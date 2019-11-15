@@ -212,32 +212,51 @@
 	end
 
 
+	---@param A unit
+	---@param B unit
 	function AngleBetweenUnits (A, B)
 		return Atan2(GetUnitY(B) - GetUnitY(A), GetUnitX(B) - GetUnitX(A)) * bj_RADTODEG
 	end
 
+	---@param A unit
+	---@param B_x real
+	---@param B_y real
 	function AnglebetweenUnitXY (A, B_x, B_y)
 		return Atan2(B_y - GetUnitY(A), B_x - GetUnitX(A)) * bj_RADTODEG
 	end
 
+	---@param A unit
+	---@param B unit
 	function DistanceBetweenUnits (A, B)
 		local dx = GetUnitX(B) - GetUnitX(A)
 		local dy = GetUnitY(B) - GetUnitY(A)
 		return SquareRoot((dx * dx) + (dy * dy))
 	end
 
+	---@param A unit
+	---@param B_x real
+	---@param B_y real
 	function DistanceBetweenUnitXY (A, B_x, B_y)
 		local dx = B_x - GetUnitX(A)
 		local dy = B_y - GetUnitY(A)
 		return SquareRoot((dx * dx) + (dy * dy))
 	end
 
+	---@param A unit
+	---@param B_x real
+	---@param B_y real
 	function DistanceBetweenUnitXY_Ex (A, B_x, B_y)
 		local dx = B_x - GetUnitX(A)
 		local dy = B_y - GetUnitY(A)
 		return GetMaxAvailableDistanceEx(A, SquareRoot((dx * dx) + (dy * dy)), AnglebetweenUnitXY(A, B_x, B_y))
 	end
 
+	---@param A_x real
+	---@param A_y real
+	---@param A_z real
+	---@param B_x real
+	---@param B_y real
+	---@param B_z real
 	function GetDistance3D(A_x, A_y, A_z, B_x, B_y, B_z)
 		local dx = B_x - A_x
 		local dy = B_y - A_y
@@ -245,6 +264,9 @@
 		return SquareRoot((dx * dx) + (dy * dy) + (dz * dz))
 	end
 
+	---@param A unit
+	---@param B unit
+	---@param speed real
 	function TimeBetweenUnits (A, B, speed)
 		local dx = GetUnitX(B) - GetUnitX(A)
 		local dy = GetUnitY(B) - GetUnitY(A)
