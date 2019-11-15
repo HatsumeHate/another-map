@@ -4,7 +4,7 @@
 	ForFilter1        = nil
 	ForFilter2        = nil
 	local SOURCE_UNIT
-	
+
 
 	function AllFilter()
 		return (GetUnitState(GetFilterUnit(), UNIT_STATE_LIFE) > 0.045)
