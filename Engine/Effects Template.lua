@@ -1,7 +1,7 @@
 
 
     EffectsData = {}
-
+    local MaxEffectLevels = 10
 
 
 
@@ -22,9 +22,11 @@
 
 
 
-    local function NewEffectData(id)
+
+    local function NewEffectData(effect_id)
+        --local index = 1
         local my_new_effect = {
-            Id = id,
+            Id = effect_id,
 
             Power = 0,
             SummBaseAttack = false,
@@ -36,6 +38,7 @@
             BonusAccuracy = 0,
             CanCrit = true,
             BonusCrit = 0,
+            BonusCritMultiplier = 0.,
 
             AppliedBuff = 0,
             PersistentAuraBuff = 0,
@@ -56,13 +59,28 @@
     end
 
 
+    local function NewEffectDataLevel(effect_id)
+        local index = 1
+        local my_new_effect = { effect_level = {} }
+
+            while(index < MaxEffectLevels) do
+                my_new_effect.effect_level[index] = NewEffectData(effect_id)
+                index = index + 1
+            end
+
+        return my_new_effect
+    end
+
+
     function DefineEffectsData()
         local effect_count = 5
         local index = 1
 
             while(index < effect_count) do
-                EffectsData[index] = NewEffectData(index)
+                EffectsData[index] = NewEffectDataLevel(index)
                 index = index + 1
             end
+
+        EffectsData[1].effect_level[1].Attribute = PHYSICAL
 
     end
