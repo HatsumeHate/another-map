@@ -2,6 +2,7 @@
 	hash = InitHashtable()
 	local udg_SimError
 	local Stop        = false
+	local Loc
 	ForFilter1        = nil
 	ForFilter2        = nil
 	IGNORE_ID = 'A00Z'
@@ -427,5 +428,215 @@
 				if float_angle > 180. then float_angle = (angle - facing + 360.) end
 			end
 
-			return float_angle <= w
+		return float_angle <= w
+	end
+
+
+	function GetDirection(u, targ)
+		local alpha = GetUnitFacing(u)
+		local gamma = bj_RADTODEG * Atan2(GetUnitY(targ)-GetUnitY(u), GetUnitX(targ)-GetUnitX(u))
+
+			if gamma < 0 then
+				gamma = 360. + gamma
+			end
+
+			if (alpha < 180. and not(gamma > alpha and gamma < alpha + 180.)) or (alpha > 180. and gamma > alpha - 180. and gamma < alpha) then
+				return 2
+			else
+				return 1
+			end
+
+		return 1
+	end
+
+
+	function SetUnitPositionSmooth(source, x, y)
+		local last_x = GetUnitX(source)
+		local last_y = GetUnitY(source)
+		local bx
+		local by
+
+		 SetUnitPosition(source, x, y)
+
+			if(RAbsBJ(GetUnitX(source) - x) > 0.5) or (RAbsBJ(GetUnitY(source) - y) > 0.5)then
+
+				 SetUnitPosition(source, x, last_y)
+				 bx = RAbsBJ(GetUnitX(source) - x) <= 0.5
+				 SetUnitPosition(source, last_x, y)
+				 by = RAbsBJ(GetUnitY(source) - y) <= 0.5
+
+				if bx then
+					SetUnitPosition(source, x, last_y)
+				elseif by then
+					 SetUnitPosition(source, last_x, y)
+				else
+					SetUnitPosition(source, last_x, last_y)
+				end
+
+			end
+	end
+
+
+	function GetZ(x, y)
+		MoveLocation(Loc, x, y)
+		return GetLocationZ(Loc)
+	end
+
+
+	function GetUnitZ(u)
+		MoveLocation(Loc, GetUnitX(u), GetUnitY(u))
+		return GetLocationZ(Loc) + GetUnitFlyHeight(u)
+	end
+
+
+	function SimError(msg1, p)
+
+		if udg_SimError==nil then
+			udg_SimError = CreateSoundFromLabel( "InterfaceError",false,false,false,10,10)
 		end
+
+			if (GetLocalPlayer() == Player(p)) then
+				DisplayTimedTextToPlayer( Player(p), 0.52, -1.00, 2.00, "|cffffcc00"..msg1.."|r" )
+				StartSound( udg_SimError )
+			end
+
+	end
+
+
+	function PlayLocalSound(s, p)
+		local snd
+
+			if GetLocalPlayer() ~= Player(p) then s = "" end
+
+			snd = CreateSound(s, false, false, false, 10, 10,"")
+			SetSoundChannel(snd,5)
+			SetSoundVolume(snd,127)
+			SetSoundPitch(snd, 1)
+			StartSound(snd)
+			KillSoundWhenDone(snd)
+
+		snd = nil
+	end
+
+	function PlayLocalSound2(s, p)
+		local snd
+
+			if GetLocalPlayer() ~= Player(p) then s = "" end
+
+			snd = CreateSound(s,false, false, false,10,10,"")
+			SetSoundChannel(snd,5)
+			SetSoundVolume(snd,127)
+			SetSoundPitch(snd, 1)
+			StartSound(snd)
+			KillSoundWhenDone(snd)
+
+		snd = nil
+	end
+
+
+	function AddSound(s, x, y)
+		local snd = CreateSound(s, false, true, true, 10, 10, "CombatSoundsEAX")
+
+			SetSoundChannel(snd, 5)
+			SetSoundVolume(snd, 127)
+			SetSoundPitch(snd, 1)
+			SetSoundDistances(snd, 600., 10000.)
+			SetSoundDistanceCutoff(snd, 2100.)
+			SetSoundConeAngles(snd, 0.0, 0.0, 127)
+			SetSoundConeOrientation(snd, 0.0, 0.0, 0.0)
+			SetSoundPosition(snd, x, y, 35.)
+			StartSound(snd)
+			KillSoundWhenDone(snd)
+
+		snd = nil
+	end
+
+	function AddLoopingSound(s, x, y, vol)
+		local snd = CreateSound(s, true, true, true, 10, 10, "CombatSoundsEAX")
+			SetSoundChannel(snd, 5)
+			SetSoundVolume(snd, vol)
+			SetSoundPitch(snd, 1)
+			SetSoundDistances(snd, 600., 10000.)
+			SetSoundDistanceCutoff(snd, 2100.)
+			SetSoundConeAngles(snd, 0.0, 0.0, 127)
+			SetSoundConeOrientation(snd, 0.0, 0.0, 0.0)
+			SetSoundPosition(snd, x, y, 35.)
+			StartSound(snd)
+		snd = nil
+	end
+
+
+	function AddSoundVolume(s, x, y, vol, cutoff)
+		local snd = CreateSound(s, false, true, true, 10, 10, "CombatSoundsEAX")
+			SetSoundChannel(snd, 5)
+			SetSoundVolume(snd, vol)
+			SetSoundPitch(snd, 1)
+			SetSoundDistances(snd, 600., 10000.)
+			SetSoundDistanceCutoff(snd, cutoff)
+			SetSoundConeAngles(snd, 0.0, 0.0, 127)
+			SetSoundConeOrientation(snd, 0.0, 0.0, 0.0)
+			SetSoundPosition(snd, x, y, 35.)
+			StartSound(snd)
+			KillSoundWhenDone(snd)
+		snd = nil
+	end
+
+	function AddSoundVolumeZ(s, x, y, z, vol, cutoff)
+		local snd = CreateSound(s, false, true, false, 10, 10, "CombatSoundsEAX") --CombatSoundsEAX
+			SetSoundChannel(snd, 5)
+			SetSoundVolume(snd, vol)
+			SetSoundPitch(snd, 1)
+			SetSoundDistances(snd, 600., 10000.)
+			SetSoundDistanceCutoff(snd, cutoff)
+			SetSoundConeAngles(snd, 0.0, 0.0, 127)
+			SetSoundConeOrientation(snd, 0.0, 0.0, 0.0)
+			SetSoundPosition(snd, x, y, z)
+			StartSound(snd)
+			KillSoundWhenDone(snd)
+		snd = nil
+	end
+
+	function CopyGroup (g)
+			bj_groupAddGroupDest = CreateGroup()
+			ForGroup(g, GroupAddGroupEnum)
+		return bj_groupAddGroupDest
+	end
+
+	function GroupPickRandom()
+		if (GetRandomInt(1, bj_groupRandomConsidered) == 1) then
+			 bj_groupRandomCurrentPick = GetEnumUnit()
+		end
+	end
+
+	function RandomFromGroup (whichGroup)
+			bj_groupRandomConsidered = 0
+			bj_groupRandomCurrentPick = nil
+			ForGroup(whichGroup, GroupPickRandomUnitEnum)
+		return bj_groupRandomCurrentPick
+	end
+
+
+	function IsUnitInHeight(A, B)
+			local loc = Location(0.,0.)
+			local min_h_A, max_h_A, min_h_B, max_h_B
+
+				MoveLocation(loc, Gx(A), Gy(A))
+				min_h_A = GetLocationZ(loc) + GetUnitFlyHeight(A) - 15.
+				max_h_A = GetLocationZ(loc) + GetUnitFlyHeight(A) + 15.
+				MoveLocation(loc, Gx(B), Gy(B))
+				min_h_B = GetLocationZ(loc) + GetUnitFlyHeight(B)
+				max_h_B = min_h_B + 80.
+				RemoveLocation(loc)
+
+			loc = nil
+		return ((min_h_A >= min_h_B and min_h_A <= max_h_B) or (max_h_A <= max_h_B and max_h_A >= min_h_B))
+	end
+
+	function SetTexture(u, texture_id)
+		bj_lastCreatedDestructable = CreateDestructable(texture_id, Gx(u) + Rx(10., GetUnitFacing(u)), Gy(u) + Ry(10., GetUnitFacing(u)), 0., 1., 0)
+		UnitAddAbility(u, 'Agra')
+		IssueTargetOrderById(u, order_grabtree, bj_lastCreatedDestructable)
+		UnitRemoveAbility(u, 'Agra')
+		RemoveDestructable(bj_lastCreatedDestructable)
+		SetUnitAnimation(u, "stand")
+	end
