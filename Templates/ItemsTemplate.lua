@@ -136,91 +136,73 @@
     end
 
 
+
+    ---@param param_type integer
+    ---@param value integer
+    ---@param bonus integer
+    function AddBonusParameter(param_type, value, bonus)
+        return { param_type = param_type, param_value = value, modificator = bonus }
+    end
+
+
     ---@param name string
     ---@param item_type integer
     ---@param subtype integer
     function DefineNewItem(name, item_type, subtype)
-        local new_item
+        local new_item = {
+            name = name,
+            item_type = item_type,
+            item_subtype = subtype,
 
-        if item_type == ITEM_TYPE_WEAPON then
-            new_item = {
-                name = name,
-                item_type = item_type,
-                item_subtype = subtype,
+            damage = 0.,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+            attribute = PHYSICAL_ATTRIBUTE,
+            attribute_bonus = 0,
 
-                damage = 1.,
-                damage_type = DAMAGE_TYPE_PHYSICAL,
-                attribute = PHYSICAL_ATTRIBUTE,
-                attribute_bonus = 0,
+            defence = 0,
+            suppression = 0,
 
-                attack_speed = 1.,
-                critical_chance = 5.,
-                critical_multiplier = 1.5,
+            attack_speed = 1.,
+            critical_chance = 5.,
+            critical_multiplier = 1.5,
 
-                dispersion = { 1., 1.},
-                range = 100,
-                angle = 30.,
-                max_targets = 1,
+            dispersion = { 1., 1.},
+            range = 100,
+            angle = 30.,
+            max_targets = 1,
 
-                missile_on_attack = 0,
-                effect_on_attack = 0,
-                weapon_sound = nil,
-                model = '',
+            missile_on_attack = 0,
+            effect_on_attack = 0,
+            weapon_sound = nil,
+            model = '',
 
-                quality = COMMON_ITEM,
-                bonus_parameters = {},
-                max_slots = 0,
-                stone_slots = {}
-            }
+            quality = COMMON_ITEM,
+            bonus_parameters = {},
+            max_slots = 0,
+            stone_slots = {}
+        }
 
-            DefineItemTemplate(new_item)
-
-        elseif item_type == ITEM_TYPE_ARMOR then
-            new_item = {
-                name = name,
-                item_type = item_type,
-                item_subtype = subtype,
-
-                defence = 0,
-
-                model = '',
-
-                quality = COMMON_ITEM,
-                bonus_parameters = {},
-                max_slots = 0,
-                stone_slots = {}
-            }
-        elseif item_type == ITEM_TYPE_JEWELRY then
-            new_item = {
-                name = name,
-                item_type = item_type,
-                item_subtype = subtype,
-
-                suppression = 0,
-
-                model = '',
-
-                quality = COMMON_ITEM,
-                bonus_parameters = {},
-                max_slots = 0,
-                stone_slots = {}
-            }
-        end
-
+        DefineItemTemplate(new_item)
         return new_item
     end
 
 
     function DefineItems()
+        local new_item
 
-        ItemsTemplateData['I000'] = DefineNewItem('test sword', ITEM_TYPE_WEAPON, SWORD_WEAPON)
-        ItemsTemplateData['I000'].damage = 100
-        ItemsTemplateData['I000'].quality = RARE_ITEM
-        ItemsTemplateData['I000'].bonus_parameters[1] = { PHYSICAL_BONUS, 20, STRAIGHT_BONUS }
-        ItemsTemplateData['I000'].bonus_parameters[2] = { CRIT_CHANCE, 1.25, MULTIPLY_BONUS }
+            ItemsTemplateData[FourCC('I000')] = DefineNewItem('test sword', ITEM_TYPE_WEAPON, SWORD_WEAPON)
+            new_item = ItemsTemplateData[FourCC('I000')]
+            new_item.damage = 100
+            new_item.quality = RARE_ITEM
+            new_item.bonus_parameters[1] = AddBonusParameter(PHYSICAL_BONUS, 20, STRAIGHT_BONUS)
+            new_item.bonus_parameters[2] = AddBonusParameter(CRIT_CHANCE, 1.25, MULTIPLY_BONUS)
 
-        ItemsTemplateData['I001'] = DefineNewItem('test armor piece', ITEM_TYPE_ARMOR, CHEST_ARMOR)
-        ItemsTemplateData['I001'].defence = 50
-        ItemsTemplateData['I001'].quality = MAGIC_ITEM
 
+            ItemsTemplateData[FourCC('I001')] = DefineNewItem('test armor piece', ITEM_TYPE_ARMOR, CHEST_ARMOR)
+            new_item = ItemsTemplateData[FourCC('I001')]
+            new_item.defence = 50
+            new_item.quality = MAGIC_ITEM
+
+
+        new_item = nil
     end
