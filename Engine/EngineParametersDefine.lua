@@ -148,7 +148,7 @@
 
     function DefineParametersData()
         ParametersUpdate[PHYSICAL_ATTACK] = function(unit_data)
-            unit_data.stats[PHYSICAL_ATTACK].value = (unit_data[PHYSICAL_ATTACK].STR_STAT * unit_data[PHYSICAL_ATTACK].multiplier) + unit_data[PHYSICAL_ATTACK].bonus
+            unit_data.stats[PHYSICAL_ATTACK].value = (unit_data.stats[PHYSICAL_ATTACK].STR_STAT * unit_data.stats[PHYSICAL_ATTACK].multiplier) + unit_data.stats[PHYSICAL_ATTACK].bonus
         end
 
 
