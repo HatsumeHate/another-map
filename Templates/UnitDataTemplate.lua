@@ -34,21 +34,29 @@
         }
 
         ---@param source unit
+        ---@param class integer
         function NewUnitData(source, class)
+            local base_stats = BASE_STATS[class]
+
             local data                 = {
                 Owner        = source,
 
                 class        = class,
+
+                base_stats = {
+                    STR = base_stats[1], VIT = base_stats[2], AGI = base_stats[3], INT = base_stats[4],
+                    HP = 100, MP = 100, hp_regen = 1, mp_regen = 1,
+                },
+
+                is_hp_static = false,
+                is_mp_static = false,
+
                 stats        = CreateParametersData(),
 
-                equip_points = { }
+                equip_point = { }
             }
 
-            local base_stats       = BASE_STATS[class]
-            data.stats[STR_STAT].value = base_stats[1]
-            data.stats[VIT_STAT].value = base_stats[2]
-            data.stats[AGI_STAT].value = base_stats[3]
-            data.stats[INT_STAT].value = base_stats[4]
+
 
 
             UnitsData[GetHandleId(source)] = data
