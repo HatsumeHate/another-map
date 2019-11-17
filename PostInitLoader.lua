@@ -1,15 +1,11 @@
-
-
-
-    do
-        local loader = InitGlobals
-
-        function InitGlobals()
-            loader()
-
-            DefineSkillsData()
-            DefineEffectsData()
-            DefineParametersData()
-            -- здесь могла быть ваша реклама или ваш код
-        end
-    end
+do
+	local InitGlobalsOrigin = InitGlobals
+	
+	function InitGlobals()
+		InitGlobalsOrigin()
+		
+		DefineSkillsData()
+		DefineEffectsData()
+		DefineParametersData()
+	end
+end
