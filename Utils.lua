@@ -442,9 +442,8 @@
 
 			if (alpha < 180. and not(gamma > alpha and gamma < alpha + 180.)) or (alpha > 180. and gamma > alpha - 180. and gamma < alpha) then
 				return 2
-			else
-				return 1
 			end
+
 
 		return 1
 	end

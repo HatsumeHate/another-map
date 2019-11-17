@@ -31,7 +31,7 @@
             Power = 0,
             SummBaseAttack = false,
             PercentOfBaseAttack = 0,
-            DamageType = true,
+            DamageType = DAMAGE_TYPE_NONE,
             HealAmount = 0,
             Attribute = 1,
             Unavoidable = false,
@@ -78,6 +78,9 @@
         end
 
         -- defined effects
+        --=======================================--
+        -- test effect
+        EffectsData[1].Level[1].Power = 30
         EffectsData[1].Level[1].Attribute = PHYSICAL
 
     end
