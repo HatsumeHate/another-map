@@ -450,6 +450,9 @@
 	end
 
 
+	---@param source unit
+	---@param x real
+	---@param y real
 	function SetUnitPositionSmooth(source, x, y)
 		local last_x = GetUnitX(source)
 		local last_y = GetUnitY(source)
@@ -477,6 +480,8 @@
 	end
 
 
+	---@param x real
+	---@param y real
 	function GetZ(x, y)
 		MoveLocation(Loc, x, y)
 		return GetLocationZ(Loc)

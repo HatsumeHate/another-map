@@ -23,8 +23,8 @@
 
 
 
+    ---@param effect_id integer
     local function NewEffectData(effect_id)
-        --local index = 1
         local my_new_effect = {
             Id = effect_id,
 
@@ -59,28 +59,25 @@
     end
 
 
+    ---@param effect_id integer
     local function NewEffectDataLevel(effect_id)
-        local index = 1
-        local my_new_effect = { effect_level = {} }
+        local my_new_effect = { level = {} }
 
-            while(index < MaxEffectLevels) do
-                my_new_effect.effect_level[index] = NewEffectData(effect_id)
-                index = index + 1
-            end
+        for i = 1, MaxEffectLevels do
+            my_new_effect.level[i] = NewEffectData(effect_id)
+        end
 
         return my_new_effect
     end
 
 
     function DefineEffectsData()
-        local effect_count = 5
-        local index = 1
 
-            while(index < effect_count) do
-                EffectsData[index] = NewEffectDataLevel(index)
-                index = index + 1
-            end
+        for i = 1, 5 do
+            EffectsData[i] = NewEffectDataLevel(i)
+        end
 
-        EffectsData[1].effect_level[1].Attribute = PHYSICAL
+        -- defined effects
+        EffectsData[1].Level[1].Attribute = PHYSICAL
 
     end
