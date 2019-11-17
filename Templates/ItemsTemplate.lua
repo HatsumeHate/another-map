@@ -217,6 +217,7 @@
         ItemsTemplateData['I000'].damage = 100
         ItemsTemplateData['I000'].quality = RARE_ITEM
         ItemsTemplateData['I000'].bonus_parameters[1] = { PHYSICAL_BONUS, 20, STRAIGHT_BONUS }
+        ItemsTemplateData['I000'].bonus_parameters[2] = { CRIT_CHANCE, 1.25, MULTIPLY_BONUS }
 
         ItemsTemplateData['I001'] = DefineNewItem('test armor piece', ITEM_TYPE_ARMOR, CHEST_ARMOR)
         ItemsTemplateData['I001'].defence = 50

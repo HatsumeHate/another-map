@@ -50,13 +50,11 @@
             data.stats[AGI_STAT].value = base_stats[3]
             data.stats[INT_STAT].value = base_stats[4]
 
-            --FIXME присваивать nil бессмысленно ибо отсутствие значение равно nil. Поэтому этот блок смело можно удалить.
-            for i = 1, 9 do
-                data.equip_points[i] = nil
-            end
 
             UnitsData[GetHandleId(source)] = data
             return data
         end
 
     end
+
+    --data.equip_points[CHEST_POINT].defence + data.equip_points[LEGS_POINT].defence
