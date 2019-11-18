@@ -14,7 +14,7 @@
         }
     end
 
-    ---@param effect_id integer
+
     local function NewEffectData()
         return {
             Power               = 0,
