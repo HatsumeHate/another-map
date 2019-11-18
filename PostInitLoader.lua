@@ -26,7 +26,7 @@ do
 		BJDebugMsg(ItemsTemplateData[FourCC('I000')].bonus_parameters[2].modificator)
 
 		BJDebugMsg("=================")
-		my_item = CreateCustomItem(FourCC('I000'), GetRectCenterX(gg_rct_test), GetRectCenterY(gg_rct_test))
+		local my_item = CreateCustomItem(FourCC('I000'), GetRectCenterX(gg_rct_test), GetRectCenterY(gg_rct_test))
 
 		BJDebugMsg(ItemsData[GetHandleId(my_item)].name)
 	end
