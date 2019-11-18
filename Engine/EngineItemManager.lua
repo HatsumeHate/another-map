@@ -3,14 +3,6 @@ do
 	---@param x real
 	---@param y real
 	function CreateCustomItem(raw, x, y)
-		local id     = FourCC(raw)
-		local item   = CreateItem(id, x, y)
-		local handle = GetHandleId(item)
-		local data   = {}
-		for k, v in pairs(ITEM_TEMPLATE_DATA[id]) do
-			data[k] = v
-		end
-		ITEM_DATA[handle] = data
-		return item
+		return  CreateItem(FourCC(raw), x, y)
 	end
 end
