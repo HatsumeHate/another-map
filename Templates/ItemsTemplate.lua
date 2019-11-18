@@ -166,7 +166,7 @@
             critical_chance = 5.,
             critical_multiplier = 1.5,
 
-            dispersion = { 1., 1.},
+            dispersion = { [1] = 1., [2] = 1.},
             range = 100,
             angle = 30.,
             max_targets = 1,

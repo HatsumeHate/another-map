@@ -28,7 +28,7 @@
             critical_chance = ItemsTemplateData[item_id].critical_chance,
             critical_multiplier = ItemsTemplateData[item_id].critical_multiplier,
 
-            dispersion = { ItemsTemplateData[item_id].dispersion[1], ItemsTemplateData[item_id].dispersion[2]},
+            dispersion = { [1] = ItemsTemplateData[item_id].dispersion[1], [2] = ItemsTemplateData[item_id].dispersion[2] },
             range = ItemsTemplateData[item_id].range,
             angle = ItemsTemplateData[item_id].angle,
             max_targets = ItemsTemplateData[item_id].max_targets,
@@ -46,11 +46,15 @@
 
 
         local i = 1
-        while(ItemsTemplateData[item_id].bonus_parameters[i] ~= nil) do
-            ItemsData[handle].bonus_parameters[i].param_type = ItemsTemplateData[item_id].bonus_parameters[i].param_type
-            ItemsData[handle].bonus_parameters[i].param_value = ItemsTemplateData[item_id].bonus_parameters[i].param_value
-            ItemsData[handle].bonus_parameters[i].modificator = ItemsTemplateData[item_id].bonus_parameters[i].modificator
-            i = i + 1
+        while(true) do
+            if ItemsTemplateData[item_id].bonus_parameters[i] == nil then
+                break
+            else
+                ItemsData[handle].bonus_parameters[i].param_type = ItemsTemplateData[item_id].bonus_parameters[i].param_type
+                ItemsData[handle].bonus_parameters[i].param_value = ItemsTemplateData[item_id].bonus_parameters[i].param_value
+                ItemsData[handle].bonus_parameters[i].modificator = ItemsTemplateData[item_id].bonus_parameters[i].modificator
+                i = i + 1
+            end
         end
 
         return bj_lastCreatedItem

@@ -15,10 +15,8 @@
     end
 
     ---@param effect_id integer
-    local function NewEffectData(effect_id)
+    local function NewEffectData()
         return {
-            Id                  = effect_id,
-
             Power               = 0,
             SummBaseAttack      = false,
             PercentOfBaseAttack = 0,
@@ -49,12 +47,12 @@
     end
 
     ---@param effect_id integer
-    local function NewEffectDataLevel(effect_id)
-        local my_new_effect = { level = {} }
+    local function NewEffectTemplate(effect_id)
+        local my_new_effect = { level = {  }, id = effect_id, name = '' }
 
-        for i = 1, MaxEffectLevels do
-            my_new_effect.level[i] = NewEffectData(effect_id)
-        end
+            for i = 1, MaxEffectLevels do
+                my_new_effect.level[i] = NewEffectData()
+            end
 
         return my_new_effect
     end
@@ -62,13 +60,14 @@
     function DefineEffectsData()
 
         for i = 1, 5 do
-            EffectsData[i] = NewEffectDataLevel(i)
+            EffectsData[i] = NewEffectTemplate(i)
         end
 
         -- defined effects
         --=======================================--
         -- test effect
-        EffectsData[1].Level[1].Power     = 30
-        EffectsData[1].Level[1].Attribute = PHYSICAL
+        EffectsData[1].name = "test effect 1"
+        EffectsData[1].level[1].Power     = 30
+        EffectsData[1].level[1].Attribute = PHYSICAL_BONUS
 
     end
