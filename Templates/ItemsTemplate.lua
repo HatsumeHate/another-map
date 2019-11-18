@@ -39,46 +39,6 @@ do
 		return a
 	end
 	
-	---@param raw string
-	---@param data table
-	local function ItemAddData(raw, data)
-		ITEM_TEMPLATE_DATA[FourCC(raw)] = ItemMergeData(
-				{
-					NAME               = '',
-					TYPE               = ITEM_TYPE_WEAPON,
-					SUBTYPE            = FIST_WEAPON,
-					
-					DAMAGE             = 0,
-					DAMAGE_TYPE        = DAMAGE_TYPE_PHYSICAL,
-					ATTRIBUTE          = PHYSICAL_ATTRIBUTE,
-					ATTRIBUTE_BONUS    = 0,
-					
-					DEFENCE            = 0,
-					SUPPRESSION        = 0,
-					
-					ATTACK_SPEED       = 1,
-					CRIT_CHANCE        = 0,
-					CRIT_MULTIPLIER    = 0,
-					
-					DISPERSION         = { 0.9, 1.1 },
-					RANGE              = 100,
-					ANGLE              = math.pi() / 6, -- 30 градусов
-					MAX_TARGETS        = 1,
-					
-					MISSILE_ON_ATTATCK = 0,
-					EFFECT_ON_ATTACK   = 0,
-					WEAPON_SOUND       = nil,
-					MODEL              = '',
-					
-					QUALITY            = COMMON_ITEM,
-					BONUS              = {},
-					MAX_SLOTS          = 0,
-					STONE_SLOTS        = {}
-				},
-				data
-		)
-	end
-	
 	local weapons = {
 		[FIST_WEAPON]       = {
 			DAMAGE          = 4,
@@ -177,22 +137,61 @@ do
 		v.SUBTYPE = k
 	end
 	
+	---@param raw string
+	---@param data table
+	local function ItemAddData(raw, data)
+		local newdata = {
+			NAME               = '',
+			TYPE               = nil,
+			SUBTYPE            = nil,
+			
+			DAMAGE             = 0,
+			DAMAGE_TYPE        = DAMAGE_TYPE_PHYSICAL,
+			ATTRIBUTE          = PHYSICAL_ATTRIBUTE,
+			ATTRIBUTE_BONUS    = 0,
+			
+			DEFENCE            = 0,
+			SUPPRESSION        = 0,
+			
+			ATTACK_SPEED       = 1,
+			CRIT_CHANCE        = 0,
+			CRIT_MULTIPLIER    = 0,
+			
+			DISPERSION         = { 0.9, 1.1 },
+			RANGE              = 100,
+			ANGLE              = math.pi() / 6, -- 30 градусов
+			MAX_TARGETS        = 1,
+			
+			MISSILE_ON_ATTATCK = 0,
+			EFFECT_ON_ATTACK   = 0,
+			WEAPON_SOUND       = nil,
+			MODEL              = '',
+			
+			QUALITY            = COMMON_ITEM,
+			BONUS              = {},
+			MAX_SLOTS          = 0,
+			STONE_SLOTS        = {}
+		}
+		
+		if (weapons[newdata.SUBTYPE] ~= nil) then
+			ItemMergeData(newdata, weapons[newdata.SUBTYPE])
+		end
+		ItemMergeData(newdata, data)
+		
+		ITEM_TEMPLATE_DATA[FourCC(raw)] = newdata
+	end
+	
 	-- чтобы заполнить инфу не нужно ждать InitGlobals
-	ItemAddData(
-			'I000',
-			ItemMergeData(
-					weapons[SWORD_WEAPON],
-					{
-						NAME    = 'test sword',
-						DAMAGE  = 100,
-						QUALITY = RARE_ITEM,
-						BONUS   = {
-							{ PHYSICAL_BONUS, 20, STRAIGHT_BONUS },
-							{ CRIT_CHANCE, 1.25, MULTIPLY_BONUS }
-						}
-					}
-			)
-	)
+	ItemAddData('I000', {
+		NAME    = 'test sword',
+		SUBTYPE = SWORD_WEAPON,
+		DAMAGE  = 100,
+		QUALITY = RARE_ITEM,
+		BONUS   = {
+			{ PHYSICAL_BONUS, 20, STRAIGHT_BONUS },
+			{ CRIT_CHANCE, 1.25, MULTIPLY_BONUS }
+		}
+	})
 	--
 	ItemAddData('I001', {
 		NAME    = 'test armor piece',
