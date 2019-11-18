@@ -43,7 +43,7 @@ do
 	---@param raw string
 	---@param data table
 	local function ItemAddData(raw, data)
-		ITEM_DATA[FourCC(raw)] = ItemMergeData(
+		ITEM_TEMPLATE_DATA[FourCC(raw)] = ItemMergeData(
 				{
 					NAME               = '',
 					TYPE               = ITEM_TYPE_WEAPON,
