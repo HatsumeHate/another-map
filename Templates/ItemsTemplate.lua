@@ -1,208 +1,205 @@
-
-    ItemsTemplateData = {}
-
-    ITEM_TYPE_WEAPON    = 1
-    ITEM_TYPE_ARMOR     = 2
-    ITEM_TYPE_JEWELRY   = 3
-
-
-    FIST_WEAPON         = 1
-    BOW_WEAPON          = 2
-    BLUNT_WEAPON        = 3
-    GREATBLUNT_WEAPON   = 4
-    SWORD_WEAPON        = 5
-    GREATSWORD_WEAPON   = 6
-    AXE_WEAPON          = 7
-    GREATAXE_WEAPON     = 8
-    DAGGER_WEAPON       = 9
-    STAFF_WEAPON        = 10
-    JAWELIN_WEAPON      = 11
-    HEAD_ARMOR          = 12
-    CHEST_ARMOR         = 13
-    LEGS_ARMOR          = 14
-    HANDS_ARMOR         = 15
-    RING_1_JEWELRY      = 16
-    RING_2_JEWELRY      = 17
-    NECKLACE_JEWELRY    = 18
-
-
-    COMMON_ITEM = 1
-    RARE_ITEM = 2
-    MAGIC_ITEM = 3
-    SET_ITEM = 4
-    UNIQUE_ITEM = 5
-
-
-
-
-
-
-
-    ---@param new_item table
-    function DefineItemTemplate(new_item)
-        if new_item.item_subtype == FIST_WEAPON then
-            new_item.damage = 4
-            new_item.attack_speed = 1.8
-            new_item.critical_chance = 0.
-            new_item.critical_multiplier = 1.5
-            new_item.range = 90.
-            new_item.dispersion[1] = 0.9
-            new_item.dispersion[2] = 1.1
-            new_item.weapon_sound = WEAPON_TYPE_WOOD_LIGHT_BASH
-        elseif new_item.item_subtype == SWORD_WEAPON then
-            new_item.attack_speed = 1.6
-            new_item.critical_chance = 4.
-            new_item.critical_multiplier = 2.1
-            new_item.range = 90.
-            new_item.dispersion[1] = 0.9
-            new_item.dispersion[2] = 1.1
-            new_item.weapon_sound = WEAPON_TYPE_METAL_MEDIUM_SLICE
-        elseif new_item.item_subtype == GREATSWORD_WEAPON then
-            new_item.attack_speed = 2.3
-            new_item.critical_chance = 5.
-            new_item.critical_multiplier = 1.6
-            new_item.range = 100.
-            new_item.angle = 35.
-            new_item.dispersion[1] = 0.9
-            new_item.dispersion[2] = 1.1
-            new_item.weapon_sound = WEAPON_TYPE_METAL_HEAVY_SLICE
-        elseif new_item.item_subtype == AXE_WEAPON then
-            new_item.attack_speed = 1.5
-            new_item.critical_chance = 6.
-            new_item.critical_multiplier = 1.7
-            new_item.range = 100.
-            new_item.dispersion[1] = 0.85
-            new_item.dispersion[2] = 1.15
-            new_item.weapon_sound = WEAPON_TYPE_METAL_MEDIUM_CHOP
-        elseif new_item.item_subtype == GREATAXE_WEAPON then
-            new_item.attack_speed = 2.2
-            new_item.critical_chance = 6.
-            new_item.critical_multiplier = 1.7
-            new_item.range = 110.
-            new_item.dispersion[1] = 0.85
-            new_item.dispersion[2] = 1.15
-            new_item.weapon_sound = WEAPON_TYPE_METAL_HEAVY_CHOP
-        elseif new_item.item_subtype == DAGGER_WEAPON then
-            new_item.attack_speed = 1.4
-            new_item.critical_chance = 9.
-            new_item.critical_multiplier = 2.3
-            new_item.range = 90.
-            new_item.angle = 25.
-            new_item.dispersion[1] = 0.9
-            new_item.dispersion[2] = 1.1
-            new_item.weapon_sound = WEAPON_TYPE_METAL_LIGHT_SLICE
-        elseif new_item.item_subtype == STAFF_WEAPON then
-            new_item.attack_speed = 2.4
-            new_item.critical_chance = 9.
-            new_item.critical_multiplier = 2.3
-            new_item.range = 100.
-            new_item.dispersion[1] = 0.85
-            new_item.dispersion[2] = 1.15
-            new_item.weapon_sound = WEAPON_TYPE_WOOD_MEDIUM_BASH
-        elseif new_item.item_subtype == JAWELIN_WEAPON then
-            new_item.attack_speed = 2.3
-            new_item.critical_chance = 5.
-            new_item.critical_multiplier = 1.7
-            new_item.range = 110.
-            new_item.dispersion[1] = 0.85
-            new_item.dispersion[2] = 1.15
-            new_item.weapon_sound = WEAPON_TYPE_METAL_HEAVY_BASH
-        elseif new_item.item_subtype == BLUNT_WEAPON then
-            new_item.attack_speed = 1.7
-            new_item.critical_chance = 5.
-            new_item.critical_multiplier = 1.6
-            new_item.range = 90.
-            new_item.dispersion[1] = 0.8
-            new_item.dispersion[2] = 1.2
-            new_item.weapon_sound = WEAPON_TYPE_METAL_MEDIUM_BASH
-        elseif new_item.item_subtype == GREATBLUNT_WEAPON then
-            new_item.attack_speed = 2.4
-            new_item.critical_chance = 5.
-            new_item.critical_multiplier = 1.7
-            new_item.range = 100.
-            new_item.dispersion[1] = 0.8
-            new_item.dispersion[2] = 1.2
-            new_item.weapon_sound = WEAPON_TYPE_METAL_HEAVY_BASH
-        elseif new_item.item_subtype == BOW_WEAPON then
-            new_item.attack_speed = 2.6
-            new_item.critical_chance = 7.
-            new_item.critical_multiplier = 2.2
-            new_item.range = 1000.
-            new_item.dispersion[1] = 0.75
-            new_item.dispersion[2] = 1.25
-            new_item.weapon_sound = nil
-        end
-
-    end
-
-
-
-    ---@param param_type integer
-    ---@param value integer
-    ---@param bonus integer
-    function AddBonusParameter(param_type, value, bonus)
-        return { param_type = param_type, param_value = value, modificator = bonus }
-    end
-
-
-    ---@param name string
-    ---@param item_type integer
-    ---@param subtype integer
-    function DefineNewItem(name, item_type, subtype)
-        local new_item = {
-            name = name,
-            item_type = item_type,
-            item_subtype = subtype,
-
-            damage = 0.,
-            damage_type = DAMAGE_TYPE_PHYSICAL,
-            attribute = PHYSICAL_ATTRIBUTE,
-            attribute_bonus = 0,
-
-            defence = 0,
-            suppression = 0,
-
-            attack_speed = 1.,
-            critical_chance = 5.,
-            critical_multiplier = 1.5,
-
-            dispersion = { [1] = 1., [2] = 1.},
-            range = 100,
-            angle = 30.,
-            max_targets = 1,
-
-            missile_on_attack = 0,
-            effect_on_attack = 0,
-            weapon_sound = nil,
-            model = '',
-
-            quality = COMMON_ITEM,
-            bonus_parameters = {},
-            max_slots = 0,
-            stone_slots = {}
-        }
-
-        DefineItemTemplate(new_item)
-        return new_item
-    end
-
-
-    function DefineItems()
-        local new_item
-
-            ItemsTemplateData[FourCC('I000')] = DefineNewItem('test sword', ITEM_TYPE_WEAPON, SWORD_WEAPON)
-            new_item = ItemsTemplateData[FourCC('I000')]
-            new_item.damage = 100
-            new_item.quality = RARE_ITEM
-            new_item.bonus_parameters[1] = AddBonusParameter(PHYSICAL_BONUS, 20, STRAIGHT_BONUS)
-            new_item.bonus_parameters[2] = AddBonusParameter(CRIT_CHANCE, 1.25, MULTIPLY_BONUS)
-
-
-            ItemsTemplateData[FourCC('I001')] = DefineNewItem('test armor piece', ITEM_TYPE_ARMOR, CHEST_ARMOR)
-            new_item = ItemsTemplateData[FourCC('I001')]
-            new_item.defence = 50
-            new_item.quality = MAGIC_ITEM
-
-
-        new_item = nil
-    end
+-- Ставь блоки если уж так хочется отступов
+do
+	ITEM_TEMPLATE_DATA = {} -- данные для ТИПОВ предметов по равкоду
+	ITEM_DATA          = {} -- данные для КАЖДОГО предмета по хэндлу
+	
+	ITEM_TYPE_WEAPON   = 1
+	ITEM_TYPE_ARMOR    = 2
+	ITEM_TYPE_JEWELRY  = 3
+	
+	FIST_WEAPON        = 1
+	BOW_WEAPON         = 2
+	BLUNT_WEAPON       = 3
+	GREATBLUNT_WEAPON  = 4
+	SWORD_WEAPON       = 5
+	GREATSWORD_WEAPON  = 6
+	AXE_WEAPON         = 7
+	GREATAXE_WEAPON    = 8
+	DAGGER_WEAPON      = 9
+	STAFF_WEAPON       = 10
+	JAWELIN_WEAPON     = 11
+	HEAD_ARMOR         = 12
+	CHEST_ARMOR        = 13
+	LEGS_ARMOR         = 14
+	HANDS_ARMOR        = 15
+	RING_JEWELRY       = 16 --TODO после прочтения удалить комментарий
+	NECKLACE_JEWELRY   = 17
+	
+	COMMON_ITEM        = 1
+	RARE_ITEM          = 2
+	MAGIC_ITEM         = 3
+	SET_ITEM           = 4
+	UNIQUE_ITEM        = 5
+	
+	---@param a table
+	---@param b table
+	local function ItemMergeData(a, b)
+		for k, v in pairs(b) do
+			a[k] = v
+		end
+		return a
+	end
+	
+	---@param raw string
+	---@param data table
+	local function ItemAddData(raw, data)
+		ITEM_DATA[FourCC(raw)] = ItemMergeData(
+				{
+					NAME               = '',
+					TYPE               = ITEM_TYPE_WEAPON,
+					SUBTYPE            = FIST_WEAPON,
+					
+					DAMAGE             = 0,
+					DAMAGE_TYPE        = DAMAGE_TYPE_PHYSICAL,
+					ATTRIBUTE          = PHYSICAL_ATTRIBUTE,
+					ATTRIBUTE_BONUS    = 0,
+					
+					DEFENCE            = 0,
+					SUPPRESSION        = 0,
+					
+					ATTACK_SPEED       = 1,
+					CRIT_CHANCE        = 0,
+					CRIT_MULTIPLIER    = 0,
+					
+					DISPERSION         = { 0.9, 1.1 },
+					RANGE              = 100,
+					ANGLE              = math.pi() / 6, -- 30 градусов
+					MAX_TARGETS        = 1,
+					
+					MISSILE_ON_ATTATCK = 0,
+					EFFECT_ON_ATTACK   = 0,
+					WEAPON_SOUND       = nil,
+					MODEL              = '',
+					
+					QUALITY            = COMMON_ITEM,
+					BONUS              = {},
+					MAX_SLOTS          = 0,
+					STONE_SLOTS        = {}
+				},
+				data
+		)
+	end
+	
+	local weapons = {
+		[FIST_WEAPON]       = {
+			DAMAGE          = 4,
+			ATTACK_SPEED    = 1.8,
+			CRIT_CHANCE     = 0,
+			CRIT_MULTIPLIER = 1.5,
+			RANGE           = 90,
+			DISPERSION      = { 0.9, 1.1 },
+			WEAPON_SOUND    = WEAPON_TYPE_WOOD_LIGHT_BASH
+		},
+		[SWORD_WEAPON]      = {
+			ATTACK_SPEED    = 1.6,
+			CRIT_CHANCE     = 4,
+			CRIT_MULTIPLIER = 2.1,
+			RANGE           = 90,
+			DISPERSION      = { 0.9, 1.1 },
+			WEAPON_SOUND    = WEAPON_TYPE_METAL_MEDIUM_SLICE
+		},
+		[GREATSWORD_WEAPON] = {
+			ATTACK_SPEED    = 2.3,
+			CRIT_CHANCE     = 5,
+			CRIT_MULTIPLIER = 1.6,
+			RANGE           = 100,
+			ANGLE           = math.pi() / 5, -- 36 градусов
+			DISPERSION      = { 0.9, 1.1 },
+			WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_SLICE
+		},
+		[AXE_WEAPON]        = {
+			ATTACK_SPEED    = 1.5,
+			CRIT_CHANCE     = 6,
+			CRIT_MULTIPLIER = 1.7,
+			RANGE           = 100,
+			DISPERSION      = { 0.85, 1.15 },
+			WEAPON_SOUND    = WEAPON_TYPE_METAL_MEDIUM_CHOP
+		},
+		[GREATAXE_WEAPON]   = {
+			ATTACK_SPEED    = 2.2,
+			CRIT_CHANCE     = 6,
+			CRIT_MULTIPLIER = 1.7,
+			RANGE           = 110,
+			DISPERSION      = { 0.85, 1.15 },
+			WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_CHOP
+		},
+		[DAGGER_WEAPON]     = {
+			ATTACK_SPEED    = 1.4,
+			CRIT_CHANCE     = 9,
+			CRIT_MULTIPLIER = 2.3,
+			RANGE           = 90,
+			ANGLE           = math.pi() / 7.2, -- 25 градусов
+			DISPERSION      = { 0.9, 1.1 },
+			WEAPON_SOUND    = WEAPON_TYPE_METAL_LIGHT_SLICE
+		},
+		[STAFF_WEAPON]      = {
+			ATTACK_SPEED    = 2.4,
+			CRIT_CHANCE     = 9,
+			CRIT_MULTIPLIER = 2.3,
+			RANGE           = 100,
+			DISPERSION      = { 0.85, 1.15 },
+			WEAPON_SOUND    = WEAPON_TYPE_WOOD_MEDIUM_BASH
+		},
+		[JAWELIN_WEAPON]    = {
+			ATTACK_SPEED    = 2.3,
+			CRIT_CHANCE     = 5,
+			CRIT_MULTIPLIER = 1.7,
+			RANGE           = 110,
+			DISPERSION      = { 0.85, 1.15 },
+			WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_BASH
+		},
+		[BLUNT_WEAPON]      = {
+			ATTACK_SPEED    = 1.7,
+			CRIT_CHANCE     = 5,
+			CRIT_MULTIPLIER = 1.6,
+			RANGE           = 90,
+			DISPERSION      = { 0.8, 1.2 },
+			WEAPON_SOUND    = WEAPON_TYPE_METAL_MEDIUM_BASH
+		},
+		[GREATBLUNT_WEAPON] = {
+			ATTACK_SPEED    = 2.4,
+			CRIT_CHANCE     = 5,
+			CRIT_MULTIPLIER = 1.7,
+			RANGE           = 100,
+			DISPERSION      = { 0.8, 1.2 },
+			WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_BASH
+		},
+		[BOW_WEAPON]        = {
+			ATTACK_SPEED    = 2.6,
+			CRIT_CHANCE     = 7,
+			CRIT_MULTIPLIER = 2.2,
+			RANGE           = 1000,
+			DISPERSION      = { 0.75, 1.25 },
+			WEAPON_SOUND    = nil
+		}
+	}
+	for k, v in pairs(weapons) do
+		v.TYPE    = ITEM_TYPE_WEAPON
+		v.SUBTYPE = k
+	end
+	
+	-- чтобы заполнить инфу не нужно ждать InitGlobals
+	ItemAddData(
+			'I000',
+			ItemMergeData(
+					weapons[SWORD_WEAPON],
+					{
+						NAME    = 'test sword',
+						DAMAGE  = 100,
+						QUALITY = RARE_ITEM,
+						BONUS   = {
+							{ PHYSICAL_BONUS, 20, STRAIGHT_BONUS },
+							{ CRIT_CHANCE, 1.25, MULTIPLY_BONUS }
+						}
+					}
+			)
+	)
+	--
+	ItemAddData('I001', {
+		NAME    = 'test armor piece',
+		TYPE    = ITEM_TYPE_ARMOR,
+		SUBTYPE = CHEST_ARMOR,
+		QUALITY = MAGIC_ITEM,
+		DEFENCE = 50
+	})
+end
