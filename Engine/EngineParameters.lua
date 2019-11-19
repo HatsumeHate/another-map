@@ -192,7 +192,7 @@
 
                 for i = 2, 6 do
                     if data.equip_slot[i] ~= nil then
-                        defence = defence + data.equip_slot[i].defence
+                        defence = defence + data.equip_slot[i].DEFENCE
                     end
                 end
 

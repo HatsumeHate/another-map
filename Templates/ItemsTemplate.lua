@@ -22,7 +22,7 @@ do
 	CHEST_ARMOR        = 13
 	LEGS_ARMOR         = 14
 	HANDS_ARMOR        = 15
-	RING_JEWELRY       = 16 --TODO после прочтения удалить комментарий
+	RING_JEWELRY       = 16
 	NECKLACE_JEWELRY   = 17
 	
 	COMMON_ITEM        = 1
