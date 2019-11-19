@@ -37,7 +37,12 @@ do
 	local function ItemMergeData(a, b)
 		if b == nil then return a end
 		for k, v in pairs(b) do
-			table.insert(a, k, v)
+			if type(v) == 'table' then
+				a[k] = {}
+				ItemMergeData(a[k], v)
+			else
+				a[k] = v
+			end
 		end
 		return a
 	end
