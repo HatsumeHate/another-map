@@ -350,8 +350,8 @@
         ParameterName[MAGICAL_ATTACK]   = 'Магическая атака'
         ParameterName[MAGICAL_SUPPRESSION] = 'Подавление магии'
         
-        ParameterName[CRIT_CHANCE] = 'Физическая атака'
-        ParameterName[CRIT_MULTIPLIER] = 'Физическая атака'
+        ParameterName[CRIT_CHANCE] = 'Критческий шанс'
+        ParameterName[CRIT_MULTIPLIER] = 'Критический множитель'
         
         ParameterName[PHYSICAL_BONUS] = 'Физический урон'
         ParameterName[ICE_BONUS] = 'Урон от льда'

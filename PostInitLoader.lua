@@ -7,6 +7,7 @@ do
 		DefineSkillsData()
 		DefineEffectsData()
 		DefineParametersData()
+        DefineItemsData()
 		
 		-- заворачиваем всё в таймер, чтоб сообщения попали в Журнал (F12)
 		TimerStart(CreateTimer(), 0, false, function()
@@ -44,12 +45,14 @@ do
 			if ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[1] == nil then
 				print("пустой бонус")
 			end
-			
-			print(GetParameterName(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[1].PARAMETER))
+
+            print("++++"..CRIT_CHANCE)
+
+			print(GetParameterName(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[1].PARAM))
 			print(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[1].VALUE)
 			print(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[1].METHOD)
 			
-			print(GetParameterName(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[2].PARAMETER))
+			print(GetParameterName(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[2].PARAM))
 			print(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[2].VALUE)
 			print(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[2].METHOD)
 			

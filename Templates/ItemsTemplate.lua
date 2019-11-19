@@ -37,12 +37,7 @@ do
 	local function ItemMergeData(a, b)
 		if b == nil then return a end
 		for k, v in pairs(b) do
-			if type(v) == 'table' then
-				a[k] = {}
-				ItemMergeData(a[k], v)
-			else
-				a[k] = v
-			end
+			a[k] = v
 		end
 		return a
 	end
@@ -187,24 +182,28 @@ do
 		
 		ITEM_TEMPLATE_DATA[FourCC(raw)] = newdata
 	end
-	
-	-- чтобы заполнить инфу не нужно ждать InitGlobals
-	ItemAddData('I000', {
-		NAME    = 'test sword',
-		SUBTYPE = SWORD_WEAPON,
-		DAMAGE  = 100,
-		QUALITY = RARE_ITEM,
-		BONUS   = {
-			{ PARAMETER = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
-			{ PARAMETER = CRIT_CHANCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
-		}
-	})
-	--
-	ItemAddData('I001', {
-		NAME    = 'test armor piece',
-		TYPE    = ITEM_TYPE_ARMOR,
-		SUBTYPE = CHEST_ARMOR,
-		QUALITY = MAGIC_ITEM,
-		DEFENCE = 50
-	})
+
+
+	function DefineItemsData()
+		-- чтобы заполнить инфу не нужно ждать InitGlobals
+		ItemAddData('I000', {
+			NAME    = 'test sword',
+			SUBTYPE = SWORD_WEAPON,
+			DAMAGE  = 100,
+			QUALITY = RARE_ITEM,
+			BONUS   = {
+				{ PARAM = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CRIT_CHANCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
+			}
+		})
+		--
+		ItemAddData('I001', {
+			NAME    = 'test armor piece',
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = CHEST_ARMOR,
+			QUALITY = MAGIC_ITEM,
+			DEFENCE = 50
+		})
+
+	end
 end
