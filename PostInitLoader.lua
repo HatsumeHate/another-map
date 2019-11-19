@@ -27,12 +27,9 @@ do
 			end
 			print('=================')
 			print('БОНУСОВ', #DATA.BONUS)
-			if #DATA.BONUS > 0 then
-				for k, v in pairs(DATA.BONUS) do
-					print('Атрибутов', #v)
-					for name, value in pairs(v) do
-						print(name, value)
-					end
+			for i = 1, #DATA.BONUS do
+				for name, value in pairs(DATA.BONUS[i]) do
+					print(name, value)
 				end
 			end
 			
