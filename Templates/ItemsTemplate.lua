@@ -64,7 +64,7 @@ do
 			CRIT_CHANCE     = 5,
 			CRIT_MULTIPLIER = 1.6,
 			RANGE           = 100,
-			ANGLE           = math.pi() / 5, -- 36 градусов
+			ANGLE           = math.pi / 5, -- 36 градусов
 			DISPERSION      = { 0.9, 1.1 },
 			WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_SLICE
 		},
@@ -89,7 +89,7 @@ do
 			CRIT_CHANCE     = 9,
 			CRIT_MULTIPLIER = 2.3,
 			RANGE           = 90,
-			ANGLE           = math.pi() / 7.2, -- 25 градусов
+			ANGLE           = math.pi / 7.2, -- 25 градусов
 			DISPERSION      = { 0.9, 1.1 },
 			WEAPON_SOUND    = WEAPON_TYPE_METAL_LIGHT_SLICE
 		},
@@ -134,6 +134,7 @@ do
 			WEAPON_SOUND    = nil
 		}
 	}
+	
 	for k, v in pairs(weapons) do
 		v.TYPE    = ITEM_TYPE_WEAPON
 		v.SUBTYPE = k
@@ -161,7 +162,7 @@ do
 			
 			DISPERSION         = { 0.9, 1.1 },
 			RANGE              = 100,
-			ANGLE              = math.pi() / 6, -- 30 градусов
+			ANGLE              = math.pi / 6, -- 30 градусов
 			MAX_TARGETS        = 1,
 			
 			MISSILE_ON_ATTATCK = 0,
