@@ -162,7 +162,7 @@ do
 			
 			DISPERSION         = { 0.9, 1.1 },
 			RANGE              = 100,
-			ANGLE              = math.pi / 6, -- 30 градусов
+			ANGLE              = 30, --math.pi / 6, 30 градусов
 			MAX_TARGETS        = 1,
 			
 			MISSILE_ON_ATTATCK = 0,
@@ -188,9 +188,9 @@ do
 		SUBTYPE = SWORD_WEAPON,
 		DAMAGE  = 100,
 		QUALITY = RARE_ITEM,
-		BONUS   = {
-			{ PHYSICAL_BONUS, 20, STRAIGHT_BONUS },
-			{ CRIT_CHANCE, 1.25, MULTIPLY_BONUS }
+		BONUS = {
+			{ PARAMETER = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
+			{ PARAMETER = CRIT_CHANCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
 		}
 	})
 	--
