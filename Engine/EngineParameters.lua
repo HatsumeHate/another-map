@@ -192,7 +192,7 @@ do
 		[MAGICAL_ATTACK]        = function(data)
 			local total_damage = data.equip_point[WEAPON_POINT].DAMAGE
 			data.stats[MAGICAL_ATTACK].value = (total_damage * GetBonus_INT(data.stats[INT_STAT].value) + data[MAGICAL_ATTACK].bonus) * data[MAGICAL_ATTACK].multiplier
-			end,
+		end,
 
         ---@param data table
         [MAGICAL_SUPPRESSION]       = function(data)
@@ -323,7 +323,7 @@ do
 		
 		---@param data table
 		[STR_STAT]               = function(data)
-			data.stats[STR_STAT].value = data.base_stats.strenght + data[STR_STAT].bonus
+			data.stats[STR_STAT].value = data.base_stats.strength + data[STR_STAT].bonus
 		end,
 		
 		---@param data table

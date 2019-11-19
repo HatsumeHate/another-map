@@ -44,30 +44,34 @@
         ---@param class integer
         ---@param reference_table table
         function NewUnitData(source, class, reference_table)
-            local base_stats = BASE_STATS[class]
+            local class_base_stats = BASE_STATS[class]
 
             print("1")
 
             local data                 = {
                 Owner        = source,
 
-                class        = class,
+                unit_class        = class,
 
-                base_stats = {
-                    strenght = base_stats[1], vitality = base_stats[2], agility = base_stats[3], intellect = base_stats[4],
-                    health = 100, mana = 100, hp_regen = 1, mp_regen = 1,
-                    moving_speed = 300
-                },
+                base_stats = { },
 
                 is_hp_static = false,
-                is_mp_static = false,
+                is_mp_static = false
 
-                stats        = CreateParametersData(),
-
-                equip_point = {
-                    [WEAPON_POINT] = CreateDefaultWeapon()
-                }
             }
+
+            data.base_stats = {
+                strength = class_base_stats[1], vitality = class_base_stats[2], agility = class_base_stats[3], intellect = class_base_stats[4],
+                health = 100, mana = 100, hp_regen = 1, mp_regen = 1, moving_speed = 300
+            }
+
+
+            print("1.0")
+            data.equip_point[WEAPON_POINT] = CreateDefaultWeapon()
+
+            print("1.1")
+            data.stats        = CreateParametersData()
+            print("1.2")
 
             print("2")
             MergeTables(data, reference_table)

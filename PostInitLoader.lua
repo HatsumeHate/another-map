@@ -50,6 +50,7 @@ do
 		]]
 
 
+		print(GetUnitName(gg_unit_HBRB_0005))
 
 		NewUnitData(gg_unit_HBRB_0005, BARBARIAN_CLASS, {
 			base_stats = {
