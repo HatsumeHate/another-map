@@ -6,7 +6,7 @@ do
 	ITEM_TYPE_WEAPON   = 1
 	ITEM_TYPE_ARMOR    = 2
 	ITEM_TYPE_JEWELRY  = 3
-	ITEM_TYPE_OFFHAND = 4
+	ITEM_TYPE_OFFHAND  = 4
 	
 	FIST_WEAPON        = 1
 	BOW_WEAPON         = 2
@@ -37,7 +37,7 @@ do
 	local function ItemMergeData(a, b)
 		if b == nil then return a end
 		for k, v in pairs(b) do
-			a[k] = v
+			table.insert(a, v)
 		end
 		return a
 	end
@@ -163,7 +163,7 @@ do
 			
 			DISPERSION         = { 0.9, 1.1 },
 			RANGE              = 100,
-			ANGLE              = 30, --math.pi / 6, 30 градусов
+			ANGLE              = math.pi * 2, --360 градусов
 			MAX_TARGETS        = 1,
 			
 			MISSILE_ON_ATTATCK = 0,
@@ -189,9 +189,9 @@ do
 		SUBTYPE = SWORD_WEAPON,
 		DAMAGE  = 100,
 		QUALITY = RARE_ITEM,
-		BONUS = {
+		BONUS   = {
 			{ PARAMETER = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
-			--{ PARAMETER = CRIT_CHANCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
+			{ PARAMETER = CRIT_CHANCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
 		}
 	})
 	--
