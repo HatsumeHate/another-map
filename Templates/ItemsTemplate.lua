@@ -37,7 +37,7 @@ do
 	local function ItemMergeData(a, b)
 		if b == nil then return a end
 		for k, v in pairs(b) do
-			table.insert(a, v)
+			table.insert(a, k, v)
 		end
 		return a
 	end
