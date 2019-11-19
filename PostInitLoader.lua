@@ -6,10 +6,12 @@ do
 		
 		DefineSkillsData()
 		DefineEffectsData()
+        DefineItemsData()
 		
 		-- заворачиваем всё в таймер, чтоб сообщения попали в Журнал (F12)
+        --[[
 		TimerStart(CreateTimer(), 0, false, function()
-			--[[
+
 			print('Проверяем эффекты')
 			print('=================')
 			local raw  = 'I000'
@@ -32,7 +34,7 @@ do
 					print(name, value)
 				end
 			end
-			]]
+
 			print('=================')
 			print("ЭФФЕКТЫ")
 			print(EffectsData[1].name)
@@ -45,6 +47,24 @@ do
 			local my_item = CreateCustomItem('I000', GetRectCenterX(gg_rct_test), GetRectCenterY(gg_rct_test))
 			
 			print(ITEM_DATA[GetHandleId(my_item)].NAME)
-		end)
+		]]
+
+
+
+		NewUnitData(gg_unit_HBRB_0005, BARBARIAN_CLASS, {
+			base_stats = {
+				HP = 2900,
+			},
+
+			equip_point = {
+				[WEAPON_POINT] = { attack_speed = 5. }
+			}
+
+		})
+
+        UpdateParameters(UnitsData[GetHandleId(gg_unit_HBRB_0005)])
+
+		print(UnitsData[GetHandleId(gg_unit_HBRB_0005)].base_stats.HP)
+
 	end
 end

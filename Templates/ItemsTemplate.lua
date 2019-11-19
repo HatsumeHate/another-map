@@ -147,7 +147,7 @@ do
 		local newdata = {
 			NAME               = '',
 			TYPE               = nil,
-			SUBTYPE            = nil,
+			SUBTYPE            = FIST_WEAPON,
 			
 			DAMAGE             = 0,
 			DAMAGE_TYPE        = DAMAGE_TYPE_PHYSICAL,
@@ -163,7 +163,7 @@ do
 			
 			DISPERSION         = { 0.9, 1.1 },
 			RANGE              = 100,
-			ANGLE              = math.pi * 2, --360 градусов
+			ANGLE              = 30, --math.pi * 2, 360 градусов
 			MAX_TARGETS        = 1,
 			
 			MISSILE_ON_ATTATCK = 0,
@@ -182,24 +182,34 @@ do
 		
 		ITEM_TEMPLATE_DATA[FourCC(raw)] = newdata
 	end
-	
-	ItemAddData('I000', {
-		NAME    = 'test sword',
-		SUBTYPE = SWORD_WEAPON,
-		DAMAGE  = 100,
-		QUALITY = RARE_ITEM,
-		BONUS   = {
-			{ PARAM = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
-			{ PARAM = CRIT_CHANCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
-		}
-	})
-	--
-	ItemAddData('I001', {
-		NAME    = 'test armor piece',
-		TYPE    = ITEM_TYPE_ARMOR,
-		SUBTYPE = CHEST_ARMOR,
-		QUALITY = MAGIC_ITEM,
-		DEFENCE = 50
-	})
+
+
+
+	function CreateDefaultWeapon()
+		return ItemAddData(0, { SUBTYPE = FIST_WEAPON })
+	end
+
+
+
+    function DefineItemsData()
+        ItemAddData('I000', {
+            NAME    = 'test sword',
+            SUBTYPE = SWORD_WEAPON,
+            DAMAGE  = 100,
+            QUALITY = RARE_ITEM,
+            BONUS   = {
+                { PARAM = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
+                { PARAM = CRIT_CHANCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
+            }
+        })
+        --
+        ItemAddData('I001', {
+            NAME    = 'test armor piece',
+            TYPE    = ITEM_TYPE_ARMOR,
+            SUBTYPE = CHEST_ARMOR,
+            QUALITY = MAGIC_ITEM,
+            DEFENCE = 50
+        })
+    end
 	
 end

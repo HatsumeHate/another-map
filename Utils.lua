@@ -180,6 +180,17 @@
 		end
 	end
 
+
+	---@param a table
+	---@param b table
+	function MergeTables(a, b)
+		if b == nil then return a end
+		for k, v in pairs(b) do
+			a[k] = v
+		end
+		return a
+	end
+
 	---@param unit unit
 	---@param range real
 	---@param ang real

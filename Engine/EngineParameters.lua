@@ -1,10 +1,9 @@
 do
 	-- parameters types
-	PHYSICAL_ATTACK        = 27
-	PHYSICAL_DEFENCE       = 28
-	
-	MAGICAL_ATTACK         = 29
-	MAGICAL_SUPPRESSION    = 30
+    STR_STAT               = 1
+    AGI_STAT               = 2
+    INT_STAT               = 3
+    VIT_STAT               = 4
 	
 	CRIT_CHANCE            = 5
 	CRIT_MULTIPLIER        = 6
@@ -12,35 +11,42 @@ do
 	HP_REGEN               = 7
 	MP_REGEN               = 8
 	
-	HP_VALUE               = 25
-	MP_VALUE               = 26
+	HP_VALUE               = 9
+	MP_VALUE               = 10
+
+    PHYSICAL_ATTACK        = 11
+    PHYSICAL_DEFENCE       = 12
+
+    MAGICAL_ATTACK         = 13
+    MAGICAL_SUPPRESSION    = 14
 	
-	PHYSICAL_RESIST        = 9
-	FIRE_RESIST            = 10
-	ICE_RESIST             = 11
-	LIGHTNING_RESIST       = 12
-	POISON_RESIST          = 13
-	ARCANE_RESIST          = 14
-	DARKNESS_RESIST        = 15
-	HOLY_RESIST            = 16
+	PHYSICAL_RESIST        = 15
+	FIRE_RESIST            = 16
+	ICE_RESIST             = 17
+	LIGHTNING_RESIST       = 18
+	POISON_RESIST          = 19
+	ARCANE_RESIST          = 20
+	DARKNESS_RESIST        = 21
+	HOLY_RESIST            = 22
 	
-	PHYSICAL_BONUS         = 17
-	FIRE_BONUS             = 18
-	ICE_BONUS              = 19
-	LIGHTNING_BONUS        = 20
-	POISON_BONUS           = 21
-	ARCANE_BONUS           = 22
-	DARKNESS_BONUS         = 23
-	HOLY_BONUS             = 24
-	
-	STR_STAT               = 1
-	AGI_STAT               = 2
-	INT_STAT               = 3
-	VIT_STAT               = 4
+	PHYSICAL_BONUS         = 23
+	FIRE_BONUS             = 24
+	ICE_BONUS              = 25
+	LIGHTNING_BONUS        = 26
+	POISON_BONUS           = 27
+	ARCANE_BONUS           = 28
+	DARKNESS_BONUS         = 29
+	HOLY_BONUS             = 30
 	
 	MELEE_DAMAGE_REDUCTION = 31
 	RANGE_DAMAGE_REDUCTION = 32
-	
+    CONTROL_REDUCTION      = 33
+
+    ATTACK_SPEED           = 34
+    CAST_SPEED             = 35
+    MOVING_SPEED           = 36
+
+
 	
 	-- attributes
 	PHYSICAL_ATTRIBUTE     = 1
@@ -135,7 +141,7 @@ do
 		
 		[PHYSICAL_RESIST]     = 'Сопротивление физ атакам',
 		[ICE_RESIST]          = 'Сопротивление холоду',
-		[FIRE_RESIST]         = 'Сщпротивление огню',
+		[FIRE_RESIST]         = 'Сопротивление огню',
 		[LIGHTNING_RESIST]    = 'Сопротивление молнии',
 		[POISON_RESIST]       = 'Сопротивление ядам',
 		[ARCANE_RESIST]       = 'Сопротивление тайной магии',
@@ -180,6 +186,19 @@ do
 			
 			data.stats[PHYSICAL_DEFENCE].value = (defence + data[PHYSICAL_DEFENCE].bonus) * data[PHYSICAL_DEFENCE].multiplier
 		end,
+
+        ---@param data table
+        [MAGICAL_SUPPRESSION]       = function(data)
+            local defence = 0
+
+            for i = 7, 9 do
+                if data.equip_slot[i] ~= nil then
+                    defence = defence + data.equip_slot[i].SUPPRESSION
+                end
+            end
+
+            data.stats[MAGICAL_SUPPRESSION].value = (defence + data[MAGICAL_SUPPRESSION].bonus) * data[MAGICAL_SUPPRESSION].multiplier
+        end,
 		
 		---@param data table
 		[CRIT_CHANCE]            = function(data)
@@ -188,31 +207,35 @@ do
 		
 		---@param data table
 		[CRIT_MULTIPLIER]        = function(data)
-			data.stats[CRIT_MULTIPLIER].value = (data.equip_slot[CRIT_MULTIPLIER].critical_multiplier + data[CRIT_MULTIPLIER].bonus) * data[CRIT_MULTIPLIER].multiplier
+			data.stats[CRIT_MULTIPLIER].value = (data.equip_slot[WEAPON_POINT].critical_multiplier + data[CRIT_MULTIPLIER].bonus) * data[CRIT_MULTIPLIER].multiplier
 		end,
 		
 		---@param data table
 		[HP_REGEN]               = function(data)
 			data.stats[HP_REGEN].value = (data.base_stats.hp_regen + data[HP_REGEN].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data[HP_REGEN].multiplier
+            BlzSetUnitRealField(data.Owner, UNIT_RF_HIT_POINTS_REGENERATION_RATE, data.stats[HP_REGEN].value)
 		end,
 		
 		---@param data table
 		[MP_REGEN]               = function(data)
 			data.stats[MP_REGEN].value = (data.base_stats.mp_regen + data[MP_REGEN].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data[MP_REGEN].multiplier
+            BlzSetUnitRealField(data.Owner, UNIT_RF_MANA_REGENERATION, data.stats[HP_REGEN].value)
 		end,
 		
 		---@param data table
 		[HP_VALUE]               = function(data)
 			data.stats[HP_VALUE].value = (data.base_stats.HP + data[HP_VALUE].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data[HP_VALUE].multiplier
+            BlzSetUnitMaxHP(data.Owner, data.stats[HP_VALUE].value)
 		end,
-		
+
 		---@param data table
 		[MP_VALUE]               = function(data)
 			data.stats[MP_VALUE].value = (data.base_stats.MP + data[MP_VALUE].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data[MP_VALUE].multiplier
+            BlzSetUnitMaxMana(data.Owner, data.stats[MP_VALUE].value)
 		end,
-		
+
 		---@param data table
-		[PHYSICAL_RESIST]        = function(data)
+		[PHYSICAL_RESIST]       = function(data)
 			data.stats[PHYSICAL_RESIST].value = data[PHYSICAL_RESIST].bonus
 		end,
 		
@@ -319,7 +342,30 @@ do
 		---@param data table
 		[RANGE_DAMAGE_REDUCTION] = function(data)
 			data.stats[RANGE_DAMAGE_REDUCTION].value = data[RANGE_DAMAGE_REDUCTION].bonus
-		end
+		end,
+
+        ---@param data table
+        [CONTROL_REDUCTION] = function(data)
+            data.stats[CONTROL_REDUCTION].value = data[CONTROL_REDUCTION].bonus
+        end,
+
+        ---@param data table
+        [ATTACK_SPEED] = function(data)
+            data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].attack_speed * ((1 - data[ATTACK_SPEED].multiplier) + 1)
+            BlzSetUnitWeaponRealField(data.Owner, UNIT_WEAPON_RF_ATTACK_BASE_COOLDOWN, data.stats[ATTACK_SPEED].value)
+        end,
+
+        ---@param data table
+        [CAST_SPEED] = function(data)
+            data.stats[CAST_SPEED].value = data[CAST_SPEED].bonus
+        end,
+
+        ---@param data table
+        [MOVING_SPEED] = function(data)
+            data.stats[MOVING_SPEED].value = (data.base_stats.moving_speed + data[MOVING_SPEED].bonus) * data[MOVING_SPEED].multiplier
+            SetUnitMoveSpeed(data.Owner, data.stats[MOVING_SPEED].value)
+        end
+
 	}
 	
 	---@param type integer
@@ -342,7 +388,7 @@ do
 			---@param flag boolean
 			multiply   = function(data, param, value, flag)
 				param.multiplier = flag and param.multiplier * value or param.multiplier / value
-				PARAMETER_FUNC[stat_type](data)
+				PARAMETER_FUNC[param](data)
 			end,
 			
 			---@param data table
@@ -351,8 +397,12 @@ do
 			---@param flag boolean
 			summ       = function(data, param, value, flag)
 				param.bonus = flag and param.bonus + value or param.bonus - value
-				PARAMETER_FUNC[stat_type](data)
-			end
+				PARAMETER_FUNC[param](data)
+			end,
+
+            update     = function(data, param)
+                PARAMETER_FUNC[param](data)
+            end
 		}
 	
 	end
