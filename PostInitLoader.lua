@@ -11,6 +11,7 @@ do
 		
 		-- заворачиваем всё в таймер, чтоб сообщения попали в Журнал (F12)
 		TimerStart(CreateTimer(), 0, false, function()
+            --[[
 			print('Проверяем эффекты')
 			print('=================')
 			local raw  = 'I000'
@@ -33,7 +34,7 @@ do
 					print(name, value)
 				end
 			end
-			
+			]]
 			print('=================')
 			print("ЭФФЕКТЫ")
 			print(EffectsData[1].name)
@@ -42,20 +43,6 @@ do
 			print('=================')
 			print("ПРЕДМЕТЫ")
 			print(ITEM_TEMPLATE_DATA[FourCC('I000')].NAME)
-			if ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[1] == nil then
-				print("пустой бонус")
-			end
-
-            print("++++"..CRIT_CHANCE)
-
-			print(GetParameterName(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[1].PARAM))
-			print(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[1].VALUE)
-			print(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[1].METHOD)
-			
-			print(GetParameterName(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[2].PARAM))
-			print(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[2].VALUE)
-			print(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[2].METHOD)
-			
 			print('=================')
 			local my_item = CreateCustomItem('I000', GetRectCenterX(gg_rct_test), GetRectCenterY(gg_rct_test))
 			

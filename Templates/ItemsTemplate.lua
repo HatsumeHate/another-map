@@ -185,7 +185,7 @@ do
 
 
 	function DefineItemsData()
-		-- чтобы заполнить инфу не нужно ждать InitGlobals
+
 		ItemAddData('I000', {
 			NAME    = 'test sword',
 			SUBTYPE = SWORD_WEAPON,
