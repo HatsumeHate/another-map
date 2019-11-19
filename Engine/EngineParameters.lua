@@ -42,6 +42,11 @@
     MELEE_DAMAGE_REDUCTION = 31
     RANGE_DAMAGE_REDUCTION = 32
 
+    ATTACK_SPEED = 33
+    CAST_SPEED = 34
+
+
+
 
     -- attributes
     PHYSICAL_ATTRIBUTE     = 1
