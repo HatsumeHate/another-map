@@ -7,6 +7,7 @@ do
 		local item   = CreateItem(id, x, y)
 		local handle = GetHandleId(item)
 		local data   = {}
+
 		for k, v in pairs(ITEM_TEMPLATE_DATA[id]) do
 			data[k] = v
 		end

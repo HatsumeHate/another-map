@@ -15,19 +15,19 @@ do
 		BJDebugMsg(EffectsData[1].level[1].Power)
 		BJDebugMsg(GetParameterName(EffectsData[1].level[1].Attribute))
 		BJDebugMsg("=================")
-		BJDebugMsg(ITEM_TEMPLATE_DATA[FourCC('I000')].name)
+		BJDebugMsg(ITEM_TEMPLATE_DATA[FourCC('I000')].NAME)
 
-		BJDebugMsg(GetParameterName(ITEM_TEMPLATE_DATA[FourCC('I000')].bonus_parameters[1].param_type))
-		BJDebugMsg(ITEM_TEMPLATE_DATA[FourCC('I000')].bonus_parameters[1].param_value)
-		BJDebugMsg(ITEM_TEMPLATE_DATA[FourCC('I000')].bonus_parameters[1].modificator)
+		BJDebugMsg(GetParameterName(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[1][1]))
+		BJDebugMsg(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[1][2])
+		BJDebugMsg(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[1][3])
 
-		BJDebugMsg(GetParameterName(ITEM_TEMPLATE_DATA[FourCC('I000')].bonus_parameters[2].param_type))
-		BJDebugMsg(ITEM_TEMPLATE_DATA[FourCC('I000')].bonus_parameters[2].param_value)
-		BJDebugMsg(ITEM_TEMPLATE_DATA[FourCC('I000')].bonus_parameters[2].modificator)
+		BJDebugMsg(GetParameterName(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[2][1]))
+		BJDebugMsg(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[2][2])
+		BJDebugMsg(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[2][3])
 
 		BJDebugMsg("=================")
-		local my_item = CreateCustomItem(FourCC('I000'), GetRectCenterX(gg_rct_test), GetRectCenterY(gg_rct_test))
+		local my_item = CreateCustomItem('I000', GetRectCenterX(gg_rct_test), GetRectCenterY(gg_rct_test))
 
-		BJDebugMsg(ItemsData[GetHandleId(my_item)].name)
+		BJDebugMsg(ITEM_DATA[GetHandleId(my_item)].NAME)
 	end
 end
