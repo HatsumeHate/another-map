@@ -182,28 +182,24 @@ do
 		
 		ITEM_TEMPLATE_DATA[FourCC(raw)] = newdata
 	end
-
-
-	function DefineItemsData()
-
-		ItemAddData('I000', {
-			NAME    = 'test sword',
-			SUBTYPE = SWORD_WEAPON,
-			DAMAGE  = 100,
-			QUALITY = RARE_ITEM,
-			BONUS   = {
-				{ PARAM = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
-				{ PARAM = CRIT_CHANCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
-			}
-		})
-		--
-		ItemAddData('I001', {
-			NAME    = 'test armor piece',
-			TYPE    = ITEM_TYPE_ARMOR,
-			SUBTYPE = CHEST_ARMOR,
-			QUALITY = MAGIC_ITEM,
-			DEFENCE = 50
-		})
-
-	end
+	
+	ItemAddData('I000', {
+		NAME    = 'test sword',
+		SUBTYPE = SWORD_WEAPON,
+		DAMAGE  = 100,
+		QUALITY = RARE_ITEM,
+		BONUS   = {
+			{ PARAM = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
+			{ PARAM = CRIT_CHANCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
+		}
+	})
+	--
+	ItemAddData('I001', {
+		NAME    = 'test armor piece',
+		TYPE    = ITEM_TYPE_ARMOR,
+		SUBTYPE = CHEST_ARMOR,
+		QUALITY = MAGIC_ITEM,
+		DEFENCE = 50
+	})
+	
 end
