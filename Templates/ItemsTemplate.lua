@@ -1,6 +1,7 @@
 -- Ставь блоки если уж так хочется отступов
 do
 	ITEM_TEMPLATE_DATA = {} -- данные для ТИПОВ предметов по равкоду
+	ITEM_DATA          = {} -- данные для КАЖДОГО предмета по хэндлу
 	
 	ITEM_TYPE_WEAPON   = 1
 	ITEM_TYPE_ARMOR    = 2
@@ -33,6 +34,7 @@ do
 	---@param a table
 	---@param b table
 	local function ItemMergeData(a, b)
+		if b == nil then return a end
 		for k, v in pairs(b) do
 			a[k] = v
 		end
@@ -173,9 +175,7 @@ do
 			STONE_SLOTS        = {}
 		}
 		
-		if (weapons[newdata.SUBTYPE] ~= nil) then
-			ItemMergeData(newdata, weapons[newdata.SUBTYPE])
-		end
+		ItemMergeData(newdata, weapons[data.SUBTYPE])
 		ItemMergeData(newdata, data)
 		
 		ITEM_TEMPLATE_DATA[FourCC(raw)] = newdata
