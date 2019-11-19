@@ -187,6 +187,13 @@ do
 			data.stats[PHYSICAL_DEFENCE].value = (defence + data[PHYSICAL_DEFENCE].bonus) * data[PHYSICAL_DEFENCE].multiplier
 		end,
 
+		
+		---@param data table
+		[MAGICAL_ATTACK]        = function(data)
+			local total_damage = data.equip_point[WEAPON_POINT].damage
+			data.stats[MAGICAL_ATTACK].value = (total_damage * GetBonus_INT(data.stats[INT_STAT].value) + data[MAGICAL_ATTACK].bonus) * data[MAGICAL_ATTACK].multiplier
+			end,
+
         ---@param data table
         [MAGICAL_SUPPRESSION]       = function(data)
             local defence = data.stats[INT_STAT].value
@@ -410,7 +417,7 @@ do
 	function CreateParametersData()
 		local parameters = { }
 		
-		for i = 1, 32 do
+		for i = 1, 36 do
 			parameters[i] = NewStat(i)
 		end
 		
