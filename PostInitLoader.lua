@@ -9,7 +9,7 @@ do
 		DefineParametersData()
 		
 		-- заворачиваем всё в таймер, чтоб сообщения попали в Журнал (F12)
-		TimerStart(CreateTimer(), 0, function()
+		TimerStart(CreateTimer(), 0, false, function()
 			print('Проверяем эффекты')
 			print('=================')
 			local raw  = 'I000'
