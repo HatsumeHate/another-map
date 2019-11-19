@@ -19,7 +19,9 @@ do
 		BJDebugMsg("=================")
 		BJDebugMsg("ПРЕДМЕТЫ")
 		BJDebugMsg(ITEM_TEMPLATE_DATA[FourCC('I000')].NAME)
-		--BJDebugMsg(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[1])
+		if ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[1] == nil then
+			BJDebugMsg("пустой бонус")
+		end
 
 		BJDebugMsg(GetParameterName(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[1].PARAMETER))
 		BJDebugMsg(ITEM_TEMPLATE_DATA[FourCC('I000')].BONUS[1].VALUE)
