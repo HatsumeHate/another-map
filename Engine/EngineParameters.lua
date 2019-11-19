@@ -163,11 +163,11 @@ do
 	local PARAMETER_FUNC = {
 		---@param data table
 		[PHYSICAL_ATTACK]        = function(data)
-			local total_damage = data.equip_point[WEAPON_POINT].damage
+			local total_damage = data.equip_point[WEAPON_POINT].DAMAGE
 			
 			if data.equip_point[OFFHAND_POINT] ~= nil then
 				if data.equip_point[OFFHAND_POINT].item_type == ITEM_TYPE_WEAPON then
-					total_damage = total_damage + (data.equip_point[OFFHAND_POINT].damage * 0.5)
+					total_damage = total_damage + (data.equip_point[OFFHAND_POINT].DAMAGE * 0.5)
 				end
 			end
 			
@@ -187,10 +187,10 @@ do
 			data.stats[PHYSICAL_DEFENCE].value = (defence + data[PHYSICAL_DEFENCE].bonus) * data[PHYSICAL_DEFENCE].multiplier
 		end,
 
-		
+
 		---@param data table
 		[MAGICAL_ATTACK]        = function(data)
-			local total_damage = data.equip_point[WEAPON_POINT].damage
+			local total_damage = data.equip_point[WEAPON_POINT].DAMAGE
 			data.stats[MAGICAL_ATTACK].value = (total_damage * GetBonus_INT(data.stats[INT_STAT].value) + data[MAGICAL_ATTACK].bonus) * data[MAGICAL_ATTACK].multiplier
 			end,
 
