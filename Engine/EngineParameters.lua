@@ -176,7 +176,7 @@ do
 		
 		---@param data table
 		[PHYSICAL_DEFENCE]       = function(data)
-			local defence = 0
+			local defence = data.stats[AGI_STAT].value * 2
 			
 			for i = 2, 6 do
 				if data.equip_slot[i] ~= nil then
@@ -189,7 +189,7 @@ do
 
         ---@param data table
         [MAGICAL_SUPPRESSION]       = function(data)
-            local defence = 0
+            local defence = data.stats[INT_STAT].value
 
             for i = 7, 9 do
                 if data.equip_slot[i] ~= nil then
@@ -224,13 +224,13 @@ do
 		
 		---@param data table
 		[HP_VALUE]               = function(data)
-			data.stats[HP_VALUE].value = (data.base_stats.HP + data[HP_VALUE].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data[HP_VALUE].multiplier
+			data.stats[HP_VALUE].value = (data.base_stats.health + data[HP_VALUE].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data[HP_VALUE].multiplier
             BlzSetUnitMaxHP(data.Owner, data.stats[HP_VALUE].value)
 		end,
 
 		---@param data table
 		[MP_VALUE]               = function(data)
-			data.stats[MP_VALUE].value = (data.base_stats.MP + data[MP_VALUE].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data[MP_VALUE].multiplier
+			data.stats[MP_VALUE].value = (data.base_stats.mana + data[MP_VALUE].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data[MP_VALUE].multiplier
             BlzSetUnitMaxMana(data.Owner, data.stats[MP_VALUE].value)
 		end,
 
@@ -316,22 +316,22 @@ do
 		
 		---@param data table
 		[STR_STAT]               = function(data)
-			data.stats[STR_STAT].value = data.base_stats.STR + data[STR_STAT].bonus
+			data.stats[STR_STAT].value = data.base_stats.strenght + data[STR_STAT].bonus
 		end,
 		
 		---@param data table
 		[VIT_STAT]               = function(data)
-			data.stats[VIT_STAT].value = data.base_stats.VIT + data[VIT_STAT].bonus
+			data.stats[VIT_STAT].value = data.base_stats.vitality + data[VIT_STAT].bonus
 		end,
 		
 		---@param data table
 		[AGI_STAT]               = function(data)
-			data.stats[AGI_STAT].value = data.base_stats.AGI + data[AGI_STAT].bonus
+			data.stats[AGI_STAT].value = data.base_stats.agility + data[AGI_STAT].bonus
 		end,
 		
 		---@param data table
 		[INT_STAT]               = function(data)
-			data.stats[INT_STAT].value = data.base_stats.INT + data[INT_STAT].bonus
+			data.stats[INT_STAT].value = data.base_stats.intellect + data[INT_STAT].bonus
 		end,
 		
 		---@param data table

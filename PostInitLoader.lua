@@ -53,7 +53,7 @@ do
 
 		NewUnitData(gg_unit_HBRB_0005, BARBARIAN_CLASS, {
 			base_stats = {
-				HP = 2900,
+				health = 2900,
 			},
 
 			equip_point = {
@@ -62,7 +62,7 @@ do
 
 		})
 
-        UpdateParameters(UnitsData[GetHandleId(gg_unit_HBRB_0005)])
+        --UpdateParameters(UnitsData[GetHandleId(gg_unit_HBRB_0005)])
 
 		print(UnitsData[GetHandleId(gg_unit_HBRB_0005)].base_stats.HP)
 

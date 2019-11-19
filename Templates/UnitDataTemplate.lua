@@ -54,8 +54,8 @@
                 class        = class,
 
                 base_stats = {
-                    STR = base_stats[1], VIT = base_stats[2], AGI = base_stats[3], INT = base_stats[4],
-                    HP = 100, MP = 100, hp_regen = 1, mp_regen = 1,
+                    strenght = base_stats[1], vitality = base_stats[2], agility = base_stats[3], intellect = base_stats[4],
+                    health = 100, mana = 100, hp_regen = 1, mp_regen = 1,
                     moving_speed = 300
                 },
 
@@ -71,6 +71,7 @@
 
             print("2")
             MergeTables(data, reference_table)
+            UpdateParameters(data)
             UnitsData[GetHandleId(source)] = data
             print("3")
             return data
