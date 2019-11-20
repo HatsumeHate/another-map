@@ -51,17 +51,16 @@ do
 
 
 		print(GetUnitName(gg_unit_HBRB_0005))
+        print("crit chance? " .. ITEM_TEMPLATE_DATA[FourCC('0000')].CRIT_CHANCE)
 
-		NewUnitData(gg_unit_HBRB_0005, BARBARIAN_CLASS, {
-			base_stats = {
-				health = 2900,
-			},
-
-			equip_point = {
-				[WEAPON_POINT] = { attack_speed = 5. }
-			}
-
-		})
+		NewUnitData(gg_unit_HBRB_0005, BARBARIAN_CLASS,
+				{
+				 	health = 2900,
+				},
+				{
+                    ATTACK_SPEED = 5.
+				}
+		)
 
         --UpdateParameters(UnitsData[GetHandleId(gg_unit_HBRB_0005)])
 

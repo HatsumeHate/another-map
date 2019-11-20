@@ -65,7 +65,7 @@ do
 			CRIT_CHANCE     = 5,
 			CRIT_MULTIPLIER = 1.6,
 			RANGE           = 100,
-			ANGLE           = math.pi / 5, -- 36 градусов
+			ANGLE           = 35, --math.pi / 5,  36 градусов
 			DISPERSION      = { 0.9, 1.1 },
 			WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_SLICE
 		},
@@ -90,7 +90,7 @@ do
 			CRIT_CHANCE     = 9,
 			CRIT_MULTIPLIER = 2.3,
 			RANGE           = 90,
-			ANGLE           = math.pi / 7.2, -- 25 градусов
+			ANGLE           = 25, --math.pi / 7.2, -- 25 градусов
 			DISPERSION      = { 0.9, 1.1 },
 			WEAPON_SOUND    = WEAPON_TYPE_METAL_LIGHT_SLICE
 		},
@@ -140,58 +140,74 @@ do
 		v.TYPE    = ITEM_TYPE_WEAPON
 		v.SUBTYPE = k
 	end
-	
-	---@param raw string
-	---@param data table
+
+
+    local function GetItemTemplate()
+        return {
+                NAME               = '',
+                TYPE               = nil,
+                SUBTYPE            = nil,
+
+                DAMAGE             = 0,
+                DAMAGE_TYPE        = DAMAGE_TYPE_PHYSICAL,
+                ATTRIBUTE          = PHYSICAL_ATTRIBUTE,
+                ATTRIBUTE_BONUS    = 0,
+
+                DEFENCE            = 0,
+                SUPPRESSION        = 0,
+
+                ATTACK_SPEED       = 1,
+                CRIT_CHANCE        = 0,
+                CRIT_MULTIPLIER    = 0,
+
+                DISPERSION         = { 0.9, 1.1 },
+                RANGE              = 100,
+                ANGLE              = 30, --math.pi * 2, 360 градусов
+                MAX_TARGETS        = 1,
+
+                MISSILE_ON_ATTATCK = 0,
+                EFFECT_ON_ATTACK   = 0,
+                WEAPON_SOUND       = nil,
+                MODEL              = '',
+
+                QUALITY            = COMMON_ITEM,
+                BONUS              = {},
+                MAX_SLOTS          = 0,
+                STONE_SLOTS        = {}
+            }
+    end
+
+    ---@param raw string
+    ---@param data table
 	local function ItemAddData(raw, data)
-		local newdata = {
-			NAME               = '',
-			TYPE               = nil,
-			SUBTYPE            = FIST_WEAPON,
-			
-			DAMAGE             = 0,
-			DAMAGE_TYPE        = DAMAGE_TYPE_PHYSICAL,
-			ATTRIBUTE          = PHYSICAL_ATTRIBUTE,
-			ATTRIBUTE_BONUS    = 0,
-			
-			DEFENCE            = 0,
-			SUPPRESSION        = 0,
-			
-			ATTACK_SPEED       = 1,
-			CRIT_CHANCE        = 0,
-			CRIT_MULTIPLIER    = 0,
-			
-			DISPERSION         = { 0.9, 1.1 },
-			RANGE              = 100,
-			ANGLE              = 30, --math.pi * 2, 360 градусов
-			MAX_TARGETS        = 1,
-			
-			MISSILE_ON_ATTATCK = 0,
-			EFFECT_ON_ATTACK   = 0,
-			WEAPON_SOUND       = nil,
-			MODEL              = '',
-			
-			QUALITY            = COMMON_ITEM,
-			BONUS              = {},
-			MAX_SLOTS          = 0,
-			STONE_SLOTS        = {}
-		}
+		local newdata = GetItemTemplate()
 		
-		ItemMergeData(newdata, weapons[data.SUBTYPE])
-		ItemMergeData(newdata, data)
-		
-		ITEM_TEMPLATE_DATA[FourCC(raw)] = newdata
+            ItemMergeData(newdata, weapons[data.SUBTYPE])
+            ItemMergeData(newdata, data)
+
+            ITEM_TEMPLATE_DATA[FourCC(raw)] = newdata
 	end
 
 
 
 	function CreateDefaultWeapon()
-		return ItemAddData(0, { SUBTYPE = FIST_WEAPON })
+		local default_weapon = GetItemTemplate()
+
+			MergeTables(default_weapon, ITEM_TEMPLATE_DATA[FourCC('0000')])
+
+		return default_weapon
 	end
 
 
 
     function DefineItemsData()
+		ItemAddData('0000', {
+			NAME    = 'Fists',
+			SUBTYPE = FIST_WEAPON,
+			DAMAGE  = 4,
+			QUALITY = COMMON_ITEM
+		})
+
         ItemAddData('I000', {
             NAME    = 'test sword',
             SUBTYPE = SWORD_WEAPON,

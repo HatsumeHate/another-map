@@ -124,7 +124,7 @@ do
 	local PARAMETER_NAME = {
 		[PHYSICAL_ATTACK]     = 'Физическая атака',
 		[PHYSICAL_DEFENCE]    = 'Физическая защита',
-		[PHYSICAL_DEFENCE]    = 'Магическая атака',
+		[MAGICAL_ATTACK]    = 'Магическая атака',
 		[MAGICAL_SUPPRESSION] = 'Подавление магии',
 		
 		[CRIT_CHANCE]         = 'Критческий шанс',
@@ -157,7 +157,16 @@ do
 		[STR_STAT]            = 'Сила',
 		[AGI_STAT]            = 'Ловкость',
 		[INT_STAT]            = 'Разум',
-		[VIT_STAT]            = 'Выносливость'
+		[VIT_STAT]            = 'Выносливость',
+
+		[MELEE_DAMAGE_REDUCTION]  = 'Урон от атак ближнего боя',
+		[RANGE_DAMAGE_REDUCTION]  = 'Урон от атак дальнего боя',
+		[CONTROL_REDUCTION]       = 'Снижение времени контроля',
+
+		[ATTACK_SPEED]            = 'Скорость атаки',
+		[CAST_SPEED]              = 'Скорость заклинаний',
+		[MOVING_SPEED]            = 'Скорость бега'
+
 	}
 	
 	local PARAMETER_FUNC = {
@@ -171,7 +180,7 @@ do
 				end
 			end
 			
-			data.stats[PHYSICAL_ATTACK].value = (total_damage * GetBonus_STR(data.stats[STR_STAT].value) + data[PHYSICAL_ATTACK].bonus) * data[PHYSICAL_ATTACK].multiplier
+			data.stats[PHYSICAL_ATTACK].value = (total_damage * GetBonus_STR(data.stats[STR_STAT].value) + data.stats[PHYSICAL_ATTACK].bonus) * data.stats[PHYSICAL_ATTACK].multiplier
 		end,
 		
 		---@param data table
@@ -184,14 +193,14 @@ do
 				end
 			end
 			
-			data.stats[PHYSICAL_DEFENCE].value = (defence + data[PHYSICAL_DEFENCE].bonus) * data[PHYSICAL_DEFENCE].multiplier
+			data.stats[PHYSICAL_DEFENCE].value = (defence + data.stats[PHYSICAL_DEFENCE].bonus) * data.stats[PHYSICAL_DEFENCE].multiplier
 		end,
 
 
 		---@param data table
 		[MAGICAL_ATTACK]        = function(data)
 			local total_damage = data.equip_point[WEAPON_POINT].DAMAGE
-			data.stats[MAGICAL_ATTACK].value = (total_damage * GetBonus_INT(data.stats[INT_STAT].value) + data[MAGICAL_ATTACK].bonus) * data[MAGICAL_ATTACK].multiplier
+			data.stats[MAGICAL_ATTACK].value = (total_damage * GetBonus_INT(data.stats[INT_STAT].value) + data.stats[MAGICAL_ATTACK].bonus) * data.stats[MAGICAL_ATTACK].multiplier
 		end,
 
         ---@param data table
@@ -204,156 +213,159 @@ do
                 end
             end
 
-            data.stats[MAGICAL_SUPPRESSION].value = (defence + data[MAGICAL_SUPPRESSION].bonus) * data[MAGICAL_SUPPRESSION].multiplier
+            data.stats[MAGICAL_SUPPRESSION].value = (defence + data[MAGICAL_SUPPRESSION].bonus) * data.stats[MAGICAL_SUPPRESSION].multiplier
         end,
 		
 		---@param data table
 		[CRIT_CHANCE]            = function(data)
-			data.stats[CRIT_CHANCE].value = (data.equip_slot[WEAPON_POINT].critical_chance + data[CRIT_CHANCE].bonus) * data[CRIT_CHANCE].multiplier
+            print(data.equip_slot[WEAPON_POINT].NAME)
+            print(data.equip_slot[WEAPON_POINT].CRIT_CHANCE)
+			data.stats[CRIT_CHANCE].value = (data.equip_slot[WEAPON_POINT].CRIT_CHANCE + data.stats[CRIT_CHANCE].bonus) * data.stats[CRIT_CHANCE].multiplier
 		end,
 		
 		---@param data table
 		[CRIT_MULTIPLIER]        = function(data)
-			data.stats[CRIT_MULTIPLIER].value = (data.equip_slot[WEAPON_POINT].critical_multiplier + data[CRIT_MULTIPLIER].bonus) * data[CRIT_MULTIPLIER].multiplier
+
+			data.stats[CRIT_MULTIPLIER].value = (data.equip_slot[WEAPON_POINT].CRIT_MULTIPLIER + data.stats[CRIT_MULTIPLIER].bonus) * data.stats[CRIT_MULTIPLIER].multiplier
 		end,
 		
 		---@param data table
 		[HP_REGEN]               = function(data)
-			data.stats[HP_REGEN].value = (data.base_stats.hp_regen + data[HP_REGEN].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data[HP_REGEN].multiplier
+			data.stats[HP_REGEN].value = (data.base_stats.hp_regen + data.stats[HP_REGEN].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data.stats[HP_REGEN].multiplier
             BlzSetUnitRealField(data.Owner, UNIT_RF_HIT_POINTS_REGENERATION_RATE, data.stats[HP_REGEN].value)
 		end,
 		
 		---@param data table
 		[MP_REGEN]               = function(data)
-			data.stats[MP_REGEN].value = (data.base_stats.mp_regen + data[MP_REGEN].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data[MP_REGEN].multiplier
+			data.stats[MP_REGEN].value = (data.base_stats.mp_regen + data.stats[MP_REGEN].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data.stats[MP_REGEN].multiplier
             BlzSetUnitRealField(data.Owner, UNIT_RF_MANA_REGENERATION, data.stats[HP_REGEN].value)
 		end,
 		
 		---@param data table
 		[HP_VALUE]               = function(data)
-			data.stats[HP_VALUE].value = (data.base_stats.health + data[HP_VALUE].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data[HP_VALUE].multiplier
+			data.stats[HP_VALUE].value = (data.base_stats.health + data.stats[HP_VALUE].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data.stats[HP_VALUE].multiplier
             BlzSetUnitMaxHP(data.Owner, data.stats[HP_VALUE].value)
 		end,
 
 		---@param data table
 		[MP_VALUE]               = function(data)
-			data.stats[MP_VALUE].value = (data.base_stats.mana + data[MP_VALUE].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data[MP_VALUE].multiplier
+			data.stats[MP_VALUE].value = (data.base_stats.mana + data.stats[MP_VALUE].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data.stats[MP_VALUE].multiplier
             BlzSetUnitMaxMana(data.Owner, data.stats[MP_VALUE].value)
 		end,
 
 		---@param data table
 		[PHYSICAL_RESIST]       = function(data)
-			data.stats[PHYSICAL_RESIST].value = data[PHYSICAL_RESIST].bonus
+			data.stats[PHYSICAL_RESIST].value = data.stats[PHYSICAL_RESIST].bonus
 		end,
 		
 		---@param data table
 		[FIRE_RESIST]            = function(data)
-			data.stats[FIRE_RESIST].value = data[FIRE_RESIST].bonus
+			data.stats[FIRE_RESIST].value = data.stats[FIRE_RESIST].bonus
 		end,
 		
 		---@param data table
 		[ICE_RESIST]             = function(data)
-			data.stats[ICE_RESIST].value = data[ICE_RESIST].bonus
+			data.stats[ICE_RESIST].value = data.stats[ICE_RESIST].bonus
 		end,
 		
 		---@param data table
 		[LIGHTNING_RESIST]       = function(data)
-			data.stats[LIGHTNING_RESIST].value = data[LIGHTNING_RESIST].bonus
+			data.stats[LIGHTNING_RESIST].value = data.stats[LIGHTNING_RESIST].bonus
 		end,
 		
 		---@param data table
 		[POISON_RESIST]          = function(data)
-			data.stats[POISON_RESIST].value = data[POISON_RESIST].bonus
+			data.stats[POISON_RESIST].value = data.stats[POISON_RESIST].bonus
 		end,
 		
 		---@param data table
 		[ARCANE_RESIST]          = function(data)
-			data.stats[ARCANE_RESIST].value = data[ARCANE_RESIST].bonus
+			data.stats[ARCANE_RESIST].value = data.stats[ARCANE_RESIST].bonus
 		end,
 		
 		---@param data table
 		[DARKNESS_RESIST]        = function(data)
-			data.stats[DARKNESS_RESIST].value = data[DARKNESS_RESIST].bonus
+			data.stats[DARKNESS_RESIST].value = data.stats[DARKNESS_RESIST].bonus
 		end,
 		
 		---@param data table
 		[HOLY_RESIST]            = function(data)
-			data.stats[HOLY_RESIST].value = data[HOLY_RESIST].bonus
+			data.stats[HOLY_RESIST].value = data.stats[HOLY_RESIST].bonus
 		end,
 		
 		---@param data table
 		[PHYSICAL_BONUS]         = function(data)
-			data.stats[PHYSICAL_BONUS].value = data[PHYSICAL_BONUS].bonus
+			data.stats[PHYSICAL_BONUS].value = data.stats[PHYSICAL_BONUS].bonus
 		end,
 		
 		---@param data table
 		[FIRE_BONUS]             = function(data)
-			data.stats[FIRE_BONUS].value = data[FIRE_BONUS].bonus
+			data.stats[FIRE_BONUS].value = data.stats[FIRE_BONUS].bonus
 		end,
 		
 		---@param data table
 		[ICE_BONUS]              = function(data)
-			data.stats[ICE_BONUS].value = data[ICE_BONUS].bonus
+			data.stats[ICE_BONUS].value = data.stats[ICE_BONUS].bonus
 		end,
 		
 		---@param data table
 		[LIGHTNING_BONUS]        = function(data)
-			data.stats[LIGHTNING_BONUS].value = data[LIGHTNING_BONUS].bonus
+			data.stats[LIGHTNING_BONUS].value = data.stats[LIGHTNING_BONUS].bonus
 		end,
 		
 		---@param data table
 		[POISON_BONUS]           = function(data)
-			data.stats[POISON_BONUS].value = data[POISON_BONUS].bonus
+			data.stats[POISON_BONUS].value = data.stats[POISON_BONUS].bonus
 		end,
 		
 		---@param data table
 		[ARCANE_BONUS]           = function(data)
-			data.stats[ARCANE_BONUS].value = data[ARCANE_BONUS].bonus
+			data.stats[ARCANE_BONUS].value = data.stats[ARCANE_BONUS].bonus
 		end,
 		
 		---@param data table
 		[DARKNESS_BONUS]         = function(data)
-			data.stats[DARKNESS_BONUS].value = data[DARKNESS_BONUS].bonus
+			data.stats[DARKNESS_BONUS].value = data.stats[DARKNESS_BONUS].bonus
 		end,
 		
 		---@param data table
 		[HOLY_BONUS]             = function(data)
-			data.stats[HOLY_BONUS].value = data[HOLY_BONUS].bonus
+			data.stats[HOLY_BONUS].value = data.stats[HOLY_BONUS].bonus
 		end,
 		
 		---@param data table
 		[STR_STAT]               = function(data)
-			data.stats[STR_STAT].value = data.base_stats.strength + data[STR_STAT].bonus
+			data.stats[STR_STAT].value = data.base_stats.strength + data.stats[STR_STAT].bonus
 		end,
 		
 		---@param data table
 		[VIT_STAT]               = function(data)
-			data.stats[VIT_STAT].value = data.base_stats.vitality + data[VIT_STAT].bonus
+			data.stats[VIT_STAT].value = data.base_stats.vitality + data.stats[VIT_STAT].bonus
 		end,
 		
 		---@param data table
 		[AGI_STAT]               = function(data)
-			data.stats[AGI_STAT].value = data.base_stats.agility + data[AGI_STAT].bonus
+			data.stats[AGI_STAT].value = data.base_stats.agility + data.stats[AGI_STAT].bonus
 		end,
 		
 		---@param data table
 		[INT_STAT]               = function(data)
-			data.stats[INT_STAT].value = data.base_stats.intellect + data[INT_STAT].bonus
+			data.stats[INT_STAT].value = data.base_stats.intellect + data.stats[INT_STAT].bonus
 		end,
 		
 		---@param data table
 		[MELEE_DAMAGE_REDUCTION] = function(data)
-			data.stats[MELEE_DAMAGE_REDUCTION].value = data[MELEE_DAMAGE_REDUCTION].bonus
+			data.stats[MELEE_DAMAGE_REDUCTION].value = data.stats[MELEE_DAMAGE_REDUCTION].bonus
 		end,
 		
 		---@param data table
 		[RANGE_DAMAGE_REDUCTION] = function(data)
-			data.stats[RANGE_DAMAGE_REDUCTION].value = data[RANGE_DAMAGE_REDUCTION].bonus
+			data.stats[RANGE_DAMAGE_REDUCTION].value = data.stats[RANGE_DAMAGE_REDUCTION].bonus
 		end,
 
         ---@param data table
         [CONTROL_REDUCTION] = function(data)
-            data.stats[CONTROL_REDUCTION].value = data[CONTROL_REDUCTION].bonus
+            data.stats[CONTROL_REDUCTION].value = data.stats[CONTROL_REDUCTION].bonus
         end,
 
         ---@param data table
@@ -408,6 +420,7 @@ do
 			end,
 
             update     = function(data, param)
+				print("processing update of " .. GetParameterName(param))
                 PARAMETER_FUNC[param](data)
             end
 		}
