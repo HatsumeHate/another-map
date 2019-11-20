@@ -3,28 +3,33 @@ do
 	ITEM_TEMPLATE_DATA = {} -- данные для ТИПОВ предметов по равкоду
 	ITEM_DATA          = {} -- данные для КАЖДОГО предмета по хэндлу
 	
-	ITEM_TYPE_WEAPON   = 1
-	ITEM_TYPE_ARMOR    = 2
-	ITEM_TYPE_JEWELRY  = 3
-	ITEM_TYPE_OFFHAND  = 4
+	ITEM_TYPE_WEAPON     = 1
+	ITEM_TYPE_ARMOR      = 2
+	ITEM_TYPE_JEWELRY    = 3
+	ITEM_TYPE_OFFHAND    = 4
+    ITEM_TYPE_CONSUMABLE = 5
+    ITEM_TYPE_GEM        = 6
+
 	
-	FIST_WEAPON        = 1
-	BOW_WEAPON         = 2
-	BLUNT_WEAPON       = 3
-	GREATBLUNT_WEAPON  = 4
-	SWORD_WEAPON       = 5
-	GREATSWORD_WEAPON  = 6
-	AXE_WEAPON         = 7
-	GREATAXE_WEAPON    = 8
-	DAGGER_WEAPON      = 9
-	STAFF_WEAPON       = 10
-	JAWELIN_WEAPON     = 11
-	HEAD_ARMOR         = 12
-	CHEST_ARMOR        = 13
-	LEGS_ARMOR         = 14
-	HANDS_ARMOR        = 15
-	RING_JEWELRY       = 16
-	NECKLACE_JEWELRY   = 17
+	FIST_WEAPON           = 1
+	BOW_WEAPON            = 2
+	BLUNT_WEAPON          = 3
+	GREATBLUNT_WEAPON     = 4
+	SWORD_WEAPON          = 5
+	GREATSWORD_WEAPON     = 6
+	AXE_WEAPON            = 7
+	GREATAXE_WEAPON       = 8
+	DAGGER_WEAPON         = 9
+	STAFF_WEAPON          = 10
+	JAWELIN_WEAPON        = 11
+	HEAD_ARMOR            = 12
+	CHEST_ARMOR           = 13
+	LEGS_ARMOR            = 14
+	HANDS_ARMOR           = 15
+	RING_JEWELRY          = 16
+	NECKLACE_JEWELRY      = 17
+    THROWING_KNIFE_WEAPON = 18
+
 	
 	COMMON_ITEM        = 1
 	RARE_ITEM          = 2
@@ -131,6 +136,7 @@ do
 			CRIT_CHANCE     = 7,
 			CRIT_MULTIPLIER = 2.2,
 			RANGE           = 1000,
+            ranged          = true,
 			DISPERSION      = { 0.75, 1.25 },
 			WEAPON_SOUND    = nil
 		}
@@ -152,6 +158,7 @@ do
                 DAMAGE_TYPE        = DAMAGE_TYPE_PHYSICAL,
                 ATTRIBUTE          = PHYSICAL_ATTRIBUTE,
                 ATTRIBUTE_BONUS    = 0,
+                ranged             = false,
 
                 DEFENCE            = 0,
                 SUPPRESSION        = 0,

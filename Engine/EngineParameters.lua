@@ -135,7 +135,7 @@ do
 		[FIRE_BONUS]          = 'Урон от огня',
 		[LIGHTNING_BONUS]     = 'Урон от молнии',
 		[POISON_BONUS]        = 'Урон от яда',
-		[ARCANE_RESIST]       = 'Урон от тайной магии',
+		[ARCANE_BONUS]       = 'Урон от тайной магии',
 		[DARKNESS_BONUS]      = 'Урон от тьмы',
 		[HOLY_BONUS]          = 'Урон от святости',
 		
@@ -166,9 +166,9 @@ do
 		[ATTACK_SPEED]            = 'Скорость атаки',
 		[CAST_SPEED]              = 'Скорость заклинаний',
 		[MOVING_SPEED]            = 'Скорость бега'
-
 	}
-	
+
+
 	local PARAMETER_FUNC = {
 		---@param data table
 		[PHYSICAL_ATTACK]        = function(data)
@@ -188,8 +188,8 @@ do
 			local defence = data.stats[AGI_STAT].value * 2
 			
 			for i = 2, 6 do
-				if data.equip_slot[i] ~= nil then
-					defence = defence + data.equip_slot[i].DEFENCE
+				if data.equip_point[i] ~= nil then
+					defence = defence + data.equip_point[i].DEFENCE
 				end
 			end
 			
@@ -208,26 +208,22 @@ do
             local defence = data.stats[INT_STAT].value
 
             for i = 7, 9 do
-                if data.equip_slot[i] ~= nil then
-                    defence = defence + data.equip_slot[i].SUPPRESSION
+                if data.equip_point[i] ~= nil then
+                    defence = defence + data.equip_point[i].SUPPRESSION
                 end
             end
 
             data.stats[MAGICAL_SUPPRESSION].value = (defence + data.stats[MAGICAL_SUPPRESSION].bonus) * data.stats[MAGICAL_SUPPRESSION].multiplier
         end,
 
-		--FIXME no data???
 		---@param data table
 		[CRIT_CHANCE]            = function(data)
-            print(data.equip_slot[WEAPON_POINT].NAME)
-            print(data.equip_slot[WEAPON_POINT].CRIT_CHANCE)
-			data.stats[CRIT_CHANCE].value = (data.equip_slot[WEAPON_POINT].CRIT_CHANCE + data.stats[CRIT_CHANCE].bonus) * data.stats[CRIT_CHANCE].multiplier
+			data.stats[CRIT_CHANCE].value = (data.equip_point[WEAPON_POINT].CRIT_CHANCE + data.stats[CRIT_CHANCE].bonus) * data.stats[CRIT_CHANCE].multiplier
 		end,
 		
 		---@param data table
 		[CRIT_MULTIPLIER]        = function(data)
-
-			data.stats[CRIT_MULTIPLIER].value = (data.equip_slot[WEAPON_POINT].CRIT_MULTIPLIER + data.stats[CRIT_MULTIPLIER].bonus) * data.stats[CRIT_MULTIPLIER].multiplier
+			data.stats[CRIT_MULTIPLIER].value = (data.equip_point[WEAPON_POINT].CRIT_MULTIPLIER + data.stats[CRIT_MULTIPLIER].bonus) * data.stats[CRIT_MULTIPLIER].multiplier
 		end,
 		
 		---@param data table
@@ -245,13 +241,13 @@ do
 		---@param data table
 		[HP_VALUE]               = function(data)
 			data.stats[HP_VALUE].value = (data.base_stats.health + data.stats[HP_VALUE].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data.stats[HP_VALUE].multiplier
-            BlzSetUnitMaxHP(data.Owner, data.stats[HP_VALUE].value)
+            BlzSetUnitMaxHP(data.Owner, R2I(data.stats[HP_VALUE].value))
 		end,
 
 		---@param data table
 		[MP_VALUE]               = function(data)
 			data.stats[MP_VALUE].value = (data.base_stats.mana + data.stats[MP_VALUE].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data.stats[MP_VALUE].multiplier
-            BlzSetUnitMaxMana(data.Owner, data.stats[MP_VALUE].value)
+            BlzSetUnitMaxMana(data.Owner, R2I(data.stats[MP_VALUE].value))
 		end,
 
 		---@param data table
@@ -313,7 +309,9 @@ do
 		[LIGHTNING_BONUS]        = function(data)
 			data.stats[LIGHTNING_BONUS].value = data.stats[LIGHTNING_BONUS].bonus
 		end,
-		
+
+
+        --FIXME crash here
 		---@param data table
 		[POISON_BONUS]           = function(data)
 			data.stats[POISON_BONUS].value = data.stats[POISON_BONUS].bonus
@@ -371,19 +369,20 @@ do
 
         ---@param data table
         [ATTACK_SPEED] = function(data)
-            data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].attack_speed * ((1 - data[ATTACK_SPEED].multiplier) + 1)
-            BlzSetUnitWeaponRealField(data.Owner, UNIT_WEAPON_RF_ATTACK_BASE_COOLDOWN, data.stats[ATTACK_SPEED].value)
+            data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].ATTACK_SPEED * ((1. - data.stats[ATTACK_SPEED].multiplier) + 1.)
+            BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 0)
+            --BlzSetUnitWeaponRealField(data.Owner, UNIT_WEAPON_RF_ATTACK_BASE_COOLDOWN, I2R(data.stats[ATTACK_SPEED].value))
         end,
 
         ---@param data table
         [CAST_SPEED] = function(data)
-            data.stats[CAST_SPEED].value = data[CAST_SPEED].bonus
+            data.stats[CAST_SPEED].value = data.stats[CAST_SPEED].bonus
         end,
 
         ---@param data table
         [MOVING_SPEED] = function(data)
-            data.stats[MOVING_SPEED].value = (data.base_stats.moving_speed + data[MOVING_SPEED].bonus) * data[MOVING_SPEED].multiplier
-            SetUnitMoveSpeed(data.Owner, data.stats[MOVING_SPEED].value)
+            data.stats[MOVING_SPEED].value = (data.base_stats.moving_speed + data.stats[MOVING_SPEED].bonus) * data.stats[MOVING_SPEED].multiplier
+            SetUnitMoveSpeed(data.Owner, I2R(data.stats[MOVING_SPEED].value))
         end
 
 	}
@@ -421,7 +420,7 @@ do
 			end,
 
             update     = function(data, param)
-				print("processing update of " .. GetParameterName(param))
+				--print("processing update of " .. GetParameterName(param))
                 PARAMETER_FUNC[param](data)
             end
 		}

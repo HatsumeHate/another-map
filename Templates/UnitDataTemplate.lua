@@ -32,6 +32,9 @@
         }
 
 
+        function GetUnitData(source)
+            return UnitsData[GetHandleId(source)]
+        end
 
 
         ---@param source unit
@@ -40,12 +43,9 @@
         ---@param reference_weapon table
         function NewUnitData(source, class, reference_base, reference_weapon)
             local class_base_stats = BASE_STATS[class]
-
-            print("unit create init ok")
-
             local data                 = {
                 Owner        = source,
-                unit_class        = class,
+                unit_class   = class,
 
                 base_stats = {
                     strength = class_base_stats[1], vitality = class_base_stats[2], agility = class_base_stats[3], intellect = class_base_stats[4],
@@ -60,22 +60,14 @@
             }
 
             data.equip_point[WEAPON_POINT] = CreateDefaultWeapon()
-
             data.stats = CreateParametersData()
-            print("stats ok")
 
-            print("crit chance on unit? " .. data.equip_point[WEAPON_POINT].CRIT_CHANCE)
-            print("name on unit? " .. data.equip_point[WEAPON_POINT].NAME)
 
-            MergeTables(data.base_stats, reference_base)
-            MergeTables(data.equip_point[WEAPON_POINT], reference_weapon)
-            print("merge ok")
+            if reference_base ~= nil then MergeTables(data.base_stats, reference_base) end
+            if reference_weapon ~= nil then MergeTables(data.equip_point[WEAPON_POINT], reference_weapon) end
 
             UpdateParameters(data)
-            print("update ok")
-
             UnitsData[GetHandleId(source)] = data
-            print("done")
             return data
         end
 
