@@ -7,10 +7,10 @@ do
 		DefineSkillsData()
 		DefineEffectsData()
         DefineItemsData()
-        AutoattackInit()
+        MainEngineInit()
 
 
-		NewUnitData(gg_unit_HBRB_0005, BARBARIAN_CLASS, nil, nil)
+		NewUnitData(gg_unit_HBRB_0005, BARBARIAN_CLASS, nil, { DAMAGE = 15, CRIT_CHANCE = 15. } )
 
 
 	end
