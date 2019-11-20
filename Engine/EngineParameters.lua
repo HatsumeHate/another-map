@@ -213,9 +213,10 @@ do
                 end
             end
 
-            data.stats[MAGICAL_SUPPRESSION].value = (defence + data[MAGICAL_SUPPRESSION].bonus) * data.stats[MAGICAL_SUPPRESSION].multiplier
+            data.stats[MAGICAL_SUPPRESSION].value = (defence + data.stats[MAGICAL_SUPPRESSION].bonus) * data.stats[MAGICAL_SUPPRESSION].multiplier
         end,
-		
+
+		--FIXME no data???
 		---@param data table
 		[CRIT_CHANCE]            = function(data)
             print(data.equip_slot[WEAPON_POINT].NAME)
@@ -238,7 +239,7 @@ do
 		---@param data table
 		[MP_REGEN]               = function(data)
 			data.stats[MP_REGEN].value = (data.base_stats.mp_regen + data.stats[MP_REGEN].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data.stats[MP_REGEN].multiplier
-            BlzSetUnitRealField(data.Owner, UNIT_RF_MANA_REGENERATION, data.stats[HP_REGEN].value)
+            BlzSetUnitRealField(data.Owner, UNIT_RF_MANA_REGENERATION, data.stats[MP_REGEN].value)
 		end,
 		
 		---@param data table

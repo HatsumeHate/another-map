@@ -23,12 +23,6 @@
     end
 
     do
-        --TODO MAKE THIS WORK
-        function SetUnitData(attached)
-            local data = UnitsData[GetHandleId(attached)]
-
-            return data
-        end
 
         -- STR_STAT, VIT_STAT, AGI_STAT, INT_STAT
         local BASE_STATS = {
