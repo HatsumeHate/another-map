@@ -15,7 +15,7 @@
     end
 
 
-    local function NewEffectData()
+     function NewEffectData()
         return {
             Power               = 0,
             SummBaseAttack      = false,

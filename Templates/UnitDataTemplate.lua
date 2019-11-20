@@ -72,5 +72,3 @@
         end
 
     end
-
-    --data.equip_points[CHEST_POINT].defence + data.equip_points[LEGS_POINT].defence

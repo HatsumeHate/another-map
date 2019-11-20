@@ -371,7 +371,6 @@ do
         [ATTACK_SPEED] = function(data)
             data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].ATTACK_SPEED * ((1. - data.stats[ATTACK_SPEED].multiplier) + 1.)
             BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 0)
-            --BlzSetUnitWeaponRealField(data.Owner, UNIT_WEAPON_RF_ATTACK_BASE_COOLDOWN, I2R(data.stats[ATTACK_SPEED].value))
         end,
 
         ---@param data table
@@ -420,7 +419,6 @@ do
 			end,
 
             update     = function(data, param)
-				--print("processing update of " .. GetParameterName(param))
                 PARAMETER_FUNC[param](data)
             end
 		}
