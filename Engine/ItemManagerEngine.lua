@@ -28,7 +28,6 @@ do
     end
 
 
-    ---
     ---@param raw string
     ---@param x real
     ---@param y real

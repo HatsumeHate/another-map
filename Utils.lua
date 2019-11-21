@@ -413,19 +413,19 @@
 		return (angle >= left and angle <= right)
 	end
 
-	---@param a real
+	---@param source_unit unit
 	---@param w real
 	---@param x real
 	---@param y real
-	---@param logic boolean
-	function IsAngleInFace(a, w, x, y, logic)
-		local facing = GetUnitFacing(a)
-		local angle  = AnglebetweenUnitXY(a, x, y)
+	---@param back boolean
+	function IsAngleInFace(source_unit, w, x, y, back)
+		local facing = GetUnitFacing(source_unit)
+		local angle  = AnglebetweenUnitXY(source_unit, x, y)
 		local float_angle
 
 		if angle < 0. then angle = angle + 360. end
 
-		if logic then
+		if back then
 			facing = facing + 180.
 			if facing > 360. then facing = facing - 360. end
 		end

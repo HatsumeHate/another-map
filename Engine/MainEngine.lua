@@ -110,9 +110,36 @@ do
             TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_DAMAGED)
             TriggerAddAction(trg, function()
 
-                if BlzGetEventAttackType() == ATTACK_TYPE_MELEE and GetEventDamage() > 0. then
+                if BlzGetEventAttackType() == ATTACK_TYPE_MELEE and GetEventDamage() > 0. and GetUnitData(GetEventDamageSource()) ~= nil then
                     local data = GetUnitData(GetEventDamageSource())
-                    DamageUnit(GetEventDamageSource(), GetTriggerUnit(), data.equip_point[WEAPON_POINT].DAMAGE, data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, 0)
+
+                    if data.equip_point[WEAPON_POINT].MAX_TARGETS > 1 then
+                        local enemy_group = CreateGroup()
+                        local facing = GetUnitFacing(data.Owner)
+                        local player = GetOwningPlayer(data.Owner)
+
+                            GroupEnumUnitsInRange(enemy_group,
+                                    GetUnitX(data.Owner) + (data.equip_point[WEAPON_POINT].RANGE * Cos(facing * bj_DEGTORAD)),
+                                    GetUnitY(data.Owner) + (data.equip_point[WEAPON_POINT].RANGE * Sin(facing * bj_DEGTORAD)),
+                                    data.equip_point[WEAPON_POINT].RANGE, nil)
+
+
+                            for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
+                                local picked = BlzGroupUnitAt(enemy_group, index)
+                                    if IsUnitEnemy(picked, player) then
+                                        if GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and IsAngleInFace(data.Owner, data.equip_point[WEAPON_POINT].ANGLE, GetUnitX(picked), GetUnitY(picked), false) then
+                                            DamageUnit(data.Owner, picked, data.equip_point[WEAPON_POINT].DAMAGE, data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, 0)
+                                        end
+                                    end
+                                GroupRemoveUnit(enemy_group, picked)
+                            end
+
+                            DestroyGroup(enemy_group)
+
+                    else
+                        DamageUnit(data.Owner, GetTriggerUnit(), data.equip_point[WEAPON_POINT].DAMAGE, data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, 0)
+                    end
+
                     BlzSetEventDamage(0.)
                 end
 

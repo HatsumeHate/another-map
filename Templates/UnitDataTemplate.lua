@@ -54,7 +54,8 @@ do
 
                 default_weapon = nil,
                 equip_point = {},
-                stats = {}
+                stats = {},
+                buff_list = {}
             }
 
             data.default_weapon = CreateDefaultWeapon()

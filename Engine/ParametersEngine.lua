@@ -136,6 +136,10 @@ do
 	end
 
 
+    --TODO stats +-
+
+
+
 	
 	local PARAMETER_NAME = {
 		[PHYSICAL_ATTACK]     = 'Физическая атака',
@@ -468,6 +472,7 @@ do
 
 	end
 
+
 	function CreateParametersData()
 		local parameters = { }
 
@@ -477,4 +482,5 @@ do
 
 		return parameters
 	end
+
 end

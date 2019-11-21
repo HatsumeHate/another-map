@@ -8,6 +8,15 @@ do
     NEGATIVE_BUFF = 2
 
 
+    function GetBuffDataLevel(buff_id, lvl)
+        local data = BUFF_DATA[GetHandleId(buff_id)]
+        return data.level[lvl]
+    end
+
+    function GetBuffData(buff_id)
+        return BUFF_DATA[GetHandleId(buff_id)]
+    end
+
 
     local function NewBuffLevelData()
         return {
