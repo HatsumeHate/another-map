@@ -31,6 +31,7 @@ do
         }
     end
 
+    ---@param buff_template table
     function NewBuffTemplate(buff_template)
         local new_buff = {
 

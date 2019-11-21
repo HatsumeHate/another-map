@@ -2,9 +2,11 @@ do
     MAX_CRITICAL = 70.
     MIN_CRITICAL = 0.
 
+    MELEE_ATTACK = 1
+    RANGE_ATTACK = 2
 
 
-
+    --TODO probably legacy
     function GetAttributeBonus(a, b)
         local source = GetUnitData(a)
         local victim = GetUnitData(b)
@@ -14,6 +16,8 @@ do
     end
 
 
+    ---@param a unit
+    ---@param bonus real
     function  GetCriticalChance(a, bonus)
         local source = GetUnitData(a)
         local chance = 0. + bonus + source.stats[CRIT_CHANCE].value
@@ -29,14 +33,22 @@ do
 
 
 
-    function DamageUnit(source, target, amount, attribute, damage_type, can_crit, is_sound, eff)
+    ---@param source unit
+    ---@param target unit
+    ---@param amount real
+    ---@param attribute integer
+    ---@param damage_type number
+    ---@param attack_type number
+    ---@param can_crit boolean
+    ---@param is_sound boolean
+    function DamageUnit(source, target, amount, attribute, damage_type, attack_type, can_crit, is_sound, eff)
         local attacker = GetUnitData(source)
         local victim = GetUnitData(target)
         local critical_rate = 1.
         local damage = amount
         local attribute_bonus = 1.
         local defence = 1.
-
+        local attack_modifier = 1.
 
             if target == nil then return 0 end
 
@@ -46,7 +58,6 @@ do
                     critical_rate = attacker.stats[CRIT_MULTIPLIER].value
                     if critical_rate < 1.1 then critical_rate = 1.1 end
                 end
-
             end
 
 
@@ -58,21 +69,25 @@ do
                     damage = damage * (1. + (MagicAttackToPercent(attacker.stats[MAGICAL_ATTACK].value) * 0.01))
                 end
 
-            damage = damage * critical_rate
+            damage = (damage * attribute_bonus) * critical_rate
         else
             if damage_type == DAMAGE_TYPE_PHYSICAL then
                 defence = 1. - (DefenceToPercent(victim.stats[PHYSICAL_DEFENCE].value) * 0.01)
-            else if damage_type == DAMAGE_TYPE_MAGICAL then
+            elseif damage_type == DAMAGE_TYPE_MAGICAL then
                 local boost = attacker.stats[MAGICAL_ATTACK].value - victim.stats[MAGICAL_SUPPRESSION].value
                 if boost < 0 then boost = 0 end
 
                 damage = damage * (1. + (MagicAttackToPercent(boost) * 0.01))
-            end
-        end
+             end
 
-                attribute_bonus = 1. + ((attacker.stats[attribute].value - victim.stats[attribute].value) * 0.01)
-                damage = ((damage * attribute_bonus) * critical_rate) * defence
-            end
+
+            attack_modifier = attack_type == MELEE_ATTACK and victim.stats[MELEE_DAMAGE_REDUCTION].value or victim.stats[RANGE_DAMAGE_REDUCTION].value
+            attack_modifier = 1. - (attack_modifier * 0.01)
+
+            attribute_bonus = 1. + ((attacker.stats[attribute].value - victim.stats[attribute].value) * 0.01)
+
+            damage = ((damage * attribute_bonus) * critical_rate) * defence * attack_modifier
+        end
 
             if damage < 0. then damage = 0 end
 
@@ -97,7 +112,7 @@ do
 
                 if BlzGetEventAttackType() == ATTACK_TYPE_MELEE and GetEventDamage() > 0. then
                     local data = GetUnitData(GetEventDamageSource())
-                    DamageUnit(GetEventDamageSource(), GetTriggerUnit(), data.equip_point[WEAPON_POINT].DAMAGE, data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, true, true, true, 0)
+                    DamageUnit(GetEventDamageSource(), GetTriggerUnit(), data.equip_point[WEAPON_POINT].DAMAGE, data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, 0)
                     BlzSetEventDamage(0.)
                 end
 

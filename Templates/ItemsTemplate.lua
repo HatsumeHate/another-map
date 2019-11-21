@@ -36,6 +36,7 @@ do
 	MAGIC_ITEM         = 3
 	SET_ITEM           = 4
 	UNIQUE_ITEM        = 5
+
 	
 	---@param a table
 	---@param b table
@@ -46,7 +47,9 @@ do
 		end
 		return a
 	end
-	
+
+
+
 	local weapons = {
 		[FIST_WEAPON]       = {
 			DAMAGE          = 4,

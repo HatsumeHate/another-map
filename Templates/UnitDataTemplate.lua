@@ -1,3 +1,5 @@
+do
+
     UnitsData       = { }
 
     BARBARIAN_CLASS = 1
@@ -16,13 +18,6 @@
 
 
 
-    function UpdateParameters(unit_data)
-        for i = 1, 36 do
-            unit_data.stats[i].update(unit_data, i)
-        end
-    end
-
-    do
 
         -- STR_STAT, VIT_STAT, AGI_STAT, INT_STAT
         local BASE_STATS = {
@@ -32,6 +27,7 @@
         }
 
 
+        ---@param source unit
         function GetUnitData(source)
             return UnitsData[GetHandleId(source)]
         end
@@ -53,13 +49,16 @@
                 },
 
                 is_hp_static = false,
+                have_mp = true,
                 is_mp_static = false,
 
+                default_weapon = nil,
                 equip_point = {},
                 stats = {}
             }
 
-            data.equip_point[WEAPON_POINT] = CreateDefaultWeapon()
+            data.default_weapon = CreateDefaultWeapon()
+            data.equip_point[WEAPON_POINT] = data.default_weapon
             data.stats = CreateParametersData()
 
 
@@ -71,4 +70,4 @@
             return data
         end
 
-    end
+end

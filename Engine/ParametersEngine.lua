@@ -1,5 +1,7 @@
 do
 	-- parameters types
+	PARAMETERS_COUNT       = 39
+
     STR_STAT               = 1
     AGI_STAT               = 2
     INT_STAT               = 3
@@ -19,32 +21,36 @@ do
 
     MAGICAL_ATTACK         = 13
     MAGICAL_SUPPRESSION    = 14
-	
-	PHYSICAL_RESIST        = 15
-	FIRE_RESIST            = 16
-	ICE_RESIST             = 17
-	LIGHTNING_RESIST       = 18
-	POISON_RESIST          = 19
-	ARCANE_RESIST          = 20
-	DARKNESS_RESIST        = 21
-	HOLY_RESIST            = 22
-	
-	PHYSICAL_BONUS         = 23
-	FIRE_BONUS             = 24
-	ICE_BONUS              = 25
-	LIGHTNING_BONUS        = 26
-	POISON_BONUS           = 27
-	ARCANE_BONUS           = 28
-	DARKNESS_BONUS         = 29
-	HOLY_BONUS             = 30
-	
-	MELEE_DAMAGE_REDUCTION = 31
-	RANGE_DAMAGE_REDUCTION = 32
-    CONTROL_REDUCTION      = 33
 
-    ATTACK_SPEED           = 34
-    CAST_SPEED             = 35
-    MOVING_SPEED           = 36
+	ALL_RESIST 			   = 15
+	PHYSICAL_RESIST        = 16
+	FIRE_RESIST            = 17
+	ICE_RESIST             = 18
+	LIGHTNING_RESIST       = 19
+	POISON_RESIST          = 20
+	ARCANE_RESIST          = 21
+	DARKNESS_RESIST        = 22
+	HOLY_RESIST            = 23
+	
+	PHYSICAL_BONUS         = 24
+	FIRE_BONUS             = 25
+	ICE_BONUS              = 26
+	LIGHTNING_BONUS        = 27
+	POISON_BONUS           = 28
+	ARCANE_BONUS           = 29
+	DARKNESS_BONUS         = 30
+	HOLY_BONUS             = 31
+	
+	MELEE_DAMAGE_REDUCTION = 32
+	RANGE_DAMAGE_REDUCTION = 33
+    CONTROL_REDUCTION      = 34
+
+    ATTACK_SPEED           = 35
+    CAST_SPEED             = 36
+    MOVING_SPEED           = 37
+
+	BLOCK_CHANCE		   = 38
+	BLOCK_ABSORB 		   = 39
 
 
 	
@@ -120,6 +126,16 @@ do
 	
 	---@param value real
 	function GetBonus_VIT(value) return 0.9 + (value * 0.03) end
+
+
+	---@param unit_data table
+	function UpdateParameters(unit_data)
+		for i = 1, PARAMETERS_COUNT do
+			unit_data.stats[i].update(unit_data, i)
+		end
+	end
+
+
 	
 	local PARAMETER_NAME = {
 		[PHYSICAL_ATTACK]     = 'Физическая атака',
@@ -138,7 +154,8 @@ do
 		[ARCANE_BONUS]       = 'Урон от тайной магии',
 		[DARKNESS_BONUS]      = 'Урон от тьмы',
 		[HOLY_BONUS]          = 'Урон от святости',
-		
+
+		[ALL_RESIST]          = 'Сопротивления',
 		[PHYSICAL_RESIST]     = 'Сопротивление физ атакам',
 		[ICE_RESIST]          = 'Сопротивление холоду',
 		[FIRE_RESIST]         = 'Сопротивление огню',
@@ -165,7 +182,12 @@ do
 
 		[ATTACK_SPEED]            = 'Скорость атаки',
 		[CAST_SPEED]              = 'Скорость заклинаний',
-		[MOVING_SPEED]            = 'Скорость бега'
+		[MOVING_SPEED]            = 'Скорость бега',
+
+		[BLOCK_CHANCE]            = 'Шанс блока',
+		[BLOCK_ABSORB]            = 'Поглощение урона'
+
+
 	}
 
 
@@ -235,59 +257,67 @@ do
 		---@param data table
 		[MP_REGEN]               = function(data)
 			data.stats[MP_REGEN].value = (data.base_stats.mp_regen + data.stats[MP_REGEN].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data.stats[MP_REGEN].multiplier
-            BlzSetUnitRealField(data.Owner, UNIT_RF_MANA_REGENERATION, data.stats[MP_REGEN].value)
+				if not data.base_stats.is_mp_static then
+					BlzSetUnitRealField(data.Owner, UNIT_RF_MANA_REGENERATION, data.stats[MP_REGEN].value)
+				end
 		end,
 		
 		---@param data table
 		[HP_VALUE]               = function(data)
-			data.stats[HP_VALUE].value = (data.base_stats.health + data.stats[HP_VALUE].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data.stats[HP_VALUE].multiplier
-            BlzSetUnitMaxHP(data.Owner, R2I(data.stats[HP_VALUE].value))
+			local ratio = GetUnitState(data.Owner, UNIT_STATE_LIFE) / BlzGetUnitMaxHP(data.Owner)
+				data.stats[HP_VALUE].value = (data.base_stats.health + data.stats[HP_VALUE].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data.stats[HP_VALUE].multiplier
+				BlzSetUnitMaxHP(data.Owner, R2I(data.stats[HP_VALUE].value))
+				SetUnitState(data.Owner, UNIT_STATE_LIFE, R2I(data.stats[HP_VALUE].value) * ratio)
 		end,
 
 		---@param data table
 		[MP_VALUE]               = function(data)
 			data.stats[MP_VALUE].value = (data.base_stats.mana + data.stats[MP_VALUE].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data.stats[MP_VALUE].multiplier
-            BlzSetUnitMaxMana(data.Owner, R2I(data.stats[MP_VALUE].value))
+				if data.base_stats.have_mp then
+					local ratio = GetUnitState(data.Owner, UNIT_STATE_MANA) / BlzGetUnitMaxMana(data.Owner)
+					BlzSetUnitMaxMana(data.Owner, R2I(data.stats[MP_VALUE].value))
+					SetUnitState(data.Owner, UNIT_STATE_MANA, R2I(data.stats[MP_VALUE].value) * ratio)
+				end
 		end,
 
 		---@param data table
 		[PHYSICAL_RESIST]       = function(data)
-			data.stats[PHYSICAL_RESIST].value = data.stats[PHYSICAL_RESIST].bonus
+			data.stats[PHYSICAL_RESIST].value = data.stats[PHYSICAL_RESIST].bonus + data.stats[ALL_RESIST].value
 		end,
 		
 		---@param data table
 		[FIRE_RESIST]            = function(data)
-			data.stats[FIRE_RESIST].value = data.stats[FIRE_RESIST].bonus
+			data.stats[FIRE_RESIST].value = data.stats[FIRE_RESIST].bonus + data.stats[ALL_RESIST].value
 		end,
 		
 		---@param data table
 		[ICE_RESIST]             = function(data)
-			data.stats[ICE_RESIST].value = data.stats[ICE_RESIST].bonus
+			data.stats[ICE_RESIST].value = data.stats[ICE_RESIST].bonus + data.stats[ALL_RESIST].value
 		end,
 		
 		---@param data table
 		[LIGHTNING_RESIST]       = function(data)
-			data.stats[LIGHTNING_RESIST].value = data.stats[LIGHTNING_RESIST].bonus
+			data.stats[LIGHTNING_RESIST].value = data.stats[LIGHTNING_RESIST].bonus + data.stats[ALL_RESIST].value
 		end,
 		
 		---@param data table
 		[POISON_RESIST]          = function(data)
-			data.stats[POISON_RESIST].value = data.stats[POISON_RESIST].bonus
+			data.stats[POISON_RESIST].value = data.stats[POISON_RESIST].bonus + data.stats[ALL_RESIST].value
 		end,
 		
 		---@param data table
 		[ARCANE_RESIST]          = function(data)
-			data.stats[ARCANE_RESIST].value = data.stats[ARCANE_RESIST].bonus
+			data.stats[ARCANE_RESIST].value = data.stats[ARCANE_RESIST].bonus + data.stats[ALL_RESIST].value
 		end,
 		
 		---@param data table
 		[DARKNESS_RESIST]        = function(data)
-			data.stats[DARKNESS_RESIST].value = data.stats[DARKNESS_RESIST].bonus
+			data.stats[DARKNESS_RESIST].value = data.stats[DARKNESS_RESIST].bonus + data.stats[ALL_RESIST].value
 		end,
 		
 		---@param data table
 		[HOLY_RESIST]            = function(data)
-			data.stats[HOLY_RESIST].value = data.stats[HOLY_RESIST].bonus
+			data.stats[HOLY_RESIST].value = data.stats[HOLY_RESIST].bonus + data.stats[ALL_RESIST].value
 		end,
 		
 		---@param data table
@@ -310,8 +340,6 @@ do
 			data.stats[LIGHTNING_BONUS].value = data.stats[LIGHTNING_BONUS].bonus
 		end,
 
-
-        --FIXME crash here
 		---@param data table
 		[POISON_BONUS]           = function(data)
 			data.stats[POISON_BONUS].value = data.stats[POISON_BONUS].bonus
@@ -371,6 +399,7 @@ do
         [ATTACK_SPEED] = function(data)
             data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].ATTACK_SPEED * ((1. - data.stats[ATTACK_SPEED].multiplier) + 1.)
             BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 0)
+			BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 1)
         end,
 
         ---@param data table
@@ -382,24 +411,38 @@ do
         [MOVING_SPEED] = function(data)
             data.stats[MOVING_SPEED].value = (data.base_stats.moving_speed + data.stats[MOVING_SPEED].bonus) * data.stats[MOVING_SPEED].multiplier
             SetUnitMoveSpeed(data.Owner, I2R(data.stats[MOVING_SPEED].value))
-        end
+        end,
 
+		---@param data table
+		[ALL_RESIST] = function(data)
+			data.stats[ALL_RESIST].value = data.stats[ALL_RESIST].bonus
+		end,
+
+		---@param data table
+		[BLOCK_CHANCE] = function(data)
+			data.stats[BLOCK_CHANCE].value = data.stats[BLOCK_CHANCE].bonus
+		end,
+
+		---@param data table
+		[BLOCK_ABSORB] = function(data)
+			data.stats[BLOCK_ABSORB].value = data.stats[BLOCK_ABSORB].bonus
+		end
 	}
-	
+
 	---@param type integer
 	function GetParameterName(type)
 		return PARAMETER_NAME[type]
 	end
-	
-	function NewStat(stat_type)
+
+	local function NewStat(stat_type)
 		return {
 			stat_type  = stat_type,
-			
+
 			value      = 0,
 			multiplier = 1,
 			bonus      = 0,
-			
-			
+
+
 			---@param data table
 			---@param param integer
 			---@param value real
@@ -408,7 +451,7 @@ do
 				param.multiplier = flag and param.multiplier * value or param.multiplier / value
 				PARAMETER_FUNC[param](data)
 			end,
-			
+
 			---@param data table
 			---@param param integer
 			---@param value real
@@ -422,16 +465,16 @@ do
                 PARAMETER_FUNC[param](data)
             end
 		}
-	
+
 	end
-	
+
 	function CreateParametersData()
 		local parameters = { }
-		
-		for i = 1, 36 do
+
+		for i = 1, PARAMETERS_COUNT do
 			parameters[i] = NewStat(i)
 		end
-		
+
 		return parameters
 	end
 end

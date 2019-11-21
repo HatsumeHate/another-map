@@ -2,10 +2,36 @@ do
 
 
 
+    local QUALITY_COLOR = {
+        [COMMON_ITEM] = '|c00FFFFFF',
+        [RARE_ITEM] = '|c00669FFF',
+        [MAGIC_ITEM] = '|c00FFFF00',
+        [SET_ITEM] = '|c0000FF00',
+        [UNIQUE_ITEM] = '|c00FFD574'
+    }
 
-	---@param raw string
-	---@param x real
-	---@param y real
+    ---@param quality number
+    function GetQualityColor(quality)
+        return QUALITY_COLOR[quality]
+    end
+
+    ---@param item item
+    function GetItemNameColorized(item)
+        local item_data = ITEM_DATA[GetHandleId(item)]
+        return QUALITY_COLOR[item_data.quality] .. item_data.NAME + '|r'
+    end
+
+
+    ---@param item unit
+    function GetItemData(item)
+        return ITEM_DATA[GetHandleId(item)]
+    end
+
+
+    ---
+    ---@param raw string
+    ---@param x real
+    ---@param y real
 	function CreateCustomItem(raw, x, y)
 		local id     = FourCC(raw)
 		local item   = CreateItem(id, x, y)
