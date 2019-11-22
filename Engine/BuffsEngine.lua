@@ -100,7 +100,6 @@ do
         local target_data = GetUnitData(target)
         local existing_buff
 
-            --TODO replace buff when same applies
             --TODO buff with higher rank replace weaker buffs
 
             if GetUnitAbilityLevel(target, FourCC(buff_id)) > 0 then
@@ -109,13 +108,33 @@ do
                         existing_buff = target_data.buff_list[i]
                             if lvl >= existing_buff.current_level then
                                 DeleteBuff(target_data, existing_buff)
+
                             else
                                 buff_data = nil
                                 return false
                             end
+                        break
                     end
                 end
             end
+
+        --[[
+        for i = 1, #buff_data.buff_replacer do
+            if GetUnitAbilityLevel(target, FourCC(buff_data.buff_replacer[i].buff_id)) > 0 then
+
+                for i2 = 1, #target_data.buff_list do
+                    if target_data.buff_list[i2].id == buff_data.buff_replacer[i].buff_id then
+                        existing_buff = target_data.buff_list[i2]
+
+                        if buff_data.level[lvl].rank >= existing_buff.level[existing_buff.current_level].rank then
+                            DeleteBuff(target_data, existing_buff)
+                        end
+
+                    end
+                end
+
+            end
+        end]]
 
             buff_data.current_level = lvl
             buff_data.expiration_time = buff_data.level[lvl].time
