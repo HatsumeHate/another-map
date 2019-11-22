@@ -15,16 +15,16 @@ do
         return QUALITY_COLOR[quality]
     end
 
-    ---@param item item
-    function GetItemNameColorized(item)
-        local item_data = ITEM_DATA[GetHandleId(item)]
-        return QUALITY_COLOR[item_data.quality] .. item_data.NAME + '|r'
+    ---@param my_item item
+    function GetItemNameColorized(my_item)
+        local item_data = ITEM_DATA[GetHandleId(my_item)]
+        return QUALITY_COLOR[item_data.QUALITY] .. item_data.NAME .. '|r'
     end
 
 
-    ---@param item unit
-    function GetItemData(item)
-        return ITEM_DATA[GetHandleId(item)]
+    ---@param my_item item
+    function GetItemData(my_item)
+        return ITEM_DATA[GetHandleId(my_item)]
     end
 
 

@@ -9,12 +9,12 @@ do
 
 
     function GetBuffDataLevel(buff_id, lvl)
-        local data = BUFF_DATA[GetHandleId(buff_id)]
+        local data = BUFF_DATA[FourCC(buff_id)]
         return data.level[lvl]
     end
 
     function GetBuffData(buff_id)
-        return BUFF_DATA[GetHandleId(buff_id)]
+        return BUFF_DATA[FourCC(buff_id)]
     end
 
 
@@ -58,8 +58,9 @@ do
                 new_buff.level[i] = NewBuffLevelData()
             end
 
+
             MergeTables(new_buff, buff_template)
-            BUFF_DATA[FourCC(id)] = new_buff
+            BUFF_DATA[FourCC(buff_template.id)] = new_buff
 
         return new_buff
     end
@@ -79,7 +80,7 @@ do
                     time = 5.,
 
                     bonus = {
-                        { PARAM = PHYSICAL_ATTACK, VALUE = 2., METHOD = MULTIPLY_BONUS }
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 15., METHOD = MULTIPLY_BONUS }
                     }
                 }
             }

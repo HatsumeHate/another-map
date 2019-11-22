@@ -203,6 +203,7 @@ do
 	function CreateDefaultWeapon()
 		local default_weapon = GetItemTemplate()
 
+            ItemMergeData(default_weapon, weapons[FIST_WEAPON])
 			MergeTables(default_weapon, ITEM_TEMPLATE_DATA[FourCC('0000')])
 
 		return default_weapon

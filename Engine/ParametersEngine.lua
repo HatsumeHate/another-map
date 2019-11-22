@@ -128,12 +128,7 @@ do
 	function GetBonus_VIT(value) return 0.9 + (value * 0.03) end
 
 
-	---@param unit_data table
-	function UpdateParameters(unit_data)
-		for i = 1, PARAMETERS_COUNT do
-			unit_data.stats[i].update(unit_data, i)
-		end
-	end
+
 
 
     --TODO stats +-
@@ -205,7 +200,8 @@ do
 					total_damage = total_damage + (data.equip_point[OFFHAND_POINT].DAMAGE * 0.5)
 				end
 			end
-			
+
+			print(data.stats[PHYSICAL_ATTACK].multiplier)
 			data.stats[PHYSICAL_ATTACK].value = (total_damage * GetBonus_STR(data.stats[STR_STAT].value) + data.stats[PHYSICAL_ATTACK].bonus) * data.stats[PHYSICAL_ATTACK].multiplier
 		end,
 		
@@ -446,7 +442,7 @@ do
 			multiplier = 1,
 			bonus      = 0,
 
-
+			--[[
 			---@param data table
 			---@param param integer
 			---@param value real
@@ -467,9 +463,37 @@ do
 
             update     = function(data, param)
                 PARAMETER_FUNC[param](data)
-            end
+            end]]
 		}
 
+	end
+
+
+	---@param param integer
+	---@param value real
+	---@param plus boolean
+	---@param target unit
+	---@param method number
+	function ModifyStat(target, param, value, method, plus)
+		local unit_data = GetUnitData(target)
+
+			if method == MULTIPLY_BONUS then
+				unit_data.stats[param].multiplier = plus and unit_data.stats[param].multiplier * value or unit_data.stats[param].multiplier / value
+			else
+				unit_data.stats[param].bonus = plus and unit_data.stats[param].bonus + value or unit_data.stats[param].bonus - value
+
+			end
+
+		PARAMETER_FUNC[param](unit_data)
+
+	end
+
+	---@param unit_data table
+	function UpdateParameters(unit_data)
+		for i = 1, PARAMETERS_COUNT do
+			PARAMETER_FUNC[i](unit_data)
+			--unit_data.stats[i].update(unit_data, i)
+		end
 	end
 
 
