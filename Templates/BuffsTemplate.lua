@@ -51,6 +51,10 @@ do
             buff_type = POSITIVE_BUFF,
             buff_replacer = {},
 
+            current_level = 1,
+            expiration_time = 0.,
+            update_timer = nil,
+
             level = {}
         }
 
@@ -80,7 +84,8 @@ do
                     time = 5.,
 
                     bonus = {
-                        { PARAM = PHYSICAL_ATTACK, VALUE = 15., METHOD = MULTIPLY_BONUS }
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 5., METHOD = MULTIPLY_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = 1.5, METHOD = MULTIPLY_BONUS }
                     }
                 }
             }

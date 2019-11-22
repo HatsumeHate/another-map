@@ -398,9 +398,14 @@ do
         ---@param data table
         [ATTACK_SPEED] = function(data)
             data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].ATTACK_SPEED * ((1. - data.stats[ATTACK_SPEED].multiplier) + 1.)
-            BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 0)
-			BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 1)
-        end,
+			if data.stats[ATTACK_SPEED].value > 0. then
+				BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 0)
+				BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 1)
+			else
+				BlzSetUnitAttackCooldown(data.Owner, 0.1, 0)
+				BlzSetUnitAttackCooldown(data.Owner, 0.1, 1)
+			end
+		end,
 
         ---@param data table
         [CAST_SPEED] = function(data)
