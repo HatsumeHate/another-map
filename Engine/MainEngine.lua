@@ -5,6 +5,9 @@ do
     MELEE_ATTACK = 1
     RANGE_ATTACK = 2
 
+    ATTACK_STATUS_USUAL = 1
+    ATTACK_STATUS_CRITICAL = 2
+
 
     --TODO probably legacy
     function GetAttributeBonus(a, b)
@@ -49,6 +52,7 @@ do
         local attribute_bonus = 1.
         local defence = 1.
         local attack_modifier = 1.
+        local attack_status = ATTACK_STATUS_USUAL
 
             if target == nil then return 0 end
 
@@ -56,6 +60,7 @@ do
             if can_crit then
                 if Chance(GetCriticalChance(source, 0)) then
                     critical_rate = attacker.stats[CRIT_MULTIPLIER].value
+                    attack_status = ATTACK_STATUS_CRITICAL
                     if critical_rate < 1.1 then critical_rate = 1.1 end
                 end
             end
@@ -89,14 +94,12 @@ do
             damage = ((damage * attribute_bonus) * critical_rate) * defence * attack_modifier
         end
 
-            if damage < 0. then damage = 0 end
-
             damage = GetRandomReal(damage * attacker.equip_point[WEAPON_POINT].DISPERSION[1], damage * attacker.equip_point[WEAPON_POINT].DISPERSION[2])
 
-
+            if damage < 0. then damage = 0 end
             UnitDamageTarget(source, target, damage, false, false, nil, nil, is_sound and attacker.equip_point[WEAPON_POINT].WEAPON_SOUND or nil)
 
-
+            CreateHitnumber(damage, source, target, attack_status)
             print(damage)
 
         return 0
@@ -131,9 +134,9 @@ do
                                             DamageUnit(data.Owner, picked, data.equip_point[WEAPON_POINT].DAMAGE, data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, 0)
                                         end
                                     end
-                                GroupRemoveUnit(enemy_group, picked)
                             end
 
+                            GroupClear(enemy_group)
                             DestroyGroup(enemy_group)
 
                     else

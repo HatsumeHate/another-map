@@ -7,11 +7,11 @@ do
     local function DeleteBuff(unit_data, buff_data)
         for i = 1, #unit_data.buff_list do
             if unit_data.buff_list[i] == buff_data then
-                UnitRemoveAbility(target, FourCC(buff_data.buff_id))
-                UnitRemoveAbility(target, FourCC(buff_data.id))
+                UnitRemoveAbility(unit_data.Owner, FourCC(buff_data.buff_id))
+                UnitRemoveAbility(unit_data.Owner, FourCC(buff_data.id))
 
                 for i2 = 1, #buff_data.level[buff_data.current_level].bonus do
-                    ModifyStat(target, buff_data.level[buff_data.current_level].bonus[i2].PARAM, buff_data.level[buff_data.current_level].bonus[i2].VALUE, buff_data.level[buff_data.current_level].bonus[i2].METHOD, false)
+                    ModifyStat(unit_data.Owner, buff_data.level[buff_data.current_level].bonus[i2].PARAM, buff_data.level[buff_data.current_level].bonus[i2].VALUE, buff_data.level[buff_data.current_level].bonus[i2].METHOD, false)
                 end
 
                 DestroyTimer(buff_data.update_timer)
@@ -108,7 +108,6 @@ do
                         existing_buff = target_data.buff_list[i]
                             if lvl >= existing_buff.current_level then
                                 DeleteBuff(target_data, existing_buff)
-
                             else
                                 buff_data = nil
                                 return false
@@ -117,24 +116,6 @@ do
                     end
                 end
             end
-
-        --[[
-        for i = 1, #buff_data.buff_replacer do
-            if GetUnitAbilityLevel(target, FourCC(buff_data.buff_replacer[i].buff_id)) > 0 then
-
-                for i2 = 1, #target_data.buff_list do
-                    if target_data.buff_list[i2].id == buff_data.buff_replacer[i].buff_id then
-                        existing_buff = target_data.buff_list[i2]
-
-                        if buff_data.level[lvl].rank >= existing_buff.level[existing_buff.current_level].rank then
-                            DeleteBuff(target_data, existing_buff)
-                        end
-
-                    end
-                end
-
-            end
-        end]]
 
             buff_data.current_level = lvl
             buff_data.expiration_time = buff_data.level[lvl].time
@@ -179,5 +160,23 @@ end
                     end
 
                     buff_data = nil
-                    ]]
+                 ]]
 
+
+--[[
+        for i = 1, #buff_data.buff_replacer do
+            if GetUnitAbilityLevel(target, FourCC(buff_data.buff_replacer[i].buff_id)) > 0 then
+
+                for i2 = 1, #target_data.buff_list do
+                    if target_data.buff_list[i2].id == buff_data.buff_replacer[i].buff_id then
+                        existing_buff = target_data.buff_list[i2]
+
+                        if buff_data.level[lvl].rank >= existing_buff.level[existing_buff.current_level].rank then
+                            DeleteBuff(target_data, existing_buff)
+                        end
+
+                    end
+                end
+
+            end
+        end]]
