@@ -4,6 +4,8 @@ do
 
 
 
+    ---@param unit_data table
+    ---@param buff_data table
     local function DeleteBuff(unit_data, buff_data)
         for i = 1, #unit_data.buff_list do
             if unit_data.buff_list[i] == buff_data then
@@ -20,6 +22,23 @@ do
                 break
             end
         end
+    end
+
+
+    ---@param target unit
+    ---@param buff_id integer
+    function GetBuffLevel(target, buff_id)
+        local target_data = GetUnitData(target)
+
+        if GetUnitAbilityLevel(target, FourCC(buff_id)) > 0 then
+            for i = 1, #target_data.buff_list do
+                if target_data.buff_list[i].id == buff_id then
+                    return target_data.buff_list[i].current_level
+                end
+            end
+        end
+
+        return 0
     end
 
     ---@param target unit
@@ -72,9 +91,17 @@ do
     function SetBuffLevel(target, buff_id, lvl)
         local unit_data = GetUnitData(target)
 
+
             for i = 1, #unit_data.buff_list do
                 if unit_data.buff_list[i].id == buff_id then
                     local buff_data = unit_data.buff_list[i]
+
+                    if lvl > unit_data.buff_list[i].max_level then
+                        lvl = unit_data.buff_list[i].max_level
+                    elseif lvl <= 0 then
+                        RemoveBuff(target, buff_id)
+                        return
+                    end
 
                     for i2 = 1, #buff_data.level[buff_data.current_level].bonus do
                         ModifyStat(target, buff_data.level[buff_data.current_level].bonus[i2].PARAM, buff_data.level[buff_data.current_level].bonus[i2].VALUE, buff_data.level[buff_data.current_level].bonus[i2].METHOD, false)
@@ -126,6 +153,8 @@ do
             for i = 1, #buff_data.level[lvl].bonus do
                 ModifyStat(target, buff_data.level[lvl].bonus[i].PARAM, buff_data.level[lvl].bonus[i].VALUE, buff_data.level[lvl].bonus[i].METHOD, true)
             end
+
+            print(123123)
 
             buff_data.update_timer = CreateTimer()
             TimerStart(buff_data.update_timer, BUFF_UPDATE, true, function()

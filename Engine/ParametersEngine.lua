@@ -1,6 +1,6 @@
 do
 	-- parameters types
-	PARAMETERS_COUNT       = 39
+	PARAMETERS_COUNT       = 41
 
     STR_STAT               = 1
     AGI_STAT               = 2
@@ -52,6 +52,10 @@ do
 	BLOCK_CHANCE		   = 38
 	BLOCK_ABSORB 		   = 39
 
+	MELEE_REFLECT_DAMAGE   = 40
+	RANGE_REFLECT_DAMAGE   = 41
+
+	VAMPIRIC_DAMAGE        = 42
 
 	
 	-- attributes
@@ -184,8 +188,10 @@ do
 		[MOVING_SPEED]            = 'Скорость бега',
 
 		[BLOCK_CHANCE]            = 'Шанс блока',
-		[BLOCK_ABSORB]            = 'Поглощение урона'
+		[BLOCK_ABSORB]            = 'Поглощение урона',
 
+		[MELEE_REFLECT_DAMAGE]   = 'Отражение урона ближнего боя',
+		[RANGE_REFLECT_DAMAGE]   = 'Отражение урона дальнего боя'
 
 	}
 
@@ -431,6 +437,16 @@ do
 		---@param data table
 		[BLOCK_ABSORB] = function(data)
 			data.stats[BLOCK_ABSORB].value = data.stats[BLOCK_ABSORB].bonus
+		end,
+
+		---@param data table
+		[MELEE_REFLECT_DAMAGE] = function(data)
+			data.stats[MELEE_REFLECT_DAMAGE].value = data.stats[MELEE_REFLECT_DAMAGE].bonus
+		end,
+
+		---@param data table
+		[RANGE_REFLECT_DAMAGE] = function(data)
+			data.stats[RANGE_REFLECT_DAMAGE].value = data.stats[RANGE_REFLECT_DAMAGE].bonus
 		end
 	}
 

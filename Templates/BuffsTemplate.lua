@@ -8,11 +8,14 @@ do
     NEGATIVE_BUFF = 2
 
 
+    ---@param buff_id integer
+    ---@param lvl integer
     function GetBuffDataLevel(buff_id, lvl)
         local data = BUFF_DATA[FourCC(buff_id)]
         return data.level[lvl]
     end
 
+    ---@param buff_id integer
     function GetBuffData(buff_id)
         return BUFF_DATA[FourCC(buff_id)]
     end
@@ -52,6 +55,7 @@ do
             buff_replacer = {},
 
             current_level = 1,
+            max_level = 1,
             expiration_time = 0.,
             update_timer = nil,
 
