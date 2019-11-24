@@ -18,6 +18,9 @@ do
     }
 
 
+    ---@param text number
+    ---@param victim unit
+    ---@param status integer
     function CreateHitnumber(text, source, victim, status)
         local tag = CreateTextTag()
         local time = 0.

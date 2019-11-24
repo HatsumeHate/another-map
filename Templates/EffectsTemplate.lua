@@ -73,6 +73,7 @@ do
     end
 
     ---@param effect_id integer
+    ---@param reference table
     function NewEffectTemplate(effect_id, reference)
 
         if EffectsData[FourCC(effect_id)] ~= nil then return nil end
@@ -111,18 +112,6 @@ do
 
         })
 
-        --[[
-            for i = 1, 5 do
-                EffectsData[i] = NewEffectTemplate(i)
-            end
-
-            -- defined effects
-            --=======================================--
-            -- test effect
-            EffectsData[1].name = "test effect 1"
-            EffectsData[1].level[1].Power     = 30
-            EffectsData[1].level[1].Attribute = PHYSICAL_BONUS
-    ]]
     end
 
 end

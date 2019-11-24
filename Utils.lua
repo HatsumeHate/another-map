@@ -233,14 +233,18 @@
 		return Atan2(GetUnitY(b) - GetUnitY(a), GetUnitX(b) - GetUnitX(a)) * bj_RADTODEG
 	end
 
-	--FIXME по умолчанию работаем в радианах, функции работающие с градусами должны иметь приставку Deg : AnglebetweenUnitXYDeg
+	--FIXME по умолчанию работаем в радианах, функции работающие с градусами должны иметь приставку Deg : AngleBetweenUnitXYDeg
 	---@param u unit
 	---@param x real
 	---@param y real
 	---@return real
-	function AnglebetweenUnitXY (u, x, y)
+	function AngleBetweenUnitXY (u, x, y)
 		return Atan2(y - GetUnitY(u), x - GetUnitX(u)) * bj_RADTODEG
 	end
+
+    function AngleBetweenXY_DEG( A_x,  A_y,  B_x,  B_y)
+        return Atan2(B_y - A_y, B_x - A_x) * bj_RADTODEG
+    end
 
 	---@param a unit
 	---@param b unit
@@ -265,8 +269,16 @@
 	---@return real
 	function DistanceBetweenUnitXY_Ex (u, x, y)
 		local dx, dy = x - GetUnitX(u), y - GetUnitY(u)
-		return GetMaxAvailableDistanceEx(u, math.sqrt((dx * dx) + (dy * dy)), AnglebetweenUnitXY(u, x, y))
+		return GetMaxAvailableDistanceEx(u, math.sqrt((dx * dx) + (dy * dy)), AngleBetweenUnitXY(u, x, y))
 	end
+
+
+    function TimeBetweenXY(x1, y1, x2, y2, speed)
+        local dx = x2 - x1
+        local dy = y2 - y1
+        return (SquareRoot((dx * dx) + (dy * dy)) / speed)
+    end
+
 
 	---@param xa real
 	---@param ya real
@@ -301,7 +313,7 @@
 	function TimeBetweenUnitXY_Ex (A, B_x, B_y, speed)
 		local dx = B_x - GetUnitX(A)
 		local dy = B_y - GetUnitY(A)
-		return (GetMaxAvailableDistanceEx(A, SquareRoot((dx * dx) + (dy * dy)), AnglebetweenUnitXY(A, B_x, B_y)) / speed)
+		return (GetMaxAvailableDistanceEx(A, SquareRoot((dx * dx) + (dy * dy)), AngleBetweenUnitXY(A, B_x, B_y)) / speed)
 	end
 
 	function ParabolaZ(h, d, x)
@@ -350,7 +362,7 @@
 	---@param victim unit
 	function IsUnitAtSideXY(x, y, victim)
 		local angle1 = GetUnitFacing(victim)
-		local angle2 = AnglebetweenUnitXY(x, y, Gx(victim), Gy(victim))
+		local angle2 = AngleBetweenUnitXY(x, y, Gx(victim), Gy(victim))
 
 		if not (GetUnitY(victim) > y) then angle1 = angle1 - 360. end
 
@@ -383,7 +395,7 @@
 	---@param y real
 	function WhichSide(a, x, y)
 		local facing = GetUnitFacing(a)
-		local angle  = AnglebetweenUnitXY(a, x, y)
+		local angle  = AngleBetweenUnitXY(a, x, y)
 		local float_angle
 
 		if angle < 0 then
@@ -405,7 +417,7 @@
 	function IsFront(a, x, y)
 		local left  = (GetUnitFacing(a) - 90) + 360
 		local right = (GetUnitFacing(a) + 90) + 360
-		local angle = AnglebetweenUnitXY(a, x, y)
+		local angle = AngleBetweenUnitXY(a, x, y)
 
 		if angle < 0 then angle = angle + 360 end
 		angle = angle + 360
@@ -420,7 +432,7 @@
 	---@param back boolean
 	function IsAngleInFace(source_unit, w, x, y, back)
 		local facing = GetUnitFacing(source_unit)
-		local angle  = AnglebetweenUnitXY(source_unit, x, y)
+		local angle  = AngleBetweenUnitXY(source_unit, x, y)
 		local float_angle
 
 		if angle < 0. then angle = angle + 360. end
@@ -496,6 +508,8 @@
 		MoveLocation(Loc, GetUnitX(u), GetUnitY(u))
 		return GetLocationZ(Loc) + GetUnitFlyHeight(u)
 	end
+
+
 
 	function SimError(msg1, p)
 

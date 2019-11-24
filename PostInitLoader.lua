@@ -8,6 +8,7 @@ do
 		DefineEffectsData()
         DefineItemsData()
 		DefineBuffsData()
+		DefineMissilesData()
         MainEngineInit()
 
 
@@ -20,8 +21,9 @@ do
 		--print(EffectsData[FourCC('EFF1')].level[1].SFX_used)
 
 		TimerStart(CreateTimer(), 3., false, function()
-            ApplyEffect(gg_unit_HBRB_0005, gg_unit_HSRC_0004, 0., 0., 'EFF1', 1)
-			ApplyBuff(gg_unit_HSRC_0004, gg_unit_HSRC_0004, 'A002', 1)
+			ThrowMissile(gg_unit_HBRB_0005, nil, 'M001', GetUnitX(gg_unit_HBRB_0005), GetUnitY(gg_unit_HBRB_0005), GetUnitX(gg_unit_HSRC_0004), GetUnitY(gg_unit_HSRC_0004), 0.)
+            --ApplyEffect(gg_unit_HBRB_0005, gg_unit_HSRC_0004, 0., 0., 'EFF1', 1)
+			--ApplyBuff(gg_unit_HSRC_0004, gg_unit_HSRC_0004, 'A002', 1)
 		end)
 
 

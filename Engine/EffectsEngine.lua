@@ -3,6 +3,9 @@ do
 
 
 
+    ---@param sfx string
+    ---@param target unit
+    ---@param point string
     local function PlaySpecialEffect(sfx, target, point)
         if sfx ~= nil then
             local new_effect = AddSpecialEffectTarget(sfx, target, point)
@@ -11,6 +14,11 @@ do
     end
 
 
+    ---@param source unit
+    ---@param target unit
+    ---@param effect_data table
+    ---@param lvl integer
+    ---@param target_type integer
     local function ModifyBuffsEffect(source, target, effect_data, lvl, target_type)
         for i = 1, #effect_data.level[lvl].applied_buff do
             if effect_data.level[lvl].applied_buff[i].target_type == target_type then
@@ -37,6 +45,8 @@ do
     end
 
 
+    ---@param data table
+    ---@param target_type integer
     local function CountBuffEffects(data, target_type)
         local count = 0
             for i = 1, #data do
@@ -49,6 +59,11 @@ do
 
 
 
+    ---@param source unit
+    ---@param target unit
+    ---@param data table
+    ---@param lvl integer
+    ---@param target_type integer
     function ApplyBuffEffect(source, target, data, lvl, target_type)
         PlaySpecialEffect(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point)
         -- delay for effect animation
@@ -58,6 +73,10 @@ do
         end)
     end
 
+    ---@param source unit
+    ---@param target unit
+    ---@param data table
+    ---@param lvl integer
     function ApplyEffectHealing(source, target, data, lvl)
         PlaySpecialEffect(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point)
 
@@ -73,6 +92,10 @@ do
         end)
     end
 
+    ---@param source unit
+    ---@param target unit
+    ---@param data table
+    ---@param lvl integer
     function ApplyEffectDamage(source, target, data, lvl)
         PlaySpecialEffect(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point)
         -- delay for effect animation
@@ -89,6 +112,12 @@ do
 
 
 
+    ---@param source unit
+    ---@param target unit
+    ---@param x real
+    ---@param y real
+    ---@param effect_id integer
+    ---@param lvl integer
     function ApplyEffect(source, target, x, y, effect_id, lvl)
         local unit_data = GetUnitData(source)
         local data = GetEffectData(effect_id)
