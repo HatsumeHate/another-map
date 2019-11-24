@@ -60,6 +60,7 @@ do
             speed = 600.,
             start_z = 65.,
             end_z = 65.,
+            arc = 0.3,
             ignore_terrain = true,
             full_distance = true
         })
