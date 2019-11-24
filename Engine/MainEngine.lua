@@ -9,6 +9,7 @@ do
     ATTACK_STATUS_USUAL = 1
     ATTACK_STATUS_CRITICAL = 2
     HEAL_STATUS = 3
+    RESOURCE_STATUS = 4
 
 
     --TODO probably legacy
@@ -64,25 +65,18 @@ do
 
         if myeffect ~= nil then
 
-            --print(myeffect.eff.name)
-            --print(myeffect.eff.level[myeffect.l].power)
-
             if myeffect.eff.level[myeffect.l].bonus_crit_chance ~= nil then
                 bonus_critical = myeffect.eff.level[myeffect.l].bonus_crit_chance
             end
 
-           -- print("a")
-
             if myeffect.eff.level[myeffect.l].bonus_crit_multiplier ~= nil then
                 bonus_critical_rate = myeffect.eff.level[myeffect.l].bonus_crit_multiplier
             end
-            --print("b")
 
             if myeffect.eff.level[myeffect.l].attack_percent_bonus ~= nil then
                 damage = damage + (attacker.equip_point[WEAPON_POINT].DAMAGE * myeffect.eff.level[myeffect.l].attack_percent_bonus)
             end
 
-            --print("c")
             if myeffect.eff.level[myeffect.l].get_attack_bonus ~= nil then
                 if myeffect.eff.level[myeffect.l].get_attack_bonus then
                     if damage_type == DAMAGE_TYPE_PHYSICAL then
@@ -92,52 +86,50 @@ do
                     end
                 end
             end
-            --print("d")
+
         end
 
-    --print(can_crit)
             if can_crit then
-                --print("can crit")
                 if Chance(GetCriticalChance(source, bonus_critical)) then
-                    --print("critical!")
                     critical_rate = attacker.stats[CRIT_MULTIPLIER].value + bonus_critical_rate
                     attack_status = ATTACK_STATUS_CRITICAL
                     if critical_rate < 1.1 then critical_rate = 1.1 end
-                    --print(1)
                 end
             end
 
 
         if victim == nil then
-            --print("asd")
-            attribute_bonus = 1. + (attacker.stats[attribute].value * 0.01)
+            if attribute ~= nil then
+                attribute_bonus = 1. + (attacker.stats[attribute].value * 0.01)
+            end
 
-                if damage_type == DAMAGE_TYPE_MAGICAL then
-                    damage = damage * (1. + (MagicAttackToPercent(attacker.stats[MAGICAL_ATTACK].value) * 0.01))
-                end
+            if damage_type == DAMAGE_TYPE_MAGICAL then
+            damage = damage * (1. + (MagicAttackToPercent(attacker.stats[MAGICAL_ATTACK].value) * 0.01))
+        end
 
-            damage = (damage * attribute_bonus) * critical_rate
+        damage = (damage * attribute_bonus) * critical_rate
         else
             if damage_type == DAMAGE_TYPE_PHYSICAL then
                 defence = 1. - (DefenceToPercent(victim.stats[PHYSICAL_DEFENCE].value) * 0.01)
-                --print("11")
             elseif damage_type == DAMAGE_TYPE_MAGICAL then
                 local boost = attacker.stats[MAGICAL_ATTACK].value - victim.stats[MAGICAL_SUPPRESSION].value
                 if boost < 0 then boost = 0 end
 
                 damage = damage * (1. + (MagicAttackToPercent(boost) * 0.01))
-                --print("22")
-             end
+            end
+
 
             if attack_type ~= nil then
                 attack_modifier = attack_type == MELEE_ATTACK and victim.stats[MELEE_DAMAGE_REDUCTION].value or victim.stats[RANGE_DAMAGE_REDUCTION].value
                 attack_modifier = 1. - (attack_modifier * 0.01)
-                --print("33")
             end
 
-            attribute_bonus = 1. + ((attacker.stats[attribute].value - victim.stats[attribute].value) * 0.01)
+
+            if attribute ~= nil then
+                attribute_bonus = 1. + ((attacker.stats[attribute].value - victim.stats[attribute].value) * 0.01)
+            end
+
             damage = ((damage * attribute_bonus) * critical_rate) * defence * attack_modifier
-            --print("4")
         end
         --print(attribute_bonus)
        -- print(critical_rate)

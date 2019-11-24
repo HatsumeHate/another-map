@@ -103,7 +103,8 @@ do
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attribute = PHYSICAL_ATTRIBUTE,
                     applied_buff = {
-                        [1] = { modificator = ADD_BUFF, buff_id = 'A002', target_type = ON_SELF }
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A002', target_type = ON_SELF },
+                        [2] = { modificator = ADD_BUFF, buff_id = 'A002', target_type = ON_ENEMY }
                     },
                 }
             }

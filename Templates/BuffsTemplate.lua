@@ -7,6 +7,9 @@ do
     POSITIVE_BUFF = 1
     NEGATIVE_BUFF = 2
 
+    OVER_TIME_DAMAGE = 1
+    OVER_TIME_HEAL = 2
+
 
     ---@param buff_id integer
     ---@param lvl integer
@@ -28,15 +31,21 @@ do
             time = 1,
             negative_state = 0,
 
+
+            effect_damage = {},
             effect_hp_value = 0,
             effect_mp_value = 0,
+            effect_delay = 0,
+
             effect_hp_percent_value = 0,
             effect_mp_percent_value = 0,
-            effect_polarity = 0,
-
-            effect_delay = 0,
             effect_type = 0,
+
+            effect_trigger_sfx = "",
+            effect_trigger_sfx_point = "",
+
             effect_sfx = "",
+            effect_sfx_point = "",
 
             bonus = { }
 
@@ -86,6 +95,16 @@ do
                 [1] = {
                     rank = 5,
                     time = 5.,
+                    buff_type = POSITIVE_BUFF,
+
+                    current_level = 1,
+                    max_level = 1,
+
+                    effect_hp_value = 15,
+                    effect_delay = 1.,
+
+                    effect_sfx = "Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdx",
+                    effect_sfx_point = "chest",
 
                     bonus = {
                         { PARAM = PHYSICAL_ATTACK, VALUE = 5., METHOD = MULTIPLY_BONUS },

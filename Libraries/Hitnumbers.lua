@@ -3,7 +3,6 @@ do
     HITNUMBERS = {}
 
     local UPDATE = 0.04
-    local END_SIZE = 9.2
     local DURATION = 1.
     local UNFADE = 0.17 --in
     local FADEPOINT = 0.65  --out
@@ -14,7 +13,8 @@ do
     local ATTACK_STATUS_COLOR = {
         [ATTACK_STATUS_USUAL]    = '|c00FF0000',
         [ATTACK_STATUS_CRITICAL] = '|c00FFFF00',
-        [HEAL_STATUS] = '|c0000FF00'
+        [HEAL_STATUS] = '|c0000FF00',
+        [RESOURCE_STATUS] = '|c00008BFF'
     }
 
 

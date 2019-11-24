@@ -207,7 +207,6 @@ do
 				end
 			end
 
-			print(data.stats[PHYSICAL_ATTACK].multiplier)
 			data.stats[PHYSICAL_ATTACK].value = (total_damage * GetBonus_STR(data.stats[STR_STAT].value) + data.stats[PHYSICAL_ATTACK].bonus) * data.stats[PHYSICAL_ATTACK].multiplier
 		end,
 		

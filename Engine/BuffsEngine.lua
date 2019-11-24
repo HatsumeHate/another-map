@@ -147,6 +147,17 @@ do
             buff_data.current_level = lvl
             buff_data.expiration_time = buff_data.level[lvl].time
 
+
+            if buff_data.level[lvl].effect_sfx ~= nil then
+                local new_effect
+                    if buff_data.level[lvl].effect_sfx_point ~= nil then
+                        new_effect = AddSpecialEffectTarget(buff_data.level[lvl].effect_sfx, target, buff_data.level[lvl].effect_sfx_point)
+                    else
+                        new_effect = AddSpecialEffect(buff_data.level[lvl].effect_sfx, GetUnitX(target), GetUnitY(target))
+                    end
+                DestroyEffect(new_effect)
+            end
+
             UnitAddAbility(target, FourCC(buff_data.id))
             table.insert(target_data.buff_list, buff_data)
 
@@ -154,7 +165,11 @@ do
                 ModifyStat(target, buff_data.level[lvl].bonus[i].PARAM, buff_data.level[lvl].bonus[i].VALUE, buff_data.level[lvl].bonus[i].METHOD, true)
             end
 
-            print(123123)
+
+            local over_time_effect_delay
+            if buff_data.level[lvl].effect_delay ~= nil then
+                over_time_effect_delay = buff_data.level[lvl].effect_delay
+            end
 
             buff_data.update_timer = CreateTimer()
             TimerStart(buff_data.update_timer, BUFF_UPDATE, true, function()
@@ -162,6 +177,59 @@ do
                 if buff_data.expiration_time <= 0. or GetUnitState(target, UNIT_STATE_LIFE) < 0.045 then
                     DeleteBuff(target_data, buff_data)
                 else
+
+                    if over_time_effect_delay ~= nil then
+
+                        if over_time_effect_delay <= 0 then
+
+                            if buff_data.level[buff_data.current_level].effect_damage ~= nil then
+                                DamageUnit(source, target, buff_data.level[buff_data.current_level].effect_damage.damage,
+                                        buff_data.level[buff_data.current_level].effect_damage.attribute,
+                                        buff_data.level[buff_data.current_level].effect_damage.damage_type,
+                                        buff_data.level[buff_data.current_level].effect_damage.attack_type,
+                                        buff_data.level[buff_data.current_level].effect_damage.can_crit, false, nil)
+                            end
+
+                                if buff_data.level[buff_data.current_level].effect_hp_value ~= nil then
+                                    SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + buff_data.level[buff_data.current_level].effect_hp_value)
+                                    CreateHitnumber(R2I(buff_data.level[buff_data.current_level].effect_hp_value), source, target, HEAL_STATUS)
+                                end
+
+                                if buff_data.level[buff_data.current_level].effect_mp_value ~= nil then
+                                    SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + buff_data.level[buff_data.current_level].effect_mp_value)
+                                    CreateHitnumber(R2I(buff_data.level[buff_data.current_level].effect_mp_value), source, target, RESOURCE_STATUS)
+                                end
+
+                            if buff_data.level[buff_data.current_level].effect_hp_percent_value ~= nil then
+                                local value = BlzGetUnitMaxHP(target) * buff_data.level[buff_data.current_level].effect_hp_percent_value
+                                    if buff_data.level[buff_data.current_level].effect_type == OVER_TIME_DAMAGE then
+                                        UnitDamageTarget(source, target, value, false, false, nil, nil, nil)
+                                        CreateHitnumber(R2I(value), source, target, ATTACK_STATUS_USUAL)
+                                    else
+                                        SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + value)
+                                        CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
+                                    end
+                            end
+
+                            if buff_data.level[buff_data.current_level].effect_mp_percent_value ~= nil then
+                                local value = BlzGetUnitMaxMana(target) * buff_data.level[buff_data.current_level].effect_mp_percent_value
+                                    SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + value)
+                                    CreateHitnumber(R2I(value), source, target, RESOURCE_STATUS)
+                            end
+
+                            over_time_effect_delay = buff_data.level[buff_data.current_level].effect_delay
+
+                            if buff_data.level[buff_data.current_level].effect_trigger_sfx ~= nil then
+                                local new_effect = AddSpecialEffectTarget(buff_data.level[buff_data.current_level].effect_trigger_sfx, target, buff_data.level[buff_data.current_level].effect_trigger_sfx_point)
+                                DestroyEffect(new_effect)
+                            end
+
+                        else
+                            over_time_effect_delay = over_time_effect_delay - BUFF_UPDATE
+                        end
+
+                    end
+
                     buff_data.expiration_time = buff_data.expiration_time - BUFF_UPDATE
                 end
 
@@ -171,41 +239,3 @@ do
     end
 
 end
-
-
---[[
-                    UnitRemoveAbility(target, FourCC(buff_data.buff_id))
-                    UnitRemoveAbility(target, FourCC(buff_data.id))
-
-                    for i = 1, #buff_data.level[lvl].bonus do
-                        ModifyStat(target, buff_data.level[lvl].bonus[i].PARAM, buff_data.level[lvl].bonus[i].VALUE, buff_data.level[lvl].bonus[i].METHOD, false)
-                    end
-
-                    for i = 1, #target_data.buff_list do
-                        if target_data.buff_list[i] == buff_data then
-                            table.remove(target_data.buff_list, i)
-                            break
-                        end
-                    end
-
-                    buff_data = nil
-                 ]]
-
-
---[[
-        for i = 1, #buff_data.buff_replacer do
-            if GetUnitAbilityLevel(target, FourCC(buff_data.buff_replacer[i].buff_id)) > 0 then
-
-                for i2 = 1, #target_data.buff_list do
-                    if target_data.buff_list[i2].id == buff_data.buff_replacer[i].buff_id then
-                        existing_buff = target_data.buff_list[i2]
-
-                        if buff_data.level[lvl].rank >= existing_buff.level[existing_buff.current_level].rank then
-                            DeleteBuff(target_data, existing_buff)
-                        end
-
-                    end
-                end
-
-            end
-        end]]

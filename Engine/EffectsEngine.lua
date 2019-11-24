@@ -12,14 +12,9 @@ do
 
 
     local function ModifyBuffsEffect(source, target, effect_data, lvl, target_type)
-        print("zzzzzzzz")
-        print(effect_data.level[lvl].applied_buff[1].modificator)
-
         for i = 1, #effect_data.level[lvl].applied_buff do
             if effect_data.level[lvl].applied_buff[i].target_type == target_type then
-                print("target type ok")
                 if effect_data.level[lvl].applied_buff[i].modificator == ADD_BUFF then
-                    print("target type ok")
                     ApplyBuff(source, target, effect_data.level[lvl].applied_buff[i].buff_id, lvl)
                 elseif effect_data.level[lvl].applied_buff[i].modificator == REMOVE_BUFF then
                     RemoveBuff(target, effect_data.level[lvl].applied_buff[i].buff_id)
@@ -39,7 +34,6 @@ do
                 end
             end
         end
-        print("bbbbbb")
     end
 
 
@@ -126,36 +120,9 @@ do
             end
 
 
-                -- damaging
-        if data.level[lvl].power ~= nil then
-            print("power")
-            -- multiple target damage
-            if data.level[lvl].area_of_effect ~= nil then
-                local enemy_group = CreateGroup()
-                GroupEnumUnitsInRange(enemy_group, x, y, data.level[lvl].area_of_effect, nil)
-
-                    for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
-                        local picked = BlzGroupUnitAt(enemy_group, index)
-
-                        if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045  then
-                            ApplyEffectDamage(source, picked, data, lvl)
-                        end
-
-                    end
-
-                GroupClear(enemy_group)
-                DestroyGroup(enemy_group)
-            else
-                -- single target damage
-                print("single")
-                if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 and IsUnitEnemy(target, player_entity) then
-                    ApplyEffectDamage(source, target, data, lvl)
-                end
-            end
-
-        else
-            -- multiple target debuff
-            if CountBuffEffects(data.level[lvl].applied_buff, ON_ENEMY) > 0 then
+            -- damaging
+            if data.level[lvl].power ~= nil then
+                -- multiple target damage
                 if data.level[lvl].area_of_effect ~= nil then
                     local enemy_group = CreateGroup()
                     GroupEnumUnitsInRange(enemy_group, x, y, data.level[lvl].area_of_effect, nil)
@@ -163,29 +130,53 @@ do
                         for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
                             local picked = BlzGroupUnitAt(enemy_group, index)
 
-                            if not (IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045) then
-                                GroupRemoveUnit(enemy_group, picked)
+                            if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045  then
+                                ApplyEffectDamage(source, picked, data, lvl)
                             end
 
                         end
 
-                        ForGroup(enemy_group, function()
-                            ApplyBuffEffect(source, GetEnumUnit(), data, lvl, ON_ENEMY)
-                        end)
-
                     GroupClear(enemy_group)
                     DestroyGroup(enemy_group)
                 else
-                    if IsUnitEnemy(target, player_entity) and GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
-                        ApplyBuffEffect(source, target, data, lvl, ON_ENEMY)
+                    -- single target damage
+                    if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 and IsUnitEnemy(target, player_entity) then
+                        ApplyEffectDamage(source, target, data, lvl)
                     end
                 end
+
+            else
+                -- multiple target debuff
+                if CountBuffEffects(data.level[lvl].applied_buff, ON_ENEMY) > 0 then
+                    if data.level[lvl].area_of_effect ~= nil then
+                        local enemy_group = CreateGroup()
+                        GroupEnumUnitsInRange(enemy_group, x, y, data.level[lvl].area_of_effect, nil)
+
+                            for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
+                                local picked = BlzGroupUnitAt(enemy_group, index)
+
+                                if not (IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045) then
+                                    GroupRemoveUnit(enemy_group, picked)
+                                end
+
+                            end
+
+                            ForGroup(enemy_group, function()
+                                ApplyBuffEffect(source, GetEnumUnit(), data, lvl, ON_ENEMY)
+                            end)
+
+                        GroupClear(enemy_group)
+                        DestroyGroup(enemy_group)
+                    else
+                        if IsUnitEnemy(target, player_entity) and GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
+                            ApplyBuffEffect(source, target, data, lvl, ON_ENEMY)
+                        end
+                    end
+                end
+
             end
 
-        end
-
-        print("ccccccccccccc")
-            -- healing
+        -- healing
             if data.level[lvl].heal_amount ~= nil then
                 -- multiple target healing
                 if data.level[lvl].area_of_effect ~= nil then
@@ -244,33 +235,8 @@ do
             end
 
 
-        print("aaaaaa")
         ModifyBuffsEffect(source, source, data, lvl, ON_SELF)
-
 
     end
 
 end
-
-
---[[
-elseif data.level[lvl].applied_buff[i].target_type == ON_ALLY then
-                            if data.level[lvl].area_of_effect ~= nil then
-                                local enemy_group = CreateGroup()
-                                GroupEnumUnitsInRange(enemy_group, x, y, data.level[lvl].area_of_effect, nil)
-
-                                for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
-                                    local picked = BlzGroupUnitAt(enemy_group, index)
-
-                                    if IsUnitAlly(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
-                                        ApplyBuff(source, picked, data.level[lvl].applied_buff[i].buff_id, lvl)
-                                    end
-
-                                end
-
-                                GroupClear(enemy_group)
-                                DestroyGroup(enemy_group)
-                            else
-                                ApplyBuff(source, target, data.level[lvl].applied_buff[i].buff_id, lvl)
-                            end
-]]
