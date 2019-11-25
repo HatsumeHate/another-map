@@ -64,6 +64,19 @@ do
             ignore_terrain = true,
             full_distance = true
         })
+
+        NewMissileTemplate('M002', {
+            name = "test straight missile",
+            model = "Abilities\\Weapons\\Arrow\\ArrowMissile.mdx",
+            max_distance = 1000.,
+            radius = 50.,
+            speed = 800.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.2,
+            ignore_terrain = false,
+            full_distance = true
+        })
         
     end
 

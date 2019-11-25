@@ -47,6 +47,7 @@ do
             can_crit              = true,
             bonus_crit_chance     = 0,
             bonus_crit_multiplier = 0.,
+            max_targets           = 1,
 
             heal_amount           = 0,
 
