@@ -90,12 +90,12 @@ do
             name = "test buff",
             id = 'A002',
             buff_id = 'B000',
+            buff_type = POSITIVE_BUFF,
 
             level = {
                 [1] = {
                     rank = 5,
                     time = 5.,
-                    buff_type = POSITIVE_BUFF,
 
                     current_level = 1,
                     max_level = 1,

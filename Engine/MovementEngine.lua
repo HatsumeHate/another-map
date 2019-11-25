@@ -74,7 +74,6 @@ do
 
     function ThrowMissile(from, target, missile, effects, start_x, start_y, end_x, end_y, angle)
         local unit_data = GetUnitData(from)
-
         local m = GetMissileData(missile)
         local end_z
         local start_z
@@ -85,9 +84,10 @@ do
         end
 
         local time = 0.
-        local weapon = {}
+        local weapon
 
                 if m == nil then
+                    weapon = {}
                     MergeTables(weapon, unit_data.equip_point[WEAPON_POINT])
                     m = GetMissileData(unit_data.equip_point[WEAPON_POINT].missile)
                     end_z = GetZ(end_x, end_y) + m.end_z
@@ -137,16 +137,11 @@ do
         end
 
 
-        print("1")
-
-
         local vx = (end_x - start_x) * ((m.speed * PERIOD) / distance)
         local vy = (end_y - start_y) * ((m.speed * PERIOD) / distance)
         local vz = (end_z - start_z) * ((m.speed * PERIOD) / distance)
 
 
-
-        print("2")
         local impact = false
 
         TimerStart(CreateTimer(), PERIOD, true, function()
@@ -204,6 +199,7 @@ do
             if m.only_on_impact then
                 if impact then
                     if weapon.splash then
+                        -- aoe damage with splash
                         local enemy_group = CreateGroup()
 
                         if #m.sound_on_hit > 0 then
@@ -215,10 +211,9 @@ do
                         -- loop
                         GroupClear(enemy_group)
                         DestroyGroup(enemy_group)
-                        -- aoe damage with splash
+
                     else
-                        local group = CreateGroup()
-                        local player_entity = GetOwningPlayer(from)
+                        -- aoe damage
                         DestroyEffect(missile_effect)
                         DestroyTimer(GetExpiredTimer())
 
@@ -226,46 +221,55 @@ do
                             AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y)
                         end
 
+                        if weapon ~= nil then
+                            local group = CreateGroup()
+                            local player_entity = GetOwningPlayer(from)
+                            local damage_list = GetDamageValues(unit_data, weapon, effects, m)
+                            GroupEnumUnitsInRange(group, start_x, start_y, damage_list.range, nil)
 
-                        local damage_list = GetDamageValues(unit_data, weapon, effects, m)
-                        GroupEnumUnitsInRange(group, start_x, start_y, damage_list.range, nil)
+                                for index = BlzGroupGetSize(group) - 1, 0, -1 do
+                                    local picked = BlzGroupUnitAt(group, index)
 
-                            for index = BlzGroupGetSize(group) - 1, 0, -1 do
-                                local picked = BlzGroupUnitAt(group, index)
+                                    if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
 
-                                if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
+                                        if m.effect_on_target ~= nil then
+                                            local new_effect = AddSpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point)
+                                            DestroyEffect(new_effect)
+                                        end
 
-                                    if m.effect_on_target ~= nil then
-                                        local new_effect = AddSpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point)
-                                        DestroyEffect(new_effect)
+                                        DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, false, nil)
+                                        damage_list.targets = damage_list.targets - 1
+                                        if damage_list.targets <= 0 then break end
                                     end
 
-                                    DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, false, nil)
-                                    damage_list.targets = damage_list.targets - 1
-                                    if damage_list.targets <= 0 then break end
                                 end
 
-                            end
+                            GroupClear(group)
+                            DestroyGroup(group)
+                            damage_list = nil
+                        else
+                            ApplyEffect(from, nil, start_x, start_y, effects.effect, effects.level)
+                        end
 
-                        damage_list = nil
-                        GroupClear(group)
-                        DestroyGroup(group)
                     end
                 end
             else
                 if m.only_on_target then
+                    -- seeking
                     if IsUnitInRangeXY(target, start_x, start_y, m.radius) then
 
                         print("hit")
                         DestroyMissile(target, missile_effect, m, start_x, start_y)
-                        local damage_list = GetDamageValues(unit_data, weapon, effects, m)
+
 
                         if m.effect_on_target ~= nil then
                             local new_effect = AddSpecialEffectTarget(m.effect_on_target, target, m.effect_on_target_point)
                             DestroyEffect(new_effect)
                         end
 
-                        DamageUnit(from, target, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, false, nil)
+                        if weapon ~= nil then
+                            local damage_list = GetDamageValues(unit_data, weapon, effects, m)
+                            DamageUnit(from, target, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, false, nil)
 
                             if damage_list.targets > 1 or damage_list.range > 0 then
                                 local group = CreateGroup()
@@ -294,16 +298,18 @@ do
                                 DestroyGroup(group)
                             end
 
-                        damage_list = nil
-                        -- damage
+                            damage_list = nil
+                        else
+                            ApplyEffect(from, target, start_x, start_y, effects.effect, effects.level)
+                        end
+
                     end
                 else
-
+                    -- first target hit
                     local group = CreateGroup()
                     local player_entity = GetOwningPlayer(from)
-
-                    -- damage
                     GroupEnumUnitsInRange(group, start_x, start_y, m.radius, nil)
+
                     for index = BlzGroupGetSize(group) - 1, 0, -1 do
                         local picked = BlzGroupUnitAt(group, index)
                             if not (IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045) then
@@ -322,27 +328,30 @@ do
                                 AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y)
                             end
 
-                            local damage_list = GetDamageValues(unit_data, weapon, effects, m)
+                            if weapon ~= nil then
+                                local damage_list = GetDamageValues(unit_data, weapon, effects, m)
 
-                                for index = BlzGroupGetSize(group) - 1, 0, -1 do
-                                    local picked = BlzGroupUnitAt(group, index)
+                                    for index = BlzGroupGetSize(group) - 1, 0, -1 do
+                                        local picked = BlzGroupUnitAt(group, index)
 
-                                    if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
+                                        if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
 
-                                        if m.effect_on_target ~= nil then
-                                            local new_effect = AddSpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point)
-                                            DestroyEffect(new_effect)
+                                            if m.effect_on_target ~= nil then
+                                                local new_effect = AddSpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point)
+                                                DestroyEffect(new_effect)
+                                            end
+
+                                            DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, false, nil)
+                                            damage_list.targets = damage_list.targets - 1
+                                            if damage_list.targets <= 0 then break end
                                         end
 
-                                        DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, false, nil)
-                                        damage_list.targets = damage_list.targets - 1
-                                        if damage_list.targets <= 0 then break end
                                     end
 
-                                end
-
-                            damage_list = nil
-
+                                damage_list = nil
+                            else
+                                ApplyEffect(from, target, start_x, start_y, effects.effect, effects.level)
+                            end
                         end
                         GroupClear(group)
                     end
@@ -351,15 +360,19 @@ do
                 end
             end
 
-
         end)
 
+
+        weapon = nil
+        unit_data = nil
+        m = nil
+        missile = nil
     end
 
 
-    function ThrowMissileBySkill(from, target, skill_id, start_x, start_y, end_x, end_y, angle)
+    --function ThrowMissileBySkill(from, target, skill_id, start_x, start_y, end_x, end_y, angle)
 
-    end
+    --end
 
 
 

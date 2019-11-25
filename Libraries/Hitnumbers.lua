@@ -17,6 +17,13 @@ do
         [RESOURCE_STATUS] = '|c00008BFF'
     }
 
+    local STATUS_OFFSET = {
+        [ATTACK_STATUS_USUAL]       = { x = { min = 35., max = 45. }, y = { min = 35., max = 45. }, },
+        [ATTACK_STATUS_CRITICAL]    = { x = { min = 55., max = 65. }, y = { min = 55., max = 65. }, },
+        [HEAL_STATUS]               = { x = { min = -10., max = 10. }, y = { min = 0., max = -30. }, },
+        [RESOURCE_STATUS]           = { x = { min = -10., max = 10. }, y = { min = 20., max = -60. }, },
+    }
+
 
     ---@param text number
     ---@param victim unit
@@ -26,9 +33,9 @@ do
         local time = 0.
         local size = 6.
         local size_parabola = 1.1
-        local x = GetUnitX(victim) + GetRandomReal(RANDOM_OFFSETM_MIN, RANDOM_OFFSET_MAX)
-        local y = GetUnitY(victim) + GetRandomReal(RANDOM_OFFSETM_MIN, RANDOM_OFFSET_MAX)
-        local step = 9.5 / (DURATION / UPDATE)
+        local x = GetUnitX(victim) + GetRandomReal(STATUS_OFFSET[status].x.min, STATUS_OFFSET[status].x.max)
+        local y = GetUnitY(victim) + GetRandomReal(STATUS_OFFSET[status].y.min, STATUS_OFFSET[status].y.max)
+        local step = 10.5 / (DURATION / UPDATE)
         local alpha = 0.
         local alpha_transition = 255 / (UNFADE / UPDATE)
 

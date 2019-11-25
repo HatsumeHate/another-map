@@ -144,6 +144,7 @@ do
                 end
             end
 
+
             buff_data.current_level = lvl
             buff_data.expiration_time = buff_data.level[lvl].time
 
@@ -160,6 +161,14 @@ do
 
             UnitAddAbility(target, FourCC(buff_data.id))
             table.insert(target_data.buff_list, buff_data)
+
+            --[[
+            if buff_data.buff_type == POSITIVE_BUFF then
+                local ability_buff = BlzGetUnitAbility(target, FourCC(buff_data.buff_id))
+                BlzSetAbilityStringLevelField(ability_buff, ABILITY_SLF_TOOLTIP_NORMAL_EXTENDED, 1, "|c0000FF00" .. BlzGetAbilityStringLevelField(ability_buff, ABILITY_SLF_TOOLTIP_NORMAL_EXTENDED, 1) .. "|r")
+                --BlzSetAbilityStringField(ability_buff, ABILITY_SLF_TOOLTIP_NORMAL,  "|c0000FF00" .. BlzGetAbilityStringField(ability_buff, ABILITY_SF_NAME) .. "|r")
+            end
+            ]]
 
             for i = 1, #buff_data.level[lvl].bonus do
                 ModifyStat(target, buff_data.level[lvl].bonus[i].PARAM, buff_data.level[lvl].bonus[i].VALUE, buff_data.level[lvl].bonus[i].METHOD, true)
