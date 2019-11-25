@@ -175,7 +175,7 @@ do
                 ANGLE              = 30, --math.pi * 2, 360 градусов
                 MAX_TARGETS        = 1,
 
-                MISSILE_ON_ATTATCK = 0,
+                missile = 0,
                 EFFECT_ON_ATTACK   = 0,
                 WEAPON_SOUND       = nil,
                 MODEL              = '',

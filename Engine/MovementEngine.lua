@@ -1,7 +1,7 @@
 do
 
     local PERIOD = 0.025
-    local step_offset = 2.5
+    local MapArea = bj_mapInitialPlayableArea
 
 
 
@@ -18,11 +18,18 @@ do
 
 
 
-    function ThrowMissile(from, target, missile, start_x, start_y, end_x, end_y, angle)
+    function ThrowMissile(from, target, missile, effects, start_x, start_y, end_x, end_y, angle)
+        local unit_data = GetUnitData(from)
         local m = GetMissileData(missile)
         local end_z = GetZ(end_x, end_y) + m.end_z
         local start_z = GetZ(start_x, start_y) + m.start_z
         local time = 0.
+        local weapon
+
+                if m == nil then
+                    MergeTables(weapon, unit_data.equip_point[WEAPON_POINT])
+                    m = GetMissileData(unit_data.equip_point[WEAPON_POINT].missile)
+                end
 
             if angle == 0. then angle = AngleBetweenXY_DEG(start_x, start_y, end_x, end_y) end
 
@@ -43,6 +50,7 @@ do
         local missile_effect = AddSpecialEffect(m.model, start_x, start_y)
         BlzSetSpecialEffectHeight(missile_effect, start_z)
         BlzSetSpecialEffectScale(missile_effect, m.scale)
+        --BlzSetSpecialEffectOrientation(missile_effect, angle * bj_DEGTORAD, 0., 0.)
         BlzSetSpecialEffectYaw(missile_effect, angle * bj_DEGTORAD)
 
         if #m.sound_on_launch > 0 then
@@ -52,14 +60,21 @@ do
         local distance2d
         local height
         local length = 0.
-        local step = m.speed / (1. / PERIOD)
-        local start_height = start_z
-        local end_height = end_z
+        local step
+        local start_height
+        local end_height
 
         if m.arc ~= nil then
             distance2d = DistanceBetweenXY(start_x, start_y, end_x, end_y)
             height = distance2d * m.arc + RMaxBJ(start_z, end_z)
+            step = m.speed / (1. / PERIOD)
+            start_height = start_z
+            end_height = end_z
+            time = time * (1. + m.arc)
         end
+
+
+        --print(height)
 
 
         local vx = (end_x - start_x) * ((m.speed * PERIOD) / distance)
@@ -67,14 +82,17 @@ do
         local vz = (end_z - start_z) * ((m.speed * PERIOD) / distance)
 
 
+
+
+        local impact = false
+
         TimerStart(CreateTimer(), PERIOD, true, function()
 
-            if IsMapBounds(start_x, start_y) then
+            if IsMapBounds(start_x, start_y) or time < 0. then
                 DestroyEffect(missile_effect)
                 DestroyTimer(GetExpiredTimer())
                 print("BOUNDS")
             else
-                --print(z)
                 --TRACKING
                 if m.trackable ~= nil and m.trackable then
                     if GetUnitState(target, UNIT_STATE_LIFE) < 0.045 or target == nil then
@@ -86,27 +104,27 @@ do
                         vx = (GetUnitX(target) - start_x) * ((m.speed * PERIOD) / distance)
                         vy = (GetUnitY(target) - start_y) * ((m.speed * PERIOD) / distance)
                         vz = (BlzGetLocalUnitZ(target) - start_z) * ((m.speed * PERIOD) / distance)
+                        BlzSetSpecialEffectYaw(missile_effect, AngleBetweenXY(start_x, start_y, end_x, end_y) * bj_DEGTORAD)
                     end
-                end
-
-                -- Z ARC
-                if m.arc ~= nil then
-                    --z = ParabolaZ(m.arc, distance / 10., step) + ((start_z-z_buffer) - GetZ(start_x, start_y))
-                    --z_buffer = z_buffer + start_step_z
-                    --step = step + step_offset
                 end
 
                 -- COLLISION
                 if BlzGetLocalSpecialEffectZ(missile_effect) <= GetZ(start_x, start_y) and not m.ignore_terrain then
                     DestroyEffect(missile_effect)
                     DestroyTimer(GetExpiredTimer())
+                    impact = true
                 else
 
                     start_x = start_x + vx
                     start_y = start_y + vy
 
                     if m.arc ~= nil then
-                        start_z = GetParabolaZ(start_height, end_height, height, distance2d, length);
+                        local old_z = start_z
+                        start_z = GetParabolaZ(start_height, end_height, height, distance2d, length)
+                        local zDiff = start_z - old_z
+                        local speed_step = m.speed * PERIOD
+                        local pitch = zDiff > 0 and math.atan(speed_step / zDiff) - math.pi / 2 or math.atan(-zDiff / speed_step) - math.pi * 2
+                        BlzSetSpecialEffectPitch(missile_effect, pitch)
                         length = length + step
                     else
                         start_z = start_z + vz
@@ -115,20 +133,40 @@ do
                     BlzSetSpecialEffectPosition(missile_effect,  start_x, start_y, start_z)
 
                     time = time - PERIOD
-
-                    if time < 0. then
-                        DestroyEffect(missile_effect)
-                        DestroyTimer(GetExpiredTimer())
-                    end
-
-                    --Z MOVEMENT
-                    if  m.arc ~= nil then
-                        BlzSetSpecialEffectHeight(missile_effect, start_z)
-                    end
-
                 end
+            end
+            -- movement end
 
+            if m.only_on_impact then
+                if impact then
+                    if weapon.splash then
+                        local enemy_group = CreateGroup()
 
+                        GroupEnumUnitsInRange(enemy_group, start_x, start_y, weapon.radius, nil)
+
+                        -- loop
+                        GroupClear(enemy_group)
+                        DestroyGroup(enemy_group)
+                        -- aoe damage with splash
+                    else
+                        -- just aoe damage
+                    end
+                end
+            else
+                if m.only_on_target then
+                    if IsUnitInRangeXY(target, start_x, start_y, m.radius) then
+
+                        if #m.sound_on_hit > 0 then
+                            AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y)
+                        end
+                        -- damage
+                    end
+                else
+                    -- damage
+                    if m.penetrate ~= nil and not m.penetrate then
+
+                    end
+                end
             end
 
 
