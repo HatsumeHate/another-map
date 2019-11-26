@@ -12,6 +12,7 @@ do
         MainEngineInit()
 
 
+
 		NewUnitData(gg_unit_HBRB_0005, BARBARIAN_CLASS, nil, {  ATTACK_SPEED = 0.4, DAMAGE = 15, CRIT_CHANCE = 15., missile = 'M002' })
         NewUnitData(gg_unit_HSRC_0004, SORCERESS_CLASS,  { health = 3000., hp_regen = 30. }, nil)
 
@@ -22,6 +23,7 @@ do
 			--ApplyBuff(gg_unit_HSRC_0004, gg_unit_HSRC_0004, 'A002', 1)
 		end)
 
+        InventoryInit()
 
 	end
 end
