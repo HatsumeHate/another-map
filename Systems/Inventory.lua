@@ -5,6 +5,7 @@ do
     PlayerInventoryFrame = {}
     ButtonList = {}
     InventorySlots = {}
+    InventoryTriggerButton = nil
     INV_SLOT = 0
 
 
@@ -119,29 +120,29 @@ do
         --TODO everything else. optimize it
 
 
-        local inv_button_btn = BlzCreateFrameByType("GLUEBUTTON", "inventory button btn", GAME_UI, "HeroSelectorButton", 0)
-        local inv_button_backdrop = BlzCreateFrameByType("BACKDROP", "inventory button backdrop", inv_button_btn, "", 0)
+        InventoryTriggerButton = BlzCreateFrame('ScriptDialogButton', GAME_UI, 0, 0)
+        local inv_button_backdrop = BlzCreateFrameByType("BACKDROP", "inventory button backdrop", InventoryTriggerButton, "", 0)
         local inv_button_tooltip = BlzCreateFrame("BoxedText", inv_button_backdrop, 150, 0)
 
 
-        BlzFrameSetSize(inv_button_btn, 0.04, 0.04)
-        BlzFrameSetAbsPoint(inv_button_btn, FRAMEPOINT_LEFT, 0., 0.2)
-        BlzFrameSetAllPoints(inv_button_backdrop, inv_button_btn)
+        BlzFrameSetSize(InventoryTriggerButton, 0.03, 0.03)
+        BlzFrameSetPoint(InventoryTriggerButton, FRAMEPOINT_LEFT, CharButton, FRAMEPOINT_RIGHT, 0.01, 0.)
+        BlzFrameSetAllPoints(inv_button_backdrop, InventoryTriggerButton)
         BlzFrameSetTexture(inv_button_backdrop, "ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp", 0, true)
 
-        BlzFrameSetTooltip(inv_button_btn, inv_button_tooltip)
+        BlzFrameSetTooltip(InventoryTriggerButton, inv_button_tooltip)
         BlzFrameSetPoint(inv_button_tooltip, FRAMEPOINT_TOPLEFT, inv_button_backdrop, FRAMEPOINT_RIGHT, 0, 0)
         BlzFrameSetSize(inv_button_tooltip, 0.11, 0.05)
         BlzFrameSetText(BlzGetFrameByName("BoxedTextValue", 0), "Содержит все ваши вещи и экипировку")--BoxedText has a child showing the text, set that childs Text.
         BlzFrameSetText(BlzGetFrameByName("BoxedTextTitle", 0), "Инвентарь")--BoxedText has a child showing the Title-text, set that childs Text.
-        FrameRegisterNoFocus(inv_button_btn)
+        FrameRegisterNoFocus(InventoryTriggerButton)
 
 
         local trg = CreateTrigger()
-        BlzTriggerRegisterFrameEvent(trg, inv_button_btn, FRAMEEVENT_CONTROL_CLICK)
+        BlzTriggerRegisterFrameEvent(trg, InventoryTriggerButton, FRAMEEVENT_CONTROL_CLICK)
         TriggerAddAction(trg, function()
 
-            BlzFrameSetVisible(PlayerInventoryFrame[1], not BlzFrameIsVisible(PlayerInventoryFrame[1]))
+            BlzFrameSetVisible(PlayerInventoryFrame[GetPlayerId(GetTriggerPlayer()) + 1], not BlzFrameIsVisible(PlayerInventoryFrame[GetPlayerId(GetTriggerPlayer()) + 1]))
 
         end)
 
