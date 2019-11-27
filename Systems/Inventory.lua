@@ -1,10 +1,7 @@
 do
 
-    local GAME_UI
-    local WORLD_FRAME
 
-    MainInventoryWindow = nil
-    EquipSlotsFrame = {}
+
     PlayerInventoryFrame = {}
     ButtonList = {}
     InventorySlots = {}
@@ -12,18 +9,7 @@ do
 
 
 
-    local FocusTrigger = CreateTrigger()
-    TriggerAddAction(FocusTrigger, function()
-        if GetTriggerPlayer() == GetLocalPlayer() then
-            BlzFrameSetEnable(BlzGetTriggerFrame(), false)
-            BlzFrameSetEnable(BlzGetTriggerFrame(), true)
-        end
-    end)
 
-    ---@param frame framehandle
-    function FrameRegisterNoFocus(frame)
-        BlzTriggerRegisterFrameEvent(FocusTrigger, frame, FRAMEEVENT_CONTROL_CLICK)
-    end
 
 
 
@@ -62,13 +48,11 @@ do
 
     local function DrawInventoryFrames(player)
         local new_Frame
-        local new_FrameImage
         local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
 
 
         BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPRIGHT, GAME_UI, FRAMEPOINT_TOPRIGHT, 0., -0.05)
         BlzFrameSetSize(main_frame, 0.4, 0.38)
-        --BlzFrameSetParent(main_frame, GAME_UI)
         PlayerInventoryFrame[player] = main_frame
 
 
@@ -84,7 +68,7 @@ do
 
 
         -- inventory slots
-        InventorySlots[1] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, inv_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.02, -0.016, inv_Frame)
+        InventorySlots[1] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, inv_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.02, -0.017, inv_Frame)
 
         for i = 2, 8 do
             InventorySlots[i] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[i - 1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPRIGHT, 0., 0., inv_Frame)
@@ -123,18 +107,13 @@ do
 
 
     function InventoryInit()
-        GAME_UI     = BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0)
-        WORLD_FRAME = BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0)
-        BlzLoadTOCFile("war3mapimported\\BoxedText.toc")
-
-
         DrawInventoryFrames(1)
 
 
-        --[[
+
         --HeroSelectorButton
         --ScriptDialogButton
-         ]]
+
 
 
         --TODO everything else. optimize it
@@ -155,7 +134,7 @@ do
         BlzFrameSetSize(inv_button_tooltip, 0.11, 0.05)
         BlzFrameSetText(BlzGetFrameByName("BoxedTextValue", 0), "Содержит все ваши вещи и экипировку")--BoxedText has a child showing the text, set that childs Text.
         BlzFrameSetText(BlzGetFrameByName("BoxedTextTitle", 0), "Инвентарь")--BoxedText has a child showing the Title-text, set that childs Text.
-
+        FrameRegisterNoFocus(inv_button_btn)
 
 
         local trg = CreateTrigger()
@@ -166,94 +145,6 @@ do
 
         end)
 
-        FrameRegisterNoFocus(inv_button_btn)
-
-
-
-        local coords = { x = 0.01, y = 0.01 }
-        --local manipulated_frame = MainInventoryFrame[1]
-
-
-        local update = function ()
-            BlzFrameSetSize(MainInventoryWindow.InventoryWindow.slots[1].backdrop, coords.x, coords.y)
-            --BlzFrameSetSize(MainInventoryWindow.EquipSlotsWindow.backdrop, coords.x, coords.y)
-            print(coords.x .. "/" .. coords.y)
-        end
-
-        trg = CreateTrigger()
-        TriggerRegisterPlayerEvent(trg, Player(0), EVENT_PLAYER_ARROW_DOWN_DOWN)
-        TriggerAddAction(trg, function()
-            coords.y = coords.y - 0.01
-            update()
-        end)
-
-        trg = CreateTrigger()
-        TriggerRegisterPlayerEvent(trg, Player(0), EVENT_PLAYER_ARROW_UP_DOWN)
-        TriggerAddAction(trg, function()
-            coords.y = coords.y + 0.01
-            update()
-        end)
-
-        trg = CreateTrigger()
-        TriggerRegisterPlayerEvent(trg, Player(0), EVENT_PLAYER_ARROW_LEFT_DOWN)
-        TriggerAddAction(trg, function()
-            coords.x = coords.x - 0.01
-            update()
-        end)
-
-        trg = CreateTrigger()
-        TriggerRegisterPlayerEvent(trg, Player(0), EVENT_PLAYER_ARROW_RIGHT_DOWN)
-        TriggerAddAction(trg, function()
-            coords.x = coords.x + 0.01
-            update()
-        end)
-
     end
 
 end
-
-
-
-
-
-
---[[
-
-        new_Frame = BlzCreateFrame('ScriptDialogButton', inv_Frame, 0, 0)
-        new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
-
-        BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, inv_Frame, FRAMEPOINT_TOPLEFT, 0.02, -0.016)
-
-        BlzFrameSetSize(new_Frame, 0.04, 0.04)
-        BlzFrameSetTexture(new_FrameImage, "GUI\\inventory_slot.blp", 0, true)
-        BlzFrameSetAllPoints(new_FrameImage, new_Frame)
-
-        ButtonList[GetHandleId(new_Frame)] = { button_type = INV_SLOT, button = new_Frame, image = new_FrameImage }
-        FrameRegisterNoFocus(new_Frame)
-
-        InventorySlots[1] = new_Frame
-
-            new_Frame = BlzCreateFrame('ScriptDialogButton', inv_Frame, 0, 0)
-            new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
-
-            ButtonList[GetHandleId(new_Frame)] = { button_type = INV_SLOT, button = new_Frame, image = new_FrameImage }
-            FrameRegisterNoFocus(new_Frame)
-
-            InventorySlots[i] = new_Frame
-            BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, InventorySlots[i - 1], FRAMEPOINT_TOPRIGHT, 0., 0.)
-            BlzFrameSetSize(new_Frame, 0.04, 0.04)
-            BlzFrameSetTexture(new_FrameImage, "GUI\\inventory_slot.blp", 0, true)
-            BlzFrameSetAllPoints(new_FrameImage, new_Frame)]]
-
---[[
-               new_Frame = BlzCreateFrame('ScriptDialogButton', inv_Frame, 0, 0)
-               new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
-
-               ButtonList[GetHandleId(new_Frame)] = { button_type = INV_SLOT, button = new_Frame, image = new_FrameImage }
-               FrameRegisterNoFocus(new_Frame)
-
-               InventorySlots[slot] = new_Frame
-               BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOP, InventorySlots[slot - 8], FRAMEPOINT_BOTTOM, 0., 0.)
-               BlzFrameSetSize(new_Frame, 0.04, 0.04)
-               BlzFrameSetTexture(new_FrameImage, "GUI\\inventory_slot.blp", 0, true)
-               BlzFrameSetAllPoints(new_FrameImage, new_Frame)

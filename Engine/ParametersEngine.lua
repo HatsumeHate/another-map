@@ -262,7 +262,7 @@ do
 		---@param data table
 		[MP_REGEN]               = function(data)
 			data.stats[MP_REGEN].value = (data.base_stats.mp_regen + data.stats[MP_REGEN].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data.stats[MP_REGEN].multiplier
-				if not data.base_stats.is_mp_static then
+				if not data.is_mp_static then
 					BlzSetUnitRealField(data.Owner, UNIT_RF_MANA_REGENERATION, data.stats[MP_REGEN].value)
 				end
 		end,
@@ -278,7 +278,7 @@ do
 		---@param data table
 		[MP_VALUE]               = function(data)
 			data.stats[MP_VALUE].value = (data.base_stats.mana + data.stats[MP_VALUE].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data.stats[MP_VALUE].multiplier
-				if data.base_stats.have_mp then
+				if data.have_mp then
 					local ratio = GetUnitState(data.Owner, UNIT_STATE_MANA) / BlzGetUnitMaxMana(data.Owner)
 					BlzSetUnitMaxMana(data.Owner, R2I(data.stats[MP_VALUE].value))
 					SetUnitState(data.Owner, UNIT_STATE_MANA, R2I(data.stats[MP_VALUE].value) * ratio)
@@ -420,7 +420,7 @@ do
         ---@param data table
         [MOVING_SPEED] = function(data)
             data.stats[MOVING_SPEED].value = (data.base_stats.moving_speed + data.stats[MOVING_SPEED].bonus) * data.stats[MOVING_SPEED].multiplier
-            SetUnitMoveSpeed(data.Owner, I2R(data.stats[MOVING_SPEED].value))
+            SetUnitMoveSpeed(data.Owner, data.stats[MOVING_SPEED].value < 0. and 0. or I2R(data.stats[MOVING_SPEED].value))
         end,
 
 		---@param data table
@@ -462,28 +462,6 @@ do
 			multiplier = 1,
 			bonus      = 0,
 
-			--[[
-			---@param data table
-			---@param param integer
-			---@param value real
-			---@param flag boolean
-			multiply   = function(data, param, value, flag)
-				param.multiplier = flag and param.multiplier * value or param.multiplier / value
-				PARAMETER_FUNC[param](data)
-			end,
-
-			---@param data table
-			---@param param integer
-			---@param value real
-			---@param flag boolean
-			summ       = function(data, param, value, flag)
-				param.bonus = flag and param.bonus + value or param.bonus - value
-				PARAMETER_FUNC[param](data)
-			end,
-
-            update     = function(data, param)
-                PARAMETER_FUNC[param](data)
-            end]]
 		}
 
 	end
@@ -501,11 +479,23 @@ do
 				unit_data.stats[param].multiplier = plus and unit_data.stats[param].multiplier * value or unit_data.stats[param].multiplier / value
 			else
 				unit_data.stats[param].bonus = plus and unit_data.stats[param].bonus + value or unit_data.stats[param].bonus - value
-
 			end
 
-		PARAMETER_FUNC[param](unit_data)
+        if param == STR_STAT then
+            PARAMETER_FUNC[PHYSICAL_ATTACK](unit_data)
+        elseif param == VIT_STAT then
+            PARAMETER_FUNC[HP_VALUE](unit_data)
+            PARAMETER_FUNC[HP_REGEN](unit_data)
+        elseif param == AGI_STAT then
+            PARAMETER_FUNC[PHYSICAL_DEFENCE](unit_data)
+        elseif param == INT_STAT then
+            PARAMETER_FUNC[MAGICAL_SUPPRESSION](unit_data)
+            PARAMETER_FUNC[MAGICAL_ATTACK](unit_data)
+            PARAMETER_FUNC[MP_VALUE](unit_data)
+            PARAMETER_FUNC[MP_REGEN](unit_data)
+        end
 
+		PARAMETER_FUNC[param](unit_data)
 	end
 
 	---@param unit_data table
