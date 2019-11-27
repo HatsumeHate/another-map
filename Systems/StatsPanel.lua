@@ -113,8 +113,8 @@ do
     function AddPointsToPlayer(player, count)
         MainStatButtons[player].points = MainStatButtons[player].points + count
         for i = STR_STAT, VIT_STAT do
-            BlzFrameSetVisible(MainStatButtons[id].frames[i], true)
-            BlzFrameSetEnable(MainStatButtons[id].frames[i], true)
+            BlzFrameSetVisible(MainStatButtons[player].frames[i], true)
+            BlzFrameSetEnable(MainStatButtons[player].frames[i], true)
         end
     end
 

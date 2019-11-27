@@ -153,6 +153,7 @@ do
 
     local function GetItemTemplate()
         return {
+                item               = nil,
                 NAME               = '',
                 TYPE               = nil,
                 SUBTYPE            = nil,
@@ -179,6 +180,7 @@ do
                 EFFECT_ON_ATTACK   = 0,
                 WEAPON_SOUND       = nil,
                 MODEL              = '',
+				frame_texture      = nil,
 
                 QUALITY            = COMMON_ITEM,
                 BONUS              = {},
@@ -224,6 +226,7 @@ do
             SUBTYPE = SWORD_WEAPON,
             DAMAGE  = 100,
             QUALITY = RARE_ITEM,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNSteelMelee.blp",
             BONUS   = {
                 { PARAM = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
                 { PARAM = CRIT_CHANCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
