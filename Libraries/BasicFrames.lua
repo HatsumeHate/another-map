@@ -68,6 +68,8 @@ do
         WORLD_FRAME = BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0)
 
         BlzLoadTOCFile("war3mapimported\\BoxedText.toc")
+        BlzLoadTOCFile("war3mapImported\\MyTOCfile.toc")
+
 
     end
 

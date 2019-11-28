@@ -13,6 +13,7 @@ do
 		BasicFramesInit()
         StatsPanelInit()
 		InventoryInit()
+        EnumItemsOnInit()
 
 
 

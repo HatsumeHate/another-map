@@ -49,6 +49,28 @@ do
 	end
 
 
+    local TWOHANDED_LIST = {
+        FIST_WEAPON           = false,
+        BOW_WEAPON            = false,
+        BLUNT_WEAPON          = false,
+        GREATBLUNT_WEAPON     = true,
+        SWORD_WEAPON          = false,
+        GREATSWORD_WEAPON     = true,
+        AXE_WEAPON            = false,
+        GREATAXE_WEAPON       = true,
+        DAGGER_WEAPON         = false,
+        STAFF_WEAPON          = true,
+        JAWELIN_WEAPON        = false,
+        THROWING_KNIFE_WEAPON = true,
+    }
+
+
+    function IsWeaponTypeTwohanded(itemtype)
+        return TWOHANDED_LIST[itemtype]
+    end
+
+
+
     function EquipItem(unit, item, flag)
         local unit_data = GetUnitData(unit)
         local item_data = GetItemData(item)
@@ -56,11 +78,32 @@ do
 
         if item_data.TYPE == ITEM_TYPE_WEAPON then
             point = WEAPON_POINT
+
+            if IsWeaponTypeTwohanded(item_data.SUBTYPE) then
+                if item_data.equip_point[OFFHAND_POINT] ~= nil then
+                    EquipItem(unit, unit_data.equip_point[OFFHAND_POINT], false)
+                end
+            end
+
         elseif item_data.TYPE == ITEM_TYPE_ARMOR then
+
             if item_data.SUBTYPE == CHEST_ARMOR then point = CHEST_POINT
             elseif item_data.SUBTYPE == HANDS_ARMOR then point = HANDS_POINT
             elseif item_data.SUBTYPE == LEGS_ARMOR then point = LEGS_POINT
             elseif item_data.SUBTYPE == HEAD_ARMOR then point = HEAD_POINT end
+
+        elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
+
+            if item_data.SUBTYPE == RING_JEWELRY then
+                if flag then
+                    point = unit_data.equip_point[RING_1_POINT] ~= nil and RING_2_POINT or RING_1_POINT
+                else
+                    point = unit_data.equip_point[RING_1_POINT].item == item and RING_1_POINT or RING_2_POINT
+                end
+            else
+                point = NECKLACE_POINT
+            end
+
         end
 
         if (unit_data.equip_point[point] ~= nil and unit_data.equip_point[point].SUBTYPE ~= FIST_WEAPON) and flag then
@@ -86,6 +129,8 @@ do
         SetItemVisible(item, false)
         AddToInventory(GetPlayerId(GetOwningPlayer(unit))+1, item)
     end
+
+
 
 
     local trg = CreateTrigger()
@@ -118,6 +163,21 @@ do
             SetItemVisible(GetManipulatedItem(), false)
         end
     end)
+
+
+
+
+    function EnumItemsOnInit()
+        EnumItemsInRect(bj_mapInitialPlayableArea, nil, function()
+
+            if ITEM_TEMPLATE_DATA[FourCC(GetItemTypeId(GetEnumItem()))] ~= nil then
+                CreateCustomItem(GetItemTypeId(GetEnumItem()), GetItemX(GetEnumItem()), GetItemY(GetEnumItem()))
+                RemoveItem(GetEnumItem())
+            end
+
+        end)
+
+    end
 
 
 end

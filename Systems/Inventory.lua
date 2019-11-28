@@ -1,13 +1,14 @@
 do
 
-
-
     PlayerInventoryFrame = {}
+    PlayerInventoryWindow = {}
     ButtonList = {}
     InventorySlots = {}
+    InventoryOwner = {}
     InventoryTriggerButton = nil
     INV_SLOT = 0
-    DoubleClickTrigger = CreateTrigger()
+    ClickTrigger = CreateTrigger()
+
 
 
 
@@ -20,75 +21,224 @@ do
             end
 
         end
-        return 0
+        return nil
     end
 
 
     local DoubleClickTimer = { [1] = CreateTimer() }
 
 
-    local function ReplaceFromTo(slot_from, slot_to, texture)
-            slot_to.item = slot_from.item
-            slot_from.item = nil
-            BlzFrameSetTexture(slot_from.image, slot_from.original_texture, 0, true)
-            BlzFrameSetTexture(slot_to.image, texture, 0, true)
+    local function ReplaceFromTo(slot_from, slot_to)
+        slot_to.item = slot_from.item
+        slot_from.item = nil
     end
 
-    local function InventorySlot_Doubleclicked()
+
+    local UNIT_POINT_LIST = {
+        [WEAPON_POINT]    = 33,
+        [OFFHAND_POINT]   = 34,
+        [HEAD_POINT]      = 35,
+        [CHEST_POINT]     = 36,
+        [LEGS_POINT]      = 38,
+        [HANDS_POINT]     = 37,
+        [RING_1_POINT]    = 40,
+        [RING_2_POINT]    = 41,
+        [NECKLACE_POINT]  = 39
+    }
+
+    local function UpdateEquipPointsWindow(player)
+        local unit_data = GetUnitData(InventoryOwner[player])
+
+        for i = WEAPON_POINT, NECKLACE_POINT do
+            local button = ButtonList[GetHandleId(InventorySlots[UNIT_POINT_LIST[i]])]
+
+            if unit_data.equip_point[i] ~= nil and unit_data.equip_point[i].SUBTYPE ~= FIST_WEAPON then
+                local item_data = GetItemData(unit_data.equip_point[i].item)
+                button.item = item_data.item
+                BlzFrameSetTexture(button.image, item_data.frame_texture, 0, true)
+            else
+                button.item = nil
+                BlzFrameSetTexture(button.image, button.original_texture, 0, true)
+            end
+
+        end
+
+    end
+
+    local function UpdateInventoryWindow(player)
+        for i = 1, 32 do
+            local button = ButtonList[GetHandleId(InventorySlots[i])]
+            if button.item ~= nil then
+                local item_data = GetItemData(button.item)
+                BlzFrameSetTexture(button.image, item_data.frame_texture, 0, true)
+            else
+                BlzFrameSetTexture(button.image, button.original_texture, 0, true)
+            end
+        end
+    end
+
+
+    ContextFrame = {}
+    ContextReactionTrigger = CreateTrigger()
+
+
+    local function DestroyContextMenu(player)
+        if ContextFrame[player] ~= nil then
+            for i = 1, #ContextFrame[player].frames do
+                BlzDestroyFrame(ContextFrame[player].frames[i])
+            end
+            BlzDestroyFrame(ContextFrame[player].backdrop)
+            ContextFrame[player].frames = nil
+            ContextFrame[player] = nil
+        end
+    end
+
+
+
+    local function AddContextOption(player, text, result)
+        local frame = BlzCreateFrame('ScriptDialogButton', PlayerInventoryFrame[player], 0, 0)
+        local position = #ContextFrame[player].frames + 1
+
+        local textframe = BlzGetFrameByName("ScriptDialogButtonText", 0)
+        BlzFrameSetText(textframe, text)
+        BlzFrameSetScale(textframe, 0.8)
+        BlzFrameSetTextAlignment(textframe, TEXT_JUSTIFY_CENTER , TEXT_JUSTIFY_MIDDLE)
+
+
+        if position == 1 or position == nil then
+            BlzFrameSetPoint(frame, FRAMEPOINT_LEFT, ContextFrame[player].originframe, FRAMEPOINT_RIGHT, 0., 0.)
+            position = 1
+        else
+            BlzFrameSetPoint(frame, FRAMEPOINT_TOP, ContextFrame[player].frames[position - 1], FRAMEPOINT_BOTTOM, 0., 0.004)
+        end
+
+        BlzFrameSetSize(frame, 0.074, 0.025)
+
+        local trg = CreateTrigger()
+        BlzTriggerRegisterFrameEvent(trg, frame, FRAMEEVENT_CONTROL_CLICK)
+        TriggerAddAction(trg, function()
+            result()
+            DestroyContextMenu(player)
+            DestroyTrigger(GetTriggeringTrigger())
+        end)
+
+        ContextFrame[player].frames[position] = frame
+
+        BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_TOP, ContextFrame[player].frames[1], FRAMEPOINT_TOP, 0., 0.003)
+        BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_TOPLEFT, ContextFrame[player].frames[1], FRAMEPOINT_TOPLEFT, -0.003, 0.003)
+        BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_TOPRIGHT, ContextFrame[player].frames[1], FRAMEPOINT_TOPRIGHT, 0.003, 0.003)
+        BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_BOTTOMLEFT, frame, FRAMEPOINT_BOTTOMLEFT, -0.003, -0.003)
+        BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_BOTTOMRIGHT, frame, FRAMEPOINT_BOTTOMRIGHT, -0.03, 0.003)
+        BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_BOTTOM, frame, FRAMEPOINT_BOTTOM, 0., -0.003)
+
+        FrameRegisterNoFocus(frame)
+
+    end
+
+
+
+    local function CreatePlayerContextMenu(player, originframe)
+        DestroyContextMenu(player)
+        ContextFrame[player] = {}
+        ContextFrame[player].frames = {}
+        ContextFrame[player].backdrop = BlzCreateFrame('ScoreScreenBottomButtonTemplate', ButtonList[GetHandleId(InventorySlots[32])].image, 0, 0)
+        ContextFrame[player].originframe = originframe
+
+        BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_LEFT, originframe, FRAMEPOINT_RIGHT, 0.,0.)
+    end
+
+    
+    
+    local function InteractWithItemInSlot(h, id)
+        local item_data = GetItemData(ButtonList[h].item)
+        if ButtonList[h].button_type == INV_SLOT then
+            if item_data.TYPE >= ITEM_TYPE_WEAPON and item_data.TYPE <= ITEM_TYPE_OFFHAND then
+                EquipItem(InventoryOwner[id], ButtonList[h].item, true)
+                ButtonList[h].item = nil
+                UpdateEquipPointsWindow(id)
+                UpdateInventoryWindow(id)
+            end
+        elseif ButtonList[h].button_type >= WEAPON_POINT and ButtonList[h].button_type <= NECKLACE_POINT then
+            EquipItem(InventoryOwner[id], ButtonList[h].item, false)
+            local free_slot = GetFirstFreeSlotButton()
+            free_slot.item = ButtonList[h].item
+            UpdateEquipPointsWindow(id)
+            UpdateInventoryWindow(id)
+        end
+    end
+    
+
+
+
+    local function InventorySlot_Clicked()
         local id = GetPlayerId(GetTriggerPlayer()) + 1
+        local h = GetHandleId(BlzGetTriggerFrame())
 
         if TimerGetRemaining(DoubleClickTimer[id]) > 0. then
-            local h = GetHandleId(BlzGetTriggerFrame())
-
             if ButtonList[h].item ~= nil then
-                local item_data = GetItemData(ButtonList[h].item)
-                    if ButtonList[h].button_type == INV_SLOT then
-                        if item_data.TYPE >= ITEM_TYPE_WEAPON and item_data.TYPE <= ITEM_TYPE_OFFHAND then
-                            EquipItem(gg_unit_HBRB_0005, ButtonList[h].item, true)
-                            ReplaceFromTo(ButtonList[h], ButtonList[GetHandleId(InventorySlots[33])], item_data.frame_texture)
-                        end
-                    elseif ButtonList[h].button_type >= WEAPON_POINT and ButtonList[h].button_type <= NECKLACE_POINT then
-                        EquipItem(gg_unit_HBRB_0005, ButtonList[h].item, false)
-                        local free_slot = GetFirstFreeSlotButton()
-                        ReplaceFromTo(ButtonList[h], free_slot, item_data.frame_texture)
-                    end
-
-
-
+                DestroyContextMenu(id)
+                InteractWithItemInSlot(h, id)
             end
         else
             TimerStart(DoubleClickTimer[id], 0.25, false, nil)
+
+            if ButtonList[h].item ~= nil then
+                if ButtonList[h].button_type == INV_SLOT then
+                    CreatePlayerContextMenu(id, ButtonList[h].button)
+
+                    AddContextOption(id, "Использовать", function()
+                        InteractWithItemInSlot(h, id)
+                    end)
+
+                    AddContextOption(id, "Переместить", function()
+                        --InteractWithItemInSlot(h, id)
+                    end)
+
+                    AddContextOption(id, "Выкинуть", function()
+                        DropFromInventory(id, ButtonList[h].item)
+                    end)
+                end
+            end
+
         end
 
     end
 
-    TriggerAddAction(DoubleClickTrigger, InventorySlot_Doubleclicked)
+    TriggerAddAction(ClickTrigger, InventorySlot_Clicked)
 
 
+    function DropFromInventory(player, item)
+        local button
+        for i = 1, 32 do
+            button = ButtonList[GetHandleId(InventorySlots[i])]
+            if button.item == item then
+                SetItemVisible(item, true)
+                SetItemPosition(item, GetUnitX(PlayerHero[player]) + GetRandomReal(-55., 55.), GetUnitY(PlayerHero[player]) + GetRandomReal(-55., 55.))
+                BlzFrameSetTexture(button.image, button.original_texture, 0, true)
+                button.item = nil
+                break
+            end
+        end
+    end
 
 
     function AddToInventory(player, item)
-        for i = 1, 32 do
-            if InventorySlots[i] ~= nil then
-                local h = GetHandleId(InventorySlots[i])
+        local free_slot = GetFirstFreeSlotButton()
 
-                if ButtonList[h].item == nil then
-                    local item_data = GetItemData(item)
-                    ButtonList[h].item = item
-                    BlzFrameSetTexture(ButtonList[h].image, item_data.frame_texture, 0, true)
-                    SetItemVisible(item, false)
-                    break
-                end
-
-            end
+        if free_slot ~= nil then
+            local item_data = GetItemData(item)
+            free_slot.item = item
+            BlzFrameSetTexture(free_slot.image, item_data.frame_texture, 0, true)
+            SetItemVisible(item, false)
         end
+
     end
 
 
     function CountFreeBagSlots()
         local count = 0
 
-        for i = 1, 41 do
+        for i = 1, 32 do
             if InventorySlots[i] ~= nil then
                 if ButtonList[GetHandleId(InventorySlots[i])].item == nil then
                     count = count + 1
@@ -117,7 +267,7 @@ do
             ButtonList[GetHandleId(new_Frame)] = { button_type = button_type, item = nil, button = new_Frame, image = new_FrameImage, original_texture = texture }
             FrameRegisterNoFocus(new_Frame)
 
-            BlzTriggerRegisterFrameEvent(DoubleClickTrigger, new_Frame, FRAMEEVENT_CONTROL_CLICK)
+            BlzTriggerRegisterFrameEvent(ClickTrigger, new_Frame, FRAMEEVENT_CONTROL_CLICK)
 
             BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
             BlzFrameSetSize(new_Frame, size_x, size_y)
@@ -147,6 +297,7 @@ do
         local inv_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
         BlzFrameSetPoint(inv_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
         BlzFrameSetSize(inv_Frame, 0.36, 0.195)
+
 
 
         -- inventory slots
@@ -182,6 +333,7 @@ do
 
 
 
+
         BlzFrameSetVisible(main_frame, false)
 
     end
@@ -196,7 +348,7 @@ do
 
         --HeroSelectorButton
         --ScriptDialogButton
-
+        InventoryOwner[1] = gg_unit_HBRB_0005
 
 
         --TODO everything else. optimize it
@@ -225,7 +377,6 @@ do
         TriggerAddAction(trg, function()
 
             BlzFrameSetVisible(PlayerInventoryFrame[GetPlayerId(GetTriggerPlayer()) + 1], not BlzFrameIsVisible(PlayerInventoryFrame[GetPlayerId(GetTriggerPlayer()) + 1]))
-
         end)
 
     end
