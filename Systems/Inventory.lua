@@ -7,7 +7,7 @@ do
     InventoryOwner = {}
     InventoryTriggerButton = nil
     INV_SLOT = 0
-    ClickTrigger = CreateTrigger()
+    local ClickTrigger = CreateTrigger()
 
 
 
@@ -28,10 +28,6 @@ do
     local DoubleClickTimer = { [1] = CreateTimer() }
 
 
-    local function ReplaceFromTo(slot_from, slot_to)
-        slot_to.item = slot_from.item
-        slot_from.item = nil
-    end
 
 
     local UNIT_POINT_LIST = {
@@ -78,9 +74,7 @@ do
     end
 
 
-    ContextFrame = {}
-    ContextReactionTrigger = CreateTrigger()
-
+    local ContextFrame = {}
 
     local function DestroyContextMenu(player)
         if ContextFrame[player] ~= nil then
@@ -147,7 +141,36 @@ do
         BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_LEFT, originframe, FRAMEPOINT_RIGHT, 0.,0.)
     end
 
-    
+
+
+
+    local PlayerMovingItem = {}
+    local EnterTrigger = CreateTrigger()
+
+    local function EnterAction()
+        local player = GetPlayerId(GetTriggerPlayer()) + 1
+
+        if PlayerMovingItem[player] ~= nil then
+            BlzFrameSetAllPoints(PlayerMovingItem[player].frame, ButtonList[GetHandleId(BlzGetTriggerFrame())].image)
+            BlzFrameSetSize(PlayerMovingItem[player].frame, 0.041, 0.041)
+        end
+
+    end
+
+    local function StartSelectionMode(player, h)
+        local item_data = GetItemData(ButtonList[h].item)
+        PlayerMovingItem[player] = { frame = nil, selected_frame = h }
+
+        PlayerMovingItem[player].frame = BlzCreateFrameByType("BACKDROP", "selection frame", ButtonList[GetHandleId(InventorySlots[32])].image, "", 0)
+        BlzFrameSetTexture(PlayerMovingItem[player].frame, item_data.frame_texture, 0, true)
+        BlzFrameSetAllPoints(PlayerMovingItem[player].frame, ButtonList[h].image)
+        BlzFrameSetSize(PlayerMovingItem[player].frame, 0.041, 0.041)
+        BlzFrameSetAlpha(PlayerMovingItem[player].frame, 175)
+    end
+
+    TriggerAddAction(EnterTrigger, EnterAction)
+
+
     
     local function InteractWithItemInSlot(h, id)
         local item_data = GetItemData(ButtonList[h].item)
@@ -166,36 +189,60 @@ do
             UpdateInventoryWindow(id)
         end
     end
-    
 
+
+    local function ForceEquip(h, player)
+        if ButtonList[h].button_type >= WEAPON_POINT and ButtonList[h].button_type <= NECKLACE_POINT then
+            EquipItem(InventoryOwner[player], ButtonList[h].item, true)
+            UpdateEquipPointsWindow(player)
+            UpdateInventoryWindow(player)
+        end
+    end
 
 
     local function InventorySlot_Clicked()
-        local id = GetPlayerId(GetTriggerPlayer()) + 1
+        local player = GetPlayerId(GetTriggerPlayer()) + 1
         local h = GetHandleId(BlzGetTriggerFrame())
 
-        if TimerGetRemaining(DoubleClickTimer[id]) > 0. then
+        if TimerGetRemaining(DoubleClickTimer[player]) > 0. then
             if ButtonList[h].item ~= nil then
-                DestroyContextMenu(id)
-                InteractWithItemInSlot(h, id)
+                DestroyContextMenu(player)
+                InteractWithItemInSlot(h, player)
             end
         else
-            TimerStart(DoubleClickTimer[id], 0.25, false, nil)
-
-            if ButtonList[h].item ~= nil then
+            TimerStart(DoubleClickTimer[player], 0.25, false, nil)
+            if PlayerMovingItem[player] ~= nil then
+                ButtonList[h].item = ButtonList[PlayerMovingItem[player].selected_frame].item
+                ButtonList[PlayerMovingItem[player].selected_frame].item = nil
                 if ButtonList[h].button_type == INV_SLOT then
-                    CreatePlayerContextMenu(id, ButtonList[h].button)
+                    UpdateInventoryWindow(player)
+                else
+                    ForceEquip(h, player)
+                end
+                BlzDestroyFrame(PlayerMovingItem[player].frame)
+                PlayerMovingItem[player] = nil
+            elseif ButtonList[h].item ~= nil then
+                if PlayerMovingItem[player] ~= nil then
 
-                    AddContextOption(id, "Использовать", function()
-                        InteractWithItemInSlot(h, id)
+                    local item = ButtonList[PlayerMovingItem[player].h].item
+                    ButtonList[PlayerMovingItem[player].h].item = ButtonList[h].item
+                    ButtonList[h].item = item
+                    UpdateInventoryWindow(player)
+
+                elseif ButtonList[h].button_type == INV_SLOT then
+                    CreatePlayerContextMenu(player, ButtonList[h].button)
+
+                    AddContextOption(player, "Надеть", function()
+                        InteractWithItemInSlot(h, player)
                     end)
 
-                    AddContextOption(id, "Переместить", function()
-                        --InteractWithItemInSlot(h, id)
+                    AddContextOption(player, "Переместить", function()
+                        StartSelectionMode(player, h)
+                        --InteractWithItemInSlot(h, player)
                     end)
 
-                    AddContextOption(id, "Выкинуть", function()
-                        DropFromInventory(id, ButtonList[h].item)
+                    AddContextOption(player, "Выкинуть", function()
+                        DropFromInventory(player, ButtonList[h].item)
                     end)
                 end
             end
@@ -207,6 +254,8 @@ do
     TriggerAddAction(ClickTrigger, InventorySlot_Clicked)
 
 
+    ---@param player integer
+    ---@param item item
     function DropFromInventory(player, item)
         local button
         for i = 1, 32 do
@@ -268,6 +317,7 @@ do
             FrameRegisterNoFocus(new_Frame)
 
             BlzTriggerRegisterFrameEvent(ClickTrigger, new_Frame, FRAMEEVENT_CONTROL_CLICK)
+            BlzTriggerRegisterFrameEvent(EnterTrigger, new_Frame, FRAMEEVENT_MOUSE_ENTER)
 
             BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
             BlzFrameSetSize(new_Frame, size_x, size_y)
@@ -332,8 +382,6 @@ do
         InventorySlots[41] = NewButton(RING_2_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, new_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMRIGHT, -0.016, 0., slots_Frame)
 
 
-
-
         BlzFrameSetVisible(main_frame, false)
 
     end
@@ -375,8 +423,15 @@ do
         local trg = CreateTrigger()
         BlzTriggerRegisterFrameEvent(trg, InventoryTriggerButton, FRAMEEVENT_CONTROL_CLICK)
         TriggerAddAction(trg, function()
+            local player = GetPlayerId(GetTriggerPlayer()) + 1
 
-            BlzFrameSetVisible(PlayerInventoryFrame[GetPlayerId(GetTriggerPlayer()) + 1], not BlzFrameIsVisible(PlayerInventoryFrame[GetPlayerId(GetTriggerPlayer()) + 1]))
+            BlzFrameSetVisible(PlayerInventoryFrame[player], not BlzFrameIsVisible(PlayerInventoryFrame[player]))
+
+            if PlayerMovingItem[player] ~= nil then
+                BlzDestroyFrame(PlayerMovingItem[player].frame)
+            end
+            PlayerMovingItem[player] = nil
+            DestroyContextMenu(player)
         end)
 
     end
