@@ -204,7 +204,7 @@ do
             for i = 1, #item_data.BONUS do
                 local value
                     if item_data.BONUS[i].METHOD == MULTIPLY_BONUS then
-                        value = R2I((item_data.BONUS[i].VALUE * 100) - 100) .. "%%"
+                        value = R2I((item_data.BONUS[i].VALUE * 100.) - 100.) .. "%%"
                     else
                         value = item_data.BONUS[i].VALUE
                     end
@@ -222,10 +222,9 @@ do
 
         frame_number = 2
         PlayerTooltip[player].frames[frame_number] = BlzCreateFrameByType("TEXT", "item type", PlayerTooltip[player].frames[1], "", 0)
-        --BlzFrameSetPoint(PlayerTooltip[player].frames[frame_number], FRAMEPOINT_TOP, PlayerTooltip[player].frames[1], FRAMEPOINT_BOTTOM, 0., 0)
         BlzFrameSetTextAlignment(PlayerTooltip[player].frames[frame_number], TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_MIDDLE)
         BlzFrameSetText(PlayerTooltip[player].frames[frame_number], areatext)
-        BlzFrameSetScale(PlayerTooltip[player].frames[frame_number], 0.9)
+        BlzFrameSetScale(PlayerTooltip[player].frames[frame_number], 0.95)
         BlzFrameSetSize(PlayerTooltip[player].frames[frame_number], BlzFrameGetWidth(PlayerTooltip[player].frames[frame_number]), 0.)
 
 
@@ -238,7 +237,7 @@ do
         end
 
 
-        if item_data.MAX_SLOTS ~= nil then
+        if item_data.MAX_SLOTS ~= nil and item_data.MAX_SLOTS > 0 then
             frame_number = frame_number + 1
             PlayerTooltip[player].frames[frame_number] = BlzCreateFrameByType("TEXT", "STONE", PlayerTooltip[player].frames[frame_number - 1], "", 0)
             BlzFrameSetSize(PlayerTooltip[player].frames[frame_number], 0.01, 0.018)
@@ -262,25 +261,26 @@ do
 
                 if BlzFrameGetWidth(PlayerTooltip[player].frames[i]) > width then
                     width = BlzFrameGetWidth(PlayerTooltip[player].frames[i])
+                    if i == 1 then width = width * 0.7 end
                 end
 
                 if i == 1 then
                     BlzFrameSetPoint(PlayerTooltip[player].frames[i], FRAMEPOINT_LEFT, ButtonList[h].image, FRAMEPOINT_RIGHT, 0.01, 0.)
                 else
                     BlzFrameSetPoint(PlayerTooltip[player].frames[i], FRAMEPOINT_TOP, PlayerTooltip[player].frames[i - 1], FRAMEPOINT_BOTTOM, 0., 0.)
-                    --BlzFrameSetSize(PlayerTooltip[player].frames[i], BlzFrameGetWidth(PlayerTooltip[player].frames[i]), 0.)
                 end
         end
+
 
         BlzFrameSetSize(PlayerTooltip[player].frames[1], width, 0.)
         LockWidth(PlayerTooltip[player].frames[1], 0.04, 0.11)
 
-        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOP, PlayerTooltip[player].frames[1], FRAMEPOINT_TOP, 0., 0.1)
+        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOP, PlayerTooltip[player].frames[1], FRAMEPOINT_TOP, 0., 0.005)
         BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOPLEFT, PlayerTooltip[player].frames[1], FRAMEPOINT_TOPLEFT, -0.005, 0.005)
         BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOPRIGHT, PlayerTooltip[player].frames[1], FRAMEPOINT_TOPRIGHT, 0.005, 0.005)
-        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMLEFT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMLEFT, -0.005, -0.005)
-        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMRIGHT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMRIGHT, -0.005, 0.005)
-        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOM, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOM, 0., -0.1)
+        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMLEFT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMLEFT, -0.005, -0.007)
+        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMRIGHT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMRIGHT, 0.005, -0.007)
+        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOM, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOM, 0., -0.007)
 
     end
 
@@ -582,9 +582,6 @@ do
         --HeroSelectorButton
         --ScriptDialogButton
         InventoryOwner[1] = gg_unit_HBRB_0005
-
-
-        --TODO everything else. optimize it
 
 
         InventoryTriggerButton = BlzCreateFrame('ScriptDialogButton', GAME_UI, 0, 0)

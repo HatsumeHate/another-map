@@ -222,11 +222,11 @@ do
 		})
 
         ItemAddData('I000', {
-            NAME    = 'test sword',
+            NAME    = 'Ледяной страж',
             SUBTYPE = SWORD_WEAPON,
-            DAMAGE  = 100,
+            DAMAGE  = 50,
             QUALITY = RARE_ITEM,
-			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNSteelMelee.blp",
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
             BONUS   = {
                 { PARAM = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
                 { PARAM = CRIT_CHANCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
@@ -235,7 +235,7 @@ do
         })
         --
         ItemAddData('I001', {
-            NAME    = 'test armor piece',
+            NAME    = 'Плащ Теней',
             TYPE    = ITEM_TYPE_ARMOR,
             SUBTYPE = CHEST_ARMOR,
             QUALITY = MAGIC_ITEM,
