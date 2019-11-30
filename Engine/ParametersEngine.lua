@@ -146,7 +146,7 @@ do
 		[MAGICAL_ATTACK]    = 'Магическая атака',
 		[MAGICAL_SUPPRESSION] = 'Подавление магии',
 		
-		[CRIT_CHANCE]         = 'Критческий шанс',
+		[CRIT_CHANCE]         = 'Критический шанс',
 		[CRIT_MULTIPLIER]     = 'Критический множитель',
 		
 		[PHYSICAL_BONUS]      = 'Физический урон',
@@ -154,7 +154,7 @@ do
 		[FIRE_BONUS]          = 'Урон от огня',
 		[LIGHTNING_BONUS]     = 'Урон от молнии',
 		[POISON_BONUS]        = 'Урон от яда',
-		[ARCANE_BONUS]       = 'Урон от тайной магии',
+		[ARCANE_BONUS]        = 'Урон от тайной магии',
 		[DARKNESS_BONUS]      = 'Урон от тьмы',
 		[HOLY_BONUS]          = 'Урон от святости',
 
@@ -453,6 +453,9 @@ do
 	function GetParameterName(type)
 		return PARAMETER_NAME[type]
 	end
+
+
+
 
 	local function NewStat(stat_type)
 		return {

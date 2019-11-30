@@ -30,7 +30,6 @@ do
 			--ApplyBuff(gg_unit_HSRC_0004, gg_unit_HSRC_0004, 'A002', 1)
 		end)
 
-        InventoryInit()
 
 	end
 end

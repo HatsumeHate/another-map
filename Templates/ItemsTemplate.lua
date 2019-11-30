@@ -230,7 +230,8 @@ do
             BONUS   = {
                 { PARAM = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
                 { PARAM = CRIT_CHANCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
-            }
+            },
+			MAX_SLOTS = 3
         })
         --
         ItemAddData('I001', {
@@ -238,7 +239,8 @@ do
             TYPE    = ITEM_TYPE_ARMOR,
             SUBTYPE = CHEST_ARMOR,
             QUALITY = MAGIC_ITEM,
-            DEFENCE = 50
+            DEFENCE = 50,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
         })
     end
 	

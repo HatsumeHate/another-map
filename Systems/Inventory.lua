@@ -74,6 +74,8 @@ do
     end
 
 
+    --======================================================================
+    -- CONTEXT MENU   ======================================================
     local ContextFrame = {}
 
     local function DestroyContextMenu(player)
@@ -135,37 +137,214 @@ do
         DestroyContextMenu(player)
         ContextFrame[player] = {}
         ContextFrame[player].frames = {}
-        ContextFrame[player].backdrop = BlzCreateFrame('ScoreScreenBottomButtonTemplate', ButtonList[GetHandleId(InventorySlots[32])].image, 0, 0)
+        ContextFrame[player].backdrop = BlzCreateFrame('ScoreScreenButtonBackdropTemplate', ButtonList[GetHandleId(InventorySlots[32])].image, 0, 0)
         ContextFrame[player].originframe = originframe
 
         BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_LEFT, originframe, FRAMEPOINT_RIGHT, 0.,0.)
+        RemoveTooltip(player)
     end
 
+
+
+    --======================================================================
+    -- TOOLTIP        ======================================================
+    local PlayerTooltip = {}
+
+
+    local function LockWidth(frame, min, max)
+        local width
+
+            if BlzFrameGetWidth(frame) < min then
+                width = min
+            elseif BlzFrameGetWidth(frame) > max  then
+                width = max
+            end
+
+        BlzFrameSetSize(frame, width, 0.)
+    end
+
+
+    local function ShowTooltip(player, h)
+        local item_data = GetItemData(ButtonList[h].item)
+        local width = 0.1
+        local frame_number = 1
+        
+        if ContextFrame[player] ~= nil then return end
+        RemoveTooltip(player)
+
+        PlayerTooltip[player] = {}
+        PlayerTooltip[player].frames = {}
+
+        PlayerTooltip[player].backdrop = BlzCreateFrame("BoxedText", ButtonList[GetHandleId(InventorySlots[32])].image, 150, 0)
+
+
+
+        local areatext = GetItemSubTypeName(item_data.SUBTYPE) .. "|n" .. "|n"
+
+        if item_data.TYPE == ITEM_TYPE_WEAPON then
+            areatext = areatext
+                    .. "Урон: " .. R2I(item_data.DAMAGE * item_data.DISPERSION[1]) .. "-" .. R2I(item_data.DAMAGE * item_data.DISPERSION[2]) .. "|n"
+                    .. "Тип урона: " .. GetItemAttributeName(item_data.ATTRIBUTE)
+        elseif item_data.TYPE == ITEM_TYPE_ARMOR then
+            areatext = areatext
+                    .. "Защита: " .. item_data.DEFENCE
+        elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
+            areatext = areatext
+                    .. "Подавление: " .. item_data.SUPPRESSION
+        elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
+            areatext = areatext
+                    .. "Защита: " .. item_data.DEFENCE
+        end
+
+
+        local bonus_text
+
+        if item_data.BONUS ~= nil and #item_data.BONUS > 0 then
+            bonus_text = "|n" .. "Дополнительные свойства:" .. "|n"
+            for i = 1, #item_data.BONUS do
+                local value
+                    if item_data.BONUS[i].METHOD == MULTIPLY_BONUS then
+                        value = R2I((item_data.BONUS[i].VALUE * 100) - 100) .. "%%"
+                    else
+                        value = item_data.BONUS[i].VALUE
+                    end
+                bonus_text = bonus_text .. GetParameterName(item_data.BONUS[i].PARAM) .. ": " .. value .. "|n"
+            end
+        end
+
+        
+        PlayerTooltip[player].frames[frame_number] = BlzCreateFrameByType("TEXT", "name", PlayerTooltip[player].backdrop, "", 0)
+        BlzFrameSetPoint(PlayerTooltip[player].frames[frame_number], FRAMEPOINT_TOPLEFT, ButtonList[h].image, FRAMEPOINT_TOPRIGHT, 0., 0.)
+        BlzFrameSetText(PlayerTooltip[player].frames[frame_number], GetItemNameColorized(ButtonList[h].item))
+        BlzFrameSetTextAlignment(PlayerTooltip[player].frames[frame_number], TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_MIDDLE)
+        BlzFrameSetScale(PlayerTooltip[player].frames[frame_number], 1.3)
+
+
+        frame_number = 2
+        PlayerTooltip[player].frames[frame_number] = BlzCreateFrameByType("TEXT", "item type", PlayerTooltip[player].frames[1], "", 0)
+        --BlzFrameSetPoint(PlayerTooltip[player].frames[frame_number], FRAMEPOINT_TOP, PlayerTooltip[player].frames[1], FRAMEPOINT_BOTTOM, 0., 0)
+        BlzFrameSetTextAlignment(PlayerTooltip[player].frames[frame_number], TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_MIDDLE)
+        BlzFrameSetText(PlayerTooltip[player].frames[frame_number], areatext)
+        BlzFrameSetScale(PlayerTooltip[player].frames[frame_number], 0.9)
+        BlzFrameSetSize(PlayerTooltip[player].frames[frame_number], BlzFrameGetWidth(PlayerTooltip[player].frames[frame_number]), 0.)
+
+
+        if bonus_text ~= nil then
+            frame_number = frame_number + 1
+            PlayerTooltip[player].frames[frame_number] = BlzCreateFrameByType("TEXT", "item type", PlayerTooltip[player].frames[frame_number - 1], "", 0)
+            BlzFrameSetTextAlignment(PlayerTooltip[player].frames[frame_number], TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_MIDDLE)
+            BlzFrameSetText(PlayerTooltip[player].frames[frame_number], bonus_text)
+            BlzFrameSetScale(PlayerTooltip[player].frames[frame_number], 1.)
+        end
+
+
+        if item_data.MAX_SLOTS ~= nil then
+            frame_number = frame_number + 1
+            PlayerTooltip[player].frames[frame_number] = BlzCreateFrameByType("TEXT", "STONE", PlayerTooltip[player].frames[frame_number - 1], "", 0)
+            BlzFrameSetSize(PlayerTooltip[player].frames[frame_number], 0.01, 0.018)
+            local stones = {}
+                for i = 1, item_data.MAX_SLOTS do
+                    stones[i] = BlzCreateFrameByType("BACKDROP", "STONE", PlayerTooltip[player].frames[frame_number], "", 0)
+                    BlzFrameSetTexture(stones[i], "GUI\\empty stone.blp", 0, true)
+                    BlzFrameSetSize(stones[i], 0.01, 0.01)
+                        if i == 1 then
+                            BlzFrameSetPoint(stones[i], FRAMEPOINT_CENTER, PlayerTooltip[player].frames[frame_number], FRAMEPOINT_CENTER, item_data.MAX_SLOTS*((item_data.MAX_SLOTS * 0.001) * -1.),  0.)
+                        else
+                            BlzFrameSetPoint(stones[i], FRAMEPOINT_LEFT, stones[i - 1], FRAMEPOINT_RIGHT, 0., 0.)
+                        end
+                end
+
+            end
+
+
+        for i = 1, #PlayerTooltip[player].frames do
+            print(BlzFrameGetWidth(PlayerTooltip[player].frames[i]))
+
+                if BlzFrameGetWidth(PlayerTooltip[player].frames[i]) > width then
+                    width = BlzFrameGetWidth(PlayerTooltip[player].frames[i])
+                end
+
+                if i == 1 then
+                    BlzFrameSetPoint(PlayerTooltip[player].frames[i], FRAMEPOINT_LEFT, ButtonList[h].image, FRAMEPOINT_RIGHT, 0.01, 0.)
+                else
+                    BlzFrameSetPoint(PlayerTooltip[player].frames[i], FRAMEPOINT_TOP, PlayerTooltip[player].frames[i - 1], FRAMEPOINT_BOTTOM, 0., 0.)
+                    --BlzFrameSetSize(PlayerTooltip[player].frames[i], BlzFrameGetWidth(PlayerTooltip[player].frames[i]), 0.)
+                end
+        end
+
+        BlzFrameSetSize(PlayerTooltip[player].frames[1], width, 0.)
+        LockWidth(PlayerTooltip[player].frames[1], 0.04, 0.11)
+
+        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOP, PlayerTooltip[player].frames[1], FRAMEPOINT_TOP, 0., 0.1)
+        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOPLEFT, PlayerTooltip[player].frames[1], FRAMEPOINT_TOPLEFT, -0.005, 0.005)
+        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOPRIGHT, PlayerTooltip[player].frames[1], FRAMEPOINT_TOPRIGHT, 0.005, 0.005)
+        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMLEFT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMLEFT, -0.005, -0.005)
+        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMRIGHT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMRIGHT, -0.005, 0.005)
+        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOM, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOM, 0., -0.1)
+
+    end
+
+
+    function RemoveTooltip(player)
+        if PlayerTooltip[player] ~= nil then
+            for i = 1, #PlayerTooltip[player].frames do
+                BlzDestroyFrame(PlayerTooltip[player].frames[i])
+            end
+            BlzDestroyFrame(PlayerTooltip[player].backdrop)
+        end
+        PlayerTooltip[player] = nil
+    end
 
 
 
     local PlayerMovingItem = {}
     local EnterTrigger = CreateTrigger()
 
+
     local function EnterAction()
         local player = GetPlayerId(GetTriggerPlayer()) + 1
+        local h = GetHandleId(BlzGetTriggerFrame())
 
         if PlayerMovingItem[player] ~= nil then
-            BlzFrameSetAllPoints(PlayerMovingItem[player].frame, ButtonList[GetHandleId(BlzGetTriggerFrame())].image)
-            BlzFrameSetSize(PlayerMovingItem[player].frame, 0.041, 0.041)
+            BlzFrameSetAllPoints(PlayerMovingItem[player].frame, ButtonList[h].image)
+            BlzFrameSetSize(PlayerMovingItem[player].frame, 0.0415, 0.0415)
+        else
+            if ButtonList[h].item ~= nil then
+                ShowTooltip(player, h)
+            else
+                RemoveTooltip(player)
+            end
         end
+    end
 
+
+    --======================================================================
+    -- SELECTOION MODE =====================================================
+
+    local function RemoveSelectionFrames(player)
+        if PlayerMovingItem[player] ~= nil then
+            BlzDestroyFrame(PlayerMovingItem[player].frame)
+            BlzDestroyFrame(PlayerMovingItem[player].selector_frame)
+        end
+        PlayerMovingItem[player] = nil
     end
 
     local function StartSelectionMode(player, h)
         local item_data = GetItemData(ButtonList[h].item)
-        PlayerMovingItem[player] = { frame = nil, selected_frame = h }
+        PlayerMovingItem[player] = { frame = nil, selector_frame = nil, selected_frame = h }
 
-        PlayerMovingItem[player].frame = BlzCreateFrameByType("BACKDROP", "selection frame", ButtonList[GetHandleId(InventorySlots[32])].image, "", 0)
+        PlayerMovingItem[player].selector_frame = BlzCreateFrameByType("SPRITE", "justAName", ButtonList[GetHandleId(InventorySlots[32])].image, "WarCraftIIILogo", 0)
+        BlzFrameSetPoint(PlayerMovingItem[player].selector_frame, FRAMEPOINT_BOTTOMLEFT, ButtonList[h].image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
+        BlzFrameSetSize(PlayerMovingItem[player].selector_frame, 1., 1.)
+        BlzFrameSetScale(PlayerMovingItem[player].selector_frame, 1.)
+        BlzFrameSetModel(PlayerMovingItem[player].selector_frame, "selecter4.mdx", 0)
+
+        PlayerMovingItem[player].frame = BlzCreateFrameByType("BACKDROP", "selection frame", PlayerMovingItem[player].selector_frame, "", 0)
         BlzFrameSetTexture(PlayerMovingItem[player].frame, item_data.frame_texture, 0, true)
         BlzFrameSetAllPoints(PlayerMovingItem[player].frame, ButtonList[h].image)
         BlzFrameSetSize(PlayerMovingItem[player].frame, 0.041, 0.041)
         BlzFrameSetAlpha(PlayerMovingItem[player].frame, 175)
+        RemoveTooltip(player)
     end
 
     TriggerAddAction(EnterTrigger, EnterAction)
@@ -206,30 +385,13 @@ do
 
         if TimerGetRemaining(DoubleClickTimer[player]) > 0. then
             if ButtonList[h].item ~= nil then
+                RemoveTooltip(player)
                 DestroyContextMenu(player)
                 InteractWithItemInSlot(h, player)
             end
         else
-            TimerStart(DoubleClickTimer[player], 0.25, false, nil)
-            if PlayerMovingItem[player] ~= nil then
-                ButtonList[h].item = ButtonList[PlayerMovingItem[player].selected_frame].item
-                ButtonList[PlayerMovingItem[player].selected_frame].item = nil
-                if ButtonList[h].button_type == INV_SLOT then
-                    UpdateInventoryWindow(player)
-                else
-                    ForceEquip(h, player)
-                end
-                BlzDestroyFrame(PlayerMovingItem[player].frame)
-                PlayerMovingItem[player] = nil
-            elseif ButtonList[h].item ~= nil then
-                if PlayerMovingItem[player] ~= nil then
-
-                    local item = ButtonList[PlayerMovingItem[player].h].item
-                    ButtonList[PlayerMovingItem[player].h].item = ButtonList[h].item
-                    ButtonList[h].item = item
-                    UpdateInventoryWindow(player)
-
-                elseif ButtonList[h].button_type == INV_SLOT then
+            TimerStart(DoubleClickTimer[player], 0.25, false, function()
+                if ButtonList[h].item ~= nil and PlayerMovingItem[player] == nil and  ButtonList[h].button_type == INV_SLOT then
                     CreatePlayerContextMenu(player, ButtonList[h].button)
 
                     AddContextOption(player, "Надеть", function()
@@ -238,12 +400,32 @@ do
 
                     AddContextOption(player, "Переместить", function()
                         StartSelectionMode(player, h)
-                        --InteractWithItemInSlot(h, player)
                     end)
 
                     AddContextOption(player, "Выкинуть", function()
                         DropFromInventory(player, ButtonList[h].item)
                     end)
+                end
+            end)
+
+            if PlayerMovingItem[player] ~= nil then
+                TimerStart(DoubleClickTimer[player], 0., false, nil)
+                ButtonList[h].item = ButtonList[PlayerMovingItem[player].selected_frame].item
+                ButtonList[PlayerMovingItem[player].selected_frame].item = nil
+
+                if ButtonList[h].button_type == INV_SLOT then
+                    UpdateInventoryWindow(player)
+                else
+                    ForceEquip(h, player)
+                end
+                RemoveSelectionFrames(player)
+            elseif ButtonList[h].item ~= nil then
+                if PlayerMovingItem[player] ~= nil then
+                    TimerStart(DoubleClickTimer[player], 0., false, nil)
+                    local item = ButtonList[PlayerMovingItem[player].h].item
+                    ButtonList[PlayerMovingItem[player].h].item = ButtonList[h].item
+                    ButtonList[h].item = item
+                    UpdateInventoryWindow(player)
                 end
             end
 
@@ -271,10 +453,11 @@ do
     end
 
 
+    ---@param item item
     function AddToInventory(player, item)
         local free_slot = GetFirstFreeSlotButton()
 
-        if free_slot ~= nil then
+        if free_slot ~= nil and GetItemData(item) ~= nil then
             local item_data = GetItemData(item)
             free_slot.item = item
             BlzFrameSetTexture(free_slot.image, item_data.frame_texture, 0, true)
@@ -381,6 +564,8 @@ do
         InventorySlots[40] = NewButton(RING_1_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, new_Frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_BOTTOMLEFT, 0.016, 0., slots_Frame)
         InventorySlots[41] = NewButton(RING_2_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, new_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMRIGHT, -0.016, 0., slots_Frame)
 
+--WarCraftIIILogo
+
 
         BlzFrameSetVisible(main_frame, false)
 
@@ -426,11 +611,8 @@ do
             local player = GetPlayerId(GetTriggerPlayer()) + 1
 
             BlzFrameSetVisible(PlayerInventoryFrame[player], not BlzFrameIsVisible(PlayerInventoryFrame[player]))
-
-            if PlayerMovingItem[player] ~= nil then
-                BlzDestroyFrame(PlayerMovingItem[player].frame)
-            end
-            PlayerMovingItem[player] = nil
+            RemoveTooltip(player)
+            RemoveSelectionFrames(player)
             DestroyContextMenu(player)
         end)
 

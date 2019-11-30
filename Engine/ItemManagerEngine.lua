@@ -10,6 +10,67 @@ do
         [UNIQUE_ITEM] = '|c00FFD574'
     }
 
+
+    local ITEMTYPES_NAMES = {
+        [ITEM_TYPE_WEAPON]     = "Оружие",
+        [ITEM_TYPE_ARMOR]      = "Броня",
+        [ITEM_TYPE_JEWELRY]    = "Бижутерия",
+        [ITEM_TYPE_OFFHAND]    = "Альтернативное оружие",
+        [ITEM_TYPE_CONSUMABLE] = "Расходуемое",
+        [ITEM_TYPE_GEM]        = "Камень"
+    }
+
+    local ITEMSUBTYPES_NAMES = {
+        [BOW_WEAPON]            = "Лук",
+        [BLUNT_WEAPON]          = "Булава",
+        [GREATBLUNT_WEAPON]     = "Двуручная булава",
+        [SWORD_WEAPON]          = "Меч",
+        [GREATSWORD_WEAPON]     = "Двуручный меч",
+        [AXE_WEAPON]            = "Топор",
+        [GREATAXE_WEAPON]       = "Двуручный топор",
+        [DAGGER_WEAPON]         = "Кинжал",
+        [STAFF_WEAPON]          = "Посох",
+        [JAWELIN_WEAPON]        = "Копье",
+        [HEAD_ARMOR]            = "Шлем",
+        [CHEST_ARMOR]           = "Нагрудник",
+        [LEGS_ARMOR]            = "Сапоги",
+        [HANDS_ARMOR]           = "Перчатки",
+        [RING_JEWELRY]          = "Кольцо",
+        [NECKLACE_JEWELRY]      = "Ожерелье",
+        [THROWING_KNIFE_WEAPON] = "Метательный нож",
+    }
+
+    local ATTRIBUTE_NAMES = {
+        [PHYSICAL_ATTRIBUTE]     = "Физический",
+        [FIRE_ATTRIBUTE]         = "Огненный",
+        [ICE_ATTRIBUTE]          = "Ледяной",
+        [LIGHTNING_ATTRIBUTE]    = "Молния",
+        [POISON_ATTRIBUTE]       = "Яд",
+        [ARCANE_ATTRIBUTE]       = "Тайна",
+        [DARKNESS_ATTRIBUTE]     = "Тьма",
+        [HOLY_ATTRIBUTE]         = "Свет"
+    }
+
+
+    --ATTACK_SPEED
+
+    function GetItemAttributeName(attribute)
+        return ATTRIBUTE_NAMES[attribute]
+    end
+
+    function GetItemSubTypeName(my_itemtype)
+        return ITEMSUBTYPES_NAMES[my_itemtype]
+    end
+
+    function GetItemSubTypeName(my_itemtype)
+        return ITEMSUBTYPES_NAMES[my_itemtype]
+    end
+
+
+    function GetItemTypeName(my_itemtype)
+        return ITEMTYPES_NAMES[my_itemtype]
+    end
+
     ---@param quality number
     function GetQualityColor(quality)
         return QUALITY_COLOR[quality]
@@ -47,6 +108,25 @@ do
 		ITEM_DATA[handle] = data
 		return item
 	end
+
+    ---@param id integer
+    ---@param x real
+    ---@param y real
+    function CreateCustomItem_Id(id, x, y)
+        local item   = CreateItem(id, x, y)
+        local handle = GetHandleId(item)
+        local data   = {}
+
+        for k, v in pairs(ITEM_TEMPLATE_DATA[id]) do
+            data[k] = v
+        end
+
+        -- data это уже данные конкретного предмета с которыми можно делать что угодно
+        data.item = item
+
+        ITEM_DATA[handle] = data
+        return item
+    end
 
 
     local TWOHANDED_LIST = {
@@ -170,8 +250,8 @@ do
     function EnumItemsOnInit()
         EnumItemsInRect(bj_mapInitialPlayableArea, nil, function()
 
-            if ITEM_TEMPLATE_DATA[FourCC(GetItemTypeId(GetEnumItem()))] ~= nil then
-                CreateCustomItem(GetItemTypeId(GetEnumItem()), GetItemX(GetEnumItem()), GetItemY(GetEnumItem()))
+            if ITEM_TEMPLATE_DATA[GetItemTypeId(GetEnumItem())] ~= nil then
+                CreateCustomItem_Id(GetItemTypeId(GetEnumItem()), GetItemX(GetEnumItem()), GetItemY(GetEnumItem()))
                 RemoveItem(GetEnumItem())
             end
 
