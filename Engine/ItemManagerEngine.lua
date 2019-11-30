@@ -62,11 +62,6 @@ do
         return ITEMSUBTYPES_NAMES[my_itemtype]
     end
 
-    function GetItemSubTypeName(my_itemtype)
-        return ITEMSUBTYPES_NAMES[my_itemtype]
-    end
-
-
     function GetItemTypeName(my_itemtype)
         return ITEMTYPES_NAMES[my_itemtype]
     end

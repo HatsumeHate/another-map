@@ -132,13 +132,18 @@ do
 	function GetBonus_VIT(value) return 0.9 + (value * 0.03) end
 
 
-
-
-
-    --TODO stats +-
-
-
-
+    function GetCorrectParamText(value, method)
+        if method == MULTIPLY_BONUS then
+            local v = value
+            value =  R2I((value * 100.) - 100.) .. "%%"
+            if v > 0 then
+                value = "+" .. value
+            end
+        elseif value > 0 then
+            value = "+" .. value
+        end
+        return  value
+    end
 	
 	local PARAMETER_NAME = {
 		[PHYSICAL_ATTACK]     = 'Физическая атака',

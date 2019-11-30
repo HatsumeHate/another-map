@@ -22,6 +22,9 @@ do
         NewUnitData(gg_unit_HSRC_0004, SORCERESS_CLASS,  { health = 3000., hp_regen = 30. }, nil)
         AddToPanel(gg_unit_HBRB_0005, 1)
 
+        --ITEM_TEMPLATE_DATA[FourCC('I002')].point_bonus[ITEM_TYPE_WEAPON]
+        --ITEM_TEMPLATE_DATA[FourCC('I002')].point_bonus[ITEM_TYPE_WEAPON].PARAM
+
 		TimerStart(CreateTimer(), 5., false, function()
 			--CreateCustomItem('I000', GetUnitX(gg_unit_HBRB_0005), GetUnitY(gg_unit_HBRB_0005))
             AddPointsToPlayer(1, 10)

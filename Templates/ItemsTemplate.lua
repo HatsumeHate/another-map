@@ -201,6 +201,20 @@ do
 	end
 
 
+	local function GemAddData(raw, data)
+		local newdata = {
+			item               = nil,
+			NAME               = '',
+			TYPE               = ITEM_TYPE_GEM,
+			frame_texture      = nil,
+			point_bonus 	   = { },
+			QUALITY            = COMMON_ITEM,
+		}
+		MergeTables(newdata, data)
+		ITEM_TEMPLATE_DATA[FourCC(raw)] = newdata
+	end
+
+
 
 	function CreateDefaultWeapon()
 		local default_weapon = GetItemTemplate()
@@ -242,6 +256,16 @@ do
             DEFENCE = 50,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
         })
+
+		GemAddData('I002', {
+			NAME    		   = 'Алмаз',
+			TYPE    		   = ITEM_TYPE_GEM,
+			frame_texture      = "BTNS_Almaz.blp",
+			point_bonus 	   = {
+				[ITEM_TYPE_WEAPON] = {  PARAM = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  = {  PARAM = PHYSICAL_DEFENCE, VALUE = 20, METHOD = STRAIGHT_BONUS }
+			}
+		})
     end
 	
 end

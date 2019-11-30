@@ -152,11 +152,11 @@ do
 
 
     local function LockWidth(frame, min, max)
-        local width
+        local width = BlzFrameGetWidth(frame)
 
-            if BlzFrameGetWidth(frame) < min then
+            if width < min then
                 width = min
-            elseif BlzFrameGetWidth(frame) > max  then
+            elseif width > max  then
                 width = max
             end
 
@@ -177,42 +177,44 @@ do
 
         PlayerTooltip[player].backdrop = BlzCreateFrame("BoxedText", ButtonList[GetHandleId(InventorySlots[32])].image, 150, 0)
 
-
-
-        local areatext = GetItemSubTypeName(item_data.SUBTYPE) .. "|n" .. "|n"
+        local areatext = ""
+        if item_data.SUBTYPE ~= nil then
+            areatext = GetItemSubTypeName(item_data.SUBTYPE) .. "|n" .. "|n"
+        end
 
         if item_data.TYPE == ITEM_TYPE_WEAPON then
-            areatext = areatext
-                    .. "Урон: " .. R2I(item_data.DAMAGE * item_data.DISPERSION[1]) .. "-" .. R2I(item_data.DAMAGE * item_data.DISPERSION[2]) .. "|n"
-                    .. "Тип урона: " .. GetItemAttributeName(item_data.ATTRIBUTE)
+            areatext = areatext .. "Урон: " .. R2I(item_data.DAMAGE * item_data.DISPERSION[1]) .. "-" .. R2I(item_data.DAMAGE * item_data.DISPERSION[2]) .. "|n" .. "Тип урона: " .. GetItemAttributeName(item_data.ATTRIBUTE)
         elseif item_data.TYPE == ITEM_TYPE_ARMOR then
-            areatext = areatext
-                    .. "Защита: " .. item_data.DEFENCE
+            areatext = areatext .. "Защита: " .. item_data.DEFENCE
         elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
-            areatext = areatext
-                    .. "Подавление: " .. item_data.SUPPRESSION
+            areatext = areatext .. "Подавление: " .. item_data.SUPPRESSION
         elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
-            areatext = areatext
-                    .. "Защита: " .. item_data.DEFENCE
+            areatext = areatext .. "Защита: " .. item_data.DEFENCE
+        elseif item_data.TYPE == ITEM_TYPE_GEM then
+            areatext = "Камень"
         end
 
 
         local bonus_text
 
         if item_data.BONUS ~= nil and #item_data.BONUS > 0 then
+
             bonus_text = "|n" .. "Дополнительные свойства:" .. "|n"
             for i = 1, #item_data.BONUS do
-                local value
-                    if item_data.BONUS[i].METHOD == MULTIPLY_BONUS then
-                        value = R2I((item_data.BONUS[i].VALUE * 100.) - 100.) .. "%%"
-                    else
-                        value = item_data.BONUS[i].VALUE
-                    end
-                bonus_text = bonus_text .. GetParameterName(item_data.BONUS[i].PARAM) .. ": " .. value .. "|n"
+                bonus_text = bonus_text .. GetParameterName(item_data.BONUS[i].PARAM) .. ": " .. GetCorrectParamText(item_data.BONUS[i].VALUE, item_data.BONUS[i].METHOD) .. "|n"
+            end
+
+        elseif item_data.TYPE == ITEM_TYPE_GEM then
+
+            bonus_text = "|n" .. "Аугментации:" .. "|n"
+            for i = 1, #item_data.point_bonus do
+                if item_data.point_bonus[i] ~= nil then
+                    bonus_text = bonus_text .. GetItemTypeName(i) .. " - " .. GetParameterName(item_data.point_bonus[i].PARAM) .. ": " .. GetCorrectParamText(item_data.point_bonus[i].VALUE, item_data.point_bonus[i].METHOD).. "|n"
+                end
             end
         end
 
-        
+
         PlayerTooltip[player].frames[frame_number] = BlzCreateFrameByType("TEXT", "name", PlayerTooltip[player].backdrop, "", 0)
         BlzFrameSetPoint(PlayerTooltip[player].frames[frame_number], FRAMEPOINT_TOPLEFT, ButtonList[h].image, FRAMEPOINT_TOPRIGHT, 0., 0.)
         BlzFrameSetText(PlayerTooltip[player].frames[frame_number], GetItemNameColorized(ButtonList[h].item))
@@ -225,7 +227,6 @@ do
         BlzFrameSetTextAlignment(PlayerTooltip[player].frames[frame_number], TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_MIDDLE)
         BlzFrameSetText(PlayerTooltip[player].frames[frame_number], areatext)
         BlzFrameSetScale(PlayerTooltip[player].frames[frame_number], 0.95)
-        BlzFrameSetSize(PlayerTooltip[player].frames[frame_number], BlzFrameGetWidth(PlayerTooltip[player].frames[frame_number]), 0.)
 
 
         if bonus_text ~= nil then
@@ -257,7 +258,6 @@ do
 
 
         for i = 1, #PlayerTooltip[player].frames do
-            print(BlzFrameGetWidth(PlayerTooltip[player].frames[i]))
 
                 if BlzFrameGetWidth(PlayerTooltip[player].frames[i]) > width then
                     width = BlzFrameGetWidth(PlayerTooltip[player].frames[i])
@@ -269,17 +269,18 @@ do
                 else
                     BlzFrameSetPoint(PlayerTooltip[player].frames[i], FRAMEPOINT_TOP, PlayerTooltip[player].frames[i - 1], FRAMEPOINT_BOTTOM, 0., 0.)
                 end
+
         end
 
+        --BlzFrameSetSize(PlayerTooltip[player].frames[1], width, 0.)
+        LockWidth(PlayerTooltip[player].frames[1], 0.04, 0.12)
 
-        BlzFrameSetSize(PlayerTooltip[player].frames[1], width, 0.)
-        LockWidth(PlayerTooltip[player].frames[1], 0.04, 0.11)
 
-        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOP, PlayerTooltip[player].frames[1], FRAMEPOINT_TOP, 0., 0.005)
-        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOPLEFT, PlayerTooltip[player].frames[1], FRAMEPOINT_TOPLEFT, -0.005, 0.005)
-        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOPRIGHT, PlayerTooltip[player].frames[1], FRAMEPOINT_TOPRIGHT, 0.005, 0.005)
-        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMLEFT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMLEFT, -0.005, -0.007)
-        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMRIGHT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMRIGHT, 0.005, -0.007)
+        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOP, PlayerTooltip[player].frames[1], FRAMEPOINT_TOP, 0., 0.003)
+        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOPLEFT, PlayerTooltip[player].frames[1], FRAMEPOINT_TOPLEFT, -0.007, 0.003)
+        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOPRIGHT, PlayerTooltip[player].frames[1], FRAMEPOINT_TOPRIGHT, 0.007, 0.003)
+        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMLEFT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMLEFT, -0.007, -0.007)
+        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMRIGHT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMRIGHT, 0.007, -0.007)
         BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOM, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOM, 0., -0.007)
 
     end
@@ -371,6 +372,12 @@ do
 
 
     local function ForceEquip(h, player)
+        local data = GetItemData(ButtonList[h].item)
+
+        if data.TYPE > ITEM_TYPE_OFFHAND then
+            return
+        end
+
         if ButtonList[h].button_type >= WEAPON_POINT and ButtonList[h].button_type <= NECKLACE_POINT then
             EquipItem(InventoryOwner[player], ButtonList[h].item, true)
             UpdateEquipPointsWindow(player)
@@ -410,20 +417,20 @@ do
 
             if PlayerMovingItem[player] ~= nil then
                 TimerStart(DoubleClickTimer[player], 0., false, nil)
-                ButtonList[h].item = ButtonList[PlayerMovingItem[player].selected_frame].item
-                ButtonList[PlayerMovingItem[player].selected_frame].item = nil
+                if ButtonList[h].item == nil then
+                    ButtonList[h].item = ButtonList[PlayerMovingItem[player].selected_frame].item
+                    ButtonList[PlayerMovingItem[player].selected_frame].item = nil
 
-                if ButtonList[h].button_type == INV_SLOT then
-                    UpdateInventoryWindow(player)
+                    if ButtonList[h].button_type == INV_SLOT then
+                       UpdateInventoryWindow(player)
+                    else
+                        ForceEquip(h, player)
+                    end
+
+                    RemoveSelectionFrames(player)
                 else
-                    ForceEquip(h, player)
-                end
-                RemoveSelectionFrames(player)
-            elseif ButtonList[h].item ~= nil then
-                if PlayerMovingItem[player] ~= nil then
-                    TimerStart(DoubleClickTimer[player], 0., false, nil)
-                    local item = ButtonList[PlayerMovingItem[player].h].item
-                    ButtonList[PlayerMovingItem[player].h].item = ButtonList[h].item
+                    local item = ButtonList[PlayerMovingItem[player].selected_frame].item
+                    ButtonList[PlayerMovingItem[player].selected_frame].item = ButtonList[h].item
                     ButtonList[h].item = item
                     UpdateInventoryWindow(player)
                 end
