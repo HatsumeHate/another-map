@@ -84,6 +84,11 @@ do
     end
 
 
+    function RemoveCustomItem(item)
+        ITEM_DATA[GetHandleId(item)] = nil
+        RemoveItem(item)
+    end
+
     ---@param raw string
     ---@param x real
     ---@param y real
@@ -191,6 +196,10 @@ do
             end
         end
 
+        for i = 1, #item_data.STONE_SLOTS do
+            ModifyStat(unit, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].PARAM, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].VALUE, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].METHOD, flag)
+        end
+
         for i = 1, #item_data.BONUS do
             ModifyStat(unit, item_data.BONUS[i].PARAM, item_data.BONUS[i].VALUE, item_data.BONUS[i].METHOD, flag)
         end
@@ -215,12 +224,12 @@ do
         if GetOrderTargetItem() ~= nil then
             local item = GetOrderTargetItem()
             local unit = GetTriggerUnit()
-            local angle = AngleBetweenUnitXY(unit, GetItemX(item), GetItemY(item)) - 180.
+            local angle = AngleBetweenXY_DEG(GetItemX(item), GetItemY(item), GetUnitX(unit), GetUnitY(unit))
 
             if DistanceBetweenUnitXY(unit, GetItemX(item), GetItemY(item)) <= 200. then
                 UnitRemoveItem(unit, item)
                 AddToInventory(1, item)
-                IssuePointOrderById(unit, order_move, GetUnitX(unit) + 0.1, GetUnitY(unit) + 0.1)
+                IssuePointOrderById(unit, order_move, GetUnitX(unit) + 0.01, GetUnitY(unit) - 0.01)
             else
                 IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(50., angle), GetUnitY(unit) + Ry(50., angle))
             end

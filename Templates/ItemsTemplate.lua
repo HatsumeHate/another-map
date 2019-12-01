@@ -242,7 +242,7 @@ do
             QUALITY = RARE_ITEM,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
             BONUS   = {
-                { PARAM = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
+                { PARAM = PHYSICAL_ATTACK, VALUE = 20, METHOD = STRAIGHT_BONUS },
                 { PARAM = CRIT_CHANCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
             },
 			MAX_SLOTS = 3
@@ -262,7 +262,7 @@ do
 			TYPE    		   = ITEM_TYPE_GEM,
 			frame_texture      = "BTNS_Almaz.blp",
 			point_bonus 	   = {
-				[ITEM_TYPE_WEAPON] = {  PARAM = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_WEAPON] = {  PARAM = PHYSICAL_ATTACK, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_ARMOR]  = {  PARAM = PHYSICAL_DEFENCE, VALUE = 20, METHOD = STRAIGHT_BONUS }
 			}
 		})
