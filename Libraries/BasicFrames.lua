@@ -19,6 +19,22 @@ do
     end
 
 
+    local ClickTrigger = CreateTrigger()
+    TriggerAddAction(ClickTrigger, function()
+        local frame = BlzGetTriggerFrame()
+        BlzFrameSetScale(frame, 0.85)
+        TimerStart(CreateTimer(), 0.1, false, function()
+            BlzFrameSetScale(frame, 1.)
+            DestroyTimer(GetExpiredTimer())
+            frame = nil
+        end)
+    end)
+
+    ---@param frame framehandle
+    function FrameRegisterClick(frame)
+        BlzTriggerRegisterFrameEvent(ClickTrigger, frame, FRAMEEVENT_CONTROL_CLICK)
+    end
+
 
     function RegisterConstructor(frame, base_x, base_y)
         local trg

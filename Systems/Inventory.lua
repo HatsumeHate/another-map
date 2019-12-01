@@ -82,6 +82,93 @@ do
 
 
     --======================================================================
+    -- SLIDER MODE =====================================================
+
+    local SliderFrame = {}
+
+
+    local function DestroySlider(player)
+        if SliderFrame[player] ~= nil then
+            BlzDestroyFrame(SliderFrame[player].backdrop)
+            DestroyTimer(SliderFrame[player].timer)
+            DestroyTrigger(SliderFrame[player].trigger)
+            SliderFrame[player] = nil
+        end
+    end
+
+
+    local function CreateSlider(player, origin_button)
+        SliderFrame[player] = {}
+        SliderFrame[player].backdrop = BlzCreateFrame("ScoreScreenButtonBackdropTemplate", ButtonList[GetHandleId(InventorySlots[32])].image, 0, 0)
+        SliderFrame[player].slider = BlzCreateFrame("EscMenuSliderTemplate", SliderFrame[player].backdrop, 0, 0)
+        SliderFrame[player].text_frame = BlzCreateFrameByType("BACKDROP", "text backdrop", SliderFrame[player].slider, "", 0)
+        SliderFrame[player].text = BlzCreateFrame("EscMenuLabelTextTemplate",  SliderFrame[player].slider, 0, 0)
+
+
+        BlzFrameSetPoint(SliderFrame[player].text_frame, FRAMEPOINT_BOTTOM, SliderFrame[player].slider, FRAMEPOINT_TOP, 0., 0.)
+        BlzFrameSetSize(SliderFrame[player].text_frame, 0.012, 0.012)
+        BlzFrameSetTexture(SliderFrame[player].text_frame, "GUI\\ChargesTexture.blp", 0, true)
+
+        BlzFrameSetPoint(SliderFrame[player].backdrop, FRAMEPOINT_TOPLEFT, origin_button.image, FRAMEPOINT_TOPRIGHT, 0., 0.)
+
+        BlzFrameSetMinMaxValue(SliderFrame[player].slider, 1, GetItemCharges(origin_button.item))
+        BlzFrameSetValue(SliderFrame[player].slider, 1)
+        BlzFrameSetStepSize(SliderFrame[player].slider, 1)
+
+        BlzFrameSetSize(SliderFrame[player].backdrop, 0.115, 0.035)
+
+        BlzFrameSetPoint(SliderFrame[player].slider, FRAMEPOINT_CENTER, SliderFrame[player].backdrop, FRAMEPOINT_CENTER, 0., 0.)
+        BlzFrameSetSize(SliderFrame[player].slider, 0.1, 0.015)
+
+        BlzFrameSetPoint(SliderFrame[player].text, FRAMEPOINT_CENTER, SliderFrame[player].text_frame, FRAMEPOINT_CENTER, 0., 0.)
+        BlzFrameSetText(SliderFrame[player].text, GetItemCharges(origin_button.item))
+        BlzFrameSetScale(SliderFrame[player].text_frame, 1.15)
+
+        SliderFrame[player].button_ok = BlzCreateFrame("ScriptDialogButton", SliderFrame[player].slider, 0, 0)
+        SliderFrame[player].button_cancel = BlzCreateFrame("ScriptDialogButton", SliderFrame[player].slider, 0, 1)
+
+        BlzFrameSetPoint(SliderFrame[player].button_ok, FRAMEPOINT_TOPLEFT, SliderFrame[player].slider, FRAMEPOINT_BOTTOM, 0., 0.)
+        BlzFrameSetPoint(SliderFrame[player].button_cancel, FRAMEPOINT_TOPRIGHT, SliderFrame[player].slider, FRAMEPOINT_BOTTOM, 0., 0.)
+
+        BlzFrameSetSize(SliderFrame[player].button_ok, 0.05, 0.025)
+        BlzFrameSetSize(SliderFrame[player].button_cancel, 0.05, 0.025)
+        BlzFrameSetText(SliderFrame[player].button_ok, "ок")
+        BlzFrameSetText(SliderFrame[player].button_cancel, "отмена")
+        BlzFrameSetTextAlignment(SliderFrame[player].button_ok, TEXT_JUSTIFY_TOP, TEXT_JUSTIFY_MIDDLE)
+        BlzFrameSetTextAlignment(SliderFrame[player].button_cancel, TEXT_JUSTIFY_TOP, TEXT_JUSTIFY_MIDDLE)
+
+        BlzFrameSetFocus(SliderFrame[player].slider, true)
+        BlzFrameSetLevel(SliderFrame[player].slider, 3)
+
+
+        SliderFrame[player].timer = CreateTimer()
+
+        TimerStart(SliderFrame[player].timer, 0.08, true, function()
+            BlzFrameSetText(SliderFrame[player].text, R2I(BlzFrameGetValue(SliderFrame[player].slider)))
+        end)
+
+        SliderFrame[player].trigger = CreateTrigger()
+        BlzTriggerRegisterFrameEvent(SliderFrame[player].trigger, SliderFrame[player].button_ok, FRAMEEVENT_CONTROL_CLICK)
+        BlzTriggerRegisterFrameEvent(SliderFrame[player].trigger, SliderFrame[player].button_cancel, FRAMEEVENT_CONTROL_CLICK)
+        TriggerAddAction(SliderFrame[player].trigger, function()
+                if BlzGetTriggerFrame() == SliderFrame[player].button_ok then
+
+                    if BlzFrameGetValue(SliderFrame[player].slider) < GetItemCharges(origin_button.item) then
+                        SetItemCharges(origin_button.item, GetItemCharges(origin_button.item) - BlzFrameGetValue(SliderFrame[player].slider))
+                        local new_item = CreateCustomItem_Id(GetItemTypeId(origin_button.item), GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]))
+                        SetItemCharges(new_item, BlzFrameGetValue(SliderFrame[player].slider))
+                    else
+                        DropItemFromInventory(player, origin_button.item)
+                    end
+
+                    UpdateInventoryWindow(player)
+                 end
+            DestroySlider(player)
+        end)
+    end
+
+
+    --======================================================================
     -- CONTEXT MENU   ======================================================
     local ContextFrame = {}
 
@@ -175,7 +262,7 @@ do
         local width = 0.
         local frame_number = 1
         
-        if ContextFrame[player] ~= nil then return end
+        if ContextFrame[player] ~= nil or SliderFrame[player] ~= nil then return end
         RemoveTooltip(player)
 
         PlayerTooltip[player] = {}
@@ -328,6 +415,7 @@ do
 
     local PlayerMovingItem = {}
     local EnterTrigger = CreateTrigger()
+    local LeaveTrigger = CreateTrigger()
 
 
     local function EnterAction()
@@ -348,6 +436,14 @@ do
         end
     end
 
+    local function LeaveAction()
+        --local player = GetPlayerId(GetTriggerPlayer()) + 1
+        --local h = GetHandleId(BlzGetTriggerFrame())
+
+            RemoveTooltip(GetPlayerId(GetTriggerPlayer()) + 1)
+    end
+
+    TriggerAddAction(LeaveTrigger, LeaveAction)
 
     --======================================================================
     -- SELECTOION MODE =====================================================
@@ -489,10 +585,22 @@ do
                     end)
 
                     AddContextOption(player, "Выкинуть", function()
-                        DropItemFromInventory(player, ButtonList[h].item)
+                        if GetItemType(ButtonList[h].item) ~= ITEM_TYPE_CHARGED then
+                            DropItemFromInventory(player, ButtonList[h].item)
+                        else
+                            if GetItemCharges(ButtonList[h].item) > 1 then
+                                CreateSlider(player, ButtonList[h])
+                            else
+                                DropItemFromInventory(player, ButtonList[h].item)
+                            end
+                        end
                     end)
                 end
             end)
+
+            if SliderFrame[player] ~= nil then
+                DestroySlider(player)
+            end
 
             if PlayerMovingItem[player] ~= nil then
                 TimerStart(DoubleClickTimer[player], 0., false, nil)
@@ -693,9 +801,11 @@ do
                 charges_text_frame = new_FrameChargesText }
 
             FrameRegisterNoFocus(new_Frame)
+            --FrameRegisterClick(new_FrameImage)
 
             BlzTriggerRegisterFrameEvent(ClickTrigger, new_Frame, FRAMEEVENT_CONTROL_CLICK)
             BlzTriggerRegisterFrameEvent(EnterTrigger, new_Frame, FRAMEEVENT_MOUSE_ENTER)
+            BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
 
 
             BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMRIGHT, new_FrameImage, FRAMEPOINT_BOTTOMRIGHT, -0.002, 0.002)
@@ -813,6 +923,7 @@ do
             RemoveTooltip(player)
             RemoveSelectionFrames(player)
             DestroyContextMenu(player)
+            DestroySlider(player)
         end)
 
     end
