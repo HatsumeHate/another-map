@@ -37,6 +37,10 @@ do
 	SET_ITEM           = 4
 	UNIQUE_ITEM        = 5
 
+	EQUIP_SOUND = 1
+	UNEQUIP_SOUND = 2
+	INTERACT_SOUND = 3
+
 	
 	---@param a table
 	---@param b table
@@ -185,32 +189,43 @@ do
                 QUALITY            = COMMON_ITEM,
                 BONUS              = {},
                 MAX_SLOTS          = 0,
-                STONE_SLOTS        = {}
+                STONE_SLOTS        = {},
+
+				sound 			   = {}
             }
     end
 
     ---@param raw string
     ---@param data table
 	local function ItemAddData(raw, data)
-		local newdata = GetItemTemplate()
-		
-            ItemMergeData(newdata, weapons[data.SUBTYPE])
-            ItemMergeData(newdata, data)
+		local newdata
 
-            ITEM_TEMPLATE_DATA[FourCC(raw)] = newdata
-	end
+		if data.TYPE >= ITEM_TYPE_WEAPON and data.TYPE <= ITEM_TYPE_OFFHAND then
+			newdata = GetItemTemplate()
+			ItemMergeData(newdata, weapons[data.SUBTYPE])
+			ItemMergeData(newdata, data)
+		elseif data.TYPE == ITEM_TYPE_CONSUMABLE then
+			newdata = {
+				item               = nil,
+				NAME               = '',
+				TYPE               = ITEM_TYPE_CONSUMABLE,
+				frame_texture      = nil,
+				special_description = "",
+				QUALITY            = COMMON_ITEM,
+			}
+			MergeTables(newdata, data)
+		elseif data.TYPE == ITEM_TYPE_GEM then
+			newdata = {
+				item               = nil,
+				NAME               = '',
+				TYPE               = ITEM_TYPE_GEM,
+				frame_texture      = nil,
+				point_bonus 	   = { },
+				QUALITY            = COMMON_ITEM,
+			}
+			MergeTables(newdata, data)
+		end
 
-
-	local function GemAddData(raw, data)
-		local newdata = {
-			item               = nil,
-			NAME               = '',
-			TYPE               = ITEM_TYPE_GEM,
-			frame_texture      = nil,
-			point_bonus 	   = { },
-			QUALITY            = COMMON_ITEM,
-		}
-		MergeTables(newdata, data)
 		ITEM_TEMPLATE_DATA[FourCC(raw)] = newdata
 	end
 
@@ -230,6 +245,7 @@ do
     function DefineItemsData()
 		ItemAddData('0000', {
 			NAME    = 'Fists',
+			TYPE = ITEM_TYPE_WEAPON,
 			SUBTYPE = FIST_WEAPON,
 			DAMAGE  = 4,
 			QUALITY = COMMON_ITEM
@@ -237,6 +253,7 @@ do
 
         ItemAddData('I000', {
             NAME    = 'Ледяной страж',
+			TYPE = ITEM_TYPE_WEAPON,
             SUBTYPE = SWORD_WEAPON,
             DAMAGE  = 50,
             QUALITY = RARE_ITEM,
@@ -257,7 +274,7 @@ do
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
         })
 
-		GemAddData('I002', {
+		ItemAddData('I002', {
 			NAME    		   = 'Алмаз',
 			TYPE    		   = ITEM_TYPE_GEM,
 			frame_texture      = "BTNS_Almaz.blp",
@@ -265,6 +282,13 @@ do
 				[ITEM_TYPE_WEAPON] = {  PARAM = PHYSICAL_ATTACK, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_ARMOR]  = {  PARAM = PHYSICAL_DEFENCE, VALUE = 20, METHOD = STRAIGHT_BONUS }
 			}
+		})
+
+		ItemAddData('I003', {
+			NAME    		   = 'Зелье Здоровья',
+			TYPE    		   = ITEM_TYPE_CONSUMABLE,
+			frame_texture      = "ReplaceableTextures\\CommandButtons\\BTNPotionGreen.blp",
+			special_description = "Восстанавливает часть здоровья"
 		})
     end
 	

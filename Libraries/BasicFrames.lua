@@ -19,20 +19,43 @@ do
     end
 
 
+
+    local ButtonTextureList = {}
+
+    function FrameChangeTexture(frame, texture)
+        ButtonTextureList[GetHandleId(frame)] = texture
+    end
+
     local ClickTrigger = CreateTrigger()
     TriggerAddAction(ClickTrigger, function()
         local frame = BlzGetTriggerFrame()
-        BlzFrameSetScale(frame, 0.85)
+        local new_Frame_backdrop = BlzCreateFrameByType("BACKDROP", "ABC", frame, "", 0)
+        local new_Frame_image = BlzCreateFrameByType("BACKDROP", "ABCD", new_Frame_backdrop, "", 0)
+
+        BlzFrameSetAllPoints(new_Frame_backdrop, frame)
+        BlzFrameSetPoint(new_Frame_image, FRAMEPOINT_TOPLEFT, new_Frame_backdrop, FRAMEPOINT_TOPLEFT, 0.003, -0.003)
+        BlzFrameSetPoint(new_Frame_image, FRAMEPOINT_TOPRIGHT, new_Frame_backdrop, FRAMEPOINT_TOPRIGHT, -0.003, -0.003)
+        BlzFrameSetPoint(new_Frame_image, FRAMEPOINT_BOTTOMLEFT, new_Frame_backdrop, FRAMEPOINT_BOTTOMLEFT, 0.003, 0.003)
+        BlzFrameSetPoint(new_Frame_image, FRAMEPOINT_BOTTOMRIGHT, new_Frame_backdrop, FRAMEPOINT_BOTTOMRIGHT, -0.003, 0.003)
+        --BlzFrameSetAllPoints(new_Frame_image, new_Frame_backdrop)
+        BlzFrameSetTexture(new_Frame_backdrop, "button_backdrop.blp", 0, true)
+        BlzFrameSetTexture(new_Frame_image, ButtonTextureList[GetHandleId(frame)], 0, true)
+
+
         TimerStart(CreateTimer(), 0.1, false, function()
-            BlzFrameSetScale(frame, 1.)
+            BlzDestroyFrame(new_Frame_backdrop)
             DestroyTimer(GetExpiredTimer())
+            new_Frame_image = nil
+            new_Frame_backdrop = nil
             frame = nil
         end)
+
     end)
 
     ---@param frame framehandle
-    function FrameRegisterClick(frame)
+    function FrameRegisterClick(frame, texture)
         BlzTriggerRegisterFrameEvent(ClickTrigger, frame, FRAMEEVENT_CONTROL_CLICK)
+        ButtonTextureList[GetHandleId(frame)] = texture
     end
 
 
