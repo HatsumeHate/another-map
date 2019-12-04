@@ -650,10 +650,12 @@ do
         local item_data = GetItemData(ButtonList[h].item)
 
         if TimerGetRemaining(DoubleClickTimer[player]) > 0. then
-            if ButtonList[h].item ~= nil and item_data.TYPE ~= ITEM_TYPE_GEM and item_data.TYPE ~= ITEM_TYPE_CONSUMABLE then
+            if ButtonList[h].item ~= nil and item_data.TYPE ~= ITEM_TYPE_GEM then
                 RemoveTooltip(player)
                 DestroyContextMenu(player)
                 InteractWithItemInSlot(h, player)
+            elseif item_data.TYPE ~= ITEM_TYPE_CONSUMABLE then
+                LockItemOnBelt(player, ButtonList[h])
             end
         else
             TimerStart(DoubleClickTimer[player], 0.25, false, function()
