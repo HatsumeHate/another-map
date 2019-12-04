@@ -57,12 +57,13 @@ do
             model = "Abilities\\Spells\\Other\\FrostBolt\\FrostBoltMissile.mdx",
             max_distance = 1000.,
             radius = 50.,
-            speed = 600.,
+            speed = 400.,
             start_z = 65.,
             end_z = 65.,
-            arc = 0.3,
+            arc = 0.1,
             ignore_terrain = true,
-            full_distance = true
+            full_distance = true,
+            trackable = false
         })
 
         NewMissileTemplate('M002', {

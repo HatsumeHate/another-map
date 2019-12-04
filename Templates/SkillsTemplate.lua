@@ -1,4 +1,5 @@
     SkillsData           = {}
+    SkillList            = {}
     local MaxSkillLevels = 10
 
     -- target types
@@ -6,59 +7,85 @@
     TARGET_CAST          = 2
     POINT_CAST           = 3
 
-    ---@param skillId integer
-    local function NewSkillData(skillId)
+
+    function GetSkillData(id)
+        return SkillsData[id]
+    end
+
+
+
+
+    local function NewSkillDataLevel()
         return {
-            Id                     = skillId,
 
-            SkillTargetType        = 1,
-            Range                  = 0.,
-            Cooldown               = 0.,
-            IsChanneling           = false,
-            ChannelTick            = 0.,
-            UseHpAmount            = 0.,
-            UseMpAmount            = 0.,
+            range                   = 0.,
+            cooldown                = 0.,
 
-            UsedMissile            = 0,
-            UsedEffect             = 0,
+            required_hp             = 0.,
+            required_mp             = 0.,
+            given_hp                = 0.,
+            given_mp                = 0.,
 
-            AutoTrigger            = true,
-            Order                  = 0,
+            missile                 = 0,
+            effect                  = 0,
 
-            BuffCondition          = 0,
+            required_buff          = 0,
 
-            GivedHpAmount          = 0.,
-            GivedMpAmount          = 0.,
+            lightning               = '',
 
-            Effect_Lightning       = '',
+            effect_on_cast_point    = '',
+            effect_on_caster        = '',
+            effect_on_caster_point  = '',
 
-            EffectOnCastLocation   = '',
-            EffectOnCastStart      = '',
-            EffectOnCastStartPoint = '',
+            EffectOnCast            = '',
+            EffectOnCastPoint       = '',
 
-            EffectOnCast           = '',
-            EffectOnCastPoint      = '',
-
-            SkillAnimation         = "",
-            SkillAnimationPoint    = 0.,
-            SkillAnimationScale    = 0.,
+            animation               = "",
+            animation_point         = 0.,
+            animation_scale         = 0.,
         }
     end
 
     ---@param skillId integer
-    local function NewSkillDataLevel(skillId)
-        local my_new_skill = { level = {} }
+    ---@param data table
+    local function NewSkillData(skillId, data)
+        local my_new_skill = {
+            Id                      = skillId,
+            name = "",
+            autotrigger             = true,
+            order                   = 0,
+            target_type             = SELF_CAST,
+            channeling              = false,
+            channel_tick            = 0.,
+            level = {}
+        }
 
         for i = 1, MaxSkillLevels do
-            my_new_skill.level[i] = NewSkillData(skillId)
+            my_new_skill.level[i] = NewSkillDataLevel()
         end
 
+        MergeTables(my_new_skill, data)
+        SkillsData[FourCC(skillId)] = my_new_skill
         return my_new_skill
     end
 
+
+
     function DefineSkillsData()
-        for i = 1, 5 do
-            SkillsData[i] = NewSkillDataLevel(i)
-        end
+
         -- defined skills
+        NewSkillData('A000', {
+            name = "test skill",
+            target_type = TARGET_CAST,
+            level = {
+                [1] = {
+                    missile             = 'M001',
+                    effect              = 'EFF1',
+                    cooldown            = 5.,
+                    animation           = 2,
+                    animation_point     = 0.7,
+                    animation_scale     = 1.,
+                }
+            }
+        })
     end

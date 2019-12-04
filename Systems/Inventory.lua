@@ -12,7 +12,7 @@ do
 
 
 
-    local function GetFirstFreeSlotButton()
+    local function GetFirstFreeSlotButton(player)
         for i = 1, 32 do
             local h = GetHandleId(InventorySlots[i])
 
@@ -590,7 +590,7 @@ do
                     UpdateInventoryWindow(id)
             elseif ButtonList[h].button_type >= WEAPON_POINT and ButtonList[h].button_type <= NECKLACE_POINT then
                 EquipItem(InventoryOwner[id], ButtonList[h].item, false)
-                local free_slot = GetFirstFreeSlotButton()
+                local free_slot = GetFirstFreeSlotButton(id)
                 free_slot.item = ButtonList[h].item
                 UpdateEquipPointsWindow(id)
                 UpdateInventoryWindow(id)
@@ -838,24 +838,24 @@ do
                 if inv_item ~= nil then
                     SetItemCharges(inv_item, GetItemCharges(item) + GetItemCharges(inv_item))
                     RemoveCustomItem(item)
-                    UpdateInventoryWindow()
+                    UpdateInventoryWindow(player)
                 else
-                    local free_slot = GetFirstFreeSlotButton()
+                    local free_slot = GetFirstFreeSlotButton(player)
 
                     if free_slot ~= nil then
                         free_slot.item = item
                         SetItemVisible(item, false)
-                        UpdateInventoryWindow()
+                        UpdateInventoryWindow(player)
                     end
 
                 end
 
             else
-                local free_slot = GetFirstFreeSlotButton()
+                local free_slot = GetFirstFreeSlotButton(player)
 
                 if free_slot ~= nil then
                     free_slot.item = item
-                    UpdateInventoryWindow()
+                    UpdateInventoryWindow(player)
                     SetItemVisible(item, false)
                 end
             end

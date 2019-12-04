@@ -1,7 +1,7 @@
 do
 
     local PERIOD = 0.025
-    local MapArea = bj_mapInitialPlayableArea
+    local MapArea
 
 
 
@@ -64,10 +64,7 @@ do
 
 
     function IsMapBounds(x, y)
-        return (x > GetRectMaxX(bj_mapInitialPlayableArea) or
-        x < GetRectMinX(bj_mapInitialPlayableArea) or
-        y > GetRectMaxY(bj_mapInitialPlayableArea) or
-        y < GetRectMinY(bj_mapInitialPlayableArea))
+        return (x > GetRectMaxX(bj_mapInitialPlayableArea) or x < GetRectMinX(bj_mapInitialPlayableArea) or y > GetRectMaxY(bj_mapInitialPlayableArea) or y < GetRectMinY(bj_mapInitialPlayableArea))
     end
 
 
@@ -107,6 +104,9 @@ do
                 end_z = GetZ(end_x, end_y) + m.end_z
             end
 
+
+        print(angle)
+
         local distance = SquareRoot((end_x-start_x)*(end_x-start_x) + (end_y-start_y)*(end_y-start_y) + (end_z - start_z)*(end_z - start_z))
         time = distance / m.speed
 
@@ -127,7 +127,7 @@ do
         local start_height
         local end_height
 
-        if m.arc ~= nil then
+        if m.arc > 0. then
             distance2d = DistanceBetweenXY(start_x, start_y, end_x, end_y)
             height = distance2d * m.arc + RMaxBJ(start_z, end_z)
             step = m.speed / (1. / PERIOD)
@@ -141,35 +141,37 @@ do
         local vy = (end_y - start_y) * ((m.speed * PERIOD) / distance)
         local vz = (end_z - start_z) * ((m.speed * PERIOD) / distance)
 
-
         local impact = false
 
-        TimerStart(CreateTimer(), PERIOD, true, function()
+
+        local my_timer = CreateTimer()
+        TimerStart(my_timer, PERIOD, true, function()
 
             if IsMapBounds(start_x, start_y) or time < 0. then
-                DestroyEffect(missile_effect)
-                DestroyTimer(GetExpiredTimer())
                 print("BOUNDS")
+                DestroyEffect(missile_effect)
+                DestroyTimer(my_timer)
             else
                 --TRACKING
-                if m.trackable ~= nil and m.trackable then
+                if m.trackable then
+                    print("TRACKABLE")
                     if GetUnitState(target, UNIT_STATE_LIFE) < 0.045 or target == nil then
                         -- disable
                         DestroyEffect(missile_effect)
-                        DestroyTimer(GetExpiredTimer())
+                        DestroyTimer(my_timer)
                     else
                         distance = GetDistance3D(start_x, start_y, start_z, GetUnitX(target), GetUnitY(target), BlzGetLocalUnitZ(target))
                         vx = (GetUnitX(target) - start_x) * ((m.speed * PERIOD) / distance)
                         vy = (GetUnitY(target) - start_y) * ((m.speed * PERIOD) / distance)
                         vz = (BlzGetLocalUnitZ(target) - start_z) * ((m.speed * PERIOD) / distance)
-                        BlzSetSpecialEffectYaw(missile_effect, AngleBetweenXY(start_x, start_y, end_x, end_y) * bj_DEGTORAD)
+                        BlzSetSpecialEffectYaw(missile_effect, AngleBetweenXY(start_x, start_y, GetUnitX(target), GetUnitY(target)))
                     end
                 end
 
                 -- COLLISION
                 if BlzGetLocalSpecialEffectZ(missile_effect) <= GetZ(start_x, start_y) and not m.ignore_terrain then
                     DestroyEffect(missile_effect)
-                    DestroyTimer(GetExpiredTimer())
+                    DestroyTimer(my_timer)
                     impact = true
                     print("collision")
                 else
@@ -177,12 +179,12 @@ do
                     start_x = start_x + vx
                     start_y = start_y + vy
 
-                    if m.arc ~= nil then
+                    if m.arc > 0. then
                         local old_z = start_z
                         start_z = GetParabolaZ(start_height, end_height, height, distance2d, length)
                         local zDiff = start_z - old_z
                         local speed_step = m.speed * PERIOD
-                        local pitch = zDiff > 0 and math.atan(speed_step / zDiff) - math.pi / 2 or math.atan(-zDiff / speed_step) - math.pi * 2
+                        local pitch = zDiff > 0. and math.atan(speed_step / zDiff) - math.pi / 2. or math.atan(-zDiff / speed_step) - math.pi * 2.
                         BlzSetSpecialEffectPitch(missile_effect, pitch)
                         length = length + step
                     else
@@ -215,7 +217,7 @@ do
                     else
                         -- aoe damage
                         DestroyEffect(missile_effect)
-                        DestroyTimer(GetExpiredTimer())
+                        DestroyTimer(my_timer)
 
                         if #m.sound_on_hit > 0 then
                             AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y)
@@ -248,7 +250,7 @@ do
                             DestroyGroup(group)
                             damage_list = nil
                         else
-                            ApplyEffect(from, nil, start_x, start_y, effects.effect, effects.level)
+                            if effects ~= nil then ApplyEffect(from, nil, start_x, start_y, effects.effect, effects.level) end
                         end
 
                     end
@@ -300,7 +302,7 @@ do
 
                             damage_list = nil
                         else
-                            ApplyEffect(from, target, start_x, start_y, effects.effect, effects.level)
+                            if effects ~= nil then ApplyEffect(from, target, start_x, start_y, effects.effect, effects.level) end
                         end
 
                     end
@@ -322,7 +324,8 @@ do
                             print("first hit")
 
                             DestroyEffect(missile_effect)
-                            DestroyTimer(GetExpiredTimer())
+                            DestroyTimer(my_timer)
+                        end
 
                             if #m.sound_on_hit > 0 then
                                 AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y)
@@ -350,9 +353,9 @@ do
 
                                 damage_list = nil
                             else
-                                ApplyEffect(from, target, start_x, start_y, effects.effect, effects.level)
+                                if effects ~= nil then ApplyEffect(from, target, start_x, start_y, effects.effect, effects.level) end
                             end
-                        end
+
                         GroupClear(group)
                     end
 
@@ -362,11 +365,6 @@ do
 
         end)
 
-
-        weapon = nil
-        unit_data = nil
-        m = nil
-        missile = nil
     end
 
 

@@ -48,6 +48,8 @@ do
                     health = 100, mana = 100, hp_regen = 1, mp_regen = 1, moving_speed = 300
                 },
 
+                action_timer = CreateTimer(),
+
                 is_hp_static = false,
                 have_mp = true,
                 is_mp_static = false,
@@ -55,7 +57,8 @@ do
                 default_weapon = nil,
                 equip_point = {},
                 stats = {},
-                buff_list = {}
+                buff_list = {},
+                skill_list = {}
             }
 
             data.default_weapon = CreateDefaultWeapon()

@@ -287,7 +287,7 @@ do
 		ItemAddData('I003', {
 			NAME    		   = 'Зелье Здоровья',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
-			frame_texture      = "ReplaceableTextures\\CommandButtons\\BTNPotionGreen.blp",
+			frame_texture      = "GUI\\BTNredAApotionGS.blp",
 			special_description = "Восстанавливает часть здоровья"
 		})
     end
