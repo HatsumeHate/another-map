@@ -5,6 +5,23 @@ do
 
 
 
+    function ResetUnitSpellCast(unit)
+        local unit_data = GetUnitData(unit)
+        unit_data.cast_skill = 0
+        BlzPauseUnitEx(unit, false)
+        IssueImmediateOrderById(unit, order_stop)
+        SetUnitTimeScale(unit, 1.)
+
+        if unit_data.cast_skill > 0 then
+            SetUnitState(unit_data.Owner, UNIT_STATE_MANA, GetUnitState(unit_data.Owner, UNIT_STATE_MANA) + BlzGetUnitAbilityManaCost(unit_data.Owner, unit_data.cast_skill, 1-1))
+        end
+    end
+
+
+    local function CastSpell()
+
+    end
+
 
 
 
@@ -13,23 +30,35 @@ do
     TriggerAddAction(SkillCastTrigger, function()
         local skill = GetSkillData(GetSpellAbilityId())
 
-        if skill ~= nil then
+
+        if skill ~= nil and skill.autotrigger then
             local id = GetSpellAbilityId()
             local unit_data = GetUnitData(GetTriggerUnit())
             local ability_level = GetUnitAbilityLevel(unit_data.Owner, id)
-
-            BlzSetUnitAbilityCooldown(unit_data.Owner, id, ability_level-1, skill.level[ability_level].cooldown)
-            SetUnitTimeScale(unit_data.Owner, skill.level[ability_level].animation_scale)
+            local time_reduction = skill.level[ability_level].animation_scale
 
 
+            if skill.type == SKILL_PHYSICAL then
+                time_reduction = time_reduction / unit_data.stats[ATTACK_SPEED].multiplier
+            elseif skill.type == SKILL_MAGICAL then
+                time_reduction = time_reduction / ((100. + unit_data.stats[CAST_SPEED].value) * 0.01)
+            end
 
-            SetUnitAnimationByIndex(unit_data.Owner, skill.level[ability_level].animation)
+            if time_reduction <= 0. then time_reduction = 0.01 end
+
+            SetUnitTimeScale(unit_data.Owner, 1. + (1. - skill.level[ability_level].animation_scale))
+            BlzSetUnitAbilityCooldown(unit_data.Owner, id, ability_level - 1, skill.level[ability_level].cooldown + (skill.level[ability_level].animation_point * time_reduction))
+
             local target = GetSpellTargetUnit()
             local spell_x = GetSpellTargetX()
             local spell_y = GetSpellTargetX()
 
-                TimerStart(unit_data.action_timer, skill.level[ability_level].animation_point * skill.level[ability_level].animation_scale, false, function()
+            unit_data.cast_skill = id
+            BlzPauseUnitEx(unit_data.Owner, true)
+            SetUnitAnimationByIndex(unit_data.Owner, skill.level[ability_level].animation)
 
+                TimerStart(unit_data.action_timer, skill.level[ability_level].animation_point * time_reduction, false, function()
+                    unit_data.cast_skill = 0
 
                     if skill.level[ability_level].missile ~= nil then
 
@@ -53,7 +82,13 @@ do
                         end
                     end
 
-                    SetUnitTimeScale(unit_data.Owner, 1.)
+                    TimerStart(unit_data.action_timer, skill.level[ability_level].animation_backswing * time_reduction, false, function()
+                        SetUnitAnimation(unit_data.Owner, "Stand Ready")
+                        BlzPauseUnitEx(unit_data.Owner, false)
+                        SetUnitTimeScale(unit_data.Owner, 1.)
+                    end)
+
+
                     print("cast")
                 end)
 

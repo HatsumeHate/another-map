@@ -101,10 +101,8 @@ do
         -- delay for effect animation
         TimerStart(CreateTimer(), data.level[lvl].delay, false, function()
             if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
-                print("final, damage")
                 DamageUnit(source, target, data.level[lvl].power, data.level[lvl].attribute, data.level[lvl].damage_type, data.level[lvl].attack_type, data.level[lvl].can_crit, false, { eff = data, l = lvl })
                 ModifyBuffsEffect(source, target, data, lvl, ON_ENEMY)
-                print("final, debuffs")
             end
             DestroyTimer(GetExpiredTimer())
         end)

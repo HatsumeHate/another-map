@@ -28,6 +28,8 @@ do
             speed = 0.,
             scale = 1.,
 
+            max_targets = 1,
+
             start_z = 0.,
             end_z = 0.,
             arc = 0.,

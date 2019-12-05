@@ -7,6 +7,10 @@
     TARGET_CAST          = 2
     POINT_CAST           = 3
 
+    SKILL_PHYSICAL = 1
+    SKILL_MAGICAL = 2
+
+
 
     function GetSkillData(id)
         return SkillsData[id]
@@ -42,6 +46,7 @@
 
             animation               = "",
             animation_point         = 0.,
+            animation_backswing     = 0.,
             animation_scale         = 0.,
         }
     end
@@ -52,6 +57,7 @@
         local my_new_skill = {
             Id                      = skillId,
             name = "",
+            skill_type              = nil,
             autotrigger             = true,
             order                   = 0,
             target_type             = SELF_CAST,
@@ -75,17 +81,22 @@
 
         -- defined skills
         NewSkillData('A000', {
-            name = "test skill",
-            target_type = TARGET_CAST,
+            name            = "test skill",
+            target_type     = TARGET_CAST,
+            order           = order_channel,
+            type            = SKILL_PHYSICAL,
+
             level = {
                 [1] = {
                     missile             = 'M001',
                     effect              = 'EFF1',
                     cooldown            = 5.,
-                    animation           = 2,
-                    animation_point     = 0.7,
-                    animation_scale     = 1.,
+                    animation           = 3,
+                    animation_point     = 1.5,
+                    animation_backswing = 0.1666,
+                    animation_scale     = 0.5,
                 }
             }
+
         })
     end

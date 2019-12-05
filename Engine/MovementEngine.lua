@@ -105,7 +105,6 @@ do
             end
 
 
-        print(angle)
 
         local distance = SquareRoot((end_x-start_x)*(end_x-start_x) + (end_y-start_y)*(end_y-start_y) + (end_z - start_z)*(end_z - start_z))
         time = distance / m.speed
@@ -136,6 +135,8 @@ do
             time = time * (1. + m.arc)
         end
 
+        local targets = m.max_targets
+
 
         local vx = (end_x - start_x) * ((m.speed * PERIOD) / distance)
         local vy = (end_y - start_y) * ((m.speed * PERIOD) / distance)
@@ -154,7 +155,7 @@ do
             else
                 --TRACKING
                 if m.trackable then
-                    print("TRACKABLE")
+                    --print("TRACKABLE")
                     if GetUnitState(target, UNIT_STATE_LIFE) < 0.045 or target == nil then
                         -- disable
                         DestroyEffect(missile_effect)
@@ -173,7 +174,7 @@ do
                     DestroyEffect(missile_effect)
                     DestroyTimer(my_timer)
                     impact = true
-                    print("collision")
+                    --print("collision")
                 else
 
                     start_x = start_x + vx
@@ -260,7 +261,7 @@ do
                     -- seeking
                     if IsUnitInRangeXY(target, start_x, start_y, m.radius) then
 
-                        print("hit")
+                        --print("hit")
                         DestroyMissile(target, missile_effect, m, start_x, start_y)
 
 
@@ -321,10 +322,13 @@ do
 
                     if BlzGroupGetSize(group) > 0 then
                         if m.penetrate ~= nil and not m.penetrate then
-                            print("first hit")
-
-                            DestroyEffect(missile_effect)
-                            DestroyTimer(my_timer)
+                            --print("first hit")
+                            if targets <= 0 then
+                                DestroyEffect(missile_effect)
+                                DestroyTimer(my_timer)
+                            else
+                                targets = targets - 1
+                            end
                         end
 
                             if #m.sound_on_hit > 0 then

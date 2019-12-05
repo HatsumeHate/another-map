@@ -54,6 +54,8 @@ do
                 have_mp = true,
                 is_mp_static = false,
 
+                cast_skill = 0,
+
                 default_weapon = nil,
                 equip_point = {},
                 stats = {},
