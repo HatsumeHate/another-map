@@ -45,6 +45,7 @@ do
             attribute             = PHYSICAL_ATTRIBUTE,
             attack_type           = nil,
             can_crit              = true,
+            is_direct             = true,
             bonus_crit_chance     = 0,
             bonus_crit_multiplier = 0.,
             max_targets           = 1,
@@ -66,8 +67,10 @@ do
             triggered_function     = nil,
 
             SFX_used               = '',
+            SFX_used_scale         = 1.,
             SFX_on_unit            = '',
             SFX_on_unit_point      = '',
+            SFX_on_unit_scale      = 1.,
             delay                  = 0.,
             sound                  = ''
         }
@@ -102,11 +105,32 @@ do
                     power = 30,
                     delay = 0.,
                     can_crit = true,
+                    is_direct = true,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = RANGE_ATTACK,
                     attribute = PHYSICAL_ATTRIBUTE,
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A002', target_type = ON_SELF },
                         [2] = { modificator = ADD_BUFF, buff_id = 'A002', target_type = ON_ENEMY }
+                    },
+                }
+            }
+
+        })
+
+        NewEffectTemplate('EFRB', {
+            name = "frostbolt",
+            level = {
+                [1] = {
+                    power = 10,
+                    delay = 0.,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = ICE_ATTRIBUTE,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A004', target_type = ON_ENEMY }
                     },
                 }
             }

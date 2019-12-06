@@ -6,9 +6,10 @@ do
     ---@param sfx string
     ---@param target unit
     ---@param point string
-    local function PlaySpecialEffect(sfx, target, point)
+    local function PlaySpecialEffect(sfx, target, point, scale)
         if sfx ~= nil then
             local new_effect = AddSpecialEffectTarget(sfx, target, point)
+            BlzSetSpecialEffectScale(new_effect, scale)
             DestroyEffect(new_effect)
         end
     end
@@ -65,7 +66,7 @@ do
     ---@param lvl integer
     ---@param target_type integer
     function ApplyBuffEffect(source, target, data, lvl, target_type)
-        PlaySpecialEffect(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point)
+        PlaySpecialEffect(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point, data.level[lvl].SFX_on_unit_scale)
         -- delay for effect animation
         TimerStart(CreateTimer(), data.level[lvl].delay, false, function()
             ModifyBuffsEffect(source, target, data, lvl, target_type)
@@ -78,7 +79,7 @@ do
     ---@param data table
     ---@param lvl integer
     function ApplyEffectHealing(source, target, data, lvl)
-        PlaySpecialEffect(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point)
+        PlaySpecialEffect(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point, data.level[lvl].SFX_on_unit_scale)
 
         -- delay for effect animation
         TimerStart(CreateTimer(), data.level[lvl].delay, false, function()
@@ -97,12 +98,46 @@ do
     ---@param data table
     ---@param lvl integer
     function ApplyEffectDamage(source, target, data, lvl)
-        PlaySpecialEffect(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point)
+        PlaySpecialEffect(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point, data.level[lvl].SFX_on_unit_scale)
         -- delay for effect animation
         TimerStart(CreateTimer(), data.level[lvl].delay, false, function()
             if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
-                DamageUnit(source, target, data.level[lvl].power, data.level[lvl].attribute, data.level[lvl].damage_type, data.level[lvl].attack_type, data.level[lvl].can_crit, false, { eff = data, l = lvl })
+                print("12312")
+                print(data.level[lvl].attribute)
+                print(data.level[lvl].damage_type)
+                print(data.level[lvl].attack_type)
+                print(data.level[lvl].can_crit)
+                print(data.level[lvl].is_direct)
+                DamageUnit(source, target, data.level[lvl].power,
+                        data.level[lvl].attribute,
+                        data.level[lvl].damage_type,
+                        data.level[lvl].attack_type,
+                        data.level[lvl].can_crit,
+                        data.level[lvl].is_direct ,false, { eff = data, l = lvl })
                 ModifyBuffsEffect(source, target, data, lvl, ON_ENEMY)
+
+                if data.level[lvl].life_restored_from_hit then
+                    if data.level[lvl].life_restored ~= nil and data.level[lvl].life_restored > 0 then
+                        SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) + data.level[lvl].life_restored)
+                        CreateHitnumber(data.level[lvl].life_restored, source, source, HEAL_STATUS)
+                    elseif data.level[lvl].life_percent_restored ~= nil and data.level[lvl].life_percent_restored > 0 then
+                        local value = BlzGetUnitMaxHP(source) * data.level[lvl].life_percent_restored
+                        SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) + value)
+                        CreateHitnumber(value, source, source, HEAL_STATUS)
+                    end
+                end
+
+
+                if data.level[lvl].resource_restored_from_hit then
+                    if data.level[lvl].resource_restored ~= nil and data.level[lvl].resource_restored > 0 then
+                        SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + data.level[lvl].resource_restored)
+                        CreateHitnumber(data.level[lvl].resource_restored, source, source, RESOURCE_STATUS)
+                    elseif data.level[lvl].resource_percent_restored ~= nil and data.level[lvl].resource_percent_restored > 0 then
+                        local value = BlzGetUnitMaxMana(source) * data.level[lvl].resource_percent_restored
+                        SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + value)
+                        CreateHitnumber(value, source, source, RESOURCE_STATUS)
+                    end
+                end
             end
             DestroyTimer(GetExpiredTimer())
         end)
@@ -132,9 +167,9 @@ do
 
             if data.level[lvl].SFX_used ~= nil then
                 bj_lastCreatedEffect = AddSpecialEffect(data.level[lvl].SFX_used, x, y)
+                BlzSetSpecialEffectScale(bj_lastCreatedEffect, data.level[lvl].SFX_used_scale)
                 DestroyEffect(bj_lastCreatedEffect)
             end
-
 
             if data.level[lvl].sound ~= nil then
                 AddSound(data.level[lvl].sound, x, y)
@@ -143,9 +178,31 @@ do
 
             if (data.level[lvl].SFX_on_unit ~= nil and target ~= nil) then
                 bj_lastCreatedEffect = AddSpecialEffectTarget(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point)
+                BlzSetSpecialEffectScale(bj_lastCreatedEffect, data.level[lvl].SFX_on_unit_scale)
                 DestroyEffect(bj_lastCreatedEffect)
             end
 
+            if not data.level[lvl].life_restored_from_hit then
+                if data.level[lvl].life_restored ~= nil and data.level[lvl].life_restored > 0 then
+                    SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) + data.level[lvl].life_restored)
+                    CreateHitnumber(data.level[lvl].life_restored, source, source, HEAL_STATUS)
+                elseif data.level[lvl].life_percent_restored ~= nil and data.level[lvl].life_percent_restored > 0 then
+                    local value = BlzGetUnitMaxHP(source) * data.level[lvl].life_percent_restored
+                    SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) + value)
+                    CreateHitnumber(value, source, source, HEAL_STATUS)
+                end
+            end
+
+            if not data.level[lvl].resource_restored_from_hit then
+                if data.level[lvl].resource_restored ~= nil and data.level[lvl].resource_restored > 0 then
+                    SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + data.level[lvl].resource_restored)
+                    CreateHitnumber(data.level[lvl].resource_restored, source, source, RESOURCE_STATUS)
+                elseif data.level[lvl].resource_percent_restored ~= nil and data.level[lvl].resource_percent_restored > 0 then
+                    local value = BlzGetUnitMaxMana(source) * data.level[lvl].resource_percent_restored
+                    SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + value)
+                    CreateHitnumber(value, source, source, RESOURCE_STATUS)
+                end
+            end
 
             -- damaging
             if data.level[lvl].power ~= nil then

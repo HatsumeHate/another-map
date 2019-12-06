@@ -1,6 +1,6 @@
 do
 	-- parameters types
-	PARAMETERS_COUNT       = 41
+	PARAMETERS_COUNT       = 43
 
     STR_STAT               = 1
     AGI_STAT               = 2
@@ -55,7 +55,9 @@ do
 	MELEE_REFLECT_DAMAGE   = 40
 	RANGE_REFLECT_DAMAGE   = 41
 
-	VAMPIRIC_DAMAGE        = 42
+	HP_PER_HIT  			= 42
+	MP_PER_HIT 				= 43
+
 
 	
 	-- attributes
@@ -196,7 +198,10 @@ do
 		[BLOCK_ABSORB]            = 'Поглощение урона',
 
 		[MELEE_REFLECT_DAMAGE]   = 'Отражение урона ближнего боя',
-		[RANGE_REFLECT_DAMAGE]   = 'Отражение урона дальнего боя'
+		[RANGE_REFLECT_DAMAGE]   = 'Отражение урона дальнего боя',
+
+		[HP_PER_HIT]   = 'Здоровье за атаку',
+		[MP_PER_HIT]   = 'Ресурса за атаку'
 
 	}
 
@@ -425,7 +430,7 @@ do
         ---@param data table
         [MOVING_SPEED] = function(data)
             data.stats[MOVING_SPEED].value = (data.base_stats.moving_speed + data.stats[MOVING_SPEED].bonus) * data.stats[MOVING_SPEED].multiplier
-            SetUnitMoveSpeed(data.Owner, data.stats[MOVING_SPEED].value < 0. and 0. or I2R(data.stats[MOVING_SPEED].value))
+            SetUnitMoveSpeed(data.Owner, data.stats[MOVING_SPEED].value < 0. and 0. or data.stats[MOVING_SPEED].value)
         end,
 
 		---@param data table
@@ -451,6 +456,16 @@ do
 		---@param data table
 		[RANGE_REFLECT_DAMAGE] = function(data)
 			data.stats[RANGE_REFLECT_DAMAGE].value = data.stats[RANGE_REFLECT_DAMAGE].bonus
+		end,
+
+		---@param data table
+		[HP_PER_HIT] = function(data)
+			data.stats[HP_PER_HIT].value = data.stats[HP_PER_HIT].bonus
+		end,
+
+		---@param data table
+		[MP_PER_HIT] = function(data)
+			data.stats[MP_PER_HIT].value = data.stats[MP_PER_HIT].bonus
 		end
 	}
 

@@ -49,12 +49,15 @@ do
                 },
 
                 action_timer = CreateTimer(),
+                attack_timer = CreateTimer(),
 
                 is_hp_static = false,
                 have_mp = true,
                 is_mp_static = false,
 
                 cast_skill = 0,
+                cast_skill_level = 0,
+                cast_effect = nil,
 
                 default_weapon = nil,
                 equip_point = {},
@@ -67,6 +70,7 @@ do
             data.equip_point[WEAPON_POINT] = data.default_weapon
             data.stats = CreateParametersData()
 
+            TimerStart(data.attack_timer, 0., false, nil)
 
             if reference_base ~= nil then MergeTables(data.base_stats, reference_base) end
             if reference_weapon ~= nil then MergeTables(data.equip_point[WEAPON_POINT], reference_weapon) end

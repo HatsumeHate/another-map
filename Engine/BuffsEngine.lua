@@ -16,6 +16,18 @@ do
                     ModifyStat(unit_data.Owner, buff_data.level[buff_data.current_level].bonus[i2].PARAM, buff_data.level[buff_data.current_level].bonus[i2].VALUE, buff_data.level[buff_data.current_level].bonus[i2].METHOD, false)
                 end
 
+                if buff_data.level[buff_data.current_level].negative_state ~= nil then
+                    if not IsHaveNegativeState(unit_data.Owner, buff_data.level[buff_data.current_level].negative_state) then
+                        if buff_data.level[buff_data.current_level].negative_state == STATE_FREEZE then
+                            SetUnitVertexColor(target, 255, 255, 255)
+                            SetUnitTimeScale(target, 1.)
+                            BlzPauseUnitEx(target, false)
+                        elseif buff_data.level[buff_data.current_level].negative_state == STATE_STUN then
+                            BlzPauseUnitEx(target, false)
+                        end
+                    end
+                end
+
                 DestroyTimer(buff_data.update_timer)
                 table.remove(unit_data.buff_list, i)
                 buff_data = nil
@@ -119,6 +131,21 @@ do
 
     end
 
+
+    function IsHaveNegativeState(unit, state)
+        local data = GetUnitData(unit)
+
+            for i = 1, #data.buff_list do
+                if data.buff_list[i].level[data.buff_list[i].current_level].negative_state ~= nil then
+                    if data.buff_list[i].level[data.buff_list[i].current_level].negative_state == state then
+                        return true
+                    end
+                end
+            end
+
+        return false
+    end
+
     ---@param target unit
     ---@param buff_id integer
     ---@param lvl integer
@@ -128,6 +155,7 @@ do
         local existing_buff
 
             --TODO buff with higher rank replace weaker buffs
+
 
             if GetUnitAbilityLevel(target, FourCC(buff_id)) > 0 then
                 for i = 1, #target_data.buff_list do
@@ -149,6 +177,29 @@ do
             buff_data.expiration_time = buff_data.level[lvl].time
 
 
+        if buff_data.level[lvl].negative_state ~= nil then
+
+            if buff_data.level[lvl].negative_state == STATE_FREEZE then
+                SetUnitVertexColor(target, 57, 57, 255)
+                SetUnitTimeScale(target, 0.)
+                BlzPauseUnitEx(target, true)
+                ResetUnitSpellCast(target)
+            elseif buff_data.level[lvl].negative_state == STATE_STUN then
+                BlzPauseUnitEx(target, true)
+                ResetUnitSpellCast(target)
+            end
+
+
+            buff_data.expiration_time = buff_data.expiration_time * ((100. - target_data.stats[CONTROL_REDUCTION].value) * 0.01)
+
+            if buff_data.expiration_time <= 0. then
+                buff_data = nil
+                return false
+            end
+
+        end
+
+
             if buff_data.level[lvl].effect_sfx ~= nil then
                 local new_effect
                     if buff_data.level[lvl].effect_sfx_point ~= nil then
@@ -156,29 +207,23 @@ do
                     else
                         new_effect = AddSpecialEffect(buff_data.level[lvl].effect_sfx, GetUnitX(target), GetUnitY(target))
                     end
+                BlzSetSpecialEffectScale(new_effect, buff_data.level[lvl].effect_sfx_scale)
                 DestroyEffect(new_effect)
             end
 
             UnitAddAbility(target, FourCC(buff_data.id))
             table.insert(target_data.buff_list, buff_data)
 
-            --[[
-            if buff_data.buff_type == POSITIVE_BUFF then
-                local ability_buff = BlzGetUnitAbility(target, FourCC(buff_data.buff_id))
-                BlzSetAbilityStringLevelField(ability_buff, ABILITY_SLF_TOOLTIP_NORMAL_EXTENDED, 1, "|c0000FF00" .. BlzGetAbilityStringLevelField(ability_buff, ABILITY_SLF_TOOLTIP_NORMAL_EXTENDED, 1) .. "|r")
-                --BlzSetAbilityStringField(ability_buff, ABILITY_SLF_TOOLTIP_NORMAL,  "|c0000FF00" .. BlzGetAbilityStringField(ability_buff, ABILITY_SF_NAME) .. "|r")
-            end
-            ]]
 
             for i = 1, #buff_data.level[lvl].bonus do
                 ModifyStat(target, buff_data.level[lvl].bonus[i].PARAM, buff_data.level[lvl].bonus[i].VALUE, buff_data.level[lvl].bonus[i].METHOD, true)
             end
 
-
             local over_time_effect_delay
-            if buff_data.level[lvl].effect_delay ~= nil then
+            if buff_data.level[lvl].effect_delay ~= nil and buff_data.level[lvl].effect_delay > 0. then
                 over_time_effect_delay = buff_data.level[lvl].effect_delay
             end
+
 
             buff_data.update_timer = CreateTimer()
             TimerStart(buff_data.update_timer, BUFF_UPDATE, true, function()
@@ -196,7 +241,7 @@ do
                                         buff_data.level[buff_data.current_level].effect_damage.attribute,
                                         buff_data.level[buff_data.current_level].effect_damage.damage_type,
                                         buff_data.level[buff_data.current_level].effect_damage.attack_type,
-                                        buff_data.level[buff_data.current_level].effect_damage.can_crit, false, nil)
+                                        buff_data.level[buff_data.current_level].effect_damage.can_crit, false, false, nil)
                             end
 
                                 if buff_data.level[buff_data.current_level].effect_hp_value ~= nil then
@@ -230,6 +275,7 @@ do
 
                             if buff_data.level[buff_data.current_level].effect_trigger_sfx ~= nil then
                                 local new_effect = AddSpecialEffectTarget(buff_data.level[buff_data.current_level].effect_trigger_sfx, target, buff_data.level[buff_data.current_level].effect_trigger_sfx_point)
+                                BlzSetSpecialEffectScale(new_effect, buff_data.level[buff_data.current_level].effect_trigger_sfx_scale)
                                 DestroyEffect(new_effect)
                             end
 

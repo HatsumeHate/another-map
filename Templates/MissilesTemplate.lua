@@ -15,6 +15,7 @@ do
             model = "",
             decay = 0,
 
+            effect_on_target_scale = 1.,
             effect_on_target_point = "",
             effect_on_target = "",
             effect_on_loc = "",
@@ -60,11 +61,12 @@ do
             max_distance = 1000.,
             radius = 50.,
             speed = 400.,
-            start_z = 65.,
-            end_z = 65.,
-            arc = 0.1,
+            start_z = 35.,
+            end_z = 35.,
+            arc = 0.,
             ignore_terrain = true,
             full_distance = true,
+            penetrate = false,
             trackable = false
         })
 
@@ -78,7 +80,24 @@ do
             end_z = 65.,
             arc = 0.2,
             ignore_terrain = false,
+            penetrate = false,
             full_distance = true
+        })
+
+        NewMissileTemplate('MFRB', {
+            name = "frostbolt missile",
+            model = "Spell\\Blizzard II Missile.mdx",
+            max_distance = 1000.,
+            radius = 70.,
+            speed = 800.,
+            start_z = 35.,
+            end_z = 35.,
+            arc = 0.,
+            scale = 0.8,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
         })
         
     end

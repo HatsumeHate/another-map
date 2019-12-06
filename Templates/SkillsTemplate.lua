@@ -22,7 +22,6 @@
     local function NewSkillDataLevel()
         return {
 
-            range                   = 0.,
             cooldown                = 0.,
 
             required_hp             = 0.,
@@ -30,21 +29,22 @@
             given_hp                = 0.,
             given_mp                = 0.,
 
-            missile                 = 0,
-            effect                  = 0,
+            missile                 = nil,
+            effect                  = nil,
 
-            required_buff          = 0,
+            required_buff           = 0,
 
             lightning               = '',
 
             effect_on_cast_point    = '',
             effect_on_caster        = '',
             effect_on_caster_point  = '',
+            effect_on_caster_scale  = 1.,
 
             EffectOnCast            = '',
             EffectOnCastPoint       = '',
 
-            animation               = "",
+            animation               = 0,
             animation_point         = 0.,
             animation_backswing     = 0.,
             animation_scale         = 0.,
@@ -53,7 +53,7 @@
 
     ---@param skillId integer
     ---@param data table
-    local function NewSkillData(skillId, data)
+     function NewSkillData(skillId, data)
         local my_new_skill = {
             Id                      = skillId,
             name = "",
@@ -83,7 +83,6 @@
         NewSkillData('A000', {
             name            = "test skill",
             target_type     = TARGET_CAST,
-            order           = order_channel,
             type            = SKILL_PHYSICAL,
 
             level = {
@@ -91,6 +90,25 @@
                     missile             = 'M001',
                     effect              = 'EFF1',
                     cooldown            = 5.,
+                    animation           = 3,
+                    animation_point     = 1.5,
+                    animation_backswing = 0.1666,
+                    animation_scale     = 0.5,
+                }
+            }
+
+        })
+
+        NewSkillData('A003', {
+            name            = "frostbolt skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_MAGICAL,
+
+            level = {
+                [1] = {
+                    missile             = 'MFRB',
+                    effect              = 'EFRB',
+                    cooldown            = 0.1,
                     animation           = 3,
                     animation_point     = 1.5,
                     animation_backswing = 0.1666,

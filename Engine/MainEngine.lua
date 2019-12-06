@@ -48,7 +48,8 @@ do
     ---@param can_crit boolean
     ---@param is_sound boolean
     ---@param myeffect table
-    function DamageUnit(source, target, amount, attribute, damage_type, attack_type, can_crit, is_sound, myeffect)
+    ---@param direct boolean
+    function DamageUnit(source, target, amount, attribute, damage_type, attack_type, can_crit, direct, is_sound, myeffect)
         local attacker = GetUnitData(source)
         local victim = GetUnitData(target)
         local critical_rate = 1.
@@ -132,11 +133,29 @@ do
 
             damage = ((damage * attribute_bonus) * critical_rate) * defence * attack_modifier
         end
-        --print(attribute_bonus)
-       -- print(critical_rate)
-       -- print(defence)
-       -- print(attack_modifier)
 
+
+        --print("attrib "..attribute_bonus)
+        --print("rate "..critical_rate)
+        --print("defence "..defence)
+        --print("modifier "..attack_modifier)
+        --print(TimerGetRemaining(attacker.attack_timer))
+
+
+        if not (TimerGetRemaining(attacker.attack_timer) > 0.) and direct then
+
+            if attacker.stats[HP_PER_HIT].value > 0 then
+                SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) + attacker.stats[HP_PER_HIT].value)
+                CreateHitnumber(attacker.stats[HP_PER_HIT].value, source, source, HEAL_STATUS)
+            end
+
+            if attacker.stats[MP_PER_HIT].value > 0 then
+                SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + attacker.stats[MP_PER_HIT].value)
+                CreateHitnumber(attacker.stats[MP_PER_HIT].value, source, source, RESOURCE_STATUS)
+            end
+
+            TimerStart(attacker.attack_timer, attacker.stats[ATTACK_SPEED].value - 0.01, false, nil)
+        end
 
             damage = GetRandomReal(damage * attacker.equip_point[WEAPON_POINT].DISPERSION[1], damage * attacker.equip_point[WEAPON_POINT].DISPERSION[2])
 
@@ -148,7 +167,7 @@ do
             CreateHitnumber(damage, source, target, attack_status)
 
 
-        return 0
+        return damage
     end
 
 
@@ -182,7 +201,7 @@ do
                                         if IsUnitEnemy(picked, player) then
                                             if GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and IsAngleInFace(data.Owner, data.equip_point[WEAPON_POINT].ANGLE, GetUnitX(picked), GetUnitY(picked), false) then
                                                 DamageUnit(data.Owner, picked, data.equip_point[WEAPON_POINT].DAMAGE + data.stats[PHYSICAL_ATTACK].value,
-                                                        data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, nil)
+                                                        data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, true, nil)
                                             end
                                         end
                                     end
@@ -191,7 +210,7 @@ do
                             DestroyGroup(enemy_group)
                         else
                             DamageUnit(data.Owner, GetTriggerUnit(), data.equip_point[WEAPON_POINT].DAMAGE + data.stats[PHYSICAL_ATTACK].value,
-                                    data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, nil)
+                                    data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, true, nil)
                         end
 
                     end

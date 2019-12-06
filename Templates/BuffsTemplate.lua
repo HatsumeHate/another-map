@@ -10,6 +10,9 @@ do
     OVER_TIME_DAMAGE = 1
     OVER_TIME_HEAL = 2
 
+    STATE_STUN = 1
+    STATE_FREEZE = 2
+
 
     ---@param buff_id integer
     ---@param lvl integer
@@ -35,16 +38,18 @@ do
             effect_damage = {},
             effect_hp_value = 0,
             effect_mp_value = 0,
-            effect_delay = 0,
+            effect_delay = 0.,
 
             effect_hp_percent_value = 0,
             effect_mp_percent_value = 0,
             effect_type = 0,
 
             effect_trigger_sfx = "",
+            effect_trigger_sfx_scale = 1.,
             effect_trigger_sfx_point = "",
 
             effect_sfx = "",
+            effect_sfx_scale = 1.,
             effect_sfx_point = "",
 
             bonus = { }
@@ -84,7 +89,6 @@ do
 
 
     function DefineBuffsData()
-        --TODO test
         --================================================--
         NewBuffTemplate({
             name = "test buff",
@@ -104,7 +108,8 @@ do
                     effect_delay = 1.,
 
                     effect_sfx = "Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdx",
-                    effect_sfx_point = "chest",
+                    effect_sfx_point = "origin",
+                    effect_sfx_scale = 0.7,
 
                     bonus = {
                         { PARAM = PHYSICAL_ATTACK, VALUE = 5., METHOD = MULTIPLY_BONUS },
@@ -115,7 +120,27 @@ do
 
         })
         --================================================--
+        NewBuffTemplate({
+            name = "frostbolt debuff",
+            id = 'A004',
+            buff_id = 'B001',
+            buff_type = NEGATIVE_BUFF,
 
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 3.,
+
+                    current_level = 1,
+                    max_level = 1,
+
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = 0.7, METHOD = MULTIPLY_BONUS }
+                    }
+                }
+            }
+
+        })
     end
 
 end
