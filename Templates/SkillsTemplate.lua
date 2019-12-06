@@ -98,7 +98,7 @@
             }
 
         })
-
+        --============================================--
         NewSkillData('A003', {
             name            = "frostbolt skill",
             target_type     = TARGET_CAST,
@@ -111,6 +111,24 @@
                     cooldown            = 0.1,
                     animation           = 3,
                     animation_point     = 1.5,
+                    animation_backswing = 0.1666,
+                    animation_scale     = 0.5,
+                }
+            }
+
+        })
+        --============================================--
+        NewSkillData('A001', {
+            name            = "frost nova skill",
+            target_type     = SELF_CAST,
+            type            = SKILL_MAGICAL,
+
+            level = {
+                [1] = {
+                    effect              = 'EFRN',
+                    cooldown            = 0.1,
+                    animation           = 3,
+                    animation_point     = 1.4,
                     animation_backswing = 0.1666,
                     animation_scale     = 0.5,
                 }

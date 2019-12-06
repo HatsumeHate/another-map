@@ -12,20 +12,27 @@ do
                 UnitRemoveAbility(unit_data.Owner, FourCC(buff_data.buff_id))
                 UnitRemoveAbility(unit_data.Owner, FourCC(buff_data.id))
 
-                for i2 = 1, #buff_data.level[buff_data.current_level].bonus do
-                    ModifyStat(unit_data.Owner, buff_data.level[buff_data.current_level].bonus[i2].PARAM, buff_data.level[buff_data.current_level].bonus[i2].VALUE, buff_data.level[buff_data.current_level].bonus[i2].METHOD, false)
+                if buff_data.level[buff_data.current_level].bonus ~= nil then
+                    for i2 = 1, #buff_data.level[buff_data.current_level].bonus do
+                        ModifyStat(unit_data.Owner, buff_data.level[buff_data.current_level].bonus[i2].PARAM, buff_data.level[buff_data.current_level].bonus[i2].VALUE, buff_data.level[buff_data.current_level].bonus[i2].METHOD, false)
+                    end
                 end
 
                 if buff_data.level[buff_data.current_level].negative_state ~= nil then
+
+                    local state = buff_data.level[buff_data.current_level].negative_state
+                    buff_data.level[buff_data.current_level].negative_state = nil
+
                     if not IsHaveNegativeState(unit_data.Owner, buff_data.level[buff_data.current_level].negative_state) then
-                        if buff_data.level[buff_data.current_level].negative_state == STATE_FREEZE then
-                            SetUnitVertexColor(target, 255, 255, 255)
-                            SetUnitTimeScale(target, 1.)
-                            BlzPauseUnitEx(target, false)
-                        elseif buff_data.level[buff_data.current_level].negative_state == STATE_STUN then
-                            BlzPauseUnitEx(target, false)
+                        if state == STATE_FREEZE then
+                            SetUnitVertexColor(unit_data.Owner, 255, 255, 255, 255)
+                            SetUnitTimeScale(unit_data.Owner, 1.)
+                            BlzPauseUnitEx(unit_data.Owner, false)
+                        elseif state == STATE_STUN then
+                            BlzPauseUnitEx(unit_data.Owner, false)
                         end
                     end
+
                 end
 
                 DestroyTimer(buff_data.update_timer)
@@ -132,7 +139,7 @@ do
     end
 
 
-    function IsHaveNegativeState(unit, state)
+     function IsHaveNegativeState(unit, state)
         local data = GetUnitData(unit)
 
             for i = 1, #data.buff_list do
@@ -180,10 +187,10 @@ do
         if buff_data.level[lvl].negative_state ~= nil then
 
             if buff_data.level[lvl].negative_state == STATE_FREEZE then
-                SetUnitVertexColor(target, 57, 57, 255)
-                SetUnitTimeScale(target, 0.)
-                BlzPauseUnitEx(target, true)
+                SetUnitVertexColor(target, 57, 57, 255, 255)
                 ResetUnitSpellCast(target)
+                BlzPauseUnitEx(target, true)
+                SetUnitTimeScale(target, 0.)
             elseif buff_data.level[lvl].negative_state == STATE_STUN then
                 BlzPauseUnitEx(target, true)
                 ResetUnitSpellCast(target)
@@ -199,7 +206,6 @@ do
 
         end
 
-
             if buff_data.level[lvl].effect_sfx ~= nil then
                 local new_effect
                     if buff_data.level[lvl].effect_sfx_point ~= nil then
@@ -214,16 +220,17 @@ do
             UnitAddAbility(target, FourCC(buff_data.id))
             table.insert(target_data.buff_list, buff_data)
 
-
-            for i = 1, #buff_data.level[lvl].bonus do
-                ModifyStat(target, buff_data.level[lvl].bonus[i].PARAM, buff_data.level[lvl].bonus[i].VALUE, buff_data.level[lvl].bonus[i].METHOD, true)
+            --print(#buff_data.level[lvl].bonus)
+            if buff_data.level[lvl].bonus ~= nil then
+                for i = 1, #buff_data.level[lvl].bonus do
+                    ModifyStat(target, buff_data.level[lvl].bonus[i].PARAM, buff_data.level[lvl].bonus[i].VALUE, buff_data.level[lvl].bonus[i].METHOD, true)
+                end
             end
 
             local over_time_effect_delay
             if buff_data.level[lvl].effect_delay ~= nil and buff_data.level[lvl].effect_delay > 0. then
                 over_time_effect_delay = buff_data.level[lvl].effect_delay
             end
-
 
             buff_data.update_timer = CreateTimer()
             TimerStart(buff_data.update_timer, BUFF_UPDATE, true, function()

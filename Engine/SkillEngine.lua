@@ -62,6 +62,8 @@ do
             --print(spell_x)
             --AddSpecialEffect("Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdx", spell_x, spell_y)
 
+            print(GetUnitName(target))
+
             unit_data.cast_skill = id
             unit_data.cast_skill_level = ability_level
 
@@ -77,9 +79,10 @@ do
                     unit_data.cast_skill = 0
                     DestroyEffect(unit_data.cast_effect)
 
-                        if  skill.autotrigger then
+                        if skill.autotrigger then
+                            print("test")
                             if skill.level[ability_level].missile ~= nil then
-
+                                print("missile")
                                 if target ~= nil then
                                     print("target")
                                     local angle = AngleBetweenUnits(unit_data.Owner, target)
@@ -89,20 +92,25 @@ do
                                 else
                                     print("no target")
                                     ThrowMissile(unit_data.Owner, nil, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level },
-                                        GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), spell_x, spell_y, AngleBetweenUnitXY(unit_data.Owner, spell_x, spell_y))
+                                            GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), spell_x, spell_y, AngleBetweenUnitXY(unit_data.Owner, spell_x, spell_y))
                                 end
 
                             else
-                                if target ~= nil then
+                            print("effect")
+                                if target ~= nil and target ~= unit_data.Owner then
                                     SetUnitFacing(unit_data.Owner, AngleBetweenUnits(unit_data.Owner, target))
                                     ApplyEffect(unit_data.Owner, target, 0.,0., skill.level[ability_level].effect, ability_level)
-                                elseif spell_x < 0. or spell_x > 0. then
-                                    ApplyEffect(unit_data.Owner, nil, spell_x, spell_y, skill.level[ability_level].effect, ability_level)
-                                else
+                                elseif target ~= nil and target == unit_data.Owner then
+                                    print("on self")
                                     ApplyEffect(unit_data.Owner, nil, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), skill.level[ability_level].effect, ability_level)
+                                else
+                                    print("on point")
+                                    ApplyEffect(unit_data.Owner, nil, spell_x, spell_y, skill.level[ability_level].effect, ability_level)
                                 end
                             end
                         end
+
+                    print("spell backswing")
 
                     TimerStart(unit_data.action_timer, skill.level[ability_level].animation_backswing * time_reduction, false, function()
                         SetUnitAnimation(unit_data.Owner, "Stand Ready")

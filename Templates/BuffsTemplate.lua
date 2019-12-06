@@ -141,6 +141,26 @@ do
             }
 
         })
+        --================================================--
+        NewBuffTemplate({
+            name = "frost nova debuff",
+            id = 'A00S',
+            buff_id = 'B002',
+            buff_type = NEGATIVE_BUFF,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 3.,
+
+                    current_level = 1,
+                    max_level = 1,
+
+                    negative_state = STATE_FREEZE
+                }
+            }
+
+        })
     end
 
 end

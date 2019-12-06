@@ -137,6 +137,31 @@ do
 
         })
 
+        NewEffectTemplate('EFRN', {
+            name = "frost nova effect",
+            level = {
+                [1] = {
+                    power = 10,
+                    delay = 0.3,
+                    can_crit = false,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = ICE_ATTRIBUTE,
+
+                    area_of_effect = 300.,
+                    max_targets = 300,
+                    SFX_used = "Spell\\IceNova.mdx",
+                    SFX_used_scale = 1.,
+
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A00S', target_type = ON_ENEMY }
+                    },
+                }
+            }
+
+        })
+
     end
 
 end
