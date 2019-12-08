@@ -10,6 +10,11 @@ do
     end
 
 
+    function OnMissileExpire(source, target, missile)
+
+    end
+
+
     function OnMissileHit(source, target, missile)
 
     end

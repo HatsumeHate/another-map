@@ -186,7 +186,11 @@
 	function MergeTables(a, b)
 		if b == nil then return a end
 		for k, v in pairs(b) do
-			a[k] = v
+			if type(v) == "table" then
+				a[k] = MergeTables({}, v)
+			else
+				a[k] = v
+			end
 		end
 		return a
 	end

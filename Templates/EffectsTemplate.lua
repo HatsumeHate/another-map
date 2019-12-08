@@ -123,6 +123,7 @@ do
             level = {
                 [1] = {
                     power = 10,
+                    get_attack_bonus = true,
                     delay = 0.,
                     can_crit = true,
                     is_direct = true,
@@ -142,6 +143,7 @@ do
             level = {
                 [1] = {
                     power = 10,
+                    get_attack_bonus = true,
                     delay = 0.3,
                     can_crit = false,
                     is_direct = true,
@@ -161,6 +163,70 @@ do
             }
 
         })
+
+        NewEffectTemplate('EGFB', {
+            name = "fireball effect",
+            level = {
+                [1] = {
+                    power = 17,
+                    get_attack_bonus = true,
+                    delay = 0.,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = FIRE_ATTRIBUTE,
+
+                    area_of_effect = 175.,
+                    max_targets = 300,
+
+                }
+            }
+
+        })
+
+        NewEffectTemplate('EFRO', {
+            name = "frost orb end effect",
+            level = {
+                [1] = {
+                    power = 20,
+                    get_attack_bonus = true,
+                    delay = 0.1,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = ICE_ATTRIBUTE,
+
+                    area_of_effect = 225.,
+                    max_targets = 300,
+
+                }
+            }
+
+        })
+
+        NewEffectTemplate('EFOA', {
+            name = "frost orb mid effect",
+            level = {
+                [1] = {
+                    power = 5,
+                    get_attack_bonus = true,
+                    delay = 0.,
+                    can_crit = false,
+                    is_direct = false,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = ICE_ATTRIBUTE,
+
+                    area_of_effect = 175.,
+                    max_targets = 300,
+
+                }
+            }
+
+        })
+
 
     end
 

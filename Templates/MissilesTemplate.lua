@@ -22,6 +22,7 @@ do
 
             sound_on_hit = {},
             sound_on_launch = {},
+            sound_on_destroy = {},
 
             radius = 0.,
             max_distance = 0.,
@@ -30,6 +31,7 @@ do
             scale = 1.,
 
             max_targets = 1,
+            hit_once_in = 0.,
 
             start_z = 0.,
             end_z = 0.,
@@ -99,7 +101,41 @@ do
             penetrate = false,
             trackable = false
         })
-        
+
+        NewMissileTemplate('MGFB', {
+            name = "firebolt missile",
+            model = "Spell\\Fireball Medium.mdx",
+            max_distance = 1000.,
+            radius = 100.,
+            speed = 625.,
+            start_z = 35.,
+            end_z = 35.,
+            arc = 0.,
+            scale = 0.8,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+
+        NewMissileTemplate('MFRO', {
+            name = "frost orb missile",
+            model = "Spell\\FrozenOrb.mdx",
+            max_distance = 600.,
+            radius = 125.,
+            speed = 625.,
+            start_z = 35.,
+            end_z = 35.,
+            arc = 0.,
+            scale = 1.45,
+            max_targets = 300,
+            hit_once_in = 0.25,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            trackable = false
+        })
+
     end
 
 end

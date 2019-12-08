@@ -24,6 +24,7 @@ do
                     buff_data.level[buff_data.current_level].negative_state = nil
 
                     if not IsHaveNegativeState(unit_data.Owner, buff_data.level[buff_data.current_level].negative_state) then
+                        --buff_data.level[buff_data.current_level].negative_state = state
                         if state == STATE_FREEZE then
                             SetUnitVertexColor(unit_data.Owner, 255, 255, 255, 255)
                             SetUnitTimeScale(unit_data.Owner, 1.)
@@ -220,7 +221,7 @@ do
             UnitAddAbility(target, FourCC(buff_data.id))
             table.insert(target_data.buff_list, buff_data)
 
-            --print(#buff_data.level[lvl].bonus)
+
             if buff_data.level[lvl].bonus ~= nil then
                 for i = 1, #buff_data.level[lvl].bonus do
                     ModifyStat(target, buff_data.level[lvl].bonus[i].PARAM, buff_data.level[lvl].bonus[i].VALUE, buff_data.level[lvl].bonus[i].METHOD, true)

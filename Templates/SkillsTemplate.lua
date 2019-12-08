@@ -135,4 +135,41 @@
             }
 
         })
+        --============================================--
+        NewSkillData('A00D', {
+            name            = "fireball skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_MAGICAL,
+
+            level = {
+                [1] = {
+                    missile             = 'MGFB',
+                    effect              = 'EGFB',
+                    cooldown            = 0.1,
+                    animation           = 3,
+                    animation_point     = 1.4,
+                    animation_backswing = 0.1666,
+                    animation_scale     = 0.5,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A005', {
+            name            = "frost orb skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_MAGICAL,
+
+            level = {
+                [1] = {
+                    missile             = 'MFRO',
+                    effect              = 'EFOA',
+                    cooldown            = 0.1,
+                    animation           = 3,
+                    animation_point     = 1.,
+                    animation_backswing = 1.,
+                    animation_scale     = 0.5,
+                }
+            }
+        })
+
     end

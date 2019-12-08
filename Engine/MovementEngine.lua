@@ -71,12 +71,42 @@ do
     end
 
 
-    function IsMapBounds(x, y)
+    local function IsMapBounds(x, y)
         return (x > GetRectMaxX(bj_mapInitialPlayableArea) or x < GetRectMinX(bj_mapInitialPlayableArea) or y > GetRectMaxY(bj_mapInitialPlayableArea) or y < GetRectMinY(bj_mapInitialPlayableArea))
     end
 
 
 
+    ---@param missile table
+    ---@param angle real
+    function RedirectMissile_Deg(missile, angle)
+        local x = BlzGetLocalSpecialEffectX(missile.missile_effect)
+        local y = BlzGetLocalSpecialEffectY(missile.missile_effect)
+        local z = BlzGetLocalSpecialEffectZ(missile.missile_effect)
+        local distance = GetDistance3D(x, y, z, missile.end_point_x, missile.end_point_y, missile.end_point_z)
+
+            missile.end_point_x = x + (distance * Cos(angle * bj_DEGTORAD))
+            missile.end_point_y = y + (distance * Sin(angle * bj_DEGTORAD))
+            missile.end_point_z = GetZ(missile.end_point_x, missile.end_point_y)
+
+            missile.vx = (missile.end_point_x - x) * ((missile.speed * PERIOD) / distance)
+            missile.vy = (missile.end_point_y - y) * ((missile.speed * PERIOD) / distance)
+            missile.vz = (missile.end_point_z - z) * ((missile.speed * PERIOD) / distance)
+            BlzSetSpecialEffectYaw(missile.missile_effect, AngleBetweenXY(x, y, missile.end_point_x, missile.end_point_y))
+
+    end
+
+
+
+    ---@param from unit
+    ---@param target unit
+    ---@param missile table
+    ---@param effects table
+    ---@param start_x real
+    ---@param start_y real
+    ---@param end_x real
+    ---@param end_y real
+    ---@param angle real
     function ThrowMissile(from, target, missile, effects, start_x, start_y, end_x, end_y, angle)
         local unit_data = GetUnitData(from)
         local m = GetMissileData(missile)
@@ -91,12 +121,17 @@ do
         local time = 0.
         local weapon
 
+
             if m == nil then
-                weapon = {}
-                MergeTables(weapon, unit_data.equip_point[WEAPON_POINT])
-                m = GetMissileData(unit_data.equip_point[WEAPON_POINT].missile)
-                end_z = GetZ(end_x, end_y) + m.end_z
-                start_z = GetZ(start_x, start_y) + m.start_z
+                if unit_data.equip_point[WEAPON_POINT].missile ~= nil then
+                    weapon = {}
+                    MergeTables(weapon, unit_data.equip_point[WEAPON_POINT])
+                    m = GetMissileData(unit_data.equip_point[WEAPON_POINT].missile)
+                    end_z = GetZ(end_x, end_y) + m.end_z
+                    start_z = GetZ(start_x, start_y) + m.start_z
+                else
+                    return
+                end
             else
                 m = MergeTables({}, m)
             end
@@ -115,6 +150,9 @@ do
             end
 
 
+        m.end_point_x = end_x
+        m.end_point_y = end_y
+        m.end_point_z = end_z
 
         local distance = SquareRoot((end_x-start_x)*(end_x-start_x) + (end_y-start_y)*(end_y-start_y) + (end_z - start_z)*(end_z - start_z))
         time = distance / m.speed
@@ -148,34 +186,40 @@ do
         local targets = m.max_targets
 
 
-        local vx = (end_x - start_x) * ((m.speed * PERIOD) / distance)
-        local vy = (end_y - start_y) * ((m.speed * PERIOD) / distance)
-        local vz = (end_z - start_z) * ((m.speed * PERIOD) / distance)
+        m.vx = (end_x - start_x) * ((m.speed * PERIOD) / distance)
+        m.vy = (end_y - start_y) * ((m.speed * PERIOD) / distance)
+        m.vz = (end_z - start_z) * ((m.speed * PERIOD) / distance)
 
         local impact = false
-
-
+        local hit_group = CreateGroup()
         local my_timer = CreateTimer()
+
+
         TimerStart(my_timer, PERIOD, true, function()
 
             if IsMapBounds(start_x, start_y) or time < 0. then
                 print("BOUNDS")
+
+                if #m.sound_on_destroy > 0 then
+                    AddSound(m.sound_on_destroy[GetRandomInt(1, #m.sound_on_destroy)], start_x, start_y)
+                end
+
+                OnMissileExpire(from, target, m)
                 DestroyEffect(missile_effect)
                 DestroyTimer(my_timer)
+                DestroyGroup(hit_group)
                 m = nil
             else
                 --TRACKING
                 if m.trackable then
                     --print("TRACKABLE")
                     if GetUnitState(target, UNIT_STATE_LIFE) < 0.045 or target == nil then
-                        -- disable
-                        DestroyEffect(missile_effect)
-                        DestroyTimer(my_timer)
+                        time = 0.
                     else
                         distance = GetDistance3D(start_x, start_y, start_z, GetUnitX(target), GetUnitY(target), BlzGetLocalUnitZ(target))
-                        vx = (GetUnitX(target) - start_x) * ((m.speed * PERIOD) / distance)
-                        vy = (GetUnitY(target) - start_y) * ((m.speed * PERIOD) / distance)
-                        vz = (BlzGetLocalUnitZ(target) - start_z) * ((m.speed * PERIOD) / distance)
+                        m.vx = (GetUnitX(target) - start_x) * ((m.speed * PERIOD) / distance)
+                        m.vy = (GetUnitY(target) - start_y) * ((m.speed * PERIOD) / distance)
+                        m.vz = (BlzGetLocalUnitZ(target) - start_z) * ((m.speed * PERIOD) / distance)
                         BlzSetSpecialEffectYaw(missile_effect, AngleBetweenXY(start_x, start_y, GetUnitX(target), GetUnitY(target)))
                     end
                 end
@@ -187,8 +231,8 @@ do
                     --print("collision")
                 else
 
-                    start_x = start_x + vx
-                    start_y = start_y + vy
+                    start_x = start_x + m.vx
+                    start_y = start_y + m.vy
 
                     if m.arc > 0. then
                         local old_z = start_z
@@ -199,7 +243,7 @@ do
                         BlzSetSpecialEffectPitch(missile_effect, pitch)
                         length = length + step
                     else
-                        start_z = start_z + vz
+                        start_z = start_z + m.vz
                     end
 
                     BlzSetSpecialEffectPosition(missile_effect,  start_x, start_y, start_z)
@@ -247,8 +291,9 @@ do
                                     if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
 
                                         ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
-
                                         DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
+                                        OnMissileHit(from, target, m)
+
                                         damage_list.targets = damage_list.targets - 1
                                         if damage_list.targets <= 0 then break end
                                     end
@@ -262,6 +307,8 @@ do
                             if effects ~= nil then ApplyEffect(from, nil, start_x, start_y, effects.effect, effects.level) end
                         end
 
+
+                        OnMissileImpact(from, m)
                     end
                 end
             else
@@ -271,36 +318,39 @@ do
 
                         --print("hit")
                         DestroyMissile(target, missile_effect, m, start_x, start_y)
-
                         ApplySpecialEffectTarget(m.effect_on_target, target, m.effect_on_target_point, m.effect_on_target_scale)
 
+
                         if weapon ~= nil then
+
                             local damage_list = GetDamageValues(unit_data, weapon, effects, m)
                             DamageUnit(from, target, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
+                            OnMissileHit(from, target, m)
 
-                            if damage_list.targets > 1 or damage_list.range > 0 then
-                                local group = CreateGroup()
-                                local player_entity = GetOwningPlayer(from)
-                                GroupEnumUnitsInRange(group, start_x, start_y, damage_list.range, nil)
-                                GroupRemoveUnit(group, target)
+                                if damage_list.targets > 1 or damage_list.range > 0 then
+                                    local group = CreateGroup()
+                                    local player_entity = GetOwningPlayer(from)
+                                    GroupEnumUnitsInRange(group, start_x, start_y, damage_list.range, nil)
+                                    GroupRemoveUnit(group, target)
 
-                                    for index = BlzGroupGetSize(group) - 1, 0, -1 do
-                                        local picked = BlzGroupUnitAt(group, index)
+                                        for index = BlzGroupGetSize(group) - 1, 0, -1 do
+                                            local picked = BlzGroupUnitAt(group, index)
 
-                                        if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
+                                            if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
 
-                                            ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
+                                                ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
+                                                DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
+                                                OnMissileHit(from, target, m)
 
-                                            DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
-                                            damage_list.targets = damage_list.targets - 1
-                                            if damage_list.targets <= 0 then break end
+                                                damage_list.targets = damage_list.targets - 1
+                                                if damage_list.targets <= 0 then break end
+                                            end
+
                                         end
 
-                                    end
-
-                                GroupClear(group)
-                                DestroyGroup(group)
-                            end
+                                    GroupClear(group)
+                                    DestroyGroup(group)
+                                end
 
                             damage_list = nil
                         else
@@ -316,7 +366,7 @@ do
 
                     for index = BlzGroupGetSize(group) - 1, 0, -1 do
                         local picked = BlzGroupUnitAt(group, index)
-                            if not (IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045) then
+                            if not (IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and not IsUnitInGroup(picked, hit_group)) then
                                 GroupRemoveUnit(group, picked)
                             end
                     end
@@ -333,17 +383,17 @@ do
                                     for index = BlzGroupGetSize(group) - 1, 0, -1 do
                                         local picked = BlzGroupUnitAt(group, index)
 
-                                        if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
 
                                             ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
-
                                             DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
                                             damage_list.targets = damage_list.targets - 1
-                                            if damage_list.targets <= 0 then
-                                                time = 0.
-                                                break
-                                            end
-                                        end
+
+                                            OnMissileHit(from, target, m)
+
+                                                if damage_list.targets <= 0 then
+                                                    time = 0.
+                                                    break
+                                                end
 
                                     end
 
@@ -353,14 +403,26 @@ do
                                     for index = BlzGroupGetSize(group) - 1, 0, -1 do
                                         local picked = BlzGroupUnitAt(group, index)
 
-                                        if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
-                                            ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
-                                            ApplyEffect(from, picked, start_x, start_y, effects.effect, effects.level)
-                                            targets = targets - 1
-                                                if targets <= 0 or not m.penetrate then
-                                                    time = 0.
-                                                    break
-                                                end
+                                        ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
+                                        ApplyEffect(from, picked, start_x, start_y, effects.effect, effects.level)
+
+                                        OnMissileHit(from, target, m)
+                                        targets = targets - 1
+
+                                        if m.hit_once_in > 0. then
+                                            local damaged_unit = picked
+                                            GroupAddUnit(hit_group, damaged_unit)
+                                            TimerStart(CreateTimer(), m.hit_once_in, false, function()
+                                                GroupRemoveUnit(hit_group, damaged_unit)
+                                                DestroyTimer(GetExpiredTimer())
+                                            end)
+
+                                        end
+
+
+                                        if targets <= 0 or not m.penetrate then
+                                            time = 0.
+                                            break
                                         end
 
                                     end

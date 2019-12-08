@@ -22,8 +22,11 @@ do
     end
 
 
-    local function CastSpell()
-
+    function SpellBackswing(unit)
+        BlzPauseUnitEx(unit, false)
+        IssueImmediateOrderById(unit, order_stop)
+        SetUnitAnimation(unit, "Stand Ready")
+        SetUnitTimeScale(unit, 1.)
     end
 
 
@@ -43,13 +46,13 @@ do
 
 
 
-            if skill.type == SKILL_PHYSICAL then
-                time_reduction = time_reduction / unit_data.stats[ATTACK_SPEED].multiplier
-            elseif skill.type == SKILL_MAGICAL then
-                time_reduction = time_reduction / ((100. + unit_data.stats[CAST_SPEED].value) * 0.01)
-            end
+                if skill.type == SKILL_PHYSICAL then
+                    time_reduction = time_reduction / unit_data.stats[ATTACK_SPEED].multiplier
+                elseif skill.type == SKILL_MAGICAL then
+                    time_reduction = time_reduction / ((100. + unit_data.stats[CAST_SPEED].value) * 0.01)
+                end
 
-            if time_reduction <= 0. then time_reduction = 0.01 end
+                if time_reduction <= 0. then time_reduction = 0.01 end
 
             SetUnitTimeScale(unit_data.Owner, 1. + (1. - skill.level[ability_level].animation_scale))
             BlzSetUnitAbilityCooldown(unit_data.Owner, id, ability_level - 1, skill.level[ability_level].cooldown + (skill.level[ability_level].animation_point * time_reduction))
@@ -59,52 +62,42 @@ do
             local spell_y = GetSpellTargetY()
 
 
-            --print(spell_x)
-            --AddSpecialEffect("Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdx", spell_x, spell_y)
-
-            print(GetUnitName(target))
-
             unit_data.cast_skill = id
             unit_data.cast_skill_level = ability_level
 
             BlzPauseUnitEx(unit_data.Owner, true)
             SetUnitAnimationByIndex(unit_data.Owner, skill.level[ability_level].animation)
 
-            if skill.level[ability_level].effect_on_caster ~= nil then
-                unit_data.cast_effect = AddSpecialEffectTarget(unit_data.Owner, skill.level[ability_level].effect_on_caster, skill.level[ability_level].effect_on_caster_point)
-                BlzSetSpecialEffectScale(unit_data.cast_effect, skill.level[ability_level].effect_on_caster_scale)
-            end
+
+                if skill.level[ability_level].effect_on_caster ~= nil then
+                    unit_data.cast_effect = AddSpecialEffectTarget(unit_data.Owner, skill.level[ability_level].effect_on_caster, skill.level[ability_level].effect_on_caster_point)
+                    BlzSetSpecialEffectScale(unit_data.cast_effect, skill.level[ability_level].effect_on_caster_scale)
+                end
+
 
                 TimerStart(unit_data.action_timer, skill.level[ability_level].animation_point * time_reduction, false, function()
                     unit_data.cast_skill = 0
                     DestroyEffect(unit_data.cast_effect)
 
                         if skill.autotrigger then
-                            print("test")
                             if skill.level[ability_level].missile ~= nil then
-                                print("missile")
                                 if target ~= nil then
-                                    print("target")
                                     local angle = AngleBetweenUnits(unit_data.Owner, target)
                                     SetUnitFacing(unit_data.Owner, angle)
                                     ThrowMissile(unit_data.Owner, target, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level },
                                             GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), GetUnitX(target), GetUnitY(target), angle)
                                 else
-                                    print("no target")
                                     ThrowMissile(unit_data.Owner, nil, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level },
                                             GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), spell_x, spell_y, AngleBetweenUnitXY(unit_data.Owner, spell_x, spell_y))
                                 end
 
                             else
-                            print("effect")
                                 if target ~= nil and target ~= unit_data.Owner then
                                     SetUnitFacing(unit_data.Owner, AngleBetweenUnits(unit_data.Owner, target))
                                     ApplyEffect(unit_data.Owner, target, 0.,0., skill.level[ability_level].effect, ability_level)
                                 elseif target ~= nil and target == unit_data.Owner then
-                                    print("on self")
                                     ApplyEffect(unit_data.Owner, nil, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), skill.level[ability_level].effect, ability_level)
                                 else
-                                    print("on point")
                                     ApplyEffect(unit_data.Owner, nil, spell_x, spell_y, skill.level[ability_level].effect, ability_level)
                                 end
                             end
@@ -112,12 +105,7 @@ do
 
                     print("spell backswing")
 
-                    TimerStart(unit_data.action_timer, skill.level[ability_level].animation_backswing * time_reduction, false, function()
-                        SetUnitAnimation(unit_data.Owner, "Stand Ready")
-                        BlzPauseUnitEx(unit_data.Owner, false)
-                        SetUnitTimeScale(unit_data.Owner, 1.)
-                    end)
-
+                    TimerStart(unit_data.action_timer, skill.level[ability_level].animation_backswing * time_reduction, false, SpellBackswing(unit_data.Owner))
 
                     print("cast")
                 end)
