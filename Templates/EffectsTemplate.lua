@@ -72,6 +72,7 @@ do
             SFX_on_unit_point      = '',
             SFX_on_unit_scale      = 1.,
             delay                  = 0.,
+            hit_delay              = 0.,
             sound                  = ''
         }
     end
@@ -82,7 +83,7 @@ do
 
         if EffectsData[FourCC(effect_id)] ~= nil then return nil end
 
-        local my_new_effect = { level = {  }, id = effect_id, name = '' }
+        local my_new_effect = { level = {  }, id = effect_id, name = '', current_level = 1, remove_after_use = true }
 
         for i = 1, MAX_LEVELS do
             my_new_effect.level[i] = NewEffectData()
@@ -125,6 +126,7 @@ do
                     power = 10,
                     get_attack_bonus = true,
                     delay = 0.,
+                    hit_delay = 0.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -145,6 +147,7 @@ do
                     power = 10,
                     get_attack_bonus = true,
                     delay = 0.3,
+                    hit_delay = 0.,
                     can_crit = false,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -171,6 +174,7 @@ do
                     power = 17,
                     get_attack_bonus = true,
                     delay = 0.,
+                    hit_delay = 0.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -192,6 +196,7 @@ do
                     power = 20,
                     get_attack_bonus = true,
                     delay = 0.1,
+                    hit_delay = 0.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -213,6 +218,7 @@ do
                     power = 5,
                     get_attack_bonus = true,
                     delay = 0.,
+                    hit_delay = 0.,
                     can_crit = false,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,

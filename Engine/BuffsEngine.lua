@@ -74,6 +74,7 @@ do
                     end
                 end
 
+                OnBuffExpire(buff_data.buff_source, target, buff_data)
                 DeleteBuff(target_data, buff_data)
                 return true
             end
@@ -164,6 +165,7 @@ do
 
             --TODO buff with higher rank replace weaker buffs
 
+            OnBuffPrecast(source, target, buff_data)
 
             if GetUnitAbilityLevel(target, FourCC(buff_id)) > 0 then
                 for i = 1, #target_data.buff_list do
@@ -180,7 +182,7 @@ do
                 end
             end
 
-
+            buff_data.buff_source = source
             buff_data.current_level = lvl
             buff_data.expiration_time = buff_data.level[lvl].time
 
@@ -207,6 +209,7 @@ do
 
         end
 
+
             if buff_data.level[lvl].effect_sfx ~= nil then
                 local new_effect
                     if buff_data.level[lvl].effect_sfx_point ~= nil then
@@ -232,6 +235,9 @@ do
             if buff_data.level[lvl].effect_delay ~= nil and buff_data.level[lvl].effect_delay > 0. then
                 over_time_effect_delay = buff_data.level[lvl].effect_delay
             end
+
+
+            OnBuffApply(source, target, buff_data)
 
             buff_data.update_timer = CreateTimer()
             TimerStart(buff_data.update_timer, BUFF_UPDATE, true, function()

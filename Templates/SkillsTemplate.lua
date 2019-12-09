@@ -88,7 +88,7 @@
             level = {
                 [1] = {
                     missile             = 'M001',
-                    effect              = 'EFF1',
+                    --effect              = 'EFF1',
                     cooldown            = 5.,
                     animation           = 3,
                     animation_point     = 1.5,
@@ -107,7 +107,7 @@
             level = {
                 [1] = {
                     missile             = 'MFRB',
-                    effect              = 'EFRB',
+                    --effect              = 'EFRB',
                     cooldown            = 0.1,
                     animation           = 3,
                     animation_point     = 1.5,
@@ -144,7 +144,7 @@
             level = {
                 [1] = {
                     missile             = 'MGFB',
-                    effect              = 'EGFB',
+                    --effect              = 'EGFB',
                     cooldown            = 0.1,
                     animation           = 3,
                     animation_point     = 1.4,
@@ -162,7 +162,7 @@
             level = {
                 [1] = {
                     missile             = 'MFRO',
-                    effect              = 'EFOA',
+                    --effect              = 'EFOA',
                     cooldown            = 0.1,
                     animation           = 3,
                     animation_point     = 1.,

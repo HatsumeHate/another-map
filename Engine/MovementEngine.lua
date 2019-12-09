@@ -204,6 +204,10 @@ do
                     AddSound(m.sound_on_destroy[GetRandomInt(1, #m.sound_on_destroy)], start_x, start_y)
                 end
 
+                if m.effect_on_expire ~= nil then
+                    ApplyEffect(from, nil, start_x, start_y, m.effect_on_expire, 1)
+                end
+
                 OnMissileExpire(from, target, m)
                 DestroyEffect(missile_effect)
                 DestroyTimer(my_timer)
@@ -257,23 +261,8 @@ do
             -- DAMAGE
             if m.only_on_impact then
                 if impact then
-                    if weapon.splash then
-                        -- aoe damage with splash
-                        local enemy_group = CreateGroup()
-
-                        if #m.sound_on_hit > 0 then
-                            AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y)
-                        end
-
-                        GroupEnumUnitsInRange(enemy_group, start_x, start_y, weapon.radius, nil)
-
-                        -- loop
-                        GroupClear(enemy_group)
-                        DestroyGroup(enemy_group)
-
-                    else
-                        -- aoe damage
-                        time = 0.
+                    -- aoe damage
+                    time = 0.
 
                         if #m.sound_on_hit > 0 then
                             AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y)
@@ -304,12 +293,19 @@ do
                             DestroyGroup(group)
                             damage_list = nil
                         else
-                            if effects ~= nil then ApplyEffect(from, nil, start_x, start_y, effects.effect, effects.level) end
+
+                            if m.effect_on_impact ~= nil then
+                                ApplyEffect(from, nil, start_x, start_y, m.effect_on_impact, 1)
+                            end
+
+                            if effects ~= nil then
+                                ApplyEffect(from, nil, start_x, start_y, effects.effect, effects.level)
+                            end
+
                         end
 
 
-                        OnMissileImpact(from, m)
-                    end
+                    OnMissileImpact(from, m)
                 end
             else
                 if m.only_on_target then
@@ -354,6 +350,10 @@ do
 
                             damage_list = nil
                         else
+                            if m.effect_on_hit ~= nil then
+                                ApplyEffect(from, target, start_x, start_y, m.effect_on_hit, 1)
+                            end
+
                             if effects ~= nil then ApplyEffect(from, target, start_x, start_y, effects.effect, effects.level) end
                         end
 
@@ -403,11 +403,20 @@ do
                                     for index = BlzGroupGetSize(group) - 1, 0, -1 do
                                         local picked = BlzGroupUnitAt(group, index)
 
+                                        targets = targets - 1
+
                                         ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
-                                        ApplyEffect(from, picked, start_x, start_y, effects.effect, effects.level)
+
+                                        if effects.effect ~= nil then
+                                            ApplyEffect(from, picked, start_x, start_y, effects.effect, effects.level)
+                                        end
+
+                                        if m.effect_on_hit ~= nil then
+                                            ApplyEffect(from, picked, start_x, start_y, m.effect_on_hit, 1)
+                                        end
 
                                         OnMissileHit(from, target, m)
-                                        targets = targets - 1
+
 
                                         if m.hit_once_in > 0. then
                                             local damaged_unit = picked
@@ -418,7 +427,6 @@ do
                                             end)
 
                                         end
-
 
                                         if targets <= 0 or not m.penetrate then
                                             time = 0.
