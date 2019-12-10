@@ -88,7 +88,7 @@
             level = {
                 [1] = {
                     missile             = 'M001',
-                    --effect              = 'EFF1',
+                    effect              = 'EFF1',
                     cooldown            = 5.,
                     animation           = 3,
                     animation_point     = 1.5,

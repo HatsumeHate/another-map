@@ -99,12 +99,25 @@ do
 
     function DefineEffectsData()
 
+        NewEffectTemplate('EFF2', {
+            name = "test effect on buff 2",
+            level = {
+                [1] = {
+                    delay = 0.,
+                    hit_delay = 0.,
+                    life_restored = 15.
+                }
+            }
+
+        })
+
         NewEffectTemplate('EFF1', {
             name = "test effect 1",
             level = {
                 [1] = {
                     power = 30,
                     delay = 0.,
+                    hit_delay = 0.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_PHYSICAL,

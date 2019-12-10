@@ -97,6 +97,9 @@ do
     end
 
 
+     --TODO push, pull, jump
+
+
 
     ---@param from unit
     ---@param target unit
@@ -399,13 +402,13 @@ do
 
                                 damage_list = nil
                             else
-                                if effects ~= nil then
-                                    for index = BlzGroupGetSize(group) - 1, 0, -1 do
-                                        local picked = BlzGroupUnitAt(group, index)
 
-                                        targets = targets - 1
+                                for index = BlzGroupGetSize(group) - 1, 0, -1 do
+                                    local picked = BlzGroupUnitAt(group, index)
 
-                                        ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
+                                    targets = targets - 1
+
+                                    ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
 
                                         if effects.effect ~= nil then
                                             ApplyEffect(from, picked, start_x, start_y, effects.effect, effects.level)
@@ -415,7 +418,7 @@ do
                                             ApplyEffect(from, picked, start_x, start_y, m.effect_on_hit, 1)
                                         end
 
-                                        OnMissileHit(from, target, m)
+                                    OnMissileHit(from, target, m)
 
 
                                         if m.hit_once_in > 0. then
@@ -428,13 +431,14 @@ do
 
                                         end
 
+
                                         if targets <= 0 or not m.penetrate then
                                             time = 0.
                                             break
                                         end
 
-                                    end
-                               end
+                                end
+
                             end
 
                         GroupClear(group)

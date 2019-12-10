@@ -91,7 +91,7 @@ do
             if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
                 local value = GetUnitState(target, UNIT_STATE_LIFE) + data.level[lvl].heal_amount
                 SetUnitState(target, value)
-                CreateHitnumber(value, source, target, HEAL_STATUS)
+                CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
                 ModifyBuffsEffect(source, target, data, lvl, ON_ALLY)
                 OnEffectApply(source, target, data)
             end
@@ -124,11 +124,11 @@ do
                 if data.level[lvl].life_restored_from_hit then
                     if data.level[lvl].life_restored ~= nil and data.level[lvl].life_restored > 0 then
                         SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) + data.level[lvl].life_restored)
-                        CreateHitnumber(data.level[lvl].life_restored, source, source, HEAL_STATUS)
+                        CreateHitnumber(R2I(data.level[lvl].life_restored), source, source, HEAL_STATUS)
                     elseif data.level[lvl].life_percent_restored ~= nil and data.level[lvl].life_percent_restored > 0 then
                         local value = BlzGetUnitMaxHP(source) * data.level[lvl].life_percent_restored
                         SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) + value)
-                        CreateHitnumber(value, source, source, HEAL_STATUS)
+                        CreateHitnumber(R2I(value), source, source, HEAL_STATUS)
                     end
                 end
 
@@ -136,11 +136,11 @@ do
                 if data.level[lvl].resource_restored_from_hit then
                     if data.level[lvl].resource_restored ~= nil and data.level[lvl].resource_restored > 0 then
                         SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + data.level[lvl].resource_restored)
-                        CreateHitnumber(data.level[lvl].resource_restored, source, source, RESOURCE_STATUS)
+                        CreateHitnumber(R2I(data.level[lvl].resource_restored), source, source, RESOURCE_STATUS)
                     elseif data.level[lvl].resource_percent_restored ~= nil and data.level[lvl].resource_percent_restored > 0 then
                         local value = BlzGetUnitMaxMana(source) * data.level[lvl].resource_percent_restored
                         SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + value)
-                        CreateHitnumber(value, source, source, RESOURCE_STATUS)
+                        CreateHitnumber(R2I(value), source, source, RESOURCE_STATUS)
                     end
                 end
 
@@ -173,6 +173,7 @@ do
         data.current_level = lvl
 
         OnEffectPrecast(source, target, x, y, data)
+
 
         if data.remove_after_use then
             data.remove_timer = CreateTimer()
@@ -211,25 +212,26 @@ do
 
             if not data.level[lvl].life_restored_from_hit then
                 if data.level[lvl].life_restored ~= nil and data.level[lvl].life_restored > 0 then
-                    SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) + data.level[lvl].life_restored)
-                    CreateHitnumber(data.level[lvl].life_restored, source, source, HEAL_STATUS)
+                    SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + data.level[lvl].life_restored)
+                    CreateHitnumber(R2I(data.level[lvl].life_restored), source, target, HEAL_STATUS)
                 elseif data.level[lvl].life_percent_restored ~= nil and data.level[lvl].life_percent_restored > 0 then
-                    local value = BlzGetUnitMaxHP(source) * data.level[lvl].life_percent_restored
-                    SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) + value)
-                    CreateHitnumber(value, source, source, HEAL_STATUS)
+                    local value = BlzGetUnitMaxHP(target) * data.level[lvl].life_percent_restored
+                    SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + value)
+                    CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
                 end
             end
 
             if not data.level[lvl].resource_restored_from_hit then
                 if data.level[lvl].resource_restored ~= nil and data.level[lvl].resource_restored > 0 then
-                    SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + data.level[lvl].resource_restored)
-                    CreateHitnumber(data.level[lvl].resource_restored, source, source, RESOURCE_STATUS)
+                    SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + data.level[lvl].resource_restored)
+                    CreateHitnumber(R2I(data.level[lvl].resource_restored), source, target, RESOURCE_STATUS)
                 elseif data.level[lvl].resource_percent_restored ~= nil and data.level[lvl].resource_percent_restored > 0 then
-                    local value = BlzGetUnitMaxMana(source) * data.level[lvl].resource_percent_restored
-                    SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + value)
-                    CreateHitnumber(value, source, source, RESOURCE_STATUS)
+                    local value = BlzGetUnitMaxMana(target) * data.level[lvl].resource_percent_restored
+                    SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + value)
+                    CreateHitnumber(R2I(value), source, target, RESOURCE_STATUS)
                 end
             end
+
 
             TimerStart(CreateTimer(), data.level[lvl].delay, false, function()
                 -- damaging

@@ -41,10 +41,19 @@ do
 
     end
 
+
+
     ---@param source unit
     ---@param target unit
     ---@param buff table
     function OnBuffExpire(source, target, buff)
+
+    end
+
+    ---@param source unit
+    ---@param target unit
+    ---@param buff table
+    function OnBuffOverTimeTrigger(source, target, buff)
 
     end
 
@@ -60,6 +69,8 @@ do
     function OnBuffPrecast(source, target, buff)
 
     end
+
+
 
     ---@param source unit
     ---@param target unit

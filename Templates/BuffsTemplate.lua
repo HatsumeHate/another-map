@@ -34,23 +34,12 @@ do
             time = 1,
             negative_state = 0,
 
-
-            effect_damage = {},
-            effect_hp_value = 0,
-            effect_mp_value = 0,
+            effect = nil,
             effect_delay = 0.,
 
-            effect_hp_percent_value = 0,
-            effect_mp_percent_value = 0,
-            effect_type = 0,
-
-            effect_trigger_sfx = "",
-            effect_trigger_sfx_scale = 1.,
-            effect_trigger_sfx_point = "",
-
-            effect_sfx = "",
-            effect_sfx_scale = 1.,
-            effect_sfx_point = "",
+            buff_sfx = nil,
+            buff_sfx_scale = 1.,
+            buff_sfx_point = "",
 
             bonus = { }
 
@@ -104,12 +93,15 @@ do
                     current_level = 1,
                     max_level = 1,
 
-                    effect_hp_value = 15,
+                    -- TODO test it
+                    effect = 'EFF2',
                     effect_delay = 1.,
 
-                    effect_sfx = "Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdx",
-                    effect_sfx_point = "origin",
-                    effect_sfx_scale = 0.7,
+                    --effect_hp_value = 15,
+
+                    buff_sfx = "Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdx",
+                    buff_sfx_point = "origin",
+                    buff_sfx_scale = 0.7,
 
                     bonus = {
                         { PARAM = PHYSICAL_ATTACK, VALUE = 5., METHOD = MULTIPLY_BONUS },
