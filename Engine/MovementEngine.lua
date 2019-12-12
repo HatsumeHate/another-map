@@ -97,8 +97,150 @@ do
     end
 
 
-     --TODO push, pull, jump
+     --TODO pull
 
+    function MakeUnitJump(target, angle, x, y, speed, arc)
+        local unit_x = GetUnitX(target)
+        local unit_y = GetUnitY(target)
+        local unit_z = GetZ(unit_x, unit_y)
+        local endpoint_z = GetZ(x, y)
+        local distance = DistanceBetweenXY(unit_x, unit_y, x, y)
+        local endpoint_x = unit_x + (distance * Cos(angle * bj_DEGTORAD))
+        local endpoint_y = unit_y + (distance * Sin(angle * bj_DEGTORAD))
+
+        local start_x = GetUnitX(target)
+        local start_y = GetUnitY(target)
+
+        local velocity = (speed * PERIOD) / distance
+        local vx = (endpoint_x - unit_x) * velocity
+        local vy = (endpoint_y - unit_y) * velocity
+
+
+        local height = distance * arc + RMaxBJ(unit_z, endpoint_z)
+        local length = 0.
+        local step = speed / (1. / PERIOD)
+        local start_height = unit_z
+        local end_height = endpoint_z
+        local time = (speed / distance) * (1. + arc)
+        local safe_time = 0.15
+
+        SetUnitFacing(target, angle)
+
+        UnitAddAbility(target, FourCC('Arav'))
+        UnitRemoveAbility(target, FourCC('Arav'))
+
+
+        TimerStart(CreateTimer(), PERIOD, true, function ()
+
+            if IsMapBounds(unit_x, unit_y) or time <= 0. then
+                print("total jump distance was "..DistanceBetweenUnitXY(target, start_x, start_y))
+                BlzPauseUnitEx(target, false)
+                SetUnitFlyHeight(target, 0., 0.)
+                DestroyTimer(GetExpiredTimer())
+            else
+                BlzPauseUnitEx(target, true)
+                -- COLLISION
+
+                local current_z = GetZ(unit_x, unit_y)
+
+                if current_z + GetUnitFlyHeight(target) <= current_z + 1. and safe_time < 0. then
+                    time = 0.
+                else
+
+                    unit_x = unit_x + vx
+                    unit_y = unit_y + vy
+                    unit_z = GetParabolaZ(start_height, end_height, height, distance, length)
+                    length = length + step
+
+                    SetUnitFlyHeight(target, unit_z - current_z, 0.)
+                    SetUnitX(target, unit_x)
+                    SetUnitY(target, unit_y)
+
+                    time = time - PERIOD
+                    safe_time = safe_time - PERIOD
+                end
+
+            end
+        end)
+
+    end
+
+
+    local PushList = {}
+
+    function PushUnit(target, angle, power, time)
+        local handle = GetHandleId(target)
+        local push_data = { x = GetUnitX(target), y = GetUnitY(target), vx = 0., vy = 0. }
+
+
+        if power <= 0. then
+            push_data = nil
+            return
+        end
+
+        if PushList[handle] ~= nil then
+            if PushList[handle].power < power then
+                DestroyTimer(push_data.timer)
+                PushList[handle] = nil
+            else
+                push_data = nil
+                return
+            end
+        end
+
+        power = power * 2.5
+
+        push_data.power = power
+        local endpoint_x = push_data.x + (power * Cos(angle * bj_DEGTORAD))
+        local endpoint_y = push_data.y + (power * Sin(angle * bj_DEGTORAD))
+        local speed = power / time
+        push_data.time = time
+
+
+        local total_time = time
+        local penalty = 0.0007
+        local multiplicator = 1.03
+
+        local velocity = (speed * PERIOD) / power
+        push_data.vx = (endpoint_x - push_data.x) * velocity
+        push_data.vy = (endpoint_y - push_data.y) * velocity
+
+
+        PushList[handle] = push_data
+        push_data.timer = CreateTimer()
+
+            TimerStart(push_data.timer, PERIOD, true, function()
+                if IsMapBounds(push_data.x, push_data.y) or push_data.time < 0. then
+                    PushList[handle] = nil
+                    BlzPauseUnitEx(target, false)
+                    DestroyTimer(push_data.timer)
+                else
+                    BlzPauseUnitEx(target, true)
+                    SetUnitPositionSmooth(target, push_data.x + push_data.vx, push_data.y + push_data.vy)
+                    local faderate = 0.1 + (push_data.time / total_time) - penalty
+
+                    penalty = penalty * multiplicator
+                    multiplicator = multiplicator + 0.01
+
+                    if faderate < 0.01 then
+                        faderate = 0.01
+                        push_data.time = 0.
+                    end
+
+                    if penalty < 0. then penalty = 0. end
+
+                    push_data.power = push_data.power * faderate
+                    push_data.vx = push_data.vx * faderate
+                    push_data.vy = push_data.vy * faderate
+                    push_data.x = GetUnitX(target)
+                    push_data.y = GetUnitY(target)
+
+                    push_data.time = push_data.time - PERIOD
+                end
+            end)
+
+        return push_data
+    end
 
 
     ---@param from unit
@@ -163,7 +305,6 @@ do
         local missile_effect = AddSpecialEffect(m.model, start_x, start_y)
         BlzSetSpecialEffectHeight(missile_effect, start_z)
         BlzSetSpecialEffectScale(missile_effect, m.scale)
-        --BlzSetSpecialEffectOrientation(missile_effect, angle * bj_DEGTORAD, 0., 0.)
         BlzSetSpecialEffectYaw(missile_effect, angle * bj_DEGTORAD)
 
         if #m.sound_on_launch > 0 then
@@ -188,10 +329,10 @@ do
 
         local targets = m.max_targets
 
-
-        m.vx = (end_x - start_x) * ((m.speed * PERIOD) / distance)
-        m.vy = (end_y - start_y) * ((m.speed * PERIOD) / distance)
-        m.vz = (end_z - start_z) * ((m.speed * PERIOD) / distance)
+        local velocity = (m.speed * PERIOD) / distance
+        m.vx = (end_x - start_x) * velocity
+        m.vy = (end_y - start_y) * velocity
+        m.vz = (end_z - start_z) * velocity
 
         local impact = false
         local hit_group = CreateGroup()
@@ -224,9 +365,10 @@ do
                         time = 0.
                     else
                         distance = GetDistance3D(start_x, start_y, start_z, GetUnitX(target), GetUnitY(target), BlzGetLocalUnitZ(target))
-                        m.vx = (GetUnitX(target) - start_x) * ((m.speed * PERIOD) / distance)
-                        m.vy = (GetUnitY(target) - start_y) * ((m.speed * PERIOD) / distance)
-                        m.vz = (BlzGetLocalUnitZ(target) - start_z) * ((m.speed * PERIOD) / distance)
+                        velocity = (m.speed * PERIOD) / distance
+                        m.vx = (GetUnitX(target) - start_x) * velocity
+                        m.vy = (GetUnitY(target) - start_y) * velocity
+                        m.vz = (BlzGetLocalUnitZ(target) - start_z) * velocity
                         BlzSetSpecialEffectYaw(missile_effect, AngleBetweenXY(start_x, start_y, GetUnitX(target), GetUnitY(target)))
                     end
                 end

@@ -64,6 +64,29 @@ do
 
 
 
+    function ApplyRestoreEffect(source, target, data, lvl)
+
+            if data.level[lvl].life_restored ~= nil and data.level[lvl].life_restored > 0 then
+                SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + data.level[lvl].life_restored)
+                CreateHitnumber(R2I(data.level[lvl].life_restored), source, target, HEAL_STATUS)
+            elseif data.level[lvl].life_percent_restored ~= nil and data.level[lvl].life_percent_restored > 0 then
+                local value = BlzGetUnitMaxHP(target) * data.level[lvl].life_percent_restored
+                SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + value)
+                CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
+            end
+
+            if data.level[lvl].resource_restored ~= nil and data.level[lvl].resource_restored > 0 then
+                SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + data.level[lvl].resource_restored)
+                CreateHitnumber(R2I(data.level[lvl].resource_restored), source, target, RESOURCE_STATUS)
+            elseif data.level[lvl].resource_percent_restored ~= nil and data.level[lvl].resource_percent_restored > 0 then
+                local value = BlzGetUnitMaxMana(target) * data.level[lvl].resource_percent_restored
+                SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + value)
+                CreateHitnumber(R2I(value), source, target, RESOURCE_STATUS)
+            end
+
+    end
+
+
     ---@param source unit
     ---@param target unit
     ---@param data table
@@ -121,28 +144,10 @@ do
             ModifyBuffsEffect(source, target, data, lvl, ON_ENEMY)
 
 
-                if data.level[lvl].life_restored_from_hit then
-                    if data.level[lvl].life_restored ~= nil and data.level[lvl].life_restored > 0 then
-                        SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) + data.level[lvl].life_restored)
-                        CreateHitnumber(R2I(data.level[lvl].life_restored), source, source, HEAL_STATUS)
-                    elseif data.level[lvl].life_percent_restored ~= nil and data.level[lvl].life_percent_restored > 0 then
-                        local value = BlzGetUnitMaxHP(source) * data.level[lvl].life_percent_restored
-                        SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) + value)
-                        CreateHitnumber(R2I(value), source, source, HEAL_STATUS)
-                    end
+                if data.level[lvl].life_restored_from_hit or data.level[lvl].resource_restored_from_hit then
+                    ApplyRestoreEffect(source, target, data, lvl)
                 end
 
-
-                if data.level[lvl].resource_restored_from_hit then
-                    if data.level[lvl].resource_restored ~= nil and data.level[lvl].resource_restored > 0 then
-                        SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + data.level[lvl].resource_restored)
-                        CreateHitnumber(R2I(data.level[lvl].resource_restored), source, source, RESOURCE_STATUS)
-                    elseif data.level[lvl].resource_percent_restored ~= nil and data.level[lvl].resource_percent_restored > 0 then
-                        local value = BlzGetUnitMaxMana(source) * data.level[lvl].resource_percent_restored
-                        SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + value)
-                        CreateHitnumber(R2I(value), source, source, RESOURCE_STATUS)
-                    end
-                end
 
             OnEffectApply(source, target, data)
             DestroyTimer(GetExpiredTimer())
@@ -202,38 +207,19 @@ do
             end
 
 
-            if (data.level[lvl].SFX_on_unit ~= nil and target ~= nil) then
-                local effect = AddSpecialEffectTarget(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point)
-                BlzSetSpecialEffectScale(effect, data.level[lvl].SFX_on_unit_scale)
-                DestroyEffect(effect)
-                effect = nil
-            end
-
-
-            if not data.level[lvl].life_restored_from_hit then
-                if data.level[lvl].life_restored ~= nil and data.level[lvl].life_restored > 0 then
-                    SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + data.level[lvl].life_restored)
-                    CreateHitnumber(R2I(data.level[lvl].life_restored), source, target, HEAL_STATUS)
-                elseif data.level[lvl].life_percent_restored ~= nil and data.level[lvl].life_percent_restored > 0 then
-                    local value = BlzGetUnitMaxHP(target) * data.level[lvl].life_percent_restored
-                    SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + value)
-                    CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
-                end
-            end
-
-            if not data.level[lvl].resource_restored_from_hit then
-                if data.level[lvl].resource_restored ~= nil and data.level[lvl].resource_restored > 0 then
-                    SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + data.level[lvl].resource_restored)
-                    CreateHitnumber(R2I(data.level[lvl].resource_restored), source, target, RESOURCE_STATUS)
-                elseif data.level[lvl].resource_percent_restored ~= nil and data.level[lvl].resource_percent_restored > 0 then
-                    local value = BlzGetUnitMaxMana(target) * data.level[lvl].resource_percent_restored
-                    SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + value)
-                    CreateHitnumber(R2I(value), source, target, RESOURCE_STATUS)
-                end
-            end
-
 
             TimerStart(CreateTimer(), data.level[lvl].delay, false, function()
+
+                if not data.level[lvl].life_restored_from_hit or not data.level[lvl].resource_restored_from_hit then
+                    PlaySpecialEffect(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point, data.level[lvl].SFX_on_unit_scale)
+
+                    TimerStart(CreateTimer(), data.level[lvl].hit_delay, false, function()
+                        ApplyRestoreEffect(source, target, data, lvl)
+                        DestroyTimer(GetExpiredTimer())
+                    end)
+
+                end
+
                 -- damaging
                 if data.level[lvl].power ~= nil then
                     -- multiple target damage
@@ -290,7 +276,7 @@ do
 
                 end
 
-            -- healing
+                -- healing
                 if data.level[lvl].heal_amount ~= nil then
                     -- multiple target healing
                     if data.level[lvl].area_of_effect ~= nil then

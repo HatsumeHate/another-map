@@ -93,11 +93,8 @@ do
                     current_level = 1,
                     max_level = 1,
 
-                    -- TODO test it
                     effect = 'EFF2',
                     effect_delay = 1.,
-
-                    --effect_hp_value = 15,
 
                     buff_sfx = "Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdx",
                     buff_sfx_point = "origin",

@@ -23,6 +23,8 @@ do
         AddToPanel(gg_unit_HBRB_0005, 1)
 
 
+		--PushUnit(gg_unit_HBRB_0005, 270., 400., 1.25)
+		--MakeUnitJump(gg_unit_HBRB_0005, 0., GetUnitX(gg_unit_HBRB_0005) + 500., GetUnitY(gg_unit_HBRB_0005), 500., 0.6)
 
         --ITEM_TEMPLATE_DATA[FourCC('I002')].point_bonus[ITEM_TYPE_WEAPON]
         --ITEM_TEMPLATE_DATA[FourCC('I002')].point_bonus[ITEM_TYPE_WEAPON].PARAM
