@@ -68,11 +68,13 @@ do
 
             SFX_used               = '',
             SFX_used_scale         = 1.,
+
             SFX_on_unit            = '',
             SFX_on_unit_point      = '',
             SFX_on_unit_scale      = 1.,
             delay                  = 0.,
             hit_delay              = 0.,
+            timescale              = 1.,
             sound                  = ''
         }
     end
@@ -93,6 +95,38 @@ do
         MergeTables(my_new_effect, reference)
         EffectsData[FourCC(effect_id)] = my_new_effect
 
+        for i = 1, MAX_LEVELS do
+            if  my_new_effect.level[i] ~= nil then
+                if my_new_effect.level[i].can_crit == nil then
+                    my_new_effect.level[i].can_crit = false
+                end
+
+                if my_new_effect.level[i].is_direct == nil then
+                    my_new_effect.level[i].is_direct = false
+                end
+
+                if my_new_effect.level[i].get_attack_bonus == nil then
+                    my_new_effect.level[i].get_attack_bonus = false
+                end
+
+                if my_new_effect.level[i].timescale == nil then
+                    my_new_effect.level[i].timescale = 1.
+                end
+
+                if my_new_effect.level[i].SFX_used_scale == nil then
+                    my_new_effect.level[i].SFX_used_scale = 1.
+                end
+
+                if my_new_effect.level[i].hit_delay == nil then
+                    my_new_effect.level[i].hit_delay = 0.
+                end
+
+                if my_new_effect.level[i].delay == nil then
+                    my_new_effect.level[i].delay = 0.
+                end
+            end
+        end
+
         return my_new_effect
     end
 
@@ -103,8 +137,6 @@ do
             name = "test effect on buff 2",
             level = {
                 [1] = {
-                    delay = 0.,
-                    hit_delay = 0.,
                     life_restored = 15.
                 }
             }
@@ -116,8 +148,6 @@ do
             level = {
                 [1] = {
                     power = 30,
-                    delay = 0.,
-                    hit_delay = 0.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
@@ -138,8 +168,6 @@ do
                 [1] = {
                     power = 10,
                     get_attack_bonus = true,
-                    delay = 0.,
-                    hit_delay = 0.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -160,8 +188,6 @@ do
                     power = 10,
                     get_attack_bonus = true,
                     delay = 0.3,
-                    hit_delay = 0.,
-                    can_crit = false,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = MELEE_ATTACK,
@@ -186,8 +212,6 @@ do
                 [1] = {
                     power = 17,
                     get_attack_bonus = true,
-                    delay = 0.,
-                    hit_delay = 0.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -209,7 +233,6 @@ do
                     power = 20,
                     get_attack_bonus = true,
                     delay = 0.1,
-                    hit_delay = 0.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -230,10 +253,6 @@ do
                 [1] = {
                     power = 5,
                     get_attack_bonus = true,
-                    delay = 0.,
-                    hit_delay = 0.,
-                    can_crit = false,
-                    is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = ICE_ATTRIBUTE,
@@ -245,8 +264,52 @@ do
             }
 
         })
+        --==========================================--
+        NewEffectTemplate('ELST', {
+            name = "lightning strike effect",
+            level = {
+                [1] = {
+                    power = 30,
+                    get_attack_bonus = true,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = LIGHTNING_ATTRIBUTE,
 
+                    SFX_used = "Spell\\Lightnings Long2.mdx",
+                    SFX_used_scale = 1.,
 
+                    area_of_effect = 255.,
+                    max_targets = 300,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EMTR', {
+            name = "meteor effect",
+            level = {
+                [1] = {
+                    delay = 0.77,
+                    timescale = 1.34,
+
+                    power = 27,
+                    get_attack_bonus = true,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = FIRE_ATTRIBUTE,
+
+                    SFX_used = "war3mapImported\\Rain of Fire.mdx",
+                    SFX_used_scale = 1.25,
+
+                    area_of_effect = 325.,
+                    max_targets = 300,
+                }
+            }
+
+        })
     end
 
 end

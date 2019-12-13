@@ -102,14 +102,20 @@ do
     ---@param source unit
     ---@param target unit
     ---@param skill table
-    function OnSkillCastEnd(source, target, skill)
-
+    ---@param x real
+    ---@param y real
+    function OnSkillCastEnd(source, target, x, y, skill)
+        if skill.Id == 'A00L' then
+            SetUnitPosition(source, x, y)
+        end
     end
 
     ---@param source unit
     ---@param target unit
+    ---@param x real
+    ---@param y real
     ---@param skill table
-    function OnSkillCast(source, target, skill)
+    function OnSkillCast(source, target, x, y, skill)
 
     end
 

@@ -3,7 +3,7 @@
 		hash         = InitHashtable()
 		udg_SimError = nil
 		Stop         = false
-		Loc 		 = nil
+		Loc 		 = Location(0., 0.)
 		ForFilter1   = nil
 		ForFilter2   = nil
 		IGNORE_ID    = 'A00Z'

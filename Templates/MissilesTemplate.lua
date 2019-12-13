@@ -55,6 +55,31 @@ do
 
 
         MergeTables(new_missile, missile_reference)
+
+        if new_missile.only_on_target == nil then
+            new_missile.only_on_target = false
+        end
+
+        if new_missile.only_on_impact == nil then
+            new_missile.only_on_impact = false
+        end
+
+        if new_missile.ignore_terrain == nil then
+            new_missile.ignore_terrain = false
+        end
+
+        if new_missile.penetrate == nil then
+            new_missile.penetrate = false
+        end
+
+        if new_missile.scale == nil then
+            new_missile.scale = 1.
+        end
+
+        if new_missile.max_targets == nil then
+            new_missile.max_targets = 1
+        end
+
         MissileList[FourCC(id)] = new_missile
     end
     
@@ -67,8 +92,8 @@ do
             max_distance = 1000.,
             radius = 50.,
             speed = 400.,
-            start_z = 35.,
-            end_z = 35.,
+            start_z = 65.,
+            end_z = 65.,
             arc = 0.,
             ignore_terrain = true,
             full_distance = true,
@@ -96,10 +121,10 @@ do
             max_distance = 1000.,
             radius = 70.,
             speed = 800.,
-            start_z = 35.,
-            end_z = 35.,
+            start_z = 65.,
+            end_z = 65.,
             arc = 0.,
-            scale = 0.8,
+            scale = 0.75,
             effect_on_hit = 'EFRB',
             ignore_terrain = true,
             full_distance = true,
@@ -113,8 +138,8 @@ do
             max_distance = 1000.,
             radius = 100.,
             speed = 625.,
-            start_z = 35.,
-            end_z = 35.,
+            start_z = 65.,
+            end_z = 65.,
             arc = 0.,
             scale = 0.8,
             effect_on_hit = 'EGFB',
@@ -130,8 +155,8 @@ do
             max_distance = 600.,
             radius = 125.,
             speed = 625.,
-            start_z = 35.,
-            end_z = 35.,
+            start_z = 65.,
+            end_z = 65.,
             arc = 0.,
             scale = 1.45,
             max_targets = 300,
@@ -143,7 +168,25 @@ do
             penetrate = true,
             trackable = false
         })
-
+    --===============================================--
+        NewMissileTemplate('MMTR', {
+            name = "meteor missile",
+            model = "war3mapImported\\Rain of Fire.mdx",
+            max_distance = 600.,
+            radius = 25.,
+            speed = 75.,
+            start_z = 325.,
+            end_z = 0.,
+            arc = 0.,
+            scale = 1.25,
+            max_targets = 300,
+            effect_on_impact = 'EMTR',
+            ignore_terrain = false,
+            full_distance = false,
+            penetrate = false,
+            trackable = false,
+            only_on_impact = true
+        })
     end
 
 end

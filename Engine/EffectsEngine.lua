@@ -197,6 +197,7 @@ do
             if data.level[lvl].SFX_used ~= nil then
                 local effect = AddSpecialEffect(data.level[lvl].SFX_used, x, y)
                 BlzSetSpecialEffectScale(effect, data.level[lvl].SFX_used_scale)
+                BlzSetSpecialEffectTimeScale(effect, 1. + (1. - data.level[lvl].timescale))
                 DestroyEffect(effect)
                 effect = nil
             end
@@ -207,8 +208,7 @@ do
             end
 
 
-
-            TimerStart(CreateTimer(), data.level[lvl].delay, false, function()
+            TimerStart(CreateTimer(), data.level[lvl].delay * data.level[lvl].timescale, false, function()
 
                 if not data.level[lvl].life_restored_from_hit or not data.level[lvl].resource_restored_from_hit then
                     PlaySpecialEffect(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point, data.level[lvl].SFX_on_unit_scale)
@@ -340,7 +340,7 @@ do
             end)
 
 
-        print("EFFECT END")
+        print("EFFECT END " .. data.name)
         return data
     end
 

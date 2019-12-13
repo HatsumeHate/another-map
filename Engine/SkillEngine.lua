@@ -27,6 +27,7 @@ do
         IssueImmediateOrderById(unit, order_stop)
         SetUnitAnimation(unit, "Stand Ready")
         SetUnitTimeScale(unit, 1.)
+        print("spell backswing")
     end
 
 
@@ -74,11 +75,24 @@ do
                     BlzSetSpecialEffectScale(unit_data.cast_effect, skill.level[ability_level].effect_on_caster_scale)
                 end
 
+                if skill.level[ability_level].start_effect_on_cast_point ~= nil then
+                    bj_lastCreatedEffect = AddSpecialEffect(skill.level[ability_level].start_effect_on_cast_point, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner))
+                    BlzSetSpecialEffectScale(bj_lastCreatedEffect, skill.level[ability_level].start_effect_on_cast_point_scale)
+                    DestroyEffect(bj_lastCreatedEffect)
+                end
+
+            OnSkillCast(unit_data.Owner, target, spell_x, spell_y, skill)
 
                 TimerStart(unit_data.action_timer, skill.level[ability_level].animation_point * time_reduction, false, function()
                     unit_data.cast_skill = 0
                     DestroyEffect(unit_data.cast_effect)
 
+                    if skill.level[ability_level].end_effect_on_cast_point ~= nil then
+                        bj_lastCreatedEffect = AddSpecialEffect(skill.level[ability_level].end_effect_on_cast_point, spell_x, spell_y)
+                        BlzSetSpecialEffectScale(bj_lastCreatedEffect, skill.level[ability_level].end_effect_on_cast_point_scale)
+                        DestroyEffect(bj_lastCreatedEffect)
+                    end
+                    
                         if skill.autotrigger then
                             if skill.level[ability_level].missile ~= nil then
                                 if target ~= nil then
@@ -91,7 +105,7 @@ do
                                             GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), spell_x, spell_y, AngleBetweenUnitXY(unit_data.Owner, spell_x, spell_y))
                                 end
 
-                            else
+                            elseif skill.level[ability_level].effect ~= nil then
                                 if target ~= nil and target ~= unit_data.Owner then
                                     SetUnitFacing(unit_data.Owner, AngleBetweenUnits(unit_data.Owner, target))
                                     ApplyEffect(unit_data.Owner, target, 0.,0., skill.level[ability_level].effect, ability_level)
@@ -103,10 +117,9 @@ do
                             end
                         end
 
-                    print("spell backswing")
+                    OnSkillCastEnd(unit_data.Owner, target, spell_x, spell_y, skill)
 
                     TimerStart(unit_data.action_timer, skill.level[ability_level].animation_backswing * time_reduction, false, SpellBackswing(unit_data.Owner))
-
                     print("cast")
                 end)
 

@@ -129,6 +129,7 @@ do
         UnitAddAbility(target, FourCC('Arav'))
         UnitRemoveAbility(target, FourCC('Arav'))
 
+        BlzPauseUnitEx(target, true)
 
         TimerStart(CreateTimer(), PERIOD, true, function ()
 
@@ -138,7 +139,6 @@ do
                 SetUnitFlyHeight(target, 0., 0.)
                 DestroyTimer(GetExpiredTimer())
             else
-                BlzPauseUnitEx(target, true)
                 -- COLLISION
 
                 local current_z = GetZ(unit_x, unit_y)
@@ -303,13 +303,19 @@ do
         time = distance / m.speed
 
         local missile_effect = AddSpecialEffect(m.model, start_x, start_y)
-        BlzSetSpecialEffectHeight(missile_effect, start_z)
+        --BlzSetSpecialEffectHeight(missile_effect, start_z)
+        BlzSetSpecialEffectZ(missile_effect, start_z)
         BlzSetSpecialEffectScale(missile_effect, m.scale)
         BlzSetSpecialEffectYaw(missile_effect, angle * bj_DEGTORAD)
 
         if #m.sound_on_launch > 0 then
             AddSound(m.sound_on_launch[GetRandomInt(1, #m.sound_on_launch)], start_x, start_y)
         end
+
+
+        --[[AddSpecialEffect("Abilities\\Spells\\Other\\Aneu\\AneuCaster.mdl", start_x, start_y)
+        AddSpecialEffect("Abilities\\Spells\\Other\\Aneu\\AneuTarget.mdl", end_x, end_y)
+        CreateUnit(Player(0), FourCC("hpea"), start_x, start_y, angle)]]
 
         local distance2d
         local height
@@ -341,7 +347,7 @@ do
 
         TimerStart(my_timer, PERIOD, true, function()
 
-            if IsMapBounds(start_x, start_y) or time < 0. then
+            if IsMapBounds(start_x, start_y) or time <= 0. then
                 print("BOUNDS")
 
                 if #m.sound_on_destroy > 0 then
@@ -374,7 +380,7 @@ do
                 end
 
                 -- COLLISION
-                if BlzGetLocalSpecialEffectZ(missile_effect) <= GetZ(start_x, start_y) and not m.ignore_terrain then
+                if BlzGetLocalSpecialEffectZ(missile_effect) <= GetZ(start_x, start_y) + 1. and not m.ignore_terrain then
                     time = 0.
                     impact = true
                     --print("collision")
@@ -449,7 +455,6 @@ do
 
                         end
 
-
                     OnMissileImpact(from, m)
                 end
             else
@@ -509,60 +514,49 @@ do
                     local player_entity = GetOwningPlayer(from)
                     GroupEnumUnitsInRange(group, start_x, start_y, m.radius, nil)
 
-                    for index = BlzGroupGetSize(group) - 1, 0, -1 do
-                        local picked = BlzGroupUnitAt(group, index)
-                            if not (IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and not IsUnitInGroup(picked, hit_group)) then
-                                GroupRemoveUnit(group, picked)
-                            end
-                    end
-
-                    if BlzGroupGetSize(group) > 0 then
-
-                            if #m.sound_on_hit > 0 then
-                                AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y)
-                            end
-
-                            if weapon ~= nil then
-                                local damage_list = GetDamageValues(unit_data, weapon, effects, m)
-
-                                    for index = BlzGroupGetSize(group) - 1, 0, -1 do
-                                        local picked = BlzGroupUnitAt(group, index)
+                        for index = BlzGroupGetSize(group) - 1, 0, -1 do
+                            local picked = BlzGroupUnitAt(group, index)
+                                if not (IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and not IsUnitInGroup(picked, hit_group)) then
+                                    GroupRemoveUnit(group, picked)
+                                end
+                        end
 
 
-                                            ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
-                                            DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
-                                            damage_list.targets = damage_list.targets - 1
+                        if BlzGroupGetSize(group) > 0 then
 
-                                            OnMissileHit(from, target, m)
+                                if #m.sound_on_hit > 0 then
+                                    AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y)
+                                end
 
-                                                if damage_list.targets <= 0 then
-                                                    time = 0.
-                                                    break
-                                                end
+                            for index = BlzGroupGetSize(group) - 1, 0, -1 do
+                                local picked = BlzGroupUnitAt(group, index)
+                                print(GetUnitName(picked))
+
+                                    targets = targets - 1
+                                    ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
+
+
+                                    if weapon ~= nil then
+                                        local damage_list = GetDamageValues(unit_data, weapon, effects, m)
+                                        DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
+                                        damage_list.targets = damage_list.targets - 1
+
+                                            if damage_list.targets <= 0 then
+                                                time = 0.
+                                                break
+                                            end
 
                                     end
 
-                                damage_list = nil
-                            else
+                                    if effects.effect ~= nil then
+                                        ApplyEffect(from, picked, start_x, start_y, effects.effect, effects.level)
+                                    end
 
-                                for index = BlzGroupGetSize(group) - 1, 0, -1 do
-                                    local picked = BlzGroupUnitAt(group, index)
-
-                                    targets = targets - 1
-
-                                    ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
-
-                                        if effects.effect ~= nil then
-                                            ApplyEffect(from, picked, start_x, start_y, effects.effect, effects.level)
-                                        end
-
-                                        if m.effect_on_hit ~= nil then
-                                            ApplyEffect(from, picked, start_x, start_y, m.effect_on_hit, 1)
-                                        end
+                                    if m.effect_on_hit ~= nil then
+                                        ApplyEffect(from, picked, start_x, start_y, m.effect_on_hit, 1)
+                                    end
 
                                     OnMissileHit(from, target, m)
-
-
                                         if m.hit_once_in > 0. then
                                             local damaged_unit = picked
                                             GroupAddUnit(hit_group, damaged_unit)
@@ -570,28 +564,24 @@ do
                                                 GroupRemoveUnit(hit_group, damaged_unit)
                                                 DestroyTimer(GetExpiredTimer())
                                             end)
-
                                         end
-
 
                                         if targets <= 0 or not m.penetrate then
                                             time = 0.
                                             break
                                         end
 
-                                end
-
                             end
+                        end
 
-                        GroupClear(group)
-                    end
-
+                    GroupClear(group)
                     DestroyGroup(group)
                 end
             end
 
         end)
 
+        return m
     end
 
 
