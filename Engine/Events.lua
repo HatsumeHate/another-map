@@ -25,6 +25,17 @@ do
 
     end
 
+    function OnMissileLaunch(source, target, missile)
+        if missile.id == 'M001' then
+            TimerStart(CreateTimer(), 0.25, true, function ()
+                RedirectMissile_Deg(missile, GetRandomReal(0., 359.))
+                if missile == nil then
+                    DestroyTimer(GetExpiredTimer())
+                end
+            end)
+        end
+    end
+
     ---@param source unit
     ---@param target unit
     ---@param x real

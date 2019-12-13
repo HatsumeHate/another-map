@@ -80,18 +80,47 @@ do
     ---@param missile table
     ---@param angle real
     function RedirectMissile_Deg(missile, angle)
-        local x = BlzGetLocalSpecialEffectX(missile.missile_effect)
-        local y = BlzGetLocalSpecialEffectY(missile.missile_effect)
-        local z = BlzGetLocalSpecialEffectZ(missile.missile_effect)
+        local x = missile.current_x
+        local y = missile.current_y
+        local z = missile.current_z
         local distance = GetDistance3D(x, y, z, missile.end_point_x, missile.end_point_y, missile.end_point_z)
+
+        AddSpecialEffect("Abilities\\Spells\\Other\\Aneu\\AneuCaster.mdl", x, y)
+
 
             missile.end_point_x = x + (distance * Cos(angle * bj_DEGTORAD))
             missile.end_point_y = y + (distance * Sin(angle * bj_DEGTORAD))
-            missile.end_point_z = GetZ(missile.end_point_x, missile.end_point_y)
+            missile.end_point_z = GetZ(missile.end_point_x, missile.end_point_y) + missile.end_z
 
-            missile.vx = (missile.end_point_x - x) * ((missile.speed * PERIOD) / distance)
-            missile.vy = (missile.end_point_y - y) * ((missile.speed * PERIOD) / distance)
-            missile.vz = (missile.end_point_z - z) * ((missile.speed * PERIOD) / distance)
+            if missile.lightning_id ~= nil then
+                missile.lightnings[#missile.lightnings].increment = false
+                missile.lightnings[#missile.lightnings + 1] = {
+                    sprite = AddLightningEx(missile.lightning_id, true, x, y, z, x, y, z),
+                    head_x = x,
+                    head_y = y,
+                    head_z = z,
+                    tail_x = x,
+                    tail_y = y,
+                    tail_z = z,
+                    increment = true,
+                    length = 0.
+                }
+
+            end
+
+            local velocity = (missile.speed * PERIOD) / distance
+
+            missile.vx = (missile.end_point_x - x) * velocity
+            missile.vy = (missile.end_point_y - y) * velocity
+            missile.vz = (missile.end_point_z - z) * velocity
+
+            if missile.lightning_id ~= nil then
+                missile.lightnings[#missile.lightnings].vector_x = missile.vx
+                missile.lightnings[#missile.lightnings].vector_y = missile.vy
+                missile.lightnings[#missile.lightnings].vector_z = missile.vz
+            end
+
+            AddSpecialEffect("Abilities\\Spells\\Other\\Aneu\\AneuTarget.mdl", missile.end_point_x, missile.end_point_y)
             BlzSetSpecialEffectYaw(missile.missile_effect, AngleBetweenXY(x, y, missile.end_point_x, missile.end_point_y))
 
     end
@@ -243,6 +272,60 @@ do
     end
 
 
+
+
+
+
+
+    function MoveLightning(m, target_x, target_y, target_z)
+        for i = 1, #m.lightnings do
+
+            if i == #m.lightnings then
+                m.lightnings[i].head_x = target_x
+                m.lightnings[i].head_y = target_y
+                m.lightnings[i].head_z = target_z
+            else
+                m.lightnings[i].head_x = m.lightnings[i+1].tail_x
+                m.lightnings[i].head_y = m.lightnings[i+1].tail_y
+                m.lightnings[i].head_z = m.lightnings[i+1].tail_z
+            end
+
+            m.lightnings[i].length = GetDistance3D(m.lightnings[i].head_x, m.lightnings[i].head_y, m.lightnings[i].head_z, m.lightnings[i].tail_x, m.lightnings[i].tail_y, m.lightnings[i].tail_z)
+
+            if m.lightnings[i].increment and m.lightnings[i].length >= m.lightning_length then
+                m.lightnings[i].tail_x = m.lightnings[i].tail_x + m.lightnings[i].vector_x
+                m.lightnings[i].tail_y = m.lightnings[i].tail_y + m.lightnings[i].vector_y
+                m.lightnings[i].tail_z = m.lightnings[i].tail_z + m.lightnings[i].vector_z
+            end
+
+            if not m.lightnings[i].increment then
+                m.lightnings[i].tail_x = m.lightnings[i].tail_x + m.lightnings[i].vector_x
+                m.lightnings[i].tail_y = m.lightnings[i].tail_y + m.lightnings[i].vector_y
+                m.lightnings[i].tail_z = m.lightnings[i].tail_z + m.lightnings[i].vector_z
+            end
+
+            MoveLightningEx(m.lightnings[i].sprite, true, m.lightnings[i].head_x, m.lightnings[i].head_y, m.lightnings[i].head_z, m.lightnings[i].tail_x, m.lightnings[i].tail_y, m.lightnings[i].tail_z)
+        end
+
+
+        for i = 1, #m.lightnings do
+            if m.lightnings[i].length <= 1. and not m.lightnings[i].increment then
+                DestroyLightning(m.lightnings[i].sprite)
+
+                for t = 1, #m.lightnings do
+                    if m.lightnings[t] == m.lightnings[i] then
+                        table.remove(m.lightnings, t)
+                    end
+                end
+
+            end
+        end
+
+    end
+
+
+
+
     ---@param from unit
     ---@param target unit
     ---@param missile table
@@ -308,6 +391,22 @@ do
         BlzSetSpecialEffectScale(missile_effect, m.scale)
         BlzSetSpecialEffectYaw(missile_effect, angle * bj_DEGTORAD)
 
+        if m.lightning_id ~= nil then
+            m.lightnings = {}
+            m.lightnings[1] = {
+                sprite = AddLightningEx(m.lightning_id, true, start_x, start_y, start_z, start_x, start_y, start_z),
+                head_x = start_x,
+                head_y = start_y,
+                head_z = start_z,
+                tail_x = start_x,
+                tail_y = start_y,
+                tail_z = start_z,
+                increment = true,
+                length = 0.
+            }
+        end
+
+
         if #m.sound_on_launch > 0 then
             AddSound(m.sound_on_launch[GetRandomInt(1, #m.sound_on_launch)], start_x, start_y)
         end
@@ -340,9 +439,18 @@ do
         m.vy = (end_y - start_y) * velocity
         m.vz = (end_z - start_z) * velocity
 
+        if m.lightnings ~= nil then
+            m.lightnings[1].vector_x = m.vx
+            m.lightnings[1].vector_y = m.vy
+            m.lightnings[1].vector_z = m.vz
+        end
+
         local impact = false
         local hit_group = CreateGroup()
         local my_timer = CreateTimer()
+
+
+        OnMissileLaunch(from, target, m)
 
 
         TimerStart(my_timer, PERIOD, true, function()
@@ -359,10 +467,25 @@ do
                 end
 
                 OnMissileExpire(from, target, m)
+
                 DestroyEffect(missile_effect)
-                DestroyTimer(my_timer)
                 DestroyGroup(hit_group)
-                m = nil
+
+
+                    if m.lightnings ~= nil then
+                        TimerStart(my_timer, PERIOD, true, function ()
+                            m.lightnings[#m.lightnings].increment = false
+                            MoveLightning(m, start_x, start_y, start_z)
+                                if #m.lightnings == nil then
+                                    DestroyTimer(my_timer)
+                                    m = nil
+                                end
+                        end)
+                    else
+                        DestroyTimer(my_timer)
+                        m = nil
+                    end
+
             else
                 --TRACKING
                 if m.trackable then
@@ -401,7 +524,14 @@ do
                         start_z = start_z + m.vz
                     end
 
+                    m.current_x = start_x
+                    m.current_y = start_y
+                    m.current_z = start_z
                     BlzSetSpecialEffectPosition(missile_effect,  start_x, start_y, start_z)
+
+                    if m.lightnings ~= nil then
+                        MoveLightning(m, start_x, start_y, start_z)
+                    end
 
                     time = time - PERIOD
                 end
@@ -530,7 +660,6 @@ do
 
                             for index = BlzGroupGetSize(group) - 1, 0, -1 do
                                 local picked = BlzGroupUnitAt(group, index)
-                                print(GetUnitName(picked))
 
                                     targets = targets - 1
                                     ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)

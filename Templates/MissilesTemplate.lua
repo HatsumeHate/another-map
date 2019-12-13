@@ -30,9 +30,11 @@ do
 
             radius = 0.,
             max_distance = 0.,
-            full_distance = false,
             speed = 0.,
             scale = 1.,
+
+            lightning_id = nil,
+            lightning_length = 0.,
 
             max_targets = 1,
             hit_once_in = 0.,
@@ -44,6 +46,7 @@ do
             revert = false,
             trackable = false,
 
+            full_distance = false,
             only_on_target = false,
             only_on_impact = false,
             penetrate = false,
@@ -55,6 +58,10 @@ do
 
 
         MergeTables(new_missile, missile_reference)
+
+        if new_missile.full_distance == nil then
+            new_missile.full_distance = false
+        end
 
         if new_missile.only_on_target == nil then
             new_missile.only_on_target = false
@@ -85,14 +92,15 @@ do
     
     
     function DefineMissilesData()
-        
         NewMissileTemplate('M001', {
             name = "test missile",
-            model = "Abilities\\Spells\\Other\\FrostBolt\\FrostBoltMissile.mdx",
+            model = ".mdx",
             max_distance = 1000.,
             radius = 50.,
             speed = 400.,
             start_z = 65.,
+            lightning_id = 'CHIM',
+            lightning_length = 125.,
             end_z = 65.,
             arc = 0.,
             ignore_terrain = true,
