@@ -3,6 +3,16 @@ do
 
 
 
+    function OnJumpExpire(target, sign)
+
+    end
+
+
+    function OnPushExpire(source, data)
+        if data.sign == 'EUPP' then
+            ApplyBuff(data.source, source, 'A012', 1)
+        end
+    end
 
 
     ---@param source unit
@@ -22,7 +32,9 @@ do
     ---@param target unit
     ---@param missile table
     function OnMissileHit(source, target, missile)
-
+        if missile.id == 'MBLB' then
+            LightningBall_VisualEffect(target, missile)
+        end
     end
 
     function OnMissileLaunch(source, target, missile)
@@ -118,38 +130,21 @@ do
     function OnSkillCastEnd(source, target, x, y, skill)
         if skill.Id == 'A00L' then
             SetUnitPosition(source, x, y)
+        elseif skill.Id == 'A00I' then
+            local unit_data = GetUnitData(source)
+
+            if unit_data.spawned_hydra ~= nil then
+                KillUnit(unit_data.spawned_hydra)
+            end
+
+            unit_data.spawned_hydra = CreateUnit(Player(GetOwningPlayer(source)), FourCC('shdr'), x, y, GetRandomReal(0.,359.))
+            UnitApplyTimedLife(unit_data.spawned_hydra, 0, 7.)
         elseif skill.Id == 'A00J' then
-            local angle
-
-            if target ~= nil then
-                angle = AngleBetweenUnitXY(source, GetUnitX(target), GetUnitY(target))
-            else
-                angle = AngleBetweenUnitXY(source, x, y)
-            end
-
-
-            local discharge = {}
-
-                discharge[1] = { missile = ThrowMissile(source, nil, 'MDSC', nil, GetUnitX(source), GetUnitY(source), x, y, 0.), a = angle }
-                discharge[2] = { missile = ThrowMissile(source, nil, 'MDSC', nil, GetUnitX(source), GetUnitY(source), x, y, angle + 15.), a = angle + 15. }
-                discharge[3] = { missile = ThrowMissile(source, nil, 'MDSC', nil, GetUnitX(source), GetUnitY(source), x, y, angle - 15.), a = angle - 15. }
-
-            for i = 1, 3 do
-                local timer = CreateTimer()
-                local timeout = GetRandomReal(0.25, 0.65)
-                TimerStart(timer, 0.05, true, function()
-                    if discharge[i].missile.time > 0. then
-                        if timeout <= 0. then
-                            RedirectMissile_Deg(discharge[i].missile, discharge[i].a + GetRandomReal(-15., 15.))
-                            timeout = GetRandomReal(0.25, 0.65)
-                        end
-                        timeout = timeout - 0.05
-                    else
-                        discharge[i] = nil
-                        DestroyTimer(timer)
-                    end
-                end)
-            end
+            SparkCast(source, target, x, y)
+        elseif skill.Id == 'A00O' then
+            MakeUnitJump(source, AngleBetweenUnitXY(source, x, y), x, y, 720., 0.6, 'A00O')
+        elseif skill.Id == 'A010' then
+            WhirlwindActivate(source)
         end
 
     end

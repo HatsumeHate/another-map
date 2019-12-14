@@ -277,7 +277,7 @@ do
                     attack_type = RANGE_ATTACK,
                     attribute = LIGHTNING_ATTRIBUTE,
 
-                    SFX_used = "Spell\\Lightnings Long2.mdx",
+                    SFX_used = "Spell\\Lightnings Long.mdx",
                     SFX_used_scale = 1.,
 
                     area_of_effect = 255.,
@@ -308,7 +308,6 @@ do
                     max_targets = 300,
                 }
             }
-
         })
         --==========================================--
         NewEffectTemplate('EDSC', {
@@ -327,7 +326,116 @@ do
                     max_targets = 1,
                 }
             }
+        })
+        --==========================================--
+        NewEffectTemplate('ELBL', {
+            name = "lightning ball effect",
+            level = {
+                [1] = {
+                    power = 7,
+                    get_attack_bonus = true,
+                    can_crit = true,
+                    is_direct = false,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = LIGHTNING_ATTRIBUTE,
 
+                    max_targets = 1,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EFCS', {
+            name = "focus effect",
+            level = {
+                [1] = {
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A00T', target_type = ON_SELF }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EFAR', {
+            name = "frost armor effect",
+            level = {
+                [1] = {
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A011', target_type = ON_SELF }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EEMA', {
+            name = "elemental mastery effect",
+            level = {
+                [1] = {
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A00U', target_type = ON_SELF }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('ETHK', {
+            name = "throwing knife effect",
+            level = {
+                [1] = {
+                    power = 5,
+                    get_attack_bonus = true,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    max_targets = 1,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EUPP', {
+            name = "uppercut effect",
+            level = {
+                [1] = {
+                    power = 3,
+                    get_attack_bonus = true,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    max_targets = 1,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EBRS', {
+            name = "berserk effect",
+            level = {
+                [1] = {
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A00V', target_type = ON_SELF }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EWHW', {
+            name = "whirlwind effect",
+            level = {
+                [1] = {
+                    power = 7,
+                    get_attack_bonus = true,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    area_of_effect = 225.,
+                    max_targets = 300,
+                }
+            }
         })
     end
 

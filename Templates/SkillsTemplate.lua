@@ -26,16 +26,11 @@
 
             required_hp             = 0.,
             required_mp             = 0.,
-            given_hp                = 0.,
-            given_mp                = 0.,
 
             missile                 = nil,
             effect                  = nil,
 
             required_buff           = 0,
-
-            lightning               = '',
-
 
             start_effect_on_cast_point    = nil,
             start_effect_on_cast_point_scale  = 1.,
@@ -266,6 +261,174 @@
                     animation_point     = 0.3,
                     animation_backswing = 0.3,
                     animation_scale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A00K', {
+            name            = "lightning ball skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_MAGICAL,
+
+            level = {
+                [1] = {
+                    missile             = 'MBLB',
+                    cooldown            = 7.,
+                    animation           = 3,
+                    animation_point     = 0.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A00N', {
+            name            = "focus skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_MAGICAL,
+
+            level = {
+                [1] = {
+                    effect             = 'EFCS',
+                    cooldown            = 25.,
+                    animation           = 3,
+                    animation_point     = 0.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A00N', {
+            name            = "frost armor skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_MAGICAL,
+
+            level = {
+                [1] = {
+                    effect             = 'EFAR',
+                    cooldown            = 20.,
+                    animation           = 3,
+                    animation_point     = 0.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A00H', {
+            name            = "elemental mastery skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_MAGICAL,
+
+            level = {
+                [1] = {
+                    effect             = 'EEMA',
+                    cooldown            = 20.,
+                    animation           = 3,
+                    animation_point     = 0.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A00I', {
+            name            = "hydra skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_MAGICAL,
+
+            level = {
+                [1] = {
+                    cooldown            = 5.,
+                    animation           = 3,
+                    animation_point     = 0.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A00O', {
+            name            = "barbarian jump skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+
+            level = {
+                [1] = {
+                    cooldown            = 12.,
+                    animation           = 3,
+                    animation_point     = 0.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A00Z', {
+            name            = "throwing knife skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+
+            level = {
+                [1] = {
+                    missile             = 'MTHK',
+                    cooldown            = 12.,
+                    animation           = 3,
+                    animation_point     = 0.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A00B', {
+            name            = "uppercut skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+
+            level = {
+                [1] = {
+                    effect              = 'EUPP',
+                    cooldown            = 12.,
+                    animation           = 3,
+                    animation_point     = 0.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A00Q', {
+            name            = "berserk skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+
+            level = {
+                [1] = {
+                    effect              = 'EBRS',
+                    cooldown            = 22.,
+                    animation           = 3,
+                    animation_point     = 0.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A010', {
+            name            = "whirlwind skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+
+            level = {
+                [1] = {
+                    cooldown            = 0.3,
+                    animation           = 3,
+                    animation_point     = 0.1,
+                    animation_backswing = 0.1,
+                    animation_scale     = 1.,
+
                 }
             }
         })

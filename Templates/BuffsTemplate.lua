@@ -150,6 +150,120 @@ do
             }
 
         })
+        --================================================--
+        NewBuffTemplate({
+            name = "focus buff",
+            id = 'A00T',
+            buff_id = 'B003',
+            buff_type = POSITIVE_BUFF,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 6.,
+
+                    current_level = 1,
+                    max_level = 1,
+
+                    bonus = {
+                        { PARAM = ALL_RESIST, VALUE = 25, METHOD = STRAIGHT_BONUS },
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
+                        { PARAM = MAGICAL_SUPPRESSION, VALUE = 1.25, METHOD = MULTIPLY_BONUS }
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "frost armor buff",
+            id = 'A011',
+            buff_id = 'B005',
+            buff_type = POSITIVE_BUFF,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 10.,
+
+                    current_level = 1,
+                    max_level = 1,
+
+                    bonus = {
+                        { PARAM = FIRE_RESIST, VALUE = 7, METHOD = STRAIGHT_BONUS },
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 1.15, METHOD = MULTIPLY_BONUS },
+                        { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 10., METHOD = STRAIGHT_BONUS }
+                    }
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "elemental mastery buff",
+            id = 'A00U',
+            buff_id = 'B004',
+            buff_type = POSITIVE_BUFF,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 10.,
+
+                    current_level = 1,
+                    max_level = 1,
+
+                    bonus = {
+                        { PARAM = FIRE_BONUS, VALUE = 15, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ICE_BONUS, VALUE = 15, METHOD = STRAIGHT_BONUS },
+                        { PARAM = LIGHTNING_BONUS, VALUE = 15, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ARCANE_BONUS, VALUE = 15, METHOD = STRAIGHT_BONUS },
+                        { PARAM = CRIT_CHANCE, VALUE = 10, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "uppercut debuff",
+            id = 'A012',
+            buff_id = 'B006',
+            buff_type = NEGATIVE_BUFF,
+
+            level = {
+                [1] = {
+                    rank = 7,
+                    time = 3.,
+
+                    current_level = 1,
+                    max_level = 1,
+
+                    negative_state = STATE_STUN
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "berserk buff",
+            id = 'A00V',
+            buff_id = 'B007',
+            buff_type = POSITIVE_BUFF,
+
+            level = {
+                [1] = {
+                    rank = 7,
+                    time = 10.,
+
+                    current_level = 1,
+                    max_level = 1,
+
+                    bonus = {
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 1.3, METHOD = MULTIPLY_BONUS },
+                        { PARAM = CONTROL_REDUCTION, VALUE = 30, METHOD = STRAIGHT_BONUS },
+                        { PARAM = MOVING_SPEED, VALUE = 40, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+        })
     end
 
 end

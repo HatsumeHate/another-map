@@ -210,6 +210,39 @@ do
             ignore_terrain = true,
             full_distance = true,
         })
+        --===============================================--
+        NewMissileTemplate('MBLB', {
+            name = "discharge missile",
+            model = "Spell\\LightningSphere_FX.mdx",
+            max_distance = 800.,
+            radius = 400.,
+            speed = 165.,
+            start_z = 70.,
+            end_z = 70.,
+            arc = 0.,
+            hit_once_in = 0.7,
+            effect_on_hit = 'ELBL',
+            max_targets = 300,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true
+        })
+        --===============================================--
+        NewMissileTemplate('MTHK', {
+            name = "knife missile",
+            model = "Spell\\SpinningKnife.mdx",
+            max_distance = 700.,
+            radius = 75.,
+            speed = 720.,
+            start_z = 70.,
+            end_z = 70.,
+            arc = 0.1,
+            effect_on_hit = 'ETHK',
+            max_targets = 1,
+            ignore_terrain = false,
+            full_distance = true,
+            penetrate = false
+        })
     end
 
 end

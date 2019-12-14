@@ -171,16 +171,29 @@ do
 
             OnBuffPrecast(source, target, buff_data)
 
+
                 if buff_data.level[lvl].negative_state ~= nil then
 
                     if buff_data.level[lvl].negative_state == STATE_FREEZE then
+
+                            if target_data.channeled_destructor ~= nil then
+                                target_data.channeled_destructor(target)
+                            end
+
                         SetUnitVertexColor(target, 57, 57, 255, 255)
                         ResetUnitSpellCast(target)
                         BlzPauseUnitEx(target, true)
                         SetUnitTimeScale(target, 0.)
+
                     elseif buff_data.level[lvl].negative_state == STATE_STUN then
+
+                            if target_data.channeled_destructor ~= nil then
+                                target_data.channeled_destructor(target)
+                            end
+
                         BlzPauseUnitEx(target, true)
                         ResetUnitSpellCast(target)
+
                     end
 
 
@@ -190,6 +203,7 @@ do
                         buff_data = nil
                         return false
                     end
+
 
                 end
 

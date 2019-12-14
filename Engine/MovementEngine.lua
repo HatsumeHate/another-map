@@ -128,7 +128,7 @@ do
 
      --TODO pull
 
-    function MakeUnitJump(target, angle, x, y, speed, arc)
+    function MakeUnitJump(target, angle, x, y, speed, arc, sign)
         local unit_x = GetUnitX(target)
         local unit_y = GetUnitY(target)
         local unit_z = GetZ(unit_x, unit_y)
@@ -164,6 +164,7 @@ do
 
             if IsMapBounds(unit_x, unit_y) or time <= 0. then
                 print("total jump distance was "..DistanceBetweenUnitXY(target, start_x, start_y))
+                OnJumpExpire(target, sign)
                 BlzPauseUnitEx(target, false)
                 SetUnitFlyHeight(target, 0., 0.)
                 DestroyTimer(GetExpiredTimer())
@@ -197,7 +198,7 @@ do
 
     local PushList = {}
 
-    function PushUnit(target, angle, power, time)
+    function PushUnit(source, target, angle, power, time, sign)
         local handle = GetHandleId(target)
         local push_data = { x = GetUnitX(target), y = GetUnitY(target), vx = 0., vy = 0. }
 
@@ -219,6 +220,8 @@ do
 
         power = power * 2.5
 
+        push_data.source = source
+        push_data.sign = sign
         push_data.power = power
         local endpoint_x = push_data.x + (power * Cos(angle * bj_DEGTORAD))
         local endpoint_y = push_data.y + (power * Sin(angle * bj_DEGTORAD))
@@ -240,6 +243,7 @@ do
 
             TimerStart(push_data.timer, PERIOD, true, function()
                 if IsMapBounds(push_data.x, push_data.y) or push_data.time < 0. then
+                    OnPushExpire(target, push_data)
                     PushList[handle] = nil
                     BlzPauseUnitEx(target, false)
                     DestroyTimer(push_data.timer)
@@ -298,7 +302,7 @@ do
                 m.lightnings[i].tail_z = m.lightnings[i].tail_z + m.lightnings[i].vector_z
             end
 
-            if not m.lightnings[i].increment then
+            if not m.lightnings[i].increment and i == 1 then
                 m.lightnings[i].tail_x = m.lightnings[i].tail_x + m.lightnings[i].vector_x
                 m.lightnings[i].tail_y = m.lightnings[i].tail_y + m.lightnings[i].vector_y
                 m.lightnings[i].tail_z = m.lightnings[i].tail_z + m.lightnings[i].vector_z
@@ -580,7 +584,7 @@ do
                                 ApplyEffect(from, nil, start_x, start_y, m.effect_on_impact, 1)
                             end
 
-                            if effects ~= nil then
+                            if effects ~= nil and effects.effect ~= nil then
                                 ApplyEffect(from, nil, start_x, start_y, effects.effect, effects.level)
                             end
 
@@ -635,7 +639,7 @@ do
                                 ApplyEffect(from, target, start_x, start_y, m.effect_on_hit, 1)
                             end
 
-                            if effects ~= nil then ApplyEffect(from, target, start_x, start_y, effects.effect, effects.level) end
+                            if effects ~= nil and effects.effect ~= nil then ApplyEffect(from, target, start_x, start_y, effects.effect, effects.level) end
                         end
 
                     end
@@ -688,7 +692,8 @@ do
                                         ApplyEffect(from, picked, start_x, start_y, m.effect_on_hit, 1)
                                     end
 
-                                    OnMissileHit(from, target, m)
+                                    OnMissileHit(from, picked, m)
+
                                         if m.hit_once_in > 0. then
                                             local damaged_unit = picked
                                             GroupAddUnit(hit_group, damaged_unit)
