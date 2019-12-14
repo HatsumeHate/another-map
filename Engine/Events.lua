@@ -62,6 +62,10 @@ do
     ---@param effect table
     function OnEffectApply(source, target , effect)
 
+        if effect.id == 'EUPP' then
+            PushUnit(source, target, AngleBetweenUnits(source,target), 200., 1.25, effect.id)
+        end
+
     end
 
 

@@ -233,7 +233,7 @@ do
             model = "Spell\\SpinningKnife.mdx",
             max_distance = 700.,
             radius = 75.,
-            speed = 720.,
+            speed = 740.,
             start_z = 70.,
             end_z = 70.,
             arc = 0.1,

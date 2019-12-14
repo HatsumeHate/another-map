@@ -193,6 +193,8 @@ do
                 y = GetUnitY(target)
             end
 
+        data.effect_x = x
+        data.effect_y = y
 
             if data.level[lvl].SFX_used ~= nil then
                 local effect = AddSpecialEffect(data.level[lvl].SFX_used, x, y)

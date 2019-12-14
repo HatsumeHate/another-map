@@ -432,4 +432,21 @@
                 }
             }
         })
+        --============================================--
+        NewSkillData('A007', {
+            name            = "chrushing strike skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+
+            level = {
+                [1] = {
+                    effect              = 'ECHR',
+                    cooldown            = 2.3,
+                    animation           = 3,
+                    animation_point     = 0.1,
+                    animation_backswing = 0.1,
+                    animation_scale     = 1.,
+                }
+            }
+        })
     end

@@ -264,6 +264,28 @@ do
                 }
             }
         })
+        --================================================--
+        NewBuffTemplate({
+            name = "chrushing strike debuff",
+            id = 'A00W',
+            buff_id = 'B008',
+            buff_type = NEGATIVE_BUFF,
+
+            level = {
+                [1] = {
+                    rank = 7,
+                    time = 5.,
+
+                    current_level = 1,
+                    max_level = 1,
+
+                    bonus = {
+                        { PARAM = PHYSICAL_ATTRIBUTE, VALUE = -15, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = 0.7, METHOD = MULTIPLY_BONUS },
+                    }
+                }
+            }
+        })
     end
 
 end

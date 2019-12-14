@@ -457,6 +457,26 @@
 		return float_angle <= w
 	end
 
+
+	function IsPointInAngleWindow(window, w, start_x, start_y, x, y)
+		local facing = window
+		local angle  = AngleBetweenXY_DEG(start_x, start_y, x, y)
+		local float_angle
+
+		if angle < 0. then angle = angle + 360. end
+
+
+		if facing < angle then
+			float_angle = angle - facing
+			if float_angle > 180. then float_angle = (facing - angle + 360.) end
+		else
+			float_angle = facing - angle
+			if float_angle > 180. then float_angle = (angle - facing + 360.) end
+		end
+
+		return float_angle <= w
+	end
+
 	function GetDirection(u, targ)
 		local alpha = GetUnitFacing(u)
 		local gamma = bj_RADTODEG * Atan2(GetUnitY(targ) - GetUnitY(u), GetUnitX(targ) - GetUnitX(u))

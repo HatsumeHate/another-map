@@ -63,6 +63,7 @@ do
             resource_restored_from_hit = false,
 
             area_of_effect         = 0.,
+            angle_window           = 0.,
 
             triggered_function     = nil,
 
@@ -124,6 +125,11 @@ do
                 if my_new_effect.level[i].delay == nil then
                     my_new_effect.level[i].delay = 0.
                 end
+
+                if my_new_effect.level[i].angle_window == nil then
+                    my_new_effect.level[i].angle_window = 0.
+                end
+
             end
         end
 
@@ -434,6 +440,26 @@ do
                     attribute = PHYSICAL_ATTRIBUTE,
                     area_of_effect = 225.,
                     max_targets = 300,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('ECRH', {
+            name = "crushing strike effect",
+            level = {
+                [1] = {
+                    power = 10,
+                    get_attack_bonus = true,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    area_of_effect = 100.,
+                    max_targets = 1,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A00W', target_type = ON_ENEMY }
+                    },
                 }
             }
         })
