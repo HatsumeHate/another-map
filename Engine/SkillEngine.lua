@@ -117,9 +117,12 @@ do
                             end
                         end
 
+                    TimerStart(unit_data.action_timer, skill.level[ability_level].animation_backswing * time_reduction, false, function ()
+                        SpellBackswing(unit_data.Owner)
+                    end)
+
                     OnSkillCastEnd(unit_data.Owner, target, spell_x, spell_y, skill)
 
-                    TimerStart(unit_data.action_timer, skill.level[ability_level].animation_backswing * time_reduction, false, SpellBackswing(unit_data.Owner))
                     print("cast")
                 end)
 

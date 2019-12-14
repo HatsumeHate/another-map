@@ -176,7 +176,7 @@ do
             penetrate = true,
             trackable = false
         })
-    --===============================================--
+        --===============================================--
         NewMissileTemplate('MMTR', {
             name = "meteor missile",
             model = "war3mapImported\\Rain of Fire.mdx",
@@ -194,6 +194,21 @@ do
             penetrate = false,
             trackable = false,
             only_on_impact = true
+        })
+        --===============================================--
+        NewMissileTemplate('MDSC', {
+            name = "discharge missile",
+            model = "Spell\\LightningSpark.mdx",
+            max_distance = 800.,
+            radius = 65.,
+            speed = 275.,
+            start_z = 10.,
+            end_z = 10.,
+            arc = 0.,
+            max_targets = 1,
+            effect_on_hit = 'EDSC',
+            ignore_terrain = true,
+            full_distance = true,
         })
     end
 

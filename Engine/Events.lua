@@ -118,7 +118,40 @@ do
     function OnSkillCastEnd(source, target, x, y, skill)
         if skill.Id == 'A00L' then
             SetUnitPosition(source, x, y)
+        elseif skill.Id == 'A00J' then
+            local angle
+
+            if target ~= nil then
+                angle = AngleBetweenUnitXY(source, GetUnitX(target), GetUnitY(target))
+            else
+                angle = AngleBetweenUnitXY(source, x, y)
+            end
+
+
+            local discharge = {}
+
+                discharge[1] = { missile = ThrowMissile(source, nil, 'MDSC', nil, GetUnitX(source), GetUnitY(source), x, y, 0.), a = angle }
+                discharge[2] = { missile = ThrowMissile(source, nil, 'MDSC', nil, GetUnitX(source), GetUnitY(source), x, y, angle + 15.), a = angle + 15. }
+                discharge[3] = { missile = ThrowMissile(source, nil, 'MDSC', nil, GetUnitX(source), GetUnitY(source), x, y, angle - 15.), a = angle - 15. }
+
+            for i = 1, 3 do
+                local timer = CreateTimer()
+                local timeout = GetRandomReal(0.25, 0.65)
+                TimerStart(timer, 0.05, true, function()
+                    if discharge[i].missile.time > 0. then
+                        if timeout <= 0. then
+                            RedirectMissile_Deg(discharge[i].missile, discharge[i].a + GetRandomReal(-15., 15.))
+                            timeout = GetRandomReal(0.25, 0.65)
+                        end
+                        timeout = timeout - 0.05
+                    else
+                        discharge[i] = nil
+                        DestroyTimer(timer)
+                    end
+                end)
+            end
         end
+
     end
 
     ---@param source unit

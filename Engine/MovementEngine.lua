@@ -85,7 +85,7 @@ do
         local z = missile.current_z
         local distance = GetDistance3D(x, y, z, missile.end_point_x, missile.end_point_y, missile.end_point_z)
 
-        AddSpecialEffect("Abilities\\Spells\\Other\\Aneu\\AneuCaster.mdl", x, y)
+        --AddSpecialEffect("Abilities\\Spells\\Other\\Aneu\\AneuCaster.mdl", x, y)
 
 
             missile.end_point_x = x + (distance * Cos(angle * bj_DEGTORAD))
@@ -120,7 +120,7 @@ do
                 missile.lightnings[#missile.lightnings].vector_z = missile.vz
             end
 
-            AddSpecialEffect("Abilities\\Spells\\Other\\Aneu\\AneuTarget.mdl", missile.end_point_x, missile.end_point_y)
+            --AddSpecialEffect("Abilities\\Spells\\Other\\Aneu\\AneuTarget.mdl", missile.end_point_x, missile.end_point_y)
             BlzSetSpecialEffectYaw(missile.missile_effect, AngleBetweenXY(x, y, missile.end_point_x, missile.end_point_y))
 
     end
@@ -328,7 +328,7 @@ do
 
     ---@param from unit
     ---@param target unit
-    ---@param missile table
+    ---@param missile integer
     ---@param effects table
     ---@param start_x real
     ---@param start_y real
@@ -346,7 +346,7 @@ do
             start_z = GetZ(start_x, start_y) + m.start_z
         end
 
-        local time = 0.
+        m.time = 0.
         local weapon
 
 
@@ -383,7 +383,7 @@ do
         m.end_point_z = end_z
 
         local distance = SquareRoot((end_x-start_x)*(end_x-start_x) + (end_y-start_y)*(end_y-start_y) + (end_z - start_z)*(end_z - start_z))
-        time = distance / m.speed
+        m.time = distance / m.speed
 
         local missile_effect = AddSpecialEffect(m.model, start_x, start_y)
         --BlzSetSpecialEffectHeight(missile_effect, start_z)
@@ -429,7 +429,7 @@ do
             step = m.speed / (1. / PERIOD)
             start_height = start_z
             end_height = end_z
-            time = time * (1. + m.arc)
+            m.time = m.time * (1. + m.arc)
         end
 
         local targets = m.max_targets
@@ -455,7 +455,7 @@ do
 
         TimerStart(my_timer, PERIOD, true, function()
 
-            if IsMapBounds(start_x, start_y) or time <= 0. then
+            if IsMapBounds(start_x, start_y) or m.time <= 0. then
                 print("BOUNDS")
 
                 if #m.sound_on_destroy > 0 then
@@ -472,7 +472,7 @@ do
                 DestroyGroup(hit_group)
 
 
-                    if m.lightnings ~= nil then
+                if m.lightnings ~= nil then
                         TimerStart(my_timer, PERIOD, true, function ()
                             m.lightnings[#m.lightnings].increment = false
                             MoveLightning(m, start_x, start_y, start_z)
@@ -491,7 +491,7 @@ do
                 if m.trackable then
                     --print("TRACKABLE")
                     if GetUnitState(target, UNIT_STATE_LIFE) < 0.045 or target == nil then
-                        time = 0.
+                        m.time = 0.
                     else
                         distance = GetDistance3D(start_x, start_y, start_z, GetUnitX(target), GetUnitY(target), BlzGetLocalUnitZ(target))
                         velocity = (m.speed * PERIOD) / distance
@@ -504,7 +504,7 @@ do
 
                 -- COLLISION
                 if BlzGetLocalSpecialEffectZ(missile_effect) <= GetZ(start_x, start_y) + 1. and not m.ignore_terrain then
-                    time = 0.
+                    m.time = 0.
                     impact = true
                     --print("collision")
                 else
@@ -527,13 +527,14 @@ do
                     m.current_x = start_x
                     m.current_y = start_y
                     m.current_z = start_z
+
                     BlzSetSpecialEffectPosition(missile_effect,  start_x, start_y, start_z)
 
                     if m.lightnings ~= nil then
                         MoveLightning(m, start_x, start_y, start_z)
                     end
 
-                    time = time - PERIOD
+                    m.time = m.time - PERIOD
                 end
             end
             -- movement end
@@ -543,7 +544,7 @@ do
             if m.only_on_impact then
                 if impact then
                     -- aoe damage
-                    time = 0.
+                    m.time = 0.
 
                         if #m.sound_on_hit > 0 then
                             AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y)
@@ -638,7 +639,7 @@ do
                         end
 
                     end
-                elseif time > 0. then
+                elseif m.time > 0. then
                     -- first target hit
                     local group = CreateGroup()
                     local player_entity = GetOwningPlayer(from)
@@ -671,14 +672,16 @@ do
                                         damage_list.targets = damage_list.targets - 1
 
                                             if damage_list.targets <= 0 then
-                                                time = 0.
+                                                m.time = 0.
                                                 break
                                             end
 
                                     end
 
-                                    if effects.effect ~= nil then
-                                        ApplyEffect(from, picked, start_x, start_y, effects.effect, effects.level)
+                                    if effects ~= nil then
+                                        if effects.effect ~= nil then
+                                            ApplyEffect(from, picked, start_x, start_y, effects.effect, effects.level)
+                                        end
                                     end
 
                                     if m.effect_on_hit ~= nil then
@@ -696,7 +699,7 @@ do
                                         end
 
                                         if targets <= 0 or not m.penetrate then
-                                            time = 0.
+                                            m.time = 0.
                                             break
                                         end
 

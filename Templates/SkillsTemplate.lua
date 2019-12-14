@@ -253,4 +253,20 @@
                 }
             }
         })
+        --============================================--
+        NewSkillData('A00J', {
+            name            = "discharge skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_MAGICAL,
+
+            level = {
+                [1] = {
+                    cooldown            = 0.1,
+                    animation           = 3,
+                    animation_point     = 0.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 1.,
+                }
+            }
+        })
     end

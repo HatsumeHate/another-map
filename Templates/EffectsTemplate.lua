@@ -310,6 +310,25 @@ do
             }
 
         })
+        --==========================================--
+        NewEffectTemplate('EDSC', {
+            name = "discharge effect",
+            level = {
+                [1] = {
+                    power = 5,
+                    get_attack_bonus = true,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = LIGHTNING_ATTRIBUTE,
+
+                    area_of_effect = 100.,
+                    max_targets = 1,
+                }
+            }
+
+        })
     end
 
 end
