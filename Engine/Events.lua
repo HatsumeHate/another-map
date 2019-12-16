@@ -8,6 +8,13 @@ do
     end
 
 
+    function OnPullRelease(source, target, sign)
+        if sign == 'EBCH' then
+            RemoveBuff(source, "A013")
+        end
+    end
+
+
     function OnPushExpire(source, data)
         if data.sign == 'EUPP' then
             ApplyBuff(data.source, source, 'A012', 1)
@@ -45,6 +52,8 @@ do
                     DestroyTimer(GetExpiredTimer())
                 end
             end)
+        elseif missile.id == "MBCH" then
+            BuildChain(source, missile)
         end
     end
 
@@ -60,10 +69,18 @@ do
     ---@param source unit
     ---@param target unit
     ---@param effect table
-    function OnEffectApply(source, target , effect)
+    function OnEffectApply(source, target, effect)
 
         if effect.id == 'EUPP' then
             PushUnit(source, target, AngleBetweenUnits(source,target), 200., 1.25, effect.id)
+        elseif effect.id == 'EBCH' then
+            local unit_data = GetUnitData(source)
+            local buff_data = GetBuffDataFromUnit(target, 'A013')
+
+            if buff_data ~= nil and buff_data.buff_source == source then
+                GroupAddUnit(unit_data.chain.group, target)
+            end
+
         end
 
     end

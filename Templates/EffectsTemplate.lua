@@ -64,6 +64,7 @@ do
 
             area_of_effect         = 0.,
             angle_window           = 0.,
+            force_from_caster_position = false,
 
             triggered_function     = nil,
 
@@ -98,6 +99,11 @@ do
 
         for i = 1, MAX_LEVELS do
             if  my_new_effect.level[i] ~= nil then
+
+                if my_new_effect.level[i].area_of_effect == nil then
+                    my_new_effect.level[i].area_of_effect = 0.
+                end
+
                 if my_new_effect.level[i].can_crit == nil then
                     my_new_effect.level[i].can_crit = false
                 end
@@ -128,6 +134,10 @@ do
 
                 if my_new_effect.level[i].angle_window == nil then
                     my_new_effect.level[i].angle_window = 0.
+                end
+
+                if my_new_effect.level[i].force_from_caster_position == nil then
+                    my_new_effect.level[i].force_from_caster_position = false
                 end
 
             end
@@ -408,6 +418,9 @@ do
                     get_attack_bonus = true,
                     can_crit = true,
                     is_direct = true,
+                    area_of_effect = 135.,
+                    angle_window  = 35.,
+                    force_from_caster_position = true,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = MELEE_ATTACK,
                     attribute = PHYSICAL_ATTRIBUTE,
@@ -455,10 +468,24 @@ do
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = MELEE_ATTACK,
                     attribute = PHYSICAL_ATTRIBUTE,
-                    area_of_effect = 100.,
+                    area_of_effect = 135.,
+                    angle_window  = 35.,
+                    force_from_caster_position = true,
                     max_targets = 1,
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A00W', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EBCH', {
+            name = "chain effect",
+            level = {
+                [1] = {
+                    max_targets = 1,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A013', target_type = ON_ENEMY }
                     },
                 }
             }

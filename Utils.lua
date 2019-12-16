@@ -454,13 +454,15 @@
 			if float_angle > 180. then float_angle = (angle - facing + 360.) end
 		end
 
+		print(float_angle)
+		print(w)
+
 		return float_angle <= w
 	end
 
 
-	function IsPointInAngleWindow(window, w, start_x, start_y, x, y)
-		local facing = window
-		local angle  = AngleBetweenXY_DEG(start_x, start_y, x, y)
+	function IsPointInAngleWindow(facing, window, start_x, start_y, point_x, point_y)
+		local angle  = AngleBetweenXY_DEG(start_x, start_y, point_x, point_y)
 		local float_angle
 
 		if angle < 0. then angle = angle + 360. end
@@ -474,7 +476,7 @@
 			if float_angle > 180. then float_angle = (angle - facing + 360.) end
 		end
 
-		return float_angle <= w
+		return float_angle <= window
 	end
 
 	function GetDirection(u, targ)

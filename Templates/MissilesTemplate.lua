@@ -243,6 +243,22 @@ do
             full_distance = true,
             penetrate = false
         })
+        --===============================================--
+        NewMissileTemplate('MBCH', {
+            name = "chain missile",
+            model = ".mdx",
+            max_distance = 600.,
+            effect_on_hit = 'EBCH',
+            radius = 75.,
+            speed = 740.,
+            start_z = 70.,
+            end_z = 70.,
+            arc = 0.,
+            max_targets = 1,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false
+        })
     end
 
 end

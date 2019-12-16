@@ -266,7 +266,7 @@ do
         })
         --================================================--
         NewBuffTemplate({
-            name = "chrushing strike debuff",
+            name = "crushing strike debuff",
             id = 'A00W',
             buff_id = 'B008',
             buff_type = NEGATIVE_BUFF,
@@ -283,6 +283,25 @@ do
                         { PARAM = PHYSICAL_ATTRIBUTE, VALUE = -15, METHOD = STRAIGHT_BONUS },
                         { PARAM = ATTACK_SPEED, VALUE = 0.7, METHOD = MULTIPLY_BONUS },
                     }
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "chain stun debuff",
+            id = 'A013',
+            buff_id = 'B009',
+            buff_type = NEGATIVE_BUFF,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 50.,
+
+                    current_level = 1,
+                    max_level = 1,
+
+                    negative_state = STATE_STUN
                 }
             }
         })

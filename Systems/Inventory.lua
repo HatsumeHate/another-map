@@ -987,6 +987,9 @@ do
 
 --WarCraftIIILogo
 
+       -- BlzFrameSetModel(new_Frame, "UI\\Glues\\MainMenu\\WarCraftIIILogo\\WarCraftIIILogo.mdx", 0)
+        --BlzFrameSetSpriteAnimate(new_Frame, 2, 0)
+        --BlzFrameSetModel(new_Frame, "selecter1.mdx", 0)
 
         BlzFrameSetVisible(main_frame, false)
 

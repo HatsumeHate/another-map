@@ -127,6 +127,49 @@ do
 
 
      --TODO pull
+    local PullList = {}
+
+    function PullUnitToUnit(source, target, speed, release_range, power, sign)
+        local pull_data = {}
+        local h = GetHandleId(source)
+
+        if PullList[h] ~= nil then
+            if PullList[h].power < power then
+                pull_data.target = target
+                pull_data.speed = speed
+                pull_data.power = power
+                pull_data.release_range = release_range
+            end
+        end
+
+            PullList[h] = pull_data
+            pull_data.target = target
+            pull_data.power = power
+            pull_data.speed = speed
+            pull_data.release_range = release_range
+            local velocity = (speed * PERIOD) / DistanceBetweenUnits(source, target)
+            pull_data.vx = (GetUnitX(target) - GetUnitX(source)) * velocity
+            pull_data.vy = (GetUnitY(target) - GetUnitY(source)) * velocity
+
+
+            TimerStart(CreateTimer(), PERIOD, true, function()
+                if IsUnitInRange(source, pull_data.target, pull_data.release_range) or GetUnitState(source, UNIT_STATE_LIFE) < 0.045 or GetUnitState(pull_data.target, UNIT_STATE_LIFE) < 0.045 then
+                    print("break")
+                    OnPullRelease(source, pull_data.target, sign)
+                    pull_data = nil
+                    PullList[h] = nil
+                    DestroyTimer(GetExpiredTimer())
+                else
+                    SetUnitX(source, GetUnitX(source) + pull_data.vx)
+                    SetUnitY(source, GetUnitY(source) + pull_data.vy)
+                    velocity = (pull_data.speed * PERIOD) / DistanceBetweenUnits(source, pull_data.target)
+                    pull_data.vx = (GetUnitX(pull_data.target) - GetUnitX(source)) * velocity
+                    pull_data.vy = (GetUnitY(pull_data.target) - GetUnitY(source)) * velocity
+                end
+            end)
+
+    end
+
 
     function MakeUnitJump(target, angle, x, y, speed, arc, sign)
         local unit_x = GetUnitX(target)
@@ -218,7 +261,7 @@ do
             end
         end
 
-        power = power * 2.5
+        power = power * 2.
 
         push_data.source = source
         push_data.sign = sign

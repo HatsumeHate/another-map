@@ -434,13 +434,30 @@
         })
         --============================================--
         NewSkillData('A007', {
-            name            = "chrushing strike skill",
+            name            = "crushing strike skill",
             target_type     = TARGET_CAST,
             type            = SKILL_PHYSICAL,
 
             level = {
                 [1] = {
-                    effect              = 'ECHR',
+                    effect              = 'ECRH',
+                    cooldown            = 2.3,
+                    animation           = 3,
+                    animation_point     = 0.1,
+                    animation_backswing = 0.1,
+                    animation_scale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A00A', {
+            name            = "chain skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+
+            level = {
+                [1] = {
+                    missile             = 'MBCH',
                     cooldown            = 2.3,
                     animation           = 3,
                     animation_point     = 0.1,

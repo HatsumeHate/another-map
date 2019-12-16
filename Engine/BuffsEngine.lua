@@ -44,6 +44,21 @@ do
         end
     end
 
+    ---@param target unit
+    ---@param buff_id integer
+    function GetBuffDataFromUnit(target, buff_id)
+        local target_data = GetUnitData(target)
+
+        if GetUnitAbilityLevel(target, FourCC(buff_id)) > 0 then
+            for i = 1, #target_data.buff_list do
+                if target_data.buff_list[i].id == buff_id then
+                    return target_data.buff_list[i]
+                end
+            end
+        end
+
+        return nil
+    end
 
     ---@param target unit
     ---@param buff_id integer
@@ -300,48 +315,3 @@ do
     end
 
 end
-
-
---[[
-                           if buff_data.level[buff_data.current_level].effect_damage ~= nil then
-                               DamageUnit(source, target, buff_data.level[buff_data.current_level].effect_damage.damage,
-                                       buff_data.level[buff_data.current_level].effect_damage.attribute,
-                                       buff_data.level[buff_data.current_level].effect_damage.damage_type,
-                                       buff_data.level[buff_data.current_level].effect_damage.attack_type,
-                                       buff_data.level[buff_data.current_level].effect_damage.can_crit, false, false, nil)
-                           end
-
-                               if buff_data.level[buff_data.current_level].effect_hp_value ~= nil then
-                                   SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + buff_data.level[buff_data.current_level].effect_hp_value)
-                                   CreateHitnumber(R2I(buff_data.level[buff_data.current_level].effect_hp_value), source, target, HEAL_STATUS)
-                               end
-
-                               if buff_data.level[buff_data.current_level].effect_mp_value ~= nil then
-                                   SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + buff_data.level[buff_data.current_level].effect_mp_value)
-                                   CreateHitnumber(R2I(buff_data.level[buff_data.current_level].effect_mp_value), source, target, RESOURCE_STATUS)
-                               end
-
-                           if buff_data.level[buff_data.current_level].effect_hp_percent_value ~= nil then
-                               local value = BlzGetUnitMaxHP(target) * buff_data.level[buff_data.current_level].effect_hp_percent_value
-                                   if buff_data.level[buff_data.current_level].effect_type == OVER_TIME_DAMAGE then
-                                       UnitDamageTarget(source, target, value, false, false, nil, nil, nil)
-                                       CreateHitnumber(R2I(value), source, target, ATTACK_STATUS_USUAL)
-                                   else
-                                       SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + value)
-                                       CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
-                                   end
-                           end
-
-                           if buff_data.level[buff_data.current_level].effect_mp_percent_value ~= nil then
-                               local value = BlzGetUnitMaxMana(target) * buff_data.level[buff_data.current_level].effect_mp_percent_value
-                                   SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + value)
-                                   CreateHitnumber(R2I(value), source, target, RESOURCE_STATUS)
-                           end
-
-                           over_time_effect_delay = buff_data.level[buff_data.current_level].effect_delay
-
-                           if buff_data.level[buff_data.current_level].effect_trigger_sfx ~= nil then
-                               local new_effect = AddSpecialEffectTarget(buff_data.level[buff_data.current_level].effect_trigger_sfx, target, buff_data.level[buff_data.current_level].effect_trigger_sfx_point)
-                               BlzSetSpecialEffectScale(new_effect, buff_data.level[buff_data.current_level].effect_trigger_sfx_scale)
-                               DestroyEffect(new_effect)
-                           end]]
