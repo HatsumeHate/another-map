@@ -296,12 +296,55 @@ do
             level = {
                 [1] = {
                     rank = 15,
-                    time = 50.,
+                    time = 1000.,
 
                     current_level = 1,
                     max_level = 1,
 
                     negative_state = STATE_STUN
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "cutting slash debuff",
+            id = 'A014',
+            buff_id = 'B00A',
+            buff_type = NEGATIVE_BUFF,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 5.,
+
+                    current_level = 1,
+                    max_level = 1,
+
+                    effect = 'ECSP',
+                    effect_delay = 1.,
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "warcry debuff",
+            id = 'A00Y',
+            buff_id = 'B00B',
+            buff_type = NEGATIVE_BUFF,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 7.,
+
+                    current_level = 1,
+                    max_level = 1,
+
+                    bonus = {
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 0.7, METHOD = MULTIPLY_BONUS },
+                        { PARAM = MAGICAL_ATTACK, VALUE = 0.7, METHOD = MULTIPLY_BONUS },
+                        { PARAM = MOVING_SPEED, VALUE = 0.8, METHOD = MULTIPLY_BONUS },
+                    }
                 }
             }
         })

@@ -74,17 +74,15 @@ do
                 bonus_critical_rate = myeffect.eff.level[myeffect.l].bonus_crit_multiplier
             end
 
-            if myeffect.eff.level[myeffect.l].attack_percent_bonus ~= nil then
-                damage = damage + (attacker.equip_point[WEAPON_POINT].DAMAGE * myeffect.eff.level[myeffect.l].attack_percent_bonus)
+            if myeffect.eff.level[myeffect.l].weapon_damage_percent_bonus ~= nil then
+                damage = damage + (attacker.equip_point[WEAPON_POINT].DAMAGE * myeffect.eff.level[myeffect.l].weapon_damage_percent_bonus)
             end
 
-            if myeffect.eff.level[myeffect.l].get_attack_bonus ~= nil then
-                if myeffect.eff.level[myeffect.l].get_attack_bonus then
-                    if damage_type == DAMAGE_TYPE_PHYSICAL then
-                        damage = damage + attacker.stats[PHYSICAL_ATTACK].value
-                    elseif damage_type == DAMAGE_TYPE_MAGICAL then
-                        damage = damage + attacker.stats[MAGICAL_ATTACK].value
-                    end
+            if myeffect.eff.level[myeffect.l].attack_percent_bonus > 0. then
+                if damage_type == DAMAGE_TYPE_PHYSICAL then
+                    damage = damage + attacker.stats[PHYSICAL_ATTACK].value * myeffect.eff.level[myeffect.l].attack_percent_bonus
+                elseif damage_type == DAMAGE_TYPE_MAGICAL then
+                    damage = damage + attacker.stats[MAGICAL_ATTACK].value * myeffect.eff.level[myeffect.l].attack_percent_bonus
                 end
             end
 

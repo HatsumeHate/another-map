@@ -622,6 +622,8 @@ do
                     local flag = slot.button_type >= WEAPON_POINT and slot.button_type <= NECKLACE_POINT
 
                     if flag then EquipItem(InventoryOwner[player], item, false) end
+                    print(stone_data)
+                    print("stone slot is " .. i)
                     item_data.STONE_SLOTS[i] = stone_data
                     if flag then EquipItem(InventoryOwner[player], item, true) end
 
@@ -650,12 +652,15 @@ do
         local item_data = GetItemData(ButtonList[h].item)
 
         if TimerGetRemaining(DoubleClickTimer[player]) > 0. then
-            if ButtonList[h].item ~= nil and item_data.TYPE ~= ITEM_TYPE_GEM then
+            if ButtonList[h].item ~= nil and item_data.TYPE ~= ITEM_TYPE_GEM and item_data.TYPE ~= ITEM_TYPE_CONSUMABLE then
                 RemoveTooltip(player)
                 DestroyContextMenu(player)
                 InteractWithItemInSlot(h, player)
-            elseif item_data.TYPE ~= ITEM_TYPE_CONSUMABLE then
+            elseif item_data.TYPE == ITEM_TYPE_CONSUMABLE then
                 LockItemOnBelt(player, ButtonList[h])
+                RemoveTooltip(player)
+                DestroyContextMenu(player)
+                TimerStart(DoubleClickTimer[player], 0.01, false, nil)
             end
         else
             TimerStart(DoubleClickTimer[player], 0.25, false, function()
@@ -675,8 +680,6 @@ do
                         AddContextOption(player, "Надеть", function()
                             InteractWithItemInSlot(h, player)
                         end)
-
-
                     end
 
                     AddContextOption(player, "Переместить", function()

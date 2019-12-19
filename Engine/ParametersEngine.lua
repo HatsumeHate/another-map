@@ -80,21 +80,29 @@ do
 	STRAIGHT_BONUS         = 1
 	MULTIPLY_BONUS         = 2
 	
-	-- limits
+	-- защита
 	VALUE_BY_PERCENT_1     = 11
 	FIRST_DEF_LIMIT        = 350
 	VALUE_BY_PERCENT_2     = 15
 	SECOND_DEF_LIMIT       = 650
 	VALUE_BY_PERCENT_3     = 19
 	
-	--маг атака
+	-- маг атака
 	MA_VALUE_BY_PERCENT_1  = 5
 	MA_FIRST_LIMIT         = 275
 	MA_VALUE_BY_PERCENT_2  = 7
 	MA_SECOND_LIMIT        = 340
 	MA_VALUE_BY_PERCENT_3  = 12
-	
-	
+
+
+	-- отражение урона
+	REFLECT_VALUE_BY_PERCENT_1  = 5
+	REFLECT_FIRST_LIMIT         = 275
+	REFLECT_VALUE_BY_PERCENT_2  = 7
+	REFLECT_SECOND_LIMIT        = 340
+	REFLECT_VALUE_BY_PERCENT_3  = 12
+
+
 	--защита в процент
 	---@param x integer
 	function DefenceToPercent(x)
@@ -412,7 +420,7 @@ do
 
         ---@param data table
         [ATTACK_SPEED] = function(data)
-            data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].ATTACK_SPEED * ((1. - data.stats[ATTACK_SPEED].multiplier) + 1.)
+            data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].ATTACK_SPEED * (1. - data.stats[ATTACK_SPEED].bonus * 0.01)
 			if data.stats[ATTACK_SPEED].value > 0. then
 				BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 0)
 				BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 1)

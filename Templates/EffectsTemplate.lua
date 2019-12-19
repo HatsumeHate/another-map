@@ -39,8 +39,8 @@ do
     function NewEffectData()
         return {
             power                 = 0,
-            get_attack_bonus      = false,
-            attack_percent_bonus  = 0,
+            attack_percent_bonus  = 1.,
+            weapon_damage_percent_bonus = 0.,
             damage_type           = DAMAGE_TYPE_NONE,
             attribute             = PHYSICAL_ATTRIBUTE,
             attack_type           = nil,
@@ -104,16 +104,16 @@ do
                     my_new_effect.level[i].area_of_effect = 0.
                 end
 
+                if my_new_effect.level[i].attack_percent_bonus == nil then
+                    my_new_effect.level[i].attack_percent_bonus = 0.
+                end
+
                 if my_new_effect.level[i].can_crit == nil then
                     my_new_effect.level[i].can_crit = false
                 end
 
                 if my_new_effect.level[i].is_direct == nil then
                     my_new_effect.level[i].is_direct = false
-                end
-
-                if my_new_effect.level[i].get_attack_bonus == nil then
-                    my_new_effect.level[i].get_attack_bonus = false
                 end
 
                 if my_new_effect.level[i].timescale == nil then
@@ -183,7 +183,7 @@ do
             level = {
                 [1] = {
                     power = 10,
-                    get_attack_bonus = true,
+                    attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -202,7 +202,7 @@ do
             level = {
                 [1] = {
                     power = 10,
-                    get_attack_bonus = true,
+                    attack_percent_bonus = 1.,
                     delay = 0.3,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -227,7 +227,7 @@ do
             level = {
                 [1] = {
                     power = 17,
-                    get_attack_bonus = true,
+                    attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -247,7 +247,7 @@ do
             level = {
                 [1] = {
                     power = 20,
-                    get_attack_bonus = true,
+                    attack_percent_bonus = 1.,
                     delay = 0.1,
                     can_crit = true,
                     is_direct = true,
@@ -268,7 +268,7 @@ do
             level = {
                 [1] = {
                     power = 5,
-                    get_attack_bonus = true,
+                    attack_percent_bonus = 1.,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = ICE_ATTRIBUTE,
@@ -286,7 +286,7 @@ do
             level = {
                 [1] = {
                     power = 30,
-                    get_attack_bonus = true,
+                    attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -310,7 +310,7 @@ do
                     timescale = 1.34,
 
                     power = 27,
-                    get_attack_bonus = true,
+                    attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -331,7 +331,7 @@ do
             level = {
                 [1] = {
                     power = 5,
-                    get_attack_bonus = true,
+                    attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -349,7 +349,7 @@ do
             level = {
                 [1] = {
                     power = 7,
-                    get_attack_bonus = true,
+                    attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -399,7 +399,7 @@ do
             level = {
                 [1] = {
                     power = 5,
-                    get_attack_bonus = true,
+                    attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
@@ -415,10 +415,10 @@ do
             level = {
                 [1] = {
                     power = 3,
-                    get_attack_bonus = true,
+                    attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
-                    area_of_effect = 135.,
+                    area_of_effect = 155.,
                     angle_window  = 35.,
                     force_from_caster_position = true,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
@@ -445,7 +445,7 @@ do
             level = {
                 [1] = {
                     power = 7,
-                    get_attack_bonus = true,
+                    attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
@@ -462,13 +462,13 @@ do
             level = {
                 [1] = {
                     power = 10,
-                    get_attack_bonus = true,
+                    attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = MELEE_ATTACK,
                     attribute = PHYSICAL_ATTRIBUTE,
-                    area_of_effect = 135.,
+                    area_of_effect = 155.,
                     angle_window  = 35.,
                     force_from_caster_position = true,
                     max_targets = 1,
@@ -486,6 +486,54 @@ do
                     max_targets = 1,
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A013', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('ECSL', {
+            name = "cutting slash effect",
+            level = {
+                [1] = {
+                    power = 4,
+                    attack_percent_bonus = 1.,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    area_of_effect = 155.,
+                    angle_window  = 35.,
+                    force_from_caster_position = true,
+                    max_targets = 1,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A014', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('ECSP', {
+            name = "cutting slash periodic effect",
+            level = {
+                [1] = {
+                    power = 1,
+                    attack_percent_bonus = 0.7,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = nil,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    max_targets = 1,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EWCR', {
+            name = "warcry effect",
+            level = {
+                [1] = {
+                    max_targets = 300,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A00Y', target_type = ON_ENEMY }
                     },
                 }
             }

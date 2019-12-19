@@ -274,21 +274,212 @@ do
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
         })
 
-		ItemAddData('I002', {
-			NAME    		   = 'Алмаз',
+		ItemAddData('I00G', {
+			NAME    		   = 'Рубин',
 			TYPE    		   = ITEM_TYPE_GEM,
-			frame_texture      = "BTNS_Almaz.blp",
+			frame_texture      = "GUI\\BTNItem_Gem_Ruby.blp",
 			point_bonus 	   = {
-				[ITEM_TYPE_WEAPON] = {  PARAM = PHYSICAL_ATTACK, VALUE = 20, METHOD = STRAIGHT_BONUS },
-				[ITEM_TYPE_ARMOR]  = {  PARAM = PHYSICAL_DEFENCE, VALUE = 20, METHOD = STRAIGHT_BONUS }
+				[ITEM_TYPE_WEAPON] 		= {  PARAM = FIRE_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = HP_VALUE, VALUE = 75, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = FIRE_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_OFFHAND]  	= {  PARAM = MELEE_REFLECT_DAMAGE, VALUE = 20, METHOD = STRAIGHT_BONUS }
 			}
 		})
 
+		ItemAddData('I00H', {
+			NAME    		   = 'Сапфир',
+			TYPE    		   = ITEM_TYPE_GEM,
+			frame_texture      = "GUI\\BTNItem_Gem_Sapphire.blp",
+			point_bonus 	   = {
+				[ITEM_TYPE_WEAPON] 		= {  PARAM = ICE_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = MP_VALUE, VALUE = 55, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = ICE_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_OFFHAND]  	= {  PARAM = RANGE_REFLECT_DAMAGE, VALUE = 20, METHOD = STRAIGHT_BONUS }
+			}
+		})
+
+		ItemAddData('I00I', {
+			NAME    		   = 'Топаз',
+			TYPE    		   = ITEM_TYPE_GEM,
+			frame_texture      = "GUI\\BTNItem_Gem_Topaz.blp",
+			point_bonus 	   = {
+				[ITEM_TYPE_WEAPON] 		= {  PARAM = HOLY_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = HP_PER_HIT, VALUE = 5, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = HOLY_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_OFFHAND]  	= {  PARAM = BLOCK_CHANCE, VALUE = 20, METHOD = STRAIGHT_BONUS }
+			}
+		})
+
+		ItemAddData('I009', {
+			NAME    		   = 'Янтарь',
+			TYPE    		   = ITEM_TYPE_GEM,
+			frame_texture      = "GUI\\BTNItem_Gem_Amber.blp",
+			point_bonus 	   = {
+				[ITEM_TYPE_WEAPON] 		= {  PARAM = CRIT_MULTIPLIER, VALUE = .4, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = MOVING_SPEED, VALUE = 15, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = CONTROL_REDUCTION, VALUE = 5, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_OFFHAND]  	= {  PARAM = PHYSICAL_ATTACK, VALUE = 22, METHOD = STRAIGHT_BONUS }
+			}
+		})
+
+		ItemAddData('I00B', {
+			NAME    		   = 'Аквамарин',
+			TYPE    		   = ITEM_TYPE_GEM,
+			frame_texture      = "GUI\\BTNItem_Gem_Aquamarine.blp",
+			point_bonus 	   = {
+				[ITEM_TYPE_WEAPON] 		= {  PARAM = LIGHTNING_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = MAGICAL_SUPPRESSION, VALUE = 1.03, METHOD = MULTIPLY_BONUS },
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = LIGHTNING_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_OFFHAND]  	= {  PARAM = CAST_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS }
+			}
+		})
+
+		ItemAddData('I002', {
+			NAME    		   = 'Алмаз',
+			TYPE    		   = ITEM_TYPE_GEM,
+			frame_texture      = "GUI\\BTNItem_Gem_Diamond.blp",
+			point_bonus 	   = {
+				[ITEM_TYPE_WEAPON] 		= {  PARAM = CRIT_CHANCE, VALUE = 10, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = PHYSICAL_DEFENCE, VALUE = 1.03, METHOD = MULTIPLY_BONUS },
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = ALL_RESIST, VALUE = 5, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_OFFHAND]  	= {  PARAM = ATTACK_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS }
+			}
+		})
+
+		ItemAddData('I00A', {
+			NAME    		   = 'Аметист',
+			TYPE    		   = ITEM_TYPE_GEM,
+			frame_texture      = "GUI\\BTNItem_Gem_Amethyst.blp",
+			point_bonus 	   = {
+				[ITEM_TYPE_WEAPON] 		= {  PARAM = ARCANE_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = MP_PER_HIT, VALUE = 1, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = ARCANE_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_OFFHAND]  	= {  PARAM = PHYSICAL_DEFENCE, VALUE = 70, METHOD = STRAIGHT_BONUS }
+			}
+		})
+
+		ItemAddData('I00J', {
+			NAME    		   = 'Бирюза',
+			TYPE    		   = ITEM_TYPE_GEM,
+			frame_texture      = "GUI\\BTNItem_Gem_Turquoise.blp",
+			point_bonus 	   = {
+				[ITEM_TYPE_WEAPON] 		= {  PARAM = MAGICAL_ATTACK, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = MAGICAL_SUPPRESSION, VALUE = 75, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = MP_REGEN, VALUE = 1.03, METHOD = MULTIPLY_BONUS },
+				[ITEM_TYPE_OFFHAND]  	= {  PARAM = CRIT_MULTIPLIER, VALUE = 0.12, METHOD = STRAIGHT_BONUS }
+			}
+		})
+
+		ItemAddData('I00C', {
+			NAME    		   = 'Изумруд',
+			TYPE    		   = ITEM_TYPE_GEM,
+			frame_texture      = "GUI\\BTNItem_Gem_Emerald.blp",
+			point_bonus 	   = {
+				[ITEM_TYPE_WEAPON] 		= {  PARAM = POISON_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 75, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = POISON_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_OFFHAND]  	= {  PARAM = MAGICAL_ATTACK, VALUE = 27, METHOD = STRAIGHT_BONUS }
+			}
+		})
+
+		ItemAddData('I00E', {
+			NAME    		   = 'Малахит',
+			TYPE    		   = ITEM_TYPE_GEM,
+			frame_texture      = "GUI\\BTNItem_Gem_Malachite.blp",
+			point_bonus 	   = {
+				[ITEM_TYPE_WEAPON] 		= {  PARAM = DARKNESS_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = PHYSICAL_DEFENCE, VALUE = 25, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = DARKNESS_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_OFFHAND]  	= {  PARAM = MP_VALUE, VALUE = 1.1, METHOD = MULTIPLY_BONUS }
+			}
+		})
+
+		ItemAddData('I00D', {
+			NAME    		   = 'Нефрит',
+			TYPE    		   = ITEM_TYPE_GEM,
+			frame_texture      = "GUI\\BTNItem_Gem_Jade.blp",
+			point_bonus 	   = {
+				[ITEM_TYPE_WEAPON] 		= {  PARAM = CAST_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 4, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = CONTROL_REDUCTION, VALUE = 5, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_OFFHAND]  	= {  PARAM = CRIT_CHANCE, VALUE = 5, METHOD = STRAIGHT_BONUS }
+			}
+		})
+
+		ItemAddData('I00F', {
+			NAME    		   = 'Опал',
+			TYPE    		   = ITEM_TYPE_GEM,
+			frame_texture      = "GUI\\BTNItem_Gem_Opal.blp",
+			point_bonus 	   = {
+				[ITEM_TYPE_WEAPON] 		= {  PARAM = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = HP_REGEN, VALUE = 1.05, METHOD = MULTIPLY_BONUS },
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = PHYSICAL_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_OFFHAND]  	= {  PARAM = HP_VALUE, VALUE = 1.1, METHOD = MULTIPLY_BONUS }
+			}
+		})
+
+
 		ItemAddData('I003', {
-			NAME    		   = 'Зелье Здоровья',
+			NAME    		   = 'Зелье исцеления',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredAApotionGS.blp",
-			special_description = "Восстанавливает часть здоровья"
+			special_description = "Восстанавливает 25%% здоровья"
+		})
+
+		ItemAddData('I005', {
+			NAME    		   = 'Большое зелье исцеления',
+			TYPE    		   = ITEM_TYPE_CONSUMABLE,
+			frame_texture      = "GUI\\BTNredEApotionGS.blp",
+			special_description = "Восстанавливает 50%% здоровья"
+		})
+
+		ItemAddData('I004', {
+			NAME    		   = 'Великое зелье исцеления',
+			TYPE    		   = ITEM_TYPE_CONSUMABLE,
+			frame_texture      = "GUI\\BTNredJApotionGS.blp",
+			special_description = "Восстанавливает 75%% здоровья"
+		})
+
+		ItemAddData('I006', {
+			NAME    		   = 'Зелье маны',
+			TYPE    		   = ITEM_TYPE_CONSUMABLE,
+			frame_texture      = "GUI\\BTNblueAApotionGS.blp",
+			special_description = "Восстанавливает 25%% маны"
+		})
+
+		ItemAddData('I007', {
+			NAME    		   = 'Большое зелье маны',
+			TYPE    		   = ITEM_TYPE_CONSUMABLE,
+			frame_texture      = "GUI\\BTNblueEApotionGS.blp",
+			special_description = "Восстанавливает 50%% маны"
+		})
+
+		ItemAddData('I008', {
+			NAME    		   = 'Великое зелье маны',
+			TYPE    		   = ITEM_TYPE_CONSUMABLE,
+			frame_texture      = "GUI\\BTNblueJApotionGS.blp",
+			special_description = "Восстанавливает 75%% маны"
+		})
+
+		ItemAddData('I00K', {
+			NAME    		   = 'Зелье восстановления',
+			TYPE    		   = ITEM_TYPE_CONSUMABLE,
+			frame_texture      = "GUI\\BTNpurpleAApotionGS.blp",
+			special_description = "Восстанавливает 25%% здоровья и маны"
+		})
+
+		ItemAddData('I00M', {
+			NAME    		   = 'Большое зелье восстановления',
+			TYPE    		   = ITEM_TYPE_CONSUMABLE,
+			frame_texture      = "GUI\\BTNpurpleEApotionGS.blp",
+			special_description = "Восстанавливает 50%% здоровья и маны"
+		})
+
+		ItemAddData('I00L', {
+			NAME    		   = 'Великое зелье восстановления',
+			TYPE    		   = ITEM_TYPE_CONSUMABLE,
+			frame_texture      = "GUI\\BTNpurpleJApotionGS.blp",
+			special_description = "Восстанавливает 75%% здоровья и маны"
 		})
     end
 	

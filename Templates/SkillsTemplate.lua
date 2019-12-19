@@ -466,4 +466,38 @@
                 }
             }
         })
+        --============================================--
+        NewSkillData('A006', {
+            name            = "cutting slash skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+
+            level = {
+                [1] = {
+                    effect             = 'ECSL',
+                    cooldown            = 3.3,
+                    animation           = 3,
+                    animation_point     = 0.1,
+                    animation_backswing = 0.1,
+                    animation_scale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A00C', {
+            name            = "warcry skill",
+            target_type     = TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+
+            level = {
+                [1] = {
+                    effect              = 'EWCR',
+                    cooldown            = 22.,
+                    animation           = 3,
+                    animation_point     = 0.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 1.,
+                }
+            }
+        })
     end

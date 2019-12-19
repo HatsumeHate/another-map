@@ -190,7 +190,6 @@ do
             y = GetUnitY(source)
         end
 
-
         data.effect_x = x
         data.effect_y = y
 
@@ -206,7 +205,6 @@ do
             if data.level[lvl].sound ~= nil then
                 AddSound(data.level[lvl].sound, x, y)
             end
-
 
             TimerStart(CreateTimer(), data.level[lvl].delay * data.level[lvl].timescale, false, function()
 
