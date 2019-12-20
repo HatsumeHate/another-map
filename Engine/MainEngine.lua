@@ -103,18 +103,18 @@ do
             end
 
             if damage_type == DAMAGE_TYPE_MAGICAL then
-            damage = damage * (1. + (MagicAttackToPercent(attacker.stats[MAGICAL_ATTACK].value) * 0.01))
+            damage = damage * (1. + (ParamToPercent(attacker.stats[MAGICAL_ATTACK].value, MAGICAL_ATTACK) * 0.01))
         end
 
         damage = (damage * attribute_bonus) * critical_rate
         else
             if damage_type == DAMAGE_TYPE_PHYSICAL then
-                defence = 1. - (DefenceToPercent(victim.stats[PHYSICAL_DEFENCE].value) * 0.01)
+                defence = 1. - (ParamToPercent(victim.stats[PHYSICAL_DEFENCE].value, PHYSICAL_DEFENCE) * 0.01)
             elseif damage_type == DAMAGE_TYPE_MAGICAL then
                 local boost = attacker.stats[MAGICAL_ATTACK].value - victim.stats[MAGICAL_SUPPRESSION].value
                 if boost < 0 then boost = 0 end
 
-                damage = damage * (1. + (MagicAttackToPercent(boost) * 0.01))
+                damage = damage * (1. + (ParamToPercent(boost, MAGICAL_ATTACK) * 0.01))
             end
 
 

@@ -1,6 +1,6 @@
 do
 	-- parameters types
-	PARAMETERS_COUNT       = 43
+	PARAMETERS_COUNT       = 44
 
     STR_STAT               = 1
     AGI_STAT               = 2
@@ -52,11 +52,12 @@ do
 	BLOCK_CHANCE		   = 38
 	BLOCK_ABSORB 		   = 39
 
-	MELEE_REFLECT_DAMAGE   = 40
-	RANGE_REFLECT_DAMAGE   = 41
+	REFLECT_DAMAGE   		= 40
+	REFLECT_MELEE_DAMAGE 	= 41
+	REFLECT_RANGE_DAMAGE 	= 42
 
-	HP_PER_HIT  			= 42
-	MP_PER_HIT 				= 43
+	HP_PER_HIT  			= 43
+	MP_PER_HIT 				= 44
 
 
 	
@@ -102,6 +103,47 @@ do
 	REFLECT_SECOND_LIMIT        = 340
 	REFLECT_VALUE_BY_PERCENT_3  = 12
 
+
+
+	local ParameterLimits = {
+		[PHYSICAL_DEFENCE] = {
+			value_by_percent_1 = 11,
+			first_limit = 350,
+			value_by_percent_2 = 15,
+			second_limit = 650,
+			value_by_percent_3 = 19
+		},
+		[MAGICAL_ATTACK] = {
+			value_by_percent_1 = 5,
+			first_limit = 275,
+			value_by_percent_2 = 7,
+			second_limit = 340,
+			value_by_percent_3 = 12
+		},
+		[REFLECT_DAMAGE] = {
+			value_by_percent_1 = 7,
+			first_limit = 200,
+			value_by_percent_2 = 13,
+			second_limit = 340,
+			value_by_percent_3 = 17
+		}
+	}
+
+
+
+	function ParamToPercent(value, param)
+		if value <= ParameterLimits[param].first_limit then
+			return value / ParameterLimits[param].value_by_percent_1
+		elseif value > ParameterLimits[param].first_limit and value <= ParameterLimits[param].second_limit then
+			return ParameterLimits[param].first_limit / ParameterLimits[param].value_by_percent_1
+					+ (value - ParameterLimits[param].first_limit) / ParameterLimits[param].second_limit
+		elseif value > ParameterLimits[param].second_limit then
+			return ParameterLimits[param].first_limit / ParameterLimits[param].value_by_percent_1
+					+ (ParameterLimits[param].second_limit - ParameterLimits[param].first_limit) / ParameterLimits[param].value_by_percent_2
+					+ (value - ParameterLimits[param].second_limit) / ParameterLimits[param].value_by_percent_3
+		end
+		return 0
+	end
 
 	--защита в процент
 	---@param x integer
@@ -205,8 +247,10 @@ do
 		[BLOCK_CHANCE]            = 'Шанс блока',
 		[BLOCK_ABSORB]            = 'Поглощение урона',
 
-		[MELEE_REFLECT_DAMAGE]   = 'Отражение урона ближнего боя',
-		[RANGE_REFLECT_DAMAGE]   = 'Отражение урона дальнего боя',
+
+		[REFLECT_DAMAGE]   = 'Отражение урона',
+		[REFLECT_MELEE_DAMAGE]   = 'Отражение урона ближнего боя',
+		[REFLECT_RANGE_DAMAGE]   = 'Отражение урона дальнего боя',
 
 		[HP_PER_HIT]   = 'Здоровье за атаку',
 		[MP_PER_HIT]   = 'Ресурса за атаку'
@@ -457,13 +501,18 @@ do
 		end,
 
 		---@param data table
-		[MELEE_REFLECT_DAMAGE] = function(data)
-			data.stats[MELEE_REFLECT_DAMAGE].value = data.stats[MELEE_REFLECT_DAMAGE].bonus
+		[REFLECT_DAMAGE] = function(data)
+			data.stats[REFLECT_DAMAGE].value = data.stats[REFLECT_DAMAGE].bonus
 		end,
 
 		---@param data table
-		[RANGE_REFLECT_DAMAGE] = function(data)
-			data.stats[RANGE_REFLECT_DAMAGE].value = data.stats[RANGE_REFLECT_DAMAGE].bonus
+		[REFLECT_MELEE_DAMAGE] = function(data)
+			data.stats[REFLECT_MELEE_DAMAGE].value = data.stats[REFLECT_MELEE_DAMAGE].bonus + data.stats[REFLECT_DAMAGE].bonus
+		end,
+
+		---@param data table
+		[REFLECT_RANGE_DAMAGE] = function(data)
+			data.stats[REFLECT_RANGE_DAMAGE].value = data.stats[REFLECT_RANGE_DAMAGE].bonus + data.stats[REFLECT_DAMAGE].bonus
 		end,
 
 		---@param data table
