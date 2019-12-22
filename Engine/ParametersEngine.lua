@@ -532,8 +532,6 @@ do
 	end
 
 
-
-
 	local function NewStat(stat_type)
 		return {
 			stat_type  = stat_type,

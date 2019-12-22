@@ -15,7 +15,7 @@ do
 		InventoryInit()
         EnumItemsOnInit()
 		UnitDataInit()
-
+        InitWeather(bj_mapInitialPlayableArea)
 
 
 		--NewUnitData(gg_unit_HBRB_0005, BARBARIAN_CLASS, nil, {  ATTACK_SPEED = 0.4, DAMAGE = 15, CRIT_CHANCE = 15., missile = 'M002' })
