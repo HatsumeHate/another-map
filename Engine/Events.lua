@@ -2,6 +2,11 @@ do
 
 
 
+    function OnUnitCreated(new_unit)
+
+    end
+
+
 
     function OnJumpExpire(target, sign)
 

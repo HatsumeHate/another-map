@@ -173,7 +173,7 @@ do
 
                 ATTACK_SPEED       = 1,
                 CRIT_CHANCE        = 0,
-                CRIT_MULTIPLIER    = 0,
+                CRIT_MULTIPLIER    = 1.,
 
                 DISPERSION         = { 0.9, 1.1 },
                 RANGE              = 100,
@@ -202,8 +202,8 @@ do
 
 		if data.TYPE >= ITEM_TYPE_WEAPON and data.TYPE <= ITEM_TYPE_OFFHAND then
 			newdata = GetItemTemplate()
-			ItemMergeData(newdata, weapons[data.SUBTYPE])
-			ItemMergeData(newdata, data)
+			MergeTables(newdata, weapons[data.SUBTYPE])
+			MergeTables(newdata, data)
 		elseif data.TYPE == ITEM_TYPE_CONSUMABLE then
 			newdata = {
 				item               = nil,

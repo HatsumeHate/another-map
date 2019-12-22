@@ -3,10 +3,10 @@
     local MaxSkillLevels = 10
 
     -- target types
-    SELF_CAST               = 1
-    TARGET_CAST             = 2
-    POINT_CAST              = 3
-    POINT_AND_TARGET_CAST   = 4
+    SELF_CAST               = 0
+    TARGET_CAST             = 1
+    POINT_CAST              = 2
+    POINT_AND_TARGET_CAST   = 3
 
     SKILL_PHYSICAL = 1
     SKILL_MAGICAL = 2
@@ -16,7 +16,7 @@
         local unit_data = GetUnitData(unit)
 
         for i = 1, #unit_data.skill_list do
-            if FourCC(unit_data.skill_list[i].Id) == id then
+            if unit_data.skill_list[i].Id == id then
                 return unit_data.skill_list[i]
             end
         end
@@ -157,11 +157,13 @@
         --============================================--
         NewSkillData('A003', {
             name            = "frostbolt skill",
-            activation_type = TARGET_CAST,
+            icon            = "Spell\\BTNice-sky-1.blp",
+            activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
 
             level = {
                 [1] = {
+                    range               = 1000.,
                     missile             = 'MFRB',
                     resource_cost       = 10.,
                     cooldown            = 0.1,
@@ -176,6 +178,7 @@
         --============================================--
         NewSkillData('A001', {
             name            = "frost nova skill",
+            icon            = "Spell\\BTNCRFrostShock.blp",
             activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
 
@@ -195,11 +198,13 @@
         --============================================--
         NewSkillData('A00D', {
             name            = "fireball skill",
-            activation_type     = TARGET_CAST,
+            icon            = "Spell\\BTNFlameLance.blp",
+            activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
 
             level = {
                 [1] = {
+                    range               = 1000.,
                     missile             = 'MGFB',
                     resource_cost       = 10.,
                     cooldown            = 0.1,
@@ -213,11 +218,13 @@
         --============================================--
         NewSkillData('A005', {
             name            = "frost orb skill",
-            activation_type     = TARGET_CAST,
+            icon            = "Spell\\BTNOrbOfFrost2.blp",
+            activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
 
             level = {
                 [1] = {
+                    range               = 800.,
                     missile             = 'MFRO',
                     resource_cost       = 10.,
                     cooldown            = 0.1,
@@ -231,11 +238,13 @@
         --============================================--
         NewSkillData('A00M', {
             name            = "lightning strike skill",
-            activation_type     = TARGET_CAST,
+            icon            = "Spell\\BTNThunderStorm.blp",
+            activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
 
             level = {
                 [1] = {
+                    range               = 800.,
                     effect              = 'ELST',
                     resource_cost       = 10.,
                     cooldown            = 0.1,
@@ -249,11 +258,14 @@
         --============================================--
         NewSkillData('A00L', {
             name            = "sorceress teleport skill",
-            activation_type     = TARGET_CAST,
+            icon            = "Spell\\BTNBlink_V2.blp",
+            activation_type = POINT_CAST,
             type            = SKILL_MAGICAL,
 
             level = {
                 [1] = {
+                    range = 500.,
+
                     start_effect_on_cast_point = 'Spell\\Blink Blue Caster.mdx',
                     start_effect_on_cast_point_scale = 1.,
 
@@ -272,11 +284,13 @@
         --============================================--
         NewSkillData('A00F', {
             name            = "meteor skill",
-            activation_type     = TARGET_CAST,
+            icon            = "Spell\\BTNInferno.BLP",
+            activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
 
             level = {
                 [1] = {
+                    range               = 1000.,
                     effect              = 'EMTR',
                     resource_cost       = 20.,
                     cooldown            = 7.,
@@ -290,11 +304,13 @@
         --============================================--
         NewSkillData('A00J', {
             name            = "discharge skill",
-            activation_type     = TARGET_CAST,
+            icon            = "Spell\\BTNSparkFlare.blp",
+            activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
 
             level = {
                 [1] = {
+                    range               = 700.,
                     resource_cost       = 10.,
                     cooldown            = 0.1,
                     animation           = 3,
@@ -307,11 +323,13 @@
         --============================================--
         NewSkillData('A00K', {
             name            = "lightning ball skill",
-            activation_type     = TARGET_CAST,
+            icon            = "Spell\\BTNLightningOrb.blp",
+            activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
 
             level = {
                 [1] = {
+                    range               = 900.,
                     resource_cost       = 15.,
                     missile             = 'MBLB',
                     cooldown            = 7.,
@@ -325,7 +343,8 @@
         --============================================--
         NewSkillData('A00N', {
             name            = "focus skill",
-            activation_type     = TARGET_CAST,
+            icon            = "Spell\\BTN_ArcaneProtection.blp",
+            activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
 
             level = {
@@ -343,7 +362,8 @@
         --============================================--
         NewSkillData('A00N', {
             name            = "frost armor skill",
-            activation_type     = TARGET_CAST,
+            icon            = "Spell\\BTNCloakOfFrost.blp",
+            activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
 
             level = {
@@ -361,7 +381,8 @@
         --============================================--
         NewSkillData('A00H', {
             name            = "elemental mastery skill",
-            activation_type     = TARGET_CAST,
+            icon            = "Spell\\BTN_cr_Dark Arts.blp",
+            activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
 
             level = {
@@ -379,11 +400,13 @@
         --============================================--
         NewSkillData('A00I', {
             name            = "hydra skill",
-            activation_type     = POINT_CAST,
+            icon            = "Spell\\BTNGlaiveCrit.blp",
+            activation_type = POINT_CAST,
             type            = SKILL_MAGICAL,
 
             level = {
                 [1] = {
+                    range               = 600.,
                     cooldown            = 5.,
                     resource_cost       = 10.,
                     animation           = 3,
@@ -396,11 +419,13 @@
         --============================================--
         NewSkillData('A00O', {
             name            = "barbarian jump skill",
-            activation_type     = POINT_CAST,
+            icon            = "Spell\\BTN_cr_CarA2.blp",
+            activation_type = POINT_CAST,
             type            = SKILL_PHYSICAL,
 
             level = {
                 [1] = {
+                    range               = 500.,
                     cooldown            = 12.,
                     resource_cost       = 5.,
                     animation           = 3,
@@ -413,11 +438,13 @@
         --============================================--
         NewSkillData('A00Z', {
             name            = "throwing knife skill",
+            icon            = "Spell\\BTN_cr_VeeR1.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
 
             level = {
                 [1] = {
+                    range               = 800.,
                     missile             = 'MTHK',
                     resource_cost       = 5.,
                     cooldown            = 12.,
@@ -431,11 +458,13 @@
         --============================================--
         NewSkillData('A00B', {
             name            = "uppercut skill",
+            icon            = "Spell\\BTNContusing Punch.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
 
             level = {
                 [1] = {
+                    range               = 100.,
                     effect              = 'EUPP',
                     cooldown            = 12.,
                     animation           = 3,
@@ -448,6 +477,7 @@
         --============================================--
         NewSkillData('A00Q', {
             name            = "berserk skill",
+            icon            = "Spell\\BTN_cr_CarA10.blp",
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
 
@@ -490,7 +520,7 @@
 
             level = {
                 [1] = {
-                    range               = 155.,
+                    range               = 100.,
                     effect              = 'ECRH',
                     cooldown            = 2.3,
                     animation           = 3,
@@ -509,6 +539,7 @@
 
             level = {
                 [1] = {
+                    range               = 600.,
                     missile             = 'MBCH',
                     resource_cost       = 6.,
                     cooldown            = 2.3,
@@ -522,12 +553,14 @@
         --============================================--
         NewSkillData('A006', {
             name            = "cutting slash skill",
+            icon            = "Spell\\BTNGlaiveCrit.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
 
             level = {
                 [1] = {
-                    effect             = 'ECSL',
+                    range               = 100.,
+                    effect              = 'ECSL',
                     cooldown            = 3.3,
                     animation           = 3,
                     animation_point     = 0.1,

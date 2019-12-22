@@ -258,7 +258,7 @@ do
 	}
 
 
-	local PARAMETER_FUNC = {
+	local PARAMETER_UPDATE_FUNC = {
 		---@param data table
 		[PHYSICAL_ATTACK]        = function(data)
 			local total_damage = data.equip_point[WEAPON_POINT].DAMAGE
@@ -562,28 +562,48 @@ do
 			end
 
         if param == STR_STAT then
-            PARAMETER_FUNC[PHYSICAL_ATTACK](unit_data)
+            PARAMETER_UPDATE_FUNC[PHYSICAL_ATTACK](unit_data)
         elseif param == VIT_STAT then
-            PARAMETER_FUNC[HP_VALUE](unit_data)
-            PARAMETER_FUNC[HP_REGEN](unit_data)
+            PARAMETER_UPDATE_FUNC[HP_VALUE](unit_data)
+            PARAMETER_UPDATE_FUNC[HP_REGEN](unit_data)
         elseif param == AGI_STAT then
-            PARAMETER_FUNC[PHYSICAL_DEFENCE](unit_data)
+            PARAMETER_UPDATE_FUNC[PHYSICAL_DEFENCE](unit_data)
         elseif param == INT_STAT then
-            PARAMETER_FUNC[MAGICAL_SUPPRESSION](unit_data)
-            PARAMETER_FUNC[MAGICAL_ATTACK](unit_data)
-            PARAMETER_FUNC[MP_VALUE](unit_data)
-            PARAMETER_FUNC[MP_REGEN](unit_data)
+            PARAMETER_UPDATE_FUNC[MAGICAL_SUPPRESSION](unit_data)
+            PARAMETER_UPDATE_FUNC[MAGICAL_ATTACK](unit_data)
+            PARAMETER_UPDATE_FUNC[MP_VALUE](unit_data)
+            PARAMETER_UPDATE_FUNC[MP_REGEN](unit_data)
         end
 
-		PARAMETER_FUNC[param](unit_data)
+		PARAMETER_UPDATE_FUNC[param](unit_data)
 	end
 
 	---@param unit_data table
 	function UpdateParameters(unit_data)
 		for i = 1, PARAMETERS_COUNT do
-			PARAMETER_FUNC[i](unit_data)
-			--unit_data.stats[i].update(unit_data, i)
+			PARAMETER_UPDATE_FUNC[i](unit_data)
 		end
+	end
+
+	function UpdateUnitParameter(unit, param)
+		local unit_data = GetUnitData(unit)
+
+			PARAMETER_UPDATE_FUNC[param](unit_data)
+
+				if param == STR_STAT then
+					PARAMETER_UPDATE_FUNC[PHYSICAL_ATTACK](unit_data)
+				elseif param == VIT_STAT then
+					PARAMETER_UPDATE_FUNC[HP_VALUE](unit_data)
+					PARAMETER_UPDATE_FUNC[HP_REGEN](unit_data)
+				elseif param == AGI_STAT then
+					PARAMETER_UPDATE_FUNC[PHYSICAL_DEFENCE](unit_data)
+				elseif param == INT_STAT then
+					PARAMETER_UPDATE_FUNC[MAGICAL_SUPPRESSION](unit_data)
+					PARAMETER_UPDATE_FUNC[MAGICAL_ATTACK](unit_data)
+					PARAMETER_UPDATE_FUNC[MP_VALUE](unit_data)
+					PARAMETER_UPDATE_FUNC[MP_REGEN](unit_data)
+				end
+
 	end
 
 

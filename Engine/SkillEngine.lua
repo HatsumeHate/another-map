@@ -11,51 +11,42 @@ do
 
     local KEYBIND_LIST = {
         [KEY_Q] =  {
-            [SELF_CAST] = FourCC('A016'),
-            [POINT_CAST] = FourCC('A018'),
-            [TARGET_CAST] = FourCC('A017'),
-            [POINT_AND_TARGET_CAST] = FourCC('A019'),
+            ability = FourCC('A016'),
             name_string = " (|cffffcc00Q|r)",
             player_skill_bind = {}
         },
         [KEY_W] =  {
-            [SELF_CAST] = FourCC('A01A'),
-            [POINT_CAST] = FourCC('A01B'),
-            [TARGET_CAST] = FourCC('A01C'),
-            [POINT_AND_TARGET_CAST] = FourCC('A01D'),
+            ability = FourCC('A01A'),
             name_string = " (|cffffcc00W|r)",
             player_skill_bind = {}
         },
         [KEY_E] =  {
-            [SELF_CAST] = FourCC('A01E'),
-            [POINT_CAST] = FourCC('A01F'),
-            [TARGET_CAST] = FourCC('A01G'),
-            [POINT_AND_TARGET_CAST] = FourCC('A01H'),
+            ability = FourCC('A01E'),
             name_string = " (|cffffcc00E|r)",
             player_skill_bind = {}
         },
         [KEY_R] =  {
-            [SELF_CAST] = FourCC('A01I'),
-            [POINT_CAST] = FourCC('A01K'),
-            [TARGET_CAST] = FourCC('A01J'),
-            [POINT_AND_TARGET_CAST] = FourCC('A01L'),
+            ability = FourCC('A01I'),
             name_string = " (|cffffcc00R|r)",
             player_skill_bind = {}
         }
     }
 
-
-
     function BindAbilityKey(unit, id, key)
         local skill = GetSkillData(FourCC(id))
-        local ability_id = KEYBIND_LIST[key][skill.activation_type]
+        local ability_id = KEYBIND_LIST[key].ability
         local ability
 
-            UnitAddAbility(unit, ability_id)
+
+            if GetUnitAbilityLevel(unit, ability_id) == 0 then
+                UnitAddAbility(unit, ability_id)
+            end
+
             ability = BlzGetUnitAbility(unit, ability_id)
 
             BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[skill.current_level].range)
             BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[skill.current_level].radius)
+            BlzSetAbilityIntegerLevelField(ability, ABILITY_ILF_TARGET_TYPE, 0, skill.activation_type)
             BlzSetUnitAbilityManaCost(unit, ability_id, 0, skill.level[skill.current_level].resource_cost)
 
                 if GetLocalPlayer() == GetOwningPlayer(unit) then
@@ -70,10 +61,8 @@ do
     function GetKeybindAbility(id, player)
 
         for key = KEY_Q, KEY_D do
-            for cast_type = SELF_CAST, POINT_AND_TARGET_CAST do
-                if KEYBIND_LIST[key][cast_type] == id then
-                    return KEYBIND_LIST[key].player_skill_bind[player]
-                end
+            if KEYBIND_LIST[key].ability == id then
+                return KEYBIND_LIST[key].player_skill_bind[player]
             end
         end
 
@@ -132,18 +121,16 @@ do
             skill = GetSkillData(skill)
         end
 
-        --TODO fix this shit
+
         if skill ~= nil then
             local unit_data = GetUnitData(GetTriggerUnit())
+            skill = GetUnitSkillData(unit_data.Owner, skill.Id)
 
-            skill = GetUnitSkillData(unit_data.Owner, id)
-            print(skill.name)
             if skill == nil then return end
 
             local ability_level = skill.current_level
             local time_reduction = skill.level[ability_level].animation_scale
 
-            print("AAAAAA")
 
                 if skill.type == SKILL_PHYSICAL then
                     time_reduction = time_reduction * (1. - unit_data.stats[ATTACK_SPEED].bonus * 0.01)
