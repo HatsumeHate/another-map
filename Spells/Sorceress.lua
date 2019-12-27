@@ -5,7 +5,7 @@ do
 
     function LightningBall_VisualEffect(target, missile)
         local faderate = 0.55
-        local bolt = AddLightningEx("CHIM", true, missile.current_x, missile.current_y, missile.current_z, GetUnitX(target), GetUnitY(target), BlzGetLocalUnitZ(target))
+        local bolt = AddLightningEx("BLNL", true, missile.current_x, missile.current_y, missile.current_z, GetUnitX(target), GetUnitY(target), GetUnitFlyHeight(target) + BlzGetLocalUnitZ(target) + missile.end_z)
         local missile_x = missile.current_x
         local missile_y = missile.current_y
         local missile_z = missile.current_z

@@ -102,6 +102,7 @@ do
             is_hp_static = reference_data.is_hp_static,
             have_mp = reference_data.have_mp,
             is_mp_static = reference_data.is_mp_static,
+            time_before_remove = 10.,
 
             cast_skill = 0,
             cast_skill_level = 0,
@@ -113,11 +114,10 @@ do
             buff_list = {},
             skill_list = {}
         }
-
-
         data.default_weapon = CreateDefaultWeapon()
         data.equip_point[WEAPON_POINT] = data.default_weapon
         data.stats = CreateParametersData()
+
 
         TimerStart(data.attack_timer, 0., false, nil)
 
@@ -176,14 +176,13 @@ do
 
         NewUnitTemplate('HBRB', {
             unit_class = BARBARIAN_CLASS,
-            weapon = {ATTACK_SPEED = 0.4, DAMAGE = 15, CRIT_CHANCE = 15.}
+            weapon = { ATTACK_SPEED = 0.4, DAMAGE = 15, CRIT_CHANCE = 15. }
         })
 
         NewUnitTemplate('HSRC', {
             unit_class = SORCERESS_CLASS,
             base_stats = { health = 3000., hp_regen = 30. },
         })
-
 
         local group = CreateGroup()
 
@@ -199,7 +198,6 @@ do
 
         DestroyGroup(group)
 
-
         local trg = CreateTrigger()
         TriggerRegisterEnterRectSimple(trg, bj_mapInitialPlayableArea)
         TriggerAddAction(trg, function ()
@@ -208,6 +206,32 @@ do
                     NewUnitByTemplate(unit, UnitsData[GetUnitTypeId(unit)])
                     OnUnitCreated(unit)
                 end
+        end)
+
+        trg = CreateTrigger()
+        TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_DEATH)
+        TriggerAddAction(trg, function ()
+            local unit_data = GetUnitData(GetTriggerUnit())
+
+
+            if unit_data ~= nil then
+                PauseTimer(unit_data.action_timer)
+                PauseTimer(unit_data.attack_timer)
+
+                if unit_data.time_before_remove > 0. then
+                    local handle = GetHandleId(unit_data.Owner)
+
+                        TimerStart(CreateTimer(), unit_data.time_before_remove, false, function ()
+                            DestroyTimer(unit_data.action_timer)
+                            DestroyTimer(unit_data.attack_timer)
+                            UnitsList[handle] = nil
+                            DestroyTimer(GetExpiredTimer())
+                        end)
+
+                end
+
+            end
+
         end)
 
     end

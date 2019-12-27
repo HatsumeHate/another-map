@@ -374,19 +374,39 @@ do
 
             bonus_text = "|nДополнительные свойства:|n"
             for i = 1, #item_data.BONUS do
-                bonus_text = bonus_text .. GetParameterName(item_data.BONUS[i].PARAM) .. ": " .. GetCorrectParamText(item_data.BONUS[i].VALUE, item_data.BONUS[i].METHOD) .. "|n"
+                bonus_text = bonus_text .. GetParameterName(item_data.BONUS[i].PARAM) .. ": " .. GetCorrectParamText(item_data.BONUS[i].PARAM, item_data.BONUS[i].VALUE, item_data.BONUS[i].METHOD) .. "|n"
             end
 
-        elseif item_data.TYPE == ITEM_TYPE_GEM then
+        end
 
+        if item_data.SKILL_BONUS ~= nil and #item_data.SKILL_BONUS > 0 then
+            local skill_bonus_text = ""
+
+            for i = 1, #item_data.SKILL_BONUS do
+                skill_bonus_text = skill_bonus_text .. GetSkillName(item_data.SKILL_BONUS[i].id) .. " +" .. item_data.SKILL_BONUS[i].bonus_levels .. "|n"
+            end
+
+            if bonus_text ~= nil then
+                bonus_text = bonus_text..skill_bonus_text
+            else
+                bonus_text = "|nДополнительные свойства:|n" .. skill_bonus_text
+            end
+
+        end
+
+
+        if item_data.TYPE == ITEM_TYPE_GEM then
             bonus_text = "|nАугментации:|n"
             for i = 1, #item_data.point_bonus do
                 if item_data.point_bonus[i] ~= nil then
-                    bonus_text = bonus_text .. GetItemTypeName(i) .. " - " .. GetParameterName(item_data.point_bonus[i].PARAM) .. ": " .. GetCorrectParamText(item_data.point_bonus[i].VALUE, item_data.point_bonus[i].METHOD).. "|n"
+                    bonus_text = bonus_text .. GetItemTypeName(i) .. " - " .. GetParameterName(item_data.point_bonus[i].PARAM) .. ": " .. GetCorrectParamText(item_data.point_bonus[i].PARAM, item_data.point_bonus[i].VALUE, item_data.point_bonus[i].METHOD).. "|n"
                 end
             end
-        elseif item_data.TYPE == ITEM_TYPE_CONSUMABLE then
-            bonus_text = "|n" .. item_data.special_description
+        end
+
+
+        if item_data.item_description ~= nil then
+            bonus_text = bonus_text .. "|n" .. item_data.item_description
         end
 
         BlzFrameSetAllPoints(PlayerTooltip[player].backdrop, ButtonList[h].image)
@@ -397,6 +417,8 @@ do
         BlzFrameSetText(PlayerTooltip[player].frames[frame_number], GetItemNameColorized(ButtonList[h].item))
         BlzFrameSetTextAlignment(PlayerTooltip[player].frames[frame_number], TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_MIDDLE)
         BlzFrameSetScale(PlayerTooltip[player].frames[frame_number], 1.3)
+
+        LockWidth(PlayerTooltip[player].frames[frame_number], BlzFrameGetWidth(PlayerTooltip[player].frames[frame_number]), 0.06, 0.14)
 
 
         frame_number = 2
@@ -415,22 +437,34 @@ do
         end
 
 
+        if item_data.legendary_description ~= nil then
+            frame_number = frame_number + 1
+
+            PlayerTooltip[player].frames[frame_number] = BlzCreateFrameByType("TEXT", "legend", PlayerTooltip[player].frames[frame_number - 1], "", 0)
+            BlzFrameSetText(PlayerTooltip[player].frames[frame_number], "|c00DF0000"..item_data.legendary_description.."|r")
+            BlzFrameSetTextAlignment(PlayerTooltip[player].frames[frame_number], TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_MIDDLE)
+            BlzFrameSetSize(PlayerTooltip[player].frames[frame_number], 0.01, 0.01)
+            LockWidth(PlayerTooltip[player].frames[frame_number], BlzFrameGetWidth(PlayerTooltip[player].frames[frame_number]), 0.16, 0.2)
+            BlzFrameSetSize(PlayerTooltip[player].frames[frame_number], BlzFrameGetWidth(PlayerTooltip[player].frames[frame_number]), BlzFrameGetHeight(PlayerTooltip[player].frames[frame_number]) + 0.01)
+        end
+
+
         if item_data.MAX_SLOTS ~= nil and item_data.MAX_SLOTS > 0 then
             frame_number = frame_number + 1
 
             local free_stone_slots = item_data.MAX_SLOTS - #item_data.STONE_SLOTS
-            local stones_text = "|nСокеты:|n"
+            local stones_text = "|nГнезда:|n"
             PlayerTooltip[player].frames[frame_number] = BlzCreateFrameByType("TEXT", "STONE", PlayerTooltip[player].frames[frame_number - 1], "", 0)
 
-            for i = 1, #item_data.STONE_SLOTS do
-                if item_data.STONE_SLOTS[i] ~= nil then
-                    stones_text = stones_text .. GetParameterName(item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].PARAM) .. ": "
-                            .. GetCorrectParamText(item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].VALUE,
-                            item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].METHOD) .. "|n"
-                else
-                    stones_text = stones_text .. "|n"
+                for i = 1, #item_data.STONE_SLOTS do
+                    if item_data.STONE_SLOTS[i] ~= nil then
+                        stones_text = stones_text .. GetParameterName(item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].PARAM) .. ": "
+                                .. GetCorrectParamText(item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].PARAM, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].VALUE,
+                                item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].METHOD) .. "|n"
+                    else
+                        stones_text = stones_text .. "|n"
+                    end
                 end
-            end
 
             BlzFrameSetText(PlayerTooltip[player].frames[frame_number], stones_text)
             BlzFrameSetTextAlignment(PlayerTooltip[player].frames[frame_number], TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_MIDDLE)
@@ -456,6 +490,41 @@ do
         end
 
 
+        if item_data.special_description ~= nil then
+            frame_number = frame_number + 1
+
+            PlayerTooltip[player].frames[frame_number] = BlzCreateFrameByType("TEXT", "special", PlayerTooltip[player].frames[frame_number - 1], "", 0)
+            BlzFrameSetText(PlayerTooltip[player].frames[frame_number], "|c00FF9748"..item_data.special_description.."|r")
+            BlzFrameSetTextAlignment(PlayerTooltip[player].frames[frame_number], TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_MIDDLE)
+            BlzFrameSetSize(PlayerTooltip[player].frames[frame_number], 0.01, 0.01)
+            LockWidth(PlayerTooltip[player].frames[frame_number], BlzFrameGetWidth(PlayerTooltip[player].frames[frame_number]), 0.16, 0.2)
+            BlzFrameSetScale(PlayerTooltip[player].frames[frame_number], 0.9)
+        end
+
+
+        local cost_Frame
+
+        if item_data.sell_value ~= nil or item_data.cost ~= nil then
+            local total_cost = 0
+
+            if item_data.sell_value ~= nil then total_cost = total_cost + item_data.sell_value end
+            if item_data.cost ~= nil then total_cost = total_cost + item_data.cost end
+
+            if total_cost > 0 then
+                cost_Frame = BlzCreateFrameByType("BACKDROP", "GOLD TEXTURE", PlayerTooltip[player].frames[frame_number], "", 0)
+                BlzFrameSetTexture(cost_Frame, "UI\\Widgets\\ToolTips\\Human\\ToolTipGoldIcon.blp", 0, true)
+                BlzFrameSetSize(cost_Frame, 0.0085, 0.0085)
+                BlzFrameSetScale(cost_Frame, 1.05)
+
+                local cost_text_Frame = BlzCreateFrameByType("TEXT", "cost", cost_Frame, "", 0)
+                BlzFrameSetPoint(cost_text_Frame, FRAMEPOINT_LEFT, cost_Frame, FRAMEPOINT_RIGHT, 0.002, 0.)
+                BlzFrameSetText(cost_text_Frame, R2I(total_cost))
+                BlzFrameSetTextAlignment(cost_text_Frame, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_LEFT)
+
+
+            end
+        end
+
         for i = 1, #PlayerTooltip[player].frames do
 
                 if BlzFrameGetWidth(PlayerTooltip[player].frames[i]) > width then
@@ -473,13 +542,18 @@ do
         LockWidth(PlayerTooltip[player].frames[1], width, 0.06, 0.2)
 
 
-        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOP, PlayerTooltip[player].frames[1], FRAMEPOINT_TOP, 0., 0.007)
+        --BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOP, PlayerTooltip[player].frames[1], FRAMEPOINT_TOP, 0., 0.007)
         BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOPLEFT, PlayerTooltip[player].frames[1], FRAMEPOINT_TOPLEFT, -0.007, 0.007)
         BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOPRIGHT, PlayerTooltip[player].frames[1], FRAMEPOINT_TOPRIGHT, 0.007, 0.007)
         BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMLEFT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMLEFT, -0.007, -0.007)
         BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMRIGHT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMRIGHT, 0.007, -0.007)
-        BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOM, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOM, 0., -0.007)
+        --BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOM, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOM, 0., -0.007)
 
+        if cost_Frame ~= nil then
+            BlzFrameSetPoint(cost_Frame, FRAMEPOINT_BOTTOMLEFT, PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMLEFT, 0.0055, 0.0055)
+            BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMLEFT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMLEFT, -0.007, -0.015)
+            BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMRIGHT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMRIGHT, 0.007, -0.015)
+        end
     end
 
 

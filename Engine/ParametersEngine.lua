@@ -184,17 +184,34 @@ do
 	function GetBonus_VIT(value) return 0.9 + (value * 0.03) end
 
 
-    function GetCorrectParamText(value, method)
+    function GetCorrectParamText(parameter, value, method)
         if method == MULTIPLY_BONUS then
             local v = value
             value =  R2I((value * 100.) - 100.) .. "%%"
-            if v > 0 then
-                value = "+" .. value
-            end
+
+				if v > 0 then
+					value = "+" .. value
+				end
+
         elseif value > 0 then
-            value = "+" .. value
+			local special = ""
+            local vector = "+"
+
+				if parameter == ATTACK_SPEED or parameter == CAST_SPEED or parameter == CRIT_CHANCE or parameter == BLOCK_CHANCE or parameter == MELEE_DAMAGE_REDUCTION or parameter == RANGE_DAMAGE_REDUCTION then
+					special = "%%"
+				end
+
+			if parameter ~= CRIT_MULTIPLIER then
+				value = R2I(value)
+			end
+
+            if parameter == MELEE_DAMAGE_REDUCTION or parameter == RANGE_DAMAGE_REDUCTION then
+                vector = "-"
+            end
+
+			value = vector .. value .. special
         end
-        return  value
+        return value
     end
 	
 	local PARAMETER_NAME = {

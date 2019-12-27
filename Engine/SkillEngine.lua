@@ -32,6 +32,9 @@ do
         }
     }
 
+    ---@param unit unit
+    ---@param id integer
+    ---@param key integer
     function BindAbilityKey(unit, id, key)
         local skill = GetSkillData(FourCC(id))
         local ability_id = KEYBIND_LIST[key].ability
@@ -58,6 +61,8 @@ do
     end
 
 
+    ---@param id integer
+    ---@param player integer
     function GetKeybindAbility(id, player)
 
         for key = KEY_Q, KEY_D do
@@ -70,6 +75,35 @@ do
     end
 
 
+
+    ---@param unit unit
+    ---@param id integer
+    function UnitGetAbilityLevel(unit, id)
+        local unit_data = GetUnitData(unit)
+        local ability_level = 0
+
+            for i = 1, #unit_data.skill_list do
+                if unit_data.skill_list[i].Id == id then
+                    ability_level = unit_data.skill_list.current_level
+                end
+            end
+
+            for i = WEAPON_POINT, NECKLACE_POINT do
+                if unit_data.equip_point[i] ~= nil and unit_data.equip_point[i].SKILL_BONUS ~= nil then
+                    for skill_bonus = 1, #unit_data.equip_point[i].SKILL_BONUS do
+                        if unit_data.equip_point[i].SKILL_BONUS[skill_bonus].id == id then
+                            ability_level = ability_level + unit_data.equip_point[i].SKILL_BONUS[skill_bonus].bonus_levels
+                        end
+                    end
+                end
+            end
+
+        return ability_level
+    end
+
+
+    ---@param unit unit
+    ---@param id integer
     function UnitAddMyAbility(unit, id)
         local unit_data = GetUnitData(unit)
         local skill_data = GetSkillData(FourCC(id))
@@ -80,6 +114,7 @@ do
     end
 
 
+    ---@param unit unit
     function ResetUnitSpellCast(unit)
         local unit_data = GetUnitData(unit)
 
@@ -97,12 +132,12 @@ do
     end
 
 
+    ---@param unit unit
     function SpellBackswing(unit)
         BlzPauseUnitEx(unit, false)
         IssueImmediateOrderById(unit, order_stop)
         SetUnitAnimation(unit, "Stand Ready")
         SetUnitTimeScale(unit, 1.)
-        print("spell backswing")
     end
 
 

@@ -12,6 +12,11 @@
     SKILL_MAGICAL = 2
 
 
+
+    function GetSkillName(id)
+        return SkillsData[FourCC(id)].name
+    end
+
     function GetUnitSkillData(unit, id)
         local unit_data = GetUnitData(unit)
 

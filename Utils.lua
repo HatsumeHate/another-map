@@ -454,8 +454,6 @@
 			if float_angle > 180. then float_angle = (angle - facing + 360.) end
 		end
 
-		print(float_angle)
-		print(w)
 
 		return float_angle <= w
 	end

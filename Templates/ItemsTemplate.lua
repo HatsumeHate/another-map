@@ -188,6 +188,7 @@ do
 
                 QUALITY            = COMMON_ITEM,
                 BONUS              = {},
+				SKILL_BONUS 	   = {},
                 MAX_SLOTS          = 0,
                 STONE_SLOTS        = {},
 
@@ -226,6 +227,8 @@ do
 			MergeTables(newdata, data)
 		end
 
+		if newdata.sell_value == nil then newdata.sell_value = 0 end
+
 		ITEM_TEMPLATE_DATA[FourCC(raw)] = newdata
 	end
 
@@ -262,8 +265,18 @@ do
                 { PARAM = PHYSICAL_ATTACK, VALUE = 20, METHOD = STRAIGHT_BONUS },
                 { PARAM = CRIT_CHANCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
             },
-			MAX_SLOTS = 3
+			MAX_SLOTS = 3,
+			sell_value = 50
         })
+		ItemAddData('IGSO', {
+			NAME    = 'NAN',
+			TYPE = ITEM_TYPE_WEAPON,
+			SUBTYPE = SWORD_WEAPON,
+			DAMAGE  = 100,
+			QUALITY = RARE_ITEM,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
+			sell_value = 50
+		})
         --
         ItemAddData('I001', {
             NAME    = 'Плащ Теней',
@@ -272,6 +285,7 @@ do
             QUALITY = MAGIC_ITEM,
             DEFENCE = 50,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
+			sell_value = 50
         })
 
 		ItemAddData('I00G', {
@@ -282,8 +296,9 @@ do
 				[ITEM_TYPE_WEAPON] 		= {  PARAM = FIRE_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = HP_VALUE, VALUE = 75, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = FIRE_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
-				[ITEM_TYPE_OFFHAND]  	= {  PARAM = MELEE_REFLECT_DAMAGE, VALUE = 20, METHOD = STRAIGHT_BONUS }
-			}
+				[ITEM_TYPE_OFFHAND]  	= {  PARAM = REFLECT_MELEE_DAMAGE, VALUE = 20, METHOD = STRAIGHT_BONUS }
+			},
+			sell_value = 50
 		})
 
 		ItemAddData('I00H', {
@@ -294,7 +309,7 @@ do
 				[ITEM_TYPE_WEAPON] 		= {  PARAM = ICE_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = MP_VALUE, VALUE = 55, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = ICE_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
-				[ITEM_TYPE_OFFHAND]  	= {  PARAM = RANGE_REFLECT_DAMAGE, VALUE = 20, METHOD = STRAIGHT_BONUS }
+				[ITEM_TYPE_OFFHAND]  	= {  PARAM = REFLECT_RANGE_DAMAGE, VALUE = 20, METHOD = STRAIGHT_BONUS }
 			}
 		})
 
@@ -307,7 +322,8 @@ do
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = HP_PER_HIT, VALUE = 5, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = HOLY_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = BLOCK_CHANCE, VALUE = 20, METHOD = STRAIGHT_BONUS }
-			}
+			},
+			sell_value = 50
 		})
 
 		ItemAddData('I009', {
@@ -319,7 +335,8 @@ do
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = MOVING_SPEED, VALUE = 15, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = CONTROL_REDUCTION, VALUE = 5, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = PHYSICAL_ATTACK, VALUE = 22, METHOD = STRAIGHT_BONUS }
-			}
+			},
+			sell_value = 50
 		})
 
 		ItemAddData('I00B', {
@@ -343,7 +360,8 @@ do
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = PHYSICAL_DEFENCE, VALUE = 1.03, METHOD = MULTIPLY_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = ALL_RESIST, VALUE = 5, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = ATTACK_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS }
-			}
+			},
+			sell_value = 50
 		})
 
 		ItemAddData('I00A', {
@@ -355,7 +373,8 @@ do
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = MP_PER_HIT, VALUE = 1, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = ARCANE_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = PHYSICAL_DEFENCE, VALUE = 70, METHOD = STRAIGHT_BONUS }
-			}
+			},
+			sell_value = 50
 		})
 
 		ItemAddData('I00J', {
@@ -367,7 +386,8 @@ do
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = MAGICAL_SUPPRESSION, VALUE = 75, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = MP_REGEN, VALUE = 1.03, METHOD = MULTIPLY_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = CRIT_MULTIPLIER, VALUE = 0.12, METHOD = STRAIGHT_BONUS }
-			}
+			},
+			sell_value = 50
 		})
 
 		ItemAddData('I00C', {
@@ -379,7 +399,8 @@ do
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 75, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = POISON_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = MAGICAL_ATTACK, VALUE = 27, METHOD = STRAIGHT_BONUS }
-			}
+			},
+			sell_value = 50
 		})
 
 		ItemAddData('I00E', {
@@ -391,7 +412,8 @@ do
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = PHYSICAL_DEFENCE, VALUE = 25, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = DARKNESS_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = MP_VALUE, VALUE = 1.1, METHOD = MULTIPLY_BONUS }
-			}
+			},
+			sell_value = 50
 		})
 
 		ItemAddData('I00D', {
@@ -403,7 +425,8 @@ do
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 4, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = CONTROL_REDUCTION, VALUE = 5, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = CRIT_CHANCE, VALUE = 5, METHOD = STRAIGHT_BONUS }
-			}
+			},
+			sell_value = 50
 		})
 
 		ItemAddData('I00F', {
@@ -415,7 +438,8 @@ do
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = HP_REGEN, VALUE = 1.05, METHOD = MULTIPLY_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = PHYSICAL_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = HP_VALUE, VALUE = 1.1, METHOD = MULTIPLY_BONUS }
-			}
+			},
+			sell_value = 50
 		})
 
 
@@ -423,64 +447,115 @@ do
 			NAME    		   = 'Зелье исцеления',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredAApotionGS.blp",
-			special_description = "Восстанавливает 25%% здоровья"
+			item_description = "Восстанавливает 25%% здоровья"
 		})
 
 		ItemAddData('I005', {
 			NAME    		   = 'Большое зелье исцеления',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredEApotionGS.blp",
-			special_description = "Восстанавливает 50%% здоровья"
+			item_description = "Восстанавливает 50%% здоровья"
 		})
 
 		ItemAddData('I004', {
 			NAME    		   = 'Великое зелье исцеления',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredJApotionGS.blp",
-			special_description = "Восстанавливает 75%% здоровья"
+			item_description = "Восстанавливает 75%% здоровья"
 		})
 
 		ItemAddData('I006', {
 			NAME    		   = 'Зелье маны',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNblueAApotionGS.blp",
-			special_description = "Восстанавливает 25%% маны"
+			item_description = "Восстанавливает 25%% маны"
 		})
 
 		ItemAddData('I007', {
 			NAME    		   = 'Большое зелье маны',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNblueEApotionGS.blp",
-			special_description = "Восстанавливает 50%% маны"
+			item_description = "Восстанавливает 50%% маны"
 		})
 
 		ItemAddData('I008', {
 			NAME    		   = 'Великое зелье маны',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNblueJApotionGS.blp",
-			special_description = "Восстанавливает 75%% маны"
+			item_description = "Восстанавливает 75%% маны"
 		})
 
 		ItemAddData('I00K', {
 			NAME    		   = 'Зелье восстановления',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNpurpleAApotionGS.blp",
-			special_description = "Восстанавливает 25%% здоровья и маны"
+			item_description = "Восстанавливает 25%% здоровья и маны"
 		})
 
 		ItemAddData('I00M', {
 			NAME    		   = 'Большое зелье восстановления',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNpurpleEApotionGS.blp",
-			special_description = "Восстанавливает 50%% здоровья и маны"
+			item_description = "Восстанавливает 50%% здоровья и маны"
 		})
 
 		ItemAddData('I00L', {
 			NAME    		   = 'Великое зелье восстановления',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNpurpleJApotionGS.blp",
-			special_description = "Восстанавливает 75%% здоровья и маны"
+			item_description = "Восстанавливает 75%% здоровья и маны"
 		})
+
+		ItemAddData('I00N', {
+			NAME    = 'Охотник на крыс',
+			TYPE = ITEM_TYPE_WEAPON,
+			SUBTYPE = BOW_WEAPON,
+			ATTRIBUTE = POISON_ATTRIBUTE,
+			DAMAGE  = 50,
+			QUALITY = UNIQUE_ITEM,
+			level = 5,
+			frame_texture = "Weapons\\BTNInfernal bow.blp",
+			special_description = "\"Даже у крысоловов был легендарный лук, коего желали все охотники на крыс\"",
+			BONUS   = {
+				{ PARAM = PHYSICAL_ATTACK, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CRIT_MULTIPLIER, VALUE = 1.25, METHOD = STRAIGHT_BONUS },
+				{ PARAM = AGI_STAT, VALUE = 3, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 3
+		})
+
+		ItemAddData('I00O', {
+			NAME    = 'Сапог Труса',
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = LEGS_ARMOR,
+			QUALITY = UNIQUE_ITEM,
+			DEFENCE = 20,
+			BONUS   = {
+				{ PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				{ PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				{ PARAM = AGI_STAT, VALUE = 4, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 2,
+			frame_texture = "Armor\\BTNbt.blp",
+			legendary_description = "Каждый противник неподалеку, повышает скорость передвижения на 3%% до максимума в 25%%",
+			special_description = "\"Владелец этого сапога применял секретную тактику своего знатного рода, передававшуюся в течении 300 лет. До поры до времени...\"",
+		})
+
     end
+
+	--[[
+
+	Легендарный ботинок труса. Один
+	"Увеличивает скорость передвижения, если моделька врага больше вашей"
+
+	Непробиваемый Наколенник Искателя Приключений
+
+
+	хочу легендарный меч проворства
+	легенда увеличивает шанс крита на 20%, а проворства +25 ловкости
+
+	Легендарный лук охотника на крыс
+	"Даже у крысоловов был легендарный лук, коего желали все охотники на крыс"
+	]]
 	
 end

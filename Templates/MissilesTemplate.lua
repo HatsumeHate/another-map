@@ -27,6 +27,7 @@ do
             effect_on_impact = nil,
             effect_on_hit = nil,
             effect_on_expire = nil,
+            effect_get_level_from_skill = nil,
 
             radius = 0.,
             max_distance = 0.,
