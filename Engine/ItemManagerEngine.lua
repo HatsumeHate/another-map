@@ -515,9 +515,19 @@ do
 
     function GenerateItemCost(item, level)
         local item_data = GetItemData(item)
+        local stats_bonus = 0
+        local stone_bonus = 0
+
+                if item_data.BONUS ~= nil then
+                    stats_bonus = #item_data.BONUS * 50
+                end
+
+                if item_data.MAX_SLOTS ~= nil then
+                    stone_bonus = 30 * item_data.MAX_SLOTS
+                end
 
             item_data.level = level
-            item_data.cost = level * 30 + (50 * #item_data.BONUS) + (30 * item_data.MAX_SLOTS)
+            item_data.cost = level * 30 + stats_bonus + stone_bonus
     end
 
 
@@ -558,9 +568,9 @@ do
 
                 if GetRandomInt(0, 100) <= physical_archetype then
                     item_data.DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL
-                    local attribute = GetRandomInt(1, 4)
+                    local attribute = GetRandomInt(1, 6)
 
-                        if attribute == 1 then
+                        if attribute == 1 or attribute > 4 then
                             item_data.ATTRIBUTE = PHYSICAL_ATTRIBUTE
                         elseif attribute == 2 then
                             item_data.ATTRIBUTE = HOLY_ATTRIBUTE
@@ -718,7 +728,8 @@ do
         EnumItemsInRect(bj_mapInitialPlayableArea, nil, function()
 
             if ITEM_TEMPLATE_DATA[GetItemTypeId(GetEnumItem())] ~= nil then
-                CreateCustomItem_Id(GetItemTypeId(GetEnumItem()), GetItemX(GetEnumItem()), GetItemY(GetEnumItem()))
+                local my_item = CreateCustomItem_Id(GetItemTypeId(GetEnumItem()), GetItemX(GetEnumItem()), GetItemY(GetEnumItem()))
+                GenerateItemLevel(my_item, 1)
                 RemoveItem(GetEnumItem())
             end
 

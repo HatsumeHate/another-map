@@ -192,6 +192,10 @@ do
                 MAX_SLOTS          = 0,
                 STONE_SLOTS        = {},
 
+				cost 				= 0,
+				sell_value 			= 0,
+                level               = 1,
+
 				sound 			   = {}
             }
     end
@@ -228,6 +232,8 @@ do
 		end
 
 		if newdata.sell_value == nil then newdata.sell_value = 0 end
+		if newdata.cost == nil then newdata.cost = 0 end
+		if newdata.level == nil then newdata.level = 1 end
 
 		ITEM_TEMPLATE_DATA[FourCC(raw)] = newdata
 	end

@@ -535,6 +535,8 @@
 
 
 
+	---@param msg1 string
+	---@param p integer
 	function SimError(msg1, p)
 
 		if udg_SimError == nil then
@@ -548,14 +550,20 @@
 
 	end
 
-	function PlayLocalSound(s, p)
-		local snd
 
-		if GetLocalPlayer() ~= Player(p) then s = "" end
+	---@param name string
+	---@param player_id integer
+	function PlayLocalSound(name, player_id)
+		local snd = CreateSound(name, false, false, false, 10, 10, "")
 
-		snd = CreateSound(s, false, false, false, 10, 10, "")
 		SetSoundChannel(snd, 5)
-		SetSoundVolume(snd, 127)
+
+			if GetLocalPlayer() ~= Player(player_id) then
+				SetSoundVolume(snd, 0)
+			else
+				SetSoundVolume(snd, 127)
+			end
+
 		SetSoundPitch(snd, 1)
 		StartSound(snd)
 		KillSoundWhenDone(snd)

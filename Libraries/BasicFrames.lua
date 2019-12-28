@@ -2,7 +2,7 @@ do
 
     GAME_UI = nil
     WORLD_FRAME = nil
-
+    ButtonList = {}
 
 
     local FocusTrigger = CreateTrigger()
