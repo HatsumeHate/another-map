@@ -603,61 +603,73 @@ do
 
 
 
+    ---@param unit unit
+    ---@param item item
+    ---@param flag boolean
+    ---@returns item
     function EquipItem(unit, item, flag)
         local unit_data = GetUnitData(unit)
         local item_data = GetItemData(item)
         local point
+        local disarmed_item
 
-        if item_data.TYPE == ITEM_TYPE_WEAPON then
-            point = WEAPON_POINT
 
-            if IsWeaponTypeTwohanded(item_data.SUBTYPE) then
-                if item_data.equip_point[OFFHAND_POINT] ~= nil then
-                    EquipItem(unit, unit_data.equip_point[OFFHAND_POINT], false)
+            if item_data.TYPE == ITEM_TYPE_WEAPON then
+                point = WEAPON_POINT
+
+                if IsWeaponTypeTwohanded(item_data.SUBTYPE) and flag then
+                    if item_data.equip_point[OFFHAND_POINT] ~= nil then
+                        EquipItem(unit, unit_data.equip_point[OFFHAND_POINT], false)
+                    end
                 end
-            end
 
-        elseif item_data.TYPE == ITEM_TYPE_ARMOR then
+            elseif item_data.TYPE == ITEM_TYPE_ARMOR then
 
-            if item_data.SUBTYPE == CHEST_ARMOR then point = CHEST_POINT
-            elseif item_data.SUBTYPE == HANDS_ARMOR then point = HANDS_POINT
-            elseif item_data.SUBTYPE == LEGS_ARMOR then point = LEGS_POINT
-            elseif item_data.SUBTYPE == HEAD_ARMOR then point = HEAD_POINT end
+                if item_data.SUBTYPE == CHEST_ARMOR then point = CHEST_POINT
+                elseif item_data.SUBTYPE == HANDS_ARMOR then point = HANDS_POINT
+                elseif item_data.SUBTYPE == LEGS_ARMOR then point = LEGS_POINT
+                elseif item_data.SUBTYPE == HEAD_ARMOR then point = HEAD_POINT end
 
-        elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
+            elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
 
-            if item_data.SUBTYPE == RING_JEWELRY then
-                if flag then
-                    point = unit_data.equip_point[RING_1_POINT] ~= nil and RING_2_POINT or RING_1_POINT
+                if item_data.SUBTYPE == RING_JEWELRY then
+                    if flag then
+                        point = unit_data.equip_point[RING_1_POINT] ~= nil and RING_2_POINT or RING_1_POINT
+                    else
+                        point = unit_data.equip_point[RING_1_POINT].item == item and RING_1_POINT or RING_2_POINT
+                    end
                 else
-                    point = unit_data.equip_point[RING_1_POINT].item == item and RING_1_POINT or RING_2_POINT
+                    point = NECKLACE_POINT
                 end
-            else
-                point = NECKLACE_POINT
+
             end
 
-        end
 
-        if (unit_data.equip_point[point] ~= nil and unit_data.equip_point[point].SUBTYPE ~= FIST_WEAPON) and flag then
-            EquipItem(unit, unit_data.equip_point[point], false)
-        else
-            if flag then
-                unit_data.equip_point[point] = item_data
-            else
-                unit_data.equip_point[point] = point == WEAPON_POINT and unit_data.default_weapon or nil
+            if (unit_data.equip_point[point] ~= nil and unit_data.equip_point[point].SUBTYPE ~= FIST_WEAPON) and flag then
+                disarmed_item = unit_data.equip_point[point].item
+                EquipItem(unit, unit_data.equip_point[point].item, false)
             end
-        end
 
-        for i = 1, #item_data.STONE_SLOTS do
-            ModifyStat(unit, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].PARAM, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].VALUE, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].METHOD, flag)
-        end
+                if flag then
+                    unit_data.equip_point[point] = item_data
+                else
+                    unit_data.equip_point[point] = point == WEAPON_POINT and unit_data.default_weapon or nil
+                end
 
-        for i = 1, #item_data.BONUS do
-            ModifyStat(unit, item_data.BONUS[i].PARAM, item_data.BONUS[i].VALUE, item_data.BONUS[i].METHOD, flag)
-        end
 
-        UpdateParameters(unit_data)
+            for i = 1, #item_data.STONE_SLOTS do
+                ModifyStat(unit, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].PARAM, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].VALUE, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].METHOD, flag)
+            end
+
+            for i = 1, #item_data.BONUS do
+                ModifyStat(unit, item_data.BONUS[i].PARAM, item_data.BONUS[i].VALUE, item_data.BONUS[i].METHOD, flag)
+            end
+
+            UpdateParameters(unit_data)
+
+        return disarmed_item
     end
+
 
 
 

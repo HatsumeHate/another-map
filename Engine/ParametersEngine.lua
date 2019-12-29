@@ -187,7 +187,8 @@ do
     function GetCorrectParamText(parameter, value, method)
         if method == MULTIPLY_BONUS then
             local v = value
-            value =  R2I((value * 100.) - 100.) .. "%%"
+            --value =  R2I((value * 100.) - 100.) .. "%%"
+			value =  S2I(R2S((value - 1.) * 100.)) .. "%%"
 
 				if v > 0 then
 					value = "+" .. value
@@ -197,7 +198,8 @@ do
 			local special = ""
             local vector = "+"
 
-				if parameter == ATTACK_SPEED or parameter == CAST_SPEED or parameter == CRIT_CHANCE or parameter == BLOCK_CHANCE or parameter == MELEE_DAMAGE_REDUCTION or parameter == RANGE_DAMAGE_REDUCTION then
+				if parameter == ATTACK_SPEED or parameter == CAST_SPEED or parameter == CRIT_CHANCE or parameter == BLOCK_CHANCE
+						or parameter == MELEE_DAMAGE_REDUCTION or parameter == RANGE_DAMAGE_REDUCTION or parameter == CONTROL_REDUCTION then
 					special = "%%"
 				end
 
@@ -208,6 +210,10 @@ do
             if parameter == MELEE_DAMAGE_REDUCTION or parameter == RANGE_DAMAGE_REDUCTION then
                 vector = "-"
             end
+
+			if value < 0 then
+				vector = ""
+			end
 
 			value = vector .. value .. special
         end

@@ -102,6 +102,9 @@ do
             DARKNESS_ATTRIBUTE_NAME     = "Тьма",
             HOLY_ATTRIBUTE_NAME         = "Свет",
 
+            INVENTORY_PANEL_TOOLTIP_NAME = "Инвентарь",
+            INVENTORY_PANEL_TOOLTIP_DESCRIPTION =  "Содержит все ваши вещи и экипировку",
+
             DAMAGE_UI = "Урон: ",
             DAMAGE_TYPE_UI = "Тип урона: ",
             DEFENCE_UI = "Защита: ",
@@ -110,6 +113,30 @@ do
             ADDITIONAL_INFO_UI = "|nДополнительные свойства:|n",
             AUGMENTS_UI = "|nАугментации:|n",
             SLOTS_UI = "|nГнезда:|n",
+
+            STAT_PANEL_TOOLTIP_NAME = "Характеристики",
+            STAT_PANEL_TOOLTIP_DESCRIPTION =  "Повышение и отслеживание характеристик",
+
+            STAT_PANEL_STR = "Сила: ",
+            STAT_PANEL_INT = "Интеллект: ",
+            STAT_PANEL_VIT = "Стойкость: ",
+            STAT_PANEL_AGI = "Ловкость: ",
+
+            STAT_PANEL_PHYS_ATTACK = "Физ. урон: ",
+            STAT_PANEL_PHYS_DEFENCE = "Защита: ",
+            STAT_PANEL_MAG_ATTACK = "Маг. урон: ",
+            STAT_PANEL_MAG_DEFENCE = "Подавление: ",
+            STAT_PANEL_ATTACK_SPEED = "Атак в сек.: ",
+            STAT_PANEL_CRIT_CHANCE = "Крит. Шанс: ",
+
+            STAT_PANEL_FIRE = "Огонь: ",
+            STAT_PANEL_PHYSICAL = "Физ.: ",
+            STAT_PANEL_ICE = "Лед: ",
+            STAT_PANEL_LIGHTNING = "Молния: ",
+            STAT_PANEL_DARKNESS = "Тьма: ",
+            STAT_PANEL_HOLY = "Свет: ",
+            STAT_PANEL_POISON = "Яд: ",
+            STAT_PANEL_ARCANE = "Тайное: ",
 
             WORN_DECL_HE = "Изношенный ",
             WORN_DECL_SHE = "Изношенная ",
@@ -146,7 +173,25 @@ do
             ITEM_NAME_BOOT_OF_COWARD = 'Сапог труса',
             ITEM_SPEC_DESCRIPTION_BOOT_OF_COWARD = "Владелец этого сапога применял секретную тактику своего знатного рода, передававшуюся в течении 300 лет. До поры до времени...",
             ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Каждый противник неподалеку, повышает скорость передвижения на 3%% до максимума в 25%%",
-            
+
+            ITEM_NAME_WITCH_MASTERY = "Мастерство Ведьмы",
+            ITEM_SPEC_DESCRIPTION_WITCH_MASTERY = "Принадлежал очень древней ведьме. Впитал в себя часть заклинаний крови, которыми может поделиться.",
+            ITEM_LEG_DESCRIPTION_WITCH_MASTERY = "Каждое произнесенное заклинание увеличивает силу магии на 10%%, однако взамен пожирает 5%% здоровья",
+
+            ITEM_NAME_DARK_CROWN = "Темная Корона",
+            ITEM_SPEC_DESCRIPTION_DARK_CROWN = "Хочешь сопротивляться тьме - стань тьмой сам",
+
+            ITEM_NAME_RITUAL_DAGGER = "Ритуальный Кинжал",
+            ITEM_LEG_DESCRIPTION_RITUAL_DAGGER = "При атаке вы накапливаете эффекты Хаоса. Накопив 15 эффектов, сила и скорость атаки на короткое время сильно повышаются, но на это время регенерация здоровья идет в обратную сторону.",
+            ITEM_SPEC_DESCRIPTION_RITUAL_DAGGER = "Сила, заточенная в этом клинке раскрывается с каждым порезом. И пусть тот кто ею завладеет, справится с ней",
+
+
+            ITEM_NAME_ACOLYTE_MANTLE = "Мантия Аколита",
+            ITEM_SPEC_DESCRIPTION_ACOLYTE_MANTLE = "Идеальное решение что бы уйти в себя",
+
+
+            ITEM_NAME_SMORC_PICKAXE = "Кирка Сморка",
+            ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE = "Легенды гласят, что шахтёр Сморк наповал косил ей врагов",
         },
         ["enGB"] = {
             PHYSICAL_ATTACK_PARAM = "Physical attack",
@@ -230,7 +275,7 @@ do
             HANDS_ARMOR_NAME           = "Glows",
             RING_JEWELRY_NAME          = "Ring",
             NECKLACE_JEWELRY_NAME      = "Necklace",
-            THROWING_KNIFE_WEAPON_NAME = "Throwing dagger",
+            THROWING_KNIFE_WEAPON_NAME = "Throwing knife",
 
             PHYSICAL_ATTRIBUTE_NAME     = "Physical",
             FIRE_ATTRIBUTE_NAME         = "Fire",
@@ -241,6 +286,10 @@ do
             DARKNESS_ATTRIBUTE_NAME     = "Darkness",
             HOLY_ATTRIBUTE_NAME         = "Holy",
 
+
+            INVENTORY_PANEL_TOOLTIP_NAME = "Inventory",
+            INVENTORY_PANEL_TOOLTIP_DESCRIPTION =  "Contains all of your items.",
+
             DAMAGE_UI = "Damage: ",
             DAMAGE_TYPE_UI = "Damage Type: ",
             DEFENCE_UI = "Defence: ",
@@ -249,6 +298,32 @@ do
             ADDITIONAL_INFO_UI = "|nBonuses:|n",
             AUGMENTS_UI = "|nAugments:|n",
             SLOTS_UI = "|nSockets:|n",
+
+
+            STAT_PANEL_TOOLTIP_NAME = "Stats",
+            STAT_PANEL_TOOLTIP_DESCRIPTION =  "Increasing and monitoring of various stats",
+
+            STAT_PANEL_STR = "STR: ",
+            STAT_PANEL_INT = "INT: ",
+            STAT_PANEL_VIT = "VIT: ",
+            STAT_PANEL_AGI = "AGI: ",
+
+            STAT_PANEL_PHYS_ATTACK = "Phys. attack: ",
+            STAT_PANEL_PHYS_DEFENCE = "Defence: ",
+            STAT_PANEL_MAG_ATTACK = "Mag. attack: ",
+            STAT_PANEL_MAG_DEFENCE = "Suppress: ",
+            STAT_PANEL_ATTACK_SPEED = "Attacks per sec.: ",
+            STAT_PANEL_CRIT_CHANCE = "Crit. chance: ",
+
+            STAT_PANEL_FIRE = "Fire: ",
+            STAT_PANEL_PHYSICAL = "Phys.: ",
+            STAT_PANEL_ICE = "Ice: ",
+            STAT_PANEL_LIGHTNING = "Lightning: ",
+            STAT_PANEL_DARKNESS = "Darkness: ",
+            STAT_PANEL_HOLY = "Holy: ",
+            STAT_PANEL_POISON = "Poison: ",
+            STAT_PANEL_ARCANE = "Arcane: ",
+
 
             WORN_DECL_HE = "Worn ",
             WORN_DECL_SHE = "Worn ",
@@ -284,16 +359,31 @@ do
 
             ITEM_NAME_BOOT_OF_COWARD = 'Boot of Coward',
             ITEM_SPEC_DESCRIPTION_BOOT_OF_COWARD = "The owner of this boot used the secret tactic of his noble family, that was inherited over 300 years. But that wasn't for long...",
-            ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Each enemy near the hero increasing his moving speed by 3%%, with maximum of 25%%"
+            ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Each enemy near the hero increasing his moving speed by 3%%, with maximum of 25%%",
 
+            ITEM_NAME_WITCH_MASTERY = "Witch Mastery",
+            ITEM_SPEC_DESCRIPTION_WITCH_MASTERY = "That staff belonged to a very ancient witch. It absorbed some blood magick, and can share it with wielder.",
+            ITEM_LEG_DESCRIPTION_WITCH_MASTERY = "Each casted spell increasing spell power by 10%% in exhange of 5%% life",
 
+            ITEM_NAME_DARK_CROWN = "Dark Crown",
+            ITEM_SPEC_DESCRIPTION_DARK_CROWN = "If you want to resist the darkness, became darkness yourself.",
+
+            ITEM_NAME_RITUAL_DAGGER = "Ritual Dagger",
+            ITEM_LEG_DESCRIPTION_RITUAL_DAGGER = " With each attack you gain stack of Chaos effect. After reaching 15 stacks, attack power and speed gain major boost for short period of time, but health regeneration is inversed.",
+            ITEM_SPEC_DESCRIPTION_RITUAL_DAGGER = "Power within this blade is revealed with every slash. And let the one who takes possession of it can bear it.",
+
+            ITEM_NAME_ACOLYTE_MANTLE = "Acolyte Mantle",
+            ITEM_SPEC_DESCRIPTION_ACOLYTE_MANTLE = "The ideal solution for withdrawing into himself",
+
+            ITEM_NAME_SMORC_PICKAXE = "Smorc Pickaxe",
+            ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE = "Legends says, that miner Smorc was crushing his enemies with that thing.",
         }
 
     }
 
 
     function InitLocaleLibrary()
-        my_locale = "enGB"--BlzGetLocale()
+        my_locale = BlzGetLocale() -- "enGB"
     end
 
 

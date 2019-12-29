@@ -238,32 +238,32 @@ do
     local function InteractWithItemInSlot(h, id)
         local item_data = GetItemData(ButtonList[h].item)
 
-        if item_data.TYPE >= ITEM_TYPE_WEAPON and item_data.TYPE <= ITEM_TYPE_OFFHAND then
+            if item_data.TYPE >= ITEM_TYPE_WEAPON and item_data.TYPE <= ITEM_TYPE_OFFHAND then
 
-            if ButtonList[h].button_type == INV_SLOT then
-                    EquipItem(InventoryOwner[id], ButtonList[h].item, true)
+                if ButtonList[h].button_type == INV_SLOT then
+                        local uneqiped_item = EquipItem(InventoryOwner[id], ButtonList[h].item, true)
 
-                        if item_data.soundpack ~= nil and item_data.soundpack.equip ~= nil then
-                            PlayLocalSound(item_data.soundpack.equip, id - 1)
+                            if item_data.soundpack ~= nil and item_data.soundpack.equip ~= nil then
+                                PlayLocalSound(item_data.soundpack.equip, id - 1)
+                            end
+
+                        ButtonList[h].item = uneqiped_item
+                        UpdateEquipPointsWindow(id)
+                        UpdateInventoryWindow(id)
+                elseif ButtonList[h].button_type >= WEAPON_POINT and ButtonList[h].button_type <= NECKLACE_POINT then
+                    EquipItem(InventoryOwner[id], ButtonList[h].item, false)
+
+                        if item_data.soundpack ~= nil and item_data.soundpack.uneqip ~= nil then
+                            PlayLocalSound(item_data.soundpack.uneqip, id - 1)
                         end
 
-                    ButtonList[h].item = nil
+                    local free_slot = GetFirstFreeSlotButton(id)
+                    free_slot.item = ButtonList[h].item
                     UpdateEquipPointsWindow(id)
                     UpdateInventoryWindow(id)
-            elseif ButtonList[h].button_type >= WEAPON_POINT and ButtonList[h].button_type <= NECKLACE_POINT then
-                EquipItem(InventoryOwner[id], ButtonList[h].item, false)
+                end
 
-                    if item_data.soundpack ~= nil and item_data.soundpack.uneqip ~= nil then
-                        PlayLocalSound(item_data.soundpack.uneqip, id - 1)
-                    end
-
-                local free_slot = GetFirstFreeSlotButton(id)
-                free_slot.item = ButtonList[h].item
-                UpdateEquipPointsWindow(id)
-                UpdateInventoryWindow(id)
             end
-
-        end
 
     end
 
@@ -339,6 +339,7 @@ do
                 RemoveTooltip(player)
                 DestroyContextMenu(player)
                 InteractWithItemInSlot(h, player)
+                TimerStart(DoubleClickTimer[player], 0.01, false, nil)
             elseif item_data.TYPE == ITEM_TYPE_CONSUMABLE then
                 LockItemOnBelt(player, ButtonList[h])
                 RemoveTooltip(player)
@@ -517,7 +518,6 @@ do
                         end
                         SetItemVisible(item, true)
                         SetItemPosition(item, GetUnitX(PlayerHero[player]) + GetRandomReal(-55., 55.), GetUnitY(PlayerHero[player]) + GetRandomReal(-55., 55.))
-                        --BlzFrameSetTexture(button.image, button.original_texture, 0, true)
                         button.item = nil
                         UpdateInventoryWindow(player)
                         break
@@ -749,8 +749,8 @@ do
         BlzFrameSetTooltip(InventoryTriggerButton, inv_button_tooltip)
         BlzFrameSetPoint(inv_button_tooltip, FRAMEPOINT_TOPLEFT, inv_button_backdrop, FRAMEPOINT_RIGHT, 0, 0)
         BlzFrameSetSize(inv_button_tooltip, 0.11, 0.05)
-        BlzFrameSetText(BlzGetFrameByName("BoxedTextValue", 0), "Содержит все ваши вещи и экипировку")--BoxedText has a child showing the text, set that childs Text.
-        BlzFrameSetText(BlzGetFrameByName("BoxedTextTitle", 0), "Инвентарь")--BoxedText has a child showing the Title-text, set that childs Text.
+        BlzFrameSetText(BlzGetFrameByName("BoxedTextValue", 0), LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_DESCRIPTION)--BoxedText has a child showing the text, set that childs Text.
+        BlzFrameSetText(BlzGetFrameByName("BoxedTextTitle", 0), LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_NAME)--BoxedText has a child showing the Title-text, set that childs Text.
         FrameRegisterNoFocus(InventoryTriggerButton)
 
 

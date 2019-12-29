@@ -29,6 +29,9 @@ do
 	RING_JEWELRY          = 16
 	NECKLACE_JEWELRY      = 17
     THROWING_KNIFE_WEAPON = 18
+	SHIELD_OFFHAND 		  = 19
+	ORB_OFFHAND 		  = 20
+
 
 	
 	COMMON_ITEM        = 1
@@ -632,21 +635,153 @@ do
 			}
 		})
 
+		ItemAddData('I00P', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_WITCH_MASTERY,
+			TYPE    = ITEM_TYPE_WEAPON,
+			SUBTYPE = STAFF_WEAPON,
+			ATTRIBUTE = FIRE_ATTRIBUTE,
+			QUALITY = UNIQUE_ITEM,
+			DAMAGE  = 50,
+			level = 10,
+			BONUS   = {
+				{ PARAM = CAST_SPEED, VALUE = 5, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CRIT_MULTIPLIER, VALUE = 0.3, METHOD = STRAIGHT_BONUS },
+				{ PARAM = INT_STAT, VALUE = 5, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 3,
+			frame_texture = "Weapons\\BTN_CW_Red_Scepter.blp",
+			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_WITCH_MASTERY,
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_WITCH_MASTERY .."\"",
+			soundpack = {
+				equip = "Sound\\staff_manadrinker_equip.wav",
+				uneqip = "Sound\\staff_unequip.wav",
+				drop = "Sound\\staff.wav"
+			}
+		})
+
+		ItemAddData('I00Q', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_DARK_CROWN,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = HEAD_ARMOR,
+			QUALITY = UNIQUE_ITEM,
+			DEFENCE = 20,
+			level = 10,
+			BONUS   = {
+				{ PARAM = DARKNESS_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS },
+				{ PARAM = DARKNESS_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CONTROL_REDUCTION, VALUE = 10, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 2,
+			frame_texture = "Armor\\BTNDarkCrown.blp",
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_DARK_CROWN .."\"",
+			soundpack = {
+				equip = "Sound\\rare.wav",
+				uneqip = "Sound\\rare.wav",
+				drop = "Sound\\rare.wav"
+			}
+		})
+
+		ItemAddData('I00R', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_RITUAL_DAGGER,
+			TYPE    = ITEM_TYPE_WEAPON,
+			SUBTYPE = DAGGER_WEAPON,
+			ATTRIBUTE = PHYSICAL_ATTRIBUTE,
+			QUALITY = UNIQUE_ITEM,
+			DAMAGE  = 50,
+			level = 10,
+			BONUS   = {
+				{ PARAM = CRIT_CHANCE, VALUE = 5, METHOD = STRAIGHT_BONUS },
+				{ PARAM = HP_REGEN, VALUE = 1.15, METHOD = MULTIPLY_BONUS },
+				{ PARAM = AGI_STAT, VALUE = 2, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 3,
+			frame_texture = "Weapons\\BTNBlack Navaja.blp",
+			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_RITUAL_DAGGER,
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_RITUAL_DAGGER .."\"",
+			soundpack = {
+				equip = "Sound\\daggers_ashes_equip.wav",
+				uneqip = "Sound\\dagger_unequip.wav",
+				drop = "Sound\\dagger.wav"
+			}
+		})
+
+		ItemAddData('I00S', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_ACOLYTE_MANTLE,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = CHEST_ARMOR,
+			QUALITY = UNIQUE_ITEM,
+			DEFENCE = 20,
+			level = 10,
+			BONUS   = {
+				{ PARAM = PHYSICAL_DEFENCE, VALUE = 1.3, METHOD = MULTIPLY_BONUS },
+				{ PARAM = MAGICAL_SUPPRESSION, VALUE = 1.3, METHOD = MULTIPLY_BONUS },
+				{ PARAM = ALL_RESIST, VALUE = 10, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 3,
+			frame_texture = "Armor\\BTNCloak of shadows.blp",
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_ACOLYTE_MANTLE .."\"",
+			soundpack = {
+				equip = "Sound\\cloth_armor_equip.wav",
+				uneqip = "Sound\\cloth_armor_unequip.wav",
+				drop = "Sound\\lightarmor.wav"
+			}
+		})
+
+		ItemAddData('I00T', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_SMORC_PICKAXE,
+			TYPE    = ITEM_TYPE_WEAPON,
+			SUBTYPE = AXE_WEAPON,
+			ATTRIBUTE = PHYSICAL_ATTRIBUTE,
+			QUALITY = UNIQUE_ITEM,
+			DAMAGE  = 50,
+			level = 10,
+			BONUS   = {
+				{ PARAM = CRIT_MULTIPLIER, VALUE = 1., METHOD = STRAIGHT_BONUS },
+				{ PARAM = STR_STAT, VALUE = 5, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 4,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNGatherGold.blp",
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE .."\"",
+			soundpack = {
+				equip = "Sound\\staff_equip.wav",
+				uneqip = "Sound\\staff_unequip.wav",
+				drop = "Sound\\sword.wav"
+			}
+		})
+
     end
 
 	--[[
+	ух сет Короля и шута
+	дуальные оружия король а второе шут
 
-	Легендарный ботинок труса. Один
-	"Увеличивает скорость передвижения, если моделька врага больше вашей"
+	Кукла вуду
+	Содержит чьи-то волосы. Опасная игрушка.
+
+	Громоотвод
+	Где вы его раздобыли??? В любом случае, может воскресить вас при ударе молнии. Или убить.
+
+		Амулет хаоса
+	Переодически нестабильным и начинается дичь.
+
+	Кирка Сморка
+	Легенды гласят, что шахтёр Сморк наповал косил ей врагов.
+
+
+		Кристальный топор
+	Превращает в кристаллы всё что коснётся. Специальные перчатки прилагаются.
+
+	Рубик в Кубике
+	Маленькое существо в кубике. Вы чувствуете что его зовут Рубик.
+
+		Трезубец короля морей
+	Может в красивые молнии. Однако владелец также в опасности.
 
 	Непробиваемый Наколенник Искателя Приключений
-
 
 	хочу легендарный меч проворства
 	легенда увеличивает шанс крита на 20%, а проворства +25 ловкости
 
-	Легендарный лук охотника на крыс
-	"Даже у крысоловов был легендарный лук, коего желали все охотники на крыс"
 	]]
 	
 end

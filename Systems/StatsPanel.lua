@@ -12,26 +12,26 @@ do
         for i = 1, 6 do
             if PlayerHero[i] ~= nil then
                 local data = GetUnitData(PlayerHero[i])
-                BlzFrameSetText(StatsList[STR_STAT], "Сила: ".. data.stats[STR_STAT].value)
-                BlzFrameSetText(StatsList[INT_STAT], "Интеллект: ".. data.stats[INT_STAT].value)
-                BlzFrameSetText(StatsList[VIT_STAT], "Стойкость: ".. data.stats[VIT_STAT].value)
-                BlzFrameSetText(StatsList[AGI_STAT], "Ловкость: ".. data.stats[AGI_STAT].value)
+                BlzFrameSetText(StatsList[STR_STAT], LOCALE_LIST[my_locale].STAT_PANEL_STR.. data.stats[STR_STAT].value)
+                BlzFrameSetText(StatsList[INT_STAT], LOCALE_LIST[my_locale].STAT_PANEL_INT.. data.stats[INT_STAT].value)
+                BlzFrameSetText(StatsList[VIT_STAT], LOCALE_LIST[my_locale].STAT_PANEL_VIT.. data.stats[VIT_STAT].value)
+                BlzFrameSetText(StatsList[AGI_STAT], LOCALE_LIST[my_locale].STAT_PANEL_AGI.. data.stats[AGI_STAT].value)
 
-                BlzFrameSetText(StatsList[PHYSICAL_ATTACK], "Физ. урон: ".. R2I(data.stats[PHYSICAL_ATTACK].value + data.equip_point[WEAPON_POINT].DAMAGE))
-                BlzFrameSetText(StatsList[PHYSICAL_DEFENCE], "Защита: ".. R2I(data.stats[PHYSICAL_DEFENCE].value))
-                BlzFrameSetText(StatsList[MAGICAL_ATTACK], "Маг. урон: ".. R2I(data.stats[MAGICAL_ATTACK].value + data.equip_point[WEAPON_POINT].DAMAGE))
-                BlzFrameSetText(StatsList[MAGICAL_SUPPRESSION], "Подавление: ".. R2I(data.stats[MAGICAL_SUPPRESSION].value))
-                BlzFrameSetText(StatsList[ATTACK_SPEED], "Атак в сек.: ".. string.format('%%.2f', data.stats[ATTACK_SPEED].value))
-                BlzFrameSetText(StatsList[CRIT_CHANCE], "Крит. Шанс: "..  R2I(data.stats[CRIT_CHANCE].value) .. "%%")
+                BlzFrameSetText(StatsList[PHYSICAL_ATTACK], LOCALE_LIST[my_locale].STAT_PANEL_PHYS_ATTACK.. R2I(data.stats[PHYSICAL_ATTACK].value + data.equip_point[WEAPON_POINT].DAMAGE))
+                BlzFrameSetText(StatsList[PHYSICAL_DEFENCE], LOCALE_LIST[my_locale].STAT_PANEL_PHYS_DEFENCE.. R2I(data.stats[PHYSICAL_DEFENCE].value))
+                BlzFrameSetText(StatsList[MAGICAL_ATTACK], LOCALE_LIST[my_locale].STAT_PANEL_MAG_ATTACK.. R2I(data.stats[MAGICAL_ATTACK].value + data.equip_point[WEAPON_POINT].DAMAGE))
+                BlzFrameSetText(StatsList[MAGICAL_SUPPRESSION], LOCALE_LIST[my_locale].STAT_PANEL_MAG_DEFENCE.. R2I(data.stats[MAGICAL_SUPPRESSION].value))
+                BlzFrameSetText(StatsList[ATTACK_SPEED], LOCALE_LIST[my_locale].STAT_PANEL_ATTACK_SPEED.. string.format('%%.2f', data.stats[ATTACK_SPEED].value))
+                BlzFrameSetText(StatsList[CRIT_CHANCE], LOCALE_LIST[my_locale].STAT_PANEL_CRIT_CHANCE..  R2I(data.stats[CRIT_CHANCE].value) .. "%%")
 
-                BlzFrameSetText(StatsList[PHYSICAL_RESIST], "Физ.: ".. data.stats[PHYSICAL_RESIST].value)
-                BlzFrameSetText(StatsList[FIRE_RESIST], "Огонь: ".. data.stats[FIRE_RESIST].value)
-                BlzFrameSetText(StatsList[ICE_RESIST], "Лед: ".. data.stats[ICE_RESIST].value)
-                BlzFrameSetText(StatsList[LIGHTNING_RESIST], "Молния: ".. data.stats[LIGHTNING_RESIST].value)
-                BlzFrameSetText(StatsList[DARKNESS_RESIST], "Тьма: ".. data.stats[DARKNESS_RESIST].value)
-                BlzFrameSetText(StatsList[HOLY_RESIST], "Свет: ".. data.stats[HOLY_RESIST].value)
-                BlzFrameSetText(StatsList[POISON_RESIST], "Яд: ".. data.stats[POISON_RESIST].value)
-                BlzFrameSetText(StatsList[ARCANE_RESIST], "Тайное: ".. data.stats[ARCANE_RESIST].value)
+                BlzFrameSetText(StatsList[PHYSICAL_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_PHYSICAL.. data.stats[PHYSICAL_RESIST].value)
+                BlzFrameSetText(StatsList[FIRE_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_FIRE.. data.stats[FIRE_RESIST].value)
+                BlzFrameSetText(StatsList[ICE_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_ICE.. data.stats[ICE_RESIST].value)
+                BlzFrameSetText(StatsList[LIGHTNING_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_LIGHTNING.. data.stats[LIGHTNING_RESIST].value)
+                BlzFrameSetText(StatsList[DARKNESS_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_DARKNESS.. data.stats[DARKNESS_RESIST].value)
+                BlzFrameSetText(StatsList[HOLY_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_HOLY.. data.stats[HOLY_RESIST].value)
+                BlzFrameSetText(StatsList[POISON_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_POISON.. data.stats[POISON_RESIST].value)
+                BlzFrameSetText(StatsList[ARCANE_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_ARCANE.. data.stats[ARCANE_RESIST].value)
             end
         end
     end
@@ -208,7 +208,7 @@ do
 
         CharButton = NewButton("ReplaceableTextures\\CommandButtons\\BTNTomeRed.blp", 0.03, 0.03, GAME_UI, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0., -0.12, GAME_UI)
 
-        CreateTooltip("Характеристики", "Повышение и отслеживание характеристик", CharButton, 0.14, 0.06)
+        CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_DESCRIPTION, CharButton, 0.14, 0.06)
 
         local trg = CreateTrigger()
         BlzTriggerRegisterFrameEvent(trg, CharButton, FRAMEEVENT_CONTROL_CLICK)
