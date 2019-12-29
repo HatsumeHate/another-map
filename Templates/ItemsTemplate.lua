@@ -272,7 +272,12 @@ do
                 { PARAM = CRIT_CHANCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
             },
 			MAX_SLOTS = 3,
-			sell_value = 50
+			sell_value = 50,
+			soundpack = {
+				equip = "Sound\\sword_equip01.wav",
+				uneqip = "Sound\\weapon_unequip.wav",
+				drop = "Sound\\sword.wav"
+			}
         })
 		ItemAddData('IGSO', {
 			NAME    = 'NAN',
@@ -291,7 +296,12 @@ do
             QUALITY = MAGIC_ITEM,
             DEFENCE = 50,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
-			sell_value = 50
+			sell_value = 50,
+			soundpack = {
+				equip = "Sound\\cloth_armor_equip.wav",
+				uneqip = "Sound\\cloth_armor_unequip.wav",
+				drop = "Sound\\lightarmor.wav"
+			}
         })
 
 		ItemAddData('I00G', {
@@ -304,7 +314,10 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = FIRE_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = REFLECT_MELEE_DAMAGE, VALUE = 20, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50
+			sell_value = 50,
+			soundpack = {
+				drop = "Sound\\gem.wav"
+			}
 		})
 
 		ItemAddData('I00H', {
@@ -316,6 +329,10 @@ do
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = MP_VALUE, VALUE = 55, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = ICE_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = REFLECT_RANGE_DAMAGE, VALUE = 20, METHOD = STRAIGHT_BONUS }
+			},
+			sell_value = 50,
+			soundpack = {
+				drop = "Sound\\gem.wav"
 			}
 		})
 
@@ -329,7 +346,10 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = HOLY_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = BLOCK_CHANCE, VALUE = 20, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50
+			sell_value = 50,
+			soundpack = {
+				drop = "Sound\\gem.wav"
+			}
 		})
 
 		ItemAddData('I009', {
@@ -342,7 +362,10 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = CONTROL_REDUCTION, VALUE = 5, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = PHYSICAL_ATTACK, VALUE = 22, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50
+			sell_value = 50,
+			soundpack = {
+				drop = "Sound\\gem.wav"
+			}
 		})
 
 		ItemAddData('I00B', {
@@ -354,6 +377,10 @@ do
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = MAGICAL_SUPPRESSION, VALUE = 1.03, METHOD = MULTIPLY_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = LIGHTNING_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = CAST_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS }
+			},
+			sell_value = 50,
+			soundpack = {
+				drop = "Sound\\gem.wav"
 			}
 		})
 
@@ -367,7 +394,10 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = ALL_RESIST, VALUE = 5, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = ATTACK_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50
+			sell_value = 50,
+			soundpack = {
+				drop = "Sound\\gem.wav"
+			}
 		})
 
 		ItemAddData('I00A', {
@@ -380,7 +410,10 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = ARCANE_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = PHYSICAL_DEFENCE, VALUE = 70, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50
+			sell_value = 50,
+			soundpack = {
+				drop = "Sound\\gem.wav"
+			}
 		})
 
 		ItemAddData('I00J', {
@@ -393,7 +426,10 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = MP_REGEN, VALUE = 1.03, METHOD = MULTIPLY_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = CRIT_MULTIPLIER, VALUE = 0.12, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50
+			sell_value = 50,
+			soundpack = {
+				drop = "Sound\\gem.wav"
+			}
 		})
 
 		ItemAddData('I00C', {
@@ -406,7 +442,10 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = POISON_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = MAGICAL_ATTACK, VALUE = 27, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50
+			sell_value = 50,
+			soundpack = {
+				drop = "Sound\\gem.wav"
+			}
 		})
 
 		ItemAddData('I00E', {
@@ -419,7 +458,10 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = DARKNESS_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = MP_VALUE, VALUE = 1.1, METHOD = MULTIPLY_BONUS }
 			},
-			sell_value = 50
+			sell_value = 50,
+			soundpack = {
+				drop = "Sound\\gem.wav"
+			}
 		})
 
 		ItemAddData('I00D', {
@@ -432,7 +474,10 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = CONTROL_REDUCTION, VALUE = 5, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = CRIT_CHANCE, VALUE = 5, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50
+			sell_value = 50,
+			soundpack = {
+				drop = "Sound\\gem.wav"
+			}
 		})
 
 		ItemAddData('I00F', {
@@ -445,7 +490,10 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = PHYSICAL_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = HP_VALUE, VALUE = 1.1, METHOD = MULTIPLY_BONUS }
 			},
-			sell_value = 50
+			sell_value = 50,
+			soundpack = {
+				drop = "Sound\\gem.wav"
+			}
 		})
 
 
@@ -453,67 +501,94 @@ do
 			NAME    		   = 'Зелье исцеления',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredAApotionGS.blp",
-			item_description = "Восстанавливает 25%% здоровья"
+			item_description = "Восстанавливает 25%% здоровья",
+			soundpack = {
+				drop = "Sound\\potionui.wav"
+			}
 		})
 
 		ItemAddData('I005', {
 			NAME    		   = 'Большое зелье исцеления',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredEApotionGS.blp",
-			item_description = "Восстанавливает 50%% здоровья"
+			item_description = "Восстанавливает 50%% здоровья",
+			soundpack = {
+				drop = "Sound\\potionui.wav"
+			}
 		})
 
 		ItemAddData('I004', {
 			NAME    		   = 'Великое зелье исцеления',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredJApotionGS.blp",
-			item_description = "Восстанавливает 75%% здоровья"
+			item_description = "Восстанавливает 75%% здоровья",
+			soundpack = {
+				drop = "Sound\\potionui.wav"
+			}
 		})
 
 		ItemAddData('I006', {
 			NAME    		   = 'Зелье маны',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNblueAApotionGS.blp",
-			item_description = "Восстанавливает 25%% маны"
+			item_description = "Восстанавливает 25%% маны",
+			soundpack = {
+				drop = "Sound\\potionui.wav"
+			}
 		})
 
 		ItemAddData('I007', {
 			NAME    		   = 'Большое зелье маны',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNblueEApotionGS.blp",
-			item_description = "Восстанавливает 50%% маны"
+			item_description = "Восстанавливает 50%% маны",
+			soundpack = {
+				drop = "Sound\\potionui.wav"
+			}
 		})
 
 		ItemAddData('I008', {
 			NAME    		   = 'Великое зелье маны',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNblueJApotionGS.blp",
-			item_description = "Восстанавливает 75%% маны"
+			item_description = "Восстанавливает 75%% маны",
+			soundpack = {
+				drop = "Sound\\potionui.wav"
+			}
 		})
 
 		ItemAddData('I00K', {
 			NAME    		   = 'Зелье восстановления',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNpurpleAApotionGS.blp",
-			item_description = "Восстанавливает 25%% здоровья и маны"
+			item_description = "Восстанавливает 25%% здоровья и маны",
+			soundpack = {
+				drop = "Sound\\potionui.wav"
+			}
 		})
 
 		ItemAddData('I00M', {
 			NAME    		   = 'Большое зелье восстановления',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNpurpleEApotionGS.blp",
-			item_description = "Восстанавливает 50%% здоровья и маны"
+			item_description = "Восстанавливает 50%% здоровья и маны",
+			soundpack = {
+				drop = "Sound\\potionui.wav"
+			}
 		})
 
 		ItemAddData('I00L', {
 			NAME    		   = 'Великое зелье восстановления',
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNpurpleJApotionGS.blp",
-			item_description = "Восстанавливает 75%% здоровья и маны"
+			item_description = "Восстанавливает 75%% здоровья и маны",
+			soundpack = {
+				drop = "Sound\\potionui.wav"
+			}
 		})
 
 		ItemAddData('I00N', {
-			NAME    = 'Охотник на крыс',
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_RAT_HUNTER,
 			TYPE = ITEM_TYPE_WEAPON,
 			SUBTYPE = BOW_WEAPON,
 			ATTRIBUTE = POISON_ATTRIBUTE,
@@ -521,17 +596,22 @@ do
 			QUALITY = UNIQUE_ITEM,
 			level = 5,
 			frame_texture = "Weapons\\BTNInfernal bow.blp",
-			special_description = "\"Даже у крысоловов был легендарный лук, коего желали все охотники на крыс\"",
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_RAT_HUNTER .."\"",
 			BONUS   = {
 				{ PARAM = PHYSICAL_ATTACK, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				{ PARAM = CRIT_MULTIPLIER, VALUE = 1.25, METHOD = STRAIGHT_BONUS },
 				{ PARAM = AGI_STAT, VALUE = 3, METHOD = STRAIGHT_BONUS },
 			},
-			MAX_SLOTS = 3
+			MAX_SLOTS = 3,
+			soundpack = {
+				equip = "Sound\\bow_equip.wav",
+				uneqip = "Sound\\bow_unequip.wav",
+				drop = "Sound\\bow.wav"
+			}
 		})
 
 		ItemAddData('I00O', {
-			NAME    = 'Сапог Труса',
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_BOOT_OF_COWARD,
 			TYPE    = ITEM_TYPE_ARMOR,
 			SUBTYPE = LEGS_ARMOR,
 			QUALITY = UNIQUE_ITEM,
@@ -543,8 +623,13 @@ do
 			},
 			MAX_SLOTS = 2,
 			frame_texture = "Armor\\BTNbt.blp",
-			legendary_description = "Каждый противник неподалеку, повышает скорость передвижения на 3%% до максимума в 25%%",
-			special_description = "\"Владелец этого сапога применял секретную тактику своего знатного рода, передававшуюся в течении 300 лет. До поры до времени...\"",
+			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD,
+			special_description = "\""..LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_BOOT_OF_COWARD.."\"",
+			soundpack = {
+				equip = "Sound\\cloth_armor_equip.wav",
+				uneqip = "Sound\\cloth_armor_unequip.wav",
+				drop = "Sound\\boots.wav"
+			}
 		})
 
     end

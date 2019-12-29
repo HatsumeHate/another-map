@@ -104,6 +104,7 @@ do
 		
 		-- data это уже данные конкретного предмета с которыми можно делать что угодно
         data.item = item
+        BlzSetItemName(item, data.NAME)
 
 		ITEM_DATA[handle] = data
 		return item
@@ -123,6 +124,7 @@ do
 
         -- data это уже данные конкретного предмета с которыми можно делать что угодно
         data.item = item
+        BlzSetItemName(item, data.NAME)
 
         ITEM_DATA[handle] = data
         return item
@@ -219,37 +221,14 @@ do
 
 
     local ITEM_AFFIX_NAME_LIST = {
-        [ITEM_AFFIX_WORN] = {
-            [DECL_HE] = "Изношенный ",
-            [DECL_SHE] = "Изношенная ",
-            [DECL_THEY] = "Изношенные ",
-            [DECL_IT] = "Изношенное "
-        },
-        [ITEM_AFFIX_FINE] = {
-            [DECL_HE] = "Качественный ",
-            [DECL_SHE] = "Качественная ",
-            [DECL_THEY] = "Качественные ",
-            [DECL_IT] = "Качественное "
-        },
-        [ITEM_AFFIX_EXCELLENT] = {
-            [DECL_HE] = "Превосходный ",
-            [DECL_SHE] = "Превосходная ",
-            [DECL_THEY] = "Превосходные ",
-            [DECL_IT] = "Превосходное "
-        },
-        [ITEM_AFFIX_IDEAL] = {
-            [DECL_HE] = "Безупречный ",
-            [DECL_SHE] = "Безупречная ",
-            [DECL_THEY] = "Безупречные ",
-            [DECL_IT] = "Безупречное "
-        }
+
     }
 
 
 
     local ITEM_SUFFIX_LIST = {
         [ITEM_SUFFIX_ANGER] = {
-            name = " Злости",
+            name = "LOCALE_LIST[my_locale].ITEM_SUFFIX_ANGER",
             affix_bonus = {
                 [ITEM_AFFIX_WORN] = {
                     parameter_bonus = {
@@ -298,7 +277,7 @@ do
             }
         },
         [ITEM_SUFFIX_FURY] = {
-            name = " Ярости",
+            name = "LOCALE_LIST[my_locale].ITEM_SUFFIX_FURY",
             affix_bonus = {
                 [ITEM_AFFIX_WORN] = {
                     parameter_bonus = {
@@ -351,7 +330,7 @@ do
             }
         },
         [ITEM_SUFFIX_CONCENTRATION] = {
-            name = " Сосредоточенности",
+            name = "LOCALE_LIST[my_locale].ITEM_SUFFIX_CONCENTRATION",
             affix_bonus = {
                 [ITEM_AFFIX_WORN] = {
                     parameter_bonus = {
@@ -400,7 +379,7 @@ do
             }
         },
         [ITEM_SUFFIX_PRECISION] = {
-            name = " Точности",
+            name = "LOCALE_LIST[my_locale].ITEM_SUFFIX_PRECISION",
             affix_bonus = {
                 [ITEM_AFFIX_WORN] = {
                     parameter_bonus = {
@@ -725,6 +704,82 @@ do
 
 
     function EnumItemsOnInit()
+        ITEMTYPES_NAMES = {
+            [ITEM_TYPE_WEAPON]     = LOCALE_LIST[my_locale].ITEM_TYPE_WEAPON_NAME,
+            [ITEM_TYPE_ARMOR]      = LOCALE_LIST[my_locale].ITEM_TYPE_ARMOR_NAME,
+            [ITEM_TYPE_JEWELRY]    = LOCALE_LIST[my_locale].ITEM_TYPE_JEWELRY_NAME,
+            [ITEM_TYPE_OFFHAND]    = LOCALE_LIST[my_locale].ITEM_TYPE_OFFHAND_NAME,
+            [ITEM_TYPE_CONSUMABLE] = LOCALE_LIST[my_locale].ITEM_TYPE_CONSUMABLE_NAME,
+            [ITEM_TYPE_GEM]        = LOCALE_LIST[my_locale].ITEM_TYPE_GEM_NAME
+        }
+
+         ITEMSUBTYPES_NAMES = {
+            [BOW_WEAPON]            = LOCALE_LIST[my_locale].BOW_WEAPON_NAME,
+            [BLUNT_WEAPON]          = LOCALE_LIST[my_locale].BLUNT_WEAPON_NAME,
+            [GREATBLUNT_WEAPON]     = LOCALE_LIST[my_locale].GREATBLUNT_WEAPON_NAME,
+            [SWORD_WEAPON]          = LOCALE_LIST[my_locale].SWORD_WEAPON_NAME,
+            [GREATSWORD_WEAPON]     = LOCALE_LIST[my_locale].GREATSWORD_WEAPON_NAME,
+            [AXE_WEAPON]            = LOCALE_LIST[my_locale].AXE_WEAPON_NAME,
+            [GREATAXE_WEAPON]       = LOCALE_LIST[my_locale].GREATAXE_WEAPON_NAME,
+            [DAGGER_WEAPON]         = LOCALE_LIST[my_locale].DAGGER_WEAPON_NAME,
+            [STAFF_WEAPON]          = LOCALE_LIST[my_locale].STAFF_WEAPON_NAME,
+            [JAWELIN_WEAPON]        = LOCALE_LIST[my_locale].JAWELIN_WEAPON_NAME,
+            [HEAD_ARMOR]            = LOCALE_LIST[my_locale].HEAD_ARMOR_NAME,
+            [CHEST_ARMOR]           = LOCALE_LIST[my_locale].CHEST_ARMOR_NAME,
+            [LEGS_ARMOR]            = LOCALE_LIST[my_locale].LEGS_ARMOR_NAME,
+            [HANDS_ARMOR]           = LOCALE_LIST[my_locale].HANDS_ARMOR_NAME,
+            [RING_JEWELRY]          = LOCALE_LIST[my_locale].RING_JEWELRY_NAME,
+            [NECKLACE_JEWELRY]      = LOCALE_LIST[my_locale].NECKLACE_JEWELRY_NAME,
+            [THROWING_KNIFE_WEAPON] = LOCALE_LIST[my_locale].THROWING_KNIFE_WEAPON_NAME,
+        }
+
+         ATTRIBUTE_NAMES = {
+             [PHYSICAL_ATTRIBUTE]     = LOCALE_LIST[my_locale].PHYSICAL_ATTRIBUTE_NAME,
+             [FIRE_ATTRIBUTE]         = LOCALE_LIST[my_locale].FIRE_ATTRIBUTE_NAME,
+             [ICE_ATTRIBUTE]          = LOCALE_LIST[my_locale].ICE_ATTRIBUTE_NAME,
+             [LIGHTNING_ATTRIBUTE]    = LOCALE_LIST[my_locale].LIGHTNING_ATTRIBUTE_NAME,
+             [POISON_ATTRIBUTE]       = LOCALE_LIST[my_locale].POISON_ATTRIBUTE_NAME,
+             [ARCANE_ATTRIBUTE]       = LOCALE_LIST[my_locale].ARCANE_ATTRIBUTE_NAME,
+             [DARKNESS_ATTRIBUTE]     = LOCALE_LIST[my_locale].DARKNESS_ATTRIBUTE_NAME,
+             [HOLY_ATTRIBUTE]         = LOCALE_LIST[my_locale].HOLY_ATTRIBUTE_NAME
+         }
+
+        ITEM_AFFIX_NAME_LIST = {
+            [ITEM_AFFIX_WORN] = {
+                [DECL_HE] = LOCALE_LIST[my_locale]. WORN_DECL_HE,
+                [DECL_SHE] = LOCALE_LIST[my_locale]. WORN_DECL_SHE,
+                [DECL_THEY] = LOCALE_LIST[my_locale]. WORN_DECL_THEY,
+                [DECL_IT] = LOCALE_LIST[my_locale]. WORN_DECL_IT
+            },
+            [ITEM_AFFIX_FINE] = {
+                [DECL_HE] = LOCALE_LIST[my_locale].FINE_DECL_HE,
+                [DECL_SHE] = LOCALE_LIST[my_locale].FINE_DECL_SHE,
+                [DECL_THEY] = LOCALE_LIST[my_locale].FINE_DECL_THEY,
+                [DECL_IT] = LOCALE_LIST[my_locale].FINE_DECL_IT
+            },
+            [ITEM_AFFIX_EXCELLENT] = {
+                [DECL_HE] = LOCALE_LIST[my_locale].EXCELLENT_DECL_HE,
+                [DECL_SHE] = LOCALE_LIST[my_locale].EXCELLENT_DECL_SHE,
+                [DECL_THEY] = LOCALE_LIST[my_locale].EXCELLENT_DECL_THEY,
+                [DECL_IT] = LOCALE_LIST[my_locale].EXCELLENT_DECL_IT
+            },
+            [ITEM_AFFIX_IDEAL] = {
+                [DECL_HE] = LOCALE_LIST[my_locale].IDEAL_DECL_HE,
+                [DECL_SHE] = LOCALE_LIST[my_locale].IDEAL_DECL_SHE,
+                [DECL_THEY] = LOCALE_LIST[my_locale].IDEAL_DECL_THEY,
+                [DECL_IT] = LOCALE_LIST[my_locale].IDEAL_DECL_IT
+            }
+        }
+
+        ITEM_SUFFIX_LIST[ITEM_SUFFIX_ANGER].name = LOCALE_LIST[my_locale].ITEM_SUFFIX_ANGER
+        ITEM_SUFFIX_LIST[ITEM_SUFFIX_FURY].name = LOCALE_LIST[my_locale].ITEM_SUFFIX_FURY
+        ITEM_SUFFIX_LIST[ITEM_SUFFIX_CONCENTRATION].name = LOCALE_LIST[my_locale].ITEM_SUFFIX_CONCENTRATION
+        ITEM_SUFFIX_LIST[ITEM_SUFFIX_PRECISION].name = LOCALE_LIST[my_locale].ITEM_SUFFIX_PRECISION
+
+        QUALITY_ITEM_LIST[COMMON_ITEM][SWORD_WEAPON][1].name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_1
+        QUALITY_ITEM_LIST[COMMON_ITEM][SWORD_WEAPON][2].name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_2
+        QUALITY_ITEM_LIST[COMMON_ITEM][SWORD_WEAPON][3].name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_3
+
         EnumItemsInRect(bj_mapInitialPlayableArea, nil, function()
 
             if ITEM_TEMPLATE_DATA[GetItemTypeId(GetEnumItem())] ~= nil then

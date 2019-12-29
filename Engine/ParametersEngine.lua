@@ -213,64 +213,9 @@ do
         end
         return value
     end
-	
+
+
 	local PARAMETER_NAME = {
-		[PHYSICAL_ATTACK]     = 'Физическая атака',
-		[PHYSICAL_DEFENCE]    = 'Физическая защита',
-		[MAGICAL_ATTACK]    = 'Магическая атака',
-		[MAGICAL_SUPPRESSION] = 'Подавление магии',
-		
-		[CRIT_CHANCE]         = 'Критический шанс',
-		[CRIT_MULTIPLIER]     = 'Критический множитель',
-		
-		[PHYSICAL_BONUS]      = 'Физический урон',
-		[ICE_BONUS]           = 'Урон от льда',
-		[FIRE_BONUS]          = 'Урон от огня',
-		[LIGHTNING_BONUS]     = 'Урон от молнии',
-		[POISON_BONUS]        = 'Урон от яда',
-		[ARCANE_BONUS]        = 'Урон от тайной магии',
-		[DARKNESS_BONUS]      = 'Урон от тьмы',
-		[HOLY_BONUS]          = 'Урон от святости',
-
-		[ALL_RESIST]          = 'Сопротивления',
-		[PHYSICAL_RESIST]     = 'Сопротивление физ атакам',
-		[ICE_RESIST]          = 'Сопротивление холоду',
-		[FIRE_RESIST]         = 'Сопротивление огню',
-		[LIGHTNING_RESIST]    = 'Сопротивление молнии',
-		[POISON_RESIST]       = 'Сопротивление ядам',
-		[ARCANE_RESIST]       = 'Сопротивление тайной магии',
-		[DARKNESS_RESIST]     = 'Сопротивление тьме',
-		[HOLY_RESIST]         = 'Сопротивление святости',
-		
-		[HP_REGEN]            = 'Восстановление здоровья',
-		[MP_REGEN]            = 'Восстановление ресурса',
-		
-		[HP_VALUE]            = 'Здоровье',
-		[MP_VALUE]            = 'Ресурс',
-		
-		[STR_STAT]            = 'Сила',
-		[AGI_STAT]            = 'Ловкость',
-		[INT_STAT]            = 'Разум',
-		[VIT_STAT]            = 'Выносливость',
-
-		[MELEE_DAMAGE_REDUCTION]  = 'Урон от атак ближнего боя',
-		[RANGE_DAMAGE_REDUCTION]  = 'Урон от атак дальнего боя',
-		[CONTROL_REDUCTION]       = 'Снижение времени контроля',
-
-		[ATTACK_SPEED]            = 'Скорость атаки',
-		[CAST_SPEED]              = 'Скорость заклинаний',
-		[MOVING_SPEED]            = 'Скорость бега',
-
-		[BLOCK_CHANCE]            = 'Шанс блока',
-		[BLOCK_ABSORB]            = 'Поглощение урона',
-
-
-		[REFLECT_DAMAGE]   = 'Отражение урона',
-		[REFLECT_MELEE_DAMAGE]   = 'Отражение урона ближнего боя',
-		[REFLECT_RANGE_DAMAGE]   = 'Отражение урона дальнего боя',
-
-		[HP_PER_HIT]   = 'Здоровье за атаку',
-		[MP_PER_HIT]   = 'Ресурса за атаку'
 
 	}
 
@@ -628,6 +573,67 @@ do
 		for i = 1, PARAMETERS_COUNT do
 			parameters[i] = NewStat(i)
 		end
+
+		PARAMETER_NAME = {
+				[PHYSICAL_ATTACK]     = LOCALE_LIST[my_locale].PHYSICAL_ATTACK_PARAM,
+				[PHYSICAL_DEFENCE]    = LOCALE_LIST[my_locale].PHYSICAL_DEFENCE_PARAM,
+				[MAGICAL_ATTACK]      = LOCALE_LIST[my_locale].MAGICAL_ATTACK_PARAM,
+				[MAGICAL_SUPPRESSION] = LOCALE_LIST[my_locale].MAGICAL_SUPPRESSION_PARAM,
+
+				[CRIT_CHANCE]         = LOCALE_LIST[my_locale].CRIT_CHANCE_PARAM,
+				[CRIT_MULTIPLIER]     = LOCALE_LIST[my_locale].CRIT_MULTIPLIER_PARAM,
+
+				[PHYSICAL_BONUS]      = LOCALE_LIST[my_locale].PHYSICAL_BONUS_PARAM,
+				[ICE_BONUS]           = LOCALE_LIST[my_locale].ICE_BONUS_PARAM,
+				[FIRE_BONUS]          = LOCALE_LIST[my_locale].FIRE_BONUS_PARAM,
+				[LIGHTNING_BONUS]     = LOCALE_LIST[my_locale].LIGHTNING_BONUS_PARAM,
+				[POISON_BONUS]        = LOCALE_LIST[my_locale].POISON_BONUS_PARAM,
+				[ARCANE_BONUS]        = LOCALE_LIST[my_locale].ARCANE_BONUS_PARAM,
+				[DARKNESS_BONUS]      = LOCALE_LIST[my_locale].DARKNESS_BONUS_PARAM,
+				[HOLY_BONUS]          = LOCALE_LIST[my_locale].HOLY_BONUS_PARAM,
+
+				[ALL_RESIST]          = LOCALE_LIST[my_locale].ALL_RESIST_PARAM,
+				[PHYSICAL_RESIST]     = LOCALE_LIST[my_locale].PHYSICAL_RESIST_PARAM,
+				[ICE_RESIST]          = LOCALE_LIST[my_locale].ICE_RESIST_PARAM,
+				[FIRE_RESIST]         = LOCALE_LIST[my_locale].FIRE_RESIST_PARAM,
+				[LIGHTNING_RESIST]    = LOCALE_LIST[my_locale].LIGHTNING_RESIST_PARAM,
+				[POISON_RESIST]       = LOCALE_LIST[my_locale].POISON_RESIST_PARAM,
+				[ARCANE_RESIST]       = LOCALE_LIST[my_locale].ARCANE_RESIST_PARAM,
+				[DARKNESS_RESIST]     = LOCALE_LIST[my_locale].DARKNESS_RESIST_PARAM,
+				[HOLY_RESIST]         = LOCALE_LIST[my_locale].HOLY_RESIST_PARAM,
+
+				[HP_REGEN]            = LOCALE_LIST[my_locale].HP_REGEN_PARAM,
+				[MP_REGEN]            = LOCALE_LIST[my_locale].MP_REGEN_PARAM,
+
+				[HP_VALUE]            = LOCALE_LIST[my_locale].HP_VALUE_PARAM,
+				[MP_VALUE]            = LOCALE_LIST[my_locale].MP_VALUE_PARAM,
+
+				[STR_STAT]            = LOCALE_LIST[my_locale].STR_STAT_PARAM,
+				[AGI_STAT]            = LOCALE_LIST[my_locale].AGI_STAT_PARAM,
+				[INT_STAT]            = LOCALE_LIST[my_locale].INT_STAT_PARAM,
+				[VIT_STAT]            = LOCALE_LIST[my_locale].VIT_STAT_PARAM,
+
+				[MELEE_DAMAGE_REDUCTION]  = LOCALE_LIST[my_locale].MELEE_DAMAGE_REDUCTION_PARAM,
+				[RANGE_DAMAGE_REDUCTION]  = LOCALE_LIST[my_locale].RANGE_DAMAGE_REDUCTION_PARAM,
+				[CONTROL_REDUCTION]       = LOCALE_LIST[my_locale].CONTROL_REDUCTION_PARAM,
+
+				[ATTACK_SPEED]            = LOCALE_LIST[my_locale].ATTACK_SPEED_PARAM,
+				[CAST_SPEED]              = LOCALE_LIST[my_locale].CAST_SPEED_PARAM,
+				[MOVING_SPEED]            = LOCALE_LIST[my_locale].MOVING_SPEED_PARAM,
+
+				[BLOCK_CHANCE]            = LOCALE_LIST[my_locale].BLOCK_CHANCE_PARAM,
+				[BLOCK_ABSORB]            = LOCALE_LIST[my_locale].BLOCK_ABSORB_PARAM,
+
+
+				[REFLECT_DAMAGE]   		 = LOCALE_LIST[my_locale].REFLECT_DAMAGE_PARAM,
+				[REFLECT_MELEE_DAMAGE]   = LOCALE_LIST[my_locale].REFLECT_MELEE_DAMAGE_PARAM,
+				[REFLECT_RANGE_DAMAGE]   = LOCALE_LIST[my_locale].REFLECT_RANGE_DAMAGE_PARAM,
+
+				[HP_PER_HIT]   = LOCALE_LIST[my_locale].HP_PER_HIT_PARAM,
+				[MP_PER_HIT]   = LOCALE_LIST[my_locale].MP_PER_HIT_PARAM
+
+
+		}
 
 		return parameters
 	end

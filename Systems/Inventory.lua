@@ -187,7 +187,7 @@ do
     --======================================================================
     -- SELECTOION MODE =====================================================
 
-    local function RemoveSelectionFrames(player)
+    function RemoveSelectionFrames(player)
         if PlayerMovingItem[player] ~= nil then
 
             if ButtonList[PlayerMovingItem[player].selected_frame].sprite ~= nil then
@@ -242,11 +242,21 @@ do
 
             if ButtonList[h].button_type == INV_SLOT then
                     EquipItem(InventoryOwner[id], ButtonList[h].item, true)
+
+                        if item_data.soundpack ~= nil and item_data.soundpack.equip ~= nil then
+                            PlayLocalSound(item_data.soundpack.equip, id - 1)
+                        end
+
                     ButtonList[h].item = nil
                     UpdateEquipPointsWindow(id)
                     UpdateInventoryWindow(id)
             elseif ButtonList[h].button_type >= WEAPON_POINT and ButtonList[h].button_type <= NECKLACE_POINT then
                 EquipItem(InventoryOwner[id], ButtonList[h].item, false)
+
+                    if item_data.soundpack ~= nil and item_data.soundpack.uneqip ~= nil then
+                        PlayLocalSound(item_data.soundpack.uneqip, id - 1)
+                    end
+
                 local free_slot = GetFirstFreeSlotButton(id)
                 free_slot.item = ButtonList[h].item
                 UpdateEquipPointsWindow(id)
@@ -259,12 +269,20 @@ do
 
 
     local function ForceEquip(h, player)
+
         if ButtonList[h].button_type >= WEAPON_POINT and ButtonList[h].button_type <= NECKLACE_POINT then
             EquipItem(InventoryOwner[player], ButtonList[PlayerMovingItem[player].selected_frame].item, true)
+            local item_data = GetItemData(ButtonList[PlayerMovingItem[player].selected_frame].item)
+
+                if item_data.soundpack ~= nil and item_data.soundpack.equip ~= nil then
+                    PlayLocalSound(item_data.soundpack.equip, player - 1)
+                end
+
             ButtonList[PlayerMovingItem[player].selected_frame].item = nil
             UpdateEquipPointsWindow(player)
             UpdateInventoryWindow(player)
         end
+
     end
 
 
@@ -377,6 +395,11 @@ do
                     end)
 
                     AddContextOption(player, "Выкинуть", function()
+
+                        if item_data.soundpack ~= nil and item_data.soundpack.drop ~= nil then
+                            AddSoundVolumeZ(item_data.soundpack.drop, GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]), BlzGetLocalUnitZ(PlayerHero[player]) + GetUnitFlyHeight(PlayerHero[player]), 127, 2200.)
+                        end
+
                         if GetItemType(ButtonList[h].item) ~= ITEM_TYPE_CHARGED then
                             DropItemFromInventory(player, ButtonList[h].item)
                         else
@@ -409,15 +432,19 @@ do
                 local moved_item_data = GetItemData(ButtonList[PlayerMovingItem[player].selected_frame].item)
 
                     if PlayerMovingItem[player].mode == 2 then
-                        if ButtonList[h].item ~= nil then
-                            if item_data.TYPE >= ITEM_TYPE_WEAPON and item_data.TYPE <= ITEM_TYPE_OFFHAND then
-                                Socket(ButtonList[PlayerMovingItem[player].selected_frame].item, ButtonList[h].item, player, ButtonList[h])
-                                return
+                            if ButtonList[h].item ~= nil then
+                                if item_data.TYPE >= ITEM_TYPE_WEAPON and item_data.TYPE <= ITEM_TYPE_OFFHAND then
+                                    Socket(ButtonList[PlayerMovingItem[player].selected_frame].item, ButtonList[h].item, player, ButtonList[h])
+                                end
+                            else
+                                RemoveSelectionFrames(player)
                             end
-                        else
-                            RemoveSelectionFrames(player)
-                        end
+                        return
                     end
+
+                if moved_item_data.soundpack ~= nil and moved_item_data.soundpack.drop ~= nil then
+                    PlayLocalSound(moved_item_data.soundpack.drop, player - 1)
+                end
 
                     if ButtonList[h].item == nil then
 

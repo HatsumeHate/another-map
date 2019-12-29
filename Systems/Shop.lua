@@ -229,6 +229,19 @@ do
                         end
                     end
 
+        new_Frame = BlzCreateFrameByType('BACKDROP', "PORTRAIT", main_frame, "",0)
+        BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.02, -0.02)
+        BlzFrameSetSize(new_Frame, 0.0435, 0.0435)
+        ShopFrame[player].portrait = new_Frame
+
+
+        new_Frame = BlzCreateFrameByType("TEXT", "shop name", ShopFrame[player].portrait, "", 0)
+        BlzFrameSetPoint(new_Frame, FRAMEPOINT_LEFT, ShopFrame[player].portrait, FRAMEPOINT_RIGHT, 0.011, 0.)
+        BlzFrameSetTextAlignment(new_Frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
+        BlzFrameSetScale(new_Frame, 1.35)
+        ShopFrame[player].name = new_Frame
+
+
         ShopFrame[player].main_frame = main_frame
         BlzFrameSetVisible(ShopFrame[player].main_frame, false)
     end
@@ -269,7 +282,7 @@ do
     end
 
 
-    function CreateShop(unit_owner)
+    function CreateShop(unit_owner, texture)
         local handle = GetHandleId(unit_owner)
 
         ShopData[handle] = {}
@@ -291,6 +304,8 @@ do
 
                 ShopInFocus[id + 1] = unit_owner
                 BlzFrameSetVisible(ShopFrame[id + 1].main_frame, true)
+                BlzFrameSetTexture(ShopFrame[id + 1].portrait, texture, 0, true)
+                BlzFrameSetText(ShopFrame[id + 1].name, GetUnitName(unit_owner))
                 UpdateShopWindow()
 
                     TimerStart(CreateTimer(), 0.1, true, function()

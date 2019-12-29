@@ -185,43 +185,47 @@ do
 
 -- ButtonList[GetHandleId(InventorySlots[32])].image
      function ShowTooltip(player, h, parent)
-        local item_data = GetItemData(ButtonList[h].item)
-        local width = 0.
-        local frame_number = 1
+         local item_data = GetItemData(ButtonList[h].item)
+         local width = 0.
+         local frame_number = 1
 
-        if ContextFrame[player] ~= nil or SliderFrame[player] ~= nil then return end
-        RemoveTooltip(player)
+         if ContextFrame[player] ~= nil or SliderFrame[player] ~= nil then return end
+         RemoveTooltip(player)
 
-        PlayerTooltip[player] = {}
-        PlayerTooltip[player].frames = {}
+         PlayerTooltip[player] = {}
+         PlayerTooltip[player].frames = {}
 
-        PlayerTooltip[player].backdrop = BlzCreateFrame("BoxedText", parent, 150, 0)
+         PlayerTooltip[player].backdrop = BlzCreateFrame("BoxedText", parent, 150, 0)
 
-        local property_text = ""
-        if item_data.SUBTYPE ~= nil then
-            property_text = GetItemSubTypeName(item_data.SUBTYPE) .. "|n" .. "|n"
-        end
+         local property_text = ""
+         if item_data.SUBTYPE ~= nil then
+             property_text = GetItemSubTypeName(item_data.SUBTYPE) .. "|n" .. "|n"
+         end
 
-        if item_data.TYPE == ITEM_TYPE_WEAPON then
-            property_text = property_text .. "Урон: " .. R2I(item_data.DAMAGE * item_data.DISPERSION[1]) .. "-" .. R2I(item_data.DAMAGE * item_data.DISPERSION[2]) .. "|n" .. "Тип урона: " .. GetItemAttributeName(item_data.ATTRIBUTE)
-        elseif item_data.TYPE == ITEM_TYPE_ARMOR then
-            property_text = property_text .. "Защита: " .. item_data.DEFENCE
-        elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
-            property_text = property_text .. "Подавление: " .. item_data.SUPPRESSION
-        elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
-            property_text = property_text .. "Защита: " .. item_data.DEFENCE
+         if item_data.TYPE == ITEM_TYPE_WEAPON then
+             property_text = property_text .. LOCALE_LIST[my_locale].DAMAGE_UI .. R2I(item_data.DAMAGE * item_data.DISPERSION[1]) .. "-" .. R2I(item_data.DAMAGE * item_data.DISPERSION[2]) ..
+                     "|n" .. LOCALE_LIST[my_locale].DAMAGE_TYPE_UI .. GetItemAttributeName(item_data.ATTRIBUTE)
+         elseif item_data.TYPE == ITEM_TYPE_ARMOR then
+             property_text = property_text .. LOCALE_LIST[my_locale].DEFENCE_UI .. item_data.DEFENCE
+         elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
+             property_text = property_text .. LOCALE_LIST[my_locale].SUPPRESSION_UI .. item_data.SUPPRESSION
+         elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
+             property_text = property_text .. LOCALE_LIST[my_locale].DEFENCE_UI .. item_data.DEFENCE
+         end
+
+            --[[
         elseif item_data.TYPE == ITEM_TYPE_GEM then
-            property_text = "Камень"
+            property_text = LOCALE_LIST[my_locale].DEFENCE_UI
         elseif item_data.TYPE == ITEM_TYPE_CONSUMABLE then
             property_text = "Потребляемое"
-        end
+        end]]
 
 
         local bonus_text
 
         if item_data.BONUS ~= nil and #item_data.BONUS > 0 then
 
-            bonus_text = "|nДополнительные свойства:|n"
+            bonus_text = LOCALE_LIST[my_locale].ADDITIONAL_INFO_UI
             for i = 1, #item_data.BONUS do
                 bonus_text = bonus_text .. GetParameterName(item_data.BONUS[i].PARAM) .. ": " .. GetCorrectParamText(item_data.BONUS[i].PARAM, item_data.BONUS[i].VALUE, item_data.BONUS[i].METHOD) .. "|n"
             end
@@ -238,14 +242,14 @@ do
             if bonus_text ~= nil then
                 bonus_text = bonus_text..skill_bonus_text
             else
-                bonus_text = "|nДополнительные свойства:|n" .. skill_bonus_text
+                bonus_text = LOCALE_LIST[my_locale].ADDITIONAL_INFO_UI .. skill_bonus_text
             end
 
         end
 
 
         if item_data.TYPE == ITEM_TYPE_GEM then
-            bonus_text = "|nАугментации:|n"
+            bonus_text = LOCALE_LIST[my_locale].AUGMENTS_UI
             for i = 1, #item_data.point_bonus do
                 if item_data.point_bonus[i] ~= nil then
                     bonus_text = bonus_text .. GetItemTypeName(i) .. " - " .. GetParameterName(item_data.point_bonus[i].PARAM) .. ": " .. GetCorrectParamText(item_data.point_bonus[i].PARAM, item_data.point_bonus[i].VALUE, item_data.point_bonus[i].METHOD).. "|n"
@@ -256,7 +260,7 @@ do
 
         if item_data.item_description ~= nil then
             if bonus_text == nil then
-                bonus_text = item_data.item_description
+                bonus_text = "|n" .. item_data.item_description
             else
                 bonus_text = bonus_text .. "|n" .. item_data.item_description
             end
@@ -307,7 +311,7 @@ do
             frame_number = frame_number + 1
 
             local free_stone_slots = item_data.MAX_SLOTS - #item_data.STONE_SLOTS
-            local stones_text = "|nГнезда:|n"
+            local stones_text = LOCALE_LIST[my_locale].SLOTS_UI
             PlayerTooltip[player].frames[frame_number] = BlzCreateFrameByType("TEXT", "STONE", PlayerTooltip[player].frames[frame_number - 1], "", 0)
 
             for i = 1, #item_data.STONE_SLOTS do
