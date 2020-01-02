@@ -102,6 +102,9 @@ do
             DARKNESS_ATTRIBUTE_NAME     = "Тьма",
             HOLY_ATTRIBUTE_NAME         = "Свет",
 
+            SKILL_PANEL_TOOLTIP_NAME = "Умения",
+            SKILL_PANEL_TOOLTIP_DESCRIPTION = "Настройка и просмотр всех умений",
+
             INVENTORY_PANEL_TOOLTIP_NAME = "Инвентарь",
             INVENTORY_PANEL_TOOLTIP_DESCRIPTION =  "Содержит все ваши вещи и экипировку",
 

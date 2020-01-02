@@ -42,29 +42,19 @@ do
     end
 
 
-    local function CreateTooltip(header, context, frame, size_x, size_y)
-        local tooltip = BlzCreateFrame("BoxedText", frame, 0, 1)
-        BlzFrameSetPoint(tooltip, FRAMEPOINT_TOPLEFT, frame, FRAMEPOINT_RIGHT, 0, 0)
-        BlzFrameSetTooltip(frame, tooltip)
-        BlzFrameSetSize(tooltip, size_x, size_y)
-        BlzFrameSetText(BlzGetFrameByName("BoxedTextValue", 1), context)
-        BlzFrameSetText(BlzGetFrameByName("BoxedTextTitle", 1), header)
-    end
-
-
     local function CreateTextBox(text, stat, size_x, size_y, scale, relative_frame, from, to, offset_x, offset_y, owning_frame)
         local new_frame = BlzCreateFrame('ScoreScreenButtonBackdropTemplate', owning_frame, 0, 0)
-        BlzFrameSetPoint(new_frame, from, relative_frame, to, offset_x, offset_y)
-        BlzFrameSetSize(new_frame, size_x, size_y)
+            BlzFrameSetPoint(new_frame, from, relative_frame, to, offset_x, offset_y)
+            BlzFrameSetSize(new_frame, size_x, size_y)
 
-        StatsList[stat] = BlzCreateFrameByType("TEXT", "text", new_frame, "", 0)
-        BlzFrameSetPoint(StatsList[stat], FRAMEPOINT_LEFT, new_frame, FRAMEPOINT_LEFT, 0.01, 0.)
-        --BlzFrameSetPoint(StatsList[stat], FRAMEPOINT_RIGHT, new_frame, FRAMEPOINT_RIGHT, 0., 0.)
-        --BlzFrameSetAllPoints(StatsList[stat], new_frame)
-        BlzFrameSetSize(StatsList[stat], 0.08, 0.03)
-        BlzFrameSetText(StatsList[stat], text)
-        BlzFrameSetTextAlignment(StatsList[stat], TEXT_JUSTIFY_MIDDLE , TEXT_JUSTIFY_LEFT )
-        BlzFrameSetScale(StatsList[stat], scale)
+            StatsList[stat] = BlzCreateFrameByType("TEXT", "text", new_frame, "", 0)
+            BlzFrameSetPoint(StatsList[stat], FRAMEPOINT_LEFT, new_frame, FRAMEPOINT_LEFT, 0.01, 0.)
+            --BlzFrameSetPoint(StatsList[stat], FRAMEPOINT_RIGHT, new_frame, FRAMEPOINT_RIGHT, 0., 0.)
+            --BlzFrameSetAllPoints(StatsList[stat], new_frame)
+            BlzFrameSetSize(StatsList[stat], 0.08, 0.03)
+            BlzFrameSetText(StatsList[stat], text)
+            BlzFrameSetTextAlignment(StatsList[stat], TEXT_JUSTIFY_MIDDLE , TEXT_JUSTIFY_LEFT )
+            BlzFrameSetScale(StatsList[stat], scale)
         return new_frame
     end
 
@@ -77,6 +67,7 @@ do
             BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
             BlzFrameSetSize(new_Frame, size_x, size_y)
             BlzFrameSetTexture(new_FrameImage, texture, 0, true)
+            FrameRegisterClick(new_Frame, texture)
             BlzFrameSetAllPoints(new_FrameImage, new_Frame)
 
         return new_Frame
@@ -98,15 +89,17 @@ do
         local button = BlzGetTriggerFrame()
         local h = GetHandleId(button)
 
-        ModifyStat(PlayerHero[id], MainStatButtons[id].frames[h].stat, 1, STRAIGHT_BONUS, true)
-        MainStatButtons[id].frames[h].allocated = MainStatButtons[id].frames[h].allocated + 1
-        MainStatButtons[id].points = MainStatButtons[id].points - 1
-        if MainStatButtons[id].points <= 0 then
-            for i = STR_STAT, VIT_STAT do
-                BlzFrameSetVisible(MainStatButtons[id].frames[i], false)
-                BlzFrameSetEnable(MainStatButtons[id].frames[i], false)
-            end
-        end
+            ModifyStat(PlayerHero[id], MainStatButtons[id].frames[h].stat, 1, STRAIGHT_BONUS, true)
+            MainStatButtons[id].frames[h].allocated = MainStatButtons[id].frames[h].allocated + 1
+            MainStatButtons[id].points = MainStatButtons[id].points - 1
+
+                if MainStatButtons[id].points <= 0 then
+                    for i = STR_STAT, VIT_STAT do
+                        BlzFrameSetVisible(MainStatButtons[id].frames[i], false)
+                        BlzFrameSetEnable(MainStatButtons[id].frames[i], false)
+                    end
+                end
+
     end
 
 
@@ -124,69 +117,69 @@ do
         local new_subframe
         local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
 
-        BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0., -0.05)
-        BlzFrameSetSize(main_frame, 0.29, 0.33)
+            BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0., -0.05)
+            BlzFrameSetSize(main_frame, 0.29, 0.33)
 
 
-        local trg = CreateTrigger()
-        TriggerAddAction(trg, StatButtonClick)
+            local trg = CreateTrigger()
+            TriggerAddAction(trg, StatButtonClick)
 
 
-        MainStatButtons[player] = {
-            frames = {stat = 0, allocated = 0},
-            points = 4
-        }
+            MainStatButtons[player] = {
+                frames = {stat = 0, allocated = 0},
+                points = 4
+            }
 
-        new_frame = CreateTextBox("Интеллект:", INT_STAT, 0.085, 0.03, 0.97, main_frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, main_frame)
-        CreateTooltip("Основная характеристика", "Каждая еденица повышает магическое подавление на 1, влияет на магический урон а так же количество и восстановление магии если вы используете ману.", StatsList[INT_STAT], 0.14, 0.1)
-        local button = NewButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
-        NewStatData(player, INT_STAT, trg, button)
-
-
-        new_frame = CreateTextBox("Стойкость:", VIT_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame)
-        CreateTooltip("Основная характеристика", "Повышает здоровье и ее восстановление.", StatsList[VIT_STAT], 0.1, 0.08)
-        button = NewButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
-        NewStatData(player, VIT_STAT, trg, button)
+            new_frame = CreateTextBox("Интеллект:", INT_STAT, 0.085, 0.03, 0.97, main_frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, main_frame)
+            CreateTooltip("Основная характеристика", "Каждая еденица повышает магическое подавление на 1, влияет на магический урон а так же количество и восстановление магии если вы используете ману.", StatsList[INT_STAT], 0.14, 0.1)
+            local button = NewButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
+            NewStatData(player, INT_STAT, trg, button)
 
 
-        new_frame = CreateTextBox("Ловкость:", AGI_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame)
-        CreateTooltip("Основная характеристика", "Каждая еденица повышает защиту на 2.", StatsList[AGI_STAT], 0.1, 0.06)
-        button = NewButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
-        NewStatData(player, AGI_STAT, trg, button)
+            new_frame = CreateTextBox("Стойкость:", VIT_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame)
+            CreateTooltip("Основная характеристика", "Повышает здоровье и ее восстановление.", StatsList[VIT_STAT], 0.1, 0.08)
+            button = NewButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
+            NewStatData(player, VIT_STAT, trg, button)
 
 
-        new_frame = CreateTextBox("Сила:", STR_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame)
-        CreateTooltip("Основная характеристика", "Влияет на силу физических атак.", StatsList[STR_STAT], 0.1, 0.06)
-        button = NewButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
-        NewStatData(player, STR_STAT, trg, button)
+            new_frame = CreateTextBox("Ловкость:", AGI_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame)
+            CreateTooltip("Основная характеристика", "Каждая еденица повышает защиту на 2.", StatsList[AGI_STAT], 0.1, 0.06)
+            button = NewButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
+            NewStatData(player, AGI_STAT, trg, button)
 
 
-
-
-        new_frame = CreateTextBox("Физ. урон: 1234", PHYSICAL_ATTACK, 0.1, 0.03, 1., main_frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.025, -0.022, main_frame)
-
-        new_subframe = CreateTextBox("Защита: 1234", PHYSICAL_DEFENCE, 0.1, 0.03, 1., main_frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.025, -0.022, main_frame)
-        --RegisterConstructor(new_subframe, 0.1, 0.03)
-
-        new_frame = CreateTextBox("Маг. урон: 1234", MAGICAL_ATTACK, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame)
-        new_subframe = CreateTextBox("Подавление: 1234", MAGICAL_SUPPRESSION, 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame)
-
-        new_frame = CreateTextBox("Крит. шанс: 100%%", CRIT_CHANCE, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame)
-        new_subframe = CreateTextBox("Атак в сек.: 1234", ATTACK_SPEED, 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame)
+            new_frame = CreateTextBox("Сила:", STR_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame)
+            CreateTooltip("Основная характеристика", "Влияет на силу физических атак.", StatsList[STR_STAT], 0.1, 0.06)
+            button = NewButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
+            NewStatData(player, STR_STAT, trg, button)
 
 
 
-        new_frame = CreateTextBox("Тьма: 100", DARKNESS_RESIST, 0.07, 0.02, 1., main_frame, FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_BOTTOMRIGHT, -0.02, 0.02, main_frame)
-        new_subframe = CreateTextBox("Свет: 100", HOLY_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., main_frame)
 
-        new_frame = CreateTextBox("Яд: 100", POISON_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame)
-        new_subframe = CreateTextBox("Тайное: 100", ARCANE_RESIST, 0.07, 0.02, 0.99, new_frame, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., main_frame)
+            new_frame = CreateTextBox("Физ. урон: 1234", PHYSICAL_ATTACK, 0.1, 0.03, 1., main_frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.025, -0.022, main_frame)
 
-        new_frame = CreateTextBox("Лед: 100", ICE_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame)
-        new_subframe = CreateTextBox("Молния: 100", LIGHTNING_RESIST, 0.07, 0.02, 0.96, new_frame, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., main_frame)
+            new_subframe = CreateTextBox("Защита: 1234", PHYSICAL_DEFENCE, 0.1, 0.03, 1., main_frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.025, -0.022, main_frame)
+            --RegisterConstructor(new_subframe, 0.1, 0.03)
 
-        new_frame = CreateTextBox("Физ: 100", PHYSICAL_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame)
-        new_subframe = CreateTextBox("Огонь: 100", FIRE_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., main_frame)
+            new_frame = CreateTextBox("Маг. урон: 1234", MAGICAL_ATTACK, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame)
+            new_subframe = CreateTextBox("Подавление: 1234", MAGICAL_SUPPRESSION, 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame)
+
+            new_frame = CreateTextBox("Крит. шанс: 100%%", CRIT_CHANCE, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame)
+            new_subframe = CreateTextBox("Атак в сек.: 1234", ATTACK_SPEED, 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame)
+
+
+
+            new_frame = CreateTextBox("Тьма: 100", DARKNESS_RESIST, 0.07, 0.02, 1., main_frame, FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_BOTTOMRIGHT, -0.02, 0.02, main_frame)
+            new_subframe = CreateTextBox("Свет: 100", HOLY_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., main_frame)
+
+            new_frame = CreateTextBox("Яд: 100", POISON_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame)
+            new_subframe = CreateTextBox("Тайное: 100", ARCANE_RESIST, 0.07, 0.02, 0.99, new_frame, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., main_frame)
+
+            new_frame = CreateTextBox("Лед: 100", ICE_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame)
+            new_subframe = CreateTextBox("Молния: 100", LIGHTNING_RESIST, 0.07, 0.02, 0.96, new_frame, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., main_frame)
+
+            new_frame = CreateTextBox("Физ: 100", PHYSICAL_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame)
+            new_subframe = CreateTextBox("Огонь: 100", FIRE_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., main_frame)
 
 
 
@@ -202,7 +195,6 @@ do
 
 
     function StatsPanelInit()
-
 
         DrawInterface(1)
 

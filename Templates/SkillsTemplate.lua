@@ -12,6 +12,39 @@
     SKILL_MAGICAL = 2
 
 
+    SKILL_CATEGORY_LIGHTNING = 1
+    SKILL_CATEGORY_ICE = 2
+    SKILL_CATEGORY_FIRE = 3
+    SKILL_CATEGORY_ARCANE = 4
+
+    SKILL_CATEGORY_FIGHTING_MASTERY = 5
+    SKILL_CATEGORY_BATTLE_ADVANTAGE = 6
+    SKILL_CATEGORY_INNER_STRENGTH = 7
+
+    SKILL_CATEGORY_ICON = {
+        [SKILL_CATEGORY_LIGHTNING] = "ReplaceableTextures\\CommandButtons\\BTNLightningShield.blp",
+        [SKILL_CATEGORY_FIRE] = "ReplaceableTextures\\CommandButtons\\BTNPeon.blp",
+        [SKILL_CATEGORY_ICE] = "ReplaceableTextures\\CommandButtons\\BTNPeon.blp",
+        [SKILL_CATEGORY_ARCANE] = "ReplaceableTextures\\CommandButtons\\BTNPeon.blp",
+        [SKILL_CATEGORY_FIGHTING_MASTERY] = "ReplaceableTextures\\CommandButtons\\BTNBloodLustOn.blp",
+        [SKILL_CATEGORY_BATTLE_ADVANTAGE] = "ReplaceableTextures\\CommandButtons\\BTNPeon.blp",
+        [SKILL_CATEGORY_INNER_STRENGTH] = "ReplaceableTextures\\CommandButtons\\BTNPeon.blp",
+    }
+
+    CLASS_SKILL_CATEGORY = {
+        [BARBARIAN_CLASS] = {
+            SKILL_CATEGORY_FIGHTING_MASTERY,
+            SKILL_CATEGORY_BATTLE_ADVANTAGE,
+            SKILL_CATEGORY_INNER_STRENGTH
+        },
+        [SORCERESS_CLASS] = {
+            SKILL_CATEGORY_FIRE,
+            SKILL_CATEGORY_LIGHTNING,
+            SKILL_CATEGORY_ICE,
+            SKILL_CATEGORY_ARCANE
+        }
+    }
+
 
     function GetSkillName(id)
         return SkillsData[FourCC(id)].name
@@ -331,6 +364,7 @@
             icon            = "Spell\\BTNLightningOrb.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_LIGHTNING,
 
             level = {
                 [1] = {
@@ -427,6 +461,7 @@
             icon            = "Spell\\BTN_cr_CarA2.blp",
             activation_type = POINT_CAST,
             type            = SKILL_PHYSICAL,
+            category = SKILL_CATEGORY_FIGHTING_MASTERY,
 
             level = {
                 [1] = {
@@ -446,6 +481,7 @@
             icon            = "Spell\\BTN_cr_VeeR1.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
+            category = SKILL_CATEGORY_FIGHTING_MASTERY,
 
             level = {
                 [1] = {
@@ -466,6 +502,7 @@
             icon            = "Spell\\BTNContusing Punch.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
+            category = SKILL_CATEGORY_FIGHTING_MASTERY,
 
             level = {
                 [1] = {
@@ -485,6 +522,7 @@
             icon            = "Spell\\BTN_cr_CarA10.blp",
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
+            category = SKILL_CATEGORY_FIGHTING_MASTERY,
 
             level = {
                 [1] = {
@@ -504,6 +542,7 @@
             icon            = "Spell\\BTNHot Wirlwind.blp",
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
+            category = SKILL_CATEGORY_FIGHTING_MASTERY,
 
             level = {
                 [1] = {
@@ -522,6 +561,7 @@
             icon            = "Spell\\BTNBreakingSmash.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
+            category = SKILL_CATEGORY_FIGHTING_MASTERY,
 
             level = {
                 [1] = {
@@ -541,6 +581,7 @@
             icon            = "Spell\\BTNHook.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
+            category = SKILL_CATEGORY_FIGHTING_MASTERY,
 
             level = {
                 [1] = {
@@ -561,6 +602,7 @@
             icon            = "Spell\\BTNGlaiveCrit.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
+            category = SKILL_CATEGORY_FIGHTING_MASTERY,
 
             level = {
                 [1] = {
@@ -580,6 +622,7 @@
             icon            = "Spell\\BTNWarCry.blp",
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
+            category = SKILL_CATEGORY_FIGHTING_MASTERY,
 
             level = {
                 [1] = {

@@ -2,6 +2,36 @@ do
 
 
 
+    function GetButtonData(button)
+        return ButtonList[GetHandleId(button)]
+    end
+
+
+    function CreateSimpleButton(texture, size_x, size_y, relative_frame, frame_point_from, frame_point_to, offset_x, offset_y, parent_frame)
+        local new_Frame = BlzCreateFrame('ScriptDialogButton', parent_frame, 0, 0)
+        local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
+
+            FrameRegisterNoFocus(new_Frame)
+            BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
+            BlzFrameSetSize(new_Frame, size_x, size_y)
+            BlzFrameSetTexture(new_FrameImage, texture, 0, true)
+            FrameRegisterClick(new_Frame, texture)
+            BlzFrameSetAllPoints(new_FrameImage, new_Frame)
+
+        return new_Frame
+    end
+
+
+    function CreateTooltip(header, context, frame, size_x, size_y)
+        local tooltip = BlzCreateFrame("BoxedText", frame, 0, 1)
+            BlzFrameSetPoint(tooltip, FRAMEPOINT_TOPLEFT, frame, FRAMEPOINT_RIGHT, 0, 0)
+            BlzFrameSetTooltip(frame, tooltip)
+            BlzFrameSetSize(tooltip, size_x, size_y)
+            BlzFrameSetText(BlzGetFrameByName("BoxedTextValue", 1), context)
+            BlzFrameSetText(BlzGetFrameByName("BoxedTextTitle", 1), header)
+    end
+
+
     --======================================================================
     -- SLIDER MODE =========================================================
 

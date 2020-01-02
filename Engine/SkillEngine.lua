@@ -108,7 +108,7 @@ do
         local unit_data = GetUnitData(unit)
         local skill_data = GetSkillData(FourCC(id))
 
-        if skill_data == nil or unit_data == nil then return end
+        if unit_data == nil then return end
 
             unit_data.skill_list[#unit_data.skill_list + 1] = MergeTables({}, skill_data)
     end

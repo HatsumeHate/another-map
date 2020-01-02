@@ -1,7 +1,6 @@
 do
 
     PlayerInventoryFrame = {}
-    PlayerInventoryWindow = {}
     InventorySlots = {}
     InventoryOwner = {}
     InventoryTriggerButton = nil
@@ -752,7 +751,7 @@ do
         BlzFrameSetText(BlzGetFrameByName("BoxedTextValue", 0), LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_DESCRIPTION)--BoxedText has a child showing the text, set that childs Text.
         BlzFrameSetText(BlzGetFrameByName("BoxedTextTitle", 0), LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_NAME)--BoxedText has a child showing the Title-text, set that childs Text.
         FrameRegisterNoFocus(InventoryTriggerButton)
-
+        FrameRegisterClick(InventoryTriggerButton, "ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp")
 
         local trg = CreateTrigger()
         BlzTriggerRegisterFrameEvent(trg, InventoryTriggerButton, FRAMEEVENT_CONTROL_CLICK)
