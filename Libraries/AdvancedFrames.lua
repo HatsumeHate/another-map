@@ -6,6 +6,16 @@ do
         return ButtonList[GetHandleId(button)]
     end
 
+    function CreateSprite(model, scale, relative_to_frame, relative_point_from, relative_point_to, offset_x, offset_y, parent)
+        local new_Frame = BlzCreateFrameByType("SPRITE", "justAName", parent, "WarCraftIIILogo", 0)
+            BlzFrameSetPoint(new_Frame, relative_point_from, relative_to_frame, relative_point_to, offset_x, offset_y)
+            BlzFrameSetSize(new_Frame, 1., 1.)
+            BlzFrameSetScale(new_Frame, scale)
+            BlzFrameSetModel(new_Frame, model, 0)
+        return new_Frame
+    end
+
+
 
     function CreateSimpleButton(texture, size_x, size_y, relative_frame, frame_point_from, frame_point_to, offset_x, offset_y, parent_frame)
         local new_Frame = BlzCreateFrame('ScriptDialogButton', parent_frame, 0, 0)
@@ -193,6 +203,7 @@ do
 
         BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_LEFT, originframe, FRAMEPOINT_RIGHT, 0.,0.)
         RemoveTooltip(player)
+        return ContextFrame[player].backdrop
     end
 
 

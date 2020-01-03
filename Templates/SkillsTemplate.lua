@@ -461,7 +461,7 @@
             icon            = "Spell\\BTN_cr_CarA2.blp",
             activation_type = POINT_CAST,
             type            = SKILL_PHYSICAL,
-            category = SKILL_CATEGORY_FIGHTING_MASTERY,
+            category = SKILL_CATEGORY_BATTLE_ADVANTAGE,
 
             level = {
                 [1] = {
@@ -481,7 +481,7 @@
             icon            = "Spell\\BTN_cr_VeeR1.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
-            category = SKILL_CATEGORY_FIGHTING_MASTERY,
+            category = SKILL_CATEGORY_BATTLE_ADVANTAGE,
 
             level = {
                 [1] = {
@@ -522,7 +522,7 @@
             icon            = "Spell\\BTN_cr_CarA10.blp",
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
-            category = SKILL_CATEGORY_FIGHTING_MASTERY,
+            category = SKILL_CATEGORY_INNER_STRENGTH,
 
             level = {
                 [1] = {
@@ -581,7 +581,7 @@
             icon            = "Spell\\BTNHook.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
-            category = SKILL_CATEGORY_FIGHTING_MASTERY,
+            category = SKILL_CATEGORY_BATTLE_ADVANTAGE,
 
             level = {
                 [1] = {
@@ -622,7 +622,7 @@
             icon            = "Spell\\BTNWarCry.blp",
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
-            category = SKILL_CATEGORY_FIGHTING_MASTERY,
+            category = SKILL_CATEGORY_INNER_STRENGTH,
 
             level = {
                 [1] = {

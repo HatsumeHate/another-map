@@ -27,12 +27,9 @@ do
 
 
 		UnitAddMyAbility(gg_unit_HBRB_0005, 'A007')
-		BindAbilityKey(gg_unit_HBRB_0005, 'A007', KEY_Q)
-
+		--BindAbilityKey(gg_unit_HBRB_0005, 'A007', KEY_Q)
 		UnitAddMyAbility(gg_unit_HBRB_0005, 'A00K')
-		BindAbilityKey(gg_unit_HBRB_0005, 'A00K', KEY_R)
-
-
+		--BindAbilityKey(gg_unit_HBRB_0005, 'A00K', KEY_R)
 		UnitAddMyAbility(gg_unit_HBRB_0005, 'A00O')
 		UnitAddMyAbility(gg_unit_HBRB_0005, 'A00Z')
 		UnitAddMyAbility(gg_unit_HBRB_0005, 'A00B')

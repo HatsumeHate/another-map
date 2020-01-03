@@ -9,31 +9,61 @@ do
     KEY_D = 6
 
 
-    local KEYBIND_LIST = {
+    KEYBIND_LIST = {
         [KEY_Q] =  {
             ability = FourCC('A016'),
             name_string = " (|cffffcc00Q|r)",
+            bind_name = "[Q]",
             player_skill_bind = {}
         },
         [KEY_W] =  {
             ability = FourCC('A01A'),
             name_string = " (|cffffcc00W|r)",
+            bind_name = "[W]",
             player_skill_bind = {}
         },
         [KEY_E] =  {
             ability = FourCC('A01E'),
             name_string = " (|cffffcc00E|r)",
+            bind_name = "[E]",
             player_skill_bind = {}
         },
         [KEY_R] =  {
             ability = FourCC('A01I'),
             name_string = " (|cffffcc00R|r)",
+            bind_name = "[R]",
+            player_skill_bind = {}
+        },
+        [KEY_F] =  {
+            ability = FourCC('A018'),
+            name_string = " (|cffffcc00F|r)",
+            bind_name = "[F]",
+            player_skill_bind = {}
+        },
+        [KEY_D] =  {
+            ability = FourCC('A017'),
+            name_string = " (|cffffcc00D|r)",
+            bind_name = "[D]",
             player_skill_bind = {}
         }
     }
 
+
+    function UnbindAbilityKey(unit, id)
+        local player = GetPlayerId(GetOwningPlayer(unit))
+
+            for i = KEY_Q, KEY_D do
+                if KEYBIND_LIST[i].player_skill_bind[player] == FourCC(id) then
+                    UnitRemoveAbility(unit, KEYBIND_LIST[i].ability)
+                    KEYBIND_LIST[i].player_skill_bind[player] = 0
+                    break
+                end
+            end
+
+    end
+
     ---@param unit unit
-    ---@param id integer
+    ---@param id string
     ---@param key integer
     function BindAbilityKey(unit, id, key)
         local skill = GetSkillData(FourCC(id))
@@ -77,14 +107,15 @@ do
 
 
     ---@param unit unit
-    ---@param id integer
+    ---@param id string
     function UnitGetAbilityLevel(unit, id)
         local unit_data = GetUnitData(unit)
         local ability_level = 0
 
             for i = 1, #unit_data.skill_list do
                 if unit_data.skill_list[i].Id == id then
-                    ability_level = unit_data.skill_list.current_level
+                    ability_level = unit_data.skill_list[i].current_level
+                    break
                 end
             end
 

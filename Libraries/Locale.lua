@@ -105,6 +105,9 @@ do
             SKILL_PANEL_TOOLTIP_NAME = "Умения",
             SKILL_PANEL_TOOLTIP_DESCRIPTION = "Настройка и просмотр всех умений",
 
+            SKILL_PANEL_LVL_TEXT = "Уровень: ",
+            SKILL_PANEL_UNBIND = "Убрать",
+
             INVENTORY_PANEL_TOOLTIP_NAME = "Инвентарь",
             INVENTORY_PANEL_TOOLTIP_DESCRIPTION =  "Содержит все ваши вещи и экипировку",
 
@@ -289,6 +292,11 @@ do
             DARKNESS_ATTRIBUTE_NAME     = "Darkness",
             HOLY_ATTRIBUTE_NAME         = "Holy",
 
+            SKILL_PANEL_TOOLTIP_NAME = "Skills",
+            SKILL_PANEL_TOOLTIP_DESCRIPTION = "Overlook and bind settings for all abilities.",
+
+            SKILL_PANEL_LVL_TEXT = "Level: ",
+            SKILL_PANEL_UNBIND = "Unbind",
 
             INVENTORY_PANEL_TOOLTIP_NAME = "Inventory",
             INVENTORY_PANEL_TOOLTIP_DESCRIPTION =  "Contains all of your items.",

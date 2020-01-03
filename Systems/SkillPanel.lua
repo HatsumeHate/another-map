@@ -14,6 +14,72 @@ do
     local SKILL_BUTTON = 0
 
 
+    function CreateBindContext(player, button_data, skip)
+
+        for key = KEY_Q, KEY_D do
+            if skip ~= key then
+                AddContextOption(player, KEYBIND_LIST[key].bind_name, function()
+                    local skill = button_data.skill
+                    UnregisterPlayerSkillHotkey(player, button_data.skill)
+                    RegisterPlayerSkillHotkey(player, skill, key)
+                end)
+            end
+        end
+
+    end
+
+
+    TriggerAddAction(ClickTrigger, function ()
+        local button_data = GetButtonData(BlzGetTriggerFrame())
+        local player = GetPlayerId(GetTriggerPlayer()) + 1
+
+
+            if button_data.button_type < 0 then
+                local last_category_button = GetButtonData(SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].button)
+                BlzDestroyFrame(last_category_button.sprite)
+
+                button_data.sprite = CreateSprite("selecter2.mdx", 0.9, SkillPanelFrame[player].category[button_data.button_type * -1].button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, button_data.image)
+                SkillPanelFrame[player].current_category = button_data.button_type * -1
+                UpdateSkillList(player)
+                DestroyContextMenu(player)
+            elseif button_data.button_type == SKILL_BUTTON then
+                CreatePlayerContextMenu(player, button_data.button, SkillPanelFrame[player].slider)
+                CreateBindContext(player, button_data, 0)
+            elseif button_data.button_type > 0 then
+                CreatePlayerContextMenu(player, button_data.button, SkillPanelFrame[player].slider)
+                CreateBindContext(player, button_data, button_data.button_type)
+                AddContextOption(player, LOCALE_LIST[my_locale].SKILL_PANEL_UNBIND, function()
+                    UnregisterPlayerSkillHotkey(player, button_data.skill)
+                end)
+            end
+
+    end)
+
+
+    function UnregisterPlayerSkillHotkey(player, skill)
+        for i = KEY_Q, KEY_D do
+            local button = GetButtonData(SkillPanelFrame[player].button_keys[i])
+                if button.skill ~= nil and skill.Id == button.skill.Id then
+                    UnbindAbilityKey(PlayerHero[player], skill.Id)
+                    BlzFrameSetTexture(button.image, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0, true)
+                    FrameChangeTexture(button.button, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp")
+                    button.skill = nil
+                    break
+                end
+        end
+    end
+
+
+    function RegisterPlayerSkillHotkey(player, skill, key)
+        local key_button_data = GetButtonData(SkillPanelFrame[player].button_keys[key])
+
+            BindAbilityKey(PlayerHero[player], skill.Id, key)
+            BlzFrameSetTexture(key_button_data.image, skill.icon, 0, true)
+            FrameChangeTexture(key_button_data.button, skill.icon)
+            key_button_data.skill = skill
+
+    end
+
 
     function UpdateSkillWindow(player)
         local max_skill_count = #SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].skill_list
@@ -28,13 +94,21 @@ do
             for i = 1, 4 do
                 local button_data = GetButtonData(SkillPanelFrame[player].displayed_skill_button[i])
                 local position = current_position + i
+
                     if position <= max_skill_count and SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].skill_list[position] ~= nil then
-                        BlzFrameSetTexture(button_data.image, SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].skill_list[position].icon, 0, true)
-                        FrameChangeTexture(button_data.button, SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].skill_list[position].icon)
+                        button_data.skill = SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].skill_list[position]
+                        BlzFrameSetTexture(button_data.image, button_data.skill.icon, 0, true)
+                        FrameChangeTexture(button_data.button, button_data.skill.icon)
                         BlzFrameSetVisible(SkillPanelFrame[player].displayed_skill_button[i], true)
+
+                        BlzFrameSetText(button_data.name_text, button_data.skill.name)
+                        BlzFrameSetText(button_data.level_text, LOCALE_LIST[my_locale].SKILL_PANEL_LVL_TEXT
+                                .. UnitGetAbilityLevel(PlayerHero[player], button_data.skill.Id))
                     else
+                        button_data.skill = nil
                         BlzFrameSetVisible(SkillPanelFrame[player].displayed_skill_button[i], false)
                     end
+
             end
 
     end
@@ -74,18 +148,14 @@ do
     local function NewButton(button_type, texture, size_x, size_y, relative_frame, frame_point_from, frame_point_to, offset_x, offset_y, parent_frame)
         local new_Frame = BlzCreateFrame('ScriptDialogButton', parent_frame, 0, 0)
         local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
-        --local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", new_Frame, "", 0)
-        --local new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
+        local handle = GetHandleId(new_Frame)
 
-
-            ButtonList[GetHandleId(new_Frame)] = {
+            ButtonList[handle] = {
                 button_type = button_type,
                 skill = nil,
                 button = new_Frame,
                 image = new_FrameImage,
                 original_texture = texture,
-                --charges_frame = new_FrameCharges,
-                --charges_text_frame = new_FrameChargesText,
                 sprite = nil
             }
 
@@ -97,11 +167,41 @@ do
             BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
 
 
-            --BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMRIGHT, new_FrameImage, FRAMEPOINT_BOTTOMRIGHT, -0.002, 0.002)
-            --BlzFrameSetSize(new_FrameCharges, 0.012, 0.012)
-            --BlzFrameSetTexture(new_FrameCharges, "GUI\\ChargesTexture.blp", 0, true)
-            --BlzFrameSetPoint(new_FrameChargesText, FRAMEPOINT_CENTER, new_FrameCharges, FRAMEPOINT_CENTER, 0.,0.)
-            --BlzFrameSetVisible(new_FrameCharges, false)
+            if button_type == SKILL_BUTTON then
+                local new_FrameText = BlzCreateFrameByType("TEXT", "skill name", new_FrameImage, "", 0)
+                local new_FrameLevelText = BlzCreateFrameByType("TEXT", "skill name", new_FrameImage, "", 0)
+
+                    BlzFrameSetTextAlignment(new_FrameText, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_LEFT)
+                    BlzFrameSetPoint(new_FrameText, FRAMEPOINT_LEFT, new_FrameImage, FRAMEPOINT_RIGHT, 0.005, 0.008)
+                    BlzFrameSetScale(new_FrameText, 0.93)
+
+
+                    BlzFrameSetTextAlignment(new_FrameLevelText, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_LEFT)
+                    BlzFrameSetPoint(new_FrameLevelText, FRAMEPOINT_LEFT, new_FrameImage, FRAMEPOINT_RIGHT, 0.005, -0.005)
+                    BlzFrameSetScale(new_FrameLevelText, 1.03)
+
+                    ButtonList[handle].name_text = new_FrameText
+                    ButtonList[handle].level_text = new_FrameLevelText
+            elseif button_type > 0 then
+                local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", new_FrameImage, "", 0)
+                local new_FrameText = BlzCreateFrameByType("TEXT", "hotkey", new_FrameCharges, "", 0)
+
+                    BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMRIGHT, new_FrameImage, FRAMEPOINT_BOTTOMRIGHT, -0.002, 0.002)
+                    BlzFrameSetSize(new_FrameCharges, 0.012, 0.012)
+                    BlzFrameSetTexture(new_FrameCharges, "GUI\\ChargesTexture.blp", 0, true)
+
+                    BlzFrameSetTextAlignment(new_FrameText, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_MIDDLE)
+                    BlzFrameSetPoint(new_FrameText, FRAMEPOINT_CENTER, new_FrameCharges, FRAMEPOINT_CENTER, 0., 0.)
+                    BlzFrameSetScale(new_FrameText, 0.98)
+
+                    if button_type == KEY_Q then BlzFrameSetText(new_FrameText, "Q")
+                    elseif button_type == KEY_W then BlzFrameSetText(new_FrameText, "W")
+                    elseif button_type == KEY_E then BlzFrameSetText(new_FrameText, "E")
+                    elseif button_type == KEY_R then BlzFrameSetText(new_FrameText, "R")
+                    elseif button_type == KEY_D then BlzFrameSetText(new_FrameText, "D")
+                    elseif button_type == KEY_F then BlzFrameSetText(new_FrameText, "F") end
+
+            end
 
             BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
             BlzFrameSetSize(new_Frame, size_x, size_y)
@@ -139,9 +239,12 @@ do
                 SkillPanelFrame[player].category[i].skill_list = {}
 
                     if i == 1 then
-                        SkillPanelFrame[player].category[i].button = NewButton(1, icon_path, 0.035, 0.035, category_border_panel, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.02, main_frame)
+                        local button_data
+                        SkillPanelFrame[player].category[i].button = NewButton(-1, icon_path, 0.035, 0.035, category_border_panel, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.02, main_frame)
+                        button_data = GetButtonData(SkillPanelFrame[player].category[i].button)
+                        button_data.sprite = CreateSprite("selecter2.mdx", 0.9, SkillPanelFrame[player].category[i].button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, button_data.image)
                     else
-                        SkillPanelFrame[player].category[i].button = NewButton(i, icon_path, 0.035, 0.035, SkillPanelFrame[player].category[i-1].button, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., -0.0055, SkillPanelFrame[player].category[i-1].button)
+                        SkillPanelFrame[player].category[i].button = NewButton(i * -1, icon_path, 0.035, 0.035, SkillPanelFrame[player].category[i-1].button, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., -0.0055, SkillPanelFrame[player].category[i-1].button)
                     end
 
             end
@@ -153,15 +256,13 @@ do
             BlzFrameSetSize(skill_bind_panel, 0.1, 0.07)
 
 
-            new_Frame = NewButton(KEY_Q, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0.035, 0.035, skill_bind_panel, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.017, 0., main_frame)
-            new_Frame = NewButton(KEY_W, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0.035, 0.035, new_Frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0012, 0., new_Frame)
-            new_Frame = NewButton(KEY_E, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0.035, 0.035, new_Frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0012, 0., new_Frame)
-            new_Frame = NewButton(KEY_R, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0.035, 0.035, new_Frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0012, 0., new_Frame)
-            new_Frame = NewButton(KEY_F, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0.035, 0.035, new_Frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0012, 0., new_Frame)
-            new_Frame = NewButton(KEY_D, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0.035, 0.035, new_Frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0012, 0., new_Frame)
+            SkillPanelFrame[player].button_keys = {}
+            SkillPanelFrame[player].button_keys[KEY_Q] = NewButton(KEY_Q, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0.035, 0.035, skill_bind_panel, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.017, 0., main_frame)
 
+                for key = 2, KEY_D do
+                    SkillPanelFrame[player].button_keys[key] = NewButton(key, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0.035, 0.035, SkillPanelFrame[player].button_keys[key-1], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0012, 0., SkillPanelFrame[player].button_keys[key-1])
+                end
 
-             --NewButton(SKILL_BUTTON, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0.03, 0.03, new_Frame, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.015, 0., new_Frame)
 
             SkillPanelFrame[player].displayed_skill_button = {}
 
@@ -186,7 +287,7 @@ do
             BlzFrameSetValue(new_Frame, 1)
             BlzFrameSetStepSize(new_Frame, 1)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_RIGHT, main_frame, FRAMEPOINT_RIGHT, -0.015, 0.035)
-            BlzFrameSetSize(new_Frame, 0.012, 0.2)
+            BlzFrameSetSize(new_Frame, 0.015, 0.2)
 
             SkillPanelFrame[player].slider = new_Frame
 
@@ -225,6 +326,8 @@ do
             TriggerAddAction(trg, function()
                 BlzFrameSetVisible(SkillPanelFrame[GetPlayerId(GetTriggerPlayer()) + 1].main_frame, not BlzFrameIsVisible(SkillPanelFrame[GetPlayerId(GetTriggerPlayer()) + 1].main_frame))
                 UpdateSkillList(GetPlayerId(GetTriggerPlayer()) + 1)
+                --BlzFrameSetFocus(SkillPanelFrame[GetPlayerId(GetTriggerPlayer()) + 1].slider, true)
+                DestroyContextMenu(GetPlayerId(GetTriggerPlayer()) + 1)
             end)
 
     end

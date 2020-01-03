@@ -333,6 +333,7 @@ do
         local h = GetHandleId(BlzGetTriggerFrame())
         local item_data = GetItemData(ButtonList[h].item)
 
+
         if TimerGetRemaining(DoubleClickTimer[player]) > 0. then
             if ButtonList[h].item ~= nil and item_data.TYPE ~= ITEM_TYPE_GEM and item_data.TYPE ~= ITEM_TYPE_CONSUMABLE then
                 RemoveTooltip(player)
