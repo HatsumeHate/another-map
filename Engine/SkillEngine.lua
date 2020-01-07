@@ -111,10 +111,12 @@ do
     function UnitGetAbilityLevel(unit, id)
         local unit_data = GetUnitData(unit)
         local ability_level = 0
+        local skill
 
             for i = 1, #unit_data.skill_list do
                 if unit_data.skill_list[i].Id == id then
                     ability_level = unit_data.skill_list[i].current_level
+                    skill = unit_data.skill_list[i]
                     break
                 end
             end
@@ -122,7 +124,8 @@ do
             for i = WEAPON_POINT, NECKLACE_POINT do
                 if unit_data.equip_point[i] ~= nil and unit_data.equip_point[i].SKILL_BONUS ~= nil then
                     for skill_bonus = 1, #unit_data.equip_point[i].SKILL_BONUS do
-                        if unit_data.equip_point[i].SKILL_BONUS[skill_bonus].id == id then
+                        if (unit_data.equip_point[i].SKILL_BONUS[skill_bonus].id ~= nil and unit_data.equip_point[i].SKILL_BONUS[skill_bonus].id == id) or
+                                (unit_data.equip_point[i].SKILL_BONUS[skill_bonus].category ~= nil and skill.category == unit_data.equip_point[i].SKILL_BONUS[skill_bonus].category) then
                             ability_level = ability_level + unit_data.equip_point[i].SKILL_BONUS[skill_bonus].bonus_levels
                         end
                     end

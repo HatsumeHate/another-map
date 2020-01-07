@@ -105,6 +105,22 @@ do
             SKILL_PANEL_TOOLTIP_NAME = "Умения",
             SKILL_PANEL_TOOLTIP_DESCRIPTION = "Настройка и просмотр всех умений",
 
+            SKILL_CATEGORY_LIGHTNING = "Молнии",
+            SKILL_CATEGORY_FIRE = "Огонь",
+            SKILL_CATEGORY_ICE = "Лед",
+            SKILL_CATEGORY_ARCANE = "Тайная магия",
+            SKILL_CATEGORY_FIGHTING_MASTERY = "Боебое мастерство",
+            SKILL_CATEGORY_BATTLE_ADVANTAGE = "Боевое преимущество",
+            SKILL_CATEGORY_INNER_STRENGTH = "Внутренние силы",
+
+            SKILL_CATEGORY_LIGHTNING_ADVANCED = "Умения молнии: ",
+            SKILL_CATEGORY_FIRE_ADVANCED = "Умения огня: ",
+            SKILL_CATEGORY_ICE_ADVANCED = "Умения льда: ",
+            SKILL_CATEGORY_ARCANE_ADVANCED = "Умения тайной магии: ",
+            SKILL_CATEGORY_FIGHTING_MASTERY_ADVANCED = "Умения боевого мастерства: ",
+            SKILL_CATEGORY_BATTLE_ADVANTAGE_ADVANCED = "Умения боевого преимущества: ",
+            SKILL_CATEGORY_INNER_STRENGTH_ADVANCED = "Умения внутренних сил: ",
+
             SKILL_PANEL_LVL_TEXT = "Уровень: ",
             SKILL_PANEL_UNBIND = "Убрать",
 
@@ -169,9 +185,47 @@ do
             ITEM_SUFFIX_CONCENTRATION = " Концентрации",
             ITEM_SUFFIX_PRECISION = " Точности",
 
-            GENERIC_SWORD_NAME_1 = "Рунический клинок",
-            GENERIC_SWORD_NAME_2 = "Короткий клинок",
-            GENERIC_SWORD_NAME_3 = "Изогнутый клинок",
+
+            GENERIC_SWORD_NAME_1 = "необработанный клинок",
+            GENERIC_SWORD_NAME_2 = "короткий меч",
+            GENERIC_SWORD_NAME_3 = "рунический клинок",
+            GENERIC_SWORD_NAME_4 = "широкий меч",
+
+            GENERIC_GREATSWORD_NAME_1 = "варварский разрезатель",
+            GENERIC_GREATSWORD_NAME_2 = "нож великанов",
+
+            GENERIC_AXE_NAME_1 = "широкий топор",
+            GENERIC_AXE_NAME_2 = "зазубренный топор",
+            GENERIC_AXE_NAME_3 = "стальной топор",
+
+            GENERIC_GREATAXE_NAME_1 = "огромный резак",
+
+            GENERIC_BLUNT_NAME_1 = "древняя булава",
+            GENERIC_BLUNT_NAME_2 = "дубина",
+            GENERIC_BLUNT_NAME_3 = "шипованная палица",
+            GENERIC_BLUNT_NAME_4 = "цеп",
+
+            GENERIC_GREATBLUNT_NAME_1 = "большая шипованная палица",
+            GENERIC_GREATBLUNT_NAME_2 = "мифриловый молот",
+
+            GENERIC_DAGGER_NAME_1 = "изогнутый нож",
+            GENERIC_DAGGER_NAME_2 = "позолоченный нож",
+            GENERIC_DAGGER_NAME_3 = "нож",
+            GENERIC_DAGGER_NAME_4 = "заточка",
+            GENERIC_DAGGER_NAME_5 = "разделочный нож",
+
+            GENERIC_STAFF_NAME_1 = "Сверток Природы",
+            GENERIC_STAFF_NAME_2 = "огненный скипетр",
+            GENERIC_STAFF_NAME_3 = "Нефритовый Холод",
+            GENERIC_STAFF_NAME_4 = "Лунный Свет",
+            GENERIC_STAFF_NAME_5 = "Связи Мира",
+
+            GENERIC_BOW_NAME_1 = "Позолоченное Древо",
+            GENERIC_BOW_NAME_2 = "длинный лук",
+            GENERIC_BOW_NAME_3 = "грубый лук",
+            GENERIC_BOW_NAME_4 = "лук разведчика",
+            GENERIC_BOW_NAME_5 = "тяжелый лук",
+            GENERIC_BOW_NAME_6 = "Рог",
 
             ITEM_NAME_RAT_HUNTER = 'Охотник на крыс',
             ITEM_SPEC_DESCRIPTION_RAT_HUNTER = "Даже у крысоловов был легендарный лук, коего желали все охотники на крыс",

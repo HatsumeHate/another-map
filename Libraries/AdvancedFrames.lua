@@ -244,8 +244,14 @@ do
          end
 
          if item_data.TYPE == ITEM_TYPE_WEAPON then
-             property_text = property_text .. LOCALE_LIST[my_locale].DAMAGE_UI .. R2I(item_data.DAMAGE * item_data.DISPERSION[1]) .. "-" .. R2I(item_data.DAMAGE * item_data.DISPERSION[2]) ..
-                     "|n" .. LOCALE_LIST[my_locale].DAMAGE_TYPE_UI .. GetItemAttributeName(item_data.ATTRIBUTE)
+             local damage_text = R2I(item_data.DAMAGE * item_data.DISPERSION[1]) .. "-" .. R2I(item_data.DAMAGE * item_data.DISPERSION[2])
+
+             if item_data.DAMAGE_TYPE == DAMAGE_TYPE_MAGICAL then
+                 damage_text = "|c007A00FF" .. damage_text .. "|r"
+             end
+
+             property_text = property_text .. LOCALE_LIST[my_locale].DAMAGE_UI .. damage_text .. "|n" .. LOCALE_LIST[my_locale].DAMAGE_TYPE_UI .. GetItemAttributeName(item_data.ATTRIBUTE)
+
          elseif item_data.TYPE == ITEM_TYPE_ARMOR then
              property_text = property_text .. LOCALE_LIST[my_locale].DEFENCE_UI .. item_data.DEFENCE
          elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
@@ -277,7 +283,11 @@ do
             local skill_bonus_text = ""
 
             for i = 1, #item_data.SKILL_BONUS do
-                skill_bonus_text = skill_bonus_text .. GetSkillName(item_data.SKILL_BONUS[i].id) .. " +" .. item_data.SKILL_BONUS[i].bonus_levels .. "|n"
+                if item_data.SKILL_BONUS[i].id ~= nil then
+                    skill_bonus_text = skill_bonus_text .. GetSkillName(item_data.SKILL_BONUS[i].id) .. " +" .. item_data.SKILL_BONUS[i].bonus_levels .. "|n"
+                elseif item_data.SKILL_BONUS[i].category ~= nil then
+                    skill_bonus_text = skill_bonus_text .. SKILL_CATEGORY_NAME[item_data.SKILL_BONUS[i].category] .. " +" .. item_data.SKILL_BONUS[i].bonus_levels .. "|n"
+                end
             end
 
             if bonus_text ~= nil then

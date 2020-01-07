@@ -12,43 +12,15 @@ do
 
 
     local ITEMTYPES_NAMES = {
-        [ITEM_TYPE_WEAPON]     = "Оружие",
-        [ITEM_TYPE_ARMOR]      = "Броня",
-        [ITEM_TYPE_JEWELRY]    = "Бижутерия",
-        [ITEM_TYPE_OFFHAND]    = "Альтернативное оружие",
-        [ITEM_TYPE_CONSUMABLE] = "Расходуемое",
-        [ITEM_TYPE_GEM]        = "Камень"
+
     }
 
     local ITEMSUBTYPES_NAMES = {
-        [BOW_WEAPON]            = "Лук",
-        [BLUNT_WEAPON]          = "Булава",
-        [GREATBLUNT_WEAPON]     = "Двуручная булава",
-        [SWORD_WEAPON]          = "Меч",
-        [GREATSWORD_WEAPON]     = "Двуручный меч",
-        [AXE_WEAPON]            = "Топор",
-        [GREATAXE_WEAPON]       = "Двуручный топор",
-        [DAGGER_WEAPON]         = "Кинжал",
-        [STAFF_WEAPON]          = "Посох",
-        [JAWELIN_WEAPON]        = "Копье",
-        [HEAD_ARMOR]            = "Шлем",
-        [CHEST_ARMOR]           = "Нагрудник",
-        [LEGS_ARMOR]            = "Сапоги",
-        [HANDS_ARMOR]           = "Перчатки",
-        [RING_JEWELRY]          = "Кольцо",
-        [NECKLACE_JEWELRY]      = "Ожерелье",
-        [THROWING_KNIFE_WEAPON] = "Метательный нож",
+
     }
 
     local ATTRIBUTE_NAMES = {
-        [PHYSICAL_ATTRIBUTE]     = "Физический",
-        [FIRE_ATTRIBUTE]         = "Огненный",
-        [ICE_ATTRIBUTE]          = "Ледяной",
-        [LIGHTNING_ATTRIBUTE]    = "Молния",
-        [POISON_ATTRIBUTE]       = "Яд",
-        [ARCANE_ATTRIBUTE]       = "Тайна",
-        [DARKNESS_ATTRIBUTE]     = "Тьма",
-        [HOLY_ATTRIBUTE]         = "Свет"
+
     }
 
 
@@ -132,20 +104,7 @@ do
 
 
 
-    ITEM_AFFIX_WORN         = 1
-    ITEM_AFFIX_FINE         = 2
-    ITEM_AFFIX_EXCELLENT    = 3
-    ITEM_AFFIX_IDEAL        = 4
 
-    DECL_HE     = 1
-    DECL_SHE    = 2
-    DECL_THEY   = 3
-    DECL_IT     = 4
-
-    ITEM_SUFFIX_ANGER           = 1
-    ITEM_SUFFIX_FURY            = 2
-    ITEM_SUFFIX_CONCENTRATION   = 3
-    ITEM_SUFFIX_PRECISION       = 4
 
 
     local DECLENSION_LIST = {
@@ -163,308 +122,58 @@ do
     }
 
 
-    local QUALITY_ITEM_LIST = {
-        [COMMON_ITEM] = {
-            [SWORD_WEAPON] = {
-                {
-                    icon = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
-                    name = "Затупленный клинок",
-                    decl = DECL_HE
-                },
-                {
-                    icon = "ReplaceableTextures\\CommandButtons\\BTNDaggerOfEscape.blp",
-                    name = "Короткий клинок",
-                    decl = DECL_HE
-                },
-                {
-                    icon = "ReplaceableTextures\\CommandButtons\\BTNArcaniteMelee.blp",
-                    name = "Изогнутый клинок",
-                    decl = DECL_HE
-                },
-            },
-        },
-        [RARE_ITEM] = {},
-        [MAGIC_ITEM] = {},
-    }
 
-    local QUALITY_STONE_COUNT = {
-        [COMMON_ITEM] = {
-            rolls = {
-                [1] = 35,
-                [2] = 25,
-                [3] = 15
-            }
-        },
-        [RARE_ITEM] = {
-            rolls = {
-                [1] = 45,
-                [2] = 35,
-                [3] = 25
-            }
-        },
-        [UNIQUE_ITEM] = {
-            rolls = {
-                [1] = 45,
-                [2] = 35,
-                [3] = 25
-            }
-        },
-        [MAGIC_ITEM] = {
-            rolls = {
-                [1] = 50,
-                [2] = 33,
-                [3] = 22,
-                [4] = 11
-            }
-        }
-    }
-
-
-    local ITEM_AFFIX_NAME_LIST = {
-
-    }
-
-
-
-    local ITEM_SUFFIX_LIST = {
-        [ITEM_SUFFIX_ANGER] = {
-            name = "LOCALE_LIST[my_locale].ITEM_SUFFIX_ANGER",
-            affix_bonus = {
-                [ITEM_AFFIX_WORN] = {
-                    parameter_bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = 5., METHOD = STRAIGHT_BONUS, probability = 100. }
-                    },
-                    skill_bonus = {
-                        { id = "A00K", bonus_levels = 1,  probability = 100. }
-                    },
-                    effect_bonus = {
-
-                    }
-                },
-                [ITEM_AFFIX_FINE] = {
-                    parameter_bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = 15., METHOD = STRAIGHT_BONUS, probability = 100. }
-                    },
-                    skill_bonus = {
-                        { id = "A00K", bonus_levels = 1,  probability = 100. }
-                    },
-                    effect_bonus = {
-
-                    }
-                },
-                [ITEM_AFFIX_EXCELLENT] = {
-                    parameter_bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = 25., METHOD = STRAIGHT_BONUS, probability = 100. }
-                    },
-                    skill_bonus = {
-                        { id = "A00K", bonus_levels = 1,  probability = 100. }
-                    },
-                    effect_bonus = {
-
-                    }
-                },
-                [ITEM_AFFIX_IDEAL] = {
-                    parameter_bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = 35., METHOD = STRAIGHT_BONUS, probability = 100. }
-                    },
-                    skill_bonus = {
-                        { id = "A00K", bonus_levels = 1,  probability = 100. }
-                    },
-                    effect_bonus = {
-
-                    }
-                }
-            }
-        },
-        [ITEM_SUFFIX_FURY] = {
-            name = "LOCALE_LIST[my_locale].ITEM_SUFFIX_FURY",
-            affix_bonus = {
-                [ITEM_AFFIX_WORN] = {
-                    parameter_bonus = {
-                        { PARAM = CRIT_CHANCE, VALUE = 5., METHOD = STRAIGHT_BONUS, probability = 100. },
-                        { PARAM = PHYSICAL_ATTACK, VALUE = 50., METHOD = STRAIGHT_BONUS, probability = 50. }
-                    },
-                    skill_bonus = {
-                        { id = "A00K", bonus_levels = 1,  probability = 100. }
-                    },
-                    effect_bonus = {
-
-                    }
-                },
-                [ITEM_AFFIX_FINE] = {
-                    parameter_bonus = {
-                        { PARAM = CRIT_CHANCE, VALUE = 10., METHOD = STRAIGHT_BONUS, probability = 100. },
-                        { PARAM = PHYSICAL_ATTACK, VALUE = 50., METHOD = STRAIGHT_BONUS, probability = 50. }
-                    },
-                    skill_bonus = {
-                        { id = "A00K", bonus_levels = 1,  probability = 100. }
-                    },
-                    effect_bonus = {
-
-                    }
-                },
-                [ITEM_AFFIX_EXCELLENT] = {
-                    parameter_bonus = {
-                        { PARAM = CRIT_CHANCE, VALUE = 25., METHOD = STRAIGHT_BONUS, probability = 100. },
-                        { PARAM = PHYSICAL_ATTACK, VALUE = 50., METHOD = STRAIGHT_BONUS, probability = 50. }
-                    },
-                    skill_bonus = {
-                        { id = "A00K", bonus_levels = 1,  probability = 100. }
-                    },
-                    effect_bonus = {
-
-                    }
-                },
-                [ITEM_AFFIX_IDEAL] = {
-                    parameter_bonus = {
-                        { PARAM = CRIT_CHANCE, VALUE = 40., METHOD = STRAIGHT_BONUS, probability = 100. },
-                        { PARAM = PHYSICAL_ATTACK, VALUE = 50., METHOD = STRAIGHT_BONUS, probability = 70. }
-                    },
-                    skill_bonus = {
-                        { id = "A00K", bonus_levels = 1,  probability = 100. }
-                    },
-                    effect_bonus = {
-
-                    }
-                }
-            }
-        },
-        [ITEM_SUFFIX_CONCENTRATION] = {
-            name = "LOCALE_LIST[my_locale].ITEM_SUFFIX_CONCENTRATION",
-            affix_bonus = {
-                [ITEM_AFFIX_WORN] = {
-                    parameter_bonus = {
-                        { PARAM = MAGICAL_ATTACK, VALUE = 30., METHOD = STRAIGHT_BONUS, probability = 100. }
-                    },
-                    skill_bonus = {
-                        { id = "A00K", bonus_levels = 1,  probability = 100. }
-                    },
-                    effect_bonus = {
-
-                    }
-                },
-                [ITEM_AFFIX_FINE] = {
-                    parameter_bonus = {
-                        { PARAM = MAGICAL_ATTACK, VALUE = 40., METHOD = STRAIGHT_BONUS, probability = 100. }
-                    },
-                    skill_bonus = {
-                        { id = "A00K", bonus_levels = 1,  probability = 100. }
-                    },
-                    effect_bonus = {
-
-                    }
-                },
-                [ITEM_AFFIX_EXCELLENT] = {
-                    parameter_bonus = {
-                        { PARAM = MAGICAL_ATTACK, VALUE = 55., METHOD = STRAIGHT_BONUS, probability = 100. }
-                    },
-                    skill_bonus = {
-                        { id = "A00K", bonus_levels = 1,  probability = 100. }
-                    },
-                    effect_bonus = {
-
-                    }
-                },
-                [ITEM_AFFIX_IDEAL] = {
-                    parameter_bonus = {
-                        { PARAM = MAGICAL_ATTACK, VALUE = 70., METHOD = STRAIGHT_BONUS, probability = 100. }
-                    },
-                    skill_bonus = {
-                        { id = "A00K", bonus_levels = 1,  probability = 100. }
-                    },
-                    effect_bonus = {
-
-                    }
-                }
-            }
-        },
-        [ITEM_SUFFIX_PRECISION] = {
-            name = "LOCALE_LIST[my_locale].ITEM_SUFFIX_PRECISION",
-            affix_bonus = {
-                [ITEM_AFFIX_WORN] = {
-                    parameter_bonus = {
-                        { PARAM = CRIT_MULTIPLIER, VALUE = 0.1, METHOD = STRAIGHT_BONUS, probability = 100. }
-                    },
-                    skill_bonus = {
-                        { id = "A00K", bonus_levels = 1,  probability = 100. }
-                    },
-                    effect_bonus = {
-
-                    }
-                },
-                [ITEM_AFFIX_FINE] = {
-                    parameter_bonus = {
-                        { PARAM = CRIT_MULTIPLIER, VALUE = 0.2, METHOD = STRAIGHT_BONUS, probability = 100. }
-                    },
-                    skill_bonus = {
-                        { id = "A00K", bonus_levels = 1,  probability = 100. }
-                    },
-                    effect_bonus = {
-
-                    }
-                },
-                [ITEM_AFFIX_EXCELLENT] = {
-                    parameter_bonus = {
-                        { PARAM = CRIT_MULTIPLIER, VALUE = 0.35, METHOD = STRAIGHT_BONUS, probability = 100. }
-                    },
-                    skill_bonus = {
-                        { id = "A00K", bonus_levels = 1,  probability = 100. }
-                    },
-                    effect_bonus = {
-
-                    }
-                },
-                [ITEM_AFFIX_IDEAL] = {
-                    parameter_bonus = {
-                        { PARAM = CRIT_MULTIPLIER, VALUE = 0.5, METHOD = STRAIGHT_BONUS, probability = 100. }
-                    },
-                    skill_bonus = {
-                        { id = "A00K", bonus_levels = 1,  probability = 100. }
-                    },
-                    effect_bonus = {
-
-                    }
-                }
-            }
-        }
-    }
-
-    local ITEM_QUALITY_SUFFIX_LIST = {
-        [COMMON_ITEM] = {
-            [ITEM_TYPE_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION
-            }
-        }
-    }
 
 
     function GenerateItemSuffix(item, variation, quality)
         local item_data = GetItemData(item)
-        local suffix = GetRandomInt(1, #ITEM_QUALITY_SUFFIX_LIST[quality][item_data.TYPE])
+        local suffix = GetRandomInt(1, #ITEM_QUALITY_SUFFIX_LIST[quality][item_data.SUBTYPE])
         local affix = GetRandomInt(1, #ITEM_SUFFIX_LIST[suffix].affix_bonus)
-
+        local max = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].max_bonuses
 
             item_data.NAME = ITEM_AFFIX_NAME_LIST[affix][QUALITY_ITEM_LIST[quality][item_data.SUBTYPE][variation].decl] .. item_data.NAME .. ITEM_SUFFIX_LIST[suffix].name
 
+
             for i = 1, #ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus do
                 if GetRandomInt(0, 100) <= ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].probability then
-                    item_data.BONUS[#item_data.BONUS + 1] = {
-                        PARAM = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].PARAM,
-                        VALUE = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].VALUE,
-                        METHOD = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].METHOD
-                    }
+
+                        item_data.BONUS[#item_data.BONUS + 1] = {
+                            PARAM = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].PARAM,
+                            --VALUE = GetRandomReal(ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].value_min, ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].value_max),
+                            METHOD = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].METHOD
+                        }
+
+                    if item_data.BONUS[#item_data.BONUS].METHOD == STRAIGHT_BONUS and item_data.BONUS[#item_data.BONUS].PARAM ~= CRIT_MULTIPLIER then
+                        item_data.BONUS[#item_data.BONUS].VALUE = GetRandomInt(ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].value_min, ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].value_max)
+                    else
+                        item_data.BONUS[#item_data.BONUS].VALUE = GetRandomReal(ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].value_min, ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].value_max)
+                    end
+
+                    print(#item_data.BONUS)
+                    print(GetParameterName(item_data.BONUS[#item_data.BONUS].PARAM))
+                    print(item_data.BONUS[#item_data.BONUS].VALUE)
+
+                    max = max - 1
+                    if max <= 0 then break end
                 end
             end
 
             for i = 1, #ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus do
-                if GetRandomInt(0, 100) <= ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].probability then
-                    item_data.SKILL_BONUS[#item_data.SKILL_BONUS + 1] = {
-                        id = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].id,
-                        bonus_levels = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].bonus_levels
-                    }
+                if GetRandomInt(0, 100) <= ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].probability and max > 0 then
+
+                        item_data.SKILL_BONUS[#item_data.SKILL_BONUS + 1] = {
+                            bonus_levels = GetRandomInt(ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].bonus_levels_min, ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].bonus_levels_max)
+                        }
+
+                        if ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].id ~= nil then
+                            item_data.SKILL_BONUS[#item_data.SKILL_BONUS].id = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].id
+                        elseif ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].category ~= nil then
+                            item_data.SKILL_BONUS[#item_data.SKILL_BONUS].category = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].category
+                        end
+
+                    max = max - 1
+                    if max <= 0 then break end
+
                 end
             end
 
@@ -539,9 +248,9 @@ do
 
         if item_data.TYPE == ITEM_TYPE_WEAPON then
             if item_data.SUBTYPE ~= BOW_WEAPON then
-                local physical_archetype = 60
+                local physical_archetype = 65
 
-                if item_data.SUBTYPE == STAFF_WEAPON then physical_archetype = 40
+                if item_data.SUBTYPE == STAFF_WEAPON then physical_archetype = 35
                 elseif item_data.SUBTYPE == AXE_WEAPON or item_data.SUBTYPE == GREATAXE_WEAPON or item_data.SUBTYPE == GREATSWORD_WEAPON or item_data.SUBTYPE == GREATBLUNT_WEAPON then physical_archetype = 75
                 elseif item_data.SUBTYPE == SWORD_WEAPON or item_data.SUBTYPE == DAGGER_WEAPON or item_data.SUBTYPE == BLUNT_WEAPON then physical_archetype = 50 end
 
@@ -716,6 +425,7 @@ do
 
 
     function EnumItemsOnInit()
+
         ITEMTYPES_NAMES = {
             [ITEM_TYPE_WEAPON]     = LOCALE_LIST[my_locale].ITEM_TYPE_WEAPON_NAME,
             [ITEM_TYPE_ARMOR]      = LOCALE_LIST[my_locale].ITEM_TYPE_ARMOR_NAME,
@@ -756,41 +466,11 @@ do
              [HOLY_ATTRIBUTE]         = LOCALE_LIST[my_locale].HOLY_ATTRIBUTE_NAME
          }
 
-        ITEM_AFFIX_NAME_LIST = {
-            [ITEM_AFFIX_WORN] = {
-                [DECL_HE] = LOCALE_LIST[my_locale]. WORN_DECL_HE,
-                [DECL_SHE] = LOCALE_LIST[my_locale]. WORN_DECL_SHE,
-                [DECL_THEY] = LOCALE_LIST[my_locale]. WORN_DECL_THEY,
-                [DECL_IT] = LOCALE_LIST[my_locale]. WORN_DECL_IT
-            },
-            [ITEM_AFFIX_FINE] = {
-                [DECL_HE] = LOCALE_LIST[my_locale].FINE_DECL_HE,
-                [DECL_SHE] = LOCALE_LIST[my_locale].FINE_DECL_SHE,
-                [DECL_THEY] = LOCALE_LIST[my_locale].FINE_DECL_THEY,
-                [DECL_IT] = LOCALE_LIST[my_locale].FINE_DECL_IT
-            },
-            [ITEM_AFFIX_EXCELLENT] = {
-                [DECL_HE] = LOCALE_LIST[my_locale].EXCELLENT_DECL_HE,
-                [DECL_SHE] = LOCALE_LIST[my_locale].EXCELLENT_DECL_SHE,
-                [DECL_THEY] = LOCALE_LIST[my_locale].EXCELLENT_DECL_THEY,
-                [DECL_IT] = LOCALE_LIST[my_locale].EXCELLENT_DECL_IT
-            },
-            [ITEM_AFFIX_IDEAL] = {
-                [DECL_HE] = LOCALE_LIST[my_locale].IDEAL_DECL_HE,
-                [DECL_SHE] = LOCALE_LIST[my_locale].IDEAL_DECL_SHE,
-                [DECL_THEY] = LOCALE_LIST[my_locale].IDEAL_DECL_THEY,
-                [DECL_IT] = LOCALE_LIST[my_locale].IDEAL_DECL_IT
-            }
-        }
 
-        ITEM_SUFFIX_LIST[ITEM_SUFFIX_ANGER].name = LOCALE_LIST[my_locale].ITEM_SUFFIX_ANGER
-        ITEM_SUFFIX_LIST[ITEM_SUFFIX_FURY].name = LOCALE_LIST[my_locale].ITEM_SUFFIX_FURY
-        ITEM_SUFFIX_LIST[ITEM_SUFFIX_CONCENTRATION].name = LOCALE_LIST[my_locale].ITEM_SUFFIX_CONCENTRATION
-        ITEM_SUFFIX_LIST[ITEM_SUFFIX_PRECISION].name = LOCALE_LIST[my_locale].ITEM_SUFFIX_PRECISION
 
-        QUALITY_ITEM_LIST[COMMON_ITEM][SWORD_WEAPON][1].name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_1
-        QUALITY_ITEM_LIST[COMMON_ITEM][SWORD_WEAPON][2].name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_2
-        QUALITY_ITEM_LIST[COMMON_ITEM][SWORD_WEAPON][3].name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_3
+        --QUALITY_ITEM_LIST[COMMON_ITEM][SWORD_WEAPON][1].name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_1
+       -- QUALITY_ITEM_LIST[COMMON_ITEM][SWORD_WEAPON][2].name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_2
+        --QUALITY_ITEM_LIST[COMMON_ITEM][SWORD_WEAPON][3].name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_3
 
         EnumItemsInRect(bj_mapInitialPlayableArea, nil, function()
 

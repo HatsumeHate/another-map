@@ -21,14 +21,19 @@
     SKILL_CATEGORY_BATTLE_ADVANTAGE = 6
     SKILL_CATEGORY_INNER_STRENGTH = 7
 
+
+    SKILL_CATEGORY_NAME = {
+
+    }
+
     SKILL_CATEGORY_ICON = {
-        [SKILL_CATEGORY_LIGHTNING] = "ReplaceableTextures\\CommandButtons\\BTNLightningShield.blp",
-        [SKILL_CATEGORY_FIRE] = "ReplaceableTextures\\CommandButtons\\BTNPeon.blp",
-        [SKILL_CATEGORY_ICE] = "ReplaceableTextures\\CommandButtons\\BTNPeon.blp",
-        [SKILL_CATEGORY_ARCANE] = "ReplaceableTextures\\CommandButtons\\BTNPeon.blp",
-        [SKILL_CATEGORY_FIGHTING_MASTERY] = "ReplaceableTextures\\CommandButtons\\BTNBloodLustOn.blp",
-        [SKILL_CATEGORY_BATTLE_ADVANTAGE] = "ReplaceableTextures\\CommandButtons\\BTNPeon.blp",
-        [SKILL_CATEGORY_INNER_STRENGTH] = "ReplaceableTextures\\CommandButtons\\BTNPeon.blp",
+        [SKILL_CATEGORY_LIGHTNING] = "GUI\\BTNLightning Mastery.blp",
+        [SKILL_CATEGORY_FIRE] = "GUI\\BTNFireMastery.blp",
+        [SKILL_CATEGORY_ICE] = "GUI\\BTNWaterMastery.blp",
+        [SKILL_CATEGORY_ARCANE] = "GUI\\BTNAstral Blessing.blp",
+        [SKILL_CATEGORY_FIGHTING_MASTERY] = "GUI\\BTN_CR_HOLDINGGROUND.blp",
+        [SKILL_CATEGORY_BATTLE_ADVANTAGE] = "GUI\\BTN_cr_Warp3.blp",
+        [SKILL_CATEGORY_INNER_STRENGTH] = "GUI\\BTN_cr_HOLYllllcharge.blp",
     }
 
     CLASS_SKILL_CATEGORY = {
@@ -173,6 +178,15 @@
 
     function DefineSkillsData()
 
+        SKILL_CATEGORY_NAME = {
+            [SKILL_CATEGORY_LIGHTNING] = LOCALE_LIST[my_locale].SKILL_CATEGORY_LIGHTNING_ADVANCED,
+            [SKILL_CATEGORY_FIRE] = LOCALE_LIST[my_locale].SKILL_CATEGORY_FIRE_ADVANCED,
+            [SKILL_CATEGORY_ICE] = LOCALE_LIST[my_locale].SKILL_CATEGORY_ICE_ADVANCED,
+            [SKILL_CATEGORY_ARCANE] = LOCALE_LIST[my_locale].SKILL_CATEGORY_ARCANE_ADVANCED,
+            [SKILL_CATEGORY_FIGHTING_MASTERY] = LOCALE_LIST[my_locale].SKILL_CATEGORY_FIGHTING_MASTERY_ADVANCED,
+            [SKILL_CATEGORY_BATTLE_ADVANTAGE] = LOCALE_LIST[my_locale].SKILL_CATEGORY_BATTLE_ADVANTAGE_ADVANCED,
+            [SKILL_CATEGORY_INNER_STRENGTH] = LOCALE_LIST[my_locale].SKILL_CATEGORY_INNER_STRENGTH_ADVANCED,
+        }
         -- defined skills
         NewSkillData('A000', {
             name            = "test skill",
@@ -198,6 +212,7 @@
             icon            = "Spell\\BTNice-sky-1.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_ICE,
 
             level = {
                 [1] = {
@@ -219,6 +234,7 @@
             icon            = "Spell\\BTNCRFrostShock.blp",
             activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_ICE,
 
             level = {
                 [1] = {
@@ -239,6 +255,7 @@
             icon            = "Spell\\BTNFlameLance.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_FIRE,
 
             level = {
                 [1] = {
@@ -259,6 +276,7 @@
             icon            = "Spell\\BTNOrbOfFrost2.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_ICE,
 
             level = {
                 [1] = {
@@ -279,6 +297,7 @@
             icon            = "Spell\\BTNThunderStorm.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_LIGHTNING,
 
             level = {
                 [1] = {
@@ -299,6 +318,7 @@
             icon            = "Spell\\BTNBlink_V2.blp",
             activation_type = POINT_CAST,
             type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_ARCANE,
 
             level = {
                 [1] = {
@@ -325,6 +345,7 @@
             icon            = "Spell\\BTNInferno.BLP",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_FIRE,
 
             level = {
                 [1] = {
@@ -345,6 +366,7 @@
             icon            = "Spell\\BTNSparkFlare.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_LIGHTNING,
 
             level = {
                 [1] = {
@@ -364,6 +386,7 @@
             icon            = "Spell\\BTNLightningOrb.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_LIGHTNING,
             category = SKILL_CATEGORY_LIGHTNING,
 
             level = {
@@ -385,6 +408,7 @@
             icon            = "Spell\\BTN_ArcaneProtection.blp",
             activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_ARCANE,
 
             level = {
                 [1] = {
@@ -404,6 +428,7 @@
             icon            = "Spell\\BTNCloakOfFrost.blp",
             activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_ICE,
 
             level = {
                 [1] = {
@@ -423,6 +448,7 @@
             icon            = "Spell\\BTN_cr_Dark Arts.blp",
             activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_ARCANE,
 
             level = {
                 [1] = {
@@ -442,6 +468,7 @@
             icon            = "Spell\\BTNGlaiveCrit.blp",
             activation_type = POINT_CAST,
             type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_FIRE,
 
             level = {
                 [1] = {

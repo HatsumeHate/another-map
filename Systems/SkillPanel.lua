@@ -14,10 +14,13 @@ do
     local SKILL_BUTTON = 0
 
 
-    function CreateBindContext(player, button_data, skip)
+    ---@param player integer
+    ---@param button_data table
+    ---@param skip_key integer
+    function CreateBindContext(player, button_data, skip_key)
 
         for key = KEY_Q, KEY_D do
-            if skip ~= key then
+            if skip_key ~= key then
                 AddContextOption(player, KEYBIND_LIST[key].bind_name, function()
                     local skill = button_data.skill
                     UnregisterPlayerSkillHotkey(player, button_data.skill)
@@ -56,6 +59,8 @@ do
     end)
 
 
+    ---@param player integer
+    ---@param skill table
     function UnregisterPlayerSkillHotkey(player, skill)
         for i = KEY_Q, KEY_D do
             local button = GetButtonData(SkillPanelFrame[player].button_keys[i])
@@ -70,6 +75,9 @@ do
     end
 
 
+    ---@param player integer
+    ---@param skill table
+    ---@param key integer
     function RegisterPlayerSkillHotkey(player, skill, key)
         local key_button_data = GetButtonData(SkillPanelFrame[player].button_keys[key])
 
@@ -81,6 +89,7 @@ do
     end
 
 
+    ---@param player integer
     function UpdateSkillWindow(player)
         local max_skill_count = #SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].skill_list
 
@@ -102,8 +111,7 @@ do
                         BlzFrameSetVisible(SkillPanelFrame[player].displayed_skill_button[i], true)
 
                         BlzFrameSetText(button_data.name_text, button_data.skill.name)
-                        BlzFrameSetText(button_data.level_text, LOCALE_LIST[my_locale].SKILL_PANEL_LVL_TEXT
-                                .. UnitGetAbilityLevel(PlayerHero[player], button_data.skill.Id))
+                        BlzFrameSetText(button_data.level_text, LOCALE_LIST[my_locale].SKILL_PANEL_LVL_TEXT .. UnitGetAbilityLevel(PlayerHero[player], button_data.skill.Id))
                     else
                         button_data.skill = nil
                         BlzFrameSetVisible(SkillPanelFrame[player].displayed_skill_button[i], false)
@@ -114,6 +122,7 @@ do
     end
 
 
+    ---@param player integer
     function UpdateSkillList(player)
         local unit_data = GetUnitData(PlayerHero[player])
         local c = SkillPanelFrame[player].current_category
@@ -326,7 +335,6 @@ do
             TriggerAddAction(trg, function()
                 BlzFrameSetVisible(SkillPanelFrame[GetPlayerId(GetTriggerPlayer()) + 1].main_frame, not BlzFrameIsVisible(SkillPanelFrame[GetPlayerId(GetTriggerPlayer()) + 1].main_frame))
                 UpdateSkillList(GetPlayerId(GetTriggerPlayer()) + 1)
-                --BlzFrameSetFocus(SkillPanelFrame[GetPlayerId(GetTriggerPlayer()) + 1].slider, true)
                 DestroyContextMenu(GetPlayerId(GetTriggerPlayer()) + 1)
             end)
 
