@@ -52,8 +52,15 @@
 
 
     function GetSkillName(id)
-        return SkillsData[FourCC(id)].name
+        local skill = SkillsData[FourCC(id)]
+        if skill == nil then return "unnamed skill" end
+        return skill.name
     end
+
+    function GetSkillCategoryName(category)
+        return SKILL_CATEGORY_NAME[category] or "unnamed category"
+    end
+
 
     function GetUnitSkillData(unit, id)
         local unit_data = GetUnitData(unit)
@@ -386,7 +393,6 @@
             icon            = "Spell\\BTNLightningOrb.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
-            category = SKILL_CATEGORY_LIGHTNING,
             category = SKILL_CATEGORY_LIGHTNING,
 
             level = {

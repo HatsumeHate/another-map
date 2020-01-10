@@ -166,7 +166,7 @@ do
                 BlzFrameSetSize(PlayerMovingItem[player].frame, scale, scale)
             else
                 if ButtonList[h].item ~= nil then
-                    ShowTooltip(player, h, ButtonList[GetHandleId(InventorySlots[32])].image)
+                    ShowTooltip(player, h, FRAMEPOINT_LEFT, ButtonList[GetHandleId(InventorySlots[32])].image)
                 else
                     RemoveTooltip(player)
                 end

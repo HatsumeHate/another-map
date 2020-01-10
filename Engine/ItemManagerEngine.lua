@@ -24,6 +24,10 @@ do
     }
 
 
+    function GetRandomWeaponType()
+        return GetRandomInt(BOW_WEAPON, STAFF_WEAPON)
+    end
+
     --ATTACK_SPEED
 
     function GetItemAttributeName(attribute)
@@ -65,20 +69,17 @@ do
     ---@param x real
     ---@param y real
 	function CreateCustomItem(raw, x, y)
+        if raw == 0 then return end
 		local id     = FourCC(raw)
 		local item   = CreateItem(id, x, y)
 		local handle = GetHandleId(item)
-		local data   = {}
+		local data   = MergeTables({}, ITEM_TEMPLATE_DATA[id])
 
-		for k, v in pairs(ITEM_TEMPLATE_DATA[id]) do
-			data[k] = v
-		end
-		
-		-- data это уже данные конкретного предмета с которыми можно делать что угодно
-        data.item = item
-        BlzSetItemName(item, data.NAME)
+            data.item = item
+            BlzSetItemName(item, data.NAME)
 
-		ITEM_DATA[handle] = data
+		    ITEM_DATA[handle] = data
+
 		return item
 	end
 
@@ -88,17 +89,13 @@ do
     function CreateCustomItem_Id(id, x, y)
         local item   = CreateItem(id, x, y)
         local handle = GetHandleId(item)
-        local data   = {}
+        local data   = MergeTables({}, ITEM_TEMPLATE_DATA[id])
 
-        for k, v in pairs(ITEM_TEMPLATE_DATA[id]) do
-            data[k] = v
-        end
+            data.item = item
+            BlzSetItemName(item, data.NAME)
 
-        -- data это уже данные конкретного предмета с которыми можно делать что угодно
-        data.item = item
-        BlzSetItemName(item, data.NAME)
+            ITEM_DATA[handle] = data
 
-        ITEM_DATA[handle] = data
         return item
     end
 
@@ -123,60 +120,119 @@ do
 
 
 
+    local function GetParameterPreset(param)
+        if param.type == SINGLE_PARAMETER then
+            return param
+        else
+            return GetParameterPreset(param.parameters[GetRandomInt(1, #param.parameters)])
+        end
+    end
 
 
     function GenerateItemSuffix(item, variation, quality)
         local item_data = GetItemData(item)
         local suffix = GetRandomInt(1, #ITEM_QUALITY_SUFFIX_LIST[quality][item_data.SUBTYPE])
-        local affix = GetRandomInt(1, #ITEM_SUFFIX_LIST[suffix].affix_bonus)
-        local max = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].max_bonuses
+        local affix = GetRandomInt(ITEM_SUFFIX_LIST[suffix].min_affix, ITEM_SUFFIX_LIST[suffix].max_affix)
+        local preset = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix]
+        local min = QUALITY_ITEM_BONUS_COUNT[quality].min
+        local bonus_parameters_count = GetRandomInt(min, QUALITY_ITEM_BONUS_COUNT[quality].max) + preset.additional_parameter
+        local parameters_list = GetRandomIntTable(1, #preset.parameter_bonus, bonus_parameters_count)
+
+
+        item_data.BONUS = {}
+
+            for i = 1, #parameters_list do
+                local parameter = GetParameterPreset(preset.parameter_bonus[parameters_list[i]])
+
+                        if GetRandomInt(0, 100) <= parameter.probability or #item_data.BONUS < min then
+
+                            item_data.BONUS[#item_data.BONUS + 1] = {
+                                PARAM = parameter.PARAM,
+                                METHOD = parameter.METHOD
+                            }
+
+                            if item_data.BONUS[#item_data.BONUS].METHOD == STRAIGHT_BONUS and item_data.BONUS[#item_data.BONUS].PARAM ~= CRIT_MULTIPLIER then
+                                item_data.BONUS[#item_data.BONUS].VALUE = GetRandomInt(parameter.value_min, parameter.value_max)
+                            else
+                                item_data.BONUS[#item_data.BONUS].VALUE = GetRandomReal(parameter.value_min, parameter.value_max)
+                                item_data.BONUS[#item_data.BONUS].VALUE = math.floor(item_data.BONUS[#item_data.BONUS].VALUE * 1000.) / 1000.
+                            end
+
+                            bonus_parameters_count = bonus_parameters_count - 1
+                        end
+
+            end
+
+
 
             item_data.NAME = ITEM_AFFIX_NAME_LIST[affix][QUALITY_ITEM_LIST[quality][item_data.SUBTYPE][variation].decl] .. item_data.NAME .. ITEM_SUFFIX_LIST[suffix].name
 
 
-            for i = 1, #ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus do
-                if GetRandomInt(0, 100) <= ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].probability then
+        item_data.SKILL_BONUS = {}
 
-                        item_data.BONUS[#item_data.BONUS + 1] = {
-                            PARAM = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].PARAM,
-                            --VALUE = GetRandomReal(ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].value_min, ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].value_max),
-                            METHOD = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].METHOD
-                        }
+            if bonus_parameters_count > 0 and preset.skill_bonus ~= nil and #preset.skill_bonus.can_generate_for > 0 then
+                local gen = preset.skill_bonus.can_generate_for[GetRandomInt(1, #preset.skill_bonus.can_generate_for)]
+                local class = preset.skill_bonus[gen]
+                local category = class.available_category[GetRandomInt(1, #class.available_category)]
 
-                    if item_data.BONUS[#item_data.BONUS].METHOD == STRAIGHT_BONUS and item_data.BONUS[#item_data.BONUS].PARAM ~= CRIT_MULTIPLIER then
-                        item_data.BONUS[#item_data.BONUS].VALUE = GetRandomInt(ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].value_min, ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].value_max)
-                    else
-                        item_data.BONUS[#item_data.BONUS].VALUE = GetRandomReal(ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].value_min, ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].parameter_bonus[i].value_max)
-                    end
+                    if GetRandomInt(0, 100) <= class.skill_bonus_probability then
 
-                    print(#item_data.BONUS)
-                    print(GetParameterName(item_data.BONUS[#item_data.BONUS].PARAM))
-                    print(item_data.BONUS[#item_data.BONUS].VALUE)
+                            item_data.SKILL_BONUS[#item_data.SKILL_BONUS + 1] = {
+                                bonus_levels = GetRandomInt(class.min_level_skill, class.max_level_skill),
+                                id = CLASS_SKILL_LIST[gen][category][GetRandomInt(1, #CLASS_SKILL_LIST[gen][category])]
+                            }
 
-                    max = max - 1
-                    if max <= 0 then break end
-                end
-            end
 
-            for i = 1, #ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus do
-                if GetRandomInt(0, 100) <= ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].probability and max > 0 then
+                            if bonus_parameters_count > 1 then
+                                category = class.available_category[GetRandomInt(1, #class.available_category)]
+                                local skill_id = CLASS_SKILL_LIST[gen][category][GetRandomInt(1, #CLASS_SKILL_LIST[gen][category])]
+
+                                if skill_id == item_data.SKILL_BONUS[#item_data.SKILL_BONUS].id then
+                                    item_data.SKILL_BONUS[#item_data.SKILL_BONUS].bonus_levels = item_data.SKILL_BONUS[#item_data.SKILL_BONUS].bonus_levels + 1
+                                else
+                                    item_data.SKILL_BONUS[#item_data.SKILL_BONUS + 1] = {
+                                        bonus_levels = GetRandomInt(class.min_level_skill, class.max_level_skill),
+                                        id = skill_id
+                                    }
+                                end
+
+                            end
+
+                    elseif GetRandomInt(0, 100) <= class.category_bonus_probability then
 
                         item_data.SKILL_BONUS[#item_data.SKILL_BONUS + 1] = {
-                            bonus_levels = GetRandomInt(ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].bonus_levels_min, ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].bonus_levels_max)
+                            bonus_levels = GetRandomInt(class.min_level_category, class.max_level_category),
+                            category = category
                         }
 
-                        if ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].id ~= nil then
-                            item_data.SKILL_BONUS[#item_data.SKILL_BONUS].id = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].id
-                        elseif ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].category ~= nil then
-                            item_data.SKILL_BONUS[#item_data.SKILL_BONUS].category = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].category
-                        end
+                    end
 
-                    max = max - 1
-                    if max <= 0 then break end
-
-                end
             end
 
+
+
+
+        --[[
+            if max > 0 then
+                for i = 1, #ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus do
+                    if (GetRandomInt(0, 100) <= ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].probability and max > 0) then
+
+                            item_data.SKILL_BONUS[#item_data.SKILL_BONUS + 1] = {
+                                bonus_levels = GetRandomInt(ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].bonus_levels_min, ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].bonus_levels_max)
+                            }
+
+                            if ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].id ~= nil then
+                                item_data.SKILL_BONUS[#item_data.SKILL_BONUS].id = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].id
+                            elseif ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].category ~= nil then
+                                item_data.SKILL_BONUS[#item_data.SKILL_BONUS].category = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].category
+                            end
+
+                        max = max - 1
+                        if max <= 0 then break end
+                    end
+                end
+            end
+        ]]
             BlzSetItemName(item, item_data.NAME)
 
     end
@@ -184,18 +240,20 @@ do
 
     function GenerateItemStoneSlots(item)
         local item_data = GetItemData(item)
-        local stone_roll = GetRandomInt(0, 100)
         local stone = #QUALITY_STONE_COUNT[item_data.QUALITY].rolls
 
             while(stone > 0) do
-                if QUALITY_STONE_COUNT[item_data.QUALITY].rolls[stone] ~= nil then
-                        if stone_roll <= QUALITY_STONE_COUNT[item_data.QUALITY].rolls[stone] then
-                            item_data.MAX_SLOTS = stone
-                        end
-                    stone = stone - 1
-                else
-                    break
-                end
+                local stone_roll = GetRandomInt(0, 100)
+
+                    if QUALITY_STONE_COUNT[item_data.QUALITY].rolls[stone] ~= nil then
+                            if stone_roll <= QUALITY_STONE_COUNT[item_data.QUALITY].rolls[stone] then
+                                item_data.MAX_SLOTS = stone
+                            end
+                        stone = stone - 1
+                    else
+                        break
+                    end
+
             end
 
     end
@@ -235,56 +293,67 @@ do
             GenerateItemCost(item, level)
     end
 
+
     function GenerateItemStats(item, level, quality)
         local item_data = GetItemData(item)
+        local item_variation = GetRandomInt(1, #QUALITY_ITEM_LIST[quality][item_data.SUBTYPE])
+        local item_preset = QUALITY_ITEM_LIST[quality][item_data.SUBTYPE][item_variation]
+
 
             item_data.QUALITY = quality
-
-        local item_variation = GetRandomInt(1, #QUALITY_ITEM_LIST[quality][item_data.SUBTYPE])
-
-            item_data.frame_texture = QUALITY_ITEM_LIST[quality][item_data.SUBTYPE][item_variation].icon
-            item_data.NAME = QUALITY_ITEM_LIST[quality][item_data.SUBTYPE][item_variation].name
+            item_data.frame_texture = item_preset.icon
+            item_data.NAME = item_preset.name
             item_data.level = level
+            item_data.soundpack = item_preset.soundpack
 
-        if item_data.TYPE == ITEM_TYPE_WEAPON then
-            if item_data.SUBTYPE ~= BOW_WEAPON then
-                local physical_archetype = 65
 
-                if item_data.SUBTYPE == STAFF_WEAPON then physical_archetype = 35
-                elseif item_data.SUBTYPE == AXE_WEAPON or item_data.SUBTYPE == GREATAXE_WEAPON or item_data.SUBTYPE == GREATSWORD_WEAPON or item_data.SUBTYPE == GREATBLUNT_WEAPON then physical_archetype = 75
-                elseif item_data.SUBTYPE == SWORD_WEAPON or item_data.SUBTYPE == DAGGER_WEAPON or item_data.SUBTYPE == BLUNT_WEAPON then physical_archetype = 50 end
+                if item_data.TYPE == ITEM_TYPE_WEAPON then
+                    if item_data.SUBTYPE ~= BOW_WEAPON then
+                        local physical_archetype = 65
 
-                if GetRandomInt(0, 100) <= physical_archetype then
-                    item_data.DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL
-                    local attribute = GetRandomInt(1, 6)
+                        if item_data.SUBTYPE == STAFF_WEAPON then physical_archetype = 35
+                        elseif item_data.SUBTYPE == AXE_WEAPON or item_data.SUBTYPE == GREATAXE_WEAPON or item_data.SUBTYPE == GREATSWORD_WEAPON or item_data.SUBTYPE == GREATBLUNT_WEAPON then physical_archetype = 75
+                        elseif item_data.SUBTYPE == SWORD_WEAPON or item_data.SUBTYPE == DAGGER_WEAPON or item_data.SUBTYPE == BLUNT_WEAPON then physical_archetype = 50 end
 
-                        if attribute == 1 or attribute > 4 then
-                            item_data.ATTRIBUTE = PHYSICAL_ATTRIBUTE
-                        elseif attribute == 2 then
-                            item_data.ATTRIBUTE = HOLY_ATTRIBUTE
-                        elseif attribute == 3 then
-                            item_data.ATTRIBUTE = POISON_ATTRIBUTE
-                        elseif attribute == 4 then
-                            item_data.ATTRIBUTE = DARKNESS_ATTRIBUTE
+                        if GetRandomInt(0, 100) <= physical_archetype then
+                            item_data.DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL
+                            local attribute_roll = GetRandomInt(1, 6)
+
+                                if attribute_roll == 1 or attribute_roll > 4 then
+                                    item_data.ATTRIBUTE = PHYSICAL_ATTRIBUTE
+                                elseif attribute_roll == 2 then
+                                    item_data.ATTRIBUTE = HOLY_ATTRIBUTE
+                                elseif attribute_roll == 3 then
+                                    item_data.ATTRIBUTE = POISON_ATTRIBUTE
+                                elseif attribute_roll == 4 then
+                                    item_data.ATTRIBUTE = DARKNESS_ATTRIBUTE
+                                end
+
+                        else
+                            item_data.DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL
+                            item_data.ATTRIBUTE = GetRandomInt(FIRE_ATTRIBUTE, DARKNESS_ATTRIBUTE)
                         end
-
-                else
-                    item_data.DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL
-                    item_data.ATTRIBUTE = GetRandomInt(FIRE_ATTRIBUTE, DARKNESS_ATTRIBUTE)
+                    else
+                        if GetRandomInt(1, 2) == 1 then
+                            item_data.ATTRIBUTE = PHYSICAL_ATTRIBUTE
+                        else
+                            item_data.ATTRIBUTE = POISON_ATTRIBUTE
+                        end
+                    end
                 end
-            else
-                if GetRandomInt(1, 2) == 1 then
-                    item_data.ATTRIBUTE = PHYSICAL_ATTRIBUTE
-                else
-                    item_data.ATTRIBUTE = POISON_ATTRIBUTE
-                end
-            end
-        end
 
             GenerateItemLevel(item, level)
             GenerateItemStoneSlots(item)
             GenerateItemSuffix(item, item_variation, quality)
             GenerateItemCost(item, level)
+
+                if item_data.TYPE == ITEM_TYPE_WEAPON then
+                    item_data.DAMAGE = item_data.DAMAGE * item_preset.modificator
+                elseif item_data.TYPE == ITEM_TYPE_ARMOR then
+                    item_data.DEFENCE = item_data.DEFENCE * item_preset.modificator
+                elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
+                    item_data.SUPPRESSION = item_data.SUPPRESSION * item_preset.modificator
+                end
 
             BlzSetItemName(item, item_data.NAME)
     end
@@ -435,7 +504,7 @@ do
             [ITEM_TYPE_GEM]        = LOCALE_LIST[my_locale].ITEM_TYPE_GEM_NAME
         }
 
-         ITEMSUBTYPES_NAMES = {
+        ITEMSUBTYPES_NAMES = {
             [BOW_WEAPON]            = LOCALE_LIST[my_locale].BOW_WEAPON_NAME,
             [BLUNT_WEAPON]          = LOCALE_LIST[my_locale].BLUNT_WEAPON_NAME,
             [GREATBLUNT_WEAPON]     = LOCALE_LIST[my_locale].GREATBLUNT_WEAPON_NAME,
@@ -455,16 +524,17 @@ do
             [THROWING_KNIFE_WEAPON] = LOCALE_LIST[my_locale].THROWING_KNIFE_WEAPON_NAME,
         }
 
-         ATTRIBUTE_NAMES = {
-             [PHYSICAL_ATTRIBUTE]     = LOCALE_LIST[my_locale].PHYSICAL_ATTRIBUTE_NAME,
-             [FIRE_ATTRIBUTE]         = LOCALE_LIST[my_locale].FIRE_ATTRIBUTE_NAME,
-             [ICE_ATTRIBUTE]          = LOCALE_LIST[my_locale].ICE_ATTRIBUTE_NAME,
-             [LIGHTNING_ATTRIBUTE]    = LOCALE_LIST[my_locale].LIGHTNING_ATTRIBUTE_NAME,
-             [POISON_ATTRIBUTE]       = LOCALE_LIST[my_locale].POISON_ATTRIBUTE_NAME,
-             [ARCANE_ATTRIBUTE]       = LOCALE_LIST[my_locale].ARCANE_ATTRIBUTE_NAME,
-             [DARKNESS_ATTRIBUTE]     = LOCALE_LIST[my_locale].DARKNESS_ATTRIBUTE_NAME,
-             [HOLY_ATTRIBUTE]         = LOCALE_LIST[my_locale].HOLY_ATTRIBUTE_NAME
-         }
+
+        ATTRIBUTE_NAMES = {
+            [PHYSICAL_ATTRIBUTE]     = LOCALE_LIST[my_locale].PHYSICAL_ATTRIBUTE_NAME,
+            [FIRE_ATTRIBUTE]         = LOCALE_LIST[my_locale].FIRE_ATTRIBUTE_NAME,
+            [ICE_ATTRIBUTE]          = LOCALE_LIST[my_locale].ICE_ATTRIBUTE_NAME,
+            [LIGHTNING_ATTRIBUTE]    = LOCALE_LIST[my_locale].LIGHTNING_ATTRIBUTE_NAME,
+            [POISON_ATTRIBUTE]       = LOCALE_LIST[my_locale].POISON_ATTRIBUTE_NAME,
+            [ARCANE_ATTRIBUTE]       = LOCALE_LIST[my_locale].ARCANE_ATTRIBUTE_NAME,
+            [DARKNESS_ATTRIBUTE]     = LOCALE_LIST[my_locale].DARKNESS_ATTRIBUTE_NAME,
+            [HOLY_ATTRIBUTE]         = LOCALE_LIST[my_locale].HOLY_ATTRIBUTE_NAME
+        }
 
 
 

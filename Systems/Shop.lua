@@ -50,7 +50,7 @@ do
         local h = GetHandleId(BlzGetTriggerFrame())
 
             if ButtonList[h].item ~= nil then
-                ShowTooltip(player, h, ButtonList[GetHandleId(ShopFrame[player].slot[32])].image)
+                ShowTooltip(player, h, FRAMEPOINT_RIGHT, ButtonList[GetHandleId(ShopFrame[player].slot[32])].image)
             else
                 RemoveTooltip(player)
             end

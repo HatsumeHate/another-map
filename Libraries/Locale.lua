@@ -184,7 +184,14 @@ do
             ITEM_SUFFIX_FURY = " Ярости",
             ITEM_SUFFIX_CONCENTRATION = " Концентрации",
             ITEM_SUFFIX_PRECISION = " Точности",
-
+            ITEM_SUFFIX_ICE_WIZARD = " Ледяного Колдуна",
+            ITEM_SUFFIX_FIRE_WIZARD = " Огненного Колдуна",
+            ITEM_SUFFIX_LIGHTNING_WIZARD = " Электрического Колдуна",
+            ITEM_SUFFIX_SLAYER = " Убийцы",
+            ITEM_SUFFIX_TRICKSTER = " Обманщика",
+            ITEM_SUFFIX_ROCK = " Скалы",
+            ITEM_SUFFIX_KNIGHT = " Рыцаря",
+            ITEM_SUFFIX_MYSTERY = " Загадки",
 
             GENERIC_SWORD_NAME_1 = "необработанный клинок",
             GENERIC_SWORD_NAME_2 = "короткий меч",
@@ -216,9 +223,9 @@ do
 
             GENERIC_STAFF_NAME_1 = "Сверток Природы",
             GENERIC_STAFF_NAME_2 = "огненный скипетр",
-            GENERIC_STAFF_NAME_3 = "Нефритовый Холод",
+            GENERIC_STAFF_NAME_3 = "Нефритовый Свет",
             GENERIC_STAFF_NAME_4 = "Лунный Свет",
-            GENERIC_STAFF_NAME_5 = "Связи Мира",
+            GENERIC_STAFF_NAME_5 = "Путы Мира",
 
             GENERIC_BOW_NAME_1 = "Позолоченное Древо",
             GENERIC_BOW_NAME_2 = "длинный лук",
@@ -226,6 +233,46 @@ do
             GENERIC_BOW_NAME_4 = "лук разведчика",
             GENERIC_BOW_NAME_5 = "тяжелый лук",
             GENERIC_BOW_NAME_6 = "Рог",
+
+            GENERIC_CHEST_NAME_1 = "композитный нагрудник",
+            GENERIC_CHEST_NAME_2 = "Воронье крыло",
+            GENERIC_CHEST_NAME_3 = "рыцарский нагрудник",
+            GENERIC_CHEST_NAME_4 = "панцирь",
+            GENERIC_CHEST_NAME_5 = "легкая броня",
+            GENERIC_CHEST_NAME_6 = "тяжелая броня",
+            GENERIC_CHEST_NAME_7 = "стальная броня",
+            GENERIC_CHEST_NAME_8 = "роба",
+
+            GENERIC_HANDS_NAME_1 = "меховые перчатки",
+            GENERIC_HANDS_NAME_2 = "кожанные перчатки",
+            GENERIC_HANDS_NAME_3 = "кольчужные перчатки",
+            GENERIC_HANDS_NAME_4 = "латные перчатки",
+
+            GENERIC_LEGS_NAME_1 = "походные сапоги",
+            GENERIC_LEGS_NAME_2 = "сандали",
+            GENERIC_LEGS_NAME_3 = "кожанные сандали",
+            GENERIC_LEGS_NAME_4 = "укрепленные сандали",
+            GENERIC_LEGS_NAME_5 = "латные сапоги",
+
+            GENERIC_HEAD_NAME_1 = "латный шлем",
+            GENERIC_HEAD_NAME_2 = "демоническая каска",
+            GENERIC_HEAD_NAME_3 = "рогатый шлем",
+            GENERIC_HEAD_NAME_4 = "шлем фанатиков",
+            GENERIC_HEAD_NAME_5 = "накидка",
+            GENERIC_HEAD_NAME_6 = "легкий шлем",
+            GENERIC_HEAD_NAME_7 = "стальной шлем",
+
+            GENERIC_RING_NAME_1 = "адамантитовое кольцо",
+            GENERIC_RING_NAME_2 = "позолоченное кольцо",
+            GENERIC_RING_NAME_3 = "рыцарская печатка",
+            GENERIC_RING_NAME_4 = "перстень наследника",
+            GENERIC_RING_NAME_5 = "золотое кольцо",
+
+            GENERIC_NECKLACE_NAME_1 = "подвеска с камнем",
+            GENERIC_NECKLACE_NAME_2 = "серебрянный амулет",
+            GENERIC_NECKLACE_NAME_3 = "древний амулет",
+            GENERIC_NECKLACE_NAME_4 = "четки колдуна",
+
 
             ITEM_NAME_RAT_HUNTER = 'Охотник на крыс',
             ITEM_SPEC_DESCRIPTION_RAT_HUNTER = "Даже у крысоловов был легендарный лук, коего желали все охотники на крыс",
@@ -349,6 +396,22 @@ do
             SKILL_PANEL_TOOLTIP_NAME = "Skills",
             SKILL_PANEL_TOOLTIP_DESCRIPTION = "Overlook and bind settings for all abilities.",
 
+            SKILL_CATEGORY_LIGHTNING = "Lightning",
+            SKILL_CATEGORY_FIRE = "Fire",
+            SKILL_CATEGORY_ICE = "Ice",
+            SKILL_CATEGORY_ARCANE = "Arcane",
+            SKILL_CATEGORY_FIGHTING_MASTERY = "Fighting Mastery",
+            SKILL_CATEGORY_BATTLE_ADVANTAGE = "Battle Advantage",
+            SKILL_CATEGORY_INNER_STRENGTH = "Inner Strength",
+
+            SKILL_CATEGORY_LIGHTNING_ADVANCED = "Lightning skills: ",
+            SKILL_CATEGORY_FIRE_ADVANCED = "Fire skills: ",
+            SKILL_CATEGORY_ICE_ADVANCED = "Ice skills: ",
+            SKILL_CATEGORY_ARCANE_ADVANCED = "Arcane skills: ",
+            SKILL_CATEGORY_FIGHTING_MASTERY_ADVANCED = "Fighting Mastery skills: ",
+            SKILL_CATEGORY_BATTLE_ADVANTAGE_ADVANCED = "Battle Advantage skills: ",
+            SKILL_CATEGORY_INNER_STRENGTH_ADVANCED = "Inner Strength skills: ",
+
             SKILL_PANEL_LVL_TEXT = "Level: ",
             SKILL_PANEL_UNBIND = "Unbind",
 
@@ -414,10 +477,94 @@ do
             ITEM_SUFFIX_FURY = " of Fury",
             ITEM_SUFFIX_CONCENTRATION = " of Concentration",
             ITEM_SUFFIX_PRECISION = " of Precision",
+            ITEM_SUFFIX_ICE_WIZARD = " of Frost Wizard",
+            ITEM_SUFFIX_FIRE_WIZARD = " of Fire Wizard",
+            ITEM_SUFFIX_LIGHTNING_WIZARD = " Lightning Wizard",
+            ITEM_SUFFIX_SLAYER = " of Slayer",
+            ITEM_SUFFIX_TRICKSTER = " of Trickster",
+            ITEM_SUFFIX_ROCK = " of Rock",
+            ITEM_SUFFIX_KNIGHT = " of Knight",
+            ITEM_SUFFIX_MYSTERY = " of Mystery",
 
-            GENERIC_SWORD_NAME_1 = "Runic blade",
-            GENERIC_SWORD_NAME_2 = "Short blade",
-            GENERIC_SWORD_NAME_3 = "Crooked blade",
+            GENERIC_SWORD_NAME_1 = "rough blade",
+            GENERIC_SWORD_NAME_2 = "short blade",
+            GENERIC_SWORD_NAME_3 = "runic blade",
+            GENERIC_SWORD_NAME_4 = "broadsword",
+
+            GENERIC_GREATSWORD_NAME_1 = "barbaric cutter",
+            GENERIC_GREATSWORD_NAME_2 = "giants knife",
+
+            GENERIC_AXE_NAME_1 = "broad axe",
+            GENERIC_AXE_NAME_2 = "serrated axe",
+            GENERIC_AXE_NAME_3 = "steel axe",
+
+            GENERIC_GREATAXE_NAME_1 = "huge cutter",
+
+            GENERIC_BLUNT_NAME_1 = "ancient mace",
+            GENERIC_BLUNT_NAME_2 = "club",
+            GENERIC_BLUNT_NAME_3 = "studded club",
+            GENERIC_BLUNT_NAME_4 = "flail",
+
+            GENERIC_GREATBLUNT_NAME_1 = "large studded club",
+            GENERIC_GREATBLUNT_NAME_2 = "mithril hammer",
+
+            GENERIC_DAGGER_NAME_1 = "curved knife",
+            GENERIC_DAGGER_NAME_2 = "gilded knife",
+            GENERIC_DAGGER_NAME_3 = "knife",
+            GENERIC_DAGGER_NAME_4 = "sharpening",
+            GENERIC_DAGGER_NAME_5 = "chopping knife",
+
+            GENERIC_STAFF_NAME_1 = "Parcel of Nature",
+            GENERIC_STAFF_NAME_2 = "fiery scepter",
+            GENERIC_STAFF_NAME_3 = "Jade Light",
+            GENERIC_STAFF_NAME_4 = "Moonlight",
+            GENERIC_STAFF_NAME_5 = "The ways of World",
+
+            GENERIC_BOW_NAME_1 = "Gilded Tree",
+            GENERIC_BOW_NAME_2 = "Longbow",
+            GENERIC_BOW_NAME_3 = "Rough bow",
+            GENERIC_BOW_NAME_4 = "Scouter bow",
+            GENERIC_BOW_NAME_5 = "Heavy bow",
+            GENERIC_BOW_NAME_6 = "Horn",
+
+            GENERIC_CHEST_NAME_1 = "composite chest",
+            GENERIC_CHEST_NAME_2 = "Raven wing",
+            GENERIC_CHEST_NAME_3 = "knight chest",
+            GENERIC_CHEST_NAME_4 = "carapace",
+            GENERIC_CHEST_NAME_5 = "light armor",
+            GENERIC_CHEST_NAME_6 = "heavy armor",
+            GENERIC_CHEST_NAME_7 = "steel armor",
+            GENERIC_CHEST_NAME_8 = "robe",
+
+            GENERIC_HANDS_NAME_1 = "fur gloves",
+            GENERIC_HANDS_NAME_2 = "leather gloves",
+            GENERIC_HANDS_NAME_3 = "chain gloves",
+            GENERIC_HANDS_NAME_4 = "plate gloves",
+
+            GENERIC_LEGS_NAME_1 = "hiking boots",
+            GENERIC_LEGS_NAME_2 = "sandals",
+            GENERIC_LEGS_NAME_3 = "leather sandals",
+            GENERIC_LEGS_NAME_4 = "reinforced sandals",
+            GENERIC_LEGS_NAME_5 = "plate boots",
+
+            GENERIC_HEAD_NAME_1 = "plate cape",
+            GENERIC_HEAD_NAME_2 = "demonic helmet",
+            GENERIC_HEAD_NAME_3 = "horned helmet",
+            GENERIC_HEAD_NAME_4 = "fanatic's helmet",
+            GENERIC_HEAD_NAME_5 = "cape",
+            GENERIC_HEAD_NAME_6 = "light helmet",
+            GENERIC_HEAD_NAME_7 = "steel cap",
+
+            GENERIC_RING_NAME_1 = "adamantite ring",
+            GENERIC_RING_NAME_2 = "gold-plated ring",
+            GENERIC_RING_NAME_3 = "knight's signet",
+            GENERIC_RING_NAME_4 = "heir ring",
+            GENERIC_RING_NAME_5 = "golden ring",
+
+            GENERIC_NECKLACE_NAME_1 = "pendant with stone",
+            GENERIC_NECKLACE_NAME_2 = "silver amulet",
+            GENERIC_NECKLACE_NAME_3 = "ancient amulet",
+            GENERIC_NECKLACE_NAME_4 = "sorcerer rosary",
 
             ITEM_NAME_RAT_HUNTER = 'Rat Hunter',
             ITEM_SPEC_DESCRIPTION_RAT_HUNTER = "Even the rat-hunters had a legendary bows, which all rat hunters desired.",
@@ -448,7 +595,7 @@ do
 
 
     function InitLocaleLibrary()
-        my_locale = BlzGetLocale() -- "enGB"
+        my_locale = "ruRU"--BlzGetLocale() -- "enGB"
     end
 
 

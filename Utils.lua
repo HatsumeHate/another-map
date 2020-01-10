@@ -195,6 +195,46 @@
 		return a
 	end
 
+
+	local function ValidateNumber(num, list)
+
+		for i = 1, #list do
+			if num == list[i] then
+				return false
+			end
+		end
+
+		return true
+	end
+
+
+	local function GenerateInt(min, max, list)
+		local num = GetRandomInt(min, max)
+
+		while(not ValidateNumber(num, list)) do
+			num = GetRandomInt(min, max)
+		end
+
+		return num
+	end
+
+
+	---@param min integer
+	---@param max integer
+	---@param count integer
+	function GetRandomIntTable(min, max, count)
+		local numbers = {}
+
+			if max < min then max = min end
+			if count > max - min + 1 then count = max - min + 1 end
+
+			for i = 1, count do
+				numbers[#numbers + 1] = GenerateInt(min, max, numbers)
+			end
+
+		return numbers
+	end
+
 	---@param unit unit
 	---@param range real
 	---@param ang real

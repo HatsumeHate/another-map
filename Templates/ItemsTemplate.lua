@@ -246,7 +246,8 @@ do
 	function CreateDefaultWeapon()
 		local default_weapon = GetItemTemplate()
 
-            ItemMergeData(default_weapon, weapons[FIST_WEAPON])
+            --ItemMergeData(default_weapon, weapons[FIST_WEAPON])
+			MergeTables(default_weapon, weapons[FIST_WEAPON])
 			MergeTables(default_weapon, ITEM_TEMPLATE_DATA[FourCC('0000')])
 
 		return default_weapon
@@ -290,6 +291,135 @@ do
 			QUALITY = RARE_ITEM,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
 			sell_value = 50
+		})
+		ItemAddData('IGST', {
+			NAME    = 'NAN',
+			TYPE = ITEM_TYPE_WEAPON,
+			SUBTYPE = GREATSWORD_WEAPON,
+			DAMAGE  = 100,
+			QUALITY = RARE_ITEM,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
+			sell_value = 50
+		})
+
+		ItemAddData('IGAO', {
+			NAME    = 'NAN',
+			TYPE = ITEM_TYPE_WEAPON,
+			SUBTYPE = AXE_WEAPON,
+			DAMAGE  = 100,
+			QUALITY = RARE_ITEM,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
+			sell_value = 50
+		})
+		ItemAddData('IGAT', {
+			NAME    = 'NAN',
+			TYPE = ITEM_TYPE_WEAPON,
+			SUBTYPE = GREATAXE_WEAPON,
+			DAMAGE  = 100,
+			QUALITY = RARE_ITEM,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
+			sell_value = 50
+		})
+
+		ItemAddData('IGBO', {
+			NAME    = 'NAN',
+			TYPE = ITEM_TYPE_WEAPON,
+			SUBTYPE = BLUNT_WEAPON,
+			DAMAGE  = 100,
+			QUALITY = RARE_ITEM,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
+			sell_value = 50
+		})
+		ItemAddData('IGBT', {
+			NAME    = 'NAN',
+			TYPE = ITEM_TYPE_WEAPON,
+			SUBTYPE = GREATBLUNT_WEAPON,
+			DAMAGE  = 100,
+			QUALITY = RARE_ITEM,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
+			sell_value = 50
+		})
+
+		ItemAddData('IGDR', {
+			NAME    = 'NAN',
+			TYPE = ITEM_TYPE_WEAPON,
+			SUBTYPE = DAGGER_WEAPON,
+			DAMAGE  = 100,
+			QUALITY = RARE_ITEM,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
+			sell_value = 50
+		})
+		ItemAddData('IGSF', {
+			NAME    = 'NAN',
+			TYPE = ITEM_TYPE_WEAPON,
+			SUBTYPE = STAFF_WEAPON,
+			DAMAGE  = 100,
+			QUALITY = RARE_ITEM,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
+			sell_value = 50
+		})
+		ItemAddData('IGBW', {
+			NAME    = 'NAN',
+			TYPE = ITEM_TYPE_WEAPON,
+			SUBTYPE = BOW_WEAPON,
+			DAMAGE  = 100,
+			QUALITY = RARE_ITEM,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
+			sell_value = 50
+		})
+		ItemAddData('IGAC', {
+			NAME    = 'NAN',
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = CHEST_ARMOR,
+			QUALITY = MAGIC_ITEM,
+			DEFENCE = 50,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
+			sell_value = 50,
+		})
+		ItemAddData('IGAD', {
+			NAME    = 'NAN',
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = HANDS_ARMOR,
+			QUALITY = MAGIC_ITEM,
+			DEFENCE = 50,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
+			sell_value = 50,
+		})
+		ItemAddData('IGAH', {
+			NAME    = 'NAN',
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = HEAD_ARMOR,
+			QUALITY = MAGIC_ITEM,
+			DEFENCE = 50,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
+			sell_value = 50,
+		})
+		ItemAddData('IGAL', {
+			NAME    = 'NAN',
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = LEGS_ARMOR,
+			QUALITY = MAGIC_ITEM,
+			DEFENCE = 50,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
+			sell_value = 50,
+		})
+		ItemAddData('IGJN', {
+			NAME    = 'NAN',
+			TYPE    = ITEM_TYPE_JEWELRY,
+			SUBTYPE = NECKLACE_JEWELRY,
+			QUALITY = MAGIC_ITEM,
+			DEFENCE = 50,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
+			sell_value = 50,
+		})
+		ItemAddData('IGJR', {
+			NAME    = 'NAN',
+			TYPE    = ITEM_TYPE_JEWELRY,
+			SUBTYPE = RING_JEWELRY,
+			QUALITY = MAGIC_ITEM,
+			DEFENCE = 50,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
+			sell_value = 50,
 		})
         --
         ItemAddData('I001', {

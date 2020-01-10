@@ -47,9 +47,12 @@ do
 
 		TimerStart(CreateTimer(), 5., false, function()
 			--print(BlzGetLocale())
-            local item = CreateCustomItem("IGSO",  GetUnitX(gg_unit_HBRB_0005) - 100., GetUnitY(gg_unit_HBRB_0005) - 100.)
-            GenerateItemStats(item, GetRandomInt(1, 100), COMMON_ITEM)
-            AddItemToShop(gg_unit_opeo_0031, item, false)
+			for i = 1, 32 do
+				local item = CreateCustomItem(GetRandomGeneratedId(),  GetUnitX(gg_unit_HBRB_0005) - 100., GetUnitY(gg_unit_HBRB_0005) - 100.)
+				GenerateItemStats(item, GetRandomInt(1, 100), COMMON_ITEM)
+				AddItemToShop(gg_unit_opeo_0031, item, false)
+			end
+
 			--CreateCustomItem('I000', GetUnitX(gg_unit_HBRB_0005), GetUnitY(gg_unit_HBRB_0005))
             AddPointsToPlayer(1, 10)
 		end)
