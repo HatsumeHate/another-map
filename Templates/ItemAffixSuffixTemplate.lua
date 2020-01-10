@@ -1435,16 +1435,24 @@ do
                                 SORCERESS_CLASS
                             },
                             [BARBARIAN_CLASS] = {
-                                category_bonus_probability = 10.,
-                                skill_bonus_probability = 10.,
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
                                 available_category = {
                                     SKILL_CATEGORY_FIGHTING_MASTERY,
                                     SKILL_CATEGORY_BATTLE_ADVANTAGE
                                 },
                             },
                             [SORCERESS_CLASS] = {
-                                category_bonus_probability = 10.,
-                                skill_bonus_probability = 10.,
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
                                 available_category = {
                                     SKILL_CATEGORY_LIGHTNING,
                                     SKILL_CATEGORY_FIRE,
