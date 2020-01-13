@@ -446,7 +446,6 @@ do
 
                 if BlzFrameGetWidth(PlayerTooltip[player].frames[i]) > width then
                     width = BlzFrameGetWidth(PlayerTooltip[player].frames[i])
-                    --if i == 1 then width = width * 0.7 end
                 end
 
                 if i ~= 1 then
@@ -458,17 +457,15 @@ do
          width = width - 0.02
          LockWidth(PlayerTooltip[player].frames[1], width, 0.06, 0.2)
 
-         --print(BlzFrameGetWidth(PlayerTooltip[player].frames[1]))
          local offset = BlzFrameGetWidth(PlayerTooltip[player].frames[1]) / 1.98
          if direction == FRAMEPOINT_LEFT then offset = -offset end
          BlzFrameSetPoint(PlayerTooltip[player].frames[1], FRAMEPOINT_CENTER, ButtonList[h].image, FRAMEPOINT_CENTER, offset, -0.01)
 
-            --BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOP, PlayerTooltip[player].frames[1], FRAMEPOINT_TOP, 0., 0.007)
+
             BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOPLEFT, PlayerTooltip[player].frames[1], FRAMEPOINT_TOPLEFT, -0.007, 0.01)
             BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOPRIGHT, PlayerTooltip[player].frames[1], FRAMEPOINT_TOPRIGHT, 0.007, 0.01)
             BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMLEFT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMLEFT, -0.007, -0.007)
             BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMRIGHT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMRIGHT, 0.007, -0.007)
-            --BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOM, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOM, 0., -0.007)
 
                 if cost_Frame ~= nil then
                     BlzFrameSetPoint(cost_Frame, FRAMEPOINT_BOTTOMLEFT, PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMLEFT, 0.0055, 0.0055)

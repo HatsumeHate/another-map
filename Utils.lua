@@ -196,7 +196,7 @@
 	end
 
 
-	local function ValidateNumber(num, list)
+	function ValidateNumber(num, list)
 
 		for i = 1, #list do
 			if num == list[i] then
@@ -208,12 +208,12 @@
 	end
 
 
-	local function GenerateInt(min, max, list)
+	function GenerateInt(min, max, list)
 		local num = GetRandomInt(min, max)
 
-		while(not ValidateNumber(num, list)) do
-			num = GetRandomInt(min, max)
-		end
+			while(not ValidateNumber(num, list) ) do
+				num = GetRandomInt(min, max)
+			end
 
 		return num
 	end
@@ -223,13 +223,14 @@
 	---@param max integer
 	---@param count integer
 	function GetRandomIntTable(min, max, count)
+
+		if max < min then max = min end
+		if count > (max - min + 1) then count = max - min + 1 end
+
 		local numbers = {}
 
-			if max < min then max = min end
-			if count > max - min + 1 then count = max - min + 1 end
-
 			for i = 1, count do
-				numbers[#numbers + 1] = GenerateInt(min, max, numbers)
+				numbers[i] = GenerateInt(min, max, numbers)
 			end
 
 		return numbers

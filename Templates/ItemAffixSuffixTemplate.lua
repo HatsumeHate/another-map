@@ -28,6 +28,7 @@ do
     ITEM_SUFFIX_ROCK                = 10
     ITEM_SUFFIX_KNIGHT              = 11
     ITEM_SUFFIX_MYSTERY             = 12
+    ITEM_SUFFIX_KNOWLEDGE           = 18
     -- rare boosted suffix
     ITEM_SUFFIX_SLAYER_GENIUS       = 13
     ITEM_SUFFIX_HIGH_KNIGHT         = 14
@@ -152,7 +153,7 @@ do
     QUALITY_ITEM_BONUS_COUNT = {
         [COMMON_ITEM] = {min = 1, max = 3},
         [RARE_ITEM] = {min = 2, max = 4},
-        [MAGIC_ITEM] = {min = 1, max = 5},
+        [MAGIC_ITEM] = {min = 3, max = 5},
     }
 
 
@@ -169,106 +170,51 @@ do
     ITEM_QUALITY_SUFFIX_LIST = {
         [COMMON_ITEM] = {
             [RING_JEWELRY] = {
-                ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
                 ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_MYSTERY,
+                ITEM_SUFFIX_KNOWLEDGE
             },
             [NECKLACE_JEWELRY] = {
-                ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
                 ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_MYSTERY,
+                ITEM_SUFFIX_KNOWLEDGE
             },
             [HEAD_ARMOR] = {
-                ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
                 ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_ROCK,
+                ITEM_SUFFIX_KNIGHT,
+                ITEM_SUFFIX_MYSTERY,
             },
             [HANDS_ARMOR] = {
-                ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
                 ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_ROCK,
+                ITEM_SUFFIX_KNIGHT,
+                ITEM_SUFFIX_MYSTERY,
             },
             [CHEST_ARMOR] = {
-                ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
                 ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_ROCK,
+                ITEM_SUFFIX_KNIGHT,
+                ITEM_SUFFIX_MYSTERY,
             },
             [LEGS_ARMOR] = {
-                ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
                 ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_ROCK,
+                ITEM_SUFFIX_KNIGHT,
+                ITEM_SUFFIX_MYSTERY,
             },
-            [SWORD_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                --ITEM_SUFFIX_SLAYER
-            },
-            [GREATSWORD_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION
-            },
-            [BLUNT_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                --ITEM_SUFFIX_SLAYER
-            },
-            [GREATBLUNT_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION
-            },
-            [AXE_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                --ITEM_SUFFIX_SLAYER
-            },
-            [GREATAXE_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION
-            },
-            [DAGGER_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                --ITEM_SUFFIX_SLAYER
-            },
-            [STAFF_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                --ITEM_SUFFIX_ICE_WIZARD,
-                --ITEM_SUFFIX_LIGHTNING_WIZARD,
-                --ITEM_SUFFIX_FIRE_WIZARD,
-                --ITEM_SUFFIX_SLAYER
-            },
-            [BOW_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                --ITEM_SUFFIX_SLAYER
-            }
-        },
-        [RARE_ITEM] = {
             [SWORD_WEAPON] = {
                 ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
@@ -280,7 +226,8 @@ do
                 ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
             },
             [BLUNT_WEAPON] = {
                 ITEM_SUFFIX_ANGER,
@@ -293,7 +240,8 @@ do
                 ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
             },
             [AXE_WEAPON] = {
                 ITEM_SUFFIX_ANGER,
@@ -306,7 +254,8 @@ do
                 ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
             },
             [DAGGER_WEAPON] = {
                 ITEM_SUFFIX_ANGER,
@@ -332,7 +281,235 @@ do
                 ITEM_SUFFIX_PRECISION,
                 ITEM_SUFFIX_SLAYER
             }
-        }
+        },
+        [RARE_ITEM] = {
+            [RING_JEWELRY] = {
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_MYSTERY,
+                ITEM_SUFFIX_KNOWLEDGE
+            },
+            [NECKLACE_JEWELRY] = {
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_MYSTERY,
+                ITEM_SUFFIX_KNOWLEDGE
+            },
+            [HEAD_ARMOR] = {
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_ROCK,
+                ITEM_SUFFIX_KNIGHT,
+                ITEM_SUFFIX_MYSTERY,
+            },
+            [HANDS_ARMOR] = {
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_ROCK,
+                ITEM_SUFFIX_KNIGHT,
+                ITEM_SUFFIX_MYSTERY,
+            },
+            [CHEST_ARMOR] = {
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_ROCK,
+                ITEM_SUFFIX_KNIGHT,
+                ITEM_SUFFIX_MYSTERY,
+            },
+            [LEGS_ARMOR] = {
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_ROCK,
+                ITEM_SUFFIX_KNIGHT,
+                ITEM_SUFFIX_MYSTERY,
+            },
+            [SWORD_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
+            },
+            [GREATSWORD_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
+            },
+            [BLUNT_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
+            },
+            [GREATBLUNT_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
+            },
+            [AXE_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
+            },
+            [GREATAXE_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
+            },
+            [DAGGER_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
+            },
+            [STAFF_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_ICE_WIZARD,
+                ITEM_SUFFIX_LIGHTNING_WIZARD,
+                ITEM_SUFFIX_FIRE_WIZARD,
+                ITEM_SUFFIX_SLAYER
+            },
+            [BOW_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
+            }
+        },
+        [MAGIC_ITEM] = {
+            [RING_JEWELRY] = {
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_MYSTERY,
+                ITEM_SUFFIX_KNOWLEDGE
+            },
+            [NECKLACE_JEWELRY] = {
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_MYSTERY,
+                ITEM_SUFFIX_KNOWLEDGE
+            },
+            [HEAD_ARMOR] = {
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_ROCK,
+                ITEM_SUFFIX_KNIGHT,
+                ITEM_SUFFIX_MYSTERY,
+            },
+            [HANDS_ARMOR] = {
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_ROCK,
+                ITEM_SUFFIX_KNIGHT,
+                ITEM_SUFFIX_MYSTERY,
+            },
+            [CHEST_ARMOR] = {
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_ROCK,
+                ITEM_SUFFIX_KNIGHT,
+                ITEM_SUFFIX_MYSTERY,
+            },
+            [LEGS_ARMOR] = {
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_ROCK,
+                ITEM_SUFFIX_KNIGHT,
+                ITEM_SUFFIX_MYSTERY,
+            },
+            [SWORD_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
+            },
+            [GREATSWORD_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
+            },
+            [BLUNT_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
+            },
+            [GREATBLUNT_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
+            },
+            [AXE_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
+            },
+            [GREATAXE_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
+            },
+            [DAGGER_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
+            },
+            [STAFF_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_ICE_WIZARD,
+                ITEM_SUFFIX_LIGHTNING_WIZARD,
+                ITEM_SUFFIX_FIRE_WIZARD,
+                ITEM_SUFFIX_SLAYER
+            },
+            [BOW_WEAPON] = {
+                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_SLAYER
+            }
+        },
     }
 
 
@@ -1163,186 +1340,1874 @@ do
                 },
             },
             [RARE_ITEM] = {
+                [RING_JEWELRY] = {
+                    {
+                        icon = "Jewelry\\BTNring1.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_1,
+                        decl = DECL_IT,
+                        modificator = 0.7,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\ring.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNring2.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_2,
+                        decl = DECL_IT,
+                        modificator = 0.7,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\ring.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNLancelot_Ring.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_3,
+                        decl = DECL_SHE,
+                        modificator = 0.7,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\ring.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNHarbingerRing.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_4,
+                        decl = DECL_HE,
+                        modificator = 0.7,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\ring.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNGold Ring.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_5,
+                        decl = DECL_IT,
+                        modificator = 0.7,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\ring.wav"
+                        }
+                    },
+                },
+                [NECKLACE_JEWELRY] = {
+                    {
+                        icon = "Jewelry\\BTNHeartAmulet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_1,
+                        decl = DECL_SHE,
+                        modificator = 1.15,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\amulet.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNEmpty Amulet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_2,
+                        decl = DECL_HE,
+                        modificator = 1.15,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\amulet.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNAncientNecklace.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_3,
+                        decl = DECL_HE,
+                        modificator = 1.15,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\amulet.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNCastersBeads.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_4,
+                        decl = DECL_THEY,
+                        modificator = 1.15,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\amulet.wav"
+                        }
+                    },
+                },
+                [CHEST_ARMOR] = {
+                    {
+                        icon = "Armor\\BTNBattleArmor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_1,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\chainarmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNCrowLightArmor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_2,
+                        decl = DECL_IT,
+                        modificator = 0.8,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\chainarmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNDarkArmor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_3,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\chainarmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNGreenMetalCarapace.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_4,
+                        decl = DECL_HE,
+                        modificator = 1.2,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\platearmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNLightArmor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_5,
+                        decl = DECL_SHE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\chainarmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNSea Heavy Armor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_6,
+                        decl = DECL_SHE,
+                        modificator = 1.2,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\platearmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNSteelArmorR.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_7,
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\chainarmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNSuperiorMageRobe.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_8,
+                        decl = DECL_SHE,
+                        modificator = 0.75,
+                        soundpack = {
+                            equip = "Sound\\cloth_armor_equip.wav",
+                            uneqip = "Sound\\cloth_armor_unequip.wav",
+                            drop = "Sound\\lightarmor.wav"
+                        }
+                    },
+                },
+                [HANDS_ARMOR] = {
+                    {
+                        icon = "Armor\\BTNFur Gauntlet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_1,
+                        decl = DECL_THEY,
+                        modificator = 0.9,
+                        soundpack = {
+                            equip = "Sound\\gloves.wav",
+                            uneqip = "Sound\\gloves.wav",
+                            drop = "Sound\\gloves.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNLeather Gauntlet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_2,
+                        decl = DECL_THEY,
+                        modificator = 0.8,
+                        soundpack = {
+                            equip = "Sound\\gloves.wav",
+                            uneqip = "Sound\\gloves.wav",
+                            drop = "Sound\\gloves.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNRogues Gauntlets.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_3,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\gloveschain.wav",
+                            uneqip = "Sound\\gloveschain.wav",
+                            drop = "Sound\\gloveschain.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNPlated Gauntlet2.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_4,
+                        decl = DECL_THEY,
+                        modificator = 1.15,
+                        soundpack = {
+                            equip = "Sound\\glovesmetal.wav",
+                            uneqip = "Sound\\glovesmetal.wav",
+                            drop = "Sound\\glovesmetal.wav"
+                        }
+                    },
+                },
+                [LEGS_ARMOR] = {
+                    {
+                        icon = "Armor\\BTNPathfinder 01.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_1,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\bootsmetal.wav",
+                            uneqip = "Sound\\bootsmetal.wav",
+                            drop = "Sound\\bootsmetal.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNSandalZ.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_2,
+                        decl = DECL_THEY,
+                        modificator = 0.9,
+                        soundpack = {
+                            equip = "Sound\\boots.wav",
+                            uneqip = "Sound\\boots.wav",
+                            drop = "Sound\\boots.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNSandalZ2.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_3,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\boots.wav",
+                            uneqip = "Sound\\boots.wav",
+                            drop = "Sound\\boots.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNSandalZ3.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_4,
+                        decl = DECL_THEY,
+                        modificator = 1.1,
+                        soundpack = {
+                            equip = "Sound\\bootschain.wav",
+                            uneqip = "Sound\\bootschain.wav",
+                            drop = "Sound\\bootschain.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNSteelBoots.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_5,
+                        decl = DECL_THEY,
+                        modificator = 1.1,
+                        soundpack = {
+                            equip = "Sound\\bootsmetal.wav",
+                            uneqip = "Sound\\bootsmetal.wav",
+                            drop = "Sound\\bootsmetal.wav"
+                        }
+                    },
+                },
+                [HEAD_ARMOR] = {
+                    {
+                        icon = "Armor\\BTNAllianceHelmet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_1,
+                        decl = DECL_HE,
+                        modificator = 1.1,
+                        soundpack = {
+                            equip = "Sound\\helmet_equip.wav",
+                            uneqip = "Sound\\helmet_unequip.wav",
+                            drop = "Sound\\helm.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNDemonsHelmet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_2,
+                        decl = DECL_SHE,
+                        modificator = 1.1,
+                        soundpack = {
+                            equip = "Sound\\helmet_equip.wav",
+                            uneqip = "Sound\\helmet_unequip.wav",
+                            drop = "Sound\\helm.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNDragonHuntersHelmet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_3,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\helmet_equip.wav",
+                            uneqip = "Sound\\helmet_unequip.wav",
+                            drop = "Sound\\helm.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNHolyHelm.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_4,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\helmet_equip.wav",
+                            uneqip = "Sound\\helmet_unequip.wav",
+                            drop = "Sound\\helm.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNLeatherHood.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_5,
+                        decl = DECL_SHE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\cap.wav",
+                            uneqip = "Sound\\cap.wav",
+                            drop = "Sound\\cap.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNNFHelmet02.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_6,
+                        decl = DECL_HE,
+                        modificator = 0.9,
+                        soundpack = {
+                            equip = "Sound\\helmet_equip.wav",
+                            uneqip = "Sound\\helmet_unequip.wav",
+                            drop = "Sound\\helm.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNNFHelmet03.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_7,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\helmet_equip.wav",
+                            uneqip = "Sound\\helmet_unequip.wav",
+                            drop = "Sound\\helm.wav"
+                        }
+                    },
+                },
                 [SWORD_WEAPON] = {
                     {
                         icon = "Weapons\\BTNTier1 Sword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_1,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\sword_equip01.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNAnother Sword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_2,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\sword_equip02.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNDKSword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_3,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\sword_equip02.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNSword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_4,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\sword_equip01.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
                     },
                 },
                 [GREATSWORD_WEAPON] = {
                     {
                         icon = "Weapons\\BTNBarbarian Brutal Slasher.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_1,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.2,
+                        soundpack = {
+                            equip = "Sound\\weapon_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\largemetalweapon.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNRitual Shaman Knife 1Charge.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_2,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.2,
+                        soundpack = {
+                            equip = "Sound\\weapon_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\largemetalweapon.wav"
+                        }
                     },
                 },
                 [AXE_WEAPON] = {
                     {
                         icon = "Weapons\\BTNBruteAxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_1,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\sword_equip02.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNGrandAxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_2,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\sword_equip02.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNSteelAxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_3,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\sword_equip02.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
                     },
                 },
                 [GREATAXE_WEAPON] = {
                     {
                         icon = "Weapons\\BTNMastercraftBattleaxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_1,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.25,
+                        soundpack = {
+                            equip = "Sound\\weapon_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\largemetalweapon.wav"
+                        }
                     },
                 },
                 [BLUNT_WEAPON] = {
                     {
                         icon = "Weapons\\BTNAntiqueMace.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_1,
-                        decl = DECL_SHE
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNBeatstickV4.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_2,
-                        decl = DECL_SHE
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNSpikedClub.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_3,
-                        decl = DECL_SHE
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNFlail.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_4,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
                     },
                 },
                 [GREATBLUNT_WEAPON] = {
                     {
                         icon = "Weapons\\BTNMace.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_1,
-                        decl = DECL_SHE
+                        decl = DECL_SHE,
+                        modificator = 1.3,
+                        soundpack = {
+                            equip = "Sound\\weapon_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\largemetalweapon.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNMythril Hammer.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_2,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.3,
+                        soundpack = {
+                            equip = "Sound\\weapon_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\largemetalweapon.wav"
+                        }
                     },
                 },
                 [DAGGER_WEAPON] = {
                     {
                         icon = "Weapons\\BTNDagger1.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_1,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\dagger_unequip.wav",
+                            drop = "Sound\\smallmetalweapon.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNGoldenDagger.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_2,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\dagger_unequip.wav",
+                            drop = "Sound\\smallmetalweapon.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNDagger3.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_3,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\dagger_unequip.wav",
+                            drop = "Sound\\smallmetalweapon.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNNastyShiv.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_4,
-                        decl = DECL_SHE
+                        decl = DECL_SHE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\dagger_unequip.wav",
+                            drop = "Sound\\smallmetalweapon.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNMecheteOfFury.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_5,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\dagger_unequip.wav",
+                            drop = "Sound\\smallmetalweapon.wav"
+                        }
                     },
                 },
                 [STAFF_WEAPON] = {
                     {
                         icon = "Weapons\\BTNEmeraldStaff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_1,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\staff_equip.wav",
+                            uneqip = "Sound\\staff_unequip.wav",
+                            drop = "Sound\\staff.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNFireWand.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_2,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\staff_equip.wav",
+                            uneqip = "Sound\\staff_unequip.wav",
+                            drop = "Sound\\staff.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNFrostJade.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_3,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\staff_equip.wav",
+                            uneqip = "Sound\\staff_unequip.wav",
+                            drop = "Sound\\staff.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNIce Staff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_4,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\staff_equip.wav",
+                            uneqip = "Sound\\staff_unequip.wav",
+                            drop = "Sound\\staff.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNStick Staff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_5,
-                        decl = DECL_THEY
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\staff_equip.wav",
+                            uneqip = "Sound\\staff_unequip.wav",
+                            drop = "Sound\\staff.wav"
+                        }
                     },
                 },
                 [BOW_WEAPON] = {
                     {
                         icon = "Weapons\\BTNGoldenWoodBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_1,
-                        decl = DECL_IT
+                        decl = DECL_IT,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\bow_equip.wav",
+                            uneqip = "Sound\\bow_unequip.wav",
+                            drop = "Sound\\bow.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNHardBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_2,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\bow_equip.wav",
+                            uneqip = "Sound\\bow_unequip.wav",
+                            drop = "Sound\\bow.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNRoughwoodBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_3,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\bow_equip.wav",
+                            uneqip = "Sound\\bow_unequip.wav",
+                            drop = "Sound\\bow.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNScoutsBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_4,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\bow_equip.wav",
+                            uneqip = "Sound\\bow_unequip.wav",
+                            drop = "Sound\\bow.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNStrongBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_5,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\bow_equip.wav",
+                            uneqip = "Sound\\bow_unequip.wav",
+                            drop = "Sound\\bow.wav"
+                        }
                     },
                     {
                         icon = "Weapons\\BTNWoodenHornBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_6,
-                        decl = DECL_HE
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\bow_equip.wav",
+                            uneqip = "Sound\\bow_unequip.wav",
+                            drop = "Sound\\bow.wav"
+                        }
                     },
                 },
             },
-            [MAGIC_ITEM] = {},
+            [MAGIC_ITEM] = {
+                [RING_JEWELRY] = {
+                    {
+                        icon = "Jewelry\\BTNring1.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_1,
+                        decl = DECL_IT,
+                        modificator = 0.7,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\ring.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNring2.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_2,
+                        decl = DECL_IT,
+                        modificator = 0.7,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\ring.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNLancelot_Ring.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_3,
+                        decl = DECL_SHE,
+                        modificator = 0.7,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\ring.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNHarbingerRing.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_4,
+                        decl = DECL_HE,
+                        modificator = 0.7,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\ring.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNGold Ring Active.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_5,
+                        decl = DECL_IT,
+                        modificator = 0.7,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\ring.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNAquamarineRing.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_6,
+                        decl = DECL_IT,
+                        modificator = 0.7,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\ring.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNArcaniteNightRing.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_7,
+                        decl = DECL_IT,
+                        modificator = 0.7,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\ring.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNArcanite Ring.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_8,
+                        decl = DECL_HE,
+                        modificator = 0.7,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\ring.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNDarknessRing.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_9,
+                        decl = DECL_IT,
+                        modificator = 0.7,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\ring.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNDeathKnightRing.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_10,
+                        decl = DECL_IT,
+                        modificator = 0.7,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\ring.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNFrostRing.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_11,
+                        decl = DECL_IT,
+                        modificator = 0.7,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\ring.wav"
+                        }
+                    },
+                },
+                [NECKLACE_JEWELRY] = {
+                    {
+                        icon = "Jewelry\\BTNAmulet2.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_6,
+                        decl = DECL_HE,
+                        modificator = 1.15,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\amulet.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNAmulet1.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_5,
+                        decl = DECL_SHE,
+                        modificator = 1.15,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\amulet.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNAncientNecklace.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_3,
+                        decl = DECL_HE,
+                        modificator = 1.15,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\amulet.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNEmerald Amulet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_7,
+                        decl = DECL_SHE,
+                        modificator = 1.15,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\amulet.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNRuby Amulet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_8,
+                        decl = DECL_SHE,
+                        modificator = 1.15,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\amulet.wav"
+                        }
+                    },
+                    {
+                        icon = "Jewelry\\BTNSapphire Amulet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_9,
+                        decl = DECL_SHE,
+                        modificator = 1.15,
+                        soundpack = {
+                            equip = "Sound\\ring_equip.wav",
+                            uneqip = "Sound\\ring_unequip.wav",
+                            drop = "Sound\\amulet.wav"
+                        }
+                    },
+                },
+                [CHEST_ARMOR] = {
+                    {
+                        icon = "Armor\\BTNBattleArmor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_1,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\chainarmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNCrowLightArmor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_2,
+                        decl = DECL_IT,
+                        modificator = 0.8,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\chainarmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNDarkArmor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_3,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\chainarmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNGreenMetalCarapace.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_4,
+                        decl = DECL_HE,
+                        modificator = 1.2,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\platearmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNLightArmor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_5,
+                        decl = DECL_SHE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\chainarmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNSea Heavy Armor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_6,
+                        decl = DECL_SHE,
+                        modificator = 1.2,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\platearmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNSteelArmorR.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_7,
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\chainarmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNSuperiorMageRobe.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_8,
+                        decl = DECL_SHE,
+                        modificator = 0.75,
+                        soundpack = {
+                            equip = "Sound\\cloth_armor_equip.wav",
+                            uneqip = "Sound\\cloth_armor_unequip.wav",
+                            drop = "Sound\\lightarmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNArbalestersArmor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_9,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\chainarmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNDivineArmor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_10,
+                        decl = DECL_HE,
+                        modificator = 1.2,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\platearmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNHalfArmor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_11,
+                        decl = DECL_HE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\chainarmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNHalfArmor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_12,
+                        decl = DECL_HE,
+                        modificator = 1.1,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\platearmor.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNMoongladeArmor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_13,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\chain_armor_equip.wav",
+                            uneqip = "Sound\\chain_armor_unequip.wav",
+                            drop = "Sound\\chainarmor.wav"
+                        }
+                    },
+                },
+                [HANDS_ARMOR] = {
+                    {
+                        icon = "Armor\\BTNFur Gauntlet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_1,
+                        decl = DECL_THEY,
+                        modificator = 0.9,
+                        soundpack = {
+                            equip = "Sound\\gloves.wav",
+                            uneqip = "Sound\\gloves.wav",
+                            drop = "Sound\\gloves.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNLeather Gauntlet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_2,
+                        decl = DECL_THEY,
+                        modificator = 0.8,
+                        soundpack = {
+                            equip = "Sound\\gloves.wav",
+                            uneqip = "Sound\\gloves.wav",
+                            drop = "Sound\\gloves.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNRogues Gauntlets.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_3,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\gloveschain.wav",
+                            uneqip = "Sound\\gloveschain.wav",
+                            drop = "Sound\\gloveschain.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNPlated Gauntlet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_5,
+                        decl = DECL_THEY,
+                        modificator = 1.15,
+                        soundpack = {
+                            equip = "Sound\\glovesmetal.wav",
+                            uneqip = "Sound\\glovesmetal.wav",
+                            drop = "Sound\\glovesmetal.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNDuelists Gauntlets.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_6,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\gloveschain.wav",
+                            uneqip = "Sound\\gloveschain.wav",
+                            drop = "Sound\\gloveschain.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNMana gloves.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_7,
+                        decl = DECL_THEY,
+                        modificator = 0.8,
+                        soundpack = {
+                            equip = "Sound\\gloves.wav",
+                            uneqip = "Sound\\gloves.wav",
+                            drop = "Sound\\gloves.wav"
+                        }
+                    },
+                },
+                [LEGS_ARMOR] = {
+                    {
+                        icon = "Armor\\BTNPathfinder 03.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_1,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\bootsmetal.wav",
+                            uneqip = "Sound\\bootsmetal.wav",
+                            drop = "Sound\\bootsmetal.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNSandalZ.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_2,
+                        decl = DECL_THEY,
+                        modificator = 0.9,
+                        soundpack = {
+                            equip = "Sound\\boots.wav",
+                            uneqip = "Sound\\boots.wav",
+                            drop = "Sound\\boots.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNSandalZ2.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_3,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\boots.wav",
+                            uneqip = "Sound\\boots.wav",
+                            drop = "Sound\\boots.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNSandalZ3.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_4,
+                        decl = DECL_THEY,
+                        modificator = 1.1,
+                        soundpack = {
+                            equip = "Sound\\bootschain.wav",
+                            uneqip = "Sound\\bootschain.wav",
+                            drop = "Sound\\bootschain.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNArmoredBoot.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_6,
+                        decl = DECL_THEY,
+                        modificator = 1.1,
+                        soundpack = {
+                            equip = "Sound\\bootsmetal.wav",
+                            uneqip = "Sound\\bootsmetal.wav",
+                            drop = "Sound\\bootsmetal.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNBoots.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_7,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\bootschain.wav",
+                            uneqip = "Sound\\bootschain.wav",
+                            drop = "Sound\\bootschain.wav"
+                        }
+                    },
+                },
+                [HEAD_ARMOR] = {
+                    {
+                        icon = "Armor\\BTNAllianceHelmet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_1,
+                        decl = DECL_HE,
+                        modificator = 1.1,
+                        soundpack = {
+                            equip = "Sound\\helmet_equip.wav",
+                            uneqip = "Sound\\helmet_unequip.wav",
+                            drop = "Sound\\helm.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNDemonsHelmet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_2,
+                        decl = DECL_SHE,
+                        modificator = 1.1,
+                        soundpack = {
+                            equip = "Sound\\helmet_equip.wav",
+                            uneqip = "Sound\\helmet_unequip.wav",
+                            drop = "Sound\\helm.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNDragonHuntersHelmet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_3,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\helmet_equip.wav",
+                            uneqip = "Sound\\helmet_unequip.wav",
+                            drop = "Sound\\helm.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNHolyHelm.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_4,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\helmet_equip.wav",
+                            uneqip = "Sound\\helmet_unequip.wav",
+                            drop = "Sound\\helm.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNLeatherHood.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_5,
+                        decl = DECL_SHE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\cap.wav",
+                            uneqip = "Sound\\cap.wav",
+                            drop = "Sound\\cap.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNNFHelmet02.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_6,
+                        decl = DECL_HE,
+                        modificator = 0.9,
+                        soundpack = {
+                            equip = "Sound\\helmet_equip.wav",
+                            uneqip = "Sound\\helmet_unequip.wav",
+                            drop = "Sound\\helm.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNNFHelmet03.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_7,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\helmet_equip.wav",
+                            uneqip = "Sound\\helmet_unequip.wav",
+                            drop = "Sound\\helm.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNDragonHelmet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_8,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\helmet_equip.wav",
+                            uneqip = "Sound\\helmet_unequip.wav",
+                            drop = "Sound\\helm.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNHelmet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_9,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\helmet_equip.wav",
+                            uneqip = "Sound\\helmet_unequip.wav",
+                            drop = "Sound\\helm.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTNJusticars Helmet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_10,
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\helmet_equip.wav",
+                            uneqip = "Sound\\helmet_unequip.wav",
+                            drop = "Sound\\helm.wav"
+                        }
+                    },
+                    {
+                        icon = "Armor\\BTN_Royal_Helmet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_11,
+                        decl = DECL_HE,
+                        modificator = 1.1,
+                        soundpack = {
+                            equip = "Sound\\helmet_equip.wav",
+                            uneqip = "Sound\\helmet_unequip.wav",
+                            drop = "Sound\\helm.wav"
+                        }
+                    },
+                },
+                [SWORD_WEAPON] = {
+                    {
+                        icon = "Weapons\\BTNtier 5 swordd.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_5,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\sword_equip01.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNAnother Sword.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_2,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\sword_equip02.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNDKSword.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_3,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\sword_equip02.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNSword.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_4,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\sword_equip01.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNrapier.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_6,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\sword_equip01.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
+                    },
+                },
+                [GREATSWORD_WEAPON] = {
+                    {
+                        icon = "Weapons\\BTNBarbarian Brutal Slasher.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_1,
+                        decl = DECL_HE,
+                        modificator = 1.2,
+                        soundpack = {
+                            equip = "Sound\\weapon_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\largemetalweapon.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNRitual Shaman Knife 1Charge.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_2,
+                        decl = DECL_HE,
+                        modificator = 1.2,
+                        soundpack = {
+                            equip = "Sound\\weapon_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\largemetalweapon.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNTier3 Sword.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_3,
+                        decl = DECL_HE,
+                        modificator = 1.2,
+                        soundpack = {
+                            equip = "Sound\\weapon_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\largemetalweapon.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNTideShamanRitualLance.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_4,
+                        decl = DECL_HE,
+                        modificator = 1.2,
+                        soundpack = {
+                            equip = "Sound\\weapon_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\largemetalweapon.wav"
+                        }
+                    },
+                },
+                [AXE_WEAPON] = {
+                    {
+                        icon = "Weapons\\BTNBruteAxe.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_1,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\sword_equip02.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNGrandAxe.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_2,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\sword_equip02.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNSteelAxe.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_3,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\sword_equip02.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNMysticHatchet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_4,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\sword_equip02.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
+                    },
+                },
+                [GREATAXE_WEAPON] = {
+                    {
+                        icon = "Weapons\\BTNMastercraftBattleaxe.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_1,
+                        decl = DECL_HE,
+                        modificator = 1.25,
+                        soundpack = {
+                            equip = "Sound\\weapon_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\largemetalweapon.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNAxe of Terror.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_2,
+                        decl = DECL_HE,
+                        modificator = 1.25,
+                        soundpack = {
+                            equip = "Sound\\weapon_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\largemetalweapon.wav"
+                        }
+                    },
+                },
+                [BLUNT_WEAPON] = {
+                    {
+                        icon = "Weapons\\BTNAntiqueMace.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_1,
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNBeatstickV4.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_2,
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNSpikedClub.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_3,
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNFlail.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_4,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNHarbingerStaff-Mace.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_5,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNMorningStar.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_6,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\sword.wav"
+                        }
+                    },
+                },
+                [GREATBLUNT_WEAPON] = {
+                    {
+                        icon = "Weapons\\BTNMace.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_1,
+                        decl = DECL_SHE,
+                        modificator = 1.3,
+                        soundpack = {
+                            equip = "Sound\\weapon_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\largemetalweapon.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNMythril Hammer.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_2,
+                        decl = DECL_HE,
+                        modificator = 1.3,
+                        soundpack = {
+                            equip = "Sound\\weapon_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\largemetalweapon.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTN_NerubianScepter.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_3,
+                        decl = DECL_HE,
+                        modificator = 1.3,
+                        soundpack = {
+                            equip = "Sound\\weapon_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\largemetalweapon.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNRunestoneWarhammer.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_4,
+                        decl = DECL_HE,
+                        modificator = 1.3,
+                        soundpack = {
+                            equip = "Sound\\weapon_equip.wav",
+                            uneqip = "Sound\\weapon_unequip.wav",
+                            drop = "Sound\\largemetalweapon.wav"
+                        }
+                    },
+                },
+                [DAGGER_WEAPON] = {
+                    {
+                        icon = "Weapons\\BTNDagger1.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_1,
+                        decl = DECL_HE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\dagger_unequip.wav",
+                            drop = "Sound\\smallmetalweapon.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNGoldenDagger.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_2,
+                        decl = DECL_HE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\dagger_unequip.wav",
+                            drop = "Sound\\smallmetalweapon.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNDagger3.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_3,
+                        decl = DECL_HE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\dagger_unequip.wav",
+                            drop = "Sound\\smallmetalweapon.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNNastyShiv.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_4,
+                        decl = DECL_SHE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\dagger_unequip.wav",
+                            drop = "Sound\\smallmetalweapon.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNMecheteOfFury.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_5,
+                        decl = DECL_HE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\dagger_unequip.wav",
+                            drop = "Sound\\smallmetalweapon.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNAcid Stinger.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_6,
+                        decl = DECL_SHE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\dagger_unequip.wav",
+                            drop = "Sound\\smallmetalweapon.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNMolten Dagger.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_7,
+                        decl = DECL_HE,
+                        modificator = 0.85,
+                        soundpack = {
+                            equip = "Sound\\dagger_equip.wav",
+                            uneqip = "Sound\\dagger_unequip.wav",
+                            drop = "Sound\\smallmetalweapon.wav"
+                        }
+                    },
+
+                },
+                [STAFF_WEAPON] = {
+                    {
+                        icon = "Weapons\\BTNEmeraldStaff.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_1,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\staff_equip.wav",
+                            uneqip = "Sound\\staff_unequip.wav",
+                            drop = "Sound\\staff.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNFireWand.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_2,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\staff_equip.wav",
+                            uneqip = "Sound\\staff_unequip.wav",
+                            drop = "Sound\\staff.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNFrostJade.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_3,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\staff_equip.wav",
+                            uneqip = "Sound\\staff_unequip.wav",
+                            drop = "Sound\\staff.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNIce Staff.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_4,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\staff_equip.wav",
+                            uneqip = "Sound\\staff_unequip.wav",
+                            drop = "Sound\\staff.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNStick Staff.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_5,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\staff_equip.wav",
+                            uneqip = "Sound\\staff_unequip.wav",
+                            drop = "Sound\\staff.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNDeadProphetStaff.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_6,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\staff_equip.wav",
+                            uneqip = "Sound\\staff_unequip.wav",
+                            drop = "Sound\\staff.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNMoongladeWand.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_7,
+                        decl = DECL_IT,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\staff_equip.wav",
+                            uneqip = "Sound\\staff_unequip.wav",
+                            drop = "Sound\\staff.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNNecromancerStaff.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_8,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\staff_equip.wav",
+                            uneqip = "Sound\\staff_unequip.wav",
+                            drop = "Sound\\staff.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNSeerStaff.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_9,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\staff_equip.wav",
+                            uneqip = "Sound\\staff_unequip.wav",
+                            drop = "Sound\\staff.wav"
+                        }
+                    },
+                },
+                [BOW_WEAPON] = {
+                    {
+                        icon = "Weapons\\BTNPoisonBow.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_7,
+                        decl = DECL_IT,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\bow_equip.wav",
+                            uneqip = "Sound\\bow_unequip.wav",
+                            drop = "Sound\\bow.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNSimpleBow.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_8,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\bow_equip.wav",
+                            uneqip = "Sound\\bow_unequip.wav",
+                            drop = "Sound\\bow.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNFireyBow.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_9,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\bow_equip.wav",
+                            uneqip = "Sound\\bow_unequip.wav",
+                            drop = "Sound\\bow.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNDarkBow.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_10,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\bow_equip.wav",
+                            uneqip = "Sound\\bow_unequip.wav",
+                            drop = "Sound\\bow.wav"
+                        }
+                    },
+                    {
+                        icon = "Weapons\\BTNIceyBow.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_11,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = {
+                            equip = "Sound\\bow_equip.wav",
+                            uneqip = "Sound\\bow_unequip.wav",
+                            drop = "Sound\\bow.wav"
+                        }
+                    },
+                },
+            },
         }
 
 
@@ -2306,76 +4171,188 @@ do
                 max_affix = ITEM_AFFIX_IDEAL,
                 affix_bonus = {
                     [ITEM_AFFIX_WORN] = {
-                        max_bonuses = 4,
+                        additional_parameter = 0,
                         parameter_bonus = {
-                            { PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = MAGICAL_SUPPRESSION, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = ICE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = ICE_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = CRIT_CHANCE, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = HP_VALUE, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER,PARAM = ICE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = ICE_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = HP_VALUE, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 15, value_max = 22, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
                         },
                         skill_bonus = {
-                            { id = "A001", bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { id = "A003", bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { id = "A005", bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { id = "A00E", bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_ICE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                        }
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_ICE
+                                },
+                            },
+                        },
                     },
                     [ITEM_AFFIX_FINE] = {
-                        max_bonuses = 4,
+                        additional_parameter = 0,
                         parameter_bonus = {
-                            { PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = MAGICAL_SUPPRESSION, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = ICE_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = ICE_RESIST, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = CRIT_CHANCE, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = HP_VALUE, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER,PARAM = ICE_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = ICE_RESIST, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = HP_VALUE, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 22, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.03, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
                         },
                         skill_bonus = {
-                            { id = "A001", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { id = "A003", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { id = "A005", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { id = "A00E", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { category = SKILL_CATEGORY_ICE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                        }
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_ICE
+                                },
+                            },
+                        },
                     },
                     [ITEM_AFFIX_EXCELLENT] = {
-                        max_bonuses = 4,
+                        additional_parameter = 0,
                         parameter_bonus = {
-                            { PARAM = MAGICAL_ATTACK, value_min = 35, value_max = 41, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = MAGICAL_SUPPRESSION, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = ICE_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = ICE_RESIST, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = CRIT_CHANCE, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = HP_VALUE, value_min = 35, value_max = 48, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER,PARAM = ICE_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = ICE_RESIST, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = HP_VALUE, value_min = 35, value_max = 48, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 35, value_max = 41, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
                         },
                         skill_bonus = {
-                            { id = "A001", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { id = "A003", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { id = "A005", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { id = "A00E", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { category = SKILL_CATEGORY_ICE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                        }
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_ICE
+                                },
+                            },
+                        },
                     },
                     [ITEM_AFFIX_IDEAL] = {
-                        max_bonuses = 4,
+                        additional_parameter = 0,
                         parameter_bonus = {
-                            { PARAM = MAGICAL_ATTACK, value_min = 41, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = MAGICAL_SUPPRESSION, value_min = 36, value_max = 42, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = ICE_BONUS, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = ICE_RESIST, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = CRIT_CHANCE, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = HP_VALUE, value_min = 48, value_max = 55, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER,PARAM = ICE_BONUS, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = ICE_RESIST, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = HP_VALUE, value_min = 48, value_max = 55, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 41, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
                         },
                         skill_bonus = {
-                            { id = "A001", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A003", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A005", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00E", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { category = SKILL_CATEGORY_ICE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                        }
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_ICE
+                                },
+                            },
+                        },
                     },
                 }
             },
@@ -2385,76 +4362,188 @@ do
                 max_affix = ITEM_AFFIX_IDEAL,
                 affix_bonus = {
                     [ITEM_AFFIX_WORN] = {
-                        max_bonuses = 4,
+                        additional_parameter = 0,
                         parameter_bonus = {
-                            { PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = MAGICAL_SUPPRESSION, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = FIRE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = FIRE_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = CRIT_CHANCE, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = HP_VALUE, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER,PARAM = FIRE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = FIRE_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = HP_VALUE, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 15, value_max = 22, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
                         },
                         skill_bonus = {
-                            --{ id = "A00G", bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { id = "A00I", bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { id = "A00F", bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { id = "A00D", bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_FIRE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                        }
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_FIRE
+                                },
+                            },
+                        },
                     },
                     [ITEM_AFFIX_FINE] = {
-                        max_bonuses = 4,
+                        additional_parameter = 0,
                         parameter_bonus = {
-                            { PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = MAGICAL_SUPPRESSION, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = FIRE_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = FIRE_RESIST, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = CRIT_CHANCE, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = HP_VALUE, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER,PARAM = FIRE_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = FIRE_RESIST, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = HP_VALUE, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 22, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.03, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
                         },
                         skill_bonus = {
-                            --{ id = "A00G", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { id = "A00I", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { id = "A00F", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { id = "A00D", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { category = SKILL_CATEGORY_FIRE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                        }
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_FIRE
+                                },
+                            },
+                        },
                     },
                     [ITEM_AFFIX_EXCELLENT] = {
-                        max_bonuses = 4,
+                        additional_parameter = 0,
                         parameter_bonus = {
-                            { PARAM = MAGICAL_ATTACK, value_min = 35, value_max = 41, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = MAGICAL_SUPPRESSION, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = FIRE_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = FIRE_RESIST, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = CRIT_CHANCE, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = HP_VALUE, value_min = 35, value_max = 48, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER,PARAM = FIRE_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = FIRE_RESIST, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = HP_VALUE, value_min = 35, value_max = 48, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 35, value_max = 41, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
                         },
                         skill_bonus = {
-                            --{ id = "A00G", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { id = "A00I", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { id = "A00F", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { id = "A00D", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { category = SKILL_CATEGORY_FIRE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                        }
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_FIRE
+                                },
+                            },
+                        },
                     },
                     [ITEM_AFFIX_IDEAL] = {
-                        max_bonuses = 4,
+                        additional_parameter = 0,
                         parameter_bonus = {
-                            { PARAM = MAGICAL_ATTACK, value_min = 41, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = MAGICAL_SUPPRESSION, value_min = 36, value_max = 42, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = FIRE_BONUS, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = FIRE_RESIST, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = CRIT_CHANCE, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = HP_VALUE, value_min = 48, value_max = 55, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER,PARAM = FIRE_BONUS, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = FIRE_RESIST, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = HP_VALUE, value_min = 48, value_max = 55, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 41, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
                         },
                         skill_bonus = {
-                            --{ id = "A00G", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00I", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00F", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00D", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { category = SKILL_CATEGORY_FIRE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                        }
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_FIRE
+                                },
+                            },
+                        },
                     },
                 }
             },
@@ -2464,72 +4553,188 @@ do
                 max_affix = ITEM_AFFIX_IDEAL,
                 affix_bonus = {
                     [ITEM_AFFIX_WORN] = {
-                        max_bonuses = 4,
+                        additional_parameter = 0,
                         parameter_bonus = {
-                            { PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = MAGICAL_SUPPRESSION, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = LIGHTNING_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = LIGHTNING_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = CRIT_CHANCE, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = HP_VALUE, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER,PARAM = LIGHTNING_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = LIGHTNING_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = HP_VALUE, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 15, value_max = 22, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
                         },
                         skill_bonus = {
-                            { id = "A00J", bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { id = "A00M", bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { id = "A00K", bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_LIGHTNING, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                        }
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING
+                                },
+                            },
+                        },
                     },
                     [ITEM_AFFIX_FINE] = {
-                        max_bonuses = 4,
+                        additional_parameter = 0,
                         parameter_bonus = {
-                            { PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = MAGICAL_SUPPRESSION, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = LIGHTNING_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = LIGHTNING_RESIST, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = CRIT_CHANCE, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = HP_VALUE, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER,PARAM = LIGHTNING_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = LIGHTNING_RESIST, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = HP_VALUE, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 22, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.03, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
                         },
                         skill_bonus = {
-                            { id = "A00J", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { id = "A00M", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { id = "A00K", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { category = SKILL_CATEGORY_LIGHTNING, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                        }
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING
+                                },
+                            },
+                        },
                     },
                     [ITEM_AFFIX_EXCELLENT] = {
-                        max_bonuses = 4,
+                        additional_parameter = 0,
                         parameter_bonus = {
-                            { PARAM = MAGICAL_ATTACK, value_min = 35, value_max = 41, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = MAGICAL_SUPPRESSION, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = LIGHTNING_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = LIGHTNING_RESIST, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = CRIT_CHANCE, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = HP_VALUE, value_min = 35, value_max = 48, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER,PARAM = LIGHTNING_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = LIGHTNING_RESIST, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = HP_VALUE, value_min = 35, value_max = 48, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 35, value_max = 41, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
                         },
                         skill_bonus = {
-                            { id = "A00J", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { id = "A00M", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { id = "A00K", bonus_levels_min = 1, bonus_levels_max = 2,  probability = 10. },
-                            { category = SKILL_CATEGORY_LIGHTNING, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                        }
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING
+                                },
+                            },
+                        },
                     },
                     [ITEM_AFFIX_IDEAL] = {
-                        max_bonuses = 4,
+                        additional_parameter = 0,
                         parameter_bonus = {
-                            { PARAM = MAGICAL_ATTACK, value_min = 41, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = MAGICAL_SUPPRESSION, value_min = 36, value_max = 42, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = LIGHTNING_BONUS, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = LIGHTNING_RESIST, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { PARAM = CRIT_CHANCE, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { PARAM = HP_VALUE, value_min = 48, value_max = 55, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER,PARAM = LIGHTNING_BONUS, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = LIGHTNING_RESIST, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER,PARAM = HP_VALUE, value_min = 48, value_max = 55, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 41, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
                         },
                         skill_bonus = {
-                            { id = "A00J", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00M", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00K", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { category = SKILL_CATEGORY_LIGHTNING, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                        }
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING
+                                },
+                            },
+                        },
                     },
                 }
             },
@@ -2539,204 +4744,1843 @@ do
                 max_affix = ITEM_AFFIX_IDEAL,
                 affix_bonus = {
                     [ITEM_AFFIX_WORN] = {
-                        max_bonuses = 4,
+                        additional_parameter = 0,
                         parameter_bonus = {
-                            { PARAM = PHYSICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { PARAM = PHYSICAL_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { PARAM = LIGHTNING_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { PARAM = FIRE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { PARAM = ICE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { PARAM = CRIT_CHANCE, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 20. },
-                            { PARAM = HP_VALUE, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 20. },
-                            { PARAM = HP_PER_HIT, value_min = 1, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 20. },
-                            { PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 35. },
-                            { PARAM = MAGICAL_ATTACK, value_min = 1.05, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 20. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 20. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 1, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 20. },
+                                }
+                            },
                         },
                         skill_bonus = {
-                            { id = "A00H", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00E", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00N", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00L", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A001", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00F", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00D", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00M", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00K", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A003", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            --{ id = "A00G", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00J", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A005", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00B", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00Q", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00Z", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A010", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00P", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A007", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A008", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A009", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A006", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00A", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00O", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00C", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { category = SKILL_CATEGORY_FIRE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_ICE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_LIGHTNING, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_ARCANE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_FIGHTING_MASTERY, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_BATTLE_ADVANTAGE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_INNER_STRENGTH, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                        }
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
                     },
                     [ITEM_AFFIX_FINE] = {
-                        max_bonuses = 4,
+                        additional_parameter = 0,
                         parameter_bonus = {
-                            { PARAM = PHYSICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { PARAM = PHYSICAL_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { PARAM = LIGHTNING_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { PARAM = FIRE_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { PARAM = ICE_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { PARAM = CRIT_CHANCE, value_min = 4, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 20. },
-                            { PARAM = HP_VALUE, value_min = 28, value_max = 37, METHOD = STRAIGHT_BONUS, probability = 20. },
-                            { PARAM = HP_PER_HIT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 20. },
-                            { PARAM = PHYSICAL_ATTACK, value_min = 1.07, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 35. },
-                            { PARAM = MAGICAL_ATTACK, value_min = 1.07, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 20. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.07, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.07, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 28, value_max = 37, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
                         },
                         skill_bonus = {
-                            { id = "A00H", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00E", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00N", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00L", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A001", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00F", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00D", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00M", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00K", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A003", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            --{ id = "A00G", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00J", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A005", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00B", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00Q", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00Z", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A010", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00P", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A007", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A008", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A009", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A006", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00A", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00O", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00C", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { category = SKILL_CATEGORY_FIRE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_ICE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_LIGHTNING, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_ARCANE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_FIGHTING_MASTERY, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_BATTLE_ADVANTAGE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_INNER_STRENGTH, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                        }
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
                     },
                     [ITEM_AFFIX_EXCELLENT] = {
-                        max_bonuses = 4,
+                        additional_parameter = 0,
                         parameter_bonus = {
-                            { PARAM = PHYSICAL_ATTACK, value_min = 33, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { PARAM = MAGICAL_ATTACK, value_min = 33, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { PARAM = PHYSICAL_BONUS, value_min = 5, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { PARAM = LIGHTNING_BONUS, value_min = 5, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { PARAM = FIRE_BONUS, value_min = 5, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { PARAM = ICE_BONUS, value_min = 5, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { PARAM = CRIT_CHANCE, value_min = 5, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 20. },
-                            { PARAM = HP_VALUE, value_min = 37, value_max = 45, METHOD = STRAIGHT_BONUS, probability = 20. },
-                            { PARAM = HP_PER_HIT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 20. },
-                            { PARAM = PHYSICAL_ATTACK, value_min = 1.11, value_max = 1.13, METHOD = MULTIPLY_BONUS, probability = 35. },
-                            { PARAM = MAGICAL_ATTACK, value_min = 1.11, value_max = 1.13, METHOD = MULTIPLY_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 20. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 33, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.09, value_max = 1.11, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 33, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.09, value_max = 1.11, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 37, value_max = 45, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
                         },
                         skill_bonus = {
-                            { id = "A00H", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00E", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00N", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00L", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A001", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00F", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00D", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00M", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00K", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A003", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            --{ id = "A00G", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00J", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A005", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00B", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00Q", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00Z", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A010", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00P", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A007", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A008", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A009", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A006", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00A", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00O", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00C", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { category = SKILL_CATEGORY_FIRE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_ICE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_LIGHTNING, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_ARCANE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_FIGHTING_MASTERY, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_BATTLE_ADVANTAGE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_INNER_STRENGTH, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                        }
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
                     },
                     [ITEM_AFFIX_IDEAL] = {
-                        max_bonuses = 4,
+                        additional_parameter = 0,
                         parameter_bonus = {
-                            { PARAM = PHYSICAL_ATTACK, value_min = 39, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { PARAM = MAGICAL_ATTACK, value_min = 39, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { PARAM = PHYSICAL_BONUS, value_min = 6, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { PARAM = LIGHTNING_BONUS, value_min = 6, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { PARAM = FIRE_BONUS, value_min = 6, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { PARAM = ICE_BONUS, value_min = 6, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { PARAM = CRIT_CHANCE, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 20. },
-                            { PARAM = HP_VALUE, value_min = 45, value_max = 55, METHOD = STRAIGHT_BONUS, probability = 20. },
-                            { PARAM = HP_PER_HIT, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 20. },
-                            { PARAM = PHYSICAL_ATTACK, value_min = 1.11, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 35. },
-                            { PARAM = MAGICAL_ATTACK, value_min = 1.11, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 39, value_max = 42, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.11, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 39, value_max = 47, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.11, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 45, value_max = 55, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                }
+                            },
                         },
                         skill_bonus = {
-                            { id = "A00H", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00E", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00N", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00L", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A001", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00F", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00D", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00M", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00K", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A003", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            --{ id = "A00G", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00J", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A005", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00B", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00Q", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00Z", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A010", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00P", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A007", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A008", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A009", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A006", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00A", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00O", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { id = "A00C", bonus_levels_min = 1, bonus_levels_max = 3,  probability = 10. },
-                            { category = SKILL_CATEGORY_FIRE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_ICE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_LIGHTNING, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_ARCANE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_FIGHTING_MASTERY, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_BATTLE_ADVANTAGE, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                            { category = SKILL_CATEGORY_INNER_STRENGTH, bonus_levels_min = 1, bonus_levels_max = 1,  probability = 10. },
-                        }
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                }
+            },
+            [ITEM_SUFFIX_ROCK] = {
+                name = LOCALE_LIST[my_locale].ITEM_SUFFIX_ROCK,
+                min_affix = ITEM_AFFIX_WORN,
+                max_affix = ITEM_AFFIX_IDEAL,
+                affix_bonus = {
+                    [ITEM_AFFIX_WORN] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 15, value_max = 23, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_FINE] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 25, value_max = 31, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 23, value_max = 26, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_EXCELLENT] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 31, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 26, value_max = 32, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_IDEAL] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 36, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 32, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 5, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.07, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.07, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                }
+            },
+            [ITEM_SUFFIX_KNIGHT] = {
+                name = LOCALE_LIST[my_locale].ITEM_SUFFIX_KNIGHT,
+                min_affix = ITEM_AFFIX_WORN,
+                max_affix = ITEM_AFFIX_IDEAL,
+                affix_bonus = {
+                    [ITEM_AFFIX_WORN] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 15, value_max = 23, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_FINE] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 25, value_max = 31, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 26, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 23, value_max = 26, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 7, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_EXCELLENT] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 31, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 26, value_max = 32, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 9, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_IDEAL] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 36, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 23, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 32, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 5, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.07, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.07, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 13, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                }
+            },
+            [ITEM_SUFFIX_MYSTERY] = {
+                name = LOCALE_LIST[my_locale].ITEM_SUFFIX_MYSTERY,
+                min_affix = ITEM_AFFIX_WORN,
+                max_affix = ITEM_AFFIX_IDEAL,
+                affix_bonus = {
+                    [ITEM_AFFIX_WORN] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 15, value_max = 23, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_FINE] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 25, value_max = 31, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 26, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 23, value_max = 26, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 1.04, value_max = 1.055, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1.04, value_max = 1.055, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_EXCELLENT] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 1, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 31, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 26, value_max = 32, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 6, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_IDEAL] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 2, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 36, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 23, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 32, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 5, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.07, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.07, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 1.06, value_max = 1.075, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1.06, value_max = 1.075, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 25.,
+                                skill_bonus_probability = 25.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                }
+            },
+            [ITEM_SUFFIX_KNOWLEDGE] = {
+                name = LOCALE_LIST[my_locale].ITEM_SUFFIX_KNOWLEDGE,
+                min_affix = ITEM_AFFIX_WORN,
+                max_affix = ITEM_AFFIX_IDEAL,
+                affix_bonus = {
+                    [ITEM_AFFIX_WORN] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 50.,
+                                skill_bonus_probability = 50.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 50.,
+                                skill_bonus_probability = 50.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_FINE] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 25, value_max = 31, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 26, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 50.,
+                                skill_bonus_probability = 50.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 50.,
+                                skill_bonus_probability = 50.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_EXCELLENT] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 31, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 1, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 50.,
+                                skill_bonus_probability = 50.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 50.,
+                                skill_bonus_probability = 50.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_IDEAL] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 36, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 35. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 35. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 23, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 35. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 2, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 50.,
+                                skill_bonus_probability = 50.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 50.,
+                                skill_bonus_probability = 50.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
                     },
                 }
             }

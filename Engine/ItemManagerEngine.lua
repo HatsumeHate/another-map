@@ -131,11 +131,13 @@ do
 
     function GenerateItemSuffix(item, variation, quality)
         local item_data = GetItemData(item)
-        local suffix = GetRandomInt(1, #ITEM_QUALITY_SUFFIX_LIST[quality][item_data.SUBTYPE])
+        local suffix = ITEM_QUALITY_SUFFIX_LIST[quality][item_data.SUBTYPE][GetRandomInt(1, #ITEM_QUALITY_SUFFIX_LIST[quality][item_data.SUBTYPE])]
         local affix = GetRandomInt(ITEM_SUFFIX_LIST[suffix].min_affix, ITEM_SUFFIX_LIST[suffix].max_affix)
         local preset = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix]
         local min = QUALITY_ITEM_BONUS_COUNT[quality].min
         local bonus_parameters_count = GetRandomInt(min, QUALITY_ITEM_BONUS_COUNT[quality].max) + preset.additional_parameter
+
+        if bonus_parameters_count > #preset.parameter_bonus then bonus_parameters_count = #preset.parameter_bonus end
         local parameters_list = GetRandomIntTable(1, #preset.parameter_bonus, bonus_parameters_count)
 
 

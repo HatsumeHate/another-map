@@ -20,7 +20,7 @@ do
     local MAX_PLAYERS = 6
     local LIGHTNING_KEY = 50
     local RainSound = CreateSound("rain.wav", true, false, false, 100, 100, "")
-    local LIGHTNING_MODEL = "Weather Lightnings.mdx.mdx"
+    local LIGHTNING_MODEL = "Weather Lightnings.mdx"
     local GENERATOR_BLOCK_VALUE = 1536.
     local CREATION_UPDATE = 0.03
     local AREA

@@ -46,10 +46,22 @@ do
 
 
 		TimerStart(CreateTimer(), 5., false, function()
-			--print(BlzGetLocale())
+
+			local counter = 1
+			local quality_table = {COMMON_ITEM, MAGIC_ITEM, RARE_ITEM }
+				--[[
+				TimerStart(CreateTimer(), 5., true, function()
+					local item = CreateCustomItem(GetRandomGeneratedId(),  GetUnitX(gg_unit_HBRB_0005) - 100., GetUnitY(gg_unit_HBRB_0005) - 100.)
+					GenerateItemStats(item, 1, MAGIC_ITEM)
+					AddItemToShop(gg_unit_opeo_0031, item, false)
+					counter = counter + 1
+					if counter == 32 then DestroyTimer(GetExpiredTimer()) end
+				end)]]
+
+
 			for i = 1, 32 do
 				local item = CreateCustomItem(GetRandomGeneratedId(),  GetUnitX(gg_unit_HBRB_0005) - 100., GetUnitY(gg_unit_HBRB_0005) - 100.)
-				GenerateItemStats(item, GetRandomInt(1, 100), COMMON_ITEM)
+				GenerateItemStats(item, 1, quality_table[GetRandomInt(1, 3)])
 				AddItemToShop(gg_unit_opeo_0031, item, false)
 			end
 
