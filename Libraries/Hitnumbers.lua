@@ -13,15 +13,21 @@ do
     local ATTACK_STATUS_COLOR = {
         [ATTACK_STATUS_USUAL]    = '|c00FF0000',
         [ATTACK_STATUS_CRITICAL] = '|c00FFFF00',
+        [ATTACK_STATUS_CRITICAL_BLOCKED] = '|c00FFFF00',
+        [ATTACK_STATUS_BLOCKED] = '|c00FFFFFF',
+        [ATTACK_STATUS_EVADE] = '|c00FFFFFF',
         [HEAL_STATUS] = '|c0000FF00',
         [RESOURCE_STATUS] = '|c00008BFF'
     }
 
     local STATUS_OFFSET = {
-        [ATTACK_STATUS_USUAL]       = { x = { min = 35., max = 45. }, y = { min = 35., max = 45. }, },
-        [ATTACK_STATUS_CRITICAL]    = { x = { min = 55., max = 65. }, y = { min = 55., max = 65. }, },
-        [HEAL_STATUS]               = { x = { min = -10., max = 10. }, y = { min = 0., max = -30. }, },
-        [RESOURCE_STATUS]           = { x = { min = -10., max = 10. }, y = { min = 20., max = -60. }, },
+        [ATTACK_STATUS_USUAL]               = { x = { min = 35., max = 45. },   y = { min = 35., max = 45. }, },
+        [ATTACK_STATUS_CRITICAL]            = { x = { min = 55., max = 65. },   y = { min = 55., max = 65. }, },
+        [ATTACK_STATUS_CRITICAL_BLOCKED]    = { x = { min = 35., max = 45. },   y = { min = 35., max = 45. }, },
+        [ATTACK_STATUS_BLOCKED]             = { x = { min = 55., max = 65. },   y = { min = 55., max = 65. }, },
+        [ATTACK_STATUS_EVADE]               = { x = { min = 55., max = 65. },   y = { min = 55., max = 65. }, },
+        [HEAL_STATUS]                       = { x = { min = -10., max = 10. },  y = { min = 0., max = -30. }, },
+        [RESOURCE_STATUS]                   = { x = { min = -10., max = 10. },  y = { min = 20., max = -60. }, },
     }
 
 
@@ -42,8 +48,10 @@ do
 
         text = ATTACK_STATUS_COLOR[status] .. text .. '|r'
 
-        if status == ATTACK_STATUS_CRITICAL then
+        if status == ATTACK_STATUS_CRITICAL or status == ATTACK_STATUS_CRITICAL_BLOCKED then
             text = text .. '!'
+        elseif status == ATTACK_STATUS_BLOCKED then
+            text = LOCALE_LIST[my_locale].BLOCK_TEXT .. text
         end
 
         SetTextTagText(tag, text, (size * 0.023) / 10)

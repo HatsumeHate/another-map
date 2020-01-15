@@ -660,7 +660,7 @@ do
     end
 
 
-    local function DrawInventoryFrames(player)
+    function DrawInventoryFrames(player, unit)
         local new_Frame
         local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
 
@@ -668,6 +668,8 @@ do
         BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPRIGHT, GAME_UI, FRAMEPOINT_TOPRIGHT, 0., -0.05)
         BlzFrameSetSize(main_frame, 0.4, 0.38)
         PlayerInventoryFrame[player] = main_frame
+
+        InventoryOwner[1] = unit
 
 
         -- slots box
@@ -727,14 +729,6 @@ do
 
 
     function InventoryInit()
-        DrawInventoryFrames(1)
-
-
-
-        --HeroSelectorButton
-        --ScriptDialogButton
-        InventoryOwner[1] = gg_unit_HBRB_0005
-
 
         InventoryTriggerButton = BlzCreateFrame('ScriptDialogButton', GAME_UI, 0, 0)
         local inv_button_backdrop = BlzCreateFrameByType("BACKDROP", "inventory button backdrop", InventoryTriggerButton, "", 0)
@@ -753,6 +747,8 @@ do
         BlzFrameSetText(BlzGetFrameByName("BoxedTextTitle", 0), LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_NAME)--BoxedText has a child showing the Title-text, set that childs Text.
         FrameRegisterNoFocus(InventoryTriggerButton)
         FrameRegisterClick(InventoryTriggerButton, "ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp")
+
+        BlzFrameSetVisible(InventoryTriggerButton, false)
 
         local trg = CreateTrigger()
         BlzTriggerRegisterFrameEvent(trg, InventoryTriggerButton, FRAMEEVENT_CONTROL_CLICK)

@@ -3,11 +3,18 @@ do
     MAX_CRITICAL = 70.
     MIN_CRITICAL = 0.
 
+    MAX_BLOCK_CHANCE = 60.
+    MIN_ATTACK_DAMAGE_REDUCTION = 0.4
+    MIN_ATTRIBUTE_DAMAGE_REDUCTION = 0.35
+
     MELEE_ATTACK = 1
     RANGE_ATTACK = 2
 
     ATTACK_STATUS_USUAL = 1
     ATTACK_STATUS_CRITICAL = 2
+    ATTACK_STATUS_CRITICAL_BLOCKED = 5
+    ATTACK_STATUS_BLOCKED = 6
+    ATTACK_STATUS_EVADE = 7
     HEAL_STATUS = 3
     RESOURCE_STATUS = 4
 
@@ -59,37 +66,39 @@ do
         local attribute_bonus = 1.
         local defence = 1.
         local attack_modifier = 1.
+        local block_reduction = 1.
         local attack_status = ATTACK_STATUS_USUAL
 
             if target == nil then return 0 end
 
 
         if myeffect ~= nil then
+            local effect_data = myeffect.eff.level[myeffect.l]
 
-            if myeffect.eff.level[myeffect.l].bonus_crit_chance ~= nil then
-                bonus_critical = myeffect.eff.level[myeffect.l].bonus_crit_chance
-            end
-
-            if myeffect.eff.level[myeffect.l].bonus_crit_multiplier ~= nil then
-                bonus_critical_rate = myeffect.eff.level[myeffect.l].bonus_crit_multiplier
-            end
-
-            if myeffect.eff.level[myeffect.l].weapon_damage_percent_bonus ~= nil then
-                damage = damage + (attacker.equip_point[WEAPON_POINT].DAMAGE * myeffect.eff.level[myeffect.l].weapon_damage_percent_bonus)
-            end
-
-            if myeffect.eff.level[myeffect.l].attack_percent_bonus > 0. then
-                if damage_type == DAMAGE_TYPE_PHYSICAL then
-                    damage = damage + attacker.stats[PHYSICAL_ATTACK].value * myeffect.eff.level[myeffect.l].attack_percent_bonus
-                elseif damage_type == DAMAGE_TYPE_MAGICAL then
-                    damage = damage + attacker.stats[MAGICAL_ATTACK].value * myeffect.eff.level[myeffect.l].attack_percent_bonus
+                if effect_data.bonus_crit_chance ~= nil then
+                    bonus_critical = effect_data.bonus_crit_chance
                 end
-            end
+
+                if effect_data.bonus_crit_multiplier ~= nil then
+                    bonus_critical_rate = effect_data.bonus_crit_multiplier
+                end
+
+                if effect_data.weapon_damage_percent_bonus ~= nil then
+                    damage = damage + (attacker.equip_point[WEAPON_POINT].DAMAGE * effect_data.weapon_damage_percent_bonus)
+                end
+
+                if effect_data.attack_percent_bonus > 0. then
+                    if damage_type == DAMAGE_TYPE_PHYSICAL then
+                        damage = damage + attacker.stats[PHYSICAL_ATTACK].value * effect_data.attack_percent_bonus
+                    elseif damage_type == DAMAGE_TYPE_MAGICAL then
+                        damage = damage + attacker.stats[MAGICAL_ATTACK].value * effect_data.attack_percent_bonus
+                    end
+                end
 
         end
 
             if can_crit then
-                if Chance(GetCriticalChance(source, bonus_critical)) then
+                if GetRandomInt(1, 100) <= GetCriticalChance(source, bonus_critical) then
                     critical_rate = attacker.stats[CRIT_MULTIPLIER].value + bonus_critical_rate
                     attack_status = ATTACK_STATUS_CRITICAL
                     if critical_rate < 1.1 then critical_rate = 1.1 end
@@ -98,16 +107,32 @@ do
 
 
         if victim == nil then
-            if attribute ~= nil then
-                attribute_bonus = 1. + (attacker.stats[attribute].value * 0.01)
+
+                if attribute ~= nil then
+                    attribute_bonus = 1. + (attacker.stats[attribute].value * 0.01)
+                end
+
+                if damage_type == DAMAGE_TYPE_MAGICAL then
+                    damage = damage * (1. + (ParamToPercent(attacker.stats[MAGICAL_ATTACK].value, MAGICAL_ATTACK) * 0.01))
+                end
+
+            damage = (damage * attribute_bonus) * critical_rate
+
+        else
+
+            if direct and victim.equip_point[OFFHAND_POINT] ~= nil and victim.equip_point[OFFHAND_POINT].SUBTYPE == SHIELD_OFFHAND then
+                local block_chance = victim.stats[BLOCK_CHANCE].value
+
+                if block_chance > MAX_BLOCK_CHANCE then block_chance = MAX_BLOCK_CHANCE end
+
+                if GetRandomInt(1, 100) <= block_chance then
+                    attack_status = attack_status == ATTACK_STATUS_CRITICAL and ATTACK_STATUS_CRITICAL_BLOCKED or ATTACK_STATUS_BLOCKED
+                    block_reduction = 1. - victim.stats[BLOCK_ABSORB].value * 0.01
+                end
+
             end
 
-            if damage_type == DAMAGE_TYPE_MAGICAL then
-            damage = damage * (1. + (ParamToPercent(attacker.stats[MAGICAL_ATTACK].value, MAGICAL_ATTACK) * 0.01))
-        end
 
-        damage = (damage * attribute_bonus) * critical_rate
-        else
             if damage_type == DAMAGE_TYPE_PHYSICAL then
                 defence = 1. - (ParamToPercent(victim.stats[PHYSICAL_DEFENCE].value, PHYSICAL_DEFENCE) * 0.01)
             elseif damage_type == DAMAGE_TYPE_MAGICAL then
@@ -118,18 +143,22 @@ do
             end
 
 
-            if attack_type ~= nil then
+            if attack_type ~= nil and direct then
                 attack_modifier = attack_type == MELEE_ATTACK and victim.stats[MELEE_DAMAGE_REDUCTION].value or victim.stats[RANGE_DAMAGE_REDUCTION].value
                 attack_modifier = 1. - (attack_modifier * 0.01)
+                if attack_modifier < MIN_ATTACK_DAMAGE_REDUCTION then attack_modifier = MIN_ATTACK_DAMAGE_REDUCTION end
             end
 
 
             if attribute ~= nil then
                 local attribute_value = attacker.equip_point[WEAPON_POINT].ATTRIBUTE == attribute and attacker.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS or 0
-                attribute_bonus = 1. + (((attacker.stats[attribute].value + attribute_value) - victim.stats[attribute].value) * 0.01)
+
+                    attribute_bonus = 1. + (((attacker.stats[attribute].value + attribute_value) - victim.stats[attribute].value) * 0.01)
+                    if attribute_bonus < MIN_ATTRIBUTE_DAMAGE_REDUCTION then attribute_bonus = MIN_ATTRIBUTE_DAMAGE_REDUCTION end
+
             end
 
-            damage = ((damage * attribute_bonus) * critical_rate) * defence * attack_modifier
+            damage = ((damage * attribute_bonus) * critical_rate * block_reduction) * defence * attack_modifier
         end
 
 

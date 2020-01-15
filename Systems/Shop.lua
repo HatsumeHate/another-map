@@ -294,12 +294,15 @@ do
             ShopData[handle].item_list[i].perm = false
         end
 
+        print("huuuuuuuuuh????")
+
         local trg = CreateTrigger()
         TriggerRegisterUnitInRangeSimple(trg, 300., unit_owner)
         TriggerAddAction(trg, function()
             local id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
 
-            if id < 5 then
+            print("huh?")
+            if id <= 5 then
                 local hero = GetTriggerUnit()
 
                 ShopInFocus[id + 1] = unit_owner
@@ -321,6 +324,7 @@ do
             end
 
         end)
+        print("??????????")
     end
 
 end

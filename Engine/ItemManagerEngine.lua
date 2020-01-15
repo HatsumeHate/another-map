@@ -212,29 +212,6 @@ do
             end
 
 
-
-
-        --[[
-            if max > 0 then
-                for i = 1, #ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus do
-                    if (GetRandomInt(0, 100) <= ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].probability and max > 0) then
-
-                            item_data.SKILL_BONUS[#item_data.SKILL_BONUS + 1] = {
-                                bonus_levels = GetRandomInt(ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].bonus_levels_min, ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].bonus_levels_max)
-                            }
-
-                            if ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].id ~= nil then
-                                item_data.SKILL_BONUS[#item_data.SKILL_BONUS].id = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].id
-                            elseif ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].category ~= nil then
-                                item_data.SKILL_BONUS[#item_data.SKILL_BONUS].category = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix].skill_bonus[i].category
-                            end
-
-                        max = max - 1
-                        if max <= 0 then break end
-                    end
-                end
-            end
-        ]]
             BlzSetItemName(item, item_data.NAME)
 
     end
@@ -285,11 +262,11 @@ do
             item_data.level = level
 
                 if item_data.TYPE == ITEM_TYPE_WEAPON then
-                    item_data.DAMAGE = 20 + GetRandomInt(-6, 6) + 2 * level
+                    item_data.DAMAGE = R2I(20 * GetRandomReal(0.75, 1.25)) + 2 * level
                 elseif item_data.TYPE == ITEM_TYPE_ARMOR then
-                    item_data.DEFENCE = 15 + GetRandomInt(-6, 6) + 2 * level
+                    item_data.DEFENCE = R2I(15 * GetRandomReal(0.75, 1.25)) + 1 * level
                 elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
-                    item_data.SUPPRESSION = 7 + GetRandomInt(-4, 4) + 2 * level
+                    item_data.SUPPRESSION = R2I(7 * GetRandomReal(0.75, 1.25)) + 1 * level
                 end
 
             GenerateItemCost(item, level)
@@ -363,7 +340,7 @@ do
 
     local TWOHANDED_LIST = {
         FIST_WEAPON           = false,
-        BOW_WEAPON            = false,
+        BOW_WEAPON            = true,
         BLUNT_WEAPON          = false,
         GREATBLUNT_WEAPON     = true,
         SWORD_WEAPON          = false,
@@ -373,7 +350,7 @@ do
         DAGGER_WEAPON         = false,
         STAFF_WEAPON          = true,
         JAWELIN_WEAPON        = false,
-        THROWING_KNIFE_WEAPON = true,
+        THROWING_KNIFE_WEAPON = false,
     }
 
 
@@ -399,6 +376,7 @@ do
 
                 if IsWeaponTypeTwohanded(item_data.SUBTYPE) and flag then
                     if item_data.equip_point[OFFHAND_POINT] ~= nil then
+                        disarmed_item = item_data.equip_point[OFFHAND_POINT].item
                         EquipItem(unit, unit_data.equip_point[OFFHAND_POINT], false)
                     end
                 end
@@ -422,6 +400,8 @@ do
                     point = NECKLACE_POINT
                 end
 
+            elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
+                point = OFFHAND_POINT
             end
 
 
@@ -470,13 +450,13 @@ do
             local unit = GetTriggerUnit()
             local angle = AngleBetweenXY_DEG(GetItemX(item), GetItemY(item), GetUnitX(unit), GetUnitY(unit))
 
-            if DistanceBetweenUnitXY(unit, GetItemX(item), GetItemY(item)) <= 200. then
-                UnitRemoveItem(unit, item)
-                AddToInventory(1, item)
-                IssuePointOrderById(unit, order_move, GetUnitX(unit) + 0.01, GetUnitY(unit) - 0.01)
-            else
-                IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(50., angle), GetUnitY(unit) + Ry(50., angle))
-            end
+                if DistanceBetweenUnitXY(unit, GetItemX(item), GetItemY(item)) <= 200. then
+                    UnitRemoveItem(unit, item)
+                    AddToInventory(GetPlayerId(GetOwningPlayer(unit)) + 1, item)
+                    IssuePointOrderById(unit, order_move, GetUnitX(unit) + 0.01, GetUnitY(unit) - 0.01)
+                else
+                    IssuePointOrderById(unit, order_move, GetItemX(item) + Rx(25., angle), GetItemY(item) + Ry(25., angle))
+                end
 
         end
 
@@ -524,6 +504,8 @@ do
             [RING_JEWELRY]          = LOCALE_LIST[my_locale].RING_JEWELRY_NAME,
             [NECKLACE_JEWELRY]      = LOCALE_LIST[my_locale].NECKLACE_JEWELRY_NAME,
             [THROWING_KNIFE_WEAPON] = LOCALE_LIST[my_locale].THROWING_KNIFE_WEAPON_NAME,
+            [SHIELD_OFFHAND]        = LOCALE_LIST[my_locale].SHIELD_OFFHAND_NAME,
+            [ORB_OFFHAND]           = LOCALE_LIST[my_locale].ORB_OFFHAND_NAME,
         }
 
 
@@ -538,11 +520,6 @@ do
             [HOLY_ATTRIBUTE]         = LOCALE_LIST[my_locale].HOLY_ATTRIBUTE_NAME
         }
 
-
-
-        --QUALITY_ITEM_LIST[COMMON_ITEM][SWORD_WEAPON][1].name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_1
-       -- QUALITY_ITEM_LIST[COMMON_ITEM][SWORD_WEAPON][2].name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_2
-        --QUALITY_ITEM_LIST[COMMON_ITEM][SWORD_WEAPON][3].name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_3
 
         EnumItemsInRect(bj_mapInitialPlayableArea, nil, function()
 

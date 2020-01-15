@@ -176,7 +176,7 @@ do
 
         NewUnitTemplate('HBRB', {
             unit_class = BARBARIAN_CLASS,
-            weapon = { ATTACK_SPEED = 0.4, DAMAGE = 15, CRIT_CHANCE = 15. }
+            --weapon = { ATTACK_SPEED = 0.4, DAMAGE = 15, CRIT_CHANCE = 15. }
         })
 
         NewUnitTemplate('HSRC', {

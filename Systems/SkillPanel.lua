@@ -7,6 +7,8 @@ do
 
     SkillPanelFrame = {}
 
+    SkillPanelButton = nil
+
     local ClickTrigger = CreateTrigger()
     local EnterTrigger = CreateTrigger()
     local LeaveTrigger = CreateTrigger()
@@ -324,16 +326,17 @@ do
 
 
     function SkillPanelInit()
-        local skill_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSpellBookBLS.blp", 0.03, 0.03, InventoryTriggerButton, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.01, 0., GAME_UI)
+        SkillPanelButton = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSpellBookBLS.blp", 0.03, 0.03, InventoryTriggerButton, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.01, 0., GAME_UI)
 
-            CreateTooltip(LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_DESCRIPTION, skill_button, 0.14, 0.06)
+            CreateTooltip(LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_DESCRIPTION, SkillPanelButton, 0.14, 0.06)
 
-            DrawSkillPanel(1)
+        BlzFrameSetVisible(SkillPanelButton, false)
 
             local trg = CreateTrigger()
-            BlzTriggerRegisterFrameEvent(trg, skill_button, FRAMEEVENT_CONTROL_CLICK)
+            BlzTriggerRegisterFrameEvent(trg, SkillPanelButton, FRAMEEVENT_CONTROL_CLICK)
             TriggerAddAction(trg, function()
                 BlzFrameSetVisible(SkillPanelFrame[GetPlayerId(GetTriggerPlayer()) + 1].main_frame, not BlzFrameIsVisible(SkillPanelFrame[GetPlayerId(GetTriggerPlayer()) + 1].main_frame))
+                BlzFrameSetVisible(PlayerStatsFrame[GetPlayerId(GetTriggerPlayer()) + 1], false)
                 UpdateSkillList(GetPlayerId(GetTriggerPlayer()) + 1)
                 DestroyContextMenu(GetPlayerId(GetTriggerPlayer()) + 1)
             end)

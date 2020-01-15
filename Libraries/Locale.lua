@@ -10,6 +10,8 @@ do
 
     LOCALE_LIST = {
         ["ruRU"] = {
+            BLOCK_TEXT = "Блок ",
+
             PHYSICAL_ATTACK_PARAM = "Физическая атака",
             PHYSICAL_DEFENCE_PARAM = 'Физическая защита',
             MAGICAL_ATTACK_PARAM    = 'Магическая атака',
@@ -92,6 +94,8 @@ do
             RING_JEWELRY_NAME          = "Кольцо",
             NECKLACE_JEWELRY_NAME      = "Ожерелье",
             THROWING_KNIFE_WEAPON_NAME = "Метательный нож",
+            SHIELD_OFFHAND_NAME	       = "Щит",
+            ORB_OFFHAND_NAME 		   = "Орб",
 
             PHYSICAL_ATTRIBUTE_NAME     = "Физический",
             FIRE_ATTRIBUTE_NAME         = "Огненный",
@@ -205,28 +209,40 @@ do
             GENERIC_AXE_NAME_1 = "широкий топор",
             GENERIC_AXE_NAME_2 = "зазубренный топор",
             GENERIC_AXE_NAME_3 = "стальной топор",
+            GENERIC_AXE_NAME_4 = "мистический топор",
 
             GENERIC_GREATAXE_NAME_1 = "огромный резак",
+            GENERIC_GREATAXE_NAME_2 = "изогнутый топор",
 
             GENERIC_BLUNT_NAME_1 = "древняя булава",
             GENERIC_BLUNT_NAME_2 = "дубина",
             GENERIC_BLUNT_NAME_3 = "шипованная палица",
             GENERIC_BLUNT_NAME_4 = "цеп",
+            GENERIC_BLUNT_NAME_5 = "скипетр наследника",
+            GENERIC_BLUNT_NAME_6 = "моргерншерн",
 
             GENERIC_GREATBLUNT_NAME_1 = "большая шипованная палица",
             GENERIC_GREATBLUNT_NAME_2 = "мифриловый молот",
+            GENERIC_GREATBLUNT_NAME_3 = "зачарованный скипетр",
+            GENERIC_GREATBLUNT_NAME_4 = "рунический боевой молот",
 
             GENERIC_DAGGER_NAME_1 = "изогнутый нож",
             GENERIC_DAGGER_NAME_2 = "позолоченный нож",
             GENERIC_DAGGER_NAME_3 = "нож",
             GENERIC_DAGGER_NAME_4 = "заточка",
             GENERIC_DAGGER_NAME_5 = "разделочный нож",
+            GENERIC_DAGGER_NAME_6 = "жало",
+            GENERIC_DAGGER_NAME_7 = "расплавленный кинжал",
 
             GENERIC_STAFF_NAME_1 = "Сверток Природы",
             GENERIC_STAFF_NAME_2 = "огненный скипетр",
             GENERIC_STAFF_NAME_3 = "Нефритовый Свет",
             GENERIC_STAFF_NAME_4 = "Лунный Свет",
             GENERIC_STAFF_NAME_5 = "Путы Мира",
+            GENERIC_STAFF_NAME_6 = "Пророк",
+            GENERIC_STAFF_NAME_7 = "посох Ночного Сияния",
+            GENERIC_STAFF_NAME_8 = "Дар Смерти",
+            GENERIC_STAFF_NAME_9 = "Искатель",
 
             GENERIC_BOW_NAME_1 = "Позолоченное Древо",
             GENERIC_BOW_NAME_2 = "длинный лук",
@@ -234,9 +250,14 @@ do
             GENERIC_BOW_NAME_4 = "лук разведчика",
             GENERIC_BOW_NAME_5 = "тяжелый лук",
             GENERIC_BOW_NAME_6 = "Рог",
+            GENERIC_BOW_NAME_7 = "рунный лук",
+            GENERIC_BOW_NAME_8 = "усиленный лук",
+            GENERIC_BOW_NAME_9 = "дергающийся лук",
+            GENERIC_BOW_NAME_10 = "мистический лук",
+            GENERIC_BOW_NAME_11 = "заиневший лук",
 
             GENERIC_CHEST_NAME_1 = "композитный нагрудник",
-            GENERIC_CHEST_NAME_2 = "Воронье крыло",
+            GENERIC_CHEST_NAME_2 = "Воронье Крыло",
             GENERIC_CHEST_NAME_3 = "укрепленный нагрудник",
             GENERIC_CHEST_NAME_4 = "панцирь",
             GENERIC_CHEST_NAME_5 = "легкая броня",
@@ -254,12 +275,17 @@ do
             GENERIC_HANDS_NAME_2 = "кожанные перчатки",
             GENERIC_HANDS_NAME_3 = "кольчужные перчатки",
             GENERIC_HANDS_NAME_4 = "латные перчатки",
+            GENERIC_HANDS_NAME_5 = "укрепленные латные перчатки",
+            GENERIC_HANDS_NAME_6 = "перчатки дуэлянта",
+            GENERIC_HANDS_NAME_7 = "зачарованные перчатки",
 
             GENERIC_LEGS_NAME_1 = "походные сапоги",
             GENERIC_LEGS_NAME_2 = "сандали",
             GENERIC_LEGS_NAME_3 = "кожанные сандали",
             GENERIC_LEGS_NAME_4 = "укрепленные сандали",
             GENERIC_LEGS_NAME_5 = "латные сапоги",
+            GENERIC_LEGS_NAME_6 = "бронированные сапоги",
+            GENERIC_LEGS_NAME_7 = "композитные сапоги",
 
             GENERIC_HEAD_NAME_1 = "латный шлем",
             GENERIC_HEAD_NAME_2 = "демоническая каска",
@@ -323,6 +349,8 @@ do
             ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE = "Легенды гласят, что шахтёр Сморк наповал косил ей врагов",
         },
         ["enUS"] = {
+            BLOCK_TEXT = "Block ",
+
             PHYSICAL_ATTACK_PARAM = "Physical attack",
             PHYSICAL_DEFENCE_PARAM = 'Physical defence',
             MAGICAL_ATTACK_PARAM    = 'Magical attack',
@@ -405,6 +433,8 @@ do
             RING_JEWELRY_NAME          = "Ring",
             NECKLACE_JEWELRY_NAME      = "Necklace",
             THROWING_KNIFE_WEAPON_NAME = "Throwing knife",
+            SHIELD_OFFHAND_NAME	       = "Shield",
+            ORB_OFFHAND_NAME 		   = "Orb",
 
             PHYSICAL_ATTRIBUTE_NAME     = "Physical",
             FIRE_ATTRIBUTE_NAME         = "Fire",

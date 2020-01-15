@@ -112,7 +112,7 @@ do
     end
 
 
-    local function DrawInterface(player)
+    function DrawStatsPanelInterface(player)
         local new_frame
         local new_subframe
         local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
@@ -195,19 +195,18 @@ do
 
 
     function StatsPanelInit()
-
-        DrawInterface(1)
-
         CharButton = NewButton("ReplaceableTextures\\CommandButtons\\BTNTomeRed.blp", 0.03, 0.03, GAME_UI, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0., -0.12, GAME_UI)
 
         CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_DESCRIPTION, CharButton, 0.14, 0.06)
+
+        BlzFrameSetVisible(CharButton, false)
 
         local trg = CreateTrigger()
         BlzTriggerRegisterFrameEvent(trg, CharButton, FRAMEEVENT_CONTROL_CLICK)
         TriggerAddAction(trg, function()
 
             BlzFrameSetVisible(PlayerStatsFrame[GetPlayerId(GetTriggerPlayer()) + 1], not BlzFrameIsVisible(PlayerStatsFrame[GetPlayerId(GetTriggerPlayer()) + 1]))
-
+            BlzFrameSetVisible(SkillPanelFrame[GetPlayerId(GetTriggerPlayer()) + 1].main_frame, false)
         end)
 
         TimerStart(CreateTimer(), UPDATE, true, Update)
