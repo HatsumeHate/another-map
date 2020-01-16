@@ -283,6 +283,84 @@ do
 				drop = "Sound\\sword.wav"
 			}
         })
+
+		ItemAddData('I00W', {
+			NAME    = 'Сбалансированный меч',
+			TYPE = ITEM_TYPE_WEAPON,
+			SUBTYPE = SWORD_WEAPON,
+			DAMAGE  = 14,
+			QUALITY = COMMON_ITEM,
+			frame_texture = "Weapons\\BTNTier1 Sword.blp",
+			BONUS   = {
+				{ PARAM = PHYSICAL_ATTACK, VALUE = 3, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CRIT_CHANCE, VALUE = 2, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 0,
+			sell_value = 50,
+			soundpack = { equip = "Sound\\sword_equip01.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
+		})
+
+		ItemAddData('I00X', {
+			NAME    = 'Клепанная броня',
+			TYPE = ITEM_TYPE_ARMOR,
+			SUBTYPE = CHEST_ARMOR,
+			DEFENCE  = 25,
+			QUALITY = COMMON_ITEM,
+			frame_texture = "Armor\\BTNSteelArmor2.blp",
+			BONUS   = {
+				{ PARAM = HP_VALUE, VALUE = 15, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 0,
+			sell_value = 70,
+			soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
+		})
+
+		ItemAddData('I010', {
+			NAME    = 'Клепанные сапоги',
+			TYPE = ITEM_TYPE_ARMOR,
+			SUBTYPE = LEGS_ARMOR,
+			DEFENCE  = 18,
+			QUALITY = COMMON_ITEM,
+			frame_texture = "Armor\\BTNBoots.blp",
+			BONUS   = {
+				{ PARAM = MAGICAL_SUPPRESSION, VALUE = 7, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 0,
+			sell_value = 50,
+			soundpack = { equip = "Sound\\bootschain.wav", uneqip = "Sound\\bootschain.wav", drop = "Sound\\bootschain.wav" }
+		})
+
+		ItemAddData('I00Y', {
+			NAME    = 'Шлем',
+			TYPE = ITEM_TYPE_ARMOR,
+			SUBTYPE = HEAD_ARMOR,
+			DEFENCE  = 12,
+			QUALITY = COMMON_ITEM,
+			frame_texture = "Armor\\BTNNFHelmet02.blp",
+			BONUS   = {
+				{ PARAM = CRIT_CHANCE, VALUE = 2, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 0,
+			sell_value = 50,
+			soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
+		})
+
+		ItemAddData('I00Z', {
+			NAME    = 'Стеганные рукавицы',
+			TYPE = ITEM_TYPE_ARMOR,
+			SUBTYPE = HANDS_ARMOR,
+			DEFENCE  = 15,
+			QUALITY = COMMON_ITEM,
+			frame_texture = "Armor\\BTNDuelists Gauntlets.blp",
+			BONUS   = {
+				{ PARAM = PHYSICAL_RESIST, VALUE = 4, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 0,
+			sell_value = 50,
+			soundpack = { equip = "Sound\\gloveschain.wav", uneqip = "Sound\\gloveschain.wav", drop = "Sound\\gloveschain.wav" }
+		})
+
+
 		ItemAddData('IGSO', {
 			NAME    = 'NAN',
 			TYPE = ITEM_TYPE_WEAPON,

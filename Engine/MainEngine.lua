@@ -190,7 +190,7 @@ do
             if damage < 0. then damage = 0 end
             UnitDamageTarget(source, target, damage, false, false, nil, nil, is_sound and attacker.equip_point[WEAPON_POINT].WEAPON_SOUND or nil)
 
-            print(damage)
+            --print(damage)
             CreateHitnumber(damage, source, target, attack_status)
 
 

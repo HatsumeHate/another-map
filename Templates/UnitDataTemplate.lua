@@ -3,8 +3,15 @@ do
     UnitsData       = { }
     UnitsList       = { }
 
-    BARBARIAN_CLASS = 1
-    SORCERESS_CLASS = 2
+    BARBARIAN_CLASS     = 1
+    SORCERESS_CLASS     = 2
+    PALADIN_CLASS       = 3
+    ASSASSIN_CLASS      = 4
+    AMAZON_CLASS        = 5
+    NECROMANCER_CLASS   = 6
+    DRUID_CLASS         = 7
+    SPECIAL_CLASS       = 8
+
     NO_CLASS = 0
 
     WEAPON_POINT    = 1
@@ -22,9 +29,15 @@ do
 
         -- STR_STAT, VIT_STAT, AGI_STAT, INT_STAT
         local BASE_STATS = {
-            [BARBARIAN_CLASS] = { 10, 9, 6, 5 },
-            [SORCERESS_CLASS] = { 5, 6, 5, 10 },
-            [NO_CLASS] = { 10, 10, 10, 10 }
+            [BARBARIAN_CLASS]   = { 10, 9, 6, 5 },
+            [SORCERESS_CLASS]   = { 5, 6, 5, 10 },
+            [PALADIN_CLASS]     = { 8, 11, 6, 5 },
+            [ASSASSIN_CLASS]    = { 6, 6, 10, 6 },
+            [AMAZON_CLASS]      = { 6, 8, 7, 5 },
+            [NECROMANCER_CLASS] = { 5, 6, 5, 10 },
+            [DRUID_CLASS]       = { 5, 9, 5, 9 },
+            [SPECIAL_CLASS]     = { 20, 20, 20, 20 },
+            [NO_CLASS]          = { 10, 10, 10, 10 }
         }
 
 
@@ -102,7 +115,7 @@ do
             is_hp_static = reference_data.is_hp_static,
             have_mp = reference_data.have_mp,
             is_mp_static = reference_data.is_mp_static,
-            time_before_remove = 10.,
+            time_before_remove = reference_data.time_before_remove or 10.,
 
             cast_skill = 0,
             cast_skill_level = 0,
@@ -173,16 +186,71 @@ do
 
     function UnitDataInit()
 
+        NewUnitTemplate('h000', {
+            unit_class = SPECIAL_CLASS,
+            base_stats = { health = 3000., hp_regen = 5. },
+            weapon = { DAMAGE = 25, CRIT_CHANCE = 15. }
+        })
 
         NewUnitTemplate('HBRB', {
             unit_class = BARBARIAN_CLASS,
+            time_before_remove = 0.
             --weapon = { ATTACK_SPEED = 0.4, DAMAGE = 15, CRIT_CHANCE = 15. }
         })
 
         NewUnitTemplate('HSRC', {
             unit_class = SORCERESS_CLASS,
-            base_stats = { health = 3000., hp_regen = 30. },
+            time_before_remove = 0.
+            --base_stats = { health = 3000., hp_regen = 30. },
         })
+
+
+        -- fiend
+        NewUnitTemplate('u007', {
+            unit_class = NO_CLASS,
+            time_before_remove = 10.,
+            base_stats = { health = 125., hp_regen = 1., moving_speed = 330. },
+            weapon = { ATTACK_SPEED = 1.4, DAMAGE = 5, CRIT_CHANCE = 10. },
+            have_mp = false
+        })
+
+        -- armored scele
+        NewUnitTemplate('u00B', {
+            unit_class = NO_CLASS,
+            time_before_remove = 10.,
+            base_stats = { health = 220., hp_regen = 1., moving_speed = 260. },
+            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 4, CRIT_CHANCE = 7. },
+            have_mp = false
+        })
+
+        -- demon assassin
+        NewUnitTemplate('u009', {
+            unit_class = NO_CLASS,
+            time_before_remove = 10.,
+            base_stats = { health = 310., hp_regen = 1.7, moving_speed = 300. },
+            weapon = { ATTACK_SPEED = 1.5, DAMAGE = 15, CRIT_CHANCE = 14. },
+            have_mp = false
+        })
+
+        -- fallen angel
+        NewUnitTemplate('u008', {
+            unit_class = NO_CLASS,
+            time_before_remove = 10.,
+            base_stats = { health = 375., hp_regen = 2.1, moving_speed = 300. },
+            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 12, ATTRIBUTE = HOLY_ATTRIBUTE, CRIT_CHANCE = 15. },
+            have_mp = false
+        })
+
+        -- hells guardian
+        NewUnitTemplate('u00A', {
+            unit_class = NO_CLASS,
+            time_before_remove = 10.,
+            base_stats = { health = 270., hp_regen = 1.4, moving_speed = 280. },
+            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 8, ATTRIBUTE = DARKNESS_ATTRIBUTE, CRIT_CHANCE = 10. },
+            have_mp = false
+        })
+
+
 
         local group = CreateGroup()
 
@@ -190,10 +258,12 @@ do
 
             ForGroup(group, function ()
                 local handle = GetUnitTypeId(GetEnumUnit())
-                if UnitsData[handle] ~= nil then
-                    NewUnitByTemplate(GetEnumUnit(), UnitsData[handle])
-                    OnUnitCreated(GetEnumUnit())
-                end
+
+                    if UnitsData[handle] ~= nil then
+                        NewUnitByTemplate(GetEnumUnit(), UnitsData[handle])
+                        OnUnitCreated(GetEnumUnit())
+                    end
+
             end)
 
         DestroyGroup(group)
@@ -201,11 +271,14 @@ do
         local trg = CreateTrigger()
         TriggerRegisterEnterRectSimple(trg, bj_mapInitialPlayableArea)
         TriggerAddAction(trg, function ()
+
             local unit = GetTriggerUnit()
+
                 if UnitsList[GetHandleId(unit)] == nil and UnitsData[GetUnitTypeId(unit)] ~= nil then
                     NewUnitByTemplate(unit, UnitsData[GetUnitTypeId(unit)])
                     OnUnitCreated(unit)
                 end
+
         end)
 
         trg = CreateTrigger()
@@ -213,24 +286,23 @@ do
         TriggerAddAction(trg, function ()
             local unit_data = GetUnitData(GetTriggerUnit())
 
+                if unit_data ~= nil then
+                    PauseTimer(unit_data.action_timer)
+                    PauseTimer(unit_data.attack_timer)
 
-            if unit_data ~= nil then
-                PauseTimer(unit_data.action_timer)
-                PauseTimer(unit_data.attack_timer)
+                    if unit_data.time_before_remove > 0. then
+                        local handle = GetHandleId(unit_data.Owner)
 
-                if unit_data.time_before_remove > 0. then
-                    local handle = GetHandleId(unit_data.Owner)
+                            TimerStart(CreateTimer(), unit_data.time_before_remove, false, function ()
+                                DestroyTimer(unit_data.action_timer)
+                                DestroyTimer(unit_data.attack_timer)
+                                UnitsList[handle] = nil
+                                DestroyTimer(GetExpiredTimer())
+                            end)
 
-                        TimerStart(CreateTimer(), unit_data.time_before_remove, false, function ()
-                            DestroyTimer(unit_data.action_timer)
-                            DestroyTimer(unit_data.attack_timer)
-                            UnitsList[handle] = nil
-                            DestroyTimer(GetExpiredTimer())
-                        end)
+                    end
 
                 end
-
-            end
 
         end)
 

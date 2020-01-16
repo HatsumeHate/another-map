@@ -11,6 +11,7 @@ do
     LOCALE_LIST = {
         ["ruRU"] = {
             BLOCK_TEXT = "Блок ",
+            WAVE_INCOMING_TEXT = "Волна:",
 
             PHYSICAL_ATTACK_PARAM = "Физическая атака",
             PHYSICAL_DEFENCE_PARAM = 'Физическая защита',
@@ -68,6 +69,9 @@ do
 
             HP_PER_HIT_PARAM   = 'Здоровье за атаку',
             MP_PER_HIT_PARAM   = 'Ресурса за атаку',
+
+            BONUS_DEMON_DAMAGE_PARAM = "Урон демонам",
+            BONUS_UNDEAD_DAMAG_PARAME = "Урон нежити",
 
 
             ITEM_TYPE_WEAPON_NAME = "Оружие",
@@ -408,6 +412,9 @@ do
             HP_PER_HIT_PARAM   = 'Health per hit',
             MP_PER_HIT_PARAM   = 'Resource per hit',
 
+            BONUS_DEMON_DAMAGE_PARAM = "Damage to demons",
+            BONUS_UNDEAD_DAMAG_PARAME = "Damage to undead",
+
 
             ITEM_TYPE_WEAPON_NAME = "Weapon",
             ITEM_TYPE_ARMOR_NAME      = "Armor",
@@ -699,7 +706,10 @@ do
 
 
     function InitLocaleLibrary()
-        my_locale = "enUS"--"ruRU"--BlzGetLocale() --
+        if GetLocalPlayer() then
+            my_locale = BlzGetLocale()
+            if my_locale ~= "ruRU" and my_locale ~= "enUS" then my_locale = "enUS" end
+        end --"ruRU" --"enUS"BlzGetLocale() --
     end
 
 

@@ -6,11 +6,12 @@
 do
 
 
-
+    local DeathTrigger
 
 
     function CreateHeroSelections()
 
+        DeathTrigger = CreateTrigger()
         local trg = CreateTrigger()
         local barbarian_region = CreateRegion()
         RegionAddRect(barbarian_region, gg_rct_barbarian_select)
@@ -41,6 +42,9 @@ do
                     player_id = player_id + 1
                     PlayerHero[player_id] = hero
 
+                    TriggerRegisterDeathEvent(DeathTrigger, hero)
+
+
                     DrawStatsPanelInterface(player_id)
                     DrawInventoryFrames(player_id, hero)
                     DrawSkillPanel(player_id)
@@ -53,11 +57,22 @@ do
                         BlzFrameSetVisible(CharButton, true)
                         BlzFrameSetVisible(InventoryTriggerButton, true)
                         BlzFrameSetVisible(SkillPanelButton, true)
-                        SetCameraPosition(GetUnitX(hero), GetUnitY(hero))
+                        PanCameraToTimed(GetUnitX(hero), GetUnitY(hero), 0.)
                     end
                     DestroyTimer(GetExpiredTimer())
                 end)
 
+
+        end)
+
+
+        TriggerAddAction(DeathTrigger, function ()
+            local hero = GetTriggerUnit()
+
+                TimerStart(CreateTimer(), 15., false, function()
+                    ReviveHero(hero, GetRectCenterX(gg_rct_starting_location), GetRectCenterY(gg_rct_starting_location), true)
+                    DestroyTimer(GetExpiredTimer())
+                end)
 
         end)
 

@@ -599,55 +599,35 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_1,
                         decl = DECL_IT,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNring2.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_2,
                         decl = DECL_IT,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNLancelot_Ring.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_3,
                         decl = DECL_SHE,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNHarbingerRing.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_4,
                         decl = DECL_HE,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNGold Ring.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_5,
                         decl = DECL_IT,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                 },
                 [NECKLACE_JEWELRY] = {
@@ -656,44 +636,28 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\amulet.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNEmpty Amulet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\amulet.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNAncientNecklace.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\amulet.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNCastersBeads.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_4,
                         decl = DECL_THEY,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\amulet.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" }
                     },
                 },
                 [CHEST_ARMOR] = {
@@ -702,88 +666,56 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_2,
                         decl = DECL_IT,
                         modificator = 0.8,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\platearmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\platearmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_5,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_6,
                         decl = DECL_SHE,
                         modificator = 1.2,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\platearmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\platearmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_7,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_8,
                         decl = DECL_SHE,
                         modificator = 0.75,
-                        soundpack = {
-                            equip = "Sound\\cloth_armor_equip.wav",
-                            uneqip = "Sound\\cloth_armor_unequip.wav",
-                            drop = "Sound\\lightarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\cloth_armor_equip.wav", uneqip = "Sound\\cloth_armor_unequip.wav", drop = "Sound\\lightarmor.wav" }
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -792,44 +724,28 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_1,
                         decl = DECL_THEY,
                         modificator = 0.9,
-                        soundpack = {
-                            equip = "Sound\\gloves.wav",
-                            uneqip = "Sound\\gloves.wav",
-                            drop = "Sound\\gloves.wav"
-                        }
+                        soundpack = { equip = "Sound\\gloves.wav", uneqip = "Sound\\gloves.wav", drop = "Sound\\gloves.wav" }
                     },
                     {
                         icon = "Armor\\BTNLeather Gauntlet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_2,
                         decl = DECL_THEY,
                         modificator = 0.8,
-                        soundpack = {
-                            equip = "Sound\\gloves.wav",
-                            uneqip = "Sound\\gloves.wav",
-                            drop = "Sound\\gloves.wav"
-                        }
+                        soundpack = { equip = "Sound\\gloves.wav", uneqip = "Sound\\gloves.wav", drop = "Sound\\gloves.wav" }
                     },
                     {
                         icon = "Armor\\BTNRogues Gauntlets.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_3,
                         decl = DECL_THEY,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\gloveschain.wav",
-                            uneqip = "Sound\\gloveschain.wav",
-                            drop = "Sound\\gloveschain.wav"
-                        }
+                        soundpack = { equip = "Sound\\gloveschain.wav", uneqip = "Sound\\gloveschain.wav", drop = "Sound\\gloveschain.wav" }
                     },
                     {
                         icon = "Armor\\BTNPlated Gauntlet2.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_4,
                         decl = DECL_THEY,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\glovesmetal.wav",
-                            uneqip = "Sound\\glovesmetal.wav",
-                            drop = "Sound\\glovesmetal.wav"
-                        }
+                        soundpack = { equip = "Sound\\glovesmetal.wav", uneqip = "Sound\\glovesmetal.wav", drop = "Sound\\glovesmetal.wav" }
                     },
                 },
                 [LEGS_ARMOR] = {
@@ -838,55 +754,35 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_1,
                         decl = DECL_THEY,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bootsmetal.wav",
-                            uneqip = "Sound\\bootsmetal.wav",
-                            drop = "Sound\\bootsmetal.wav"
-                        }
+                        soundpack = { equip = "Sound\\bootsmetal.wav", uneqip = "Sound\\bootsmetal.wav", drop = "Sound\\bootsmetal.wav" }
                     },
                     {
                         icon = "Armor\\BTNSandalZ.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_2,
                         decl = DECL_THEY,
                         modificator = 0.9,
-                        soundpack = {
-                            equip = "Sound\\boots.wav",
-                            uneqip = "Sound\\boots.wav",
-                            drop = "Sound\\boots.wav"
-                        }
+                        soundpack = { equip = "Sound\\boots.wav", uneqip = "Sound\\boots.wav", drop = "Sound\\boots.wav" }
                     },
                     {
                         icon = "Armor\\BTNSandalZ2.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_3,
                         decl = DECL_THEY,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\boots.wav",
-                            uneqip = "Sound\\boots.wav",
-                            drop = "Sound\\boots.wav"
-                        }
+                        soundpack = { equip = "Sound\\boots.wav", uneqip = "Sound\\boots.wav", drop = "Sound\\boots.wav" }
                     },
                     {
                         icon = "Armor\\BTNSandalZ3.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_4,
                         decl = DECL_THEY,
                         modificator = 1.1,
-                        soundpack = {
-                            equip = "Sound\\bootschain.wav",
-                            uneqip = "Sound\\bootschain.wav",
-                            drop = "Sound\\bootschain.wav"
-                        }
+                        soundpack = { equip = "Sound\\bootschain.wav", uneqip = "Sound\\bootschain.wav", drop = "Sound\\bootschain.wav" }
                     },
                     {
                         icon = "Armor\\BTNSteelBoots.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_5,
                         decl = DECL_THEY,
                         modificator = 1.1,
-                        soundpack = {
-                            equip = "Sound\\bootsmetal.wav",
-                            uneqip = "Sound\\bootsmetal.wav",
-                            drop = "Sound\\bootsmetal.wav"
-                        }
+                        soundpack = { equip = "Sound\\bootsmetal.wav", uneqip = "Sound\\bootsmetal.wav", drop = "Sound\\bootsmetal.wav" }
                     },
                 },
                 [HEAD_ARMOR] = {
@@ -895,77 +791,49 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.1,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNDemonsHelmet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_2,
                         decl = DECL_SHE,
                         modificator = 1.1,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNDragonHuntersHelmet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNHolyHelm.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNLeatherHood.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_5,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\cap.wav",
-                            uneqip = "Sound\\cap.wav",
-                            drop = "Sound\\cap.wav"
-                        }
+                        soundpack = { equip = "Sound\\cap.wav", uneqip = "Sound\\cap.wav", drop = "Sound\\cap.wav" }
                     },
                     {
                         icon = "Armor\\BTNNFHelmet02.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_6,
                         decl = DECL_HE,
                         modificator = 0.9,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNNFHelmet03.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_7,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                 },
                 [SWORD_WEAPON] = {
@@ -974,44 +842,28 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip01.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip01.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNAnother Sword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip02.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNDKSword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip02.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNSword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip01.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip01.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                 },
                 [GREATSWORD_WEAPON] = {
@@ -1020,22 +872,14 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNRitual Shaman Knife 1Charge.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
                 [AXE_WEAPON] = {
@@ -1044,33 +888,21 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip02.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNGrandAxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip02.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNSteelAxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip02.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                 },
                 [GREATAXE_WEAPON] = {
@@ -1079,11 +911,7 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.25,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
                 [BLUNT_WEAPON] = {
@@ -1092,44 +920,28 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNBeatstickV4.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_2,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNSpikedClub.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_3,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNFlail.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                 },
                 [GREATBLUNT_WEAPON] = {
@@ -1138,22 +950,14 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.3,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNMythril Hammer.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.3,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
                 [DAGGER_WEAPON] = {
@@ -1162,55 +966,35 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_1,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNGoldenDagger.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_2,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNDagger3.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_3,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNNastyShiv.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_4,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNMecheteOfFury.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_5,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
                 },
                 [STAFF_WEAPON] = {
@@ -1219,55 +1003,35 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNFireWand.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNFrostJade.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNIce Staff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNStick Staff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_5,
                         decl = DECL_THEY,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                 },
                 [BOW_WEAPON] = {
@@ -1276,66 +1040,42 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_1,
                         decl = DECL_IT,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
-                        }
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
                     },
                     {
                         icon = "Weapons\\BTNHardBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
-                        }
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
                     },
                     {
                         icon = "Weapons\\BTNRoughwoodBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
-                        }
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
                     },
                     {
                         icon = "Weapons\\BTNScoutsBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
-                        }
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
                     },
                     {
                         icon = "Weapons\\BTNStrongBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
-                        }
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
                     },
                     {
                         icon = "Weapons\\BTNWoodenHornBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
-                        }
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
                     },
                 },
             },
@@ -1346,55 +1086,35 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_1,
                         decl = DECL_IT,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNring2.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_2,
                         decl = DECL_IT,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNLancelot_Ring.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_3,
                         decl = DECL_SHE,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNHarbingerRing.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_4,
                         decl = DECL_HE,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNGold Ring.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_5,
                         decl = DECL_IT,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                 },
                 [NECKLACE_JEWELRY] = {
@@ -1403,44 +1123,28 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\amulet.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNEmpty Amulet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\amulet.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNAncientNecklace.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\amulet.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNCastersBeads.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_4,
                         decl = DECL_THEY,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\amulet.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" }
                     },
                 },
                 [CHEST_ARMOR] = {
@@ -1449,88 +1153,56 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_2,
                         decl = DECL_IT,
                         modificator = 0.8,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\platearmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\platearmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_5,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_6,
                         decl = DECL_SHE,
                         modificator = 1.2,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\platearmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\platearmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_7,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_8,
                         decl = DECL_SHE,
                         modificator = 0.75,
-                        soundpack = {
-                            equip = "Sound\\cloth_armor_equip.wav",
-                            uneqip = "Sound\\cloth_armor_unequip.wav",
-                            drop = "Sound\\lightarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\cloth_armor_equip.wav", uneqip = "Sound\\cloth_armor_unequip.wav", drop = "Sound\\lightarmor.wav" }
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -1539,44 +1211,28 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_1,
                         decl = DECL_THEY,
                         modificator = 0.9,
-                        soundpack = {
-                            equip = "Sound\\gloves.wav",
-                            uneqip = "Sound\\gloves.wav",
-                            drop = "Sound\\gloves.wav"
-                        }
+                        soundpack = { equip = "Sound\\gloves.wav", uneqip = "Sound\\gloves.wav", drop = "Sound\\gloves.wav" }
                     },
                     {
                         icon = "Armor\\BTNLeather Gauntlet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_2,
                         decl = DECL_THEY,
                         modificator = 0.8,
-                        soundpack = {
-                            equip = "Sound\\gloves.wav",
-                            uneqip = "Sound\\gloves.wav",
-                            drop = "Sound\\gloves.wav"
-                        }
+                        soundpack = { equip = "Sound\\gloves.wav", uneqip = "Sound\\gloves.wav", drop = "Sound\\gloves.wav" }
                     },
                     {
                         icon = "Armor\\BTNRogues Gauntlets.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_3,
                         decl = DECL_THEY,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\gloveschain.wav",
-                            uneqip = "Sound\\gloveschain.wav",
-                            drop = "Sound\\gloveschain.wav"
-                        }
+                        soundpack = { equip = "Sound\\gloveschain.wav", uneqip = "Sound\\gloveschain.wav", drop = "Sound\\gloveschain.wav" }
                     },
                     {
                         icon = "Armor\\BTNPlated Gauntlet2.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_4,
                         decl = DECL_THEY,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\glovesmetal.wav",
-                            uneqip = "Sound\\glovesmetal.wav",
-                            drop = "Sound\\glovesmetal.wav"
-                        }
+                        soundpack = { equip = "Sound\\glovesmetal.wav", uneqip = "Sound\\glovesmetal.wav", drop = "Sound\\glovesmetal.wav" }
                     },
                 },
                 [LEGS_ARMOR] = {
@@ -1585,55 +1241,35 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_1,
                         decl = DECL_THEY,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bootsmetal.wav",
-                            uneqip = "Sound\\bootsmetal.wav",
-                            drop = "Sound\\bootsmetal.wav"
-                        }
+                        soundpack = { equip = "Sound\\bootsmetal.wav", uneqip = "Sound\\bootsmetal.wav", drop = "Sound\\bootsmetal.wav" }
                     },
                     {
                         icon = "Armor\\BTNSandalZ.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_2,
                         decl = DECL_THEY,
                         modificator = 0.9,
-                        soundpack = {
-                            equip = "Sound\\boots.wav",
-                            uneqip = "Sound\\boots.wav",
-                            drop = "Sound\\boots.wav"
-                        }
+                        soundpack = { equip = "Sound\\boots.wav", uneqip = "Sound\\boots.wav", drop = "Sound\\boots.wav" }
                     },
                     {
                         icon = "Armor\\BTNSandalZ2.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_3,
                         decl = DECL_THEY,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\boots.wav",
-                            uneqip = "Sound\\boots.wav",
-                            drop = "Sound\\boots.wav"
-                        }
+                        soundpack = { equip = "Sound\\boots.wav", uneqip = "Sound\\boots.wav", drop = "Sound\\boots.wav" }
                     },
                     {
                         icon = "Armor\\BTNSandalZ3.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_4,
                         decl = DECL_THEY,
                         modificator = 1.1,
-                        soundpack = {
-                            equip = "Sound\\bootschain.wav",
-                            uneqip = "Sound\\bootschain.wav",
-                            drop = "Sound\\bootschain.wav"
-                        }
+                        soundpack = { equip = "Sound\\bootschain.wav", uneqip = "Sound\\bootschain.wav", drop = "Sound\\bootschain.wav" }
                     },
                     {
                         icon = "Armor\\BTNSteelBoots.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_5,
                         decl = DECL_THEY,
                         modificator = 1.1,
-                        soundpack = {
-                            equip = "Sound\\bootsmetal.wav",
-                            uneqip = "Sound\\bootsmetal.wav",
-                            drop = "Sound\\bootsmetal.wav"
-                        }
+                        soundpack = { equip = "Sound\\bootsmetal.wav", uneqip = "Sound\\bootsmetal.wav", drop = "Sound\\bootsmetal.wav" }
                     },
                 },
                 [HEAD_ARMOR] = {
@@ -1642,77 +1278,49 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.1,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNDemonsHelmet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_2,
                         decl = DECL_SHE,
                         modificator = 1.1,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNDragonHuntersHelmet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNHolyHelm.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNLeatherHood.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_5,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\cap.wav",
-                            uneqip = "Sound\\cap.wav",
-                            drop = "Sound\\cap.wav"
-                        }
+                        soundpack = { equip = "Sound\\cap.wav", uneqip = "Sound\\cap.wav", drop = "Sound\\cap.wav" }
                     },
                     {
                         icon = "Armor\\BTNNFHelmet02.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_6,
                         decl = DECL_HE,
                         modificator = 0.9,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNNFHelmet03.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_7,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                 },
                 [SWORD_WEAPON] = {
@@ -1721,44 +1329,28 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip01.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip01.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNAnother Sword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip02.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNDKSword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip02.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNSword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip01.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip01.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                 },
                 [GREATSWORD_WEAPON] = {
@@ -1767,22 +1359,14 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNRitual Shaman Knife 1Charge.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
                 [AXE_WEAPON] = {
@@ -1791,33 +1375,21 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip02.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNGrandAxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip02.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNSteelAxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip02.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                 },
                 [GREATAXE_WEAPON] = {
@@ -1826,11 +1398,7 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.25,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
                 [BLUNT_WEAPON] = {
@@ -1839,44 +1407,28 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNBeatstickV4.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_2,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNSpikedClub.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_3,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNFlail.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                 },
                 [GREATBLUNT_WEAPON] = {
@@ -1885,22 +1437,14 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.3,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNMythril Hammer.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.3,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
                 [DAGGER_WEAPON] = {
@@ -1909,55 +1453,35 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_1,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNGoldenDagger.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_2,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNDagger3.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_3,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNNastyShiv.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_4,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNMecheteOfFury.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_5,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
                 },
                 [STAFF_WEAPON] = {
@@ -1966,55 +1490,35 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNFireWand.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNFrostJade.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNIce Staff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNStick Staff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_5,
                         decl = DECL_THEY,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                 },
                 [BOW_WEAPON] = {
@@ -2023,66 +1527,42 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_1,
                         decl = DECL_IT,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
-                        }
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
                     },
                     {
                         icon = "Weapons\\BTNHardBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
-                        }
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
                     },
                     {
                         icon = "Weapons\\BTNRoughwoodBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
-                        }
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
                     },
                     {
                         icon = "Weapons\\BTNScoutsBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
-                        }
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
                     },
                     {
                         icon = "Weapons\\BTNStrongBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
-                        }
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
                     },
                     {
                         icon = "Weapons\\BTNWoodenHornBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
-                        }
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
                     },
                 },
             },
@@ -2093,121 +1573,77 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_1,
                         decl = DECL_IT,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNring2.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_2,
                         decl = DECL_IT,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNLancelot_Ring.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_3,
                         decl = DECL_SHE,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNHarbingerRing.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_4,
                         decl = DECL_HE,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNGold Ring Active.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_5,
                         decl = DECL_IT,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNAquamarineRing.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_6,
                         decl = DECL_IT,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNArcaniteNightRing.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_7,
                         decl = DECL_IT,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNArcanite Ring.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_8,
                         decl = DECL_HE,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNDarknessRing.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_9,
                         decl = DECL_IT,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNDeathKnightRing.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_10,
                         decl = DECL_IT,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNFrostRing.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_11,
                         decl = DECL_IT,
                         modificator = 0.7,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\ring.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
                     },
                 },
                 [NECKLACE_JEWELRY] = {
@@ -2216,66 +1652,42 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\amulet.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNAmulet1.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_5,
                         decl = DECL_SHE,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\amulet.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNAncientNecklace.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\amulet.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNEmerald Amulet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_7,
                         decl = DECL_SHE,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\amulet.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNRuby Amulet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_8,
                         decl = DECL_SHE,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\amulet.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
                         icon = "Jewelry\\BTNSapphire Amulet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_9,
                         decl = DECL_SHE,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\ring_equip.wav",
-                            uneqip = "Sound\\ring_unequip.wav",
-                            drop = "Sound\\amulet.wav"
-                        }
+                        soundpack = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" }
                     },
                 },
                 [CHEST_ARMOR] = {
@@ -2284,143 +1696,91 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_2,
                         decl = DECL_IT,
                         modificator = 0.8,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\platearmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\platearmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_5,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_6,
                         decl = DECL_SHE,
                         modificator = 1.2,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\platearmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\platearmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_7,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_8,
                         decl = DECL_SHE,
                         modificator = 0.75,
-                        soundpack = {
-                            equip = "Sound\\cloth_armor_equip.wav",
-                            uneqip = "Sound\\cloth_armor_unequip.wav",
-                            drop = "Sound\\lightarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\cloth_armor_equip.wav", uneqip = "Sound\\cloth_armor_unequip.wav", drop = "Sound\\lightarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNArbalestersArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_9,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNDivineArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_10,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\platearmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\platearmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNHalfArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_11,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNHalfArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_12,
                         decl = DECL_HE,
                         modificator = 1.1,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\platearmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\platearmor.wav" }
                     },
                     {
                         icon = "Armor\\BTNMoongladeArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_13,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\chain_armor_equip.wav",
-                            uneqip = "Sound\\chain_armor_unequip.wav",
-                            drop = "Sound\\chainarmor.wav"
-                        }
+                        soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -2429,66 +1789,42 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_1,
                         decl = DECL_THEY,
                         modificator = 0.9,
-                        soundpack = {
-                            equip = "Sound\\gloves.wav",
-                            uneqip = "Sound\\gloves.wav",
-                            drop = "Sound\\gloves.wav"
-                        }
+                        soundpack = { equip = "Sound\\gloves.wav", uneqip = "Sound\\gloves.wav", drop = "Sound\\gloves.wav" }
                     },
                     {
                         icon = "Armor\\BTNLeather Gauntlet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_2,
                         decl = DECL_THEY,
                         modificator = 0.8,
-                        soundpack = {
-                            equip = "Sound\\gloves.wav",
-                            uneqip = "Sound\\gloves.wav",
-                            drop = "Sound\\gloves.wav"
-                        }
+                        soundpack = { equip = "Sound\\gloves.wav", uneqip = "Sound\\gloves.wav", drop = "Sound\\gloves.wav" }
                     },
                     {
                         icon = "Armor\\BTNRogues Gauntlets.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_3,
                         decl = DECL_THEY,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\gloveschain.wav",
-                            uneqip = "Sound\\gloveschain.wav",
-                            drop = "Sound\\gloveschain.wav"
-                        }
+                        soundpack = { equip = "Sound\\gloveschain.wav", uneqip = "Sound\\gloveschain.wav", drop = "Sound\\gloveschain.wav" }
                     },
                     {
                         icon = "Armor\\BTNPlated Gauntlet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_5,
                         decl = DECL_THEY,
                         modificator = 1.15,
-                        soundpack = {
-                            equip = "Sound\\glovesmetal.wav",
-                            uneqip = "Sound\\glovesmetal.wav",
-                            drop = "Sound\\glovesmetal.wav"
-                        }
+                        soundpack = { equip = "Sound\\glovesmetal.wav", uneqip = "Sound\\glovesmetal.wav", drop = "Sound\\glovesmetal.wav" }
                     },
                     {
                         icon = "Armor\\BTNDuelists Gauntlets.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_6,
                         decl = DECL_THEY,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\gloveschain.wav",
-                            uneqip = "Sound\\gloveschain.wav",
-                            drop = "Sound\\gloveschain.wav"
-                        }
+                        soundpack = { equip = "Sound\\gloveschain.wav", uneqip = "Sound\\gloveschain.wav", drop = "Sound\\gloveschain.wav" }
                     },
                     {
                         icon = "Armor\\BTNMana gloves.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_7,
                         decl = DECL_THEY,
                         modificator = 0.8,
-                        soundpack = {
-                            equip = "Sound\\gloves.wav",
-                            uneqip = "Sound\\gloves.wav",
-                            drop = "Sound\\gloves.wav"
-                        }
+                        soundpack = { equip = "Sound\\gloves.wav", uneqip = "Sound\\gloves.wav", drop = "Sound\\gloves.wav" }
                     },
                 },
                 [LEGS_ARMOR] = {
@@ -2497,66 +1833,42 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_1,
                         decl = DECL_THEY,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bootsmetal.wav",
-                            uneqip = "Sound\\bootsmetal.wav",
-                            drop = "Sound\\bootsmetal.wav"
-                        }
+                        soundpack = { equip = "Sound\\bootsmetal.wav", uneqip = "Sound\\bootsmetal.wav", drop = "Sound\\bootsmetal.wav" }
                     },
                     {
                         icon = "Armor\\BTNSandalZ.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_2,
                         decl = DECL_THEY,
                         modificator = 0.9,
-                        soundpack = {
-                            equip = "Sound\\boots.wav",
-                            uneqip = "Sound\\boots.wav",
-                            drop = "Sound\\boots.wav"
-                        }
+                        soundpack = { equip = "Sound\\boots.wav", uneqip = "Sound\\boots.wav", drop = "Sound\\boots.wav" }
                     },
                     {
                         icon = "Armor\\BTNSandalZ2.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_3,
                         decl = DECL_THEY,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\boots.wav",
-                            uneqip = "Sound\\boots.wav",
-                            drop = "Sound\\boots.wav"
-                        }
+                        soundpack = { equip = "Sound\\boots.wav", uneqip = "Sound\\boots.wav", drop = "Sound\\boots.wav" }
                     },
                     {
                         icon = "Armor\\BTNSandalZ3.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_4,
                         decl = DECL_THEY,
                         modificator = 1.1,
-                        soundpack = {
-                            equip = "Sound\\bootschain.wav",
-                            uneqip = "Sound\\bootschain.wav",
-                            drop = "Sound\\bootschain.wav"
-                        }
+                        soundpack = { equip = "Sound\\bootschain.wav", uneqip = "Sound\\bootschain.wav", drop = "Sound\\bootschain.wav" }
                     },
                     {
                         icon = "Armor\\BTNArmoredBoot.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_6,
                         decl = DECL_THEY,
                         modificator = 1.1,
-                        soundpack = {
-                            equip = "Sound\\bootsmetal.wav",
-                            uneqip = "Sound\\bootsmetal.wav",
-                            drop = "Sound\\bootsmetal.wav"
-                        }
+                        soundpack = { equip = "Sound\\bootsmetal.wav", uneqip = "Sound\\bootsmetal.wav", drop = "Sound\\bootsmetal.wav" }
                     },
                     {
                         icon = "Armor\\BTNBoots.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_7,
                         decl = DECL_THEY,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bootschain.wav",
-                            uneqip = "Sound\\bootschain.wav",
-                            drop = "Sound\\bootschain.wav"
-                        }
+                        soundpack = { equip = "Sound\\bootschain.wav", uneqip = "Sound\\bootschain.wav", drop = "Sound\\bootschain.wav" }
                     },
                 },
                 [HEAD_ARMOR] = {
@@ -2565,121 +1877,77 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.1,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNDemonsHelmet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_2,
                         decl = DECL_SHE,
                         modificator = 1.1,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNDragonHuntersHelmet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNHolyHelm.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNLeatherHood.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_5,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\cap.wav",
-                            uneqip = "Sound\\cap.wav",
-                            drop = "Sound\\cap.wav"
-                        }
+                        soundpack = { equip = "Sound\\cap.wav", uneqip = "Sound\\cap.wav", drop = "Sound\\cap.wav" }
                     },
                     {
                         icon = "Armor\\BTNNFHelmet02.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_6,
                         decl = DECL_HE,
                         modificator = 0.9,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNNFHelmet03.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_7,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNDragonHelmet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_8,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNHelmet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_9,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTNJusticars Helmet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_10,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                     {
                         icon = "Armor\\BTN_Royal_Helmet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_11,
                         decl = DECL_HE,
                         modificator = 1.1,
-                        soundpack = {
-                            equip = "Sound\\helmet_equip.wav",
-                            uneqip = "Sound\\helmet_unequip.wav",
-                            drop = "Sound\\helm.wav"
-                        }
+                        soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
                     },
                 },
                 [SWORD_WEAPON] = {
@@ -2688,55 +1956,35 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip01.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip01.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNAnother Sword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip02.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNDKSword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip02.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNSword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip01.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip01.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNrapier.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip01.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip01.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                 },
                 [GREATSWORD_WEAPON] = {
@@ -2745,44 +1993,28 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNRitual Shaman Knife 1Charge.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNTier3 Sword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNTideShamanRitualLance.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
                 [AXE_WEAPON] = {
@@ -2791,44 +2023,28 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip02.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNGrandAxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip02.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNSteelAxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip02.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNMysticHatchet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\sword_equip02.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                 },
                 [GREATAXE_WEAPON] = {
@@ -2837,22 +2053,14 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.25,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNAxe of Terror.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.25,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
                 [BLUNT_WEAPON] = {
@@ -2861,66 +2069,42 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNBeatstickV4.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_2,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNSpikedClub.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_3,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNFlail.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNHarbingerStaff-Mace.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                     {
                         icon = "Weapons\\BTNMorningStar.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\sword.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
                     },
                 },
                 [GREATBLUNT_WEAPON] = {
@@ -2929,44 +2113,28 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.3,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNMythril Hammer.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.3,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTN_NerubianScepter.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.3,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNRunestoneWarhammer.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.3,
-                        soundpack = {
-                            equip = "Sound\\weapon_equip.wav",
-                            uneqip = "Sound\\weapon_unequip.wav",
-                            drop = "Sound\\largemetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
                 [DAGGER_WEAPON] = {
@@ -2975,77 +2143,49 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_1,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNGoldenDagger.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_2,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNDagger3.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_3,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNNastyShiv.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_4,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNMecheteOfFury.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_5,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNAcid Stinger.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_6,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNMolten Dagger.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_7,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = {
-                            equip = "Sound\\dagger_equip.wav",
-                            uneqip = "Sound\\dagger_unequip.wav",
-                            drop = "Sound\\smallmetalweapon.wav"
-                        }
+                        soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
                     },
 
                 },
@@ -3055,99 +2195,63 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNFireWand.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNFrostJade.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNIce Staff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNStick Staff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_5,
                         decl = DECL_THEY,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNDeadProphetStaff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNMoongladeWand.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_7,
                         decl = DECL_IT,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNNecromancerStaff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_8,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNSeerStaff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_9,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\staff_equip.wav",
-                            uneqip = "Sound\\staff_unequip.wav",
-                            drop = "Sound\\staff.wav"
-                        }
+                        soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                 },
                 [BOW_WEAPON] = {
@@ -3156,43 +2260,28 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_7,
                         decl = DECL_IT,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
-                        }
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
                     },
                     {
                         icon = "Weapons\\BTNSimpleBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_8,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
-                        }
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
                     },
                     {
                         icon = "Weapons\\BTNFireyBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_9,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
-                        }
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
                     },
                     {
                         icon = "Weapons\\BTNDarkBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_10,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav"
                         }
                     },
                     {
@@ -3200,11 +2289,7 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_11,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = {
-                            equip = "Sound\\bow_equip.wav",
-                            uneqip = "Sound\\bow_unequip.wav",
-                            drop = "Sound\\bow.wav"
-                        }
+                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
                     },
                 },
             },

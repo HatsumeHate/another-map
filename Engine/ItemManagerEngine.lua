@@ -445,7 +445,7 @@ do
     TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER)
     TriggerAddAction(trg, function()
 
-        if GetOrderTargetItem() ~= nil then
+        if GetOrderTargetItem() ~= nil and GetItemType(GetOrderTargetItem()) ~= ITEM_TYPE_POWERUP then
             local item = GetOrderTargetItem()
             local unit = GetTriggerUnit()
             local angle = AngleBetweenXY_DEG(GetItemX(item), GetItemY(item), GetUnitX(unit), GetUnitY(unit))
@@ -458,6 +458,8 @@ do
                     IssuePointOrderById(unit, order_move, GetItemX(item) + Rx(25., angle), GetItemY(item) + Ry(25., angle))
                 end
 
+            item = nil
+            unit = nil
         end
 
     end)
@@ -522,13 +524,15 @@ do
 
 
         EnumItemsInRect(bj_mapInitialPlayableArea, nil, function()
+            local item = GetEnumItem()
 
-            if ITEM_TEMPLATE_DATA[GetItemTypeId(GetEnumItem())] ~= nil then
-                local my_item = CreateCustomItem_Id(GetItemTypeId(GetEnumItem()), GetItemX(GetEnumItem()), GetItemY(GetEnumItem()))
-                GenerateItemLevel(my_item, 1)
-                RemoveItem(GetEnumItem())
-            end
+                if ITEM_TEMPLATE_DATA[GetItemTypeId(item)] ~= nil then
+                    local my_item = CreateCustomItem_Id(GetItemTypeId(item), GetItemX(item), GetItemY(item))
+                    GenerateItemLevel(my_item, 1)
+                    RemoveItem(item)
+                end
 
+            item = nil
         end)
 
     end

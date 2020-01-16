@@ -20,6 +20,7 @@ do
 		InventoryInit()
 		SkillPanelInit()
         InitWeather(bj_mapInitialPlayableArea)
+		InitMonsterData()
 
 
 
@@ -39,6 +40,8 @@ do
 
 
 		TimerStart(CreateTimer(), 5., false, function()
+			WavesInit()
+			AddWaveTimer(360.)
 			--local quality_table = {COMMON_ITEM, MAGIC_ITEM, RARE_ITEM }
 				--[[
 				TimerStart(CreateTimer(), 5., true, function()

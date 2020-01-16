@@ -59,6 +59,10 @@ do
 	HP_PER_HIT  			= 43
 	MP_PER_HIT 				= 44
 
+	BONUS_DEMON_DAMAGE = 45
+	BONUS_UNDEAD_DAMAGE = 46
+
+
 
 	
 	-- attributes
@@ -187,7 +191,6 @@ do
     function GetCorrectParamText(parameter, value, method)
         if method == MULTIPLY_BONUS then
             local v = value
-            --value =  R2I((value * 100.) - 100.) .. "%%"
 			value =  S2I(R2S((value - 1.) * 100.)) .. "%%"
 
 				if v > 0 then
@@ -491,7 +494,18 @@ do
 		---@param data table
 		[MP_PER_HIT] = function(data)
 			data.stats[MP_PER_HIT].value = data.stats[MP_PER_HIT].bonus
+		end,
+
+		---@param data table
+		[BONUS_DEMON_DAMAGE] = function(data)
+			data.stats[BONUS_DEMON_DAMAGE].value = data.stats[BONUS_DEMON_DAMAGE].bonus
+		end,
+
+		---@param data table
+		[BONUS_UNDEAD_DAMAGE] = function(data)
+			data.stats[BONUS_UNDEAD_DAMAGE].value = data.stats[BONUS_UNDEAD_DAMAGE].bonus
 		end
+
 	}
 
 	---@param type integer
@@ -640,7 +654,10 @@ do
 			[REFLECT_RANGE_DAMAGE]   = LOCALE_LIST[my_locale].REFLECT_RANGE_DAMAGE_PARAM,
 
 			[HP_PER_HIT]   = LOCALE_LIST[my_locale].HP_PER_HIT_PARAM,
-			[MP_PER_HIT]   = LOCALE_LIST[my_locale].MP_PER_HIT_PARAM
+			[MP_PER_HIT]   = LOCALE_LIST[my_locale].MP_PER_HIT_PARAM,
+
+			[BONUS_DEMON_DAMAGE]   = LOCALE_LIST[my_locale].BONUS_DEMON_DAMAGE_PARAM,
+			[BONUS_UNDEAD_DAMAGE]   = LOCALE_LIST[my_locale].BONUS_UNDEAD_DAMAG_PARAME,
 		}
 	end
 
