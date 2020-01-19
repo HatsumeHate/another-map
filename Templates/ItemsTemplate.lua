@@ -300,6 +300,39 @@ do
 			soundpack = { equip = "Sound\\sword_equip01.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" }
 		})
 
+		ItemAddData('I011', {
+			NAME    = 'Клеймор',
+			TYPE = ITEM_TYPE_WEAPON,
+			SUBTYPE = GREATSWORD_WEAPON,
+			DAMAGE  = 27,
+			QUALITY = COMMON_ITEM,
+			frame_texture = "Weapons\\BTNBarbarian Brutal Slasher.blp",
+			BONUS   = {
+				{ PARAM = PHYSICAL_ATTACK, VALUE = 3, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CRIT_CHANCE, VALUE = 2, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 0,
+			sell_value = 70,
+			soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
+		})
+
+		ItemAddData('I012', {
+			NAME    = 'Потертый посох',
+			TYPE = ITEM_TYPE_WEAPON,
+			SUBTYPE = STAFF_WEAPON,
+			DAMAGE  = 24,
+			QUALITY = COMMON_ITEM,
+			frame_texture = "Weapons\\BTNIce Staff.blp",
+			BONUS   = {
+				{ PARAM = CAST_SPEED, VALUE = 3, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CRIT_CHANCE, VALUE = 2, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 0,
+			sell_value = 70,
+			soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
+		})
+
+
 		ItemAddData('I00X', {
 			NAME    = 'Клепанная броня',
 			TYPE = ITEM_TYPE_ARMOR,

@@ -40,7 +40,7 @@ do
         [NECKLACE_POINT]  = 39
     }
 
-    local function UpdateEquipPointsWindow(player)
+    function UpdateEquipPointsWindow(player)
         local unit_data = GetUnitData(InventoryOwner[player])
 
         for i = WEAPON_POINT, NECKLACE_POINT do
@@ -166,7 +166,7 @@ do
                 BlzFrameSetSize(PlayerMovingItem[player].frame, scale, scale)
             else
                 if ButtonList[h].item ~= nil then
-                    ShowTooltip(player, h, FRAMEPOINT_LEFT, ButtonList[GetHandleId(InventorySlots[32])].image)
+                    ShowTooltip(player, h, FRAMEPOINT_LEFT, MASTER_FRAME)--ButtonList[GetHandleId(InventorySlots[32])].image)
                 else
                     RemoveTooltip(player)
                 end
@@ -562,48 +562,55 @@ do
     function AddToInventory(player, item)
         if GetItemData(item) ~= nil then
 
+            if CountFreeBagSlots(player) <= 0 then
+                SimError("В рюкзаке нет места", player-1)
+                return
+            end
+
             if GetItemType(item) == ITEM_TYPE_CHARGED then
 
                 local inv_item = GetSameItemSlotItem(player, GetItemTypeId(item))
-                if inv_item ~= nil then
-                    SetItemCharges(inv_item, GetItemCharges(item) + GetItemCharges(inv_item))
-                    RemoveCustomItem(item)
-                    UpdateInventoryWindow(player)
-                else
-                    local free_slot = GetFirstFreeSlotButton(player)
 
-                    if free_slot ~= nil then
-                        free_slot.item = item
-                        SetItemVisible(item, false)
+                    if inv_item ~= nil then
+                        SetItemCharges(inv_item, GetItemCharges(item) + GetItemCharges(inv_item))
+                        RemoveCustomItem(item)
                         UpdateInventoryWindow(player)
-                    end
+                    else
+                        local free_slot = GetFirstFreeSlotButton(player)
 
-                end
+                        if free_slot ~= nil then
+                            free_slot.item = item
+                            SetItemVisible(item, false)
+                            UpdateInventoryWindow(player)
+                        end
+
+                    end
 
             else
                 local free_slot = GetFirstFreeSlotButton(player)
 
-                if free_slot ~= nil then
-                    free_slot.item = item
-                    UpdateInventoryWindow(player)
-                    SetItemVisible(item, false)
-                end
+                    if free_slot ~= nil then
+                        free_slot.item = item
+                        UpdateInventoryWindow(player)
+                        SetItemVisible(item, false)
+                    end
+
             end
 
         end
     end
 
 
-    function CountFreeBagSlots()
+    function CountFreeBagSlots(player)
         local count = 0
 
-        for i = 1, 32 do
-            if InventorySlots[i] ~= nil then
-                if ButtonList[GetHandleId(InventorySlots[i])].item == nil then
-                    count = count + 1
+            for i = 1, 32 do
+                if InventorySlots[i] ~= nil then
+                    if ButtonList[GetHandleId(InventorySlots[i])].item == nil then
+                        count = count + 1
+                    end
                 end
             end
-        end
 
         return count
     end

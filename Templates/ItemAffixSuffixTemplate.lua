@@ -39,63 +39,78 @@ do
 
     local GENERATED_ITEM_LIST = {
         {
-            type = SWORD_WEAPON,
+            type = ITEM_TYPE_WEAPON,
+            subtype = SWORD_WEAPON,
             id = "IGSO"
         },
         {
-            type = GREATSWORD_WEAPON,
+            type = ITEM_TYPE_WEAPON,
+            subtype = GREATSWORD_WEAPON,
             id = "IGST"
         },
         {
-            type = BLUNT_WEAPON,
+            type = ITEM_TYPE_WEAPON,
+            subtype = BLUNT_WEAPON,
             id = "IGBO"
         },
         {
-            type = GREATBLUNT_WEAPON,
+            type = ITEM_TYPE_WEAPON,
+            subtype = GREATBLUNT_WEAPON,
             id = "IGBT"
         },
         {
-            type = AXE_WEAPON,
+            type = ITEM_TYPE_WEAPON,
+            subtype = AXE_WEAPON,
             id = "IGAO"
         },
         {
-            type = GREATAXE_WEAPON,
+            type = ITEM_TYPE_WEAPON,
+            subtype = GREATAXE_WEAPON,
             id = "IGAT"
         },
         {
-            type = STAFF_WEAPON,
+            type = ITEM_TYPE_WEAPON,
+            subtype = STAFF_WEAPON,
             id = "IGSF"
         },
         {
-            type = DAGGER_WEAPON,
+            type = ITEM_TYPE_WEAPON,
+            subtype = DAGGER_WEAPON,
             id = "IGDR"
         },
         {
-            type = BOW_WEAPON,
+            type = ITEM_TYPE_WEAPON,
+            subtype = BOW_WEAPON,
             id = "IGBW"
         },
         {
-            type = CHEST_ARMOR,
+            type = ITEM_TYPE_ARMOR,
+            subtype = CHEST_ARMOR,
             id = "IGAC"
         },
         {
-            type = HANDS_ARMOR,
+            type = ITEM_TYPE_ARMOR,
+            subtype = HANDS_ARMOR,
             id = "IGAD"
         },
         {
-            type = HEAD_ARMOR,
+            type = ITEM_TYPE_ARMOR,
+            subtype = HEAD_ARMOR,
             id = "IGAH"
         },
         {
-            type = LEGS_ARMOR,
+            type = ITEM_TYPE_ARMOR,
+            subtype = LEGS_ARMOR,
             id = "IGAL"
         },
         {
-            type = RING_JEWELRY,
+            type = ITEM_TYPE_JEWELRY,
+            subtype = RING_JEWELRY,
             id = "IGJR"
         },
         {
-            type = NECKLACE_JEWELRY,
+            type = ITEM_TYPE_JEWELRY,
+            subtype = NECKLACE_JEWELRY,
             id = "IGJN"
         },
     }
@@ -106,11 +121,26 @@ do
 
     function GetGeneratedItemId(item_subtype)
         for i = 1, #GENERATED_ITEM_LIST do
-            if GENERATED_ITEM_LIST[i].type == item_subtype then
+            if GENERATED_ITEM_LIST[i].subtype == item_subtype then
                 return GENERATED_ITEM_LIST[i].id
             end
         end
         return 0
+    end
+
+    
+    function GetRandomGeneratedIdByType(item_type)
+        local list = {}
+
+            for i = 1, #GENERATED_ITEM_LIST do
+                if GENERATED_ITEM_LIST[i].type == item_type then
+                    list[#list + 1] = GENERATED_ITEM_LIST[i].id
+                end
+            end
+
+        if #list == 0 then return nil end
+
+        return list[GetRandomInt(1 ,#list)]
     end
 
 
@@ -152,8 +182,8 @@ do
 
     QUALITY_ITEM_BONUS_COUNT = {
         [COMMON_ITEM] = {min = 1, max = 3},
-        [RARE_ITEM] = {min = 2, max = 4},
-        [MAGIC_ITEM] = {min = 3, max = 5},
+        [RARE_ITEM] =   {min = 2, max = 4},
+        [MAGIC_ITEM] =  {min = 3, max = 5},
     }
 
 

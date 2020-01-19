@@ -6,6 +6,25 @@ do
         return ButtonList[GetHandleId(button)]
     end
 
+
+    function GetMasterParentFrame(player)
+        local frame
+        local btn
+
+            if BlzFrameIsVisible(ShopFrame[player].main_frame) then
+                btn = GetButtonData(ShopFrame[player].slot[32])
+                frame = BlzFrameIsVisible(btn.charges_text_frame) and btn.charges_text_frame or btn.image
+            elseif BlzFrameIsVisible(SkillPanelFrame[player].main_frame) then
+                frame = SkillPanelFrame[player].slider
+            elseif BlzFrameIsVisible(PlayerInventoryFrame[player]) then
+                btn = GetButtonData(InventorySlots[32])
+                frame = BlzFrameIsVisible(btn.charges_text_frame) and btn.charges_text_frame or btn.image
+            end
+
+        return frame
+    end
+
+
     function CreateSprite(model, scale, relative_to_frame, relative_point_from, relative_point_to, offset_x, offset_y, parent)
         local new_Frame = BlzCreateFrameByType("SPRITE", "justAName", parent, "WarCraftIIILogo", 0)
             BlzFrameSetPoint(new_Frame, relative_point_from, relative_to_frame, relative_point_to, offset_x, offset_y)
@@ -59,6 +78,9 @@ do
 
 
     function CreateSlider(player, origin_button, parent, ok_func, cancel_func)
+
+        parent = GetMasterParentFrame(player) or parent
+
         SliderFrame[player] = {}
         SliderFrame[player].backdrop = BlzCreateFrame("ScoreScreenButtonBackdropTemplate", parent, 0, 0)
         SliderFrame[player].slider = BlzCreateFrame("EscMenuSliderTemplate", SliderFrame[player].backdrop, 0, 0)
@@ -187,6 +209,9 @@ do
 
     function CreatePlayerContextMenu(player, originframe, parent)
         DestroyContextMenu(player)
+
+        parent = GetMasterParentFrame(player) or parent
+
         ContextFrame[player] = {}
         ContextFrame[player].frames = {}
         ContextFrame[player].backdrop = BlzCreateFrame('ScoreScreenButtonBackdropTemplate', parent, 0, 0)
@@ -232,6 +257,8 @@ do
 
          if ContextFrame[player] ~= nil or SliderFrame[player] ~= nil then return end
          RemoveTooltip(player)
+
+         parent = GetMasterParentFrame(player) or parent
 
          PlayerTooltip[player] = {}
          PlayerTooltip[player].frames = {}

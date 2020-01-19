@@ -50,7 +50,9 @@ do
         local h = GetHandleId(BlzGetTriggerFrame())
 
             if ButtonList[h].item ~= nil then
-                ShowTooltip(player, h, FRAMEPOINT_RIGHT, ButtonList[GetHandleId(ShopFrame[player].slot[32])].image)
+
+                --ButtonList[GetHandleId(ShopFrame[player].slot[32])].image
+                ShowTooltip(player, h, FRAMEPOINT_RIGHT, MASTER_FRAME)
             else
                 RemoveTooltip(player)
             end
@@ -76,19 +78,10 @@ do
 
                     if GetItemCharges(ButtonList[h].item) > 1 then
                         CreateSlider(player, ButtonList[h], ButtonList[GetHandleId(ShopFrame[player].slot[32])].image, function()
-
-                            if BlzFrameGetValue(SliderFrame[player].slider) < GetItemCharges(ButtonList[h].item) then
-                                local new_item = SplitChargedItem(ButtonList[h].item, BlzFrameGetValue(SliderFrame[player].slider), player)
-                                BuyItem(player, ButtonList[h].item)
-                                AddItemToShop(ShopInFocus[player], new_item, false)
-                            else
-                                BuyItem(player, ButtonList[h].item)
-                                -- DropItemFromInventory(player, ButtonList[h].item)
-                            end
-
+                            BuyItem(player, ButtonList[h].item, BlzFrameGetValue(SliderFrame[player].slider))
                         end, nil)
                     else
-                        BuyItem(player, ButtonList[h].item)
+                        BuyItem(player, ButtonList[h].item, 1)
                     end
 
                     --print("ЭТО БЫЛ Я! ДИО!")
@@ -105,45 +98,6 @@ do
     TriggerAddAction(EnterTrigger, EnterAction)
     TriggerAddAction(ClickTrigger, ShopSlot_Clicked)
 
-
-    function BuyItem(player, item)
-        local item_data = GetItemData(item)
-        local gold = GetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD)
-        local total_cost = item_data.cost + item_data.sell_value
-
-        if GetItemCharges(item) > 1 then
-            total_cost = total_cost * GetItemCharges(item)
-        end
-
-            if gold >= total_cost then
-                SetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD, gold - total_cost)
-                RemoveItemFromShop(ShopInFocus[player], item)
-                AddToInventory(player, item)
-                PlayLocalSound("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", player-1)
-                return true
-            else
-                SimError("Недостаточно золота", player-1)
-            end
-
-        return false
-    end
-
-    function SellItem(player, item)
-        local item_data = GetItemData(item)
-        local gold = GetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD)
-        local total_cost = item_data.cost + item_data.sell_value
-
-            if GetItemCharges(item) > 1 then
-                total_cost = total_cost * GetItemCharges(item)
-            end
-
-            SetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD, gold + total_cost)
-            DropItemFromInventory(player, item)
-            AddItemToShop(ShopInFocus[player], item, false)
-            PlayLocalSound("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", player-1)
-
-        return true
-    end
 
     ---@param button_type number
     ---@param texture string
@@ -198,6 +152,7 @@ do
 
     ShopFrame = {}
 
+    ---@param player integer
     function DrawShopFrames(player)
         local new_Frame
         local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
@@ -251,22 +206,144 @@ do
     ShopData = {}
 
 
+    ---@param shop unit
+    ---@param item item
     function RemoveItemFromShop(shop, item)
         local my_shop_data = ShopData[GetHandleId(shop)]
 
             for i = 1, MAXIMUM_ITEMS do
                 if my_shop_data.item_list[i].item == item then
-                    my_shop_data.item_list[i].item = nil
+
+                    if my_shop_data.item_list[i].perm then
+                        SetItemCharges(my_shop_data.item_list[i].item, my_shop_data.item_list[i].charges)
+                        item = CreateCustomItem_Id(GetItemTypeId(my_shop_data.item_list[i].item), 0., 0.)
+                    else
+                        my_shop_data.item_list[i].item = nil
+                    end
+
                     UpdateShopWindow()
                     break
                 end
             end
 
+        return item
     end
 
 
+    ---@param shop unit
+    function ClearShop(shop)
+        local my_shop_data = ShopData[GetHandleId(shop)]
+
+            for i = 1, MAXIMUM_ITEMS do
+                if not my_shop_data.item_list[i].perm then
+                    RemoveCustomItem(my_shop_data.item_list[i].item)
+                    my_shop_data.item_list[i].item = nil
+                end
+            end
+
+        UpdateShopWindow()
+    end
+
+    ---@param player integer
+    ---@param item item
+    function BuyItem(player, item, amount)
+        local item_data = GetItemData(item)
+        local gold = GetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD)
+        local total_cost = item_data.cost + item_data.sell_value
+
+
+            if CountFreeBagSlots(player) <= 0 then
+                SimError("В рюкзаке нет места", player-1)
+                return false
+            end
+
+
+            if GetItemCharges(item) > 1 then
+                total_cost = total_cost * amount
+            end
+
+            if gold > total_cost then
+                SetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD, gold - total_cost)
+                item = RemoveItemFromShop(ShopInFocus[player], item)
+
+                    if GetItemType(item) == ITEM_TYPE_CHARGED then
+                        SetItemCharges(item, amount)
+                    end
+
+                AddToInventory(player, item)
+                PlayLocalSound("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", player-1)
+                return true
+            else
+                SimError("Недостаточно золота", player-1)
+            end
+
+        return false
+    end
+
+
+    ---@param player integer
+    ---@param item item
+    function SellItem(player, item)
+        local item_data = GetItemData(item)
+        local gold = GetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD)
+        local total_cost = item_data.cost + item_data.sell_value
+
+            if CountFreeSlotsShop(ShopInFocus[player]) <= 0 then
+                SimError("В магазине нет места", player-1)
+                return false
+            end
+
+            if GetItemCharges(item) > 1 then
+                total_cost = total_cost * GetItemCharges(item)
+            end
+
+            SetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD, gold + total_cost)
+            DropItemFromInventory(player, item)
+            AddItemToShop(ShopInFocus[player], item, false)
+            PlayLocalSound("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", player-1)
+
+        return true
+    end
+
+
+    ---@param shop unit
+    function CountFreeSlotsShop(shop)
+        local my_shop_data = ShopData[GetHandleId(shop)]
+        local count = 0
+
+            for i = 1, MAXIMUM_ITEMS do
+                if my_shop_data.item_list[i].item == nil then
+                    count = count + 1
+                end
+            end
+
+        return count
+    end
+
+
+    ---@param shop unit
+    ---@param item item
+    ---@param permanent boolean
     function AddItemToShop(shop, item, permanent)
         local my_shop_data = ShopData[GetHandleId(shop)]
+
+
+            if GetItemType(item) == ITEM_TYPE_CHARGED then
+                local id = GetItemTypeId(item)
+                    for i = 1, MAXIMUM_ITEMS do
+                        if id == GetItemTypeId(my_shop_data.item_list[i].item) then
+                            if my_shop_data.item_list[i].perm then
+                                RemoveCustomItem(item)
+                                return true
+                            else
+                                SetItemCharges(item, GetItemCharges(item) + GetItemCharges(my_shop_data.item_list[i].item))
+                                RemoveCustomItem(item)
+                                return true
+                            end
+                        end
+                    end
+            end
+
 
             for i = 1, MAXIMUM_ITEMS do
                 if my_shop_data.item_list[i].item == nil then
@@ -278,53 +355,81 @@ do
                 end
             end
 
+    end
+
+    ---@param shop unit
+    ---@param item item
+    ---@param permanent boolean
+    ---@param slot integer
+    function AddItemToShopWithSlot(shop, item, slot, permanent)
+        local my_shop_data = ShopData[GetHandleId(shop)]
+
+            if slot > MAXIMUM_ITEMS then
+                slot = MAXIMUM_ITEMS
+            elseif slot < 1 then
+                slot = 1
+            end
+
+
+                if my_shop_data.item_list[slot].item == nil then
+                    my_shop_data.item_list[slot].item = item
+                    my_shop_data.item_list[slot].perm = permanent
+
+                        if permanent and GetItemType(item) == ITEM_TYPE_CHARGED then
+                            my_shop_data.item_list[slot].charges = GetItemCharges(item)
+                        end
+
+                    SetItemVisible(item, false)
+                    UpdateShopWindow()
+                end
 
     end
 
-
+    ---@param unit_owner unit
+    ---@param texture string
     function CreateShop(unit_owner, texture)
         local handle = GetHandleId(unit_owner)
 
-        ShopData[handle] = {}
-        ShopData[handle].item_list = {}
+            ShopData[handle] = {}
+            ShopData[handle].item_list = {}
 
-        for i = 1, MAXIMUM_ITEMS do
-            ShopData[handle].item_list[i] = {}
-            ShopData[handle].item_list[i].item = nil
-            ShopData[handle].item_list[i].perm = false
-        end
 
-        print("huuuuuuuuuh????")
-
-        local trg = CreateTrigger()
-        TriggerRegisterUnitInRangeSimple(trg, 300., unit_owner)
-        TriggerAddAction(trg, function()
-            local id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
-
-            print("huh?")
-            if id <= 5 then
-                local hero = GetTriggerUnit()
-
-                ShopInFocus[id + 1] = unit_owner
-                BlzFrameSetVisible(ShopFrame[id + 1].main_frame, true)
-                BlzFrameSetTexture(ShopFrame[id + 1].portrait, texture, 0, true)
-                BlzFrameSetText(ShopFrame[id + 1].name, GetUnitName(unit_owner))
-                UpdateShopWindow()
-
-                    TimerStart(CreateTimer(), 0.1, true, function()
-                        if not IsUnitInRange(hero, unit_owner, 300.) then
-                            DestroySlider(id + 1)
-                            DestroyContextMenu(id + 1)
-                            ShopInFocus[id + 1] = nil
-                            BlzFrameSetVisible(ShopFrame[id + 1].main_frame, false)
-                            DestroyTimer(GetExpiredTimer())
-                        end
-                    end)
-
+            for i = 1, MAXIMUM_ITEMS do
+                ShopData[handle].item_list[i] = {}
+                ShopData[handle].item_list[i].item = nil
+                ShopData[handle].item_list[i].perm = false
             end
 
-        end)
-        print("??????????")
+
+            local trg = CreateTrigger()
+            TriggerRegisterUnitInRangeSimple(trg, 300., unit_owner)
+            TriggerAddAction(trg, function()
+                local id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
+
+                if id <= 5 then
+                    local hero = GetTriggerUnit()
+
+                    ShopInFocus[id + 1] = unit_owner
+                    BlzFrameSetVisible(ShopFrame[id + 1].main_frame, true)
+                    BlzFrameSetTexture(ShopFrame[id + 1].portrait, texture, 0, true)
+                    BlzFrameSetText(ShopFrame[id + 1].name, GetUnitName(unit_owner))
+                    UpdateShopWindow()
+
+                        TimerStart(CreateTimer(), 0.1, true, function()
+                            if not IsUnitInRange(hero, unit_owner, 300.) then
+                                DestroySlider(id + 1)
+                                DestroyContextMenu(id + 1)
+                                ShopInFocus[id + 1] = nil
+                                BlzFrameSetVisible(ShopFrame[id + 1].main_frame, false)
+                                DestroyTimer(GetExpiredTimer())
+                            end
+                        end)
+
+                end
+
+            end)
+
+        return ShopData[handle]
     end
 
 end

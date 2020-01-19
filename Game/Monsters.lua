@@ -12,6 +12,9 @@ do
 
     SPAWN_POINTS = nil
     MAIN_POINT = nil
+    MONSTER_PLAYER = Player(10)
+    WaveGroup = CreateGroup()
+
 
     MONSTER_LIST = {
         [MONSTER_RANK_COMMON] = {
@@ -22,6 +25,15 @@ do
         [MONSTER_RANK_ADVANCED] = {
             { id = "u008", ratio = 0.7 },
             { id = "u009", ratio = 0.7 } ,
+        },
+        [MONSTER_RANK_BOSS] = {
+             "U001",
+             "U000",
+             "U006",
+             "U005",
+             "U002",
+             "U004",
+             "U003",
         }
     }
 
@@ -31,34 +43,58 @@ do
         local id = FourCC(unitid)
 
             for i = 1, amount do
-                unit_list[i] = CreateUnit(Player(10), id, GetRandomInt(GetRectMinX(rect), GetRectMaxX(rect)), GetRandomInt(GetRectMinY(rect), GetRectMaxY(rect)), GetRandomInt(0, 359))
+                unit_list[i] = CreateUnit(MONSTER_PLAYER, id, GetRandomReal(GetRectMinX(rect), GetRectMaxX(rect)), GetRandomReal(GetRectMinY(rect), GetRectMaxY(rect)), GetRandomInt(0, 359))
             end
 
         return unit_list
     end
 
 
+    local trg = CreateTrigger()
+    TriggerRegisterPlayerUnitEvent(trg, MONSTER_PLAYER, EVENT_PLAYER_UNIT_DEATH, nil)
+    TriggerAddAction(trg, function()
+
+        if IsUnitInGroup(GetTriggerUnit(), WaveGroup) then
+            GroupRemoveUnit(WaveGroup, GetTriggerUnit())
+
+            if BlzGroupGetSize(WaveGroup) <= 0 then
+                AddWaveTimer(200.)
+                Current_Wave = Current_Wave + 1
+                GenerateShops()
+                -- TODO reset shops
+            end
+
+        end
+
+    end)
+
+
+
     function SpawnMonsters()
         local monster_type = MONSTER_LIST[MONSTER_RANK_COMMON][GetRandomInt(1, #MONSTER_LIST[MONSTER_RANK_COMMON])]
         local my_group = {}
+        local point = SPAWN_POINTS[gg_rct_spawn_left]
 
-            my_group[MONSTER_RANK_COMMON] = CreateUnits(monster_type.id, SPAWN_POINTS[gg_rct_spawn_left], math.floor(GetRandomInt(1, 10) * monster_type.ratio))
+            my_group[MONSTER_RANK_COMMON] = CreateUnits(monster_type.id, point, math.floor(GetRandomInt(1, 10) * monster_type.ratio))
 
                 if GetRandomInt(1, 100) <= 25. then
                     monster_type = MONSTER_LIST[MONSTER_RANK_ADVANCED][GetRandomInt(1, #MONSTER_LIST[MONSTER_RANK_ADVANCED])]
-                    my_group[MONSTER_RANK_ADVANCED] = CreateUnits(monster_type.id, SPAWN_POINTS[gg_rct_spawn_left], math.floor(GetRandomInt(1, 10) * monster_type.ratio))
+                    my_group[MONSTER_RANK_ADVANCED] = CreateUnits(monster_type.id, point, math.floor(GetRandomInt(1, 10) * monster_type.ratio))
                 end
 
 
-        for k = 1, #my_group do
-            for i = 1, #my_group[k] do
-                IssuePointOrderById(my_group[k][i], order_attack, GetRectCenterX(MAIN_POINT), GetRectCenterY(MAIN_POINT))
+            for k = 1, #my_group do
+                for i = 1, #my_group[k] do
+                    IssuePointOrderById(my_group[k][i], order_attack, GetRectCenterX(MAIN_POINT), GetRectCenterY(MAIN_POINT))
+                    GroupAddUnit(WaveGroup, my_group[k][i])
+                end
             end
-        end
 
+            DelayAction(0.1, function()
+                --TODO wave -> stronk
+            end)
 
-
-        PingMinimap(GetRectCenterX(SPAWN_POINTS[gg_rct_spawn_left]), GetRectCenterY(SPAWN_POINTS[gg_rct_spawn_left]), 7.)
+        PingMinimap(GetRectCenterX(point), GetRectCenterY(point), 7.)
 
     end
 

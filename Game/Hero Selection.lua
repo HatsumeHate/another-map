@@ -26,17 +26,26 @@ do
             local region = GetTriggeringRegion()
             local id
             local player_id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
-
+            local starting_items = {}
 
                 if region == barbarian_region then
                     id = FourCC("HBRB")
+                    starting_items[1] = CreateCustomItem("I011", 0., 0.)
+                    starting_items[2] = CreateCustomItem("I00X", 0., 0.)
+                    starting_items[3] = CreateCustomItem("I010", 0., 0.)
+                    starting_items[4] = CreateCustomItem("I00Z", 0., 0.)
+                    starting_items[5] = CreateCustomItem("I00Y", 0., 0.)
                 else
                     id = FourCC("HSRC")
+                    starting_items[1] = CreateCustomItem("I012", 0., 0.)
+                    starting_items[2] = CreateCustomItem("I00X", 0., 0.)
+                    starting_items[3] = CreateCustomItem("I010", 0., 0.)
+                    starting_items[4] = CreateCustomItem("I00Z", 0., 0.)
+                    starting_items[5] = CreateCustomItem("I00Y", 0., 0.)
                 end
 
                 local hero = CreateUnit(Player(player_id), id, GetRectCenterX(gg_rct_starting_location) , GetRectCenterY(gg_rct_starting_location), 270.)
                 RemoveUnit(GetTriggerUnit())
-
 
                 TimerStart(CreateTimer(), 0.1, false, function()
                     player_id = player_id + 1
@@ -53,12 +62,19 @@ do
                     AddToPanel(hero, player_id)
                     AddPointsToPlayer(player_id, 5)
 
+                    for i = 1, #starting_items do
+                        EquipItem(hero, starting_items[i], true)
+                        UpdateEquipPointsWindow(player_id)
+                    end
+
+
                     if GetLocalPlayer() == Player(player_id - 1) then
                         BlzFrameSetVisible(CharButton, true)
                         BlzFrameSetVisible(InventoryTriggerButton, true)
                         BlzFrameSetVisible(SkillPanelButton, true)
                         PanCameraToTimed(GetUnitX(hero), GetUnitY(hero), 0.)
                     end
+
                     DestroyTimer(GetExpiredTimer())
                 end)
 

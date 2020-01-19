@@ -65,6 +65,68 @@ do
         RemoveItem(item)
     end
 
+
+
+
+    MIN_GOLD_SCALE = 0.6
+    MAX_GOLD_SCALE = 1.
+    MIN_GOLD_SCALE_AMOUNT = 25
+    MAX_GOLD_SCALE_AMOUNT = 150
+
+
+    ---@param player integer
+    ---@param amount integer
+    ---@param x real
+    ---@param y real
+    function CreateGoldStack(amount, x, y, player)
+        local str = ""
+
+        if GetLocalPlayer() == Player(player) then
+            str = "Items\\Money.mdl"
+        end
+
+        local effect = AddSpecialEffect(str, x, y)
+        local rect = Rect(x - 25., y - 25., x + 25., y + 25.)
+        local region = CreateRegion()
+        local timer = CreateTimer()
+
+            RegionAddRect(region, rect)
+            BlzSetSpecialEffectYaw(effect, GetRandomInt(1, 360) * bj_DEGTORAD)
+
+            local result_scale = (amount  / MAX_GOLD_SCALE_AMOUNT) + MIN_GOLD_SCALE
+
+            if result_scale < MIN_GOLD_SCALE then result_scale = MIN_GOLD_SCALE
+            elseif result_scale > MAX_GOLD_SCALE then result_scale = MAX_GOLD_SCALE end
+
+
+
+            local trg = CreateTrigger()
+            TriggerRegisterEnterRegionSimple(trg, region)
+            TriggerAddAction(trg, function()
+
+                if GetOwningPlayer(GetTriggerUnit()) == Player(player) then
+                    SetPlayerState(Player(player), PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(Player(player), PLAYER_STATE_RESOURCE_GOLD) + amount)
+                    AddSoundForPlayerVolumeZ("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", x, y, BlzGetLocalSpecialEffectZ(effect), 127, 2200., player)
+                    GoldText(x, y, amount)
+                    DestroyEffect(effect)
+                    RemoveRegion(region)
+                    DestroyTrigger(trg)
+                    RemoveRect(rect)
+                    DestroyTimer(timer)
+                end
+
+            end)
+
+            TimerStart(timer, 70., false, function()
+                DestroyEffect(effect)
+                RemoveRegion(region)
+                DestroyTrigger(trg)
+                RemoveRect(rect)
+                DestroyTimer(timer)
+            end)
+
+    end
+
     ---@param raw string
     ---@param x real
     ---@param y real
@@ -79,6 +141,7 @@ do
             BlzSetItemName(item, data.NAME)
 
 		    ITEM_DATA[handle] = data
+            GenerateItemLevel(item, 1)
 
 		return item
 	end
@@ -95,28 +158,11 @@ do
             BlzSetItemName(item, data.NAME)
 
             ITEM_DATA[handle] = data
+            GenerateItemLevel(item, 1)
 
         return item
     end
 
-
-
-
-
-
-    local DECLENSION_LIST = {
-        [SWORD_WEAPON] = DECL_HE,
-        [GREATSWORD_WEAPON] = DECL_HE,
-        [BLUNT_WEAPON] = DECL_SHE,
-        [GREATBLUNT_WEAPON] = DECL_SHE,
-        [AXE_WEAPON] = DECL_HE,
-        [GREATAXE_WEAPON] = DECL_HE,
-        [DAGGER_WEAPON] = DECL_HE,
-        [STAFF_WEAPON] = DECL_HE,
-        [BOW_WEAPON] = DECL_HE,
-        [NECKLACE_JEWELRY] = DECL_THEY,
-        [RING_JEWELRY] = DECL_IT,
-    }
 
 
 
@@ -452,8 +498,8 @@ do
 
                 if DistanceBetweenUnitXY(unit, GetItemX(item), GetItemY(item)) <= 200. then
                     UnitRemoveItem(unit, item)
-                    AddToInventory(GetPlayerId(GetOwningPlayer(unit)) + 1, item)
                     IssuePointOrderById(unit, order_move, GetUnitX(unit) + 0.01, GetUnitY(unit) - 0.01)
+                    AddToInventory(GetPlayerId(GetOwningPlayer(unit)) + 1, item)
                 else
                     IssuePointOrderById(unit, order_move, GetItemX(item) + Rx(25., angle), GetItemY(item) + Ry(25., angle))
                 end

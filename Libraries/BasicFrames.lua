@@ -2,6 +2,7 @@ do
 
     GAME_UI = nil
     WORLD_FRAME = nil
+    MASTER_FRAME = nil
     ButtonList = {}
 
 
@@ -18,6 +19,11 @@ do
         BlzTriggerRegisterFrameEvent(FocusTrigger, frame, FRAMEEVENT_CONTROL_CLICK)
     end
 
+
+    function CreateMasterFrame()
+        MASTER_FRAME = BlzCreateFrameByType("BACKDROP", "ABC", GAME_UI, "", 0)
+        BlzFrameSetAbsPoint(MASTER_FRAME, FRAMEPOINT_CENTER, 0.4, 0.3)
+    end
 
 
     local ButtonTextureList = {}

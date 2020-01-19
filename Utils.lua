@@ -236,6 +236,16 @@
 		return numbers
 	end
 
+
+	function DelayAction(duration, callback)
+		TimerStart(CreateTimer(), duration, false, function ()
+			callback()
+			DestroyTimer(GetExpiredTimer())
+		end)
+	end
+
+
+
 	---@param unit unit
 	---@param range real
 	---@param ang real
@@ -668,6 +678,28 @@
 		SetSoundConeAngles(snd, 0.0, 0.0, 127)
 		SetSoundConeOrientation(snd, 0.0, 0.0, 0.0)
 		SetSoundPosition(snd, x, y, 35.)
+		StartSound(snd)
+		KillSoundWhenDone(snd)
+		snd = nil
+	end
+
+
+	function AddSoundForPlayerVolumeZ(s, x, y, z, vol, cutoff, player)
+		local snd = CreateSound(s, false, true, false, 10, 10, "CombatSoundsEAX") --CombatSoundsEAX
+		SetSoundChannel(snd, 5)
+
+		if GetLocalPlayer() == Player(player) then
+			SetSoundVolume(snd, vol)
+		else
+			SetSoundVolume(snd, 0)
+		end
+
+		SetSoundPitch(snd, 1)
+		SetSoundDistances(snd, 600., 10000.)
+		SetSoundDistanceCutoff(snd, cutoff)
+		SetSoundConeAngles(snd, 0.0, 0.0, 127)
+		SetSoundConeOrientation(snd, 0.0, 0.0, 0.0)
+		SetSoundPosition(snd, x, y, z)
 		StartSound(snd)
 		KillSoundWhenDone(snd)
 		snd = nil

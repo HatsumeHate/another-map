@@ -31,6 +31,22 @@ do
     }
 
 
+    local CONSTANT_TEXT_SIZE =  (9. * 0.023) / 10
+
+    function GoldText(x, y, amount)
+        local tag = CreateTextTag()
+
+            SetTextTagText(tag, "|c00FFFF00+" .. amount .. "|r", CONSTANT_TEXT_SIZE)
+            SetTextTagPos(tag, x, y, 15.)
+            SetTextTagColor(tag, 255, 255, 255, 255)
+            SetTextTagPermanent(tag, false)
+            SetTextTagLifespan(tag, 1.)
+            SetTextTagFadepoint(tag, 0.5)
+            SetTextTagVelocity(tag, 0., 0.025)
+
+    end
+
+
     ---@param text number
     ---@param victim unit
     ---@param status integer

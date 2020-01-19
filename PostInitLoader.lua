@@ -22,8 +22,6 @@ do
         InitWeather(bj_mapInitialPlayableArea)
 		InitMonsterData()
 
-
-
 		--UnitAddMyAbility(gg_unit_HBRB_0005, 'A007')
 		--UnitAddMyAbility(gg_unit_HBRB_0005, 'A00K')
 		--UnitAddMyAbility(gg_unit_HBRB_0005, 'A00O')
@@ -33,6 +31,19 @@ do
         CreateShop(gg_unit_opeo_0031, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp")
 		CreateShop(gg_unit_n000_0056, "ReplaceableTextures\\CommandButtons\\BTNVillagerMan1.blp")
 		CreateShop(gg_unit_n001_0055, "ReplaceableTextures\\CommandButtons\\BTNVillagerWoman.blp")
+
+
+		local my_item = CreateCustomItem("I006",  0.,0.)
+		SetItemCharges(my_item, 20)
+		AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 32, true)
+
+
+		my_item = CreateCustomItem("I003",  0.,0.)
+		SetItemCharges(my_item, 20)
+		AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 31, true)
+		my_item = nil
+
+
 		CreateHeroSelections()
 
 		--PushUnit(gg_unit_HBRB_0005, 270., 400., 1.25)
@@ -42,6 +53,11 @@ do
 		TimerStart(CreateTimer(), 5., false, function()
 			WavesInit()
 			AddWaveTimer(360.)
+
+			CreateGoldStack(25, 7345., 3201., 0)
+			CreateGoldStack(35, 7445., 3201., 0)
+			CreateGoldStack(45, 7555., 3201., 0)
+
 			--local quality_table = {COMMON_ITEM, MAGIC_ITEM, RARE_ITEM }
 				--[[
 				TimerStart(CreateTimer(), 5., true, function()
