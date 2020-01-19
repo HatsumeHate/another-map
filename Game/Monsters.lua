@@ -5,11 +5,6 @@
 ---
 do
 
-    MONSTER_RANK_COMMON = 1
-    MONSTER_RANK_ADVANCED = 2
-    MONSTER_RANK_ELITE = 3
-    MONSTER_RANK_BOSS = 4
-
     SPAWN_POINTS = nil
     MAIN_POINT = nil
     MONSTER_PLAYER = Player(10)
@@ -23,8 +18,8 @@ do
             { id = "u00A", ratio = 0.7 },
         },
         [MONSTER_RANK_ADVANCED] = {
-            { id = "u008", ratio = 0.7 },
-            { id = "u009", ratio = 0.7 } ,
+            { id = "u008", ratio = 0.5 },
+            { id = "u009", ratio = 0.5 } ,
         },
         [MONSTER_RANK_BOSS] = {
              "U001",
@@ -42,6 +37,8 @@ do
         local unit_list = {}
         local id = FourCC(unitid)
 
+        if amount <= 0 then return unit_list end
+
             for i = 1, amount do
                 unit_list[i] = CreateUnit(MONSTER_PLAYER, id, GetRandomReal(GetRectMinX(rect), GetRectMaxX(rect)), GetRandomReal(GetRectMinY(rect), GetRectMaxY(rect)), GetRandomInt(0, 359))
             end
@@ -57,12 +54,13 @@ do
         if IsUnitInGroup(GetTriggerUnit(), WaveGroup) then
             GroupRemoveUnit(WaveGroup, GetTriggerUnit())
 
-            if BlzGroupGetSize(WaveGroup) <= 0 then
-                AddWaveTimer(200.)
-                Current_Wave = Current_Wave + 1
-                GenerateShops()
-                -- TODO reset shops
-            end
+            DropForPlayer(GetTriggerUnit(), 0)
+
+                if BlzGroupGetSize(WaveGroup) <= 0 then
+                    AddWaveTimer(200.)
+                    Current_Wave = Current_Wave + 1
+                    ResetShops()
+                end
 
         end
 
@@ -73,7 +71,7 @@ do
     function SpawnMonsters()
         local monster_type = MONSTER_LIST[MONSTER_RANK_COMMON][GetRandomInt(1, #MONSTER_LIST[MONSTER_RANK_COMMON])]
         local my_group = {}
-        local point = SPAWN_POINTS[gg_rct_spawn_left]
+        local point = SPAWN_POINTS[1]
 
             my_group[MONSTER_RANK_COMMON] = CreateUnits(monster_type.id, point, math.floor(GetRandomInt(1, 10) * monster_type.ratio))
 
@@ -83,12 +81,12 @@ do
                 end
 
 
-            for k = 1, #my_group do
-                for i = 1, #my_group[k] do
-                    IssuePointOrderById(my_group[k][i], order_attack, GetRectCenterX(MAIN_POINT), GetRectCenterY(MAIN_POINT))
-                    GroupAddUnit(WaveGroup, my_group[k][i])
+                for k = 1, #my_group do
+                    for i = 1, #my_group[k] do
+                        IssuePointOrderById(my_group[k][i], order_attack, GetRectCenterX(MAIN_POINT), GetRectCenterY(MAIN_POINT))
+                        GroupAddUnit(WaveGroup, my_group[k][i])
+                    end
                 end
-            end
 
             DelayAction(0.1, function()
                 --TODO wave -> stronk

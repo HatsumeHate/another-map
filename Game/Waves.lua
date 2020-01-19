@@ -25,7 +25,7 @@ do
 
 
 
-    function GenerateShops()
+    function ResetShops()
         local item_count = GetRandomInt(2, 7)
 
             ClearShop(gg_unit_opeo_0031)

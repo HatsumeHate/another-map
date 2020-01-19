@@ -21,6 +21,7 @@ do
 		SkillPanelInit()
         InitWeather(bj_mapInitialPlayableArea)
 		InitMonsterData()
+		DropListInit()
 
 		--UnitAddMyAbility(gg_unit_HBRB_0005, 'A007')
 		--UnitAddMyAbility(gg_unit_HBRB_0005, 'A00K')

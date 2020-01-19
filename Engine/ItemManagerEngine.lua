@@ -86,7 +86,7 @@ do
         end
 
         local effect = AddSpecialEffect(str, x, y)
-        local rect = Rect(x - 25., y - 25., x + 25., y + 25.)
+        local rect = Rect(x - 45., y - 45., x + 45., y + 45.)
         local region = CreateRegion()
         local timer = CreateTimer()
 

@@ -12,6 +12,15 @@ do
     DRUID_CLASS         = 7
     SPECIAL_CLASS       = 8
 
+    MONSTER_RANK_COMMON = 1
+    MONSTER_RANK_ADVANCED = 2
+    MONSTER_RANK_ELITE = 3
+    MONSTER_RANK_BOSS = 4
+
+    TRAIT_DEMON = 1
+    TRAIT_UNDEAD = 2
+    TRAIT_BEAST = 3
+
     NO_CLASS = 0
 
     WEAPON_POINT    = 1
@@ -121,6 +130,9 @@ do
             cast_skill_level = 0,
             cast_effect = nil,
 
+            classification = reference_data.classification or nil,
+            trait = reference_data.trait or nil,
+
             default_weapon = nil,
             equip_point = {},
             stats = {},
@@ -208,6 +220,8 @@ do
         -- fiend
         NewUnitTemplate('u007', {
             unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 125., hp_regen = 1., moving_speed = 330. },
             weapon = { ATTACK_SPEED = 1.4, DAMAGE = 5, CRIT_CHANCE = 10. },
@@ -217,6 +231,8 @@ do
         -- armored scele
         NewUnitTemplate('u00B', {
             unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 220., hp_regen = 1., moving_speed = 260. },
             weapon = { ATTACK_SPEED = 1.8, DAMAGE = 4, CRIT_CHANCE = 7. },
@@ -226,6 +242,8 @@ do
         -- demon assassin
         NewUnitTemplate('u009', {
             unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 310., hp_regen = 1.7, moving_speed = 300. },
             weapon = { ATTACK_SPEED = 1.5, DAMAGE = 15, CRIT_CHANCE = 14. },
@@ -236,17 +254,21 @@ do
         NewUnitTemplate('u008', {
             unit_class = NO_CLASS,
             time_before_remove = 10.,
+            classification = MONSTER_RANK_COMMON,
+            trait = TRAIT_DEMON,
             base_stats = { health = 375., hp_regen = 2.1, moving_speed = 300. },
-            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 12, ATTRIBUTE = HOLY_ATTRIBUTE, CRIT_CHANCE = 15. },
+            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 12, ATTRIBUTE = HOLY_ATTRIBUTE, ATTRIBUTE_BONUS = 15, CRIT_CHANCE = 15. },
             have_mp = false
         })
 
         -- hells guardian
         NewUnitTemplate('u00A', {
             unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 270., hp_regen = 1.4, moving_speed = 280. },
-            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 8, ATTRIBUTE = DARKNESS_ATTRIBUTE, CRIT_CHANCE = 10. },
+            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 8, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10, CRIT_CHANCE = 10. },
             have_mp = false
         })
 

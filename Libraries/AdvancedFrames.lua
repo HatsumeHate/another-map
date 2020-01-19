@@ -388,43 +388,43 @@ do
                 local stones_text = LOCALE_LIST[my_locale].SLOTS_UI
                 PlayerTooltip[player].frames[frame_number] = BlzCreateFrameByType("TEXT", "STONE", PlayerTooltip[player].frames[frame_number - 1], "", 0)
 
-                for i = 1, #item_data.STONE_SLOTS do
-                    if item_data.STONE_SLOTS[i] ~= nil then
-                        stones_text = stones_text .. GetParameterName(item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].PARAM) .. ": "
-                                .. GetCorrectParamText(item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].PARAM, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].VALUE,
-                                item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].METHOD) .. "|n"
-                    else
-                        stones_text = stones_text .. "|n"
+                    for i = 1, #item_data.STONE_SLOTS do
+                        if item_data.STONE_SLOTS[i] ~= nil then
+                            stones_text = stones_text .. GetParameterName(item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].PARAM) .. ": "
+                                    .. GetCorrectParamText(item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].PARAM, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].VALUE,
+                                    item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].METHOD) .. "|n"
+                        else
+                            stones_text = stones_text .. "|n"
+                        end
                     end
-                end
 
                 BlzFrameSetText(PlayerTooltip[player].frames[frame_number], stones_text)
                 BlzFrameSetTextAlignment(PlayerTooltip[player].frames[frame_number], TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_MIDDLE)
 
-                if free_stone_slots > 0 then
-                    local stones = {}
-                    frame_number = frame_number + 1
-                    PlayerTooltip[player].frames[frame_number] = BlzCreateFrameByType("TEXT", "STONE", PlayerTooltip[player].frames[frame_number - 1], "", 0)
-                    BlzFrameSetSize(PlayerTooltip[player].frames[frame_number], 0.01, 0.028)
+                    if free_stone_slots > 0 then
+                        local stones = {}
+                        frame_number = frame_number + 1
+                        PlayerTooltip[player].frames[frame_number] = BlzCreateFrameByType("TEXT", "STONE", PlayerTooltip[player].frames[frame_number - 1], "", 0)
+                        BlzFrameSetSize(PlayerTooltip[player].frames[frame_number], 0.01, 0.028)
 
-                    local offset_bonus = 4 - free_stone_slots
-                    if offset_bonus < 0 then offset_bonus = 0 end
+                        local offset_bonus = 4 - free_stone_slots
+                        if offset_bonus < 0 then offset_bonus = 0 end
 
-                    offset_bonus = offset_bonus * 0.15
+                        offset_bonus = offset_bonus * 0.15
 
-                        for i = 1, free_stone_slots do
-                            stones[i] = BlzCreateFrameByType("BACKDROP", "STONE", PlayerTooltip[player].frames[frame_number], "", 0)
-                            BlzFrameSetTexture(stones[i], "GUI\\empty stone.blp", 0, true)
-                            BlzFrameSetSize(stones[i], 0.015, 0.015)
-                            if i == 1 then
-                                BlzFrameSetPoint(stones[i], FRAMEPOINT_CENTER, PlayerTooltip[player].frames[frame_number], FRAMEPOINT_CENTER, free_stone_slots*((free_stone_slots * 0.0015) * (-1. - offset_bonus)),  0.)
-                            else
-                                BlzFrameSetPoint(stones[i], FRAMEPOINT_LEFT, stones[i - 1], FRAMEPOINT_RIGHT, 0., 0.)
+                            for i = 1, free_stone_slots do
+                                stones[i] = BlzCreateFrameByType("BACKDROP", "STONE", PlayerTooltip[player].frames[frame_number], "", 0)
+                                BlzFrameSetTexture(stones[i], "GUI\\empty stone.blp", 0, true)
+                                BlzFrameSetSize(stones[i], 0.015, 0.015)
+                                if i == 1 then
+                                    BlzFrameSetPoint(stones[i], FRAMEPOINT_CENTER, PlayerTooltip[player].frames[frame_number], FRAMEPOINT_CENTER, free_stone_slots*((free_stone_slots * 0.0015) * (-1. - offset_bonus)),  0.)
+                                else
+                                    BlzFrameSetPoint(stones[i], FRAMEPOINT_LEFT, stones[i - 1], FRAMEPOINT_RIGHT, 0., 0.)
+                                end
                             end
-                        end
 
-                    stones = nil
-                end
+                        stones = nil
+                    end
 
             end
 
@@ -491,8 +491,8 @@ do
 
             BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOPLEFT, PlayerTooltip[player].frames[1], FRAMEPOINT_TOPLEFT, -0.007, 0.01)
             BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_TOPRIGHT, PlayerTooltip[player].frames[1], FRAMEPOINT_TOPRIGHT, 0.007, 0.01)
-            BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMLEFT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMLEFT, -0.007, -0.007)
-            BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMRIGHT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMRIGHT, 0.007, -0.007)
+            BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMLEFT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMLEFT, -0.007, -0.009)
+            BlzFrameSetPoint(PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMRIGHT, PlayerTooltip[player].frames[#PlayerTooltip[player].frames], FRAMEPOINT_BOTTOMRIGHT, 0.007, -0.009)
 
                 if cost_Frame ~= nil then
                     BlzFrameSetPoint(cost_Frame, FRAMEPOINT_BOTTOMLEFT, PlayerTooltip[player].backdrop, FRAMEPOINT_BOTTOMLEFT, 0.0055, 0.0055)
@@ -504,12 +504,13 @@ do
 
 
     function RemoveTooltip(player)
-        if PlayerTooltip[player] ~= nil then
-            for i = 1, #PlayerTooltip[player].frames do
-                BlzDestroyFrame(PlayerTooltip[player].frames[i])
+        PauseGame(false)
+            if PlayerTooltip[player] ~= nil then
+                for i = 1, #PlayerTooltip[player].frames do
+                    BlzDestroyFrame(PlayerTooltip[player].frames[i])
+                end
+                BlzDestroyFrame(PlayerTooltip[player].backdrop)
             end
-            BlzDestroyFrame(PlayerTooltip[player].backdrop)
-        end
         PlayerTooltip[player] = nil
     end
 
