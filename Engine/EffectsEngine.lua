@@ -6,12 +6,16 @@ do
     ---@param sfx string
     ---@param target unit
     ---@param point string
-    local function PlaySpecialEffect(sfx, target, point, scale)
+    local function PlaySpecialEffect(sfx, target, point, scale, duration)
+
         if sfx ~= nil then
-            local new_effect = AddSpecialEffectTarget(sfx, target, point)
-            BlzSetSpecialEffectScale(new_effect, scale)
-            DestroyEffect(new_effect)
+            local new_effect = AddSpecialEffectTarget(sfx, target, point or "chest")
+                BlzSetSpecialEffectScale(new_effect, scale or 1.)
+                DelayAction(duration or 0., function()
+                    DestroyEffect(new_effect)
+                end)
         end
+
     end
 
 
@@ -21,32 +25,36 @@ do
     ---@param lvl integer
     ---@param target_type integer
     local function ModifyBuffsEffect(source, target, effect_data, lvl, target_type)
-        if effect_data.level[lvl].applied_buff ~= nil then
+        local myeffect_leveldata = effect_data.level[lvl]
 
-            for i = 1, #effect_data.level[lvl].applied_buff do
-                if effect_data.level[lvl].applied_buff[i].target_type == target_type then
-                    if effect_data.level[lvl].applied_buff[i].modificator == ADD_BUFF then
-                        ApplyBuff(source, target, effect_data.level[lvl].applied_buff[i].buff_id, lvl)
-                    elseif effect_data.level[lvl].applied_buff[i].modificator == REMOVE_BUFF then
-                        RemoveBuff(target, effect_data.level[lvl].applied_buff[i].buff_id)
-                    elseif effect_data.level[lvl].applied_buff[i].modificator == INCREASE_BUFF_LEVEL then
-                        local l = GetBuffLevel(target, effect_data.level[lvl].applied_buff[i].buff_id)
-                        if l == 0 then
-                            ApplyBuff(source, target, effect_data.level[lvl].applied_buff[i].buff_id, lvl)
-                        else
-                            SetBuffLevel(target, effect_data.level[lvl].applied_buff[i].buff_id, l + 1)
+        if myeffect_leveldata.applied_buff == nil then return end
+
+            for i = 1, #myeffect_leveldata.applied_buff do
+                local myeffect = myeffect_leveldata.applied_buff[i]
+
+                    if myeffect.target_type == target_type then
+                        if myeffect.modificator == ADD_BUFF then
+                            ApplyBuff(source, target, myeffect.buff_id, lvl)
+                        elseif myeffect.modificator == REMOVE_BUFF then
+                            RemoveBuff(target, myeffect.buff_id)
+                        elseif myeffect.modificator == INCREASE_BUFF_LEVEL then
+                            local l = GetBuffLevel(target, myeffect.buff_id)
+                            if l == 0 then
+                                ApplyBuff(source, target, myeffect.buff_id, lvl)
+                            else
+                                SetBuffLevel(target, myeffect.buff_id, l + 1)
+                            end
+                        elseif myeffect.modificator == DECREASE_BUFF_LEVEL then
+                            SetBuffLevel(target, myeffect.buff_id, GetBuffLevel(target, myeffect.buff_id) - 1)
+                        elseif myeffect.modificator == SET_BUFF_LEVEL then
+                            SetBuffLevel(target, myeffect.buff_id, myeffect.value)
+                        elseif myeffect.modificator == SET_BUFF_TIME then
+                            SetBuffExpirationTime(target, myeffect.buff_id, myeffect.value)
                         end
-                    elseif effect_data.level[lvl].applied_buff[i].modificator == DECREASE_BUFF_LEVEL then
-                        SetBuffLevel(target, effect_data.level[lvl].applied_buff[i].buff_id, GetBuffLevel(target, effect_data.level[lvl].applied_buff[i].buff_id) - 1)
-                    elseif effect_data.level[lvl].applied_buff[i].modificator == SET_BUFF_LEVEL then
-                        SetBuffLevel(target, effect_data.level[lvl].applied_buff[i].buff_id, effect_data.level[lvl].applied_buff[i].value)
-                    elseif effect_data.level[lvl].applied_buff[i].modificator == SET_BUFF_TIME then
-                        SetBuffExpirationTime(target, effect_data.level[lvl].applied_buff[i].buff_id, effect_data.level[lvl].applied_buff[i].value)
                     end
-                end
+
             end
 
-        end
     end
 
 
@@ -65,21 +73,22 @@ do
 
 
     function ApplyRestoreEffect(source, target, data, lvl)
+        local myeffect = data.level[lvl]
 
-            if data.level[lvl].life_restored ~= nil and data.level[lvl].life_restored > 0 then
-                SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + data.level[lvl].life_restored)
-                CreateHitnumber(R2I(data.level[lvl].life_restored), source, target, HEAL_STATUS)
-            elseif data.level[lvl].life_percent_restored ~= nil and data.level[lvl].life_percent_restored > 0 then
-                local value = BlzGetUnitMaxHP(target) * data.level[lvl].life_percent_restored
+            if myeffect.life_restored ~= nil and myeffect.life_restored > 0 then
+                SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + myeffect.life_restored)
+                CreateHitnumber(R2I(myeffect.life_restored), source, target, HEAL_STATUS)
+            elseif myeffect.life_percent_restored ~= nil and myeffect.life_percent_restored > 0 then
+                local value = BlzGetUnitMaxHP(target) * myeffect.life_percent_restored
                 SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + value)
                 CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
             end
 
-            if data.level[lvl].resource_restored ~= nil and data.level[lvl].resource_restored > 0 then
-                SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + data.level[lvl].resource_restored)
-                CreateHitnumber(R2I(data.level[lvl].resource_restored), source, target, RESOURCE_STATUS)
-            elseif data.level[lvl].resource_percent_restored ~= nil and data.level[lvl].resource_percent_restored > 0 then
-                local value = BlzGetUnitMaxMana(target) * data.level[lvl].resource_percent_restored
+            if myeffect.resource_restored ~= nil and myeffect.resource_restored > 0 then
+                SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + myeffect.resource_restored)
+                CreateHitnumber(R2I(myeffect.resource_restored), source, target, RESOURCE_STATUS)
+            elseif myeffect.resource_percent_restored ~= nil and myeffect.resource_percent_restored > 0 then
+                local value = BlzGetUnitMaxMana(target) * myeffect.resource_percent_restored
                 SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + value)
                 CreateHitnumber(R2I(value), source, target, RESOURCE_STATUS)
             end
@@ -93,13 +102,14 @@ do
     ---@param lvl integer
     ---@param target_type integer
     function ApplyBuffEffect(source, target, data, lvl, target_type)
-        PlaySpecialEffect(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point, data.level[lvl].SFX_on_unit_scale)
+        local myeffect = data.level[lvl]
+        PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
         -- delay for effect animation
-        TimerStart(CreateTimer(), data.level[lvl].hit_delay, false, function()
-            ModifyBuffsEffect(source, target, data, lvl, target_type)
-            OnEffectApply(source, target, data)
-            DestroyTimer(GetExpiredTimer())
-        end)
+            TimerStart(CreateTimer(), myeffect.hit_delay, false, function()
+                ModifyBuffsEffect(source, target, data, lvl, target_type)
+                OnEffectApply(source, target, data)
+                DestroyTimer(GetExpiredTimer())
+            end)
     end
 
     ---@param source unit
@@ -107,12 +117,14 @@ do
     ---@param data table
     ---@param lvl integer
     function ApplyEffectHealing(source, target, data, lvl)
-        PlaySpecialEffect(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point, data.level[lvl].SFX_on_unit_scale)
+        local myeffect = data.level[lvl]
+
+        PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
 
         -- delay for effect animation
-        TimerStart(CreateTimer(), data.level[lvl].hit_delay, false, function()
+        TimerStart(CreateTimer(), myeffect.hit_delay, false, function()
             if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
-                local value = GetUnitState(target, UNIT_STATE_LIFE) + data.level[lvl].heal_amount
+                local value = GetUnitState(target, UNIT_STATE_LIFE) + myeffect.heal_amount
                 SetUnitState(target, value)
                 CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
                 ModifyBuffsEffect(source, target, data, lvl, ON_ALLY)
@@ -127,24 +139,23 @@ do
     ---@param data table
     ---@param lvl integer
     function ApplyEffectDamage(source, target, data, lvl)
-        PlaySpecialEffect(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point, data.level[lvl].SFX_on_unit_scale)
-        -- delay for effect animation
-        TimerStart(CreateTimer(), data.level[lvl].hit_delay, false, function()
+        local myeffect = data.level[lvl]
 
-            DamageUnit(source, target, data.level[lvl].power, data.level[lvl].attribute, data.level[lvl].damage_type, data.level[lvl].attack_type, data.level[lvl].can_crit, data.level[lvl].is_direct
-            ,false, { eff = data, l = lvl })
+            PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
+            -- delay for effect animation
+            TimerStart(CreateTimer(), myeffect.hit_delay, false, function()
 
-            ModifyBuffsEffect(source, target, data, lvl, ON_ENEMY)
+                DamageUnit(source, target, myeffect.power, myeffect.attribute, myeffect.damage_type, myeffect.attack_type, myeffect.can_crit, myeffect.is_direct,false, { eff = data, l = lvl })
+                ModifyBuffsEffect(source, target, data, lvl, ON_ENEMY)
+
+                    if myeffect.life_restored_from_hit or myeffect.resource_restored_from_hit then
+                        ApplyRestoreEffect(source, target, data, lvl)
+                    end
 
 
-                if data.level[lvl].life_restored_from_hit or data.level[lvl].resource_restored_from_hit then
-                    ApplyRestoreEffect(source, target, data, lvl)
-                end
-
-
-            OnEffectApply(source, target, data)
-            DestroyTimer(GetExpiredTimer())
-        end)
+                OnEffectApply(source, target, data)
+                DestroyTimer(GetExpiredTimer())
+            end)
 
     end
 
@@ -160,7 +171,6 @@ do
     function ApplyEffect(source, target, x, y, effect_id, lvl)
         local data = GetEffectData(effect_id)
         local player_entity = GetOwningPlayer(source)
-
 
             if data ~= nil then
                 data = MergeTables({}, data)
@@ -202,6 +212,8 @@ do
             end
 
 
+        PlaySpecialEffect(data.level[lvl].SFX_on_caster, source, data.level[lvl].SFX_on_caster_point, data.level[lvl].SFX_on_caster_scale, data.level[lvl].SFX_on_caster_duration)
+
             if data.level[lvl].sound ~= nil then
                 AddSound(data.level[lvl].sound, x, y)
             end
@@ -209,7 +221,7 @@ do
             TimerStart(CreateTimer(), data.level[lvl].delay * data.level[lvl].timescale, false, function()
 
                 if not data.level[lvl].life_restored_from_hit or not data.level[lvl].resource_restored_from_hit then
-                    PlaySpecialEffect(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point, data.level[lvl].SFX_on_unit_scale)
+                    PlaySpecialEffect(data.level[lvl].SFX_on_unit, target, data.level[lvl].SFX_on_unit_point, data.level[lvl].SFX_on_unit_scale, data.level[lvl].SFX_on_unit_duration)
 
                     TimerStart(CreateTimer(), data.level[lvl].hit_delay, false, function()
                         ApplyRestoreEffect(source, target, data, lvl)

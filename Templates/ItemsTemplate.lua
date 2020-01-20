@@ -9,6 +9,7 @@ do
 	ITEM_TYPE_OFFHAND    = 4
     ITEM_TYPE_CONSUMABLE = 5
     ITEM_TYPE_GEM        = 6
+	ITEM_TYPE_SKILLBOOK  = 7
 
 	
 	FIST_WEAPON           = 1

@@ -71,6 +71,10 @@ do
             SFX_used               = '',
             SFX_used_scale         = 1.,
 
+            SFX_on_caster            = '',
+            SFX_on_caster_point      = '',
+            SFX_on_caster_scale      = 1.,
+            
             SFX_on_unit            = '',
             SFX_on_unit_point      = '',
             SFX_on_unit_scale      = 1.,
@@ -535,6 +539,72 @@ do
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A00Y', target_type = ON_ENEMY }
                     },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('PHWK', {
+            name = "health restore",
+            level = {
+                [1] = {
+                    max_targets = 1,
+                    SFX_on_caster            = 'Abilities\\Spells\\Items\\AIhe\\AIheTarget.mdx',
+                    SFX_on_caster_point      = 'origin',
+                    SFX_on_caster_scale      = 0.7,
+                    SFX_on_caster_duration = 1.833,
+                    life_percent_restored = 0.25,
+                    sound =  "Sound\\life_potion.wav"
+                },
+                [2] = {
+                    max_targets = 1,
+                    SFX_on_caster            = 'Abilities\\Spells\\Items\\AIhe\\AIheTarget.mdx',
+                    SFX_on_caster_point      = 'origin',
+                    SFX_on_caster_scale      = 0.85,
+                    SFX_on_caster_duration = 1.833,
+                    life_percent_restored = 0.5,
+                    sound =  "Sound\\life_potion.wav"
+                },
+                [3] = {
+                    max_targets = 1,
+                    SFX_on_caster            = 'Abilities\\Spells\\Items\\AIhe\\AIheTarget.mdx',
+                    SFX_on_caster_point      = 'origin',
+                    SFX_on_caster_scale      = 1.,
+                    SFX_on_caster_duration = 1.833,
+                    life_percent_restored = 0.75,
+                    sound =  "Sound\\life_potion.wav"
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('PMWK', {
+            name = "mana restore",
+            level = {
+                [1] = {
+                    max_targets = 1,
+                    SFX_on_caster            = 'Abilities\\Spells\\Items\\AIma\\AImaTarget.mdx',
+                    SFX_on_caster_point      = 'origin',
+                    SFX_on_caster_scale      = 0.7,
+                    SFX_on_caster_duration = 1.833,
+                    resource_percent_restored = 0.25,
+                    sound =  "Sound\\mana_potion.wav"
+                },
+                [2] = {
+                    max_targets = 1,
+                    SFX_on_caster            = 'Abilities\\Spells\\Items\\AIma\\AImaTarget.mdx',
+                    SFX_on_caster_point      = 'origin',
+                    SFX_on_caster_scale      = 0.85,
+                    SFX_on_caster_duration = 1.833,
+                    resource_percent_restored = 0.5,
+                    sound =  "Sound\\mana_potion.wav"
+                },
+                [3] = {
+                    max_targets = 1,
+                    SFX_on_caster            = 'Abilities\\Spells\\Items\\AIma\\AImaTarget.mdx',
+                    SFX_on_caster_point      = 'origin',
+                    SFX_on_caster_scale      = 1.,
+                    SFX_on_caster_duration = 1.833,
+                    resource_percent_restored = 0.75,
+                    sound =  "Sound\\mana_potion.wav"
                 }
             }
         })

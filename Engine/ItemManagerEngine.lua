@@ -522,6 +522,19 @@ do
 
 
 
+    trg = CreateTrigger()
+    TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_USE_ITEM)
+    TriggerAddAction(trg, function()
+        local player = GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1
+            OnItemUse(GetTriggerUnit(), GetManipulatedItem(), GetEventTargetUnit())
+
+            if BlzFrameIsVisible(PlayerInventoryFrame[player]) or GetItemTypeId(GetManipulatedItem()) == ITEM_TYPE_CHARGED then
+                UpdateInventoryWindow(player)
+            end
+
+    end)
+
+
 
     function EnumItemsOnInit()
 

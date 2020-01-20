@@ -237,8 +237,10 @@
 	end
 
 
+	---@param duration real
+	---@param callback function
 	function DelayAction(duration, callback)
-		TimerStart(CreateTimer(), duration, false, function ()
+		TimerStart(CreateTimer(), duration or 0., false, function ()
 			callback()
 			DestroyTimer(GetExpiredTimer())
 		end)

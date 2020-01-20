@@ -187,6 +187,26 @@ do
 
 
 
+    function OnItemUse(source, item, target)
+        local id = GetItemTypeId(item)
+
+            if id == FourCC(ITEM_POTION_HEALTH_WEAK) then
+                ApplyEffect(source, source, 0.,0., "PHWK", 1)
+            elseif id == FourCC(ITEM_POTION_MANA_WEAK) then
+                ApplyEffect(source, source, 0.,0., "PMWK", 1)
+            elseif id == FourCC(ITEM_POTION_HEALTH_HALF) then
+                ApplyEffect(source, source, 0.,0., "PHWK", 2)
+            elseif id == FourCC(ITEM_POTION_MANA_HALF) then
+                ApplyEffect(source, source, 0.,0., "PMWK", 2)
+            elseif id == FourCC(ITEM_POTION_HEALTH_STRONG) then
+                ApplyEffect(source, source, 0.,0., "PHWK", 3)
+            elseif id == FourCC(ITEM_POTION_MANA_STRONG) then
+                ApplyEffect(source, source, 0.,0., "PMWK", 3)
+            end
+
+    end
+
+
 end
 
 

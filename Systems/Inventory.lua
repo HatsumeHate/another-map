@@ -71,26 +71,43 @@ do
                     BlzFrameSetTexture(button.image, item_data.frame_texture, 0, true)
                     FrameChangeTexture(button.button, item_data.frame_texture)
 
-                    if GetItemType(button.item) == ITEM_TYPE_CHARGED then
-                        BlzFrameSetVisible(button.charges_frame, true)
-                        BlzFrameSetText(button.charges_text_frame, R2I(GetItemCharges(button.item)))
+                        if GetItemType(button.item) == ITEM_TYPE_CHARGED then
 
-                        if button.sprite ~= nil and not IsItemInvulnerable(button.item) then
-                            BlzDestroyFrame(button.sprite)
-                            button.sprite = nil
-                        elseif button.sprite == nil and IsItemInvulnerable(button.item) then
-                            button.sprite = BlzCreateFrameByType("SPRITE", "justAName", button.image, "WarCraftIIILogo", 0)
+                            if GetItemCharges(button.item) <= 0 then
 
-                            BlzFrameSetPoint(button.sprite, FRAMEPOINT_BOTTOMLEFT, button.image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
-                            BlzFrameSetSize(button.sprite, 1., 1.)
-                            BlzFrameSetScale(button.sprite, 1.)
+                                BlzFrameSetTexture(button.image, button.original_texture, 0, true)
+                                FrameChangeTexture(button.button, button.original_texture)
+                                BlzFrameSetVisible(button.charges_frame, false)
 
-                            BlzFrameSetModel(button.sprite, "selecter3.mdx", 0)
+                                    if button.sprite ~= nil then
+                                        BlzDestroyFrame(button.sprite)
+                                    end
+
+                                RemoveCustomItem(button.item)
+                                button.item = nil
+
+                            else
+                                BlzFrameSetVisible(button.charges_frame, true)
+                                BlzFrameSetText(button.charges_text_frame, R2I(GetItemCharges(button.item)))
+
+                                    if button.sprite ~= nil and not IsItemInvulnerable(button.item) then
+                                        BlzDestroyFrame(button.sprite)
+                                        button.sprite = nil
+                                    elseif button.sprite == nil and IsItemInvulnerable(button.item) then
+                                        button.sprite = BlzCreateFrameByType("SPRITE", "justAName", button.image, "WarCraftIIILogo", 0)
+
+                                        BlzFrameSetPoint(button.sprite, FRAMEPOINT_BOTTOMLEFT, button.image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
+                                        BlzFrameSetSize(button.sprite, 1., 1.)
+                                        BlzFrameSetScale(button.sprite, 1.)
+
+                                        BlzFrameSetModel(button.sprite, "selecter3.mdx", 0)
+                                    end
+
+                            end
+
+                        else
+                            BlzFrameSetVisible(button.charges_frame, false)
                         end
-
-                    else
-                        BlzFrameSetVisible(button.charges_frame, false)
-                    end
 
                 else
                     BlzFrameSetTexture(button.image, button.original_texture, 0, true)
@@ -112,13 +129,13 @@ do
     --======================================================================
     -- BELT LOCK   =========================================================
 
-
+--[[
     local ItemUseTrigger = CreateTrigger()
     TriggerRegisterAnyUnitEventBJ(ItemUseTrigger, EVENT_PLAYER_UNIT_USE_ITEM)
     TriggerAddAction(ItemUseTrigger, function()
         UpdateInventoryWindow(GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1)
     end)
-
+]]
     local function LockItemOnBelt(player, button)
         if button.sprite == nil then
             if UnitInventoryCount(InventoryOwner[player]) < 6 then
@@ -742,32 +759,32 @@ do
         local inv_button_tooltip = BlzCreateFrame("BoxedText", inv_button_backdrop, 150, 0)
 
 
-        BlzFrameSetSize(InventoryTriggerButton, 0.03, 0.03)
-        BlzFrameSetPoint(InventoryTriggerButton, FRAMEPOINT_LEFT, CharButton, FRAMEPOINT_RIGHT, 0.01, 0.)
-        BlzFrameSetAllPoints(inv_button_backdrop, InventoryTriggerButton)
-        BlzFrameSetTexture(inv_button_backdrop, "ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp", 0, true)
+            BlzFrameSetSize(InventoryTriggerButton, 0.03, 0.03)
+            BlzFrameSetPoint(InventoryTriggerButton, FRAMEPOINT_LEFT, CharButton, FRAMEPOINT_RIGHT, 0.01, 0.)
+            BlzFrameSetAllPoints(inv_button_backdrop, InventoryTriggerButton)
+            BlzFrameSetTexture(inv_button_backdrop, "ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp", 0, true)
 
-        BlzFrameSetTooltip(InventoryTriggerButton, inv_button_tooltip)
-        BlzFrameSetPoint(inv_button_tooltip, FRAMEPOINT_TOPLEFT, inv_button_backdrop, FRAMEPOINT_RIGHT, 0, 0)
-        BlzFrameSetSize(inv_button_tooltip, 0.11, 0.05)
-        BlzFrameSetText(BlzGetFrameByName("BoxedTextValue", 0), LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_DESCRIPTION)--BoxedText has a child showing the text, set that childs Text.
-        BlzFrameSetText(BlzGetFrameByName("BoxedTextTitle", 0), LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_NAME)--BoxedText has a child showing the Title-text, set that childs Text.
-        FrameRegisterNoFocus(InventoryTriggerButton)
-        FrameRegisterClick(InventoryTriggerButton, "ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp")
+            BlzFrameSetTooltip(InventoryTriggerButton, inv_button_tooltip)
+            BlzFrameSetPoint(inv_button_tooltip, FRAMEPOINT_TOPLEFT, inv_button_backdrop, FRAMEPOINT_RIGHT, 0, 0)
+            BlzFrameSetSize(inv_button_tooltip, 0.11, 0.05)
+            BlzFrameSetText(BlzGetFrameByName("BoxedTextValue", 0), LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_DESCRIPTION)--BoxedText has a child showing the text, set that childs Text.
+            BlzFrameSetText(BlzGetFrameByName("BoxedTextTitle", 0), LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_NAME)--BoxedText has a child showing the Title-text, set that childs Text.
+            FrameRegisterNoFocus(InventoryTriggerButton)
+            FrameRegisterClick(InventoryTriggerButton, "ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp")
 
-        BlzFrameSetVisible(InventoryTriggerButton, false)
+            BlzFrameSetVisible(InventoryTriggerButton, false)
 
-        local trg = CreateTrigger()
-        BlzTriggerRegisterFrameEvent(trg, InventoryTriggerButton, FRAMEEVENT_CONTROL_CLICK)
-        TriggerAddAction(trg, function()
-            local player = GetPlayerId(GetTriggerPlayer()) + 1
+            local trg = CreateTrigger()
+            BlzTriggerRegisterFrameEvent(trg, InventoryTriggerButton, FRAMEEVENT_CONTROL_CLICK)
+            TriggerAddAction(trg, function()
+                local player = GetPlayerId(GetTriggerPlayer()) + 1
 
-            BlzFrameSetVisible(PlayerInventoryFrame[player], not BlzFrameIsVisible(PlayerInventoryFrame[player]))
-            RemoveTooltip(player)
-            RemoveSelectionFrames(player)
-            DestroyContextMenu(player)
-            DestroySlider(player)
-        end)
+                BlzFrameSetVisible(PlayerInventoryFrame[player], not BlzFrameIsVisible(PlayerInventoryFrame[player]))
+                RemoveTooltip(player)
+                RemoveSelectionFrames(player)
+                DestroyContextMenu(player)
+                DestroySlider(player)
+            end)
 
     end
 
