@@ -298,7 +298,7 @@ do
             end
 
             SetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD, gold + total_cost)
-            DropItemFromInventory(player, item)
+            DropItemFromInventory(player, item, true)
             AddItemToShop(ShopInFocus[player], item, false)
             PlayLocalSound("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", player-1)
 
@@ -349,7 +349,12 @@ do
                 if my_shop_data.item_list[i].item == nil then
                     my_shop_data.item_list[i].item = item
                     my_shop_data.item_list[i].perm = permanent
+
                     SetItemVisible(item, false)
+
+                    local item_data = GetItemData(item)
+                    if item_data.quality_effect ~= nil then DestroyEffect(item_data.quality_effect) end
+
                     UpdateShopWindow()
                     break
                 end

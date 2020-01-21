@@ -419,7 +419,7 @@ do
                         end
 
                         if GetItemType(ButtonList[h].item) ~= ITEM_TYPE_CHARGED then
-                            DropItemFromInventory(player, ButtonList[h].item)
+                            DropItemFromInventory(player, ButtonList[h].item, false)
                         else
                             if GetItemCharges(ButtonList[h].item) > 1 then
                                 CreateSlider(player, ButtonList[h], ButtonList[GetHandleId(InventorySlots[32])].image, function()
@@ -429,13 +429,13 @@ do
                                         local new_item = CreateCustomItem_Id(GetItemTypeId(ButtonList[h].item), GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]))
                                         SetItemCharges(new_item, BlzFrameGetValue(SliderFrame[player].slider))
                                     else
-                                        DropItemFromInventory(player, ButtonList[h].item)
+                                        DropItemFromInventory(player, ButtonList[h].item, false)
                                     end
                                     UpdateInventoryWindow(player)
 
                                 end, nil)
                             else
-                                DropItemFromInventory(player, ButtonList[h].item)
+                                DropItemFromInventory(player, ButtonList[h].item, false)
                             end
                         end
                     end)
@@ -524,17 +524,31 @@ do
 
     ---@param player integer
     ---@param item item
-    function DropItemFromInventory(player, item)
+    function DropItemFromInventory(player, item, is_silent)
         local button
             for i = 1, 32 do
                 button = ButtonList[GetHandleId(InventorySlots[i])]
 
                     if button.item == item then
+
                         if button.sprite ~= nil then
                             LockItemOnBelt(player, button)
                         end
+
                         SetItemVisible(item, true)
-                        SetItemPosition(item, GetUnitX(PlayerHero[player]) + GetRandomReal(-55., 55.), GetUnitY(PlayerHero[player]) + GetRandomReal(-55., 55.))
+                        local x = GetUnitX(PlayerHero[player]) + GetRandomReal(-55., 55.)
+                        local y =  GetUnitY(PlayerHero[player]) + GetRandomReal(-55., 55.)
+                        SetItemPosition(item, x, y)
+                        local item_data = GetItemData(item)
+
+                            if item_data.flippy ~= nil and item_data.flippy and not is_silent then
+                                if item_data.soundpack ~= nil then
+                                    AddSoundVolume(item_data.soundpack.drop, x, y, 128, 2100.)
+                                end
+
+                                CreateQualityEffect(item)
+                            end
+
                         button.item = nil
                         UpdateInventoryWindow(player)
                         break
@@ -577,29 +591,32 @@ do
     ---@param item item
     ---@param player integer
     function AddToInventory(player, item)
-        if GetItemData(item) ~= nil then
+
+        if GetItemData(item) == nil then return false end
 
             if CountFreeBagSlots(player) <= 0 then
                 SimError("В рюкзаке нет места", player-1)
-                return
+                return false
             end
 
-            if GetItemType(item) == ITEM_TYPE_CHARGED then
 
+            if GetItemType(item) == ITEM_TYPE_CHARGED then
                 local inv_item = GetSameItemSlotItem(player, GetItemTypeId(item))
 
                     if inv_item ~= nil then
                         SetItemCharges(inv_item, GetItemCharges(item) + GetItemCharges(inv_item))
                         RemoveCustomItem(item)
                         UpdateInventoryWindow(player)
+                        return true
                     else
                         local free_slot = GetFirstFreeSlotButton(player)
 
-                        if free_slot ~= nil then
-                            free_slot.item = item
-                            SetItemVisible(item, false)
-                            UpdateInventoryWindow(player)
-                        end
+                            if free_slot ~= nil then
+                                free_slot.item = item
+                                SetItemVisible(item, false)
+                                UpdateInventoryWindow(player)
+                                return true
+                            end
 
                     end
 
@@ -610,11 +627,13 @@ do
                         free_slot.item = item
                         UpdateInventoryWindow(player)
                         SetItemVisible(item, false)
+                        return true
                     end
 
             end
 
-        end
+
+        return false
     end
 
 

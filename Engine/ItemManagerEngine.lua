@@ -10,6 +10,35 @@ do
         [UNIQUE_ITEM] = '|c00FFD574'
     }
 
+    local EFFECT_QUALITY_COLOR = {
+        [COMMON_ITEM]   = { r = 255, g = 255, b = 255 },
+        [RARE_ITEM]     = { r = 102, g = 159, b = 255 },
+        [MAGIC_ITEM]    = { r = 255, g = 255, b = 0 },
+        [SET_ITEM]      = { r = 0, g = 255, b = 0 },
+        [UNIQUE_ITEM]   = { r = 255, g = 213, b = 116 },
+    }
+
+    ITEMSUBTYPES_EFFECT_SCALE = {
+        [BOW_WEAPON]            = 0.85,
+        [BLUNT_WEAPON]          = 0.75,
+        [GREATBLUNT_WEAPON]     = 0.85,
+        [SWORD_WEAPON]          = 0.75,
+        [GREATSWORD_WEAPON]     = 0.85,
+        [AXE_WEAPON]            = 0.75,
+        [GREATAXE_WEAPON]       = 0.85,
+        [DAGGER_WEAPON]         = 0.7,
+        [STAFF_WEAPON]          = 0.85,
+        [JAWELIN_WEAPON]        = 1.,
+        [HEAD_ARMOR]            = 0.5,
+        [CHEST_ARMOR]           = 0.65,
+        [LEGS_ARMOR]            = 0.55,
+        [HANDS_ARMOR]           = 0.55,
+        [RING_JEWELRY]          = 0.5,
+        [NECKLACE_JEWELRY]      = 0.7,
+        [THROWING_KNIFE_WEAPON] = 0.7,
+        [SHIELD_OFFHAND]        = 0.65,
+        [ORB_OFFHAND]           = 0.65,
+    }
 
     local ITEMTYPES_NAMES = {
 
@@ -47,6 +76,11 @@ do
         return QUALITY_COLOR[quality]
     end
 
+    ---@param quality number
+    function GetQualityEffectColor(quality)
+        return EFFECT_QUALITY_COLOR[quality]
+    end
+
     ---@param my_item item
     function GetItemNameColorized(my_item)
         local item_data = ITEM_DATA[GetHandleId(my_item)]
@@ -74,6 +108,25 @@ do
     MAX_GOLD_SCALE_AMOUNT = 150
 
 
+    function CreateQualityEffect(item)
+        local data = GetItemData(item)
+        local string = "QualityGlow.mdx"
+
+            for i = 1, 6 do
+                if GetLocalPlayer() == Player(i-1) then
+                    if not IsItemVisible(item) then
+                        string = ""
+                    end
+                end
+            end
+
+            local color_table = GetQualityEffectColor(data.QUALITY)
+            data.quality_effect = AddSpecialEffect(string, GetItemX(item), GetItemY(item))
+            BlzSetSpecialEffectColor(data.quality_effect, color_table.r, color_table.g, color_table.b)
+            BlzSetSpecialEffectScale(data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[data.SUBTYPE])
+    end
+
+
     ---@param player integer
     ---@param amount integer
     ---@param x real
@@ -99,6 +152,7 @@ do
             elseif result_scale > MAX_GOLD_SCALE then result_scale = MAX_GOLD_SCALE end
 
 
+            AddSoundForPlayerVolumeZ("Sound\\gold.wav", x, y, BlzGetLocalSpecialEffectZ(effect), 110, 2100., player)
 
             local trg = CreateTrigger()
             TriggerRegisterEnterRegionSimple(trg, region)
@@ -140,7 +194,49 @@ do
             data.item = item
             BlzSetItemName(item, data.NAME)
 
-		    ITEM_DATA[handle] = data
+            ITEM_DATA[handle] = data
+
+            DelayAction(0.001, function()
+
+                if data.model ~= nil then
+                    BlzSetItemStringField(item, ITEM_SF_MODEL_USED, data.model)
+                end
+
+                if data.flippy ~= nil and data.flippy then
+                    local volume = 128
+
+                        for i = 1, 6 do
+                            if GetLocalPlayer() == Player(i-1) then
+                                if not IsItemVisible(item) then
+                                    volume = 0
+                                end
+                            end
+                        end
+
+                        AddSoundVolume("Sound\\flippy.wav", x, y, volume, 2100.)
+                        TimerStart(CreateTimer(), 0.48, false, function()
+                            if data.soundpack ~= nil then AddSoundVolume(data.soundpack.drop, x, y, volume, 2100.) end
+                            CreateQualityEffect(item)
+                        end)
+
+                else
+                    local volume = 128
+
+                        for i = 1, 6 do
+                            if GetLocalPlayer() == Player(i-1) then
+                                if not IsItemVisible(item) then
+                                    volume = 0
+                                end
+                            end
+                        end
+
+                        if data.soundpack ~= nil then
+                            AddSoundVolume(data.soundpack.drop, x, y, volume, 2100.)
+                        end
+
+                end
+            end)
+
             GenerateItemLevel(item, 1)
 
 		return item
@@ -159,6 +255,10 @@ do
 
             ITEM_DATA[handle] = data
             GenerateItemLevel(item, 1)
+
+                if data.flippy ~= nil and data.flippy then
+                    CreateQualityEffect(item)
+                end
 
         return item
     end
@@ -497,9 +597,15 @@ do
             local angle = AngleBetweenXY_DEG(GetItemX(item), GetItemY(item), GetUnitX(unit), GetUnitY(unit))
 
                 if DistanceBetweenUnitXY(unit, GetItemX(item), GetItemY(item)) <= 200. then
+                    local item_data = GetItemData(item)
+
                     UnitRemoveItem(unit, item)
                     IssuePointOrderById(unit, order_move, GetUnitX(unit) + 0.01, GetUnitY(unit) - 0.01)
-                    AddToInventory(GetPlayerId(GetOwningPlayer(unit)) + 1, item)
+                    local done =  AddToInventory(GetPlayerId(GetOwningPlayer(unit)) + 1, item)
+
+                        if done and item_data.quality_effect ~= nil then
+                            DestroyEffect(item_data.quality_effect)
+                        end
                 else
                     IssuePointOrderById(unit, order_move, GetItemX(item) + Rx(25., angle), GetItemY(item) + Ry(25., angle))
                 end

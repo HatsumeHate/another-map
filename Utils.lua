@@ -248,6 +248,14 @@
 
 
 
+	---@param command string
+	---@param callback function
+	function RegisterTestCommand(command, callback)
+		local trigger = CreateTrigger()
+		TriggerRegisterPlayerChatEvent(trigger, Player(0), command, false)
+		TriggerAddAction(trigger, callback)
+	end
+
 	---@param unit unit
 	---@param range real
 	---@param ang real

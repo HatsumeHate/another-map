@@ -204,7 +204,6 @@ do
                 missile = 0,
                 EFFECT_ON_ATTACK   = 0,
                 WEAPON_SOUND       = nil,
-                MODEL              = '',
 				frame_texture      = nil,
 
                 QUALITY            = COMMON_ITEM,
@@ -289,6 +288,7 @@ do
             DAMAGE  = 50,
             QUALITY = RARE_ITEM,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
+			flippy = true,
             BONUS   = {
                 { PARAM = PHYSICAL_ATTACK, VALUE = 20, METHOD = STRAIGHT_BONUS },
                 { PARAM = CRIT_CHANCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
@@ -309,6 +309,7 @@ do
 			DAMAGE  = 14,
 			QUALITY = COMMON_ITEM,
 			frame_texture = "Weapons\\BTNTier1 Sword.blp",
+			flippy = true,
 			BONUS   = {
 				{ PARAM = PHYSICAL_ATTACK, VALUE = 3, METHOD = STRAIGHT_BONUS },
 				{ PARAM = CRIT_CHANCE, VALUE = 2, METHOD = STRAIGHT_BONUS },
@@ -325,6 +326,7 @@ do
 			DAMAGE  = 27,
 			QUALITY = COMMON_ITEM,
 			frame_texture = "Weapons\\BTNBarbarian Brutal Slasher.blp",
+			flippy = true,
 			BONUS   = {
 				{ PARAM = PHYSICAL_ATTACK, VALUE = 3, METHOD = STRAIGHT_BONUS },
 				{ PARAM = CRIT_CHANCE, VALUE = 2, METHOD = STRAIGHT_BONUS },
@@ -341,6 +343,7 @@ do
 			DAMAGE  = 24,
 			QUALITY = COMMON_ITEM,
 			frame_texture = "Weapons\\BTNIce Staff.blp",
+			flippy = true,
 			BONUS   = {
 				{ PARAM = CAST_SPEED, VALUE = 3, METHOD = STRAIGHT_BONUS },
 				{ PARAM = CRIT_CHANCE, VALUE = 2, METHOD = STRAIGHT_BONUS },
@@ -357,6 +360,7 @@ do
 			SUBTYPE = CHEST_ARMOR,
 			DEFENCE  = 25,
 			QUALITY = COMMON_ITEM,
+			flippy = true,
 			frame_texture = "Armor\\BTNSteelArmor2.blp",
 			BONUS   = {
 				{ PARAM = HP_VALUE, VALUE = 15, METHOD = STRAIGHT_BONUS },
@@ -371,6 +375,7 @@ do
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = LEGS_ARMOR,
 			DEFENCE  = 18,
+			flippy = true,
 			QUALITY = COMMON_ITEM,
 			frame_texture = "Armor\\BTNBoots.blp",
 			BONUS   = {
@@ -387,6 +392,7 @@ do
 			SUBTYPE = HEAD_ARMOR,
 			DEFENCE  = 12,
 			QUALITY = COMMON_ITEM,
+			flippy = true,
 			frame_texture = "Armor\\BTNNFHelmet02.blp",
 			BONUS   = {
 				{ PARAM = CRIT_CHANCE, VALUE = 2, METHOD = STRAIGHT_BONUS },
@@ -401,6 +407,7 @@ do
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = HANDS_ARMOR,
 			DEFENCE  = 15,
+			flippy = true,
 			QUALITY = COMMON_ITEM,
 			frame_texture = "Armor\\BTNDuelists Gauntlets.blp",
 			BONUS   = {
@@ -418,6 +425,8 @@ do
 			SUBTYPE = SWORD_WEAPON,
 			DAMAGE  = 100,
 			QUALITY = RARE_ITEM,
+			model = "FlippySword.mdx",
+			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
 			sell_value = 50
 		})
@@ -427,6 +436,8 @@ do
 			SUBTYPE = GREATSWORD_WEAPON,
 			DAMAGE  = 100,
 			QUALITY = RARE_ITEM,
+			model = "FlippyGreatSword.mdx",
+			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
 			sell_value = 50
 		})
@@ -437,6 +448,7 @@ do
 			SUBTYPE = AXE_WEAPON,
 			DAMAGE  = 100,
 			QUALITY = RARE_ITEM,
+			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
 			sell_value = 50
 		})
@@ -446,6 +458,7 @@ do
 			SUBTYPE = GREATAXE_WEAPON,
 			DAMAGE  = 100,
 			QUALITY = RARE_ITEM,
+			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
 			sell_value = 50
 		})
@@ -456,6 +469,7 @@ do
 			SUBTYPE = BLUNT_WEAPON,
 			DAMAGE  = 100,
 			QUALITY = RARE_ITEM,
+			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
 			sell_value = 50
 		})
@@ -465,6 +479,7 @@ do
 			SUBTYPE = GREATBLUNT_WEAPON,
 			DAMAGE  = 100,
 			QUALITY = RARE_ITEM,
+			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
 			sell_value = 50
 		})
@@ -475,6 +490,7 @@ do
 			SUBTYPE = DAGGER_WEAPON,
 			DAMAGE  = 100,
 			QUALITY = RARE_ITEM,
+			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
 			sell_value = 50
 		})
@@ -484,6 +500,7 @@ do
 			SUBTYPE = STAFF_WEAPON,
 			DAMAGE  = 100,
 			QUALITY = RARE_ITEM,
+			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
 			sell_value = 50
 		})
@@ -493,6 +510,7 @@ do
 			SUBTYPE = BOW_WEAPON,
 			DAMAGE  = 100,
 			QUALITY = RARE_ITEM,
+			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
 			sell_value = 50
 		})
@@ -502,6 +520,7 @@ do
 			SUBTYPE = CHEST_ARMOR,
 			QUALITY = MAGIC_ITEM,
 			DEFENCE = 50,
+			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
 		})
@@ -511,6 +530,7 @@ do
 			SUBTYPE = HANDS_ARMOR,
 			QUALITY = MAGIC_ITEM,
 			DEFENCE = 50,
+			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
 		})
@@ -520,6 +540,7 @@ do
 			SUBTYPE = HEAD_ARMOR,
 			QUALITY = MAGIC_ITEM,
 			DEFENCE = 50,
+			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
 		})
@@ -529,6 +550,7 @@ do
 			SUBTYPE = LEGS_ARMOR,
 			QUALITY = MAGIC_ITEM,
 			DEFENCE = 50,
+			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
 		})
@@ -538,6 +560,7 @@ do
 			SUBTYPE = NECKLACE_JEWELRY,
 			QUALITY = MAGIC_ITEM,
 			DEFENCE = 50,
+			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
 		})
@@ -547,6 +570,7 @@ do
 			SUBTYPE = RING_JEWELRY,
 			QUALITY = MAGIC_ITEM,
 			DEFENCE = 50,
+			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
 		})
@@ -557,6 +581,7 @@ do
             SUBTYPE = CHEST_ARMOR,
             QUALITY = MAGIC_ITEM,
             DEFENCE = 50,
+			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
 			soundpack = {
@@ -700,7 +725,7 @@ do
 			frame_texture      = "GUI\\BTNItem_Gem_Emerald.blp",
 			point_bonus 	   = {
 				[ITEM_TYPE_WEAPON] 		= {  PARAM = POISON_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
-				[ITEM_TYPE_ARMOR]  		= {  PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 75, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 4, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = POISON_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = MAGICAL_ATTACK, VALUE = 27, METHOD = STRAIGHT_BONUS }
 			},
@@ -857,6 +882,7 @@ do
 			DAMAGE  = 50,
 			QUALITY = UNIQUE_ITEM,
 			level = 5,
+			flippy = true,
 			frame_texture = "Weapons\\BTNInfernal bow.blp",
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_RAT_HUNTER .."\"",
 			BONUS   = {
@@ -878,6 +904,7 @@ do
 			SUBTYPE = LEGS_ARMOR,
 			QUALITY = UNIQUE_ITEM,
 			DEFENCE = 20,
+			flippy = true,
 			BONUS   = {
 				{ PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				{ PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 20, METHOD = STRAIGHT_BONUS },
@@ -901,6 +928,7 @@ do
 			ATTRIBUTE = FIRE_ATTRIBUTE,
 			QUALITY = UNIQUE_ITEM,
 			DAMAGE  = 50,
+			flippy = true,
 			level = 10,
 			BONUS   = {
 				{ PARAM = CAST_SPEED, VALUE = 5, METHOD = STRAIGHT_BONUS },
@@ -924,6 +952,7 @@ do
 			SUBTYPE = HEAD_ARMOR,
 			QUALITY = UNIQUE_ITEM,
 			DEFENCE = 20,
+			flippy = true,
 			level = 10,
 			BONUS   = {
 				{ PARAM = DARKNESS_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS },
@@ -947,6 +976,7 @@ do
 			ATTRIBUTE = PHYSICAL_ATTRIBUTE,
 			QUALITY = UNIQUE_ITEM,
 			DAMAGE  = 50,
+			flippy = true,
 			level = 10,
 			BONUS   = {
 				{ PARAM = CRIT_CHANCE, VALUE = 5, METHOD = STRAIGHT_BONUS },
@@ -970,6 +1000,7 @@ do
 			SUBTYPE = CHEST_ARMOR,
 			QUALITY = UNIQUE_ITEM,
 			DEFENCE = 20,
+			flippy = true,
 			level = 10,
 			BONUS   = {
 				{ PARAM = PHYSICAL_DEFENCE, VALUE = 1.3, METHOD = MULTIPLY_BONUS },
@@ -993,6 +1024,7 @@ do
 			ATTRIBUTE = PHYSICAL_ATTRIBUTE,
 			QUALITY = UNIQUE_ITEM,
 			DAMAGE  = 50,
+			flippy = true,
 			level = 10,
 			BONUS   = {
 				{ PARAM = CRIT_MULTIPLIER, VALUE = 1., METHOD = STRAIGHT_BONUS },
