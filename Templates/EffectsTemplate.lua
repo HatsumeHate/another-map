@@ -1,7 +1,7 @@
 do
 
     EffectsData           = {}
-    local MAX_LEVELS = 10
+    local MAX_LEVELS = 5
 
     ON_ENEMY = 1
     ON_ALLY = 2
@@ -20,20 +20,6 @@ do
         return EffectsData[FourCC(effect_id)]
     end
 
-
-
-    ---@param source unit
-    ---@param victim unit
-    ---@param effect_id integer
-    ---@param level integer
-    function NewEffect(source, victim, effect_id, level)
-        return {
-            source    = source,
-            victim    = victim,
-            effect_id = effect_id,
-            level     = level
-        }
-    end
 
 
     function NewEffectData()
@@ -85,67 +71,113 @@ do
         }
     end
 
+
+    function GenerateEffectLevelData(effect, lvl)
+
+        if lvl == 1 then return end
+
+            if effect.level[lvl] == nil then
+                effect.level[lvl] = NewEffectData()
+                MergeTables(effect.level[lvl], effect.level[1])
+                effect.level[lvl].generated = false
+            end
+
+
+        if effect.level[lvl].generated == nil or not effect.level[lvl].generated then
+            effect.level[lvl].generated = true
+
+
+            if effect.power_delta ~= nil then
+                effect.level[lvl].power = (effect.level[1].power or 0) + math.floor(lvl / (effect.power_delta_level or 1.)) * effect.power_delta
+            end
+
+            if effect.attack_percent_bonus_delta ~= nil then
+                effect.level[lvl].attack_percent = (effect.level[1].attack_percent or 0.) + math.floor(lvl / (effect.attack_percent_bonus_delta_level or 1.)) * effect.attack_percent_bonus_delta
+            end
+
+            if effect.attribute_bonus_delta ~= nil then
+                effect.level[lvl].attribute_bonus = (effect.level[1].attribute_bonus or 0) + math.floor(lvl / (effect.attribute_bonus_level or 1.)) * effect.attribute_bonus_delta
+            end
+
+            if effect.weapon_damage_percent_bonus_delta ~= nil then
+                effect.level[lvl].weapon_damage_percent_bonus = (effect.level[1].weapon_damage_percent_bonus or 0) + math.floor(lvl / (effect.weapon_damage_percent_bonus_level or 1.)) * effect.weapon_damage_percent_bonus_delta
+            end
+
+            if effect.bonus_crit_chance_delta ~= nil then
+                effect.level[lvl].bonus_crit_chance = (effect.level[1].bonus_crit_chance or 0.) + math.floor(lvl / (effect.bonus_crit_chance_delta_level or 1.)) * effect.bonus_crit_chance_delta
+            end
+
+            if effect.bonus_crit_multiplier_delta ~= nil then
+                effect.level[lvl].bonus_crit_multiplier = (effect.level[1].bonus_crit_multiplier or 0.) + math.floor(lvl / (effect.bonus_crit_multiplier_delta_level or 1.)) * effect.bonus_crit_multiplier_delta
+            end
+
+            if effect.max_targets_delta ~= nil then
+                effect.level[lvl].max_targets = (effect.level[1].max_targets or 0) + math.floor(lvl / (effect.max_targets_delta_level or 1.)) * effect.max_targets_delta
+            end
+
+            if effect.heal_amount_delta ~= nil then
+                effect.level[lvl].heal_amount = (effect.level[1].heal_amount or 0) + math.floor(lvl / (effect.heal_amount_delta_level or 1.)) * effect.heal_amount_delta
+            end
+
+            if effect.life_restored_delta ~= nil then
+                effect.level[lvl].life_restored = (effect.level[1].life_restored or 0) + math.floor(lvl / (effect.life_restored_delta_level or 1.)) * effect.life_restored_delta
+            end
+
+            if effect.life_percent_restored_delta ~= nil then
+                effect.level[lvl].life_percent_restored = (effect.level[1].life_percent_restored or 0.) + math.floor(lvl / (effect.life_percent_restored_delta_level or 1.)) * effect.life_percent_restored_delta
+            end
+
+            if effect.resource_restored_delta ~= nil then
+                effect.level[lvl].resource_restored = (effect.level[1].resource_restored or 0) + math.floor(lvl / (effect.resource_restored_delta_level or 1.)) * effect.resource_restored_delta
+            end
+
+            if effect.resource_percent_restored_delta ~= nil then
+                effect.level[lvl].resource_percent_restored = (effect.level[1].resource_percent_restored or 0.) + math.floor(lvl / (effect.resource_percent_restored_delta_level or 1.)) * effect.resource_percent_restored_delta
+            end
+
+            if effect.area_of_effect_delta ~= nil then
+                effect.level[lvl].area_of_effect = (effect.level[1].area_of_effect or 0.) + math.floor(lvl / (effect.area_of_effect_delta_level or 1.)) * effect.area_of_effect_delta
+            end
+
+            if effect.angle_window_delta ~= nil then
+                effect.level[lvl].angle_window = (effect.level[1].angle_window or 0.) + math.floor(lvl / (effect.angle_window_delta_level or 1.)) * effect.angle_window_delta
+            end
+
+            if effect.delay_delta ~= nil then
+                effect.level[lvl].delay = (effect.level[1].delay or 0.) + math.floor(lvl / (effect.delay_delta_level or 1.)) * effect.delay_delta
+            end
+
+            if effect.hit_delay_delta ~= nil then
+                effect.level[lvl].hit_delay = (effect.level[1].hit_delay or 0.) + math.floor(lvl / (effect.hit_delay_delta_level or 1.)) * effect.hit_delay_delta
+            end
+
+            if effect.timescale_delta ~= nil then
+                effect.level[lvl].timescale = (effect.level[1].timescale or 1.) + math.floor(lvl / (effect.timescale_delta_level or 1.)) * effect.timescale_delta
+            end
+
+        end
+
+        return effect.level[lvl]
+    end
+
     ---@param effect_id integer
     ---@param reference table
     function NewEffectTemplate(effect_id, reference)
-
         if EffectsData[FourCC(effect_id)] ~= nil then return nil end
-
         local my_new_effect = { level = {  }, id = effect_id, name = '', current_level = 1, remove_after_use = true }
 
-        for i = 1, MAX_LEVELS do
-            my_new_effect.level[i] = NewEffectData()
-        end
+
+            my_new_effect.level[1] = NewEffectData()
+            MergeTables(my_new_effect, reference)
 
 
-        MergeTables(my_new_effect, reference)
-        EffectsData[FourCC(effect_id)] = my_new_effect
-
-        for i = 1, MAX_LEVELS do
-            if  my_new_effect.level[i] ~= nil then
-
-                if my_new_effect.level[i].area_of_effect == nil then
-                    my_new_effect.level[i].area_of_effect = 0.
+                for i = 2, MAX_LEVELS do
+                    my_new_effect.level[i] = GenerateEffectLevelData(my_new_effect, i)
                 end
 
-                if my_new_effect.level[i].attack_percent_bonus == nil then
-                    my_new_effect.level[i].attack_percent_bonus = 0.
-                end
 
-                if my_new_effect.level[i].can_crit == nil then
-                    my_new_effect.level[i].can_crit = false
-                end
+            EffectsData[FourCC(effect_id)] = my_new_effect
 
-                if my_new_effect.level[i].is_direct == nil then
-                    my_new_effect.level[i].is_direct = false
-                end
-
-                if my_new_effect.level[i].timescale == nil then
-                    my_new_effect.level[i].timescale = 1.
-                end
-
-                if my_new_effect.level[i].SFX_used_scale == nil then
-                    my_new_effect.level[i].SFX_used_scale = 1.
-                end
-
-                if my_new_effect.level[i].hit_delay == nil then
-                    my_new_effect.level[i].hit_delay = 0.
-                end
-
-                if my_new_effect.level[i].delay == nil then
-                    my_new_effect.level[i].delay = 0.
-                end
-
-                if my_new_effect.level[i].angle_window == nil then
-                    my_new_effect.level[i].angle_window = 0.
-                end
-
-                if my_new_effect.level[i].force_from_caster_position == nil then
-                    my_new_effect.level[i].force_from_caster_position = false
-                end
-
-            end
-        end
 
         return my_new_effect
     end
@@ -184,6 +216,9 @@ do
 
         NewEffectTemplate('EFRB', {
             name = "frostbolt",
+            power_delta = 1,
+            power_delta_level = 1,
+            get_level_from_skill = "A003",
             level = {
                 [1] = {
                     power = 10,
@@ -193,6 +228,8 @@ do
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = ICE_ATTRIBUTE,
+                    area_of_effect = 175.,
+                    max_targets = 300,
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A004', target_type = ON_ENEMY }
                     },
@@ -203,6 +240,11 @@ do
 
         NewEffectTemplate('EFRN', {
             name = "frost nova effect",
+            power_delta = 3,
+            power_delta_level = 1,
+            area_of_effect_delta = 1.,
+            area_of_effect_delta_level = 1,
+            get_level_from_skill = "A001",
             level = {
                 [1] = {
                     power = 10,
@@ -228,6 +270,9 @@ do
 
         NewEffectTemplate('EGFB', {
             name = "fireball effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "A00D",
             level = {
                 [1] = {
                     power = 17,
@@ -248,6 +293,11 @@ do
 
         NewEffectTemplate('EFRO', {
             name = "frost orb end effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            bonus_crit_chance_delta = 1.,
+            bonus_crit_chance_delta_level = 5,
+            get_level_from_skill = "A005",
             level = {
                 [1] = {
                     power = 20,
@@ -258,7 +308,6 @@ do
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = ICE_ATTRIBUTE,
-
                     area_of_effect = 225.,
                     max_targets = 300,
 
@@ -269,6 +318,11 @@ do
 
         NewEffectTemplate('EFOA', {
             name = "frost orb mid effect",
+            power_delta = 1,
+            power_delta_level = 1,
+            attribute_bonus_delta = 2,
+            attribute_bonus_delta_level = 5,
+            get_level_from_skill = "A005",
             level = {
                 [1] = {
                     power = 5,
@@ -276,7 +330,6 @@ do
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = ICE_ATTRIBUTE,
-
                     area_of_effect = 175.,
                     max_targets = 300,
 
@@ -287,6 +340,13 @@ do
         --==========================================--
         NewEffectTemplate('ELST', {
             name = "lightning strike effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            bonus_crit_multiplier_delta = 0.1,
+            bonus_crit_multiplier_delta_level = 5.,
+            attribute_bonus_delta = 2,
+            attribute_bonus_delta_level = 5,
+            get_level_from_skill = "A00M",
             level = {
                 [1] = {
                     power = 30,
@@ -308,6 +368,13 @@ do
         --==========================================--
         NewEffectTemplate('EMTR', {
             name = "meteor effect",
+            power_delta = 3,
+            power_delta_level = 1,
+            area_of_effect_delta = 1.,
+            area_of_effect_delta_level = 1,
+            attribute_bonus_delta = 2,
+            attribute_bonus_delta_level = 5,
+            get_level_from_skill = "A00F",
             level = {
                 [1] = {
                     delay = 0.77,
@@ -332,6 +399,9 @@ do
         --==========================================--
         NewEffectTemplate('EDSC', {
             name = "discharge effect",
+            power_delta = 1,
+            power_delta_level = 1,
+            get_level_from_skill = "A00J",
             level = {
                 [1] = {
                     power = 5,
@@ -350,6 +420,9 @@ do
         --==========================================--
         NewEffectTemplate('ELBL', {
             name = "lightning ball effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "A00K",
             level = {
                 [1] = {
                     power = 7,
@@ -359,7 +432,6 @@ do
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = LIGHTNING_ATTRIBUTE,
-
                     max_targets = 1,
                 }
             }
@@ -367,6 +439,7 @@ do
         --==========================================--
         NewEffectTemplate('EFCS', {
             name = "focus effect",
+            get_level_from_skill = "A00N",
             level = {
                 [1] = {
                     applied_buff = {
@@ -378,6 +451,7 @@ do
         --==========================================--
         NewEffectTemplate('EFAR', {
             name = "frost armor effect",
+            get_level_from_skill = "A00E",
             level = {
                 [1] = {
                     applied_buff = {
@@ -389,6 +463,7 @@ do
         --==========================================--
         NewEffectTemplate('EEMA', {
             name = "elemental mastery effect",
+            get_level_from_skill = "A00H",
             level = {
                 [1] = {
                     applied_buff = {
@@ -400,6 +475,13 @@ do
         --==========================================--
         NewEffectTemplate('ETHK', {
             name = "throwing knife effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            attack_percent_bonus_delta = 0.05,
+            attack_percent_bonus_delta_level = 2,
+            bonus_crit_chance_delta = 1.,
+            bonus_crit_chance_delta_level = 3,
+            get_level_from_skill = "A00Z",
             level = {
                 [1] = {
                     power = 5,
@@ -416,6 +498,9 @@ do
         --==========================================--
         NewEffectTemplate('EUPP', {
             name = "uppercut effect",
+            power_delta = 2,
+            power_delta_level = 2,
+            get_level_from_skill = "A00B",
             level = {
                 [1] = {
                     power = 3,
@@ -428,13 +513,14 @@ do
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = MELEE_ATTACK,
                     attribute = PHYSICAL_ATTRIBUTE,
-                    max_targets = 1,
+                    max_targets = 300,
                 }
             }
         })
         --==========================================--
         NewEffectTemplate('EBRS', {
             name = "berserk effect",
+            get_level_from_skill = "A00Q",
             level = {
                 [1] = {
                     applied_buff = {
@@ -446,6 +532,9 @@ do
         --==========================================--
         NewEffectTemplate('EWHW', {
             name = "whirlwind effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "A010",
             level = {
                 [1] = {
                     power = 7,
@@ -463,6 +552,9 @@ do
         --==========================================--
         NewEffectTemplate('ECRH', {
             name = "crushing strike effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "A007",
             level = {
                 [1] = {
                     power = 10,
@@ -475,7 +567,7 @@ do
                     area_of_effect = 155.,
                     angle_window  = 35.,
                     force_from_caster_position = true,
-                    max_targets = 1,
+                    max_targets = 300,
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A00W', target_type = ON_ENEMY }
                     },
@@ -485,6 +577,7 @@ do
         --==========================================--
         NewEffectTemplate('EBCH', {
             name = "chain effect",
+            get_level_from_skill = "A00A",
             level = {
                 [1] = {
                     max_targets = 1,
@@ -497,6 +590,7 @@ do
         --==========================================--
         NewEffectTemplate('ECSL', {
             name = "cutting slash effect",
+            get_level_from_skill = "A006",
             level = {
                 [1] = {
                     power = 4,
@@ -509,7 +603,7 @@ do
                     area_of_effect = 155.,
                     angle_window  = 35.,
                     force_from_caster_position = true,
-                    max_targets = 1,
+                    max_targets = 300,
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A014', target_type = ON_ENEMY }
                     },
@@ -519,6 +613,11 @@ do
         --==========================================--
         NewEffectTemplate('ECSP', {
             name = "cutting slash periodic effect",
+            power_delta = 1,
+            power_delta_level = 5,
+            attack_percent_bonus_delta = 0.1,
+            attack_percent_bonus_delta_level = 5,
+            get_level_from_skill = "A006",
             level = {
                 [1] = {
                     power = 1,
@@ -533,6 +632,7 @@ do
         --==========================================--
         NewEffectTemplate('EWCR', {
             name = "warcry effect",
+            get_level_from_skill = "A00C",
             level = {
                 [1] = {
                     max_targets = 300,
@@ -605,6 +705,54 @@ do
                     SFX_on_caster_duration = 1.833,
                     resource_percent_restored = 0.75,
                     sound =  "Sound\\mana_potion.wav"
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('PHUN', {
+            name = "health and mana restore",
+            level = {
+                [1] = {
+                    max_targets  = 1,
+                    sound        = "Sound\\full_life_potion.wav",
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A01D', target_type = ON_SELF }
+                    },
+                },
+                [2] = {
+                    max_targets  = 1,
+                    sound        = "Sound\\full_life_potion.wav",
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A01D', target_type = ON_SELF }
+                    },
+                },
+                [3] = {
+                    max_targets  = 1,
+                    sound        = "Sound\\full_life_potion.wav",
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A01D', target_type = ON_SELF }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('PUPR', {
+            name = "health and mana restore periodic",
+            level = {
+                [1] = {
+                    max_targets = 1,
+                    life_percent_restored    = 0.06,
+                    resource_percent_restored = 0.05,
+                },
+                [2] = {
+                    max_targets = 1,
+                    life_percent_restored   = 0.11,
+                    resource_percent_restored = 0.1,
+                },
+                [3] = {
+                    max_targets = 1,
+                    life_percent_restored   = 0.14,
+                    resource_percent_restored = 0.13,
                 }
             }
         })

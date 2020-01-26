@@ -65,11 +65,17 @@
     function GetUnitSkillData(unit, id)
         local unit_data = GetUnitData(unit)
 
-        for i = 1, #unit_data.skill_list do
-            if unit_data.skill_list[i].Id == id then
-                return unit_data.skill_list[i]
+            for i = 1, #unit_data.skill_list do
+                if unit_data.skill_list[i].Id == id then
+                    local skill = unit_data.skill_list[i]
+
+                        if skill.level[skill.current_level] == nil then
+                            GenerateSkillLevelData(skill, skill.current_level)
+                        end
+
+                    return skill
+                end
             end
-        end
 
         return nil
     end
@@ -118,6 +124,39 @@
         }
     end
 
+
+    function GenerateSkillLevelData(skill, lvl)
+
+        if lvl == 1 then return end
+
+        if skill.level[lvl] == nil then
+            skill.level[lvl] = NewSkillDataLevel()
+            MergeTables(skill.level[lvl], skill.level[1])
+            skill.level[lvl].generated = false
+        end
+
+
+        if skill.level[lvl].generated == nil or not skill.level[lvl].generated then
+
+            if skill.cooldown_delta ~= nil then
+                skill.level[lvl].cooldown = (skill.level[1].cooldown or 0.1) + math.floor(lvl / (skill.cooldown_delta_level or 1.)) * skill.cooldown_delta
+                if skill.level[lvl].cooldown < 0.1 then skill.level[lvl].cooldown = 0.1 end
+            end
+
+            if skill.resource_cost_delta ~= nil then
+                skill.level[lvl].resource_cost = (skill.level[1].resource_cost or 0) + math.floor(lvl / (skill.resource_cost_delta_level or 1.)) * skill.resource_cost_delta
+                if skill.level[lvl].resource_cost < 0 then skill.level[lvl].resource_cost = 0 end
+            end
+
+            if skill.range_delta ~= nil then
+                skill.level[lvl].range = (skill.level[1].range or 0.) + math.floor(lvl / (skill.range_delta_level or 1.)) * skill.range_delta
+                if skill.level[lvl].range < 0. then skill.level[lvl].range = 0. end
+            end
+
+            skill.level[lvl].generated = true
+        end
+    end
+
     ---@param skillId integer
     ---@param data table
      function NewSkillData(skillId, data)
@@ -135,47 +174,25 @@
             level = {}
         }
 
-        for i = 1, MaxSkillLevels do
+        my_new_skill.level[1] = NewSkillDataLevel()
+
+        for i = 2, MaxSkillLevels do
             my_new_skill.level[i] = NewSkillDataLevel()
+            GenerateSkillLevelData(my_new_skill, i)
         end
 
         MergeTables(my_new_skill, data)
-
         my_new_skill.current_level = 1
 
-        for i = 1, MaxSkillLevels do
-            if  my_new_skill.level[i] ~= nil then
+            for i = 1, MaxSkillLevels do
+                if  my_new_skill.level[i] ~= nil then
 
-                if my_new_skill.level[i].autotrigger == nil then
-                    my_new_skill.level[i].autotrigger = false
+                    if my_new_skill.level[i].autotrigger == nil then
+                        my_new_skill.level[i].autotrigger = false
+                    end
+
                 end
-
-                if my_new_skill.level[i].animation_scale == nil then
-                    my_new_skill.level[i].animation_scale = 1.
-                end
-
-                if my_new_skill.level[i].animation == nil then
-                    my_new_skill.level[i].animation = 0
-                end
-
-                if my_new_skill.level[i].cooldown == nil then
-                    my_new_skill.level[i].cooldown = 0.1
-                end
-
-                if my_new_skill.level[i].resource_cost == nil then
-                    my_new_skill.level[i].resource_cost = 0.
-                end
-
-                if my_new_skill.level[i].range == nil then
-                    my_new_skill.level[i].range = 0.
-                end
-
-                if my_new_skill.level[i].radius == nil then
-                    my_new_skill.level[i].radius = 0.
-                end
-
             end
-        end
 
         SkillsData[FourCC(skillId)] = my_new_skill
         return my_new_skill
@@ -209,6 +226,15 @@
                     animation_point     = 1.5,
                     animation_backswing = 0.1666,
                     animation_scale     = 0.5,
+                },
+                [7] = {
+                    missile             = 'M001',
+                    effect              = 'EFF1',
+                    cooldown            = 5.,
+                    animation           = 3,
+                    animation_point     = 1.5,
+                    animation_backswing = 0.1666,
+                    animation_scale     = 0.5,
                 }
             }
 
@@ -223,6 +249,16 @@
 
             level = {
                 [1] = {
+                    range               = 1000.,
+                    missile             = 'MFRB',
+                    resource_cost       = 10.,
+                    cooldown            = 0.1,
+                    animation           = 3,
+                    animation_point     = 1.5,
+                    animation_backswing = 0.1666,
+                    animation_scale     = 0.5,
+                },
+                [7] = {
                     range               = 1000.,
                     missile             = 'MFRB',
                     resource_cost       = 10.,
@@ -247,10 +283,10 @@
                 [1] = {
                     effect              = 'EFRN',
                     resource_cost       = 10.,
-                    cooldown            = 0.1,
+                    cooldown            = 1.1,
                     animation           = 3,
-                    animation_point     = 1.4,
-                    animation_backswing = 0.1666,
+                    animation_point     = 2.1,
+                    animation_backswing = 0.633,
                     animation_scale     = 0.5,
                 }
             }
@@ -271,8 +307,8 @@
                     resource_cost       = 10.,
                     cooldown            = 0.1,
                     animation           = 3,
-                    animation_point     = 1.4,
-                    animation_backswing = 0.1666,
+                    animation_point     = 2.1,
+                    animation_backswing = 0.633,
                     animation_scale     = 0.5,
                 }
             }
@@ -292,8 +328,8 @@
                     resource_cost       = 10.,
                     cooldown            = 0.1,
                     animation           = 3,
-                    animation_point     = 1.,
-                    animation_backswing = 1.,
+                    animation_point     = 2.1,
+                    animation_backswing = 0.633,
                     animation_scale     = 0.5,
                 }
             }
@@ -313,8 +349,8 @@
                     resource_cost       = 10.,
                     cooldown            = 0.1,
                     animation           = 3,
-                    animation_point     = 1.,
-                    animation_backswing = 1.,
+                    animation_point     = 2.1,
+                    animation_backswing = 0.633,
                     animation_scale     = 0.5,
                 }
             }
@@ -326,6 +362,8 @@
             activation_type = POINT_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_ARCANE,
+            range_delta = 5.,
+            range_delta_level = 1,
 
             level = {
                 [1] = {
@@ -341,7 +379,7 @@
                     cooldown            = 3.,
                     animation           = 3,
                     animation_point     = 0.1,
-                    animation_backswing = 1.,
+                    animation_backswing = 0.1,
                     animation_scale     = 0.5,
                 }
             }
@@ -361,8 +399,8 @@
                     resource_cost       = 20.,
                     cooldown            = 7.,
                     animation           = 3,
-                    animation_point     = 0.5,
-                    animation_backswing = 1.,
+                    animation_point     = 2.1,
+                    animation_backswing = 0.633,
                     animation_scale     = 0.5,
                 }
             }
@@ -381,9 +419,9 @@
                     resource_cost       = 10.,
                     cooldown            = 0.1,
                     animation           = 3,
-                    animation_point     = 0.3,
-                    animation_backswing = 0.3,
-                    animation_scale     = 1.,
+                    animation_point     = 2.1,
+                    animation_backswing = 0.633,
+                    animation_scale     = 0.5,
                 }
             }
         })
@@ -402,9 +440,9 @@
                     missile             = 'MBLB',
                     cooldown            = 7.,
                     animation           = 3,
-                    animation_point     = 0.3,
-                    animation_backswing = 0.3,
-                    animation_scale     = 1.,
+                    animation_point     = 2.1,
+                    animation_backswing = 0.633,
+                    animation_scale     = 0.5,
                 }
             }
         })
@@ -429,7 +467,7 @@
             }
         })
         --============================================--
-        NewSkillData('A00N', {
+        NewSkillData('A00E', {
             name            = "frost armor skill",
             icon            = "Spell\\BTNCloakOfFrost.blp",
             activation_type = SELF_CAST,
@@ -482,9 +520,9 @@
                     cooldown            = 5.,
                     resource_cost       = 10.,
                     animation           = 3,
-                    animation_point     = 0.3,
-                    animation_backswing = 0.3,
-                    animation_scale     = 1.,
+                    animation_point     = 2.1,
+                    animation_backswing = 0.633,
+                    animation_scale     = 0.5,
                 }
             }
         })
@@ -646,6 +684,9 @@
                     animation_point     = 0.1,
                     animation_backswing = 0.1,
                     animation_scale     = 1.,
+                    effect_on_caster        = "Spell\\Sweep_TeamColor_Medium.mdx",
+                    effect_on_caster_point  = 'Weapon R',
+                    effect_on_caster_scale  = 1.,
                 }
             }
         })

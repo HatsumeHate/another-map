@@ -224,6 +224,8 @@
 	---@param count integer
 	function GetRandomIntTable(min, max, count)
 
+		if min > max then min, max = max, min end
+
 		if max < min then max = min end
 		if count > (max - min + 1) then count = max - min + 1 end
 
@@ -236,6 +238,40 @@
 		return numbers
 	end
 
+
+	---@param min integer
+	---@param max integer
+	---@param count integer|nil
+	function GetRandomIntTableFast(min, max, count)
+		local keys = {}
+		local out  = {}
+
+		if min == max then return { min } end
+		if max < min then min, max = max, min end
+		local limit = math.abs(max - min) + 1
+		count       = count == nil and limit or math.min(limit, count)
+			
+			if limit <= count then
+				local ints = {}
+				for i = min, max do
+					table.insert(ints, i)
+				end
+				for _ = 1, limit do
+					table.insert(out, table.remove(ints, math.random(1, #ints)))
+				end
+				return out
+			else
+				while true do
+					if #out >= count then return out end
+					local i = math.random(min, max)
+					if keys[i] == nil then
+						keys[i] = true
+						table.insert(out, i)
+					end
+				end
+			end
+
+	end
 
 	---@param duration real
 	---@param callback function
@@ -612,123 +648,6 @@
 	end
 
 
-	---@param name string
-	---@param player_id integer
-	function PlayLocalSound(name, player_id)
-		local snd = CreateSound(name, false, false, false, 10, 10, "")
-
-		SetSoundChannel(snd, 5)
-
-			if GetLocalPlayer() ~= Player(player_id) then
-				SetSoundVolume(snd, 0)
-			else
-				SetSoundVolume(snd, 127)
-			end
-
-		SetSoundPitch(snd, 1)
-		StartSound(snd)
-		KillSoundWhenDone(snd)
-
-		snd = nil
-	end
-
-	function PlayLocalSound2(s, p)
-		local snd
-
-		if GetLocalPlayer() ~= Player(p) then s = "" end
-
-		snd = CreateSound(s, false, false, false, 10, 10, "")
-		SetSoundChannel(snd, 5)
-		SetSoundVolume(snd, 127)
-		SetSoundPitch(snd, 1)
-		StartSound(snd)
-		KillSoundWhenDone(snd)
-
-		snd = nil
-	end
-
-	function AddSound(s, x, y)
-		local snd = CreateSound(s, false, true, true, 10, 10, "CombatSoundsEAX")
-
-		SetSoundChannel(snd, 5)
-		SetSoundVolume(snd, 127)
-		SetSoundPitch(snd, 1)
-		SetSoundDistances(snd, 600., 10000.)
-		SetSoundDistanceCutoff(snd, 2100.)
-		SetSoundConeAngles(snd, 0.0, 0.0, 127)
-		SetSoundConeOrientation(snd, 0.0, 0.0, 0.0)
-		SetSoundPosition(snd, x, y, 35.)
-		StartSound(snd)
-		KillSoundWhenDone(snd)
-
-		snd = nil
-	end
-
-	function AddLoopingSound(s, x, y, vol)
-		local snd = CreateSound(s, true, true, true, 10, 10, "CombatSoundsEAX")
-		SetSoundChannel(snd, 5)
-		SetSoundVolume(snd, vol)
-		SetSoundPitch(snd, 1)
-		SetSoundDistances(snd, 600., 10000.)
-		SetSoundDistanceCutoff(snd, 2100.)
-		SetSoundConeAngles(snd, 0.0, 0.0, 127)
-		SetSoundConeOrientation(snd, 0.0, 0.0, 0.0)
-		SetSoundPosition(snd, x, y, 35.)
-		StartSound(snd)
-		snd = nil
-	end
-
-	function AddSoundVolume(s, x, y, vol, cutoff)
-		local snd = CreateSound(s, false, true, true, 10, 10, "CombatSoundsEAX")
-		SetSoundChannel(snd, 5)
-		SetSoundVolume(snd, vol)
-		SetSoundPitch(snd, 1)
-		SetSoundDistances(snd, 600., 10000.)
-		SetSoundDistanceCutoff(snd, cutoff)
-		SetSoundConeAngles(snd, 0.0, 0.0, 127)
-		SetSoundConeOrientation(snd, 0.0, 0.0, 0.0)
-		SetSoundPosition(snd, x, y, 35.)
-		StartSound(snd)
-		KillSoundWhenDone(snd)
-		snd = nil
-	end
-
-
-	function AddSoundForPlayerVolumeZ(s, x, y, z, vol, cutoff, player)
-		local snd = CreateSound(s, false, true, false, 10, 10, "CombatSoundsEAX") --CombatSoundsEAX
-		SetSoundChannel(snd, 5)
-
-		if GetLocalPlayer() == Player(player) then
-			SetSoundVolume(snd, vol)
-		else
-			SetSoundVolume(snd, 0)
-		end
-
-		SetSoundPitch(snd, 1)
-		SetSoundDistances(snd, 600., 10000.)
-		SetSoundDistanceCutoff(snd, cutoff)
-		SetSoundConeAngles(snd, 0.0, 0.0, 127)
-		SetSoundConeOrientation(snd, 0.0, 0.0, 0.0)
-		SetSoundPosition(snd, x, y, z)
-		StartSound(snd)
-		KillSoundWhenDone(snd)
-		snd = nil
-	end
-
-	function AddSoundVolumeZ(s, x, y, z, vol, cutoff)
-		local snd = CreateSound(s, false, true, false, 10, 10, "CombatSoundsEAX") --CombatSoundsEAX
-		SetSoundChannel(snd, 5)
-		SetSoundVolume(snd, vol)
-		SetSoundPitch(snd, 1)
-		SetSoundDistances(snd, 600., 10000.)
-		SetSoundDistanceCutoff(snd, cutoff)
-		SetSoundConeAngles(snd, 0.0, 0.0, 127)
-		SetSoundConeOrientation(snd, 0.0, 0.0, 0.0)
-		SetSoundPosition(snd, x, y, z)
-		StartSound(snd)
-		KillSoundWhenDone(snd)
-		snd = nil
-	end
 
 	function CopyGroup (g)
 		bj_groupAddGroupDest = CreateGroup()

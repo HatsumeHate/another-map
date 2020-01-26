@@ -56,74 +56,26 @@ do
         end
 
 
-        ---@param source unit
-        ---@param class integer
-        ---@param reference_base table
-        ---@param reference_weapon table
-        function NewUnitData(source, class, reference_base, reference_weapon)
-            local class_base_stats = BASE_STATS[class]
-            local data                 = {
-                Owner        = source,
-                unit_class   = class,
-
-                base_stats = {
-                    strength = class_base_stats[1], vitality = class_base_stats[2], agility = class_base_stats[3], intellect = class_base_stats[4],
-                    health = 100, mana = 100, hp_regen = 1., mp_regen = 1., moving_speed = 300
-                },
-
-                action_timer = CreateTimer(),
-                attack_timer = CreateTimer(),
-
-                is_hp_static = false,
-                have_mp = true,
-                is_mp_static = false,
-
-                cast_skill = 0,
-                cast_skill_level = 0,
-                cast_effect = nil,
-
-                default_weapon = nil,
-                equip_point = {},
-                stats = {},
-                buff_list = {},
-                skill_list = {}
-            }
-
-            data.default_weapon = CreateDefaultWeapon()
-            data.equip_point[WEAPON_POINT] = data.default_weapon
-            data.stats = CreateParametersData()
-
-            TimerStart(data.attack_timer, 0., false, nil)
-
-            if reference_base ~= nil then MergeTables(data.base_stats, reference_base) end
-            if reference_weapon ~= nil then MergeTables(data.equip_point[WEAPON_POINT], reference_weapon) end
-
-            UpdateParameters(data)
-            UnitsList[GetHandleId(source)] = data
-            return data
-        end
-
-
     ---@param source unit
     function NewUnitByTemplate(source, reference_data)
-        local class_base_stats = BASE_STATS[reference_data.unit_class]
+        local class_base_stats = BASE_STATS[reference_data.unit_class or NO_CLASS]
         local data                 = {
             Owner        = source,
-            unit_class   = reference_data.unit_class,
+            unit_class   = reference_data.unit_class or NO_CLASS,
 
             base_stats = {
                 strength = class_base_stats[1], vitality = class_base_stats[2], agility = class_base_stats[3], intellect = class_base_stats[4],
-                health = reference_data.base_stats.health, mana = reference_data.base_stats.mana,
-                hp_regen = reference_data.base_stats.hp_regen, mp_regen = reference_data.base_stats.mp_regen,
-                moving_speed = reference_data.base_stats.moving_speed
+                health = reference_data.base_stats.health or 100., mana = reference_data.base_stats.mana or 100.,
+                hp_regen = reference_data.base_stats.hp_regen or 1., mp_regen = reference_data.base_stats.mp_regen or 1.,
+                moving_speed = reference_data.base_stats.moving_speed or 300.
             },
 
             action_timer = CreateTimer(),
             attack_timer = CreateTimer(),
 
-            is_hp_static = reference_data.is_hp_static,
-            have_mp = reference_data.have_mp,
-            is_mp_static = reference_data.is_mp_static,
+            is_hp_static = reference_data.is_hp_static or false,
+            have_mp = reference_data.have_mp or false,
+            is_mp_static = reference_data.is_mp_static or false,
             time_before_remove = reference_data.time_before_remove or 10.,
 
             cast_skill = 0,
@@ -147,7 +99,11 @@ do
         TimerStart(data.attack_timer, 0., false, nil)
 
         --if reference_data.base_stats ~= nil then MergeTables(data.base_stats, reference_data.base_stats) end
+
         if reference_data.weapon ~= nil then MergeTables(data.default_weapon, reference_data.weapon) end
+        if reference_data.chest ~= nil then data.equip_point[CHEST_POINT] = MergeTables({}, reference_data.chest) end
+        if reference_data.necklace ~= nil then data.equip_point[NECKLACE_POINT] = MergeTables({}, reference_data.necklace) end
+        if reference_data.offhand ~= nil then data.equip_point[OFFHAND_POINT] = MergeTables({}, reference_data.offhand) end
 
         UpdateParameters(data)
         UnitsList[GetHandleId(source)] = data
@@ -162,7 +118,7 @@ do
 
 
         if new_data.unit_class == nil then
-            new_data.unit_class = BARBARIAN_CLASS
+            new_data.unit_class = NO_CLASS
         end
 
         if new_data.is_hp_static == nil then
@@ -187,6 +143,7 @@ do
             if new_data.base_stats.moving_speed == nil then new_data.base_stats.moving_speed = 300 end
         end
 
+
         UnitsData[FourCC(id)] = new_data
     end
 
@@ -201,17 +158,19 @@ do
         NewUnitTemplate('h000', {
             unit_class = SPECIAL_CLASS,
             base_stats = { health = 3000., hp_regen = 5. },
-            weapon = { DAMAGE = 25, CRIT_CHANCE = 15. }
+            weapon = { DAMAGE = 25, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_SLICE }
         })
 
         NewUnitTemplate('HBRB', {
             unit_class = BARBARIAN_CLASS,
+            have_mp = true,
             time_before_remove = 0.
             --weapon = { ATTACK_SPEED = 0.4, DAMAGE = 15, CRIT_CHANCE = 15. }
         })
 
         NewUnitTemplate('HSRC', {
             unit_class = SORCERESS_CLASS,
+            have_mp = true,
             time_before_remove = 0.
             --base_stats = { health = 3000., hp_regen = 30. },
         })
@@ -224,7 +183,7 @@ do
             trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 125., hp_regen = 1., moving_speed = 330. },
-            weapon = { ATTACK_SPEED = 1.4, DAMAGE = 5, CRIT_CHANCE = 10. },
+            weapon = { ATTACK_SPEED = 1.4, DAMAGE = 5, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             have_mp = false
         })
 
@@ -235,18 +194,18 @@ do
             trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 220., hp_regen = 1., moving_speed = 260. },
-            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 4, CRIT_CHANCE = 7. },
+            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 4, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
             have_mp = false
         })
 
         -- demon assassin
         NewUnitTemplate('u009', {
             unit_class = NO_CLASS,
-            classification = MONSTER_RANK_COMMON,
+            classification = MONSTER_RANK_ADVANCED,
             trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 310., hp_regen = 1.7, moving_speed = 300. },
-            weapon = { ATTACK_SPEED = 1.5, DAMAGE = 15, CRIT_CHANCE = 14. },
+            weapon = { ATTACK_SPEED = 1.5, DAMAGE = 15, CRIT_CHANCE = 14., WEAPON_SOUND = WEAPON_TYPE_METAL_LIGHT_SLICE },
             have_mp = false
         })
 
@@ -254,10 +213,10 @@ do
         NewUnitTemplate('u008', {
             unit_class = NO_CLASS,
             time_before_remove = 10.,
-            classification = MONSTER_RANK_COMMON,
+            classification = MONSTER_RANK_ADVANCED,
             trait = TRAIT_DEMON,
             base_stats = { health = 375., hp_regen = 2.1, moving_speed = 300. },
-            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 12, ATTRIBUTE = HOLY_ATTRIBUTE, ATTRIBUTE_BONUS = 15, CRIT_CHANCE = 15. },
+            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 12, ATTRIBUTE = HOLY_ATTRIBUTE, ATTRIBUTE_BONUS = 15, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_CHOP },
             have_mp = false
         })
 
@@ -268,7 +227,7 @@ do
             trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 270., hp_regen = 1.4, moving_speed = 280. },
-            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 8, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10, CRIT_CHANCE = 10. },
+            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 8, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_SLICE },
             have_mp = false
         })
 

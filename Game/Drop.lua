@@ -20,32 +20,41 @@ do
         local quality_list = drop_list.quality_list
         local number_list = GetRandomIntTable(1, #drop_list.item_list, drop_list.rolls)
         local max = drop_list.max_items
+        local current_offset = 0.45
+        local time_offset = 0.
+
 
             for i = 1, #number_list do
                 local current_item = drop_list.item_list[number_list[i]]
 
                     if GetRandomReal(0., 100.) <= current_item.chance then
-                        local my_item = CreateCustomItem(current_item.id, GetUnitX(unit) + GetRandomReal(-45., 45), GetUnitY(unit) + GetRandomReal(-45., 45))
 
-                            if current_item.generate ~= nil and current_item.generate then
-                                local quality = COMMON_ITEM
+                        DelayAction(current_offset + time_offset, function()
+                            local my_item = CreateCustomItem(current_item.id, GetUnitX(unit) + GetRandomReal(-45., 45), GetUnitY(unit) + GetRandomReal(-45., 45))
 
-                                    for k = 1, #quality_list do
-                                        if quality_list[k].chance then
-                                            quality = quality_list[k].quality
+                                if current_item.generate ~= nil and current_item.generate then
+                                    local quality = COMMON_ITEM
+
+                                        for k = 1, #quality_list do
+                                            if quality_list[k].chance then
+                                                quality = quality_list[k].quality
+                                            end
                                         end
-                                    end
 
-                                GenerateItemStats(my_item, Current_Wave + GetRandomInt(1, 2), quality)
-                            end
+                                    GenerateItemStats(my_item, Current_Wave + GetRandomInt(1, 2), quality)
+                                end
 
-                            if GetItemTypeId(my_item) == ITEM_TYPE_CHARGED then
-                                SetItemCharges(my_item, GetRandomInt(current_item.min, current_item.max))
-                            end
+                                if GetItemTypeId(my_item) == ITEM_TYPE_CHARGED then
+                                    SetItemCharges(my_item, GetRandomInt(current_item.min, current_item.max))
+                                end
 
-                            if GetLocalPlayer() ~= Player(player) then
-                                SetItemVisible(my_item, false)
-                            end
+                                if GetLocalPlayer() ~= Player(player) then
+                                    SetItemVisible(my_item, false)
+                                end
+
+                        end)
+
+                        time_offset = time_offset + 0.117
 
                         max = max - 1
                         if max <= 0 then break end
@@ -53,7 +62,12 @@ do
 
             end
 
-            CreateGoldStack(GetRandomInt(drop_list.min_gold, drop_list.max_gold), GetUnitX(unit) + GetRandomReal(-45., 45), GetUnitY(unit) + GetRandomReal(-45., 45), player)
+
+        if GetRandomReal(0., 100.) <= drop_list.gold.chance then
+            DelayAction(current_offset + time_offset, function()
+                CreateGoldStack(GetRandomInt(drop_list.gold.min_gold, drop_list.gold.max_gold), GetUnitX(unit) + GetRandomReal(-45., 45), GetUnitY(unit) + GetRandomReal(-45., 45), player)
+            end)
+        end
 
     end
 
@@ -68,21 +82,21 @@ do
                     { quality = COMMON_ITEM, chance = 100. },
                 },
                 item_list = {
-                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 70.3, generate = true  },
-                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 73.3, generate = true },
-                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 3.3, generate = true },
-                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 3.3, generate = true },
-                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 3.3, generate = true },
-                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 3.3, generate = true },
-                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 3.3, generate = true },
-                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 3.3, generate = true },
-                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 3.3, generate = true },
-                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 3.3, generate = true },
-                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 3.3, generate = true },
-                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 3.3, generate = true },
-                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 3.3, generate = true },
-                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 3.3, generate = true },
-                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 5.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 5.3, generate = true },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 1 },
@@ -98,6 +112,49 @@ do
                     { id = ITEM_POTION_HEALTH_WEAK, chance = 15.3, min = 1, max = 3 },
                     { id = ITEM_POTION_MANA_WEAK, chance = 15.3, min = 1, max = 3 }
                 },
+                gold = { min_gold = 15, max_gold = 65, chance = 70. },
+                min_gold = 15, max_gold = 75,
+                rolls = 7,
+                max_items = 2,
+            },
+            [MONSTER_RANK_ADVANCED] = {
+                quality_list = {
+                    { quality = MAGIC_ITEM, chance = 5. },
+                    { quality = RARE_ITEM, chance = 35. },
+                    { quality = COMMON_ITEM, chance = 100. },
+                },
+                item_list = {
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 5.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 5.3, generate = true },
+                    { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_EMERALD, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_MALACHITE, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_JADE, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_OPAL, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_RUBY, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_SAPPHIRE, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_POTION_HEALTH_WEAK, chance = 15.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_WEAK, chance = 15.3, min = 1, max = 3 }
+                },
+                gold = { min_gold = 25, max_gold = 85, chance = 70. },
                 min_gold = 15, max_gold = 75,
                 rolls = 7,
                 max_items = 2,

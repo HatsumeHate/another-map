@@ -702,6 +702,8 @@ do
 
                         if BlzGroupGetSize(group) > 0 then
 
+                            print("MISSILE HIT")
+
                                 if #m.sound_on_hit > 0 then
                                     AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y)
                                 end
@@ -725,10 +727,8 @@ do
 
                                     end
 
-                                    if effects ~= nil then
-                                        if effects.effect ~= nil then
-                                            ApplyEffect(from, picked, start_x, start_y, effects.effect, effects.level)
-                                        end
+                                    if effects ~= nil and effects.effect ~= nil then
+                                        ApplyEffect(from, picked, start_x, start_y, effects.effect, effects.level)
                                     end
 
                                     if m.effect_on_hit ~= nil then

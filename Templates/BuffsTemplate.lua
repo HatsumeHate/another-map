@@ -46,6 +46,55 @@ do
         }
     end
 
+
+    function GenerateBuffLevelData(buff, lvl)
+
+        if lvl == 1 then return end
+
+        if buff.level[lvl] == nil then
+            buff.level[lvl] = NewEffectData()
+            MergeTables(buff.level[lvl], buff.level[1])
+            buff.level[lvl].generated = false
+        end
+
+
+        if buff.level[lvl].generated == nil or not buff.level[lvl].generated then
+            buff.level[lvl].generated = true
+
+    
+                if buff.effect_delay_delta ~= nil then
+                    buff.level[lvl].effect_delay = (buff.level[1].effect_delay or 0.1) + math.floor(lvl / (buff.effect_delay_delta_level or 1.)) * buff.effect_delay_delta
+                end
+    
+                if buff.rank_delta ~= nil then
+                    buff.level[lvl].rank = (buff.level[1].rank or 1) + math.floor(lvl / (buff.rank_delta_level or 1.)) * buff.rank_delta
+                end
+    
+    
+                if buff.time_delta ~= nil then
+                    buff.level[lvl].time = (buff.level[1].time or 0.1) + math.floor(lvl / (buff.time_delta_level or 1.)) * buff.time_delta
+                end
+
+
+
+                if buff.level[1].bonus ~= nil then
+
+                        for i = 1, #buff.level[lvl].bonus do
+                            local origin_param_data = buff.level[1].bonus[i]
+
+                                if origin_param_data.value_delta ~= nil then
+                                    local param_data = buff.level[lvl].bonus[i]
+                                    param_data.VALUE = origin_param_data.VALUE + math.floor(lvl / origin_param_data.value_delta_level) * origin_param_data.value_delta
+                                end
+
+                        end
+
+                end
+
+        end
+
+    end
+
     ---@param buff_template table
     function NewBuffTemplate(buff_template)
         local new_buff = {
@@ -84,6 +133,8 @@ do
             id = 'A002',
             buff_id = 'B000',
             buff_type = POSITIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
 
             level = {
                 [1] = {
@@ -114,6 +165,8 @@ do
             id = 'A004',
             buff_id = 'B001',
             buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
 
             level = {
                 [1] = {
@@ -136,6 +189,8 @@ do
             id = 'A00S',
             buff_id = 'B002',
             buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
 
             level = {
                 [1] = {
@@ -156,6 +211,8 @@ do
             id = 'A00T',
             buff_id = 'B003',
             buff_type = POSITIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
 
             level = {
                 [1] = {
@@ -180,6 +237,8 @@ do
             id = 'A011',
             buff_id = 'B005',
             buff_type = POSITIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
 
             level = {
                 [1] = {
@@ -203,6 +262,8 @@ do
             id = 'A00U',
             buff_id = 'B004',
             buff_type = POSITIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
 
             level = {
                 [1] = {
@@ -228,6 +289,8 @@ do
             id = 'A012',
             buff_id = 'B006',
             buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
 
             level = {
                 [1] = {
@@ -247,6 +310,8 @@ do
             id = 'A00V',
             buff_id = 'B007',
             buff_type = POSITIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
 
             level = {
                 [1] = {
@@ -270,6 +335,8 @@ do
             id = 'A00W',
             buff_id = 'B008',
             buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
 
             level = {
                 [1] = {
@@ -292,6 +359,8 @@ do
             id = 'A013',
             buff_id = 'B009',
             buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
 
             level = {
                 [1] = {
@@ -311,6 +380,7 @@ do
             id = 'A014',
             buff_id = 'B00A',
             buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
 
             level = {
                 [1] = {
@@ -331,6 +401,7 @@ do
             id = 'A00Y',
             buff_id = 'B00B',
             buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
 
             level = {
                 [1] = {
@@ -347,6 +418,26 @@ do
                     }
                 }
             }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "regen buff",
+            id = 'A01D',
+            buff_id = 'B00C',
+            buff_type = POSITIVE_BUFF,
+            current_level = 1,
+            max_level = 1,
+            inherit_level = true,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 6.,
+                    effect = 'PUPR',
+                    effect_delay = 1.,
+                }
+            }
+
         })
     end
 

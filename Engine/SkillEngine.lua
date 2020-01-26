@@ -77,10 +77,10 @@ do
 
             ability = BlzGetUnitAbility(unit, ability_id)
 
-            BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[skill.current_level].range)
-            BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[skill.current_level].radius)
+            BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[skill.current_level].range or 0.)
+            BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[skill.current_level].radius or 0.)
             BlzSetAbilityIntegerLevelField(ability, ABILITY_ILF_TARGET_TYPE, 0, skill.activation_type)
-            BlzSetUnitAbilityManaCost(unit, ability_id, 0, skill.level[skill.current_level].resource_cost)
+            BlzSetUnitAbilityManaCost(unit, ability_id, 0, skill.level[skill.current_level].resource_cost or 0.)
 
                 if GetLocalPlayer() == GetOwningPlayer(unit) then
                     BlzSetAbilityTooltip(ability_id, skill.name .. KEYBIND_LIST[key].name_string, 0)
@@ -105,6 +105,41 @@ do
     end
 
 
+
+
+    ---@param unit unit
+    ---@param id string
+    ---@param amount integer
+    function UnitAddAbilityLevel(unit, id, amount)
+        local unit_data = GetUnitData(unit)
+
+            for i = 1, #unit_data.skill_list do
+                if unit_data.skill_list[i].Id == id then
+                    unit_data.skill_list[i].current_level = unit_data.skill_list[i].current_level + amount
+                    return true
+                end
+            end
+
+        return false
+    end
+
+
+    ---@param unit unit
+    ---@param id string
+    ---@param lvl integer
+    function UnitSetAbilityLevel(unit, id, lvl)
+        local unit_data = GetUnitData(unit)
+
+            for i = 1, #unit_data.skill_list do
+                if unit_data.skill_list[i].Id == id then
+                    unit_data.skill_list[i].current_level = lvl
+                    print("set unit ability level " .. unit_data.skill_list[i].current_level)
+                    return true
+                end
+            end
+
+        return false
+    end
 
     ---@param unit unit
     ---@param id string
@@ -131,6 +166,10 @@ do
                     end
                 end
             end
+
+        if skill[ability_level] == nil then
+            GenerateSkillLevelData(skill, ability_level)
+        end
 
         return ability_level
     end
@@ -197,8 +236,13 @@ do
 
             if skill == nil then return end
 
-            local ability_level = skill.current_level
-            local time_reduction = skill.level[ability_level].animation_scale
+            local ability_level = UnitGetAbilityLevel(unit_data.Owner, skill.Id)
+
+                if skill.level[ability_level] == nil then
+                    GenerateSkillLevelData(skill, ability_level)
+                end
+
+            local time_reduction = skill.level[ability_level].animation_scale or 1.
 
 
                 if skill.type == SKILL_PHYSICAL then
@@ -209,8 +253,12 @@ do
 
                 if time_reduction <= 0. then time_reduction = 0. end
 
-            SetUnitTimeScale(unit_data.Owner, 1. + (1. - skill.level[ability_level].animation_scale))
-            BlzSetUnitAbilityCooldown(unit_data.Owner, id, ability_level - 1, skill.level[ability_level].cooldown + (skill.level[ability_level].animation_point * time_reduction))
+
+            if skill.level[ability_level].animation_scale ~= nil then
+                SetUnitTimeScale(unit_data.Owner, 1. + (1. - skill.level[ability_level].animation_scale))
+            end
+
+            BlzSetUnitAbilityCooldown(unit_data.Owner, id, ability_level - 1, (skill.level[ability_level].cooldown or 0.1) + (skill.level[ability_level].animation_point * time_reduction))
             BlzSetUnitAbilityManaCost(unit_data.Owner, id, ability_level - 1, skill.level[ability_level].resource_cost)
 
 
@@ -223,29 +271,29 @@ do
             unit_data.cast_skill_level = ability_level
 
             BlzPauseUnitEx(unit_data.Owner, true)
-            SetUnitAnimationByIndex(unit_data.Owner, skill.level[ability_level].animation)
+            SetUnitAnimationByIndex(unit_data.Owner, skill.level[ability_level].animation or 0)
 
 
                 if skill.level[ability_level].effect_on_caster ~= nil then
                     unit_data.cast_effect = AddSpecialEffectTarget(unit_data.Owner, skill.level[ability_level].effect_on_caster, skill.level[ability_level].effect_on_caster_point)
-                    BlzSetSpecialEffectScale(unit_data.cast_effect, skill.level[ability_level].effect_on_caster_scale)
+                    BlzSetSpecialEffectScale(unit_data.cast_effect, skill.level[ability_level].effect_on_caster_scale or 1.)
                 end
 
                 if skill.level[ability_level].start_effect_on_cast_point ~= nil then
                     bj_lastCreatedEffect = AddSpecialEffect(skill.level[ability_level].start_effect_on_cast_point, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner))
-                    BlzSetSpecialEffectScale(bj_lastCreatedEffect, skill.level[ability_level].start_effect_on_cast_point_scale)
+                    BlzSetSpecialEffectScale(bj_lastCreatedEffect, skill.level[ability_level].start_effect_on_cast_point_scale or 1.)
                     DestroyEffect(bj_lastCreatedEffect)
                 end
 
             OnSkillCast(unit_data.Owner, target, spell_x, spell_y, skill)
 
-                TimerStart(unit_data.action_timer, skill.level[ability_level].animation_point * time_reduction, false, function()
+                TimerStart(unit_data.action_timer, (skill.level[ability_level].animation_point or 0.) * time_reduction, false, function()
                     unit_data.cast_skill = 0
                     DestroyEffect(unit_data.cast_effect)
 
                     if skill.level[ability_level].end_effect_on_cast_point ~= nil then
                         bj_lastCreatedEffect = AddSpecialEffect(skill.level[ability_level].end_effect_on_cast_point, spell_x, spell_y)
-                        BlzSetSpecialEffectScale(bj_lastCreatedEffect, skill.level[ability_level].end_effect_on_cast_point_scale)
+                        BlzSetSpecialEffectScale(bj_lastCreatedEffect, skill.level[ability_level].end_effect_on_cast_point_scale or 1.)
                         DestroyEffect(bj_lastCreatedEffect)
                     end
                     

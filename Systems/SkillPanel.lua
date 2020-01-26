@@ -107,13 +107,14 @@ do
                 local position = current_position + i
 
                     if position <= max_skill_count and SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].skill_list[position] ~= nil then
+
                         button_data.skill = SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].skill_list[position]
                         BlzFrameSetTexture(button_data.image, button_data.skill.icon, 0, true)
                         FrameChangeTexture(button_data.button, button_data.skill.icon)
                         BlzFrameSetVisible(SkillPanelFrame[player].displayed_skill_button[i], true)
-
                         BlzFrameSetText(button_data.name_text, button_data.skill.name)
                         BlzFrameSetText(button_data.level_text, LOCALE_LIST[my_locale].SKILL_PANEL_LVL_TEXT .. UnitGetAbilityLevel(PlayerHero[player], button_data.skill.Id))
+
                     else
                         button_data.skill = nil
                         BlzFrameSetVisible(SkillPanelFrame[player].displayed_skill_button[i], false)

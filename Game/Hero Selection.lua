@@ -6,12 +6,15 @@
 do
 
 
-    local DeathTrigger
+    RegisterTestCommand("add", function()
+        UnitSetAbilityLevel(PlayerHero[1], "A003", 7)
+    end)
+
 
 
     function CreateHeroSelections()
 
-        DeathTrigger = CreateTrigger()
+        local DeathTrigger = CreateTrigger()
         local trg = CreateTrigger()
         local barbarian_region = CreateRegion()
         RegionAddRect(barbarian_region, gg_rct_barbarian_select)
@@ -27,6 +30,8 @@ do
             local id
             local player_id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
             local starting_items = {}
+            local starting_skills = {}
+
 
                 if region == barbarian_region then
                     id = FourCC("HBRB")
@@ -35,6 +40,9 @@ do
                     starting_items[3] = CreateCustomItem("I010", 0., 0.)
                     starting_items[4] = CreateCustomItem("I00Z", 0., 0.)
                     starting_items[5] = CreateCustomItem("I00Y", 0., 0.)
+                    starting_skills[1] = 'A007'
+                    starting_skills[2] = 'A00C'
+                    starting_skills[3] = 'A00Z'
                 else
                     id = FourCC("HSRC")
                     starting_items[1] = CreateCustomItem("I012", 0., 0.)
@@ -42,6 +50,9 @@ do
                     starting_items[3] = CreateCustomItem("I010", 0., 0.)
                     starting_items[4] = CreateCustomItem("I00Z", 0., 0.)
                     starting_items[5] = CreateCustomItem("I00Y", 0., 0.)
+                    starting_skills[1] = 'A003'
+                    starting_skills[2] = 'A00J'
+                    starting_skills[3] = 'A00D'
                 end
 
                 local hero = CreateUnit(Player(player_id), id, GetRectCenterX(gg_rct_starting_location) , GetRectCenterY(gg_rct_starting_location), 270.)
@@ -53,7 +64,6 @@ do
 
                     TriggerRegisterDeathEvent(DeathTrigger, hero)
 
-
                     DrawStatsPanelInterface(player_id)
                     DrawInventoryFrames(player_id, hero)
                     DrawSkillPanel(player_id)
@@ -62,11 +72,16 @@ do
                     AddToPanel(hero, player_id)
                     AddPointsToPlayer(player_id, 5)
 
+
                     for i = 1, #starting_items do
                         EquipItem(hero, starting_items[i], true)
                         UpdateEquipPointsWindow(player_id)
                     end
 
+
+                    for i = 1, #starting_skills do
+                        UnitAddMyAbility(hero, starting_skills[i])
+                    end
 
                     if GetLocalPlayer() == Player(player_id - 1) then
                         BlzFrameSetVisible(CharButton, true)
@@ -75,9 +90,9 @@ do
                         PanCameraToTimed(GetUnitX(hero), GetUnitY(hero), 0.)
                     end
 
+
                     DestroyTimer(GetExpiredTimer())
                 end)
-
 
         end)
 

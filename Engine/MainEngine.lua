@@ -87,7 +87,7 @@ do
                     damage = damage + (attacker.equip_point[WEAPON_POINT].DAMAGE * effect_data.weapon_damage_percent_bonus)
                 end
 
-                if effect_data.attack_percent_bonus > 0. then
+                if effect_data.attack_percent_bonus ~= nil and effect_data.attack_percent_bonus > 0. then
                     if damage_type == DAMAGE_TYPE_PHYSICAL then
                         damage = damage + attacker.stats[PHYSICAL_ATTACK].value * effect_data.attack_percent_bonus
                     elseif damage_type == DAMAGE_TYPE_MAGICAL then
@@ -125,10 +125,10 @@ do
 
                 if block_chance > MAX_BLOCK_CHANCE then block_chance = MAX_BLOCK_CHANCE end
 
-                if GetRandomInt(1, 100) <= block_chance then
-                    attack_status = attack_status == ATTACK_STATUS_CRITICAL and ATTACK_STATUS_CRITICAL_BLOCKED or ATTACK_STATUS_BLOCKED
-                    block_reduction = 1. - victim.stats[BLOCK_ABSORB].value * 0.01
-                end
+                    if GetRandomInt(1, 100) <= block_chance then
+                        attack_status = attack_status == ATTACK_STATUS_CRITICAL and ATTACK_STATUS_CRITICAL_BLOCKED or ATTACK_STATUS_BLOCKED
+                        block_reduction = 1. - victim.stats[BLOCK_ABSORB].value * 0.01
+                    end
 
             end
 

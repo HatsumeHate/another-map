@@ -49,6 +49,7 @@ do
         end
     end
 
+
     function OnMissileLaunch(source, target, missile)
         if missile.id == 'M001' then
             TimerStart(CreateTimer(), 0.25, true, function ()
@@ -77,7 +78,6 @@ do
     function OnEffectApply(source, target, effect)
 
         if effect.id == 'EUPP' then
-            print("asd")
             PushUnit(source, target, AngleBetweenUnits(source,target), 200., 1.25, effect.id)
         elseif effect.id == 'EBCH' then
             local unit_data = GetUnitData(source)
@@ -202,6 +202,12 @@ do
                 ApplyEffect(source, source, 0.,0., "PHWK", 3)
             elseif id == FourCC(ITEM_POTION_MANA_STRONG) then
                 ApplyEffect(source, source, 0.,0., "PMWK", 3)
+            elseif id == FourCC(ITEM_POTION_MIX_WEAK) then
+                ApplyEffect(source, source, 0.,0., "PHUN", 1)
+            elseif id == FourCC(ITEM_POTION_MIX_HALF) then
+                ApplyEffect(source, source, 0.,0., "PHUN", 2)
+            elseif id == FourCC(ITEM_POTION_MIX_STRONG) then
+                ApplyEffect(source, source, 0.,0., "PHUN", 3)
             end
 
     end

@@ -49,13 +49,13 @@ do
     function GetBuffDataFromUnit(target, buff_id)
         local target_data = GetUnitData(target)
 
-        if GetUnitAbilityLevel(target, FourCC(buff_id)) > 0 then
-            for i = 1, #target_data.buff_list do
-                if target_data.buff_list[i].id == buff_id then
-                    return target_data.buff_list[i]
+            if GetUnitAbilityLevel(target, FourCC(buff_id)) > 0 then
+                for i = 1, #target_data.buff_list do
+                    if target_data.buff_list[i].id == buff_id then
+                        return target_data.buff_list[i]
+                    end
                 end
             end
-        end
 
         return nil
     end
@@ -65,13 +65,13 @@ do
     function GetBuffLevel(target, buff_id)
         local target_data = GetUnitData(target)
 
-        if GetUnitAbilityLevel(target, FourCC(buff_id)) > 0 then
-            for i = 1, #target_data.buff_list do
-                if target_data.buff_list[i].id == buff_id then
-                    return target_data.buff_list[i].current_level
+            if GetUnitAbilityLevel(target, FourCC(buff_id)) > 0 then
+                for i = 1, #target_data.buff_list do
+                    if target_data.buff_list[i].id == buff_id then
+                        return target_data.buff_list[i].current_level
+                    end
                 end
             end
-        end
 
         return 0
     end
@@ -132,8 +132,8 @@ do
                 if unit_data.buff_list[i].id == buff_id then
                     local buff_data = unit_data.buff_list[i]
 
-                    if lvl > unit_data.buff_list[i].max_level then
-                        lvl = unit_data.buff_list[i].max_level
+                    if lvl > buff_data.max_level then
+                        lvl = buff_data.max_level
                     elseif lvl <= 0 then
                         RemoveBuff(target, buff_id)
                         return
@@ -160,11 +160,13 @@ do
         local data = GetUnitData(unit)
 
             for i = 1, #data.buff_list do
-                if data.buff_list[i].level[data.buff_list[i].current_level].negative_state ~= nil then
-                    if data.buff_list[i].level[data.buff_list[i].current_level].negative_state == state then
-                        return true
+
+                    if data.buff_list[i].level[data.buff_list[i].current_level].negative_state ~= nil then
+                        if data.buff_list[i].level[data.buff_list[i].current_level].negative_state == state then
+                            return true
+                        end
                     end
-                end
+
             end
 
         return false
@@ -182,6 +184,12 @@ do
 
             buff_data.buff_source = source
             buff_data.current_level = lvl
+
+            if buff_data.inherit_level == nil or not buff_data.inherit_level then buff_data.current_level = 1
+            elseif buff_data.current_level > buff_data.max_level then buff_data.current_level = buff_data.max_level end
+
+
+            GenerateBuffLevelData(buff_data, buff_data.current_level)
             buff_data.expiration_time = buff_data.level[lvl].time
 
             OnBuffPrecast(source, target, buff_data)
