@@ -459,6 +459,10 @@ do
         end
 
 
+        if m.sound_on_fly ~= nil then
+            m.attached_sound = CreateNew3DSound(m.sound_on_fly.pack[GetRandomInt(1, #m.sound_on_fly.pack)], start_x, start_y, start_z, m.sound_on_fly.volume, m.sound_on_fly.cutoff, m.sound_on_fly.looping or nil)
+            StartSound(m.attached_sound)
+        end
         --[[AddSpecialEffect("Abilities\\Spells\\Other\\Aneu\\AneuCaster.mdl", start_x, start_y)
         AddSpecialEffect("Abilities\\Spells\\Other\\Aneu\\AneuTarget.mdl", end_x, end_y)
         CreateUnit(Player(0), FourCC("hpea"), start_x, start_y, angle)]]
@@ -505,19 +509,13 @@ do
             if IsMapBounds(start_x, start_y) or m.time <= 0. then
                 print("BOUNDS")
 
-                if #m.sound_on_destroy > 0 then
-                    AddSound(m.sound_on_destroy[GetRandomInt(1, #m.sound_on_destroy)], start_x, start_y)
-                end
-
-                if m.effect_on_expire ~= nil then
-                    ApplyEffect(from, nil, start_x, start_y, m.effect_on_expire, 1)
-                end
+                if #m.sound_on_destroy > 0 then AddSound(m.sound_on_destroy[GetRandomInt(1, #m.sound_on_destroy)], start_x, start_y) end
+                if m.effect_on_expire ~= nil then ApplyEffect(from, nil, start_x, start_y, m.effect_on_expire, 1) end
+                if m.attached_sound ~= nil then StopSound(m.attached_sound, true, true) end
 
                 OnMissileExpire(from, target, m)
-
                 DestroyEffect(missile_effect)
                 DestroyGroup(hit_group)
-
 
                 if m.lightnings ~= nil then
                         TimerStart(my_timer, PERIOD, true, function ()
@@ -576,10 +574,8 @@ do
                     m.current_z = start_z
 
                     BlzSetSpecialEffectPosition(missile_effect,  start_x, start_y, start_z)
-
-                    if m.lightnings ~= nil then
-                        MoveLightning(m, start_x, start_y, start_z)
-                    end
+                    if m.attached_sound ~= nil then SetSoundPosition(m.attached_sound, start_x, start_y, start_z) end
+                    if m.lightnings ~= nil then MoveLightning(m, start_x, start_y, start_z) end
 
                     m.time = m.time - PERIOD
                 end
@@ -593,9 +589,7 @@ do
                     -- aoe damage
                     m.time = 0.
 
-                        if #m.sound_on_hit > 0 then
-                            AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y)
-                        end
+                        if #m.sound_on_hit > 0 then AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y) end
 
                         if weapon ~= nil then
                             local group = CreateGroup()
@@ -623,13 +617,8 @@ do
                             damage_list = nil
                         else
 
-                            if m.effect_on_impact ~= nil then
-                                ApplyEffect(from, nil, start_x, start_y, m.effect_on_impact, 1)
-                            end
-
-                            if effects ~= nil and effects.effect ~= nil then
-                                ApplyEffect(from, nil, start_x, start_y, effects.effect, effects.level)
-                            end
+                            if m.effect_on_impact ~= nil then ApplyEffect(from, nil, start_x, start_y, m.effect_on_impact, 1) end
+                            if effects ~= nil and effects.effect ~= nil then ApplyEffect(from, nil, start_x, start_y, effects.effect, effects.level) end
 
                         end
 
@@ -678,11 +667,10 @@ do
 
                             damage_list = nil
                         else
-                            if m.effect_on_hit ~= nil then
-                                ApplyEffect(from, target, start_x, start_y, m.effect_on_hit, 1)
-                            end
 
+                            if m.effect_on_hit ~= nil then ApplyEffect(from, target, start_x, start_y, m.effect_on_hit, 1) end
                             if effects ~= nil and effects.effect ~= nil then ApplyEffect(from, target, start_x, start_y, effects.effect, effects.level) end
+
                         end
 
                     end
@@ -704,9 +692,7 @@ do
 
                             print("MISSILE HIT")
 
-                                if #m.sound_on_hit > 0 then
-                                    AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y)
-                                end
+                                if #m.sound_on_hit > 0 then AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y) end
 
                             for index = BlzGroupGetSize(group) - 1, 0, -1 do
                                 local picked = BlzGroupUnitAt(group, index)
@@ -727,13 +713,8 @@ do
 
                                     end
 
-                                    if effects ~= nil and effects.effect ~= nil then
-                                        ApplyEffect(from, picked, start_x, start_y, effects.effect, effects.level)
-                                    end
-
-                                    if m.effect_on_hit ~= nil then
-                                        ApplyEffect(from, picked, start_x, start_y, m.effect_on_hit, 1)
-                                    end
+                                    if effects ~= nil and effects.effect ~= nil then ApplyEffect(from, picked, start_x, start_y, effects.effect, effects.level) end
+                                    if m.effect_on_hit ~= nil then ApplyEffect(from, picked, start_x, start_y, m.effect_on_hit, 1) end
 
                                     OnMissileHit(from, picked, m)
 

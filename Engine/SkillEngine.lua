@@ -196,6 +196,10 @@ do
             SetUnitTimeScale(unit, 1.)
             DestroyEffect(unit_data.cast_effect)
 
+                if unit_data.castsound ~= nil then
+                    StopSound(unit_data.castsound, true, true)
+                end
+
                 if unit_data.cast_skill > 0 then
                     BlzEndUnitAbilityCooldown(unit, unit_data.cast_skill)
                     SetUnitState(unit, UNIT_STATE_MANA, GetUnitState(unit, UNIT_STATE_MANA) + BlzGetUnitAbilityManaCost(unit_data.Owner, unit_data.cast_skill, unit_data.cast_skill_level - 1))
@@ -237,13 +241,11 @@ do
             if skill == nil then return end
 
             local ability_level = UnitGetAbilityLevel(unit_data.Owner, skill.Id)
+            GenerateSkillLevelData(skill, ability_level)
 
-                if skill.level[ability_level] == nil then
-                    GenerateSkillLevelData(skill, ability_level)
-                end
 
             local time_reduction = skill.level[ability_level].animation_scale or 1.
-
+            print("basic reduction "..time_reduction)
 
                 if skill.type == SKILL_PHYSICAL then
                     time_reduction = time_reduction * (1. - unit_data.stats[ATTACK_SPEED].bonus * 0.01)
@@ -253,10 +255,14 @@ do
 
                 if time_reduction <= 0. then time_reduction = 0. end
 
+            print("after bonus reduction "..time_reduction)
 
             if skill.level[ability_level].animation_scale ~= nil then
                 SetUnitTimeScale(unit_data.Owner, 1. + (1. - skill.level[ability_level].animation_scale))
+                print("timescale is " .. (1. + (1. - skill.level[ability_level].animation_scale)))
             end
+
+            print("result cast time is " .. (skill.level[ability_level].animation_point or 0.) * time_reduction)
 
             BlzSetUnitAbilityCooldown(unit_data.Owner, id, ability_level - 1, (skill.level[ability_level].cooldown or 0.1) + (skill.level[ability_level].animation_point * time_reduction))
             BlzSetUnitAbilityManaCost(unit_data.Owner, id, ability_level - 1, skill.level[ability_level].resource_cost)
@@ -284,6 +290,14 @@ do
                     BlzSetSpecialEffectScale(bj_lastCreatedEffect, skill.level[ability_level].start_effect_on_cast_point_scale or 1.)
                     DestroyEffect(bj_lastCreatedEffect)
                 end
+
+                if skill.sound ~= nil then
+                    if skill.sound ~= nil then
+                        unit_data.castsound = AddSoundVolumeZ(skill.sound.pack[GetRandomInt(1, #skill.sound.pack)], GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), 35., skill.sound.volume, skill.sound.cutoff)
+                        --AddSound(myeffect.sound, x, y)
+                    end
+                end
+
 
             OnSkillCast(unit_data.Owner, target, spell_x, spell_y, skill)
 

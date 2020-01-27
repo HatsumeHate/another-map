@@ -18,6 +18,22 @@ do
 
 
     ---@param name string
+    ---@param x real
+    ---@param y real
+    ---@param z real
+    ---@param volume integer
+    ---@param cutoff real
+    function CreateNew3DSound(name, x, y, z, volume, cutoff, loop)
+        local snd = CreateSound(name, loop or false, true, false, 100, 100, "CombatSoundsEAX")
+
+            ConfigureSound(snd, volume, cutoff)
+            SetSoundPosition(snd, x, y, z)
+
+        return snd
+    end
+
+
+    ---@param name string
     ---@param player_id integer
     function PlayLocalSound(name, player_id, volume)
         local snd = CreateSound(name, false, false, false, 10, 10, "")
@@ -28,7 +44,7 @@ do
             StartSound(snd)
             KillSoundWhenDone(snd)
 
-        snd = nil
+        return snd
     end
 
 
@@ -43,7 +59,7 @@ do
             StartSound(snd)
             KillSoundWhenDone(snd)
 
-        snd = nil
+        return snd
     end
 
 
@@ -214,7 +230,7 @@ do
             StartSound(snd)
             KillSoundWhenDone(snd)
 
-        snd = nil
+        return snd
     end
 
     ---@param s string
@@ -230,7 +246,7 @@ do
             StartSound(snd)
             KillSoundWhenDone(snd)
 
-        snd = nil
+        return snd
     end
 
     ---@param s string
@@ -242,12 +258,12 @@ do
     function AddSoundVolumeZ(s, x, y, z, vol, cutoff)
         local snd = CreateSound(s, false, true, false, 10, 10, "CombatSoundsEAX") --CombatSoundsEAX
 
-        ConfigureSound(snd, vol or 128, cutoff or 2100.)
-        SetSoundPosition(snd, x, y, z)
-        StartSound(snd)
-        KillSoundWhenDone(snd)
+            ConfigureSound(snd, vol or 128, cutoff or 2100.)
+            SetSoundPosition(snd, x, y, z)
+            StartSound(snd)
+            KillSoundWhenDone(snd)
 
-        snd = nil
+        return snd
     end
 
     ---@param s string
@@ -271,7 +287,7 @@ do
             StartSound(snd)
             KillSoundWhenDone(snd)
 
-        snd = nil
+        return snd
     end
 
 

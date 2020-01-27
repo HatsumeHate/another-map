@@ -9,6 +9,13 @@ do
     local MAXIMUM_ITEMS = 32
 
 
+    function Feedback_NoGold(player)
+        SimError("Недостаточно золота", player-1)
+        PlayLocalSound(LOCALE_LIST[my_locale].FEEDBACK_GOLD[GetUnitClass(PlayerHero[player])][GetRandomInt(1, 5)], player-1)
+    end
+
+
+
     function UpdateShopWindow()
             for player = 1, 6 do
                 local my_shop_data = ShopData[GetHandleId(ShopInFocus[player])]
@@ -253,7 +260,7 @@ do
 
 
             if CountFreeBagSlots(player) <= 0 then
-                SimError("В рюкзаке нет места", player-1)
+                Feedback_InventoryNoSpace(player)
                 return false
             end
 
@@ -274,7 +281,7 @@ do
                 PlayLocalSound("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", player-1)
                 return true
             else
-                SimError("Недостаточно золота", player-1)
+                Feedback_NoGold(player)
             end
 
         return false

@@ -156,13 +156,14 @@ do
     ---@param y real
     function OnSkillCastEnd(source, target, x, y, skill)
         if skill.Id == 'A00L' then
+            AddSoundVolumeZ("Sounds\\Spells\\blink_launch_".. GetRandomInt(1, 3) ..".wav", GetUnitX(source), GetUnitY(source), 35., 120, 1700.)
             SetUnitPosition(source, x, y)
         elseif skill.Id == 'A00I' then
             local unit_data = GetUnitData(source)
 
-            if unit_data.spawned_hydra ~= nil then
-                KillUnit(unit_data.spawned_hydra)
-            end
+                if unit_data.spawned_hydra ~= nil then
+                    KillUnit(unit_data.spawned_hydra)
+                end
 
             unit_data.spawned_hydra = CreateUnit(Player(GetOwningPlayer(source)), FourCC('shdr'), x, y, GetRandomReal(0.,359.))
             UnitApplyTimedLife(unit_data.spawned_hydra, 0, 7.)

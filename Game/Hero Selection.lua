@@ -53,6 +53,11 @@ do
                     starting_skills[1] = 'A003'
                     starting_skills[2] = 'A00J'
                     starting_skills[3] = 'A00D'
+                    starting_skills[4] = 'A005'
+                    starting_skills[5] = 'A00L'
+                    starting_skills[6] = 'A001'
+                    starting_skills[7] = 'A00K'
+                    starting_skills[8] = 'A00M'
                 end
 
                 local hero = CreateUnit(Player(player_id), id, GetRectCenterX(gg_rct_starting_location) , GetRectCenterY(gg_rct_starting_location), 270.)

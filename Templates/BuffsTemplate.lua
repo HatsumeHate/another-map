@@ -52,7 +52,7 @@ do
         if lvl == 1 then return end
 
         if buff.level[lvl] == nil then
-            buff.level[lvl] = NewEffectData()
+            buff.level[lvl] = NewBuffLevelData()
             MergeTables(buff.level[lvl], buff.level[1])
             buff.level[lvl].generated = false
         end
@@ -114,13 +114,15 @@ do
             level = {}
         }
 
-            for i = 1, MAX_BUFF_LEVEL do
+
+        MergeTables(new_buff, buff_template)
+
+            for i = 2, MAX_BUFF_LEVEL do
                 new_buff.level[i] = NewBuffLevelData()
+                new_buff.level[i] = MergeTables(new_buff.level[i], new_buff.level[1])
             end
 
-
-            MergeTables(new_buff, buff_template)
-            BUFF_DATA[FourCC(buff_template.id)] = new_buff
+        BUFF_DATA[FourCC(buff_template.id)] = new_buff
 
         return new_buff
     end
@@ -134,7 +136,7 @@ do
             buff_id = 'B000',
             buff_type = POSITIVE_BUFF,
             inherit_level = false,
-            max_level = 1,
+            max_level = 75,
 
             level = {
                 [1] = {
@@ -166,7 +168,7 @@ do
             buff_id = 'B001',
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
-            max_level = 1,
+            max_level = 75,
 
             level = {
                 [1] = {
@@ -190,7 +192,7 @@ do
             buff_id = 'B002',
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
-            max_level = 1,
+            max_level = 75,
 
             level = {
                 [1] = {
@@ -212,7 +214,7 @@ do
             buff_id = 'B003',
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
-            max_level = 1,
+            max_level = 75,
 
             level = {
                 [1] = {
@@ -238,7 +240,7 @@ do
             buff_id = 'B005',
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
-            max_level = 1,
+            max_level = 75,
 
             level = {
                 [1] = {
@@ -263,7 +265,7 @@ do
             buff_id = 'B004',
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
-            max_level = 1,
+            max_level = 75,
 
             level = {
                 [1] = {
@@ -290,7 +292,7 @@ do
             buff_id = 'B006',
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
-            max_level = 1,
+            max_level = 75,
 
             level = {
                 [1] = {
@@ -311,7 +313,7 @@ do
             buff_id = 'B007',
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
-            max_level = 1,
+            max_level = 75,
 
             level = {
                 [1] = {
@@ -336,7 +338,7 @@ do
             buff_id = 'B008',
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
-            max_level = 1,
+            max_level = 75,
 
             level = {
                 [1] = {
@@ -381,6 +383,7 @@ do
             buff_id = 'B00A',
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
+            max_level = 75,
 
             level = {
                 [1] = {
@@ -401,6 +404,7 @@ do
             id = 'A00Y',
             buff_id = 'B00B',
             buff_type = NEGATIVE_BUFF,
+            max_level = 75,
             inherit_level = true,
 
             level = {
@@ -426,7 +430,7 @@ do
             buff_id = 'B00C',
             buff_type = POSITIVE_BUFF,
             current_level = 1,
-            max_level = 1,
+            max_level = 3,
             inherit_level = true,
 
             level = {

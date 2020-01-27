@@ -56,6 +56,11 @@ do
         end
 
 
+        function GetUnitClass(unit)
+            return UnitsList[GetHandleId(unit)].unit_class
+        end
+
+
     ---@param source unit
     function NewUnitByTemplate(source, reference_data)
         local class_base_stats = BASE_STATS[reference_data.unit_class or NO_CLASS]

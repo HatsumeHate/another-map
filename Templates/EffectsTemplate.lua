@@ -67,7 +67,7 @@ do
             delay                  = 0.,
             hit_delay              = 0.,
             timescale              = 1.,
-            sound                  = ''
+            sound                  = nil
         }
     end
 
@@ -233,6 +233,11 @@ do
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A004', target_type = ON_ENEMY }
                     },
+                    sound = {
+                        pack = { "Sounds\\Spells\\ice_crack_1.wav", "Sounds\\Spells\\ice_crack_2.wav", "Sounds\\Spells\\ice_crack_3.wav" },
+                        volume = 122, cutoff = 1800.
+                    },
+
                 }
             }
 
@@ -260,6 +265,11 @@ do
                     SFX_used = "Spell\\IceNova.mdx",
                     SFX_used_scale = 1.,
 
+                    sound = {
+                        pack = { "Sounds\\Spells\\frost_nova_hit_1.wav", "Sounds\\Spells\\frost_nova_hit_2.wav", "Sounds\\Spells\\frost_nova_hit_3.wav" },
+                        volume = 122, cutoff = 1800.
+                    },
+
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A00S', target_type = ON_ENEMY }
                     },
@@ -285,7 +295,6 @@ do
 
                     area_of_effect = 175.,
                     max_targets = 300,
-
                 }
             }
 
@@ -310,7 +319,10 @@ do
                     attribute = ICE_ATTRIBUTE,
                     area_of_effect = 225.,
                     max_targets = 300,
-
+                    sound = {
+                        pack = { "Sounds\\Spells\\frost_orb_impact_1.wav", "Sounds\\Spells\\frost_orb_impact_2.wav" },
+                        volume = 120
+                    }
                 }
             }
 
@@ -362,6 +374,10 @@ do
 
                     area_of_effect = 255.,
                     max_targets = 300,
+                    sound = {
+                        pack = { "Sounds\\Spells\\lightning_hit_1.wav", "Sounds\\Spells\\lightning_hit_2.wav", "Sounds\\Spells\\lightning_hit_3.wav" },
+                        volume = 128, cutoff = 1800.
+                    },
                 }
             }
         })
@@ -414,6 +430,11 @@ do
 
                     area_of_effect = 100.,
                     max_targets = 1,
+
+                    sound = {
+                        pack = { "Sounds\\Spells\\lightning_hit_1.wav", "Sounds\\Spells\\lightning_hit_2.wav", "Sounds\\Spells\\lightning_hit_3.wav" },
+                        volume = 110, cutoff = 1500.
+                    },
                 }
             }
         })
@@ -433,6 +454,11 @@ do
                     attack_type = RANGE_ATTACK,
                     attribute = LIGHTNING_ATTRIBUTE,
                     max_targets = 1,
+
+                    sound = {
+                        pack = { "Sounds\\Spells\\lightning_hit_1.wav", "Sounds\\Spells\\lightning_hit_2.wav", "Sounds\\Spells\\lightning_hit_3.wav" },
+                        volume = 115, cutoff = 1600.
+                    },
                 }
             }
         })

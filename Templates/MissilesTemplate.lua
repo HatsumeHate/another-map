@@ -23,6 +23,7 @@ do
             sound_on_hit = {},
             sound_on_launch = {},
             sound_on_destroy = {},
+            sound_on_fly = nil,
 
             effect_on_impact = nil,
             effect_on_hit = nil,
@@ -135,6 +136,7 @@ do
             arc = 0.,
             scale = 0.75,
             effect_on_hit = 'EFRB',
+            sound_on_launch = { "Sounds\\Spells\\frosbolt_launch_1.wav", "Sounds\\Spells\\frosbolt_launch_2.wav" },
             ignore_terrain = true,
             full_distance = true,
             penetrate = false,
@@ -152,6 +154,11 @@ do
             arc = 0.,
             scale = 0.8,
             effect_on_hit = 'EGFB',
+            sound_on_fly = {
+                pack = { "Sounds\\Spells\\fire_launch_1.wav", "Sounds\\Spells\\fire_launch_2.wav", "Sounds\\Spells\\fire_launch_3.wav" },
+                volume = 100,
+                cutoff = 1700.
+            },
             ignore_terrain = true,
             full_distance = true,
             penetrate = false,
@@ -172,6 +179,11 @@ do
             hit_once_in = 0.25,
             effect_on_expire = 'EFRO',
             effect_on_hit = 'EFOA',
+            sound_on_fly = {
+                pack = { "Sounds\\Spells\\frost_orb_launch_1.wav", "Sounds\\Spells\\frost_orb_launch_2.wav" },
+                volume = 125,
+                cutoff = 1700.
+            },
             ignore_terrain = true,
             full_distance = true,
             penetrate = true,
@@ -208,12 +220,18 @@ do
             arc = 0.,
             max_targets = 1,
             effect_on_hit = 'EDSC',
+            sound_on_fly = {
+                pack = { "Sounds\\Spells\\lightning_zap_loop_1.wav", "Sounds\\Spells\\lightning_zap_loop_2.wav", "Sounds\\Spells\\lightning_zap_loop_3.wav" },
+                volume = 25,
+                cutoff = 1600.,
+                looping = true
+            },
             ignore_terrain = true,
             full_distance = true,
         })
         --===============================================--
         NewMissileTemplate('MBLB', {
-            name = "discharge missile",
+            name = "lightning orb missile",
             model = "Spell\\LightningSphere_FX.mdx",
             max_distance = 800.,
             radius = 400.,
@@ -223,6 +241,12 @@ do
             arc = 0.,
             hit_once_in = 0.7,
             effect_on_hit = 'ELBL',
+            sound_on_fly = {
+                pack = { "Sounds\\Spells\\lightning_loop_1.wav", "Sounds\\Spells\\lightning_loop_3.wav", "Sounds\\Spells\\lightning_loop_4.wav"},
+                volume = 100,
+                cutoff = 1700.,
+                looping = true
+            },
             max_targets = 300,
             ignore_terrain = true,
             full_distance = true,

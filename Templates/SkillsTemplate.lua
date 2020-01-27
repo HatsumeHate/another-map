@@ -10,6 +10,7 @@
 
     SKILL_PHYSICAL = 1
     SKILL_MAGICAL = 2
+    SKILL_UNIQUE = 3
 
 
     SKILL_CATEGORY_LIGHTNING = 1
@@ -175,13 +176,13 @@
         }
 
         my_new_skill.level[1] = NewSkillDataLevel()
+        MergeTables(my_new_skill, data)
 
         for i = 2, MaxSkillLevels do
-            my_new_skill.level[i] = NewSkillDataLevel()
             GenerateSkillLevelData(my_new_skill, i)
         end
 
-        MergeTables(my_new_skill, data)
+
         my_new_skill.current_level = 1
 
             for i = 1, MaxSkillLevels do
@@ -258,16 +259,6 @@
                     animation_backswing = 0.1666,
                     animation_scale     = 0.5,
                 },
-                [7] = {
-                    range               = 1000.,
-                    missile             = 'MFRB',
-                    resource_cost       = 10.,
-                    cooldown            = 0.1,
-                    animation           = 3,
-                    animation_point     = 1.5,
-                    animation_backswing = 0.1666,
-                    animation_scale     = 0.5,
-                }
             }
 
         })
@@ -287,7 +278,7 @@
                     animation           = 3,
                     animation_point     = 2.1,
                     animation_backswing = 0.633,
-                    animation_scale     = 0.5,
+                    animation_scale     = 0.3,
                 }
             }
 
@@ -299,6 +290,7 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_FIRE,
+            sound = { pack = { "Sounds\\Spells\\fire_light_launch_1.wav", "Sounds\\Spells\\fire_light_launch_2.wav", "Sounds\\Spells\\fire_light_launch_3.wav" }, volume = 110, cutoff = 1500.},
 
             level = {
                 [1] = {
@@ -309,7 +301,7 @@
                     animation           = 3,
                     animation_point     = 2.1,
                     animation_backswing = 0.633,
-                    animation_scale     = 0.5,
+                    animation_scale     = 0.35,
                 }
             }
         })
@@ -320,6 +312,7 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_ICE,
+            sound = { pack = { "Sounds\\Spells\\cast_large_1.wav", "Sounds\\Spells\\cast_large_2.wav", "Sounds\\Spells\\cast_large_3.wav" }, volume = 110, cutoff = 1500.},
 
             level = {
                 [1] = {
@@ -330,7 +323,7 @@
                     animation           = 3,
                     animation_point     = 2.1,
                     animation_backswing = 0.633,
-                    animation_scale     = 0.5,
+                    animation_scale     = 0.35,
                 }
             }
         })
@@ -341,6 +334,7 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_LIGHTNING,
+            sound = { pack = { "Sounds\\Spells\\cast_lightning_1.wav", "Sounds\\Spells\\cast_lightning_2.wav", "Sounds\\Spells\\cast_lightning_3.wav" }, volume = 110, cutoff = 1500.},
 
             level = {
                 [1] = {
@@ -360,7 +354,7 @@
             name            = "sorceress teleport skill",
             icon            = "Spell\\BTNBlink_V2.blp",
             activation_type = POINT_CAST,
-            type            = SKILL_MAGICAL,
+            type            = SKILL_UNIQUE,
             category = SKILL_CATEGORY_ARCANE,
             range_delta = 5.,
             range_delta_level = 1,
@@ -380,7 +374,7 @@
                     animation           = 3,
                     animation_point     = 0.1,
                     animation_backswing = 0.1,
-                    animation_scale     = 0.5,
+                    animation_scale     = 0.3,
                 }
             }
         })
@@ -412,6 +406,8 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_LIGHTNING,
+            sound = { pack = { "Sounds\\Spells\\cast_lightning_1.wav", "Sounds\\Spells\\cast_lightning_2.wav", "Sounds\\Spells\\cast_lightning_3.wav" }, volume = 120, cutoff = 1500.},
+
 
             level = {
                 [1] = {
@@ -432,6 +428,7 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_LIGHTNING,
+            sound = { pack = { "Sounds\\Spells\\cast_lightning_1_diff.wav", "Sounds\\Spells\\cast_lightning_2_diff.wav" }, volume = 120, cutoff = 1500.},
 
             level = {
                 [1] = {

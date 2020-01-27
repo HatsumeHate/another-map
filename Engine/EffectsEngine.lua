@@ -197,6 +197,8 @@ do
 
         local myeffect =  data.level[data.current_level]
 
+        print("EFFECT START -> " .. data.name .. " with level " .. data.current_level)
+
         data.remove_timer = CreateTimer()
             TimerStart(data.remove_timer, (myeffect.delay or 0.) + (myeffect.hit_delay or 0.) + 1., false, function()
                 DestroyTimer(data.remove_timer)
@@ -229,7 +231,8 @@ do
         PlaySpecialEffect(myeffect.SFX_on_caster, source, myeffect.SFX_on_caster_point, myeffect.SFX_on_caster_scale, myeffect.SFX_on_caster_duration)
 
             if myeffect.sound ~= nil then
-                AddSound(myeffect.sound, x, y)
+                AddSoundVolumeZ(myeffect.sound.pack[GetRandomInt(1, #myeffect.sound.pack)], x, y, 35., myeffect.sound.volume, myeffect.sound.cutoff)
+                --AddSound(myeffect.sound, x, y)
             end
 
             TimerStart(CreateTimer(), (myeffect.delay or 0.) * (myeffect.timescale or 1.), false, function()
@@ -398,7 +401,7 @@ do
             end)
 
 
-        print("EFFECT END " .. data.name)
+        print("EFFECT END -> " .. data.name .. " with level " .. data.current_level)
         return data
     end
 

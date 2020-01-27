@@ -109,6 +109,59 @@ do
             ARCANE_ATTRIBUTE_NAME       = "Тайна",
             DARKNESS_ATTRIBUTE_NAME     = "Тьма",
             HOLY_ATTRIBUTE_NAME         = "Свет",
+            
+            
+            FEEDBACK_GOLD = {
+                [BARBARIAN_CLASS] = {
+                    "Sounds\\Responses\\barbarian_gold_1_ru.wav",
+                    "Sounds\\Responses\\barbarian_gold_2_ru.wav",
+                    "Sounds\\Responses\\barbarian_gold_3_ru.wav",
+                    "Sounds\\Responses\\barbarian_gold_4_ru.wav",
+                    "Sounds\\Responses\\barbarian_gold_5_ru.wav",
+                },
+                [SORCERESS_CLASS] = {
+                    "Sounds\\Responses\\sorceress_gold_1_ru.wav",
+                    "Sounds\\Responses\\sorceress_gold_2_ru.wav",
+                    "Sounds\\Responses\\sorceress_gold_3_ru.wav",
+                    "Sounds\\Responses\\sorceress_gold_4_ru.wav",
+                    "Sounds\\Responses\\sorceress_gold_5_ru.wav",
+                }
+            },
+
+            FEEDBACK_HEAL = {
+                [BARBARIAN_CLASS] = {
+                    "Sounds\\Responses\\barbarian_healing_1_ru.wav",
+                    "Sounds\\Responses\\barbarian_healing_2_ru.wav",
+                    "Sounds\\Responses\\barbarian_healing_3_ru.wav",
+                    "Sounds\\Responses\\barbarian_healing_4_ru.wav",
+                    "Sounds\\Responses\\barbarian_healing_5_ru.wav",
+                },
+                [SORCERESS_CLASS] = {
+                    "Sounds\\Responses\\sorceress_healing_1_ru.wav",
+                    "Sounds\\Responses\\sorceress_healing_2_ru.wav",
+                    "Sounds\\Responses\\sorceress_healing_3_ru.wav",
+                    "Sounds\\Responses\\sorceress_healing_4_ru.wav",
+                    "Sounds\\Responses\\sorceress_healing_5_ru.wav",
+                }
+            },
+            
+            FEEDBACK_BAG = {
+                [BARBARIAN_CLASS] = {
+                    "Sounds\\Responses\\barbarian_bag_1_ru.wav",
+                    "Sounds\\Responses\\barbarian_bag_2_ru.wav",
+                    "Sounds\\Responses\\barbarian_bag_3_ru.wav",
+                    "Sounds\\Responses\\barbarian_bag_4_ru.wav",
+                    "Sounds\\Responses\\barbarian_bag_5_ru.wav",
+                },
+                [SORCERESS_CLASS] = {
+                    "Sounds\\Responses\\sorceress_bag_1_ru.wav",
+                    "Sounds\\Responses\\sorceress_bag_2_ru.wav",
+                    "Sounds\\Responses\\sorceress_bag_3_ru.wav",
+                    "Sounds\\Responses\\sorceress_bag_4_ru.wav",
+                    "Sounds\\Responses\\sorceress_bag_5_ru.wav",
+                }
+            },
+
 
             SKILL_PANEL_TOOLTIP_NAME = "Умения",
             SKILL_PANEL_TOOLTIP_DESCRIPTION = "Настройка и просмотр всех умений",
@@ -403,8 +456,7 @@ do
 
             BLOCK_CHANCE_PARAM            = 'Block chance',
             BLOCK_ABSORB_PARAM            = 'Block damage reduction',
-
-
+            
             REFLECT_DAMAGE_PARAM   = 'Damage reflection',
             REFLECT_MELEE_DAMAGE_PARAM   = 'Melee damage reflection',
             REFLECT_RANGE_DAMAGE_PARAM   = 'Range damage reflection',
@@ -451,6 +503,58 @@ do
             ARCANE_ATTRIBUTE_NAME       = "Arcane",
             DARKNESS_ATTRIBUTE_NAME     = "Darkness",
             HOLY_ATTRIBUTE_NAME         = "Holy",
+            
+            
+            FEEDBACK_GOLD = {
+                [BARBARIAN_CLASS] = {
+                    "Sounds\\Responses\\barbarian_gold_1_us.wav",
+                    "Sounds\\Responses\\barbarian_gold_2_us.wav",
+                    "Sounds\\Responses\\barbarian_gold_3_us.wav",
+                    "Sounds\\Responses\\barbarian_gold_4_us.wav",
+                    "Sounds\\Responses\\barbarian_gold_5_us.wav",
+                },
+                [SORCERESS_CLASS] = {
+                    "Sounds\\Responses\\sorceress_gold_1_us.wav",
+                    "Sounds\\Responses\\sorceress_gold_2_us.wav",
+                    "Sounds\\Responses\\sorceress_gold_3_us.wav",
+                    "Sounds\\Responses\\sorceress_gold_4_us.wav",
+                    "Sounds\\Responses\\sorceress_gold_5_us.wav",
+                }
+            },
+
+            FEEDBACK_HEAL = {
+                [BARBARIAN_CLASS] = {
+                    "Sounds\\Responses\\barbarian_healing_1_us.wav",
+                    "Sounds\\Responses\\barbarian_healing_2_us.wav",
+                    "Sounds\\Responses\\barbarian_healing_3_us.wav",
+                    "Sounds\\Responses\\barbarian_healing_4_us.wav",
+                    "Sounds\\Responses\\barbarian_healing_5_us.wav",
+                },
+                [SORCERESS_CLASS] = {
+                    "Sounds\\Responses\\sorceress_healing_1_us.wav",
+                    "Sounds\\Responses\\sorceress_healing_2_us.wav",
+                    "Sounds\\Responses\\sorceress_healing_3_us.wav",
+                    "Sounds\\Responses\\sorceress_healing_4_us.wav",
+                    "Sounds\\Responses\\sorceress_healing_5_us.wav",
+                }
+            },
+
+            FEEDBACK_BAG = {
+                [BARBARIAN_CLASS] = {
+                    "Sounds\\Responses\\barbarian_bag_1_us.wav",
+                    "Sounds\\Responses\\barbarian_bag_2_us.wav",
+                    "Sounds\\Responses\\barbarian_bag_3_us.wav",
+                    "Sounds\\Responses\\barbarian_bag_4_us.wav",
+                    "Sounds\\Responses\\barbarian_bag_5_us.wav",
+                },
+                [SORCERESS_CLASS] = {
+                    "Sounds\\Responses\\sorceress_bag_1_us.wav",
+                    "Sounds\\Responses\\sorceress_bag_2_us.wav",
+                    "Sounds\\Responses\\sorceress_bag_3_us.wav",
+                    "Sounds\\Responses\\sorceress_bag_4_us.wav",
+                    "Sounds\\Responses\\sorceress_bag_5_us.wav",
+                }
+            },
 
             SKILL_PANEL_TOOLTIP_NAME = "Skills",
             SKILL_PANEL_TOOLTIP_DESCRIPTION = "Overlook and bind settings for all abilities.",

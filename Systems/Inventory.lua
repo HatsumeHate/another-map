@@ -40,6 +40,15 @@ do
         [NECKLACE_POINT]  = 39
     }
 
+
+    function Feedback_InventoryNoSpace(player)
+        SimError("В рюкзаке нет места", player-1)
+        PlayLocalSound(LOCALE_LIST[my_locale].FEEDBACK_BAG[GetUnitClass(PlayerHero[player])][GetRandomInt(1, 5)], player-1)
+    end
+
+
+
+
     function UpdateEquipPointsWindow(player)
         local unit_data = GetUnitData(InventoryOwner[player])
 
@@ -267,16 +276,17 @@ do
                         UpdateEquipPointsWindow(id)
                         UpdateInventoryWindow(id)
                 elseif ButtonList[h].button_type >= WEAPON_POINT and ButtonList[h].button_type <= NECKLACE_POINT then
-                    EquipItem(InventoryOwner[id], ButtonList[h].item, false)
+                    if CountFreeBagSlots(id) == 0 then
+                        Feedback_InventoryNoSpace(id)
+                    else
+                        EquipItem(InventoryOwner[id], ButtonList[h].item, false)
+                        if item_data.soundpack ~= nil and item_data.soundpack.uneqip ~= nil then PlayLocalSound(item_data.soundpack.uneqip, id - 1) end
 
-                        if item_data.soundpack ~= nil and item_data.soundpack.uneqip ~= nil then
-                            PlayLocalSound(item_data.soundpack.uneqip, id - 1)
-                        end
-
-                    local free_slot = GetFirstFreeSlotButton(id)
-                    free_slot.item = ButtonList[h].item
-                    UpdateEquipPointsWindow(id)
-                    UpdateInventoryWindow(id)
+                        local free_slot = GetFirstFreeSlotButton(id)
+                        free_slot.item = ButtonList[h].item
+                        UpdateEquipPointsWindow(id)
+                        UpdateInventoryWindow(id)
+                    end
                 end
 
             end
@@ -307,30 +317,26 @@ do
         local item_data = GetItemData(item)
 
 
-        if item_data.MAX_SLOTS ~= #item_data.STONE_SLOTS then
-            for i = 1, item_data.MAX_SLOTS do
-                if item_data.STONE_SLOTS[i] == nil then
-                    local flag = slot.button_type >= WEAPON_POINT and slot.button_type <= NECKLACE_POINT
+            if item_data.MAX_SLOTS ~= #item_data.STONE_SLOTS then
+                for i = 1, item_data.MAX_SLOTS do
+                    if item_data.STONE_SLOTS[i] == nil then
+                        local flag = slot.button_type >= WEAPON_POINT and slot.button_type <= NECKLACE_POINT
 
-                    if flag then EquipItem(InventoryOwner[player], item, false) end
-                    print(stone_data)
-                    print("stone slot is " .. i)
-                    item_data.STONE_SLOTS[i] = stone_data
-                    if flag then EquipItem(InventoryOwner[player], item, true) end
+                        if flag then EquipItem(InventoryOwner[player], item, false) end
+
+                        item_data.STONE_SLOTS[i] = stone_data
+                        if flag then EquipItem(InventoryOwner[player], item, true) end
 
 
-                    if GetItemCharges(stone) - 1 <= 0 then
-                        RemoveItemFromInventory(player, stone)
-                    else
-                        SetItemCharges(stone, GetItemCharges(stone) - 1)
+                        if GetItemCharges(stone) - 1 <= 0 then RemoveItemFromInventory(player, stone)
+                        else SetItemCharges(stone, GetItemCharges(stone) - 1) end
+
+                        RemoveSelectionFrames(player)
+                        UpdateInventoryWindow(player)
+                        break
                     end
-
-                    RemoveSelectionFrames(player)
-                    UpdateInventoryWindow(player)
-                    break
                 end
             end
-        end
 
     end
 
@@ -595,7 +601,7 @@ do
         if GetItemData(item) == nil then return false end
 
             if CountFreeBagSlots(player) <= 0 then
-                SimError("В рюкзаке нет места", player-1)
+                Feedback_InventoryNoSpace(player)
                 return false
             end
 
