@@ -74,12 +74,13 @@ do
             BONUS_UNDEAD_DAMAG_PARAME = "Урон нежити",
 
 
-            ITEM_TYPE_WEAPON_NAME = "Оружие",
+            ITEM_TYPE_WEAPON_NAME     = "Оружие",
             ITEM_TYPE_ARMOR_NAME      = "Броня",
             ITEM_TYPE_JEWELRY_NAME    = "Бижутерия",
             ITEM_TYPE_OFFHAND_NAME    = "Альтернативное оружие",
             ITEM_TYPE_CONSUMABLE_NAME = "Расходуемое",
             ITEM_TYPE_GEM_NAME        = "Камень",
+            ITEM_TYPE_SKILLBOOK       = "Знания",
 
             BOW_WEAPON_NAME            = "Лук",
             BLUNT_WEAPON_NAME          = "Булава",
@@ -377,6 +378,38 @@ do
             GENERIC_NECKLACE_NAME_7 = "изумрудная подвеска",
             GENERIC_NECKLACE_NAME_8 = "рубиновая подвеска",
             GENERIC_NECKLACE_NAME_9 = "сапфировая подвеска",
+
+            POTION_WEAK_HP_NAME_TEXT = "Зелье исцеления",
+            POTION_HALF_HP_NAME_TEXT = "Большое зелье исцеления",
+            POTION_STRONG_HP_NAME_TEXT = "Великое зелье исцеления",
+
+            POTION_WEAK_HP_DESC_TEXT = "Восстанавливает 25%% здоровья",
+            POTION_HALF_HP_DESC_TEXT = "Восстанавливает 50%% здоровья",
+            POTION_STRONG_HP_DESC_TEXT = "Восстанавливает 75%% здоровья",
+
+            POTION_WEAK_MP_NAME_TEXT = "Зелье маны",
+            POTION_HALF_MP_NAME_TEXT = "Большое зелье маны",
+            POTION_STRONG_MP_NAME_TEXT = "Великое зелье маны",
+
+            POTION_WEAK_MP_DESC_TEXT = "Восстанавливает 25%% маны",
+            POTION_HALF_MP_DESC_TEXT = "Восстанавливает 50%% маны",
+            POTION_STRONG_MP_DESC_TEXT = "Восстанавливает 75%% маны",
+
+            POTION_WEAK_MIX_NAME_TEXT = "Зелье восстановления",
+            POTION_HALF_MIX_NAME_TEXT = "Большое зелье восстановления",
+            POTION_STRONG_MIX_NAME_TEXT = "Великое зелье восстановления",
+
+            POTION_WEAK_MIX_DESC_TEXT = "Восстанавливает 25%% здоровья и маны",
+            POTION_HALF_MIX_DESC_TEXT = "Восстанавливает 50%% здоровья и маны",
+            POTION_STRONG_MIX_DESC_TEXT = "Восстанавливает 75%% здоровья и маны",
+
+
+            SKILLBOOK_FIRE = "Книга пламени",
+            SKILLBOOK_LIGHTNING = "Книга молний",
+            SKILLBOOK_ICE = "Книга льда",
+            SKILLBOOK_ARCANE = "Книга тайн",
+
+            SKILLBOOK_TEXT = "Позволяет увеличить знания:",
 
 
             ITEM_NAME_RAT_HUNTER = 'Охотник на крыс',

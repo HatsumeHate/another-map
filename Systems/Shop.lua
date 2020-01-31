@@ -35,6 +35,7 @@ do
                                     BlzFrameSetText(button.charges_text_frame, R2I(GetItemCharges(button.item)))
                                 else
                                     BlzFrameSetVisible(button.charges_frame, false)
+                                    BlzFrameSetText(button.charges_text_frame, "0")
                                 end
 
                             else
@@ -57,9 +58,9 @@ do
         local h = GetHandleId(BlzGetTriggerFrame())
 
             if ButtonList[h].item ~= nil then
-
                 --ButtonList[GetHandleId(ShopFrame[player].slot[32])].image
                 ShowTooltip(player, h, FRAMEPOINT_RIGHT, MASTER_FRAME)
+
             else
                 RemoveTooltip(player)
             end
@@ -145,6 +146,7 @@ do
         BlzFrameSetSize(new_FrameCharges, 0.012, 0.012)
         BlzFrameSetTexture(new_FrameCharges, "GUI\\ChargesTexture.blp", 0, true)
         BlzFrameSetPoint(new_FrameChargesText, FRAMEPOINT_CENTER, new_FrameCharges, FRAMEPOINT_CENTER, 0.,0.)
+        BlzFrameSetText(new_FrameChargesText, "0")
         BlzFrameSetVisible(new_FrameCharges, false)
 
         BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
@@ -206,6 +208,7 @@ do
 
         ShopFrame[player].main_frame = main_frame
         BlzFrameSetVisible(ShopFrame[player].main_frame, false)
+        ShopFrame[player].state = false
     end
 
 
@@ -417,22 +420,25 @@ do
             TriggerRegisterUnitInRangeSimple(trg, 300., unit_owner)
             TriggerAddAction(trg, function()
                 local id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
+                local player = id + 1
 
                 if id <= 5 then
                     local hero = GetTriggerUnit()
 
-                    ShopInFocus[id + 1] = unit_owner
-                    BlzFrameSetVisible(ShopFrame[id + 1].main_frame, true)
-                    BlzFrameSetTexture(ShopFrame[id + 1].portrait, texture, 0, true)
-                    BlzFrameSetText(ShopFrame[id + 1].name, GetUnitName(unit_owner))
+                    ShopInFocus[player] = unit_owner
+                    if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(ShopFrame[player].main_frame, true) end
+                    ShopFrame[player].state = true
+                    BlzFrameSetTexture(ShopFrame[player].portrait, texture, 0, true)
+                    BlzFrameSetText(ShopFrame[player].name, GetUnitName(unit_owner))
                     UpdateShopWindow()
 
                         TimerStart(CreateTimer(), 0.1, true, function()
                             if not IsUnitInRange(hero, unit_owner, 300.) then
-                                DestroySlider(id + 1)
-                                DestroyContextMenu(id + 1)
-                                ShopInFocus[id + 1] = nil
-                                BlzFrameSetVisible(ShopFrame[id + 1].main_frame, false)
+                                DestroySlider(player)
+                                DestroyContextMenu(player)
+                                ShopInFocus[player] = nil
+                                ShopFrame[player].state = false
+                                if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(ShopFrame[player].main_frame, false) end
                                 DestroyTimer(GetExpiredTimer())
                             end
                         end)

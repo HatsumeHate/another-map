@@ -8,6 +8,7 @@ do
             UnitRemoveAbility(unit, FourCC('Abun'))
             AddUnitAnimationProperties(unit, "alternate", false)
             PauseTimer(unit_data.action_timer)
+            DestroyLoopingSound(unit_data.looping_sound, 0.2)
             SpellBackswing(unit)
             unit_data.channeled_destructor = nil
 
@@ -27,6 +28,8 @@ do
             AddUnitAnimationProperties(unit, "alternate", true)
             UnitAddAbility(unit, FourCC('Abun'))
 
+            unit_data.looping_sound = AddLoopingSoundOnUnit({"Sounds\\Spell\\whirlwind_1.wav", "Sounds\\Spell\\whirlwind_2.wav", "Sounds\\Spell\\whirlwind_3.wav", "Sounds\\Spell\\whirlwind_4.wav"}, unit, 200, 200, -0.15, 100, 1700.)
+
             TimerStart(unit_data.action_timer, 0.33, true, function()
                 local mp = GetUnitState(unit, UNIT_STATE_MANA)
 
@@ -36,6 +39,7 @@ do
                 else
                     WhirlwindDeactivate(unit)
                 end
+
             end)
         end
     end

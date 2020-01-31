@@ -266,7 +266,12 @@ do
             max_targets = 1,
             ignore_terrain = false,
             full_distance = true,
-            penetrate = false
+            penetrate = false,
+            sound_on_fly = {
+                pack = { "Sounds\\Spells\\throw_whirl_1.wav", "Sounds\\Spells\\throw_whirl_2.wav", "Sounds\\Spells\\throw_whirl_3.wav" },
+                volume = 100,
+                cutoff = 1700.
+            },
         })
         --===============================================--
         NewMissileTemplate('MBCH', {
@@ -275,14 +280,19 @@ do
             max_distance = 600.,
             effect_on_hit = 'EBCH',
             radius = 75.,
-            speed = 740.,
+            speed = 800.,
             start_z = 70.,
             end_z = 70.,
             arc = 0.,
             max_targets = 1,
             ignore_terrain = true,
             full_distance = true,
-            penetrate = false
+            penetrate = false,
+            sound_on_fly = {
+                pack = { "Sounds\\Spells\\chain_launch_1.wav", "Sounds\\Spells\\chain_launch_2.wav", "Sounds\\Spells\\chain_launch_3.wav", "Sounds\\Spells\\chain_launch_4.wav", "Sounds\\Spells\\chain_launch_5.wav" },
+                volume = 100,
+                cutoff = 1700.
+            },
         })
     end
 

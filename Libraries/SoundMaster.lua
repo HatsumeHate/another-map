@@ -35,6 +35,8 @@ do
 
     ---@param name string
     ---@param player_id integer
+    ---@return sound
+    ---@param volume integer
     function PlayLocalSound(name, player_id, volume)
         local snd = CreateSound(name, false, false, false, 10, 10, "")
 

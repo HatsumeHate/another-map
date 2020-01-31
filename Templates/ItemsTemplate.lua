@@ -249,6 +249,15 @@ do
 				QUALITY            = COMMON_ITEM,
 			}
 			MergeTables(newdata, data)
+		elseif data.TYPE == ITEM_TYPE_SKILLBOOK then
+			newdata = {
+				item               = nil,
+				NAME               = '',
+				TYPE               = ITEM_TYPE_SKILLBOOK,
+				frame_texture      = nil,
+				QUALITY            = RARE_ITEM,
+			}
+			MergeTables(newdata, data)
 		end
 
 		if newdata.sell_value == nil then newdata.sell_value = 0 end
@@ -845,32 +854,80 @@ do
 		})
 
 		ItemAddData('I00K', {
-			NAME    		   = 'Зелье восстановления',
+			NAME    		   = LOCALE_LIST[my_locale].POTION_WEAK_MIX_NAME_TEXT,
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNpurpleAApotionGS.blp",
-			item_description = "Восстанавливает 25%% здоровья и маны",
+			item_description   = LOCALE_LIST[my_locale].POTION_WEAK_MIX_DESC_TEXT,
 			soundpack = {
 				drop = "Sound\\potionui.wav"
 			}
 		})
 
 		ItemAddData('I00M', {
-			NAME    		   = 'Большое зелье восстановления',
+			NAME    		   = LOCALE_LIST[my_locale].POTION_HALF_MIX_NAME_TEXT,
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNpurpleEApotionGS.blp",
-			item_description = "Восстанавливает 50%% здоровья и маны",
+			item_description = LOCALE_LIST[my_locale].POTION_HALF_MIX_DESC_TEXT,
 			soundpack = {
 				drop = "Sound\\potionui.wav"
 			}
 		})
 
 		ItemAddData('I00L', {
-			NAME    		   = 'Великое зелье восстановления',
+			NAME    		   = LOCALE_LIST[my_locale].POTION_STRONG_MIX_NAME_TEXT,
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNpurpleJApotionGS.blp",
-			item_description = "Восстанавливает 75%% здоровья и маны",
+			item_description   = LOCALE_LIST[my_locale].POTION_STRONG_MIX_DESC_TEXT,
 			soundpack = {
 				drop = "Sound\\potionui.wav"
+			}
+		})
+
+		ItemAddData('I00U', {
+			NAME    		   = LOCALE_LIST[my_locale].SKILLBOOK_FIRE,
+			TYPE    		   = ITEM_TYPE_SKILLBOOK,
+			frame_texture      = "Items\\Book\\BTNbook1fire .blp",
+			item_description = LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_FIRE],
+			learn_effect = "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
+			soundpack = {
+				drop = "Sound\\book.wav"
+			}
+		})
+
+		ItemAddData('I00V', {
+			NAME    		   = LOCALE_LIST[my_locale].SKILLBOOK_ICE,
+			TYPE    		   = ITEM_TYPE_SKILLBOOK,
+			frame_texture      = "Items\\Book\\BTNbook1water .blp",
+			item_description = LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_ICE],
+			learn_effect = "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
+			soundpack = {
+				drop = "Sound\\book.wav"
+			}
+		})
+
+		ItemAddData('I013', {
+			NAME    		   = LOCALE_LIST[my_locale].SKILLBOOK_LIGHTNING,
+			TYPE    		   = ITEM_TYPE_SKILLBOOK,
+			frame_texture      = "Items\\Book\\BTNbook1wind .blp",
+			item_description = LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_LIGHTNING],
+			learn_effect = "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
+			soundpack = {
+				drop = "Sound\\book.wav"
+			}
+		})
+
+		ItemAddData('I014', {
+			NAME    		   = LOCALE_LIST[my_locale].SKILLBOOK_ARCANE,
+			TYPE    		   = ITEM_TYPE_SKILLBOOK,
+			frame_texture      = "Items\\Book\\BTNBK_Red_Book.blp",
+			item_description = LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_ARCANE],
+			learn_effect = "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
+			soundpack = {
+				drop = "Sound\\book.wav"
 			}
 		})
 

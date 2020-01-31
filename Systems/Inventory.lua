@@ -1,6 +1,7 @@
 do
 
     PlayerInventoryFrame = {}
+    PlayerInventoryFrameState = {}
     InventorySlots = {}
     InventoryOwner = {}
     InventoryTriggerButton = nil
@@ -341,6 +342,24 @@ do
     end
 
 
+    local function LearnBook(item, player)
+        local item_data = GetItemData(item)
+
+            DestroyEffect(AddSpecialEffectTarget(item_data.learn_effect, PlayerHero[player], "origin"))
+
+            if not UnitAddMyAbility(PlayerHero[player], item_data.improving_skill) then
+                UnitAddAbilityLevel(PlayerHero[player], item_data.improving_skill, 1)
+            end
+
+            DropItemFromInventory(player, item, true)
+            RemoveCustomItem(item)
+
+            if SkillPanelFrame[player].state then
+                UpdateSkillList(player)
+            end
+    end
+
+
     function SplitChargedItem(item, count, player)
             SetItemCharges(item, GetItemCharges(item) - count)
             local new_item = CreateCustomItem_Id(GetItemTypeId(item), GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]))
@@ -351,6 +370,8 @@ do
 
 
 
+    -- ========================= CLICK ============================= --
+
     local function InventorySlot_Clicked()
         local player = GetPlayerId(GetTriggerPlayer()) + 1
         local h = GetHandleId(BlzGetTriggerFrame())
@@ -358,15 +379,20 @@ do
 
 
         if TimerGetRemaining(DoubleClickTimer[player]) > 0. then
-            if ButtonList[h].item ~= nil and item_data.TYPE ~= ITEM_TYPE_GEM and item_data.TYPE ~= ITEM_TYPE_CONSUMABLE then
+            if ButtonList[h].item ~= nil then
                 RemoveTooltip(player)
                 DestroyContextMenu(player)
-                InteractWithItemInSlot(h, player)
-                TimerStart(DoubleClickTimer[player], 0.01, false, nil)
-            elseif item_data.TYPE == ITEM_TYPE_CONSUMABLE then
-                LockItemOnBelt(player, ButtonList[h])
-                RemoveTooltip(player)
-                DestroyContextMenu(player)
+
+                    if item_data.TYPE == ITEM_TYPE_CONSUMABLE then
+                        LockItemOnBelt(player, ButtonList[h])
+                    elseif item_data.TYPE == ITEM_TYPE_GEM then
+                        StartSelectionMode(player, h, 2)
+                    elseif item_data.TYPE == ITEM_TYPE_SKILLBOOK then
+                        LearnBook(item_data.item, player)
+                    else
+                        InteractWithItemInSlot(h, player)
+                    end
+
                 TimerStart(DoubleClickTimer[player], 0.01, false, nil)
             end
         else
@@ -407,6 +433,10 @@ do
                     elseif item_data.TYPE == ITEM_TYPE_CONSUMABLE then
                         AddContextOption(player, ButtonList[h].sprite ~= nil and "Открепить" or "Закрепить", function()
                             LockItemOnBelt(player, ButtonList[h])
+                        end)
+                    elseif item_data.TYPE == ITEM_TYPE_SKILLBOOK then
+                        AddContextOption(player, "Изучить", function()
+                            LearnBook(item_data.item, player)
                         end)
                     else
                         AddContextOption(player, "Надеть", function()
@@ -699,6 +729,7 @@ do
             BlzFrameSetTexture(new_FrameCharges, "GUI\\ChargesTexture.blp", 0, true)
             BlzFrameSetPoint(new_FrameChargesText, FRAMEPOINT_CENTER, new_FrameCharges, FRAMEPOINT_CENTER, 0.,0.)
             BlzFrameSetVisible(new_FrameCharges, false)
+            BlzFrameSetText(new_FrameChargesText, "0")
 
             BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
             BlzFrameSetSize(new_Frame, size_x, size_y)
@@ -771,7 +802,7 @@ do
         --BlzFrameSetModel(new_Frame, "selecter1.mdx", 0)
 
         BlzFrameSetVisible(main_frame, false)
-
+        PlayerInventoryFrameState[player] = false
     end
 
 
@@ -804,7 +835,11 @@ do
             TriggerAddAction(trg, function()
                 local player = GetPlayerId(GetTriggerPlayer()) + 1
 
-                BlzFrameSetVisible(PlayerInventoryFrame[player], not BlzFrameIsVisible(PlayerInventoryFrame[player]))
+                    if GetLocalPlayer() == Player(player-1) then
+                        BlzFrameSetVisible(PlayerInventoryFrame[player], not BlzFrameIsVisible(PlayerInventoryFrame[player]))
+                    end
+
+                PlayerInventoryFrameState[player] = not PlayerInventoryFrameState[player]
                 RemoveTooltip(player)
                 RemoveSelectionFrames(player)
                 DestroyContextMenu(player)

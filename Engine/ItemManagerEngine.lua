@@ -237,7 +237,9 @@ do
                 end
             end)
 
+
             GenerateItemLevel(item, 1)
+            if data.TYPE == ITEM_TYPE_SKILLBOOK then GenerateItemBookSkill(item) end
 
 		return item
 	end
@@ -255,6 +257,7 @@ do
 
             ITEM_DATA[handle] = data
             GenerateItemLevel(item, 1)
+            if data.TYPE == ITEM_TYPE_SKILLBOOK then GenerateItemBookSkill(item) end
 
                 if data.flippy ~= nil and data.flippy then
                     CreateQualityEffect(item)
@@ -272,6 +275,15 @@ do
         else
             return GetParameterPreset(param.parameters[GetRandomInt(1, #param.parameters)])
         end
+    end
+
+
+    function GenerateItemBookSkill(item)
+        local item_data = GetItemData(item)
+
+            item_data.improving_skill = item_data.skill_category[GetRandomInt(1, #item_data.skill_category)]
+            item_data.item_description = item_data.item_description .. "|n" .. GetSkillName(item_data.improving_skill)
+
     end
 
 
@@ -433,6 +445,7 @@ do
 
 
                 if item_data.TYPE == ITEM_TYPE_WEAPON then
+
                     if item_data.SUBTYPE ~= BOW_WEAPON then
                         local physical_archetype = 65
 
@@ -458,6 +471,7 @@ do
                             item_data.DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL
                             item_data.ATTRIBUTE = GetRandomInt(FIRE_ATTRIBUTE, DARKNESS_ATTRIBUTE)
                         end
+
                     else
                         if GetRandomInt(1, 2) == 1 then
                             item_data.ATTRIBUTE = PHYSICAL_ATTRIBUTE
@@ -465,6 +479,7 @@ do
                             item_data.ATTRIBUTE = POISON_ATTRIBUTE
                         end
                     end
+
                 end
 
             GenerateItemLevel(item, level)
@@ -650,7 +665,8 @@ do
             [ITEM_TYPE_JEWELRY]    = LOCALE_LIST[my_locale].ITEM_TYPE_JEWELRY_NAME,
             [ITEM_TYPE_OFFHAND]    = LOCALE_LIST[my_locale].ITEM_TYPE_OFFHAND_NAME,
             [ITEM_TYPE_CONSUMABLE] = LOCALE_LIST[my_locale].ITEM_TYPE_CONSUMABLE_NAME,
-            [ITEM_TYPE_GEM]        = LOCALE_LIST[my_locale].ITEM_TYPE_GEM_NAME
+            [ITEM_TYPE_GEM]        = LOCALE_LIST[my_locale].ITEM_TYPE_GEM_NAME,
+            [ITEM_TYPE_SKILLBOOK]  = LOCALE_LIST[my_locale].ITEM_TYPE_SKILLBOOK
         }
 
         ITEMSUBTYPES_NAMES = {

@@ -11,14 +11,18 @@ do
         local frame
         local btn
 
-            if BlzFrameIsVisible(ShopFrame[player].main_frame) then
+            if ShopFrame[player].state ~= nil and ShopFrame[player].state then --BlzFrameIsVisible(ShopFrame[player].main_frame) then
+                print("shop")
                 btn = GetButtonData(ShopFrame[player].slot[32])
-                frame = BlzFrameIsVisible(btn.charges_text_frame) and btn.charges_text_frame or btn.image
-            elseif BlzFrameIsVisible(SkillPanelFrame[player].main_frame) then
+                frame = BlzFrameGetText(btn.charges_text_frame) ~= "0" and btn.charges_text_frame or btn.image
+            elseif SkillPanelFrame[player].state ~= nil and SkillPanelFrame[player].state then
+                print("skill")
                 frame = SkillPanelFrame[player].slider
-            elseif BlzFrameIsVisible(PlayerInventoryFrame[player]) then
+                print("????")
+            elseif PlayerInventoryFrameState[player] ~= nil and PlayerInventoryFrameState[player] then -- BlzFrameIsVisible(PlayerInventoryFrame[player]) then
+                print("inventory")
                 btn = GetButtonData(InventorySlots[32])
-                frame = BlzFrameIsVisible(btn.charges_text_frame) and btn.charges_text_frame or btn.image
+                frame = BlzFrameGetText(btn.charges_text_frame) ~= "0" and btn.charges_text_frame or btn.image
             end
 
         return frame
@@ -260,10 +264,12 @@ do
 
          parent = GetMasterParentFrame(player) or parent
 
+
          PlayerTooltip[player] = {}
          PlayerTooltip[player].frames = {}
 
          PlayerTooltip[player].backdrop = BlzCreateFrame("BoxedText", parent, 150, 0)
+
 
          local property_text = ""
          if item_data.SUBTYPE ~= nil then
@@ -504,12 +510,12 @@ do
 
 
     function RemoveTooltip(player)
-        PauseGame(false)
             if PlayerTooltip[player] ~= nil then
-                for i = 1, #PlayerTooltip[player].frames do
-                    BlzDestroyFrame(PlayerTooltip[player].frames[i])
-                end
-                BlzDestroyFrame(PlayerTooltip[player].backdrop)
+                --PauseGame(false)
+                local frame = PlayerTooltip[player].backdrop
+                BlzFrameSetVisible(frame, false)
+                BlzFrameSetEnable(frame, false)
+                DelayAction(0.5, function() BlzDestroyFrame(frame) end)
             end
         PlayerTooltip[player] = nil
     end

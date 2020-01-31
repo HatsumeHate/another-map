@@ -181,9 +181,17 @@ do
         local unit_data = GetUnitData(unit)
         local skill_data = GetSkillData(FourCC(id))
 
-        if unit_data == nil then return end
+        if unit_data == nil or skill_data == nil then return end
+
+            for i = 1, #unit_data.skill_list do
+                if unit_data.skill_list[i].Id == id then
+                    return false
+                end
+            end
 
             unit_data.skill_list[#unit_data.skill_list + 1] = MergeTables({}, skill_data)
+
+        return true
     end
 
 
@@ -281,7 +289,7 @@ do
 
 
                 if skill.level[ability_level].effect_on_caster ~= nil then
-                    unit_data.cast_effect = AddSpecialEffectTarget(unit_data.Owner, skill.level[ability_level].effect_on_caster, skill.level[ability_level].effect_on_caster_point)
+                    unit_data.cast_effect = AddSpecialEffectTarget( skill.level[ability_level].effect_on_caster, unit_data.Owner, skill.level[ability_level].effect_on_caster_point)
                     BlzSetSpecialEffectScale(unit_data.cast_effect, skill.level[ability_level].effect_on_caster_scale or 1.)
                 end
 

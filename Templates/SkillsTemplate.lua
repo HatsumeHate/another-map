@@ -248,16 +248,20 @@
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_ICE,
 
+
             level = {
                 [1] = {
                     range               = 1000.,
                     missile             = 'MFRB',
                     resource_cost       = 10.,
                     cooldown            = 0.1,
-                    animation           = 3,
-                    animation_point     = 1.5,
-                    animation_backswing = 0.1666,
-                    animation_scale     = 0.5,
+                    animation           = 2,
+                    animation_point     = 1.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 0.4,
+                    effect_on_caster        = "Spell\\Ice Low.mdx",
+                    effect_on_caster_point  = 'Hand Right',
+                    effect_on_caster_scale  = 1.,
                 },
             }
 
@@ -279,6 +283,9 @@
                     animation_point     = 2.1,
                     animation_backswing = 0.633,
                     animation_scale     = 0.3,
+                    effect_on_caster        = "Spell\\Ice Low.mdx",
+                    effect_on_caster_point  = 'Hand Right',
+                    effect_on_caster_scale  = 1.,
                 }
             }
 
@@ -298,10 +305,13 @@
                     missile             = 'MGFB',
                     resource_cost       = 10.,
                     cooldown            = 0.1,
-                    animation           = 3,
-                    animation_point     = 2.1,
-                    animation_backswing = 0.633,
-                    animation_scale     = 0.35,
+                    animation           = 2,
+                    animation_point     = 1.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 0.4,
+                    effect_on_caster        = "Spell\\Fire Low.mdx",
+                    effect_on_caster_point  = 'Hand Right',
+                    effect_on_caster_scale  = 1.,
                 }
             }
         })
@@ -324,6 +334,9 @@
                     animation_point     = 2.1,
                     animation_backswing = 0.633,
                     animation_scale     = 0.35,
+                    effect_on_caster        = "Spell\\Ice High.mdx",
+                    effect_on_caster_point  = 'Hand Right',
+                    effect_on_caster_scale  = 1.,
                 }
             }
         })
@@ -342,10 +355,13 @@
                     effect              = 'ELST',
                     resource_cost       = 10.,
                     cooldown            = 0.1,
-                    animation           = 3,
-                    animation_point     = 2.1,
-                    animation_backswing = 0.633,
-                    animation_scale     = 0.5,
+                    animation           = 2,
+                    animation_point     = 1.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 0.4,
+                    effect_on_caster        = "Spell\\Storm Cast.mdx",
+                    effect_on_caster_point  = 'Hand Right',
+                    effect_on_caster_scale  = 1.,
                 }
             }
         })
@@ -392,10 +408,10 @@
                     effect              = 'EMTR',
                     resource_cost       = 20.,
                     cooldown            = 7.,
-                    animation           = 3,
-                    animation_point     = 2.1,
-                    animation_backswing = 0.633,
-                    animation_scale     = 0.5,
+                    animation           = 2,
+                    animation_point     = 1.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 0.4,
                 }
             }
         })
@@ -408,16 +424,18 @@
             category = SKILL_CATEGORY_LIGHTNING,
             sound = { pack = { "Sounds\\Spells\\cast_lightning_1.wav", "Sounds\\Spells\\cast_lightning_2.wav", "Sounds\\Spells\\cast_lightning_3.wav" }, volume = 120, cutoff = 1500.},
 
-
             level = {
                 [1] = {
                     range               = 700.,
                     resource_cost       = 10.,
                     cooldown            = 0.1,
-                    animation           = 3,
-                    animation_point     = 2.1,
-                    animation_backswing = 0.633,
-                    animation_scale     = 0.5,
+                    animation           = 2,
+                    animation_point     = 1.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 0.4,
+                    effect_on_caster        = "Spell\\Storm Cast.mdx",
+                    effect_on_caster_point  = 'Hand Right',
+                    effect_on_caster_scale  = 0.8,
                 }
             }
         })
@@ -440,6 +458,9 @@
                     animation_point     = 2.1,
                     animation_backswing = 0.633,
                     animation_scale     = 0.5,
+                    effect_on_caster        = "Spell\\Storm Cast.mdx",
+                    effect_on_caster_point  = 'Hand Right',
+                    effect_on_caster_scale  = 1.,
                 }
             }
         })
@@ -468,7 +489,7 @@
             name            = "frost armor skill",
             icon            = "Spell\\BTNCloakOfFrost.blp",
             activation_type = SELF_CAST,
-            type            = SKILL_MAGICAL,
+            type            = SKILL_UNIQUE,
             category = SKILL_CATEGORY_ICE,
 
             level = {
@@ -488,7 +509,7 @@
             name            = "elemental mastery skill",
             icon            = "Spell\\BTN_cr_Dark Arts.blp",
             activation_type = SELF_CAST,
-            type            = SKILL_MAGICAL,
+            type            = SKILL_UNIQUE,
             category = SKILL_CATEGORY_ARCANE,
 
             level = {
@@ -497,9 +518,9 @@
                     resource_cost       = 5.,
                     cooldown            = 20.,
                     animation           = 3,
-                    animation_point     = 0.3,
-                    animation_backswing = 0.3,
-                    animation_scale     = 1.,
+                    animation_point     = 0.1,
+                    animation_backswing = 0.1,
+                    animation_scale     = 0.3,
                 }
             }
         })
@@ -508,7 +529,7 @@
             name            = "hydra skill",
             icon            = "Spell\\BTNGlaiveCrit.blp",
             activation_type = POINT_CAST,
-            type            = SKILL_MAGICAL,
+            type            = SKILL_UNIQUE,
             category = SKILL_CATEGORY_FIRE,
 
             level = {
@@ -516,10 +537,13 @@
                     range               = 600.,
                     cooldown            = 5.,
                     resource_cost       = 10.,
-                    animation           = 3,
-                    animation_point     = 2.1,
-                    animation_backswing = 0.633,
-                    animation_scale     = 0.5,
+                    animation           = 2,
+                    animation_point     = 1.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 0.4,
+                    effect_on_caster        = "Spell\\Fire Low.mdx",
+                    effect_on_caster_point  = 'Hand Right',
+                    effect_on_caster_scale  = 1.,
                 }
             }
         })
@@ -528,7 +552,7 @@
             name            = "barbarian jump skill",
             icon            = "Spell\\BTN_cr_CarA2.blp",
             activation_type = POINT_CAST,
-            type            = SKILL_PHYSICAL,
+            type            = SKILL_UNIQUE,
             category = SKILL_CATEGORY_BATTLE_ADVANTAGE,
 
             level = {
@@ -551,6 +575,7 @@
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_BATTLE_ADVANTAGE,
 
+
             level = {
                 [1] = {
                     range               = 800.,
@@ -558,9 +583,9 @@
                     resource_cost       = 5.,
                     cooldown            = 12.,
                     animation           = 3,
-                    animation_point     = 0.3,
-                    animation_backswing = 0.3,
-                    animation_scale     = 1.,
+                    animation_point     = 1.4,
+                    animation_backswing = 0.2666,
+                    animation_scale     = 0.3
                 }
             }
         })
@@ -571,16 +596,17 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_FIGHTING_MASTERY,
+            sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 120, cutoff = 1500.},
 
             level = {
                 [1] = {
                     range               = 100.,
                     effect              = 'EUPP',
                     cooldown            = 12.,
-                    animation           = 3,
-                    animation_point     = 0.3,
+                    animation           = 5,
+                    animation_point     = 0.6,
                     animation_backswing = 0.3,
-                    animation_scale     = 1.,
+                    animation_scale     = 0.7,
                 }
             }
         })
@@ -598,9 +624,9 @@
                     resource_cost       = 10.,
                     cooldown            = 22.,
                     animation           = 3,
-                    animation_point     = 0.3,
-                    animation_backswing = 0.3,
-                    animation_scale     = 1.,
+                    animation_point     = 1.4,
+                    animation_backswing = 0.2666,
+                    animation_scale     = 0.5
                 }
             }
         })
@@ -630,16 +656,17 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_FIGHTING_MASTERY,
+            sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 120, cutoff = 1500.},
 
             level = {
                 [1] = {
                     range               = 100.,
                     effect              = 'ECRH',
                     cooldown            = 2.3,
-                    animation           = 3,
-                    animation_point     = 0.1,
-                    animation_backswing = 0.1,
-                    animation_scale     = 1.,
+                    animation           = 4,
+                    animation_point     = 0.6,
+                    animation_backswing = 0.3,
+                    animation_scale     = 0.7,
                 }
             }
         })
@@ -658,9 +685,9 @@
                     resource_cost       = 6.,
                     cooldown            = 2.3,
                     animation           = 3,
-                    animation_point     = 0.1,
-                    animation_backswing = 0.1,
-                    animation_scale     = 1.,
+                    animation_point     = 1.4,
+                    animation_backswing = 0.2666,
+                    animation_scale     = 0.4
                 }
             }
         })
@@ -671,16 +698,17 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_FIGHTING_MASTERY,
+            sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 120, cutoff = 1500.},
 
             level = {
                 [1] = {
                     range               = 100.,
                     effect              = 'ECSL',
                     cooldown            = 3.3,
-                    animation           = 3,
-                    animation_point     = 0.1,
-                    animation_backswing = 0.1,
-                    animation_scale     = 1.,
+                    animation           = 6,
+                    animation_point     = 0.6,
+                    animation_backswing = 0.3,
+                    animation_scale     = 0.7,
                     effect_on_caster        = "Spell\\Sweep_TeamColor_Medium.mdx",
                     effect_on_caster_point  = 'Weapon R',
                     effect_on_caster_scale  = 1.,
@@ -695,15 +723,16 @@
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_INNER_STRENGTH,
 
+
             level = {
                 [1] = {
                     effect              = 'EWCR',
                     resource_cost       = 5.,
                     cooldown            = 22.,
                     animation           = 3,
-                    animation_point     = 0.3,
-                    animation_backswing = 0.3,
-                    animation_scale     = 1.,
+                    animation_point     = 1.4,
+                    animation_backswing = 0.2666,
+                    animation_scale     = 0.5
                 }
             }
         })

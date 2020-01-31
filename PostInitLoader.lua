@@ -37,6 +37,9 @@ do
 		print("monsters done")
 		DropListInit()
 		print("droplist done")
+		ShakerInit()
+
+		print("init done")
 
 		--UnitAddMyAbility(gg_unit_HBRB_0005, 'A007')
 		--UnitAddMyAbility(gg_unit_HBRB_0005, 'A00K')
@@ -62,11 +65,14 @@ do
 
 		CreateHeroSelections()
 
+
+
 		--PushUnit(gg_unit_HBRB_0005, 270., 400., 1.25)
 		--MakeUnitJump(gg_unit_HBRB_0005, 0., GetUnitX(gg_unit_HBRB_0005) + 500., GetUnitY(gg_unit_HBRB_0005), 500., 0.6)
 
 
 		TimerStart(CreateTimer(), 5., false, function()
+
 			WavesInit()
 			AddWaveTimer(300.)
 

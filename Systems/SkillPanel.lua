@@ -41,7 +41,7 @@ do
 
             if button_data.button_type < 0 then
                 local last_category_button = GetButtonData(SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].button)
-                BlzDestroyFrame(last_category_button.sprite)
+                if last_category_button.sprite ~= nil then BlzDestroyFrame(last_category_button.sprite) end
 
                 button_data.sprite = CreateSprite("selecter2.mdx", 0.9, SkillPanelFrame[player].category[button_data.button_type * -1].button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, button_data.image)
                 SkillPanelFrame[player].current_category = button_data.button_type * -1
@@ -51,11 +51,13 @@ do
                 CreatePlayerContextMenu(player, button_data.button, SkillPanelFrame[player].slider)
                 CreateBindContext(player, button_data, 0)
             elseif button_data.button_type > 0 then
-                CreatePlayerContextMenu(player, button_data.button, SkillPanelFrame[player].slider)
-                CreateBindContext(player, button_data, button_data.button_type)
-                AddContextOption(player, LOCALE_LIST[my_locale].SKILL_PANEL_UNBIND, function()
-                    UnregisterPlayerSkillHotkey(player, button_data.skill)
-                end)
+                if button_data.skill ~= nil then
+                    CreatePlayerContextMenu(player, button_data.button, SkillPanelFrame[player].slider)
+                    CreateBindContext(player, button_data, button_data.button_type)
+                    AddContextOption(player, LOCALE_LIST[my_locale].SKILL_PANEL_UNBIND, function()
+                        UnregisterPlayerSkillHotkey(player, button_data.skill)
+                    end)
+                end
             end
 
     end)
@@ -64,16 +66,16 @@ do
     ---@param player integer
     ---@param skill table
     function UnregisterPlayerSkillHotkey(player, skill)
-        for i = KEY_Q, KEY_D do
-            local button = GetButtonData(SkillPanelFrame[player].button_keys[i])
-                if button.skill ~= nil and skill.Id == button.skill.Id then
-                    UnbindAbilityKey(PlayerHero[player], skill.Id)
-                    BlzFrameSetTexture(button.image, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0, true)
-                    FrameChangeTexture(button.button, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp")
-                    button.skill = nil
-                    break
-                end
-        end
+            for i = KEY_Q, KEY_D do
+                local button = GetButtonData(SkillPanelFrame[player].button_keys[i])
+                    if button.skill ~= nil and skill.Id == button.skill.Id and not BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindAbility(skill.Id, player-1)) > 0. then
+                        UnbindAbilityKey(PlayerHero[player], skill.Id)
+                        BlzFrameSetTexture(button.image, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0, true)
+                        FrameChangeTexture(button.button, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp")
+                        button.skill = nil
+                        break
+                    end
+            end
     end
 
 
@@ -82,11 +84,14 @@ do
     ---@param key integer
     function RegisterPlayerSkillHotkey(player, skill, key)
         local key_button_data = GetButtonData(SkillPanelFrame[player].button_keys[key])
+        local ability = GetKeybindAbility(skill.Id, player-1)
 
-            BindAbilityKey(PlayerHero[player], skill.Id, key)
-            BlzFrameSetTexture(key_button_data.image, skill.icon, 0, true)
-            FrameChangeTexture(key_button_data.button, skill.icon)
-            key_button_data.skill = skill
+            if ability == 0 or (ability ~= 0 and not BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], ability) > 0.) then
+                BindAbilityKey(PlayerHero[player], skill.Id, key)
+                BlzFrameSetTexture(key_button_data.image, skill.icon, 0, true)
+                FrameChangeTexture(key_button_data.button, skill.icon)
+                key_button_data.skill = skill
+            end
 
     end
 
@@ -128,7 +133,7 @@ do
     ---@param player integer
     function UpdateSkillList(player)
         local unit_data = GetUnitData(PlayerHero[player])
-        local c = SkillPanelFrame[player].current_category
+        local c = SkillPanelFrame[player].current_category or CLASS_SKILL_CATEGORY[unit_data.unit_class][1]
 
             SkillPanelFrame[player].category[c].skill_list = nil
             SkillPanelFrame[player].category[c].skill_list = {}
@@ -139,8 +144,8 @@ do
                 end
             end
 
-            BlzFrameSetMinMaxValue(SkillPanelFrame[player].slider, 1., #SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].skill_list)
-            BlzFrameSetValue(SkillPanelFrame[player].slider, #SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].skill_list)
+            BlzFrameSetMinMaxValue(SkillPanelFrame[player].slider, 1., #SkillPanelFrame[player].category[c].skill_list)
+            BlzFrameSetValue(SkillPanelFrame[player].slider, #SkillPanelFrame[player].category[c].skill_list)
 
         UpdateSkillWindow(player)
     end
@@ -323,6 +328,10 @@ do
             BlzFrameSetVisible(main_frame, false)
 
         SkillPanelFrame[player].main_frame = main_frame
+        SkillPanelFrame[player].state = false
+
+
+        --SkillPanelFrame[player].default_category = CLASS_SKILL_CATEGORY[unit_data.unit_class][1]
     end
 
 
@@ -336,11 +345,17 @@ do
             local trg = CreateTrigger()
             BlzTriggerRegisterFrameEvent(trg, SkillPanelButton, FRAMEEVENT_CONTROL_CLICK)
             TriggerAddAction(trg, function()
-                BlzFrameSetVisible(SkillPanelFrame[GetPlayerId(GetTriggerPlayer()) + 1].main_frame, not BlzFrameIsVisible(SkillPanelFrame[GetPlayerId(GetTriggerPlayer()) + 1].main_frame))
-                BlzFrameSetVisible(PlayerStatsFrame[GetPlayerId(GetTriggerPlayer()) + 1], false)
-                UpdateSkillList(GetPlayerId(GetTriggerPlayer()) + 1)
-                DestroyContextMenu(GetPlayerId(GetTriggerPlayer()) + 1)
-            end)
+                local player = GetPlayerId(GetTriggerPlayer()) + 1
+
+                    if GetLocalPlayer() == Player(player-1) then
+                        BlzFrameSetVisible(SkillPanelFrame[player].main_frame, not BlzFrameIsVisible(SkillPanelFrame[player].main_frame))
+                        BlzFrameSetVisible(PlayerStatsFrame[player], false)
+                    end
+
+                UpdateSkillList(player)
+                DestroyContextMenu(player)
+                SkillPanelFrame[player].state = not SkillPanelFrame[player].state
+                end)
 
     end
 

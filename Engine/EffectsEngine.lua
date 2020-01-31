@@ -145,22 +145,29 @@ do
             PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
             -- delay for effect animation
             TimerStart(CreateTimer(), myeffect.hit_delay or 0., false, function()
+                if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
+                    DamageUnit(source, target, myeffect.power or 0,
+                            myeffect.attribute or PHYSICAL_ATTRIBUTE,
+                            myeffect.damage_type or DAMAGE_TYPE_NONE,
+                            myeffect.attack_type or nil,
+                            myeffect.can_crit or false,
+                            myeffect.is_direct or false,
+                            false, { eff = data, l = lvl })
 
-                DamageUnit(source, target, myeffect.power or 0,
-                        myeffect.attribute or PHYSICAL_ATTRIBUTE,
-                        myeffect.damage_type or DAMAGE_TYPE_NONE,
-                        myeffect.attack_type or nil,
-                        myeffect.can_crit or false,
-                        myeffect.is_direct or false,
-                        false, { eff = data, l = lvl })
-                ModifyBuffsEffect(source, target, data, lvl, ON_ENEMY)
+                    ModifyBuffsEffect(source, target, data, lvl, ON_ENEMY)
+
+                    if myeffect.sound_on_hit ~= nil then
+                        AddSoundVolumeZ(myeffect.sound_on_hit.pack[GetRandomInt(1, #myeffect.sound_on_hit.pack)], GetUnitX(target), GetUnitY(target), 35., myeffect.sound_on_hit.volume, myeffect.sound_on_hit.cutoff)
+                        --AddSound(myeffect.sound, x, y)
+                    end
 
                     if( myeffect.life_restored_from_hit ~= nil and myeffect.life_restored_from_hit) or (myeffect.resource_restored_from_hit ~= nil and myeffect.resource_restored_from_hit) then
                         ApplyRestoreEffect(source, target, data, lvl)
                     end
 
 
-                OnEffectApply(source, target, data)
+                    OnEffectApply(source, target, data)
+                end
                 DestroyTimer(GetExpiredTimer())
             end)
 
@@ -221,9 +228,20 @@ do
 
             if myeffect.SFX_used ~= nil then
                 local effect = AddSpecialEffect(myeffect.SFX_used, x, y)
-                BlzSetSpecialEffectScale(effect, myeffect.SFX_used_scale or 1.)
-                if myeffect.timescale ~= nil then BlzSetSpecialEffectTimeScale(effect, 1. + (1. - myeffect.timescale)) end
-                DestroyEffect(effect)
+
+                    BlzSetSpecialEffectScale(effect, myeffect.SFX_used_scale or 1.)
+                    if myeffect.timescale ~= nil then BlzSetSpecialEffectTimeScale(effect, 1. + (1. - myeffect.timescale)) end
+
+                    if myeffect.SFX_inherit_angle ~= nil and myeffect.SFX_inherit_angle then
+                        BlzSetSpecialEffectYaw(effect, GetUnitFacing(source) * bj_DEGTORAD)
+                    end
+
+                    if myeffect.SFX_bonus_z ~= nil then
+                        BlzSetSpecialEffectZ(effect, BlzGetLocalSpecialEffectZ(effect) + myeffect.SFX_bonus_z)
+                    end
+
+                    DelayAction(myeffect.SFX_lifetime or 0., function() DestroyEffect(effect) end)
+
                 effect = nil
             end
 
@@ -236,6 +254,10 @@ do
             end
 
             TimerStart(CreateTimer(), (myeffect.delay or 0.) * (myeffect.timescale or 1.), false, function()
+
+                if myeffect.shake_magnitude ~= nil then
+                    ShakeByCoords(x, y, myeffect.shake_magnitude, myeffect.shake_duration, myeffect.shake_distance)
+                end
 
                 if not myeffect.life_restored_from_hit or not myeffect.resource_restored_from_hit then
                     PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)

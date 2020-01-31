@@ -56,6 +56,9 @@ do
 
             SFX_used               = '',
             SFX_used_scale         = 1.,
+            SFX_inherit_angle      = false,
+            SFX_lifetime            = 0.,
+            SFX_bonus_z             = 0.,
 
             SFX_on_caster            = '',
             SFX_on_caster_point      = '',
@@ -64,10 +67,18 @@ do
             SFX_on_unit            = '',
             SFX_on_unit_point      = '',
             SFX_on_unit_scale      = 1.,
+
+            shake_magnitude = 0.,
+            shake_distance = 0.,
+            shake_duration = 0.,
+
             delay                  = 0.,
             hit_delay              = 0.,
             timescale              = 1.,
-            sound                  = nil
+
+            sound                  = nil,
+            sound_on_hit           = nil
+
         }
     end
 
@@ -549,6 +560,10 @@ do
             get_level_from_skill = "A00Q",
             level = {
                 [1] = {
+                    SFX_on_caster            = 'Spell\\TaurenAvatar.mdx',
+                    SFX_on_caster_point      = 'origin',
+                    SFX_on_caster_scale      = 1.,
+
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A00V', target_type = ON_SELF }
                     },
@@ -607,6 +622,10 @@ do
             level = {
                 [1] = {
                     max_targets = 1,
+                    sound = {
+                        pack = { "Sounds\\Spells\\chain_hit_1.wav", "Sounds\\Spells\\chain_hit_2.wav", "Sounds\\Spells\\chain_hit_3.wav", "Sounds\\Spells\\chain_hit_4.wav", "Sounds\\Spells\\chain_hit_5.wav" },
+                        volume = 115, cutoff = 1600.
+                    },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A013', target_type = ON_ENEMY }
                     },
@@ -616,6 +635,8 @@ do
         --==========================================--
         NewEffectTemplate('ECSL', {
             name = "cutting slash effect",
+            power_delta = 2,
+            power_delta_level = 1,
             get_level_from_skill = "A006",
             level = {
                 [1] = {
@@ -630,6 +651,15 @@ do
                     angle_window  = 35.,
                     force_from_caster_position = true,
                     max_targets = 300,
+                    SFX_used               = 'Spell\\Coup de Grace.mdx',
+                    SFX_used_scale         = 1.,
+                    SFX_bonus_z = 50.,
+                    SFX_inherit_angle = true,
+                    hit_delay = 0.3,
+                    sound_on_hit = {
+                        pack = { "Sounds\\Spell\\stab_1.wav", "Sounds\\Spell\\stab_2.wav", "Sounds\\Spell\\stab_3.wav", "Sounds\\Spell\\stab_4.wav", "Sounds\\Spell\\stab_5.wav", "Sounds\\Spell\\stab_6.wav" },
+                        volume = 100, cutoff = 1600.
+                    },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A014', target_type = ON_ENEMY }
                     },
@@ -662,6 +692,13 @@ do
             level = {
                 [1] = {
                     max_targets = 300,
+                    SFX_on_caster            = 'Abilities\\Spells\\Other\\HowlOfTerror\\HowlCaster.mdx',
+                    SFX_on_caster_point      = 'origin',
+                    SFX_on_caster_scale      = 1.,
+                    sound = {
+                        pack = { "Sounds\\Spells\\barbarian_howl_1.wav", "Sounds\\Spells\\barbarian_howl_2.wav" },
+                        volume = 100, cutoff = 1600.
+                    },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A00Y', target_type = ON_ENEMY }
                     },
