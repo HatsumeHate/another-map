@@ -329,7 +329,7 @@ do
 		})
 
 		ItemAddData('I011', {
-			NAME    = 'Клеймор',
+			NAME    = LOCALE_LIST[my_locale].STARTING_ITEM_NAME_2HSWORD,
 			TYPE = ITEM_TYPE_WEAPON,
 			SUBTYPE = GREATSWORD_WEAPON,
 			DAMAGE  = 27,
@@ -346,7 +346,7 @@ do
 		})
 
 		ItemAddData('I012', {
-			NAME    = 'Потертый посох',
+			NAME    = LOCALE_LIST[my_locale].STARTING_ITEM_NAME_STAFF,
 			TYPE = ITEM_TYPE_WEAPON,
 			SUBTYPE = STAFF_WEAPON,
 			DAMAGE  = 24,
@@ -364,7 +364,7 @@ do
 
 
 		ItemAddData('I00X', {
-			NAME    = 'Клепанная броня',
+			NAME    = LOCALE_LIST[my_locale].STARTING_ITEM_NAME_CHEST,
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = CHEST_ARMOR,
 			DEFENCE  = 25,
@@ -380,7 +380,7 @@ do
 		})
 
 		ItemAddData('I010', {
-			NAME    = 'Клепанные сапоги',
+			NAME    = LOCALE_LIST[my_locale].STARTING_ITEM_NAME_LEGS,
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = LEGS_ARMOR,
 			DEFENCE  = 18,
@@ -396,7 +396,7 @@ do
 		})
 
 		ItemAddData('I00Y', {
-			NAME    = 'Шлем',
+			NAME    = LOCALE_LIST[my_locale].STARTING_ITEM_NAME_HEAD,
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = HEAD_ARMOR,
 			DEFENCE  = 12,
@@ -412,7 +412,7 @@ do
 		})
 
 		ItemAddData('I00Z', {
-			NAME    = 'Стеганные рукавицы',
+			NAME    = LOCALE_LIST[my_locale].STARTING_ITEM_NAME_HANDS,
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = HANDS_ARMOR,
 			DEFENCE  = 15,
@@ -601,7 +601,7 @@ do
         })
 
 		ItemAddData('I00G', {
-			NAME    		   = 'Рубин',
+			NAME    		   = LOCALE_LIST[my_locale].GEM_RUBY,
 			TYPE    		   = ITEM_TYPE_GEM,
 			frame_texture      = "GUI\\BTNItem_Gem_Ruby.blp",
 			point_bonus 	   = {
@@ -617,7 +617,7 @@ do
 		})
 
 		ItemAddData('I00H', {
-			NAME    		   = 'Сапфир',
+			NAME    		   = LOCALE_LIST[my_locale].GEM_SAPPHIRE,
 			TYPE    		   = ITEM_TYPE_GEM,
 			frame_texture      = "GUI\\BTNItem_Gem_Sapphire.blp",
 			point_bonus 	   = {
@@ -633,7 +633,7 @@ do
 		})
 
 		ItemAddData('I00I', {
-			NAME    		   = 'Топаз',
+			NAME    		   = LOCALE_LIST[my_locale].GEM_TOPAZ,
 			TYPE    		   = ITEM_TYPE_GEM,
 			frame_texture      = "GUI\\BTNItem_Gem_Topaz.blp",
 			point_bonus 	   = {
@@ -649,7 +649,7 @@ do
 		})
 
 		ItemAddData('I009', {
-			NAME    		   = 'Янтарь',
+			NAME    		   = LOCALE_LIST[my_locale].GEM_AMBER,
 			TYPE    		   = ITEM_TYPE_GEM,
 			frame_texture      = "GUI\\BTNItem_Gem_Amber.blp",
 			point_bonus 	   = {
@@ -665,7 +665,7 @@ do
 		})
 
 		ItemAddData('I00B', {
-			NAME    		   = 'Аквамарин',
+			NAME    		   = LOCALE_LIST[my_locale].GEM_AQUAMARINE,
 			TYPE    		   = ITEM_TYPE_GEM,
 			frame_texture      = "GUI\\BTNItem_Gem_Aquamarine.blp",
 			point_bonus 	   = {
@@ -681,7 +681,7 @@ do
 		})
 
 		ItemAddData('I002', {
-			NAME    		   = 'Алмаз',
+			NAME    		   = LOCALE_LIST[my_locale].GEM_DIAMOND,
 			TYPE    		   = ITEM_TYPE_GEM,
 			frame_texture      = "GUI\\BTNItem_Gem_Diamond.blp",
 			point_bonus 	   = {
@@ -697,7 +697,7 @@ do
 		})
 
 		ItemAddData('I00A', {
-			NAME    		   = 'Аметист',
+			NAME    		   = LOCALE_LIST[my_locale].GEM_AMETHYST,
 			TYPE    		   = ITEM_TYPE_GEM,
 			frame_texture      = "GUI\\BTNItem_Gem_Amethyst.blp",
 			point_bonus 	   = {
@@ -713,7 +713,7 @@ do
 		})
 
 		ItemAddData('I00J', {
-			NAME    		   = 'Бирюза',
+			NAME    		   = LOCALE_LIST[my_locale].GEM_TURQUOISE,
 			TYPE    		   = ITEM_TYPE_GEM,
 			frame_texture      = "GUI\\BTNItem_Gem_Turquoise.blp",
 			point_bonus 	   = {
@@ -729,7 +729,7 @@ do
 		})
 
 		ItemAddData('I00C', {
-			NAME    		   = 'Изумруд',
+			NAME    		   = LOCALE_LIST[my_locale].GEM_EMERALD,
 			TYPE    		   = ITEM_TYPE_GEM,
 			frame_texture      = "GUI\\BTNItem_Gem_Emerald.blp",
 			point_bonus 	   = {
@@ -745,7 +745,7 @@ do
 		})
 
 		ItemAddData('I00E', {
-			NAME    		   = 'Малахит',
+			NAME    		   = LOCALE_LIST[my_locale].GEM_MALACHITE,
 			TYPE    		   = ITEM_TYPE_GEM,
 			frame_texture      = "GUI\\BTNItem_Gem_Malachite.blp",
 			point_bonus 	   = {
@@ -761,7 +761,7 @@ do
 		})
 
 		ItemAddData('I00D', {
-			NAME    		   = 'Нефрит',
+			NAME    		   = LOCALE_LIST[my_locale].GEM_JADE,
 			TYPE    		   = ITEM_TYPE_GEM,
 			frame_texture      = "GUI\\BTNItem_Gem_Jade.blp",
 			point_bonus 	   = {
@@ -777,7 +777,7 @@ do
 		})
 
 		ItemAddData('I00F', {
-			NAME    		   = 'Опал',
+			NAME    		   = LOCALE_LIST[my_locale].GEM_OPAL,
 			TYPE    		   = ITEM_TYPE_GEM,
 			frame_texture      = "GUI\\BTNItem_Gem_Opal.blp",
 			point_bonus 	   = {
@@ -794,60 +794,60 @@ do
 
 
 		ItemAddData('I003', {
-			NAME    		   = 'Зелье исцеления',
+			NAME    		   = LOCALE_LIST[my_locale].POTION_WEAK_HP_NAME_TEXT,
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredAApotionGS.blp",
-			item_description = "Восстанавливает 25%% здоровья",
+			item_description = LOCALE_LIST[my_locale].POTION_WEAK_HP_DESC_TEXT,
 			soundpack = {
 				drop = "Sound\\potionui.wav"
 			}
 		})
 
 		ItemAddData('I005', {
-			NAME    		   = 'Большое зелье исцеления',
+			NAME    		   = LOCALE_LIST[my_locale].POTION_HALF_HP_NAME_TEXT,
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredEApotionGS.blp",
-			item_description = "Восстанавливает 50%% здоровья",
+			item_description = LOCALE_LIST[my_locale].POTION_HALF_HP_DESC_TEXT,
 			soundpack = {
 				drop = "Sound\\potionui.wav"
 			}
 		})
 
 		ItemAddData('I004', {
-			NAME    		   = 'Великое зелье исцеления',
+			NAME    		   = LOCALE_LIST[my_locale].POTION_STRONG_HP_NAME_TEXT,
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredJApotionGS.blp",
-			item_description = "Восстанавливает 75%% здоровья",
+			item_description = LOCALE_LIST[my_locale].POTION_STRONG_HP_DESC_TEXT,
 			soundpack = {
 				drop = "Sound\\potionui.wav"
 			}
 		})
 
 		ItemAddData('I006', {
-			NAME    		   = 'Зелье маны',
+			NAME    		   = LOCALE_LIST[my_locale].POTION_WEAK_MP_NAME_TEXT,
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNblueAApotionGS.blp",
-			item_description = "Восстанавливает 25%% маны",
+			item_description = LOCALE_LIST[my_locale].POTION_WEAK_MP_DESC_TEXT,
 			soundpack = {
 				drop = "Sound\\potionui.wav"
 			}
 		})
 
 		ItemAddData('I007', {
-			NAME    		   = 'Большое зелье маны',
+			NAME    		   = LOCALE_LIST[my_locale].POTION_HALF_MP_NAME_TEXT,
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNblueEApotionGS.blp",
-			item_description = "Восстанавливает 50%% маны",
+			item_description = LOCALE_LIST[my_locale].POTION_HALF_MP_DESC_TEXT,
 			soundpack = {
 				drop = "Sound\\potionui.wav"
 			}
 		})
 
 		ItemAddData('I008', {
-			NAME    		   = 'Великое зелье маны',
+			NAME    		   = LOCALE_LIST[my_locale].POTION_STRONG_MP_NAME_TEXT,
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNblueJApotionGS.blp",
-			item_description = "Восстанавливает 75%% маны",
+			item_description = LOCALE_LIST[my_locale].POTION_STRONG_MP_DESC_TEXT,
 			soundpack = {
 				drop = "Sound\\potionui.wav"
 			}
@@ -888,6 +888,7 @@ do
 			TYPE    		   = ITEM_TYPE_SKILLBOOK,
 			frame_texture      = "Items\\Book\\BTNbook1fire .blp",
 			item_description = LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to = SORCERESS_CLASS,
 			skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_FIRE],
 			learn_effect = "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
 			soundpack = {
@@ -900,6 +901,7 @@ do
 			TYPE    		   = ITEM_TYPE_SKILLBOOK,
 			frame_texture      = "Items\\Book\\BTNbook1water .blp",
 			item_description = LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to = SORCERESS_CLASS,
 			skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_ICE],
 			learn_effect = "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
 			soundpack = {
@@ -912,6 +914,7 @@ do
 			TYPE    		   = ITEM_TYPE_SKILLBOOK,
 			frame_texture      = "Items\\Book\\BTNbook1wind .blp",
 			item_description = LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to = SORCERESS_CLASS,
 			skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_LIGHTNING],
 			learn_effect = "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
 			soundpack = {
@@ -924,8 +927,48 @@ do
 			TYPE    		   = ITEM_TYPE_SKILLBOOK,
 			frame_texture      = "Items\\Book\\BTNBK_Red_Book.blp",
 			item_description = LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to = SORCERESS_CLASS,
 			skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_ARCANE],
 			learn_effect = "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
+			soundpack = {
+				drop = "Sound\\book.wav"
+			}
+		})
+
+		ItemAddData('I015', {
+			NAME    		   = LOCALE_LIST[my_locale].SKILLBOOK_FIGHTING_MASTERY,
+			TYPE    		   = ITEM_TYPE_SKILLBOOK,
+			frame_texture      = "Items\\Book\\BTN_cr_BookNOADD.blp",
+			item_description = LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to = BARBARIAN_CLASS,
+			skill_category = CLASS_SKILL_LIST[BARBARIAN_CLASS][SKILL_CATEGORY_FIGHTING_MASTERY],
+			learn_effect = "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
+			soundpack = {
+				drop = "Sound\\book.wav"
+			}
+		})
+
+		ItemAddData('I016', {
+			NAME    		   = LOCALE_LIST[my_locale].SKILLBOOK_INNER_STRENGTH,
+			TYPE    		   = ITEM_TYPE_SKILLBOOK,
+			frame_texture      = "Items\\Book\\BTNRuneBook.BLP",
+			item_description = LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to = BARBARIAN_CLASS,
+			skill_category = CLASS_SKILL_LIST[BARBARIAN_CLASS][SKILL_CATEGORY_INNER_STRENGTH],
+			learn_effect = "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
+			soundpack = {
+				drop = "Sound\\book.wav"
+			}
+		})
+
+		ItemAddData('I017', {
+			NAME    		   = LOCALE_LIST[my_locale].SKILLBOOK_BATTLE_ADVANTAGE,
+			TYPE    		   = ITEM_TYPE_SKILLBOOK,
+			frame_texture      = "Items\\Book\\BTNSimpleBook1.BLP",
+			item_description = LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to = BARBARIAN_CLASS,
+			skill_category = CLASS_SKILL_LIST[BARBARIAN_CLASS][SKILL_CATEGORY_BATTLE_ADVANTAGE],
+			learn_effect = "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
 			soundpack = {
 				drop = "Sound\\book.wav"
 			}

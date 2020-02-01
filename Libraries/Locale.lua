@@ -164,6 +164,21 @@ do
             },
 
 
+            FEEDBACK_CLASSRESTRICTED = {
+                [BARBARIAN_CLASS] = {
+                    "Sounds\\Responses\\barbarian_classrestricted_1_ru.wav",
+                    "Sounds\\Responses\\barbarian_classrestricted_2_ru.wav",
+                    "Sounds\\Responses\\barbarian_classrestricted_3_ru.wav",
+                    "Sounds\\Responses\\barbarian_classrestricted_4_ru.wav",
+                },
+                [SORCERESS_CLASS] = {
+                    "Sounds\\Responses\\sorceress_classrestricted_1_ru.wav",
+                    "Sounds\\Responses\\sorceress_classrestricted_2_ru.wav",
+                    "Sounds\\Responses\\sorceress_classrestricted_3_ru.wav",
+                    "Sounds\\Responses\\sorceress_classrestricted_4_ru.wav",
+                }
+            },
+
             SKILL_PANEL_TOOLTIP_NAME = "Умения",
             SKILL_PANEL_TOOLTIP_DESCRIPTION = "Настройка и просмотр всех умений",
 
@@ -186,8 +201,23 @@ do
             SKILL_PANEL_LVL_TEXT = "Уровень: ",
             SKILL_PANEL_UNBIND = "Убрать",
 
+            FEEDBACK_MSG_NOSPACE = "В рюкзаке нет места",
+            FEEDBACK_MSG_CANTUSE = "Невозможно это использовать",
+            FEEDBACK_MSG_NOGOLD = "Недостаточно золота",
+            --FEEDBACK_MSG_ = "",
+
             INVENTORY_PANEL_TOOLTIP_NAME = "Инвентарь",
             INVENTORY_PANEL_TOOLTIP_DESCRIPTION =  "Содержит все ваши вещи и экипировку",
+
+            UI_TEXT_SELL = "Продать",
+            UI_TEXT_BUY = "Купить",
+            UI_TEXT_ENCHANT = "Вставить",
+            UI_TEXT_LEARN = "Изучить",
+            UI_TEXT_MOVE = "Переместить",
+            UI_TEXT_EQUIP = "Надеть",
+            UI_TEXT_DROP = "Выкинуть",
+            UI_TEXT_BELT_ON = "Закрепить",
+            UI_TEXT_BELT_OFF = "Открепить",
 
             DAMAGE_UI = "Урон: ",
             DAMAGE_TYPE_UI = "Тип урона: ",
@@ -379,6 +409,29 @@ do
             GENERIC_NECKLACE_NAME_8 = "рубиновая подвеска",
             GENERIC_NECKLACE_NAME_9 = "сапфировая подвеска",
 
+            STARTING_ITEM_NAME_2HSWORD = "Клеймор",
+            STARTING_ITEM_NAME_CHEST = "Клепанная броня",
+            STARTING_ITEM_NAME_HEAD = "Шлем",
+            STARTING_ITEM_NAME_HANDS = "Стеганные рукавицы",
+            STARTING_ITEM_NAME_LEGS = "Клепанные сапоги",
+            STARTING_ITEM_NAME_STAFF = "Потертый посох",
+            --STARTING_ITEM_NAME_ = "",
+
+
+            GEM_RUBY = 'Рубин',
+            GEM_SAPPHIRE = 'Сапфир',
+            GEM_TOPAZ = 'Топаз',
+            GEM_AMBER = 'Янтарь',
+            GEM_AQUAMARINE = 'Аквамарин',
+            GEM_DIAMOND = 'Алмаз',
+            GEM_AMETHYST = "Аметист",
+            GEM_TURQUOISE = 'Бирюза',
+            GEM_EMERALD = 'Изумруд',
+            GEM_MALACHITE = 'Малахит',
+            GEM_JADE = 'Нефрит',
+            GEM_OPAL = 'Опал',
+
+
             POTION_WEAK_HP_NAME_TEXT = "Зелье исцеления",
             POTION_HALF_HP_NAME_TEXT = "Большое зелье исцеления",
             POTION_STRONG_HP_NAME_TEXT = "Великое зелье исцеления",
@@ -408,8 +461,34 @@ do
             SKILLBOOK_LIGHTNING = "Книга молний",
             SKILLBOOK_ICE = "Книга льда",
             SKILLBOOK_ARCANE = "Книга тайн",
+            SKILLBOOK_FIGHTING_MASTERY = "Книга бойца",
+            SKILLBOOK_INNER_STRENGTH = "Книга сил",
+            SKILLBOOK_BATTLE_ADVANTAGE = "Книга превосходства",
 
             SKILLBOOK_TEXT = "Позволяет увеличить знания:",
+
+            SKILL_WARCRY = 'Боевой Клич',
+            SKILL_CUTTINGSLASH = 'Рассекающий Взмах',
+            SKILL_HARPOON = 'Гарпун',
+            SKILL_CRUSHINGBLOW = 'Сокрущающий Удар',
+            SKILL_WHIRLWIND = 'Вихрь',
+            SKILL_BERSERK = 'Берсерк',
+            SKILL_UPPERCUT = 'Апперкот',
+            SKILL_THROWKNIFE = 'Бросок Кинжала ',
+            SKILL_JUMP = 'Прыжок',
+            SKILL_SUMMONHYDRA = 'Призвать Гидру',
+            SKILL_ELEMENTALMASTERY = 'Мастерство Стихий',
+            SKILL_FOCUS = 'Сосредоточенность',
+            SKILL_FROSTARMOR = 'Ледяная Броня',
+            SKILL_LIGHTNINGBALL = 'Шаровая Молния',
+            SKILL_DISCHARGE = 'Разряд',
+            SKILL_METEOR = 'Метеор',
+            SKILL_TELEPORT = 'Телепорт',
+            SKILL_LIGHTNINGSTRIKE = 'Удар Молнии',
+            SKILL_FROSTORB = 'Ледяной Шар',
+            SKILL_FROSTBOLT = 'Ледяная Стрела',
+            SKILL_FIREBALL = 'Огненный Шар',
+            SKILL_FROSTNOVA = 'Кольцо Льда',
 
 
             ITEM_NAME_RAT_HUNTER = 'Охотник на крыс',
@@ -501,12 +580,13 @@ do
             BONUS_UNDEAD_DAMAG_PARAME = "Damage to undead",
 
 
-            ITEM_TYPE_WEAPON_NAME = "Weapon",
+            ITEM_TYPE_WEAPON_NAME     = "Weapon",
             ITEM_TYPE_ARMOR_NAME      = "Armor",
             ITEM_TYPE_JEWELRY_NAME    = "Jewelry",
             ITEM_TYPE_OFFHAND_NAME    = "Alternate",
             ITEM_TYPE_CONSUMABLE_NAME = "Consumable",
             ITEM_TYPE_GEM_NAME        = "Gem",
+            ITEM_TYPE_SKILLBOOK       = "Knowledge",
 
             BOW_WEAPON_NAME            = "Bow",
             BLUNT_WEAPON_NAME          = "Blunt",
@@ -589,6 +669,21 @@ do
                 }
             },
 
+            FEEDBACK_CLASSRESTRICTED = {
+                [BARBARIAN_CLASS] = {
+                    "Sounds\\Responses\\barbarian_classrestricted_1_us.wav",
+                    "Sounds\\Responses\\barbarian_classrestricted_2_us.wav",
+                    "Sounds\\Responses\\barbarian_classrestricted_3_us.wav",
+                    "Sounds\\Responses\\barbarian_classrestricted_4_us.wav",
+                },
+                [SORCERESS_CLASS] = {
+                    "Sounds\\Responses\\sorceress_classrestricted_1_us.wav",
+                    "Sounds\\Responses\\sorceress_classrestricted_2_us.wav",
+                    "Sounds\\Responses\\sorceress_classrestricted_3_us.wav",
+                    "Sounds\\Responses\\sorceress_classrestricted_4_us.wav",
+                }
+            },
+
             SKILL_PANEL_TOOLTIP_NAME = "Skills",
             SKILL_PANEL_TOOLTIP_DESCRIPTION = "Overlook and bind settings for all abilities.",
 
@@ -611,8 +706,22 @@ do
             SKILL_PANEL_LVL_TEXT = "Level: ",
             SKILL_PANEL_UNBIND = "Unbind",
 
+            FEEDBACK_MSG_NOSPACE = "Not enough space",
+            FEEDBACK_MSG_CANTUSE = "Can't use that",
+            FEEDBACK_MSG_NOGOLD = "Not enough gold",
+
             INVENTORY_PANEL_TOOLTIP_NAME = "Inventory",
             INVENTORY_PANEL_TOOLTIP_DESCRIPTION =  "Contains all of your items.",
+
+            UI_TEXT_SELL = "Sell",
+            UI_TEXT_BUY = "Buy",
+            UI_TEXT_ENCHANT = "Socket",
+            UI_TEXT_LEARN = "Learn",
+            UI_TEXT_MOVE = "Move",
+            UI_TEXT_EQUIP = "Equip",
+            UI_TEXT_DROP = "Drop",
+            UI_TEXT_BELT_ON = "Take on",
+            UI_TEXT_BELT_OFF = "Take off",
 
             DAMAGE_UI = "Damage: ",
             DAMAGE_TYPE_UI = "Damage Type: ",
@@ -814,6 +923,89 @@ do
             GENERIC_NECKLACE_NAME_9 = "sapphire pendant",
 
 
+            STARTING_ITEM_NAME_2HSWORD = "Claymore",
+            STARTING_ITEM_NAME_CHEST = "Riveted armor",
+            STARTING_ITEM_NAME_HEAD = "Helmet",
+            STARTING_ITEM_NAME_HANDS = "Quilted Gauntlets",
+            STARTING_ITEM_NAME_LEGS = "Riveted boots",
+            STARTING_ITEM_NAME_STAFF = "Worn staff",
+
+            GEM_RUBY = 'Ruby',
+            GEM_SAPPHIRE = 'Sapphire',
+            GEM_TOPAZ = 'Topaz',
+            GEM_AMBER = 'Abmer',
+            GEM_AQUAMARINE = 'Aquamarine',
+            GEM_DIAMOND = 'Diamond',
+            GEM_AMETHYST = "Amethyst",
+            GEM_TURQUOISE = 'Turquoise',
+            GEM_EMERALD = 'Emerald',
+            GEM_MALACHITE = 'Malachite',
+            GEM_JADE = 'Jade',
+            GEM_OPAL = 'Opal',
+
+
+            POTION_WEAK_HP_NAME_TEXT = "Health potion",
+            POTION_HALF_HP_NAME_TEXT = "Great health potion",
+            POTION_STRONG_HP_NAME_TEXT = "Large health potion",
+
+            POTION_WEAK_HP_DESC_TEXT = "Restoring 25%% of health",
+            POTION_HALF_HP_DESC_TEXT = "Restoring 50%% of health",
+            POTION_STRONG_HP_DESC_TEXT = "Restoring 75%% of health",
+
+            POTION_WEAK_MP_NAME_TEXT = "Mana potion",
+            POTION_HALF_MP_NAME_TEXT = "Great mana potion",
+            POTION_STRONG_MP_NAME_TEXT = "Large mana potion",
+
+            POTION_WEAK_MP_DESC_TEXT = "Restoring 25%% of mana",
+            POTION_HALF_MP_DESC_TEXT = "Restoring 50%% of mana",
+            POTION_STRONG_MP_DESC_TEXT = "Restoring 75%% of mana",
+
+            POTION_WEAK_MIX_NAME_TEXT = "Restoration potion",
+            POTION_HALF_MIX_NAME_TEXT = "Great restoration potion",
+            POTION_STRONG_MIX_NAME_TEXT = "Large restoration potion",
+
+            POTION_WEAK_MIX_DESC_TEXT = "Restoring 25%% of health and mana over time",
+            POTION_HALF_MIX_DESC_TEXT = "Restoring 50%% of health and mana over time",
+            POTION_STRONG_MIX_DESC_TEXT = "Restoring 75%% of health and mana over time",
+
+
+            SKILLBOOK_FIRE = "Book of fire",
+            SKILLBOOK_LIGHTNING = "Book of lightning",
+            SKILLBOOK_ICE = "Book of ice",
+            SKILLBOOK_ARCANE = "Book of arcane",
+            SKILLBOOK_FIGHTING_MASTERY = "Book of fighter",
+            SKILLBOOK_INNER_STRENGTH = "Book of strength",
+            SKILLBOOK_BATTLE_ADVANTAGE = "Book of superiority",
+
+            SKILLBOOK_TEXT = "Improving your knowledge:",
+
+
+            SKILL_WARCRY = 'Warcry',
+            SKILL_CUTTINGSLASH = 'Cutting Slash',
+            SKILL_HARPOON = 'Harpoon',
+            SKILL_CRUSHINGBLOW = 'Crushing Blow',
+            SKILL_WHIRLWIND = 'Whirlwind',
+            SKILL_BERSERK = 'BERSERK',
+            SKILL_UPPERCUT = 'Uppercut',
+            SKILL_THROWKNIFE = 'Throw Knife',
+            SKILL_JUMP = 'Jump',
+            SKILL_SUMMONHYDRA = 'Summon Hydra',
+            SKILL_ELEMENTALMASTERY = 'Elemental Mastery',
+            SKILL_FOCUS = 'Focus',
+            SKILL_FROSTARMOR = 'Frost Armor',
+            SKILL_LIGHTNINGBALL = 'Lightning Ball',
+            SKILL_DISCHARGE = 'Discharge',
+            SKILL_METEOR = 'Meteor',
+            SKILL_TELEPORT = 'Teleport',
+            SKILL_LIGHTNINGSTRIKE = 'Lightning Strike',
+            SKILL_FROSTORB = 'Frost Orb',
+            SKILL_FROSTBOLT = 'Frostbolt',
+            SKILL_FIREBALL = 'Fireball',
+            SKILL_FROSTNOVA = 'Frost Nova',
+            --SKILL_ = 'Summon',
+            
+            
+            
             ITEM_NAME_RAT_HUNTER = 'Rat Hunter',
             ITEM_SPEC_DESCRIPTION_RAT_HUNTER = "Even the rat-hunters had a legendary bows, which all rat hunters desired.",
 

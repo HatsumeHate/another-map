@@ -53,7 +53,7 @@ do
     function CreateHitnumber(text, source, victim, status)
         local tag = CreateTextTag()
         local time = 0.
-        local size = 6.
+        local size = 6.4
         local size_parabola = 1.1
         local x = GetUnitX(victim) + GetRandomReal(STATUS_OFFSET[status].x.min, STATUS_OFFSET[status].x.max)
         local y = GetUnitY(victim) + GetRandomReal(STATUS_OFFSET[status].y.min, STATUS_OFFSET[status].y.max)

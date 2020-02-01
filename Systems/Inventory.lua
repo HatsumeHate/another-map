@@ -43,31 +43,35 @@ do
 
 
     function Feedback_InventoryNoSpace(player)
-        SimError("В рюкзаке нет места", player-1)
+        SimError(LOCALE_LIST[my_locale].FEEDBACK_MSG_NOSPACE, player-1)
         PlayLocalSound(LOCALE_LIST[my_locale].FEEDBACK_BAG[GetUnitClass(PlayerHero[player])][GetRandomInt(1, 5)], player-1)
     end
 
 
+    function Feedback_CantUse(player)
+        SimError(LOCALE_LIST[my_locale].FEEDBACK_MSG_CANTUSE, player-1)
+        PlayLocalSound(LOCALE_LIST[my_locale].FEEDBACK_CLASSRESTRICTED[GetUnitClass(PlayerHero[player])][GetRandomInt(1, 4)], player-1)
+    end
 
 
     function UpdateEquipPointsWindow(player)
         local unit_data = GetUnitData(InventoryOwner[player])
 
-        for i = WEAPON_POINT, NECKLACE_POINT do
-            local button = ButtonList[GetHandleId(InventorySlots[UNIT_POINT_LIST[i]])]
+            for i = WEAPON_POINT, NECKLACE_POINT do
+                local button = ButtonList[GetHandleId(InventorySlots[UNIT_POINT_LIST[i]])]
 
-            if unit_data.equip_point[i] ~= nil and unit_data.equip_point[i].SUBTYPE ~= FIST_WEAPON then
-                local item_data = GetItemData(unit_data.equip_point[i].item)
-                button.item = item_data.item
-                BlzFrameSetTexture(button.image, item_data.frame_texture, 0, true)
-                FrameChangeTexture(button.button, item_data.frame_texture)
-            else
-                button.item = nil
-                BlzFrameSetTexture(button.image, button.original_texture, 0, true)
-                FrameChangeTexture(button.button, button.original_texture)
+                    if unit_data.equip_point[i] ~= nil and unit_data.equip_point[i].SUBTYPE ~= FIST_WEAPON then
+                        local item_data = GetItemData(unit_data.equip_point[i].item)
+                        button.item = item_data.item
+                        BlzFrameSetTexture(button.image, item_data.frame_texture, 0, true)
+                        FrameChangeTexture(button.button, item_data.frame_texture)
+                    else
+                        button.item = nil
+                        BlzFrameSetTexture(button.image, button.original_texture, 0, true)
+                        FrameChangeTexture(button.button, button.original_texture)
+                    end
+
             end
-
-        end
 
     end
 
@@ -91,6 +95,7 @@ do
 
                                     if button.sprite ~= nil then
                                         BlzDestroyFrame(button.sprite)
+                                        button.sprite = nil
                                     end
 
                                 RemoveCustomItem(button.item)
@@ -105,11 +110,9 @@ do
                                         button.sprite = nil
                                     elseif button.sprite == nil and IsItemInvulnerable(button.item) then
                                         button.sprite = BlzCreateFrameByType("SPRITE", "justAName", button.image, "WarCraftIIILogo", 0)
-
                                         BlzFrameSetPoint(button.sprite, FRAMEPOINT_BOTTOMLEFT, button.image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
                                         BlzFrameSetSize(button.sprite, 1., 1.)
                                         BlzFrameSetScale(button.sprite, 1.)
-
                                         BlzFrameSetModel(button.sprite, "selecter3.mdx", 0)
                                     end
 
@@ -124,9 +127,10 @@ do
                     FrameChangeTexture(button.button, button.original_texture)
                     BlzFrameSetVisible(button.charges_frame, false)
 
-                    if button.sprite ~= nil then
-                        BlzDestroyFrame(button.sprite)
-                    end
+                        if button.sprite ~= nil then
+                            BlzDestroyFrame(button.sprite)
+                            button.sprite = nil
+                        end
 
                 end
             end
@@ -214,46 +218,52 @@ do
     -- SELECTOION MODE =====================================================
 
     function RemoveSelectionFrames(player)
-        if PlayerMovingItem[player] ~= nil then
 
-            if ButtonList[PlayerMovingItem[player].selected_frame].sprite ~= nil then
-                BlzFrameSetEnable(ButtonList[PlayerMovingItem[player].selected_frame].sprite, true)
+            if PlayerMovingItem[player] ~= nil then
+
+                if ButtonList[PlayerMovingItem[player].selected_frame].sprite ~= nil then
+                    BlzFrameSetEnable(ButtonList[PlayerMovingItem[player].selected_frame].sprite, true)
+                end
+
+                BlzDestroyFrame(PlayerMovingItem[player].frame)
+                BlzDestroyFrame(PlayerMovingItem[player].selector_frame)
             end
 
-            BlzDestroyFrame(PlayerMovingItem[player].frame)
-            BlzDestroyFrame(PlayerMovingItem[player].selector_frame)
-        end
         PlayerMovingItem[player] = nil
     end
 
+
+
+    local SELECTION_MODE_MOVE = 1
+    local SELECTION_MODE_ENCHANT = 2
+
     local function StartSelectionMode(player, h, mode)
         local item_data = GetItemData(ButtonList[h].item)
-        PlayerMovingItem[player] = { frame = nil, selector_frame = nil, selected_frame = h, mode = mode }
 
-        PlayerMovingItem[player].selector_frame = BlzCreateFrameByType("SPRITE", "justAName", ButtonList[GetHandleId(InventorySlots[32])].image, "WarCraftIIILogo", 0)
-        BlzFrameSetPoint(PlayerMovingItem[player].selector_frame, FRAMEPOINT_BOTTOMLEFT, ButtonList[h].image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
-        BlzFrameSetSize(PlayerMovingItem[player].selector_frame, 1., 1.)
-        BlzFrameSetScale(PlayerMovingItem[player].selector_frame, 1.)
+            PlayerMovingItem[player] = { frame = nil, selector_frame = nil, selected_frame = h, mode = mode }
 
+            PlayerMovingItem[player].selector_frame = BlzCreateFrameByType("SPRITE", "justAName", ButtonList[GetHandleId(InventorySlots[32])].image, "WarCraftIIILogo", 0)
+            BlzFrameSetPoint(PlayerMovingItem[player].selector_frame, FRAMEPOINT_BOTTOMLEFT, ButtonList[h].image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
+            BlzFrameSetSize(PlayerMovingItem[player].selector_frame, 1., 1.)
+            BlzFrameSetScale(PlayerMovingItem[player].selector_frame, 1.)
 
-        if ButtonList[h].sprite ~= nil then
-            BlzFrameSetEnable(ButtonList[h].sprite, false)
-        end
+            if ButtonList[h].sprite ~= nil then BlzFrameSetEnable(ButtonList[h].sprite, false) end
 
-        PlayerMovingItem[player].frame = BlzCreateFrameByType("BACKDROP", "selection frame", PlayerMovingItem[player].selector_frame, "", 0)
-        BlzFrameSetTexture(PlayerMovingItem[player].frame, item_data.frame_texture, 0, true)
-        BlzFrameSetAllPoints(PlayerMovingItem[player].frame, ButtonList[h].image)
+            PlayerMovingItem[player].frame = BlzCreateFrameByType("BACKDROP", "selection frame", PlayerMovingItem[player].selector_frame, "", 0)
+            BlzFrameSetTexture(PlayerMovingItem[player].frame, item_data.frame_texture, 0, true)
+            BlzFrameSetAllPoints(PlayerMovingItem[player].frame, ButtonList[h].image)
 
-        if mode == 1 then
-            BlzFrameSetSize(PlayerMovingItem[player].frame, 0.041, 0.041)
-            BlzFrameSetModel(PlayerMovingItem[player].selector_frame, "selecter4.mdx", 0)
-        else
-            BlzFrameSetSize(PlayerMovingItem[player].frame, 0.035, 0.035)
-            BlzFrameSetModel(PlayerMovingItem[player].selector_frame, "selecter5.mdx", 0)
-        end
+                if mode == SELECTION_MODE_MOVE then
+                    BlzFrameSetSize(PlayerMovingItem[player].frame, 0.041, 0.041)
+                    BlzFrameSetModel(PlayerMovingItem[player].selector_frame, "selecter4.mdx", 0)
+                else
+                    BlzFrameSetSize(PlayerMovingItem[player].frame, 0.035, 0.035)
+                    BlzFrameSetModel(PlayerMovingItem[player].selector_frame, "selecter5.mdx", 0)
+                end
 
-        BlzFrameSetAlpha(PlayerMovingItem[player].frame, 175)
-        RemoveTooltip(player)
+            BlzFrameSetAlpha(PlayerMovingItem[player].frame, 175)
+            RemoveTooltip(player)
+
     end
 
 
@@ -345,14 +355,20 @@ do
     local function LearnBook(item, player)
         local item_data = GetItemData(item)
 
+            if item_data.restricted_to ~= GetUnitClass(PlayerHero[player]) then
+                Feedback_CantUse(player)
+                return
+            end
+
             DestroyEffect(AddSpecialEffectTarget(item_data.learn_effect, PlayerHero[player], "origin"))
 
             if not UnitAddMyAbility(PlayerHero[player], item_data.improving_skill) then
                 UnitAddAbilityLevel(PlayerHero[player], item_data.improving_skill, 1)
             end
 
-            DropItemFromInventory(player, item, true)
-            RemoveCustomItem(item)
+            RemoveItemFromInventory(player, item)
+            --DropItemFromInventory(player, item, true)
+            --RemoveCustomItem(item)
 
             if SkillPanelFrame[player].state then
                 UpdateSkillList(player)
@@ -367,6 +383,7 @@ do
             SetItemCharges(new_item, count)
         return new_item
     end
+
 
 
 
@@ -386,7 +403,7 @@ do
                     if item_data.TYPE == ITEM_TYPE_CONSUMABLE then
                         LockItemOnBelt(player, ButtonList[h])
                     elseif item_data.TYPE == ITEM_TYPE_GEM then
-                        StartSelectionMode(player, h, 2)
+                        StartSelectionMode(player, h, SELECTION_MODE_ENCHANT)
                     elseif item_data.TYPE == ITEM_TYPE_SKILLBOOK then
                         LearnBook(item_data.item, player)
                     else
@@ -402,7 +419,7 @@ do
                     CreatePlayerContextMenu(player, ButtonList[h].button, ButtonList[GetHandleId(InventorySlots[32])].image)
 
                     if ShopInFocus[player] ~= nil then
-                        AddContextOption(player, "Продать", function()
+                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_SELL, function()
                             if ShopInFocus[player] ~= nil then
 
                                 if GetItemCharges(ButtonList[h].item) > 1 then
@@ -427,28 +444,28 @@ do
                     end
 
                     if item_data.TYPE == ITEM_TYPE_GEM then
-                        AddContextOption(player, "Вставить", function()
-                            StartSelectionMode(player, h, 2)
+                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_ENCHANT, function()
+                            StartSelectionMode(player, h, SELECTION_MODE_ENCHANT)
                         end)
                     elseif item_data.TYPE == ITEM_TYPE_CONSUMABLE then
-                        AddContextOption(player, ButtonList[h].sprite ~= nil and "Открепить" or "Закрепить", function()
+                        AddContextOption(player, ButtonList[h].sprite ~= nil and LOCALE_LIST[my_locale].UI_TEXT_BELT_OFF or LOCALE_LIST[my_locale].UI_TEXT_BELT_ON, function()
                             LockItemOnBelt(player, ButtonList[h])
                         end)
                     elseif item_data.TYPE == ITEM_TYPE_SKILLBOOK then
-                        AddContextOption(player, "Изучить", function()
+                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_LEARN, function()
                             LearnBook(item_data.item, player)
                         end)
                     else
-                        AddContextOption(player, "Надеть", function()
+                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_EQUIP, function()
                             InteractWithItemInSlot(h, player)
                         end)
                     end
 
-                    AddContextOption(player, "Переместить", function()
-                        StartSelectionMode(player, h, 1)
+                    AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_MOVE, function()
+                        StartSelectionMode(player, h, SELECTION_MODE_MOVE)
                     end)
 
-                    AddContextOption(player, "Выкинуть", function()
+                    AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_DROP, function()
 
                         if item_data.soundpack ~= nil and item_data.soundpack.drop ~= nil then
                             AddSoundVolumeZ(item_data.soundpack.drop, GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]), BlzGetLocalUnitZ(PlayerHero[player]) + GetUnitFlyHeight(PlayerHero[player]), 127, 2200.)

@@ -9,7 +9,7 @@ do
     local function ApplySpecialEffectTarget(effect, target, point, scale)
         if effect ~= nil then
             local new_effect = AddSpecialEffectTarget(effect, target, point)
-            BlzSetSpecialEffectScale(new_effect, scale)
+            BlzSetSpecialEffectScale(new_effect, scale or 1.)
             DestroyEffect(new_effect)
         end
     end
@@ -34,36 +34,30 @@ do
         local damage_table = { range = 0., damage = 0, attribute = nil, damagetype = nil, targets = 1 }
 
         if weapon ~= nil then
-            damage_table.targets = weapon.MAX_TARGETS
-            damage_table.damage = unit_data.equip_point[WEAPON_POINT].DAMAGE
-            damage_table.attribute = unit_data.equip_point[WEAPON_POINT].ATTRIBUTE
-            damage_table.damagetype = unit_data.equip_point[WEAPON_POINT].DAMAGE_TYPE
+            damage_table.targets = weapon.MAX_TARGETS or 1
+            damage_table.damage = unit_data.equip_point[WEAPON_POINT].DAMAGE or 1
+            damage_table.attribute = unit_data.equip_point[WEAPON_POINT].ATTRIBUTE or PHYSICAL_ATTRIBUTE
+            damage_table.damagetype = unit_data.equip_point[WEAPON_POINT].DAMAGE_TYPE or nil
 
-            if damage_table.damagetype == DAMAGE_TYPE_PHYSICAL then
-                damage_table.damage = damage_table.damage + unit_data.stats[PHYSICAL_ATTACK].value
-            elseif damage_table.damagetype == DAMAGE_TYPE_MAGICAL then
-                damage_table.damage = damage_table.damage + unit_data.stats[MAGICAL_ATTACK].value
-            end
+            if damage_table.damagetype == DAMAGE_TYPE_PHYSICAL then damage_table.damage = damage_table.damage + unit_data.stats[PHYSICAL_ATTACK].value end
+            --elseif damage_table.damagetype == DAMAGE_TYPE_MAGICAL then damage_table.damage = damage_table.damage + unit_data.stats[MAGICAL_ATTACK].value end
 
-            damage_table.range = weapon.range
+            damage_table.range = weapon.range or 90.
         elseif effects ~= nil then
-            damage_table.targets = effects.max_targets
-            damage_table.damage = effects.power
-            damage_table.damagetype = effects.damage_type
+            damage_table.targets = effects.max_targets or 1
+            damage_table.damage = effects.power or 0
+            damage_table.damagetype = effects.damage_type or nil
 
             if effects.get_attack_bonus then
-                if damage_table.damagetype == DAMAGE_TYPE_PHYSICAL then
-                    damage_table.damage = damage_table.damage + unit_data.stats[PHYSICAL_ATTACK].value
-                elseif damage_table.damagetype == DAMAGE_TYPE_MAGICAL then
-                    damage_table.damage = damage_table.damage + unit_data.stats[MAGICAL_ATTACK].value
-                end
+                if damage_table.damagetype == DAMAGE_TYPE_PHYSICAL then damage_table.damage = damage_table.damage + unit_data.stats[PHYSICAL_ATTACK].value
+                elseif damage_table.damagetype == DAMAGE_TYPE_MAGICAL then damage_table.damage = damage_table.damage + unit_data.stats[MAGICAL_ATTACK].value end
             end
 
             if effects.attack_percent_bonus ~= nil then
                 damage_table.damage = damage_table.damage + (unit_data.equip_point[WEAPON_POINT].DAMAGE * effects.attack_percent_bonus)
             end
 
-            damage_table.attribute = effects.attribute
+            damage_table.attribute = effects.attribute or PHYSICAL_ATTRIBUTE
             damage_table.range = effects.area_of_effect ~= nil and effects.area_of_effect or missile.radius
         end
 
@@ -384,7 +378,7 @@ do
     ---@param angle real
     function ThrowMissile(from, target, missile, effects, start_x, start_y, end_x, end_y, angle)
         local unit_data = GetUnitData(from)
-        local m = GetMissileData(missile)
+        local m = GetMissileData(missile or "0000")
         local end_z
         local start_z
 
@@ -393,14 +387,11 @@ do
             start_z = GetZ(start_x, start_y) + m.start_z
         end
 
-        m.time = 0.
         local weapon
-
 
             if m == nil then
                 if unit_data.equip_point[WEAPON_POINT].missile ~= nil then
-                    weapon = {}
-                    MergeTables(weapon, unit_data.equip_point[WEAPON_POINT])
+                    weapon = MergeTables({}, unit_data.equip_point[WEAPON_POINT])
                     m = GetMissileData(unit_data.equip_point[WEAPON_POINT].missile)
                     end_z = GetZ(end_x, end_y) + m.end_z
                     start_z = GetZ(start_x, start_y) + m.start_z
@@ -410,6 +401,8 @@ do
             else
                 m = MergeTables({}, m)
             end
+
+        m.time = 0.
 
             if angle == 0. then angle = AngleBetweenXY_DEG(start_x, start_y, end_x, end_y) end
 

@@ -10,7 +10,7 @@ do
 
 
     function Feedback_NoGold(player)
-        SimError("Недостаточно золота", player-1)
+        SimError(LOCALE_LIST[my_locale].FEEDBACK_MSG_NOGOLD, player-1)
         PlayLocalSound(LOCALE_LIST[my_locale].FEEDBACK_GOLD[GetUnitClass(PlayerHero[player])][GetRandomInt(1, 5)], player-1)
     end
 
@@ -82,7 +82,7 @@ do
 
             if ButtonList[h].item ~= nil then
                 CreatePlayerContextMenu(player, ButtonList[h].button, ButtonList[GetHandleId(ShopFrame[player].slot[32])].image)
-                AddContextOption(player, "Купить", function()
+                AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_BUY, function()
 
                     if GetItemCharges(ButtonList[h].item) > 1 then
                         CreateSlider(player, ButtonList[h], ButtonList[GetHandleId(ShopFrame[player].slot[32])].image, function()

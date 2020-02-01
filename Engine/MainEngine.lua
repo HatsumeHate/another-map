@@ -120,7 +120,7 @@ do
 
         else
 
-            if direct and victim.equip_point[OFFHAND_POINT] ~= nil and victim.equip_point[OFFHAND_POINT].SUBTYPE == SHIELD_OFFHAND then
+            if direct and (damage_type ~= nil and damage_type == DAMAGE_TYPE_PHYSICAL) and (victim.equip_point[OFFHAND_POINT] ~= nil and victim.equip_point[OFFHAND_POINT].SUBTYPE == SHIELD_OFFHAND) then
                 local block_chance = victim.stats[BLOCK_CHANCE].value
 
                 if block_chance > MAX_BLOCK_CHANCE then block_chance = MAX_BLOCK_CHANCE end
@@ -210,8 +210,11 @@ do
                     local target =  GetTriggerUnit()
 
                     if data.equip_point[WEAPON_POINT].ranged then
-                        ThrowMissile(data.Owner, target, data.equip_point[WEAPON_POINT].missile, nil, GetUnitX(data.Owner), GetUnitY(data.Owner), GetUnitX(target), GetUnitY(target), 0.)
+                        ThrowMissile(data.Owner, target, nil, nil, GetUnitX(data.Owner), GetUnitY(data.Owner), GetUnitX(target), GetUnitY(target), 0.)
                     else
+                        local bonus_damage = 0
+                        if data.equip_point[WEAPON_POINT].DAMAGE_TYPE == DAMAGE_TYPE_PHYSICAL then bonus_damage = data.stats[PHYSICAL_ATTACK].value end
+
                         if data.equip_point[WEAPON_POINT].MAX_TARGETS > 1 then
                             local enemy_group = CreateGroup()
                             local facing = GetUnitFacing(data.Owner)
@@ -227,8 +230,7 @@ do
                                         local picked = BlzGroupUnitAt(enemy_group, index)
                                         if IsUnitEnemy(picked, player) then
                                             if GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and IsAngleInFace(data.Owner, data.equip_point[WEAPON_POINT].ANGLE, GetUnitX(picked), GetUnitY(picked), false) then
-                                                DamageUnit(data.Owner, picked, data.equip_point[WEAPON_POINT].DAMAGE + data.stats[PHYSICAL_ATTACK].value,
-                                                        data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, true, nil)
+                                                DamageUnit(data.Owner, picked, data.equip_point[WEAPON_POINT].DAMAGE + bonus_damage, data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, true, nil)
                                             end
                                         end
                                     end
@@ -236,8 +238,8 @@ do
                             GroupClear(enemy_group)
                             DestroyGroup(enemy_group)
                         else
-                            DamageUnit(data.Owner, GetTriggerUnit(), data.equip_point[WEAPON_POINT].DAMAGE + data.stats[PHYSICAL_ATTACK].value,
-                                    data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, true, nil)
+                            --print(bonus_damage)
+                            DamageUnit(data.Owner, GetTriggerUnit(), data.equip_point[WEAPON_POINT].DAMAGE + bonus_damage, data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, true, nil)
                         end
 
                     end

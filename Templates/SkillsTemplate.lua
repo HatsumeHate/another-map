@@ -242,7 +242,7 @@
         })
         --============================================--
         NewSkillData('A003', {
-            name            = "frostbolt skill",
+            name            = LOCALE_LIST[my_locale].SKILL_FROSTBOLT,
             icon            = "Spell\\BTNice-sky-1.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
@@ -268,7 +268,7 @@
         })
         --============================================--
         NewSkillData('A001', {
-            name            = "frost nova skill",
+            name            = LOCALE_LIST[my_locale].SKILL_FROSTNOVA,
             icon            = "Spell\\BTNCRFrostShock.blp",
             activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
@@ -292,7 +292,7 @@
         })
         --============================================--
         NewSkillData('A00D', {
-            name            = "fireball skill",
+            name            = LOCALE_LIST[my_locale].SKILL_FIREBALL,
             icon            = "Spell\\BTNFlameLance.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
@@ -317,7 +317,7 @@
         })
         --============================================--
         NewSkillData('A005', {
-            name            = "frost orb skill",
+            name            = LOCALE_LIST[my_locale].SKILL_FROSTORB,
             icon            = "Spell\\BTNOrbOfFrost2.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
@@ -342,7 +342,7 @@
         })
         --============================================--
         NewSkillData('A00M', {
-            name            = "lightning strike skill",
+            name            = LOCALE_LIST[my_locale].SKILL_LIGHTNINGSTRIKE,
             icon            = "Spell\\BTNThunderStorm.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
@@ -367,7 +367,7 @@
         })
         --============================================--
         NewSkillData('A00L', {
-            name            = "sorceress teleport skill",
+            name            = LOCALE_LIST[my_locale].SKILL_TELEPORT,
             icon            = "Spell\\BTNBlink_V2.blp",
             activation_type = POINT_CAST,
             type            = SKILL_UNIQUE,
@@ -396,7 +396,7 @@
         })
         --============================================--
         NewSkillData('A00F', {
-            name            = "meteor skill",
+            name            = LOCALE_LIST[my_locale].SKILL_METEOR,
             icon            = "Spell\\BTNInferno.BLP",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
@@ -417,7 +417,7 @@
         })
         --============================================--
         NewSkillData('A00J', {
-            name            = "discharge skill",
+            name            = LOCALE_LIST[my_locale].SKILL_DISCHARGE,
             icon            = "Spell\\BTNSparkFlare.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
@@ -441,7 +441,7 @@
         })
         --============================================--
         NewSkillData('A00K', {
-            name            = "lightning ball skill",
+            name            = LOCALE_LIST[my_locale].SKILL_LIGHTNINGBALL,
             icon            = "Spell\\BTNLightningOrb.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
@@ -466,7 +466,7 @@
         })
         --============================================--
         NewSkillData('A00N', {
-            name            = "focus skill",
+            name            = LOCALE_LIST[my_locale].SKILL_FOCUS,
             icon            = "Spell\\BTN_ArcaneProtection.blp",
             activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
@@ -486,7 +486,7 @@
         })
         --============================================--
         NewSkillData('A00E', {
-            name            = "frost armor skill",
+            name            = LOCALE_LIST[my_locale].SKILL_FROSTARMOR,
             icon            = "Spell\\BTNCloakOfFrost.blp",
             activation_type = SELF_CAST,
             type            = SKILL_UNIQUE,
@@ -506,7 +506,7 @@
         })
         --============================================--
         NewSkillData('A00H', {
-            name            = "elemental mastery skill",
+            name            = LOCALE_LIST[my_locale].SKILL_ELEMENTALMASTERY,
             icon            = "Spell\\BTN_cr_Dark Arts.blp",
             activation_type = SELF_CAST,
             type            = SKILL_UNIQUE,
@@ -526,10 +526,10 @@
         })
         --============================================--
         NewSkillData('A00I', {
-            name            = "hydra skill",
+            name            = LOCALE_LIST[my_locale].SKILL_SUMMONHYDRA,
             icon            = "Spell\\BTNGlaiveCrit.blp",
             activation_type = POINT_CAST,
-            type            = SKILL_UNIQUE,
+            type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_FIRE,
 
             level = {
@@ -549,7 +549,7 @@
         })
         --============================================--
         NewSkillData('A00O', {
-            name            = "barbarian jump skill",
+            name            = LOCALE_LIST[my_locale].SKILL_JUMP,
             icon            = "Spell\\BTN_cr_CarA2.blp",
             activation_type = POINT_CAST,
             type            = SKILL_UNIQUE,
@@ -569,7 +569,7 @@
         })
         --============================================--
         NewSkillData('A00Z', {
-            name            = "throwing knife skill",
+            name            = LOCALE_LIST[my_locale].SKILL_THROWKNIFE,
             icon            = "Spell\\BTN_cr_VeeR1.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
@@ -591,7 +591,7 @@
         })
         --============================================--
         NewSkillData('A00B', {
-            name            = "uppercut skill",
+            name            = LOCALE_LIST[my_locale].SKILL_UPPERCUT,
             icon            = "Spell\\BTNContusing Punch.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
@@ -612,7 +612,7 @@
         })
         --============================================--
         NewSkillData('A00Q', {
-            name            = "berserk skill",
+            name            = LOCALE_LIST[my_locale].SKILL_BERSERK,
             icon            = "Spell\\BTN_cr_CarA10.blp",
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
@@ -632,7 +632,7 @@
         })
         --============================================--
         NewSkillData('A010', {
-            name            = "whirlwind skill",
+            name            = LOCALE_LIST[my_locale].SKILL_WHIRLWIND,
             icon            = "Spell\\BTNHot Wirlwind.blp",
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
@@ -651,7 +651,7 @@
         })
         --============================================--
         NewSkillData('A007', {
-            name            = "crushing strike skill",
+            name            = LOCALE_LIST[my_locale].SKILL_CRUSHINGBLOW,
             icon            = "Spell\\BTNBreakingSmash.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
@@ -667,12 +667,15 @@
                     animation_point     = 0.6,
                     animation_backswing = 0.3,
                     animation_scale     = 0.7,
+                    effect_on_caster        = "Spell\\Sweep_TeamColor_Medium.mdx",
+                    effect_on_caster_point  = 'Weapon L',
+                    effect_on_caster_scale  = 1.,
                 }
             }
         })
         --============================================--
         NewSkillData('A00A', {
-            name            = "chain skill",
+            name            = LOCALE_LIST[my_locale].SKILL_HARPOON,
             icon            = "Spell\\BTNHook.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
@@ -693,7 +696,7 @@
         })
         --============================================--
         NewSkillData('A006', {
-            name            = "cutting slash skill",
+            name            = LOCALE_LIST[my_locale].SKILL_CUTTINGSLASH,
             icon            = "Spell\\BTNGlaiveCrit.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
@@ -717,7 +720,7 @@
         })
         --============================================--
         NewSkillData('A00C', {
-            name            = "warcry skill",
+            name            = LOCALE_LIST[my_locale].SKILL_WARCRY,
             icon            = "Spell\\BTNWarCry.blp",
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,

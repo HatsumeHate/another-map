@@ -12,15 +12,11 @@ do
         local btn
 
             if ShopFrame[player].state ~= nil and ShopFrame[player].state then --BlzFrameIsVisible(ShopFrame[player].main_frame) then
-                print("shop")
                 btn = GetButtonData(ShopFrame[player].slot[32])
                 frame = BlzFrameGetText(btn.charges_text_frame) ~= "0" and btn.charges_text_frame or btn.image
             elseif SkillPanelFrame[player].state ~= nil and SkillPanelFrame[player].state then
-                print("skill")
                 frame = SkillPanelFrame[player].slider
-                print("????")
             elseif PlayerInventoryFrameState[player] ~= nil and PlayerInventoryFrameState[player] then -- BlzFrameIsVisible(PlayerInventoryFrame[player]) then
-                print("inventory")
                 btn = GetButtonData(InventorySlots[32])
                 frame = BlzFrameGetText(btn.charges_text_frame) ~= "0" and btn.charges_text_frame or btn.image
             end

@@ -3,7 +3,7 @@ do
     MissileList = {}
 
     function GetMissileData(id)
-        return MissileList[FourCC(id)]
+        return MissileList[FourCC(id)] or nil
     end
 
 
@@ -125,6 +125,107 @@ do
             full_distance = true
         })
 
+        --==============================================--
+        NewMissileTemplate('MSKA', {
+            name = "skeleton archer",
+            model = "Abilities\\Weapons\\Arrow\\ArrowMissile.mdx",
+            max_distance = 900.,
+            radius = 50.,
+            speed = 800.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.2,
+            ignore_terrain = false,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MSKM', {
+            name = "skeleton mage",
+            model = "Abilities\\Weapons\\SkeletalMageMissile\\SkeletalMageMissile.mdx",
+            max_distance = 1000.,
+            radius = 55.,
+            speed = 600.,
+            start_z = 60.,
+            end_z = 60.,
+            arc = 0.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MVWS', {
+            name = "void walker small",
+            model = "Abilities\\Weapons\\VoidWalkerMissile\\VoidWalkerMissile.mdx",
+            max_distance = 1000.,
+            radius = 55.,
+            speed = 600.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.,
+            scale = 0.85,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MVWM', {
+            name = "void walker normal",
+            model = "Abilities\\Weapons\\VoidWalkerMissile\\VoidWalkerMissile.mdx",
+            max_distance = 1000.,
+            radius = 55.,
+            speed = 600.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MNCR', {
+            name = "necromancer missile",
+            model = "Abilities\\Weapons\\NecromancerMissile\\NecromancerMissile.mdx",
+            max_distance = 1000.,
+            radius = 55.,
+            speed = 750.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MBNS', {
+            name = "bashee minor missile",
+            model = "Abilities\\Weapons\\BansheeMissile\\BansheeMissile.mdx",
+            max_distance = 1000.,
+            radius = 55.,
+            speed = 670.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MSCB', {
+            name = "succubus missile",
+            model = "Abilities\\Weapons\\VengeanceMissile\\VengeanceMissile.mdx",
+            max_distance = 1000.,
+            radius = 57.,
+            speed = 370.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.,
+            scale = 1.1,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
         NewMissileTemplate('MFRB', {
             name = "frostbolt missile",
             model = "Spell\\Blizzard II Missile.mdx",
