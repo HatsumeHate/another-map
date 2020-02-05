@@ -392,7 +392,7 @@ do
             if m == nil then
                 if unit_data.equip_point[WEAPON_POINT].missile ~= nil then
                     weapon = MergeTables({}, unit_data.equip_point[WEAPON_POINT])
-                    m = GetMissileData(unit_data.equip_point[WEAPON_POINT].missile)
+                    m = MergeTables({}, GetMissileData(unit_data.equip_point[WEAPON_POINT].missile))
                     end_z = GetZ(end_x, end_y) + m.end_z
                     start_z = GetZ(start_x, start_y) + m.start_z
                 else

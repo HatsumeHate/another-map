@@ -71,8 +71,9 @@ do
             MP_PER_HIT_PARAM   = 'Ресурса за атаку',
 
             BONUS_DEMON_DAMAGE_PARAM = "Урон демонам",
-            BONUS_UNDEAD_DAMAG_PARAME = "Урон нежити",
-
+            BONUS_UNDEAD_DAMAGE_PARAM = "Урон нежити",
+            BONUS_HUMAN_DAMAGE_PARAM = "Урон людям",
+            BONUS_BEAST_DAMAGE_PARAM = "Урон зверям",
 
             ITEM_TYPE_WEAPON_NAME     = "Оружие",
             ITEM_TYPE_ARMOR_NAME      = "Броня",
@@ -110,8 +111,8 @@ do
             ARCANE_ATTRIBUTE_NAME       = "Тайна",
             DARKNESS_ATTRIBUTE_NAME     = "Тьма",
             HOLY_ATTRIBUTE_NAME         = "Свет",
-            
-            
+
+
             FEEDBACK_GOLD = {
                 [BARBARIAN_CLASS] = {
                     "Sounds\\Responses\\barbarian_gold_1_ru.wav",
@@ -145,7 +146,7 @@ do
                     "Sounds\\Responses\\sorceress_healing_5_ru.wav",
                 }
             },
-            
+
             FEEDBACK_BAG = {
                 [BARBARIAN_CLASS] = {
                     "Sounds\\Responses\\barbarian_bag_1_ru.wav",
@@ -516,6 +517,41 @@ do
 
             ITEM_NAME_SMORC_PICKAXE = "Кирка Сморка",
             ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE = "Легенды гласят, что шахтёр Сморк наповал косил ей врагов",
+
+
+
+            GENERATED_TOOLTIP = "урона от атаки",
+
+            [FourCC("A007")] = {
+                bind = "Сильный удар наносящий @e!ECRH.dmg# типа @e!ECRH.atr# в секторе перед собой. Поражает эффектом *Сокрушение* снижающим уязвимость к физическому урону на @b!A00W.va1# и снижающим скорость атаки на @b!A00W.va2# на @b!A00W.time# сек.",
+            },
+            [FourCC("A00C")] = {
+                bind = "Варвар испускает в радиусе @e!EWCR.aoe# ед. крик который снижает атаку врагов на @b!A00Y.va1# и скорость их перемещения на @b!A00Y.va3# ед.",
+            },
+            [FourCC("A006")] = {
+                bind = "Молниеносный удар наносящий @e!ECSL.dmg# типа @e!ECSL.atr# в секторе перед собой. Враги начинают кровоточить получая @e!ECSP.dmg# типа @e!ECSP.atr#",
+            },
+            [FourCC("A00A")] = {
+                bind = "Запускает цепь на расстояние @s!A00A.rng#, притягивая первого врага.",
+            },
+            [FourCC("A010")] = {
+                bind = "Варвар образует яростный вихрь безумно вращаясь, нанося @e!EWHW.dmg# типа @e!EWHW.atr# 3 раза в секунду вокруг себя. При этом постоянно потребляется 9 маны в сек.",
+            },
+            [FourCC("A00Q")] = {
+                bind = "Впадает в ярость, увеличивая свою атаку на @b!A00V.va1#, сопротивлению контролю на @b!A00V.va2# и скорость бега на @b!A00V.va3# в течении @b!A00V.time# сек.",
+            },
+            [FourCC("A00B")] = {
+                bind = "Удар наносящий @e!EUPP.dmg# типа @e!EUPP.atr# и отталкивающий врагов, после чего они оглушаются на @b!A012.time# сек.",
+            },
+            [FourCC("A00Z")] = {
+                bind = "Бросает кинжал на расстояние @s!A00Z.rng#, поражающий первого противника, наносит @e!ETHK.dmg# типа @e!ETHK.atr#. Имеет повышенные шансы на критический урон (+@e!ETHK.bcc#).",
+            },
+            [FourCC("A00O")] = {
+                bind = "Прыжок, позволяющий переместиться на расстояние до @s!A00O.rng#.",
+            },
+
+
+
         },
         ["enUS"] = {
             BLOCK_TEXT = "Block ",
@@ -577,7 +613,9 @@ do
             MP_PER_HIT_PARAM   = 'Resource per hit',
 
             BONUS_DEMON_DAMAGE_PARAM = "Damage to demons",
-            BONUS_UNDEAD_DAMAG_PARAME = "Damage to undead",
+            BONUS_UNDEAD_DAMAGE_PARAM = "Damage to undead",
+            BONUS_HUMAN_DAMAGE_PARAM = "Damage to humans",
+            BONUS_BEAST_DAMAGE_PARAM = "Damage to beasts",
 
 
             ITEM_TYPE_WEAPON_NAME     = "Weapon",
@@ -734,7 +772,7 @@ do
 
 
             STAT_PANEL_TOOLTIP_NAME = "Stats",
-            STAT_PANEL_TOOLTIP_DESCRIPTION =  "Increasing and monitoring of various stats",
+            STAT_PANEL_TOOLTIP_DESCRIPTION =  "Manage and overview your stats",
 
             STAT_PANEL_STR = "STR: ",
             STAT_PANEL_INT = "INT: ",

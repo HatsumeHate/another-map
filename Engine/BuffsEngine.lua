@@ -172,6 +172,12 @@ do
         return false
     end
 
+
+    RegisterTestCommand("apply", function ()
+        ApplyBuff(PlayerHero[1], PlayerHero[1], "A00W", 1)
+    end)
+
+
     ---@param target unit
     ---@param buff_id integer
     ---@param lvl integer

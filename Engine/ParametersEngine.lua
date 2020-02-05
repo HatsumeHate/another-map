@@ -61,6 +61,8 @@ do
 
 	BONUS_DEMON_DAMAGE = 45
 	BONUS_UNDEAD_DAMAGE = 46
+	BONUS_BEAST_DAMAGE = 47
+	BONUS_HUMAN_DAMAGE = 48
 
 
 
@@ -193,11 +195,13 @@ do
             local v = value
 			value =  S2I(R2S((value - 1.) * 100.)) .. "%%"
 
-				if v > 0 then
+				if v >= 1. then
 					value = "+" .. value
+				else
+					value = math.abs(value)
 				end
 
-        elseif value > 0 then
+        else
 			local special = ""
             local vector = "+"
 
@@ -216,6 +220,7 @@ do
 
 			if value < 0 then
 				vector = ""
+				value = math.abs(value)
 			end
 
 			value = vector .. value .. special
@@ -504,6 +509,16 @@ do
 		---@param data table
 		[BONUS_UNDEAD_DAMAGE] = function(data)
 			data.stats[BONUS_UNDEAD_DAMAGE].value = data.stats[BONUS_UNDEAD_DAMAGE].bonus
+		end,
+
+		---@param data table
+		[BONUS_BEAST_DAMAGE] = function(data)
+			data.stats[BONUS_BEAST_DAMAGE].value = data.stats[BONUS_BEAST_DAMAGE].bonus
+		end,
+
+		---@param data table
+		[BONUS_HUMAN_DAMAGE] = function(data)
+			data.stats[BONUS_HUMAN_DAMAGE].value = data.stats[BONUS_HUMAN_DAMAGE].bonus
 		end
 
 	}
@@ -657,7 +672,9 @@ do
 			[MP_PER_HIT]   = LOCALE_LIST[my_locale].MP_PER_HIT_PARAM,
 
 			[BONUS_DEMON_DAMAGE]   = LOCALE_LIST[my_locale].BONUS_DEMON_DAMAGE_PARAM,
-			[BONUS_UNDEAD_DAMAGE]   = LOCALE_LIST[my_locale].BONUS_UNDEAD_DAMAG_PARAME,
+			[BONUS_UNDEAD_DAMAGE]   = LOCALE_LIST[my_locale].BONUS_UNDEAD_DAMAGE_PARAM,
+			[BONUS_BEAST_DAMAGE]   = LOCALE_LIST[my_locale].BONUS_BEAST_DAMAGE_PARAM,
+			[BONUS_HUMAN_DAMAGE]   = LOCALE_LIST[my_locale].BONUS_HUMAN_DAMAGE_PARAM,
 		}
 	end
 

@@ -8,6 +8,8 @@ do
             UnitRemoveAbility(unit, FourCC('Abun'))
             AddUnitAnimationProperties(unit, "alternate", false)
             PauseTimer(unit_data.action_timer)
+            DestroyEffect(unit_data.weapon_sfx_right)
+            DestroyEffect(unit_data.weapon_sfx_left)
             DestroyLoopingSound(unit_data.looping_sound, 0.2)
             SpellBackswing(unit)
             unit_data.channeled_destructor = nil
@@ -29,6 +31,9 @@ do
             UnitAddAbility(unit, FourCC('Abun'))
 
             unit_data.looping_sound = AddLoopingSoundOnUnit({"Sounds\\Spell\\whirlwind_1.wav", "Sounds\\Spell\\whirlwind_2.wav", "Sounds\\Spell\\whirlwind_3.wav", "Sounds\\Spell\\whirlwind_4.wav"}, unit, 200, 200, -0.15, 100, 1700.)
+            unit_data.weapon_sfx_right = AddSpecialEffectTarget("Spell\\Sweep_TeamColor_Medium.mdx", unit, "weapon right")
+            unit_data.weapon_sfx_left = AddSpecialEffectTarget("Spell\\Sweep_TeamColor_Medium.mdx", unit, "weapon left")
+
 
             TimerStart(unit_data.action_timer, 0.33, true, function()
                 local mp = GetUnitState(unit, UNIT_STATE_MANA)
@@ -84,7 +89,6 @@ do
                         PullUnitToUnit(GetEnumUnit(), caster, 700., 125., 15, "EBCH")
                     end)
                     target = BlzGroupUnitAt(unit_data.chain.group, BlzGroupGetSize(unit_data.chain.group) - 1)
-                    print(GetUnitName(target))
                     missile = nil
                 else
                     for i = 1, 25 do

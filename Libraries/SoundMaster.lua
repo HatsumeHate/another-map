@@ -258,7 +258,7 @@ do
     ---@param vol integer
     ---@param cutoff real
     function AddSoundVolumeZ(s, x, y, z, vol, cutoff)
-        local snd = CreateSound(s, false, true, false, 10, 10, "CombatSoundsEAX") --CombatSoundsEAX
+        local snd = CreateSound(s, false, true, true, 10, 10, "CombatSoundsEAX") --CombatSoundsEAX
 
             ConfigureSound(snd, vol or 128, cutoff or 2100.)
             SetSoundPosition(snd, x, y, z)
@@ -276,7 +276,7 @@ do
     ---@param cutoff real
     ---@param player integer
     function AddSoundForPlayerVolumeZ(s, x, y, z, vol, cutoff, player)
-        local snd = CreateSound(s, false, true, false, 10, 10, "CombatSoundsEAX") --CombatSoundsEAX
+        local snd = CreateSound(s, false, true, true, 10, 10, "CombatSoundsEAX") --CombatSoundsEAX
 
             SetSoundChannel(snd, 5)
             if GetLocalPlayer() == Player(player) then SetSoundVolume(snd, vol or 128) else SetSoundVolume(snd, 0) end

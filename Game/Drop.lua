@@ -30,7 +30,7 @@ do
                     if GetRandomReal(0., 100.) <= current_item.chance then
 
                         DelayAction(current_offset + time_offset, function()
-                            local my_item = CreateCustomItem(current_item.id, GetUnitX(unit) + GetRandomReal(-45., 45), GetUnitY(unit) + GetRandomReal(-45., 45))
+                            local my_item = CreateCustomItem(current_item.id, GetUnitX(unit) + GetRandomReal(-45., 45), GetUnitY(unit) + GetRandomReal(-45., 45), true)
 
                                 if current_item.generate ~= nil and current_item.generate then
                                     local quality = COMMON_ITEM
@@ -54,7 +54,7 @@ do
 
                         end)
 
-                        time_offset = time_offset + 0.117
+                        time_offset = time_offset + 0.347
 
                         max = max - 1
                         if max <= 0 then break end

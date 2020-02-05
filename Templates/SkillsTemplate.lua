@@ -82,6 +82,7 @@
     end
 
 
+    ---@param id integer
     function GetSkillData(id)
         return SkillsData[id]
     end
@@ -260,7 +261,7 @@
                     animation_backswing = 0.3,
                     animation_scale     = 0.4,
                     effect_on_caster        = "Spell\\Ice Low.mdx",
-                    effect_on_caster_point  = 'Hand Right',
+                    effect_on_caster_point  = 'hand right',
                     effect_on_caster_scale  = 1.,
                 },
             }
@@ -284,7 +285,7 @@
                     animation_backswing = 0.633,
                     animation_scale     = 0.3,
                     effect_on_caster        = "Spell\\Ice Low.mdx",
-                    effect_on_caster_point  = 'Hand Right',
+                    effect_on_caster_point  = 'hand right',
                     effect_on_caster_scale  = 1.,
                 }
             }
@@ -310,7 +311,7 @@
                     animation_backswing = 0.3,
                     animation_scale     = 0.4,
                     effect_on_caster        = "Spell\\Fire Low.mdx",
-                    effect_on_caster_point  = 'Hand Right',
+                    effect_on_caster_point  = 'hand right',
                     effect_on_caster_scale  = 1.,
                 }
             }
@@ -335,7 +336,7 @@
                     animation_backswing = 0.633,
                     animation_scale     = 0.35,
                     effect_on_caster        = "Spell\\Ice High.mdx",
-                    effect_on_caster_point  = 'Hand Right',
+                    effect_on_caster_point  = 'hand right',
                     effect_on_caster_scale  = 1.,
                 }
             }
@@ -360,7 +361,7 @@
                     animation_backswing = 0.3,
                     animation_scale     = 0.4,
                     effect_on_caster        = "Spell\\Storm Cast.mdx",
-                    effect_on_caster_point  = 'Hand Right',
+                    effect_on_caster_point  = 'hand right',
                     effect_on_caster_scale  = 1.,
                 }
             }
@@ -434,7 +435,7 @@
                     animation_backswing = 0.3,
                     animation_scale     = 0.4,
                     effect_on_caster        = "Spell\\Storm Cast.mdx",
-                    effect_on_caster_point  = 'Hand Right',
+                    effect_on_caster_point  = 'hand right',
                     effect_on_caster_scale  = 0.8,
                 }
             }
@@ -459,7 +460,7 @@
                     animation_backswing = 0.633,
                     animation_scale     = 0.5,
                     effect_on_caster        = "Spell\\Storm Cast.mdx",
-                    effect_on_caster_point  = 'Hand Right',
+                    effect_on_caster_point  = 'hand right',
                     effect_on_caster_scale  = 1.,
                 }
             }
@@ -542,7 +543,7 @@
                     animation_backswing = 0.3,
                     animation_scale     = 0.4,
                     effect_on_caster        = "Spell\\Fire Low.mdx",
-                    effect_on_caster_point  = 'Hand Right',
+                    effect_on_caster_point  = 'hand right',
                     effect_on_caster_scale  = 1.,
                 }
             }
@@ -666,9 +667,9 @@
                     animation           = 4,
                     animation_point     = 0.6,
                     animation_backswing = 0.3,
-                    animation_scale     = 0.7,
-                    effect_on_caster        = "Spell\\Sweep_TeamColor_Medium.mdx",
-                    effect_on_caster_point  = 'Weapon L',
+                    animation_scale     = 0.9,
+                    effect_on_caster        = "Spell\\Sweep_Fire_Medium.mdx",
+                    effect_on_caster_point  = 'weapon left',
                     effect_on_caster_scale  = 1.,
                 }
             }
@@ -713,7 +714,7 @@
                     animation_backswing = 0.3,
                     animation_scale     = 0.7,
                     effect_on_caster        = "Spell\\Sweep_TeamColor_Medium.mdx",
-                    effect_on_caster_point  = 'Weapon R',
+                    effect_on_caster_point  = 'weapon right',
                     effect_on_caster_scale  = 1.,
                 }
             }

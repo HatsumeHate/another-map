@@ -16,6 +16,7 @@ do
 
 
 
+    ---@param effect_id string
     function GetEffectData(effect_id)
         return EffectsData[FourCC(effect_id)]
     end
@@ -59,6 +60,7 @@ do
             SFX_inherit_angle      = false,
             SFX_lifetime            = 0.,
             SFX_bonus_z             = 0.,
+            SFX_delay                = 0.,
 
             SFX_on_caster            = '',
             SFX_on_caster_point      = '',
@@ -83,6 +85,8 @@ do
     end
 
 
+    ---@param effect table
+    ---@param lvl integer
     function GenerateEffectLevelData(effect, lvl)
 
         if lvl == 1 then return end
@@ -329,6 +333,11 @@ do
                     attack_type = RANGE_ATTACK,
                     attribute = ICE_ATTRIBUTE,
                     area_of_effect = 225.,
+
+                    shake_magnitude = 1.2,
+                    shake_distance = 1250.,
+                    shake_duration = 0.7,
+
                     max_targets = 300,
                     sound = {
                         pack = { "Sounds\\Spells\\frost_orb_impact_1.wav", "Sounds\\Spells\\frost_orb_impact_2.wav" },
@@ -380,9 +389,15 @@ do
                     attack_type = RANGE_ATTACK,
                     attribute = LIGHTNING_ATTRIBUTE,
 
+                    SFX_delay = 0.5,
                     SFX_used = "Spell\\Lightnings Long.mdx",
                     SFX_used_scale = 1.,
 
+                    shake_magnitude = 1.5,
+                    shake_distance = 1450.,
+                    shake_duration = 0.7,
+
+                    delay = 0.5,
                     area_of_effect = 255.,
                     max_targets = 300,
                     sound = {
@@ -414,6 +429,10 @@ do
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = FIRE_ATTRIBUTE,
+
+                    shake_magnitude = 1.7,
+                    shake_distance = 1450.,
+                    shake_duration = 0.7,
 
                     SFX_used = "war3mapImported\\Rain of Fire.mdx",
                     SFX_used_scale = 1.25,
@@ -547,6 +566,9 @@ do
                     area_of_effect = 155.,
                     angle_window  = 35.,
                     force_from_caster_position = true,
+                    shake_magnitude = 1.,
+                    shake_distance = 1000.,
+                    shake_duration = 0.7,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = MELEE_ATTACK,
                     attribute = PHYSICAL_ATTRIBUTE,
@@ -609,6 +631,9 @@ do
                     angle_window  = 35.,
                     force_from_caster_position = true,
                     max_targets = 300,
+                    shake_magnitude = 1.2,
+                    shake_distance = 1000.,
+                    shake_duration = 0.7,
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A00W', target_type = ON_ENEMY }
                     },
@@ -691,6 +716,7 @@ do
             get_level_from_skill = "A00C",
             level = {
                 [1] = {
+                    area_of_effect = 800.,
                     max_targets = 300,
                     SFX_on_caster            = 'Abilities\\Spells\\Other\\HowlOfTerror\\HowlCaster.mdx',
                     SFX_on_caster_point      = 'origin',

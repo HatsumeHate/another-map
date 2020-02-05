@@ -567,9 +567,9 @@ do
             button = ButtonList[GetHandleId(InventorySlots[i])]
             if button.item == item then
                 --BlzFrameSetTexture(button.image, button.original_texture, 0, true)
-                UpdateInventoryWindow()
                 button.item = nil
                 RemoveCustomItem(item)
+                UpdateInventoryWindow(player)
                 break
             end
         end

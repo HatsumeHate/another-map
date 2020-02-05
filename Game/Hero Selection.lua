@@ -80,6 +80,7 @@ do
 
                     for i = 1, #starting_items do
                         EquipItem(hero, starting_items[i], true)
+                        SetItemVisible(starting_items[i], false)
                         UpdateEquipPointsWindow(player_id)
                     end
 

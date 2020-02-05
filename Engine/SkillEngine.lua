@@ -62,6 +62,119 @@ do
 
     end
 
+
+    function GetStringEnding(string, from)
+
+        for i = from, StringLength(string) do
+            if SubString(string, i, i + 1) == "#" then
+                return i + 1
+            end
+        end
+
+        return StringLength(string)
+    end
+
+
+    function ParseString(str, tag, lvl)
+        local value_str = SubString(str, 8, GetStringEnding(str, 8)-1)
+        local id = SubString(str, 3,  7)
+
+            if tag == "e" then
+                local effect = GetEffectData(id)
+
+                 GenerateEffectLevelData(effect, lvl)
+
+                    if value_str == "pwr" then return (effect.level[lvl].power or 0)
+                    elseif value_str == "dmg" then return (effect.level[lvl].power or 0) .. " + " .. S2I(R2S((effect.level[lvl].attack_percent_bonus or 1.) * 100.)) .. "%% " .. LOCALE_LIST[my_locale].GENERATED_TOOLTIP
+                    elseif value_str == "atr" then return GetItemAttributeName(effect.level[lvl].attribute)
+                    elseif value_str == "ap" then return math.floor((effect.level[lvl].attack_percent_bonus or 1.) * 100.)
+                    elseif value_str == "ab" then return effect.level[lvl].attribute_bonus or 0
+                    elseif value_str == "wdpb" then return math.floor((effect.level[lvl].weapon_damage_percent_bonus or 1.) * 100.)
+                    elseif value_str == "aoe" then return R2I(effect.level[lvl].area_of_effect or 0.)
+                    elseif value_str == "bcc" then return R2I(effect.level[lvl].bonus_crit_chance or 0.) .. "%%"
+                    elseif value_str == "bcm" then return effect.level[lvl].bonus_crit_multiplier or 0.
+                    end
+            elseif tag == "s" then
+                local skill = GetSkillData(FourCC(id))
+                    if value_str == "rc" then return R2I(skill.level[lvl].resource_cost or 0.)
+                    elseif value_str == "cld" then return skill.level[lvl].cooldown or 0.1
+                    elseif value_str == "rng" then return R2I(skill.level[lvl].range or 0.)
+                    end
+            elseif tag == "b" then
+                local buff = GetBuffData(id)
+
+                    GenerateBuffLevelData(buff, lvl)
+
+                    if value_str == "time" then return buff.level[lvl].time or 0.1
+                    elseif SubString(value_str, 0,  2) == "va" then
+                        local param = buff.level[lvl].bonus[S2I(SubString(value_str, 2, 3))]
+                        return GetCorrectParamText(param.PARAM, param.VALUE, param.METHOD)
+                    elseif SubString(value_str, 0,  2) == "pa" then
+                        local param = buff.level[lvl].bonus[S2I(SubString(value_str, 2, 3))]
+                        return param.PARAM
+                    end
+
+            end
+
+        return ""
+    end
+
+
+
+
+    function ParseLocalizationSkillTooltipString(str, level)
+        local last_sector = 0
+        local result_string = ""
+        local my_string_table = {}
+        local ending_number = 0
+
+        for i = 0, StringLength(str) do
+
+            if SubString(str, i, i+1) == "@" then
+                ending_number = GetStringEnding(str, i)
+                local value_string = SubString(str, i, ending_number)
+                my_string_table[#my_string_table+1] = SubString(str, last_sector, i) .. ParseString(value_string, SubString(str, i+1, i+2), level)
+                i = ending_number
+                last_sector = i
+            end
+
+
+        end
+
+        my_string_table[#my_string_table+1] = SubString(str, last_sector, StringLength(str))
+
+
+        for i = 1, #my_string_table do
+            result_string = result_string .. my_string_table[i]
+        end
+
+        return result_string
+    end
+
+
+
+    RegisterTestCommand("parse", function()
+        print(ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][FourCC("A007")].bind, 1))
+    end)
+
+    ---@param unit unit
+    ---@param id string
+    ---@param player number
+    function SetAbilityExtendedTooltip(unit, id, player)
+        local true_id = FourCC(id)
+        local ability = GetKeybindKeyAbility(true_id, player)
+
+            if ability == 0 then return end
+            local lvl = UnitGetAbilityLevel(unit, id)
+
+            if GetLocalPlayer() == Player(player) then
+                if LOCALE_LIST[my_locale][true_id] ~= nil then
+                    BlzSetAbilityExtendedTooltip(ability, ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id].bind, lvl), 0)
+                end
+            end
+
+    end
+
     ---@param unit unit
     ---@param id string
     ---@param key integer
@@ -87,9 +200,37 @@ do
                     BlzSetAbilityIcon(ability_id, skill.icon)
                 end
 
+
         KEYBIND_LIST[key].player_skill_bind[GetPlayerId(GetOwningPlayer(unit))] = FourCC(id)
+        SetAbilityExtendedTooltip(unit, id, GetPlayerId(GetOwningPlayer(unit)))
     end
 
+
+    ---@param id integer
+    ---@param player integer
+    function IsAbilityKeybinded(id, player)
+
+        for key = KEY_Q, KEY_D do
+            if KEYBIND_LIST[key].player_skill_bind[player] == id then
+                return true
+            end
+        end
+
+        return false
+    end
+
+    ---@param id integer
+    ---@param player integer
+    function GetKeybindKeyAbility(id, player)
+
+        for key = KEY_Q, KEY_D do
+            if KEYBIND_LIST[key].player_skill_bind[player] == id then
+                return KEYBIND_LIST[key].ability
+            end
+        end
+
+        return 0
+    end
 
     ---@param id integer
     ---@param player integer
@@ -263,6 +404,7 @@ do
 
                 if time_reduction <= 0. then time_reduction = 0. end
 
+            SetUnitAnimationByIndex(unit_data.Owner, 0)
             print("after bonus reduction "..time_reduction)
 
             if skill.level[ability_level].animation_scale ~= nil then
@@ -273,7 +415,7 @@ do
             print("result cast time is " .. (skill.level[ability_level].animation_point or 0.) * time_reduction)
 
             BlzSetUnitAbilityCooldown(unit_data.Owner, id, ability_level - 1, (skill.level[ability_level].cooldown or 0.1) + (skill.level[ability_level].animation_point * time_reduction))
-            BlzSetUnitAbilityManaCost(unit_data.Owner, id, ability_level - 1, skill.level[ability_level].resource_cost)
+            BlzSetUnitAbilityManaCost(unit_data.Owner, id, ability_level - 1, skill.level[ability_level].resource_cost or 0)
 
 
             local target = GetSpellTargetUnit()
@@ -287,9 +429,8 @@ do
             BlzPauseUnitEx(unit_data.Owner, true)
             SetUnitAnimationByIndex(unit_data.Owner, skill.level[ability_level].animation or 0)
 
-
                 if skill.level[ability_level].effect_on_caster ~= nil then
-                    unit_data.cast_effect = AddSpecialEffectTarget( skill.level[ability_level].effect_on_caster, unit_data.Owner, skill.level[ability_level].effect_on_caster_point)
+                    unit_data.cast_effect = AddSpecialEffectTarget(skill.level[ability_level].effect_on_caster, unit_data.Owner, skill.level[ability_level].effect_on_caster_point)
                     BlzSetSpecialEffectScale(unit_data.cast_effect, skill.level[ability_level].effect_on_caster_scale or 1.)
                 end
 

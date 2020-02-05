@@ -19,10 +19,7 @@ do
 
 
     RegisterTestCommand("run", function() AddWaveTimer(3.) end)
-    --[[
-    local trigger = CreateTrigger()
-    TriggerRegisterPlayerChatEvent(trigger, Player(0), "run", false)
-    TriggerAddAction(trigger, function() AddWaveTimer(3.) end)]]
+
 
 
 

@@ -91,8 +91,8 @@ do
 
         MissileList[FourCC(id)] = new_missile
     end
-    
-    
+
+
     function DefineMissilesData()
         NewMissileTemplate('M001', {
             name = "test missile",
@@ -129,6 +129,34 @@ do
         NewMissileTemplate('MSKA', {
             name = "skeleton archer",
             model = "Abilities\\Weapons\\Arrow\\ArrowMissile.mdx",
+            max_distance = 900.,
+            radius = 50.,
+            speed = 800.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.2,
+            ignore_terrain = false,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MSKH', {
+            name = "skeleton hell archer",
+            model = "Abilities\\Weapons\\SearingArrow\\SearingArrowMissile.mdx",
+            max_distance = 900.,
+            radius = 50.,
+            speed = 800.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.2,
+            ignore_terrain = false,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MSKF', {
+            name = "skeleton frost archer",
+            model = "Abilities\\Weapons\\ColdArrow\\ColdArrowMissile.mdx",
             max_distance = 900.,
             radius = 50.,
             speed = 800.,
@@ -183,6 +211,35 @@ do
             full_distance = true
         })
         --==============================================--
+        NewMissileTemplate('MVWB', {
+            name = "void walker big",
+            model = "Abilities\\Weapons\\VoidWalkerMissile\\VoidWalkerMissile.mdx",
+            max_distance = 1000.,
+            radius = 57.,
+            speed = 550.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.,
+            scale = 1.1,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MDWZ', {
+            name = "hell wizard",
+            model = "Abilities\\Weapons\\DemonHunterMissile\\DemonHunterMissile.mdx",
+            max_distance = 1000.,
+            radius = 57.,
+            speed = 620.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
         NewMissileTemplate('MNCR', {
             name = "necromancer missile",
             model = "Abilities\\Weapons\\NecromancerMissile\\NecromancerMissile.mdx",
@@ -203,6 +260,20 @@ do
             max_distance = 1000.,
             radius = 55.,
             speed = 670.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MGHO', {
+            name = "ghost missile",
+            model = "Abilities\\Weapons\\LichMissile\\LichMissile.mdl",
+            max_distance = 1000.,
+            radius = 55.,
+            speed = 480.,
             start_z = 65.,
             end_z = 65.,
             arc = 0.,

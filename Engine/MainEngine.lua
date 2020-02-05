@@ -46,6 +46,8 @@ do
 
 
 
+
+
     ---@param source unit
     ---@param target unit
     ---@param amount real
@@ -75,17 +77,9 @@ do
         if myeffect ~= nil then
             local effect_data = myeffect.eff.level[myeffect.l]
 
-                if effect_data.bonus_crit_chance ~= nil then
-                    bonus_critical = effect_data.bonus_crit_chance
-                end
-
-                if effect_data.bonus_crit_multiplier ~= nil then
-                    bonus_critical_rate = effect_data.bonus_crit_multiplier
-                end
-
-                if effect_data.weapon_damage_percent_bonus ~= nil then
-                    damage = damage + (attacker.equip_point[WEAPON_POINT].DAMAGE * effect_data.weapon_damage_percent_bonus)
-                end
+                if effect_data.bonus_crit_chance ~= nil then bonus_critical = effect_data.bonus_crit_chance end
+                if effect_data.bonus_crit_multiplier ~= nil then bonus_critical_rate = effect_data.bonus_crit_multiplier end
+                if effect_data.weapon_damage_percent_bonus ~= nil then damage = damage + (attacker.equip_point[WEAPON_POINT].DAMAGE * effect_data.weapon_damage_percent_bonus) end
 
                 if effect_data.attack_percent_bonus ~= nil and effect_data.attack_percent_bonus > 0. then
                     if damage_type == DAMAGE_TYPE_PHYSICAL then
@@ -188,7 +182,7 @@ do
 
             damage = R2I(damage)
             if damage < 0. then damage = 0 end
-            UnitDamageTarget(source, target, damage, false, false, nil, nil, is_sound and attacker.equip_point[WEAPON_POINT].WEAPON_SOUND or nil)
+            UnitDamageTarget(source, target, damage, true, false, ATTACK_TYPE_NORMAL, nil, is_sound and attacker.equip_point[WEAPON_POINT].WEAPON_SOUND or nil)
 
             --print(damage)
             CreateHitnumber(damage, source, target, attack_status)

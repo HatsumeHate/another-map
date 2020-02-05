@@ -119,6 +119,7 @@ do
         return GENERATED_ITEM_LIST[GetRandomInt(1, #GENERATED_ITEM_LIST)].id
     end
 
+    ---@param item_subtype number
     function GetGeneratedItemId(item_subtype)
         for i = 1, #GENERATED_ITEM_LIST do
             if GENERATED_ITEM_LIST[i].subtype == item_subtype then
@@ -129,6 +130,7 @@ do
     end
 
     
+    ---@param item_type number
     function GetRandomGeneratedIdByType(item_type)
         local list = {}
 

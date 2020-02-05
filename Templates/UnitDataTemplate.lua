@@ -72,8 +72,8 @@ do
             base_stats = {
                 strength = class_base_stats[1], vitality = class_base_stats[2], agility = class_base_stats[3], intellect = class_base_stats[4],
                 health = reference_data.base_stats.health or 100., mana = reference_data.base_stats.mana or 100.,
-                hp_regen = reference_data.base_stats.hp_regen or 1., mp_regen = reference_data.base_stats.mp_regen or 1.,
-                moving_speed = reference_data.base_stats.moving_speed or 300.
+                hp_regen = reference_data.base_stats.hp_regen or 0.2, mp_regen = reference_data.base_stats.mp_regen or 0.2,
+                moving_speed = reference_data.base_stats.moving_speed or 245.
             },
 
             action_timer = CreateTimer(),
@@ -111,8 +111,17 @@ do
         if reference_data.necklace ~= nil then data.equip_point[NECKLACE_POINT] = MergeTables({}, reference_data.necklace) end
         if reference_data.offhand ~= nil then data.equip_point[OFFHAND_POINT] = MergeTables({}, reference_data.offhand) end
 
-        UpdateParameters(data)
+
         UnitsList[GetHandleId(source)] = data
+
+        UpdateParameters(data)
+
+        if reference_data.bonus_parameters ~= nil then
+            for i = 1, #reference_data.bonus_parameters do
+                ModifyStat(source, reference_data.bonus_parameters[i].param, reference_data.bonus_parameters[i].value, reference_data.bonus_parameters[i].method, true)
+            end
+        end
+
         return data
     end
 
@@ -140,13 +149,13 @@ do
         end
 
         if new_data.base_stats == nil then
-            new_data.base_stats = {health = 100, mana = 100, hp_regen = 1., mp_regen = 1., moving_speed = 260}
+            new_data.base_stats = {health = 100, mana = 100, hp_regen = 1., mp_regen = 1., moving_speed = 245}
         else
             if new_data.base_stats.health == nil then new_data.base_stats.health = 100 end
             if new_data.base_stats.mana == nil then new_data.base_stats.mana = 100 end
             if new_data.base_stats.hp_regen == nil then new_data.base_stats.hp_regen = 0.2 end
             if new_data.base_stats.mp_regen == nil then new_data.base_stats.mp_regen = 0.2 end
-            if new_data.base_stats.moving_speed == nil then new_data.base_stats.moving_speed = 260 end
+            if new_data.base_stats.moving_speed == nil then new_data.base_stats.moving_speed = 245 end
         end
 
 
@@ -155,16 +164,12 @@ do
 
 
 
-
-
-
-
     function UnitDataInit()
 
         NewUnitTemplate('h000', {
             unit_class = SPECIAL_CLASS,
             base_stats = { health = 3000., hp_regen = 5. },
-            weapon = { DAMAGE = 25, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_SLICE }
+            weapon = { DAMAGE = 25, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE }
         })
 
         NewUnitTemplate('HBRB', {
@@ -188,7 +193,7 @@ do
             classification = MONSTER_RANK_COMMON,
             trait = TRAIT_DEMON,
             time_before_remove = 10.,
-            base_stats = { health = 125., hp_regen = 0.4, moving_speed = 275. },
+            base_stats = { health = 125., hp_regen = 0.4, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 1.4, DAMAGE = 5, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             have_mp = false
         })
@@ -199,19 +204,25 @@ do
             classification = MONSTER_RANK_COMMON,
             trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
-            base_stats = { health = 220., hp_regen = 0.4, moving_speed = 250. },
+            base_stats = { health = 220., hp_regen = 0.4, moving_speed = 225. },
             weapon = { ATTACK_SPEED = 1.8, DAMAGE = 4, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
+            bonus_parameters = {
+                { param = PHYSICAL_DEFENCE, value = 70, method = STRAIGHT_BONUS }
+            },
             have_mp = false
         })
 
         -- zombie
-        NewUnitTemplate('u00C', {
+        NewUnitTemplate('n00C', {
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
             trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
-            base_stats = { health = 370., hp_regen = 0.7, moving_speed = 210. },
+            base_stats = { health = 370., hp_regen = 0.7, moving_speed = 160. },
             weapon = { ATTACK_SPEED = 2.1, DAMAGE = 3, CRIT_CHANCE = 5., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
+            bonus_parameters = {
+                { param = MELEE_DAMAGE_REDUCTION, value = 11, method = STRAIGHT_BONUS }
+            },
             have_mp = false
         })
         --==========================================================--
@@ -221,7 +232,7 @@ do
             classification = MONSTER_RANK_COMMON,
             trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
-            base_stats = { health = 180., hp_regen = 0.4, moving_speed = 250. },
+            base_stats = { health = 180., hp_regen = 0.4, moving_speed = 230. },
             weapon = { ATTACK_SPEED = 1.7, DAMAGE = 5, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
             have_mp = false
         })
@@ -232,7 +243,7 @@ do
             classification = MONSTER_RANK_COMMON,
             trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
-            base_stats = { health = 150., hp_regen = 0.4, moving_speed = 250. },
+            base_stats = { health = 150., hp_regen = 0.4, moving_speed = 220. },
             weapon = { ATTACK_SPEED = 1.9, DAMAGE = 7, CRIT_CHANCE = 9., missile = "MSKA", ranged = true },
             have_mp = false
         })
@@ -243,8 +254,11 @@ do
             classification = MONSTER_RANK_COMMON,
             trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
-            base_stats = { health = 140., hp_regen = 0.4, moving_speed = 250. },
+            base_stats = { health = 140., hp_regen = 0.4, moving_speed = 220. },
             weapon = { ATTACK_SPEED = 1.6, DAMAGE = 8, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSKM", ranged = true },
+            bonus_parameters = {
+                { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS }
+            },
             have_mp = false
         })
         --==========================================================--
@@ -254,8 +268,11 @@ do
             classification = MONSTER_RANK_COMMON,
             trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
-            base_stats = { health = 200., hp_regen = 0.4, moving_speed = 260. },
+            base_stats = { health = 200., hp_regen = 0.4, moving_speed = 230. },
             weapon = { ATTACK_SPEED = 1.65, DAMAGE = 6, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
+            bonus_parameters = {
+                { param = PHYSICAL_DEFENCE, value = 50, method = STRAIGHT_BONUS }
+            },
             have_mp = false
         })
         --==========================================================--
@@ -265,7 +282,7 @@ do
             classification = MONSTER_RANK_COMMON,
             trait = TRAIT_HUMAN,
             time_before_remove = 10.,
-            base_stats = { health = 215., hp_regen = 0.4, moving_speed = 245. },
+            base_stats = { health = 215., hp_regen = 0.4, moving_speed = 215. },
             weapon = { ATTACK_SPEED = 1.9, DAMAGE = 15, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MNCR", ranged = true },
             have_mp = false
         })
@@ -276,8 +293,12 @@ do
             classification = MONSTER_RANK_COMMON,
             trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
-            base_stats = { health = 190., hp_regen = 0.4, moving_speed = 260. },
+            base_stats = { health = 190., hp_regen = 0.4, moving_speed = 240. },
             weapon = { ATTACK_SPEED = 1.6, DAMAGE = 7, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MBNS", ranged = true },
+            bonus_parameters = {
+                { param = MELEE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS },
+                { param = RANGE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS }
+            },
             have_mp = false
         })
         --==========================================================--
@@ -287,7 +308,7 @@ do
             classification = MONSTER_RANK_COMMON,
             trait = TRAIT_DEMON,
             time_before_remove = 10.,
-            base_stats = { health = 227., hp_regen = 0.55, moving_speed = 260. },
+            base_stats = { health = 227., hp_regen = 0.55, moving_speed = 240. },
             weapon = { ATTACK_SPEED = 2.2, DAMAGE = 20, CRIT_CHANCE = 10., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSCB", ranged = true },
             have_mp = false
         })
@@ -298,7 +319,7 @@ do
             classification = MONSTER_RANK_COMMON,
             trait = TRAIT_DEMON,
             time_before_remove = 10.,
-            base_stats = { health = 210., hp_regen = 0.6, moving_speed = 260. },
+            base_stats = { health = 210., hp_regen = 0.6, moving_speed = 240. },
             weapon = { ATTACK_SPEED = 1.65, DAMAGE = 6, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
             have_mp = false
         })
@@ -309,7 +330,7 @@ do
             classification = MONSTER_RANK_COMMON,
             trait = TRAIT_DEMON,
             time_before_remove = 10.,
-            base_stats = { health = 200., hp_regen = 0.4, moving_speed = 250. },
+            base_stats = { health = 200., hp_regen = 0.4, moving_speed = 220. },
             weapon = { ATTACK_SPEED = 2., DAMAGE = 10, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 5, missile = "MVWS", ranged = true },
             have_mp = false
         })
@@ -320,8 +341,100 @@ do
             classification = MONSTER_RANK_COMMON,
             trait = TRAIT_DEMON,
             time_before_remove = 10.,
-            base_stats = { health = 225., hp_regen = 0.4, moving_speed = 250. },
+            base_stats = { health = 225., hp_regen = 0.4, moving_speed = 220. },
             weapon = { ATTACK_SPEED = 2.1, DAMAGE = 15, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MVWM", ranged = true },
+            bonus_parameters = {
+                { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = DARKNESS_RESIST, value = 5, method = STRAIGHT_BONUS }
+            },
+            have_mp = false
+        })
+        --==========================================================--
+        -- void walker big
+        NewUnitTemplate('n009', {
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            trait = TRAIT_DEMON,
+            time_before_remove = 10.,
+            base_stats = { health = 270., hp_regen = 0.4, moving_speed = 200. },
+            weapon = { ATTACK_SPEED = 2.1, DAMAGE = 20, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MVWB", ranged = true },
+            bonus_parameters = {
+                { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
+                { param = DARKNESS_RESIST, value = 15, method = STRAIGHT_BONUS }
+            },
+            have_mp = false
+        })
+        --==========================================================--
+        -- ghost
+        NewUnitTemplate('n006', {
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            trait = TRAIT_UNDEAD,
+            time_before_remove = 10.,
+            base_stats = { health = 213., hp_regen = 0.4, moving_speed = 240. },
+            weapon = { ATTACK_SPEED = 1.74, DAMAGE = 14, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MGHO", ranged = true },
+            bonus_parameters = {
+                { param = MELEE_DAMAGE_REDUCTION, value = 15, method = STRAIGHT_BONUS },
+                { param = RANGE_DAMAGE_REDUCTION, value = 15, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS }
+            },
+            have_mp = false
+        })
+        --==========================================================--
+        -- zombie big
+        NewUnitTemplate('u00E', {
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            trait = TRAIT_UNDEAD,
+            time_before_remove = 10.,
+            base_stats = { health = 680., hp_regen = 1.2, moving_speed = 160. },
+            weapon = { ATTACK_SPEED = 2.3, DAMAGE = 6, CRIT_CHANCE = 5., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
+            bonus_parameters = {
+                { param = MELEE_DAMAGE_REDUCTION, value = 11, method = STRAIGHT_BONUS },
+                { param = ALL_RESIST, value = 4, method = STRAIGHT_BONUS }
+            },
+            have_mp = false
+        })
+        --==========================================================--
+        -- skeleton hell archer
+        NewUnitTemplate('n004', {
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            trait = TRAIT_UNDEAD,
+            time_before_remove = 10.,
+            base_stats = { health = 200., hp_regen = 0.4, moving_speed = 210. },
+            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 10, CRIT_CHANCE = 11., ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MSKH", ranged = true },
+            bonus_parameters = {
+                { param = FIRE_RESIST, value = 15, method = STRAIGHT_BONUS }
+            },
+            have_mp = false
+        })
+        --==========================================================--
+        -- skeleton frost archer
+        NewUnitTemplate('n007', {
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            trait = TRAIT_UNDEAD,
+            time_before_remove = 10.,
+            base_stats = { health = 240., hp_regen = 0.4, moving_speed = 210. },
+            weapon = { ATTACK_SPEED = 1.95, DAMAGE = 10, CRIT_CHANCE = 11., ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MSKF", ranged = true },
+            bonus_parameters = {
+                { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS }
+            },
+            have_mp = false
+        })
+        --==========================================================--
+        -- hell wizard
+        NewUnitTemplate('n003', {
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            trait = TRAIT_DEMON,
+            time_before_remove = 10.,
+            base_stats = { health = 270., hp_regen = 0.7, moving_speed = 220. },
+            weapon = { ATTACK_SPEED = 1.63, DAMAGE = 12, CRIT_CHANCE = 11., ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MDWZ", ranged = true },
+            bonus_parameters = {
+                { param = ALL_RESIST, value = 8, method = STRAIGHT_BONUS }
+            },
             have_mp = false
         })
         --==========================================================--
@@ -331,7 +444,7 @@ do
             classification = MONSTER_RANK_ADVANCED,
             trait = TRAIT_DEMON,
             time_before_remove = 10.,
-            base_stats = { health = 310., hp_regen = 1.7, moving_speed = 270. },
+            base_stats = { health = 310., hp_regen = 1.7, moving_speed = 250. },
             weapon = { ATTACK_SPEED = 1.5, DAMAGE = 15, CRIT_CHANCE = 14., WEAPON_SOUND = WEAPON_TYPE_METAL_LIGHT_SLICE },
             have_mp = false
         })
@@ -342,19 +455,28 @@ do
             time_before_remove = 10.,
             classification = MONSTER_RANK_ADVANCED,
             trait = TRAIT_DEMON,
-            base_stats = { health = 375., hp_regen = 2.1, moving_speed = 270. },
+            base_stats = { health = 375., hp_regen = 2.1, moving_speed = 260. },
             weapon = { ATTACK_SPEED = 1.8, DAMAGE = 12, ATTRIBUTE = HOLY_ATTRIBUTE, ATTRIBUTE_BONUS = 15, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_CHOP },
+            bonus_parameters = {
+                { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = HOLY_RESIST, value = 15, method = STRAIGHT_BONUS },
+            },
             have_mp = false
         })
 
         -- hells guardian
         NewUnitTemplate('u00A', {
             unit_class = NO_CLASS,
-            classification = MONSTER_RANK_COMMON,
+            classification = MONSTER_RANK_ADVANCED,
             trait = TRAIT_DEMON,
             time_before_remove = 10.,
-            base_stats = { health = 270., hp_regen = 1.4, moving_speed = 245. },
+            base_stats = { health = 270., hp_regen = 1.4, moving_speed = 225. },
             weapon = { ATTACK_SPEED = 1.8, DAMAGE = 8, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_SLICE },
+            bonus_parameters = {
+                { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_DEFENCE, value = 70, method = STRAIGHT_BONUS },
+                { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS },
+            },
             have_mp = false
         })
 

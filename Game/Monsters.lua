@@ -10,40 +10,227 @@ do
     MONSTER_PLAYER = Player(10)
     WaveGroup = CreateGroup()
 
+    local WaveDifficultyModificator = 0.5
+    local WavePlayerCountModificator = 1.
+
+    local COMMON_MONSTER_RATE = 0.65
+    local MELEE_MONSTER_CHANCE = 60.
+
+    local WAVE_MINIMUM_COUNT = 10
+    local WAVE_MAXIMUM_COUNT = 25
+
+
+    local MONSTER_TAG_MELEE = 1
+    local MONSTER_TAG_RANGE = 2
+
+    local MONSTERPACK_SUCCUBUS = 1
+    local MONSTERPACK_SKELETONS = 2
+    local MONSTERPACK_ZOMBIES = 3
+    local MONSTERPACK_DEMONS = 4
+    local MONSTERPACK_GHOSTS = 5
+    local MONSTERPACK_BANDITS = 6
+    local MONSTERPACK_BOSS = 10
+
+
+
+    MONSTER_ID_ZOMBIE = "n00C"
+    MONSTER_ID_ZOMBIE_MUTANT = "n00E"
+    MONSTER_ID_FIEND = "u007"
+    MONSTER_ID_DEMON_ASSASSIN = "u009"
+    MONSTER_ID_DEMON_WIZARD = "n003"
+    MONSTER_ID_DEMON_HELL_GUARD = "u00A"
+    MONSTER_ID_FALLEN_ANGEL = "u008"
+    MONSTER_ID_SUCCUBUS = "n002"
+    MONSTER_ID_SUCCUBUS_ADVANCED = "n00B"
+    MONSTER_ID_BANSHEE = "u00C"
+    MONSTER_ID_GHOST = "n006"
+    MONSTER_ID_VOIDWALKER = "n008"
+    MONSTER_ID_ANCIENT_VOIDWALKER = "n009"
+    MONSTER_ID_SKELETON = "u00D"
+    MONSTER_ID_SKELETON_IMPROVED = "n00D"
+    MONSTER_ID_SKELETON_ARMORED = "u00B"
+    MONSTER_ID_SKELETON_ARCHER = "n005"
+    MONSTER_ID_SKELETON_MAGE = "u00E"
+    MONSTER_ID_SKELETON_HELL_ARCHER = "n004"
+    MONSTER_ID_SKELETON_SNIPER = "n007"
+    MONSTER_ID_NECROMANCER = "u00F"
+
+    MONSTER_ID_BUTCHER = "U003"
+    MONSTER_ID_BAAL = "U001"
+    MONSTER_ID_MEPHISTO = "U000"
+    MONSTER_ID_DEMONESS = "U006"
+    MONSTER_ID_DEMONKING = "U005"
+    MONSTER_ID_UNDERWORLD_QUEEN = "U002"
+    MONSTER_ID_REANIMATED = "U004"
+
+
+
+    RegisterTestCommand("kill", function()
+
+        ForGroup(WaveGroup, function ()
+            KillUnit(GetEnumUnit())
+        end)
+
+    end)
+
+
+    -- attack type focus (melee/range ratio) => monster type =>
+
 
     MONSTER_LIST = {
-        [MONSTER_RANK_COMMON] = {
-            { id = "u007", ratio = 1.5 },
-            { id = "u00B", ratio = 1.2 },
-            { id = "u00A", ratio = 0.7 },
-        },
-        [MONSTER_RANK_ADVANCED] = {
-            { id = "u008", ratio = 0.5 },
-            { id = "u009", ratio = 0.5 } ,
-        },
-        [MONSTER_RANK_BOSS] = {
-             "U001",
-             "U000",
-             "U006",
-             "U005",
-             "U002",
-             "U004",
-             "U003",
-        }
+            [MONSTERPACK_SUCCUBUS] = {
+                [MONSTER_RANK_COMMON] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_SUCCUBUS, chance = 100. },
+                    },
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_SUCCUBUS_ADVANCED, chance = 100. } ,
+                    }
+                },
+                [MONSTERPACK_BOSS] = {
+                    MONSTER_ID_DEMONESS,
+                    MONSTER_ID_UNDERWORLD_QUEEN
+                }
+            },
+            [MONSTERPACK_SKELETONS] = {
+                [MONSTER_RANK_COMMON] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_SKELETON_ARMORED, chance = 22.5 },
+                        { id = MONSTER_ID_SKELETON_IMPROVED, chance = 32.5 },
+                        { id = MONSTER_ID_SKELETON, chance = 100. },
+                    },
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_SKELETON_ARCHER, chance = 40. },
+                        { id = MONSTER_ID_SKELETON_MAGE, chance = 40. },
+                        { id = MONSTER_ID_NECROMANCER, chance = 100. },
+                    }
+                },
+                [MONSTER_RANK_ADVANCED] = {
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_SKELETON_HELL_ARCHER, chance = 50. },
+                        { id = MONSTER_ID_SKELETON_SNIPER, chance = 100. },
+                    }
+                },
+                [MONSTERPACK_BOSS] = {
+                    MONSTER_ID_REANIMATED
+                }
+            },
+            [MONSTERPACK_ZOMBIES] = {
+                [MONSTER_RANK_COMMON] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_ZOMBIE, chance = 100. },
+                    },
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_NECROMANCER, chance = 100. },
+                    }
+                },
+                [MONSTER_RANK_ADVANCED] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_ZOMBIE_MUTANT, chance = 100. },
+                    }
+                },
+                [MONSTERPACK_BOSS] = {
+                    MONSTER_ID_BUTCHER
+                }
+            },
+            [MONSTERPACK_DEMONS] = {
+                [MONSTER_RANK_COMMON] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_SKELETON_ARMORED, chance = 21.5 },
+                        { id = MONSTER_ID_SUCCUBUS, chance = 33.5 },
+                        { id = MONSTER_ID_FIEND, chance = 100. },
+                    },
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_NECROMANCER, chance = 23. },
+                        { id = MONSTER_ID_SUCCUBUS_ADVANCED, chance = 40. },
+                        { id = MONSTER_ID_VOIDWALKER, chance = 100. },
+                    }
+                },
+                [MONSTER_RANK_ADVANCED] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_DEMON_ASSASSIN, chance = 40.5 },
+                        { id = MONSTER_ID_FALLEN_ANGEL, chance = 30.5 },
+                        { id = MONSTER_ID_DEMON_HELL_GUARD, chance = 100. },
+                    },
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_DEMON_WIZARD, chance = 33.5 },
+                        { id = MONSTER_ID_ANCIENT_VOIDWALKER, chance = 100. },
+                    }
+                },
+                [MONSTERPACK_BOSS] = {
+                    MONSTER_ID_DEMONESS,
+                    MONSTER_ID_DEMONKING,
+                    MONSTER_ID_UNDERWORLD_QUEEN
+                }
+            },
+            [MONSTERPACK_GHOSTS] = {
+                [MONSTER_RANK_COMMON] = {
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_BANSHEE, chance = 100. },
+                    }
+                },
+                [MONSTER_RANK_ADVANCED] = {
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_GHOST, chance = 100. },
+                    }
+                }
+            },
+            [MONSTERPACK_BOSS] = {
+                MONSTER_ID_BUTCHER,
+                MONSTER_ID_BAAL,
+                MONSTER_ID_MEPHISTO,
+                MONSTER_ID_DEMONESS ,
+                MONSTER_ID_DEMONKING,
+                MONSTER_ID_UNDERWORLD_QUEEN,
+                MONSTER_ID_REANIMATED
+            }
     }
 
 
-    function CreateUnits(unitid, rect, amount)
-        local unit_list = {}
-        local id = FourCC(unitid)
+    function GetRandomMonsterPack(rank)
+        local pack = GetRandomInt(MONSTERPACK_SUCCUBUS, MONSTERPACK_GHOSTS)
 
-        if amount <= 0 then return unit_list end
-
-            for i = 1, amount do
-                unit_list[i] = CreateUnit(MONSTER_PLAYER, id, GetRandomReal(GetRectMinX(rect), GetRectMaxX(rect)), GetRandomReal(GetRectMinY(rect), GetRectMaxY(rect)), GetRandomInt(0, 359))
+            while true do
+                if MONSTER_LIST[pack][rank] ~= nil then return MONSTER_LIST[pack] end
+                pack = GetRandomInt(MONSTERPACK_SUCCUBUS, MONSTERPACK_GHOSTS)
             end
 
-        return unit_list
+        return MONSTER_LIST[pack]
+    end
+
+
+    function GetRandomMonsterPackTag(rank, tag)
+        local pack = GetRandomInt(MONSTERPACK_SUCCUBUS, MONSTERPACK_GHOSTS)
+        local num = 10
+
+            while num > 0 do
+                pack = GetRandomInt(MONSTERPACK_SUCCUBUS, MONSTERPACK_GHOSTS)
+                    if MONSTER_LIST[pack][rank] ~= nil and MONSTER_LIST[pack][rank][tag] ~= nil then
+                        return MONSTER_LIST[pack]
+                    end
+                num = num - 1
+            end
+
+        return MONSTER_LIST[pack]
+    end
+
+
+
+    function CreateUnits(pack, rect, amount)
+        if pack == nil then return 0 end
+
+        local id
+        local newunit
+
+        if amount <= 0 then return end
+
+            for i = 1, amount do
+                for k = 1, #pack do if GetRandomReal(0.,100.) <= pack[k].chance then id = FourCC(pack[k].id) end end
+                newunit = CreateUnit(MONSTER_PLAYER, id, GetRandomReal(GetRectMinX(rect), GetRectMaxX(rect)), GetRandomReal(GetRectMinY(rect), GetRectMaxY(rect)), GetRandomInt(0, 359))
+                GroupAddUnit(WaveGroup, newunit)
+            end
+
+        return amount
     end
 
 
@@ -69,24 +256,64 @@ do
 
 
     function SpawnMonsters()
-        local monster_type = MONSTER_LIST[MONSTER_RANK_COMMON][GetRandomInt(1, #MONSTER_LIST[MONSTER_RANK_COMMON])]
-        local my_group = {}
+        local monster_pack = GetRandomMonsterPack(MONSTER_RANK_COMMON)
         local point = SPAWN_POINTS[1]
+        local total_monster_count = GetRandomInt(WAVE_MINIMUM_COUNT, WAVE_MAXIMUM_COUNT)
+        print("total is "..total_monster_count)
+        local first_pack_count = math.floor(total_monster_count * COMMON_MONSTER_RATE)
+        print("first pack count is "..first_pack_count)
+        local monster_attack_type = GetRandomReal(0., 100.) <= MELEE_MONSTER_CHANCE and MONSTER_TAG_MELEE or MONSTER_TAG_RANGE
 
-            my_group[MONSTER_RANK_COMMON] = CreateUnits(monster_type.id, point, math.floor(GetRandomInt(1, 10) * monster_type.ratio))
 
-                if GetRandomInt(1, 100) <= 25. then
-                    monster_type = MONSTER_LIST[MONSTER_RANK_ADVANCED][GetRandomInt(1, #MONSTER_LIST[MONSTER_RANK_ADVANCED])]
-                    my_group[MONSTER_RANK_ADVANCED] = CreateUnits(monster_type.id, point, math.floor(GetRandomInt(1, 10) * monster_type.ratio))
+        print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
+        --print("pack is "..monster_pack)
+
+
+        total_monster_count = total_monster_count - CreateUnits(monster_pack[MONSTER_RANK_COMMON][monster_attack_type] or nil, point, first_pack_count)
+        print("there is " .. total_monster_count .. " free slots")
+
+
+        local second_pack_count = GetRandomInt(1, total_monster_count)
+        monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
+
+        total_monster_count = total_monster_count - CreateUnits(monster_pack[MONSTER_RANK_COMMON][monster_attack_type] or nil, point, second_pack_count)
+        print("second pack count is "..second_pack_count)
+        print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
+        print("there is " .. total_monster_count .. " free slots")
+
+        if total_monster_count > 0 then
+            local elite_monster_count = GetRandomInt(1, total_monster_count)
+            monster_attack_type = GetRandomReal(0., 100.) <= MELEE_MONSTER_CHANCE and MONSTER_TAG_MELEE or MONSTER_TAG_RANGE
+
+                if monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] == nil then
+                    monster_pack = GetRandomMonsterPackTag(MONSTER_RANK_ADVANCED, monster_attack_type)
                 end
 
+            total_monster_count = total_monster_count - CreateUnits(monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] or nil, point, elite_monster_count)
+            print("elite pack count is "..elite_monster_count)
+            print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
+            print("there is " .. total_monster_count .. " free slots")
 
-                for k = 1, #my_group do
-                    for i = 1, #my_group[k] do
-                        IssuePointOrderById(my_group[k][i], order_attack, GetRectCenterX(MAIN_POINT), GetRectCenterY(MAIN_POINT))
-                        GroupAddUnit(WaveGroup, my_group[k][i])
-                    end
+            if  total_monster_count > 0 then
+                monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
+
+                if monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] == nil then
+                    monster_pack = GetRandomMonsterPackTag(MONSTER_RANK_ADVANCED, monster_attack_type)
                 end
+
+                local elite_second_monster_count = GetRandomInt(1, total_monster_count)
+                CreateUnits(monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] or nil, point, elite_second_monster_count)
+                print("alternate elite pack count is "..elite_second_monster_count)
+                print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
+                print("there is " .. total_monster_count .. " free slots")
+            end
+
+        end
+
+
+            ForGroup(WaveGroup, function()
+                IssuePointOrderById(GetEnumUnit(), order_attack, GetRectCenterX(MAIN_POINT), GetRectCenterY(MAIN_POINT))
+            end)
 
             DelayAction(0.1, function()
                 --TODO wave -> stronk

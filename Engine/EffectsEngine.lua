@@ -226,24 +226,22 @@ do
         data.effect_x = x
         data.effect_y = y
 
-            if myeffect.SFX_used ~= nil then
-                local effect = AddSpecialEffect(myeffect.SFX_used, x, y)
 
-                    BlzSetSpecialEffectScale(effect, myeffect.SFX_used_scale or 1.)
-                    if myeffect.timescale ~= nil then BlzSetSpecialEffectTimeScale(effect, 1. + (1. - myeffect.timescale)) end
+            TimerStart(CreateTimer(), myeffect.SFX_delay or 0., false, function()
+                if myeffect.SFX_used ~= nil then
+                    local effect = AddSpecialEffect(myeffect.SFX_used, x, y)
 
-                    if myeffect.SFX_inherit_angle ~= nil and myeffect.SFX_inherit_angle then
-                        BlzSetSpecialEffectYaw(effect, GetUnitFacing(source) * bj_DEGTORAD)
-                    end
+                        BlzSetSpecialEffectScale(effect, myeffect.SFX_used_scale or 1.)
+                        if myeffect.timescale ~= nil then BlzSetSpecialEffectTimeScale(effect, 1. + (1. - myeffect.timescale)) end
+                        if myeffect.SFX_inherit_angle ~= nil and myeffect.SFX_inherit_angle then BlzSetSpecialEffectYaw(effect, GetUnitFacing(source) * bj_DEGTORAD) end
+                        if myeffect.SFX_bonus_z ~= nil then BlzSetSpecialEffectZ(effect, BlzGetLocalSpecialEffectZ(effect) + myeffect.SFX_bonus_z) end
 
-                    if myeffect.SFX_bonus_z ~= nil then
-                        BlzSetSpecialEffectZ(effect, BlzGetLocalSpecialEffectZ(effect) + myeffect.SFX_bonus_z)
-                    end
+                        DelayAction(myeffect.SFX_lifetime or 0., function() DestroyEffect(effect) end)
 
-                    DelayAction(myeffect.SFX_lifetime or 0., function() DestroyEffect(effect) end)
-
-                effect = nil
-            end
+                    effect = nil
+                end
+                DestroyTimer(GetExpiredTimer())
+            end)
 
 
         PlaySpecialEffect(myeffect.SFX_on_caster, source, myeffect.SFX_on_caster_point, myeffect.SFX_on_caster_scale, myeffect.SFX_on_caster_duration)

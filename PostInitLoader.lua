@@ -41,12 +41,7 @@ do
 
 		print("init done")
 
-		--UnitAddMyAbility(gg_unit_HBRB_0005, 'A007')
-		--UnitAddMyAbility(gg_unit_HBRB_0005, 'A00K')
-		--UnitAddMyAbility(gg_unit_HBRB_0005, 'A00O')
-		--UnitAddMyAbility(gg_unit_HBRB_0005, 'A00Z')
-		--UnitAddMyAbility(gg_unit_HBRB_0005, 'A00B')
-		--UnitAddMyAbility(gg_unit_HBRB_0005, 'A00Q')
+
         CreateShop(gg_unit_opeo_0031, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp")
 		CreateShop(gg_unit_n000_0056, "ReplaceableTextures\\CommandButtons\\BTNVillagerMan1.blp")
 		CreateShop(gg_unit_n001_0055, "ReplaceableTextures\\CommandButtons\\BTNVillagerWoman.blp")
@@ -72,16 +67,11 @@ do
 
 
 		TimerStart(CreateTimer(), 5., false, function()
-
 			WavesInit()
 			AddWaveTimer(300.)
-
-			CreateGoldStack(25, 7345., 3201., 0)
-			CreateGoldStack(35, 7445., 3201., 0)
-			CreateGoldStack(45, 7555., 3201., 0)
-
 		end)
 
 		DoNotSaveReplay()
 	end
+
 end

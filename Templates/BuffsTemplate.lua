@@ -14,14 +14,14 @@ do
     STATE_FREEZE = 2
 
 
-    ---@param buff_id integer
+    ---@param buff_id string
     ---@param lvl integer
     function GetBuffDataLevel(buff_id, lvl)
         local data = BUFF_DATA[FourCC(buff_id)]
         return data.level[lvl]
     end
 
-    ---@param buff_id integer
+    ---@param buff_id string
     function GetBuffData(buff_id)
         return BUFF_DATA[FourCC(buff_id)]
     end
@@ -47,6 +47,8 @@ do
     end
 
 
+    ---@param buff table
+    ---@param lvl integer
     function GenerateBuffLevelData(buff, lvl)
 
         if lvl == 1 then return end
@@ -349,8 +351,8 @@ do
                     max_level = 1,
 
                     bonus = {
-                        { PARAM = PHYSICAL_ATTRIBUTE, VALUE = -15, METHOD = STRAIGHT_BONUS },
-                        { PARAM = ATTACK_SPEED, VALUE = 0.7, METHOD = MULTIPLY_BONUS },
+                        { PARAM = PHYSICAL_RESIST, VALUE = -15, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = -25, METHOD = STRAIGHT_BONUS },
                     }
                 }
             }

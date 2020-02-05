@@ -184,7 +184,8 @@ do
     ---@param raw string
     ---@param x real
     ---@param y real
-	function CreateCustomItem(raw, x, y)
+    ---@param drop_animation boolean
+	function CreateCustomItem(raw, x, y, drop_animation)
         if raw == 0 then return end
 		local id     = FourCC(raw)
 		local item   = CreateItem(id, x, y)
@@ -196,47 +197,45 @@ do
 
             ITEM_DATA[handle] = data
 
-            DelayAction(0.001, function()
+            if drop_animation ~= nil then
+                DelayAction(0.001, function()
 
-                if data.model ~= nil then
-                    BlzSetItemStringField(item, ITEM_SF_MODEL_USED, data.model)
-                end
+                    if data.flippy ~= nil and data.flippy then
+                        local volume = 128
 
-                if data.flippy ~= nil and data.flippy then
-                    local volume = 128
-
-                        for i = 1, 6 do
-                            if GetLocalPlayer() == Player(i-1) then
-                                if not IsItemVisible(item) then
-                                    volume = 0
+                            for i = 1, 6 do
+                                if GetLocalPlayer() == Player(i-1) then
+                                    if not IsItemVisible(item) then
+                                        volume = 0
+                                    end
                                 end
                             end
-                        end
 
-                        AddSoundVolume("Sound\\flippy.wav", x, y, volume, 2100.)
-                        TimerStart(CreateTimer(), 0.48, false, function()
-                            if data.soundpack ~= nil then AddSoundVolume(data.soundpack.drop, x, y, volume, 2100.) end
-                            CreateQualityEffect(item)
-                        end)
+                            AddSoundVolume("Sound\\flippy.wav", x, y, volume, 2100.)
+                            TimerStart(CreateTimer(), 0.48, false, function()
+                                if data.soundpack ~= nil then AddSoundVolume(data.soundpack.drop, x, y, volume, 2100.) end
+                                CreateQualityEffect(item)
+                                DestroyTimer(GetExpiredTimer())
+                            end)
 
-                else
-                    local volume = 128
+                    else
+                        local volume = 128
 
-                        for i = 1, 6 do
-                            if GetLocalPlayer() == Player(i-1) then
-                                if not IsItemVisible(item) then
-                                    volume = 0
+                            for i = 1, 6 do
+                                if GetLocalPlayer() == Player(i-1) then
+                                    if not IsItemVisible(item) then
+                                        volume = 0
+                                    end
                                 end
                             end
-                        end
 
-                        if data.soundpack ~= nil then
-                            AddSoundVolume(data.soundpack.drop, x, y, volume, 2100.)
-                        end
+                            if data.soundpack ~= nil then
+                                AddSoundVolume(data.soundpack.drop, x, y, volume, 2100.)
+                            end
 
-                end
-            end)
-
+                    end
+                end)
+            end
 
             GenerateItemLevel(item, 1)
             if data.TYPE == ITEM_TYPE_SKILLBOOK then GenerateItemBookSkill(item) end
@@ -278,6 +277,7 @@ do
     end
 
 
+    ---@param item item
     function GenerateItemBookSkill(item)
         local item_data = GetItemData(item)
 
@@ -585,6 +585,7 @@ do
             for i = 1, #item_data.BONUS do
                 ModifyStat(unit, item_data.BONUS[i].PARAM, item_data.BONUS[i].VALUE, item_data.BONUS[i].METHOD, flag)
             end
+
 
             UpdateParameters(unit_data)
 
