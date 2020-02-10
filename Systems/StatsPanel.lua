@@ -103,6 +103,8 @@ do
     end
 
 
+    ---@param player integer
+    ---@param count integer
     function AddPointsToPlayer(player, count)
         MainStatButtons[player].points = MainStatButtons[player].points + count
         for i = STR_STAT, VIT_STAT do

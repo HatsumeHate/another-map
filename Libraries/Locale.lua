@@ -97,11 +97,13 @@ do
             CHEST_ARMOR_NAME           = "Нагрудник",
             LEGS_ARMOR_NAME            = "Сапоги",
             HANDS_ARMOR_NAME           = "Перчатки",
+            BELT_ARMOR_NAME            = "Пояс",
             RING_JEWELRY_NAME          = "Кольцо",
             NECKLACE_JEWELRY_NAME      = "Ожерелье",
             THROWING_KNIFE_WEAPON_NAME = "Метательный нож",
             SHIELD_OFFHAND_NAME	       = "Щит",
-            ORB_OFFHAND_NAME 		   = "Орб",
+            ORB_OFFHAND_NAME 		   = "Сфера",
+            QUIVER_OFFHAND_NAME        = "Колчан",
 
             PHYSICAL_ATTRIBUTE_NAME     = "Физический",
             FIRE_ATTRIBUTE_NAME         = "Огненный",
@@ -221,6 +223,7 @@ do
             UI_TEXT_BELT_OFF = "Открепить",
 
             DAMAGE_UI = "Урон: ",
+            BLOCK_UI = "Блок: ",
             DAMAGE_TYPE_UI = "Тип урона: ",
             DEFENCE_UI = "Защита: ",
             SUPPRESSION_UI = "Подавление: ",
@@ -345,6 +348,36 @@ do
             GENERIC_BOW_NAME_10 = "мистический лук",
             GENERIC_BOW_NAME_11 = "заиневший лук",
 
+            GENERIC_QUIVER_NAME_1 = "колчан",
+            GENERIC_QUIVER_NAME_2 = "кожанный колчан",
+            GENERIC_QUIVER_NAME_3 = "рейнджерский колчан",
+            GENERIC_QUIVER_NAME_4 = "обработанный колчан",
+            GENERIC_QUIVER_NAME_5 = "искусный колчан",
+            GENERIC_QUIVER_NAME_6 = "военный колчан",
+            GENERIC_QUIVER_NAME_7 = "укрепленный колчан",
+            GENERIC_QUIVER_NAME_8 = "егерьский колчан",
+            GENERIC_QUIVER_NAME_9 = "мастерский колчан",
+            GENERIC_QUIVER_NAME_10 = "легковесный колчан",
+
+            GENERIC_ORB_NAME_1 = "ветрянная сфера",
+            GENERIC_ORB_NAME_2 = "водная сфера",
+            GENERIC_ORB_NAME_3 = "песочная сфера",
+            GENERIC_ORB_NAME_4 = "опаляющая сфера",
+            GENERIC_ORB_NAME_5 = "сгусток хаоса",
+            GENERIC_ORB_NAME_6 = "заряженная сфера",
+            GENERIC_ORB_NAME_7 = "капля тьмы",
+
+            GENERIC_SHIELD_NAME_1 = "широкий щит",
+            GENERIC_SHIELD_NAME_2 = "рыцарский щит",
+            GENERIC_SHIELD_NAME_3 = "фамильный щит",
+            GENERIC_SHIELD_NAME_4 = "баклер",
+            GENERIC_SHIELD_NAME_5 = "защитник",
+            GENERIC_SHIELD_NAME_6 = "башенный щит",
+            GENERIC_SHIELD_NAME_7 = "рунический щит",
+            GENERIC_SHIELD_NAME_8 = "отражатель",
+            GENERIC_SHIELD_NAME_9 = "рондаш",
+   
+
             GENERIC_CHEST_NAME_1 = "композитный нагрудник",
             GENERIC_CHEST_NAME_2 = "Воронье Крыло",
             GENERIC_CHEST_NAME_3 = "укрепленный нагрудник",
@@ -387,6 +420,16 @@ do
             GENERIC_HEAD_NAME_9 = "укрепленный шлем",
             GENERIC_HEAD_NAME_10 = "каска юстициария",
             GENERIC_HEAD_NAME_11 = "королевский шлем",
+
+            GENERIC_BELT_NAME_1 = "ремень",
+            GENERIC_BELT_NAME_2 = "укрепленный ремень",
+            GENERIC_BELT_NAME_3 = "охотничий пояс",
+            GENERIC_BELT_NAME_4 = "ремень",
+            GENERIC_BELT_NAME_5 = "боевой пояс",
+            GENERIC_BELT_NAME_6 = "шипованный ремень",
+            GENERIC_BELT_NAME_7 = "зачарованный кушак",
+            GENERIC_BELT_NAME_8 = "отделанный пояс",
+
 
             GENERIC_RING_NAME_1 = "адамантитовое кольцо",
             GENERIC_RING_NAME_2 = "позолоченное кольцо",
@@ -549,8 +592,45 @@ do
             [FourCC("A00O")] = {
                 bind = "Прыжок, позволяющий переместиться на расстояние до @s!A00O.rng#.",
             },
-
-
+            [FourCC("A00I")] = {
+                bind = "Призывает неуязвимую огненную гидру, которая атакует врагов. Она наследует 70%% значений характеристик.",
+            },
+            [FourCC("A00H")] = {
+                bind = "Вошлебница подчиняет себе мощь стихий, весь урон от стихий [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# и @b!A00U.pa4#] увеличивается на @b!A00U.va1#, @b!A00U.pa5# на @b!A00U.va5#. Время эффекта - @b!A00U.time сек. ",
+            },
+            [FourCC("A00E")] = {
+                bind = "Волшебница формирует вокруг себя ледяной барьер, повышающий ее защитные параметры: @b!A011.pa1# на @b!A011.va1# ед., @b!A011.pa2# на @b!A011.va2# ед. и @b!A011.pa3# на @b!A011.va3# ед.",
+            },
+            [FourCC("A00N")] = {
+                bind = "Волшебница фокусирует энергии тайной магии, улучшая свою защиту: @b!A00T.pa1# на @b!A00T.va1# ед., @b!A00T.pa2# на @b!A00T.va2# и @b!A00T.pa3# на @b!A00T.va3#.",
+            },
+            [FourCC("A00K")] = {
+                bind = "Выпускает заряженный сгусток энергии медленно летящий вперед, периодически пульсируя разрядами в радиусе @e!ELBL.aoe#, которые наносят @e!ELBL.pwr# ед. урона типа @e!ELBL.atr#",
+            },
+            [FourCC("A00J")] = {
+                bind = "Выстреливает хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают",
+            },
+            [FourCC("A00F")] = {
+                bind = "Призывает с неба метеор, падающий на землю после небольшой задержки, нанося @e!EMTR.pwr# ед. урона типа @e!EMTR.atr# в радиусе @e!EMTR.aoe# и отталкивая противников из центра падения. Имеет повышенный бонус к стихии (+@e!EMTR.ab#)",
+            },
+            [FourCC("A00L")] = {
+                bind = "Позволяет мгновенно переместиться на расстояние до @s!A00L.rng#.",
+            },
+            [FourCC("A00M")] = {
+                bind = "Призывает мощный разряд, поражающий в радиусе @e!ELST.aoe# нанося  @e!ELST.pwr# ед. урона типа @e!ELST.atr#. Имеет повышенный бонус к стихии (+@e!ELST.ab#) и множителю критического урона (+@e!ELST.bcm#)",
+            },
+            [FourCC("A005")] = {
+                bind = "Запускает вперед ледяной шар, который наносит постоянно в радиусе @e!EFOA.aoe# @e!EFOA.pwr# ед. урона типа @e!EFOA.atr (+@e!EFOA.ab#). В конце пути взрывается, нанося @e!EFRO.pwr# ед. урона типа @e!EFRO.atr#, с повышенном шансом критического урона на (+@e!EFRO.bcc#)",
+            },
+            [FourCC("A00D")] = {
+                bind = "Запускает вперед огненный шар, при столкновении наносящий @e!EGFB.pwr# ед. урона типа @e!EGFB.atr#.",
+            },
+            [FourCC("A001")] = {
+                bind = "Ледяная волна, исходящая от волшебницы до радиуса в @e!EFRN.aoe# ед., которая наносит противникам @e!EFRN.pwr# ед. урона типа @e!EFRN.atr# и замораживающая их на @b!A00S.time# cек.",
+            },
+            [FourCC("A003")] = {
+                bind = "Бросает вперед ледяную стрелу, при столкновении с первым противником разлетается на осколки нанося @e!EFRB.pwr# ед. урона типа @e!EFRB.atr# в радиусе @e!EFRB.aoe#. Пораженные охлаждаются, замедляясь на @b!A00S.va1#",
+            },
 
         },
         ["enUS"] = {
@@ -639,12 +719,14 @@ do
             HEAD_ARMOR_NAME            = "Head",
             CHEST_ARMOR_NAME           = "Chest",
             LEGS_ARMOR_NAME            = "Boots",
-            HANDS_ARMOR_NAME           = "Glows",
+            HANDS_ARMOR_NAME           = "Gloves",
+            BELT_ARMOR_NAME            = "Belt",
             RING_JEWELRY_NAME          = "Ring",
             NECKLACE_JEWELRY_NAME      = "Necklace",
             THROWING_KNIFE_WEAPON_NAME = "Throwing knife",
             SHIELD_OFFHAND_NAME	       = "Shield",
             ORB_OFFHAND_NAME 		   = "Orb",
+            QUIVER_OFFHAND_NAME        = "Quiver",
 
             PHYSICAL_ATTRIBUTE_NAME     = "Physical",
             FIRE_ATTRIBUTE_NAME         = "Fire",
@@ -762,6 +844,7 @@ do
             UI_TEXT_BELT_OFF = "Take off",
 
             DAMAGE_UI = "Damage: ",
+            BLOCK_UI = "Block: ",
             DAMAGE_TYPE_UI = "Damage Type: ",
             DEFENCE_UI = "Defence: ",
             SUPPRESSION_UI = "Suppression: ",
@@ -892,6 +975,34 @@ do
             GENERIC_BOW_NAME_10 = "mystic bow",
             GENERIC_BOW_NAME_11 = "iced bow",
 
+            GENERIC_QUIVER_NAME_1 = "quiver",
+            GENERIC_QUIVER_NAME_2 = "leather quiver",
+            GENERIC_QUIVER_NAME_3 = "ranger's quiver",
+            GENERIC_QUIVER_NAME_4 = "crafted quiver",
+            GENERIC_QUIVER_NAME_5 = "skillful quiver",
+            GENERIC_QUIVER_NAME_6 = "military quiver",
+            GENERIC_QUIVER_NAME_7 = "fortified quiver",
+            GENERIC_QUIVER_NAME_8 = "huntsman's quiver",
+            GENERIC_QUIVER_NAME_9 = "master quiver",
+            GENERIC_QUIVER_NAME_10 = "lightweight quiver",
+
+            GENERIC_ORB_NAME_1 = "wind orb",
+            GENERIC_ORB_NAME_2 = "water orb",
+            GENERIC_ORB_NAME_3 = "sand orb",
+            GENERIC_ORB_NAME_4 = "scorching orb",
+            GENERIC_ORB_NAME_5 = "clot of chaos",
+            GENERIC_ORB_NAME_6 = "charged orb",
+            GENERIC_ORB_NAME_7 = "drop of darkness",
+
+            GENERIC_SHIELD_NAME_1 = "wide shield",
+            GENERIC_SHIELD_NAME_2 = "knight's shield",
+            GENERIC_SHIELD_NAME_3 = "heir's shield",
+            GENERIC_SHIELD_NAME_4 = "buckler",
+            GENERIC_SHIELD_NAME_5 = "defender",
+            GENERIC_SHIELD_NAME_6 = "tower shield",
+            GENERIC_SHIELD_NAME_7 = "runic shield",
+            GENERIC_SHIELD_NAME_8 = "reflector",
+            GENERIC_SHIELD_NAME_9 = "rondache",
 
             GENERIC_CHEST_NAME_1 = "composite chest",
             GENERIC_CHEST_NAME_2 = "Raven Wing",
@@ -912,7 +1023,7 @@ do
             GENERIC_HANDS_NAME_3 = "chain gauntlets",
             GENERIC_HANDS_NAME_4 = "plate gauntlets",
             GENERIC_HANDS_NAME_5 = "enforced plate gauntlets",
-            GENERIC_HANDS_NAME_6 = "duelist gauntlets",
+            GENERIC_HANDS_NAME_6 = "duelist's gauntlets",
             GENERIC_HANDS_NAME_7 = "charmed gloves",
 
             GENERIC_LEGS_NAME_1 = "hiking boots",
@@ -936,11 +1047,20 @@ do
             GENERIC_HEAD_NAME_10 = "justicars helmet",
             GENERIC_HEAD_NAME_11 = "royal helmet",
 
+            GENERIC_BELT_NAME_1 = "belt",
+            GENERIC_BELT_NAME_2 = "armored belt",
+            GENERIC_BELT_NAME_3 = "hunter's belt",
+            GENERIC_BELT_NAME_4 = "belt",
+            GENERIC_BELT_NAME_5 = "combat belt",
+            GENERIC_BELT_NAME_6 = "studded belt",
+            GENERIC_BELT_NAME_7 = "charmed sash",
+            GENERIC_BELT_NAME_8 = "cast belt",
+
 
             GENERIC_RING_NAME_1 = "adamantite ring",
             GENERIC_RING_NAME_2 = "gold-plated ring",
             GENERIC_RING_NAME_3 = "knight's signet",
-            GENERIC_RING_NAME_4 = "heir ring",
+            GENERIC_RING_NAME_4 = "heir's ring",
             GENERIC_RING_NAME_5 = "golden ring",
             GENERIC_RING_NAME_6 = "aquamarine ring",
             GENERIC_RING_NAME_7 = "blackened ring",
@@ -1067,6 +1187,76 @@ do
 
             ITEM_NAME_SMORC_PICKAXE = "Smorc Pickaxe",
             ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE = "Legends says, that miner Smorc was crushing his enemies with that thing.",
+
+
+            GENERATED_TOOLTIP = " of attack",
+
+            [FourCC("A007")] = {
+                bind = "Strong blow that deals @e!ECRH.dmg# of @e!ECRH.atr# damage in front. Affected enemy suffer loss of physical damage resistance by @b!A00W.va1# and attack speed by @b!A00W.va2# for @b!A00W.time# seconds.",
+            },
+            [FourCC("A00C")] = {
+                bind = "Barbarian screams in @e!EWCR.aoe# range, which reduces enemy attack by @b!A00Y.va1# and movement speed by @b!A00Y.va3#.",
+            },
+            [FourCC("A006")] = {
+                bind = "Swift strkike which inflicts @e!ECSL.dmg# of @e!ECSL.atr# in front. Enemies suffer a bloodloss, taking @e!ECSP.dmg# of @e!ECSP.atr# as periodic damage.",
+            },
+            [FourCC("A00A")] = {
+                bind = "Throwing a chain that flyes up to @s!A00A.rng# range, pulling first target it hits to you.",
+            },
+            [FourCC("A010")] = {
+                bind = "Barbarian forms storm of fury, rapidly spinning around while dealing enemies @e!EWHW.dmg# of @e!EWHW.atr# 3 times per second and spending 9 mana.",
+            },
+            [FourCC("A00Q")] = {
+                bind = "Falling into pure rage, increasing attack by @b!A00V.va1#, effects control reduction by @b!A00V.va2# and movement speed by @b!A00V.va3# for @b!A00V.time# sec.",
+            },
+            [FourCC("A00B")] = {
+                bind = "Punch that deals @e!EUPP.dmg# of @e!EUPP.atr# and pushing back targets, after which they are stunned for @b!A012.time# sec.",
+            },
+            [FourCC("A00Z")] = {
+                bind = "Throws a dagger up to @s!A00Z.rng# range, first enemy takes @e!ETHK.dmg# of @e!ETHK.atr#. Increased chance of critical damage (+@e!ETHK.bcc#).",
+            },
+            [FourCC("A00O")] = {
+                bind = "Allows you to jump up to @s!A00O.rng# range.",
+            },
+            [FourCC("A00I")] = {
+                bind = "Summons an immortal flame hydra that attacks enemies. Hydra inherits 70% of your stats.",
+            },
+            [FourCC("A00H")] = {
+                bind = "Sorceress binds elemental forces to her will, which boosting her stats: [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# и @b!A00U.pa4#] inscreasing for @b!A00U.va1#, @b!A00U.pa5# на @b!A00U.va5#. Duration - @b!A00U.time sec.",
+            },
+            [FourCC("A00E")] = {
+                bind = "Sorceress formes frost barrier around herself, boosting @b!A011.pa1# for @b!A011.va1#, @b!A011.pa2# for @b!A011.va2# and @b!A011.pa3# for @b!A011.va3#. Duration - @b!A011.time sec.",
+            },
+            [FourCC("A00N")] = {
+                bind = "Sorceress focusing her arcane powers, boosting her defence: @b!A00T.pa1# for @b!A00T.va1#, @b!A00T.pa2# for @b!A00T.va2# and @b!A00T.pa3# for @b!A00T.va3#. Duration - @b!A00T.time sec.",
+            },
+            [FourCC("A00K")] = {
+                bind = "Forms energized ball that slowly flies forward, periodically pulsing in @e!ELBL.aoe# range on nearby enemies for @e!ELBL.pwr# @e!ELBL.atr# damage.",
+            },
+            [FourCC("A00J")] = {
+                bind = "Shots electrical bolts that moving in the chaotic pattern. First enemy they hit takes @e!EDSC.pwr# @e!EDSC.atr# damage.",
+            },
+            [FourCC("A00F")] = {
+                bind = "Calls for a meteor from the sky, that falling after short delay, dealing enemies @e!EMTR.pwr# @e!EMTR.atr# damage in a @e!EMTR.aoe# radius, pushing them from explosion center. Have bonus to attribute (+@e!EMTR.ab#)",
+            },
+            [FourCC("A00L")] = {
+                bind = "Allows you to instantly move up to @s!A00L.rng# range.",
+            },
+            [FourCC("A00M")] = {
+                bind = "Calls for a powerful discharge with @e!ELST.aoe# radius that deals @e!ELST.pwr# @e!ELST.atr# damage. Have bonus to attribute (+@e!ELST.ab#) and critical multiplier (+@e!ELST.bcm#)",
+            },
+            [FourCC("A005")] = {
+                bind = "Launching forward the frost orb that constantly damages enemies in a @e!EFOA.aoe# radius inflicting @e!EFOA.pwr# @e!EFOA.atr damage (+@e!EFOA.ab#). In the end orb explodes for @e!EFRO.pwr# @e!EFRO.atr# damage with increased bonus to critical chance (+@e!EFRO.bcc#)",
+            },
+            [FourCC("A00D")] = {
+                bind = "Throws forward a fireball, first enemy it hits takes @e!EGFB.pwr# @e!EGFB.atr# damage.",
+            },
+            [FourCC("A001")] = {
+                bind = "Emits wave of frost from yourself with @e!EFRN.aoe# radius, freezing enemies for @b!A00S.time# sec. and dealing them @e!EFRN.pwr# @e!EFRN.atr# damage.",
+            },
+            [FourCC("A003")] = {
+                bind = "Throws frostbolt that explodes on the first enemy, dealing @e!EFRB.pwr# @e!EFRB.atr# damage in a @e!EFRB.aoe# radius. Affected targets suffer movement speed loss by @b!A00S.va1#",
+            },
         }
 
     }

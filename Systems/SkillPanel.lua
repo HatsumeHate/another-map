@@ -34,6 +34,21 @@ do
     end
 
 
+    TriggerAddAction(LeaveTrigger, function()
+        RemoveTooltip(GetPlayerId(GetTriggerPlayer()) + 1)
+    end)
+
+    TriggerAddAction(EnterTrigger, function()
+        local button_data = GetButtonData(BlzGetTriggerFrame())
+        local player = GetPlayerId(GetTriggerPlayer()) + 1
+
+            if button_data.skill ~= nil then
+                ShowSkillTooltip(button_data.skill, SkillPanelFrame[player].tooltip, button_data, player)
+            end
+
+    end)
+
+
     TriggerAddAction(ClickTrigger, function ()
         local button_data = GetButtonData(BlzGetTriggerFrame())
         local player = GetPlayerId(GetTriggerPlayer()) + 1
@@ -325,7 +340,9 @@ do
             BlzTriggerRegisterFrameEvent(trg, SkillPanelFrame[player].slider, FRAMEEVENT_MOUSE_WHEEL)
 
 
-            BlzFrameSetVisible(main_frame, false)
+        SkillPanelFrame[player].tooltip = NewTooltip(SkillPanelFrame[player].slider)
+
+        BlzFrameSetVisible(main_frame, false)
 
         SkillPanelFrame[player].main_frame = main_frame
         SkillPanelFrame[player].state = false
@@ -334,7 +351,7 @@ do
         --SkillPanelFrame[player].default_category = CLASS_SKILL_CATEGORY[unit_data.unit_class][1]
     end
 
-
+    
     function SkillPanelInit()
         SkillPanelButton = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSpellBookBLS.blp", 0.03, 0.03, InventoryTriggerButton, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.01, 0., GAME_UI)
 
@@ -354,6 +371,7 @@ do
 
                 UpdateSkillList(player)
                 DestroyContextMenu(player)
+                RemoveTooltip(player)
                 SkillPanelFrame[player].state = not SkillPanelFrame[player].state
                 end)
 

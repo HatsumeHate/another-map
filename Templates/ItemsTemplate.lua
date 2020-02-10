@@ -32,7 +32,8 @@ do
     THROWING_KNIFE_WEAPON = 18
 	SHIELD_OFFHAND 		  = 19
 	ORB_OFFHAND 		  = 20
-
+	QUIVER_OFFHAND 		  = 21
+	BELT_ARMOR 			  = 22
 
 	
 	COMMON_ITEM        = 1
@@ -191,6 +192,8 @@ do
 
                 DEFENCE            = 0,
                 SUPPRESSION        = 0,
+				BLOCK 			   = 0,
+				BLOCK_RATE 		   = 40.,
 
                 ATTACK_SPEED       = 1,
                 CRIT_CHANCE        = 0,
@@ -563,6 +566,16 @@ do
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
 		})
+		ItemAddData('IGAB', {
+			NAME    = 'NAN',
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = BELT_ARMOR,
+			QUALITY = MAGIC_ITEM,
+			DEFENCE = 50,
+			flippy = true,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
+			sell_value = 50,
+		})
 		ItemAddData('IGJN', {
 			NAME    = 'NAN',
 			TYPE    = ITEM_TYPE_JEWELRY,
@@ -583,6 +596,34 @@ do
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
 		})
+		ItemAddData('IGOO', {
+			NAME    = 'NAN',
+			TYPE    = ITEM_TYPE_OFFHAND,
+			SUBTYPE = ORB_OFFHAND,
+			QUALITY = MAGIC_ITEM,
+			flippy = true,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
+			sell_value = 50,
+		})
+		ItemAddData('IGOS', {
+			NAME    = 'NAN',
+			TYPE    = ITEM_TYPE_OFFHAND,
+			SUBTYPE = SHIELD_OFFHAND,
+			QUALITY = MAGIC_ITEM,
+			flippy = true,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
+			sell_value = 50,
+		})
+		ItemAddData('IGOQ', {
+			NAME    = 'NAN',
+			TYPE    = ITEM_TYPE_OFFHAND,
+			SUBTYPE = QUIVER_OFFHAND,
+			QUALITY = MAGIC_ITEM,
+			flippy = true,
+			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
+			sell_value = 50,
+		})
+		-- TODO ^ in object editor
         --
         ItemAddData('I001', {
             NAME    = 'Плащ Теней',

@@ -74,6 +74,33 @@ do
     end)
 
 
+    MONSTER_STATS_RATES = {
+        { stat = PHYSICAL_ATTACK,       initial = 0.98,   delta = 0.02,  delta_level = 1, method = MULTIPLY_BONUS },
+        { stat = PHYSICAL_DEFENCE,      initial = 0.99,   delta = 0.01,  delta_level = 1, method = MULTIPLY_BONUS },
+        { stat = MAGICAL_ATTACK,        initial = 0.98,   delta = 0.02,  delta_level = 1, method = MULTIPLY_BONUS },
+        { stat = MAGICAL_SUPPRESSION,   initial = 0.99,   delta = 0.01,  delta_level = 1, method = MULTIPLY_BONUS },
+        { stat = CRIT_CHANCE,           initial = 0,      delta = 1.,    delta_level = 5, method = STRAIGHT_BONUS },
+        { stat = ALL_RESIST,            initial = 0,      delta = 1,     delta_level = 5, method = STRAIGHT_BONUS },
+        { stat = PHYSICAL_BONUS,        initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+        { stat = ICE_BONUS,             initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+        { stat = LIGHTNING_BONUS,       initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+        { stat = FIRE_BONUS,            initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+        { stat = DARKNESS_BONUS,        initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+        { stat = HOLY_BONUS,            initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+        { stat = POISON_BONUS,          initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+        { stat = ARCANE_BONUS,          initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+        { stat = HP_VALUE,              initial = 0.96,   delta = 0.04,  delta_level = 1, method = MULTIPLY_BONUS },
+    }
+
+
+    MONSTER_EXP_RATES = {
+        [MONSTER_RANK_COMMON] = 1.,
+        [MONSTER_RANK_ADVANCED] = 1.25,
+        [MONSTER_RANK_BOSS] = 5.,
+        const_per_level = 75,
+        modf_per_level = 0.02
+    }
+
     -- attack type focus (melee/range ratio) => monster type =>
 
 
@@ -239,9 +266,12 @@ do
     TriggerAddAction(trg, function()
 
         if IsUnitInGroup(GetTriggerUnit(), WaveGroup) then
-            GroupRemoveUnit(WaveGroup, GetTriggerUnit())
+            local unit = GetTriggerUnit()
+            local unit_Data = GetUnitData(unit)
+            GroupRemoveUnit(WaveGroup, unit)
 
-            DropForPlayer(GetTriggerUnit(), 0)
+            DropForPlayer(unit, 0)
+            GiveExpForKill(((unit_Data.xp or 15) + MONSTER_EXP_RATES.const_per_level) * MONSTER_EXP_RATES[unit_Data.classification or MONSTER_RANK_COMMON] * (1. + (MONSTER_EXP_RATES.modf_per_level * Current_Wave)) , GetUnitX(unit), GetUnitY(unit))
 
                 if BlzGroupGetSize(WaveGroup) <= 0 then
                     AddWaveTimer(200.)
@@ -315,8 +345,14 @@ do
                 IssuePointOrderById(GetEnumUnit(), order_attack, GetRectCenterX(MAIN_POINT), GetRectCenterY(MAIN_POINT))
             end)
 
+
             DelayAction(0.1, function()
-                --TODO wave -> stronk
+                ForGroup(WaveGroup, function ()
+                    for i = 1, #MONSTER_STATS_RATES do
+                        ModifyStat(GetEnumUnit(), MONSTER_STATS_RATES[i].stat, MONSTER_STATS_RATES[i].initial +
+                                math.floor(Current_Wave / MONSTER_STATS_RATES[i].delta_level) * MONSTER_STATS_RATES[i].delta, MONSTER_STATS_RATES[i].method, true)
+                    end
+                end)
             end)
 
         PingMinimap(GetRectCenterX(point), GetRectCenterY(point), 7.)

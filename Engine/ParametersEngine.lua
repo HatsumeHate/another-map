@@ -193,12 +193,12 @@ do
     function GetCorrectParamText(parameter, value, method)
         if method == MULTIPLY_BONUS then
             local v = value
-			value =  S2I(R2S((value - 1.) * 100.)) .. "%%"
+			value =  S2I(R2S((value - 1.) * 100.))
 
 				if v >= 1. then
-					value = "+" .. value
+					value = "+" .. value .. "%%"
 				else
-					value = math.abs(value)
+					value = math.abs(value) .. "%%"
 				end
 
         else
@@ -252,9 +252,9 @@ do
 		[PHYSICAL_DEFENCE]       = function(data)
 			local defence = data.stats[AGI_STAT].value * 2
 			
-			for i = 2, 6 do
+			for i = OFFHAND_POINT, HANDS_POINT do
 				if data.equip_point[i] ~= nil then
-					defence = defence + data.equip_point[i].DEFENCE
+					defence = defence + (data.equip_point[i].DEFENCE or 0)
 				end
 			end
 			
@@ -272,9 +272,9 @@ do
         [MAGICAL_SUPPRESSION]       = function(data)
             local defence = data.stats[INT_STAT].value
 
-            for i = 7, 9 do
+            for i = RING_1_POINT, NECKLACE_POINT do
                 if data.equip_point[i] ~= nil then
-                    defence = defence + data.equip_point[i].SUPPRESSION
+                    defence = defence + (data.equip_point[i].SUPPRESSION or 0)
                 end
             end
 
@@ -468,12 +468,20 @@ do
 
 		---@param data table
 		[BLOCK_CHANCE] = function(data)
-			data.stats[BLOCK_CHANCE].value = data.stats[BLOCK_CHANCE].bonus
+			local base = 0.
+			if data.equip_point[OFFHAND_POINT] ~= nil and data.equip_point[OFFHAND_POINT].SUBTYPE == SHIELD_OFFHAND then
+				base = data.equip_point[OFFHAND_POINT].BLOCK or 0.
+			end
+			data.stats[BLOCK_CHANCE].value = data.stats[BLOCK_CHANCE].bonus + base
 		end,
 
 		---@param data table
 		[BLOCK_ABSORB] = function(data)
-			data.stats[BLOCK_ABSORB].value = data.stats[BLOCK_ABSORB].bonus
+			local base = 0.
+			if data.equip_point[OFFHAND_POINT] ~= nil and data.equip_point[OFFHAND_POINT].SUBTYPE == SHIELD_OFFHAND then
+				base = data.equip_point[OFFHAND_POINT].BLOCK_RATE or 40.
+			end
+			data.stats[BLOCK_ABSORB].value = data.stats[BLOCK_ABSORB].bonus + base
 		end,
 
 		---@param data table

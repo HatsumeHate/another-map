@@ -686,7 +686,7 @@
                 [1] = {
                     range               = 600.,
                     missile             = 'MBCH',
-                    resource_cost       = 6.,
+                    resource_cost       = 6,
                     cooldown            = 2.3,
                     animation           = 3,
                     animation_point     = 1.4,
@@ -731,7 +731,7 @@
             level = {
                 [1] = {
                     effect              = 'EWCR',
-                    resource_cost       = 5.,
+                    resource_cost       = 5,
                     cooldown            = 22.,
                     animation           = 3,
                     animation_point     = 1.4,

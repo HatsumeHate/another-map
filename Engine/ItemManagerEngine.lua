@@ -26,18 +26,20 @@ do
         [GREATSWORD_WEAPON]     = 0.85,
         [AXE_WEAPON]            = 0.75,
         [GREATAXE_WEAPON]       = 0.85,
-        [DAGGER_WEAPON]         = 0.7,
+        [DAGGER_WEAPON]         = 0.65,
         [STAFF_WEAPON]          = 0.85,
         [JAWELIN_WEAPON]        = 1.,
         [HEAD_ARMOR]            = 0.5,
         [CHEST_ARMOR]           = 0.65,
         [LEGS_ARMOR]            = 0.55,
         [HANDS_ARMOR]           = 0.55,
+        [BELT_ARMOR]            = 0.55,
         [RING_JEWELRY]          = 0.5,
         [NECKLACE_JEWELRY]      = 0.7,
         [THROWING_KNIFE_WEAPON] = 0.7,
-        [SHIELD_OFFHAND]        = 0.65,
+        [SHIELD_OFFHAND]        = 0.7,
         [ORB_OFFHAND]           = 0.65,
+        [QUIVER_OFFHAND]        = 0.65,
     }
 
     local ITEMTYPES_NAMES = {
@@ -423,8 +425,17 @@ do
                     item_data.DAMAGE = R2I(20 * GetRandomReal(0.75, 1.25)) + 2 * level
                 elseif item_data.TYPE == ITEM_TYPE_ARMOR then
                     item_data.DEFENCE = R2I(15 * GetRandomReal(0.75, 1.25)) + 1 * level
+                    if item_data.SUBTYPE == BELT_ARMOR then
+                        item_data.DEFENCE = item_data.DEFENCE * 0.5
+                        item_data.SUPPRESSION = (R2I(7 * GetRandomReal(0.75, 1.25)) + 1 * level) * 0.5
+                    end
                 elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
                     item_data.SUPPRESSION = R2I(7 * GetRandomReal(0.75, 1.25)) + 1 * level
+                elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
+                    if item_data.SUBTYPE == SHIELD_OFFHAND then
+                        item_data.BLOCK = GetRandomInt(20, 30)
+                        item_data.DEFENCE = R2I(15 * GetRandomReal(0.75, 1.25)) + 1 * level
+                    end
                 end
 
             GenerateItemCost(item, level)
@@ -493,6 +504,11 @@ do
                     item_data.DEFENCE = item_data.DEFENCE * item_preset.modificator
                 elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
                     item_data.SUPPRESSION = item_data.SUPPRESSION * item_preset.modificator
+                elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
+                    if item_data.SUBTYPE == SHIELD_OFFHAND then
+                        item_data.DEFENCE = item_data.DEFENCE * item_preset.modificator
+                        item_data.BLOCK = item_data.BLOCK * item_preset.modificator
+                    end
                 end
 
             BlzSetItemName(item, item_data.NAME)
@@ -537,7 +553,7 @@ do
 
                 if IsWeaponTypeTwohanded(item_data.SUBTYPE) and flag then
                     if item_data.equip_point[OFFHAND_POINT] ~= nil then
-                        disarmed_item = item_data.equip_point[OFFHAND_POINT].item
+                        --disarmed_item = item_data.equip_point[OFFHAND_POINT].item
                         EquipItem(unit, unit_data.equip_point[OFFHAND_POINT], false)
                     end
                 end
@@ -563,6 +579,8 @@ do
 
             elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
                 point = OFFHAND_POINT
+            else
+                point = BELT_POINT
             end
 
 
@@ -601,27 +619,29 @@ do
     end
 
 
-
+    PlayerPickUpItemFlag = {}
 
     local trg = CreateTrigger()
     TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER)
     TriggerAddAction(trg, function()
 
-        if GetOrderTargetItem() ~= nil and GetItemType(GetOrderTargetItem()) ~= ITEM_TYPE_POWERUP then
-            local item = GetOrderTargetItem()
+        if GetOrderTargetItem() ~= nil and GetItemType(GetOrderTargetItem()) ~= ITEM_TYPE_POWERUP and not PlayerPickUpItemFlag[GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1] then
             local unit = GetTriggerUnit()
+            local player = GetPlayerId(GetOwningPlayer(unit)) + 1
+            local item = GetOrderTargetItem()
             local angle = AngleBetweenXY_DEG(GetItemX(item), GetItemY(item), GetUnitX(unit), GetUnitY(unit))
 
-                if DistanceBetweenUnitXY(unit, GetItemX(item), GetItemY(item)) <= 200. then
+
+                 if DistanceBetweenUnitXY(unit, GetItemX(item), GetItemY(item)) <= 200. and not PlayerPickUpItemFlag[player] then
+                    PlayerPickUpItemFlag[player] = true
                     local item_data = GetItemData(item)
 
-                    UnitRemoveItem(unit, item)
-                    IssuePointOrderById(unit, order_move, GetUnitX(unit) + 0.01, GetUnitY(unit) - 0.01)
-                    local done =  AddToInventory(GetPlayerId(GetOwningPlayer(unit)) + 1, item)
+                        UnitRemoveItem(unit, item)
+                        IssuePointOrderById(unit, order_move, GetUnitX(unit) + 0.01, GetUnitY(unit) - 0.01)
+                        local done =  AddToInventory(player, item)
+                        if done and item_data.quality_effect ~= nil then DestroyEffect(item_data.quality_effect) end
+                        DelayAction(0.001, function() PlayerPickUpItemFlag[player] = false end)
 
-                        if done and item_data.quality_effect ~= nil then
-                            DestroyEffect(item_data.quality_effect)
-                        end
                 else
                     IssuePointOrderById(unit, order_move, GetItemX(item) + Rx(25., angle), GetItemY(item) + Ry(25., angle))
                 end
@@ -650,7 +670,7 @@ do
         local player = GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1
             OnItemUse(GetTriggerUnit(), GetManipulatedItem(), GetEventTargetUnit())
 
-            if BlzFrameIsVisible(PlayerInventoryFrame[player]) or GetItemTypeId(GetManipulatedItem()) == ITEM_TYPE_CHARGED then
+            if PlayerInventoryFrameState[player] or GetItemTypeId(GetManipulatedItem()) == ITEM_TYPE_CHARGED then
                 UpdateInventoryWindow(player)
             end
 
@@ -685,11 +705,13 @@ do
             [CHEST_ARMOR]           = LOCALE_LIST[my_locale].CHEST_ARMOR_NAME,
             [LEGS_ARMOR]            = LOCALE_LIST[my_locale].LEGS_ARMOR_NAME,
             [HANDS_ARMOR]           = LOCALE_LIST[my_locale].HANDS_ARMOR_NAME,
+            [BELT_ARMOR]            = LOCALE_LIST[my_locale].BELT_ARMOR_NAME,
             [RING_JEWELRY]          = LOCALE_LIST[my_locale].RING_JEWELRY_NAME,
             [NECKLACE_JEWELRY]      = LOCALE_LIST[my_locale].NECKLACE_JEWELRY_NAME,
             [THROWING_KNIFE_WEAPON] = LOCALE_LIST[my_locale].THROWING_KNIFE_WEAPON_NAME,
             [SHIELD_OFFHAND]        = LOCALE_LIST[my_locale].SHIELD_OFFHAND_NAME,
             [ORB_OFFHAND]           = LOCALE_LIST[my_locale].ORB_OFFHAND_NAME,
+            [QUIVER_OFFHAND]        = LOCALE_LIST[my_locale].QUIVER_OFFHAND_NAME,
         }
 
 
@@ -717,6 +739,9 @@ do
             item = nil
         end)
 
+        for i = 1, bj_MAX_PLAYERS do
+            PlayerPickUpItemFlag[i] = false
+        end
     end
 
 

@@ -84,21 +84,21 @@ do
 
                  GenerateEffectLevelData(effect, lvl)
 
-                    if value_str == "pwr" then return (effect.level[lvl].power or 0)
-                    elseif value_str == "dmg" then return (effect.level[lvl].power or 0) .. " + " .. S2I(R2S((effect.level[lvl].attack_percent_bonus or 1.) * 100.)) .. "%% " .. LOCALE_LIST[my_locale].GENERATED_TOOLTIP
-                    elseif value_str == "atr" then return GetItemAttributeName(effect.level[lvl].attribute)
+                    if value_str == "pwr" then return "|c00FF7600" .. (effect.level[lvl].power or 0) .. "|r"
+                    elseif value_str == "dmg" then return "|c00FF7600" .. (effect.level[lvl].power or 0) .. " + " .. S2I(R2S((effect.level[lvl].attack_percent_bonus or 1.) * 100.)) .. "%%|r " .. LOCALE_LIST[my_locale].GENERATED_TOOLTIP
+                    elseif value_str == "atr" then return "|c007AB3FF" .. GetItemAttributeName(effect.level[lvl].attribute) .. "|r"
                     elseif value_str == "ap" then return math.floor((effect.level[lvl].attack_percent_bonus or 1.) * 100.)
-                    elseif value_str == "ab" then return effect.level[lvl].attribute_bonus or 0
+                    elseif value_str == "ab" then return "|c007AB3FF" ..  (effect.level[lvl].attribute_bonus or 0) .. "|r"
                     elseif value_str == "wdpb" then return math.floor((effect.level[lvl].weapon_damage_percent_bonus or 1.) * 100.)
                     elseif value_str == "aoe" then return R2I(effect.level[lvl].area_of_effect or 0.)
-                    elseif value_str == "bcc" then return R2I(effect.level[lvl].bonus_crit_chance or 0.) .. "%%"
-                    elseif value_str == "bcm" then return effect.level[lvl].bonus_crit_multiplier or 0.
+                    elseif value_str == "bcc" then return "|c00FFD900" .. R2I(effect.level[lvl].bonus_crit_chance or 0.) .. "%%|r"
+                    elseif value_str == "bcm" then return "|c00FFD900" .. (effect.level[lvl].bonus_crit_multiplier or 0.) .. "|r"
                     end
             elseif tag == "s" then
                 local skill = GetSkillData(FourCC(id))
-                    if value_str == "rc" then return R2I(skill.level[lvl].resource_cost or 0.)
+                    if value_str == "rc" then return R2I(skill.level[lvl].resource_cost or 0)
                     elseif value_str == "cld" then return skill.level[lvl].cooldown or 0.1
-                    elseif value_str == "rng" then return R2I(skill.level[lvl].range or 0.)
+                    elseif value_str == "rng" then return "|c0000DBA4" .. R2I(skill.level[lvl].range or 0.) .. "|r"
                     end
             elseif tag == "b" then
                 local buff = GetBuffData(id)
@@ -108,10 +108,10 @@ do
                     if value_str == "time" then return buff.level[lvl].time or 0.1
                     elseif SubString(value_str, 0,  2) == "va" then
                         local param = buff.level[lvl].bonus[S2I(SubString(value_str, 2, 3))]
-                        return GetCorrectParamText(param.PARAM, param.VALUE, param.METHOD)
+                        return "|c00FF7600" .. GetCorrectParamText(param.PARAM, param.VALUE, param.METHOD) .. "|r"
                     elseif SubString(value_str, 0,  2) == "pa" then
                         local param = buff.level[lvl].bonus[S2I(SubString(value_str, 2, 3))]
-                        return param.PARAM
+                        return GetParameterName(param.PARAM)
                     end
 
             end
@@ -128,25 +128,18 @@ do
         local my_string_table = {}
         local ending_number = 0
 
-        for i = 0, StringLength(str) do
-
-            if SubString(str, i, i+1) == "@" then
-                ending_number = GetStringEnding(str, i)
-                local value_string = SubString(str, i, ending_number)
-                my_string_table[#my_string_table+1] = SubString(str, last_sector, i) .. ParseString(value_string, SubString(str, i+1, i+2), level)
-                i = ending_number
-                last_sector = i
+            for i = 0, StringLength(str) do
+                if SubString(str, i, i+1) == "@" then
+                    ending_number = GetStringEnding(str, i)
+                    local value_string = SubString(str, i, ending_number)
+                    my_string_table[#my_string_table+1] = SubString(str, last_sector, i) .. ParseString(value_string, SubString(str, i+1, i+2), level)
+                    i = ending_number
+                    last_sector = i
+                end
             end
 
-
-        end
-
         my_string_table[#my_string_table+1] = SubString(str, last_sector, StringLength(str))
-
-
-        for i = 1, #my_string_table do
-            result_string = result_string .. my_string_table[i]
-        end
+        for i = 1, #my_string_table do result_string = result_string .. my_string_table[i] end
 
         return result_string
     end
@@ -154,7 +147,7 @@ do
 
 
     RegisterTestCommand("parse", function()
-        print(ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][FourCC("A007")].bind, 1))
+        print(ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][FourCC("A00C")].bind, 1))
     end)
 
     ---@param unit unit
@@ -193,7 +186,7 @@ do
             BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[skill.current_level].range or 0.)
             BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[skill.current_level].radius or 0.)
             BlzSetAbilityIntegerLevelField(ability, ABILITY_ILF_TARGET_TYPE, 0, skill.activation_type)
-            BlzSetUnitAbilityManaCost(unit, ability_id, 0, skill.level[skill.current_level].resource_cost or 0.)
+            BlzSetUnitAbilityManaCost(unit, ability_id, 0, R2I(skill.level[skill.current_level].resource_cost) or 0)
 
                 if GetLocalPlayer() == GetOwningPlayer(unit) then
                     BlzSetAbilityTooltip(ability_id, skill.name .. KEYBIND_LIST[key].name_string, 0)
@@ -331,6 +324,8 @@ do
             end
 
             unit_data.skill_list[#unit_data.skill_list + 1] = MergeTables({}, skill_data)
+
+            print("new skill added ".. unit_data.skill_list[#unit_data.skill_list].name)
 
         return true
     end

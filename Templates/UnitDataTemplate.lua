@@ -29,10 +29,11 @@ do
     HEAD_POINT      = 3
     CHEST_POINT     = 4
     LEGS_POINT      = 5
-    HANDS_POINT     = 6
-    RING_1_POINT    = 7
-    RING_2_POINT    = 8
-    NECKLACE_POINT  = 9
+    BELT_POINT      = 6
+    HANDS_POINT     = 7
+    RING_1_POINT    = 8
+    RING_2_POINT    = 9
+    NECKLACE_POINT  = 10
 
 
 
@@ -90,6 +91,7 @@ do
 
             classification = reference_data.classification or nil,
             trait = reference_data.trait or nil,
+            xp = reference_data.xp or 15,
 
             default_weapon = nil,
             equip_point = {},
@@ -195,7 +197,8 @@ do
             time_before_remove = 10.,
             base_stats = { health = 125., hp_regen = 0.4, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 1.4, DAMAGE = 5, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
-            have_mp = false
+            have_mp = false,
+            xp = 35,
         })
 
         -- armored scele
@@ -209,7 +212,8 @@ do
             bonus_parameters = {
                 { param = PHYSICAL_DEFENCE, value = 70, method = STRAIGHT_BONUS }
             },
-            have_mp = false
+            have_mp = false,
+            xp = 35,
         })
 
         -- zombie
@@ -223,7 +227,8 @@ do
             bonus_parameters = {
                 { param = MELEE_DAMAGE_REDUCTION, value = 11, method = STRAIGHT_BONUS }
             },
-            have_mp = false
+            have_mp = false,
+            xp = 20,
         })
         --==========================================================--
         -- skeleton
@@ -234,7 +239,8 @@ do
             time_before_remove = 10.,
             base_stats = { health = 180., hp_regen = 0.4, moving_speed = 230. },
             weapon = { ATTACK_SPEED = 1.7, DAMAGE = 5, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
-            have_mp = false
+            have_mp = false,
+            xp = 25,
         })
         --==========================================================--
         -- skeleton archer
@@ -245,7 +251,8 @@ do
             time_before_remove = 10.,
             base_stats = { health = 150., hp_regen = 0.4, moving_speed = 220. },
             weapon = { ATTACK_SPEED = 1.9, DAMAGE = 7, CRIT_CHANCE = 9., missile = "MSKA", ranged = true },
-            have_mp = false
+            have_mp = false,
+            xp = 30,
         })
         --==========================================================--
         -- skeleton mage
@@ -259,7 +266,8 @@ do
             bonus_parameters = {
                 { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS }
             },
-            have_mp = false
+            have_mp = false,
+            xp = 35,
         })
         --==========================================================--
         -- skeleton improved
@@ -273,7 +281,8 @@ do
             bonus_parameters = {
                 { param = PHYSICAL_DEFENCE, value = 50, method = STRAIGHT_BONUS }
             },
-            have_mp = false
+            have_mp = false,
+            xp = 35,
         })
         --==========================================================--
         -- necromancer
@@ -284,7 +293,8 @@ do
             time_before_remove = 10.,
             base_stats = { health = 215., hp_regen = 0.4, moving_speed = 215. },
             weapon = { ATTACK_SPEED = 1.9, DAMAGE = 15, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MNCR", ranged = true },
-            have_mp = false
+            have_mp = false,
+            xp = 45,
         })
         --==========================================================--
         -- banshee
@@ -299,7 +309,8 @@ do
                 { param = MELEE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS },
                 { param = RANGE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS }
             },
-            have_mp = false
+            have_mp = false,
+            xp = 35,
         })
         --==========================================================--
         -- succubus improved
@@ -310,7 +321,8 @@ do
             time_before_remove = 10.,
             base_stats = { health = 227., hp_regen = 0.55, moving_speed = 240. },
             weapon = { ATTACK_SPEED = 2.2, DAMAGE = 20, CRIT_CHANCE = 10., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSCB", ranged = true },
-            have_mp = false
+            have_mp = false,
+            xp = 45,
         })
         --==========================================================--
         -- succubus
@@ -321,7 +333,8 @@ do
             time_before_remove = 10.,
             base_stats = { health = 210., hp_regen = 0.6, moving_speed = 240. },
             weapon = { ATTACK_SPEED = 1.65, DAMAGE = 6, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
-            have_mp = false
+            have_mp = false,
+            xp = 30,
         })
         --==========================================================--
         -- void walker small
@@ -332,7 +345,8 @@ do
             time_before_remove = 10.,
             base_stats = { health = 200., hp_regen = 0.4, moving_speed = 220. },
             weapon = { ATTACK_SPEED = 2., DAMAGE = 10, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 5, missile = "MVWS", ranged = true },
-            have_mp = false
+            have_mp = false,
+            xp = 25,
         })
         --==========================================================--
         -- void walker normal
@@ -347,7 +361,8 @@ do
                 { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 5, method = STRAIGHT_BONUS }
             },
-            have_mp = false
+            have_mp = false,
+            xp = 35,
         })
         --==========================================================--
         -- void walker big
@@ -362,7 +377,8 @@ do
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 15, method = STRAIGHT_BONUS }
             },
-            have_mp = false
+            have_mp = false,
+            xp = 45,
         })
         --==========================================================--
         -- ghost
@@ -378,7 +394,8 @@ do
                 { param = RANGE_DAMAGE_REDUCTION, value = 15, method = STRAIGHT_BONUS },
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS }
             },
-            have_mp = false
+            have_mp = false,
+            xp = 35,
         })
         --==========================================================--
         -- zombie big
@@ -393,7 +410,8 @@ do
                 { param = MELEE_DAMAGE_REDUCTION, value = 11, method = STRAIGHT_BONUS },
                 { param = ALL_RESIST, value = 4, method = STRAIGHT_BONUS }
             },
-            have_mp = false
+            have_mp = false,
+            xp = 50,
         })
         --==========================================================--
         -- skeleton hell archer
@@ -407,7 +425,8 @@ do
             bonus_parameters = {
                 { param = FIRE_RESIST, value = 15, method = STRAIGHT_BONUS }
             },
-            have_mp = false
+            have_mp = false,
+            xp = 35,
         })
         --==========================================================--
         -- skeleton frost archer
@@ -421,7 +440,8 @@ do
             bonus_parameters = {
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS }
             },
-            have_mp = false
+            have_mp = false,
+            xp = 35,
         })
         --==========================================================--
         -- hell wizard
@@ -435,7 +455,8 @@ do
             bonus_parameters = {
                 { param = ALL_RESIST, value = 8, method = STRAIGHT_BONUS }
             },
-            have_mp = false
+            have_mp = false,
+            xp = 37,
         })
         --==========================================================--
         -- demon assassin
@@ -446,7 +467,8 @@ do
             time_before_remove = 10.,
             base_stats = { health = 310., hp_regen = 1.7, moving_speed = 250. },
             weapon = { ATTACK_SPEED = 1.5, DAMAGE = 15, CRIT_CHANCE = 14., WEAPON_SOUND = WEAPON_TYPE_METAL_LIGHT_SLICE },
-            have_mp = false
+            have_mp = false,
+            xp = 40,
         })
 
         -- fallen angel
@@ -461,7 +483,8 @@ do
                 { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = 15, method = STRAIGHT_BONUS },
             },
-            have_mp = false
+            have_mp = false,
+            xp = 40,
         })
 
         -- hells guardian
@@ -477,7 +500,8 @@ do
                 { param = PHYSICAL_DEFENCE, value = 70, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS },
             },
-            have_mp = false
+            have_mp = false,
+            xp = 35,
         })
 
 

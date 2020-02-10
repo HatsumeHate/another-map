@@ -4,6 +4,7 @@ do
     PlayerInventoryFrameState = {}
     InventorySlots = {}
     InventoryOwner = {}
+    InventoryTooltip = {}
     InventoryTriggerButton = nil
     INV_SLOT = 0
     local ClickTrigger = CreateTrigger()
@@ -36,6 +37,7 @@ do
         [CHEST_POINT]     = 36,
         [LEGS_POINT]      = 38,
         [HANDS_POINT]     = 37,
+        [BELT_POINT]      = 42,
         [RING_1_POINT]    = 40,
         [RING_2_POINT]    = 41,
         [NECKLACE_POINT]  = 39
@@ -143,13 +145,6 @@ do
     --======================================================================
     -- BELT LOCK   =========================================================
 
---[[
-    local ItemUseTrigger = CreateTrigger()
-    TriggerRegisterAnyUnitEventBJ(ItemUseTrigger, EVENT_PLAYER_UNIT_USE_ITEM)
-    TriggerAddAction(ItemUseTrigger, function()
-        UpdateInventoryWindow(GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1)
-    end)
-]]
     local function LockItemOnBelt(player, button)
         if button.sprite == nil then
             if UnitInventoryCount(InventoryOwner[player]) < 6 then
@@ -197,7 +192,11 @@ do
                 BlzFrameSetSize(PlayerMovingItem[player].frame, scale, scale)
             else
                 if ButtonList[h].item ~= nil then
-                    ShowTooltip(player, h, FRAMEPOINT_LEFT, MASTER_FRAME)--ButtonList[GetHandleId(InventorySlots[32])].image)
+                    local proper_tooltip
+                    if ShopFrame[player].state then proper_tooltip = ShopFrame[player].tooltip
+                    else proper_tooltip = InventoryTooltip[player] end
+                    ShowItemTooltip(ButtonList[h].item, proper_tooltip, ButtonList[h], player, FRAMEPOINT_LEFT)
+                    --ShowTooltip(player, h, FRAMEPOINT_LEFT, MASTER_FRAME)--ButtonList[GetHandleId(InventorySlots[32])].image)
                 else
                     RemoveTooltip(player)
                 end
@@ -361,18 +360,10 @@ do
             end
 
             DestroyEffect(AddSpecialEffectTarget(item_data.learn_effect, PlayerHero[player], "origin"))
-
-            if not UnitAddMyAbility(PlayerHero[player], item_data.improving_skill) then
-                UnitAddAbilityLevel(PlayerHero[player], item_data.improving_skill, 1)
-            end
+            if not UnitAddMyAbility(PlayerHero[player], item_data.improving_skill) then UnitAddAbilityLevel(PlayerHero[player], item_data.improving_skill, 1) end
 
             RemoveItemFromInventory(player, item)
-            --DropItemFromInventory(player, item, true)
-            --RemoveCustomItem(item)
-
-            if SkillPanelFrame[player].state then
-                UpdateSkillList(player)
-            end
+            if SkillPanelFrame[player].state then UpdateSkillList(player) end
     end
 
 
@@ -795,22 +786,21 @@ do
             end
         end
 
+        InventorySlots[45] = BlzCreateFrameByType("BACKDROP", "ButtonIcon", InventorySlots[32], "", 0)
 
         -- equip slots
         InventorySlots[33] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.044, 0.044, slots_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.03, 0.03, slots_Frame)
         InventorySlots[34] = NewButton(OFFHAND_POINT, "GUI\\BTNWeapon_Slot.blp", 0.04, 0.04, slots_Frame, FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_BOTTOMRIGHT, -0.03, 0.03, slots_Frame)
 
-        InventorySlots[35] = NewButton(HEAD_POINT, "GUI\\BTNHead_Slot.blp", 0.038, 0.038, slots_Frame, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.015, slots_Frame)
-        InventorySlots[36] = NewButton(CHEST_POINT, "GUI\\BTNChest_Slot.blp", 0.043, 0.043, slots_Frame, FRAMEPOINT_CENTER, FRAMEPOINT_CENTER, 0., 0., slots_Frame)
-        InventorySlots[37] = NewButton(HANDS_POINT, "GUI\\BTNHands_Slot.blp", 0.04, 0.04, slots_Frame, FRAMEPOINT_CENTER, FRAMEPOINT_CENTER, -0.058, 0., slots_Frame)
-        InventorySlots[38] = NewButton(LEGS_POINT, "GUI\\BTNBoots_Slot.blp", 0.038, 0.038, slots_Frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_BOTTOM, 0., 0.015, slots_Frame)
+        InventorySlots[35] = NewButton(HEAD_POINT, "GUI\\BTNHead_Slot.blp", 0.038, 0.038, slots_Frame, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.025, slots_Frame)
+        InventorySlots[36] = NewButton(CHEST_POINT, "GUI\\BTNChest_Slot.blp", 0.043, 0.043, slots_Frame, FRAMEPOINT_CENTER, FRAMEPOINT_CENTER, 0., -0.015, slots_Frame)
+        InventorySlots[37] = NewButton(HANDS_POINT, "GUI\\BTNHands_Slot.blp", 0.038, 0.038, InventorySlots[36], FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_TOPLEFT, -0.003, -0.008, slots_Frame)
+        InventorySlots[38] = NewButton(LEGS_POINT, "GUI\\BTNBoots_Slot.blp", 0.038, 0.038, InventorySlots[36], FRAMEPOINT_TOPRIGHT, FRAMEPOINT_BOTTOMLEFT, -0.003, 0.032, slots_Frame)
+        InventorySlots[42] = NewButton(BELT_POINT, "GUI\\BTNBeltSlot.blp", 0.038, 0.038, InventorySlots[36], FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.0445, 0.0085, slots_Frame)
 
-
-        new_Frame = NewButton(NECKLACE_POINT, "GUI\\BTNNecklace_Slot.blp", 0.04, 0.04, slots_Frame, FRAMEPOINT_CENTER, FRAMEPOINT_CENTER, 0.064, 0.012, slots_Frame)
-        InventorySlots[39] = new_Frame
-
-        InventorySlots[40] = NewButton(RING_1_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, new_Frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_BOTTOMLEFT, 0.016, 0., slots_Frame)
-        InventorySlots[41] = NewButton(RING_2_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, new_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMRIGHT, -0.016, 0., slots_Frame)
+        InventorySlots[39] = NewButton(NECKLACE_POINT, "GUI\\BTNNecklace_Slot.blp", 0.038, 0.038, InventorySlots[36], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0445, 0.0085, slots_Frame)
+        InventorySlots[40] = NewButton(RING_1_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[36], FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_TOPRIGHT, 0.003, -0.008, slots_Frame)
+        InventorySlots[41] = NewButton(RING_2_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[36], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMRIGHT, 0.003, 0.032, slots_Frame)
 
 --WarCraftIIILogo
 
@@ -818,6 +808,7 @@ do
         --BlzFrameSetSpriteAnimate(new_Frame, 2, 0)
         --BlzFrameSetModel(new_Frame, "selecter1.mdx", 0)
 
+        InventoryTooltip[player] = NewTooltip(InventorySlots[45])
         BlzFrameSetVisible(main_frame, false)
         PlayerInventoryFrameState[player] = false
     end

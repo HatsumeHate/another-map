@@ -59,8 +59,8 @@ do
 
             if ButtonList[h].item ~= nil then
                 --ButtonList[GetHandleId(ShopFrame[player].slot[32])].image
-                ShowTooltip(player, h, FRAMEPOINT_RIGHT, MASTER_FRAME)
-
+                --ShowTooltip(player, h, FRAMEPOINT_RIGHT, MASTER_FRAME)
+                ShowItemTooltip(ButtonList[h].item, ShopFrame[player].tooltip, ButtonList[h], player, FRAMEPOINT_RIGHT)
             else
                 RemoveTooltip(player)
             end
@@ -193,6 +193,8 @@ do
                         end
                     end
 
+        ShopFrame[player].masterframe = BlzCreateFrameByType("BACKDROP", "ButtonIcon", ShopFrame[player].slot[32], "", 0)
+
         new_Frame = BlzCreateFrameByType('BACKDROP', "PORTRAIT", main_frame, "",0)
         BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.02, -0.02)
         BlzFrameSetSize(new_Frame, 0.0435, 0.0435)
@@ -205,7 +207,7 @@ do
         BlzFrameSetScale(new_Frame, 1.35)
         ShopFrame[player].name = new_Frame
 
-
+        ShopFrame[player].tooltip = NewTooltip(ShopFrame[player].masterframe)
         ShopFrame[player].main_frame = main_frame
         BlzFrameSetVisible(ShopFrame[player].main_frame, false)
         ShopFrame[player].state = false

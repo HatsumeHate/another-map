@@ -5,16 +5,46 @@
 ---
 do
 
+    local MAX_RANGE_XP_LOSS = 1700.
+    local MIN_XP_LOSS_RATE = 0.35
 
-    RegisterTestCommand("add", function()
-        UnitSetAbilityLevel(PlayerHero[1], "A003", 7)
-    end)
+
+
+    ---@param amount integer
+    ---@param x real
+    ---@param y real
+    function GiveExpForKill(amount, x, y)
+        for i = 1, 6 do
+            if PlayerHero[i] ~= nil and GetUnitState(PlayerHero[i], UNIT_STATE_LIFE) > 0.45 then
+                local xp_rate = 1.
+                local distance = DistanceBetweenUnitXY(PlayerHero[i], x, y)
+
+                    if distance > MAX_RANGE_XP_LOSS then
+                        xp_rate = MAX_RANGE_XP_LOSS / distance
+                    end
+
+                if xp_rate < MIN_XP_LOSS_RATE then xp_rate = MIN_XP_LOSS_RATE end
+                AddHeroXP(PlayerHero[i], math.ceil(amount * xp_rate), false)
+            end
+        end
+    end
+
+
+    ---@param amount integer
+    function GiveExp(amount)
+        for i = 1, 6 do
+            if PlayerHero[i] ~= nil and GetUnitState(PlayerHero[i], UNIT_STATE_LIFE) > 0.45 then
+                AddHeroXP(PlayerHero[i], amount, false)
+            end
+        end
+    end
 
 
 
     function CreateHeroSelections()
 
         local DeathTrigger = CreateTrigger()
+        local LvlupTrigger = CreateTrigger()
         local trg = CreateTrigger()
         local barbarian_region = CreateRegion()
         RegionAddRect(barbarian_region, gg_rct_barbarian_select)
@@ -68,12 +98,13 @@ do
                     PlayerHero[player_id] = hero
 
                     TriggerRegisterDeathEvent(DeathTrigger, hero)
+                    TriggerRegisterUnitEvent(LvlupTrigger, hero, EVENT_UNIT_HERO_LEVEL)
+
 
                     DrawStatsPanelInterface(player_id)
                     DrawInventoryFrames(player_id, hero)
                     DrawSkillPanel(player_id)
                     DrawShopFrames(player_id)
-
                     AddToPanel(hero, player_id)
                     AddPointsToPlayer(player_id, 5)
 
@@ -102,6 +133,10 @@ do
 
         end)
 
+
+        TriggerAddAction(LvlupTrigger, function()
+            AddPointsToPlayer(GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1, 3)
+        end)
 
         TriggerAddAction(DeathTrigger, function ()
             local hero = GetTriggerUnit()
