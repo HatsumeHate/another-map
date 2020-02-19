@@ -81,8 +81,10 @@ do
             attack_timer = CreateTimer(),
 
             is_hp_static = reference_data.is_hp_static or false,
+            hp_vector = reference_data.hp_vector or true,
             have_mp = reference_data.have_mp or false,
             is_mp_static = reference_data.is_mp_static or false,
+            mp_vector = reference_data.mp_vector or true,
             time_before_remove = reference_data.time_before_remove or 10.,
 
             cast_skill = 0,
@@ -99,10 +101,14 @@ do
             buff_list = {},
             skill_list = {}
         }
+
         data.default_weapon = CreateDefaultWeapon()
         data.equip_point[WEAPON_POINT] = data.default_weapon
         data.stats = CreateParametersData()
+        data.effects = {}
+        data.colours = { r = 255, g = 255, b = 255, a = 255 }
 
+        if reference_data.colours ~= nil then MergeTables(data.colours, reference_data.colours) end
 
         TimerStart(data.attack_timer, 0., false, nil)
 
@@ -134,24 +140,16 @@ do
         MergeTables(new_data, reference)
 
 
-        if new_data.unit_class == nil then
-            new_data.unit_class = NO_CLASS
-        end
+        if new_data.unit_class == nil then new_data.unit_class = NO_CLASS end
 
-        if new_data.is_hp_static == nil then
-            new_data.is_hp_static = false
-        end
+        if new_data.is_hp_static == nil then new_data.is_hp_static = false end
 
-        if new_data.have_mp == nil then
-            new_data.have_mp = true
-        end
+        if new_data.have_mp == nil then new_data.have_mp = true end
 
-        if new_data.is_mp_static == nil then
-            new_data.is_mp_static = false
-        end
+        if new_data.is_mp_static == nil then new_data.is_mp_static = false end
 
         if new_data.base_stats == nil then
-            new_data.base_stats = {health = 100, mana = 100, hp_regen = 1., mp_regen = 1., moving_speed = 245}
+            new_data.base_stats = {health = 100, mana = 100, hp_regen = 0.2, mp_regen = 0.2, moving_speed = 245}
         else
             if new_data.base_stats.health == nil then new_data.base_stats.health = 100 end
             if new_data.base_stats.mana == nil then new_data.base_stats.mana = 100 end

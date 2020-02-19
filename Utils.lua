@@ -1,4 +1,4 @@
-	--FIXME удалить этот блок нахер при певой возможности
+
 	do
 		hash         = InitHashtable()
 		udg_SimError = nil
@@ -300,16 +300,16 @@
 		local steps    = R2I(range / curRange)
 
 		local x, y     = GetUnitX(unit), GetUnitY(unit)
-		--FIXME вынести рэкт и не создавать его заново
+
 		local rct      = Rect(x - 50, y - 50, x + 50, y + 50)
 
 		while (steps ~= 0) do
 			MoveRectTo(rct, GetPolarOffsetX(GetRectCenterX(rct), 25., ang), GetPolarOffsetY(GetRectCenterY(rct), 25., ang))
 
-			--FIXME непонятная переменная, дать ей вменяемое название
+
 			Stop = false
 
-			--FIXME заинлайнить фильтр
+
 			EnumDestructablesInRect(rct, Filter(GetMaxAvailableDistanceFilter))
 			if Stop then break end
 
@@ -327,14 +327,12 @@
 		return curRange
 	end
 
-	--FIXME по умолчанию работаем в радианах, функции работающие с градусами должны иметь приставку Deg : AngleBetweenUnitsDeg
 	---@param a unit
 	---@param b unit
 	function AngleBetweenUnits (a, b)
 		return Atan2(GetUnitY(b) - GetUnitY(a), GetUnitX(b) - GetUnitX(a)) * bj_RADTODEG
 	end
 
-	--FIXME по умолчанию работаем в радианах, функции работающие с градусами должны иметь приставку Deg : AngleBetweenUnitXYDeg
 	---@param u unit
 	---@param x real
 	---@param y real

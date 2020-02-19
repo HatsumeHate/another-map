@@ -12,6 +12,7 @@ do
 		print("effects done")
 		DefineItemGeneratorTemplates()
 		print("item generator done")
+		InitSetBonusTemplates()
         DefineItemsData()
 		print("items done")
 		DefineBuffsData()
@@ -38,6 +39,7 @@ do
 		DropListInit()
 		print("droplist done")
 		ShakerInit()
+		TeleporterInit()
 
 		print("init done")
 

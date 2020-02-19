@@ -75,6 +75,10 @@ do
 
 
     MONSTER_STATS_RATES = {
+        { stat = PHYSICAL_ATTACK,       initial = 0,   delta = 3,  delta_level = 1, method = STRAIGHT_BONUS },
+        { stat = MAGICAL_ATTACK,        initial = 0,   delta = 2,  delta_level = 1, method = STRAIGHT_BONUS },
+        { stat = PHYSICAL_DEFENCE,      initial = 0,   delta = 3,  delta_level = 1, method = STRAIGHT_BONUS },
+        { stat = MAGICAL_SUPPRESSION,   initial = 0,   delta = 2,  delta_level = 1, method = STRAIGHT_BONUS },
         { stat = PHYSICAL_ATTACK,       initial = 0.98,   delta = 0.02,  delta_level = 1, method = MULTIPLY_BONUS },
         { stat = PHYSICAL_DEFENCE,      initial = 0.99,   delta = 0.01,  delta_level = 1, method = MULTIPLY_BONUS },
         { stat = MAGICAL_ATTACK,        initial = 0.98,   delta = 0.02,  delta_level = 1, method = MULTIPLY_BONUS },
@@ -89,6 +93,7 @@ do
         { stat = HOLY_BONUS,            initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
         { stat = POISON_BONUS,          initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
         { stat = ARCANE_BONUS,          initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+        { stat = HP_VALUE,              initial = 0,      delta = 15,    delta_level = 1, method = STRAIGHT_BONUS },
         { stat = HP_VALUE,              initial = 0.96,   delta = 0.04,  delta_level = 1, method = MULTIPLY_BONUS },
     }
 

@@ -63,11 +63,11 @@ do
                 UpdateSkillList(player)
                 DestroyContextMenu(player)
             elseif button_data.button_type == SKILL_BUTTON then
-                CreatePlayerContextMenu(player, button_data.button, SkillPanelFrame[player].slider)
+                CreatePlayerContextMenu(player, button_data.button, FRAMEPOINT_RIGHT, SkillPanelFrame[player].slider)
                 CreateBindContext(player, button_data, 0)
             elseif button_data.button_type > 0 then
                 if button_data.skill ~= nil then
-                    CreatePlayerContextMenu(player, button_data.button, SkillPanelFrame[player].slider)
+                    CreatePlayerContextMenu(player, button_data.button, FRAMEPOINT_RIGHT, SkillPanelFrame[player].slider)
                     CreateBindContext(player, button_data, button_data.button_type)
                     AddContextOption(player, LOCALE_LIST[my_locale].SKILL_PANEL_UNBIND, function()
                         UnregisterPlayerSkillHotkey(player, button_data.skill)

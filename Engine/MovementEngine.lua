@@ -120,7 +120,7 @@ do
     end
 
 
-     --TODO pull
+
     local PullList = {}
 
     function PullUnitToUnit(source, target, speed, release_range, power, sign)

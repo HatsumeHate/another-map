@@ -1,6 +1,6 @@
 do
 	-- parameters types
-	PARAMETERS_COUNT       = 44
+	PARAMETERS_COUNT       = 48
 
     STR_STAT               = 1
     AGI_STAT               = 2
@@ -195,11 +195,8 @@ do
             local v = value
 			value =  S2I(R2S((value - 1.) * 100.))
 
-				if v >= 1. then
-					value = "+" .. value .. "%%"
-				else
-					value = math.abs(value) .. "%%"
-				end
+				if v >= 1. then value = "+" .. value .. "%%"
+				else value = math.abs(value) .. "%%" end
 
         else
 			local special = ""
@@ -210,13 +207,9 @@ do
 					special = "%%"
 				end
 
-			if parameter ~= CRIT_MULTIPLIER then
-				value = R2I(value)
-			end
+			if parameter ~= CRIT_MULTIPLIER then value = R2I(value) end
 
-            if parameter == MELEE_DAMAGE_REDUCTION or parameter == RANGE_DAMAGE_REDUCTION then
-                vector = "-"
-            end
+            if parameter == MELEE_DAMAGE_REDUCTION or parameter == RANGE_DAMAGE_REDUCTION then vector = "-" end
 
 			if value < 0 then
 				vector = ""
@@ -294,14 +287,14 @@ do
 		---@param data table
 		[HP_REGEN]               = function(data)
 			data.stats[HP_REGEN].value = (data.base_stats.hp_regen + data.stats[HP_REGEN].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data.stats[HP_REGEN].multiplier
-            BlzSetUnitRealField(data.Owner, UNIT_RF_HIT_POINTS_REGENERATION_RATE, data.stats[HP_REGEN].value)
+            BlzSetUnitRealField(data.Owner, UNIT_RF_HIT_POINTS_REGENERATION_RATE, data.hp_vector and data.stats[HP_REGEN].value or -data.stats[HP_REGEN].value)
 		end,
 		
 		---@param data table
 		[MP_REGEN]               = function(data)
 			data.stats[MP_REGEN].value = (data.base_stats.mp_regen + data.stats[MP_REGEN].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data.stats[MP_REGEN].multiplier
 				if not data.is_mp_static then
-					BlzSetUnitRealField(data.Owner, UNIT_RF_MANA_REGENERATION, data.stats[MP_REGEN].value)
+					BlzSetUnitRealField(data.Owner, UNIT_RF_MANA_REGENERATION, data.mp_vector and data.stats[MP_REGEN].value or -data.stats[MP_REGEN].value)
 				end
 		end,
 		
@@ -491,12 +484,12 @@ do
 
 		---@param data table
 		[REFLECT_MELEE_DAMAGE] = function(data)
-			data.stats[REFLECT_MELEE_DAMAGE].value = data.stats[REFLECT_MELEE_DAMAGE].bonus + data.stats[REFLECT_DAMAGE].bonus
+			data.stats[REFLECT_MELEE_DAMAGE].value = (data.stats[REFLECT_MELEE_DAMAGE].bonus + data.stats[REFLECT_DAMAGE].value) * data.stats[REFLECT_DAMAGE].multiplier
 		end,
 
 		---@param data table
 		[REFLECT_RANGE_DAMAGE] = function(data)
-			data.stats[REFLECT_RANGE_DAMAGE].value = data.stats[REFLECT_RANGE_DAMAGE].bonus + data.stats[REFLECT_DAMAGE].bonus
+			data.stats[REFLECT_RANGE_DAMAGE].value = (data.stats[REFLECT_RANGE_DAMAGE].bonus + data.stats[REFLECT_DAMAGE].value) * data.stats[REFLECT_DAMAGE].multiplier
 		end,
 
 		---@param data table

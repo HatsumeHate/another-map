@@ -26,7 +26,7 @@ do
                     if not IsHaveNegativeState(unit_data.Owner, buff_data.level[buff_data.current_level].negative_state) then
                         --buff_data.level[buff_data.current_level].negative_state = state
                         if state == STATE_FREEZE then
-                            SetUnitVertexColor(unit_data.Owner, 255, 255, 255, 255)
+                            SetUnitVertexColor(unit_data.Owner, unit_data.colours.r or 255, unit_data.colours.g or 255, unit_data.colours.b or 255, unit_data.colours.a or 255)
                             SetUnitTimeScale(unit_data.Owner, 1.)
                             BlzPauseUnitEx(unit_data.Owner, false)
                         elseif state == STATE_STUN then
@@ -143,11 +143,15 @@ do
                         ModifyStat(target, buff_data.level[buff_data.current_level].bonus[i2].PARAM, buff_data.level[buff_data.current_level].bonus[i2].VALUE, buff_data.level[buff_data.current_level].bonus[i2].METHOD, false)
                     end
 
+                    local logic = lvl >= buff_data.current_level
+
                     buff_data.current_level = lvl
 
                     for i2 = 1, #buff_data.level[buff_data.current_level].bonus do
                         ModifyStat(target, buff_data.level[buff_data.current_level].bonus[i2].PARAM, buff_data.level[buff_data.current_level].bonus[i2].VALUE, buff_data.level[buff_data.current_level].bonus[i2].METHOD, true)
                     end
+
+                    OnBuffLevelChange(buff_data.buff_source, target, buff_data, logic)
 
                     break
                 end

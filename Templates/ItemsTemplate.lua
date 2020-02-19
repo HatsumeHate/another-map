@@ -11,6 +11,8 @@ do
     ITEM_TYPE_GEM        = 6
 	ITEM_TYPE_SKILLBOOK  = 7
 
+	ITEM_PASSIVE_EFFECT = 1
+	ITEM_ACTIVE_EFFECT 	= 2
 	
 	FIST_WEAPON           = 1
 	BOW_WEAPON            = 2
@@ -336,7 +338,8 @@ do
 			TYPE = ITEM_TYPE_WEAPON,
 			SUBTYPE = GREATSWORD_WEAPON,
 			DAMAGE  = 27,
-			QUALITY = COMMON_ITEM,
+			QUALITY = SET_ITEM,
+			set_bonus = GetItemSet("STST"),
 			frame_texture = "Weapons\\BTNBarbarian Brutal Slasher.blp",
 			flippy = true,
 			BONUS   = {
@@ -371,7 +374,8 @@ do
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = CHEST_ARMOR,
 			DEFENCE  = 25,
-			QUALITY = COMMON_ITEM,
+			QUALITY = SET_ITEM,
+			set_bonus = GetItemSet("STST"),
 			flippy = true,
 			frame_texture = "Armor\\BTNSteelArmor2.blp",
 			BONUS   = {
@@ -387,8 +391,9 @@ do
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = LEGS_ARMOR,
 			DEFENCE  = 18,
+			QUALITY = SET_ITEM,
+			set_bonus = GetItemSet("STST"),
 			flippy = true,
-			QUALITY = COMMON_ITEM,
 			frame_texture = "Armor\\BTNBoots.blp",
 			BONUS   = {
 				{ PARAM = MAGICAL_SUPPRESSION, VALUE = 7, METHOD = STRAIGHT_BONUS },
@@ -403,7 +408,8 @@ do
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = HEAD_ARMOR,
 			DEFENCE  = 12,
-			QUALITY = COMMON_ITEM,
+			QUALITY = SET_ITEM,
+			set_bonus = GetItemSet("STST"),
 			flippy = true,
 			frame_texture = "Armor\\BTNNFHelmet02.blp",
 			BONUS   = {
@@ -419,8 +425,9 @@ do
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = HANDS_ARMOR,
 			DEFENCE  = 15,
+			QUALITY = SET_ITEM,
+			set_bonus = GetItemSet("STST"),
 			flippy = true,
-			QUALITY = COMMON_ITEM,
 			frame_texture = "Armor\\BTNDuelists Gauntlets.blp",
 			BONUS   = {
 				{ PARAM = PHYSICAL_RESIST, VALUE = 4, METHOD = STRAIGHT_BONUS },
@@ -631,14 +638,11 @@ do
             SUBTYPE = CHEST_ARMOR,
             QUALITY = MAGIC_ITEM,
             DEFENCE = 50,
+			stat_modificator = 0.9,
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
-			soundpack = {
-				equip = "Sound\\cloth_armor_equip.wav",
-				uneqip = "Sound\\cloth_armor_unequip.wav",
-				drop = "Sound\\lightarmor.wav"
-			}
+			soundpack = { equip = "Sound\\cloth_armor_equip.wav", uneqip = "Sound\\cloth_armor_unequip.wav", drop = "Sound\\lightarmor.wav" }
         })
 
 		ItemAddData('I00G', {
@@ -652,9 +656,7 @@ do
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = REFLECT_MELEE_DAMAGE, VALUE = 20, METHOD = STRAIGHT_BONUS }
 			},
 			sell_value = 50,
-			soundpack = {
-				drop = "Sound\\gem.wav"
-			}
+			soundpack = { drop = "Sound\\gem.wav" }
 		})
 
 		ItemAddData('I00H', {
@@ -760,7 +762,7 @@ do
 			point_bonus 	   = {
 				[ITEM_TYPE_WEAPON] 		= {  PARAM = MAGICAL_ATTACK, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = MAGICAL_SUPPRESSION, VALUE = 75, METHOD = STRAIGHT_BONUS },
-				[ITEM_TYPE_JEWELRY]  	= {  PARAM = MP_REGEN, VALUE = 1.03, METHOD = MULTIPLY_BONUS },
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = MP_REGEN, VALUE = 0.53, METHOD = MULTIPLY_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = CRIT_MULTIPLIER, VALUE = 0.12, METHOD = STRAIGHT_BONUS }
 			},
 			sell_value = 50,
@@ -796,9 +798,7 @@ do
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = MP_VALUE, VALUE = 1.1, METHOD = MULTIPLY_BONUS }
 			},
 			sell_value = 50,
-			soundpack = {
-				drop = "Sound\\gem.wav"
-			}
+			soundpack = { drop = "Sound\\gem.wav" }
 		})
 
 		ItemAddData('I00D', {
@@ -812,9 +812,7 @@ do
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = CRIT_CHANCE, VALUE = 5, METHOD = STRAIGHT_BONUS }
 			},
 			sell_value = 50,
-			soundpack = {
-				drop = "Sound\\gem.wav"
-			}
+			soundpack = { drop = "Sound\\gem.wav" }
 		})
 
 		ItemAddData('I00F', {
@@ -823,14 +821,12 @@ do
 			frame_texture      = "GUI\\BTNItem_Gem_Opal.blp",
 			point_bonus 	   = {
 				[ITEM_TYPE_WEAPON] 		= {  PARAM = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
-				[ITEM_TYPE_ARMOR]  		= {  PARAM = HP_REGEN, VALUE = 1.05, METHOD = MULTIPLY_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = HP_REGEN, VALUE = 0.5, METHOD = MULTIPLY_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = PHYSICAL_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = HP_VALUE, VALUE = 1.1, METHOD = MULTIPLY_BONUS }
 			},
 			sell_value = 50,
-			soundpack = {
-				drop = "Sound\\gem.wav"
-			}
+			soundpack = { drop = "Sound\\gem.wav" }
 		})
 
 
@@ -839,9 +835,7 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredAApotionGS.blp",
 			item_description = LOCALE_LIST[my_locale].POTION_WEAK_HP_DESC_TEXT,
-			soundpack = {
-				drop = "Sound\\potionui.wav"
-			}
+			soundpack = { drop = "Sound\\potionui.wav" }
 		})
 
 		ItemAddData('I005', {
@@ -849,9 +843,7 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredEApotionGS.blp",
 			item_description = LOCALE_LIST[my_locale].POTION_HALF_HP_DESC_TEXT,
-			soundpack = {
-				drop = "Sound\\potionui.wav"
-			}
+			soundpack = { drop = "Sound\\potionui.wav" }
 		})
 
 		ItemAddData('I004', {
@@ -859,9 +851,7 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredJApotionGS.blp",
 			item_description = LOCALE_LIST[my_locale].POTION_STRONG_HP_DESC_TEXT,
-			soundpack = {
-				drop = "Sound\\potionui.wav"
-			}
+			soundpack = { drop = "Sound\\potionui.wav" }
 		})
 
 		ItemAddData('I006', {
@@ -869,9 +859,7 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNblueAApotionGS.blp",
 			item_description = LOCALE_LIST[my_locale].POTION_WEAK_MP_DESC_TEXT,
-			soundpack = {
-				drop = "Sound\\potionui.wav"
-			}
+			soundpack = { drop = "Sound\\potionui.wav" }
 		})
 
 		ItemAddData('I007', {
@@ -879,9 +867,7 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNblueEApotionGS.blp",
 			item_description = LOCALE_LIST[my_locale].POTION_HALF_MP_DESC_TEXT,
-			soundpack = {
-				drop = "Sound\\potionui.wav"
-			}
+			soundpack = { drop = "Sound\\potionui.wav" }
 		})
 
 		ItemAddData('I008', {
@@ -889,9 +875,7 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNblueJApotionGS.blp",
 			item_description = LOCALE_LIST[my_locale].POTION_STRONG_MP_DESC_TEXT,
-			soundpack = {
-				drop = "Sound\\potionui.wav"
-			}
+			soundpack = { drop = "Sound\\potionui.wav" }
 		})
 
 		ItemAddData('I00K', {
@@ -899,9 +883,7 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNpurpleAApotionGS.blp",
 			item_description   = LOCALE_LIST[my_locale].POTION_WEAK_MIX_DESC_TEXT,
-			soundpack = {
-				drop = "Sound\\potionui.wav"
-			}
+			soundpack = { drop = "Sound\\potionui.wav" }
 		})
 
 		ItemAddData('I00M', {
@@ -909,9 +891,7 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNpurpleEApotionGS.blp",
 			item_description = LOCALE_LIST[my_locale].POTION_HALF_MIX_DESC_TEXT,
-			soundpack = {
-				drop = "Sound\\potionui.wav"
-			}
+			soundpack = { drop = "Sound\\potionui.wav" }
 		})
 
 		ItemAddData('I00L', {
@@ -919,9 +899,7 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNpurpleJApotionGS.blp",
 			item_description   = LOCALE_LIST[my_locale].POTION_STRONG_MIX_DESC_TEXT,
-			soundpack = {
-				drop = "Sound\\potionui.wav"
-			}
+			soundpack = { drop = "Sound\\potionui.wav" }
 		})
 
 		ItemAddData('I00U', {
@@ -932,9 +910,7 @@ do
 			restricted_to = SORCERESS_CLASS,
 			skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_FIRE],
 			learn_effect = "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
-			soundpack = {
-				drop = "Sound\\book.wav"
-			}
+			soundpack = { drop = "Sound\\book.wav" }
 		})
 
 		ItemAddData('I00V', {
@@ -945,9 +921,7 @@ do
 			restricted_to = SORCERESS_CLASS,
 			skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_ICE],
 			learn_effect = "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
-			soundpack = {
-				drop = "Sound\\book.wav"
-			}
+			soundpack = { drop = "Sound\\book.wav" }
 		})
 
 		ItemAddData('I013', {
@@ -958,9 +932,7 @@ do
 			restricted_to = SORCERESS_CLASS,
 			skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_LIGHTNING],
 			learn_effect = "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
-			soundpack = {
-				drop = "Sound\\book.wav"
-			}
+			soundpack = { drop = "Sound\\book.wav" }
 		})
 
 		ItemAddData('I014', {
@@ -971,9 +943,7 @@ do
 			restricted_to = SORCERESS_CLASS,
 			skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_ARCANE],
 			learn_effect = "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
-			soundpack = {
-				drop = "Sound\\book.wav"
-			}
+			soundpack = { drop = "Sound\\book.wav" }
 		})
 
 		ItemAddData('I015', {
@@ -984,9 +954,7 @@ do
 			restricted_to = BARBARIAN_CLASS,
 			skill_category = CLASS_SKILL_LIST[BARBARIAN_CLASS][SKILL_CATEGORY_FIGHTING_MASTERY],
 			learn_effect = "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
-			soundpack = {
-				drop = "Sound\\book.wav"
-			}
+			soundpack = { drop = "Sound\\book.wav" }
 		})
 
 		ItemAddData('I016', {
@@ -997,9 +965,7 @@ do
 			restricted_to = BARBARIAN_CLASS,
 			skill_category = CLASS_SKILL_LIST[BARBARIAN_CLASS][SKILL_CATEGORY_INNER_STRENGTH],
 			learn_effect = "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
-			soundpack = {
-				drop = "Sound\\book.wav"
-			}
+			soundpack = { drop = "Sound\\book.wav" }
 		})
 
 		ItemAddData('I017', {
@@ -1010,9 +976,7 @@ do
 			restricted_to = BARBARIAN_CLASS,
 			skill_category = CLASS_SKILL_LIST[BARBARIAN_CLASS][SKILL_CATEGORY_BATTLE_ADVANTAGE],
 			learn_effect = "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
-			soundpack = {
-				drop = "Sound\\book.wav"
-			}
+			soundpack = { drop = "Sound\\book.wav" }
 		})
 
 		ItemAddData('I00N', {
@@ -1032,11 +996,7 @@ do
 				{ PARAM = AGI_STAT, VALUE = 3, METHOD = STRAIGHT_BONUS },
 			},
 			MAX_SLOTS = 3,
-			soundpack = {
-				equip = "Sound\\bow_equip.wav",
-				uneqip = "Sound\\bow_unequip.wav",
-				drop = "Sound\\bow.wav"
-			}
+			soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" }
 		})
 
 		ItemAddData('I00O', {
@@ -1055,11 +1015,7 @@ do
 			frame_texture = "Armor\\BTNbt.blp",
 			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD,
 			special_description = "\""..LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_BOOT_OF_COWARD.."\"",
-			soundpack = {
-				equip = "Sound\\cloth_armor_equip.wav",
-				uneqip = "Sound\\cloth_armor_unequip.wav",
-				drop = "Sound\\boots.wav"
-			}
+			soundpack = { equip = "Sound\\cloth_armor_equip.wav", uneqip = "Sound\\cloth_armor_unequip.wav", drop = "Sound\\boots.wav" }
 		})
 
 		ItemAddData('I00P', {
@@ -1069,6 +1025,7 @@ do
 			ATTRIBUTE = FIRE_ATTRIBUTE,
 			QUALITY = UNIQUE_ITEM,
 			DAMAGE  = 50,
+			stat_modificator = 1.2,
 			flippy = true,
 			level = 10,
 			BONUS   = {
@@ -1078,13 +1035,10 @@ do
 			},
 			MAX_SLOTS = 3,
 			frame_texture = "Weapons\\BTN_CW_Red_Scepter.blp",
+			legendary_effect = { id = "WMEF", type = ITEM_PASSIVE_EFFECT },
 			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_WITCH_MASTERY,
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_WITCH_MASTERY .."\"",
-			soundpack = {
-				equip = "Sound\\staff_manadrinker_equip.wav",
-				uneqip = "Sound\\staff_unequip.wav",
-				drop = "Sound\\staff.wav"
-			}
+			soundpack = { equip = "Sound\\staff_manadrinker_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
 		})
 
 		ItemAddData('I00Q', {
@@ -1093,6 +1047,7 @@ do
 			SUBTYPE = HEAD_ARMOR,
 			QUALITY = UNIQUE_ITEM,
 			DEFENCE = 20,
+			stat_modificator = 0.85,
 			flippy = true,
 			level = 10,
 			BONUS   = {
@@ -1103,11 +1058,7 @@ do
 			MAX_SLOTS = 2,
 			frame_texture = "Armor\\BTNDarkCrown.blp",
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_DARK_CROWN .."\"",
-			soundpack = {
-				equip = "Sound\\rare.wav",
-				uneqip = "Sound\\rare.wav",
-				drop = "Sound\\rare.wav"
-			}
+			soundpack = { equip = "Sound\\rare.wav", uneqip = "Sound\\rare.wav", drop = "Sound\\rare.wav" }
 		})
 
 		ItemAddData('I00R', {
@@ -1117,6 +1068,7 @@ do
 			ATTRIBUTE = PHYSICAL_ATTRIBUTE,
 			QUALITY = UNIQUE_ITEM,
 			DAMAGE  = 50,
+			stat_modificator = 0.9,
 			flippy = true,
 			level = 10,
 			BONUS   = {
@@ -1126,13 +1078,10 @@ do
 			},
 			MAX_SLOTS = 3,
 			frame_texture = "Weapons\\BTNBlack Navaja.blp",
+			legendary_effect = { id = "RDEF", type = ITEM_PASSIVE_EFFECT },
 			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_RITUAL_DAGGER,
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_RITUAL_DAGGER .."\"",
-			soundpack = {
-				equip = "Sound\\daggers_ashes_equip.wav",
-				uneqip = "Sound\\dagger_unequip.wav",
-				drop = "Sound\\dagger.wav"
-			}
+			soundpack = { equip = "Sound\\daggers_ashes_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\dagger.wav" }
 		})
 
 		ItemAddData('I00S', {
@@ -1141,6 +1090,7 @@ do
 			SUBTYPE = CHEST_ARMOR,
 			QUALITY = UNIQUE_ITEM,
 			DEFENCE = 20,
+			stat_modificator = 1.,
 			flippy = true,
 			level = 10,
 			BONUS   = {
@@ -1151,11 +1101,7 @@ do
 			MAX_SLOTS = 3,
 			frame_texture = "Armor\\BTNCloak of shadows.blp",
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_ACOLYTE_MANTLE .."\"",
-			soundpack = {
-				equip = "Sound\\cloth_armor_equip.wav",
-				uneqip = "Sound\\cloth_armor_unequip.wav",
-				drop = "Sound\\lightarmor.wav"
-			}
+			soundpack = { equip = "Sound\\cloth_armor_equip.wav", uneqip = "Sound\\cloth_armor_unequip.wav", drop = "Sound\\lightarmor.wav" }
 		})
 
 		ItemAddData('I00T', {
@@ -1163,8 +1109,10 @@ do
 			TYPE    = ITEM_TYPE_WEAPON,
 			SUBTYPE = AXE_WEAPON,
 			ATTRIBUTE = PHYSICAL_ATTRIBUTE,
+			ATTRIBUTE_BONUS = 5,
 			QUALITY = UNIQUE_ITEM,
 			DAMAGE  = 50,
+			stat_modificator = 1.,
 			flippy = true,
 			level = 10,
 			BONUS   = {
@@ -1174,12 +1122,139 @@ do
 			MAX_SLOTS = 4,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNGatherGold.blp",
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE .."\"",
-			soundpack = {
-				equip = "Sound\\staff_equip.wav",
-				uneqip = "Sound\\staff_unequip.wav",
-				drop = "Sound\\sword.wav"
-			}
+			soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\sword.wav" }
 		})
+		--TODO create it in OE
+		ItemAddData('I00Q', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_BOOSTERS,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = LEGS_ARMOR,
+			QUALITY = UNIQUE_ITEM,
+			DEFENCE = 20,
+			stat_modificator = 1.1,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = PHYSICAL_RESIST, VALUE = 7, METHOD = STRAIGHT_BONUS },
+				{ PARAM = MOVING_SPEED, VALUE = 20, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 3,
+			frame_texture = "Armor\\BTNSteampunkBoots.blp",
+			legendary_effect =  GetLegendaryEffect("BSTR"),--{ id = "BSTR", type = ITEM_PASSIVE_EFFECT },
+			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_BOOSTERS,
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_BOOSTERS .."\"",
+			soundpack = { equip = "Sound\\bootsmetal.wav", uneqip = "Sound\\bootsmetal.wav", drop = "Sound\\bootsmetal.wav" }
+		})
+
+		ItemAddData('I00Q', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_EYE_OF_THE_STORM,
+			TYPE    = ITEM_TYPE_JEWELRY,
+			SUBTYPE = NECKLACE_JEWELRY,
+			QUALITY = UNIQUE_ITEM,
+			stat_modificator = 1.12,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = LIGHTNING_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS },
+				{ PARAM = INT_STAT, VALUE = 5, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CAST_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 2,
+			frame_texture = "Jewelry\\BTNStorm Necklace.blp",
+			legendary_effect = GetLegendaryEffect("EOTS"),--{ id = "EOTS", type = ITEM_PASSIVE_EFFECT },
+			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM,
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_EYE_OF_THE_STORM .."\"",
+			soundpack = { equip = "Sound\\ring_dexterity_equip.wav", uneqip = "Sound\\ring_dexterity_unequip.wav", drop = "Sound\\amulet.wav" }
+		})
+
+		ItemAddData('I018', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_FIREPRINCESS,
+			TYPE    = ITEM_TYPE_JEWELRY,
+			SUBTYPE = NECKLACE_JEWELRY,
+			QUALITY = SET_ITEM,
+			stat_modificator = 1.12,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = FIRE_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS },
+				{ PARAM = MAGICAL_ATTACK, VALUE = 35, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CRIT_CHANCE, VALUE = 7, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 1,
+			frame_texture = "Jewelry\\BTNFireprincessNecklace2.blp",
+			set_bonus = GetItemSet("FRBD"),
+			--legendary_effect = GetLegendaryEffect("EOTS"),--{ id = "EOTS", type = ITEM_PASSIVE_EFFECT },
+			--legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_FIREPRINCESS,
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_FIREPRINCESS .."\"",
+			soundpack = { equip = "Sound\\ring_protectfire_equip.wav", uneqip = "Sound\\ring_protectfire_unequip.wav", drop = "Sound\\amulet.wav" }
+		})
+
+		ItemAddData('I019', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_FIREQUEEN,
+			TYPE    = ITEM_TYPE_JEWELRY,
+			SUBTYPE = RING_JEWELRY,
+			QUALITY = SET_ITEM,
+			stat_modificator = 0.9,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = MP_VALUE, VALUE = 25, METHOD = STRAIGHT_BONUS },
+				{ PARAM = FIRE_RESIST, VALUE = 10, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CAST_SPEED, VALUE = 15, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 1,
+			frame_texture = "Jewelry\\BTNFirequeenRing.blp",
+			set_bonus = GetItemSet("FRBD"),
+			--legendary_effect = GetLegendaryEffect("EOTS"),--{ id = "EOTS", type = ITEM_PASSIVE_EFFECT },
+			--legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_FIREPRINCESS,
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_FIREQUEEN .."\"",
+			soundpack = { equip = "Sound\\ring_protectfire_equip.wav", uneqip = "Sound\\ring_protectfire_unequip.wav", drop = "Sound\\amulet.wav" }
+		})
+
+		ItemAddData('I00Q', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_PAIN_ECHO,
+			TYPE    = ITEM_TYPE_JEWELRY,
+			SUBTYPE = RING_JEWELRY,
+			QUALITY = UNIQUE_ITEM,
+			stat_modificator = 0.8,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = REFLECT_DAMAGE, VALUE = 55, METHOD = STRAIGHT_BONUS },
+				{ PARAM = ATTACK_SPEED, VALUE = 12, METHOD = STRAIGHT_BONUS },
+				{ PARAM = PHYSICAL_ATTACK, VALUE = 27, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 1,
+			frame_texture = "Jewelry\\BTNDarknessRing.blp",
+			legendary_effect = GetLegendaryEffect("ECSL"),--{ id = "ECSL", type = ITEM_PASSIVE_EFFECT },
+			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_PAIN_ECHO,
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_PAIN_ECHO .."\"",
+			soundpack = { equip = "Sound\\ring_regeneration_equip.wav", uneqip = "Sound\\ring_regeneration_unequip.wav", drop = "Sound\\ring.wav" }
+		})
+
+		ItemAddData('I00Q', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_CRYSTAL_AXE,
+			TYPE    = ITEM_TYPE_WEAPON,
+			SUBTYPE = AXE_WEAPON,
+			QUALITY = UNIQUE_ITEM,
+			ATTRIBUTE = ICE_ATTRIBUTE,
+			ATTRIBUTE_BONUS = 7,
+			stat_modificator = 0.9,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = STR_STAT, VALUE = 2, METHOD = STRAIGHT_BONUS },
+				{ PARAM = ICE_RESIST, VALUE = 4, METHOD = STRAIGHT_BONUS },
+				{ PARAM = PHYSICAL_ATTACK, VALUE = 27, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 1,
+			frame_texture = "Weapon\\BTNFrostAxe.blp",
+			legendary_effect = GetLegendaryEffect("ECRA"), --{ id = "ECRA", type = ITEM_PASSIVE_EFFECT },
+			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_CRYSTAL_AXE,
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_CRYSTAL_AXE .."\"",
+			soundpack = { equip = "Sound\\daggers_polar_equip.wav", uneqip = "Sound\\daggers_polar_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
+		})
+
 
     end
 
@@ -1198,7 +1273,6 @@ do
 
 	Кирка Сморка
 	Легенды гласят, что шахтёр Сморк наповал косил ей врагов.
-
 
 		Кристальный топор
 	Превращает в кристаллы всё что коснётся. Специальные перчатки прилагаются.

@@ -322,7 +322,7 @@ do
                                 for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
                                     local picked = BlzGroupUnitAt(enemy_group, index)
 
-                                    if not (IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045) then
+                                    if not (IsUnitEnemy(picked, player_entity) or GetUnitState(picked, UNIT_STATE_LIFE) > 0.045) then
                                         GroupRemoveUnit(enemy_group, picked)
                                         GroupAddUnit(result_group, picked)
                                         targets = targets - 1

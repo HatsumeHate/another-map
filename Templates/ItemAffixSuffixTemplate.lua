@@ -370,6 +370,9 @@ do
             [RING_JEWELRY] = {
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_ENDLESS_FURY,
+                ITEM_SUFFIX_PURE_CONCENTRATION,
+                ITEM_SUFFIX_DEADLY_PRECISION,
                 ITEM_SUFFIX_PRECISION,
                 ITEM_SUFFIX_MYSTERY,
                 ITEM_SUFFIX_KNOWLEDGE
@@ -377,6 +380,9 @@ do
             [NECKLACE_JEWELRY] = {
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
+                ITEM_SUFFIX_ENDLESS_FURY,
+                ITEM_SUFFIX_PURE_CONCENTRATION,
+                ITEM_SUFFIX_DEADLY_PRECISION,
                 ITEM_SUFFIX_PRECISION,
                 ITEM_SUFFIX_MYSTERY,
                 ITEM_SUFFIX_KNOWLEDGE
@@ -385,6 +391,10 @@ do
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
                 ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_ENDLESS_FURY,
+                ITEM_SUFFIX_PURE_CONCENTRATION,
+                ITEM_SUFFIX_DEADLY_PRECISION,
+                ITEM_SUFFIX_HIGH_KNIGHT,
                 ITEM_SUFFIX_ROCK,
                 ITEM_SUFFIX_KNIGHT,
                 ITEM_SUFFIX_MYSTERY,
@@ -396,6 +406,10 @@ do
                 ITEM_SUFFIX_ROCK,
                 ITEM_SUFFIX_KNIGHT,
                 ITEM_SUFFIX_MYSTERY,
+                ITEM_SUFFIX_ENDLESS_FURY,
+                ITEM_SUFFIX_PURE_CONCENTRATION,
+                ITEM_SUFFIX_DEADLY_PRECISION,
+                ITEM_SUFFIX_HIGH_KNIGHT,
             },
             [CHEST_ARMOR] = {
                 ITEM_SUFFIX_FURY,
@@ -404,6 +418,10 @@ do
                 ITEM_SUFFIX_ROCK,
                 ITEM_SUFFIX_KNIGHT,
                 ITEM_SUFFIX_MYSTERY,
+                ITEM_SUFFIX_ENDLESS_FURY,
+                ITEM_SUFFIX_PURE_CONCENTRATION,
+                ITEM_SUFFIX_DEADLY_PRECISION,
+                ITEM_SUFFIX_HIGH_KNIGHT,
             },
             [LEGS_ARMOR] = {
                 ITEM_SUFFIX_FURY,
@@ -412,61 +430,94 @@ do
                 ITEM_SUFFIX_ROCK,
                 ITEM_SUFFIX_KNIGHT,
                 ITEM_SUFFIX_MYSTERY,
+                ITEM_SUFFIX_ENDLESS_FURY,
+                ITEM_SUFFIX_PURE_CONCENTRATION,
+                ITEM_SUFFIX_DEADLY_PRECISION,
+                ITEM_SUFFIX_HIGH_KNIGHT,
             },
             [BELT_ARMOR] = {
                 ITEM_SUFFIX_ROCK,
                 ITEM_SUFFIX_KNIGHT,
                 ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_KNOWLEDGE
+                ITEM_SUFFIX_KNOWLEDGE,
+                ITEM_SUFFIX_HIGH_KNIGHT
             },
             [SWORD_WEAPON] = {
                 ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
                 ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
+                ITEM_SUFFIX_SLAYER,
+                ITEM_SUFFIX_ENDLESS_FURY,
+                ITEM_SUFFIX_PURE_CONCENTRATION,
+                ITEM_SUFFIX_DEADLY_PRECISION,
+                ITEM_SUFFIX_SLAYER_GENIUS
             },
             [GREATSWORD_WEAPON] = {
                 ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
                 ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
+                ITEM_SUFFIX_SLAYER,
+                ITEM_SUFFIX_ENDLESS_FURY,
+                ITEM_SUFFIX_PURE_CONCENTRATION,
+                ITEM_SUFFIX_DEADLY_PRECISION,
+                ITEM_SUFFIX_SLAYER_GENIUS
             },
             [BLUNT_WEAPON] = {
                 ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
                 ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
+                ITEM_SUFFIX_SLAYER,
+                ITEM_SUFFIX_ENDLESS_FURY,
+                ITEM_SUFFIX_PURE_CONCENTRATION,
+                ITEM_SUFFIX_DEADLY_PRECISION,
+                ITEM_SUFFIX_SLAYER_GENIUS
             },
             [GREATBLUNT_WEAPON] = {
                 ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
                 ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
+                ITEM_SUFFIX_SLAYER,
+                ITEM_SUFFIX_ENDLESS_FURY,
+                ITEM_SUFFIX_PURE_CONCENTRATION,
+                ITEM_SUFFIX_DEADLY_PRECISION,
+                ITEM_SUFFIX_SLAYER_GENIUS
             },
             [AXE_WEAPON] = {
                 ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
                 ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
+                ITEM_SUFFIX_SLAYER,
+                ITEM_SUFFIX_ENDLESS_FURY,
+                ITEM_SUFFIX_PURE_CONCENTRATION,
+                ITEM_SUFFIX_DEADLY_PRECISION,
+                ITEM_SUFFIX_SLAYER_GENIUS
             },
             [GREATAXE_WEAPON] = {
                 ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
                 ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
+                ITEM_SUFFIX_SLAYER,
+                ITEM_SUFFIX_ENDLESS_FURY,
+                ITEM_SUFFIX_PURE_CONCENTRATION,
+                ITEM_SUFFIX_DEADLY_PRECISION,
+                ITEM_SUFFIX_SLAYER_GENIUS
             },
             [DAGGER_WEAPON] = {
                 ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
                 ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
+                ITEM_SUFFIX_SLAYER,
+                ITEM_SUFFIX_ENDLESS_FURY,
+                ITEM_SUFFIX_PURE_CONCENTRATION,
+                ITEM_SUFFIX_DEADLY_PRECISION,
+                ITEM_SUFFIX_SLAYER_GENIUS
             },
             [STAFF_WEAPON] = {
                 ITEM_SUFFIX_ANGER,
@@ -476,14 +527,22 @@ do
                 ITEM_SUFFIX_ICE_WIZARD,
                 ITEM_SUFFIX_LIGHTNING_WIZARD,
                 ITEM_SUFFIX_FIRE_WIZARD,
-                ITEM_SUFFIX_SLAYER
+                ITEM_SUFFIX_SLAYER,
+                ITEM_SUFFIX_ENDLESS_FURY,
+                ITEM_SUFFIX_PURE_CONCENTRATION,
+                ITEM_SUFFIX_DEADLY_PRECISION,
+                ITEM_SUFFIX_SLAYER_GENIUS
             },
             [BOW_WEAPON] = {
                 ITEM_SUFFIX_ANGER,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_CONCENTRATION,
                 ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
+                ITEM_SUFFIX_SLAYER,
+                ITEM_SUFFIX_ENDLESS_FURY,
+                ITEM_SUFFIX_PURE_CONCENTRATION,
+                ITEM_SUFFIX_DEADLY_PRECISION,
+                ITEM_SUFFIX_SLAYER_GENIUS
             },
             [ORB_OFFHAND] = {
                 ITEM_SUFFIX_FURY,
@@ -496,6 +555,9 @@ do
                 ITEM_SUFFIX_ICE_WIZARD,
                 ITEM_SUFFIX_LIGHTNING_WIZARD,
                 ITEM_SUFFIX_FIRE_WIZARD,
+                ITEM_SUFFIX_ENDLESS_FURY,
+                ITEM_SUFFIX_PURE_CONCENTRATION,
+                ITEM_SUFFIX_DEADLY_PRECISION,
             },
             [SHIELD_OFFHAND] = {
                 ITEM_SUFFIX_KNOWLEDGE,
@@ -504,6 +566,8 @@ do
                 ITEM_SUFFIX_ROCK,
                 ITEM_SUFFIX_KNIGHT,
                 ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_HIGH_KNIGHT,
+                ITEM_SUFFIX_ENDLESS_FURY,
             }
         },
         [MAGIC_ITEM] = {
@@ -3455,6 +3519,247 @@ do
                     }
                 }
             },
+            [ITEM_SUFFIX_ENDLESS_FURY] = {
+                name = LOCALE_LIST[my_locale].ITEM_SUFFIX_ENDLESS_FURY,
+                min_affix = ITEM_AFFIX_WORN,
+                max_affix = ITEM_AFFIX_IDEAL,
+                affix_bonus = {
+                    [ITEM_AFFIX_WORN] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 26, value_max = 30, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 26, value_max = 34, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_FIGHTING_MASTERY,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE
+                                },
+                            },
+                            min_level = 1,
+                            max_level = 1,
+                        },
+                        effect_bonus = {
+
+                        }
+                    },
+                    [ITEM_AFFIX_FINE] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 30, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.08, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 34, value_max = 40, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.08, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_FIGHTING_MASTERY,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE
+                                },
+                            },
+                            min_level = 1,
+                            max_level = 1,
+                        },
+                        effect_bonus = {
+
+                        }
+                    },
+                    [ITEM_AFFIX_EXCELLENT] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
+                            { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 12, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 60. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 36, value_max = 41, METHOD = STRAIGHT_BONUS, probability = 60. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 60. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 42, value_max = 55, METHOD = STRAIGHT_BONUS, probability = 60. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 60. }
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_FIGHTING_MASTERY,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE
+                                },
+                            },
+                            min_level = 1,
+                            max_level = 2,
+                        },
+                        effect_bonus = {
+
+                        }
+                    },
+                    [ITEM_AFFIX_IDEAL] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
+                            { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 12, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 14, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 60. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 55, value_max = 64, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.12, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 70. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 55, value_max = 66, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.12, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 70. }
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_FIGHTING_MASTERY,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE
+                                },
+                            },
+                            min_level = 1,
+                            max_level = 2,
+                        },
+                        effect_bonus = {
+
+                        }
+                    }
+                }
+            },
             [ITEM_SUFFIX_CONCENTRATION] = {
                 name = LOCALE_LIST[my_locale].ITEM_SUFFIX_CONCENTRATION,
                 min_affix = ITEM_AFFIX_WORN,
@@ -3624,6 +3929,205 @@ do
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 18, value_max = 22, METHOD = STRAIGHT_BONUS, probability = 75. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.06, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 70. }
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                            min_level = 1,
+                            max_level = 2,
+                        },
+                        effect_bonus = {
+
+                        }
+                    }
+                }
+            },
+            [ITEM_SUFFIX_PURE_CONCENTRATION] = {
+                name = LOCALE_LIST[my_locale].ITEM_SUFFIX_PURE_CONCENTRATION,
+                min_affix = ITEM_AFFIX_WORN,
+                max_affix = ITEM_AFFIX_IDEAL,
+                affix_bonus = {
+                    [ITEM_AFFIX_WORN] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 22, value_max = 26, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.14, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 20, value_max = 22, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.14, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 70. }
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                            min_level = 1,
+                            max_level = 2,
+                        },
+                        effect_bonus = {
+
+                        }
+                    },
+                    [ITEM_AFFIX_FINE] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 14, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 26, value_max = 30, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.14, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 75. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.08, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 70. }
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                            min_level = 1,
+                            max_level = 2,
+                        },
+                        effect_bonus = {
+
+                        }
+                    },
+                    [ITEM_AFFIX_EXCELLENT] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 20, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 30, value_max = 34, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 75. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 70. }
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                            min_level = 1,
+                            max_level = 2,
+                        },
+                        effect_bonus = {
+
+                        }
+                    },
+                    [ITEM_AFFIX_IDEAL] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 6, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 6, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 28, value_max = 38, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 38, value_max = 46, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.12, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 36, value_max = 44, METHOD = STRAIGHT_BONUS, probability = 75. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.12, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 70. }
                                 }
                             },
                         },
@@ -3890,6 +4394,286 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.045, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.045, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                            min_level = 1,
+                            max_level = 2,
+                        },
+                        effect_bonus = {
+
+                        }
+                    }
+                }
+            },
+            [ITEM_SUFFIX_DEADLY_PRECISION] = {
+                name = LOCALE_LIST[my_locale].ITEM_SUFFIX_DEADLY_PRECISION,
+                min_affix = ITEM_AFFIX_WORN,
+                max_affix = ITEM_AFFIX_IDEAL,
+                affix_bonus = {
+                    [ITEM_AFFIX_WORN] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_MULTIPLIER, value_min = 0.2, value_max = 0.2, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 6, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 24, value_max = 31, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 30, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.06, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                            min_level = 1,
+                            max_level = 1,
+                        },
+                        effect_bonus = {
+
+                        }
+                    },
+                    [ITEM_AFFIX_FINE] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_MULTIPLIER, value_min = 0.2, value_max = 0.3, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 31, value_max = 44, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 30, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                            min_level = 1,
+                            max_level = 1,
+                        },
+                        effect_bonus = {
+
+                        }
+                    },
+                    [ITEM_AFFIX_EXCELLENT] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 6, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_MULTIPLIER, value_min = 0.3, value_max = 0.4, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 44, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.07, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 36, value_max = 44, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.07, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                            min_level = 1,
+                            max_level = 2,
+                        },
+                        effect_bonus = {
+
+                        }
+                    },
+                    [ITEM_AFFIX_IDEAL] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 8, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_MULTIPLIER, value_min = 0.3, value_max = 0.45, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 6, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 52, value_max = 66, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.09, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 44, value_max = 56, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.09, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
                         },
@@ -4842,6 +5626,341 @@ do
                     },
                 }
             },
+            [ITEM_SUFFIX_SLAYER_GENIUS] = {
+                name = LOCALE_LIST[my_locale].ITEM_SUFFIX_SLAYER_GENIUS,
+                min_affix = ITEM_AFFIX_WORN,
+                max_affix = ITEM_AFFIX_IDEAL,
+                affix_bonus = {
+                    [ITEM_AFFIX_WORN] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 20. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 44, value_max = 56, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.1, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 44, value_max = 56, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.1, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 44, value_max = 56, METHOD = STRAIGHT_BONUS, probability = 20. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 2, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 20. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_FINE] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 20. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 56, value_max = 66, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.14, value_max = 1.18, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 56, value_max = 66, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.14, value_max = 1.18, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 56, value_max = 74, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_EXCELLENT] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 6, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 20. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 66, value_max = 78, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.18, value_max = 1.22, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 66, value_max = 78, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.18, value_max = 1.22, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 74, value_max = 90, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_IDEAL] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 8, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 78, value_max = 84, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.22, value_max = 1.3, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 78, value_max = 85, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.22, value_max = 1.3, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 90, value_max = 110, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 6, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                }
+            },
             [ITEM_SUFFIX_ROCK] = {
                 name = LOCALE_LIST[my_locale].ITEM_SUFFIX_ROCK,
                 min_affix = ITEM_AFFIX_WORN,
@@ -5540,6 +6659,416 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.07, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.07, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 13, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                }
+            },
+            [ITEM_SUFFIX_HIGH_KNIGHT] = {
+                name = LOCALE_LIST[my_locale].ITEM_SUFFIX_HIGH_KNIGHT,
+                min_affix = ITEM_AFFIX_WORN,
+                max_affix = ITEM_AFFIX_IDEAL,
+                affix_bonus = {
+                    [ITEM_AFFIX_WORN] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 40, value_max = 50, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.04, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 40, value_max = 50, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.04, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 30, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 30, value_max = 46, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.04, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.04, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_FINE] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 6, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 50, value_max = 62, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.06, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 52, value_max = 56, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.06, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.06, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 30, value_max = 32, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 23, value_max = 26, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 14, value_max = 18, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_EXCELLENT] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 2, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_RESIST, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_RESIST, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_RESIST, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_RESIST, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_RESIST, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 62, value_max = 72, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.12, value_max = 1.18, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 56, value_max = 66, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.12, value_max = 1.18, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.12, value_max = 1.18, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 34, value_max = 40, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.12, value_max = 1.18, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 26, value_max = 32, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.12, value_max = 1.16, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.12, value_max = 1.16, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 18, value_max = 24, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = {
+                                BARBARIAN_CLASS,
+                                SORCERESS_CLASS
+                            },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_INNER_STRENGTH,
+                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                                    SKILL_CATEGORY_FIGHTING_MASTERY
+                                },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = {
+                                    SKILL_CATEGORY_LIGHTNING,
+                                    SKILL_CATEGORY_FIRE,
+                                    SKILL_CATEGORY_ICE,
+                                    SKILL_CATEGORY_ARCANE
+                                },
+                            },
+                        },
+                    },
+                    [ITEM_AFFIX_IDEAL] = {
+                        additional_parameter = -2,
+                        parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 14, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 36, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.12, value_max = 1.2, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 66, value_max = 74, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.12, value_max = 1.2, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.12, value_max = 1.2, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 40, value_max = 46, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.12, value_max = 1.2, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                        },
+                                    },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 64, value_max = 70, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.14, value_max = 1.2, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.14, value_max = 1.2, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 26, value_max = 30, METHOD = STRAIGHT_BONUS, probability = 30. },
                                 }
                             },
                         },
@@ -6354,7 +7883,7 @@ do
                 }
             }
         }
---
+
     end
 
 end

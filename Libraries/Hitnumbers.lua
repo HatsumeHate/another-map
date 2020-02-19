@@ -6,8 +6,6 @@ do
     local DURATION = 1.
     local UNFADE = 0.17 --in
     local FADEPOINT = 0.65  --out
-    local RANDOM_OFFSETM_MIN = 45.
-    local RANDOM_OFFSET_MAX = 65.
 
 
     local ATTACK_STATUS_COLOR = {
@@ -17,7 +15,8 @@ do
         [ATTACK_STATUS_BLOCKED] = '|c00FFFFFF',
         [ATTACK_STATUS_EVADE] = '|c00FFFFFF',
         [HEAL_STATUS] = '|c0000FF00',
-        [RESOURCE_STATUS] = '|c00008BFF'
+        [RESOURCE_STATUS] = '|c00008BFF',
+        [REFLECT_STATUS] = "|c008800FF"
     }
 
     local STATUS_OFFSET = {
@@ -28,6 +27,7 @@ do
         [ATTACK_STATUS_EVADE]               = { x = { min = 55., max = 65. },   y = { min = 55., max = 65. }, },
         [HEAL_STATUS]                       = { x = { min = -10., max = 10. },  y = { min = 0., max = -30. }, },
         [RESOURCE_STATUS]                   = { x = { min = -10., max = 10. },  y = { min = 20., max = -60. }, },
+        [REFLECT_STATUS]                    = { x = { min = -50., max = -20. },  y = { min = 20., max = -60. }, },
     }
 
 

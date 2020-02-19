@@ -107,6 +107,10 @@ do
 
     end
 
+    function OnBuffLevelChange(source, target, buff, flag)
+
+    end
+
     ---@param source unit
     ---@param buff table
     function OnBuffApply(source, target, buff)
@@ -139,6 +143,12 @@ do
     ---@param source unit
     ---@param target unit
     function OnAttackEnd(source, target)
+
+    end
+
+    ---@param source unit
+    ---@param target unit
+    function OnMyAttack(source, target)
 
     end
 

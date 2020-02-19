@@ -204,6 +204,14 @@ do
             SKILL_PANEL_LVL_TEXT = "Уровень: ",
             SKILL_PANEL_UNBIND = "Убрать",
 
+            SKILL_PANEL_MANA_TEXT = " маны",
+            SKILL_PANEL_COOLDOWN_TEXT = " перезарядка",
+            SKILL_PANEL_RANGE_TEXT = " дальность",
+
+            CASTLE_LOCATION = 'Замок',
+            SHORE_LOCATION = 'Берег',
+            WOODS_LOCATION = 'Леса',
+
             FEEDBACK_MSG_NOSPACE = "В рюкзаке нет места",
             FEEDBACK_MSG_CANTUSE = "Невозможно это использовать",
             FEEDBACK_MSG_NOGOLD = "Недостаточно золота",
@@ -231,6 +239,7 @@ do
             ADDITIONAL_INFO_UI = "|nДополнительные свойства:|n",
             AUGMENTS_UI = "|nАугментации:|n",
             SLOTS_UI = "|nГнезда:|n",
+            SET_PART_UI = " части:|n",
 
             STAT_PANEL_TOOLTIP_NAME = "Характеристики",
             STAT_PANEL_TOOLTIP_DESCRIPTION =  "Повышение и отслеживание характеристик",
@@ -276,19 +285,24 @@ do
             IDEAL_DECL_THEY = "Безупречные ",
             IDEAL_DECL_IT = "Безупречное ",
 
-            ITEM_SUFFIX_ANGER = " Злости",
-            ITEM_SUFFIX_FURY = " Ярости",
-            ITEM_SUFFIX_CONCENTRATION = " Концентрации",
-            ITEM_SUFFIX_PRECISION = " Точности",
-            ITEM_SUFFIX_ICE_WIZARD = " Ледяного Колдуна",
-            ITEM_SUFFIX_FIRE_WIZARD = " Огненного Колдуна",
-            ITEM_SUFFIX_LIGHTNING_WIZARD = " Электрического Колдуна",
-            ITEM_SUFFIX_SLAYER = " Убийцы",
-            ITEM_SUFFIX_TRICKSTER = " Обманщика",
-            ITEM_SUFFIX_ROCK = " Скалы",
-            ITEM_SUFFIX_KNIGHT = " Рыцаря",
-            ITEM_SUFFIX_MYSTERY = " Загадки",
-            ITEM_SUFFIX_KNOWLEDGE = " Знаний",
+            ITEM_SUFFIX_ANGER                   = " Злости",
+            ITEM_SUFFIX_FURY                    = " Ярости",
+            ITEM_SUFFIX_CONCENTRATION           = " Концентрации",
+            ITEM_SUFFIX_PRECISION               = " Точности",
+            ITEM_SUFFIX_ICE_WIZARD              = " Ледяного Колдуна",
+            ITEM_SUFFIX_FIRE_WIZARD             = " Огненного Колдуна",
+            ITEM_SUFFIX_LIGHTNING_WIZARD        = " Электрического Колдуна",
+            ITEM_SUFFIX_SLAYER                  = " Убийцы",
+            ITEM_SUFFIX_TRICKSTER               = " Обманщика",
+            ITEM_SUFFIX_ROCK                    = " Скалы",
+            ITEM_SUFFIX_KNIGHT                  = " Рыцаря",
+            ITEM_SUFFIX_MYSTERY                 = " Загадки",
+            ITEM_SUFFIX_KNOWLEDGE               = " Знаний",
+            ITEM_SUFFIX_PURE_CONCENTRATION      = "Сосредоточенности",
+            ITEM_SUFFIX_SLAYER_GENIUS           = "Гениального убийцы",
+            ITEM_SUFFIX_HIGH_KNIGHT             = "Благородного рыцаря",
+            ITEM_SUFFIX_ENDLESS_FURY            = "Бесконечной ярости",
+            ITEM_SUFFIX_DEADLY_PRECISION        = "Смертельной точности",
 
             GENERIC_SWORD_NAME_1 = "необработанный клинок",
             GENERIC_SWORD_NAME_2 = "короткий меч",
@@ -535,6 +549,12 @@ do
             SKILL_FROSTNOVA = 'Кольцо Льда',
 
 
+            SET_NAME_ANCIENT_LEGACY = "Наследие предков",
+            SET_NAME_JESTERANDKING = "Король и Шут",
+            SET_NAME_FIREBOND = "Огненная связь",
+            SET_NAME_FRENDLINESS = "Приветливость",
+
+
             ITEM_NAME_RAT_HUNTER = 'Охотник на крыс',
             ITEM_SPEC_DESCRIPTION_RAT_HUNTER = "Даже у крысоловов был легендарный лук, коего желали все охотники на крыс",
 
@@ -559,8 +579,34 @@ do
 
 
             ITEM_NAME_SMORC_PICKAXE = "Кирка Сморка",
-            ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE = "Легенды гласят, что шахтёр Сморк наповал косил ей врагов",
+            ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE = "Легенды гласят, что шахтёр Сморк наповал косил ею врагов",
 
+            ITEM_NAME_BOOSTERS = "Усилители",
+            ITEM_LEG_DESCRIPTION_BOOSTERS = "После приземления от использования умения \"Прыжок\" варвар наносит 215%% урона от оружия в радиусе 325",
+            ITEM_SPEC_DESCRIPTION_BOOSTERS = "Изобретение неизвестного автора нашло свое уникальное применение.",
+
+            ITEM_NAME_EYE_OF_THE_STORM = "Око бури",
+            ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Разряд\" теперь идет из позиции чародейки, а их урон и количество зарядов увеличивается.",
+            ITEM_SPEC_DESCRIPTION_EYE_OF_THE_STORM = "Неизвестный чародей смог заполучить себе невероятный артефакт, после чего вскоре превратился в пепел.",
+
+
+            ITEM_NAME_FIREPRINCESS = "Пламенная Принцесса",
+            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+            ITEM_SPEC_DESCRIPTION_FIREPRINCESS = "Принцесса одного древнего королевства проявляла интерес к пламени, сжигая предателей и окружая себя огнем.",
+
+
+            ITEM_NAME_FIREQUEEN = "Пламенная Королева",
+            --ITEM_LEG_DESCRIPTION_FIREQUEEN = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+            ITEM_SPEC_DESCRIPTION_FIREQUEEN = "Став королевой, страсть пламени лишь разгоралась, и однажды, войдя в ее покои, слуги не нашли их королеву, только лишь амулет и кольцо на обуглившимся полу.",
+
+
+            ITEM_NAME_PAIN_ECHO = "Эхо Боли",
+            ITEM_LEG_DESCRIPTION_PAIN_ECHO = "Кровотечение от умения \"Рассекающий взмах\" теперь может быть критическим, так же его шанс на крит повышен на 25%%.",
+            ITEM_SPEC_DESCRIPTION_PAIN_ECHO = "Чьей кровью ты будешь насыщать это кольцо?",
+
+            ITEM_NAME_CRYSTAL_AXE = "Кристальный топор",
+            ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "Каждая атака по врагу накладывает на него эффект кристаллизации, снижающий скорость передвижения. После накопления 5 зарядов, противник замораживается на 3 сек.",
+            ITEM_SPEC_DESCRIPTION_CRYSTAL_AXE = "Превращает в кристаллы всё чего коснётся, держите острие подальше от себя.",
 
 
             GENERATED_TOOLTIP = "урона от атаки",
@@ -826,6 +872,14 @@ do
             SKILL_PANEL_LVL_TEXT = "Level: ",
             SKILL_PANEL_UNBIND = "Unbind",
 
+            SKILL_PANEL_MANA_TEXT = " mana",
+            SKILL_PANEL_COOLDOWN_TEXT = " cooldown",
+            SKILL_PANEL_RANGE_TEXT = " range",
+
+            CASTLE_LOCATION = 'Castle',
+            SHORE_LOCATION = 'Shore',
+            WOODS_LOCATION = 'Woods',
+
             FEEDBACK_MSG_NOSPACE = "Not enough space",
             FEEDBACK_MSG_CANTUSE = "Can't use that",
             FEEDBACK_MSG_NOGOLD = "Not enough gold",
@@ -852,6 +906,7 @@ do
             ADDITIONAL_INFO_UI = "|nBonuses:|n",
             AUGMENTS_UI = "|nAugments:|n",
             SLOTS_UI = "|nSockets:|n",
+            SET_PART_UI = " parts:|n",
 
 
             STAT_PANEL_TOOLTIP_NAME = "Stats",
@@ -912,6 +967,11 @@ do
             ITEM_SUFFIX_KNIGHT = " of Knight",
             ITEM_SUFFIX_MYSTERY = " of Mystery",
             ITEM_SUFFIX_KNOWLEDGE = " of Knowledge",
+            ITEM_SUFFIX_PURE_CONCENTRATION      = "Focus",
+            ITEM_SUFFIX_SLAYER_GENIUS           = "Genius Slayer",
+            ITEM_SUFFIX_HIGH_KNIGHT             = "Noble Knight",
+            ITEM_SUFFIX_ENDLESS_FURY            = "Endless Fury",
+            ITEM_SUFFIX_DEADLY_PRECISION        = "Deadly Precision",
 
             GENERIC_SWORD_NAME_1 = "rough blade",
             GENERIC_SWORD_NAME_2 = "short blade",
@@ -1161,8 +1221,13 @@ do
             SKILL_FIREBALL = 'Fireball',
             SKILL_FROSTNOVA = 'Frost Nova',
             --SKILL_ = 'Summon',
-            
-            
+
+
+
+            SET_NAME_ANCIENT_LEGACY = "Ancient legacy",
+            SET_NAME_JESTERANDKING = "Jester and King",
+            SET_NAME_FIREBOND = "Fire bond",
+            SET_NAME_FRENDLINESS = "Frendliness",
             
             ITEM_NAME_RAT_HUNTER = 'Rat Hunter',
             ITEM_SPEC_DESCRIPTION_RAT_HUNTER = "Even the rat-hunters had a legendary bows, which all rat hunters desired.",
@@ -1172,8 +1237,8 @@ do
             ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Each enemy near the hero increasing his moving speed by 3%%, with maximum of 25%%",
 
             ITEM_NAME_WITCH_MASTERY = "Witch Mastery",
-            ITEM_SPEC_DESCRIPTION_WITCH_MASTERY = "That staff belonged to a very ancient witch. It absorbed some blood magick, and can share it with wielder.",
-            ITEM_LEG_DESCRIPTION_WITCH_MASTERY = "Each casted spell increasing spell power by 10%% in exhange of 5%% life",
+            ITEM_SPEC_DESCRIPTION_WITCH_MASTERY = "That staff belonged to a very ancient witch. It absorbed some blood magic, and can share it with wielder.",
+            ITEM_LEG_DESCRIPTION_WITCH_MASTERY = "Each casted spell will increase your spell power by 10%% in exhange of 5%% life",
 
             ITEM_NAME_DARK_CROWN = "Dark Crown",
             ITEM_SPEC_DESCRIPTION_DARK_CROWN = "If you want to resist the darkness, became darkness yourself.",
@@ -1189,10 +1254,33 @@ do
             ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE = "Legends says, that miner Smorc was crushing his enemies with that thing.",
 
 
+            ITEM_NAME_EYE_OF_THE_STORM = "Eye of the Storm",
+            ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Discharge\" now comes out of sorceress, also its power increased.",
+            ITEM_SPEC_DESCRIPTION_EYE_OF_THE_STORM = "Unknown sorcerer acquired magnificent artifact, to only become shortly an ash.",
+
+            ITEM_NAME_FIREPRINCESS = "Fiery Princess",
+            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+            ITEM_SPEC_DESCRIPTION_FIREPRINCESS = "Princess of an ancient kingdom showed interest to flames, burning her traitors and surrounding herself in fire.",
+
+
+            ITEM_NAME_FIREQUEEN = "Fiery Queen",
+            --ITEM_LEG_DESCRIPTION_FIREQUEEN = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+            ITEM_SPEC_DESCRIPTION_FIREQUEEN = "After becoming a queen, her passion towards the flames only grew stronger. One day, when her servants entered her chamber, only ring and an amulet lied down on the charred floor, with no trace of the Queen whatsoever.",
+
+
+            ITEM_NAME_PAIN_ECHO = "Pain Echo",
+            ITEM_LEG_DESCRIPTION_PAIN_ECHO = "\"Cutting Slash\"'s bleeding now can be critical and gain 25%% bonus critical chance.",
+            ITEM_SPEC_DESCRIPTION_PAIN_ECHO = "Whose blood will be fed to this ring?",
+
+            ITEM_NAME_CRYSTAL_AXE = "Crystal Axe",
+            ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "With each attack you apply crystallisation on the enemis decreasing their moving speed. After reaching 5 stacks, enemy will freeze for 3 sec.",
+            ITEM_SPEC_DESCRIPTION_CRYSTAL_AXE = "That axe freezing everything it's touching, mind yourself keeping its blade away.",
+
+
             GENERATED_TOOLTIP = " of attack",
 
             [FourCC("A007")] = {
-                bind = "Strong blow that deals @e!ECRH.dmg# of @e!ECRH.atr# damage in front. Affected enemy suffer loss of physical damage resistance by @b!A00W.va1# and attack speed by @b!A00W.va2# for @b!A00W.time# seconds.",
+                bind = "Strong blow that deals @e!ECRH.dmg# @e!ECRH.atr# damage in front. Affected enemy suffer loss of physical damage resistance by @b!A00W.va1# and attack speed by @b!A00W.va2# for @b!A00W.time# seconds.",
             },
             [FourCC("A00C")] = {
                 bind = "Barbarian screams in @e!EWCR.aoe# range, which reduces enemy attack by @b!A00Y.va1# and movement speed by @b!A00Y.va3#.",
@@ -1213,7 +1301,7 @@ do
                 bind = "Punch that deals @e!EUPP.dmg# of @e!EUPP.atr# and pushing back targets, after which they are stunned for @b!A012.time# sec.",
             },
             [FourCC("A00Z")] = {
-                bind = "Throws a dagger up to @s!A00Z.rng# range, first enemy takes @e!ETHK.dmg# of @e!ETHK.atr#. Increased chance of critical damage (+@e!ETHK.bcc#).",
+                bind = "Throws a dagger up to @s!A00Z.rng# range, first enemy takes @e!ETHK.dmg# of @e!ETHK.atr# damage. Increased chance of critical damage (+@e!ETHK.bcc#).",
             },
             [FourCC("A00O")] = {
                 bind = "Allows you to jump up to @s!A00O.rng# range.",

@@ -186,7 +186,7 @@ do
             BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[skill.current_level].range or 0.)
             BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[skill.current_level].radius or 0.)
             BlzSetAbilityIntegerLevelField(ability, ABILITY_ILF_TARGET_TYPE, 0, skill.activation_type)
-            BlzSetUnitAbilityManaCost(unit, ability_id, 0, R2I(skill.level[skill.current_level].resource_cost) or 0)
+            BlzSetUnitAbilityManaCost(unit, ability_id, 0, R2I(skill.level[skill.current_level].resource_cost or 0.))
 
                 if GetLocalPlayer() == GetOwningPlayer(unit) then
                     BlzSetAbilityTooltip(ability_id, skill.name .. KEYBIND_LIST[key].name_string, 0)

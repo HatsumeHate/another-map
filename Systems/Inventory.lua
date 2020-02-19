@@ -407,7 +407,7 @@ do
             TimerStart(DoubleClickTimer[player], 0.25, false, function()
                 if ButtonList[h].item ~= nil and PlayerMovingItem[player] == nil and ButtonList[h].button_type == INV_SLOT then
 
-                    CreatePlayerContextMenu(player, ButtonList[h].button, ButtonList[GetHandleId(InventorySlots[32])].image)
+                    CreatePlayerContextMenu(player, ButtonList[h].button, FRAMEPOINT_LEFT, ButtonList[GetHandleId(InventorySlots[32])].image)
 
                     if ShopInFocus[player] ~= nil then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_SELL, function()

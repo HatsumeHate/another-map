@@ -11,12 +11,12 @@ do
         local frame
         local btn
 
-            if ShopFrame[player].state ~= nil and ShopFrame[player].state then --BlzFrameIsVisible(ShopFrame[player].main_frame) then
+            if ShopFrame[player].state ~= nil and ShopFrame[player].state then
                 btn = GetButtonData(ShopFrame[player].slot[32])
                 frame = BlzFrameGetText(btn.charges_text_frame) ~= "0" and btn.charges_text_frame or btn.image
             elseif SkillPanelFrame[player].state ~= nil and SkillPanelFrame[player].state then
                 frame = SkillPanelFrame[player].slider
-            elseif PlayerInventoryFrameState[player] ~= nil and PlayerInventoryFrameState[player] then -- BlzFrameIsVisible(PlayerInventoryFrame[player]) then
+            elseif PlayerInventoryFrameState[player] ~= nil and PlayerInventoryFrameState[player] then
                 btn = GetButtonData(InventorySlots[32])
                 frame = BlzFrameGetText(btn.charges_text_frame) ~= "0" and btn.charges_text_frame or btn.image
             end
@@ -196,7 +196,7 @@ do
         BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_TOPLEFT, ContextFrame[player].frames[1], FRAMEPOINT_TOPLEFT, -0.003, 0.003)
         BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_TOPRIGHT, ContextFrame[player].frames[1], FRAMEPOINT_TOPRIGHT, 0.003, 0.003)
         BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_BOTTOMLEFT, frame, FRAMEPOINT_BOTTOMLEFT, -0.003, -0.003)
-        BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_BOTTOMRIGHT, frame, FRAMEPOINT_BOTTOMRIGHT, -0.03, 0.003)
+        BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_BOTTOMRIGHT, frame, FRAMEPOINT_BOTTOMRIGHT, -0.003, 0.003)
         BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_BOTTOM, frame, FRAMEPOINT_BOTTOM, 0., -0.003)
 
         BlzFrameSetPoint(ContextFrame[player].focus_frame, FRAMEPOINT_CENTER, ContextFrame[player].backdrop, FRAMEPOINT_CENTER, 0.,0.)
@@ -207,7 +207,11 @@ do
 
 
 
-    function CreatePlayerContextMenu(player, originframe, parent)
+    ---@param player integer
+    ---@param originframe framehandle
+    ---@param parent framehandle
+    ---@param direction framepointtype
+    function CreatePlayerContextMenu(player, originframe, direction, parent)
         DestroyContextMenu(player)
 
         parent = GetMasterParentFrame(player) or parent
@@ -226,7 +230,10 @@ do
             DestroyContextMenu(player)
         end)
 
-        BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_LEFT, originframe, FRAMEPOINT_RIGHT, 0.,0.)
+        local from = direction == FRAMEPOINT_RIGHT and FRAMEPOINT_LEFT or FRAMEPOINT_RIGHT
+        local to = direction == FRAMEPOINT_RIGHT and FRAMEPOINT_RIGHT or FRAMEPOINT_LEFT
+
+        BlzFrameSetPoint(ContextFrame[player].backdrop, from, originframe, to, 0.,0.)
         RemoveTooltip(player)
         return ContextFrame[player].backdrop
     end
@@ -252,6 +259,7 @@ do
 
 
 
+    ---@param parent framehandle
     function NewTooltip(parent)
         local backdrop = BlzCreateFrame("BoxedText", parent, 15, 0)
         local handle = GetHandleId(backdrop)
@@ -382,14 +390,14 @@ do
             local master_index = 1
 
             master_index = master_index + 1
-            AddExtendedSkillValue(master_index, my_tooltip, "ReplaceableTextures\\CommandButtons\\BTNSlow.blp", (skill.level[ability_level].cooldown or 0.1) .. " перезарядка", my_tooltip.textframe[1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMLEFT, 0., -0.004, TEXT_JUSTIFY_LEFT)
+            AddExtendedSkillValue(master_index, my_tooltip, "ReplaceableTextures\\CommandButtons\\BTNSlow.blp", (skill.level[ability_level].cooldown or 0.1) .. LOCALE_LIST[my_locale].SKILL_PANEL_COOLDOWN_TEXT, my_tooltip.textframe[1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMLEFT, 0., -0.004, TEXT_JUSTIFY_LEFT)
             height = height + BlzFrameGetHeight(my_tooltip.imageframe[master_index]) + 0.005
 
 
             if skill.level[ability_level].resource_cost ~= nil then
                 master_index = master_index + 1
                 AddExtendedSkillValue(master_index, my_tooltip,
-                        "UI\\Widgets\\ToolTips\\Human\\ToolTipManaIcon.blp", (R2I(skill.level[ability_level].resource_cost) or 0) .. " маны",
+                        "UI\\Widgets\\ToolTips\\Human\\ToolTipManaIcon.blp", (R2I(skill.level[ability_level].resource_cost) or 0) .. LOCALE_LIST[my_locale].SKILL_PANEL_MANA_TEXT,
                         my_tooltip.imageframe[master_index-1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMLEFT, 0., -0.004, TEXT_JUSTIFY_LEFT)
 
                 height = height + BlzFrameGetHeight(my_tooltip.imageframe[master_index]) + 0.005
@@ -398,7 +406,7 @@ do
             if skill.activation_type ~= SELF_CAST then
                 master_index = master_index + 1
                 AddExtendedSkillValue(master_index, my_tooltip,
-                        "ReplaceableTextures\\CommandButtons\\BTNMarksmanship.blp", (R2I(skill.level[ability_level].range) or 0) .. " дальность",
+                        "ReplaceableTextures\\CommandButtons\\BTNMarksmanship.blp", (R2I(skill.level[ability_level].range) or 0) .. LOCALE_LIST[my_locale].SKILL_PANEL_RANGE_TEXT,
                         my_tooltip.imageframe[master_index-1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMLEFT, 0., -0.004, TEXT_JUSTIFY_LEFT)
 
                 height = height + BlzFrameGetHeight(my_tooltip.imageframe[master_index]) + 0.005
@@ -509,7 +517,7 @@ do
             local myframe = SetTooltipText(1, tooltip, GetItemNameColorized(item), TEXT_JUSTIFY_MIDDLE, tooltip.backdrop, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.01)
             LockWidth(myframe, BlzFrameGetWidth(myframe), 0.1, 0.26)
             BlzFrameSetScale(myframe, 1.2)
-            print("name " .. BlzFrameGetWidth(myframe))
+            --print("name " .. BlzFrameGetWidth(myframe))
             
              if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
             height = height + BlzFrameGetHeight(myframe)
@@ -519,7 +527,7 @@ do
             BlzFrameSetScale(myframe, 0.95)
              if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
             height = height + BlzFrameGetHeight(myframe)
-            print("property " .. BlzFrameGetWidth(myframe))
+            --print("property " .. BlzFrameGetWidth(myframe))
 
             local master_index = 3
 
@@ -527,31 +535,52 @@ do
                 myframe = SetTooltipText(master_index, tooltip, bonus_text, TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0)
                 BlzFrameSetScale(myframe, 0.95)
                 LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.45)
-                --BlzFrameSetSize(myframe, BlzFrameGetWidth(myframe), BlzFrameGetHeight(myframe))
                 master_index = master_index + 1
                  if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
                 height = height + BlzFrameGetHeight(myframe)
-                print("bonus " .. BlzFrameGetWidth(myframe))
+                --print("bonus " .. BlzFrameGetWidth(myframe))
             end
 
 
             if item_data.legendary_description ~= nil then
                 myframe = SetTooltipText(master_index, tooltip, "|c00DF0000"..item_data.legendary_description.."|r", TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., -0.005)
-                --BlzFrameSetSize(myframe, 0.01, 0.01)
                 LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.2)
                 BlzFrameSetScale(myframe, 0.97)
-                --BlzFrameSetSize(myframe, BlzFrameGetWidth(myframe), BlzFrameGetHeight(myframe) + 0.01)
                 master_index = master_index + 1
-                 if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
+                if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
                 height = height + BlzFrameGetHeight(myframe) * 0.95
-                print("legendary " .. BlzFrameGetWidth(myframe))
+                --print("legendary " .. BlzFrameGetWidth(myframe))
+            elseif item_data.set_bonus ~= nil then
+                local set_bonus_text = item_data.set_bonus.name .. ":|n"
+                local set_count = CountSetItems(PlayerHero[player], item_data.set_bonus)
+
+                    for k = 1, #item_data.set_bonus.bonuses do
+                        set_bonus_text = set_bonus_text .. item_data.set_bonus.bonuses[k].pieces .. LOCALE_LIST[my_locale].SET_PART_UI
+                        local params = item_data.set_bonus.bonuses[k].params
+                        if set_count < item_data.set_bonus.bonuses[k].pieces then set_bonus_text = set_bonus_text .. "|c007D7D7D" end
+                        for i = 1, #params do
+                            if params[i].param then
+                                set_bonus_text = set_bonus_text .. GetParameterName(params[i].param) .. ": " .. GetCorrectParamText(params[i].param, params[i].value, params[i].method) .. "|n"
+                            else
+                                set_bonus_text = set_bonus_text .. params[i].legendary_effect.name  .. "|n"
+                            end
+                        end
+                        if set_count < item_data.set_bonus.bonuses[k].pieces then set_bonus_text = set_bonus_text .. "|r" end
+                    end
+
+                BlzFrameSetSize(tooltip.textframe[master_index], 0., 0.)
+                myframe = SetTooltipText(master_index, tooltip, set_bonus_text, TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., -0.005)
+                BlzFrameSetScale(myframe, 0.95)
+                LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.45)
+                master_index = master_index + 1
+                if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
+                height = height + BlzFrameGetHeight(myframe) * 0.95
             end
 
 
             if item_data.MAX_SLOTS ~= nil and item_data.MAX_SLOTS > 0 then
                 local free_stone_slots = item_data.MAX_SLOTS - #item_data.STONE_SLOTS
                 local stones_text = LOCALE_LIST[my_locale].SLOTS_UI
-                print("1")
 
                     for i = 1, #item_data.STONE_SLOTS do
                         if item_data.STONE_SLOTS[i] ~= nil then
@@ -563,17 +592,16 @@ do
                     end
 
 
-                print("2")
 
                 myframe = SetTooltipText(master_index, tooltip, stones_text, TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0)
                 LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.45)
                 master_index = master_index + 1
                  if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
                 height = height + BlzFrameGetHeight(myframe)
-                print("3")
+
                     if free_stone_slots > 0 then
                         local stones = {}
-                        print("free > 0")
+
                         myframe = SetTooltipText(master_index, tooltip, "", TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0)
                         master_index = master_index + 1
                         BlzFrameSetSize(myframe, 0.01, 0.02)
@@ -585,7 +613,7 @@ do
 
                         offset_bonus = offset_bonus * 0.15
                         local last_stone_frame
-                        print("precalculation")
+
                             for i = 1, free_stone_slots do
 
                                 if i == 1 then
@@ -597,7 +625,6 @@ do
 
                         stones = nil
                     end
-                print("done")
             end
 
 
@@ -606,9 +633,9 @@ do
                 LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.2)
                 BlzFrameSetScale(myframe, 0.9)
                 master_index = master_index + 1
-                 if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
+                 if BlzFrameGetWidth(myframe) * 1.05 > width then width = BlzFrameGetWidth(myframe) * 1.05 end
                 height = height + (BlzFrameGetHeight(myframe) * 0.72)
-                print("special " .. BlzFrameGetWidth(myframe))
+                --print("special " .. BlzFrameGetWidth(myframe))
             end
 
 
@@ -631,7 +658,7 @@ do
 
             end
 
-        print("most is " .. width)
+        --print("most is " .. width)
         --print("before ------" .. BlzFrameGetWidth(tooltip.backdrop) .. " / " ..BlzFrameGetHeight(tooltip.backdrop) )
         BlzFrameSetSize(tooltip.backdrop, width, height * 1.2)
         --print("after ------" .. BlzFrameGetWidth(tooltip.backdrop) .. " / " ..BlzFrameGetHeight(tooltip.backdrop) )
@@ -639,7 +666,7 @@ do
         --if direction == FRAMEPOINT_LEFT then offset = -offset end
         --BlzFrameSetPoint(tooltip.backdrop, FRAMEPOINT_CENTER, button.image, FRAMEPOINT_CENTER, offset, -0.01)
 
-        print("done")
+        --print("done")
     end
 
 

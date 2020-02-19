@@ -81,7 +81,7 @@ do
         --local item_data = GetItemData(ButtonList[h].item)
 
             if ButtonList[h].item ~= nil then
-                CreatePlayerContextMenu(player, ButtonList[h].button, ButtonList[GetHandleId(ShopFrame[player].slot[32])].image)
+                CreatePlayerContextMenu(player, ButtonList[h].button, FRAMEPOINT_RIGHT, ButtonList[GetHandleId(ShopFrame[player].slot[32])].image)
                 AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_BUY, function()
 
                     if GetItemCharges(ButtonList[h].item) > 1 then

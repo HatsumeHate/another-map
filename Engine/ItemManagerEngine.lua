@@ -298,6 +298,8 @@ do
         local bonus_parameters_count = GetRandomInt(min, QUALITY_ITEM_BONUS_COUNT[quality].max) + preset.additional_parameter
 
         if bonus_parameters_count > #preset.parameter_bonus then bonus_parameters_count = #preset.parameter_bonus end
+        if bonus_parameters_count <= min then bonus_parameters_count = min end
+
         local parameters_list = GetRandomIntTable(1, #preset.parameter_bonus, bonus_parameters_count)
 
 
@@ -313,11 +315,11 @@ do
                                 METHOD = parameter.METHOD
                             }
 
-                            if item_data.BONUS[#item_data.BONUS].METHOD == STRAIGHT_BONUS and item_data.BONUS[#item_data.BONUS].PARAM ~= CRIT_MULTIPLIER then
+                            if item_data.BONUS[#item_data.BONUS].METHOD == STRAIGHT_BONUS and (item_data.BONUS[#item_data.BONUS].PARAM ~= CRIT_MULTIPLIER or item_data.BONUS[#item_data.BONUS].PARAM ~= HP_REGEN or item_data.BONUS[#item_data.BONUS].PARAM ~= MP_REGEN) then
                                 item_data.BONUS[#item_data.BONUS].VALUE = GetRandomInt(parameter.value_min, parameter.value_max)
                             else
                                 item_data.BONUS[#item_data.BONUS].VALUE = GetRandomReal(parameter.value_min, parameter.value_max)
-                                item_data.BONUS[#item_data.BONUS].VALUE = math.floor(item_data.BONUS[#item_data.BONUS].VALUE * 1000.) / 1000.
+                                item_data.BONUS[#item_data.BONUS].VALUE = math.floor(item_data.BONUS[#item_data.BONUS].VALUE * 100.) / 100.
                             end
 
                             bonus_parameters_count = bonus_parameters_count - 1
@@ -411,10 +413,32 @@ do
                     stone_bonus = 30 * item_data.MAX_SLOTS
                 end
 
+                if item_data.legendary_effect ~= nil then
+                    stats_bonus = stats_bonus * 2
+                end
+
             item_data.level = level
             item_data.cost = level * 30 + stats_bonus + stone_bonus
     end
 
+
+
+    function GenerateItemStatPreset(item, value)
+        local item_data = GetItemData(item)
+
+            if item_data.TYPE == ITEM_TYPE_WEAPON then
+                item_data.DAMAGE = item_data.DAMAGE * value
+            elseif item_data.TYPE == ITEM_TYPE_ARMOR then
+                item_data.DEFENCE = item_data.DEFENCE * value
+            elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
+                item_data.SUPPRESSION = item_data.SUPPRESSION * value
+            elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
+                if item_data.SUBTYPE == SHIELD_OFFHAND then
+                    item_data.DEFENCE = item_data.DEFENCE * value
+                    item_data.BLOCK = item_data.BLOCK * value
+                end
+            end
+    end
 
     function GenerateItemLevel(item, level)
         local item_data = GetItemData(item)
@@ -439,6 +463,7 @@ do
                 end
 
             GenerateItemCost(item, level)
+            if item_data.stat_modificator ~= nil then GenerateItemStatPreset(item, item_data.stat_modificator) end
     end
 
 
@@ -468,27 +493,21 @@ do
                             item_data.DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL
                             local attribute_roll = GetRandomInt(1, 6)
 
-                                if attribute_roll == 1 or attribute_roll > 4 then
-                                    item_data.ATTRIBUTE = PHYSICAL_ATTRIBUTE
-                                elseif attribute_roll == 2 then
-                                    item_data.ATTRIBUTE = HOLY_ATTRIBUTE
-                                elseif attribute_roll == 3 then
-                                    item_data.ATTRIBUTE = POISON_ATTRIBUTE
-                                elseif attribute_roll == 4 then
-                                    item_data.ATTRIBUTE = DARKNESS_ATTRIBUTE
-                                end
+                                if attribute_roll == 1 or attribute_roll > 4 then item_data.ATTRIBUTE = PHYSICAL_ATTRIBUTE
+                                elseif attribute_roll == 2 then item_data.ATTRIBUTE = HOLY_ATTRIBUTE
+                                elseif attribute_roll == 3 then item_data.ATTRIBUTE = POISON_ATTRIBUTE
+                                elseif attribute_roll == 4 then item_data.ATTRIBUTE = DARKNESS_ATTRIBUTE end
 
                         else
                             item_data.DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL
                             item_data.ATTRIBUTE = GetRandomInt(FIRE_ATTRIBUTE, DARKNESS_ATTRIBUTE)
                         end
 
+                        item_data.ATTRIBUTE_BONUS = GetRandomInt(0, 5)
+
                     else
-                        if GetRandomInt(1, 2) == 1 then
-                            item_data.ATTRIBUTE = PHYSICAL_ATTRIBUTE
-                        else
-                            item_data.ATTRIBUTE = POISON_ATTRIBUTE
-                        end
+                        if GetRandomInt(1, 2) == 1 then item_data.ATTRIBUTE = PHYSICAL_ATTRIBUTE
+                        else item_data.ATTRIBUTE = POISON_ATTRIBUTE end
                     end
 
                 end
@@ -497,19 +516,7 @@ do
             GenerateItemStoneSlots(item)
             GenerateItemSuffix(item, item_variation, quality)
             GenerateItemCost(item, level)
-
-                if item_data.TYPE == ITEM_TYPE_WEAPON then
-                    item_data.DAMAGE = item_data.DAMAGE * item_preset.modificator
-                elseif item_data.TYPE == ITEM_TYPE_ARMOR then
-                    item_data.DEFENCE = item_data.DEFENCE * item_preset.modificator
-                elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
-                    item_data.SUPPRESSION = item_data.SUPPRESSION * item_preset.modificator
-                elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
-                    if item_data.SUBTYPE == SHIELD_OFFHAND then
-                        item_data.DEFENCE = item_data.DEFENCE * item_preset.modificator
-                        item_data.BLOCK = item_data.BLOCK * item_preset.modificator
-                    end
-                end
+            --GenerateItemStatPreset(item, item_preset.modificator)
 
             BlzSetItemName(item, item_data.NAME)
     end
@@ -531,10 +538,38 @@ do
     }
 
 
+    ---@param itemtype number
     function IsWeaponTypeTwohanded(itemtype)
         return TWOHANDED_LIST[itemtype]
     end
 
+
+
+
+
+
+
+    function ApplyLegendaryEffectEx(item, unit, id, flag)
+        local item_data = GetItemData(item)
+        local unit_data = GetUnitData(unit)
+
+            if item_data.legendary_effect.type == ITEM_PASSIVE_EFFECT then
+                if flag then unit_data.effects[id] = true
+                else unit_data.effects[id] = nil end
+            else
+                if flag then
+                    unit_data.effects[id] = CreateTimer()
+                    TimerStart(unit_data.effects[id], item_data.legendary_effect.period, true, function()
+                        item_data.legendary_effect.func(unit, id)
+                    end)
+                else
+                    item_data.legendary_effect.endfunc(unit, id)
+                    DestroyTimer(unit_data.effects[id])
+                    unit_data.effects[id] = nil
+                end
+            end
+
+    end
 
 
     ---@param unit unit
@@ -568,19 +603,12 @@ do
             elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
 
                 if item_data.SUBTYPE == RING_JEWELRY then
-                    if flag then
-                        point = unit_data.equip_point[RING_1_POINT] ~= nil and RING_2_POINT or RING_1_POINT
-                    else
-                        point = unit_data.equip_point[RING_1_POINT].item == item and RING_1_POINT or RING_2_POINT
-                    end
-                else
-                    point = NECKLACE_POINT
-                end
+                    if flag then point = unit_data.equip_point[RING_1_POINT] ~= nil and RING_2_POINT or RING_1_POINT
+                    else point = unit_data.equip_point[RING_1_POINT].item == item and RING_1_POINT or RING_2_POINT end
+                else point = NECKLACE_POINT end
 
-            elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
-                point = OFFHAND_POINT
-            else
-                point = BELT_POINT
+            elseif item_data.TYPE == ITEM_TYPE_OFFHAND then point = OFFHAND_POINT
+            else point = BELT_POINT
             end
 
 
@@ -589,11 +617,19 @@ do
                 EquipItem(unit, unit_data.equip_point[point].item, false)
             end
 
-                if flag then
-                    unit_data.equip_point[point] = item_data
-                else
-                    unit_data.equip_point[point] = point == WEAPON_POINT and unit_data.default_weapon or nil
-                end
+
+            if item_data.set_bonus ~= nil then
+                ApplySetBonus(unit, item_data.set_bonus, flag)
+            end
+
+
+                if flag then unit_data.equip_point[point] = item_data
+                else unit_data.equip_point[point] = point == WEAPON_POINT and unit_data.default_weapon or nil end
+
+
+            if item_data.legendary_effect ~= nil then
+                ApplyLegendaryEffect(unit, item_data.legendary_effect, flag)
+            end
 
 
             for i = 1, #item_data.STONE_SLOTS do
