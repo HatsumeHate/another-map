@@ -103,7 +103,7 @@
 			DestroyGroup(g)
 		end
 
-		function GC()
+		function GC(g)
 			GroupClear(g)
 		end
 
@@ -115,9 +115,6 @@
 			DestroyTimer(t)
 		end
 
-		function GC()
-			GroupClear(g)
-		end
 
 		function Gx(a)
 			return GetUnitX(a)
