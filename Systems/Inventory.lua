@@ -14,7 +14,7 @@ do
 
     local function GetFirstFreeSlotButton(player)
         for i = 1, 32 do
-            local h = GetHandleId(InventorySlots[i])
+            local h = GetHandleId(InventorySlots[player][i])
 
             if ButtonList[h].item == nil then
                 return ButtonList[h]
@@ -43,6 +43,48 @@ do
         [NECKLACE_POINT]  = 39
     }
 
+    local POINT_TO_TYPE = {
+        [WEAPON_POINT]    = {
+            AXE_WEAPON,
+            BOW_WEAPON,
+            DAGGER_WEAPON,
+            SWORD_WEAPON,
+            STAFF_WEAPON,
+            GREATAXE_WEAPON,
+            GREATBLUNT_WEAPON,
+            GREATSWORD_WEAPON,
+            BLUNT_WEAPON
+        },
+        [OFFHAND_POINT]   = {
+            ORB_OFFHAND,
+            SHIELD_OFFHAND,
+            QUIVER_OFFHAND
+        },
+        [HEAD_POINT]      = HEAD_ARMOR,
+        [CHEST_POINT]     = CHEST_ARMOR,
+        [LEGS_POINT]      = LEGS_ARMOR,
+        [HANDS_POINT]     = HANDS_ARMOR,
+        [BELT_POINT]      = BELT_ARMOR,
+        [RING_1_POINT]    = RING_JEWELRY,
+        [RING_2_POINT]    = RING_JEWELRY,
+        [NECKLACE_POINT]  = NECKLACE_JEWELRY
+    }
+
+
+    ---@param point number
+    ---@param type number
+    function IsItemPointEqualToType(point, type)
+
+        if point == WEAPON_POINT or point == OFFHAND_POINT then
+            for i = 1, #POINT_TO_TYPE[point] do
+                if POINT_TO_TYPE[point][i] == type then return true end
+            end
+            return false
+        end
+
+        return POINT_TO_TYPE[point] == type
+    end
+
 
     function Feedback_InventoryNoSpace(player)
         SimError(LOCALE_LIST[my_locale].FEEDBACK_MSG_NOSPACE, player-1)
@@ -60,7 +102,7 @@ do
         local unit_data = GetUnitData(InventoryOwner[player])
 
             for i = WEAPON_POINT, NECKLACE_POINT do
-                local button = ButtonList[GetHandleId(InventorySlots[UNIT_POINT_LIST[i]])]
+                local button = ButtonList[GetHandleId(InventorySlots[player][UNIT_POINT_LIST[i]])]
 
                     if unit_data.equip_point[i] ~= nil and unit_data.equip_point[i].SUBTYPE ~= FIST_WEAPON then
                         local item_data = GetItemData(unit_data.equip_point[i].item)
@@ -81,7 +123,7 @@ do
         if InventoryOwner[player] ~= nil then
 
             for i = 1, 32 do
-                local button = ButtonList[GetHandleId(InventorySlots[i])]
+                local button = ButtonList[GetHandleId(InventorySlots[player][i])]
                 if button.item ~= nil then
                     local item_data = GetItemData(button.item)
                     BlzFrameSetTexture(button.image, item_data.frame_texture, 0, true)
@@ -160,6 +202,8 @@ do
                 SetItemVisible(button.item, true)
                 SetItemInvulnerable(button.item, true)
                 UnitAddItem(PlayerHero[player], button.item)
+            else
+                Feedback_CantUse(player)
             end
         else
             BlzDestroyFrame(button.sprite)
@@ -241,7 +285,7 @@ do
 
             PlayerMovingItem[player] = { frame = nil, selector_frame = nil, selected_frame = h, mode = mode }
 
-            PlayerMovingItem[player].selector_frame = BlzCreateFrameByType("SPRITE", "justAName", ButtonList[GetHandleId(InventorySlots[32])].image, "WarCraftIIILogo", 0)
+            PlayerMovingItem[player].selector_frame = BlzCreateFrameByType("SPRITE", "justAName", ButtonList[GetHandleId(InventorySlots[player][32])].image, "WarCraftIIILogo", 0)
             BlzFrameSetPoint(PlayerMovingItem[player].selector_frame, FRAMEPOINT_BOTTOMLEFT, ButtonList[h].image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
             BlzFrameSetSize(PlayerMovingItem[player].selector_frame, 1., 1.)
             BlzFrameSetScale(PlayerMovingItem[player].selector_frame, 1.)
@@ -269,20 +313,60 @@ do
     TriggerAddAction(EnterTrigger, EnterAction)
 
 
-    
+    local function CanEquipOffhand(item, equipped_item)
+        local item_data = GetItemData(item)
+        local item_button_data = GetItemData(equipped_item)
+
+            if item_data.SUBTYPE == QUIVER_OFFHAND and item_button_data.SUBTYPE ~= BOW_WEAPON then
+                return false
+            elseif (item_data.SUBTYPE == ORB_OFFHAND or item_data.SUBTYPE == SHIELD_OFFHAND) and IsWeaponTypeTwohanded(item_button_data.SUBTYPE) then
+                return false
+            end
+
+        return true
+    end
+
+    local function OffhandPointCheck(item, player)
+        local item_data = GetItemData(item)
+        local unit_Data = GetUnitData(InventoryOwner[player])
+
+            if item_data.TYPE == ITEM_TYPE_OFFHAND then
+                if unit_Data.equip_point[WEAPON_POINT].item and not CanEquipOffhand(item, unit_Data.equip_point[WEAPON_POINT].item) then
+                    Feedback_CantUse(player)
+                    return false
+                end
+            elseif unit_Data.equip_point[OFFHAND_POINT] and ((item_data.SUBTYPE ~= BOW_WEAPON and unit_Data.equip_point[OFFHAND_POINT].SUBTYPE == QUIVER_OFFHAND) or IsWeaponTypeTwohanded(item_data.SUBTYPE)) then
+                if CountFreeBagSlots(player) == 0 then
+                    Feedback_InventoryNoSpace(player)
+                    return false
+                else
+                    local free_slot = GetFirstFreeSlotButton(player)
+                    free_slot.item = unit_Data.equip_point[OFFHAND_POINT].item
+                    EquipItem(InventoryOwner[player], unit_Data.equip_point[OFFHAND_POINT].item, false)
+                end
+            end
+
+        return true
+    end
+
+
+
     local function InteractWithItemInSlot(h, id)
         local item_data = GetItemData(ButtonList[h].item)
 
             if item_data.TYPE >= ITEM_TYPE_WEAPON and item_data.TYPE <= ITEM_TYPE_OFFHAND then
 
                 if ButtonList[h].button_type == INV_SLOT then
-                        local uneqiped_item = EquipItem(InventoryOwner[id], ButtonList[h].item, true)
+
+                        if not OffhandPointCheck(ButtonList[h].item, id) then return end
+
+                        local unequipped_item = EquipItem(InventoryOwner[id], ButtonList[h].item, true)
 
                             if item_data.soundpack ~= nil and item_data.soundpack.equip ~= nil then
                                 PlayLocalSound(item_data.soundpack.equip, id - 1)
                             end
 
-                        ButtonList[h].item = uneqiped_item
+                        ButtonList[h].item = unequipped_item
                         UpdateEquipPointsWindow(id)
                         UpdateInventoryWindow(id)
                 elseif ButtonList[h].button_type >= WEAPON_POINT and ButtonList[h].button_type <= NECKLACE_POINT then
@@ -305,19 +389,22 @@ do
 
 
     local function ForceEquip(h, player)
+        local selected_item = ButtonList[PlayerMovingItem[player].selected_frame].item
+        local item_data = GetItemData(selected_item)
 
-        if ButtonList[h].button_type >= WEAPON_POINT and ButtonList[h].button_type <= NECKLACE_POINT then
-            EquipItem(InventoryOwner[player], ButtonList[PlayerMovingItem[player].selected_frame].item, true)
-            local item_data = GetItemData(ButtonList[PlayerMovingItem[player].selected_frame].item)
+            if (ButtonList[h].button_type >= WEAPON_POINT and ButtonList[h].button_type <= NECKLACE_POINT) and IsItemPointEqualToType(ButtonList[h].button_type, item_data.SUBTYPE) then
 
-                if item_data.soundpack ~= nil and item_data.soundpack.equip ~= nil then
-                    PlayLocalSound(item_data.soundpack.equip, player - 1)
-                end
+                if not OffhandPointCheck(selected_item, player) then return end
 
-            ButtonList[PlayerMovingItem[player].selected_frame].item = nil
-            UpdateEquipPointsWindow(player)
-            UpdateInventoryWindow(player)
-        end
+                local unequipped_item = EquipItem(InventoryOwner[player], selected_item, true) or nil
+
+                if item_data.soundpack ~= nil and item_data.soundpack.equip ~= nil then PlayLocalSound(item_data.soundpack.equip, player - 1) end
+
+                ButtonList[PlayerMovingItem[player].selected_frame].item = unequipped_item or nil
+                UpdateEquipPointsWindow(player)
+                UpdateInventoryWindow(player)
+
+            end
 
     end
 
@@ -391,71 +478,53 @@ do
                 RemoveTooltip(player)
                 DestroyContextMenu(player)
 
-                    if item_data.TYPE == ITEM_TYPE_CONSUMABLE then
-                        LockItemOnBelt(player, ButtonList[h])
-                    elseif item_data.TYPE == ITEM_TYPE_GEM then
-                        StartSelectionMode(player, h, SELECTION_MODE_ENCHANT)
-                    elseif item_data.TYPE == ITEM_TYPE_SKILLBOOK then
-                        LearnBook(item_data.item, player)
-                    else
-                        InteractWithItemInSlot(h, player)
-                    end
+                    if item_data.TYPE == ITEM_TYPE_CONSUMABLE then LockItemOnBelt(player, ButtonList[h])
+                    elseif item_data.TYPE == ITEM_TYPE_GEM then StartSelectionMode(player, h, SELECTION_MODE_ENCHANT)
+                    elseif item_data.TYPE == ITEM_TYPE_SKILLBOOK then LearnBook(item_data.item, player)
+                    else InteractWithItemInSlot(h, player) end
 
                 TimerStart(DoubleClickTimer[player], 0.01, false, nil)
             end
         else
             TimerStart(DoubleClickTimer[player], 0.25, false, function()
                 if ButtonList[h].item ~= nil and PlayerMovingItem[player] == nil and ButtonList[h].button_type == INV_SLOT then
+                    CreatePlayerContextMenu(player, ButtonList[h].button, FRAMEPOINT_LEFT, ButtonList[GetHandleId(InventorySlots[player][32])].image)
+                        if ShopInFocus[player] ~= nil then
+                            AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_SELL, function()
+                                if ShopInFocus[player] ~= nil then
 
-                    CreatePlayerContextMenu(player, ButtonList[h].button, FRAMEPOINT_LEFT, ButtonList[GetHandleId(InventorySlots[32])].image)
+                                    if GetItemCharges(ButtonList[h].item) > 1 then
+                                        CreateSlider(player, ButtonList[h], ButtonList[GetHandleId(InventorySlots[player][32])].image, function()
 
-                    if ShopInFocus[player] ~= nil then
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_SELL, function()
-                            if ShopInFocus[player] ~= nil then
+                                            if BlzFrameGetValue(SliderFrame[player].slider) < GetItemCharges(ButtonList[h].item) then
+                                                local new_item = SplitChargedItem(ButtonList[h].item, BlzFrameGetValue(SliderFrame[player].slider), player)
+                                                SellItem(player, new_item)
+                                                UpdateInventoryWindow(player)
+                                            else
+                                                SellItem(player, ButtonList[h].item)
+                                                -- DropItemFromInventory(player, ButtonList[h].item)
+                                            end
 
-                                if GetItemCharges(ButtonList[h].item) > 1 then
-                                    CreateSlider(player, ButtonList[h], ButtonList[GetHandleId(InventorySlots[32])].image, function()
+                                        end, nil)
+                                    else
+                                        SellItem(player, ButtonList[h].item)
+                                    end
 
-                                        if BlzFrameGetValue(SliderFrame[player].slider) < GetItemCharges(ButtonList[h].item) then
-                                            local new_item = SplitChargedItem(ButtonList[h].item, BlzFrameGetValue(SliderFrame[player].slider), player)
-                                            SellItem(player, new_item)
-                                            UpdateInventoryWindow(player)
-                                        else
-                                            SellItem(player, ButtonList[h].item)
-                                            -- DropItemFromInventory(player, ButtonList[h].item)
-                                        end
-
-                                    end, nil)
-                                else
-                                    SellItem(player, ButtonList[h].item)
                                 end
-
-                            end
-                        end)
-                    end
+                            end)
+                        end
 
                     if item_data.TYPE == ITEM_TYPE_GEM then
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_ENCHANT, function()
-                            StartSelectionMode(player, h, SELECTION_MODE_ENCHANT)
-                        end)
+                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_ENCHANT, function() StartSelectionMode(player, h, SELECTION_MODE_ENCHANT) end)
                     elseif item_data.TYPE == ITEM_TYPE_CONSUMABLE then
-                        AddContextOption(player, ButtonList[h].sprite ~= nil and LOCALE_LIST[my_locale].UI_TEXT_BELT_OFF or LOCALE_LIST[my_locale].UI_TEXT_BELT_ON, function()
-                            LockItemOnBelt(player, ButtonList[h])
-                        end)
+                        AddContextOption(player, ButtonList[h].sprite ~= nil and LOCALE_LIST[my_locale].UI_TEXT_BELT_OFF or LOCALE_LIST[my_locale].UI_TEXT_BELT_ON, function() LockItemOnBelt(player, ButtonList[h]) end)
                     elseif item_data.TYPE == ITEM_TYPE_SKILLBOOK then
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_LEARN, function()
-                            LearnBook(item_data.item, player)
-                        end)
+                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_LEARN, function() LearnBook(item_data.item, player) end)
                     else
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_EQUIP, function()
-                            InteractWithItemInSlot(h, player)
-                        end)
+                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_EQUIP, function() InteractWithItemInSlot(h, player) end)
                     end
 
-                    AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_MOVE, function()
-                        StartSelectionMode(player, h, SELECTION_MODE_MOVE)
-                    end)
-
+                    AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_MOVE, function() StartSelectionMode(player, h, SELECTION_MODE_MOVE) end)
                     AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_DROP, function()
 
                         if item_data.soundpack ~= nil and item_data.soundpack.drop ~= nil then
@@ -466,7 +535,7 @@ do
                             DropItemFromInventory(player, ButtonList[h].item, false)
                         else
                             if GetItemCharges(ButtonList[h].item) > 1 then
-                                CreateSlider(player, ButtonList[h], ButtonList[GetHandleId(InventorySlots[32])].image, function()
+                                CreateSlider(player, ButtonList[h], ButtonList[GetHandleId(InventorySlots[player][32])].image, function()
 
                                     if BlzFrameGetValue(SliderFrame[player].slider) < GetItemCharges(ButtonList[h].item) then
                                         SetItemCharges(ButtonList[h].item, GetItemCharges(ButtonList[h].item) - BlzFrameGetValue(SliderFrame[player].slider))
@@ -493,7 +562,7 @@ do
                 TimerStart(DoubleClickTimer[player], 0., false, nil)
                 local moved_item_data = GetItemData(ButtonList[PlayerMovingItem[player].selected_frame].item)
 
-                    if PlayerMovingItem[player].mode == 2 then
+                    if PlayerMovingItem[player].mode == SELECTION_MODE_ENCHANT then
                             if ButtonList[h].item ~= nil then
                                 if item_data.TYPE >= ITEM_TYPE_WEAPON and item_data.TYPE <= ITEM_TYPE_OFFHAND then
                                     Socket(ButtonList[PlayerMovingItem[player].selected_frame].item, ButtonList[h].item, player, ButtonList[h])
@@ -504,13 +573,11 @@ do
                         return
                     end
 
-                if moved_item_data.soundpack ~= nil and moved_item_data.soundpack.drop ~= nil then
-                    PlayLocalSound(moved_item_data.soundpack.drop, player - 1)
-                end
 
                     if ButtonList[h].item == nil then
 
                         if ButtonList[h].button_type == INV_SLOT then
+                            if moved_item_data.soundpack ~= nil and moved_item_data.soundpack.drop ~= nil then PlayLocalSound(moved_item_data.soundpack.drop, player - 1) end
                             ButtonList[h].item = ButtonList[PlayerMovingItem[player].selected_frame].item
                             ButtonList[PlayerMovingItem[player].selected_frame].item = nil
                             UpdateInventoryWindow(player)
@@ -532,9 +599,7 @@ do
                             RemoveSelectionFrames(player)
                         else
                             if moved_item_data.TYPE ~= ITEM_TYPE_GEM and moved_item_data.TYPE ~= ITEM_TYPE_CONSUMABLE then
-                                local item = ButtonList[PlayerMovingItem[player].selected_frame].item
-                                ButtonList[PlayerMovingItem[player].selected_frame].item = ButtonList[h].item
-                                ButtonList[h].item = item
+                                ForceEquip(h, player)
                                 UpdateInventoryWindow(player)
                                 RemoveSelectionFrames(player)
                             end
@@ -555,7 +620,7 @@ do
     function RemoveItemFromInventory(player, item)
         local button
         for i = 1, 32 do
-            button = ButtonList[GetHandleId(InventorySlots[i])]
+            button = ButtonList[GetHandleId(InventorySlots[player][i])]
             if button.item == item then
                 --BlzFrameSetTexture(button.image, button.original_texture, 0, true)
                 button.item = nil
@@ -571,7 +636,7 @@ do
     function DropItemFromInventory(player, item, is_silent)
         local button
             for i = 1, 32 do
-                button = ButtonList[GetHandleId(InventorySlots[i])]
+                button = ButtonList[GetHandleId(InventorySlots[player][i])]
 
                     if button.item == item then
 
@@ -604,7 +669,7 @@ do
     ---@param item item
     function IsPlayerHaveItem(player, item)
         for i = 1, 32 do
-            if ButtonList[GetHandleId(InventorySlots[i])].item == item then
+            if ButtonList[GetHandleId(InventorySlots[player][i])].item == item then
                 return true
             end
         end
@@ -614,7 +679,7 @@ do
     ---@param itemid integer
     function IsPlayerHaveItemId(player, itemid)
         for i = 1, 32 do
-            if GetItemTypeId(ButtonList[GetHandleId(InventorySlots[i])].item) == itemid then
+            if GetItemTypeId(ButtonList[GetHandleId(InventorySlots[player][i])].item) == itemid then
                 return true
             end
         end
@@ -624,8 +689,8 @@ do
     ---@param itemid integer
     function GetSameItemSlotItem(player, itemid)
         for i = 1, 32 do
-            if GetItemTypeId(ButtonList[GetHandleId(InventorySlots[i])].item) == itemid then
-                return ButtonList[GetHandleId(InventorySlots[i])].item
+            if GetItemTypeId(ButtonList[GetHandleId(InventorySlots[player][i])].item) == itemid then
+                return ButtonList[GetHandleId(InventorySlots[player][i])].item
             end
         end
         return nil
@@ -685,8 +750,8 @@ do
         local count = 0
 
             for i = 1, 32 do
-                if InventorySlots[i] ~= nil then
-                    if ButtonList[GetHandleId(InventorySlots[i])].item == nil then
+                if InventorySlots[player][i] ~= nil then
+                    if ButtonList[GetHandleId(InventorySlots[player][i])].item == nil then
                         count = count + 1
                     end
                 end
@@ -749,7 +814,7 @@ do
 
 
     function DrawInventoryFrames(player, unit)
-        local new_Frame
+        --local new_Frame
         local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
 
 
@@ -757,7 +822,7 @@ do
         BlzFrameSetSize(main_frame, 0.4, 0.38)
         PlayerInventoryFrame[player] = main_frame
 
-        InventoryOwner[1] = unit
+        InventoryOwner[player] = unit
 
 
         -- slots box
@@ -771,36 +836,36 @@ do
         BlzFrameSetSize(inv_Frame, 0.36, 0.195)
 
 
-
+        InventorySlots[player] = {}
         -- inventory slots
-        InventorySlots[1] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, inv_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.02, -0.017, inv_Frame)
+        InventorySlots[player][1] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, inv_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.02, -0.017, inv_Frame)
 
         for i = 2, 8 do
-            InventorySlots[i] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[i - 1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPRIGHT, 0., 0., inv_Frame)
+            InventorySlots[player][i] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[player][i - 1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPRIGHT, 0., 0., inv_Frame)
         end
 
         for row = 2, 4 do
             for i = 1, 8 do
                 local slot = i + ((row - 1) * 8)
-                InventorySlots[slot] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[slot - 8], FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., inv_Frame)
+                InventorySlots[player][slot] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[player][slot - 8], FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., inv_Frame)
             end
         end
 
-        InventorySlots[45] = BlzCreateFrameByType("BACKDROP", "ButtonIcon", InventorySlots[32], "", 0)
+        InventorySlots[player][45] = BlzCreateFrameByType("BACKDROP", "ButtonIcon", InventorySlots[player][32], "", 0)
 
         -- equip slots
-        InventorySlots[33] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.044, 0.044, slots_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.03, 0.03, slots_Frame)
-        InventorySlots[34] = NewButton(OFFHAND_POINT, "GUI\\BTNWeapon_Slot.blp", 0.04, 0.04, slots_Frame, FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_BOTTOMRIGHT, -0.03, 0.03, slots_Frame)
+        InventorySlots[player][33] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.044, 0.044, slots_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.03, 0.03, slots_Frame)
+        InventorySlots[player][34] = NewButton(OFFHAND_POINT, "GUI\\BTNWeapon_Slot.blp", 0.04, 0.04, slots_Frame, FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_BOTTOMRIGHT, -0.03, 0.03, slots_Frame)
 
-        InventorySlots[35] = NewButton(HEAD_POINT, "GUI\\BTNHead_Slot.blp", 0.038, 0.038, slots_Frame, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.025, slots_Frame)
-        InventorySlots[36] = NewButton(CHEST_POINT, "GUI\\BTNChest_Slot.blp", 0.043, 0.043, slots_Frame, FRAMEPOINT_CENTER, FRAMEPOINT_CENTER, 0., -0.015, slots_Frame)
-        InventorySlots[37] = NewButton(HANDS_POINT, "GUI\\BTNHands_Slot.blp", 0.038, 0.038, InventorySlots[36], FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_TOPLEFT, -0.003, -0.008, slots_Frame)
-        InventorySlots[38] = NewButton(LEGS_POINT, "GUI\\BTNBoots_Slot.blp", 0.038, 0.038, InventorySlots[36], FRAMEPOINT_TOPRIGHT, FRAMEPOINT_BOTTOMLEFT, -0.003, 0.032, slots_Frame)
-        InventorySlots[42] = NewButton(BELT_POINT, "GUI\\BTNBeltSlot.blp", 0.038, 0.038, InventorySlots[36], FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.0445, 0.0085, slots_Frame)
+        InventorySlots[player][35] = NewButton(HEAD_POINT, "GUI\\BTNHead_Slot.blp", 0.038, 0.038, slots_Frame, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.025, slots_Frame)
+        InventorySlots[player][36] = NewButton(CHEST_POINT, "GUI\\BTNChest_Slot.blp", 0.043, 0.043, slots_Frame, FRAMEPOINT_CENTER, FRAMEPOINT_CENTER, 0., -0.015, slots_Frame)
+        InventorySlots[player][37] = NewButton(HANDS_POINT, "GUI\\BTNHands_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_TOPLEFT, -0.003, -0.008, slots_Frame)
+        InventorySlots[player][38] = NewButton(LEGS_POINT, "GUI\\BTNBoots_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_TOPRIGHT, FRAMEPOINT_BOTTOMLEFT, -0.003, 0.032, slots_Frame)
+        InventorySlots[player][42] = NewButton(BELT_POINT, "GUI\\BTNBeltSlot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.0445, 0.0085, slots_Frame)
 
-        InventorySlots[39] = NewButton(NECKLACE_POINT, "GUI\\BTNNecklace_Slot.blp", 0.038, 0.038, InventorySlots[36], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0445, 0.0085, slots_Frame)
-        InventorySlots[40] = NewButton(RING_1_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[36], FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_TOPRIGHT, 0.003, -0.008, slots_Frame)
-        InventorySlots[41] = NewButton(RING_2_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[36], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMRIGHT, 0.003, 0.032, slots_Frame)
+        InventorySlots[player][39] = NewButton(NECKLACE_POINT, "GUI\\BTNNecklace_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0445, 0.0085, slots_Frame)
+        InventorySlots[player][40] = NewButton(RING_1_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_TOPRIGHT, 0.003, -0.008, slots_Frame)
+        InventorySlots[player][41] = NewButton(RING_2_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMRIGHT, 0.003, 0.032, slots_Frame)
 
 --WarCraftIIILogo
 
@@ -808,9 +873,10 @@ do
         --BlzFrameSetSpriteAnimate(new_Frame, 2, 0)
         --BlzFrameSetModel(new_Frame, "selecter1.mdx", 0)
 
-        InventoryTooltip[player] = NewTooltip(InventorySlots[45])
+        InventoryTooltip[player] = NewTooltip(InventorySlots[player][45])
         BlzFrameSetVisible(main_frame, false)
         PlayerInventoryFrameState[player] = false
+        main_frame = nil
     end
 
 
@@ -833,6 +899,7 @@ do
             BlzFrameSetSize(inv_button_tooltip, 0.11, 0.05)
             BlzFrameSetText(BlzGetFrameByName("BoxedTextValue", 0), LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_DESCRIPTION)--BoxedText has a child showing the text, set that childs Text.
             BlzFrameSetText(BlzGetFrameByName("BoxedTextTitle", 0), LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_NAME)--BoxedText has a child showing the Title-text, set that childs Text.
+
             FrameRegisterNoFocus(InventoryTriggerButton)
             FrameRegisterClick(InventoryTriggerButton, "ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp")
 

@@ -107,6 +107,10 @@ do
                     DrawShopFrames(player_id)
                     AddToPanel(hero, player_id)
                     AddPointsToPlayer(player_id, 5)
+                    DrawQuartermeisterFrames(player_id)
+                    LockCameraForPlayer(player_id)
+                    --CreateGUILayoutForPlayer(player_id, hero)
+                    --TODO redo this garbo ^
 
 
                     for i = 1, #starting_items do
@@ -141,8 +145,10 @@ do
         TriggerAddAction(DeathTrigger, function ()
             local hero = GetTriggerUnit()
 
-                TimerStart(CreateTimer(), 15., false, function()
-                    ReviveHero(hero, GetRectCenterX(gg_rct_starting_location), GetRectCenterY(gg_rct_starting_location), true)
+            DisplayTextToPlayer(GetOwningPlayer(hero), 0.,0., "Ваш герой возродится через ".. R2S(7. + (Current_Wave / 4.)) .. ". сек на кладбище.")
+
+                TimerStart(CreateTimer(), 7. + (Current_Wave / 4.), false, function()
+                    ReviveHero(hero, GetRectCenterX(gg_rct_cemetary), GetRectCenterY(gg_rct_cemetary), true)
                     DestroyTimer(GetExpiredTimer())
                 end)
 

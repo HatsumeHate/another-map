@@ -130,6 +130,10 @@ do
     end
 
 
+
+    -- inherit_level: перенимает ли баф уровни и скейлинг. нет - значит у бафа только 1 уровень
+
+
     function DefineBuffsData()
         --================================================--
         NewBuffTemplate({
@@ -289,6 +293,126 @@ do
         })
         --================================================--
         NewBuffTemplate({
+            name = "elemental mastery orb debuff",
+            id = 'A01B',
+            buff_id = 'B00D',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 3,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 10.,
+
+                    bonus = {
+                        { PARAM = FIRE_BONUS, VALUE = -5, METHOD = STRAIGHT_BONUS },
+                    }
+
+                },
+                [2] = {
+                    rank = 10,
+                    time = 10.,
+
+                    bonus = {
+                        { PARAM = FIRE_BONUS, VALUE = -10, METHOD = STRAIGHT_BONUS },
+                    }
+
+                },
+                [3] = {
+                    rank = 10,
+                    time = 10.,
+
+                    bonus = {
+                        { PARAM = FIRE_BONUS, VALUE = -15, METHOD = STRAIGHT_BONUS },
+                    }
+
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "elemental mastery orb debuff",
+            id = 'A01C',
+            buff_id = 'B00E',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 3,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 10.,
+
+                    bonus = {
+                        { PARAM = ICE_BONUS, VALUE = -5, METHOD = STRAIGHT_BONUS },
+                    }
+
+                },
+                [2] = {
+                    rank = 10,
+                    time = 10.,
+
+                    bonus = {
+                        { PARAM = ICE_BONUS, VALUE = -10, METHOD = STRAIGHT_BONUS },
+                    }
+
+                },
+                [3] = {
+                    rank = 10,
+                    time = 10.,
+
+                    bonus = {
+                        { PARAM = ICE_BONUS, VALUE = -15, METHOD = STRAIGHT_BONUS },
+                    }
+
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "elemental mastery orb debuff",
+            id = 'A01F',
+            buff_id = 'B00F',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 3,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 10.,
+                    current_level = 1,
+
+                    bonus = {
+                        { PARAM = LIGHTNING_BONUS, VALUE = -5, METHOD = STRAIGHT_BONUS },
+                    }
+
+                },
+                [2] = {
+                    rank = 10,
+                    time = 10.,
+                    current_level = 1,
+
+                    bonus = {
+                        { PARAM = LIGHTNING_BONUS, VALUE = -10, METHOD = STRAIGHT_BONUS },
+                    }
+
+                },
+                [3] = {
+                    rank = 10,
+                    time = 10.,
+                    current_level = 1,
+
+                    bonus = {
+                        { PARAM = LIGHTNING_BONUS, VALUE = -15, METHOD = STRAIGHT_BONUS },
+                    }
+
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
             name = "uppercut debuff",
             id = 'A012',
             buff_id = 'B006',
@@ -352,7 +476,7 @@ do
 
                     bonus = {
                         { PARAM = PHYSICAL_RESIST, VALUE = -15, METHOD = STRAIGHT_BONUS },
-                        { PARAM = ATTACK_SPEED, VALUE = -25, METHOD = STRAIGHT_BONUS },
+                        { PARAM = MOVING_SPEED, VALUE = -25, METHOD = STRAIGHT_BONUS },
                     }
                 }
             }
@@ -441,6 +565,34 @@ do
                     time = 6.,
                     effect = 'PUPR',
                     effect_delay = 1.,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "flurry altar buff",
+            id = 'A01G',
+            buff_id = 'B00G',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 45.,
+
+                    current_level = 1,
+                    max_level = 1,
+
+                    buff_sfx = "Abilities\\Spells\\Items\\AIam\\AIamTarget.mdx",
+                    buff_sfx_scale = 1.,
+                    buff_sfx_point = "origin",
+
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 35, METHOD = STRAIGHT_BONUS }
+                    }
                 }
             }
 

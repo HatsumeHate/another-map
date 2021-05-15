@@ -82,6 +82,10 @@ do
             if tag == "e" then
                 local effect = GetEffectData(id)
 
+                if effect == nil then
+                    return "invalid effect"
+                end
+
                  GenerateEffectLevelData(effect, lvl)
 
                     if value_str == "pwr" then return "|c00FF7600" .. (effect.level[lvl].power or 0) .. "|r"
@@ -103,6 +107,10 @@ do
             elseif tag == "b" then
                 local buff = GetBuffData(id)
 
+                if buff == nil then
+                    return "invalid buff"
+                end
+
                     GenerateBuffLevelData(buff, lvl)
 
                     if value_str == "time" then return buff.level[lvl].time or 0.1
@@ -112,6 +120,13 @@ do
                     elseif SubString(value_str, 0,  2) == "pa" then
                         local param = buff.level[lvl].bonus[S2I(SubString(value_str, 2, 3))]
                         return GetParameterName(param.PARAM)
+                    end
+
+            elseif tag == "m" then
+                local missile = GetMissileData(id)
+
+                    if value_str == "rad" then return "|c0000DBA4" .. R2I(missile.radius) or 0 .. "|r"
+                    elseif value_str == "maxd" then return R2I(missile.max_distance) or 0
                     end
 
             end
@@ -239,6 +254,20 @@ do
     end
 
 
+    ---@param id integer
+    ---@param player integer
+    function GetKeybindAbilityId(id, player)
+
+        for key = KEY_Q, KEY_D do
+            if KEYBIND_LIST[key].player_skill_bind == FourCC(id) then
+                return KEYBIND_LIST[key].player_skill_bind[player]
+            end
+        end
+
+        return 0
+    end
+
+
 
 
     ---@param unit unit
@@ -267,7 +296,7 @@ do
             for i = 1, #unit_data.skill_list do
                 if unit_data.skill_list[i].Id == id then
                     unit_data.skill_list[i].current_level = lvl
-                    print("set unit ability level " .. unit_data.skill_list[i].current_level)
+                    --print("set unit ability level " .. unit_data.skill_list[i].current_level)
                     return true
                 end
             end
@@ -325,7 +354,7 @@ do
 
             unit_data.skill_list[#unit_data.skill_list + 1] = MergeTables({}, skill_data)
 
-            print("new skill added ".. unit_data.skill_list[#unit_data.skill_list].name)
+            --print("new skill added ".. unit_data.skill_list[#unit_data.skill_list].name)
 
         return true
     end
@@ -335,10 +364,15 @@ do
     function ResetUnitSpellCast(unit)
         local unit_data = GetUnitData(unit)
 
-            BlzPauseUnitEx(unit, false)
+            if TimerGetRemaining(unit_data.action_timer) > 0. then
+                BlzPauseUnitEx(unit, false)
+            end
+
             IssueImmediateOrderById(unit, order_stop)
             SetUnitTimeScale(unit, 1.)
             DestroyEffect(unit_data.cast_effect)
+            TimerStart(unit_data.action_timer, 0., false, nil)
+            --PauseTimer(unit_data.action_timer)
 
                 if unit_data.castsound ~= nil then
                     StopSound(unit_data.castsound, true, true)
@@ -363,133 +397,143 @@ do
 
 
 
+    function InitializeSkillEngine()
+        TimerStart(CreateTimer(), 1., false, function()
 
-    local SkillCastTrigger = CreateTrigger()
-    TriggerRegisterAnyUnitEventBJ(SkillCastTrigger, EVENT_PLAYER_UNIT_SPELL_EFFECT)
-    TriggerAddAction(SkillCastTrigger, function()
-        local id = GetSpellAbilityId()
-        local skill = GetKeybindAbility(id, GetPlayerId(GetOwningPlayer(GetTriggerUnit())))
-
-
-        if skill == 0 then
-            skill = GetSkillData(GetSpellAbilityId())
-        else
-            skill = GetSkillData(skill)
-        end
+            local SkillCastTrigger = CreateTrigger()
+            TriggerRegisterAnyUnitEventBJ(SkillCastTrigger, EVENT_PLAYER_UNIT_SPELL_EFFECT)
+            TriggerAddAction(SkillCastTrigger, function()
+                local id = GetSpellAbilityId()
+                local skill = GetKeybindAbility(id, GetPlayerId(GetOwningPlayer(GetTriggerUnit())))
 
 
-        if skill ~= nil then
-            local unit_data = GetUnitData(GetTriggerUnit())
-            skill = GetUnitSkillData(unit_data.Owner, skill.Id)
-
-            if skill == nil then return end
-
-            local ability_level = UnitGetAbilityLevel(unit_data.Owner, skill.Id)
-            GenerateSkillLevelData(skill, ability_level)
-
-
-            local time_reduction = skill.level[ability_level].animation_scale or 1.
-            print("basic reduction "..time_reduction)
-
-                if skill.type == SKILL_PHYSICAL then
-                    time_reduction = time_reduction * (1. - unit_data.stats[ATTACK_SPEED].bonus * 0.01)
-                elseif skill.type == SKILL_MAGICAL then
-                    time_reduction = time_reduction * (1. - unit_data.stats[CAST_SPEED].value * 0.01)
+                if skill == 0 then
+                    print("skill 0")
+                    skill = GetSkillData(GetSpellAbilityId())
+                else
+                    print("skill data")
+                    skill = GetSkillData(skill)
                 end
 
-                if time_reduction <= 0. then time_reduction = 0. end
 
-            SetUnitAnimationByIndex(unit_data.Owner, 0)
-            print("after bonus reduction "..time_reduction)
+                if skill ~= nil then
+                    local unit_data = GetUnitData(GetTriggerUnit())
+                    skill = GetUnitSkillData(unit_data.Owner, skill.Id)
 
-            if skill.level[ability_level].animation_scale ~= nil then
-                SetUnitTimeScale(unit_data.Owner, 1. + (1. - skill.level[ability_level].animation_scale))
-                print("timescale is " .. (1. + (1. - skill.level[ability_level].animation_scale)))
-            end
+                    if skill == nil then return end
 
-            print("result cast time is " .. (skill.level[ability_level].animation_point or 0.) * time_reduction)
-
-            BlzSetUnitAbilityCooldown(unit_data.Owner, id, ability_level - 1, (skill.level[ability_level].cooldown or 0.1) + (skill.level[ability_level].animation_point * time_reduction))
-            BlzSetUnitAbilityManaCost(unit_data.Owner, id, ability_level - 1, skill.level[ability_level].resource_cost or 0)
+                    local ability_level = UnitGetAbilityLevel(unit_data.Owner, skill.Id)
+                    GenerateSkillLevelData(skill, ability_level)
 
 
-            local target = GetSpellTargetUnit()
-            local spell_x = GetSpellTargetX()
-            local spell_y = GetSpellTargetY()
+                    local time_reduction = skill.level[ability_level].animation_scale or 1.
+                    --print("basic reduction "..time_reduction)
 
+                        if skill.type == SKILL_PHYSICAL then
+                            time_reduction = time_reduction * (1. - unit_data.stats[ATTACK_SPEED].bonus * 0.01)
+                        elseif skill.type == SKILL_MAGICAL then
+                            time_reduction = time_reduction * (1. - unit_data.stats[CAST_SPEED].value * 0.01)
+                        end
 
-            unit_data.cast_skill = id
-            unit_data.cast_skill_level = ability_level
+                        if time_reduction <= 0. then time_reduction = 0. end
 
-            BlzPauseUnitEx(unit_data.Owner, true)
-            SetUnitAnimationByIndex(unit_data.Owner, skill.level[ability_level].animation or 0)
+                    SetUnitAnimationByIndex(unit_data.Owner, 0)
+                    --print("after bonus reduction "..time_reduction)
 
-                if skill.level[ability_level].effect_on_caster ~= nil then
-                    unit_data.cast_effect = AddSpecialEffectTarget(skill.level[ability_level].effect_on_caster, unit_data.Owner, skill.level[ability_level].effect_on_caster_point)
-                    BlzSetSpecialEffectScale(unit_data.cast_effect, skill.level[ability_level].effect_on_caster_scale or 1.)
-                end
-
-                if skill.level[ability_level].start_effect_on_cast_point ~= nil then
-                    bj_lastCreatedEffect = AddSpecialEffect(skill.level[ability_level].start_effect_on_cast_point, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner))
-                    BlzSetSpecialEffectScale(bj_lastCreatedEffect, skill.level[ability_level].start_effect_on_cast_point_scale or 1.)
-                    DestroyEffect(bj_lastCreatedEffect)
-                end
-
-                if skill.sound ~= nil then
-                    if skill.sound ~= nil then
-                        unit_data.castsound = AddSoundVolumeZ(skill.sound.pack[GetRandomInt(1, #skill.sound.pack)], GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), 35., skill.sound.volume, skill.sound.cutoff)
-                        --AddSound(myeffect.sound, x, y)
+                    if skill.level[ability_level].animation_scale ~= nil then
+                        SetUnitTimeScale(unit_data.Owner, 1. + (1. - skill.level[ability_level].animation_scale))
+                        --print("timescale is " .. (1. + (1. - skill.level[ability_level].animation_scale)))
                     end
-                end
+
+                    --print("result cast time is " .. (skill.level[ability_level].animation_point or 0.) * time_reduction)
+
+                    BlzSetUnitAbilityCooldown(unit_data.Owner, id, ability_level - 1, (skill.level[ability_level].cooldown or 0.1) + (skill.level[ability_level].animation_point * time_reduction))
+                    BlzSetUnitAbilityManaCost(unit_data.Owner, id, ability_level - 1, skill.level[ability_level].resource_cost or 0)
 
 
-            OnSkillCast(unit_data.Owner, target, spell_x, spell_y, skill)
+                    local target = GetSpellTargetUnit()
+                    local spell_x = GetSpellTargetX()
+                    local spell_y = GetSpellTargetY()
 
-                TimerStart(unit_data.action_timer, (skill.level[ability_level].animation_point or 0.) * time_reduction, false, function()
-                    unit_data.cast_skill = 0
-                    DestroyEffect(unit_data.cast_effect)
 
-                    if skill.level[ability_level].end_effect_on_cast_point ~= nil then
-                        bj_lastCreatedEffect = AddSpecialEffect(skill.level[ability_level].end_effect_on_cast_point, spell_x, spell_y)
-                        BlzSetSpecialEffectScale(bj_lastCreatedEffect, skill.level[ability_level].end_effect_on_cast_point_scale or 1.)
-                        DestroyEffect(bj_lastCreatedEffect)
-                    end
-                    
-                        if skill.autotrigger then
-                            if skill.level[ability_level].missile ~= nil then
-                                if target ~= nil then
-                                    local angle = AngleBetweenUnits(unit_data.Owner, target)
-                                    SetUnitFacing(unit_data.Owner, angle)
-                                    ThrowMissile(unit_data.Owner, target, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level },
-                                            GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), GetUnitX(target), GetUnitY(target), angle)
-                                else
-                                    ThrowMissile(unit_data.Owner, nil, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level },
-                                            GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), spell_x, spell_y, AngleBetweenUnitXY(unit_data.Owner, spell_x, spell_y))
-                                end
+                    unit_data.cast_skill = id
+                    unit_data.cast_skill_level = ability_level
 
-                            elseif skill.level[ability_level].effect ~= nil then
-                                if target ~= nil and target ~= unit_data.Owner then
-                                    SetUnitFacing(unit_data.Owner, AngleBetweenUnits(unit_data.Owner, target))
-                                    ApplyEffect(unit_data.Owner, target, 0.,0., skill.level[ability_level].effect, ability_level)
-                                elseif target ~= nil and target == unit_data.Owner then
-                                    ApplyEffect(unit_data.Owner, nil, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), skill.level[ability_level].effect, ability_level)
-                                else
-                                    ApplyEffect(unit_data.Owner, nil, spell_x, spell_y, skill.level[ability_level].effect, ability_level)
-                                end
+                    BlzPauseUnitEx(unit_data.Owner, true)
+                    SetUnitAnimationByIndex(unit_data.Owner, skill.level[ability_level].animation or 0)
+
+                        if skill.level[ability_level].effect_on_caster ~= nil then
+                            unit_data.cast_effect = AddSpecialEffectTarget(skill.level[ability_level].effect_on_caster, unit_data.Owner, skill.level[ability_level].effect_on_caster_point)
+                            BlzSetSpecialEffectScale(unit_data.cast_effect, skill.level[ability_level].effect_on_caster_scale or 1.)
+                        end
+
+                        if skill.level[ability_level].start_effect_on_cast_point ~= nil then
+                            bj_lastCreatedEffect = AddSpecialEffect(skill.level[ability_level].start_effect_on_cast_point, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner))
+                            BlzSetSpecialEffectScale(bj_lastCreatedEffect, skill.level[ability_level].start_effect_on_cast_point_scale or 1.)
+                            DestroyEffect(bj_lastCreatedEffect)
+                        end
+
+                        if skill.sound ~= nil then
+                            if skill.sound ~= nil then
+                                unit_data.castsound = AddSoundVolumeZ(skill.sound.pack[GetRandomInt(1, #skill.sound.pack)], GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), 35., skill.sound.volume, skill.sound.cutoff)
+                                --AddSound(myeffect.sound, x, y)
                             end
                         end
 
-                    TimerStart(unit_data.action_timer, skill.level[ability_level].animation_backswing * time_reduction, false, function ()
-                        SpellBackswing(unit_data.Owner)
-                    end)
 
-                    OnSkillCastEnd(unit_data.Owner, target, spell_x, spell_y, skill)
+                    OnSkillCast(unit_data.Owner, target, spell_x, spell_y, skill)
 
-                    print("cast")
-                end)
+                        TimerStart(unit_data.action_timer, (skill.level[ability_level].animation_point or 0.) * time_reduction, false, function()
+                            unit_data.cast_skill = 0
+                            DestroyEffect(unit_data.cast_effect)
 
-        end
+                            if skill.level[ability_level].end_effect_on_cast_point ~= nil then
+                                bj_lastCreatedEffect = AddSpecialEffect(skill.level[ability_level].end_effect_on_cast_point, spell_x, spell_y)
+                                BlzSetSpecialEffectScale(bj_lastCreatedEffect, skill.level[ability_level].end_effect_on_cast_point_scale or 1.)
+                                DestroyEffect(bj_lastCreatedEffect)
+                            end
 
-    end)
+                                if skill.autotrigger then
+                                    if skill.level[ability_level].missile ~= nil then
+                                        if target ~= nil then
+                                            local angle = AngleBetweenUnits(unit_data.Owner, target)
+                                            SetUnitFacing(unit_data.Owner, angle)
+                                            ThrowMissile(unit_data.Owner, target, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level },
+                                                    GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), GetUnitX(target), GetUnitY(target), angle)
+                                        else
+                                            ThrowMissile(unit_data.Owner, nil, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level },
+                                                    GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), spell_x, spell_y, AngleBetweenUnitXY(unit_data.Owner, spell_x, spell_y))
+                                        end
+
+                                    elseif skill.level[ability_level].effect ~= nil then
+                                        if target ~= nil and target ~= unit_data.Owner then
+                                            SetUnitFacing(unit_data.Owner, AngleBetweenUnits(unit_data.Owner, target))
+                                            ApplyEffect(unit_data.Owner, target, 0.,0., skill.level[ability_level].effect, ability_level)
+                                        elseif target ~= nil and target == unit_data.Owner then
+                                            ApplyEffect(unit_data.Owner, nil, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), skill.level[ability_level].effect, ability_level)
+                                        else
+                                            ApplyEffect(unit_data.Owner, nil, spell_x, spell_y, skill.level[ability_level].effect, ability_level)
+                                        end
+                                    end
+                                end
+
+                            TimerStart(unit_data.action_timer, skill.level[ability_level].animation_backswing * time_reduction, false, function ()
+                                SpellBackswing(unit_data.Owner)
+                            end)
+
+                            OnSkillCastEnd(unit_data.Owner, target, spell_x, spell_y, skill)
+
+                            --print("cast")
+                        end)
+
+                end
+
+            end)
+
+            DestroyTimer(GetExpiredTimer())
+        end)
+    end
+
+
 
 end

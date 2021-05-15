@@ -534,6 +534,7 @@ do
             SKILL_UPPERCUT = 'Апперкот',
             SKILL_THROWKNIFE = 'Бросок Кинжала ',
             SKILL_JUMP = 'Прыжок',
+            SKILL_EXECUTION = "Казнь",
             SKILL_SUMMONHYDRA = 'Призвать Гидру',
             SKILL_ELEMENTALMASTERY = 'Мастерство Стихий',
             SKILL_FOCUS = 'Сосредоточенность',
@@ -547,6 +548,7 @@ do
             SKILL_FROSTBOLT = 'Ледяная Стрела',
             SKILL_FIREBALL = 'Огненный Шар',
             SKILL_FROSTNOVA = 'Кольцо Льда',
+            SKILL_CHAIN_LIGHTNING = "Электрошок",
 
 
             SET_NAME_ANCIENT_LEGACY = "Наследие предков",
@@ -560,7 +562,7 @@ do
 
             ITEM_NAME_BOOT_OF_COWARD = 'Сапог труса',
             ITEM_SPEC_DESCRIPTION_BOOT_OF_COWARD = "Владелец этого сапога применял секретную тактику своего знатного рода, передававшуюся в течении 300 лет. До поры до времени...",
-            ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Каждый противник неподалеку, повышает скорость передвижения на 3%% до максимума в 25%%",
+            ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Каждый противник неподалеку повышает скорость передвижения на 3%% до максимума в 25%%",
 
             ITEM_NAME_WITCH_MASTERY = "Мастерство Ведьмы",
             ITEM_SPEC_DESCRIPTION_WITCH_MASTERY = "Принадлежал очень древней ведьме. Впитал в себя часть заклинаний крови, которыми может поделиться.",
@@ -608,6 +610,33 @@ do
             ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "Каждая атака по врагу накладывает на него эффект кристаллизации, снижающий скорость передвижения. После накопления 5 зарядов, противник замораживается на 3 сек.",
             ITEM_SPEC_DESCRIPTION_CRYSTAL_AXE = "Превращает в кристаллы всё чего коснётся, держите острие подальше от себя.",
 
+            ITEM_NAME_BOOTSOFPAIN = "Сапоги Боли",
+            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+            ITEM_SPEC_DESCRIPTION_BOOTSOFPAIN = "Больно ли тебе ходить?",
+
+            ITEM_NAME_CHESTOFPAIN = "Нагрудник Боли",
+            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+            ITEM_SPEC_DESCRIPTION_CHESTOFPAIN = "Больно ли тебе дышать?",
+
+            ITEM_NAME_HEADOFPAIN = "Шлем Боли",
+            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+            ITEM_SPEC_DESCRIPTION_HEADOFPAIN = "Больно ли тебе находиться в сознании?",
+
+
+            ITEM_NAME_THE_KING = "Король",
+            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+            ITEM_SPEC_DESCRIPTION_THE_KING = "Принцесса одного древнего королевства проявляла интерес к пламени, сжигая предателей и окружая себя огнем.",
+
+            ITEM_NAME_THE_JESTER = "Шут",
+            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+            ITEM_SPEC_DESCRIPTION_THE_JESTER = "Принцесса одного древнего королевства проявляла интерес к пламени, сжигая предателей и окружая себя огнем.",
+
+
+            ITEM_NAME_MASTER_OF_ELEMENTS = "Мастер стихий",
+            ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "Каждая атака накладывает уязвимость к своей стихии понижающая сопротивление ей на 5 ед. на 7 секунд, повторная атака любой стихией обновляет эффект. Суммируется до 3 раз.",
+            ITEM_SPEC_DESCRIPTION_MASTER_OF_ELEMENTS = "Редкая, уникальная вещь которой будет завидовать любой чародей.",
+
+
 
             GENERATED_TOOLTIP = "урона от атаки",
 
@@ -651,7 +680,7 @@ do
                 bind = "Волшебница фокусирует энергии тайной магии, улучшая свою защиту: @b!A00T.pa1# на @b!A00T.va1# ед., @b!A00T.pa2# на @b!A00T.va2# и @b!A00T.pa3# на @b!A00T.va3#.",
             },
             [FourCC("A00K")] = {
-                bind = "Выпускает заряженный сгусток энергии медленно летящий вперед, периодически пульсируя разрядами в радиусе @e!ELBL.aoe#, которые наносят @e!ELBL.pwr# ед. урона типа @e!ELBL.atr#",
+                bind = "Выпускает заряженный сгусток энергии медленно летящий вперед, периодически пульсируя разрядами в радиусе @m!MBLB.rad#, которые наносят @e!ELBL.pwr# ед. урона типа @e!ELBL.atr#",
             },
             [FourCC("A00J")] = {
                 bind = "Выстреливает хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают",
@@ -663,10 +692,10 @@ do
                 bind = "Позволяет мгновенно переместиться на расстояние до @s!A00L.rng#.",
             },
             [FourCC("A00M")] = {
-                bind = "Призывает мощный разряд, поражающий в радиусе @e!ELST.aoe# нанося  @e!ELST.pwr# ед. урона типа @e!ELST.atr#. Имеет повышенный бонус к стихии (+@e!ELST.ab#) и множителю критического урона (+@e!ELST.bcm#)",
+                bind = "Призывает мощный разряд, поражающий в радиусе @e!ELST.aoe# нанося @e!ELST.pwr# ед. урона типа @e!ELST.atr#. Имеет повышенный бонус к стихии (+@e!ELST.ab#) и множителю критического урона (+@e!ELST.bcm#)",
             },
             [FourCC("A005")] = {
-                bind = "Запускает вперед ледяной шар, который наносит постоянно в радиусе @e!EFOA.aoe# @e!EFOA.pwr# ед. урона типа @e!EFOA.atr (+@e!EFOA.ab#). В конце пути взрывается, нанося @e!EFRO.pwr# ед. урона типа @e!EFRO.atr#, с повышенном шансом критического урона на (+@e!EFRO.bcc#)",
+                bind = "Запускает вперед ледяной шар, который наносит постоянно в радиусе @e!EFOA.aoe# @e!EFOA.pwr# ед. урона типа @e!EFOA.atr# (+@e!EFOA.ab#). В конце пути взрывается, нанося @e!EFRO.pwr# ед. урона типа @e!EFRO.atr#, с повышенном шансом критического урона на (+@e!EFRO.bcc#)",
             },
             [FourCC("A00D")] = {
                 bind = "Запускает вперед огненный шар, при столкновении наносящий @e!EGFB.pwr# ед. урона типа @e!EGFB.atr#.",
@@ -675,7 +704,7 @@ do
                 bind = "Ледяная волна, исходящая от волшебницы до радиуса в @e!EFRN.aoe# ед., которая наносит противникам @e!EFRN.pwr# ед. урона типа @e!EFRN.atr# и замораживающая их на @b!A00S.time# cек.",
             },
             [FourCC("A003")] = {
-                bind = "Бросает вперед ледяную стрелу, при столкновении с первым противником разлетается на осколки нанося @e!EFRB.pwr# ед. урона типа @e!EFRB.atr# в радиусе @e!EFRB.aoe#. Пораженные охлаждаются, замедляясь на @b!A00S.va1#",
+                bind = "Бросает вперед ледяную стрелу, при столкновении с первым противником разлетается на осколки нанося @e!EFRB.pwr# ед. урона типа @e!EFRB.atr# в радиусе @e!EFRB.aoe#. Пораженные охлаждаются, замедляясь на @b!A004.va1#",
             },
 
         },
@@ -1207,6 +1236,7 @@ do
             SKILL_UPPERCUT = 'Uppercut',
             SKILL_THROWKNIFE = 'Throw Knife',
             SKILL_JUMP = 'Jump',
+            SKILL_EXECUTION = "Execution",
             SKILL_SUMMONHYDRA = 'Summon Hydra',
             SKILL_ELEMENTALMASTERY = 'Elemental Mastery',
             SKILL_FOCUS = 'Focus',
@@ -1220,6 +1250,8 @@ do
             SKILL_FROSTBOLT = 'Frostbolt',
             SKILL_FIREBALL = 'Fireball',
             SKILL_FROSTNOVA = 'Frost Nova',
+            SKILL_CHAIN_LIGHTNING = "Electrocute",
+
             --SKILL_ = 'Summon',
 
 
@@ -1256,7 +1288,7 @@ do
 
             ITEM_NAME_EYE_OF_THE_STORM = "Eye of the Storm",
             ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Discharge\" now comes out of sorceress, also its power increased.",
-            ITEM_SPEC_DESCRIPTION_EYE_OF_THE_STORM = "Unknown sorcerer acquired magnificent artifact, to only become shortly an ash.",
+            ITEM_SPEC_DESCRIPTION_EYE_OF_THE_STORM = "Unknown sorcerer acquired magnificent artifact, to only become shortly after an ash.",
 
             ITEM_NAME_FIREPRINCESS = "Fiery Princess",
             --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
@@ -1275,6 +1307,33 @@ do
             ITEM_NAME_CRYSTAL_AXE = "Crystal Axe",
             ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "With each attack you apply crystallisation on the enemis decreasing their moving speed. After reaching 5 stacks, enemy will freeze for 3 sec.",
             ITEM_SPEC_DESCRIPTION_CRYSTAL_AXE = "That axe freezing everything it's touching, mind yourself keeping its blade away.",
+
+
+            ITEM_NAME_BOOTSOFPAIN = "Boots of Pain",
+            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+            ITEM_SPEC_DESCRIPTION_BOOTSOFPAIN = "Is walking so painful?",
+
+            ITEM_NAME_CHESTOFPAIN = "Chest of Pain",
+            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+            ITEM_SPEC_DESCRIPTION_CHESTOFPAIN = "How painful to you is to breath?",
+
+            ITEM_NAME_HEADOFPAIN = "Helmet of Pain",
+            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+            ITEM_SPEC_DESCRIPTION_HEADOFPAIN = "Are your mind in pain?",
+
+
+            ITEM_NAME_THE_KING = "King",
+            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+            ITEM_SPEC_DESCRIPTION_THE_KING = "blank",
+
+            ITEM_NAME_THE_JESTER = "Jester",
+            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+            ITEM_SPEC_DESCRIPTION_THE_JESTER = "blank",
+
+
+            ITEM_NAME_MASTER_OF_ELEMENTS = "Master of Elements",
+            ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "With each attack you apply a negative effect that is decreasing resistance to it by 5 for 7 sec. Every attack is refreshing time and stacking 3 times.",
+            ITEM_SPEC_DESCRIPTION_MASTER_OF_ELEMENTS = "Every wizard will be envy that you own such a rare and unique item.",
 
 
             GENERATED_TOOLTIP = " of attack",

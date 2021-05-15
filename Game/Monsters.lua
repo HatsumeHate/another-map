@@ -8,6 +8,7 @@ do
     SPAWN_POINTS = nil
     MAIN_POINT = nil
     MONSTER_PLAYER = Player(10)
+    SECOND_MONSTER_PLAYER = Player(11)
     WaveGroup = CreateGroup()
 
     local WaveDifficultyModificator = 0.5
@@ -23,13 +24,13 @@ do
     local MONSTER_TAG_MELEE = 1
     local MONSTER_TAG_RANGE = 2
 
-    local MONSTERPACK_SUCCUBUS = 1
-    local MONSTERPACK_SKELETONS = 2
-    local MONSTERPACK_ZOMBIES = 3
-    local MONSTERPACK_DEMONS = 4
-    local MONSTERPACK_GHOSTS = 5
-    local MONSTERPACK_BANDITS = 6
-    local MONSTERPACK_BOSS = 10
+    MONSTERPACK_SUCCUBUS = 1
+    MONSTERPACK_SKELETONS = 2
+    MONSTERPACK_ZOMBIES = 3
+    MONSTERPACK_DEMONS = 4
+    MONSTERPACK_GHOSTS = 5
+    MONSTERPACK_BANDITS = 6
+    MONSTERPACK_BOSS = 10
 
 
 
@@ -65,7 +66,7 @@ do
 
 
 
-    RegisterTestCommand("kill", function()
+    RegisterTestCommand("endw", function()
 
         ForGroup(WaveGroup, function ()
             KillUnit(GetEnumUnit())
@@ -74,28 +75,7 @@ do
     end)
 
 
-    MONSTER_STATS_RATES = {
-        { stat = PHYSICAL_ATTACK,       initial = 0,   delta = 3,  delta_level = 1, method = STRAIGHT_BONUS },
-        { stat = MAGICAL_ATTACK,        initial = 0,   delta = 2,  delta_level = 1, method = STRAIGHT_BONUS },
-        { stat = PHYSICAL_DEFENCE,      initial = 0,   delta = 3,  delta_level = 1, method = STRAIGHT_BONUS },
-        { stat = MAGICAL_SUPPRESSION,   initial = 0,   delta = 2,  delta_level = 1, method = STRAIGHT_BONUS },
-        { stat = PHYSICAL_ATTACK,       initial = 0.98,   delta = 0.02,  delta_level = 1, method = MULTIPLY_BONUS },
-        { stat = PHYSICAL_DEFENCE,      initial = 0.99,   delta = 0.01,  delta_level = 1, method = MULTIPLY_BONUS },
-        { stat = MAGICAL_ATTACK,        initial = 0.98,   delta = 0.02,  delta_level = 1, method = MULTIPLY_BONUS },
-        { stat = MAGICAL_SUPPRESSION,   initial = 0.99,   delta = 0.01,  delta_level = 1, method = MULTIPLY_BONUS },
-        { stat = CRIT_CHANCE,           initial = 0,      delta = 1.,    delta_level = 5, method = STRAIGHT_BONUS },
-        { stat = ALL_RESIST,            initial = 0,      delta = 1,     delta_level = 5, method = STRAIGHT_BONUS },
-        { stat = PHYSICAL_BONUS,        initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = ICE_BONUS,             initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = LIGHTNING_BONUS,       initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = FIRE_BONUS,            initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = DARKNESS_BONUS,        initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = HOLY_BONUS,            initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = POISON_BONUS,          initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = ARCANE_BONUS,          initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = HP_VALUE,              initial = 0,      delta = 15,    delta_level = 1, method = STRAIGHT_BONUS },
-        { stat = HP_VALUE,              initial = 0.96,   delta = 0.04,  delta_level = 1, method = MULTIPLY_BONUS },
-    }
+
 
 
     MONSTER_EXP_RATES = {
@@ -247,7 +227,32 @@ do
     end
 
 
+    
+    ---@param pack number
+    ---@param rect rect
+    ---@param amount number
+    ---@param group group
+    function CreateUnits_Pack(pack, rect, amount, group)
+        if pack == nil then return 0 end
 
+        local id
+        local newunit
+
+        if amount <= 0 then return end
+
+            for i = 1, amount do
+                for k = 1, #pack do if GetRandomReal(0.,100.) <= pack[k].chance then id = FourCC(pack[k].id) end end
+                newunit = CreateUnit(SECOND_MONSTER_PLAYER, id, GetRandomReal(GetRectMinX(rect), GetRectMaxX(rect)), GetRandomReal(GetRectMinY(rect), GetRectMaxY(rect)), GetRandomInt(0, 359))
+                GroupAddUnit(group, newunit)
+            end
+
+        return amount
+    end
+    
+
+    ---@param pack number
+    ---@param rect rect
+    ---@param amount number
     function CreateUnits(pack, rect, amount)
         if pack == nil then return 0 end
 
@@ -266,55 +271,123 @@ do
     end
 
 
-    local trg = CreateTrigger()
-    TriggerRegisterPlayerUnitEvent(trg, MONSTER_PLAYER, EVENT_PLAYER_UNIT_DEATH, nil)
-    TriggerAddAction(trg, function()
 
-        if IsUnitInGroup(GetTriggerUnit(), WaveGroup) then
-            local unit = GetTriggerUnit()
-            local unit_Data = GetUnitData(unit)
-            GroupRemoveUnit(WaveGroup, unit)
 
-            DropForPlayer(unit, 0)
-            GiveExpForKill(((unit_Data.xp or 15) + MONSTER_EXP_RATES.const_per_level) * MONSTER_EXP_RATES[unit_Data.classification or MONSTER_RANK_COMMON] * (1. + (MONSTER_EXP_RATES.modf_per_level * Current_Wave)) , GetUnitX(unit), GetUnitY(unit))
 
-                if BlzGroupGetSize(WaveGroup) <= 0 then
-                    AddWaveTimer(200.)
-                    Current_Wave = Current_Wave + 1
-                    ResetShops()
-                end
+    local function GetProperAttackTypeSwitch(current_type, pack_attack_type)
+        local monster_attack_type = current_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
 
+        if pack_attack_type == nil then
+            monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
         end
 
-    end)
+        return monster_attack_type
+    end
 
 
 
-    function SpawnMonsters()
-        local monster_pack = GetRandomMonsterPack(MONSTER_RANK_COMMON)
-        local point = SPAWN_POINTS[1]
-        local total_monster_count = GetRandomInt(WAVE_MINIMUM_COUNT, WAVE_MAXIMUM_COUNT)
-        print("total is "..total_monster_count)
+    ---@param point rect
+    ---@param monster_pack number
+    ---@param min number
+    ---@param max number
+    ---@param bonus_elite number
+    ---@param range_type_chance_delta number
+    function SpawnMonsterPack(point, monster_pack, min, max, bonus_elite, range_type_chance_delta)
+        if point == nil or monster_pack == nil then return end
+        local total_monster_count = GetRandomInt(min, max)
         local first_pack_count = math.floor(total_monster_count * COMMON_MONSTER_RATE)
-        print("first pack count is "..first_pack_count)
+        local monster_attack_type = GetRandomReal(0., 100.) <= (MELEE_MONSTER_CHANCE + (range_type_chance_delta or 0.)) and MONSTER_TAG_MELEE or MONSTER_TAG_RANGE
+        local monster_group = CreateGroup()
+
+        monster_pack = MONSTER_LIST[monster_pack]
+
+        if monster_pack[MONSTER_RANK_COMMON] == nil then
+            monster_pack = GetRandomMonsterPack(MONSTER_RANK_COMMON)
+        end
+        --print("spawn init")
+
+        if monster_pack[MONSTER_RANK_COMMON][monster_attack_type] == nil then
+            monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
+        end
+
+        total_monster_count = total_monster_count - CreateUnits_Pack(monster_pack[MONSTER_RANK_COMMON][monster_attack_type] or nil, point, first_pack_count, monster_group)
+        --print("spawn first")
+        local second_pack_count = GetRandomInt(1, total_monster_count)
+
+        --monster_attack_type = GetProperAttackTypeSwitch(monster_attack_type, monster_pack[MONSTER_RANK_COMMON][monster_attack_type])
+
+        monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
+
+        if monster_pack[MONSTER_RANK_COMMON][monster_attack_type] == nil then
+            monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
+        end
+
+        --print("spawn secind")
+        total_monster_count = total_monster_count - CreateUnits_Pack(monster_pack[MONSTER_RANK_COMMON][monster_attack_type] or nil, point, second_pack_count, monster_group)
+
+            if total_monster_count + (bonus_elite or 0) > 0 then
+                --print("spawn elite - yes")
+                local elite_monster_count = GetRandomInt(1, total_monster_count + (bonus_elite or 0))
+                monster_attack_type = GetRandomReal(0., 100.) <= (MELEE_MONSTER_CHANCE + range_type_chance_delta) and MONSTER_TAG_MELEE or MONSTER_TAG_RANGE
+
+                if monster_pack[MONSTER_RANK_ADVANCED] == nil then
+                    monster_pack = GetRandomMonsterPack(MONSTER_RANK_ADVANCED)
+                end
+
+                if monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] == nil then
+                    monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
+                end
+
+                total_monster_count = total_monster_count - CreateUnits_Pack(monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] or nil, point, elite_monster_count, monster_group)
+
+                if  total_monster_count > 0 then
+                    monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
+
+                        if monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] == nil then
+                            monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
+                        end
+
+                    local elite_second_monster_count = GetRandomInt(1, total_monster_count)
+                    CreateUnits_Pack(monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] or nil, point, elite_second_monster_count, monster_group)
+                end
+
+            end
+
+        DelayAction(0.015, function()
+            ScaleMonsterGroup(monster_group)
+        end)
+
+        return monster_group
+    end
+
+
+
+    ---@param point rect
+    function SpawnMonstersWave(point)
+        local monster_pack = GetRandomMonsterPack(MONSTER_RANK_COMMON)
+        --local point = SPAWN_POINTS[1]
+        local total_monster_count = GetRandomInt(WAVE_MINIMUM_COUNT, WAVE_MAXIMUM_COUNT)
+        --print("total is "..total_monster_count)
+        local first_pack_count = math.floor(total_monster_count * COMMON_MONSTER_RATE)
+        --print("first pack counter is "..first_pack_count)
         local monster_attack_type = GetRandomReal(0., 100.) <= MELEE_MONSTER_CHANCE and MONSTER_TAG_MELEE or MONSTER_TAG_RANGE
 
 
-        print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
+        --print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
         --print("pack is "..monster_pack)
 
 
         total_monster_count = total_monster_count - CreateUnits(monster_pack[MONSTER_RANK_COMMON][monster_attack_type] or nil, point, first_pack_count)
-        print("there is " .. total_monster_count .. " free slots")
+        --print("there are " .. total_monster_count .. " free slots")
 
 
         local second_pack_count = GetRandomInt(1, total_monster_count)
         monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
 
         total_monster_count = total_monster_count - CreateUnits(monster_pack[MONSTER_RANK_COMMON][monster_attack_type] or nil, point, second_pack_count)
-        print("second pack count is "..second_pack_count)
-        print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
-        print("there is " .. total_monster_count .. " free slots")
+        --print("second pack counter is "..second_pack_count)
+        --print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
+        --print("there are " .. total_monster_count .. " free slots")
 
         if total_monster_count > 0 then
             local elite_monster_count = GetRandomInt(1, total_monster_count)
@@ -325,9 +398,9 @@ do
                 end
 
             total_monster_count = total_monster_count - CreateUnits(monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] or nil, point, elite_monster_count)
-            print("elite pack count is "..elite_monster_count)
-            print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
-            print("there is " .. total_monster_count .. " free slots")
+            --print("elite pack counter is "..elite_monster_count)
+            --print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
+            --print("there is " .. total_monster_count .. " free slots")
 
             if  total_monster_count > 0 then
                 monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
@@ -338,25 +411,18 @@ do
 
                 local elite_second_monster_count = GetRandomInt(1, total_monster_count)
                 CreateUnits(monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] or nil, point, elite_second_monster_count)
-                print("alternate elite pack count is "..elite_second_monster_count)
-                print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
-                print("there is " .. total_monster_count .. " free slots")
+                --print("alternate elite pack counter is "..elite_second_monster_count)
+                --print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
+                --print("there are " .. total_monster_count .. " free slots")
             end
 
         end
 
 
-            ForGroup(WaveGroup, function()
-                IssuePointOrderById(GetEnumUnit(), order_attack, GetRectCenterX(MAIN_POINT), GetRectCenterY(MAIN_POINT))
-            end)
-
-
-            DelayAction(0.1, function()
+            DelayAction(0.015, function()
                 ForGroup(WaveGroup, function ()
-                    for i = 1, #MONSTER_STATS_RATES do
-                        ModifyStat(GetEnumUnit(), MONSTER_STATS_RATES[i].stat, MONSTER_STATS_RATES[i].initial +
-                                math.floor(Current_Wave / MONSTER_STATS_RATES[i].delta_level) * MONSTER_STATS_RATES[i].delta, MONSTER_STATS_RATES[i].method, true)
-                    end
+                    ScaleMonsterUnit(GetEnumUnit())
+                    IssuePointOrderById(GetEnumUnit(), order_attack, GetRectCenterX(MAIN_POINT), GetRectCenterY(MAIN_POINT))
                 end)
             end)
 
@@ -365,15 +431,49 @@ do
     end
 
 
+    function GetRandomMonsterSpawnPoint()
+        return SPAWN_POINTS[GetRandomInt(1, #SPAWN_POINTS)]
+    end
+
+
     function InitMonsterData()
 
         SPAWN_POINTS = {
             gg_rct_spawn_left,
             gg_rct_spawn_down,
-            gg_rct_spawn_right
+            gg_rct_spawn_right,
+            gg_rct_spawn_wave_top_righ
         }
 
         MAIN_POINT = gg_rct_captain_guard_rect
+
+        InitMonsterPacks()
+
+         local trg = CreateTrigger()
+            TriggerRegisterPlayerUnitEvent(trg, MONSTER_PLAYER, EVENT_PLAYER_UNIT_DEATH, nil)
+            TriggerRegisterPlayerUnitEvent(trg, SECOND_MONSTER_PLAYER, EVENT_PLAYER_UNIT_DEATH, nil)
+            TriggerAddAction(trg, function()
+
+                --print("killer is " .. GetUnitName(GetKillingUnit()))
+
+                if GetKillingUnit() ~= nil then
+                    local unit = GetTriggerUnit()
+                    local unit_Data = GetUnitData(unit)
+
+                    if IsUnitInGroup(unit, WaveGroup) then
+                        GroupRemoveUnit(WaveGroup, unit)
+                        if BlzGroupGetSize(WaveGroup) <= 0 then EndWave() end
+                    end
+
+                    --print("pre drop")
+                    DropForPlayer(unit, GetPlayerId(GetOwningPlayer(GetKillingUnit())))
+                    GiveExpForKill(((unit_Data.xp or 15) + MONSTER_EXP_RATES.const_per_level) * MONSTER_EXP_RATES[unit_Data.classification or MONSTER_RANK_COMMON] * (1. + (MONSTER_EXP_RATES.modf_per_level * Current_Wave)) , GetUnitX(unit), GetUnitY(unit))
+
+                    unit = nil
+                    unit_Data = nil
+                end
+
+        end)
 
     end
 

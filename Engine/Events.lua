@@ -177,12 +177,10 @@ do
 
             unit_data.spawned_hydra = CreateUnit(Player(GetOwningPlayer(source)), FourCC('shdr'), x, y, GetRandomReal(0.,359.))
             UnitApplyTimedLife(unit_data.spawned_hydra, 0, 7.)
-        elseif skill.Id == 'A00J' then
-            SparkCast(source, target, x, y)
-        elseif skill.Id == 'A00O' then
-            MakeUnitJump(source, AngleBetweenUnitXY(source, x, y), x, y, 720., 0.6, 'A00O')
-        elseif skill.Id == 'A010' then
-            WhirlwindActivate(source)
+        elseif skill.Id == 'A00J' then SparkCast(source, target, x, y)
+        elseif skill.Id == "A019" then ChainLightningCast(source, target)
+        elseif skill.Id == 'A00O' then MakeUnitJump(source, AngleBetweenUnitXY(source, x, y), x, y, 720., 0.6, 'A00O')
+        elseif skill.Id == 'A010' then WhirlwindActivate(source)
         end
 
     end

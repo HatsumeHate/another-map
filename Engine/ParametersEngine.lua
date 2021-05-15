@@ -434,7 +434,7 @@ do
         ---@param data table
         [ATTACK_SPEED] = function(data)
             data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].ATTACK_SPEED * (1. - data.stats[ATTACK_SPEED].bonus * 0.01)
-			if data.stats[ATTACK_SPEED].value > 0. then
+			if data.stats[ATTACK_SPEED].value > 0.1 then
 				BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 0)
 				BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 1)
 			else

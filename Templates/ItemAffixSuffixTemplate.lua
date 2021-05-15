@@ -135,7 +135,7 @@ do
         },
     }
 
-    function GetRandomGeneratedId()
+    function GetRandomGeneratedItemId()
         return GENERATED_ITEM_LIST[GetRandomInt(1, #GENERATED_ITEM_LIST)].id
     end
 
@@ -163,6 +163,19 @@ do
         if #list == 0 then return nil end
 
         return list[GetRandomInt(1 ,#list)]
+    end
+
+
+    ---@param id number
+    function IsRandomGeneratedId(id)
+
+            for i = 1, #GENERATED_ITEM_LIST do
+                if FourCC(GENERATED_ITEM_LIST[i].id) == id then
+                    return true
+                end
+            end
+
+        return false
     end
 
 
@@ -349,7 +362,7 @@ do
                 ITEM_SUFFIX_KNOWLEDGE,
                 ITEM_SUFFIX_ICE_WIZARD,
                 ITEM_SUFFIX_LIGHTNING_WIZARD,
-                ITEM_SUFFIX_FIRE_WIZARD,
+                ITEM_SUFFIX_FIRE_WIZARD
             },
             [SHIELD_OFFHAND] = {
                 ITEM_SUFFIX_KNOWLEDGE,
@@ -357,13 +370,13 @@ do
                 ITEM_SUFFIX_KNIGHT,
                 ITEM_SUFFIX_ROCK,
                 ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_FURY
             },
             [QUIVER_OFFHAND] = {
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ANGER,
+                ITEM_SUFFIX_ANGER
             }
         },
         [RARE_ITEM] = {
@@ -725,7 +738,8 @@ do
                 'A00B',
                 "A010",
                 "A007",
-                "A006"
+                "A006",
+                "A020"
             },
             [SKILL_CATEGORY_BATTLE_ADVANTAGE] = {
                 "A00O",
@@ -742,6 +756,7 @@ do
                 'A00M',
                 "A00J",
                 "A00K",
+                "A019",
             },
             [SKILL_CATEGORY_ICE] = {
                 "A003",
@@ -796,7 +811,7 @@ do
             }
         }
 
-        -- TODO import orbs, shields, quivers, belts
+
         QUALITY_ITEM_LIST = {
             [COMMON_ITEM] = {
                 [RING_JEWELRY] = {
@@ -1309,43 +1324,43 @@ do
                 },
                 [QUIVER_OFFHAND] = {
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_01.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_1,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_01.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_02.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_2,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_02.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_07.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_7,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_07.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_7,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_08.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_8,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_08.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_8,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_09.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_9,
-                        decl = DECL_IT,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_09.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_9,
+                        decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_10.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_10,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_10.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_10,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
@@ -1353,28 +1368,28 @@ do
                 },
                 [ORB_OFFHAND] = {
                     {
-                        icon = "Offhands\\BTNOrbOfWinds.blp",
+                        icon = "Offhand\\BTNOrbOfWinds.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNWaterOrb.blp",
+                        icon = "Offhand\\BTNWaterOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_2,
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNSandOrb.blp",
+                        icon = "Offhand\\BTNSandOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_3,
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNOrbOfTheSun.blp",
+                        icon = "Offhand\\BTNOrbOfTheSun.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_4,
                         decl = DECL_SHE,
                         modificator = 1.,
@@ -1383,42 +1398,42 @@ do
                 },
                 [SHIELD_OFFHAND] = {
                     {
-                        icon = "Offhands\\BTNFancy Shield.blp",
+                        icon = "Offhand\\BTNFancy Shield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_1,
                         decl = DECL_HE,
                         modificator = 0.9,
                         soundpack = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\woodshield.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNKiteShield1.blp",
+                        icon = "Offhand\\BTNKiteShield1.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_2,
                         decl = DECL_HE,
                         modificator = 0.8,
                         soundpack = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\woodshield.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNLancelot_Shield.blp",
+                        icon = "Offhand\\BTNLancelot_Shield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.1,
                         soundpack = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\metalshield.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNBuckler.blp",
+                        icon = "Offhand\\BTNBuckler.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_4,
                         decl = DECL_HE,
                         modificator = 0.8,
                         soundpack = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\metalshield.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNrcgs.blp",
+                        icon = "Offhand\\BTNrcgs.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\woodshield.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNTowerShield.blp",
+                        icon = "Offhand\\BTNTowerShield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.2,
@@ -1951,43 +1966,43 @@ do
                 },
                 [QUIVER_OFFHAND] = {
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_01.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_1,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_01.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_1,
                         decl = DECL_IT,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_02.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_2,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_02.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_07.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_7,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_07.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_7,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_08.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_8,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_08.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_8,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_03.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_3,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_03.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_04.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_4,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_04.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
@@ -1995,42 +2010,42 @@ do
                 },
                 [ORB_OFFHAND] = {
                     {
-                        icon = "Offhands\\BTNOrbOfWinds.blp",
+                        icon = "Offhand\\BTNOrbOfWinds.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNWaterOrb.blp",
+                        icon = "Offhand\\BTNWaterOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_2,
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNSandOrb.blp",
+                        icon = "Offhand\\BTNSandOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_3,
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNOrbOfTheSun.blp",
+                        icon = "Offhand\\BTNOrbOfTheSun.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_4,
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNChaosOrb.blp",
+                        icon = "Offhand\\BTNChaosOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNOrbOfLightningNew.blp",
+                        icon = "Offhand\\BTNOrbOfLightningNew.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_6,
                         decl = DECL_SHE,
                         modificator = 1.,
@@ -2039,42 +2054,42 @@ do
                 },
                 [SHIELD_OFFHAND] = {
                     {
-                        icon = "Offhands\\BTNKiteShield1.blp",
+                        icon = "Offhand\\BTNKiteShield1.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_2,
                         decl = DECL_HE,
                         modificator = 0.8,
                         soundpack = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\woodshield.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNLancelot_Shield.blp",
+                        icon = "Offhand\\BTNLancelot_Shield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.1,
                         soundpack = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\metalshield.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNBuckler.blp",
+                        icon = "Offhand\\BTNBuckler.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_4,
                         decl = DECL_HE,
                         modificator = 0.8,
                         soundpack = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\metalshield.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNTowerShield.blp",
+                        icon = "Offhand\\BTNTowerShield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.2,
                         soundpack = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\metalshield.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNRunestoneShield.blp",
+                        icon = "Offhand\\BTNRunestoneShield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_7,
                         decl = DECL_HE,
                         modificator = 1.1,
                         soundpack = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\metalshield.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNMastercraftShield.blp",
+                        icon = "Offhand\\BTNMastercraftShield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_8,
                         decl = DECL_HE,
                         modificator = 1.,
@@ -2868,71 +2883,71 @@ do
                 },
                 [QUIVER_OFFHAND] = {
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_01.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_1,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_01.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_1,
                         decl = DECL_IT,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_02.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_2,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_02.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_05.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_5,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_05.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_5,
                         decl = DECL_IT,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_06.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_6,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_06.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_07.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_7,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_07.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_7,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_08.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_8,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_08.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_8,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_09.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_9,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_09.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_9,
                         decl = DECL_IT,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_10.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_10,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_10.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_10,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_03.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_3,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_03.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNINV_Misc_Quiver_04.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_4,
+                        icon = "Offhand\\BTNINV_Misc_Quiver_04.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" }
@@ -2940,49 +2955,49 @@ do
                 },
                 [ORB_OFFHAND] = {
                     {
-                        icon = "Offhands\\BTNOrbOfWinds.blp",
+                        icon = "Offhand\\BTNOrbOfWinds.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNWaterOrb.blp",
+                        icon = "Offhand\\BTNWaterOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_2,
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNSandOrb.blp",
+                        icon = "Offhand\\BTNSandOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_3,
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNOrbOfTheSun.blp",
+                        icon = "Offhand\\BTNOrbOfTheSun.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_4,
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNChaosOrb.blp",
+                        icon = "Offhand\\BTNChaosOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNOrbOfLightningNew.blp",
+                        icon = "Offhand\\BTNOrbOfLightningNew.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_6,
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNOrbPain.blp",
+                        icon = "Offhand\\BTNOrbPain.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_7,
                         decl = DECL_SHE,
                         modificator = 1.,
@@ -2991,49 +3006,49 @@ do
                 },
                 [SHIELD_OFFHAND] = {
                     {
-                        icon = "Offhands\\BTNKiteShield1.blp",
+                        icon = "Offhand\\BTNKiteShield1.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_2,
                         decl = DECL_HE,
                         modificator = 0.8,
                         soundpack = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\woodshield.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNLancelot_Shield.blp",
+                        icon = "Offhand\\BTNLancelot_Shield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.1,
                         soundpack = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\metalshield.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNBuckler.blp",
+                        icon = "Offhand\\BTNBuckler.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_4,
                         decl = DECL_HE,
                         modificator = 0.8,
                         soundpack = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\metalshield.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNTowerShield.blp",
+                        icon = "Offhand\\BTNTowerShield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.2,
                         soundpack = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\metalshield.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNRunestoneShield.blp",
+                        icon = "Offhand\\BTNRunestoneShield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_7,
                         decl = DECL_HE,
                         modificator = 1.1,
                         soundpack = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\metalshield.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNMastercraftShield.blp",
+                        icon = "Offhand\\BTNMastercraftShield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_8,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\metalshield.wav" }
                     },
                     {
-                        icon = "Offhands\\BTNShield.blp",
+                        icon = "Offhand\\BTNShield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_9,
                         decl = DECL_HE,
                         modificator = 1.,

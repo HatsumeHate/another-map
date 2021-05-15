@@ -344,7 +344,7 @@
         --============================================--
         NewSkillData('A00M', {
             name            = LOCALE_LIST[my_locale].SKILL_LIGHTNINGSTRIKE,
-            icon            = "Spell\\BTNThunderStorm.blp",
+            icon            = "Spell\\BTNLightningSpell8.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_LIGHTNING,
@@ -419,7 +419,7 @@
         --============================================--
         NewSkillData('A00J', {
             name            = LOCALE_LIST[my_locale].SKILL_DISCHARGE,
-            icon            = "Spell\\BTNSparkFlare.blp",
+            icon            = "Spell\\BTNLightningSpell16.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_LIGHTNING,
@@ -441,9 +441,33 @@
             }
         })
         --============================================--
+        NewSkillData('A019', {
+            name            = LOCALE_LIST[my_locale].SKILL_CHAIN_LIGHTNING,
+            icon            = "Spell\\BTNChainLightning2.blp",
+            activation_type = TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_LIGHTNING,
+            sound = { pack = { "Sounds\\Spells\\cast_lightning_1.wav", "Sounds\\Spells\\cast_lightning_2.wav", "Sounds\\Spells\\cast_lightning_3.wav" }, volume = 120, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    range               = 870.,
+                    resource_cost       = 16.,
+                    cooldown            = 1.1,
+                    animation           = 2,
+                    animation_point     = 1.3,
+                    animation_backswing = 0.3,
+                    animation_scale     = 0.4,
+                    effect_on_caster        = "Spell\\Storm Cast.mdx",
+                    effect_on_caster_point  = 'hand right',
+                    effect_on_caster_scale  = 1.,
+                }
+            }
+        })
+        --============================================--
         NewSkillData('A00K', {
             name            = LOCALE_LIST[my_locale].SKILL_LIGHTNINGBALL,
-            icon            = "Spell\\BTNLightningOrb.blp",
+            icon            = "Spell\\BTNLightningSpell9.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_LIGHTNING,
@@ -663,6 +687,30 @@
                 [1] = {
                     range               = 100.,
                     effect              = 'ECRH',
+                    cooldown            = 2.3,
+                    animation           = 4,
+                    animation_point     = 0.6,
+                    animation_backswing = 0.3,
+                    animation_scale     = 0.9,
+                    effect_on_caster        = "Spell\\Sweep_Fire_Medium.mdx",
+                    effect_on_caster_point  = 'weapon left',
+                    effect_on_caster_scale  = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A020', {
+            name            = LOCALE_LIST[my_locale].SKILL_EXECUTION,
+            icon            = "Spell\\BTNBreakingSmash.blp",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+            category = SKILL_CATEGORY_FIGHTING_MASTERY,
+            sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 120, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    range               = 100.,
+                    --effect              = 'EEXC',
                     cooldown            = 2.3,
                     animation           = 4,
                     animation_point     = 0.6,

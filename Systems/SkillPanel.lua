@@ -34,63 +34,27 @@ do
     end
 
 
-    TriggerAddAction(LeaveTrigger, function()
-        RemoveTooltip(GetPlayerId(GetTriggerPlayer()) + 1)
-    end)
-
-    TriggerAddAction(EnterTrigger, function()
-        local button_data = GetButtonData(BlzGetTriggerFrame())
-        local player = GetPlayerId(GetTriggerPlayer()) + 1
-
-            if button_data.skill ~= nil then
-                ShowSkillTooltip(button_data.skill, SkillPanelFrame[player].tooltip, button_data, player)
-            end
-
-    end)
-
-
-    TriggerAddAction(ClickTrigger, function ()
-        local button_data = GetButtonData(BlzGetTriggerFrame())
-        local player = GetPlayerId(GetTriggerPlayer()) + 1
-
-
-            if button_data.button_type < 0 then
-                local last_category_button = GetButtonData(SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].button)
-                if last_category_button.sprite ~= nil then BlzDestroyFrame(last_category_button.sprite) end
-
-                button_data.sprite = CreateSprite("selecter2.mdx", 0.9, SkillPanelFrame[player].category[button_data.button_type * -1].button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, button_data.image)
-                SkillPanelFrame[player].current_category = button_data.button_type * -1
-                UpdateSkillList(player)
-                DestroyContextMenu(player)
-            elseif button_data.button_type == SKILL_BUTTON then
-                CreatePlayerContextMenu(player, button_data.button, FRAMEPOINT_RIGHT, SkillPanelFrame[player].slider)
-                CreateBindContext(player, button_data, 0)
-            elseif button_data.button_type > 0 then
-                if button_data.skill ~= nil then
-                    CreatePlayerContextMenu(player, button_data.button, FRAMEPOINT_RIGHT, SkillPanelFrame[player].slider)
-                    CreateBindContext(player, button_data, button_data.button_type)
-                    AddContextOption(player, LOCALE_LIST[my_locale].SKILL_PANEL_UNBIND, function()
-                        UnregisterPlayerSkillHotkey(player, button_data.skill)
-                    end)
-                end
-            end
-
-    end)
-
-
     ---@param player integer
     ---@param skill table
     function UnregisterPlayerSkillHotkey(player, skill)
-            for i = KEY_Q, KEY_D do
-                local button = GetButtonData(SkillPanelFrame[player].button_keys[i])
-                    if button.skill ~= nil and skill.Id == button.skill.Id and not BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindAbility(skill.Id, player-1)) > 0. then
-                        UnbindAbilityKey(PlayerHero[player], skill.Id)
-                        BlzFrameSetTexture(button.image, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0, true)
-                        FrameChangeTexture(button.button, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp")
-                        button.skill = nil
-                        break
-                    end
-            end
+
+        for i = KEY_Q, KEY_D do
+            local button = GetButtonData(SkillPanelFrame[player].button_keys[i])
+                -- and not BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindAbilityId(FourCC(skill.Id), player-1)) > 0.
+                --print(R2S(BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindAbilityId(skill.Id, player-1))))
+
+                if button.skill ~= nil and skill.Id == button.skill.Id and not (BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindAbilityId(skill.Id, player-1)) > 0.) then
+                    --print("skill is found, trying to unbind")
+                    UnbindAbilityKey(PlayerHero[player], skill.Id)
+                    --print("skill is unbinded")
+                    BlzFrameSetTexture(button.image, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0, true)
+                    FrameChangeTexture(button.button, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp")
+                    button.skill = nil
+                    break
+                end
+
+        end
+
     end
 
 
@@ -101,11 +65,13 @@ do
         local key_button_data = GetButtonData(SkillPanelFrame[player].button_keys[key])
         local ability = GetKeybindAbility(skill.Id, player-1)
 
-            if ability == 0 or (ability ~= 0 and not BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], ability) > 0.) then
+            if ability == 0 or (ability ~= 0 and not (BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindAbilityId(skill.Id, player-1)) > 0.)) then
                 BindAbilityKey(PlayerHero[player], skill.Id, key)
                 BlzFrameSetTexture(key_button_data.image, skill.icon, 0, true)
                 FrameChangeTexture(key_button_data.button, skill.icon)
                 key_button_data.skill = skill
+                --print("ability " .. key_button_data.skill.name .." is binded")
+                --print("ability " .. key_button_data.skill.name .." id is " .. key_button_data.skill.Id)
             end
 
     end
@@ -354,9 +320,7 @@ do
     
     function SkillPanelInit()
         SkillPanelButton = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSpellBookBLS.blp", 0.03, 0.03, InventoryTriggerButton, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.01, 0., GAME_UI)
-
-            CreateTooltip(LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_DESCRIPTION, SkillPanelButton, 0.14, 0.06)
-
+        CreateTooltip(LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_DESCRIPTION, SkillPanelButton, 0.14, 0.06)
         BlzFrameSetVisible(SkillPanelButton, false)
 
             local trg = CreateTrigger()
@@ -374,6 +338,51 @@ do
                 RemoveTooltip(player)
                 SkillPanelFrame[player].state = not SkillPanelFrame[player].state
                 end)
+
+
+        TriggerAddAction(LeaveTrigger, function()
+            RemoveTooltip(GetPlayerId(GetTriggerPlayer()) + 1)
+        end)
+
+        TriggerAddAction(EnterTrigger, function()
+            local button_data = GetButtonData(BlzGetTriggerFrame())
+            local player = GetPlayerId(GetTriggerPlayer()) + 1
+
+                if button_data.skill ~= nil then
+                    ShowSkillTooltip(button_data.skill, SkillPanelFrame[player].tooltip, button_data, player)
+                end
+
+        end)
+
+
+        TriggerAddAction(ClickTrigger, function ()
+            local button_data = GetButtonData(BlzGetTriggerFrame())
+            local player = GetPlayerId(GetTriggerPlayer()) + 1
+
+
+                if button_data.button_type < 0 then
+                    local last_category_button = GetButtonData(SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].button)
+                    if last_category_button.sprite ~= nil then BlzDestroyFrame(last_category_button.sprite) end
+
+                    button_data.sprite = CreateSprite("selecter2.mdx", 0.9, SkillPanelFrame[player].category[button_data.button_type * -1].button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, button_data.image)
+                    SkillPanelFrame[player].current_category = button_data.button_type * -1
+                    UpdateSkillList(player)
+                    DestroyContextMenu(player)
+                elseif button_data.button_type == SKILL_BUTTON then
+                    CreatePlayerContextMenu(player, button_data.button, FRAMEPOINT_RIGHT, SkillPanelFrame[player].slider)
+                    CreateBindContext(player, button_data, 0)
+                elseif button_data.button_type > 0 then
+                    if button_data.skill ~= nil then
+                        CreatePlayerContextMenu(player, button_data.button, FRAMEPOINT_RIGHT, SkillPanelFrame[player].slider)
+                        CreateBindContext(player, button_data, button_data.button_type)
+                        AddContextOption(player, LOCALE_LIST[my_locale].SKILL_PANEL_UNBIND, function()
+                            --print(button_data.skill.name)
+                            UnregisterPlayerSkillHotkey(player, button_data.skill)
+                        end)
+                    end
+                end
+
+        end)
 
     end
 

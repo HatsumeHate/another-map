@@ -420,31 +420,34 @@ do
 
             local trg = CreateTrigger()
             TriggerRegisterUnitInRangeSimple(trg, 300., unit_owner)
+            --TriggerAddCondition(trg, Condition())
             TriggerAddAction(trg, function()
-                local id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
-                local player = id + 1
+                if not IsUnitHidden(unit_owner) then
+                    local id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
+                    local player = id + 1
 
-                if id <= 5 then
-                    local hero = GetTriggerUnit()
+                    if id <= 5 then
+                        local hero = GetTriggerUnit()
 
-                    ShopInFocus[player] = unit_owner
-                    if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(ShopFrame[player].main_frame, true) end
-                    ShopFrame[player].state = true
-                    BlzFrameSetTexture(ShopFrame[player].portrait, texture, 0, true)
-                    BlzFrameSetText(ShopFrame[player].name, GetUnitName(unit_owner))
-                    UpdateShopWindow()
+                        ShopInFocus[player] = unit_owner
+                        if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(ShopFrame[player].main_frame, true) end
+                        ShopFrame[player].state = true
+                        BlzFrameSetTexture(ShopFrame[player].portrait, texture, 0, true)
+                        BlzFrameSetText(ShopFrame[player].name, GetUnitName(unit_owner))
+                        UpdateShopWindow()
 
-                        TimerStart(CreateTimer(), 0.1, true, function()
-                            if not IsUnitInRange(hero, unit_owner, 300.) then
-                                DestroySlider(player)
-                                DestroyContextMenu(player)
-                                ShopInFocus[player] = nil
-                                ShopFrame[player].state = false
-                                if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(ShopFrame[player].main_frame, false) end
-                                DestroyTimer(GetExpiredTimer())
-                            end
-                        end)
+                            TimerStart(CreateTimer(), 0.1, true, function()
+                                if not IsUnitInRange(hero, unit_owner, 299.) or IsUnitHidden(unit_owner) then
+                                    DestroySlider(player)
+                                    DestroyContextMenu(player)
+                                    ShopInFocus[player] = nil
+                                    ShopFrame[player].state = false
+                                    if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(ShopFrame[player].main_frame, false) end
+                                    DestroyTimer(GetExpiredTimer())
+                                end
+                            end)
 
+                    end
                 end
 
             end)

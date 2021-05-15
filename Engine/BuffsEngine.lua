@@ -7,6 +7,7 @@ do
     ---@param unit_data table
     ---@param buff_data table
     local function DeleteBuff(unit_data, buff_data)
+        --print("DELETE BUFF")
         for i = 1, #unit_data.buff_list do
             if unit_data.buff_list[i] == buff_data then
                 UnitRemoveAbility(unit_data.Owner, FourCC(buff_data.buff_id))
@@ -28,6 +29,7 @@ do
                         if state == STATE_FREEZE then
                             SetUnitVertexColor(unit_data.Owner, unit_data.colours.r or 255, unit_data.colours.g or 255, unit_data.colours.b or 255, unit_data.colours.a or 255)
                             SetUnitTimeScale(unit_data.Owner, 1.)
+                            --PauseUnit(unit_data.Owner, false)
                             BlzPauseUnitEx(unit_data.Owner, false)
                         elseif state == STATE_STUN then
                             BlzPauseUnitEx(unit_data.Owner, false)
@@ -215,6 +217,7 @@ do
 
                         SetUnitVertexColor(target, 57, 57, 255, 255)
                         ResetUnitSpellCast(target)
+                        --PauseUnit(target, true)
                         BlzPauseUnitEx(target, true)
                         SetUnitTimeScale(target, 0.)
 
@@ -224,13 +227,16 @@ do
                                 target_data.channeled_destructor(target)
                             end
 
-                        BlzPauseUnitEx(target, true)
                         ResetUnitSpellCast(target)
+                        BlzPauseUnitEx(target, true)
+
 
                     end
 
 
                     buff_data.expiration_time = buff_data.expiration_time * ((100. - target_data.stats[CONTROL_REDUCTION].value) * 0.01)
+                    --print("expiration time - " .. R2S(buff_data.expiration_time))
+                    --print("target control reduction is " .. I2S(target_data.stats[CONTROL_REDUCTION].value))
 
                     if buff_data.expiration_time <= 0. then
                         buff_data = nil
@@ -273,7 +279,7 @@ do
 
                 if buff_data.level[lvl].buff_sfx ~= nil then
                     local new_effect
-                        if buff_data.level[lvl].buff_sfx_point ~= nil then
+                        if buff_data.level[lvl].buff_sfx_point ~= nil and StringLength(buff_data.level[lvl].buff_sfx_point) > 0 then
                             new_effect = AddSpecialEffectTarget(buff_data.level[lvl].buff_sfx, target, buff_data.level[lvl].buff_sfx_point)
                         else
                             new_effect = AddSpecialEffect(buff_data.level[lvl].buff_sfx, GetUnitX(target), GetUnitY(target))
@@ -303,7 +309,7 @@ do
 
             buff_data.update_timer = CreateTimer()
             TimerStart(buff_data.update_timer, BUFF_UPDATE, true, function()
-
+                --print("expiration time - " .. R2S(buff_data.expiration_time))
                 if buff_data.expiration_time <= 0. or GetUnitState(target, UNIT_STATE_LIFE) < 0.045 then
                     DeleteBuff(target_data, buff_data)
                 else
@@ -323,6 +329,7 @@ do
                             over_time_effect_delay = over_time_effect_delay - BUFF_UPDATE
                         end
                     end
+
 
                     buff_data.expiration_time = buff_data.expiration_time - BUFF_UPDATE
                 end

@@ -280,12 +280,21 @@
 	end
 
 
+	---@param rect rect
+	function GetRandomRectX(rect)
+		return GetRandomReal(GetRectMinX(rect), GetRectMaxX(rect))
+	end
+
+	---@param rect rect
+	function GetRandomRectY(rect)
+		return GetRandomReal(GetRectMinY(rect), GetRectMaxY(rect))
+	end
 
 	---@param command string
 	---@param callback function
 	function RegisterTestCommand(command, callback)
 		local trigger = CreateTrigger()
-		TriggerRegisterPlayerChatEvent(trigger, Player(0), command, false)
+		TriggerRegisterPlayerChatEvent(trigger, Player(0), command, true)
 		TriggerAddAction(trigger, callback)
 	end
 

@@ -85,9 +85,13 @@ do
         local trait_modifier = 1.
         local attack_status = ATTACK_STATUS_USUAL
 
+        if attacker == nil then print("Warning: " .. GetUnitName(source) .. " doesn't have unit data.") end
+        if victim == nil then print("Warning: " .. GetUnitName(target) .. " doesn't have unit data.") end
+        --if source == nil then print("DAMAGE - SOURCE NULL") end
+
             if target == nil then return 0 end
 
-
+        --print("1")
         if myeffect ~= nil then
             local effect_data = myeffect.eff.level[myeffect.l]
 
@@ -105,6 +109,8 @@ do
 
         end
 
+       -- print("2")
+
             if can_crit then
                 if GetRandomInt(1, 100) <= GetCriticalChance(source, bonus_critical) then
                     critical_rate = attacker.stats[CRIT_MULTIPLIER].value + bonus_critical_rate
@@ -113,7 +119,7 @@ do
                 end
             end
 
-
+        --print("3")
         if victim == nil then
 
                 if attribute ~= nil then
@@ -128,16 +134,21 @@ do
 
         else
 
+           -- print("4")
+            --print(I2S(attacker.stats[BONUS_BEAST_DAMAGE].value))
+            --print(I2S(attacker.stats[BONUS_UNDEAD_DAMAGE].value))
+            --print(I2S(attacker.stats[BONUS_HUMAN_DAMAGE].value))
+            --print(I2S(attacker.stats[BONUS_DEMON_DAMAGE].value))
             if victim.trait then
-                if victim.trait == TRAIT_BEAST then trait_modifier = 1. + (source.stats[BONUS_BEAST_DAMAGE].value * 0.01)
-                elseif victim.trait == TRAIT_UNDEAD then trait_modifier = 1. + (source.stats[BONUS_UNDEAD_DAMAGE].value * 0.01)
-                elseif victim.trait == TRAIT_HUMAN then trait_modifier = 1. + (source.stats[BONUS_HUMAN_DAMAGE].value * 0.01)
-                elseif victim.trait == TRAIT_DEMON then trait_modifier = 1. + (source.stats[BONUS_DEMON_DAMAGE].value * 0.01)
+                if victim.trait == TRAIT_BEAST then trait_modifier = 1. + (attacker.stats[BONUS_BEAST_DAMAGE].value * 0.01)
+                elseif victim.trait == TRAIT_UNDEAD then trait_modifier = 1. + (attacker.stats[BONUS_UNDEAD_DAMAGE].value * 0.01)
+                elseif victim.trait == TRAIT_HUMAN then trait_modifier = 1. + (attacker.stats[BONUS_HUMAN_DAMAGE].value * 0.01)
+                elseif victim.trait == TRAIT_DEMON then trait_modifier = 1. + (attacker.stats[BONUS_DEMON_DAMAGE].value * 0.01)
                 end
             end
+           -- print("5")
 
-
-            if direct and (damage_type ~= nil and damage_type == DAMAGE_TYPE_PHYSICAL) and (victim.equip_point[OFFHAND_POINT] ~= nil and victim.equip_point[OFFHAND_POINT].SUBTYPE == SHIELD_OFFHAND) then
+            if direct and (damage_type  and damage_type == DAMAGE_TYPE_PHYSICAL) and (victim.equip_point[OFFHAND_POINT]  and victim.equip_point[OFFHAND_POINT].SUBTYPE == SHIELD_OFFHAND) then
                 local block_chance = victim.stats[BLOCK_CHANCE].value
 
                 if block_chance > MAX_BLOCK_CHANCE then block_chance = MAX_BLOCK_CHANCE end
@@ -149,7 +160,7 @@ do
                     end
 
             end
-
+           -- print("6")
 
             if damage_type == DAMAGE_TYPE_PHYSICAL then
                 defence = 1. - (ParamToPercent(victim.stats[PHYSICAL_DEFENCE].value, PHYSICAL_DEFENCE) * 0.01)
@@ -159,24 +170,25 @@ do
 
                 damage = damage * (1. + (ParamToPercent(boost, MAGICAL_ATTACK) * 0.01))
             end
+            --print("7")
 
-
-            if attack_type ~= nil and direct then
+            if attack_type and direct then
                 attack_modifier = attack_type == MELEE_ATTACK and victim.stats[MELEE_DAMAGE_REDUCTION].value or victim.stats[RANGE_DAMAGE_REDUCTION].value
                 attack_modifier = 1. - (attack_modifier * 0.01)
                 if attack_modifier < MIN_ATTACK_DAMAGE_REDUCTION then attack_modifier = MIN_ATTACK_DAMAGE_REDUCTION end
             end
 
-
-            if attribute ~= nil then
+            --print("8")
+            if attribute then
                 local attribute_value = attacker.equip_point[WEAPON_POINT].ATTRIBUTE == attribute and attacker.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS or 0
 
                     attribute_bonus = 1. + (((attacker.stats[GetAttributeBonusParam(attribute)].value + attribute_value) - victim.stats[GetAttributeResistParam(attribute)].value) * 0.01)
                     if attribute_bonus < MIN_ATTRIBUTE_DAMAGE_REDUCTION then attribute_bonus = MIN_ATTRIBUTE_DAMAGE_REDUCTION end
 
             end
-
+            --print("9")
             damage = ((damage * attribute_bonus * trait_modifier) * critical_rate * block_reduction) * defence * attack_modifier
+            --print("10")
         end
 
 
@@ -185,8 +197,9 @@ do
         --print("defence "..defence)
         --print("modifier "..attack_modifier)
         --print(TimerGetRemaining(attacker.attack_timer))
-
-
+        --print("total raw damage "..damage)
+        --print("dispersion "..attacker.equip_point[WEAPON_POINT].DISPERSION[1] .. "/" .. attacker.equip_point[WEAPON_POINT].DISPERSION[2])
+        --print("11")
         if not (TimerGetRemaining(attacker.attack_timer) > 0.) and direct then
 
             if attacker.stats[HP_PER_HIT].value > 0 then
@@ -202,32 +215,47 @@ do
             TimerStart(attacker.attack_timer, BlzGetUnitAttackCooldown(source, 0) - 0.01, false, nil)
             OnMyAttack(source, target)
         end
-
-
+            --print("12")
             damage = R2I(GetRandomReal(damage * attacker.equip_point[WEAPON_POINT].DISPERSION[1], damage * attacker.equip_point[WEAPON_POINT].DISPERSION[2]))
+           -- print("13")
+            if direct and damage > 0 and victim then
+                local reflect = 0
 
-            if direct and damage > 0 then
-                local reflect = attack_type == MELEE_ATTACK and victim.stats[REFLECT_MELEE_DAMAGE].value or victim.stats[REFLECT_RANGE_DAMAGE].value
+                if attack_type then
+                     reflect = attack_type == MELEE_ATTACK and victim.stats[REFLECT_MELEE_DAMAGE].value or victim.stats[REFLECT_RANGE_DAMAGE].value
+                end
+
 
                     reflect = damage * ParamToPercent(reflect, REFLECT_DAMAGE)
-                    UnitDamageTarget(target, source, reflect, false, false, nil, nil, nil)
-                    CreateHitnumber(reflect, source, source, REFLECT_DAMAGE)
+
+                    if reflect >= 1 then
+                        UnitDamageTarget(target, source, reflect, false, false, nil, nil, nil)
+                        CreateHitnumber(R2I(reflect), source, source, REFLECT_STATUS)
+                    end
+
+                if damage_type == DAMAGE_TYPE_PHYSICAL then
+                    local damage_effect = AddSpecialEffect("DamageEffect.mdx", GetUnitX(target), GetUnitY(target))
+
+                        BlzSetSpecialEffectYaw(damage_effect, AngleBetweenUnits(target, source) * bj_DEGTORAD)
+                        BlzSetSpecialEffectZ(damage_effect, GetUnitZ(target) + 55.)
+
+                    DestroyEffect(damage_effect)
+                end
+
             end
+            --print("14")
 
-
-            if damage >= BlzGetUnitMaxHP(target) * 0.18 then
-                SetUnitExploded(target, true)
-            end
-
+            if damage >= BlzGetUnitMaxHP(target) * 0.18 and damage >= GetUnitState(target, UNIT_STATE_LIFE) then SetUnitExploded(target, true) end
+            --print("15")
             OnDamage_PreHit(source, target, damage)
             if damage < 0 then damage = 0 end
-
+            --print("16")
             UnitDamageTarget(source, target, damage, true, false, ATTACK_TYPE_NORMAL, nil, is_sound and attacker.equip_point[WEAPON_POINT].WEAPON_SOUND or nil)
             OnDamage_End(source, target, damage)
-
+            --print("17")
             --print(damage)
             CreateHitnumber(damage, source, target, attack_status)
-
+            --print("18")
 
         return damage
     end
@@ -275,7 +303,6 @@ do
                             GroupClear(enemy_group)
                             DestroyGroup(enemy_group)
                         else
-                            --print(bonus_damage)
                             DamageUnit(data.Owner, GetTriggerUnit(), actual_damage, data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, true, nil)
                         end
 

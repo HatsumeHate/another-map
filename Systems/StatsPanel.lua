@@ -1,6 +1,6 @@
 do
 
-    local UPDATE = 0.33
+    STAT_PANEL_UPDATE = 0.33
     PlayerStatsFrame = {}
     StatsList = {}
     PlayerHero = {}
@@ -8,7 +8,7 @@ do
     CharButton = nil
 
 
-    local function Update()
+    function StatPanelUpdate()
         for i = 1, 6 do
             if PlayerHero[i] ~= nil then
                 local data = GetUnitData(PlayerHero[i])
@@ -211,7 +211,7 @@ do
             BlzFrameSetVisible(SkillPanelFrame[GetPlayerId(GetTriggerPlayer()) + 1].main_frame, false)
         end)
 
-        TimerStart(CreateTimer(), UPDATE, true, Update)
+        TimerStart(CreateTimer(), STAT_PANEL_UPDATE, true, StatPanelUpdate)
         --RegisterConstructor(PlayerStatsFrame[1], 0.2, 0.2)
 
     end

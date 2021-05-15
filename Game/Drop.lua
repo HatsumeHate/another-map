@@ -14,21 +14,23 @@ do
     function DropForPlayer(unit, player)
         local unit_data = GetUnitData(unit)
         local drop_list = UNIT_DROP_LIST[unit_data.classification] or nil
-
+        --print("1")
         if drop_list == nil then return end
-
+        --print("2")
         local quality_list = drop_list.quality_list
         local number_list = GetRandomIntTable(1, #drop_list.item_list, drop_list.rolls)
         local max = drop_list.max_items
         local current_offset = 0.45
         local time_offset = 0.
+        --print("3")
 
 
             for i = 1, #number_list do
+
                 local current_item = drop_list.item_list[number_list[i]]
-
+                --print("checking")
                     if GetRandomReal(0., 100.) <= current_item.chance then
-
+                        --print("drop!")
                         DelayAction(current_offset + time_offset, function()
                             local my_item = CreateCustomItem(current_item.id, GetUnitX(unit) + GetRandomReal(-45., 45), GetUnitY(unit) + GetRandomReal(-45., 45), true)
 
@@ -69,7 +71,6 @@ do
             end)
         end
 
-        DoNothing()
     end
 
 
@@ -91,7 +92,7 @@ do
                     { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(STAFF_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(CHEST_ARMOR), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(HEAD_ARMOR), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(HANDS_ARMOR), chance = 5.3, generate = true },
@@ -133,7 +134,7 @@ do
                     { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(STAFF_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(CHEST_ARMOR), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(HEAD_ARMOR), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(HANDS_ARMOR), chance = 5.3, generate = true },

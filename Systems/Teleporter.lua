@@ -63,11 +63,11 @@ do
     end
 
 
-    RegisterTestCommand("show", function() ShowTeleportList(nil, 1) end)
-    RegisterTestCommand("tp", function() CreateTeleportFrame() end)
+    --RegisterTestCommand("show", function() ShowTeleportList(nil, 1) end)
+    --RegisterTestCommand("tp", function() CreateTeleportFrame() end)
 
 
-    function CreateTeleportFrame()
+    local function CreateTeleportFrame()
 
         local trg = CreateTrigger()
         TriggerAddAction(trg, TeleportButtonPressed)
@@ -104,13 +104,15 @@ do
         TeleportLocation[2] = { name = LOCALE_LIST[my_locale].SHORE_LOCATION, rect = gg_rct_shore_loc, trackable = nil }
         TeleportLocation[3] = { name = LOCALE_LIST[my_locale].WOODS_LOCATION, rect = gg_rct_woods_loc, trackable = nil }
 
-        for i = 1, 7 do
-            PlayerCurrentButtonList[i] = {}
-            PlayerCurrentButtonList[i].buttonlist = {}
-            for k = 1, 10 do
-                PlayerCurrentButtonList[i].buttonlist[k] = {}
+            for i = 1, 7 do
+                PlayerCurrentButtonList[i] = {}
+                PlayerCurrentButtonList[i].buttonlist = {}
+                for k = 1, 10 do
+                    PlayerCurrentButtonList[i].buttonlist[k] = {}
+                end
             end
-        end
+
+        CreateTeleportFrame()
 
     end
 

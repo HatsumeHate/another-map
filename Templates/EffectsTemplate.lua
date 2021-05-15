@@ -23,6 +23,8 @@ do
 
 
 
+
+
     function NewEffectData()
         return {
             power                 = 0,
@@ -469,6 +471,32 @@ do
             }
         })
         --==========================================--
+        NewEffectTemplate('ECHL', {
+            name = "chain lightning effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "A019",
+            level = {
+                [1] = {
+                    power = 11,
+                    attack_percent_bonus = 1.,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = LIGHTNING_ATTRIBUTE,
+
+                    --area_of_effect = 100.,
+                    max_targets = 1,
+
+                    sound = {
+                        pack = { "Sounds\\Spells\\lightning_hit_1.wav", "Sounds\\Spells\\lightning_hit_2.wav", "Sounds\\Spells\\lightning_hit_3.wav" },
+                        volume = 115, cutoff = 1500.
+                    },
+                }
+            }
+        })
+        --==========================================--
         NewEffectTemplate('ELBL', {
             name = "lightning ball effect",
             power_delta = 2,
@@ -845,6 +873,19 @@ do
                 }
             }
         })
+
+
+        RegisterTestCommand("fr effect", function()
+        local effect = GetEffectData("EFRB")
+
+            print(R2S(effect.level[1].power))
+            print(R2S(effect.level[1].attribute))
+            print(R2S(effect.level[1].damage_type))
+            print(R2S(effect.level[1].attack_type))
+            print(R2S(effect.level[1].area_of_effect))
+            print(R2S(effect.level[1].max_targets))
+
+    end)
     end
 
 end

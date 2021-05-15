@@ -630,7 +630,6 @@ do
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
 		})
-		-- TODO ^ in object editor
         --
         ItemAddData('I001', {
             NAME    = 'Плащ Теней',
@@ -985,6 +984,7 @@ do
 			SUBTYPE = BOW_WEAPON,
 			ATTRIBUTE = POISON_ATTRIBUTE,
 			DAMAGE  = 50,
+			stat_modificator = 1.2,
 			QUALITY = UNIQUE_ITEM,
 			level = 5,
 			flippy = true,
@@ -1005,6 +1005,7 @@ do
 			SUBTYPE = LEGS_ARMOR,
 			QUALITY = UNIQUE_ITEM,
 			DEFENCE = 20,
+			stat_modificator = 0.8,
 			flippy = true,
 			BONUS   = {
 				{ PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 20, METHOD = STRAIGHT_BONUS },
@@ -1124,8 +1125,7 @@ do
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE .."\"",
 			soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\sword.wav" }
 		})
-		--TODO create it in OE
-		ItemAddData('I00Q', {
+		ItemAddData('I018', {
 			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_BOOSTERS,
 			TYPE    = ITEM_TYPE_ARMOR,
 			SUBTYPE = LEGS_ARMOR,
@@ -1146,7 +1146,7 @@ do
 			soundpack = { equip = "Sound\\bootsmetal.wav", uneqip = "Sound\\bootsmetal.wav", drop = "Sound\\bootsmetal.wav" }
 		})
 
-		ItemAddData('I00Q', {
+		ItemAddData('I019', {
 			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_EYE_OF_THE_STORM,
 			TYPE    = ITEM_TYPE_JEWELRY,
 			SUBTYPE = NECKLACE_JEWELRY,
@@ -1167,7 +1167,7 @@ do
 			soundpack = { equip = "Sound\\ring_dexterity_equip.wav", uneqip = "Sound\\ring_dexterity_unequip.wav", drop = "Sound\\amulet.wav" }
 		})
 
-		ItemAddData('I018', {
+		ItemAddData('I01A', {
 			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_FIREPRINCESS,
 			TYPE    = ITEM_TYPE_JEWELRY,
 			SUBTYPE = NECKLACE_JEWELRY,
@@ -1189,7 +1189,7 @@ do
 			soundpack = { equip = "Sound\\ring_protectfire_equip.wav", uneqip = "Sound\\ring_protectfire_unequip.wav", drop = "Sound\\amulet.wav" }
 		})
 
-		ItemAddData('I019', {
+		ItemAddData('I01B', {
 			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_FIREQUEEN,
 			TYPE    = ITEM_TYPE_JEWELRY,
 			SUBTYPE = RING_JEWELRY,
@@ -1211,7 +1211,7 @@ do
 			soundpack = { equip = "Sound\\ring_protectfire_equip.wav", uneqip = "Sound\\ring_protectfire_unequip.wav", drop = "Sound\\amulet.wav" }
 		})
 
-		ItemAddData('I00Q', {
+		ItemAddData('I01C', {
 			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_PAIN_ECHO,
 			TYPE    = ITEM_TYPE_JEWELRY,
 			SUBTYPE = RING_JEWELRY,
@@ -1232,7 +1232,7 @@ do
 			soundpack = { equip = "Sound\\ring_regeneration_equip.wav", uneqip = "Sound\\ring_regeneration_unequip.wav", drop = "Sound\\ring.wav" }
 		})
 
-		ItemAddData('I00Q', {
+		ItemAddData('I01D', {
 			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_CRYSTAL_AXE,
 			TYPE    = ITEM_TYPE_WEAPON,
 			SUBTYPE = AXE_WEAPON,
@@ -1248,13 +1248,140 @@ do
 				{ PARAM = PHYSICAL_ATTACK, VALUE = 27, METHOD = STRAIGHT_BONUS },
 			},
 			MAX_SLOTS = 1,
-			frame_texture = "Weapon\\BTNFrostAxe.blp",
+			frame_texture = "Weapons\\BTNFrostAxe.blp",
 			legendary_effect = GetLegendaryEffect("ECRA"), --{ id = "ECRA", type = ITEM_PASSIVE_EFFECT },
 			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_CRYSTAL_AXE,
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_CRYSTAL_AXE .."\"",
 			soundpack = { equip = "Sound\\daggers_polar_equip.wav", uneqip = "Sound\\daggers_polar_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
 		})
 
+		ItemAddData('I01E', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_BOOTSOFPAIN,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = LEGS_ARMOR,
+			QUALITY = SET_ITEM,
+			DEFENCE = 20,
+			stat_modificator = 1.1,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = PHYSICAL_ATTACK, VALUE = 37, METHOD = STRAIGHT_BONUS },
+				{ PARAM = MAGICAL_ATTACK, VALUE = 55, METHOD = STRAIGHT_BONUS },
+				{ PARAM = MOVING_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 2,
+			frame_texture = "Armor\\BTNGoreBoot.blp",
+			set_bonus = GetItemSet("FRDL"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_BOOSTERS .."\"",
+			soundpack = { equip = "Sound\\bootsmetal.wav", uneqip = "Sound\\bootsmetal.wav", drop = "Sound\\bootsmetal.wav" }
+		})
+
+		ItemAddData('I01F', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_CHESTOFPAIN,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = CHEST_ARMOR,
+			QUALITY = SET_ITEM,
+			DEFENCE = 20,
+			stat_modificator = 1.25,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = CRIT_CHANCE, VALUE = 6, METHOD = STRAIGHT_BONUS },
+				{ PARAM = ATTACK_SPEED, VALUE = 7, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CAST_SPEED, VALUE = 7, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 2,
+			frame_texture = "Armor\\BTNSpikedArmor.blp",
+			set_bonus = GetItemSet("FRDL"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_BOOSTERS .."\"",
+			soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
+		})
+
+		ItemAddData('I01G', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_HEADOFPAIN,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = HEAD_ARMOR,
+			QUALITY = SET_ITEM,
+			DEFENCE = 20,
+			stat_modificator = 1.12,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 11, METHOD = STRAIGHT_BONUS },
+				{ PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 11, METHOD = STRAIGHT_BONUS },
+				{ PARAM = HP_VALUE, VALUE = 1.1, METHOD = MULTIPLY_BONUS },
+			},
+			MAX_SLOTS = 2,
+			frame_texture = "Armor\\BTN_Royal_Helmet.blp",
+			set_bonus = GetItemSet("FRDL"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_BOOSTERS .."\"",
+			soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
+		})
+
+		ItemAddData('I01H', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_THE_KING,
+			TYPE    = ITEM_TYPE_WEAPON,
+			SUBTYPE = BLUNT_WEAPON,
+			QUALITY = SET_ITEM,
+			ATTRIBUTE = PHYSICAL_ATTRIBUTE,
+			ATTRIBUTE_BONUS = 5,
+			stat_modificator = 0.9,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = STR_STAT, VALUE = 1, METHOD = STRAIGHT_BONUS },
+				{ PARAM = HP_VALUE, VALUE = 44, METHOD = STRAIGHT_BONUS },
+				{ PARAM = HOLY_RESIST, VALUE = 5, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 1,
+			frame_texture = "Weapons\\BTNInfernal Mace.blp",
+			set_bonus = GetItemSet("KAJS"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_THE_KING .."\"",
+			soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
+		})
+
+		ItemAddData('I01I', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_THE_JESTER,
+			TYPE    = ITEM_TYPE_WEAPON,
+			SUBTYPE = DAGGER_WEAPON,
+			QUALITY = SET_ITEM,
+			ATTRIBUTE = PHYSICAL_ATTRIBUTE,
+			ATTRIBUTE_BONUS = 5,
+			stat_modificator = 0.82,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = AGI_STAT, VALUE = 1, METHOD = STRAIGHT_BONUS },
+				{ PARAM = MP_VALUE, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				{ PARAM = DARKNESS_RESIST, VALUE = 5, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 1,
+			frame_texture = "Weapons\\BTNBlood Stinger.blp",
+			set_bonus = GetItemSet("KAJS"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_THE_JESTER .."\"",
+			soundpack = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
+		})
+
+		ItemAddData('I01J', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_MASTER_OF_ELEMENTS,
+			TYPE    = ITEM_TYPE_OFFHAND,
+			SUBTYPE = ORB_OFFHAND,
+			QUALITY = UNIQUE_ITEM,
+			DAMAGE  = 50,
+			stat_modificator = 1.2,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = MP_REGEN, VALUE = 1.05, METHOD = MULTIPLY_BONUS },
+				{ PARAM = INT_STAT, VALUE = 4, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 3,
+			frame_texture = "Offhand\\BTNMageOrb.blp",
+			legendary_effect = { id = "MOFE", type = ITEM_PASSIVE_EFFECT },
+			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS,
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_MASTER_OF_ELEMENTS .."\"",
+			soundpack = { equip = "Sound\\gem.wav", uneqip = "Sound\\gem.wav", drop = "Sound\\gem.wav" }
+		})
 
     end
 

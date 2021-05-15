@@ -58,12 +58,14 @@ do
         end
 
 
+        ---@param unit unit
         function GetUnitClass(unit)
             return UnitsList[GetHandleId(unit)].unit_class or NO_CLASS
         end
 
 
     ---@param source unit
+    ---@param reference_data table
     function NewUnitByTemplate(source, reference_data)
         local class_base_stats = BASE_STATS[reference_data.unit_class or NO_CLASS]
         local data                 = {
@@ -164,6 +166,10 @@ do
 
 
 
+
+
+
+
     function UnitDataInit()
 
         NewUnitTemplate('h000', {
@@ -186,6 +192,18 @@ do
             --base_stats = { health = 3000., hp_regen = 30. },
         })
 
+
+        -- dummy
+        NewUnitTemplate('dmmy', {
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            --trait = TRAIT_DEMON,
+            time_before_remove = 10.,
+            base_stats = { health = 15000., hp_regen = 5., moving_speed = 0. },
+            --weapon = { ATTACK_SPEED = 1.4, DAMAGE = 5, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
+            have_mp = false,
+            xp = 35,
+        })
 
         -- fiend
         NewUnitTemplate('u007', {
@@ -397,7 +415,7 @@ do
         })
         --==========================================================--
         -- zombie big
-        NewUnitTemplate('u00E', {
+        NewUnitTemplate('n00E', {
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
             trait = TRAIT_UNDEAD,
@@ -557,6 +575,20 @@ do
                 end
 
         end)
+
+
+        RegisterTestCommand("t1", function()
+        print("dummy spawned")
+
+                    CreateUnit(Player(10), FourCC("dmmy"), GetRectCenterX(gg_rct_dummy1), GetRectCenterY(gg_rct_dummy1), 135.)
+        local d2 =  CreateUnit(Player(10), FourCC("dmmy"), GetRectCenterX(gg_rct_dummy2), GetRectCenterY(gg_rct_dummy2), 135.)
+        local d3 =  CreateUnit(Player(10), FourCC("dmmy"), GetRectCenterX(gg_rct_dummy3), GetRectCenterY(gg_rct_dummy3), 135.)
+
+        DelayAction(0.01, function()
+            ModifyStat(d2, ALL_RESIST, 15, STRAIGHT_BONUS, true)
+            ModifyStat(d3, ALL_RESIST, 35, STRAIGHT_BONUS, true)
+        end)
+    end)
 
     end
 

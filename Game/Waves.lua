@@ -5,42 +5,48 @@
 ---
 do
 
-    MAIN_MULTIBOARD = nil
-    local WaveTimer
+
+    WaveTimer = nil
     Current_Wave = 1
 
 
-    local function TimeToText(time)
-        local mins = math.floor(time / 60.)
-        local secs = time - (mins * 60.)
 
-        return R2I(mins) .. ":" .. R2I(secs)
-    end
 
 
     RegisterTestCommand("run", function() AddWaveTimer(3.) end)
 
 
 
+    function EndWave()
+
+        if Current_Wave == 50 then
+            VictoryScreen()
+        else
+            AddWaveTimer(200.)
+            Current_Wave = Current_Wave + 1
+            ResetShops()
+            ToggleCitizens()
+        end
+
+    end
+
 
     function ResetShops()
-        local item_count = GetRandomInt(2, 7)
+        local item_count = GetRandomInt(7, 12)
 
+            --smorc
             ClearShop(gg_unit_opeo_0031)
             for i = 1, item_count do
-                local item = CreateCustomItem(GetRandomGeneratedId(), 0., 0.)
+                local item = CreateCustomItem(GetRandomGeneratedItemId(), 0., 0.)
                 local roll = GetRandomInt(1, 5)
                 local quality
 
-                    if roll == 1 then
-                        quality = MAGIC_ITEM
-                    elseif roll == 2 then
-                        quality = RARE_ITEM
-                    else
-                        quality = COMMON_ITEM
+                    if roll == 1 then quality = MAGIC_ITEM
+                    elseif roll == 2 then quality = RARE_ITEM
+                    else quality = COMMON_ITEM
                     end
 
-                GenerateItemStats(item, Current_Wave, quality)
+                GenerateItemStats(item, Current_Wave + GetRandomInt(1, 2), quality)
                 AddItemToShop(gg_unit_opeo_0031, item, false)
             end
 
@@ -53,35 +59,45 @@ do
                 BLUNT_WEAPON,
                 GREATBLUNT_WEAPON,
                 STAFF_WEAPON,
-                BOW_WEAPON,
+                --BOW_WEAPON,
                 DAGGER_WEAPON,
                 CHEST_ARMOR,
                 HANDS_ARMOR,
                 HEAD_ARMOR,
-                LEGS_ARMOR
+                LEGS_ARMOR,
+                SHIELD_OFFHAND
             }
 
+            --smith
             ClearShop(gg_unit_n000_0056)
             for i = 1, #item_pool do
                 local item = CreateCustomItem(GetGeneratedItemId(item_pool[i]), 0., 0.)
-                GenerateItemStats(item, Current_Wave, GetRandomInt(1, 2) == 1 and COMMON_ITEM or RARE_ITEM)
+                GenerateItemStats(item, Current_Wave, GetRandomInt(1, 5) == 1 and RARE_ITEM or COMMON_ITEM)
                 AddItemToShop(gg_unit_n000_0056, item, false)
             end
 
 
             item_count = GetRandomInt(2, 7)
             for i = 1, item_count do
-                local item = CreateCustomItem(GetRandomGeneratedId(), 0., 0.)
-                GenerateItemStats(item, Current_Wave, GetRandomInt(1, 2) == 1 and COMMON_ITEM or RARE_ITEM)
+                local item = CreateCustomItem(GetRandomGeneratedItemId(), 0., 0.)
+                GenerateItemStats(item, Current_Wave, GetRandomInt(1, 5) == 1 and RARE_ITEM or COMMON_ITEM)
                 AddItemToShop(gg_unit_n000_0056, item, false)
             end
 
 
+            item_pool = {
+                RING_JEWELRY,
+                NECKLACE_JEWELRY,
+                ORB_OFFHAND,
+                BELT_ARMOR,
+            }
+
+            --herbalist
             ClearShop(gg_unit_n001_0055)
-            item_count = GetRandomInt(2, 5)
+            item_count = GetRandomInt(2, 6)
             for i = 1, item_count do
-                local item = CreateCustomItem(GetRandomInt(1, 2) == 1 and GetGeneratedItemId(RING_JEWELRY) or GetGeneratedItemId(NECKLACE_JEWELRY), 0., 0.)
-                GenerateItemStats(item, Current_Wave, GetRandomInt(1, 2) == 1 and COMMON_ITEM or RARE_ITEM)
+                local item = CreateCustomItem(GetGeneratedItemId(item_pool[GetRandomInt(1, 4)]), 0., 0.)
+                GenerateItemStats(item, Current_Wave, GetRandomInt(1, 5) == 1 and RARE_ITEM or COMMON_ITEM)
                 AddItemToShop(gg_unit_n001_0055, item, false)
             end
 
@@ -91,35 +107,30 @@ do
     function AddWaveTimer(total_time)
         local item = MultiboardGetItem(MAIN_MULTIBOARD, 1, 1)
 
-            MultiboardSetItemStyle(item, true, false)
+        MultiboardSetItemStyle(item, true, false)
+        MultiboardSetItemValue(item, TimeToText(total_time))
+        TimerStart(WaveTimer, 0., false, nil)
+
+        TimerStart(WaveTimer, 1., true, function()
+            total_time = total_time - 1.
             MultiboardSetItemValue(item, TimeToText(total_time))
-            TimerStart(WaveTimer, 0., false, nil)
 
-            TimerStart(WaveTimer, 1., true, function()
-                total_time = total_time - 1.
-                MultiboardSetItemValue(item, TimeToText(total_time))
+            if total_time <= 0. then
+                PauseTimer(WaveTimer)
+                SpawnMonstersWave(GetRandomMonsterSpawnPoint())
+                ToggleCitizens()
+                Play2DSound("Sound\\Interface\\Warning.wav", 127)
+            end
 
-                    if total_time <= 0. then
-                        PauseTimer(WaveTimer)
-                        SpawnMonsters()
-                    end
-
-            end)
+        end)
 
     end
 
 
     function WavesInit()
 
+        InitMultiboard()
         WaveTimer = CreateTimer()
-        MAIN_MULTIBOARD = CreateMultiboard()
-        MultiboardSetTitleText(MAIN_MULTIBOARD, LOCALE_LIST[my_locale].WAVE_INCOMING_TEXT)
-        MultiboardSetItemsStyle(MAIN_MULTIBOARD, true, false)
-        MultiboardSetItemsWidth(MAIN_MULTIBOARD, 6.5 / 200.0)
-        MultiboardSetColumnCount(MAIN_MULTIBOARD, 4)
-        MultiboardSetRowCount(MAIN_MULTIBOARD, 4)
-        MultiboardDisplay(MAIN_MULTIBOARD, true)
-
 
     end
 

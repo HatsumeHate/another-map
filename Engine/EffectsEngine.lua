@@ -146,6 +146,7 @@ do
             -- delay for effect animation
             TimerStart(CreateTimer(), myeffect.hit_delay or 0., false, function()
                 if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
+                    --print("effect level data : ".. "attribute " .. GetItemAttributeName(myeffect.attribute) .. " damage type " .. I2S(myeffect.damage_type) .. " power " .. I2S(myeffect.power))
                     DamageUnit(source, target, myeffect.power or 0,
                             myeffect.attribute or PHYSICAL_ATTRIBUTE,
                             myeffect.damage_type or DAMAGE_TYPE_NONE,
@@ -204,7 +205,7 @@ do
 
         local myeffect =  data.level[data.current_level]
 
-        print("EFFECT START -> " .. data.name .. " with level " .. data.current_level)
+        --print("EFFECT START -> " .. data.name .. " with level " .. data.current_level)
 
         data.remove_timer = CreateTimer()
             TimerStart(data.remove_timer, (myeffect.delay or 0.) + (myeffect.hit_delay or 0.) + 1., false, function()
@@ -270,11 +271,15 @@ do
                 -- damaging
                 if myeffect.power ~= nil then
                     -- multiple target damage
+                    --print("power > 0")
 
                     if myeffect.area_of_effect ~= nil and myeffect.area_of_effect > 0. then
+                        --print("multiple targets")
                         local enemy_group = CreateGroup()
                         GroupEnumUnitsInRange(enemy_group, x, y, myeffect.area_of_effect, nil)
                         local targets = myeffect.max_targets or 1
+
+                        --print("targets - " .. I2S(BlzGroupGetSize(enemy_group)))
 
                             for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
                                 local picked = BlzGroupUnitAt(enemy_group, index)
@@ -298,6 +303,7 @@ do
                         GroupClear(enemy_group)
                         DestroyGroup(enemy_group)
                     else
+                        --print("single target")
                         -- single target damage
                         if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 and IsUnitEnemy(target, player_entity) then
                             if myeffect.angle_window ~= nil and myeffect.angle_window > 0. then
@@ -305,6 +311,7 @@ do
                                     ApplyEffectDamage(source, target, data, lvl)
                                 end
                             else
+                                --print("apply damage effect - " .. GetUnitName(source) .. " to " .. GetUnitName(target) .. " with effect " .. data.name .. " with level " .. I2S(lvl))
                                 ApplyEffectDamage(source, target, data, lvl)
                             end
                         end
@@ -421,7 +428,7 @@ do
             end)
 
 
-        print("EFFECT END -> " .. data.name .. " with level " .. data.current_level)
+        --print("EFFECT END -> " .. data.name .. " with level " .. data.current_level)
         return data
     end
 

@@ -255,9 +255,11 @@ do
 
             data.item = item
             BlzSetItemName(item, data.NAME)
-
             ITEM_DATA[handle] = data
-            GenerateItemLevel(item, 1)
+
+            if IsRandomGeneratedId(id) then GenerateItemStats(item, 1, COMMON_ITEM)
+            else GenerateItemLevel(item, 1) end
+
             if data.TYPE == ITEM_TYPE_SKILLBOOK then GenerateItemBookSkill(item) end
 
                 if data.flippy ~= nil and data.flippy then
@@ -315,11 +317,10 @@ do
                                 METHOD = parameter.METHOD
                             }
 
-                            if item_data.BONUS[#item_data.BONUS].METHOD == STRAIGHT_BONUS and (item_data.BONUS[#item_data.BONUS].PARAM ~= CRIT_MULTIPLIER or item_data.BONUS[#item_data.BONUS].PARAM ~= HP_REGEN or item_data.BONUS[#item_data.BONUS].PARAM ~= MP_REGEN) then
+                            if item_data.BONUS[#item_data.BONUS].METHOD == STRAIGHT_BONUS and not (item_data.BONUS[#item_data.BONUS].PARAM == CRIT_MULTIPLIER or item_data.BONUS[#item_data.BONUS].PARAM == HP_REGEN or item_data.BONUS[#item_data.BONUS].PARAM == MP_REGEN) then
                                 item_data.BONUS[#item_data.BONUS].VALUE = GetRandomInt(parameter.value_min, parameter.value_max)
                             else
-                                item_data.BONUS[#item_data.BONUS].VALUE = GetRandomReal(parameter.value_min, parameter.value_max)
-                                item_data.BONUS[#item_data.BONUS].VALUE = math.floor(item_data.BONUS[#item_data.BONUS].VALUE * 100.) / 100.
+                                item_data.BONUS[#item_data.BONUS].VALUE = math.floor(GetRandomReal(parameter.value_min, parameter.value_max) * 100.) / 100.
                             end
 
                             bonus_parameters_count = bonus_parameters_count - 1
@@ -405,17 +406,9 @@ do
         local stats_bonus = 0
         local stone_bonus = 0
 
-                if item_data.BONUS ~= nil then
-                    stats_bonus = #item_data.BONUS * 50
-                end
-
-                if item_data.MAX_SLOTS ~= nil then
-                    stone_bonus = 30 * item_data.MAX_SLOTS
-                end
-
-                if item_data.legendary_effect ~= nil then
-                    stats_bonus = stats_bonus * 2
-                end
+                if item_data.BONUS then stats_bonus = #item_data.BONUS * 50 end
+                if item_data.MAX_SLOTS then stone_bonus = 30 * item_data.MAX_SLOTS end
+                if item_data.legendary_effect then stats_bonus = stats_bonus * 2 end
 
             item_data.level = level
             item_data.cost = level * 30 + stats_bonus + stone_bonus
@@ -463,7 +456,7 @@ do
                 end
 
             GenerateItemCost(item, level)
-            if item_data.stat_modificator ~= nil then GenerateItemStatPreset(item, item_data.stat_modificator) end
+            if item_data.stat_modificator then GenerateItemStatPreset(item, item_data.stat_modificator) end
     end
 
 
@@ -523,18 +516,18 @@ do
 
 
     local TWOHANDED_LIST = {
-        FIST_WEAPON           = false,
-        BOW_WEAPON            = true,
-        BLUNT_WEAPON          = false,
-        GREATBLUNT_WEAPON     = true,
-        SWORD_WEAPON          = false,
-        GREATSWORD_WEAPON     = true,
-        AXE_WEAPON            = false,
-        GREATAXE_WEAPON       = true,
-        DAGGER_WEAPON         = false,
-        STAFF_WEAPON          = true,
-        JAWELIN_WEAPON        = false,
-        THROWING_KNIFE_WEAPON = false,
+        [FIST_WEAPON]           = false,
+        [BOW_WEAPON]            = true,
+        [BLUNT_WEAPON]          = false,
+        [GREATBLUNT_WEAPON]     = true,
+        [SWORD_WEAPON]          = false,
+        [GREATSWORD_WEAPON]     = true,
+        [AXE_WEAPON]            = false,
+        [GREATAXE_WEAPON]       = true,
+        [DAGGER_WEAPON]         = false,
+        [STAFF_WEAPON]          = true,
+        [JAWELIN_WEAPON]        = false,
+        [THROWING_KNIFE_WEAPON] = false,
     }
 
 
@@ -571,7 +564,7 @@ do
 
     end
 
-
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA??????????????????????????????3")
     ---@param unit unit
     ---@param item item
     ---@param flag boolean
@@ -585,15 +578,7 @@ do
 
             if item_data.TYPE == ITEM_TYPE_WEAPON then
                 point = WEAPON_POINT
-
-                if IsWeaponTypeTwohanded(item_data.SUBTYPE) and flag then
-                    if item_data.equip_point[OFFHAND_POINT] ~= nil then
-                        --disarmed_item = item_data.equip_point[OFFHAND_POINT].item
-                        EquipItem(unit, unit_data.equip_point[OFFHAND_POINT], false)
-                    end
-                end
-
-            elseif item_data.TYPE == ITEM_TYPE_ARMOR then
+            elseif item_data.TYPE == ITEM_TYPE_ARMOR and item_data.SUBTYPE ~= BELT_ARMOR then
 
                 if item_data.SUBTYPE == CHEST_ARMOR then point = CHEST_POINT
                 elseif item_data.SUBTYPE == HANDS_ARMOR then point = HANDS_POINT
@@ -612,13 +597,13 @@ do
             end
 
 
-            if (unit_data.equip_point[point] ~= nil and unit_data.equip_point[point].SUBTYPE ~= FIST_WEAPON) and flag then
+            if (unit_data.equip_point[point] and unit_data.equip_point[point].SUBTYPE ~= FIST_WEAPON) and flag then
                 disarmed_item = unit_data.equip_point[point].item
                 EquipItem(unit, unit_data.equip_point[point].item, false)
             end
 
 
-            if item_data.set_bonus ~= nil then
+            if item_data.set_bonus then
                 ApplySetBonus(unit, item_data.set_bonus, flag)
             end
 
@@ -627,7 +612,7 @@ do
                 else unit_data.equip_point[point] = point == WEAPON_POINT and unit_data.default_weapon or nil end
 
 
-            if item_data.legendary_effect ~= nil then
+            if item_data.legendary_effect then
                 ApplyLegendaryEffect(unit, item_data.legendary_effect, flag)
             end
 
@@ -648,69 +633,24 @@ do
 
 
 
-
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA?????????????????????????????? 1")
     function GiveItemToPlayerByUnit(unit, item)
         SetItemVisible(item, false)
         AddToInventory(GetPlayerId(GetOwningPlayer(unit))+1, item)
     end
 
 
-    PlayerPickUpItemFlag = {}
-
-    local trg = CreateTrigger()
-    TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER)
-    TriggerAddAction(trg, function()
-
-        if GetOrderTargetItem() ~= nil and GetItemType(GetOrderTargetItem()) ~= ITEM_TYPE_POWERUP and not PlayerPickUpItemFlag[GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1] then
-            local unit = GetTriggerUnit()
-            local player = GetPlayerId(GetOwningPlayer(unit)) + 1
-            local item = GetOrderTargetItem()
-            local angle = AngleBetweenXY_DEG(GetItemX(item), GetItemY(item), GetUnitX(unit), GetUnitY(unit))
-
-
-                 if DistanceBetweenUnitXY(unit, GetItemX(item), GetItemY(item)) <= 200. and not PlayerPickUpItemFlag[player] then
-                    PlayerPickUpItemFlag[player] = true
-                    local item_data = GetItemData(item)
-
-                        UnitRemoveItem(unit, item)
-                        IssuePointOrderById(unit, order_move, GetUnitX(unit) + 0.01, GetUnitY(unit) - 0.01)
-                        local done =  AddToInventory(player, item)
-                        if done and item_data.quality_effect ~= nil then DestroyEffect(item_data.quality_effect) end
-                        DelayAction(0.001, function() PlayerPickUpItemFlag[player] = false end)
-
-                else
-                    IssuePointOrderById(unit, order_move, GetItemX(item) + Rx(25., angle), GetItemY(item) + Ry(25., angle))
-                end
-
-            item = nil
-            unit = nil
-        end
-
-    end)
-
-
-    trg = CreateTrigger()
-    TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_PICKUP_ITEM)
-    TriggerAddAction(trg, function()
-        if not IsItemInvulnerable(GetManipulatedItem()) then
-            UnitRemoveItem(GetTriggerUnit(), GetManipulatedItem())
-            SetItemVisible(GetManipulatedItem(), false)
-        end
-    end)
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA?????????????????????????????? 2")
+    PlayerPickUpItemFlag = {  }
 
 
 
-    trg = CreateTrigger()
-    TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_USE_ITEM)
-    TriggerAddAction(trg, function()
-        local player = GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1
-            OnItemUse(GetTriggerUnit(), GetManipulatedItem(), GetEventTargetUnit())
 
-            if PlayerInventoryFrameState[player] or GetItemTypeId(GetManipulatedItem()) == ITEM_TYPE_CHARGED then
-                UpdateInventoryWindow(player)
-            end
 
-    end)
+
+
+
+
 
 
 
@@ -778,6 +718,58 @@ do
         for i = 1, bj_MAX_PLAYERS do
             PlayerPickUpItemFlag[i] = false
         end
+
+
+        local trg = CreateTrigger()
+        TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER)
+        TriggerAddAction(trg, function()
+
+            if GetOrderTargetItem() ~= nil and GetItemType(GetOrderTargetItem()) ~= ITEM_TYPE_POWERUP and not PlayerPickUpItemFlag[GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1] then
+                local unit = GetTriggerUnit()
+                local player = GetPlayerId(GetOwningPlayer(unit)) + 1
+                local item = GetOrderTargetItem()
+                local angle = AngleBetweenXY_DEG(GetItemX(item), GetItemY(item), GetUnitX(unit), GetUnitY(unit))
+
+                    if DistanceBetweenUnitXY(unit, GetItemX(item), GetItemY(item)) <= 200. and not PlayerPickUpItemFlag[player] then
+                        PlayerPickUpItemFlag[player] = true
+                        local item_data = GetItemData(item)
+                        UnitRemoveItem(unit, item)
+                        IssuePointOrderById(unit, order_move, GetUnitX(unit) + 0.01, GetUnitY(unit) - 0.01)
+                        local done =  AddToInventory(player, item)
+                        if done and item_data.quality_effect ~= nil then DestroyEffect(item_data.quality_effect) end
+                        DelayAction(0.001, function() PlayerPickUpItemFlag[player] = false end)
+                    else
+                        IssuePointOrderById(unit, order_move, GetItemX(item) + Rx(25., angle), GetItemY(item) + Ry(25., angle))
+                    end
+
+                item = nil
+                unit = nil
+            end
+
+        end)
+
+
+        trg = CreateTrigger()
+        TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_PICKUP_ITEM)
+        TriggerAddAction(trg, function()
+            if not IsItemInvulnerable(GetManipulatedItem()) then
+                UnitRemoveItem(GetTriggerUnit(), GetManipulatedItem())
+                SetItemVisible(GetManipulatedItem(), false)
+            end
+        end)
+
+        trg = CreateTrigger()
+        TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_USE_ITEM)
+        TriggerAddAction(trg, function()
+            local player = GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1
+                OnItemUse(GetTriggerUnit(), GetManipulatedItem(), GetEventTargetUnit())
+
+                if PlayerInventoryFrameState[player] or GetItemTypeId(GetManipulatedItem()) == ITEM_TYPE_CHARGED then
+                    UpdateInventoryWindow(player)
+                end
+
+        end)
+
     end
 
 

@@ -500,7 +500,7 @@ do
         TimerStart(my_timer, PERIOD, true, function()
 
             if IsMapBounds(start_x, start_y) or m.time <= 0. then
-                print("BOUNDS")
+                --print("BOUNDS")
 
                 if #m.sound_on_destroy > 0 then AddSound(m.sound_on_destroy[GetRandomInt(1, #m.sound_on_destroy)], start_x, start_y) end
                 if m.effect_on_expire ~= nil then ApplyEffect(from, nil, start_x, start_y, m.effect_on_expire, 1) end
@@ -683,9 +683,12 @@ do
 
                         if BlzGroupGetSize(group) > 0 then
 
-                            print("MISSILE HIT")
+                            --print("MISSILE HIT")
 
                                 if #m.sound_on_hit > 0 then AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y) end
+
+                            if weapon ~= nil then print("has weapon") end
+                            if m.effect_on_hit ~= nil then print("has effect") end
 
                             for index = BlzGroupGetSize(group) - 1, 0, -1 do
                                 local picked = BlzGroupUnitAt(group, index)
@@ -696,7 +699,9 @@ do
 
                                     if weapon ~= nil then
                                         local damage_list = GetDamageValues(unit_data, weapon, effects, m)
+                                        --print("do damage from a weapon "  .. GetUnitName(from))
                                         DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
+                                        --print("do damage from a  - ok")
                                         damage_list.targets = damage_list.targets - 1
 
                                             if damage_list.targets <= 0 then
@@ -707,7 +712,11 @@ do
                                     end
 
                                     if effects ~= nil and effects.effect ~= nil then ApplyEffect(from, picked, start_x, start_y, effects.effect, effects.level) end
-                                    if m.effect_on_hit ~= nil then ApplyEffect(from, picked, start_x, start_y, m.effect_on_hit, 1) end
+                                    if m.effect_on_hit ~= nil then
+                                        --print("do damage from an effect " .. GetUnitName(from))
+                                        ApplyEffect(from, picked, start_x, start_y, m.effect_on_hit, 1)
+                                        --print("do damage from an effect - ok")
+                                    end
 
                                     OnMissileHit(from, picked, m)
 

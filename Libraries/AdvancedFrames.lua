@@ -17,7 +17,7 @@ do
             elseif SkillPanelFrame[player].state ~= nil and SkillPanelFrame[player].state then
                 frame = SkillPanelFrame[player].slider
             elseif PlayerInventoryFrameState[player] ~= nil and PlayerInventoryFrameState[player] then
-                btn = GetButtonData(InventorySlots[32])
+                btn = GetButtonData(InventorySlots[player][32])
                 frame = BlzFrameGetText(btn.charges_text_frame) ~= "0" and btn.charges_text_frame or btn.image
             end
 
@@ -213,9 +213,7 @@ do
     ---@param direction framepointtype
     function CreatePlayerContextMenu(player, originframe, direction, parent)
         DestroyContextMenu(player)
-
         parent = GetMasterParentFrame(player) or parent
-
         ContextFrame[player] = {}
         ContextFrame[player].frames = {}
         ContextFrame[player].backdrop = BlzCreateFrame('ScoreScreenButtonBackdropTemplate', parent, 0, 0)
@@ -223,13 +221,11 @@ do
         ContextFrame[player].focus_frame = BlzCreateFrameByType("TEXT", "123asd", ContextFrame[player].backdrop, "", 0)
         ContextFrame[player].focus_trigger = CreateTrigger()
         BlzTriggerRegisterFrameEvent(ContextFrame[player].focus_trigger, ContextFrame[player].focus_frame, FRAMEEVENT_MOUSE_LEAVE)
-
         BlzFrameSetPoint(ContextFrame[player].focus_frame, FRAMEPOINT_CENTER, ContextFrame[player].backdrop, FRAMEPOINT_CENTER, 0.,0.)
 
         TriggerAddAction(ContextFrame[player].focus_trigger, function()
             DestroyContextMenu(player)
         end)
-
         local from = direction == FRAMEPOINT_RIGHT and FRAMEPOINT_LEFT or FRAMEPOINT_RIGHT
         local to = direction == FRAMEPOINT_RIGHT and FRAMEPOINT_RIGHT or FRAMEPOINT_LEFT
 
@@ -470,9 +466,10 @@ do
             elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
                 property_text = property_text .. LOCALE_LIST[my_locale].SUPPRESSION_UI .. R2I(item_data.SUPPRESSION)
             elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
-                property_text = property_text .. LOCALE_LIST[my_locale].DEFENCE_UI .. R2I(item_data.DEFENCE)
-                    if item_data.SUBTYPE == SHIELD_OFFHAND then property_text = property_text .. "|n" .. LOCALE_LIST[my_locale].BLOCK_UI .. R2I(item_data.BLOCK) .. "%%"
-                    elseif item_data.SUBTYPE == QUIVER_OFFHAND then property_text = GetItemSubTypeName(item_data.SUBTYPE) .. "|n" .. "|n" end
+                --property_text = property_text .. LOCALE_LIST[my_locale].DEFENCE_UI .. R2I(item_data.DEFENCE)
+                    if item_data.SUBTYPE == SHIELD_OFFHAND then
+                        property_text = property_text .. LOCALE_LIST[my_locale].DEFENCE_UI .. R2I(item_data.DEFENCE) .. "|n" .. LOCALE_LIST[my_locale].BLOCK_UI .. R2I(item_data.BLOCK) .. "%%"
+                    end
             end
         
 
@@ -515,17 +512,17 @@ do
 
 
             local myframe = SetTooltipText(1, tooltip, GetItemNameColorized(item), TEXT_JUSTIFY_MIDDLE, tooltip.backdrop, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.01)
-            LockWidth(myframe, BlzFrameGetWidth(myframe), 0.1, 0.26)
+            LockWidth(myframe, BlzFrameGetWidth(myframe), 0.1, 0.16)
             BlzFrameSetScale(myframe, 1.2)
             --print("name " .. BlzFrameGetWidth(myframe))
             
-             if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
+             --if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
             height = height + BlzFrameGetHeight(myframe)
 
 
             myframe = SetTooltipText(2, tooltip, property_text, TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., -0.005)
             BlzFrameSetScale(myframe, 0.95)
-             if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
+             --if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
             height = height + BlzFrameGetHeight(myframe)
             --print("property " .. BlzFrameGetWidth(myframe))
 
@@ -536,7 +533,7 @@ do
                 BlzFrameSetScale(myframe, 0.95)
                 LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.45)
                 master_index = master_index + 1
-                 if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
+                 --if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
                 height = height + BlzFrameGetHeight(myframe)
                 --print("bonus " .. BlzFrameGetWidth(myframe))
             end
@@ -547,7 +544,7 @@ do
                 LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.2)
                 BlzFrameSetScale(myframe, 0.97)
                 master_index = master_index + 1
-                if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
+                --if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
                 height = height + BlzFrameGetHeight(myframe) * 0.95
                 --print("legendary " .. BlzFrameGetWidth(myframe))
             elseif item_data.set_bonus ~= nil then
@@ -573,7 +570,7 @@ do
                 BlzFrameSetScale(myframe, 0.95)
                 LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.45)
                 master_index = master_index + 1
-                if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
+                --if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
                 height = height + BlzFrameGetHeight(myframe) * 0.95
             end
 
@@ -596,7 +593,7 @@ do
                 myframe = SetTooltipText(master_index, tooltip, stones_text, TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0)
                 LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.45)
                 master_index = master_index + 1
-                 if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
+                 --if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
                 height = height + BlzFrameGetHeight(myframe)
 
                     if free_stone_slots > 0 then
@@ -605,7 +602,7 @@ do
                         myframe = SetTooltipText(master_index, tooltip, "", TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0)
                         master_index = master_index + 1
                         BlzFrameSetSize(myframe, 0.01, 0.02)
-                         if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
+                         --if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
                         height = height + BlzFrameGetHeight(myframe)
 
                         local offset_bonus = 4 - free_stone_slots
@@ -657,6 +654,16 @@ do
                 end
 
             end
+
+
+        local test_width
+        for i = 1, master_index do
+            test_width = BlzFrameGetWidth(tooltip.textframe[i]) * 1.07
+            if test_width > width then
+                width = test_width
+            end
+        end
+
 
         --print("most is " .. width)
         --print("before ------" .. BlzFrameGetWidth(tooltip.backdrop) .. " / " ..BlzFrameGetHeight(tooltip.backdrop) )
@@ -968,7 +975,7 @@ do
                     BlzFrameSetScale(tooltip.imageframe[i], 1.)
                     BlzFrameSetVisible(tooltip.imageframe[i], false)
                     BlzFrameSetText(tooltip.textframe[i], "")
-                    --BlzFrameSetSize(tooltip.textframe[i], 0.001 ,0.001)
+                    BlzFrameSetSize(tooltip.textframe[i], 0.0 ,0.0)
                     BlzFrameSetScale(tooltip.textframe[i], 1.)
                     BlzFrameSetVisible(tooltip.textframe[i], false)
                 end
