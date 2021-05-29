@@ -1,6 +1,17 @@
 do
 
 
+    local function IsAHero(unit)
+
+        for i = 1, 6 do
+            if PlayerHero[i] ~= nil and PlayerHero[i] == unit then
+                return true
+            end
+        end
+
+        return false
+    end
+
 
     function OnUnitCreated(new_unit)
 
@@ -9,7 +20,11 @@ do
 
 
     function OnJumpExpire(target, sign)
-
+        if sign == "A00O" then
+            if UnitHasEffect(target, "BSTR") then
+                ApplyEffect(target, nil, 0., 0., "ELBS", 1)
+            end
+        end
     end
 
 
@@ -69,6 +84,27 @@ do
     ---@param y real
     ---@param effect table
     function OnEffectPrecast(source, target, x, y, effect)
+        local leveled_effect = effect.level[effect.current_level]
+
+            if effect.id == "EEXC" then
+                if GetUnitState(target, UNIT_STATE_LIFE) / GetUnitState(target, UNIT_STATE_MAX_LIFE) <= 0.2  then
+                    leveled_effect.power = R2I(leveled_effect.power * 3)
+                    leveled_effect.bonus_crit_chance = 20.
+                end
+            elseif UnitHasEffect(source, "FRBD") then
+                if leveled_effect.attribute and leveled_effect.power and leveled_effect.attribute == FIRE_ATTRIBUTE then
+                    leveled_effect.power = leveled_effect.power * 1.35
+                end
+            elseif UnitHasEffect(source, "PNEC") then
+                if effect.id == "ECSP" then
+                    leveled_effect.can_crit = true
+                    leveled_effect.bonus_crit_chance = 25.
+                end
+            elseif UnitHasEffect(source, "EOTS") then
+                if effect.id == "EDSC" then
+                    leveled_effect.power = leveled_effect.power * 1.15
+                end
+            end
 
     end
 
@@ -86,7 +122,8 @@ do
             if buff_data ~= nil and buff_data.buff_source == source then
                 GroupAddUnit(unit_data.chain.group, target)
             end
-
+        elseif effect.id == 'EMTR' then
+            PushUnit(source, target, AngleBetweenUnitXY(target, effect.effect_x, effect.effect_y) + 180., 200., 1.25, "smeteor")
         end
 
     end
@@ -97,7 +134,11 @@ do
     ---@param target unit
     ---@param buff table
     function OnBuffExpire(source, target, buff)
-
+        if buff.id == "A01S" and buff.current_level == 15 then
+            local unit_data = GetUnitData(target)
+                unit_data.hp_vector = true
+                UpdateUnitParameter(target, HP_REGEN)
+        end
     end
 
     ---@param source unit
@@ -107,8 +148,18 @@ do
 
     end
 
-    function OnBuffLevelChange(source, target, buff, flag)
-
+    function OnBuffLevelChange(source, target, buff, max_level)
+        if buff.id == "A01P" then
+            SetBuffExpirationTime(target, "A01P", -1)
+        elseif buff.id == "A01S" then
+            if buff.current_level == 15 then
+                local unit_data = GetUnitData(target)
+                unit_data.hp_vector = false
+                UpdateUnitParameter(target, HP_REGEN)
+            else
+                SetBuffExpirationTime(target, "A01S", -1)
+            end
+        end
     end
 
     ---@param source unit
@@ -148,8 +199,26 @@ do
 
     ---@param source unit
     ---@param target unit
-    function OnMyAttack(source, target)
+    function OnMyAttack(source, target, attack_data)
+        --local attacker_data = GetUnitData(source)
 
+            if UnitHasEffect(source, "ECRA") then
+                if GetUnitAbilityLevel(target, FourCC("A01P")) == 0 then
+                    ApplyBuff(source, target, "A01P", 1)
+                else
+                    SetBuffLevel(target, "A01P", GetBuffLevel(target, "A01P") + 1)
+                end
+            elseif UnitHasEffect(source, "MOFE") then
+
+                if attack_data.attribute == ICE_ATTRIBUTE then ApplyEffect(source, target, 0,0, "EMEI", 1)
+                elseif attack_data.attribute == FIRE_ATTRIBUTE then ApplyEffect(source, target, 0,0, "EMEF", 1)
+                elseif attack_data.attribute == LIGHTNING_ATTRIBUTE then ApplyEffect(source, target, 0,0, "EMEL", 1) end
+
+            elseif UnitHasEffect(source, "RDAG") then
+                ApplyEffect(source, source, 0, 0, "ERIT", 1)
+            end
+
+        attack_data = nil
     end
 
     ---@param source unit
@@ -169,18 +238,21 @@ do
             AddSoundVolumeZ("Sounds\\Spells\\blink_launch_".. GetRandomInt(1, 3) ..".wav", GetUnitX(source), GetUnitY(source), 35., 120, 1700.)
             SetUnitPosition(source, x, y)
         elseif skill.Id == 'A00I' then
-            local unit_data = GetUnitData(source)
-
-                if unit_data.spawned_hydra ~= nil then
-                    KillUnit(unit_data.spawned_hydra)
-                end
-
-            unit_data.spawned_hydra = CreateUnit(Player(GetOwningPlayer(source)), FourCC('shdr'), x, y, GetRandomReal(0.,359.))
-            UnitApplyTimedLife(unit_data.spawned_hydra, 0, 7.)
-        elseif skill.Id == 'A00J' then SparkCast(source, target, x, y)
+            SummonHydra(source, x, y)
+        elseif skill.Id == 'A00J' then
+            if UnitHasEffect(source,"EOTS") then
+                SparkCast_Legendary(source)
+            else
+                SparkCast(source, target, x, y)
+            end
         elseif skill.Id == "A019" then ChainLightningCast(source, target)
-        elseif skill.Id == 'A00O' then MakeUnitJump(source, AngleBetweenUnitXY(source, x, y), x, y, 720., 0.6, 'A00O')
+        elseif skill.Id == 'A00O' then MakeUnitJump(source, AngleBetweenUnitXY(source, x, y), x, y, 970., 0.6, 'A00O')
         elseif skill.Id == 'A010' then WhirlwindActivate(source)
+        elseif skill.Id == 'A00B' then
+            local effect = AddSpecialEffect("Spell\\DetroitSmash_Effect.mdx", GetUnitX(source) + Rx(50., GetUnitFacing(source)), GetUnitY(source) + Ry(50., GetUnitFacing(source)))
+            BlzSetSpecialEffectYaw(effect, GetUnitFacing(source) * bj_DEGTORAD)
+            BlzSetSpecialEffectScale(effect, 0.7)
+            DestroyEffect(effect)
         end
 
     end
@@ -192,15 +264,23 @@ do
     ---@param skill table
     function OnSkillCast(source, target, x, y, skill)
 
+        if UnitHasEffect(source, "EWTM") then
+            if skill.type == SKILL_MAGICAL then
+                if GetUnitState(source, UNIT_STATE_LIFE) / GetUnitState(source, UNIT_STATE_MAX_LIFE) > 0.05 then
+                    ApplyEffect(source, source, 0, 0, "EWTM", 1)
+                    SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) - (BlzGetUnitMaxHP(source) * 0.05))
+                end
+            end
+        end
+
     end
 
 
 
     function OnItemUse(source, item, target)
         local id = GetItemTypeId(item)
-
             if id == FourCC(ITEM_POTION_HEALTH_WEAK) then
-                ApplyEffect(source, source, 0.,0., "PHWK", 1)
+                ApplyEffect(source, nil, 0.,0., "PHWK", 1)
             elseif id == FourCC(ITEM_POTION_MANA_WEAK) then
                 ApplyEffect(source, source, 0.,0., "PMWK", 1)
             elseif id == FourCC(ITEM_POTION_HEALTH_HALF) then
@@ -217,6 +297,31 @@ do
                 ApplyEffect(source, source, 0.,0., "PHUN", 2)
             elseif id == FourCC(ITEM_POTION_MIX_STRONG) then
                 ApplyEffect(source, source, 0.,0., "PHUN", 3)
+            elseif id == FourCC(ITEM_SCROLL_OF_TOWN_PORTAL) then
+                local x = GetUnitX(source); local y = GetUnitY(source)
+                local portal = AddSpecialEffect("Spell\\D2Portal.mdx", x + 50., y + 50.)
+                local rect = Rect((x + 50.) - 50., (y + 50.) - 25., (x + 50.) + 50., (y + 50.) + 25.)
+                local region = CreateRegion()
+                local trg = CreateTrigger()
+
+                    RegionAddRect(region, rect)
+                    BlzSetSpecialEffectScale(portal, 1.6)
+                    AddSoundVolume("Sound\\portalcast.wav", x + 50., y + 50., 128, 1900.)
+
+                    TriggerRegisterEnterRegion(trg, region, nil)
+                    TriggerAddAction(trg, function()
+                        if IsAHero(GetTriggerUnit()) then
+                            PlayLocalSound("Sound\\portalenter.wav", GetPlayerId(GetOwningPlayer(GetTriggerUnit())), 125)
+                            SetUnitPosition(GetTriggerUnit(), GetRectCenterX(gg_rct_portal_location), GetRectCenterY(gg_rct_portal_location))
+                        end
+                    end)
+
+                    DelayAction(15., function()
+                        DestroyEffect(portal)
+                        RemoveRect(rect)
+                        RemoveRegion(region)
+                        DestroyTrigger(trg)
+                    end)
             end
 
     end

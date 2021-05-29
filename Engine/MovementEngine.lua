@@ -148,7 +148,6 @@ do
 
             TimerStart(CreateTimer(), PERIOD, true, function()
                 if IsUnitInRange(source, pull_data.target, pull_data.release_range) or GetUnitState(source, UNIT_STATE_LIFE) < 0.045 or GetUnitState(pull_data.target, UNIT_STATE_LIFE) < 0.045 then
-                    print("break")
                     OnPullRelease(source, pull_data.target, sign)
                     pull_data = nil
                     PullList[h] = nil
@@ -195,14 +194,18 @@ do
         UnitAddAbility(target, FourCC('Arav'))
         UnitRemoveAbility(target, FourCC('Arav'))
 
-        BlzPauseUnitEx(target, true)
+        SafePauseUnit(target, true)
+
+        --BlzPauseUnitEx(target, true)
 
         TimerStart(CreateTimer(), PERIOD, true, function ()
 
             if IsMapBounds(unit_x, unit_y) or time <= 0. then
-                print("total jump distance was "..DistanceBetweenUnitXY(target, start_x, start_y))
+                --print("total jump distance was "..DistanceBetweenUnitXY(target, start_x, start_y))
                 OnJumpExpire(target, sign)
-                BlzPauseUnitEx(target, false)
+                SafePauseUnit(target, false)
+                --if GetUnitAbilityLevel(target, FourCC("A01M")) > 0 then BlzPauseUnitEx(target, false) end
+                --BlzPauseUnitEx(target, false)
                 SetUnitFlyHeight(target, 0., 0.)
                 DestroyTimer(GetExpiredTimer())
             else
@@ -214,14 +217,18 @@ do
                     time = 0.
                 else
 
-                    unit_x = unit_x + vx
-                    unit_y = unit_y + vy
+                    if IsPathable_Air(unit_x + vx, unit_y + vy) then
+                        unit_x = unit_x + vx
+                        unit_y = unit_y + vy
+                        SetUnitX(target, unit_x)
+                        SetUnitY(target, unit_y)
+                    end
+
                     unit_z = GetParabolaZ(start_height, end_height, height, distance, length)
                     length = length + step
 
                     SetUnitFlyHeight(target, unit_z - current_z, 0.)
-                    SetUnitX(target, unit_x)
-                    SetUnitY(target, unit_y)
+
 
                     time = time - PERIOD
                     safe_time = safe_time - PERIOD
@@ -278,14 +285,18 @@ do
         PushList[handle] = push_data
         push_data.timer = CreateTimer()
 
+        SafePauseUnit(target, true)
+
             TimerStart(push_data.timer, PERIOD, true, function()
                 if IsMapBounds(push_data.x, push_data.y) or push_data.time < 0. then
+                    SafePauseUnit(target, false)
                     OnPushExpire(target, push_data)
                     PushList[handle] = nil
-                    BlzPauseUnitEx(target, false)
+                    --if GetUnitAbilityLevel(target, FourCC("A01M")) > 0 then BlzPauseUnitEx(target, false) end
+                    --BlzPauseUnitEx(target, false)
                     DestroyTimer(push_data.timer)
                 else
-                    BlzPauseUnitEx(target, true)
+                    --BlzPauseUnitEx(target, true)
                     SetUnitPositionSmooth(target, push_data.x + push_data.vx, push_data.y + push_data.vy)
                     local faderate = 0.1 + (push_data.time / total_time) - penalty
 
@@ -686,9 +697,6 @@ do
                             --print("MISSILE HIT")
 
                                 if #m.sound_on_hit > 0 then AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y) end
-
-                            if weapon ~= nil then print("has weapon") end
-                            if m.effect_on_hit ~= nil then print("has effect") end
 
                             for index = BlzGroupGetSize(group) - 1, 0, -1 do
                                 local picked = BlzGroupUnitAt(group, index)

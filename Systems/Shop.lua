@@ -20,28 +20,29 @@ do
             for player = 1, 6 do
                 local my_shop_data = ShopData[GetHandleId(ShopInFocus[player])]
 
-                    if my_shop_data ~= nil then
+                    if my_shop_data then
                         for i = 1, MAXIMUM_ITEMS do
                             local button = ButtonList[GetHandleId(ShopFrame[player].slot[i])]
                             button.item = my_shop_data.item_list[i].item
 
-                            if button.item ~= nil then
+                            if button.item then
                                 local item_data = GetItemData(button.item)
                                 BlzFrameSetTexture(button.image, item_data.frame_texture, 0, true)
                                 FrameChangeTexture(button.button, item_data.frame_texture)
 
-                                if GetItemType(button.item) == ITEM_TYPE_CHARGED then
-                                    BlzFrameSetVisible(button.charges_frame, true)
-                                    BlzFrameSetText(button.charges_text_frame, R2I(GetItemCharges(button.item)))
-                                else
-                                    BlzFrameSetVisible(button.charges_frame, false)
-                                    BlzFrameSetText(button.charges_text_frame, "0")
-                                end
+                                    if GetItemType(button.item) == ITEM_TYPE_CHARGED then
+                                        BlzFrameSetVisible(button.charges_frame, true)
+                                        BlzFrameSetText(button.charges_text_frame, I2S(R2I(GetItemCharges(button.item))))
+                                    else
+                                        BlzFrameSetVisible(button.charges_frame, false)
+                                        BlzFrameSetText(button.charges_text_frame, "")
+                                    end
 
                             else
                                 BlzFrameSetTexture(button.image, button.original_texture, 0, true)
                                 FrameChangeTexture(button.button, button.original_texture)
                                 BlzFrameSetVisible(button.charges_frame, false)
+                                BlzFrameSetText(button.charges_text_frame, "")
                             end
                         end
                     end
@@ -80,13 +81,18 @@ do
         local h = GetHandleId(BlzGetTriggerFrame())
         --local item_data = GetItemData(ButtonList[h].item)
 
-            if ButtonList[h].item ~= nil then
-                CreatePlayerContextMenu(player, ButtonList[h].button, FRAMEPOINT_RIGHT, ButtonList[GetHandleId(ShopFrame[player].slot[32])].image)
+            if ButtonList[h].item then
+                local button_data = GetButtonData(ShopFrame[player].slot[32])
+                CreatePlayerContextMenu(player, ButtonList[h].button, FRAMEPOINT_RIGHT, ButtonList[GetHandleId(button_data.image)])
                 AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_BUY, function()
 
                     if GetItemCharges(ButtonList[h].item) > 1 then
                         CreateSlider(player, ButtonList[h], ButtonList[GetHandleId(ShopFrame[player].slot[32])].image, function()
-                            BuyItem(player, ButtonList[h].item, BlzFrameGetValue(SliderFrame[player].slider))
+                            local amount = BlzFrameGetValue(SliderFrame[player].slider)
+                            if amount > GetItemCharges(ButtonList[h].item) then
+                                amount = GetItemCharges(ButtonList[h].item)
+                            end
+                            BuyItem(player, ButtonList[h].item, amount)
                         end, nil)
                     else
                         BuyItem(player, ButtonList[h].item, 1)
@@ -146,7 +152,7 @@ do
         BlzFrameSetSize(new_FrameCharges, 0.012, 0.012)
         BlzFrameSetTexture(new_FrameCharges, "GUI\\ChargesTexture.blp", 0, true)
         BlzFrameSetPoint(new_FrameChargesText, FRAMEPOINT_CENTER, new_FrameCharges, FRAMEPOINT_CENTER, 0.,0.)
-        BlzFrameSetText(new_FrameChargesText, "0")
+        BlzFrameSetText(new_FrameChargesText, "")
         BlzFrameSetVisible(new_FrameCharges, false)
 
         BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
@@ -274,13 +280,23 @@ do
                 total_cost = total_cost * amount
             end
 
-            if gold > total_cost then
+            if gold >= total_cost then
                 SetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD, gold - total_cost)
-                item = RemoveItemFromShop(ShopInFocus[player], item)
 
-                    if GetItemType(item) == ITEM_TYPE_CHARGED then
-                        SetItemCharges(item, amount)
-                    end
+
+                if GetItemType(item) == ITEM_TYPE_CHARGED then
+                        if GetItemCharges(item) == amount then
+                            item = RemoveItemFromShop(ShopInFocus[player], item)
+                        else
+                            SetItemCharges(item, GetItemCharges(item) - amount)
+                            item = CreateCustomItem_Id(GetItemTypeId(item), 0., 0.)
+                            UpdateShopWindow()
+                        end
+                    SetItemCharges(item, amount)
+                else
+                    item = RemoveItemFromShop(ShopInFocus[player], item)
+                end
+
 
                 AddToInventory(player, item)
                 PlayLocalSound("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", player-1)
@@ -343,12 +359,13 @@ do
             if GetItemType(item) == ITEM_TYPE_CHARGED then
                 local id = GetItemTypeId(item)
                     for i = 1, MAXIMUM_ITEMS do
-                        if id == GetItemTypeId(my_shop_data.item_list[i].item) then
+                        if my_shop_data.item_list[i].item and id == GetItemTypeId(my_shop_data.item_list[i].item) then
                             if my_shop_data.item_list[i].perm then
                                 RemoveCustomItem(item)
                                 return true
                             else
-                                SetItemCharges(item, GetItemCharges(item) + GetItemCharges(my_shop_data.item_list[i].item))
+                                SetItemCharges(my_shop_data.item_list[i].item, GetItemCharges(item) + GetItemCharges(my_shop_data.item_list[i].item))
+                                UpdateShopWindow()
                                 RemoveCustomItem(item)
                                 return true
                             end
@@ -402,13 +419,17 @@ do
 
     end
 
+    local FirstTime_Data = nil
+
+
     ---@param unit_owner unit
     ---@param texture string
-    function CreateShop(unit_owner, texture)
+    function CreateShop(unit_owner, texture, soundpack)
         local handle = GetHandleId(unit_owner)
 
             ShopData[handle] = {}
             ShopData[handle].item_list = {}
+            ShopData[handle].soundpack = soundpack or nil
 
 
             for i = 1, MAXIMUM_ITEMS do
@@ -416,6 +437,30 @@ do
                 ShopData[handle].item_list[i].item = nil
                 ShopData[handle].item_list[i].perm = false
             end
+
+
+            if not FirstTime_Data then
+
+                FirstTime_Data = {
+                    [1] = { first_time = true },
+                    [2] = { first_time = true },
+                    [3] = { first_time = true },
+                    [4] = { first_time = true },
+                    [5] = { first_time = true },
+                    [6] = { first_time = true }
+                }
+
+                for i = 1, 6 do
+                    if GetLocalPlayer() == Player(i-1) then
+                        FirstTime_Data[i].effect = AddSpecialEffectTarget("Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdx", unit_owner, "overhead")
+                    else
+                        FirstTime_Data[i].effect = AddSpecialEffectTarget("", unit_owner, "overhead")
+                    end
+                end
+
+            end
+
+
 
 
             local trg = CreateTrigger()
@@ -436,6 +481,10 @@ do
                         BlzFrameSetText(ShopFrame[player].name, GetUnitName(unit_owner))
                         UpdateShopWindow()
 
+                        if soundpack then
+                            PlayLocalSound(soundpack.open[GetRandomInt(1, #soundpack.open)], id, 125)
+                        end
+
                             TimerStart(CreateTimer(), 0.1, true, function()
                                 if not IsUnitInRange(hero, unit_owner, 299.) or IsUnitHidden(unit_owner) then
                                     DestroySlider(player)
@@ -444,8 +493,19 @@ do
                                     ShopFrame[player].state = false
                                     if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(ShopFrame[player].main_frame, false) end
                                     DestroyTimer(GetExpiredTimer())
+                                    if soundpack then
+                                        PlayLocalSound(soundpack.close[GetRandomInt(1, #soundpack.open)], id, 125)
+                                    end
                                 end
                             end)
+
+
+
+                        if FirstTime_Data[player].first_time then
+                            ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_SHOP_1, GetPlayerId(GetTriggerPlayer()))
+                            DestroyEffect(FirstTime_Data[player].effect)
+                            FirstTime_Data[player].first_time = false
+                        end
 
                     end
                 end

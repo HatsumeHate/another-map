@@ -25,16 +25,21 @@ do
         local unit_data = GetUnitData(unit)
 
             if effect.type == ITEM_PASSIVE_EFFECT then
-                if flag then unit_data.effects[effect.id] = true
-                else unit_data.effects[effect.id] = nil end
-            else
                 if flag then
+                    if effect.on_apply and not unit_data.effects[effect.id] then effect.on_apply(unit) end
+                    unit_data.effects[effect.id] = true
+                else
+                    if effect.on_end and unit_data.effects[effect.id] then effect.on_end(unit) end
+                    unit_data.effects[effect.id] = nil
+                end
+            else
+                if flag and not unit_data.effects[effect.id] then
                     unit_data.effects[effect.id] = CreateTimer()
                     TimerStart(unit_data.effects[effect.id], effect.period, true, function()
-                        effect.func(unit, effect.id)
+                        effect.periodic(unit)
                     end)
-                else
-                    effect.endfunc(unit, effect.id)
+                elseif not flag and unit_data.effects[effect.id] then
+                    effect.on_end(unit)
                     DestroyTimer(unit_data.effects[effect.id])
                     unit_data.effects[effect.id] = nil
                 end
@@ -46,44 +51,82 @@ do
     function InitLegendaryEffects()
         --=========================================================================
         NewLegendaryEffect({
-            name = "Все огненные заклинания на 35%% сильнее.",
+            name =  LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_FIREBOND,
             id = "FRBD",
             type = ITEM_PASSIVE_EFFECT
         })
         --=========================================================================
         NewLegendaryEffect({
-            name = "кристальный топор",
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_CRYSTAL_AXE,
             id = "ECRA",
             type = ITEM_PASSIVE_EFFECT
         })
         --=========================================================================
         NewLegendaryEffect({
-            name = "эхо боли",
-            id = "ECSL",
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_PAIN_ECHO,
+            id = "PNEC",
             type = ITEM_PASSIVE_EFFECT
         })
         --=========================================================================
         NewLegendaryEffect({
-            name = "огненная принцесса",
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD,
+            id = "BTCW",
+            type = ITEM_ACTIVE_EFFECT,
+            period = 0.75,
+            periodic = function(unit)
+                local enemies = CreateGroup()
+
+                    GroupEnumUnitsInRange(enemies, GetUnitX(unit), GetUnitY(unit), 400., nil)
+
+                        for index = BlzGroupGetSize(enemies) - 1, 0, -1 do
+                            local picked = BlzGroupUnitAt(enemies, index)
+                            if not IsUnitEnemy(picked, GetOwningPlayer(unit)) then
+                                GroupRemoveUnit(enemies, picked)
+                            end
+                        end
+
+                    local count = BlzGroupGetSize(enemies)
+
+                    if GetUnitAbilityLevel(unit, FourCC("A01Q")) == 0 and count > 0 then ApplyBuff(unit, unit, "A01Q", BlzGroupGetSize(enemies))
+                    elseif GetUnitAbilityLevel(unit, FourCC("A01Q")) > 0 and count > 0 then SetBuffLevel(unit, "A01Q", BlzGroupGetSize(enemies)); SetBuffExpirationTime(unit, "A01Q", -1)
+                    else RemoveBuff(unit, "A01Q") end
+
+                    GroupClear(enemies)
+                    DestroyGroup(enemies)
+
+            end,
+            on_end = function(unit)
+                RemoveBuff(unit, "A01Q")
+            end
+        })
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_WITCH_MASTERY,
+            id = "EWTM",
+            type = ITEM_PASSIVE_EFFECT
+        })
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM,
             id = "EOTS",
             type = ITEM_PASSIVE_EFFECT
         })
         --=========================================================================
         NewLegendaryEffect({
-            name = "око бури",
-            id = "EOTS",
-            type = ITEM_PASSIVE_EFFECT
-        })
-        --=========================================================================
-        NewLegendaryEffect({
-            name = "сапоги бустеры",
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_BOOSTERS,
             id = "BSTR",
             type = ITEM_PASSIVE_EFFECT
         })
         --=========================================================================
         NewLegendaryEffect({
-            name = "мастер элементов",
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS,
             id = "MOFE",
+            type = ITEM_PASSIVE_EFFECT
+        })
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_RITUAL_DAGGER,
+            id = "RDAG",
             type = ITEM_PASSIVE_EFFECT
         })
         --=========================================================================

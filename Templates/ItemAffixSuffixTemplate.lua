@@ -581,6 +581,12 @@ do
                 ITEM_SUFFIX_FURY,
                 ITEM_SUFFIX_HIGH_KNIGHT,
                 ITEM_SUFFIX_ENDLESS_FURY,
+            },
+            [QUIVER_OFFHAND] = {
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_FURY,
+                ITEM_SUFFIX_PRECISION,
+                ITEM_SUFFIX_ANGER,
             }
         },
         [MAGIC_ITEM] = {
@@ -748,7 +754,8 @@ do
             },
             [SKILL_CATEGORY_INNER_STRENGTH] = {
                 "A00Q",
-                "A00C"
+                "A00C",
+                "ABFA"
             }
         },
         [SORCERESS_CLASS] = {
@@ -762,7 +769,7 @@ do
                 "A003",
                 "A001",
                 "A005",
-                "A00N"
+                "A00E"
             },
             [SKILL_CATEGORY_FIRE] = {
                 "A00D",
@@ -3074,6 +3081,15 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = BONUS_BEAST_DAMAGE, value_min = 5, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = BONUS_DEMON_DAMAGE, value_min = 5, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = BONUS_HUMAN_DAMAGE, value_min = 5, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = BONUS_UNDEAD_DAMAGE, value_min = 5, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
@@ -3127,6 +3143,15 @@ do
                         additional_parameter = 0,
                         parameter_bonus = {
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = BONUS_BEAST_DAMAGE, value_min = 5, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = BONUS_DEMON_DAMAGE, value_min = 5, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = BONUS_HUMAN_DAMAGE, value_min = 5, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = BONUS_UNDEAD_DAMAGE, value_min = 5, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                }
+                            },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -3186,6 +3211,15 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = BONUS_BEAST_DAMAGE, value_min = 7, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = BONUS_DEMON_DAMAGE, value_min = 7, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = BONUS_HUMAN_DAMAGE, value_min = 7, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = BONUS_UNDEAD_DAMAGE, value_min = 7, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 24, METHOD = STRAIGHT_BONUS, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
@@ -3239,6 +3273,15 @@ do
                         additional_parameter = 0,
                         parameter_bonus = {
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 11, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = BONUS_BEAST_DAMAGE, value_min = 10, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = BONUS_DEMON_DAMAGE, value_min = 10, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = BONUS_HUMAN_DAMAGE, value_min = 10, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = BONUS_UNDEAD_DAMAGE, value_min = 10, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                }
+                            },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -3784,7 +3827,7 @@ do
                         additional_parameter = 0,
                         parameter_bonus = {
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 30. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 1.3, METHOD = STRAIGHT_BONUS, probability = 40. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 10. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 10. },
                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -3832,7 +3875,7 @@ do
                         additional_parameter = 0,
                         parameter_bonus = {
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 1.3, METHOD = STRAIGHT_BONUS, probability = 40. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 10. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 10. },
                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -3880,7 +3923,7 @@ do
                         additional_parameter = 0,
                         parameter_bonus = {
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 1.4, METHOD = STRAIGHT_BONUS, probability = 40. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 2, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 10. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 2, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 10. },
                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -3928,7 +3971,7 @@ do
                         additional_parameter = 0,
                         parameter_bonus = {
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 1.5, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 3, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 14, value_max = 19, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -3983,7 +4026,7 @@ do
                         additional_parameter = -2,
                         parameter_bonus = {
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.2, value_max = 1.4, METHOD = STRAIGHT_BONUS, probability = 40. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -4031,7 +4074,7 @@ do
                         additional_parameter = -2,
                         parameter_bonus = {
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.2, value_max = 1.5, METHOD = STRAIGHT_BONUS, probability = 40. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 10. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 10. },
                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 14, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -4079,7 +4122,7 @@ do
                         additional_parameter = -2,
                         parameter_bonus = {
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.4, value_max = 1.55, METHOD = STRAIGHT_BONUS, probability = 40. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 10. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 10. },
                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 20, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -4127,7 +4170,7 @@ do
                         additional_parameter = -2,
                         parameter_bonus = {
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.3, value_max = 1.6, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 6, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 6, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 28, value_max = 38, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -6021,7 +6064,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 15, value_max = 23, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.4, value_max = 0.6, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
@@ -6101,7 +6144,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 23, value_max = 26, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.4, value_max = 0.6, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
@@ -6181,7 +6224,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 26, value_max = 32, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.4, value_max = 0.7, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
@@ -6261,7 +6304,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 32, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.4, value_max = 0.75, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.07, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.07, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
@@ -6367,7 +6410,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 15, value_max = 23, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.4, value_max = 0.65, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 30. },
@@ -6468,7 +6511,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 23, value_max = 26, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.4, value_max = 0.65, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 7, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 30. },
@@ -6569,7 +6612,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 26, value_max = 32, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.4, value_max = 0.75, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 9, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 30. },
@@ -6670,7 +6713,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 32, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.5, value_max = 0.85, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.07, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.07, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 13, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 30. },
@@ -6777,7 +6820,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 30, value_max = 46, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.6, value_max = 0.75, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.04, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.04, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 30. },
@@ -6878,7 +6921,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 23, value_max = 26, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.6, value_max = 0.75, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 14, value_max = 18, METHOD = STRAIGHT_BONUS, probability = 30. },
@@ -6979,7 +7022,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 26, value_max = 32, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.6, value_max = 0.85, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.12, value_max = 1.16, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.12, value_max = 1.16, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 18, value_max = 24, METHOD = STRAIGHT_BONUS, probability = 30. },
@@ -7080,7 +7123,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 64, value_max = 70, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.6, value_max = 0.85, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.14, value_max = 1.2, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.14, value_max = 1.2, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = BLOCK_CHANCE, value_min = 26, value_max = 30, METHOD = STRAIGHT_BONUS, probability = 30. },
@@ -7194,7 +7237,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 15, value_max = 23, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.4, value_max = 0.6, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
@@ -7203,7 +7246,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 0.3, value_max = 0.5, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
@@ -7309,7 +7352,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 23, value_max = 26, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.4, value_max = 0.6, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
@@ -7318,7 +7361,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 0.3, value_max = 0.6, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 1.04, value_max = 1.055, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1.04, value_max = 1.055, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
@@ -7424,7 +7467,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 26, value_max = 32, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.4, value_max = 0.65, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
@@ -7433,7 +7476,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 6, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 0.4, value_max = 0.6, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
@@ -7539,7 +7582,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 32, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.4, value_max = 0.75, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 1.07, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.07, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
@@ -7548,7 +7591,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 0.4, value_max = 0.6, METHOD = STRAIGHT_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 1.06, value_max = 1.075, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1.06, value_max = 1.075, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
@@ -7827,7 +7870,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 36, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 35. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 35. },
                                 }
                             },
                             {
@@ -7843,7 +7886,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 23, METHOD = STRAIGHT_BONUS, probability = 35. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 35. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 35. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 35. },
                                 }
                             },
                             {

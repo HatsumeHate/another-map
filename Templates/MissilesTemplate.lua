@@ -126,6 +126,22 @@ do
         })
 
         --==============================================--
+        NewMissileTemplate('SRHD', {
+            name = "hydra missile",
+            model = "Spell\\GreatElderHydraMoltenBreath.mdx",
+            max_distance = 750.,
+            radius = 52.,
+            speed = 870.,
+            start_z = 50.,
+            end_z = 50.,
+            arc = 0.05,
+            scale = 0.55,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+
+        --==============================================--
         NewMissileTemplate('MSKA', {
             name = "skeleton archer",
             model = "Abilities\\Weapons\\Arrow\\ArrowMissile.mdx",
@@ -134,7 +150,7 @@ do
             speed = 800.,
             start_z = 65.,
             end_z = 65.,
-            arc = 0.2,
+            arc = 0.15,
             ignore_terrain = false,
             penetrate = false,
             full_distance = true
@@ -148,7 +164,7 @@ do
             speed = 800.,
             start_z = 65.,
             end_z = 65.,
-            arc = 0.2,
+            arc = 0.15,
             ignore_terrain = false,
             penetrate = false,
             full_distance = true
@@ -162,7 +178,7 @@ do
             speed = 800.,
             start_z = 65.,
             end_z = 65.,
-            arc = 0.2,
+            arc = 0.15,
             ignore_terrain = false,
             penetrate = false,
             full_distance = true
@@ -292,6 +308,81 @@ do
             end_z = 65.,
             arc = 0.,
             scale = 1.1,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MBAL', {
+            name = "BAAL missile",
+            model = "Abilities\\Weapons\\GargoyleMissile\\GargoyleMissile.mdx",
+            max_distance = 1000.,
+            radius = 57.,
+            speed = 670.,
+            start_z = 65.,
+            end_z = 60.,
+            arc = 0.,
+            scale = 1.2,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MREA', {
+            name = "reanimated boss",
+            model = "Abilities\\Weapons\\SearingArrow\\SearingArrowMissile.mdx",
+            max_distance = 900.,
+            radius = 53.,
+            speed = 900.,
+            start_z = 60.,
+            end_z = 60.,
+            arc = 0.2,
+            scale = 1.1,
+            ignore_terrain = false,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MSAT', {
+            name = "arachnid thrower missile",
+            model = "Abilities\\Weapons\\HarpyMissile\\HarpyMissile.mdx",
+            max_distance = 600.,
+            radius = 57.,
+            speed = 450.,
+            start_z = 45.,
+            end_z = 45.,
+            arc = 0.1,
+            scale = 1.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MSBN', {
+            name = "bandit missile",
+            model = "Abilities\\Weapons\\Banditmissile\\Banditmissile.mdx",
+            max_distance = 700.,
+            radius = 57.,
+            speed = 420.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.1,
+            scale = 1.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MSSP', {
+            name = "bandit missile",
+            model = "Abilities\\Weapons\\ChimaeraAcidMissile\\ChimaeraAcidMissile.mdx",
+            max_distance = 750.,
+            radius = 57.,
+            speed = 370.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.1,
+            scale = 1.,
             ignore_terrain = true,
             penetrate = false,
             full_distance = true
@@ -452,7 +543,7 @@ do
             max_distance = 600.,
             effect_on_hit = 'EBCH',
             radius = 75.,
-            speed = 800.,
+            speed = 1200.,
             start_z = 70.,
             end_z = 70.,
             arc = 0.,

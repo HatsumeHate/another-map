@@ -10,7 +10,7 @@ do
     local CitizenZones = {}
 
     function SpawnCitizens(rect, min, max)
-        for i = 1, GetRandomInt(3, 5) do
+        for i = 1, GetRandomInt(min, max) do
             if Chance(65.) then
                 if Chance(50.) then
                     bj_lastCreatedUnit = CreateUnit(Player(8), FourCC('n00H'), GetRandomRectX(rect), GetRandomRectY(rect), GetRandomReal(0, 360.))
@@ -40,9 +40,9 @@ do
     end
 
 
-    function ToggleCitizens()
+    function ToggleCitizens(state)
         ForGroup(CitizenGroup, function()
-            ShowUnit(GetEnumUnit(), not IsUnitHidden(GetEnumUnit()))
+            ShowUnit(GetEnumUnit(), state)
         end)
     end
 

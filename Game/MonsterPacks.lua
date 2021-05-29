@@ -6,6 +6,9 @@
 do
 
     local MonsterPack = {}
+    local BossPack = {}
+    local RESPAWN_TYPE_RANDOM = 1
+    local RESPAWN_TYPE_SAME = 1
 
 
     local function IsAnyHeroInRange(i)
@@ -42,6 +45,18 @@ do
     end
 
 
+    function ScaleMonsterPacks()
+        for i = 1, #MonsterPack do
+            if BlzGroupGetSize(MonsterPack[i].group) > 0 then
+                ScaleMonsterGroup(MonsterPack[i].group)
+            end
+        end
+        for i = 1, #BossPack do
+            ScaleMonsterUnit(BossPack[i].boss)
+        end
+    end
+
+
 
     function InitMonsterPacks()
 
@@ -56,6 +71,7 @@ do
         }
         MonsterPack[1].tags = { [1] = MONSTERPACK_SKELETONS, [2] = MONSTERPACK_ZOMBIES }
         MonsterPack[1].respawn = 145.
+        MonsterPack[1].respawn_type = RESPAWN_TYPE_RANDOM
         MonsterPack[1].min = 5; MonsterPack[1].max = 10; MonsterPack[1].elite = 2
         --##########################################################
         --#######################SPAWNER_DATA#######################
@@ -148,7 +164,29 @@ do
         MonsterPack[9].respawn = 165.
         MonsterPack[9].min = 7; MonsterPack[9].max = 15; MonsterPack[9].elite = 2
         --##########################################################
-
+        BossPack[1] = {
+            spawner = gg_rct_arachnid_boss,
+            boss_types = { MONSTER_ID_ARACHNID_BOSS },
+            leash_range = 600.,
+            respawn = 480.,
+            respawn_type = RESPAWN_TYPE_SAME
+        }
+        --##########################################################
+        BossPack[2] = {
+            spawner = gg_rct_bandit_boss,
+            boss_types = { MONSTER_ID_BANDIT_BOSS },
+            leash_range = 600.,
+            respawn = 480.,
+            respawn_type = RESPAWN_TYPE_SAME
+        }
+        --##########################################################
+        BossPack[3] = {
+            spawner = gg_rct_spider_boss,
+            boss_types = { MONSTER_ID_SPIDER_QUEEN },
+            leash_range = 600.,
+            respawn = 480.,
+            respawn_type = RESPAWN_TYPE_SAME
+        }
 
 
         for i = 1, #MonsterPack do
@@ -213,6 +251,56 @@ do
             end
            --print("pack initialized")
         end
+
+        for i = 1, #BossPack do
+            local x = GetRectCenterX(BossPack[i].spawner); local y = GetRectCenterY(BossPack[i].spawner)
+            BossPack[i].boss = CreateUnit(SECOND_MONSTER_PLAYER, FourCC(BossPack[i].boss_types[GetRandomInt(1, #BossPack[i].boss_types)]), x, y, GetRandomReal(0.,359.))
+
+            TimerStart(CreateTimer(), 3.25, true, function()
+                local state = GetUnitState(BossPack[i].boss, UNIT_STATE_LIFE) > 0.045
+
+                    if state and not IsUnitInRangeXY(BossPack[i].boss, x, y, BossPack[i].leash_range) then
+                        IssuePointOrderById(BossPack[i].boss, order_move, x, y)
+                    elseif IsUnitInRangeXY(BossPack[i].boss, x, y, 35.) and state then
+                        SetUnitState(BossPack[i].boss, UNIT_STATE_LIFE, GetUnitState(BossPack[i].boss, UNIT_STATE_MAX_LIFE))
+                    end
+
+            end)
+
+                if BossPack[i].respawn then
+                    local trg = CreateTrigger()
+                    TriggerRegisterUnitEvent(trg, BossPack[i].boss, EVENT_UNIT_DEATH)
+                    TriggerAddAction(trg, function()
+                        local id = GetUnitTypeId(GetTriggerUnit())
+
+                            TimerStart(CreateTimer(), BossPack[i].respawn, false, function()
+
+                                    if BossPack[i].respawn_type == RESPAWN_TYPE_SAME then
+                                        BossPack[i].boss = CreateUnit(SECOND_MONSTER_PLAYER, id, x, y, GetRandomReal(0.,359.))
+                                    else
+                                        BossPack[i].boss = CreateUnit(SECOND_MONSTER_PLAYER, FourCC(BossPack[i].boss_types[GetRandomInt(1, #BossPack[i].boss_types)]), x, y, GetRandomReal(0.,359.))
+                                    end
+
+                                TriggerRegisterUnitEvent(trg, BossPack[i].boss, EVENT_PLAYER_UNIT_DEATH)
+                                DestroyTimer(GetExpiredTimer())
+                                DelayAction(0.001, function() ScaleMonsterUnit(BossPack[i].boss) end)
+                            end)
+                        end)
+                end
+        end
+
+
+        RegisterTestCommand("kill a", function()
+            KillUnit(BossPack[1].boss)
+        end)
+
+        RegisterTestCommand("kill b", function()
+            KillUnit(BossPack[2].boss)
+        end)
+
+        RegisterTestCommand("kill s", function()
+            KillUnit(BossPack[3].boss)
+        end)
 
 
         RegisterTestCommand("wipe", function()

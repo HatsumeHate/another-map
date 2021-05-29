@@ -2,6 +2,35 @@ do
 
 
 
+    function SummonHydra(hero, x, y)
+        local unit_data = GetUnitData(hero)
+
+                if unit_data.spawned_hydra then
+                    KillUnit(unit_data.spawned_hydra)
+                end
+
+            unit_data.spawned_hydra = CreateUnit(GetOwningPlayer(hero), FourCC('shdr'), x, y, GetRandomReal(0.,359.))
+            UnitApplyTimedLife(unit_data.spawned_hydra, 0, 6.75 + (UnitGetAbilityLevel(hero, "A00I") * 0.25))
+
+            DelayAction(0.001, function()
+                local hydra = GetUnitData(unit_data.spawned_hydra)
+
+                    hydra.stats[PHYSICAL_ATTACK].value = unit_data.stats[PHYSICAL_ATTACK].value * 0.7
+                    hydra.stats[MAGICAL_ATTACK].value = unit_data.stats[MAGICAL_ATTACK].value * 0.7
+                    hydra.stats[CRIT_CHANCE].value = unit_data.stats[CRIT_CHANCE].value * 0.7
+                    hydra.equip_point[WEAPON_POINT].DAMAGE = unit_data.equip_point[WEAPON_POINT].DAMAGE * 0.7
+                    hydra.equip_point[WEAPON_POINT].ATTACK_SPEED = unit_data.stats[ATTACK_SPEED].value * 0.7
+                    hydra.equip_point[WEAPON_POINT].DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL
+                    hydra.equip_point[WEAPON_POINT].ATTRIBUTE = FIRE_ATTRIBUTE
+                    hydra.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS = R2I((hydra.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS or 0) * 0.7)
+                    hydra.stats[INT_STAT].value = R2I(unit_data.stats[INT_STAT].value * 0.7)
+                    hydra.stats[FIRE_BONUS].value = R2I(unit_data.stats[FIRE_BONUS].value * 0.7)
+                    UpdateParameters(hydra)
+
+            end)
+    end
+
+
     function LightningEffect_Units(source, target, id, faderate, bonus_start_z, bonus_end_z)
         local bolt = AddLightningEx(id, true, GetUnitX(source), GetUnitY(source), GetUnitZ(source) + bonus_start_z, GetUnitX(target), GetUnitY(target), GetUnitZ(target) + bonus_end_z)
         local fade_time = faderate
@@ -21,6 +50,10 @@ do
 
 
     function LightningBall_VisualEffect(target, missile)
+        if not target or not missile then
+            return
+        end
+
         local faderate = 0.55
         local bolt = AddLightningEx("BLNL", true, missile.current_x, missile.current_y, missile.current_z, GetUnitX(target), GetUnitY(target), GetUnitFlyHeight(target) + BlzGetLocalUnitZ(target) + missile.end_z)
         local missile_x = missile.current_x
@@ -78,13 +111,15 @@ do
     end
 
     function ChainLightningCast(source, target)
+        local from = source
 
-        LightningEffect_Units(source, target, "BLNL", 0.45, 50., 50.)
+        LightningEffect_Units(from, target, "BLNL", 0.45, 50., 50.)
         ApplyEffect(source, target, 0., 0.,"ECHL", 1)
 
         local damaged_group = CreateGroup()
         GroupAddUnit(damaged_group, target)
 
+        from = target
         local next_target = GetChainLightningVictim(source, target, 500., damaged_group)
 
 
@@ -94,10 +129,12 @@ do
 
                 TimerStart(CreateTimer(), 0.45, true, function()
 
-                    LightningEffect_Units(source, next_target, "BLNL", 0.45, 50., 50.)
+                    LightningEffect_Units(from, next_target, "BLNL", 0.45, 50., 50.)
                     ApplyEffect(source, next_target, 0., 0.,"ECHL", 1)
                     rebounds = rebounds - 1
 
+
+                    from = next_target
                     next_target = GetChainLightningVictim(source, next_target, 500., damaged_group)
 
                         if rebounds <= 0 or not next_target then
@@ -110,6 +147,40 @@ do
                 end)
 
             end
+    end
+
+
+    function SparkCast_Legendary(source)
+        local discharge = {}
+        local spark_amount = 12
+        local angle = 360. / spark_amount
+        local current_angle = 0.01
+
+
+        for i = 1, spark_amount do
+            discharge[i] = { missile = ThrowMissile(source, nil, 'MDSC', nil, GetUnitX(source), GetUnitY(source), 0, 0, current_angle), a = current_angle }
+            current_angle = current_angle + angle
+        end
+
+        for i = 1, spark_amount do
+                local timer = CreateTimer()
+                local timeout = GetRandomReal(0.22, 0.65)
+
+                    TimerStart(timer, 0.05, true, function()
+                        if discharge[i].missile.time > 0. then
+                            if timeout <= 0. then
+                                RedirectMissile_Deg(discharge[i].missile, discharge[i].a + GetRandomReal(-15., 15.))
+                                timeout = GetRandomReal(0.22, 0.65)
+                            end
+                            timeout = timeout - 0.05
+                        else
+                            discharge[i] = nil
+                            DestroyTimer(timer)
+                        end
+                    end)
+
+            end
+
     end
 
 

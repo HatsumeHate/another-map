@@ -61,6 +61,15 @@ do
     end
 
     ---@param message string
+    function ShowQuestHintForPlayer(message, player)
+        if GetLocalPlayer() == Player(player) then
+            DisplayTimedTextToPlayer(Player(player), 0, 0, bj_TEXT_DELAY_ALWAYSHINT, " ")
+            DisplayTimedTextToPlayer(Player(player), 0, 0, bj_TEXT_DELAY_ALWAYSHINT, QUEST_HINT_STRING .. message)
+            StartSound(QUEST_HINT_SOUND or bj_questHintSound)
+        end
+    end
+
+    ---@param message string
     function ShowQuestAlert(message)
         SendQuestMessage(QUEST_ALERT_STRING .. message, bj_TEXT_DELAY_WARNING)
         StartSound(QUEST_ALERT_SOUND or bj_questWarningSound)

@@ -255,7 +255,7 @@
                     range               = 1000.,
                     missile             = 'MFRB',
                     resource_cost       = 10.,
-                    cooldown            = 0.1,
+                    cooldown            = 0.3,
                     animation           = 2,
                     animation_point     = 1.3,
                     animation_backswing = 0.3,
@@ -279,7 +279,7 @@
                 [1] = {
                     effect              = 'EFRN',
                     resource_cost       = 10.,
-                    cooldown            = 1.1,
+                    cooldown            = 10.,
                     animation           = 3,
                     animation_point     = 2.1,
                     animation_backswing = 0.633,
@@ -305,7 +305,7 @@
                     range               = 1000.,
                     missile             = 'MGFB',
                     resource_cost       = 10.,
-                    cooldown            = 0.1,
+                    cooldown            = 0.3,
                     animation           = 2,
                     animation_point     = 1.3,
                     animation_backswing = 0.3,
@@ -330,7 +330,7 @@
                     range               = 800.,
                     missile             = 'MFRO',
                     resource_cost       = 10.,
-                    cooldown            = 0.1,
+                    cooldown            = 0.3,
                     animation           = 3,
                     animation_point     = 2.1,
                     animation_backswing = 0.633,
@@ -354,8 +354,8 @@
                 [1] = {
                     range               = 800.,
                     effect              = 'ELST',
-                    resource_cost       = 10.,
-                    cooldown            = 0.1,
+                    resource_cost       = 17.,
+                    cooldown            = 0.3,
                     animation           = 2,
                     animation_point     = 1.3,
                     animation_backswing = 0.3,
@@ -378,7 +378,7 @@
 
             level = {
                 [1] = {
-                    range = 500.,
+                    range = 400.,
 
                     start_effect_on_cast_point = 'Spell\\Blink Blue Caster.mdx',
                     start_effect_on_cast_point_scale = 1.,
@@ -387,7 +387,7 @@
                     end_effect_on_cast_point_scale = 1.,
 
                     resource_cost       = 5.,
-                    cooldown            = 3.,
+                    cooldown            = 5.,
                     animation           = 3,
                     animation_point     = 0.1,
                     animation_backswing = 0.1,
@@ -429,7 +429,7 @@
                 [1] = {
                     range               = 700.,
                     resource_cost       = 10.,
-                    cooldown            = 0.1,
+                    cooldown            = 0.3,
                     animation           = 2,
                     animation_point     = 1.3,
                     animation_backswing = 0.3,
@@ -453,7 +453,7 @@
                 [1] = {
                     range               = 870.,
                     resource_cost       = 16.,
-                    cooldown            = 1.1,
+                    cooldown            = 3.,
                     animation           = 2,
                     animation_point     = 1.3,
                     animation_backswing = 0.3,
@@ -476,9 +476,9 @@
             level = {
                 [1] = {
                     range               = 900.,
-                    resource_cost       = 15.,
+                    resource_cost       = 25.,
                     missile             = 'MBLB',
-                    cooldown            = 7.,
+                    cooldown            = 11.,
                     animation           = 3,
                     animation_point     = 2.1,
                     animation_backswing = 0.633,
@@ -552,10 +552,11 @@
         --============================================--
         NewSkillData('A00I', {
             name            = LOCALE_LIST[my_locale].SKILL_SUMMONHYDRA,
-            icon            = "Spell\\BTNGlaiveCrit.blp",
+            icon            = "Spell\\BTNPyro.blp",
             activation_type = POINT_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_FIRE,
+            autotrigger = false,
 
             level = {
                 [1] = {
@@ -621,11 +622,11 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_FIGHTING_MASTERY,
-            sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 120, cutoff = 1500.},
+            sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 128, cutoff = 1500.},
 
             level = {
                 [1] = {
-                    range               = 100.,
+                    range               = 75.,
                     effect              = 'EUPP',
                     cooldown            = 12.,
                     animation           = 5,
@@ -667,10 +668,9 @@
                 [1] = {
                     cooldown            = 0.3,
                     animation           = 3,
-                    animation_point     = 0.1,
-                    animation_backswing = 0.1,
+                    animation_point     = 0.001,
+                    animation_backswing = 0.001,
                     animation_scale     = 1.,
-
                 }
             }
         })
@@ -681,13 +681,14 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_FIGHTING_MASTERY,
-            sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 120, cutoff = 1500.},
+            sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 128, cutoff = 1500.},
 
             level = {
                 [1] = {
-                    range               = 100.,
+                    range               = 75.,
                     effect              = 'ECRH',
                     cooldown            = 2.3,
+                    resource_cost = 5.,
                     animation           = 4,
                     animation_point     = 0.6,
                     animation_backswing = 0.3,
@@ -701,23 +702,24 @@
         --============================================--
         NewSkillData('A020', {
             name            = LOCALE_LIST[my_locale].SKILL_EXECUTION,
-            icon            = "Spell\\BTNBreakingSmash.blp",
+            icon            = "Spell\\BTNHearbreak.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_FIGHTING_MASTERY,
-            sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 120, cutoff = 1500.},
+            sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 128, cutoff = 1500.},
 
             level = {
                 [1] = {
-                    range               = 100.,
-                    --effect              = 'EEXC',
-                    cooldown            = 2.3,
-                    animation           = 4,
+                    range               = 75.,
+                    effect              = 'EEXC',
+                    cooldown            = 5.,
+                    resource_cost = 5.,
+                    animation           = 6,
                     animation_point     = 0.6,
                     animation_backswing = 0.3,
                     animation_scale     = 0.9,
                     effect_on_caster        = "Spell\\Sweep_Fire_Medium.mdx",
-                    effect_on_caster_point  = 'weapon left',
+                    effect_on_caster_point  = 'weapon right',
                     effect_on_caster_scale  = 1.,
                 }
             }
@@ -757,6 +759,7 @@
                     range               = 100.,
                     effect              = 'ECSL',
                     cooldown            = 3.3,
+                    resource_cost = 5.,
                     animation           = 6,
                     animation_point     = 0.6,
                     animation_backswing = 0.3,
@@ -781,6 +784,26 @@
                     effect              = 'EWCR',
                     resource_cost       = 5,
                     cooldown            = 22.,
+                    animation           = 3,
+                    animation_point     = 1.4,
+                    animation_backswing = 0.2666,
+                    animation_scale     = 0.5
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ABFA', {
+            name            = LOCALE_LIST[my_locale].SKILL_FIRSTAID,
+            icon            = "Spell\\BTNNatureRestore.blp",
+            activation_type = SELF_CAST,
+            type            = SKILL_PHYSICAL,
+            category = SKILL_CATEGORY_INNER_STRENGTH,
+
+            level = {
+                [1] = {
+                    effect              = 'EBFA',
+                    resource_cost       = 3.,
+                    cooldown            = 30.,
                     animation           = 3,
                     animation_point     = 1.4,
                     animation_backswing = 0.2666,

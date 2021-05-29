@@ -14,7 +14,7 @@ do
         local mins = math.floor(time / 60.)
         local secs = time - (mins * 60.)
 
-        return R2I(mins) .. ":" .. R2I(secs)
+        return LOCALE_LIST[my_locale].WAVE_COUNTDOWN .. R2I(mins) .. ":" .. R2I(secs)
     end
 
 
@@ -32,7 +32,7 @@ do
             if total_time <= 0. then
                 PauseTimer(WaveTimer)
                 SpawnMonsters()
-                ToggleCitizens()
+                ToggleCitizens(false)
             end
 
         end)
@@ -40,16 +40,45 @@ do
     end
 
 
+    local PlayerColors = {
+        [1] = "|c00FF0000",
+        [2] = "|c000000FF",
+        [3] = "|c0000FFFF",
+        [4] = "|c0071007D",
+        [5] = "|c00FFFF00",
+        [6] = "|c00FF8B00",
+    }
+
+
     function InitMultiboard()
 
             MAIN_MULTIBOARD = CreateMultiboard()
             MultiboardSetTitleText(MAIN_MULTIBOARD, LOCALE_LIST[my_locale].WAVE_INCOMING_TEXT)
             MultiboardSetItemsStyle(MAIN_MULTIBOARD, true, false)
-            MultiboardSetItemsWidth(MAIN_MULTIBOARD, 6.5 / 200.0)
-            MultiboardSetColumnCount(MAIN_MULTIBOARD, 4)
-            MultiboardSetRowCount(MAIN_MULTIBOARD, 4)
+            MultiboardSetItemsWidth(MAIN_MULTIBOARD, 6.5 / 100.0)
+            MultiboardSetColumnCount(MAIN_MULTIBOARD, 2)
+            MultiboardSetRowCount(MAIN_MULTIBOARD, 8)
             MultiboardDisplay(MAIN_MULTIBOARD, true)
 
+
+            for i = 0, 4 do
+                MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1, i), "==================")
+            end
+
+            for i = 1, 6 do
+                if GetPlayerSlotState(Player(i-1)) == PLAYER_SLOT_STATE_PLAYING then
+                    MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), PlayerColors[i] .. GetPlayerName(Player(i-1)) .. "|r")
+                    --MultiboardSetItemWidth(MAIN_MULTIBOARD, 6.5 / 175.0)
+                end
+            end
+            --MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 2, 0), )
+
+            TimerStart(CreateTimer(), 2.25, true, function()
+                for i = 1, 6 do
+                    local gold = GetPlayerState(Player(i-1), PLAYER_STATE_RESOURCE_GOLD)
+                    if gold > 0 then MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 1), "|c00FFFF00"..gold.."|r") end
+                end
+            end)
 
     end
 

@@ -43,12 +43,13 @@ do
                 -- and not BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindAbilityId(FourCC(skill.Id), player-1)) > 0.
                 --print(R2S(BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindAbilityId(skill.Id, player-1))))
 
-                if button.skill ~= nil and skill.Id == button.skill.Id and not (BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindAbilityId(skill.Id, player-1)) > 0.) then
+                if button.skill ~= nil and skill.Id == button.skill.Id and not (BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindKeyAbility(FourCC(skill.Id), player)) > 0.) then
+                    --GetKeybindAbilityId(skill.Id, player-1)
                     --print("skill is found, trying to unbind")
                     UnbindAbilityKey(PlayerHero[player], skill.Id)
                     --print("skill is unbinded")
-                    BlzFrameSetTexture(button.image, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0, true)
-                    FrameChangeTexture(button.button, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp")
+                    BlzFrameSetTexture(button.image, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0, true)
+                    FrameChangeTexture(button.button, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp")
                     button.skill = nil
                     break
                 end
@@ -63,9 +64,9 @@ do
     ---@param key integer
     function RegisterPlayerSkillHotkey(player, skill, key)
         local key_button_data = GetButtonData(SkillPanelFrame[player].button_keys[key])
-        local ability = GetKeybindAbility(skill.Id, player-1)
+        local ability = GetKeybindKeyAbility(FourCC(skill.Id), player)
 
-            if ability == 0 or (ability ~= 0 and not (BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindAbilityId(skill.Id, player-1)) > 0.)) then
+            if (ability == 0 or (ability ~= 0 and not (BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], ability) > 0.))) and not (BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], KEYBIND_LIST[key].ability) > 0.) then
                 BindAbilityKey(PlayerHero[player], skill.Id, key)
                 BlzFrameSetTexture(key_button_data.image, skill.icon, 0, true)
                 FrameChangeTexture(key_button_data.button, skill.icon)
@@ -255,10 +256,10 @@ do
 
 
             SkillPanelFrame[player].button_keys = {}
-            SkillPanelFrame[player].button_keys[KEY_Q] = NewButton(KEY_Q, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0.035, 0.035, skill_bind_panel, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.017, 0., main_frame)
+            SkillPanelFrame[player].button_keys[KEY_Q] = NewButton(KEY_Q, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.035, 0.035, skill_bind_panel, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.017, 0., main_frame)
 
                 for key = 2, KEY_D do
-                    SkillPanelFrame[player].button_keys[key] = NewButton(key, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0.035, 0.035, SkillPanelFrame[player].button_keys[key-1], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0012, 0., SkillPanelFrame[player].button_keys[key-1])
+                    SkillPanelFrame[player].button_keys[key] = NewButton(key, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.035, 0.035, SkillPanelFrame[player].button_keys[key-1], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0012, 0., SkillPanelFrame[player].button_keys[key-1])
                 end
 
 
@@ -273,7 +274,7 @@ do
                         BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOP, last_frame, FRAMEPOINT_BOTTOM, 0., 0.01)
                     end
                 BlzFrameSetSize(new_Frame, 0.18, 0.06)
-                SkillPanelFrame[player].displayed_skill_button[i] = NewButton(SKILL_BUTTON, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0.03, 0.03, new_Frame, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.015, 0., new_Frame)
+                SkillPanelFrame[player].displayed_skill_button[i] = NewButton(SKILL_BUTTON, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.03, 0.03, new_Frame, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.015, 0., new_Frame)
                 BlzFrameSetVisible(SkillPanelFrame[player].displayed_skill_button[i], false)
                 last_frame = new_Frame
             end

@@ -104,6 +104,7 @@ do
     function ApplyBuffEffect(source, target, data, lvl, target_type)
         local myeffect = data.level[lvl]
         PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
+        --print("add buff")
         -- delay for effect animation
             TimerStart(CreateTimer(), myeffect.hit_delay or 0., false, function()
                 ModifyBuffsEffect(source, target, data, lvl, target_type)
@@ -162,7 +163,7 @@ do
                         --AddSound(myeffect.sound, x, y)
                     end
 
-                    if( myeffect.life_restored_from_hit ~= nil and myeffect.life_restored_from_hit) or (myeffect.resource_restored_from_hit ~= nil and myeffect.resource_restored_from_hit) then
+                    if(myeffect.life_restored_from_hit ~= nil and myeffect.life_restored_from_hit) or (myeffect.resource_restored_from_hit ~= nil and myeffect.resource_restored_from_hit) then
                         ApplyRestoreEffect(source, target, data, lvl)
                     end
 
@@ -200,10 +201,17 @@ do
                 data.current_level = UnitGetAbilityLevel(source, data.get_level_from_skill)
             end
 
-        OnEffectPrecast(source, target, x, y, data)
-        GenerateEffectLevelData(data, data.current_level)
 
-        local myeffect =  data.level[data.current_level]
+        GenerateEffectLevelData(data, data.current_level)
+        local current_level = data.current_level
+
+        OnEffectPrecast(source, target, x, y, data)
+
+        if current_level ~= data.current_level then
+            GenerateEffectLevelData(data, data.current_level)
+        end
+
+        local myeffect = data.level[data.current_level]
 
         --print("EFFECT START -> " .. data.name .. " with level " .. data.current_level)
 
@@ -214,12 +222,10 @@ do
             end)
 
 
-            if target ~= nil then
-                x = GetUnitX(target)
-                y = GetUnitY(target)
-            end
+        if target then x = GetUnitX(target); y = GetUnitY(target)
+        elseif target == nil and (x == 0 or y == 0) then x = GetUnitX(source); y = GetUnitY(source) end
 
-        if myeffect.force_from_caster_position ~= nil and myeffect.force_from_caster_position then
+        if myeffect.force_from_caster_position then
             x = GetUnitX(source)
             y = GetUnitY(source)
         end
@@ -233,9 +239,10 @@ do
                     local effect = AddSpecialEffect(myeffect.SFX_used, x, y)
 
                         BlzSetSpecialEffectScale(effect, myeffect.SFX_used_scale or 1.)
-                        if myeffect.timescale ~= nil then BlzSetSpecialEffectTimeScale(effect, 1. + (1. - myeffect.timescale)) end
-                        if myeffect.SFX_inherit_angle ~= nil and myeffect.SFX_inherit_angle then BlzSetSpecialEffectYaw(effect, GetUnitFacing(source) * bj_DEGTORAD) end
-                        if myeffect.SFX_bonus_z ~= nil then BlzSetSpecialEffectZ(effect, BlzGetLocalSpecialEffectZ(effect) + myeffect.SFX_bonus_z) end
+                        if myeffect.timescale then BlzSetSpecialEffectTimeScale(effect, 1. + (1. - myeffect.timescale)) end
+                        if myeffect.SFX_inherit_angle then BlzSetSpecialEffectYaw(effect, GetUnitFacing(source) * bj_DEGTORAD)
+                        elseif myeffect.SFX_facing then BlzSetSpecialEffectYaw(effect, myeffect.SFX_facing * bj_DEGTORAD) end
+                        if myeffect.SFX_bonus_z then BlzSetSpecialEffectZ(effect, BlzGetLocalSpecialEffectZ(effect) + myeffect.SFX_bonus_z) end
 
                         DelayAction(myeffect.SFX_lifetime or 0., function() DestroyEffect(effect) end)
 
@@ -247,7 +254,7 @@ do
 
         PlaySpecialEffect(myeffect.SFX_on_caster, source, myeffect.SFX_on_caster_point, myeffect.SFX_on_caster_scale, myeffect.SFX_on_caster_duration)
 
-            if myeffect.sound ~= nil then
+            if myeffect.sound and myeffect.sound.pack then
                 AddSoundVolumeZ(myeffect.sound.pack[GetRandomInt(1, #myeffect.sound.pack)], x, y, 35., myeffect.sound.volume, myeffect.sound.cutoff)
                 --AddSound(myeffect.sound, x, y)
             end
@@ -258,22 +265,22 @@ do
                     ShakeByCoords(x, y, myeffect.shake_magnitude, myeffect.shake_duration, myeffect.shake_distance)
                 end
 
-                if not myeffect.life_restored_from_hit or not myeffect.resource_restored_from_hit then
-                    PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
+                if myeffect.life_percent_restored or myeffect.resource_percent_restored then
+                    PlaySpecialEffect(myeffect.SFX_on_unit, target or source, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
 
                     TimerStart(CreateTimer(), myeffect.hit_delay or 0., false, function()
-                        ApplyRestoreEffect(source, target, data, lvl)
+                        ApplyRestoreEffect(source, target or source, data, lvl)
                         DestroyTimer(GetExpiredTimer())
                     end)
 
                 end
 
                 -- damaging
-                if myeffect.power ~= nil then
+                if (myeffect.power and myeffect.power > 0) or (myeffect.attack_percent_bonus and myeffect.attack_percent_bonus > 0.) or (myeffect.weapon_damage_percent_bonus and myeffect.weapon_damage_percent_bonus > 0.) then
                     -- multiple target damage
                     --print("power > 0")
 
-                    if myeffect.area_of_effect ~= nil and myeffect.area_of_effect > 0. then
+                    if myeffect.area_of_effect and myeffect.area_of_effect > 0. then
                         --print("multiple targets")
                         local enemy_group = CreateGroup()
                         GroupEnumUnitsInRange(enemy_group, x, y, myeffect.area_of_effect, nil)
@@ -319,17 +326,22 @@ do
 
                 else
                     -- multiple target debuff
+                    --print("no power")
                     if CountBuffEffects(myeffect.applied_buff, ON_ENEMY) > 0 then
-                        if myeffect.area_of_effect ~= nil and myeffect.area_of_effect > 0. then
+                        --print("have negative buffs on enemy")
+                        if myeffect.area_of_effect and myeffect.area_of_effect > 0. then
                             local enemy_group = CreateGroup()
                             local result_group = CreateGroup()
                             GroupEnumUnitsInRange(enemy_group, x, y, myeffect.area_of_effect, nil)
                             local targets = myeffect.max_targets or 1
+                            --print("aoe " .. myeffect.area_of_effect)
+                            --print("target count is " .. targets)
+                            --print("group count is " .. BlzGroupGetSize(enemy_group))
 
                                 for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
                                     local picked = BlzGroupUnitAt(enemy_group, index)
 
-                                    if not (IsUnitEnemy(picked, player_entity) or GetUnitState(picked, UNIT_STATE_LIFE) > 0.045) then
+                                    if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
                                         GroupRemoveUnit(enemy_group, picked)
                                         GroupAddUnit(result_group, picked)
                                         targets = targets - 1
@@ -338,7 +350,10 @@ do
 
                                 end
 
+                                --print(BlzGroupGetSize(result_group))
+
                                 ForGroup(result_group, function()
+                                    --print("target is ".. GetUnitName(GetEnumUnit()))
                                     ApplyBuffEffect(source, GetEnumUnit(), data, lvl, ON_ENEMY)
                                 end)
 
@@ -356,9 +371,9 @@ do
                 end
 
                 -- healing
-                if myeffect.heal_amount ~= nil then
+                if myeffect.heal_amount then
                     -- multiple target healing
-                    if myeffect.area_of_effect ~= nil and myeffect.area_of_effect > 0. then
+                    if myeffect.area_of_effect and myeffect.area_of_effect > 0. then
                         local targets = myeffect.max_targets or 1
                         local enemy_group = CreateGroup()
                         GroupEnumUnitsInRange(enemy_group, x, y, myeffect.area_of_effect, nil)

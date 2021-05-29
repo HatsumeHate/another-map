@@ -178,6 +178,34 @@
 	end
 
 
+
+	AirPathingUnit = nil
+
+	function IsPathable_Air(x, y)
+		SetUnitPosition(AirPathingUnit, x, y)
+		return (R2I(x) == R2I(GetUnitX(AirPathingUnit)) and R2I(y) == R2I(GetUnitY(AirPathingUnit)))
+	end
+
+
+	local PauseDataTable = {}
+
+	function SafePauseUnit(target, flag)
+		local handle = GetHandleId(target)
+
+			if flag then PauseDataTable[handle] = (PauseDataTable[handle] or 0) + 1
+			else PauseDataTable[handle] = (PauseDataTable[handle] or -10) - 1 end
+
+		if PauseDataTable[handle] == -11 then
+			PauseDataTable[handle] = nil
+			return
+		end
+
+			if PauseDataTable[handle] == 1 and flag then BlzPauseUnitEx(target, true)
+			elseif PauseDataTable[handle] <= 0 and not flag then BlzPauseUnitEx(target, false); PauseDataTable[handle] = nil end
+
+	end
+
+
 	---@param a table
 	---@param b table
 	function MergeTables(a, b)

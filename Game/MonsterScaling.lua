@@ -5,12 +5,14 @@
 ---
 do
 
+    ActivePlayers = 1
+
 
     MONSTER_STATS_RATES = {
-        { stat = PHYSICAL_ATTACK,       initial = 0,      delta = 3,     delta_level = 1, method = STRAIGHT_BONUS },
-        { stat = MAGICAL_ATTACK,        initial = 0,      delta = 2,     delta_level = 1, method = STRAIGHT_BONUS },
-        { stat = PHYSICAL_DEFENCE,      initial = 0,      delta = 3,     delta_level = 1, method = STRAIGHT_BONUS },
-        { stat = MAGICAL_SUPPRESSION,   initial = 0,      delta = 2,     delta_level = 1, method = STRAIGHT_BONUS },
+        { stat = PHYSICAL_ATTACK,       initial = 0,      delta = 2,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 1 },
+        { stat = MAGICAL_ATTACK,        initial = 0,      delta = 1,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 1 },
+        { stat = PHYSICAL_DEFENCE,      initial = 0,      delta = 3,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 5 },
+        { stat = MAGICAL_SUPPRESSION,   initial = 0,      delta = 2,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 3 },
         { stat = PHYSICAL_ATTACK,       initial = 0.98,   delta = 0.02,  delta_level = 1, method = MULTIPLY_BONUS },
         { stat = PHYSICAL_DEFENCE,      initial = 0.99,   delta = 0.01,  delta_level = 1, method = MULTIPLY_BONUS },
         { stat = MAGICAL_ATTACK,        initial = 0.98,   delta = 0.02,  delta_level = 1, method = MULTIPLY_BONUS },
@@ -25,7 +27,7 @@ do
         { stat = HOLY_BONUS,            initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
         { stat = POISON_BONUS,          initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
         { stat = ARCANE_BONUS,          initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = HP_VALUE,              initial = 0,      delta = 15,    delta_level = 1, method = STRAIGHT_BONUS },
+        { stat = HP_VALUE,              initial = 0,      delta = 15,    delta_level = 1, method = STRAIGHT_BONUS, per_player = 30 },
         { stat = HP_VALUE,              initial = 0.96,   delta = 0.04,  delta_level = 1, method = MULTIPLY_BONUS },
     }
 
@@ -39,22 +41,50 @@ do
     ---@param target unit
     function ScaleMonsterUnit(target)
         local monster_id = GetUnitTypeId(target)
+        local unit_data = GetUnitData(target)
+
+
+        if unit_data.scale_power then unit_data.scale_power = unit_data.scale_power + 1
+        else unit_data.scale_power = 1 end
+
+        --print("scale - start " .. GetUnitName(target))
 
             for i = 1, #MONSTER_STATS_RATES do
-                ModifyStat(target, MONSTER_STATS_RATES[i].stat, MONSTER_STATS_RATES[i].initial +
-                        math.floor(Current_Wave / MONSTER_STATS_RATES[i].delta_level) *
-                        (MONSTER_STATS_RATES[i].delta + BONUS_MONSTER_STAT_RATES[monster_id][MONSTER_STATS_RATES[i].stat] or 0.),
-                         MONSTER_STATS_RATES[i].method, true)
+                local level_scaling = math.floor(Current_Wave / MONSTER_STATS_RATES[i].delta_level)
+                local power_scaling = math.floor((unit_data.scale_power - 1) / MONSTER_STATS_RATES[i].delta_level)
+                local bonus_delta = 0
+
+                if BONUS_MONSTER_STAT_RATES[monster_id] and BONUS_MONSTER_STAT_RATES[monster_id][MONSTER_STATS_RATES[i].stat] then
+                    bonus_delta = BONUS_MONSTER_STAT_RATES[monster_id][MONSTER_STATS_RATES[i].stat]
+                end
+
+                if level_scaling > power_scaling then
+                    --print("must scale")
+                    --print("difference " .. I2S(level_scaling - power_scaling))
+                    --print(GetParameterName(MONSTER_STATS_RATES[i].stat))
+                    --print(R2S(MONSTER_STATS_RATES[i].initial) .. "/" .. R2S(MONSTER_STATS_RATES[i].delta))
+                    ModifyStat(target, MONSTER_STATS_RATES[i].stat, MONSTER_STATS_RATES[i].initial + ((level_scaling - power_scaling) *
+                        (MONSTER_STATS_RATES[i].delta + bonus_delta + ((MONSTER_STATS_RATES[i].per_player or 0.) * (ActivePlayers - 1)))),
+                        MONSTER_STATS_RATES[i].method, true)
+                    --BONUS_MONSTER_STAT_RATES[monster_id][MONSTER_STATS_RATES[i].stat] or
+                end
+
             end
+
+        --print("scale - end "  .. GetUnitName(target))
 
     end
 
 
     ---@param target_group group
     function ScaleMonsterGroup(target_group)
+
+        --for i = 0, 5 do if IsPlayerSlotState(Player(i), PLAYER_SLOT_STATE_PLAYING) then ActivePlayers = ActivePlayers + 1 end end
+
         ForGroup(target_group, function()
             ScaleMonsterUnit(GetEnumUnit())
         end)
+
     end
 
 

@@ -11,9 +11,16 @@ do
     }
 
 
+    ---@param unit unit
+    ---@param player number
     function DropForPlayer(unit, player)
         local unit_data = GetUnitData(unit)
-        local drop_list = UNIT_DROP_LIST[unit_data.classification] or nil
+        local drop_list
+
+        if unit_data and unit_data.classification and unit_data.classification ~= MONSTER_RANK_BOSS then drop_list = UNIT_DROP_LIST[unit_data.classification]
+        else drop_list = UNIT_DROP_LIST[GetUnitTypeId(unit)] end
+
+        --drop_list = unit_data.classification and UNIT_DROP_LIST[unit_data.classification] or UNIT_DROP_LIST[GetUnitTypeId(unit)]
         --print("1")
         if drop_list == nil then return end
         --print("2")
@@ -32,22 +39,29 @@ do
                     if GetRandomReal(0., 100.) <= current_item.chance then
                         --print("drop!")
                         DelayAction(current_offset + time_offset, function()
-                            local my_item = CreateCustomItem(current_item.id, GetUnitX(unit) + GetRandomReal(-45., 45), GetUnitY(unit) + GetRandomReal(-45., 45), true)
+                            local my_item = CreateCustomItem(current_item.id, GetUnitX(unit) + GetRandomReal(-45. + (drop_list.bonus_range or 0.), 45 + (drop_list.bonus_range or 0.)), GetUnitY(unit) + GetRandomReal(-45. + (drop_list.bonus_range or 0.), 45. + (drop_list.bonus_range or 0.)), true)
 
-                                if current_item.generate ~= nil and current_item.generate then
-                                    local quality = COMMON_ITEM
+                                if current_item.generate then
+                                    local item_data = GetItemData(my_item)
 
-                                        for k = 1, #quality_list do
-                                            if quality_list[k].chance then
-                                                quality = quality_list[k].quality
-                                            end
+                                        if item_data.QUALITY == SET_ITEM or item_data.QUALITY == UNIQUE_ITEM then
+                                            GenerateItemLevel(my_item, Current_Wave + GetRandomInt(1, 2))
+                                        else
+                                            local quality = COMMON_ITEM
+
+                                                for k = 1, #quality_list do
+                                                    if quality_list[k].chance then
+                                                        quality = quality_list[k].quality
+                                                    end
+                                                end
+
+                                            GenerateItemStats(my_item, Current_Wave + GetRandomInt(1, 2), quality)
                                         end
 
-                                    GenerateItemStats(my_item, Current_Wave + GetRandomInt(1, 2), quality)
                                 end
 
                                 if GetItemTypeId(my_item) == ITEM_TYPE_CHARGED then
-                                    SetItemCharges(my_item, GetRandomInt(current_item.min, current_item.max))
+                                    SetItemCharges(my_item, GetRandomInt(current_item.min or 1, current_item.max or 1))
                                 end
 
                                 if GetLocalPlayer() ~= Player(player) then
@@ -65,11 +79,13 @@ do
             end
 
 
-        if GetRandomReal(0., 100.) <= drop_list.gold.chance then
+        if drop_list.gold and GetRandomReal(0., 100.) <= drop_list.gold.chance then
             DelayAction(current_offset + time_offset, function()
                 CreateGoldStack(GetRandomInt(drop_list.gold.min_gold, drop_list.gold.max_gold), GetUnitX(unit) + GetRandomReal(-45., 45), GetUnitY(unit) + GetRandomReal(-45., 45), player)
             end)
         end
+
+        print("drop done")
 
     end
 
@@ -79,7 +95,7 @@ do
         UNIT_DROP_LIST = {
             [MONSTER_RANK_COMMON] = {
                 quality_list = {
-                    { quality = MAGIC_ITEM, chance = 3. },
+                    { quality = MAGIC_ITEM, chance = 5. },
                     { quality = RARE_ITEM, chance = 25. },
                     { quality = COMMON_ITEM, chance = 100. },
                 },
@@ -99,7 +115,13 @@ do
                     { id = GetGeneratedItemId(LEGS_ARMOR), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(RING_JEWELRY), chance = 5.3, generate = true },
-                    { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 1 },
+                    { id = "I00U", chance = 7.3, min = 1, max = 1 },
+                    { id = "I00V", chance = 7.3, min = 1, max = 1 },
+                    { id = "I013", chance = 7.3, min = 1, max = 1 },
+                    { id = "I014", chance = 7.3, min = 1, max = 1 },
+                    { id = "I015", chance = 7.3, min = 1, max = 1 },
+                    { id = "I016", chance = 7.3, min = 1, max = 1 },
+                    { id = "I017", chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 1 },
@@ -112,7 +134,15 @@ do
                     { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_POTION_HEALTH_WEAK, chance = 15.3, min = 1, max = 3 },
-                    { id = ITEM_POTION_MANA_WEAK, chance = 15.3, min = 1, max = 3 }
+                    { id = ITEM_POTION_MANA_WEAK, chance = 15.3, min = 1, max = 3 },
+                    { id = ITEM_SCROLL_OF_TOWN_PORTAL, chance = 15.3, min = 1, max = 1 },
+                    { id = "I00U", chance = 11.7, min = 1, max = 1 },
+                    { id = "I00V", chance = 11.7, min = 1, max = 1 },
+                    { id = "I013", chance = 11.7, min = 1, max = 1 },
+                    { id = "I014", chance = 11.7, min = 1, max = 1 },
+                    { id = "I015", chance = 11.7, min = 1, max = 1 },
+                    { id = "I016", chance = 11.7, min = 1, max = 1 },
+                    { id = "I017", chance = 11.7, min = 1, max = 1 },
                 },
                 gold = { min_gold = 15, max_gold = 65, chance = 70. },
                 min_gold = 15, max_gold = 75,
@@ -121,7 +151,7 @@ do
             },
             [MONSTER_RANK_ADVANCED] = {
                 quality_list = {
-                    { quality = MAGIC_ITEM, chance = 5. },
+                    { quality = MAGIC_ITEM, chance = 15. },
                     { quality = RARE_ITEM, chance = 35. },
                     { quality = COMMON_ITEM, chance = 100. },
                 },
@@ -141,6 +171,13 @@ do
                     { id = GetGeneratedItemId(LEGS_ARMOR), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(RING_JEWELRY), chance = 5.3, generate = true },
+                    { id = "I00U", chance = 7.3, min = 1, max = 1 },
+                    { id = "I00V", chance = 7.3, min = 1, max = 1 },
+                    { id = "I013", chance = 7.3, min = 1, max = 1 },
+                    { id = "I014", chance = 7.3, min = 1, max = 1 },
+                    { id = "I015", chance = 7.3, min = 1, max = 1 },
+                    { id = "I016", chance = 7.3, min = 1, max = 1 },
+                    { id = "I017", chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 1 },
@@ -154,15 +191,767 @@ do
                     { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_POTION_HEALTH_WEAK, chance = 15.3, min = 1, max = 3 },
-                    { id = ITEM_POTION_MANA_WEAK, chance = 15.3, min = 1, max = 3 }
+                    { id = ITEM_POTION_MANA_WEAK, chance = 15.3, min = 1, max = 3 },
+                    { id = "I00U", chance = 11.7, min = 1, max = 1 },
+                    { id = "I00V", chance = 11.7, min = 1, max = 1 },
+                    { id = "I013", chance = 11.7, min = 1, max = 1 },
+                    { id = "I014", chance = 11.7, min = 1, max = 1 },
+                    { id = "I015", chance = 11.7, min = 1, max = 1 },
+                    { id = "I016", chance = 11.7, min = 1, max = 1 },
+                    { id = "I017", chance = 11.7, min = 1, max = 1 },
                 },
                 gold = { min_gold = 25, max_gold = 85, chance = 70. },
-                min_gold = 15, max_gold = 75,
                 rolls = 7,
-                max_items = 2,
+                max_items = 3,
+            },
+            -- chest
+            [FourCC("n00N")] = {
+                quality_list = {
+                    { quality = MAGIC_ITEM, chance = 15. },
+                    { quality = RARE_ITEM, chance = 40. },
+                    { quality = COMMON_ITEM, chance = 100. }
+                },
+                item_list = {
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 45.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
+                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = "I01B", chance = 3., generate = true  },
+                    { id = "I01A", chance = 3., generate = true  },
+                    { id = "I01E", chance = 3., generate = true  },
+                    { id = "I01F", chance = 3., generate = true  },
+                    { id = "I01G", chance = 3., generate = true  },
+                    { id = "I01H", chance = 3., generate = true  },
+                    { id = "I01I", chance = 3., generate = true  },
+                    { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_EMERALD, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_MALACHITE, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_JADE, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_OPAL, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_RUBY, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_SAPPHIRE, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 1 },
+                    { id = ITEM_POTION_HEALTH_WEAK, chance = 75.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_WEAK, chance = 75.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_STRONG, chance = 55.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_STRONG, chance = 55.3, min = 1, max = 3 }
+                },
+                gold = { min_gold = 70, max_gold = 165, chance = 90. },
+                rolls = 9,
+                max_items = 6,
+                bonus_range = 75.
+            },
+            -- bandit's boss
+            [FourCC("n00X")] = {
+                quality_list = {
+                    { quality = MAGIC_ITEM, chance = 50. },
+                    { quality = RARE_ITEM, chance = 50. },
+                    { quality = COMMON_ITEM, chance = 100. }
+                },
+                item_list = {
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 45.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
+                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = "I00O", chance = 3., generate = true }, --COWARD
+                    { id = "I00P", chance = 3., generate = true  }, --witch
+                    { id = "I00Q", chance = 3., generate = true  }, --crown
+                    { id = "I00R", chance = 3., generate = true  }, --ritual
+                    { id = "I00S", chance = 3., generate = true  }, --acolyte
+                    { id = "I00T", chance = 3., generate = true  }, --smorc
+                    { id = "I018", chance = 3., generate = true  }, --boosters
+                    { id = "I019", chance = 3., generate = true  }, --storm
+                    { id = "I01A", chance = 3., generate = true  }, --princess
+                    { id = "I01B", chance = 3., generate = true  }, --queen
+                    { id = "I01C", chance = 3., generate = true  }, --pain
+                    { id = "I01D", chance = 3., generate = true  }, --axe
+                    { id = "I01E", chance = 3., generate = true  }, --bootpain
+                    { id = "I01F", chance = 3., generate = true  }, --chestpain
+                    { id = "I01G", chance = 3., generate = true  }, --headpain
+                    { id = "I01H", chance = 3., generate = true  }, --king
+                    { id = "I01I", chance = 3., generate = true  }, --jester
+                    { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_EMERALD, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_MALACHITE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_JADE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_OPAL, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_RUBY, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_SAPPHIRE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_STRONG, chance = 55.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_STRONG, chance = 55.3, min = 1, max = 3 }
+                },
+                gold = { min_gold = 250, max_gold = 1250, chance = 90. },
+                rolls = 9,
+                max_items = 6,
+                bonus_range = 165.
+            },
+            -- skeleton king
+            [FourCC("n015")] = {
+                quality_list = {
+                    { quality = MAGIC_ITEM, chance = 50. },
+                    { quality = RARE_ITEM, chance = 50. },
+                    { quality = COMMON_ITEM, chance = 100. }
+                },
+                item_list = {
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 45.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
+                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = "I00O", chance = 3., generate = true }, --COWARD
+                    { id = "I00P", chance = 3., generate = true  }, --witch
+                    { id = "I00Q", chance = 3., generate = true  }, --crown
+                    { id = "I00R", chance = 3., generate = true  }, --ritual
+                    { id = "I00S", chance = 3., generate = true  }, --acolyte
+                    { id = "I00T", chance = 3., generate = true  }, --smorc
+                    { id = "I018", chance = 3., generate = true  }, --boosters
+                    { id = "I019", chance = 3., generate = true  }, --storm
+                    { id = "I01A", chance = 3., generate = true  }, --princess
+                    { id = "I01B", chance = 3., generate = true  }, --queen
+                    { id = "I01C", chance = 3., generate = true  }, --pain
+                    { id = "I01D", chance = 3., generate = true  }, --axe
+                    { id = "I01E", chance = 3., generate = true  }, --bootpain
+                    { id = "I01F", chance = 3., generate = true  }, --chestpain
+                    { id = "I01G", chance = 3., generate = true  }, --headpain
+                    { id = "I01H", chance = 3., generate = true  }, --king
+                    { id = "I01I", chance = 3., generate = true  }, --jester
+                    { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_EMERALD, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_MALACHITE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_JADE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_OPAL, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_RUBY, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_SAPPHIRE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_STRONG, chance = 55.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_STRONG, chance = 55.3, min = 1, max = 3 }
+                },
+                gold = { min_gold = 250, max_gold = 1250, chance = 90. },
+                rolls = 9,
+                max_items = 6,
+                bonus_range = 165.
+            },
+            -- spider queen
+            [FourCC("n012")] = {
+                quality_list = {
+                    { quality = MAGIC_ITEM, chance = 50. },
+                    { quality = RARE_ITEM, chance = 50. },
+                    { quality = COMMON_ITEM, chance = 100. }
+                },
+                item_list = {
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 45.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
+                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = "I00O", chance = 3., generate = true }, --COWARD
+                    { id = "I00P", chance = 3., generate = true  }, --witch
+                    { id = "I00Q", chance = 3., generate = true  }, --crown
+                    { id = "I00R", chance = 3., generate = true  }, --ritual
+                    { id = "I00S", chance = 3., generate = true  }, --acolyte
+                    { id = "I00T", chance = 3., generate = true  }, --smorc
+                    { id = "I018", chance = 3., generate = true  }, --boosters
+                    { id = "I019", chance = 3., generate = true  }, --storm
+                    { id = "I01A", chance = 3., generate = true  }, --princess
+                    { id = "I01B", chance = 3., generate = true  }, --queen
+                    { id = "I01C", chance = 3., generate = true  }, --pain
+                    { id = "I01D", chance = 3., generate = true  }, --axe
+                    { id = "I01E", chance = 3., generate = true  }, --bootpain
+                    { id = "I01F", chance = 3., generate = true  }, --chestpain
+                    { id = "I01G", chance = 3., generate = true  }, --headpain
+                    { id = "I01H", chance = 3., generate = true  }, --king
+                    { id = "I01I", chance = 3., generate = true  }, --jester
+                    { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_EMERALD, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_MALACHITE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_JADE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_OPAL, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_RUBY, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_SAPPHIRE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_STRONG, chance = 55.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_STRONG, chance = 55.3, min = 1, max = 3 }
+                },
+                gold = { min_gold = 250, max_gold = 1250, chance = 90. },
+                rolls = 9,
+                max_items = 6,
+                bonus_range = 165.
+            },
+            -- arachnid
+            [FourCC("n00S")] = {
+                quality_list = {
+                    { quality = MAGIC_ITEM, chance = 50. },
+                    { quality = RARE_ITEM, chance = 50. },
+                    { quality = COMMON_ITEM, chance = 100. }
+                },
+                item_list = {
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 45.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
+                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = "I00O", chance = 3., generate = true }, --COWARD
+                    { id = "I00P", chance = 3., generate = true  }, --witch
+                    { id = "I00Q", chance = 3., generate = true  }, --crown
+                    { id = "I00R", chance = 3., generate = true  }, --ritual
+                    { id = "I00S", chance = 3., generate = true  }, --acolyte
+                    { id = "I00T", chance = 3., generate = true  }, --smorc
+                    { id = "I018", chance = 3., generate = true  }, --boosters
+                    { id = "I019", chance = 3., generate = true  }, --storm
+                    { id = "I01A", chance = 3., generate = true  }, --princess
+                    { id = "I01B", chance = 3., generate = true  }, --queen
+                    { id = "I01C", chance = 3., generate = true  }, --pain
+                    { id = "I01D", chance = 3., generate = true  }, --axe
+                    { id = "I01E", chance = 3., generate = true  }, --bootpain
+                    { id = "I01F", chance = 3., generate = true  }, --chestpain
+                    { id = "I01G", chance = 3., generate = true  }, --headpain
+                    { id = "I01H", chance = 3., generate = true  }, --king
+                    { id = "I01I", chance = 3., generate = true  }, --jester
+                    { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_EMERALD, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_MALACHITE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_JADE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_OPAL, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_RUBY, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_SAPPHIRE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_STRONG, chance = 55.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_STRONG, chance = 55.3, min = 1, max = 3 }
+                },
+                gold = { min_gold = 250, max_gold = 1250, chance = 90. },
+                rolls = 9,
+                max_items = 6,
+                bonus_range = 165.
+            },
+            -- meph
+            [FourCC("U000")] = {
+                quality_list = {
+                    { quality = MAGIC_ITEM, chance = 50. },
+                    { quality = RARE_ITEM, chance = 50. },
+                    { quality = COMMON_ITEM, chance = 100. }
+                },
+                item_list = {
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 45.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
+                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = "I00O", chance = 3., generate = true }, --COWARD
+                    { id = "I00P", chance = 3., generate = true  }, --witch
+                    { id = "I00Q", chance = 3., generate = true  }, --crown
+                    { id = "I00R", chance = 3., generate = true  }, --ritual
+                    { id = "I00S", chance = 3., generate = true  }, --acolyte
+                    { id = "I00T", chance = 3., generate = true  }, --smorc
+                    { id = "I018", chance = 3., generate = true  }, --boosters
+                    { id = "I019", chance = 3., generate = true  }, --storm
+                    { id = "I01A", chance = 3., generate = true  }, --princess
+                    { id = "I01B", chance = 3., generate = true  }, --queen
+                    { id = "I01C", chance = 3., generate = true  }, --pain
+                    { id = "I01D", chance = 3., generate = true  }, --axe
+                    { id = "I01E", chance = 3., generate = true  }, --bootpain
+                    { id = "I01F", chance = 3., generate = true  }, --chestpain
+                    { id = "I01G", chance = 3., generate = true  }, --headpain
+                    { id = "I01H", chance = 3., generate = true  }, --king
+                    { id = "I01I", chance = 3., generate = true  }, --jester
+                    { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_EMERALD, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_MALACHITE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_JADE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_OPAL, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_RUBY, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_SAPPHIRE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_STRONG, chance = 55.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_STRONG, chance = 55.3, min = 1, max = 3 }
+                },
+                gold = { min_gold = 250, max_gold = 1250, chance = 90. },
+                rolls = 9,
+                max_items = 6,
+                bonus_range = 165.
+            },
+            -- baal
+            [FourCC("U001")] = {
+                quality_list = {
+                    { quality = MAGIC_ITEM, chance = 50. },
+                    { quality = RARE_ITEM, chance = 50. },
+                    { quality = COMMON_ITEM, chance = 100. }
+                },
+                item_list = {
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 45.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
+                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = "I00O", chance = 3., generate = true }, --COWARD
+                    { id = "I00P", chance = 3., generate = true  }, --witch
+                    { id = "I00Q", chance = 3., generate = true  }, --crown
+                    { id = "I00R", chance = 3., generate = true  }, --ritual
+                    { id = "I00S", chance = 3., generate = true  }, --acolyte
+                    { id = "I00T", chance = 3., generate = true  }, --smorc
+                    { id = "I018", chance = 3., generate = true  }, --boosters
+                    { id = "I019", chance = 3., generate = true  }, --storm
+                    { id = "I01A", chance = 3., generate = true  }, --princess
+                    { id = "I01B", chance = 3., generate = true  }, --queen
+                    { id = "I01C", chance = 3., generate = true  }, --pain
+                    { id = "I01D", chance = 3., generate = true  }, --axe
+                    { id = "I01E", chance = 3., generate = true  }, --bootpain
+                    { id = "I01F", chance = 3., generate = true  }, --chestpain
+                    { id = "I01G", chance = 3., generate = true  }, --headpain
+                    { id = "I01H", chance = 3., generate = true  }, --king
+                    { id = "I01I", chance = 3., generate = true  }, --jester
+                    { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_EMERALD, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_MALACHITE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_JADE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_OPAL, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_RUBY, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_SAPPHIRE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_STRONG, chance = 55.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_STRONG, chance = 55.3, min = 1, max = 3 }
+                },
+                gold = { min_gold = 250, max_gold = 1250, chance = 90. },
+                rolls = 9,
+                max_items = 6,
+                bonus_range = 165.
+            },
+            -- underworld queen
+            [FourCC("U002")] = {
+                quality_list = {
+                    { quality = MAGIC_ITEM, chance = 50. },
+                    { quality = RARE_ITEM, chance = 50. },
+                    { quality = COMMON_ITEM, chance = 100. }
+                },
+                item_list = {
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 45.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
+                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = "I00O", chance = 3., generate = true }, --COWARD
+                    { id = "I00P", chance = 3., generate = true  }, --witch
+                    { id = "I00Q", chance = 3., generate = true  }, --crown
+                    { id = "I00R", chance = 3., generate = true  }, --ritual
+                    { id = "I00S", chance = 3., generate = true  }, --acolyte
+                    { id = "I00T", chance = 3., generate = true  }, --smorc
+                    { id = "I018", chance = 3., generate = true  }, --boosters
+                    { id = "I019", chance = 3., generate = true  }, --storm
+                    { id = "I01A", chance = 3., generate = true  }, --princess
+                    { id = "I01B", chance = 3., generate = true  }, --queen
+                    { id = "I01C", chance = 3., generate = true  }, --pain
+                    { id = "I01D", chance = 3., generate = true  }, --axe
+                    { id = "I01E", chance = 3., generate = true  }, --bootpain
+                    { id = "I01F", chance = 3., generate = true  }, --chestpain
+                    { id = "I01G", chance = 3., generate = true  }, --headpain
+                    { id = "I01H", chance = 3., generate = true  }, --king
+                    { id = "I01I", chance = 3., generate = true  }, --jester
+                    { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_EMERALD, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_MALACHITE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_JADE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_OPAL, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_RUBY, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_SAPPHIRE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_STRONG, chance = 55.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_STRONG, chance = 55.3, min = 1, max = 3 }
+                },
+                gold = { min_gold = 250, max_gold = 1250, chance = 90. },
+                rolls = 9,
+                max_items = 6,
+                bonus_range = 165.
+            },
+            -- butcher
+            [FourCC("U003")] = {
+                quality_list = {
+                    { quality = MAGIC_ITEM, chance = 50. },
+                    { quality = RARE_ITEM, chance = 50. },
+                    { quality = COMMON_ITEM, chance = 100. }
+                },
+                item_list = {
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 45.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
+                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = "I00O", chance = 3., generate = true }, --COWARD
+                    { id = "I00P", chance = 3., generate = true  }, --witch
+                    { id = "I00Q", chance = 3., generate = true  }, --crown
+                    { id = "I00R", chance = 3., generate = true  }, --ritual
+                    { id = "I00S", chance = 3., generate = true  }, --acolyte
+                    { id = "I00T", chance = 3., generate = true  }, --smorc
+                    { id = "I018", chance = 3., generate = true  }, --boosters
+                    { id = "I019", chance = 3., generate = true  }, --storm
+                    { id = "I01A", chance = 3., generate = true  }, --princess
+                    { id = "I01B", chance = 3., generate = true  }, --queen
+                    { id = "I01C", chance = 3., generate = true  }, --pain
+                    { id = "I01D", chance = 3., generate = true  }, --axe
+                    { id = "I01E", chance = 3., generate = true  }, --bootpain
+                    { id = "I01F", chance = 3., generate = true  }, --chestpain
+                    { id = "I01G", chance = 3., generate = true  }, --headpain
+                    { id = "I01H", chance = 3., generate = true  }, --king
+                    { id = "I01I", chance = 3., generate = true  }, --jester
+                    { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_EMERALD, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_MALACHITE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_JADE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_OPAL, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_RUBY, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_SAPPHIRE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_STRONG, chance = 55.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_STRONG, chance = 55.3, min = 1, max = 3 }
+                },
+                gold = { min_gold = 250, max_gold = 1250, chance = 90. },
+                rolls = 9,
+                max_items = 6,
+                bonus_range = 165.
+            },
+            -- reanimated
+            [FourCC("U004")] = {
+                quality_list = {
+                    { quality = MAGIC_ITEM, chance = 50. },
+                    { quality = RARE_ITEM, chance = 50. },
+                    { quality = COMMON_ITEM, chance = 100. }
+                },
+                item_list = {
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 45.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
+                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = "I00O", chance = 3., generate = true }, --COWARD
+                    { id = "I00P", chance = 3., generate = true  }, --witch
+                    { id = "I00Q", chance = 3., generate = true  }, --crown
+                    { id = "I00R", chance = 3., generate = true  }, --ritual
+                    { id = "I00S", chance = 3., generate = true  }, --acolyte
+                    { id = "I00T", chance = 3., generate = true  }, --smorc
+                    { id = "I018", chance = 3., generate = true  }, --boosters
+                    { id = "I019", chance = 3., generate = true  }, --storm
+                    { id = "I01A", chance = 3., generate = true  }, --princess
+                    { id = "I01B", chance = 3., generate = true  }, --queen
+                    { id = "I01C", chance = 3., generate = true  }, --pain
+                    { id = "I01D", chance = 3., generate = true  }, --axe
+                    { id = "I01E", chance = 3., generate = true  }, --bootpain
+                    { id = "I01F", chance = 3., generate = true  }, --chestpain
+                    { id = "I01G", chance = 3., generate = true  }, --headpain
+                    { id = "I01H", chance = 3., generate = true  }, --king
+                    { id = "I01I", chance = 3., generate = true  }, --jester
+                    { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_EMERALD, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_MALACHITE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_JADE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_OPAL, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_RUBY, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_SAPPHIRE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_STRONG, chance = 55.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_STRONG, chance = 55.3, min = 1, max = 3 }
+                },
+                gold = { min_gold = 250, max_gold = 1250, chance = 90. },
+                rolls = 9,
+                max_items = 6,
+                bonus_range = 165.
+            },
+            -- ruler
+            [FourCC("U005")] = {
+                quality_list = {
+                    { quality = MAGIC_ITEM, chance = 50. },
+                    { quality = RARE_ITEM, chance = 50. },
+                    { quality = COMMON_ITEM, chance = 100. }
+                },
+                item_list = {
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 45.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
+                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = "I00O", chance = 3., generate = true }, --COWARD
+                    { id = "I00P", chance = 3., generate = true  }, --witch
+                    { id = "I00Q", chance = 3., generate = true  }, --crown
+                    { id = "I00R", chance = 3., generate = true  }, --ritual
+                    { id = "I00S", chance = 3., generate = true  }, --acolyte
+                    { id = "I00T", chance = 3., generate = true  }, --smorc
+                    { id = "I018", chance = 3., generate = true  }, --boosters
+                    { id = "I019", chance = 3., generate = true  }, --storm
+                    { id = "I01A", chance = 3., generate = true  }, --princess
+                    { id = "I01B", chance = 3., generate = true  }, --queen
+                    { id = "I01C", chance = 3., generate = true  }, --pain
+                    { id = "I01D", chance = 3., generate = true  }, --axe
+                    { id = "I01E", chance = 3., generate = true  }, --bootpain
+                    { id = "I01F", chance = 3., generate = true  }, --chestpain
+                    { id = "I01G", chance = 3., generate = true  }, --headpain
+                    { id = "I01H", chance = 3., generate = true  }, --king
+                    { id = "I01I", chance = 3., generate = true  }, --jester
+                    { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_EMERALD, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_MALACHITE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_JADE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_OPAL, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_RUBY, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_SAPPHIRE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_STRONG, chance = 55.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_STRONG, chance = 55.3, min = 1, max = 3 }
+                },
+                gold = { min_gold = 250, max_gold = 1250, chance = 90. },
+                rolls = 9,
+                max_items = 6,
+                bonus_range = 165.
+            },
+            -- demoness
+            [FourCC("U006")] = {
+                quality_list = {
+                    { quality = MAGIC_ITEM, chance = 50. },
+                    { quality = RARE_ITEM, chance = 50. },
+                    { quality = COMMON_ITEM, chance = 100. }
+                },
+                item_list = {
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 45.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
+                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = "I00O", chance = 3., generate = true }, --COWARD
+                    { id = "I00P", chance = 3., generate = true  }, --witch
+                    { id = "I00Q", chance = 3., generate = true  }, --crown
+                    { id = "I00R", chance = 3., generate = true  }, --ritual
+                    { id = "I00S", chance = 3., generate = true  }, --acolyte
+                    { id = "I00T", chance = 3., generate = true  }, --smorc
+                    { id = "I018", chance = 3., generate = true  }, --boosters
+                    { id = "I019", chance = 3., generate = true  }, --storm
+                    { id = "I01A", chance = 3., generate = true  }, --princess
+                    { id = "I01B", chance = 3., generate = true  }, --queen
+                    { id = "I01C", chance = 3., generate = true  }, --pain
+                    { id = "I01D", chance = 3., generate = true  }, --axe
+                    { id = "I01E", chance = 3., generate = true  }, --bootpain
+                    { id = "I01F", chance = 3., generate = true  }, --chestpain
+                    { id = "I01G", chance = 3., generate = true  }, --headpain
+                    { id = "I01H", chance = 3., generate = true  }, --king
+                    { id = "I01I", chance = 3., generate = true  }, --jester
+                    { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_EMERALD, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_MALACHITE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_JADE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_OPAL, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_RUBY, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_SAPPHIRE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_STRONG, chance = 55.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_STRONG, chance = 55.3, min = 1, max = 3 }
+                },
+                gold = { min_gold = 250, max_gold = 1250, chance = 90. },
+                rolls = 9,
+                max_items = 6,
+                bonus_range = 165.
             },
         }
-
     end
 
 end

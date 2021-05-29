@@ -11,9 +11,7 @@ do
     PlayerCameraSetup = {}
 
 
-    RegisterTestCommand("cam", function ()
-        PlayerCameraState[1] = false
-    end)
+
 
 
     function LockCameraForPlayer(player_id)
@@ -24,7 +22,7 @@ do
 
     function InitPlayerCamera()
 
-        for i = 1, 5 do
+        for i = 1, 6 do
             PlayerCameraSetup[i] = CreateCameraSetup()
             CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_ANGLE_OF_ATTACK, 304., 0.)
             CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_TARGET_DISTANCE, 1650., 0.)
@@ -36,7 +34,7 @@ do
 
         TimerStart(CreateTimer(), 0.03, true, function ()
 
-            for i = 1, 5 do
+            for i = 1, 6 do
                 if PlayerCameraState[i] then
                     CameraSetupSetDestPosition(PlayerCameraSetup[i], GetUnitX(PlayerHero[i]) + Rx(90., GetUnitFacing(PlayerHero[i])), GetUnitY(PlayerHero[i]) + Ry(90., GetUnitFacing(PlayerHero[i])), 0.12)
                     BlzCameraSetupApplyForceDurationSmooth(PlayerCameraSetup[i], true, 0.12, 1., 1., 1.)
@@ -44,6 +42,11 @@ do
             end
 
         end)
+
+        RegisterTestCommand("cam", function ()
+            PlayerCameraState[1] = false
+        end)
+
     end
 
 end

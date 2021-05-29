@@ -9,7 +9,7 @@ do
     MAIN_POINT = nil
     MONSTER_PLAYER = Player(10)
     SECOND_MONSTER_PLAYER = Player(11)
-    WaveGroup = CreateGroup()
+    WaveGroup = nil
 
     local WaveDifficultyModificator = 0.5
     local WavePlayerCountModificator = 1.
@@ -17,8 +17,9 @@ do
     local COMMON_MONSTER_RATE = 0.65
     local MELEE_MONSTER_CHANCE = 60.
 
-    local WAVE_MINIMUM_COUNT = 10
-    local WAVE_MAXIMUM_COUNT = 25
+    local WAVE_MINIMUM_COUNT = 5
+    local WAVE_MAXIMUM_COUNT = 7
+    local WAVE_PLAYER_BONUS = 2
 
 
     local MONSTER_TAG_MELEE = 1
@@ -30,7 +31,9 @@ do
     MONSTERPACK_DEMONS = 4
     MONSTERPACK_GHOSTS = 5
     MONSTERPACK_BANDITS = 6
-    MONSTERPACK_BOSS = 10
+    MONSTERPACK_ARACHNIDS = 7
+    MONSTERPACK_SPIDERS = 8
+    MONSTERPACK_BOSS = 9
 
 
 
@@ -55,6 +58,19 @@ do
     MONSTER_ID_SKELETON_HELL_ARCHER = "n004"
     MONSTER_ID_SKELETON_SNIPER = "n007"
     MONSTER_ID_NECROMANCER = "u00F"
+    MONSTER_ID_SPIDER = "n00Y"
+    MONSTER_ID_BLACK_SPIDER = "n00Z"
+    MONSTER_ID_SPIDER_HUNTER = "n010"
+    MONSTER_ID_GIGANTIC_SPIDER = "n011"
+    MONSTER_ID_ARACHNID_THROWER = "n00O"
+    MONSTER_ID_ARACHNID = "n00P"
+    MONSTER_ID_ARACHNID_WARRIOR = "n00Q"
+    MONSTER_ID_ARACHNID_GROUNDER = "n00R"
+    MONSTER_ID_BANDIT_BASIC = "n00T"
+    MONSTER_ID_BANDIT_ROBBER = "n00U"
+    MONSTER_ID_BANDIT_ROGUE = "n00V"
+    MONSTER_ID_BANDIT_ASSASSIN = "n00W"
+
 
     MONSTER_ID_BUTCHER = "U003"
     MONSTER_ID_BAAL = "U001"
@@ -63,16 +79,14 @@ do
     MONSTER_ID_DEMONKING = "U005"
     MONSTER_ID_UNDERWORLD_QUEEN = "U002"
     MONSTER_ID_REANIMATED = "U004"
+    MONSTER_ID_SKELETON_KING = "n015"
+    MONSTER_ID_SPIDER_QUEEN = "n012"
+    MONSTER_ID_ARACHNID_BOSS = "n00S"
+    MONSTER_ID_BANDIT_BOSS = "n00X"
 
 
 
-    RegisterTestCommand("endw", function()
 
-        ForGroup(WaveGroup, function ()
-            KillUnit(GetEnumUnit())
-        end)
-
-    end)
 
 
 
@@ -104,6 +118,67 @@ do
                     MONSTER_ID_UNDERWORLD_QUEEN
                 }
             },
+            [MONSTERPACK_BANDITS] = {
+                [MONSTER_RANK_COMMON] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_BANDIT_BASIC, chance = 100. }
+                    },
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_BANDIT_ROBBER, chance = 100. }
+                    }
+                },
+                [MONSTER_RANK_ADVANCED] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_BANDIT_ROGUE, chance = 100. }
+                    },
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_BANDIT_ASSASSIN, chance = 100. },
+                    }
+                },
+                [MONSTERPACK_BOSS] = {
+                    MONSTER_ID_BANDIT_BOSS
+                }
+            },
+            [MONSTERPACK_ARACHNIDS] = {
+                [MONSTER_RANK_COMMON] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_ARACHNID, chance = 100. }
+                    },
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_ARACHNID_THROWER, chance = 100. }
+                    }
+                },
+                [MONSTER_RANK_ADVANCED] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_ARACHNID_WARRIOR, chance = 100. }
+                    },
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_ARACHNID_GROUNDER, chance = 100. },
+                    }
+                },
+                [MONSTERPACK_BOSS] = {
+                    MONSTER_ID_ARACHNID_BOSS
+                }
+            },
+            [MONSTERPACK_SPIDERS] = {
+                [MONSTER_RANK_COMMON] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_BLACK_SPIDER, chance = 20. },
+                        { id = MONSTER_ID_SPIDER, chance = 100. }
+                    }
+                },
+                [MONSTER_RANK_ADVANCED] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_GIGANTIC_SPIDER, chance = 100. }
+                    },
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_SPIDER_HUNTER, chance = 100. },
+                    }
+                },
+                [MONSTERPACK_BOSS] = {
+                    MONSTER_ID_SPIDER_QUEEN
+                }
+            },
             [MONSTERPACK_SKELETONS] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
@@ -124,7 +199,8 @@ do
                     }
                 },
                 [MONSTERPACK_BOSS] = {
-                    MONSTER_ID_REANIMATED
+                    MONSTER_ID_REANIMATED,
+                    MONSTER_ID_SKELETON_KING
                 }
             },
             [MONSTERPACK_ZOMBIES] = {
@@ -172,7 +248,10 @@ do
                 [MONSTERPACK_BOSS] = {
                     MONSTER_ID_DEMONESS,
                     MONSTER_ID_DEMONKING,
-                    MONSTER_ID_UNDERWORLD_QUEEN
+                    MONSTER_ID_UNDERWORLD_QUEEN,
+                    MONSTER_ID_BUTCHER,
+                    MONSTER_ID_BAAL,
+                    MONSTER_ID_MEPHISTO
                 }
             },
             [MONSTERPACK_GHOSTS] = {
@@ -185,6 +264,9 @@ do
                     [MONSTER_TAG_RANGE] = {
                         { id = MONSTER_ID_GHOST, chance = 100. },
                     }
+                },
+                [MONSTERPACK_BOSS] = {
+                    MONSTER_ID_MEPHISTO
                 }
             },
             [MONSTERPACK_BOSS] = {
@@ -194,17 +276,21 @@ do
                 MONSTER_ID_DEMONESS ,
                 MONSTER_ID_DEMONKING,
                 MONSTER_ID_UNDERWORLD_QUEEN,
-                MONSTER_ID_REANIMATED
+                MONSTER_ID_REANIMATED,
+                MONSTER_ID_SPIDER_QUEEN,
+                MONSTER_ID_ARACHNID_BOSS,
+                MONSTER_ID_BANDIT_BOSS,
+                MONSTER_ID_SKELETON_KING
             }
     }
 
 
     function GetRandomMonsterPack(rank)
-        local pack = GetRandomInt(MONSTERPACK_SUCCUBUS, MONSTERPACK_GHOSTS)
+        local pack = GetRandomInt(1, #MONSTER_LIST-1)
 
             while true do
                 if MONSTER_LIST[pack][rank] ~= nil then return MONSTER_LIST[pack] end
-                pack = GetRandomInt(MONSTERPACK_SUCCUBUS, MONSTERPACK_GHOSTS)
+                pack = GetRandomInt(1, #MONSTER_LIST-1)
             end
 
         return MONSTER_LIST[pack]
@@ -212,11 +298,11 @@ do
 
 
     function GetRandomMonsterPackTag(rank, tag)
-        local pack = GetRandomInt(MONSTERPACK_SUCCUBUS, MONSTERPACK_GHOSTS)
+        local pack = GetRandomInt(1, #MONSTER_LIST-1)
         local num = 10
 
             while num > 0 do
-                pack = GetRandomInt(MONSTERPACK_SUCCUBUS, MONSTERPACK_GHOSTS)
+                pack = GetRandomInt(1, #MONSTER_LIST-1)
                     if MONSTER_LIST[pack][rank] ~= nil and MONSTER_LIST[pack][rank][tag] ~= nil then
                         return MONSTER_LIST[pack]
                     end
@@ -361,18 +447,19 @@ do
     end
 
 
+    local BossCounter = 0
 
     ---@param point rect
     function SpawnMonstersWave(point)
         local monster_pack = GetRandomMonsterPack(MONSTER_RANK_COMMON)
         --local point = SPAWN_POINTS[1]
-        local total_monster_count = GetRandomInt(WAVE_MINIMUM_COUNT, WAVE_MAXIMUM_COUNT)
+        local total_monster_count = GetRandomInt(WAVE_MINIMUM_COUNT, WAVE_MAXIMUM_COUNT) + R2I(Current_Wave / 5) + (ActivePlayers-1 * WAVE_PLAYER_BONUS)
         --print("total is "..total_monster_count)
         local first_pack_count = math.floor(total_monster_count * COMMON_MONSTER_RATE)
         --print("first pack counter is "..first_pack_count)
         local monster_attack_type = GetRandomReal(0., 100.) <= MELEE_MONSTER_CHANCE and MONSTER_TAG_MELEE or MONSTER_TAG_RANGE
 
-
+        BossCounter = BossCounter + 1
         --print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
         --print("pack is "..monster_pack)
 
@@ -419,6 +506,21 @@ do
         end
 
 
+        if BossCounter == 5 then
+            local boss
+
+            if monster_pack[MONSTER_RANK_BOSS] then
+                boss = CreateUnit(MONSTER_PLAYER, FourCC(monster_pack[MONSTERPACK_BOSS][GetRandomInt(1, #monster_pack[MONSTERPACK_BOSS])]), GetRectCenterX(point), GetRectCenterY(point), 270.)
+            else
+                boss = CreateUnit(MONSTER_PLAYER, FourCC(MONSTER_LIST[MONSTERPACK_BOSS][GetRandomInt(1, #monster_pack[MONSTERPACK_BOSS])]), GetRectCenterX(point), GetRectCenterY(point), 270.)
+            end
+
+            GroupAddUnit(WaveGroup, boss)
+            BossCounter = 0
+            --CreateUnit()
+        end
+
+
             DelayAction(0.015, function()
                 ForGroup(WaveGroup, function ()
                     ScaleMonsterUnit(GetEnumUnit())
@@ -426,7 +528,22 @@ do
                 end)
             end)
 
+
+        TimerStart(CreateTimer(), 12.5, true, function()
+            if BlzGroupGetSize(WaveGroup) <= 0 then
+                DestroyTimer(GetExpiredTimer())
+            else
+                ForGroup(WaveGroup, function()
+                    IssuePointOrderById(GetEnumUnit(), order_attack, GetRectCenterX(MAIN_POINT), GetRectCenterY(MAIN_POINT))
+                end)
+            end
+        end)
+
         PingMinimap(GetRectCenterX(point), GetRectCenterY(point), 7.)
+
+        local penta = AddSpecialEffect("Other\\MagicCircle_Fire.mdx", GetRectCenterX(point), GetRectCenterY(point))
+        BlzSetSpecialEffectScale(penta, 3.)
+        DestroyEffect(penta)
 
     end
 
@@ -445,7 +562,11 @@ do
             gg_rct_spawn_wave_top_righ
         }
 
+        WaveGroup = CreateGroup()
+
         MAIN_POINT = gg_rct_captain_guard_rect
+
+        for i = 0, 5 do if IsPlayerSlotState(Player(i), PLAYER_SLOT_STATE_PLAYING) then ActivePlayers = ActivePlayers + 1 end end
 
         InitMonsterPacks()
 
@@ -453,17 +574,16 @@ do
             TriggerRegisterPlayerUnitEvent(trg, MONSTER_PLAYER, EVENT_PLAYER_UNIT_DEATH, nil)
             TriggerRegisterPlayerUnitEvent(trg, SECOND_MONSTER_PLAYER, EVENT_PLAYER_UNIT_DEATH, nil)
             TriggerAddAction(trg, function()
-
+                local unit = GetTriggerUnit()
                 --print("killer is " .. GetUnitName(GetKillingUnit()))
-
-                if GetKillingUnit() ~= nil then
-                    local unit = GetTriggerUnit()
-                    local unit_Data = GetUnitData(unit)
 
                     if IsUnitInGroup(unit, WaveGroup) then
                         GroupRemoveUnit(WaveGroup, unit)
                         if BlzGroupGetSize(WaveGroup) <= 0 then EndWave() end
                     end
+
+                if GetKillingUnit() ~= nil then
+                    local unit_Data = GetUnitData(unit)
 
                     --print("pre drop")
                     DropForPlayer(unit, GetPlayerId(GetOwningPlayer(GetKillingUnit())))
@@ -473,6 +593,14 @@ do
                     unit_Data = nil
                 end
 
+        end)
+
+
+        RegisterTestCommand("endw", function()
+            print("kill current wave")
+            ForGroup(WaveGroup, function ()
+                KillUnit(GetEnumUnit())
+            end)
         end)
 
     end

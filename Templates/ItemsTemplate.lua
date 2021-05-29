@@ -70,7 +70,7 @@ do
 	ITEM_POTION_MANA_STRONG = "I008"
 	ITEM_POTION_MIX_STRONG = "I00L"
 
-
+	ITEM_SCROLL_OF_TOWN_PORTAL = "I01K"
 
 
 	EQUIP_SOUND = 1
@@ -285,6 +285,14 @@ do
 	end
 
 
+	function CreateDefaultShieldOffhand()
+		local default_shield = GetItemTemplate()
+
+			MergeTables(default_shield, ITEM_TEMPLATE_DATA[FourCC('SDEF')])
+
+		return default_shield
+	end
+
 
     function DefineItemsData()
 		ItemAddData('0000', {
@@ -292,6 +300,13 @@ do
 			TYPE = ITEM_TYPE_WEAPON,
 			SUBTYPE = FIST_WEAPON,
 			DAMAGE  = 4,
+			QUALITY = COMMON_ITEM
+		})
+
+		ItemAddData('SDEF', {
+			NAME    = 'SHIELD',
+			TYPE = ITEM_TYPE_OFFHAND,
+			SUBTYPE = SHIELD_OFFHAND,
 			QUALITY = COMMON_ITEM
 		})
 
@@ -338,8 +353,8 @@ do
 			TYPE = ITEM_TYPE_WEAPON,
 			SUBTYPE = GREATSWORD_WEAPON,
 			DAMAGE  = 27,
-			QUALITY = SET_ITEM,
-			set_bonus = GetItemSet("STST"),
+			QUALITY = COMMON_ITEM,
+			--set_bonus = GetItemSet("STST"),
 			frame_texture = "Weapons\\BTNBarbarian Brutal Slasher.blp",
 			flippy = true,
 			BONUS   = {
@@ -374,8 +389,8 @@ do
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = CHEST_ARMOR,
 			DEFENCE  = 25,
-			QUALITY = SET_ITEM,
-			set_bonus = GetItemSet("STST"),
+			QUALITY = COMMON_ITEM,
+			--set_bonus = GetItemSet("STST"),
 			flippy = true,
 			frame_texture = "Armor\\BTNSteelArmor2.blp",
 			BONUS   = {
@@ -391,8 +406,8 @@ do
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = LEGS_ARMOR,
 			DEFENCE  = 18,
-			QUALITY = SET_ITEM,
-			set_bonus = GetItemSet("STST"),
+			QUALITY = COMMON_ITEM,
+			--set_bonus = GetItemSet("STST"),
 			flippy = true,
 			frame_texture = "Armor\\BTNBoots.blp",
 			BONUS   = {
@@ -408,8 +423,8 @@ do
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = HEAD_ARMOR,
 			DEFENCE  = 12,
-			QUALITY = SET_ITEM,
-			set_bonus = GetItemSet("STST"),
+			QUALITY = COMMON_ITEM,
+			--set_bonus = GetItemSet("STST"),
 			flippy = true,
 			frame_texture = "Armor\\BTNNFHelmet02.blp",
 			BONUS   = {
@@ -425,8 +440,8 @@ do
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = HANDS_ARMOR,
 			DEFENCE  = 15,
-			QUALITY = SET_ITEM,
-			set_bonus = GetItemSet("STST"),
+			QUALITY = COMMON_ITEM,
+			--set_bonus = GetItemSet("STST"),
 			flippy = true,
 			frame_texture = "Armor\\BTNDuelists Gauntlets.blp",
 			BONUS   = {
@@ -761,7 +776,7 @@ do
 			point_bonus 	   = {
 				[ITEM_TYPE_WEAPON] 		= {  PARAM = MAGICAL_ATTACK, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = MAGICAL_SUPPRESSION, VALUE = 75, METHOD = STRAIGHT_BONUS },
-				[ITEM_TYPE_JEWELRY]  	= {  PARAM = MP_REGEN, VALUE = 0.53, METHOD = MULTIPLY_BONUS },
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = MP_REGEN, VALUE = 1.13, METHOD = MULTIPLY_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = CRIT_MULTIPLIER, VALUE = 0.12, METHOD = STRAIGHT_BONUS }
 			},
 			sell_value = 50,
@@ -820,7 +835,7 @@ do
 			frame_texture      = "GUI\\BTNItem_Gem_Opal.blp",
 			point_bonus 	   = {
 				[ITEM_TYPE_WEAPON] 		= {  PARAM = PHYSICAL_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
-				[ITEM_TYPE_ARMOR]  		= {  PARAM = HP_REGEN, VALUE = 0.5, METHOD = MULTIPLY_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = HP_REGEN, VALUE = 1.1, METHOD = MULTIPLY_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = PHYSICAL_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = HP_VALUE, VALUE = 1.1, METHOD = MULTIPLY_BONUS }
 			},
@@ -828,6 +843,15 @@ do
 			soundpack = { drop = "Sound\\gem.wav" }
 		})
 
+
+		ItemAddData('I01K', {
+			NAME    		   = LOCALE_LIST[my_locale].SCROLL_OF_TOWN_PORTAL_NAME,
+			TYPE    		   = ITEM_TYPE_CONSUMABLE,
+			frame_texture      = "ReplaceableTextures\\CommandButtons\\BTNScrollOfHealing.blp",
+			item_description = LOCALE_LIST[my_locale].SCROLL_OF_TOWN_PORTAL_DESC,
+			soundpack = { drop = "Sound\\scroll.wav" },
+			cost = 50
+		})
 
 		ItemAddData('I003', {
 			NAME    		   = LOCALE_LIST[my_locale].POTION_WEAK_HP_NAME_TEXT,
@@ -1014,7 +1038,8 @@ do
 			},
 			MAX_SLOTS = 2,
 			frame_texture = "Armor\\BTNbt.blp",
-			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD,
+			legendary_effect = GetLegendaryEffect("BTCW"),
+			--legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD,
 			special_description = "\""..LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_BOOT_OF_COWARD.."\"",
 			soundpack = { equip = "Sound\\cloth_armor_equip.wav", uneqip = "Sound\\cloth_armor_unequip.wav", drop = "Sound\\boots.wav" }
 		})
@@ -1036,8 +1061,8 @@ do
 			},
 			MAX_SLOTS = 3,
 			frame_texture = "Weapons\\BTN_CW_Red_Scepter.blp",
-			legendary_effect = { id = "WMEF", type = ITEM_PASSIVE_EFFECT },
-			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_WITCH_MASTERY,
+			legendary_effect = GetLegendaryEffect("EWTM"),--{ id = "EWTM", type = ITEM_PASSIVE_EFFECT },
+			--legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_WITCH_MASTERY,
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_WITCH_MASTERY .."\"",
 			soundpack = { equip = "Sound\\staff_manadrinker_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
 		})
@@ -1062,6 +1087,26 @@ do
 			soundpack = { equip = "Sound\\rare.wav", uneqip = "Sound\\rare.wav", drop = "Sound\\rare.wav" }
 		})
 
+		ItemAddData('I01L', {
+			NAME    = "Обруч Напряжения", --LOCALE_LIST[my_locale].ITEM_NAME_DARK_CROWN,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = HEAD_ARMOR,
+			QUALITY = UNIQUE_ITEM,
+			DEFENCE = 30,
+			stat_modificator = 0.85,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = MAGICAL_ATTACK, VALUE = 1.3, METHOD = MULTIPLY_BONUS },
+				{ PARAM = CRIT_CHANCE, VALUE = 10, METHOD = STRAIGHT_BONUS },
+				{ PARAM = DARKNESS_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 2,
+			frame_texture = "Armor\\BTNdiadem1.blp",
+			special_description = "\"".. "Приносит одну головную боль. Но не только его владельцу." .."\"",
+			soundpack = { equip = "Sound\\rare.wav", uneqip = "Sound\\rare.wav", drop = "Sound\\rare.wav" }
+		})
+
 		ItemAddData('I00R', {
 			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_RITUAL_DAGGER,
 			TYPE    = ITEM_TYPE_WEAPON,
@@ -1079,8 +1124,8 @@ do
 			},
 			MAX_SLOTS = 3,
 			frame_texture = "Weapons\\BTNBlack Navaja.blp",
-			legendary_effect = { id = "RDEF", type = ITEM_PASSIVE_EFFECT },
-			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_RITUAL_DAGGER,
+			legendary_effect = GetLegendaryEffect("RDAG"), --{ id = "RDAG", type = ITEM_PASSIVE_EFFECT },
+			--legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_RITUAL_DAGGER,
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_RITUAL_DAGGER .."\"",
 			soundpack = { equip = "Sound\\daggers_ashes_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\dagger.wav" }
 		})
@@ -1141,7 +1186,7 @@ do
 			MAX_SLOTS = 3,
 			frame_texture = "Armor\\BTNSteampunkBoots.blp",
 			legendary_effect =  GetLegendaryEffect("BSTR"),--{ id = "BSTR", type = ITEM_PASSIVE_EFFECT },
-			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_BOOSTERS,
+			--legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_BOOSTERS,
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_BOOSTERS .."\"",
 			soundpack = { equip = "Sound\\bootsmetal.wav", uneqip = "Sound\\bootsmetal.wav", drop = "Sound\\bootsmetal.wav" }
 		})
@@ -1162,7 +1207,7 @@ do
 			MAX_SLOTS = 2,
 			frame_texture = "Jewelry\\BTNStorm Necklace.blp",
 			legendary_effect = GetLegendaryEffect("EOTS"),--{ id = "EOTS", type = ITEM_PASSIVE_EFFECT },
-			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM,
+			--legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM,
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_EYE_OF_THE_STORM .."\"",
 			soundpack = { equip = "Sound\\ring_dexterity_equip.wav", uneqip = "Sound\\ring_dexterity_unequip.wav", drop = "Sound\\amulet.wav" }
 		})
@@ -1226,8 +1271,8 @@ do
 			},
 			MAX_SLOTS = 1,
 			frame_texture = "Jewelry\\BTNDarknessRing.blp",
-			legendary_effect = GetLegendaryEffect("ECSL"),--{ id = "ECSL", type = ITEM_PASSIVE_EFFECT },
-			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_PAIN_ECHO,
+			legendary_effect = GetLegendaryEffect("PNEC"),--{ id = "ECSL", type = ITEM_PASSIVE_EFFECT },
+			--legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_PAIN_ECHO,
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_PAIN_ECHO .."\"",
 			soundpack = { equip = "Sound\\ring_regeneration_equip.wav", uneqip = "Sound\\ring_regeneration_unequip.wav", drop = "Sound\\ring.wav" }
 		})
@@ -1250,7 +1295,7 @@ do
 			MAX_SLOTS = 1,
 			frame_texture = "Weapons\\BTNFrostAxe.blp",
 			legendary_effect = GetLegendaryEffect("ECRA"), --{ id = "ECRA", type = ITEM_PASSIVE_EFFECT },
-			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_CRYSTAL_AXE,
+			--legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_CRYSTAL_AXE,
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_CRYSTAL_AXE .."\"",
 			soundpack = { equip = "Sound\\daggers_polar_equip.wav", uneqip = "Sound\\daggers_polar_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
 		})
@@ -1377,8 +1422,8 @@ do
 			},
 			MAX_SLOTS = 3,
 			frame_texture = "Offhand\\BTNMageOrb.blp",
-			legendary_effect = { id = "MOFE", type = ITEM_PASSIVE_EFFECT },
-			legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS,
+			legendary_effect = GetLegendaryEffect("MOFE"), --{ id = "MOFE", type = ITEM_PASSIVE_EFFECT },
+			--legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS,
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_MASTER_OF_ELEMENTS .."\"",
 			soundpack = { equip = "Sound\\gem.wav", uneqip = "Sound\\gem.wav", drop = "Sound\\gem.wav" }
 		})

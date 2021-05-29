@@ -9,12 +9,22 @@ do
     WaveTimer = nil
     Current_Wave = 1
 
+    local MusicMix = {
+        "Sound\\Music\\mp3Music\\IllidansTheme.mp3",
+        "Sound\\Music\\mp3Music\\ArthasTheme.mp3",
+        "Sound\\Music\\mp3Music\\BloodElfTheme.mp3"
+    }
 
+    function GetRandomMusicMix()
+        local result_mix = ""
+        local order_table = GetRandomIntTable(1, #MusicMix, #MusicMix)
 
+        for i = 1, #order_table do
+            result_mix = result_mix .. MusicMix[order_table[i]] .. ";"
+        end
 
-
-    RegisterTestCommand("run", function() AddWaveTimer(3.) end)
-
+        return result_mix
+    end
 
 
     function EndWave()
@@ -22,10 +32,16 @@ do
         if Current_Wave == 50 then
             VictoryScreen()
         else
-            AddWaveTimer(200.)
             Current_Wave = Current_Wave + 1
+            AddWaveTimer(330.)
             ResetShops()
-            ToggleCitizens()
+            ToggleCitizens(true)
+            ScaleMonsterPacks()
+
+            StopMusic(true)
+            ClearMapMusic()
+            PlayMusic(GetRandomMusicMix())
+            ResumeMusic()
         end
 
     end
@@ -34,10 +50,13 @@ do
     function ResetShops()
         local item_count = GetRandomInt(7, 12)
 
+        --print("shops reset - start")
             --smorc
             ClearShop(gg_unit_opeo_0031)
+            --print("shop cleared")
             for i = 1, item_count do
                 local item = CreateCustomItem(GetRandomGeneratedItemId(), 0., 0.)
+                --print("create item number " .. i)
                 local roll = GetRandomInt(1, 5)
                 local quality
 
@@ -50,6 +69,7 @@ do
                 AddItemToShop(gg_unit_opeo_0031, item, false)
             end
 
+        --print("smorc shop is generated")
 
             local item_pool = {
                 SWORD_WEAPON,
@@ -84,6 +104,7 @@ do
                 AddItemToShop(gg_unit_n000_0056, item, false)
             end
 
+        --print("blacksmith shop is generated")
 
             item_pool = {
                 RING_JEWELRY,
@@ -101,14 +122,20 @@ do
                 AddItemToShop(gg_unit_n001_0055, item, false)
             end
 
+            local scrolls = CreateCustomItem(ITEM_SCROLL_OF_TOWN_PORTAL, 0., 0.)
+            SetItemCharges(scrolls, 5)
+            AddItemToShopWithSlot(gg_unit_n001_0055, scrolls, 30, false)
+
+        --print("shops resetted")
     end
 
 
     function AddWaveTimer(total_time)
-        local item = MultiboardGetItem(MAIN_MULTIBOARD, 1, 1)
+        local item = MultiboardGetItem(MAIN_MULTIBOARD, 0, 1)
 
         MultiboardSetItemStyle(item, true, false)
         MultiboardSetItemValue(item, TimeToText(total_time))
+        MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 0, 0),  LOCALE_LIST[my_locale].WAVE_LEVEL .. I2S(Current_Wave))
         TimerStart(WaveTimer, 0., false, nil)
 
         TimerStart(WaveTimer, 1., true, function()
@@ -118,8 +145,13 @@ do
             if total_time <= 0. then
                 PauseTimer(WaveTimer)
                 SpawnMonstersWave(GetRandomMonsterSpawnPoint())
-                ToggleCitizens()
+                ToggleCitizens(false)
                 Play2DSound("Sound\\Interface\\Warning.wav", 127)
+                StopMusic(true)
+                ClearMapMusic()
+                PlayMusic("Sound\\Music\\mp3Music\\PursuitTheme.mp3")
+                --SetMapMusic("Sound\\Music\\mp3Music\\PursuitTheme.mp3", false, 0)
+                ResumeMusic()
             end
 
         end)
@@ -131,6 +163,8 @@ do
 
         InitMultiboard()
         WaveTimer = CreateTimer()
+
+        RegisterTestCommand("run", function() AddWaveTimer(3.) end)
 
     end
 

@@ -17,9 +17,9 @@ do
                 BlzFrameSetText(StatsList[VIT_STAT], LOCALE_LIST[my_locale].STAT_PANEL_VIT.. data.stats[VIT_STAT].value)
                 BlzFrameSetText(StatsList[AGI_STAT], LOCALE_LIST[my_locale].STAT_PANEL_AGI.. data.stats[AGI_STAT].value)
 
-                BlzFrameSetText(StatsList[PHYSICAL_ATTACK], LOCALE_LIST[my_locale].STAT_PANEL_PHYS_ATTACK.. R2I(data.stats[PHYSICAL_ATTACK].value + data.equip_point[WEAPON_POINT].DAMAGE))
+                BlzFrameSetText(StatsList[PHYSICAL_ATTACK], LOCALE_LIST[my_locale].STAT_PANEL_PHYS_ATTACK.. R2I(data.stats[PHYSICAL_ATTACK].value))
                 BlzFrameSetText(StatsList[PHYSICAL_DEFENCE], LOCALE_LIST[my_locale].STAT_PANEL_PHYS_DEFENCE.. R2I(data.stats[PHYSICAL_DEFENCE].value))
-                BlzFrameSetText(StatsList[MAGICAL_ATTACK], LOCALE_LIST[my_locale].STAT_PANEL_MAG_ATTACK.. R2I(data.stats[MAGICAL_ATTACK].value + data.equip_point[WEAPON_POINT].DAMAGE))
+                BlzFrameSetText(StatsList[MAGICAL_ATTACK], LOCALE_LIST[my_locale].STAT_PANEL_MAG_ATTACK.. R2I(data.stats[MAGICAL_ATTACK].value))
                 BlzFrameSetText(StatsList[MAGICAL_SUPPRESSION], LOCALE_LIST[my_locale].STAT_PANEL_MAG_DEFENCE.. R2I(data.stats[MAGICAL_SUPPRESSION].value))
                 BlzFrameSetText(StatsList[ATTACK_SPEED], LOCALE_LIST[my_locale].STAT_PANEL_ATTACK_SPEED.. string.format('%%.2f', data.stats[ATTACK_SPEED].value))
                 BlzFrameSetText(StatsList[CRIT_CHANCE], LOCALE_LIST[my_locale].STAT_PANEL_CRIT_CHANCE..  R2I(data.stats[CRIT_CHANCE].value) .. "%%")
@@ -203,13 +203,31 @@ do
 
         BlzFrameSetVisible(CharButton, false)
 
+         local FirstTime_Data = {
+                [1] = { first_time = true },
+                [2] = { first_time = true },
+                [3] = { first_time = true },
+                [4] = { first_time = true },
+                [5] = { first_time = true },
+                [6] = { first_time = true }
+            }
+
         local trg = CreateTrigger()
         BlzTriggerRegisterFrameEvent(trg, CharButton, FRAMEEVENT_CONTROL_CLICK)
         TriggerAddAction(trg, function()
 
             BlzFrameSetVisible(PlayerStatsFrame[GetPlayerId(GetTriggerPlayer()) + 1], not BlzFrameIsVisible(PlayerStatsFrame[GetPlayerId(GetTriggerPlayer()) + 1]))
             BlzFrameSetVisible(SkillPanelFrame[GetPlayerId(GetTriggerPlayer()) + 1].main_frame, false)
+
+                if FirstTime_Data[GetPlayerId(GetTriggerPlayer()) + 1].first_time then
+                    ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_STATS_1, GetPlayerId(GetTriggerPlayer()))
+                    FirstTime_Data[GetPlayerId(GetTriggerPlayer()) + 1].first_time = false
+                end
         end)
+
+
+
+
 
         TimerStart(CreateTimer(), STAT_PANEL_UPDATE, true, StatPanelUpdate)
         --RegisterConstructor(PlayerStatsFrame[1], 0.2, 0.2)

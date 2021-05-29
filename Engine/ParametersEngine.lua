@@ -207,9 +207,13 @@ do
 					special = "%%"
 				end
 
-			if parameter ~= CRIT_MULTIPLIER then value = R2I(value) end
+			if parameter == MELEE_DAMAGE_REDUCTION or parameter == RANGE_DAMAGE_REDUCTION then vector = "-" end
 
-            if parameter == MELEE_DAMAGE_REDUCTION or parameter == RANGE_DAMAGE_REDUCTION then vector = "-" end
+			if parameter ~= CRIT_MULTIPLIER and parameter ~= HP_REGEN and parameter ~= MP_REGEN then
+				value = R2I(value)
+			else
+
+			end
 
 			if value < 0 then
 				vector = ""
@@ -232,8 +236,8 @@ do
 		[PHYSICAL_ATTACK]        = function(data)
 			local total_damage = data.equip_point[WEAPON_POINT].DAMAGE
 			
-			if data.equip_point[OFFHAND_POINT] ~= nil then
-				if data.equip_point[OFFHAND_POINT].item_type == ITEM_TYPE_WEAPON then
+			if data.equip_point[OFFHAND_POINT] then
+				if data.equip_point[OFFHAND_POINT].TYPE == ITEM_TYPE_WEAPON then
 					total_damage = total_damage + (data.equip_point[OFFHAND_POINT].DAMAGE * 0.5)
 				end
 			end
@@ -276,12 +280,12 @@ do
 
 		---@param data table
 		[CRIT_CHANCE]            = function(data)
-			data.stats[CRIT_CHANCE].value = (data.equip_point[WEAPON_POINT].CRIT_CHANCE + data.stats[CRIT_CHANCE].bonus) * data.stats[CRIT_CHANCE].multiplier
+			data.stats[CRIT_CHANCE].value = ((data.equip_point[WEAPON_POINT].CRIT_CHANCE or 0.) + data.stats[CRIT_CHANCE].bonus) * data.stats[CRIT_CHANCE].multiplier
 		end,
 		
 		---@param data table
 		[CRIT_MULTIPLIER]        = function(data)
-			data.stats[CRIT_MULTIPLIER].value = (data.equip_point[WEAPON_POINT].CRIT_MULTIPLIER + data.stats[CRIT_MULTIPLIER].bonus) * data.stats[CRIT_MULTIPLIER].multiplier
+			data.stats[CRIT_MULTIPLIER].value = ((data.equip_point[WEAPON_POINT].CRIT_MULTIPLIER or 0.) + data.stats[CRIT_MULTIPLIER].bonus) * data.stats[CRIT_MULTIPLIER].multiplier
 		end,
 		
 		---@param data table
@@ -303,7 +307,7 @@ do
 			local ratio = GetUnitState(data.Owner, UNIT_STATE_LIFE) / BlzGetUnitMaxHP(data.Owner)
 				data.stats[HP_VALUE].value = (data.base_stats.health + data.stats[HP_VALUE].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data.stats[HP_VALUE].multiplier
 				BlzSetUnitMaxHP(data.Owner, R2I(data.stats[HP_VALUE].value))
-				SetUnitState(data.Owner, UNIT_STATE_LIFE, R2I(data.stats[HP_VALUE].value) * ratio)
+				if ratio >= 0.9 then SetUnitState(data.Owner, UNIT_STATE_LIFE, R2I(data.stats[HP_VALUE].value) * ratio) end
 		end,
 
 		---@param data table
@@ -457,6 +461,7 @@ do
 		---@param data table
 		[ALL_RESIST] = function(data)
 			data.stats[ALL_RESIST].value = data.stats[ALL_RESIST].bonus
+
 		end,
 
 		---@param data table
@@ -550,6 +555,8 @@ do
 	---@param method number
 	function ModifyStat(target, param, value, method, plus)
 		local unit_data = GetUnitData(target)
+		
+		if unit_data == nil then return end
 
 			if method == MULTIPLY_BONUS then
 				unit_data.stats[param].multiplier = plus and unit_data.stats[param].multiplier * value or unit_data.stats[param].multiplier / value
@@ -557,21 +564,31 @@ do
 				unit_data.stats[param].bonus = plus and unit_data.stats[param].bonus + value or unit_data.stats[param].bonus - value
 			end
 
-        if param == STR_STAT then
-            PARAMETER_UPDATE_FUNC[PHYSICAL_ATTACK](unit_data)
-        elseif param == VIT_STAT then
-            PARAMETER_UPDATE_FUNC[HP_VALUE](unit_data)
-            PARAMETER_UPDATE_FUNC[HP_REGEN](unit_data)
-        elseif param == AGI_STAT then
-            PARAMETER_UPDATE_FUNC[PHYSICAL_DEFENCE](unit_data)
-        elseif param == INT_STAT then
-            PARAMETER_UPDATE_FUNC[MAGICAL_SUPPRESSION](unit_data)
-            PARAMETER_UPDATE_FUNC[MAGICAL_ATTACK](unit_data)
-            PARAMETER_UPDATE_FUNC[MP_VALUE](unit_data)
-            PARAMETER_UPDATE_FUNC[MP_REGEN](unit_data)
-        end
+		UpdateUnitParameter(target, param)
+		--[[
+		if param == STR_STAT then
+			PARAMETER_UPDATE_FUNC[PHYSICAL_ATTACK](unit_data)
+		elseif param == VIT_STAT then
+			PARAMETER_UPDATE_FUNC[HP_VALUE](unit_data)
+			PARAMETER_UPDATE_FUNC[HP_REGEN](unit_data)
+		elseif param == AGI_STAT then
+			PARAMETER_UPDATE_FUNC[PHYSICAL_DEFENCE](unit_data)
+		elseif param == INT_STAT then
+			PARAMETER_UPDATE_FUNC[MAGICAL_SUPPRESSION](unit_data)
+			PARAMETER_UPDATE_FUNC[MAGICAL_ATTACK](unit_data)
+			PARAMETER_UPDATE_FUNC[MP_VALUE](unit_data)
+			PARAMETER_UPDATE_FUNC[MP_REGEN](unit_data)
+		elseif param == ALL_RESIST then
+			PARAMETER_UPDATE_FUNC[PHYSICAL_RESIST](unit_data)
+			PARAMETER_UPDATE_FUNC[FIRE_RESIST](unit_data)
+			PARAMETER_UPDATE_FUNC[ICE_RESIST](unit_data)
+			PARAMETER_UPDATE_FUNC[LIGHTNING_RESIST](unit_data)
+			PARAMETER_UPDATE_FUNC[POISON_RESIST](unit_data)
+			PARAMETER_UPDATE_FUNC[DARKNESS_RESIST](unit_data)
+			PARAMETER_UPDATE_FUNC[HOLY_RESIST](unit_data)
+		end
 
-		PARAMETER_UPDATE_FUNC[param](unit_data)
+		PARAMETER_UPDATE_FUNC[param](unit_data)]]
 	end
 
 	---@param unit_data table
@@ -598,6 +615,18 @@ do
 					PARAMETER_UPDATE_FUNC[MAGICAL_ATTACK](unit_data)
 					PARAMETER_UPDATE_FUNC[MP_VALUE](unit_data)
 					PARAMETER_UPDATE_FUNC[MP_REGEN](unit_data)
+				elseif param == ALL_RESIST then
+					PARAMETER_UPDATE_FUNC[PHYSICAL_RESIST](unit_data)
+					PARAMETER_UPDATE_FUNC[FIRE_RESIST](unit_data)
+					PARAMETER_UPDATE_FUNC[ICE_RESIST](unit_data)
+					PARAMETER_UPDATE_FUNC[LIGHTNING_RESIST](unit_data)
+					PARAMETER_UPDATE_FUNC[POISON_RESIST](unit_data)
+					PARAMETER_UPDATE_FUNC[DARKNESS_RESIST](unit_data)
+					PARAMETER_UPDATE_FUNC[HOLY_RESIST](unit_data)
+					PARAMETER_UPDATE_FUNC[ARCANE_RESIST](unit_data)
+				elseif param == REFLECT_DAMAGE then
+					PARAMETER_UPDATE_FUNC[REFLECT_MELEE_DAMAGE](unit_data)
+					PARAMETER_UPDATE_FUNC[REFLECT_RANGE_DAMAGE](unit_data)
 				end
 
 	end

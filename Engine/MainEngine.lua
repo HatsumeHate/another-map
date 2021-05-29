@@ -37,7 +37,6 @@ do
     end
 
 
-
     function GetAttributeResistParam(attribute)
         if attribute == FIRE_ATTRIBUTE then return FIRE_RESIST
         elseif attribute == ICE_ATTRIBUTE then return ICE_RESIST
@@ -92,14 +91,14 @@ do
             if target == nil then return 0 end
 
         --print("1")
-        if myeffect ~= nil then
+        if myeffect then
             local effect_data = myeffect.eff.level[myeffect.l]
 
-                if effect_data.bonus_crit_chance ~= nil then bonus_critical = effect_data.bonus_crit_chance end
-                if effect_data.bonus_crit_multiplier ~= nil then bonus_critical_rate = effect_data.bonus_crit_multiplier end
-                if effect_data.weapon_damage_percent_bonus ~= nil then damage = damage + (attacker.equip_point[WEAPON_POINT].DAMAGE * effect_data.weapon_damage_percent_bonus) end
+                if effect_data.bonus_crit_chance then bonus_critical = effect_data.bonus_crit_chance end
+                if effect_data.bonus_crit_multiplier then bonus_critical_rate = effect_data.bonus_crit_multiplier end
+                if effect_data.weapon_damage_percent_bonus then damage = damage + (attacker.equip_point[WEAPON_POINT].DAMAGE * effect_data.weapon_damage_percent_bonus) end
 
-                if effect_data.attack_percent_bonus ~= nil and effect_data.attack_percent_bonus > 0. then
+                if effect_data.attack_percent_bonus and effect_data.attack_percent_bonus > 0. then
                     if damage_type == DAMAGE_TYPE_PHYSICAL then
                         damage = damage + attacker.stats[PHYSICAL_ATTACK].value * effect_data.attack_percent_bonus
                     elseif damage_type == DAMAGE_TYPE_MAGICAL then
@@ -122,7 +121,7 @@ do
         --print("3")
         if victim == nil then
 
-                if attribute ~= nil then
+                if attribute then
                     attribute_bonus = 1. + (attacker.stats[GetAttributeBonusParam(attribute)].value * 0.01)
                 end
 
@@ -148,7 +147,7 @@ do
             end
            -- print("5")
 
-            if direct and (damage_type  and damage_type == DAMAGE_TYPE_PHYSICAL) and (victim.equip_point[OFFHAND_POINT]  and victim.equip_point[OFFHAND_POINT].SUBTYPE == SHIELD_OFFHAND) then
+            if direct and (damage_type  and damage_type == DAMAGE_TYPE_PHYSICAL) and (victim.equip_point[OFFHAND_POINT] and victim.equip_point[OFFHAND_POINT].SUBTYPE == SHIELD_OFFHAND) then
                 local block_chance = victim.stats[BLOCK_CHANCE].value
 
                 if block_chance > MAX_BLOCK_CHANCE then block_chance = MAX_BLOCK_CHANCE end
@@ -156,6 +155,7 @@ do
                     if GetRandomInt(1, 100) <= block_chance then
                         attack_status = attack_status == ATTACK_STATUS_CRITICAL and ATTACK_STATUS_CRITICAL_BLOCKED or ATTACK_STATUS_BLOCKED
                         block_reduction = 1. - victim.stats[BLOCK_ABSORB].value * 0.01
+                        if block_reduction > 0.8 then block_reduction = 0.8 end
                         DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Defend\\DefendCaster.mdx", target, "origin"))
                     end
 
@@ -200,23 +200,34 @@ do
         --print("total raw damage "..damage)
         --print("dispersion "..attacker.equip_point[WEAPON_POINT].DISPERSION[1] .. "/" .. attacker.equip_point[WEAPON_POINT].DISPERSION[2])
         --print("11")
-        if not (TimerGetRemaining(attacker.attack_timer) > 0.) and direct then
 
+        if damage_type == DAMAGE_TYPE_PHYSICAL then
+            damage = R2I(GetRandomReal(damage * attacker.equip_point[WEAPON_POINT].DISPERSION[1], damage * attacker.equip_point[WEAPON_POINT].DISPERSION[2]))
+        else
+            damage = R2I(damage)
+        end
+
+        if not (TimerGetRemaining(attacker.attack_timer) > 0.) and direct then
+            --print("atttack")
             if attacker.stats[HP_PER_HIT].value > 0 then
+                --print("attacker.stats[HP_PER_HIT].value > 0")
                 SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) + attacker.stats[HP_PER_HIT].value)
                 CreateHitnumber(attacker.stats[HP_PER_HIT].value, source, source, HEAL_STATUS)
+                --print("attacker.stats[HP_PER_HIT].value > 0 done")
             end
 
             if attacker.stats[MP_PER_HIT].value > 0 then
+                --print("attacker.stats[MP_PER_HIT].value > 0")
                 SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + attacker.stats[MP_PER_HIT].value)
                 CreateHitnumber(attacker.stats[MP_PER_HIT].value, source, source, RESOURCE_STATUS)
+                --print("attacker.stats[MP_PER_HIT].value > 0 done")
             end
 
             TimerStart(attacker.attack_timer, BlzGetUnitAttackCooldown(source, 0) - 0.01, false, nil)
-            OnMyAttack(source, target)
+            OnMyAttack(source, target, { damage = damage, attribute = attribute, attack_status = attack_status, damage_type = damage_type, attack_type = attack_type, is_direct = direct, effect = myeffect })
         end
             --print("12")
-            damage = R2I(GetRandomReal(damage * attacker.equip_point[WEAPON_POINT].DISPERSION[1], damage * attacker.equip_point[WEAPON_POINT].DISPERSION[2]))
+
            -- print("13")
             if direct and damage > 0 and victim then
                 local reflect = 0
@@ -295,6 +306,9 @@ do
                                         local picked = BlzGroupUnitAt(enemy_group, index)
                                         if IsUnitEnemy(picked, player) then
                                             if GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and IsAngleInFace(data.Owner, data.equip_point[WEAPON_POINT].ANGLE, GetUnitX(picked), GetUnitY(picked), false) then
+                                                if data.equip_point[WEAPON_POINT].LIGHTNING then
+                                                    LightningEffect_Units(data.Owner, target, data.equip_point[WEAPON_POINT].LIGHTNING.id, data.equip_point[WEAPON_POINT].LIGHTNING.fade, 60., 60.)
+                                                end
                                                 DamageUnit(data.Owner, picked, actual_damage, data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, true, nil)
                                             end
                                         end
@@ -303,6 +317,10 @@ do
                             GroupClear(enemy_group)
                             DestroyGroup(enemy_group)
                         else
+                            if data.equip_point[WEAPON_POINT].LIGHTNING then
+                                LightningEffect_Units(data.Owner, target, data.equip_point[WEAPON_POINT].LIGHTNING.id, data.equip_point[WEAPON_POINT].LIGHTNING.fade, 60., 60.)
+                            end
+
                             DamageUnit(data.Owner, GetTriggerUnit(), actual_damage, data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, true, nil)
                         end
 

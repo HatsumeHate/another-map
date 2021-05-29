@@ -12,6 +12,8 @@ do
         ["ruRU"] = {
             BLOCK_TEXT = "Блок ",
             WAVE_INCOMING_TEXT = "Волна:",
+            WAVE_LEVEL = "Уровень ",
+            WAVE_COUNTDOWN = "До атаки: ",
 
             PHYSICAL_ATTACK_PARAM = "Физическая атака",
             PHYSICAL_DEFENCE_PARAM = 'Физическая защита',
@@ -229,6 +231,21 @@ do
             UI_TEXT_DROP = "Выкинуть",
             UI_TEXT_BELT_ON = "Закрепить",
             UI_TEXT_BELT_OFF = "Открепить",
+            UI_TEXT_REFORGE = "Перековка",
+            UI_TEXT_RESOCKET = "Извлечение",
+            UI_TEXT_ALT_WEAPON = "Левая рука",
+
+            UI_TOOLTIP_REFORGE_TITLE = "Перековать предмет",
+            UI_TOOLTIP_REFORGE_DESC = "Перековка повышает уровень предмета до актуального.",
+
+            HINT_INVENTORY_1 = "Используйте одиночный клик по предмету для вызова контекстного меню или двойной для быстрого взаимодействия с предметом.",
+            HINT_INVENTORY_2 = "Например, двойной клик по оружию возьмет его в основную руку, а по расходуемому предмету - вынесет его в инвентарь героя.",
+            HINT_SHOP_1 = "Каждую волну нападения ассортимент магазинов обновляется, так что не стесняйтесь продавать ненужное. Пока магазин открыт, контекстное меню на предмете в инвентаре откроет кнопку %<Продать%>",
+            HINT_BLACKSMITH_1 = "У кузнеца можно перековать предметы до текущего уровня волны, а так же изъять ненужные камни. Камни утрачиваются безвозвратно.",
+            HINT_STATS_1 = "Базовые параметры очень важная часть развития героя. Наведите курсором на каждый, и узнаете немного подробнее о них. Каждый новый уровень дает 3 очка развития.",
+            HINT_ALTARS = "Взаимодействовать с алтарями и сундуками можно кликнув правой кнопкой мыши по ним находясь поблизости. Алтари дают случайный эффект, сундуки содержат предметы и золото, колодцы восстанавливают здоровье или ману.",
+            HINT_BELT = "Можно быстро использовать предметы на поясе нажимая 1-2-3-4-5-6. Нумерация предметов начинается слева сверху.",
+
 
             DAMAGE_UI = "Урон: ",
             BLOCK_UI = "Блок: ",
@@ -240,6 +257,7 @@ do
             AUGMENTS_UI = "|nАугментации:|n",
             SLOTS_UI = "|nГнезда:|n",
             SET_PART_UI = " части:|n",
+            UNIQUE_EFFECT_UI = "Уникальный эффект",
 
             STAT_PANEL_TOOLTIP_NAME = "Характеристики",
             STAT_PANEL_TOOLTIP_DESCRIPTION =  "Повышение и отслеживание характеристик",
@@ -264,6 +282,10 @@ do
             STAT_PANEL_HOLY = "Свет: ",
             STAT_PANEL_POISON = "Яд: ",
             STAT_PANEL_ARCANE = "Тайное: ",
+
+            REFORGE_BUTTON_TEXT = "Перековать",
+            SOCKET_BUTTON_TEXT = "Изьять",
+
 
             WORN_DECL_HE = "Изношенный ",
             WORN_DECL_SHE = "Изношенная ",
@@ -298,19 +320,23 @@ do
             ITEM_SUFFIX_KNIGHT                  = " Рыцаря",
             ITEM_SUFFIX_MYSTERY                 = " Загадки",
             ITEM_SUFFIX_KNOWLEDGE               = " Знаний",
-            ITEM_SUFFIX_PURE_CONCENTRATION      = "Сосредоточенности",
-            ITEM_SUFFIX_SLAYER_GENIUS           = "Гениального убийцы",
-            ITEM_SUFFIX_HIGH_KNIGHT             = "Благородного рыцаря",
-            ITEM_SUFFIX_ENDLESS_FURY            = "Бесконечной ярости",
-            ITEM_SUFFIX_DEADLY_PRECISION        = "Смертельной точности",
+            ITEM_SUFFIX_PURE_CONCENTRATION      = " Сосредоточенности",
+            ITEM_SUFFIX_SLAYER_GENIUS           = " Гениального убийцы",
+            ITEM_SUFFIX_HIGH_KNIGHT             = " Благородного рыцаря",
+            ITEM_SUFFIX_ENDLESS_FURY            = " Бесконечной ярости",
+            ITEM_SUFFIX_DEADLY_PRECISION        = " Смертельной точности",
 
             GENERIC_SWORD_NAME_1 = "необработанный клинок",
             GENERIC_SWORD_NAME_2 = "короткий меч",
             GENERIC_SWORD_NAME_3 = "рунический клинок",
             GENERIC_SWORD_NAME_4 = "широкий меч",
+            GENERIC_SWORD_NAME_5 = "зачарованный меч",
+            GENERIC_SWORD_NAME_6 = "рапира",
 
             GENERIC_GREATSWORD_NAME_1 = "варварский разрезатель",
             GENERIC_GREATSWORD_NAME_2 = "нож великанов",
+            GENERIC_GREATSWORD_NAME_3 = "клеймор",
+            GENERIC_GREATSWORD_NAME_4 = "эсток",
 
             GENERIC_AXE_NAME_1 = "широкий топор",
             GENERIC_AXE_NAME_2 = "зазубренный топор",
@@ -514,6 +540,9 @@ do
             POTION_HALF_MIX_DESC_TEXT = "Восстанавливает 50%% здоровья и маны",
             POTION_STRONG_MIX_DESC_TEXT = "Восстанавливает 75%% здоровья и маны",
 
+            SCROLL_OF_TOWN_PORTAL_NAME = "Свиток Городского Портала",
+            SCROLL_OF_TOWN_PORTAL_DESC = "При использовании открывает ненадолго портал в город.",
+
 
             SKILLBOOK_FIRE = "Книга пламени",
             SKILLBOOK_LIGHTNING = "Книга молний",
@@ -532,9 +561,10 @@ do
             SKILL_WHIRLWIND = 'Вихрь',
             SKILL_BERSERK = 'Берсерк',
             SKILL_UPPERCUT = 'Апперкот',
-            SKILL_THROWKNIFE = 'Бросок Кинжала ',
+            SKILL_THROWKNIFE = 'Бросок Кинжала',
             SKILL_JUMP = 'Прыжок',
             SKILL_EXECUTION = "Казнь",
+            SKILL_FIRSTAID = "Перевязка",
             SKILL_SUMMONHYDRA = 'Призвать Гидру',
             SKILL_ELEMENTALMASTERY = 'Мастерство Стихий',
             SKILL_FOCUS = 'Сосредоточенность',
@@ -557,22 +587,31 @@ do
             SET_NAME_FRENDLINESS = "Приветливость",
 
 
+            ITEM_LEG_DESCRIPTION_FIREBOND = "Все огненные умения на 35%% сильнее.",
+            ITEM_LEG_DESCRIPTION_WITCH_MASTERY = "Каждое произнесенное заклинание увеличивает силу магии на 10%%, однако взамен пожирает 5%% здоровья",
+            ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Каждый противник неподалеку повышает скорость передвижения на 3%% до максимума в 25%%",
+            ITEM_LEG_DESCRIPTION_RITUAL_DAGGER = "При атаке вы накапливаете эффекты Хаоса. Накопив 15 эффектов, сила и скорость атаки на короткое время сильно повышаются, но на это время регенерация здоровья идет в обратную сторону.",
+            ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Разряд\" теперь идет из позиции чародейки, а их урон и количество зарядов увеличивается.",
+            ITEM_LEG_DESCRIPTION_BOOSTERS = "После приземления от использования умения \"Прыжок\" варвар наносит 215%% урона от оружия в небольшом радиусе.",
+            ITEM_LEG_DESCRIPTION_PAIN_ECHO = "Кровотечение от умения \"Рассекающий взмах\" теперь может быть критическим, так же его шанс на крит повышен на 25%%.",
+            ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "Каждая атака по врагу накладывает на него эффект кристаллизации, снижающий скорость передвижения. После накопления 5 зарядов, противник замораживается на 3 сек.",
+            ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "Каждая атака льдом, огнем или молнией накладывает уязвимость к соответствующей стихии понижающая сопротивление ей на 5 ед. на 7 секунд, повторная атака любой стихией обновляет эффект. Суммируется до 3 раз.",
+
+
+
             ITEM_NAME_RAT_HUNTER = 'Охотник на крыс',
             ITEM_SPEC_DESCRIPTION_RAT_HUNTER = "Даже у крысоловов был легендарный лук, коего желали все охотники на крыс",
 
             ITEM_NAME_BOOT_OF_COWARD = 'Сапог труса',
             ITEM_SPEC_DESCRIPTION_BOOT_OF_COWARD = "Владелец этого сапога применял секретную тактику своего знатного рода, передававшуюся в течении 300 лет. До поры до времени...",
-            ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Каждый противник неподалеку повышает скорость передвижения на 3%% до максимума в 25%%",
 
             ITEM_NAME_WITCH_MASTERY = "Мастерство Ведьмы",
             ITEM_SPEC_DESCRIPTION_WITCH_MASTERY = "Принадлежал очень древней ведьме. Впитал в себя часть заклинаний крови, которыми может поделиться.",
-            ITEM_LEG_DESCRIPTION_WITCH_MASTERY = "Каждое произнесенное заклинание увеличивает силу магии на 10%%, однако взамен пожирает 5%% здоровья",
 
             ITEM_NAME_DARK_CROWN = "Темная Корона",
             ITEM_SPEC_DESCRIPTION_DARK_CROWN = "Хочешь сопротивляться тьме - стань тьмой сам",
 
             ITEM_NAME_RITUAL_DAGGER = "Ритуальный Кинжал",
-            ITEM_LEG_DESCRIPTION_RITUAL_DAGGER = "При атаке вы накапливаете эффекты Хаоса. Накопив 15 эффектов, сила и скорость атаки на короткое время сильно повышаются, но на это время регенерация здоровья идет в обратную сторону.",
             ITEM_SPEC_DESCRIPTION_RITUAL_DAGGER = "Сила, заточенная в этом клинке раскрывается с каждым порезом. И пусть тот кто ею завладеет, справится с ней",
 
 
@@ -584,11 +623,9 @@ do
             ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE = "Легенды гласят, что шахтёр Сморк наповал косил ею врагов",
 
             ITEM_NAME_BOOSTERS = "Усилители",
-            ITEM_LEG_DESCRIPTION_BOOSTERS = "После приземления от использования умения \"Прыжок\" варвар наносит 215%% урона от оружия в радиусе 325",
             ITEM_SPEC_DESCRIPTION_BOOSTERS = "Изобретение неизвестного автора нашло свое уникальное применение.",
 
             ITEM_NAME_EYE_OF_THE_STORM = "Око бури",
-            ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Разряд\" теперь идет из позиции чародейки, а их урон и количество зарядов увеличивается.",
             ITEM_SPEC_DESCRIPTION_EYE_OF_THE_STORM = "Неизвестный чародей смог заполучить себе невероятный артефакт, после чего вскоре превратился в пепел.",
 
 
@@ -603,11 +640,9 @@ do
 
 
             ITEM_NAME_PAIN_ECHO = "Эхо Боли",
-            ITEM_LEG_DESCRIPTION_PAIN_ECHO = "Кровотечение от умения \"Рассекающий взмах\" теперь может быть критическим, так же его шанс на крит повышен на 25%%.",
             ITEM_SPEC_DESCRIPTION_PAIN_ECHO = "Чьей кровью ты будешь насыщать это кольцо?",
 
             ITEM_NAME_CRYSTAL_AXE = "Кристальный топор",
-            ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "Каждая атака по врагу накладывает на него эффект кристаллизации, снижающий скорость передвижения. После накопления 5 зарядов, противник замораживается на 3 сек.",
             ITEM_SPEC_DESCRIPTION_CRYSTAL_AXE = "Превращает в кристаллы всё чего коснётся, держите острие подальше от себя.",
 
             ITEM_NAME_BOOTSOFPAIN = "Сапоги Боли",
@@ -625,16 +660,19 @@ do
 
             ITEM_NAME_THE_KING = "Король",
             --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_THE_KING = "Принцесса одного древнего королевства проявляла интерес к пламени, сжигая предателей и окружая себя огнем.",
+            ITEM_SPEC_DESCRIPTION_THE_KING = "Правитель...",
 
             ITEM_NAME_THE_JESTER = "Шут",
             --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_THE_JESTER = "Принцесса одного древнего королевства проявляла интерес к пламени, сжигая предателей и окружая себя огнем.",
+            ITEM_SPEC_DESCRIPTION_THE_JESTER = "...Посмещище",
 
 
             ITEM_NAME_MASTER_OF_ELEMENTS = "Мастер стихий",
-            ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "Каждая атака накладывает уязвимость к своей стихии понижающая сопротивление ей на 5 ед. на 7 секунд, повторная атака любой стихией обновляет эффект. Суммируется до 3 раз.",
+            --ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "Каждая атака накладывает уязвимость к своей стихии понижающая сопротивление ей на 5 ед. на 7 секунд, повторная атака любой стихией обновляет эффект. Суммируется до 3 раз.",
             ITEM_SPEC_DESCRIPTION_MASTER_OF_ELEMENTS = "Редкая, уникальная вещь которой будет завидовать любой чародей.",
+
+
+
 
 
 
@@ -667,8 +705,14 @@ do
             [FourCC("A00O")] = {
                 bind = "Прыжок, позволяющий переместиться на расстояние до @s!A00O.rng#.",
             },
+            [FourCC("A020")] = {
+                bind = "Удар, который призван добивать врагов. Наносит @e!EEXC.dmg# типа @e!EEXC.atr#, при применении на противников у которых осталось менее 20%% здоровья сила умения увеличивается втрое, а критический шанс возрастает на 20%%.",
+            },
+            [FourCC("ABFA")] = {
+                bind = "Лечит на @e!EFAA.hp_perc# каждую секунду в течении @b!A01N.time# секунд.",
+            },
             [FourCC("A00I")] = {
-                bind = "Призывает неуязвимую огненную гидру, которая атакует врагов. Она наследует 70%% значений характеристик.",
+                bind = "Призывает неуязвимую огненную гидру, которая атакует врагов. Она наследует 70%% значений характеристик. С повышением уровня заклинания увеличивается ее время существования.",
             },
             [FourCC("A00H")] = {
                 bind = "Вошлебница подчиняет себе мощь стихий, весь урон от стихий [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# и @b!A00U.pa4#] увеличивается на @b!A00U.va1#, @b!A00U.pa5# на @b!A00U.va5#. Время эффекта - @b!A00U.time сек. ",
@@ -706,9 +750,17 @@ do
             [FourCC("A003")] = {
                 bind = "Бросает вперед ледяную стрелу, при столкновении с первым противником разлетается на осколки нанося @e!EFRB.pwr# ед. урона типа @e!EFRB.atr# в радиусе @e!EFRB.aoe#. Пораженные охлаждаются, замедляясь на @b!A004.va1#",
             },
+            [FourCC("A019")] = {
+                bind = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на ближайших противников. Количество пораженных целей увеличивается с уровнем.",
+            },
+
 
         },
         ["enUS"] = {
+            WAVE_INCOMING_TEXT = "Stats:",
+            WAVE_LEVEL = "Level ",
+            WAVE_COUNTDOWN = "Attack in: ",
+
             BLOCK_TEXT = "Block ",
 
             PHYSICAL_ATTACK_PARAM = "Physical attack",
@@ -925,6 +977,21 @@ do
             UI_TEXT_DROP = "Drop",
             UI_TEXT_BELT_ON = "Take on",
             UI_TEXT_BELT_OFF = "Take off",
+            UI_TEXT_REFORGE = "Reforge",
+            UI_TEXT_RESOCKET = "Resocket",
+            UI_TEXT_ALT_WEAPON = "Left hand",
+
+            UI_TOOLTIP_REFORGE_TITLE = "Reforge an item",
+            UI_TOOLTIP_REFORGE_DESC = "Improving the item level.",
+
+            HINT_INVENTORY_1 = "You can use single click on any item in the inventory to open up a context menu or double click to do a fast interaction depending on an item type.",
+            HINT_INVENTORY_2 = "For example you can do double click on a weapon to equip it in the main hand. Doing the same on a consumable item will bind it in the basic hero inventory.",
+            HINT_SHOP_1 = "Every wave stock of each shop will get updated so feel free to sell unnecessary items. While you have any shop opened context menu in the invenrory unlocks <Sell> button.",
+            HINT_BLACKSMITH_1 = "Blacksmith can reforge your item to the wave level, upgrading its basic parameters. Also he can remove socket stones. That action won't return the stone.",
+            HINT_STATS_1 = "Basic parameters are crucial in a hero development. You can hover over any of it to know more about each. You gain 3 parameter points with a new level.",
+            HINT_ALTARS = "You can interact with altars, chests or wells via right click while being nearby. Altars give random positive effect, chests contain loot and gold and wells recover your's hero hp or mana.",
+            HINT_BELT = "You can use items on the belt by pressing 1-2-3-4-5-6. Items numeration starts with the top-left item.",
+
 
             DAMAGE_UI = "Damage: ",
             BLOCK_UI = "Block: ",
@@ -936,6 +1003,7 @@ do
             AUGMENTS_UI = "|nAugments:|n",
             SLOTS_UI = "|nSockets:|n",
             SET_PART_UI = " parts:|n",
+            UNIQUE_EFFECT_UI = "Unique effect",
 
 
             STAT_PANEL_TOOLTIP_NAME = "Stats",
@@ -961,6 +1029,9 @@ do
             STAT_PANEL_HOLY = "Holy: ",
             STAT_PANEL_POISON = "Poison: ",
             STAT_PANEL_ARCANE = "Arcane: ",
+
+            REFORGE_BUTTON_TEXT = "Reforge",
+            SOCKET_BUTTON_TEXT = "Remove",
 
 
             WORN_DECL_HE = "Worn ",
@@ -996,11 +1067,11 @@ do
             ITEM_SUFFIX_KNIGHT = " of Knight",
             ITEM_SUFFIX_MYSTERY = " of Mystery",
             ITEM_SUFFIX_KNOWLEDGE = " of Knowledge",
-            ITEM_SUFFIX_PURE_CONCENTRATION      = "Focus",
-            ITEM_SUFFIX_SLAYER_GENIUS           = "Genius Slayer",
-            ITEM_SUFFIX_HIGH_KNIGHT             = "Noble Knight",
-            ITEM_SUFFIX_ENDLESS_FURY            = "Endless Fury",
-            ITEM_SUFFIX_DEADLY_PRECISION        = "Deadly Precision",
+            ITEM_SUFFIX_PURE_CONCENTRATION      = " of Focus",
+            ITEM_SUFFIX_SLAYER_GENIUS           = " of Genius Slayer",
+            ITEM_SUFFIX_HIGH_KNIGHT             = " of Noble Knight",
+            ITEM_SUFFIX_ENDLESS_FURY            = " of Endless Fury",
+            ITEM_SUFFIX_DEADLY_PRECISION        = " of Deadly Precision",
 
             GENERIC_SWORD_NAME_1 = "rough blade",
             GENERIC_SWORD_NAME_2 = "short blade",
@@ -1215,6 +1286,9 @@ do
             POTION_HALF_MIX_DESC_TEXT = "Restoring 50%% of health and mana over time",
             POTION_STRONG_MIX_DESC_TEXT = "Restoring 75%% of health and mana over time",
 
+            SCROLL_OF_TOWN_PORTAL_NAME = "Scroll of the Town portal",
+            SCROLL_OF_TOWN_PORTAL_DESC = "Opens up a temporary portal to the town.",
+
 
             SKILLBOOK_FIRE = "Book of fire",
             SKILLBOOK_LIGHTNING = "Book of lightning",
@@ -1232,11 +1306,12 @@ do
             SKILL_HARPOON = 'Harpoon',
             SKILL_CRUSHINGBLOW = 'Crushing Blow',
             SKILL_WHIRLWIND = 'Whirlwind',
-            SKILL_BERSERK = 'BERSERK',
+            SKILL_BERSERK = 'Berserk',
             SKILL_UPPERCUT = 'Uppercut',
-            SKILL_THROWKNIFE = 'Throw Knife',
+            SKILL_THROWKNIFE = 'Knife Throw',
             SKILL_JUMP = 'Jump',
             SKILL_EXECUTION = "Execution",
+            SKILL_FIRSTAID = "Bandage",
             SKILL_SUMMONHYDRA = 'Summon Hydra',
             SKILL_ELEMENTALMASTERY = 'Elemental Mastery',
             SKILL_FOCUS = 'Focus',
@@ -1260,39 +1335,49 @@ do
             SET_NAME_JESTERANDKING = "Jester and King",
             SET_NAME_FIREBOND = "Fire bond",
             SET_NAME_FRENDLINESS = "Frendliness",
-            
+
+
+            ITEM_LEG_DESCRIPTION_FIREBOND = "Fire abilities are stronger by 35%%.",
+            ITEM_LEG_DESCRIPTION_WITCH_MASTERY = "Each casted spell will increase your spell power by 10%% in exhange of 5%% life",
+            ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Each enemy near a hero is increasing his moving speed by 3%%, with maximum of 25%%",
+            ITEM_LEG_DESCRIPTION_RITUAL_DAGGER = " With each attack you gain a stack of Chaos effect. After reaching 15 stacks, attack power and speed gain major boost for short period of time, but health regeneration is inversed.",
+            ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "With each fire, ice or lightning attack you apply a negative effect that will decrease target's resistance of that element by 5 for 7 sec. Every attack is refreshing uptime and stacking 3 times.",
+            ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Discharge\" now comes out of sorceress, also it's power is increased.",
+            ITEM_LEG_DESCRIPTION_PAIN_ECHO = "\"Cutting Slash\"'s bleeding now can be critical and gains 25%% critical chance bonus.",
+            ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "With each attack you apply crystallisation on the enemies, decreasing their moving speed. After reaching 5 stacks, enemy will freeze for 3 sec.",
+
+
+
             ITEM_NAME_RAT_HUNTER = 'Rat Hunter',
-            ITEM_SPEC_DESCRIPTION_RAT_HUNTER = "Even the rat-hunters had a legendary bows, which all rat hunters desired.",
+            ITEM_SPEC_DESCRIPTION_RAT_HUNTER = "Even the rat-hunters had a legendary bows, which all rat hunters are desired.",
 
             ITEM_NAME_BOOT_OF_COWARD = 'Boot of Coward',
-            ITEM_SPEC_DESCRIPTION_BOOT_OF_COWARD = "The owner of this boot used the secret tactic of his noble family, that was inherited over 300 years. But that wasn't for long...",
-            ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Each enemy near the hero increasing his moving speed by 3%%, with maximum of 25%%",
+            ITEM_SPEC_DESCRIPTION_BOOT_OF_COWARD = "The owner of this boot used a secret tactic of his noble family, that was inherited over 300 years. But that wasn't for long...",
+
 
             ITEM_NAME_WITCH_MASTERY = "Witch Mastery",
-            ITEM_SPEC_DESCRIPTION_WITCH_MASTERY = "That staff belonged to a very ancient witch. It absorbed some blood magic, and can share it with wielder.",
-            ITEM_LEG_DESCRIPTION_WITCH_MASTERY = "Each casted spell will increase your spell power by 10%% in exhange of 5%% life",
+            ITEM_SPEC_DESCRIPTION_WITCH_MASTERY = "This staff is belonged to a very ancient witch. It is absorbed some blood magic, and can share it with wielder.",
+
 
             ITEM_NAME_DARK_CROWN = "Dark Crown",
             ITEM_SPEC_DESCRIPTION_DARK_CROWN = "If you want to resist the darkness, became darkness yourself.",
 
             ITEM_NAME_RITUAL_DAGGER = "Ritual Dagger",
-            ITEM_LEG_DESCRIPTION_RITUAL_DAGGER = " With each attack you gain stack of Chaos effect. After reaching 15 stacks, attack power and speed gain major boost for short period of time, but health regeneration is inversed.",
             ITEM_SPEC_DESCRIPTION_RITUAL_DAGGER = "Power within this blade is revealed with every slash. And let the one who takes possession of it can bear it.",
 
-            ITEM_NAME_ACOLYTE_MANTLE = "Acolyte Mantle",
-            ITEM_SPEC_DESCRIPTION_ACOLYTE_MANTLE = "The ideal solution for withdrawing into himself",
+            ITEM_NAME_ACOLYTE_MANTLE = "Acolyte's Mantle",
+            ITEM_SPEC_DESCRIPTION_ACOLYTE_MANTLE = "The ideal solution for withdrawing into yourself.",
 
-            ITEM_NAME_SMORC_PICKAXE = "Smorc Pickaxe",
-            ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE = "Legends says, that miner Smorc was crushing his enemies with that thing.",
+            ITEM_NAME_SMORC_PICKAXE = "Smorc's Pickaxe",
+            ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE = "Legends have told, that miner Smorc was crushing his enemies with that thing.",
 
 
             ITEM_NAME_EYE_OF_THE_STORM = "Eye of the Storm",
-            ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Discharge\" now comes out of sorceress, also its power increased.",
-            ITEM_SPEC_DESCRIPTION_EYE_OF_THE_STORM = "Unknown sorcerer acquired magnificent artifact, to only become shortly after an ash.",
+            ITEM_SPEC_DESCRIPTION_EYE_OF_THE_STORM = "Unknown sorcerer acquired a magnificent artifact, and shortly after that he became an ash.",
 
             ITEM_NAME_FIREPRINCESS = "Fiery Princess",
             --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_FIREPRINCESS = "Princess of an ancient kingdom showed interest to flames, burning her traitors and surrounding herself in fire.",
+            ITEM_SPEC_DESCRIPTION_FIREPRINCESS = "Princess of an ancient kingdom has had an special interest to a flame, burning her traitors and surrounding herself in a lot of fire.",
 
 
             ITEM_NAME_FIREQUEEN = "Fiery Queen",
@@ -1301,57 +1386,54 @@ do
 
 
             ITEM_NAME_PAIN_ECHO = "Pain Echo",
-            ITEM_LEG_DESCRIPTION_PAIN_ECHO = "\"Cutting Slash\"'s bleeding now can be critical and gain 25%% bonus critical chance.",
             ITEM_SPEC_DESCRIPTION_PAIN_ECHO = "Whose blood will be fed to this ring?",
 
             ITEM_NAME_CRYSTAL_AXE = "Crystal Axe",
-            ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "With each attack you apply crystallisation on the enemis decreasing their moving speed. After reaching 5 stacks, enemy will freeze for 3 sec.",
             ITEM_SPEC_DESCRIPTION_CRYSTAL_AXE = "That axe freezing everything it's touching, mind yourself keeping its blade away.",
 
 
             ITEM_NAME_BOOTSOFPAIN = "Boots of Pain",
             --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_BOOTSOFPAIN = "Is walking so painful?",
+            ITEM_SPEC_DESCRIPTION_BOOTSOFPAIN = "Is walking so painful for you?",
 
             ITEM_NAME_CHESTOFPAIN = "Chest of Pain",
             --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_CHESTOFPAIN = "How painful to you is to breath?",
+            ITEM_SPEC_DESCRIPTION_CHESTOFPAIN = "How painful it is for you to breath?",
 
             ITEM_NAME_HEADOFPAIN = "Helmet of Pain",
             --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_HEADOFPAIN = "Are your mind in pain?",
+            ITEM_SPEC_DESCRIPTION_HEADOFPAIN = "Is your mind in pain?",
 
 
             ITEM_NAME_THE_KING = "King",
             --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_THE_KING = "blank",
+            ITEM_SPEC_DESCRIPTION_THE_KING = "The Ruler",
 
             ITEM_NAME_THE_JESTER = "Jester",
             --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_THE_JESTER = "blank",
+            ITEM_SPEC_DESCRIPTION_THE_JESTER = "The Fool",
 
 
             ITEM_NAME_MASTER_OF_ELEMENTS = "Master of Elements",
-            ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "With each attack you apply a negative effect that is decreasing resistance to it by 5 for 7 sec. Every attack is refreshing time and stacking 3 times.",
             ITEM_SPEC_DESCRIPTION_MASTER_OF_ELEMENTS = "Every wizard will be envy that you own such a rare and unique item.",
 
 
             GENERATED_TOOLTIP = " of attack",
 
             [FourCC("A007")] = {
-                bind = "Strong blow that deals @e!ECRH.dmg# @e!ECRH.atr# damage in front. Affected enemy suffer loss of physical damage resistance by @b!A00W.va1# and attack speed by @b!A00W.va2# for @b!A00W.time# seconds.",
+                bind = "Strong blow that deals @e!ECRH.dmg# @e!ECRH.atr# damage in front. Affected enemies will suffer a loss of physical damage resistance by @b!A00W.va1# and attack speed by @b!A00W.va2# for @b!A00W.time# seconds.",
             },
             [FourCC("A00C")] = {
                 bind = "Barbarian screams in @e!EWCR.aoe# range, which reduces enemy attack by @b!A00Y.va1# and movement speed by @b!A00Y.va3#.",
             },
             [FourCC("A006")] = {
-                bind = "Swift strkike which inflicts @e!ECSL.dmg# of @e!ECSL.atr# in front. Enemies suffer a bloodloss, taking @e!ECSP.dmg# of @e!ECSP.atr# as periodic damage.",
+                bind = "Swift strkike that inflicts @e!ECSL.dmg# of @e!ECSL.atr# in front. Enemies suffer a bloodloss, taking @e!ECSP.dmg# of @e!ECSP.atr# as a periodic damage.",
             },
             [FourCC("A00A")] = {
-                bind = "Throwing a chain that flyes up to @s!A00A.rng# range, pulling first target it hits to you.",
+                bind = "Throws a chain that flies up to @s!A00A.rng# range, pulling first target it hits to you.",
             },
             [FourCC("A010")] = {
-                bind = "Barbarian forms storm of fury, rapidly spinning around while dealing enemies @e!EWHW.dmg# of @e!EWHW.atr# 3 times per second and spending 9 mana.",
+                bind = "Barbarian forms storm of fury, rapidly spinning around and dealing enemies @e!EWHW.dmg# of @e!EWHW.atr# 3 times per second for a cost of 9 mana per second.",
             },
             [FourCC("A00Q")] = {
                 bind = "Falling into pure rage, increasing attack by @b!A00V.va1#, effects control reduction by @b!A00V.va2# and movement speed by @b!A00V.va3# for @b!A00V.time# sec.",
@@ -1360,49 +1442,58 @@ do
                 bind = "Punch that deals @e!EUPP.dmg# of @e!EUPP.atr# and pushing back targets, after which they are stunned for @b!A012.time# sec.",
             },
             [FourCC("A00Z")] = {
-                bind = "Throws a dagger up to @s!A00Z.rng# range, first enemy takes @e!ETHK.dmg# of @e!ETHK.atr# damage. Increased chance of critical damage (+@e!ETHK.bcc#).",
+                bind = "Throws a dagger up to @s!A00Z.rng# range, first enemy it hits will take @e!ETHK.dmg# of @e!ETHK.atr# damage. This skill has increased chance of critical damage (+@e!ETHK.bcc#).",
             },
             [FourCC("A00O")] = {
                 bind = "Allows you to jump up to @s!A00O.rng# range.",
             },
+            [FourCC("A020")] = {
+                bind = "Finishing strike. Deals @e!EEXC.dmg# @e!EEXC.atr#, if it is used on enemies that have less than 20%% of health its power is increased by 3 times and chances to crit by 20%%.",
+            },
+            [FourCC("ABFA")] = {
+                bind = "Heals you for @e!EFAA.hp_perc# every second during @b!A01N.time# seconds.",
+            },
             [FourCC("A00I")] = {
-                bind = "Summons an immortal flame hydra that attacks enemies. Hydra inherits 70% of your stats.",
+                bind = "Summons an immortal flame hydra that attacks enemies. Hydra inherits 70% of Sorceress stats. Increasing level of this skill enhances hydra's life duration.",
             },
             [FourCC("A00H")] = {
-                bind = "Sorceress binds elemental forces to her will, which boosting her stats: [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# и @b!A00U.pa4#] inscreasing for @b!A00U.va1#, @b!A00U.pa5# на @b!A00U.va5#. Duration - @b!A00U.time sec.",
+                bind = "Sorceress binds elemental forces to her will, which boosting her powers: [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# и @b!A00U.pa4#] inscreasing for @b!A00U.va1#, @b!A00U.pa5# на @b!A00U.va5#. Duration - @b!A00U.time sec.",
             },
             [FourCC("A00E")] = {
-                bind = "Sorceress formes frost barrier around herself, boosting @b!A011.pa1# for @b!A011.va1#, @b!A011.pa2# for @b!A011.va2# and @b!A011.pa3# for @b!A011.va3#. Duration - @b!A011.time sec.",
+                bind = "Sorceress forms frost barrier around herself, boosting @b!A011.pa1# for @b!A011.va1#, @b!A011.pa2# for @b!A011.va2# and @b!A011.pa3# for @b!A011.va3#. Duration - @b!A011.time sec.",
             },
             [FourCC("A00N")] = {
-                bind = "Sorceress focusing her arcane powers, boosting her defence: @b!A00T.pa1# for @b!A00T.va1#, @b!A00T.pa2# for @b!A00T.va2# and @b!A00T.pa3# for @b!A00T.va3#. Duration - @b!A00T.time sec.",
+                bind = "Sorceress focusing her arcane powers that boosting her defence: @b!A00T.pa1# for @b!A00T.va1#, @b!A00T.pa2# for @b!A00T.va2# and @b!A00T.pa3# for @b!A00T.va3#. Duration - @b!A00T.time sec.",
             },
             [FourCC("A00K")] = {
-                bind = "Forms energized ball that slowly flies forward, periodically pulsing in @e!ELBL.aoe# range on nearby enemies for @e!ELBL.pwr# @e!ELBL.atr# damage.",
+                bind = "Forms energized ball that slowly flies forward, periodically pulsing in @e!MBLB.rad# range on a nearby enemies for a @e!ELBL.pwr# @e!ELBL.atr# damage.",
             },
             [FourCC("A00J")] = {
-                bind = "Shots electrical bolts that moving in the chaotic pattern. First enemy they hit takes @e!EDSC.pwr# @e!EDSC.atr# damage.",
+                bind = "Shots electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# @e!EDSC.atr# damage.",
             },
             [FourCC("A00F")] = {
-                bind = "Calls for a meteor from the sky, that falling after short delay, dealing enemies @e!EMTR.pwr# @e!EMTR.atr# damage in a @e!EMTR.aoe# radius, pushing them from explosion center. Have bonus to attribute (+@e!EMTR.ab#)",
+                bind = "Calls for a meteor from the sky that falling after a short delay, dealing enemies @e!EMTR.pwr# @e!EMTR.atr# damage in a @e!EMTR.aoe# radius, pushing them from an explosion center. Has bonus to an attribute (+@e!EMTR.ab#)",
             },
             [FourCC("A00L")] = {
                 bind = "Allows you to instantly move up to @s!A00L.rng# range.",
             },
             [FourCC("A00M")] = {
-                bind = "Calls for a powerful discharge with @e!ELST.aoe# radius that deals @e!ELST.pwr# @e!ELST.atr# damage. Have bonus to attribute (+@e!ELST.ab#) and critical multiplier (+@e!ELST.bcm#)",
+                bind = "Calls for a powerful discharge with a radius @e!ELST.aoe# that deals @e!ELST.pwr# @e!ELST.atr# damage. This skill has bonus to an attribute (+@e!ELST.ab#) and a critical multiplier (+@e!ELST.bcm#).",
             },
             [FourCC("A005")] = {
-                bind = "Launching forward the frost orb that constantly damages enemies in a @e!EFOA.aoe# radius inflicting @e!EFOA.pwr# @e!EFOA.atr damage (+@e!EFOA.ab#). In the end orb explodes for @e!EFRO.pwr# @e!EFRO.atr# damage with increased bonus to critical chance (+@e!EFRO.bcc#)",
+                bind = "Launching forward a frost orb that constantly damages enemies in a @e!EFOA.aoe# radius inflicting @e!EFOA.pwr# @e!EFOA.atr# damage (+@e!EFOA.ab#). At the end the orb explodes for a @e!EFRO.pwr# @e!EFRO.atr# damage with increased bonus to a critical chance (+@e!EFRO.bcc#)",
             },
             [FourCC("A00D")] = {
-                bind = "Throws forward a fireball, first enemy it hits takes @e!EGFB.pwr# @e!EGFB.atr# damage.",
+                bind = "Throws forward a fireball, first enemy it hit takes @e!EGFB.pwr# @e!EGFB.atr# damage in small area around.",
             },
             [FourCC("A001")] = {
                 bind = "Emits wave of frost from yourself with @e!EFRN.aoe# radius, freezing enemies for @b!A00S.time# sec. and dealing them @e!EFRN.pwr# @e!EFRN.atr# damage.",
             },
             [FourCC("A003")] = {
-                bind = "Throws frostbolt that explodes on the first enemy, dealing @e!EFRB.pwr# @e!EFRB.atr# damage in a @e!EFRB.aoe# radius. Affected targets suffer movement speed loss by @b!A00S.va1#",
+                bind = "Throws a frostbolt that explodes on a first enemy, dealing @e!EFRB.pwr# @e!EFRB.atr# damage in a @e!EFRB.aoe# radius. Affected targets will suffer a movement speed loss by @b!A004.va1#",
+            },
+            [FourCC("A019")] = {
+                bind = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces to a nearby enemy. Bounces amount is increased with the skill level.",
             },
         }
 

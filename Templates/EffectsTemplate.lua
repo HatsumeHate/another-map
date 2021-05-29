@@ -421,7 +421,7 @@ do
             get_level_from_skill = "A00F",
             level = {
                 [1] = {
-                    delay = 0.77,
+                    delay = 0.86,
                     timescale = 1.34,
 
                     power = 27,
@@ -436,7 +436,7 @@ do
                     shake_distance = 1450.,
                     shake_duration = 0.7,
 
-                    SFX_used = "war3mapImported\\Rain of Fire.mdx",
+                    SFX_used = "Spell\\Meteor2.mdx",
                     SFX_used_scale = 1.25,
 
                     area_of_effect = 325.,
@@ -459,6 +459,9 @@ do
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = LIGHTNING_ATTRIBUTE,
+
+                    SFX_on_unit = "Abilities\\Spells\\Orc\\LightningShield\\LightningShieldBuff.mdx",
+                    SFX_on_unit_point = "origin",
 
                     area_of_effect = 100.,
                     max_targets = 1,
@@ -489,6 +492,10 @@ do
                     --area_of_effect = 100.,
                     max_targets = 1,
 
+                    --Abilities\Spells\Items\AIlb\AIlbSpecialArt.mdl
+                    SFX_on_unit = "Abilities\\Spells\\Items\\AIlb\\AIlbSpecialArt.mdx",
+                    SFX_on_unit_point = "chest",
+
                     sound = {
                         pack = { "Sounds\\Spells\\lightning_hit_1.wav", "Sounds\\Spells\\lightning_hit_2.wav", "Sounds\\Spells\\lightning_hit_3.wav" },
                         volume = 115, cutoff = 1500.
@@ -504,7 +511,7 @@ do
             get_level_from_skill = "A00K",
             level = {
                 [1] = {
-                    power = 7,
+                    power = 5,
                     attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = false,
@@ -592,7 +599,7 @@ do
                     can_crit = true,
                     is_direct = true,
                     area_of_effect = 155.,
-                    angle_window  = 35.,
+                    angle_window  = 40.,
                     force_from_caster_position = true,
                     shake_magnitude = 1.,
                     shake_distance = 1000.,
@@ -605,14 +612,42 @@ do
             }
         })
         --==========================================--
+        NewEffectTemplate('EEXC', {
+            name = "execution effect",
+            power_delta = 2,
+            power_delta_level = 2,
+            get_level_from_skill = "A020",
+            level = {
+                [1] = {
+                    power = 3,
+                    attack_percent_bonus = 1.,
+                    can_crit = true,
+                    is_direct = true,
+                    area_of_effect = 155.,
+                    angle_window  = 40,
+                    force_from_caster_position = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    max_targets = 300,
+                    SFX_on_unit = "Abilities\\Spells\\Demon\\DemonBoltImpact\\DemonBoltImpact.mdx",
+                    SFX_on_unit_point = "chest",
+                }
+            }
+        })
+        --==========================================--
         NewEffectTemplate('EBRS', {
             name = "berserk effect",
             get_level_from_skill = "A00Q",
             level = {
                 [1] = {
-                    SFX_on_caster            = 'Spell\\TaurenAvatar.mdx',
-                    SFX_on_caster_point      = 'origin',
-                    SFX_on_caster_scale      = 1.,
+                    SFX_used = 'Spell\\TaurenAvatar.mdx',
+                    SFX_used_scale = 2.3,
+                    --SFX_facing = 270.,
+                    SFX_inherit_angle = true,
+                    --SFX_on_caster            = 'Spell\\TaurenAvatar.mdx',
+                    --SFX_on_caster_point      = 'origin',
+                    --SFX_on_caster_scale      = 4.,
 
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A00V', target_type = ON_SELF }
@@ -635,7 +670,7 @@ do
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = MELEE_ATTACK,
                     attribute = PHYSICAL_ATTRIBUTE,
-                    area_of_effect = 225.,
+                    area_of_effect = 200.,
                     max_targets = 300,
                 }
             }
@@ -655,8 +690,8 @@ do
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = MELEE_ATTACK,
                     attribute = PHYSICAL_ATTRIBUTE,
-                    area_of_effect = 155.,
-                    angle_window  = 35.,
+                    area_of_effect = 200.,
+                    angle_window  = 40.,
                     force_from_caster_position = true,
                     max_targets = 300,
                     shake_magnitude = 1.2,
@@ -664,6 +699,66 @@ do
                     shake_duration = 0.7,
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A00W', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EBFA', {
+            name = "first aid effect",
+            get_level_from_skill = "ABFA",
+            level = {
+                [1] = {
+                    --SFX_used = 'Spell\\TaurenAvatar.mdx',
+                    --SFX_used_scale = 2.3,
+                    --SFX_facing = 270.,
+                    --SFX_inherit_angle = true,
+                    --SFX_on_caster            = 'Spell\\TaurenAvatar.mdx',
+                    --SFX_on_caster_point      = 'origin',
+                    --SFX_on_caster_scale      = 4.,
+
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A01N', target_type = ON_SELF }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('ELBS', {
+            name = "boosters effect",
+
+            level = {
+                [1] = {
+                    --power = 0,
+                    weapon_damage_percent_bonus = 2.15,
+                    --attack_percent_bonus = 0.,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+
+                    area_of_effect = 300.,
+                    max_targets = 300,
+
+                    SFX_used = "Abilities\\Spells\\Human\\Thunderclap\\ThunderClapCaster.mdx",
+
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EFAA', {
+            name = "first aid health restore periodic",
+            get_level_from_skill = "ABFA",
+            level = {
+                [1] = {
+                    max_targets = 1,
+                    life_percent_restored = 0.015,
+                    life_percent_restored_delta = 0.01,
+                    life_percent_restored_delta_level = 1,
+                    sound = {
+                        pack = { "Abilities\\Spells\\Human\\Heal\\HealTarget.wav" },
+                        volume = 120, cutoff = 1600.
                     },
                 }
             }
@@ -700,8 +795,8 @@ do
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = MELEE_ATTACK,
                     attribute = PHYSICAL_ATTRIBUTE,
-                    area_of_effect = 155.,
-                    angle_window  = 35.,
+                    area_of_effect = 200.,
+                    angle_window  = 40.,
                     force_from_caster_position = true,
                     max_targets = 300,
                     SFX_used               = 'Spell\\Coup de Grace.mdx',
@@ -735,6 +830,8 @@ do
                     attack_type = nil,
                     attribute = PHYSICAL_ATTRIBUTE,
                     max_targets = 1,
+                    SFX_on_unit = 'Spell\\Lascerate.mdx',
+                    SFX_on_unit_point = 'chest',
                 }
             }
         })
@@ -760,6 +857,88 @@ do
             }
         })
         --==========================================--
+        NewEffectTemplate('EWTM', {
+            name = "witch effect",
+
+            level = {
+                [1] = {
+                    max_targets = 1,
+                    SFX_on_caster            = 'Abilities\\Spells\\Items\\VampiricPotion\\VampPotionCaster.mdx',
+                    SFX_on_caster_point      = 'origin',
+                    SFX_on_caster_scale      = 1.,
+                    SFX_on_caster_duration = 0.95,
+                    sound = {
+                        pack = { "Abilities\\Spells\\Undead\\DeathPact\\DeathPactTargetBirth1.wav" },
+                        volume = 100, cutoff = 1500.
+                    },
+                    applied_buff = {
+                        [1] = { modificator = INCREASE_BUFF_LEVEL, buff_id = 'A01R', target_type = ON_SELF },
+                        [2] = { modificator = SET_BUFF_TIME, buff_id = 'A01R', target_type = ON_SELF, value = -1 }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('ERIT', {
+            name = "ritual effect",
+
+            level = {
+                [1] = {
+                    max_targets = 1,
+                    sound = {
+                        pack = { "Abilities\\Spells\\Undead\\DeathPact\\DeathPactTargetBirth1.wav" },
+                        volume = 120, cutoff = 1500.
+                    },
+                    applied_buff = {
+                        [1] = { modificator = INCREASE_BUFF_LEVEL, buff_id = 'A01S', target_type = ON_SELF }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EMEI', {
+            name = "master ice effect",
+
+            level = {
+                [1] = {
+                    max_targets = 1,
+
+                    applied_buff = {
+                        [1] = { modificator = INCREASE_BUFF_LEVEL, buff_id = 'A01C', target_type = ON_ENEMY },
+                        [2] = { modificator = SET_BUFF_TIME, buff_id = 'A01C', target_type = ON_ENEMY, value = -1 }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EMEF', {
+            name = "master fire effect",
+
+            level = {
+                [1] = {
+                    max_targets = 1,
+                    applied_buff = {
+                        [1] = { modificator = INCREASE_BUFF_LEVEL, buff_id = 'A01B', target_type = ON_ENEMY },
+                        [2] = { modificator = SET_BUFF_TIME, buff_id = 'A01B', target_type = ON_ENEMY, value = -1 }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EMEL', {
+            name = "master lightning effect",
+
+            level = {
+                [1] = {
+                    max_targets = 1,
+                    applied_buff = {
+                        [1] = { modificator = INCREASE_BUFF_LEVEL, buff_id = 'A01F', target_type = ON_ENEMY },
+                        [2] = { modificator = SET_BUFF_TIME, buff_id = 'A01F', target_type = ON_ENEMY, value = -1 }
+                    },
+                }
+            }
+        })
+        --==========================================--
         NewEffectTemplate('PHWK', {
             name = "health restore",
             level = {
@@ -770,7 +949,10 @@ do
                     SFX_on_caster_scale      = 0.7,
                     SFX_on_caster_duration = 1.833,
                     life_percent_restored = 0.25,
-                    sound =  "Sound\\life_potion.wav"
+                    sound = {
+                        pack = { "Sound\\life_potion.wav" },
+                        volume = 120, cutoff = 1600.
+                    },
                 },
                 [2] = {
                     max_targets = 1,
@@ -779,7 +961,10 @@ do
                     SFX_on_caster_scale      = 0.85,
                     SFX_on_caster_duration = 1.833,
                     life_percent_restored = 0.5,
-                    sound =  "Sound\\life_potion.wav"
+                    sound = {
+                        pack = { "Sound\\life_potion.wav" },
+                        volume = 120, cutoff = 1600.
+                    },
                 },
                 [3] = {
                     max_targets = 1,
@@ -788,7 +973,10 @@ do
                     SFX_on_caster_scale      = 1.,
                     SFX_on_caster_duration = 1.833,
                     life_percent_restored = 0.75,
-                    sound =  "Sound\\life_potion.wav"
+                    sound = {
+                        pack = { "Sound\\life_potion.wav" },
+                        volume = 120, cutoff = 1600.
+                    },
                 }
             }
         })
@@ -803,7 +991,10 @@ do
                     SFX_on_caster_scale      = 0.7,
                     SFX_on_caster_duration = 1.833,
                     resource_percent_restored = 0.25,
-                    sound =  "Sound\\mana_potion.wav"
+                    sound = {
+                        pack = { "Sound\\mana_potion.wav" },
+                        volume = 120, cutoff = 1600.
+                    },
                 },
                 [2] = {
                     max_targets = 1,
@@ -812,7 +1003,10 @@ do
                     SFX_on_caster_scale      = 0.85,
                     SFX_on_caster_duration = 1.833,
                     resource_percent_restored = 0.5,
-                    sound =  "Sound\\mana_potion.wav"
+                    sound = {
+                        pack = { "Sound\\mana_potion.wav" },
+                        volume = 120, cutoff = 1600.
+                    },
                 },
                 [3] = {
                     max_targets = 1,
@@ -821,7 +1015,10 @@ do
                     SFX_on_caster_scale      = 1.,
                     SFX_on_caster_duration = 1.833,
                     resource_percent_restored = 0.75,
-                    sound =  "Sound\\mana_potion.wav"
+                    sound = {
+                        pack = { "Sound\\mana_potion.wav" },
+                        volume = 120, cutoff = 1600.
+                    },
                 }
             }
         })
@@ -831,21 +1028,30 @@ do
             level = {
                 [1] = {
                     max_targets  = 1,
-                    sound        = "Sound\\full_life_potion.wav",
+                    sound = {
+                        pack = { "Sound\\full_life_potion.wav" },
+                        volume = 120, cutoff = 1600.
+                    },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A01D', target_type = ON_SELF }
                     },
                 },
                 [2] = {
                     max_targets  = 1,
-                    sound        = "Sound\\full_life_potion.wav",
+                    sound = {
+                        pack = { "Sound\\full_life_potion.wav" },
+                        volume = 120, cutoff = 1600.
+                    },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A01D', target_type = ON_SELF }
                     },
                 },
                 [3] = {
                     max_targets  = 1,
-                    sound        = "Sound\\full_life_potion.wav",
+                    sound = {
+                        pack = { "Sound\\full_life_potion.wav" },
+                        volume = 120, cutoff = 1600.
+                    },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A01D', target_type = ON_SELF }
                     },
@@ -876,13 +1082,8 @@ do
 
 
         RegisterTestCommand("fr effect", function()
-        local effect = GetEffectData("EFRB")
-
-            print(R2S(effect.level[1].power))
-            print(R2S(effect.level[1].attribute))
-            print(R2S(effect.level[1].damage_type))
-            print(R2S(effect.level[1].attack_type))
-            print(R2S(effect.level[1].area_of_effect))
+        local effect = GetEffectData("PHWK")
+            print(effect.name)
             print(R2S(effect.level[1].max_targets))
 
     end)

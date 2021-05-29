@@ -195,47 +195,37 @@ do
 		local data   = MergeTables({}, ITEM_TEMPLATE_DATA[id])
 
             data.item = item
-            BlzSetItemName(item, data.NAME)
+            BlzSetItemName(item, GetQualityColor(data.QUALITY) .. data.NAME .. "|r")
 
             ITEM_DATA[handle] = data
 
             if drop_animation ~= nil then
                 DelayAction(0.001, function()
+                    local volume = 128
 
-                    if data.flippy ~= nil and data.flippy then
-                        local volume = 128
-
-                            for i = 1, 6 do
-                                if GetLocalPlayer() == Player(i-1) then
-                                    if not IsItemVisible(item) then
-                                        volume = 0
-                                    end
-                                end
+                    for i = 1, 6 do
+                        if GetLocalPlayer() == Player(i-1) then
+                            if not IsItemVisible(item) then
+                                volume = 0
                             end
+                        end
+                    end
+
+                        if data.flippy then
 
                             AddSoundVolume("Sound\\flippy.wav", x, y, volume, 2100.)
                             TimerStart(CreateTimer(), 0.48, false, function()
-                                if data.soundpack ~= nil then AddSoundVolume(data.soundpack.drop, x, y, volume, 2100.) end
+                                if data.soundpack then AddSoundVolume(data.soundpack.drop, x, y, volume, 2100.) end
                                 CreateQualityEffect(item)
                                 DestroyTimer(GetExpiredTimer())
                             end)
 
-                    else
-                        local volume = 128
+                        else
 
-                            for i = 1, 6 do
-                                if GetLocalPlayer() == Player(i-1) then
-                                    if not IsItemVisible(item) then
-                                        volume = 0
-                                    end
-                                end
-                            end
+                            if data.soundpack then AddSoundVolume(data.soundpack.drop, x, y, volume, 2100.) end
 
-                            if data.soundpack ~= nil then
-                                AddSoundVolume(data.soundpack.drop, x, y, volume, 2100.)
-                            end
+                        end
 
-                    end
                 end)
             end
 
@@ -254,7 +244,7 @@ do
         local data   = MergeTables({}, ITEM_TEMPLATE_DATA[id])
 
             data.item = item
-            BlzSetItemName(item, data.NAME)
+            BlzSetItemName(item, GetQualityColor(data.QUALITY) .. data.NAME .. "|r")
             ITEM_DATA[handle] = data
 
             if IsRandomGeneratedId(id) then GenerateItemStats(item, 1, COMMON_ITEM)
@@ -293,8 +283,13 @@ do
 
     function GenerateItemSuffix(item, variation, quality)
         local item_data = GetItemData(item)
+
+        --print("item type is " .. GetItemSubTypeName(item_data.SUBTYPE) .. " quality " .. item_data.QUALITY)
+
         local suffix = ITEM_QUALITY_SUFFIX_LIST[quality][item_data.SUBTYPE][GetRandomInt(1, #ITEM_QUALITY_SUFFIX_LIST[quality][item_data.SUBTYPE])]
+        --print("suffix number " .. (suffix or "invalid"))
         local affix = GetRandomInt(ITEM_SUFFIX_LIST[suffix].min_affix, ITEM_SUFFIX_LIST[suffix].max_affix)
+        --print("affix number " .. (affix or "invalid"))
         local preset = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix]
         local min = QUALITY_ITEM_BONUS_COUNT[quality].min
         local bonus_parameters_count = GetRandomInt(min, QUALITY_ITEM_BONUS_COUNT[quality].max) + preset.additional_parameter
@@ -304,6 +299,9 @@ do
 
         local parameters_list = GetRandomIntTable(1, #preset.parameter_bonus, bonus_parameters_count)
 
+        --print("rolled suffix id " .. )
+        --print("ok")
+        --print("affix " .. ITEM_AFFIX_NAME_LIST[affix][QUALITY_ITEM_LIST[quality][item_data.SUBTYPE][variation].decl] .. " + " .. item_data.NAME .." + suffix " .. ITEM_SUFFIX_LIST[suffix].name)
 
         item_data.BONUS = {}
 
@@ -312,15 +310,21 @@ do
 
                         if GetRandomInt(0, 100) <= parameter.probability or #item_data.BONUS < min then
 
+                            --print("found " .. GetParameterName(parameter.PARAM) .. " method " .. parameter.METHOD)
+
                             item_data.BONUS[#item_data.BONUS + 1] = {
                                 PARAM = parameter.PARAM,
                                 METHOD = parameter.METHOD
                             }
 
                             if item_data.BONUS[#item_data.BONUS].METHOD == STRAIGHT_BONUS and not (item_data.BONUS[#item_data.BONUS].PARAM == CRIT_MULTIPLIER or item_data.BONUS[#item_data.BONUS].PARAM == HP_REGEN or item_data.BONUS[#item_data.BONUS].PARAM == MP_REGEN) then
+                                --print("straight start")
                                 item_data.BONUS[#item_data.BONUS].VALUE = GetRandomInt(parameter.value_min, parameter.value_max)
+                                --print("straight end .. " .. item_data.BONUS[#item_data.BONUS].VALUE)
                             else
-                                item_data.BONUS[#item_data.BONUS].VALUE = math.floor(GetRandomReal(parameter.value_min, parameter.value_max) * 100.) / 100.
+                                --print("mult start")
+                                item_data.BONUS[#item_data.BONUS].VALUE = I2R(GetRandomInt(R2I(parameter.value_min * 100.), R2I(parameter.value_max * 100.))) / 100.
+                                --print("mult end " .. item_data.BONUS[#item_data.BONUS].VALUE)
                             end
 
                             bonus_parameters_count = bonus_parameters_count - 1
@@ -332,6 +336,7 @@ do
 
             item_data.NAME = ITEM_AFFIX_NAME_LIST[affix][QUALITY_ITEM_LIST[quality][item_data.SUBTYPE][variation].decl] .. item_data.NAME .. ITEM_SUFFIX_LIST[suffix].name
 
+        --print("generator parameters done")
 
         item_data.SKILL_BONUS = {}
 
@@ -373,9 +378,9 @@ do
                     end
 
             end
+            --print("generator skills done")
 
-
-            BlzSetItemName(item, item_data.NAME)
+            BlzSetItemName(item, GetQualityColor(quality) .. item_data.NAME .. '|r')
 
     end
 
@@ -401,6 +406,8 @@ do
     end
 
 
+    ---@param item item
+    ---@param level number
     function GenerateItemCost(item, level)
         local item_data = GetItemData(item)
         local stats_bonus = 0
@@ -415,7 +422,8 @@ do
     end
 
 
-
+    ---@param item item
+    ---@param value number
     function GenerateItemStatPreset(item, value)
         local item_data = GetItemData(item)
 
@@ -433,6 +441,9 @@ do
             end
     end
 
+
+    ---@param item item
+    ---@param level number
     function GenerateItemLevel(item, level)
         local item_data = GetItemData(item)
 
@@ -506,12 +517,16 @@ do
                 end
 
             GenerateItemLevel(item, level)
+            --print("generate level")
             GenerateItemStoneSlots(item)
+            --print("generate slots")
             GenerateItemSuffix(item, item_variation, quality)
+            --print("generate affix suffix")
             GenerateItemCost(item, level)
+            --print("generate cost")
             --GenerateItemStatPreset(item, item_preset.modificator)
 
-            BlzSetItemName(item, item_data.NAME)
+            BlzSetItemName(item, GetQualityColor(quality) .. item_data.NAME .. '|r')
     end
 
 
@@ -565,19 +580,37 @@ do
     end
 
     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA??????????????????????????????3")
+
+    function IsItemEquipped(unit, item)
+        local unit_data = GetUnitData(unit)
+
+            for point = 1, NECKLACE_POINT do
+                if unit_data.equip_point[point] and unit_data.equip_point[point].item == item then
+                    return true
+                end
+            end
+
+        return false
+    end
+
     ---@param unit unit
     ---@param item item
     ---@param flag boolean
     ---@returns item
-    function EquipItem(unit, item, flag)
+    function EquipItem(unit, item, flag, offhand)
         local unit_data = GetUnitData(unit)
         local item_data = GetItemData(item)
         local point
         local disarmed_item
 
+           --print("eqip item is ".. GetItemName(item).. " state is " .. (flag and "equip" or "unequip"))
 
-            if item_data.TYPE == ITEM_TYPE_WEAPON then
+            if item_data.TYPE == ITEM_TYPE_OFFHAND or (offhand and item_data.TYPE == ITEM_TYPE_WEAPON) then
+                point = OFFHAND_POINT
+                --print("offhand point")
+            elseif item_data.TYPE == ITEM_TYPE_WEAPON then
                 point = WEAPON_POINT
+                --print("weapon point")
             elseif item_data.TYPE == ITEM_TYPE_ARMOR and item_data.SUBTYPE ~= BELT_ARMOR then
 
                 if item_data.SUBTYPE == CHEST_ARMOR then point = CHEST_POINT
@@ -597,9 +630,15 @@ do
             end
 
 
+            if not flag and (unit_data.equip_point[point] and unit_data.equip_point[point].item ~= item) then
+                print("Warning: trying to disarm an item that wasn't equipped in first place")
+                return nil
+            end
+
+
             if (unit_data.equip_point[point] and unit_data.equip_point[point].SUBTYPE ~= FIST_WEAPON) and flag then
                 disarmed_item = unit_data.equip_point[point].item
-                EquipItem(unit, unit_data.equip_point[point].item, false)
+                EquipItem(unit, unit_data.equip_point[point].item, false, point == OFFHAND_POINT and unit_data.equip_point[point].TYPE == ITEM_TYPE_WEAPON)
             end
 
 
@@ -623,6 +662,11 @@ do
 
             for i = 1, #item_data.BONUS do
                 ModifyStat(unit, item_data.BONUS[i].PARAM, item_data.BONUS[i].VALUE, item_data.BONUS[i].METHOD, flag)
+            end
+
+
+            if item_data.SKILL_BONUS then
+                UpdateBindedSkillsData(GetPlayerId(GetOwningPlayer(unit)) + 1)
             end
 
 
@@ -730,14 +774,20 @@ do
                 local item = GetOrderTargetItem()
                 local angle = AngleBetweenXY_DEG(GetItemX(item), GetItemY(item), GetUnitX(unit), GetUnitY(unit))
 
-                    if DistanceBetweenUnitXY(unit, GetItemX(item), GetItemY(item)) <= 200. and not PlayerPickUpItemFlag[player] then
+                    if IsUnitInRangeXY(unit, GetItemX(item), GetItemY(item), 200.) and not PlayerPickUpItemFlag[player] then
                         PlayerPickUpItemFlag[player] = true
                         local item_data = GetItemData(item)
+                        local x = GetItemX(item); local y = GetItemY(item)
                         UnitRemoveItem(unit, item)
                         IssuePointOrderById(unit, order_move, GetUnitX(unit) + 0.01, GetUnitY(unit) - 0.01)
-                        local done =  AddToInventory(player, item)
+                        local done = AddToInventory(player, item)
                         if done and item_data.quality_effect ~= nil then DestroyEffect(item_data.quality_effect) end
-                        DelayAction(0.001, function() PlayerPickUpItemFlag[player] = false end)
+                        IssueImmediateOrderById(unit, order_stop)
+                        SetUnitFacingTimed(unit, angle+180.,0.)
+                        DelayAction(0.035, function()
+                            PlayerPickUpItemFlag[player] = false
+                            --IssuePointOrderById(unit, order_move, x + Rx(5., angle), y + Ry(5., angle))
+                        end)
                     else
                         IssuePointOrderById(unit, order_move, GetItemX(item) + Rx(25., angle), GetItemY(item) + Ry(25., angle))
                     end
@@ -762,9 +812,8 @@ do
         TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_USE_ITEM)
         TriggerAddAction(trg, function()
             local player = GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1
-                OnItemUse(GetTriggerUnit(), GetManipulatedItem(), GetEventTargetUnit())
-
-                if PlayerInventoryFrameState[player] or GetItemTypeId(GetManipulatedItem()) == ITEM_TYPE_CHARGED then
+                OnItemUse(GetTriggerUnit(), GetManipulatedItem(), GetEventTargetUnit() or nil)
+                if PlayerInventoryFrameState[player] or GetItemType(GetManipulatedItem()) == ITEM_TYPE_CHARGED then
                     UpdateInventoryWindow(player)
                 end
 

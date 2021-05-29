@@ -83,15 +83,34 @@ do
                     starting_skills[1] = 'A003'
                     starting_skills[2] = 'A00J'
                     starting_skills[3] = 'A00D'
+
                     starting_skills[4] = 'A005'
                     starting_skills[5] = 'A00L'
                     starting_skills[6] = 'A001'
                     starting_skills[7] = 'A00K'
                     starting_skills[8] = 'A00M'
+                    starting_skills[9] = 'A019'
+                    starting_skills[10] = 'A00F'
+                    starting_skills[11] = 'A00I'
                 end
 
                 local hero = CreateUnit(Player(player_id), id, GetRectCenterX(gg_rct_starting_location) , GetRectCenterY(gg_rct_starting_location), 270.)
                 RemoveUnit(GetTriggerUnit())
+                --SelectUnit(hero, true)
+                --SelectUnitAddForPlayer(hero, Player(player_id))
+
+                SetCameraBoundsToRectForPlayerBJ(Player(player_id), bj_mapInitialCameraBounds)
+
+
+                local player_number = player_id
+                TimerStart(CreateTimer(), 0.05, true, function()
+                    if GetLocalPlayer() == Player(player_number) then
+                        if not IsUnitSelected(hero, Player(player_number)) then
+                             ClearSelection()
+                            SelectUnit(hero, true)
+                        end
+                    end
+                end)
 
                 TimerStart(CreateTimer(), 0.1, false, function()
                     player_id = player_id + 1
@@ -144,14 +163,26 @@ do
 
         TriggerAddAction(DeathTrigger, function ()
             local hero = GetTriggerUnit()
+            local player = GetOwningPlayer(hero)
 
-            DisplayTextToPlayer(GetOwningPlayer(hero), 0.,0., "Ваш герой возродится через ".. R2S(7. + (Current_Wave / 4.)) .. ". сек на кладбище.")
+            DisplayTextToPlayer(player, 0.,0., "Ваш герой возродится через ".. R2S(7. + (Current_Wave / 4.)) .. " сек. на кладбище.")
+            ResetUnitSpellCast(hero)
+            ToggleInventory(player, false)
 
                 TimerStart(CreateTimer(), 7. + (Current_Wave / 4.), false, function()
                     ReviveHero(hero, GetRectCenterX(gg_rct_cemetary), GetRectCenterY(gg_rct_cemetary), true)
+                    SetUnitTimeScale(hero, 1.)
+                    SetUnitAnimationByIndex(hero, 0)
+                    IssueImmediateOrderById(hero, order_stop)
+                    SetUnitState(hero, UNIT_STATE_LIFE, GetUnitState(hero, UNIT_STATE_MAX_LIFE) * 0.5)
+                    SetUnitState(hero, UNIT_STATE_MANA, GetUnitState(hero, UNIT_STATE_MAX_MANA) * 0.5)
                     DestroyTimer(GetExpiredTimer())
                 end)
 
+        end)
+
+        RegisterTestCommand("ded", function()
+            KillUnit(PlayerHero[1])
         end)
 
 

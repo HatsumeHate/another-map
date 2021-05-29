@@ -32,7 +32,7 @@ do
 
         local ClickTrigger = CreateTrigger()
 
-        for i = 1, 5 do
+        for i = 1, 6 do
             GlobalButton[i] = {}
 
             GlobalButton[i].char_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNTomeRed.blp", 0.03, 0.03, nil, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.01, 0., GAME_UI)
@@ -62,7 +62,7 @@ do
             local panel_type
 
 
-                for i = 1, 5 do
+                for i = 1, 6 do
                     if frame == GlobalButton[i].char_panel_button then
                         panel_type = CHAR_PANEL
 
