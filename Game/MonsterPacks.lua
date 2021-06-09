@@ -7,25 +7,15 @@ do
 
     local MonsterPack = {}
     local BossPack = {}
+    QuestMonsters = nil
     local RESPAWN_TYPE_RANDOM = 1
     local RESPAWN_TYPE_SAME = 1
 
 
-    local function IsAnyHeroInRange(i)
-
-        for indx = 1, 6 do
-            if PlayerHero[indx] ~= nil and IsUnitInRangeXY(PlayerHero[indx], GetRectCenterX(MonsterPack[i].spawner), GetRectCenterY(MonsterPack[i].spawner), 1550.) then
-                return true
-            end
-        end
-
-        return false
-    end
-
 
     local function RespawnMonsterPack(i)
 
-        if IsAnyHeroInRange(i) then
+        if IsAnyHeroInRange(GetRectCenterX(MonsterPack[i].spawner), GetRectCenterY(MonsterPack[i].spawner), 1550.) then
             TimerStart(CreateTimer(), 15., false, function()
                 DestroyTimer(GetExpiredTimer())
                 RespawnMonsterPack(i)
@@ -46,15 +36,23 @@ do
 
 
     function ScaleMonsterPacks()
+
         for i = 1, #MonsterPack do
             if BlzGroupGetSize(MonsterPack[i].group) > 0 then
                 ScaleMonsterGroup(MonsterPack[i].group)
             end
         end
+
         for i = 1, #BossPack do
             ScaleMonsterUnit(BossPack[i].boss)
         end
-    end
+
+        ForGroup(QuestMonsters, function()
+            if GetUnitState(GetEnumUnit(), UNIT_STATE_LIFE) <= 0.045 then GroupRemoveUnit(QuestMonsters, GetEnumUnit())
+            else ScaleMonsterUnit(GetEnumUnit()) end
+        end)
+
+        end
 
 
 
@@ -62,6 +60,7 @@ do
 
         --##########################################################
         --#######################SPAWNER_DATA#######################
+        QuestMonsters = CreateGroup()
         MonsterPack[1] = {}
         MonsterPack[1].spawner = gg_rct_monster_pack_1_spawner
         MonsterPack[1].wander_region = {
@@ -205,7 +204,7 @@ do
                 end)
 
 
-                if BlzGroupGetSize(MonsterPack[i].group) < MonsterPack[i].pack_count and not IsAnyHeroInRange(i) then
+                if BlzGroupGetSize(MonsterPack[i].group) < MonsterPack[i].pack_count and not IsAnyHeroInRange(GetRectCenterX(MonsterPack[i].spawner), GetRectCenterY(MonsterPack[i].spawner), 1550.)then
                     local respawn_chance = ((1. - (BlzGroupGetSize(MonsterPack[i].group) / MonsterPack[i].pack_count)) * 100.) * 0.15
 
                         if respawn_chance > 0. and Chance(respawn_chance) then
@@ -283,7 +282,7 @@ do
 
                                 TriggerRegisterUnitEvent(trg, BossPack[i].boss, EVENT_PLAYER_UNIT_DEATH)
                                 DestroyTimer(GetExpiredTimer())
-                                DelayAction(0.001, function() ScaleMonsterUnit(BossPack[i].boss) end)
+                                --DelayAction(0.001, function() ScaleMonsterUnit(BossPack[i].boss) end)
                             end)
                         end)
                 end

@@ -380,7 +380,7 @@ do
     ---@param range_type_chance_delta number
     function SpawnMonsterPack(point, monster_pack, min, max, bonus_elite, range_type_chance_delta)
         if point == nil or monster_pack == nil then return end
-        local total_monster_count = GetRandomInt(min, max)
+        local total_monster_count = GetRandomInt(min, max) + math.floor(Current_Wave / 5.)
         local first_pack_count = math.floor(total_monster_count * COMMON_MONSTER_RATE)
         local monster_attack_type = GetRandomReal(0., 100.) <= (MELEE_MONSTER_CHANCE + (range_type_chance_delta or 0.)) and MONSTER_TAG_MELEE or MONSTER_TAG_RANGE
         local monster_group = CreateGroup()
@@ -439,9 +439,9 @@ do
 
             end
 
-        DelayAction(0.015, function()
-            ScaleMonsterGroup(monster_group)
-        end)
+        --DelayAction(0.015, function()
+            --ScaleMonsterGroup(monster_group)
+        --end)
 
         return monster_group
     end
@@ -523,7 +523,7 @@ do
 
             DelayAction(0.015, function()
                 ForGroup(WaveGroup, function ()
-                    ScaleMonsterUnit(GetEnumUnit())
+                    --ScaleMonsterUnit(GetEnumUnit())
                     IssuePointOrderById(GetEnumUnit(), order_attack, GetRectCenterX(MAIN_POINT), GetRectCenterY(MAIN_POINT))
                 end)
             end)
@@ -595,6 +595,8 @@ do
 
         end)
 
+
+        InitSpiderQueenData()
 
         RegisterTestCommand("endw", function()
             print("kill current wave")

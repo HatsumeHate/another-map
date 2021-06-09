@@ -425,7 +425,7 @@ do
 
             for i = 1, 6 do
                 if GetLocalPlayer() == Player(i-1) then
-                    FirstTime_Data[i].effect = AddSpecialEffectTarget("Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdx", unit_owner, "overhead")
+                    FirstTime_Data[i].effect = AddSpecialEffectTarget("Quest\\ExcMark_Green_FlightPath.mdx", unit_owner, "overhead")
                 else
                     FirstTime_Data[i].effect = AddSpecialEffectTarget("", unit_owner, "overhead")
                 end

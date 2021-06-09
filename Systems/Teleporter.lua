@@ -14,24 +14,22 @@ do
         local frame = BlzGetTriggerFrame()
         local player = GetPlayerId(GetTriggerPlayer()) + 1
 
-
-            PlayLocalSound("location_change.wav", player - 1, 110)
+            PlayLocalSound("Sound\\location_change.wav", player - 1, 110)
             BlzFrameSetVisible(TeleportFrame[player].mainframe, false)
 
-            for i = 1, #TeleportLocation[i] do
+            for i = 1, #TeleportLocation do
                 if PlayerCurrentButtonList[player].buttonlist[i].button == frame then
                     SetUnitX(PlayerHero[player], GetRectCenterX(PlayerCurrentButtonList[player].buttonlist[i].teleport))
                     SetUnitY(PlayerHero[player], GetRectCenterY(PlayerCurrentButtonList[player].buttonlist[i].teleport))
                     break
                 end
             end
-
     end
 
 
 
 
-    for i = 1, 7 do
+    for i = 1, 6 do
         PlayerCurrentButtonList[i] = {}
     end
 
@@ -40,7 +38,7 @@ do
         local slot = 1
 
             for i = 1, #TeleportLocation do
-                --if TeleportLocation[i].trackable ~= trackable then
+                if TeleportLocation[i].trackable ~= trackable then
                     BlzFrameClearAllPoints(TeleportFrame[player].slots[slot].button)
                     BlzFrameSetVisible(TeleportFrame[player].slots[slot].button, true)
                     BlzFrameSetText(TeleportFrame[player].slots[slot].text, TeleportLocation[i].name)
@@ -54,12 +52,11 @@ do
                 PlayerCurrentButtonList[player].buttonlist[i].button = TeleportFrame[player].slots[slot].button
                 PlayerCurrentButtonList[player].buttonlist[i].teleport = TeleportLocation[i].rect
                 slot = slot + 1
-                --end
+                end
             end
 
 
         BlzFrameSetSize(TeleportFrame[player].mainframe, BlzFrameGetWidth(TeleportFrame[player].mainframe), (BlzFrameGetHeight(TeleportFrame[player].slots[slot].button) + (0.001 * slot)) * slot + 0.04)
-
     end
 
 
@@ -72,7 +69,7 @@ do
         local trg = CreateTrigger()
         TriggerAddAction(trg, TeleportButtonPressed)
 
-        for i = 1, 7 do
+        for i = 1, 6 do
             TeleportFrame[i] = {}
             TeleportFrame[i].mainframe =  BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
 
@@ -98,13 +95,77 @@ do
     end
 
 
+    local HitTrigger = CreateTrigger()
+
+    function RegisterUnitForTeleport(unit)
+        TriggerRegisterUnitEvent(HitTrigger, unit, EVENT_UNIT_ISSUED_TARGET_ORDER)
+    end
+
+
+    function HitCond()
+        return GetUnitTypeId(GetOrderTargetUnit()) == FourCC("ntel") and GetIssuedOrderId() == order_smart and IsUnitInRange(GetOrderTargetUnit(), GetTriggerUnit(), 200.)
+    end
+
     function TeleporterInit()
 
-        TeleportLocation[1] = { name = LOCALE_LIST[my_locale].CASTLE_LOCATION, rect = gg_rct_castle_loc, trackable = nil }
-        TeleportLocation[2] = { name = LOCALE_LIST[my_locale].SHORE_LOCATION, rect = gg_rct_shore_loc, trackable = nil }
-        TeleportLocation[3] = { name = LOCALE_LIST[my_locale].WOODS_LOCATION, rect = gg_rct_woods_loc, trackable = nil }
+        TeleportLocation[1] = {
+            name = LOCALE_LIST[my_locale].CASTLE_LOCATION,
+            rect = gg_rct_castle_loc,
+            trackable = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("ntel"), GetRectCenterX(gg_rct_castle_loc), GetRectCenterY(gg_rct_castle_loc), 270.),
+            effect = AddSpecialEffect("war3mapImported\\Glow.mdx", GetRectCenterX(gg_rct_castle_loc), GetRectCenterY(gg_rct_castle_loc))
+        }
+        TeleportLocation[2] = {
+            name = LOCALE_LIST[my_locale].SHORE_LOCATION,
+            rect = gg_rct_shore_loc,
+            trackable = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("ntel"), GetRectCenterX(gg_rct_shore_loc), GetRectCenterY(gg_rct_shore_loc), 270.),
+            effect = AddSpecialEffect("war3mapImported\\Glow.mdx", GetRectCenterX(gg_rct_shore_loc), GetRectCenterY(gg_rct_shore_loc))
+        }
+        TeleportLocation[3] = {
+            name = LOCALE_LIST[my_locale].WOODS_LOCATION,
+            rect = gg_rct_woods_loc,
+            trackable = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("ntel"), GetRectCenterX(gg_rct_woods_loc), GetRectCenterY(gg_rct_woods_loc), 270.),
+            effect = AddSpecialEffect("war3mapImported\\Glow.mdx", GetRectCenterX(gg_rct_woods_loc), GetRectCenterY(gg_rct_woods_loc))
+        }
+        TeleportLocation[4] = {
+            name = LOCALE_LIST[my_locale].RUINS_LOCATION,
+            rect = gg_rct_ruins_loc,
+            trackable = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("ntel"), GetRectCenterX(gg_rct_ruins_loc), GetRectCenterY(gg_rct_ruins_loc), 270.),
+            effect = AddSpecialEffect("war3mapImported\\Glow.mdx", GetRectCenterX(gg_rct_ruins_loc), GetRectCenterY(gg_rct_ruins_loc))
+        }
 
-            for i = 1, 7 do
+
+
+        for i = 1, #TeleportLocation do
+            BlzSetSpecialEffectScale(TeleportLocation[i].effect, 3.)
+            SetUnitPathing(TeleportLocation[i].trackable, false)
+            SetUnitX(TeleportLocation[i].trackable, GetRectCenterX(TeleportLocation[i].rect))
+            SetUnitY(TeleportLocation[i].trackable, GetRectCenterY(TeleportLocation[i].rect))
+        end
+
+
+        TriggerAddCondition(HitTrigger, Condition(HitCond))
+
+        TriggerAddAction(HitTrigger, function()
+            local trackable = GetOrderTargetUnit()
+            local player = GetPlayerId(GetTriggerPlayer()) + 1
+            local id = 0
+
+                for i = 1, #TeleportLocation do if trackable == TeleportLocation[i].trackable then id = i; break end end
+
+                ShowTeleportList(trackable, player)
+                TimerStart(CreateTimer(), 0.3, true, function()
+                    if not IsUnitInRange(PlayerHero[player], TeleportLocation[id].trackable, 200.) then
+                        BlzFrameSetVisible(TeleportFrame[player].mainframe, false)
+                        DestroyTimer(GetExpiredTimer())
+                    end
+                end)
+
+        end)
+
+
+
+
+            for i = 1, 6 do
                 PlayerCurrentButtonList[i] = {}
                 PlayerCurrentButtonList[i].buttonlist = {}
                 for k = 1, 10 do

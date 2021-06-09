@@ -91,7 +91,7 @@ do
         FlashQuestDialogButton()
     end
 
-    function MarkQuestAsComplited(quest_id)
+    function MarkQuestAsCompleted(quest_id)
         QuestsList[quest_id].completed = true
         QuestSetCompleted(QuestsList[quest_id].quest, true)
         SendQuestMessage(QUEST_DONE_STRING .. QuestsList[quest_id].name, bj_TEXT_DELAY_QUESTDONE)
@@ -133,6 +133,12 @@ do
 
     end
 
+    function IsMyQuestItemCompleted(quest_id, quest_item_id)
+        local quest = QuestsList[quest_id]
+        local qitem_table = GetQuestItem(quest, quest_item_id)
+        if not qitem_table then return false end
+        return IsQuestItemCompleted(qitem_table.qitem)
+    end
 
     ---@param quest_item questitem
     ---@param state boolean
@@ -140,22 +146,27 @@ do
         local quest = QuestsList[quest_id]
         local completed_quest_items = 0
 
-            QuestItemSetCompleted(quest_item.qitem, state)
-            quest_item.completed = state
+        for i = 1, #quest.quest_items do
+            if quest.quest_items[i].id == quest_item then
+                quest_item = quest.quest_items[i]
+                QuestItemSetCompleted(quest_item.qitem, state)
+                quest_item.completed = state
 
-            for i = 1, #quest.quest_items do
-                if quest.quest_items[i].completed then
-                    completed_quest_items = completed_quest_items + 1
+                for i2 = 1, #quest.quest_items do
+                    if quest.quest_items[i2].completed then
+                        completed_quest_items = completed_quest_items + 1
+                    end
                 end
-            end
 
-
-            if completed_quest_items == #quest.quest_items then
-                MarkQuestAsComplited(quest_id)
-                return true
-            else
-                HintQuestUpdated(quest_id)
+                if completed_quest_items == #quest.quest_items then
+                    MarkQuestAsCompleted(quest_id)
+                    return true
+                else
+                    HintQuestUpdated(quest_id)
+                end
+                break
             end
+        end
 
         return false
     end
@@ -166,7 +177,7 @@ do
         local player_quest = QuestsList[quest_id]
         local qitem_table = GetQuestItem(player_quest, id)
 
-        if player_quest.completed then return true end
+        if not qitem_table or player_quest.completed then return true end
 
             qitem_table.current_pool_count = qitem_table.current_pool_count + number
             QuestItemSetDescription(qitem_table.qitem, qitem_table.description .. " " ..  qitem_table.current_pool_count .. "/" .. qitem_table.pool_count)
@@ -194,7 +205,6 @@ do
     end
 
 
-
     ---@param quest_id any
     ---@param id any
     ---@param description string
@@ -203,7 +213,7 @@ do
         local player_quest = QuestsList[quest_id]
         if player_quest == nil then return end
 
-        local qitem_table GetQuestItem(player_quest, id)
+        local qitem_table = GetQuestItem(player_quest, id)
 
 
             if qitem_table == nil then
@@ -225,6 +235,31 @@ do
     end
 
 
+    ---@param player number
+    ---@param unit unit
+    ---@param text string
+    ---@param time number
+    function PlayCinematicSpeech(player, unit, text, time)
+        if GetLocalPlayer() == Player(player) then
+            ForceCinematicSubtitles(true)
+            SetCinematicScene(GetUnitTypeId(unit), GetPlayerColor(GetOwningPlayer(unit)), GetUnitName(unit), text, time, time)
+            PingMinimap(GetUnitX(unit), GetUnitY(unit), bj_TRANSMISSION_PING_TIME)
+            UnitAddIndicator(unit, bj_TRANSMISSION_IND_RED, bj_TRANSMISSION_IND_BLUE, bj_TRANSMISSION_IND_GREEN, bj_TRANSMISSION_IND_ALPHA)
+        end
+    end
+
+
+    ---@param unit unit
+    ---@param text string
+    ---@param time number
+    function PlayCinematicSpeechForEveryone(unit, text, time, waittime)
+        ForceCinematicSubtitles(true)
+        SetCinematicScene(GetUnitTypeId(unit), GetPlayerColor(GetOwningPlayer(unit)), GetUnitName(unit), text, time, time)
+        PingMinimap(GetUnitX(unit), GetUnitY(unit), bj_TRANSMISSION_PING_TIME)
+        UnitAddIndicator(unit, bj_TRANSMISSION_IND_RED, bj_TRANSMISSION_IND_BLUE, bj_TRANSMISSION_IND_GREEN, bj_TRANSMISSION_IND_ALPHA)
+        if waittime then TriggerSleepAction(waittime) end
+    end
+    
 
     RegisterTestCommand("it", function()
         SetQuestItemPool("MQ01", 1, 1)

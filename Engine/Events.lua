@@ -1,22 +1,36 @@
 do
 
 
-    local function IsAHero(unit)
-
-        for i = 1, 6 do
-            if PlayerHero[i] ~= nil and PlayerHero[i] == unit then
-                return true
-            end
-        end
-
-        return false
-    end
 
 
     function OnUnitCreated(new_unit)
+        if GetOwningPlayer(new_unit) == SECOND_MONSTER_PLAYER or GetOwningPlayer(new_unit) == MONSTER_PLAYER then
+            ScaleMonsterUnit(new_unit)
+        end
+
+        if GetUnitTypeId(new_unit) == FourCC("U000") then
+            MephistoSouls(new_unit)
+        end
 
     end
 
+
+
+    function OnChargeEnd(source, targets_hit, sign, negative_state)
+
+
+    end
+
+
+    function OnChargeHit(source, target, sign)
+        if sign == "abch" then
+            ApplyEffect(source, target, 0.,0., "EBCS", Current_Wave)
+        elseif sign == "aach" then
+            ApplyEffect(source, target, 0.,0., "EACH", Current_Wave)
+            PushUnit(source, target, AngleBetweenUnits(source,target), 150., 0.7, "aach")
+        end
+        return false
+    end
 
 
     function OnJumpExpire(target, sign)
@@ -30,6 +44,10 @@ do
 
     function OnPullRelease(source, target, sign)
         if sign == 'EBCH' then
+            local abil_level = UnitGetAbilityLevel(source, "A00A")
+            if abil_level >= 10 then
+                --ApplyBuff(source, target, "", abil_level)
+            end
             RemoveBuff(source, "A013")
         end
     end
@@ -37,7 +55,7 @@ do
 
     function OnPushExpire(source, data)
         if data.sign == 'EUPP' then
-            ApplyBuff(data.source, source, 'A012', 1)
+            ApplyBuff(data.source, source, 'A012', UnitGetAbilityLevel(source, "A00B"))
         end
     end
 
@@ -45,7 +63,16 @@ do
     ---@param source unit
     ---@param missile table
     function OnMissileImpact(source, missile)
-
+        --print("missile.id")
+        if missile.id == "MSSK" then
+            DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Undead\\RaiseSkeletonWarrior\\RaiseSkeleton.mdx", missile.current_x, missile.current_y))
+            local reanimated = CreateUnit(MONSTER_PLAYER, FourCC("u00G"), missile.current_x, missile.current_y, GetRandomReal(0., 359.))
+            SetUnitAnimation(reanimated, "birth")
+            SafePauseUnit(reanimated, true)
+            DelayAction(2.33, function()
+                SafePauseUnit(reanimated, false)
+            end)
+        end
     end
 
     ---@param source unit
@@ -61,6 +88,8 @@ do
     function OnMissileHit(source, target, missile)
         if missile.id == 'MBLB' then
             LightningBall_VisualEffect(target, missile)
+        elseif missile.id == 'MSCN' then
+            ApplyBuff(source, target, "ASCB", 1)
         end
     end
 
@@ -75,6 +104,8 @@ do
             end)
         elseif missile.id == "MBCH" then
             BuildChain(source, missile)
+        elseif missile.id == "MSCN" then
+            SummonCurse(missile)
         end
     end
 
@@ -92,7 +123,7 @@ do
                     leveled_effect.bonus_crit_chance = 20.
                 end
             elseif UnitHasEffect(source, "FRBD") then
-                if leveled_effect.attribute and leveled_effect.power and leveled_effect.attribute == FIRE_ATTRIBUTE then
+                if leveled_effect.attribute and (leveled_effect.power or leveled_effect.attack_percent_bonus) and leveled_effect.attribute == FIRE_ATTRIBUTE then
                     leveled_effect.power = leveled_effect.power * 1.35
                 end
             elseif UnitHasEffect(source, "PNEC") then
@@ -104,6 +135,8 @@ do
                 if effect.id == "EDSC" then
                     leveled_effect.power = leveled_effect.power * 1.15
                 end
+            elseif effect.id == "ESQB" or effect.id == "ECSC" or effect.id == "EAPN" then
+                effect.current_level = Current_Wave
             end
 
     end
@@ -114,7 +147,7 @@ do
     function OnEffectApply(source, target, effect)
 
         if effect.id == 'EUPP' then
-            PushUnit(source, target, AngleBetweenUnits(source,target), 200., 1.25, effect.id)
+            PushUnit(source, target, AngleBetweenUnits(source,target), 215., 1., effect.id)
         elseif effect.id == 'EBCH' then
             local unit_data = GetUnitData(source)
             local buff_data = GetBuffDataFromUnit(target, 'A013')
@@ -158,6 +191,10 @@ do
                 UpdateUnitParameter(target, HP_REGEN)
             else
                 SetBuffExpirationTime(target, "A01S", -1)
+            end
+        elseif buff.id == "ABBS" then
+            if buff.current_level < 7 then
+                SetBuffExpirationTime(target, "ABBS", -1)
             end
         end
     end
@@ -216,6 +253,8 @@ do
 
             elseif UnitHasEffect(source, "RDAG") then
                 ApplyEffect(source, source, 0, 0, "ERIT", 1)
+            elseif UnitHasEffect(source, "EBBS") then
+                ApplyEffect(source, target, 0.,0., "EBBS", 1)
             end
 
         attack_data = nil
@@ -234,17 +273,11 @@ do
     ---@param x real
     ---@param y real
     function OnSkillCastEnd(source, target, x, y, skill)
-        if skill.Id == 'A00L' then
-            AddSoundVolumeZ("Sounds\\Spells\\blink_launch_".. GetRandomInt(1, 3) ..".wav", GetUnitX(source), GetUnitY(source), 35., 120, 1700.)
-            SetUnitPosition(source, x, y)
-        elseif skill.Id == 'A00I' then
-            SummonHydra(source, x, y)
+        if skill.Id == 'A00L' then CastSorceressBlink(source, x, y, skill)
+        elseif skill.Id == 'A00I' then SummonHydra(source, x, y)
         elseif skill.Id == 'A00J' then
-            if UnitHasEffect(source,"EOTS") then
-                SparkCast_Legendary(source)
-            else
-                SparkCast(source, target, x, y)
-            end
+            if UnitHasEffect(source,"EOTS") then SparkCast_Legendary(source)
+            else SparkCast(source, target, x, y) end
         elseif skill.Id == "A019" then ChainLightningCast(source, target)
         elseif skill.Id == 'A00O' then MakeUnitJump(source, AngleBetweenUnitXY(source, x, y), x, y, 970., 0.6, 'A00O')
         elseif skill.Id == 'A010' then WhirlwindActivate(source)
@@ -253,6 +286,41 @@ do
             BlzSetSpecialEffectYaw(effect, GetUnitFacing(source) * bj_DEGTORAD)
             BlzSetSpecialEffectScale(effect, 0.7)
             DestroyEffect(effect)
+        elseif skill.Id == "A006" then
+            local angle = target and AngleBetweenUnits(source, target) or AngleBetweenUnitXY(source, x, y)
+            local effect_x = GetUnitX(source); local effect_y = GetUnitY(source)
+            local time = 0.3
+            local effect = AddSpecialEffect("Spell\\Coup de Grace.mdx", GetUnitX(source), GetUnitY(source))
+            local z = GetUnitZ(source) + 50.
+
+                BlzSetSpecialEffectYaw(effect, angle * bj_DEGTORAD)
+
+                TimerStart(CreateTimer(), 0.025, true, function()
+                    if time > 0. then
+                        effect_x = effect_x + Rx(17., angle)
+                        effect_y = effect_y + Ry(17., angle)
+                        BlzSetSpecialEffectPosition(effect, effect_x, effect_y, z)
+                    else
+                        DestroyEffect(effect)
+                        DestroyTimer(GetExpiredTimer())
+                    end
+                    time = time - 0.025
+                end)
+
+        elseif skill.Id == "ASQT" then
+            SpiderQueen_WebTrap(source)
+        elseif skill.Id == "ASQS" then
+            SpiderQueen_SpawnBrood(source)
+        elseif skill.Id == "ABCH" then
+            ChargeUnit(source, 750., 600., GetUnitFacing(source), 1, 100., "walk", "abch")
+        elseif skill.Id == "AACH" then
+            ChargeUnit(source, 500., 500., GetUnitFacing(source), 1, 100., "walk", "aach")
+        elseif skill.Id == "AAPN" then
+            CreatePoisonNova(source)
+        elseif skill.Id == "ASSM" then
+            SpawnSkeletons(source)
+        elseif skill.Id == "AMLN" then
+            LightningNovaBoss(source)
         end
 
     end

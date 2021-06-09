@@ -127,7 +127,7 @@ do
                 local rebounds = 2 + math.floor(UnitGetAbilityLevel(source, "A019") / 15)
                 GroupAddUnit(damaged_group, next_target)
 
-                TimerStart(CreateTimer(), 0.45, true, function()
+                TimerStart(CreateTimer(), 0.25, true, function()
 
                     LightningEffect_Units(from, next_target, "BLNL", 0.45, 50., 50.)
                     ApplyEffect(source, next_target, 0., 0.,"ECHL", 1)
@@ -159,10 +159,11 @@ do
 
         for i = 1, spark_amount do
             discharge[i] = { missile = ThrowMissile(source, nil, 'MDSC', nil, GetUnitX(source), GetUnitY(source), 0, 0, current_angle), a = current_angle }
+            BlzSetSpecialEffectScale(discharge[i].missile.missile_effect, 1.15)
             current_angle = current_angle + angle
         end
 
-        for i = 1, spark_amount do
+            for i = 1, spark_amount do
                 local timer = CreateTimer()
                 local timeout = GetRandomReal(0.22, 0.65)
 
@@ -218,6 +219,21 @@ do
                     end)
 
             end
+
+    end
+
+
+    function CastSorceressBlink(caster, x, y, skill)
+        local caster_x = GetUnitX(caster)
+        local caster_y = GetUnitY(caster)
+        local angle = AngleBetweenUnitXY(caster, x, y)
+        local distance = GetMaxAvailableDistance(caster_x, caster_y, angle, skill.level[UnitGetAbilityLevel(caster, "A00L")].range or 0.)
+
+            x = caster_x + Rx(distance, angle)
+            y = caster_y + Ry(distance, angle)
+            AddSoundVolumeZ("Sounds\\Spells\\blink_launch_".. GetRandomInt(1, 3) ..".wav", caster_x, caster_y, 35., 120, 1700.)
+            SetUnitPosition(caster, x, y)
+            DestroyEffect(AddSpecialEffect("Spell\\Blink Blue Target.mdx", x, y))
 
     end
 

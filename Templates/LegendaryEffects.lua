@@ -74,13 +74,17 @@ do
             type = ITEM_ACTIVE_EFFECT,
             period = 0.75,
             periodic = function(unit)
-                local enemies = CreateGroup()
+
+                if GetUnitState(unit, UNIT_STATE_LIFE) <= 0.045 then
+                    RemoveBuff(unit, "A01Q")
+                else
+                    local enemies = CreateGroup()
 
                     GroupEnumUnitsInRange(enemies, GetUnitX(unit), GetUnitY(unit), 400., nil)
 
                         for index = BlzGroupGetSize(enemies) - 1, 0, -1 do
                             local picked = BlzGroupUnitAt(enemies, index)
-                            if not IsUnitEnemy(picked, GetOwningPlayer(unit)) then
+                            if not IsUnitEnemy(picked, GetOwningPlayer(unit)) or GetUnitState(picked, UNIT_STATE_LIFE) <= 0.045 then
                                 GroupRemoveUnit(enemies, picked)
                             end
                         end
@@ -93,6 +97,7 @@ do
 
                     GroupClear(enemies)
                     DestroyGroup(enemies)
+                end
 
             end,
             on_end = function(unit)
@@ -130,6 +135,7 @@ do
             type = ITEM_PASSIVE_EFFECT
         })
         --=========================================================================
+
     end
 
 

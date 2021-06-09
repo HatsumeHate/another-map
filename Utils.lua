@@ -180,10 +180,35 @@
 
 
 	AirPathingUnit = nil
+	GroundPathingItem = nil
 
 	function IsPathable_Air(x, y)
 		SetUnitPosition(AirPathingUnit, x, y)
 		return (R2I(x) == R2I(GetUnitX(AirPathingUnit)) and R2I(y) == R2I(GetUnitY(AirPathingUnit)))
+	end
+
+	function IsPathable_Ground(x, y)
+		SetItemPosition(GroundPathingItem, x, y)
+		SetItemVisible(GroundPathingItem, false)
+		return (R2I(x) == R2I(GetItemX(GroundPathingItem)) and R2I(y) == R2I(GetItemY(GroundPathingItem)))
+	end
+
+
+	function GetMaxAvailableDistance(x, y, angle, distance)
+		local step = math.ceil(distance / 32.)
+		local total_distance = 0.
+
+			for i = 1, step do
+
+				x = x + (32. * Cos(angle * bj_DEGTORAD))
+				y = y + (32. * Sin(angle * bj_DEGTORAD))
+
+				if not IsPathable_Air(x, y) then return total_distance
+				else total_distance = total_distance + 32. end
+
+			end
+
+		return total_distance
 	end
 
 

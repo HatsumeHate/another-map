@@ -1,6 +1,6 @@
 do
 
-    STAT_PANEL_UPDATE = 0.33
+    STAT_PANEL_UPDATE = 0.3
     PlayerStatsFrame = {}
     StatsList = {}
     PlayerHero = {}
@@ -10,7 +10,7 @@ do
 
     function StatPanelUpdate()
         for i = 1, 6 do
-            if PlayerHero[i] ~= nil then
+            if PlayerHero[i] then
                 local data = GetUnitData(PlayerHero[i])
                 BlzFrameSetText(StatsList[STR_STAT], LOCALE_LIST[my_locale].STAT_PANEL_STR.. data.stats[STR_STAT].value)
                 BlzFrameSetText(StatsList[INT_STAT], LOCALE_LIST[my_locale].STAT_PANEL_INT.. data.stats[INT_STAT].value)
@@ -92,11 +92,13 @@ do
             ModifyStat(PlayerHero[id], MainStatButtons[id].frames[h].stat, 1, STRAIGHT_BONUS, true)
             MainStatButtons[id].frames[h].allocated = MainStatButtons[id].frames[h].allocated + 1
             MainStatButtons[id].points = MainStatButtons[id].points - 1
+            BlzFrameSetText(MainStatButtons[id].points_text_frame, MainStatButtons[id].points)
 
                 if MainStatButtons[id].points <= 0 then
                     for i = STR_STAT, VIT_STAT do
                         BlzFrameSetVisible(MainStatButtons[id].frames[i], false)
                         BlzFrameSetEnable(MainStatButtons[id].frames[i], false)
+                        BlzFrameSetVisible(MainStatButtons[id].points_frame, false)
                     end
                 end
 
@@ -111,6 +113,8 @@ do
             BlzFrameSetVisible(MainStatButtons[player].frames[i], true)
             BlzFrameSetEnable(MainStatButtons[player].frames[i], true)
         end
+        BlzFrameSetVisible(MainStatButtons[player].points_frame, true)
+        BlzFrameSetText(MainStatButtons[player].points_text_frame, MainStatButtons[player].points)
     end
 
 
@@ -132,26 +136,45 @@ do
                 points = 4
             }
 
+
+
+            local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", GlobalButton[player].char_panel_button, "", 0)
+            BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMLEFT, GlobalButton[player].char_panel_button, FRAMEPOINT_BOTTOMLEFT, 0.002, 0.002)
+            BlzFrameSetSize(new_FrameCharges, 0.012, 0.012)
+            BlzFrameSetTexture(new_FrameCharges, "GUI\\ChargesTexture.blp", 0, true)
+            MainStatButtons[player].points_frame = new_FrameCharges
+
+            local new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
+            BlzFrameSetAllPoints(new_FrameChargesText, new_FrameCharges)
+            BlzFrameSetTextAlignment(new_FrameChargesText, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_CENTER)
+            BlzFrameSetText(new_FrameChargesText, "")
+            --BlzFrameSetSize(new_FrameChargesText, text_size, text_size)
+            BlzFrameSetScale(new_FrameCharges, 0.9)
+            BlzFrameSetScale(new_FrameChargesText, 0.9)
+            MainStatButtons[player].points_text_frame = new_FrameChargesText
+            BlzFrameSetVisible(new_FrameCharges, false)
+
+
             new_frame = CreateTextBox("Интеллект:", INT_STAT, 0.085, 0.03, 0.97, main_frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, main_frame)
-            CreateTooltip("Основная характеристика", "Каждая еденица повышает магическое подавление на 1, влияет на магический урон а так же количество и восстановление магии если вы используете ману.", StatsList[INT_STAT], 0.14, 0.1)
+            CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_INT_DESC, StatsList[INT_STAT], 0.14, 0.1)
             local button = NewButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
             NewStatData(player, INT_STAT, trg, button)
 
 
             new_frame = CreateTextBox("Стойкость:", VIT_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame)
-            CreateTooltip("Основная характеристика", "Повышает здоровье и ее восстановление.", StatsList[VIT_STAT], 0.1, 0.08)
+            CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_VIT_DESC, StatsList[VIT_STAT], 0.1, 0.06)
             button = NewButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
             NewStatData(player, VIT_STAT, trg, button)
 
 
             new_frame = CreateTextBox("Ловкость:", AGI_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame)
-            CreateTooltip("Основная характеристика", "Каждая еденица повышает защиту на 2.", StatsList[AGI_STAT], 0.1, 0.06)
+            CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_AGI_DESC, StatsList[AGI_STAT], 0.1, 0.06)
             button = NewButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
             NewStatData(player, AGI_STAT, trg, button)
 
 
             new_frame = CreateTextBox("Сила:", STR_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame)
-            CreateTooltip("Основная характеристика", "Влияет на силу физических атак.", StatsList[STR_STAT], 0.1, 0.06)
+            CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_STR_DESC, StatsList[STR_STAT], 0.1, 0.06)
             button = NewButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
             NewStatData(player, STR_STAT, trg, button)
 
@@ -195,23 +218,41 @@ do
     end
 
 
+    local FirstTime_Data = {
+        [1] = { first_time = true },
+        [2] = { first_time = true },
+        [3] = { first_time = true },
+        [4] = { first_time = true },
+        [5] = { first_time = true },
+        [6] = { first_time = true }
+    }
+
+
+    function SetStatsPanelState(player, state)
+
+        if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(PlayerStatsFrame[player], state) end
+
+        --BlzFrameSetVisible(PlayerStatsFrame[player], state)
+        --BlzFrameSetVisible(SkillPanelFrame[player].main_frame, state)
+
+            if FirstTime_Data[GetPlayerId(GetTriggerPlayer()) + 1].first_time then
+                ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_STATS_1, GetPlayerId(GetTriggerPlayer()))
+                FirstTime_Data[GetPlayerId(GetTriggerPlayer()) + 1].first_time = false
+            end
+
+    end
+
 
     function StatsPanelInit()
-        CharButton = NewButton("ReplaceableTextures\\CommandButtons\\BTNTomeRed.blp", 0.03, 0.03, GAME_UI, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0., -0.12, GAME_UI)
+        --CharButton = NewButton("ReplaceableTextures\\CommandButtons\\BTNTomeRed.blp", 0.03, 0.03, GAME_UI, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0., -0.12, GAME_UI)
 
-        CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_DESCRIPTION, CharButton, 0.14, 0.06)
+        --CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_DESCRIPTION, CharButton, 0.14, 0.06)
 
-        BlzFrameSetVisible(CharButton, false)
+        --BlzFrameSetVisible(CharButton, false)
 
-         local FirstTime_Data = {
-                [1] = { first_time = true },
-                [2] = { first_time = true },
-                [3] = { first_time = true },
-                [4] = { first_time = true },
-                [5] = { first_time = true },
-                [6] = { first_time = true }
-            }
+        TimerStart(CreateTimer(), STAT_PANEL_UPDATE, true, StatPanelUpdate)
 
+        --[[
         local trg = CreateTrigger()
         BlzTriggerRegisterFrameEvent(trg, CharButton, FRAMEEVENT_CONTROL_CLICK)
         TriggerAddAction(trg, function()
@@ -223,13 +264,13 @@ do
                     ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_STATS_1, GetPlayerId(GetTriggerPlayer()))
                     FirstTime_Data[GetPlayerId(GetTriggerPlayer()) + 1].first_time = false
                 end
-        end)
+        end)]]
 
 
 
 
 
-        TimerStart(CreateTimer(), STAT_PANEL_UPDATE, true, StatPanelUpdate)
+        --TimerStart(CreateTimer(), STAT_PANEL_UPDATE, true, StatPanelUpdate)
         --RegisterConstructor(PlayerStatsFrame[1], 0.2, 0.2)
 
     end

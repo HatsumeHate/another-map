@@ -12,6 +12,7 @@ do
     ALTAR_TYPE_WELL_MP = 2
     ALTAR_TYPE_OBELISK = 3
     ALTAR_TYPE_CHEST = 4
+    ALTAR_TYPE_HATRED = 5
     local ChestMax = 15
     local ChestGroup
     local FirstTime_Data
@@ -81,20 +82,42 @@ do
                 end
                 AddSoundVolume("Sounds\\Altar\\chestbig.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
             end
+        },
+        shrine_of_hatred = {
+            --recharge_time = 10.,
+            effect = function(altar, source)
+                local player = GetPlayerId(GetOwningPlayer(source)) + 1
+                local item = GetItemFromInventory(player, FourCC("I01O"))
+
+                    if item then
+                        local charges = GetItemCharges(item)
+                        if charges >= 5 then
+                            RemoveChargesFromInventoryItem(player, item, 5)
+                            SetUnitAnimation(altar, "Spell First")
+                            DelayAction(2., function()
+                                AddUnitAnimationProperties(altar, "Work", true)
+                                DelayAction(5., function()
+                                    Current_Wave = Current_Wave + 5
+                                    AddUnitAnimationProperties(altar, "Work", false)
+                                    ScaleMonsterPacks()
+                                    UnitAddAbility(altar, FourCC("A01H"))
+                                    MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 0, 0),  LOCALE_LIST[my_locale].WAVE_LEVEL .. I2S(Current_Wave))
+                                end)
+                                --SetUnitAnimation(altar, "Stand Work")
+                            end)
+                        else
+                            Feedback_CantUse(player)
+                            UnitAddAbility(altar, FourCC("A01H"))
+                        end
+                    else
+                        Feedback_CantUse(player)
+                        UnitAddAbility(altar, FourCC("A01H"))
+                    end
+                --AddSoundVolume("Sounds\\Altar\\chestbig.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
+            end
         }
     }
 
-
-    local function IsAHero(unit)
-
-        for i = 1, 6 do
-            if PlayerHero[i] ~= nil and PlayerHero[i] == unit then
-                return true
-            end
-        end
-
-        return false
-    end
 
 
     function GetAltarData(unit)
@@ -200,6 +223,15 @@ do
     end
 
 
+    function CreateShrineOfHatred(rect)
+        local altar = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("n01B"), GetRectCenterX(rect), GetRectCenterY(rect), 270.)
+        local handle = GetHandleId(altar)
+
+            AltarsList[handle] = { rect = rect, altar_type = ALTAR_TYPE_HATRED, obelisk_effect = AltarEffects.shrine_of_hatred }
+
+    end
+
+
     function InitAltars()
 
         FirstTime_Data = {
@@ -232,19 +264,27 @@ do
         TriggerRegisterPlayerUnitEvent(trg, Player(2), EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER, nil)
         TriggerRegisterPlayerUnitEvent(trg, Player(3), EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER, nil)
         TriggerRegisterPlayerUnitEvent(trg, Player(4), EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER, nil)
+        TriggerRegisterPlayerUnitEvent(trg, Player(5), EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER, nil)
         TriggerAddAction(trg, function()
 
             if GetUnitAbilityLevel(GetOrderTargetUnit(), FourCC("A01H")) <= 0 then return end
             local hero = GetTriggerUnit()
 
-                if IsAHero(hero) and IsUnitInRange(hero, GetOrderTargetUnit(), 250.) then
+                if IsAHero(hero) and IsUnitInRange(hero, GetOrderTargetUnit(), 225.) then
                     local altar_unit = GetOrderTargetUnit()
                     local altar = GetAltarData(altar_unit)
 
+
+
                     UnitRemoveAbility(altar_unit, FourCC("A01H"))
                     --AltarEffects.obelisk[1](hero)
-
-                    altar.obelisk_effect.effect(altar.altar_type == ALTAR_TYPE_CHEST and altar_unit or hero)
+                    if altar.altar_type == ALTAR_TYPE_CHEST then
+                        altar.obelisk_effect.effect(altar_unit)
+                    elseif altar.altar_type == ALTAR_TYPE_HATRED then
+                        altar.obelisk_effect.effect(altar_unit, hero)
+                    else
+                        altar.obelisk_effect.effect(hero)
+                    end
 
 
                     if altar.altar_type == ALTAR_TYPE_OBELISK then
@@ -436,6 +476,10 @@ do
 
         CreateWell(ALTAR_TYPE_WELL_HP, gg_rct_test_a_2)
         CreateWell(ALTAR_TYPE_WELL_MP, gg_rct_test_a_1)
+
+        local rects = { gg_rct_shrineofhate1, gg_rct_shrineofhate2, gg_rct_shrineofhate3, gg_rct_shrineofhate4, gg_rct_shrineofhate5, gg_rct_shrineofhate6, gg_rct_shrineofhate7 }
+        CreateShrineOfHatred(rects[GetRandomInt(1, #rects)])
+        rects = nil
 
     end
 

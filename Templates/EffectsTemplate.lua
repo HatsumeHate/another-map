@@ -28,7 +28,7 @@ do
     function NewEffectData()
         return {
             power                 = 0,
-            attack_percent_bonus  = 1.,
+            attack_percent_bonus  = 0.,
             weapon_damage_percent_bonus = 0.,
             damage_type           = DAMAGE_TYPE_NONE,
             attribute             = PHYSICAL_ATTRIBUTE,
@@ -104,23 +104,23 @@ do
             effect.level[lvl].generated = true
 
 
-            if effect.power_delta ~= nil then
+            if effect.power_delta then
                 effect.level[lvl].power = (effect.level[1].power or 0) + math.floor(lvl / (effect.power_delta_level or 1.)) * effect.power_delta
             end
 
-            if effect.attack_percent_bonus_delta ~= nil then
+            if effect.attack_percent_bonus_delta then
                 effect.level[lvl].attack_percent = (effect.level[1].attack_percent or 0.) + math.floor(lvl / (effect.attack_percent_bonus_delta_level or 1.)) * effect.attack_percent_bonus_delta
             end
 
-            if effect.attribute_bonus_delta ~= nil then
+            if effect.attribute_bonus_delta then
                 effect.level[lvl].attribute_bonus = (effect.level[1].attribute_bonus or 0) + math.floor(lvl / (effect.attribute_bonus_level or 1.)) * effect.attribute_bonus_delta
             end
 
-            if effect.weapon_damage_percent_bonus_delta ~= nil then
+            if effect.weapon_damage_percent_bonus_delta then
                 effect.level[lvl].weapon_damage_percent_bonus = (effect.level[1].weapon_damage_percent_bonus or 0) + math.floor(lvl / (effect.weapon_damage_percent_bonus_level or 1.)) * effect.weapon_damage_percent_bonus_delta
             end
 
-            if effect.bonus_crit_chance_delta ~= nil then
+            if effect.bonus_crit_chance_delta then
                 effect.level[lvl].bonus_crit_chance = (effect.level[1].bonus_crit_chance or 0.) + math.floor(lvl / (effect.bonus_crit_chance_delta_level or 1.)) * effect.bonus_crit_chance_delta
             end
 
@@ -128,47 +128,48 @@ do
                 effect.level[lvl].bonus_crit_multiplier = (effect.level[1].bonus_crit_multiplier or 0.) + math.floor(lvl / (effect.bonus_crit_multiplier_delta_level or 1.)) * effect.bonus_crit_multiplier_delta
             end
 
-            if effect.max_targets_delta ~= nil then
+            if effect.max_targets_delta then
                 effect.level[lvl].max_targets = (effect.level[1].max_targets or 0) + math.floor(lvl / (effect.max_targets_delta_level or 1.)) * effect.max_targets_delta
             end
 
-            if effect.heal_amount_delta ~= nil then
+            if effect.heal_amount_delta then
                 effect.level[lvl].heal_amount = (effect.level[1].heal_amount or 0) + math.floor(lvl / (effect.heal_amount_delta_level or 1.)) * effect.heal_amount_delta
             end
 
-            if effect.life_restored_delta ~= nil then
+            if effect.life_restored_delta then
                 effect.level[lvl].life_restored = (effect.level[1].life_restored or 0) + math.floor(lvl / (effect.life_restored_delta_level or 1.)) * effect.life_restored_delta
             end
 
-            if effect.life_percent_restored_delta ~= nil then
+            if effect.life_percent_restored_delta then
                 effect.level[lvl].life_percent_restored = (effect.level[1].life_percent_restored or 0.) + math.floor(lvl / (effect.life_percent_restored_delta_level or 1.)) * effect.life_percent_restored_delta
+                --print("generated effect life_percent_restored " .. effect.level[lvl].life_percent_restored .. " for level " .. lvl)
             end
 
-            if effect.resource_restored_delta ~= nil then
+            if effect.resource_restored_delta then
                 effect.level[lvl].resource_restored = (effect.level[1].resource_restored or 0) + math.floor(lvl / (effect.resource_restored_delta_level or 1.)) * effect.resource_restored_delta
             end
 
-            if effect.resource_percent_restored_delta ~= nil then
+            if effect.resource_percent_restored_delta then
                 effect.level[lvl].resource_percent_restored = (effect.level[1].resource_percent_restored or 0.) + math.floor(lvl / (effect.resource_percent_restored_delta_level or 1.)) * effect.resource_percent_restored_delta
             end
 
-            if effect.area_of_effect_delta ~= nil then
+            if effect.area_of_effect_delta then
                 effect.level[lvl].area_of_effect = (effect.level[1].area_of_effect or 0.) + math.floor(lvl / (effect.area_of_effect_delta_level or 1.)) * effect.area_of_effect_delta
             end
 
-            if effect.angle_window_delta ~= nil then
+            if effect.angle_window_delta then
                 effect.level[lvl].angle_window = (effect.level[1].angle_window or 0.) + math.floor(lvl / (effect.angle_window_delta_level or 1.)) * effect.angle_window_delta
             end
 
-            if effect.delay_delta ~= nil then
+            if effect.delay_delta then
                 effect.level[lvl].delay = (effect.level[1].delay or 0.) + math.floor(lvl / (effect.delay_delta_level or 1.)) * effect.delay_delta
             end
 
-            if effect.hit_delay_delta ~= nil then
+            if effect.hit_delay_delta then
                 effect.level[lvl].hit_delay = (effect.level[1].hit_delay or 0.) + math.floor(lvl / (effect.hit_delay_delta_level or 1.)) * effect.hit_delay_delta
             end
 
-            if effect.timescale_delta ~= nil then
+            if effect.timescale_delta then
                 effect.level[lvl].timescale = (effect.level[1].timescale or 1.) + math.floor(lvl / (effect.timescale_delta_level or 1.)) * effect.timescale_delta
             end
 
@@ -255,6 +256,9 @@ do
                         volume = 122, cutoff = 1800.
                     },
 
+                    SFX_on_unit = "Abilities\\Spells\\Items\\AIob\\AIobSpecialArt.mdx",
+                    SFX_on_unit_point = "chest",
+
                 }
             }
 
@@ -290,6 +294,9 @@ do
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A00S', target_type = ON_ENEMY }
                     },
+
+                    SFX_on_unit = "Abilities\\Spells\\Items\\AIob\\AIobSpecialArt.mdx",
+                    SFX_on_unit_point = "chest",
                 }
             }
 
@@ -312,6 +319,9 @@ do
 
                     area_of_effect = 175.,
                     max_targets = 300,
+
+                    SFX_on_unit = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx",
+                    SFX_on_unit_point = "chest",
                 }
             }
 
@@ -344,7 +354,9 @@ do
                     sound = {
                         pack = { "Sounds\\Spells\\frost_orb_impact_1.wav", "Sounds\\Spells\\frost_orb_impact_2.wav" },
                         volume = 120
-                    }
+                    },
+                    SFX_on_unit = "Abilities\\Spells\\Items\\AIob\\AIobSpecialArt.mdx",
+                    SFX_on_unit_point = "chest",
                 }
             }
 
@@ -366,7 +378,8 @@ do
                     attribute = ICE_ATTRIBUTE,
                     area_of_effect = 175.,
                     max_targets = 300,
-
+                    SFX_on_unit = "Abilities\\Spells\\Items\\AIob\\AIobSpecialArt.mdx",
+                    SFX_on_unit_point = "chest",
                 }
             }
 
@@ -438,6 +451,9 @@ do
 
                     SFX_used = "Spell\\Meteor2.mdx",
                     SFX_used_scale = 1.25,
+
+                    SFX_on_unit = "Abilities\\Spells\\Other\\Incinerate\\FireLordDeathExplode.mdx",
+                    SFX_on_unit_point = "origin",
 
                     area_of_effect = 325.,
                     max_targets = 300,
@@ -520,6 +536,9 @@ do
                     attribute = LIGHTNING_ATTRIBUTE,
                     max_targets = 1,
 
+                    SFX_on_unit = "Abilities\\Spells\\Items\\AIlb\\AIlbSpecialArt.mdx",
+                    SFX_on_unit_point = "chest",
+
                     sound = {
                         pack = { "Sounds\\Spells\\lightning_hit_1.wav", "Sounds\\Spells\\lightning_hit_2.wav", "Sounds\\Spells\\lightning_hit_3.wav" },
                         volume = 115, cutoff = 1600.
@@ -579,6 +598,7 @@ do
                     attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
+                    is_sound = true,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = PHYSICAL_ATTRIBUTE,
@@ -598,8 +618,8 @@ do
                     attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
-                    area_of_effect = 155.,
-                    angle_window  = 40.,
+                    area_of_effect = 175.,
+                    angle_window  = 45.,
                     force_from_caster_position = true,
                     shake_magnitude = 1.,
                     shake_distance = 1000.,
@@ -623,8 +643,9 @@ do
                     attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
-                    area_of_effect = 155.,
-                    angle_window  = 40,
+                    is_sound = true,
+                    area_of_effect = 175.,
+                    angle_window  = 45,
                     force_from_caster_position = true,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = MELEE_ATTACK,
@@ -643,11 +664,7 @@ do
                 [1] = {
                     SFX_used = 'Spell\\TaurenAvatar.mdx',
                     SFX_used_scale = 2.3,
-                    --SFX_facing = 270.,
                     SFX_inherit_angle = true,
-                    --SFX_on_caster            = 'Spell\\TaurenAvatar.mdx',
-                    --SFX_on_caster_point      = 'origin',
-                    --SFX_on_caster_scale      = 4.,
 
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A00V', target_type = ON_SELF }
@@ -667,6 +684,7 @@ do
                     attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
+                    is_sound = true,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = MELEE_ATTACK,
                     attribute = PHYSICAL_ATTRIBUTE,
@@ -691,7 +709,7 @@ do
                     attack_type = MELEE_ATTACK,
                     attribute = PHYSICAL_ATTRIBUTE,
                     area_of_effect = 200.,
-                    angle_window  = 40.,
+                    angle_window  = 45.,
                     force_from_caster_position = true,
                     max_targets = 300,
                     shake_magnitude = 1.2,
@@ -750,12 +768,13 @@ do
         NewEffectTemplate('EFAA', {
             name = "first aid health restore periodic",
             get_level_from_skill = "ABFA",
+            life_percent_restored_delta = 0.001,
+            life_percent_restored_delta_level = 1,
             level = {
                 [1] = {
                     max_targets = 1,
                     life_percent_restored = 0.015,
-                    life_percent_restored_delta = 0.01,
-                    life_percent_restored_delta_level = 1,
+
                     sound = {
                         pack = { "Abilities\\Spells\\Human\\Heal\\HealTarget.wav" },
                         volume = 120, cutoff = 1600.
@@ -799,14 +818,14 @@ do
                     angle_window  = 40.,
                     force_from_caster_position = true,
                     max_targets = 300,
-                    SFX_used               = 'Spell\\Coup de Grace.mdx',
-                    SFX_used_scale         = 1.,
-                    SFX_bonus_z = 50.,
-                    SFX_inherit_angle = true,
+                    --SFX_used               = 'Spell\\Coup de Grace.mdx',
+                    --SFX_used_scale         = 1.,
+                    --SFX_bonus_z = 50.,
+                    --SFX_inherit_angle = true,
                     hit_delay = 0.3,
                     sound_on_hit = {
                         pack = { "Sounds\\Spell\\stab_1.wav", "Sounds\\Spell\\stab_2.wav", "Sounds\\Spell\\stab_3.wav", "Sounds\\Spell\\stab_4.wav", "Sounds\\Spell\\stab_5.wav", "Sounds\\Spell\\stab_6.wav" },
-                        volume = 100, cutoff = 1600.
+                        volume = 115, cutoff = 1600.
                     },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A014', target_type = ON_ENEMY }
@@ -825,7 +844,7 @@ do
             level = {
                 [1] = {
                     power = 1,
-                    attack_percent_bonus = 0.7,
+                    attack_percent_bonus = 0.45,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = nil,
                     attribute = PHYSICAL_ATTRIBUTE,
@@ -848,7 +867,7 @@ do
                     SFX_on_caster_scale      = 1.,
                     sound = {
                         pack = { "Sounds\\Spells\\barbarian_howl_1.wav", "Sounds\\Spells\\barbarian_howl_2.wav" },
-                        volume = 100, cutoff = 1600.
+                        volume = 115, cutoff = 1600.
                     },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A00Y', target_type = ON_ENEMY }
@@ -869,7 +888,7 @@ do
                     SFX_on_caster_duration = 0.95,
                     sound = {
                         pack = { "Abilities\\Spells\\Undead\\DeathPact\\DeathPactTargetBirth1.wav" },
-                        volume = 100, cutoff = 1500.
+                        volume = 127, cutoff = 1500.
                     },
                     applied_buff = {
                         [1] = { modificator = INCREASE_BUFF_LEVEL, buff_id = 'A01R', target_type = ON_SELF },
@@ -1079,6 +1098,183 @@ do
                 }
             }
         })
+        --==========================================--
+        NewEffectTemplate('ESQM', {
+            name = "spider queen bile missile effect",
+            --get_level_from_skill = "A006",
+            level = {
+                [1] = {
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A01U', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        NewEffectTemplate('ESQB', {
+            name = "spider queen bile periodic effect",
+            power_delta = 4,
+            power_delta_level = 5,
+            attack_percent_bonus_delta = 0.1,
+            attack_percent_bonus_delta_level = 5,
+            --get_level_from_skill = "A006",
+            level = {
+                [1] = {
+                    power = 7,
+                    attack_percent_bonus = 0.85,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = nil,
+                    attribute = POISON_ATTRIBUTE,
+                    max_targets = 1
+                    --SFX_on_unit = 'Spell\\Lascerate.mdx',
+                    --SFX_on_unit_point = 'chest',
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('ECSC', {
+            name = "spider queen bite effect",
+            power_delta = 3,
+            power_delta_level = 1,
+            level = {
+                [1] = {
+                    power = 14,
+                    attack_percent_bonus = 1.25,
+                    can_crit = true,
+                    is_direct = true,
+                    is_sound = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    area_of_effect = 225.,
+                    angle_window  = 50.,
+                    force_from_caster_position = true,
+                    max_targets = 300,
+                    --hit_delay = 0.3,
+                    sound_on_hit = {
+                        pack = { "Sounds\\Spell\\stab_1.wav", "Sounds\\Spell\\stab_2.wav", "Sounds\\Spell\\stab_3.wav", "Sounds\\Spell\\stab_4.wav", "Sounds\\Spell\\stab_5.wav", "Sounds\\Spell\\stab_6.wav" },
+                        volume = 100, cutoff = 1600.
+                    },
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A01V', target_type = ON_ENEMY }
+                    },
+                }
+            }
+
+        })
+        --==========================================--
+        NewEffectTemplate('EBCS', {
+            name = "bandit boss charge impact effect",
+            power_delta = 4,
+            power_delta_level = 1,
+            level = {
+                [1] = {
+                    power = 18,
+                    attack_percent_bonus = 1.15,
+                    can_crit = true,
+                    is_direct = true,
+                    is_sound = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    max_targets = 1,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'ABCB', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EBBS', {
+            name = "boldness effect",
+
+            level = {
+                [1] = {
+                    max_targets = 1,
+                    applied_buff = {
+                        [1] = { modificator = INCREASE_BUFF_LEVEL, buff_id = 'ABBS', target_type = ON_SELF }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EACL', {
+            name = "arachno clac effect",
+            power_delta = 5,
+            power_delta_level = 1,
+            level = {
+                [1] = {
+                    power = 13,
+                    attack_percent_bonus = 1.15,
+                    can_crit = true,
+                    is_direct = true,
+                    is_sound = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    max_targets = 50,
+                    area_of_effect = 225.,
+                    angle_window  = 50.,
+                    force_from_caster_position = true,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'ACLS', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EAPN', {
+            name = "arachno poison nova effect",
+            power_delta = 4,
+            power_delta_level = 1,
+            level = {
+                [1] = {
+                    power = 20,
+                    can_crit = true,
+                    is_direct = false,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = POISON_ATTRIBUTE,
+                    max_targets = 1,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EACH', {
+            name = "arachno charge impact effect",
+            power_delta = 3,
+            power_delta_level = 1,
+            level = {
+                [1] = {
+                    power = 6,
+                    attack_percent_bonus = 1.,
+                    bonus_crit_chance = 25.,
+                    can_crit = true,
+                    is_direct = true,
+                    is_sound = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EALN', {
+            name = "lightning nova effect",
+            power_delta = 3,
+            power_delta_level = 1,
+            level = {
+                [1] = {
+                    power = 18,
+                    can_crit = true,
+                    is_direct = false,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = LIGHTNING_ATTRIBUTE,
+                    max_targets = 1,
+                }
+            }
+        })
+
 
 
         RegisterTestCommand("fr effect", function()

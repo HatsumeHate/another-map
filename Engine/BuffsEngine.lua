@@ -120,7 +120,7 @@ do
                             buff_data.expiration_time = time
                         end
 
-                        if buff_data.level[buff_data.current_level].negative_state then
+                        if buff_data.level[buff_data.current_level].negative_state and buff_data.level[buff_data.current_level].negative_state > 0 then
                             buff_data.expiration_time = buff_data.expiration_time * ((100. - unit_data.stats[CONTROL_REDUCTION].value) * 0.01)
                         end
 
@@ -142,6 +142,7 @@ do
                 if unit_data.buff_list[i].id == buff_id then
                     local buff_data = unit_data.buff_list[i]
 
+
                     if lvl >= buff_data.max_level and buff_data.current_level < buff_data.max_level then
                         lvl = buff_data.max_level
                     elseif lvl <= 0 then
@@ -161,7 +162,6 @@ do
                     local logic = lvl >= buff_data.current_level
 
                     buff_data.current_level = lvl
-
 
                         if buff_data.level[lvl].negative_state and buff_data.level[lvl].negative_state > 0 then
 
@@ -220,11 +220,28 @@ do
 
             for i = 1, #data.buff_list do
 
-                    if data.buff_list[i].level[data.buff_list[i].current_level].negative_state ~= nil then
-                        if data.buff_list[i].level[data.buff_list[i].current_level].negative_state == state then
-                            return true
-                        end
+                if data.buff_list[i].level[data.buff_list[i].current_level].negative_state ~= nil then
+                    if data.buff_list[i].level[data.buff_list[i].current_level].negative_state == state then
+                        return true
                     end
+                end
+
+            end
+
+        return false
+    end
+
+
+    function HasAnyDisableState(unit)
+        local data = GetUnitData(unit)
+
+            for i = 1, #data.buff_list do
+
+                if data.buff_list[i].level[data.buff_list[i].current_level].negative_state then
+                    if data.buff_list[i].level[data.buff_list[i].current_level].negative_state == STATE_STUN or data.buff_list[i].level[data.buff_list[i].current_level].negative_state == STATE_FREEZE then
+                        return true
+                    end
+                end
 
             end
 
@@ -286,6 +303,7 @@ do
 
 
                     buff_data.expiration_time = buff_data.expiration_time * ((100. - target_data.stats[CONTROL_REDUCTION].value) * 0.01)
+
 
                     if buff_data.expiration_time <= 0. then
                         buff_data = nil

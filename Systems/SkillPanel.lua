@@ -44,6 +44,10 @@ do
                 --print(R2S(BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindAbilityId(skill.Id, player-1))))
 
                 if button.skill ~= nil and skill.Id == button.skill.Id and not (BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindKeyAbility(FourCC(skill.Id), player)) > 0.) then
+                    local unit_data = GetUnitData(PlayerHero[player])
+                    if unit_data.channeled_ability and unit_data.channeled_ability == skill.Id then
+                        unit_data.channeled_destructor(PlayerHero[player])
+                    end
                     --GetKeybindAbilityId(skill.Id, player-1)
                     --print("skill is found, trying to unbind")
                     UnbindAbilityKey(PlayerHero[player], skill.Id)
@@ -318,12 +322,34 @@ do
         --SkillPanelFrame[player].default_category = CLASS_SKILL_CATEGORY[unit_data.unit_class][1]
     end
 
+    function SetSkillPanelState(player, state)
+
+         if GetUnitState(PlayerHero[player], UNIT_STATE_LIFE) < 0.045 and state then
+            FrameState[player][SKILL_PANEL] = false
+            return
+        end
+
+        if GetLocalPlayer() == Player(player-1) then
+            BlzFrameSetVisible(SkillPanelFrame[player].main_frame, state)
+        end
+        --BlzFrameSetVisible(SkillPanelFrame[player].main_frame, state)
+        SkillPanelFrame[player].state = state
+
+        if state then
+            UpdateSkillList(player)
+        else
+            DestroyContextMenu(player)
+            RemoveTooltip(player)
+        end
+
+    end
+
     
     function SkillPanelInit()
-        SkillPanelButton = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSpellBookBLS.blp", 0.03, 0.03, InventoryTriggerButton, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.01, 0., GAME_UI)
-        CreateTooltip(LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_DESCRIPTION, SkillPanelButton, 0.14, 0.06)
-        BlzFrameSetVisible(SkillPanelButton, false)
-
+        --SkillPanelButton = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSpellBookBLS.blp", 0.03, 0.03, InventoryTriggerButton, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.01, 0., GAME_UI)
+        --CreateTooltip(LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_DESCRIPTION, SkillPanelButton, 0.14, 0.06)
+        --BlzFrameSetVisible(SkillPanelButton, false)
+            --[[
             local trg = CreateTrigger()
             BlzTriggerRegisterFrameEvent(trg, SkillPanelButton, FRAMEEVENT_CONTROL_CLICK)
             TriggerAddAction(trg, function()
@@ -338,7 +364,7 @@ do
                 DestroyContextMenu(player)
                 RemoveTooltip(player)
                 SkillPanelFrame[player].state = not SkillPanelFrame[player].state
-                end)
+                end)]]
 
 
         TriggerAddAction(LeaveTrigger, function()

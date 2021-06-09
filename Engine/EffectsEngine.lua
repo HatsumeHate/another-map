@@ -148,22 +148,26 @@ do
             TimerStart(CreateTimer(), myeffect.hit_delay or 0., false, function()
                 if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
                     --print("effect level data : ".. "attribute " .. GetItemAttributeName(myeffect.attribute) .. " damage type " .. I2S(myeffect.damage_type) .. " power " .. I2S(myeffect.power))
-                    DamageUnit(source, target, myeffect.power or 0,
+
+                    DamageUnit(source, target,
+                            myeffect.power or 0,
                             myeffect.attribute or PHYSICAL_ATTRIBUTE,
                             myeffect.damage_type or DAMAGE_TYPE_NONE,
                             myeffect.attack_type or nil,
                             myeffect.can_crit or false,
                             myeffect.is_direct or false,
-                            false, { eff = data, l = lvl })
+                            myeffect.is_sound or false,
+                            { eff = data, l = lvl }
+                    )
 
                     ModifyBuffsEffect(source, target, data, lvl, ON_ENEMY)
 
-                    if myeffect.sound_on_hit ~= nil then
+                    if myeffect.sound_on_hit then
                         AddSoundVolumeZ(myeffect.sound_on_hit.pack[GetRandomInt(1, #myeffect.sound_on_hit.pack)], GetUnitX(target), GetUnitY(target), 35., myeffect.sound_on_hit.volume, myeffect.sound_on_hit.cutoff)
                         --AddSound(myeffect.sound, x, y)
                     end
 
-                    if(myeffect.life_restored_from_hit ~= nil and myeffect.life_restored_from_hit) or (myeffect.resource_restored_from_hit ~= nil and myeffect.resource_restored_from_hit) then
+                    if myeffect.life_restored_from_hit or myeffect.resource_restored_from_hit then
                         ApplyRestoreEffect(source, target, data, lvl)
                     end
 
@@ -188,16 +192,13 @@ do
         local data = GetEffectData(effect_id)
         local player_entity = GetOwningPlayer(source)
 
-            if data ~= nil then
-                data = MergeTables({}, data)
-            else
-                return
-            end
+            if data then data = MergeTables({}, data)
+            else return end
 
 
         data.current_level = lvl
 
-            if data.get_level_from_skill ~= nil then
+            if data.get_level_from_skill then
                 data.current_level = UnitGetAbilityLevel(source, data.get_level_from_skill)
             end
 
@@ -235,7 +236,7 @@ do
 
 
             TimerStart(CreateTimer(), myeffect.SFX_delay or 0., false, function()
-                if myeffect.SFX_used ~= nil then
+                if myeffect.SFX_used then
                     local effect = AddSpecialEffect(myeffect.SFX_used, x, y)
 
                         BlzSetSpecialEffectScale(effect, myeffect.SFX_used_scale or 1.)

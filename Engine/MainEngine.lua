@@ -90,6 +90,10 @@ do
 
             if target == nil then return 0 end
 
+        if GetUnitState(target, UNIT_STATE_LIFE) <= 0.045 then
+            return
+        end
+
         --print("1")
         if myeffect then
             local effect_data = myeffect.eff.level[myeffect.l]
@@ -201,11 +205,8 @@ do
         --print("dispersion "..attacker.equip_point[WEAPON_POINT].DISPERSION[1] .. "/" .. attacker.equip_point[WEAPON_POINT].DISPERSION[2])
         --print("11")
 
-        if damage_type == DAMAGE_TYPE_PHYSICAL then
-            damage = R2I(GetRandomReal(damage * attacker.equip_point[WEAPON_POINT].DISPERSION[1], damage * attacker.equip_point[WEAPON_POINT].DISPERSION[2]))
-        else
-            damage = R2I(damage)
-        end
+        damage = R2I(GetRandomReal(damage * attacker.equip_point[WEAPON_POINT].DISPERSION[1], damage * attacker.equip_point[WEAPON_POINT].DISPERSION[2]))
+
 
         if not (TimerGetRemaining(attacker.attack_timer) > 0.) and direct then
             --print("atttack")
@@ -256,16 +257,23 @@ do
             end
             --print("14")
 
-            if damage >= BlzGetUnitMaxHP(target) * 0.18 and damage >= GetUnitState(target, UNIT_STATE_LIFE) then SetUnitExploded(target, true) end
-            --print("15")
-            OnDamage_PreHit(source, target, damage)
+
             if damage < 0 then damage = 0 end
+
+
             --print("16")
-            UnitDamageTarget(source, target, damage, true, false, ATTACK_TYPE_NORMAL, nil, is_sound and attacker.equip_point[WEAPON_POINT].WEAPON_SOUND or nil)
-            OnDamage_End(source, target, damage)
-            --print("17")
-            --print(damage)
-            CreateHitnumber(damage, source, target, attack_status)
+            if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
+                --SetUnitState(unit, UNIT_STATE_LIFE, BlzGetUnitMaxHP(unit))
+                if damage >= BlzGetUnitMaxHP(target) * 0.18 and damage >= GetUnitState(target, UNIT_STATE_LIFE) then SetUnitExploded(target, true) end
+                --print("15")
+                OnDamage_PreHit(source, target, damage)
+                UnitDamageTarget(source, target, damage, true, false, ATTACK_TYPE_NORMAL, nil, is_sound and attacker.equip_point[WEAPON_POINT].WEAPON_SOUND or nil)
+                OnDamage_End(source, target, damage)
+                --print("17")
+                --print(damage)
+                CreateHitnumber(damage, source, target, attack_status)
+            end
+
             --print("18")
 
         return damage
@@ -284,7 +292,14 @@ do
                     local target =  GetTriggerUnit()
 
                     if data.equip_point[WEAPON_POINT].ranged then
-                        ThrowMissile(data.Owner, target, nil, nil, GetUnitX(data.Owner), GetUnitY(data.Owner), GetUnitX(target), GetUnitY(target), 0.)
+                        if data.equip_point[WEAPON_POINT].LIGHTNING then
+                            local actual_damage = data.equip_point[WEAPON_POINT].DAMAGE_TYPE == DAMAGE_TYPE_PHYSICAL and data.stats[PHYSICAL_ATTACK].value or data.equip_point[WEAPON_POINT].DAMAGE
+
+                            LightningEffect_Units(data.Owner, target, data.equip_point[WEAPON_POINT].LIGHTNING.id, data.equip_point[WEAPON_POINT].LIGHTNING.fade, 60., 60.)
+                            DamageUnit(data.Owner, GetTriggerUnit(), actual_damage, data.equip_point[WEAPON_POINT].ATTRIBUTE, data.equip_point[WEAPON_POINT].DAMAGE_TYPE, RANGE_ATTACK, true, true, false, nil)
+                        else
+                            ThrowMissile(data.Owner, target, nil, nil, GetUnitX(data.Owner), GetUnitY(data.Owner), GetUnitX(target), GetUnitY(target), 0.)
+                        end
                     else
                         local actual_damage = 0
                         if data.equip_point[WEAPON_POINT].DAMAGE_TYPE == DAMAGE_TYPE_PHYSICAL then actual_damage = data.stats[PHYSICAL_ATTACK].value
@@ -321,7 +336,7 @@ do
                                 LightningEffect_Units(data.Owner, target, data.equip_point[WEAPON_POINT].LIGHTNING.id, data.equip_point[WEAPON_POINT].LIGHTNING.fade, 60., 60.)
                             end
 
-                            DamageUnit(data.Owner, GetTriggerUnit(), actual_damage, data.equip_point[WEAPON_POINT].ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, true, nil)
+                            DamageUnit(data.Owner, GetTriggerUnit(), actual_damage, data.equip_point[WEAPON_POINT].ATTRIBUTE, data.equip_point[WEAPON_POINT].DAMAGE_TYPE, MELEE_ATTACK, true, true, true, nil)
                         end
 
                     end

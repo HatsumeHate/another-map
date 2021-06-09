@@ -14,11 +14,11 @@ do
             if ShopFrame[player].state ~= nil and ShopFrame[player].state then
                 btn = GetButtonData(ShopFrame[player].slot[32])
                 frame = (StringLength(BlzFrameGetText(btn.charges_text_frame)) > 0) and btn.charges_text_frame or btn.image
-            elseif SkillPanelFrame[player].state ~= nil and SkillPanelFrame[player].state then
+            elseif SkillPanelFrame[player].state and SkillPanelFrame[player].state then
                 frame = SkillPanelFrame[player].slider
-            elseif PlayerInventoryFrameState[player] ~= nil and PlayerInventoryFrameState[player] then
+            elseif PlayerInventoryFrameState[player] and PlayerInventoryFrameState[player] then
                 btn = GetButtonData(InventorySlots[player][32])
-                frame = BlzFrameGetText(btn.charges_text_frame) ~= "0" and btn.charges_text_frame or btn.image
+                frame = StringLength(BlzFrameGetText(btn.charges_text_frame)) > 0 and btn.charges_text_frame or btn.image
             end
 
         return frame
@@ -385,7 +385,24 @@ do
         BlzFrameSetVisible(my_tooltip.backdrop, true)
 
         local ability_level = UnitGetAbilityLevel(PlayerHero[player], skill.Id) or 1
-        local main_description = ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][FourCC(skill.Id)].bind, ability_level) or "invalid parse data"
+       -- local proper_level_data = ability_level
+        local true_id = FourCC(skill.Id)
+        local main_description
+
+                    if LOCALE_LIST[my_locale][true_id][ability_level] then
+                        main_description = ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id][ability_level], ability_level) or "invalid parse data"
+                        --BlzSetAbilityExtendedTooltip(ability, ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id].bind, lvl), 0)
+                    else
+                        for i = ability_level, 1, -1 do
+                            if LOCALE_LIST[my_locale][true_id][i] then
+                                main_description = ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id][i], ability_level) or "invalid parse data"
+                                break
+                                --BlzSetAbilityExtendedTooltip(ability, ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id][i], lvl), 0)
+                            end
+                        end
+                    end
+
+
         local height = 0.009
 
             BlzFrameClearAllPoints(my_tooltip.backdrop)
@@ -458,8 +475,8 @@ do
             else
                 point_from = FRAMEPOINT_TOPRIGHT
                 point_to = FRAMEPOINT_LEFT
-                offset_x = -0.002
-                offset_y = -0.002
+                offset_x = -0.001
+                offset_y = -0.001
             end
 
             BlzFrameSetPoint(tooltip.backdrop, point_from, button.image, point_to, offset_x, offset_y)
@@ -467,7 +484,10 @@ do
 
 
             local property_text = ""
-            if item_data.SUBTYPE ~= nil then property_text = GetItemSubTypeName(item_data.SUBTYPE) .. "|n" .. "|n" end
+            if item_data.SUBTYPE then property_text = GetItemSubTypeName(item_data.SUBTYPE) .. "|n" .. "|n"
+            else
+                property_text = GetItemTypeName(item_data.TYPE) .. "|n"
+            end
 
 
             if item_data.TYPE == ITEM_TYPE_WEAPON then
@@ -487,7 +507,7 @@ do
                         property_text = property_text .. LOCALE_LIST[my_locale].DEFENCE_UI .. R2I(item_data.DEFENCE) .. "|n" .. LOCALE_LIST[my_locale].BLOCK_UI .. R2I(item_data.BLOCK) .. "%%"
                     end
             end
-        
+
 
             local bonus_text
 
@@ -509,7 +529,7 @@ do
                 else bonus_text = LOCALE_LIST[my_locale].ADDITIONAL_INFO_UI .. skill_bonus_text end
 
             end
-        
+
 
             if item_data.TYPE == ITEM_TYPE_GEM then
                 bonus_text = LOCALE_LIST[my_locale].AUGMENTS_UI
@@ -531,7 +551,7 @@ do
             LockWidth(myframe, BlzFrameGetWidth(myframe), 0.1, 0.16)
             BlzFrameSetScale(myframe, 1.2)
             --print("name " .. BlzFrameGetWidth(myframe))
-            
+
              --if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
             height = height + BlzFrameGetHeight(myframe)
 
@@ -544,10 +564,10 @@ do
 
             local master_index = 3
 
-            if bonus_text ~= nil then
+            if bonus_text then
                 myframe = SetTooltipText(master_index, tooltip, bonus_text, TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0)
                 BlzFrameSetScale(myframe, 0.95)
-                LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.45)
+                LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.21)
                 master_index = master_index + 1
                  --if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
                 height = height + BlzFrameGetHeight(myframe)
@@ -563,7 +583,7 @@ do
                 --if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
                 height = height + BlzFrameGetHeight(myframe) * 0.95
                 --print("legendary " .. BlzFrameGetWidth(myframe))
-            elseif item_data.set_bonus ~= nil then
+            elseif item_data.set_bonus then
                 local set_bonus_text = GetQualityColor(SET_ITEM) .. item_data.set_bonus.name .. "|r" .. ":|n"
                 local set_count = CountSetItems(PlayerHero[player], item_data.set_bonus)
 
@@ -591,7 +611,7 @@ do
             end
 
 
-            if item_data.MAX_SLOTS ~= nil and item_data.MAX_SLOTS > 0 then
+            if item_data.MAX_SLOTS and item_data.MAX_SLOTS > 0 then
                 local free_stone_slots = item_data.MAX_SLOTS - #item_data.STONE_SLOTS
                 local stones_text = LOCALE_LIST[my_locale].SLOTS_UI
 
@@ -641,7 +661,7 @@ do
             end
 
 
-            if item_data.special_description ~= nil then
+            if item_data.special_description then
                 myframe = SetTooltipText(master_index, tooltip, "|c00FF9748"..item_data.special_description.."|r", TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0)
                 LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.2)
                 BlzFrameSetScale(myframe, 0.9)
@@ -653,11 +673,11 @@ do
 
 
 
-            if item_data.sell_value ~= nil or item_data.cost ~= nil then
+            if item_data.sell_value or item_data.cost then
                 local total_cost = 0
 
-                if item_data.sell_value ~= nil then total_cost = total_cost + item_data.sell_value end
-                if item_data.cost ~= nil then total_cost = total_cost + item_data.cost end
+                if item_data.sell_value then total_cost = total_cost + item_data.sell_value end
+                if item_data.cost then total_cost = total_cost + item_data.cost end
 
                 if GetItemCharges(item_data.item) > 1 then
                     total_cost = total_cost * GetItemCharges(item_data.item)
@@ -792,7 +812,7 @@ do
                     end
             end
 
-            if bonus_text ~= nil then
+            if bonus_text then
                 bonus_text = bonus_text..skill_bonus_text
             else
                 bonus_text = LOCALE_LIST[my_locale].ADDITIONAL_INFO_UI .. skill_bonus_text
@@ -804,14 +824,14 @@ do
         if item_data.TYPE == ITEM_TYPE_GEM then
             bonus_text = LOCALE_LIST[my_locale].AUGMENTS_UI
             for i = 1, #item_data.point_bonus do
-                if item_data.point_bonus[i] ~= nil then
+                if item_data.point_bonus[i] then
                     bonus_text = bonus_text .. GetItemTypeName(i) .. " - " .. GetParameterName(item_data.point_bonus[i].PARAM) .. ": " .. GetCorrectParamText(item_data.point_bonus[i].PARAM, item_data.point_bonus[i].VALUE, item_data.point_bonus[i].METHOD).. "|n"
                 end
             end
         end
 
 
-        if item_data.item_description ~= nil then
+        if item_data.item_description then
             if bonus_text == nil then
                 bonus_text = "|n" .. item_data.item_description
             else

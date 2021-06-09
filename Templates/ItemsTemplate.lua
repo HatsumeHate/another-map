@@ -9,7 +9,8 @@ do
 	ITEM_TYPE_OFFHAND    = 4
     ITEM_TYPE_CONSUMABLE = 5
     ITEM_TYPE_GEM        = 6
-	ITEM_TYPE_SKILLBOOK  = 7
+	ITEM_TYPE_OTHER      = 7
+	ITEM_TYPE_SKILLBOOK  = 8
 
 	ITEM_PASSIVE_EFFECT = 1
 	ITEM_ACTIVE_EFFECT 	= 2
@@ -263,6 +264,15 @@ do
 				QUALITY            = RARE_ITEM,
 			}
 			MergeTables(newdata, data)
+		else
+			newdata = {
+				item               = nil,
+				NAME               = '',
+				TYPE               = ITEM_TYPE_OTHER,
+				frame_texture      = nil,
+				QUALITY            = COMMON_ITEM,
+			}
+			MergeTables(newdata, data)
 		end
 
 		if newdata.sell_value == nil then newdata.sell_value = 0 end
@@ -352,7 +362,8 @@ do
 			NAME    = LOCALE_LIST[my_locale].STARTING_ITEM_NAME_2HSWORD,
 			TYPE = ITEM_TYPE_WEAPON,
 			SUBTYPE = GREATSWORD_WEAPON,
-			DAMAGE  = 27,
+			DAMAGE  = 37,
+			stat_modificator = 1.5,
 			QUALITY = COMMON_ITEM,
 			--set_bonus = GetItemSet("STST"),
 			frame_texture = "Weapons\\BTNBarbarian Brutal Slasher.blp",
@@ -371,6 +382,7 @@ do
 			TYPE = ITEM_TYPE_WEAPON,
 			SUBTYPE = STAFF_WEAPON,
 			DAMAGE  = 24,
+			stat_modificator = 1.25,
 			QUALITY = COMMON_ITEM,
 			frame_texture = "Weapons\\BTNIce Staff.blp",
 			flippy = true,
@@ -389,6 +401,7 @@ do
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = CHEST_ARMOR,
 			DEFENCE  = 25,
+			stat_modificator = 1.1,
 			QUALITY = COMMON_ITEM,
 			--set_bonus = GetItemSet("STST"),
 			flippy = true,
@@ -406,6 +419,7 @@ do
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = LEGS_ARMOR,
 			DEFENCE  = 18,
+			stat_modificator = 1.,
 			QUALITY = COMMON_ITEM,
 			--set_bonus = GetItemSet("STST"),
 			flippy = true,
@@ -423,6 +437,7 @@ do
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = HEAD_ARMOR,
 			DEFENCE  = 12,
+			stat_modificator = 0.8,
 			QUALITY = COMMON_ITEM,
 			--set_bonus = GetItemSet("STST"),
 			flippy = true,
@@ -440,6 +455,7 @@ do
 			TYPE = ITEM_TYPE_ARMOR,
 			SUBTYPE = HANDS_ARMOR,
 			DEFENCE  = 15,
+			stat_modificator = 0.9,
 			QUALITY = COMMON_ITEM,
 			--set_bonus = GetItemSet("STST"),
 			flippy = true,
@@ -658,6 +674,16 @@ do
 			sell_value = 50,
 			soundpack = { equip = "Sound\\cloth_armor_equip.wav", uneqip = "Sound\\cloth_armor_unequip.wav", drop = "Sound\\lightarmor.wav" }
         })
+
+		ItemAddData('I01O', {
+			NAME    		   = LOCALE_LIST[my_locale].SHARD_OF_HATE,
+			TYPE    		   = ITEM_TYPE_OTHER,
+			QUALITY 		   = MAGIC_ITEM,
+			frame_texture      = "GUI\\BTNRuby.blp",
+			item_description = LOCALE_LIST[my_locale].SHARD_OF_HATE_DESC,
+			sell_value = 50,
+			soundpack = { drop = "Sound\\gem.wav" }
+		})
 
 		ItemAddData('I00G', {
 			NAME    		   = LOCALE_LIST[my_locale].GEM_RUBY,
@@ -1317,7 +1343,7 @@ do
 			MAX_SLOTS = 2,
 			frame_texture = "Armor\\BTNGoreBoot.blp",
 			set_bonus = GetItemSet("FRDL"),
-			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_BOOSTERS .."\"",
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_BOOTSOFPAIN .."\"",
 			soundpack = { equip = "Sound\\bootsmetal.wav", uneqip = "Sound\\bootsmetal.wav", drop = "Sound\\bootsmetal.wav" }
 		})
 
@@ -1338,7 +1364,7 @@ do
 			MAX_SLOTS = 2,
 			frame_texture = "Armor\\BTNSpikedArmor.blp",
 			set_bonus = GetItemSet("FRDL"),
-			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_BOOSTERS .."\"",
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_CHESTOFPAIN .."\"",
 			soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
 		})
 
@@ -1359,7 +1385,7 @@ do
 			MAX_SLOTS = 2,
 			frame_texture = "Armor\\BTN_Royal_Helmet.blp",
 			set_bonus = GetItemSet("FRDL"),
-			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_BOOSTERS .."\"",
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_HEADOFPAIN .."\"",
 			soundpack = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" }
 		})
 

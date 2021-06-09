@@ -8,6 +8,7 @@ do
 
     WaveTimer = nil
     Current_Wave = 1
+    WavesUntilShopsUpdate = 2
 
     local MusicMix = {
         "Sound\\Music\\mp3Music\\IllidansTheme.mp3",
@@ -29,7 +30,7 @@ do
 
     function EndWave()
 
-        if Current_Wave == 50 then
+        if Current_Wave >= 51 then
             VictoryScreen()
         else
             Current_Wave = Current_Wave + 1
@@ -48,28 +49,27 @@ do
 
 
     function ResetShops()
-        local item_count = GetRandomInt(7, 12)
 
-        --print("shops reset - start")
-            --smorc
+        WavesUntilShopsUpdate = WavesUntilShopsUpdate + 1
+
+        if WavesUntilShopsUpdate == 3 then
+            local item_count = GetRandomInt(7, 12)
+            WavesUntilShopsUpdate = 0
+
             ClearShop(gg_unit_opeo_0031)
-            --print("shop cleared")
             for i = 1, item_count do
                 local item = CreateCustomItem(GetRandomGeneratedItemId(), 0., 0.)
-                --print("create item number " .. i)
                 local roll = GetRandomInt(1, 5)
                 local quality
 
                     if roll == 1 then quality = MAGIC_ITEM
                     elseif roll == 2 then quality = RARE_ITEM
-                    else quality = COMMON_ITEM
-                    end
+                    else quality = COMMON_ITEM end
 
                 GenerateItemStats(item, Current_Wave + GetRandomInt(1, 2), quality)
                 AddItemToShop(gg_unit_opeo_0031, item, false)
             end
 
-        --print("smorc shop is generated")
 
             local item_pool = {
                 SWORD_WEAPON,
@@ -104,8 +104,6 @@ do
                 AddItemToShop(gg_unit_n000_0056, item, false)
             end
 
-        --print("blacksmith shop is generated")
-
             item_pool = {
                 RING_JEWELRY,
                 NECKLACE_JEWELRY,
@@ -122,12 +120,22 @@ do
                 AddItemToShop(gg_unit_n001_0055, item, false)
             end
 
+
+            item_count = GetRandomInt(0, 4)
+            if item_count > 0 then
+                 AddItemToShop(gg_unit_n001_0055, CreateCustomItem(GetRandomBookItemId(), 0, 0, false), false)
+            end
+
+        end
+
+
             local scrolls = CreateCustomItem(ITEM_SCROLL_OF_TOWN_PORTAL, 0., 0.)
             SetItemCharges(scrolls, 5)
             AddItemToShopWithSlot(gg_unit_n001_0055, scrolls, 30, false)
 
         --print("shops resetted")
     end
+
 
 
     function AddWaveTimer(total_time)

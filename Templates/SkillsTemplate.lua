@@ -260,9 +260,12 @@
                     animation_point     = 1.3,
                     animation_backswing = 0.3,
                     animation_scale     = 0.4,
-                    effect_on_caster        = "Spell\\Ice Low.mdx",
-                    effect_on_caster_point  = 'hand right',
-                    effect_on_caster_scale  = 1.,
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Spell\\Sweep_True_Ice_Small.mdx", point = "origin" },
+                            { effect = "Spell\\Ice Low.mdx", point = 'hand right' }
+                        }
+                    },
                 },
             }
 
@@ -284,9 +287,12 @@
                     animation_point     = 2.1,
                     animation_backswing = 0.633,
                     animation_scale     = 0.3,
-                    effect_on_caster        = "Spell\\Ice Low.mdx",
-                    effect_on_caster_point  = 'hand right',
-                    effect_on_caster_scale  = 1.,
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "war3mapImported\\FrostNova.MDX", point = "origin" },
+                            { effect = "Spell\\Ice Low.mdx", point = 'hand right' }
+                        }
+                    },
                 }
             }
 
@@ -298,7 +304,7 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_FIRE,
-            sound = { pack = { "Sounds\\Spells\\fire_light_launch_1.wav", "Sounds\\Spells\\fire_light_launch_2.wav", "Sounds\\Spells\\fire_light_launch_3.wav" }, volume = 110, cutoff = 1500.},
+            sound = { pack = { "Sounds\\Spells\\fire_light_launch_1.wav", "Sounds\\Spells\\fire_light_launch_2.wav", "Sounds\\Spells\\fire_light_launch_3.wav" }, volume = 117, cutoff = 1500.},
 
             level = {
                 [1] = {
@@ -310,9 +316,12 @@
                     animation_point     = 1.3,
                     animation_backswing = 0.3,
                     animation_scale     = 0.4,
-                    effect_on_caster        = "Spell\\Fire Low.mdx",
-                    effect_on_caster_point  = 'hand right',
-                    effect_on_caster_scale  = 1.,
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Spell\\Sweep_Fire_Small.mdx", point = "weapon" },
+                            { effect = "Spell\\Fire Low.mdx", point = 'hand right' }
+                        }
+                    },
                 }
             }
         })
@@ -335,9 +344,12 @@
                     animation_point     = 2.1,
                     animation_backswing = 0.633,
                     animation_scale     = 0.35,
-                    effect_on_caster        = "Spell\\Ice High.mdx",
-                    effect_on_caster_point  = 'hand right',
-                    effect_on_caster_scale  = 1.,
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Spell\\Sweep_True_Ice_Medium.mdx", point = "weapon" },
+                            { effect = "Spell\\Ice High.mdx", point = 'hand right' }
+                        }
+                    },
                 }
             }
         })
@@ -360,9 +372,15 @@
                     animation_point     = 1.3,
                     animation_backswing = 0.3,
                     animation_scale     = 0.4,
-                    effect_on_caster        = "Spell\\Storm Cast.mdx",
-                    effect_on_caster_point  = 'hand right',
-                    effect_on_caster_scale  = 1.,
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Spell\\Sweep_Lightning_Large.mdx", point = "weapon" },
+                            { effect = "Spell\\Storm Cast.mdx", point = 'hand right' }
+                        }
+                    },
+                    --effect_on_caster        = "Spell\\Storm Cast.mdx",
+                    --effect_on_caster_point  = 'hand right',
+                    --effect_on_caster_scale  = 1.,
                 }
             }
         })
@@ -383,8 +401,8 @@
                     start_effect_on_cast_point = 'Spell\\Blink Blue Caster.mdx',
                     start_effect_on_cast_point_scale = 1.,
 
-                    end_effect_on_cast_point = 'Spell\\Blink Blue Target.mdx',
-                    end_effect_on_cast_point_scale = 1.,
+                    --end_effect_on_cast_point = 'Spell\\Blink Blue Target.mdx',
+                    --end_effect_on_cast_point_scale = 1.,
 
                     resource_cost       = 5.,
                     cooldown            = 5.,
@@ -413,6 +431,13 @@
                     animation_point     = 1.3,
                     animation_backswing = 0.3,
                     animation_scale     = 0.4,
+
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Spell\\Sweep_Fire_Medium.mdx", point = "weapon" },
+                            { effect = "Spell\\Fire Uber.mdx", point = 'hand right' }
+                        }
+                    },
                 }
             }
         })
@@ -434,9 +459,16 @@
                     animation_point     = 1.3,
                     animation_backswing = 0.3,
                     animation_scale     = 0.4,
-                    effect_on_caster        = "Spell\\Storm Cast.mdx",
-                    effect_on_caster_point  = 'hand right',
-                    effect_on_caster_scale  = 0.8,
+                    --effect_on_caster        = "Spell\\Storm Cast.mdx",
+                    --effect_on_caster_point  = 'hand right',
+                    --effect_on_caster_scale  = 0.8,
+
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Spell\\Sweep_Lightning_Small.mdx", point = "weapon" },
+                            { effect = "Spell\\Storm Cast.mdx", point = 'hand right', scale = 0.8 }
+                        }
+                    },
                 }
             }
         })
@@ -458,9 +490,15 @@
                     animation_point     = 1.3,
                     animation_backswing = 0.3,
                     animation_scale     = 0.4,
-                    effect_on_caster        = "Spell\\Storm Cast.mdx",
-                    effect_on_caster_point  = 'hand right',
-                    effect_on_caster_scale  = 1.,
+                    --effect_on_caster        = "Spell\\Storm Cast.mdx",
+                    --effect_on_caster_point  = 'hand right',
+                    --effect_on_caster_scale  = 1.,
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Spell\\Sweep_Lightning_Medium.mdx", point = "weapon" },
+                            { effect = "Spell\\Storm Cast.mdx", point = 'hand right' }
+                        }
+                    },
                 }
             }
         })
@@ -483,9 +521,12 @@
                     animation_point     = 2.1,
                     animation_backswing = 0.633,
                     animation_scale     = 0.5,
-                    effect_on_caster        = "Spell\\Storm Cast.mdx",
-                    effect_on_caster_point  = 'hand right',
-                    effect_on_caster_scale  = 1.,
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Spell\\Sweep_Lightning_Medium.mdx", point = "weapon" },
+                            { effect = "Spell\\Storm Cast.mdx", point = 'hand right' }
+                        }
+                    },
                 }
             }
         })
@@ -506,6 +547,11 @@
                     animation_point     = 0.3,
                     animation_backswing = 0.3,
                     animation_scale     = 1.,
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdx", point = "origin", scale = 0.4 }
+                        }
+                    }
                 }
             }
         })
@@ -516,6 +562,7 @@
             activation_type = SELF_CAST,
             type            = SKILL_UNIQUE,
             category = SKILL_CATEGORY_ICE,
+            sound = { pack = { "Sounds\\Spells\\frost_armor_launch_2.wav" }, volume = 110, cutoff = 1500.},
 
             level = {
                 [1] = {
@@ -526,6 +573,12 @@
                     animation_point     = 0.3,
                     animation_backswing = 0.3,
                     animation_scale     = 1.,
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Spell\\ShivasEnchantment.mdx", point = "origin", duration = 1.233 },
+                            { effect = "Spell\\ColdRitual.mdx", point = "origin" }
+                        }
+                    }
                 }
             }
         })
@@ -546,6 +599,11 @@
                     animation_point     = 0.1,
                     animation_backswing = 0.1,
                     animation_scale     = 0.3,
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Abilities\\Spells\\Orc\\AncestralSpirit\\AncestralSpiritCaster.mdx", point = "origin", duration = 1.233 }
+                        }
+                    }
                 }
             }
         })
@@ -570,6 +628,8 @@
                     effect_on_caster        = "Spell\\Fire Low.mdx",
                     effect_on_caster_point  = 'hand right',
                     effect_on_caster_scale  = 1.,
+                    end_effect_on_cast_point = "Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeTarget.mdx",
+                    end_effect_on_cast_point_scale = 0.7,
                 }
             }
         })
@@ -663,6 +723,7 @@
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_FIGHTING_MASTERY,
+            channel = true,
 
             level = {
                 [1] = {
@@ -758,13 +819,13 @@
                 [1] = {
                     range               = 100.,
                     effect              = 'ECSL',
-                    cooldown            = 3.3,
-                    resource_cost = 5.,
+                    cooldown            = 7.3,
+                    resource_cost       = 5.,
                     animation           = 6,
                     animation_point     = 0.6,
                     animation_backswing = 0.3,
                     animation_scale     = 0.7,
-                    effect_on_caster        = "Spell\\Sweep_TeamColor_Medium.mdx",
+                    effect_on_caster        = "Spell\\Sweep_Blood_Medium.mdx",
                     effect_on_caster_point  = 'weapon right',
                     effect_on_caster_scale  = 1.,
                 }
@@ -808,6 +869,239 @@
                     animation_point     = 1.4,
                     animation_backswing = 0.2666,
                     animation_scale     = 0.5
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ASQB', {
+            name            = "spider queen bile",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_UNIQUE,
+            sound = { pack = { "Units\\Creeps\\Spider\\SpiderYes1.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    range               = 700.,
+                    resource_cost       = 0.,
+                    cooldown            = 7.3,
+                    animation           = 3,
+                    animation_point     = 0.7,
+                    animation_backswing = 0.3,
+                    animation_scale     = 2.,
+                    missile             = "MSQB",
+                    effect_on_caster        = "Spell\\Sweep_Acid_Small.mdx",
+                    effect_on_caster_point  = 'weapon',
+                    effect_on_caster_scale  = 2.2,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ASQC', {
+            name            = "spider queen bite",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+            sound = { pack = { "Units\\Creeps\\Spider\\SpiderYesAttack1.wav", "Units\\Creeps\\Spider\\SpiderYesAttack2.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    range               = 200.,
+                    resource_cost       = 0.,
+                    cooldown            = 5.3,
+                    animation           = 4,
+                    animation_point     = 0.7,
+                    animation_backswing = 0.3,
+                    animation_scale     = 1.8,
+                    effect              = "ECSC",
+                    effect_on_caster        = "Spell\\Sweep_Chaos_Small.mdx",
+                    effect_on_caster_point  = 'weapon',
+                    effect_on_caster_scale  = 2.2,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ASQT', {
+            name            = "spider queen trap",
+            activation_type = SELF_CAST,
+            type            = SKILL_UNIQUE,
+
+            level = {
+                [1] = {
+                    resource_cost       = 0.,
+                    cooldown            = 12.,
+                    animation           = 6,
+                    animation_point     = 0.4,
+                    animation_backswing = 0.3,
+                    animation_scale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ASQS', {
+            name            = "spider queen brood",
+            activation_type = SELF_CAST,
+            type            = SKILL_UNIQUE,
+            sound = { pack = { "Units\\Creeps\\Spider\\SpiderYes2.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    resource_cost       = 0.,
+                    cooldown            = 6.,
+                    animation           = 6,
+                    animation_point     = 0.4,
+                    animation_backswing = 0.3,
+                    animation_scale     = 1.2,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ABCH', {
+            name            = "bandit charge",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+            sound = { pack = { "Units\\Creeps\\Bandit\\BanditYesAttack2.wav", "Units\\Creeps\\Bandit\\BanditYesAttack3.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    range               = 700.,
+                    cooldown            = 5.3,
+                    resource_cost       = 0.,
+                    animation           = 4,
+                    animation_point     = 0.6,
+                    animation_backswing = 0.3,
+                    animation_scale     = 0.9,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('AACL', {
+            name            = "arachno bite",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+            sound = { pack = { "Units\\Creeps\\Arachnathid\\ArachnathidYes1.wav", "Units\\Creeps\\Arachnathid\\ArachnathidYes2.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    range               = 215.,
+                    resource_cost       = 0.,
+                    cooldown            = 5.3,
+                    animation           = 2,
+                    animation_point     = 0.566,
+                    animation_backswing = 0.35,
+                    animation_scale     = 1.75,
+                    effect              = "EACL",
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Spell\\Sweep_Chaos_Medium.mdx", point = "hand right", scale = 1.5 },
+                            { effect = "Spell\\Sweep_Chaos_Medium.mdx", point = "hand left", scale = 1.5 }
+                        }
+                    },
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('AAPN', {
+            name            = "arachno poison nova",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            sound = { pack = { "Units\\Creeps\\Arachnathid\\ArachnathidYes1.wav", "Units\\Creeps\\Arachnathid\\ArachnathidYes2.wav" }, volume = 128, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    resource_cost       = 0.,
+                    cooldown            = 8.,
+                    animation           = 2,
+                    animation_point     = 0.667,
+                    animation_backswing = 0.4,
+                    animation_scale     = 1.9,
+                    effect              = "EACL",
+                    effect_on_caster        = "Spell\\Sweep_Acid_Small.mdx",
+                    effect_on_caster_point  = 'weapon',
+                    effect_on_caster_scale  = 2.25,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('AACH', {
+            name            = "arachno charge",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+            --sound = { pack = { "Units\\Creeps\\Bandit\\BanditYesAttack2.wav", "Units\\Creeps\\Bandit\\BanditYesAttack3.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    range               = 700.,
+                    cooldown            = 9.,
+                    resource_cost       = 0.,
+                    animation           = 4,
+                    animation_point     = 0.6,
+                    animation_backswing = 0.1,
+                    animation_scale     = 0.9,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ASSM', {
+            name            = "summon skele",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            --sound = { pack = { "Units\\Creeps\\Bandit\\BanditYesAttack2.wav", "Units\\Creeps\\Bandit\\BanditYesAttack3.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    cooldown            = 14.,
+                    resource_cost       = 0.,
+                    animation           = 4,
+                    animation_point     = 0.5,
+                    animation_backswing = 0.45,
+                    animation_scale     = 1.2,
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = "hand right", scale = 1.25 },
+                        }
+                    },
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ASBN', {
+            name            = "chasing curse",
+            activation_type = TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            sound = { pack = { "Abilities\\Spells\\Undead\\Possession\\PossessionMissileLaunch1.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    range               = 550.,
+                    resource_cost       = 0.,
+                    cooldown            = 5.,
+                    animation           = 4,
+                    animation_point     = 0.5,
+                    animation_backswing = 0.45,
+                    animation_scale     = 1.65,
+                    missile             = "MSCN",
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Spell\\Sweep_Soul_Medium.mdx", point = "hand right", scale = 1.25 },
+                        }
+                    },
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('AMLN', {
+            name            = "meph nova",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            sound = { pack = { "Sounds\\Spells\\cast_lightning_1_diff.wav", "Sounds\\Spells\\cast_lightning_2_diff.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    cooldown            = 5.,
+                    resource_cost       = 0.,
+                    animation           = 8,
+                    animation_point     = 0.445,
+                    animation_backswing = 0.555,
+                    animation_scale     = 1.25,
                 }
             }
         })

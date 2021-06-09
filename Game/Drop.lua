@@ -85,8 +85,6 @@ do
             end)
         end
 
-        print("drop done")
-
     end
 
 
@@ -192,6 +190,7 @@ do
                     { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_POTION_HEALTH_WEAK, chance = 15.3, min = 1, max = 3 },
                     { id = ITEM_POTION_MANA_WEAK, chance = 15.3, min = 1, max = 3 },
+                    { id = "I01O", chance = 3. },
                     { id = "I00U", chance = 11.7, min = 1, max = 1 },
                     { id = "I00V", chance = 11.7, min = 1, max = 1 },
                     { id = "I013", chance = 11.7, min = 1, max = 1 },
@@ -299,6 +298,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
@@ -362,6 +362,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
@@ -425,6 +426,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
@@ -488,6 +490,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
@@ -551,6 +554,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
@@ -614,6 +618,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
@@ -677,6 +682,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
@@ -740,6 +746,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
@@ -803,6 +810,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
@@ -866,6 +874,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
@@ -929,6 +938,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },

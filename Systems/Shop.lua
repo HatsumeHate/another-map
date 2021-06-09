@@ -405,17 +405,21 @@ do
             end
 
 
-                if my_shop_data.item_list[slot].item == nil then
-                    my_shop_data.item_list[slot].item = item
-                    my_shop_data.item_list[slot].perm = permanent
+            if my_shop_data.item_list[slot].item == nil then
+                my_shop_data.item_list[slot].item = item
+                my_shop_data.item_list[slot].perm = permanent
 
-                        if permanent and GetItemType(item) == ITEM_TYPE_CHARGED then
-                            my_shop_data.item_list[slot].charges = GetItemCharges(item)
-                        end
-
-                    SetItemVisible(item, false)
-                    UpdateShopWindow()
+                if permanent and GetItemType(item) == ITEM_TYPE_CHARGED then
+                    my_shop_data.item_list[slot].charges = GetItemCharges(item)
                 end
+
+                SetItemVisible(item, false)
+                UpdateShopWindow()
+            elseif my_shop_data.item_list[slot].item and GetItemType(item) == ITEM_TYPE_CHARGED and GetItemTypeId(item) == GetItemTypeId(my_shop_data.item_list[slot].item) then
+                my_shop_data.item_list[slot].charges = my_shop_data.item_list[slot].charges + GetItemCharges(item)
+                RemoveCustomItem(item)
+                UpdateShopWindow()
+            end
 
     end
 
@@ -452,7 +456,7 @@ do
 
                 for i = 1, 6 do
                     if GetLocalPlayer() == Player(i-1) then
-                        FirstTime_Data[i].effect = AddSpecialEffectTarget("Abilities\\Spells\\Other\\TalkToMe\\TalkToMe.mdx", unit_owner, "overhead")
+                        FirstTime_Data[i].effect = AddSpecialEffectTarget("Quest\\ExcMark_Green_FlightPath.mdx", unit_owner, "overhead")
                     else
                         FirstTime_Data[i].effect = AddSpecialEffectTarget("", unit_owner, "overhead")
                     end
@@ -480,6 +484,9 @@ do
                         BlzFrameSetTexture(ShopFrame[player].portrait, texture, 0, true)
                         BlzFrameSetText(ShopFrame[player].name, GetUnitName(unit_owner))
                         UpdateShopWindow()
+
+                        SetUIState(player, SKILL_PANEL, false)
+                        SetUIState(player, CHAR_PANEL, false)
 
                         if soundpack then
                             PlayLocalSound(soundpack.open[GetRandomInt(1, #soundpack.open)], id, 125)

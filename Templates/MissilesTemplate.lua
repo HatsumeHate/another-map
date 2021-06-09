@@ -358,12 +358,28 @@ do
             full_distance = true
         })
         --==============================================--
+        NewMissileTemplate('MSQB', {
+            name = "spider queen venom bile missile",
+            model = "Abilities\\Weapons\\ChimaeraAcidMissile\\ChimaeraAcidMissile.mdx",
+            max_distance = 750.,
+            radius = 62.,
+            speed = 600.,
+            start_z = 35.,
+            end_z = 45.,
+            arc = 0.07,
+            scale = 1.27,
+            effect_on_hit = "ESQM",
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
         NewMissileTemplate('MSBN', {
             name = "bandit missile",
             model = "Abilities\\Weapons\\Banditmissile\\Banditmissile.mdx",
             max_distance = 700.,
             radius = 57.,
-            speed = 420.,
+            speed = 470.,
             start_z = 65.,
             end_z = 65.,
             arc = 0.1,
@@ -374,14 +390,76 @@ do
         })
         --==============================================--
         NewMissileTemplate('MSSP', {
-            name = "bandit missile",
+            name = "arachno missile",
             model = "Abilities\\Weapons\\ChimaeraAcidMissile\\ChimaeraAcidMissile.mdx",
             max_distance = 750.,
             radius = 57.,
-            speed = 370.,
+            speed = 450.,
             start_z = 65.,
             end_z = 65.,
             arc = 0.1,
+            scale = 1.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MAPN', {
+            name = "arachno poison nova missile",
+            model = "Abilities\\Weapons\\ChimaeraAcidMissile\\ChimaeraAcidMissile.mdx",
+            max_distance = 850.,
+            radius = 60.,
+            speed = 370.,
+            start_z = 45.,
+            end_z = 45.,
+            arc = 0.,
+            scale = 1.35,
+            effect_on_hit = "EAPN",
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MSSK', {
+            name = "summon skele missile",
+            model = "Abilities\\Spells\\Undead\\DeathCoil\\DeathCoilMissile.mdx",
+            speed = 330.,
+            start_z = 100.,
+            end_z = 0.,
+            arc = 0.35,
+            scale = 1.,
+            only_on_impact = true,
+            ignore_terrain = false
+        })
+        --==============================================--
+        NewMissileTemplate('MSCN', {
+            name = "summon curse missile",
+            model = "Abilities\\Spells\\Undead\\Possession\\PossessionMissile.mdx",
+            speed = 250.,
+            start_z = 60.,
+            end_z = 60.,
+            scale = 1.,
+            trackable = true,
+            ignore_terrain = true,
+            only_on_target = true
+        })
+        --==============================================--
+        NewMissileTemplate('MMLN', {
+            name = "meph lightning missile",
+            model = ".mdx",
+            max_distance = 800.,
+            radius = 50.,
+            speed = 500.,
+            start_z = 25.,
+            end_z = 25.,
+            sound_on_fly = {
+                pack = { "Sounds\\Spells\\lightning_wave_loop_1.wav" },
+                volume = 25,
+                cutoff = 1700.
+            },
+            lightning_id = "YENL",
+            lightning_length = 175.,
+            effect_on_hit = "EALN",
             scale = 1.,
             ignore_terrain = true,
             penetrate = false,

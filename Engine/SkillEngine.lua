@@ -97,13 +97,16 @@ do
                     elseif value_str == "aoe" then return R2I(effect.level[lvl].area_of_effect or 0.)
                     elseif value_str == "bcc" then return "|c00FFD900" .. R2I(effect.level[lvl].bonus_crit_chance or 0.) .. "%%|r"
                     elseif value_str == "bcm" then return "|c00FFD900" .. (effect.level[lvl].bonus_crit_multiplier or 0.) .. "|r"
-                    elseif value_str == "hp_perc" then return "|c0000FF00" .. (effect.level[lvl].life_percent_restored or 0.) .. "%%|r"
-                    elseif value_str == "mp_perc" then return "|c000066FF" .. (effect.level[lvl].resource_percent_restored or 0.) .. "%%|r"
+                    elseif value_str == "hp_perc" then return "|c0000FF00" .. string.format('%%.1f', (effect.level[lvl].life_percent_restored or 0.) * 100.) .. "%%|r"
+                    elseif value_str == "mp_perc" then return "|c000066FF" .. string.format('%%.1f', (effect.level[lvl].resource_percent_restored or 0.) * 100.) .. "%%|r"
                     elseif value_str == "hp" then return "|c0000FF00" .. (effect.level[lvl].life_restored or 0.) .. "|r"
                     elseif value_str == "mp" then return "|c000066FF" .. (effect.level[lvl].resource_restored or 0.) .. "|r"
                     end
             elseif tag == "s" then
                 local skill = GetSkillData(FourCC(id))
+
+                GenerateSkillLevelData(skill, lvl)
+
                     if value_str == "rc" then return R2I(skill.level[lvl].resource_cost or 0)
                     elseif value_str == "cld" then return skill.level[lvl].cooldown or 0.1
                     elseif value_str == "rng" then return "|c0000DBA4" .. R2I(skill.level[lvl].range or 0.) .. "|r"
@@ -166,7 +169,7 @@ do
 
 
     RegisterTestCommand("parse", function()
-        print(ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][FourCC("A00C")].bind, 1))
+        print(ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][FourCC("A00C")][1], 1))
     end)
 
     ---@param unit unit
@@ -181,7 +184,22 @@ do
 
             if GetLocalPlayer() == Player(player-1) then
                 if LOCALE_LIST[my_locale][true_id] then
-                    BlzSetAbilityExtendedTooltip(ability, ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id].bind, lvl), 0)
+                    --local proper_level_data = lvl
+
+                    if LOCALE_LIST[my_locale][true_id][lvl] then
+                        print("exists")
+                        BlzSetAbilityExtendedTooltip(ability, ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id][lvl], lvl), 0)
+                    else
+                        print("has " .. lvl .. "elemets")
+                        for i = lvl, 1, -1 do
+                            print("checking ".. i)
+                            if LOCALE_LIST[my_locale][true_id][i] then
+                                BlzSetAbilityExtendedTooltip(ability, ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id][i], lvl), 0)
+                                break
+                            end
+                        end
+                    end
+                    --BlzSetAbilityExtendedTooltip(ability, ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id].bind, lvl), 0)
                 end
             end
 
@@ -230,7 +248,7 @@ do
     ---@param id string
     ---@param key integer
     function BindAbilityKey(unit, id, key)
-        local skill = GetSkillData(FourCC(id))
+        local skill = GetAbilityFromUnit(unit, id)--GetSkillData(FourCC(id))
         local ability_id = KEYBIND_LIST[key].ability
         local ability
 
@@ -241,6 +259,7 @@ do
 
             ability = BlzGetUnitAbility(unit, ability_id)
             local level = UnitGetAbilityLevel(unit, id)
+
 
             BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[level].range or 0.)
             BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[level].radius or 0.)
@@ -307,6 +326,7 @@ do
             for i = 1, #unit_data.skill_list do
                 if unit_data.skill_list[i].Id == id then
                     unit_data.skill_list[i].current_level = unit_data.skill_list[i].current_level + amount
+                    GenerateSkillLevelData(unit_data.skill_list[i], unit_data.skill_list[i].current_level)
                     UpdateBindedSkillData(id, GetPlayerId(GetOwningPlayer(unit)) + 1)
                     return true
                 end
@@ -350,10 +370,10 @@ do
             end
 
             for i = WEAPON_POINT, NECKLACE_POINT do
-                if unit_data.equip_point[i] ~= nil and unit_data.equip_point[i].SKILL_BONUS ~= nil then
+                if unit_data.equip_point[i] and unit_data.equip_point[i].SKILL_BONUS then
                     for skill_bonus = 1, #unit_data.equip_point[i].SKILL_BONUS do
-                        if (unit_data.equip_point[i].SKILL_BONUS[skill_bonus].id ~= nil and unit_data.equip_point[i].SKILL_BONUS[skill_bonus].id == id) or
-                                (unit_data.equip_point[i].SKILL_BONUS[skill_bonus].category ~= nil and skill.category == unit_data.equip_point[i].SKILL_BONUS[skill_bonus].category) then
+                        if (unit_data.equip_point[i].SKILL_BONUS[skill_bonus].id and unit_data.equip_point[i].SKILL_BONUS[skill_bonus].id == id) or
+                                (unit_data.equip_point[i].SKILL_BONUS[skill_bonus].category and skill.category == unit_data.equip_point[i].SKILL_BONUS[skill_bonus].category) then
                             ability_level = ability_level + unit_data.equip_point[i].SKILL_BONUS[skill_bonus].bonus_levels
                         end
                     end
@@ -392,24 +412,69 @@ do
     end
 
 
+    function UnitRemoveMyAbility(unit, id)
+        local unit_data = GetUnitData(unit)
+
+        if unit_data == nil then return end
+
+            for i = 1, #unit_data.skill_list do
+                if unit_data.skill_list[i].Id == id then
+                    unit_data.skill_list[i] = nil
+                end
+            end
+
+    end
+
+
+    ---@param unit unit
+    ---@param skill string
+    function GetAbilityFromUnit(unit, skill)
+        local unit_data = GetUnitData(unit)
+
+            for i = 1, #unit_data.skill_list do
+                if unit_data.skill_list[i].Id == skill then
+                    return unit_data.skill_list[i]
+                end
+            end
+
+        return nil
+    end
+
+
     ---@param unit unit
     function ResetUnitSpellCast(unit)
         local unit_data = GetUnitData(unit)
 
+
+            if unit_data.channeled_destructor then
+                unit_data.channeled_destructor(unit)
+            end
+
+            BlzUnitInterruptAttack(unit)
+
             SafePauseUnit(unit, false)
+
             IssueImmediateOrderById(unit, order_stop)
             SetUnitTimeScale(unit, 1.)
             DestroyEffect(unit_data.cast_effect)
+
+            if unit_data.cast_effect_pack then
+                for i = 1, #unit_data.cast_effect_pack do
+                    DestroyEffect(unit_data.cast_effect_pack[i])
+                end
+                unit_data.cast_effect_pack = nil
+            end
+
             TimerStart(unit_data.action_timer, 0., false, nil)
             --PauseTimer(unit_data.action_timer)
 
-                if unit_data.castsound ~= nil then
+                if unit_data.castsound then
                     StopSound(unit_data.castsound, true, true)
                 end
 
                 if unit_data.cast_skill > 0 then
                     BlzEndUnitAbilityCooldown(unit, unit_data.cast_skill)
-                    SetUnitState(unit, UNIT_STATE_MANA, GetUnitState(unit, UNIT_STATE_MANA) + BlzGetUnitAbilityManaCost(unit_data.Owner, unit_data.cast_skill, unit_data.cast_skill_level - 1))
+                    SetUnitState(unit, UNIT_STATE_MANA, GetUnitState(unit, UNIT_STATE_MANA) + BlzGetUnitAbilityManaCost(unit, GetKeybindAbility(unit_data.cast_skill, GetPlayerId(GetOwningPlayer(unit)) + 1), 0))
                 end
 
             unit_data.cast_skill = 0
@@ -445,7 +510,7 @@ do
                 end
 
 
-                if skill ~= nil then
+                if skill then
                     local unit_data = GetUnitData(GetTriggerUnit())
                     skill = GetUnitSkillData(unit_data.Owner, skill.Id)
 
@@ -453,6 +518,12 @@ do
 
                     local ability_level = UnitGetAbilityLevel(unit_data.Owner, skill.Id)
                     GenerateSkillLevelData(skill, ability_level)
+
+                    if not skill.channel then
+                        if unit_data.channeled_destructor then
+                            unit_data.channeled_destructor(unit_data.Owner)
+                        end
+                    end
 
 
                     local time_reduction = skill.level[ability_level].animation_scale or 1.
@@ -467,16 +538,21 @@ do
                         if time_reduction <= 0. then time_reduction = 0. end
 
                     SetUnitAnimationByIndex(unit_data.Owner, 0)
+                    ResetUnitAnimation(unit_data.Owner)
                     --print("after bonus reduction "..time_reduction)
 
-                    if skill.level[ability_level].animation_scale ~= nil then
-                        SetUnitTimeScale(unit_data.Owner, 1. + (1. - skill.level[ability_level].animation_scale))
-                        --print("timescale is " .. (1. + (1. - skill.level[ability_level].animation_scale)))
-                    end
+
+                    local scale = 1.
+                    if time_reduction > 1. then scale = 1. / time_reduction
+                    else scale = 1. + (1. - time_reduction) end
+
+                    if scale <= 0.01 then scale = 0.01 end
+                    SetUnitTimeScale(unit_data.Owner, scale)
 
                     --print("result cast time is " .. (skill.level[ability_level].animation_point or 0.) * time_reduction)
                     --print("skill cooldown is " .. R2S(skill.level[ability_level].cooldown))
                     --print("ability level is " .. I2S(ability_level))
+                    -- 0.4 * 2. -> 0.8 /// 0.4 * 0.5 -> 0.2
                     BlzSetUnitAbilityCooldown(unit_data.Owner, id, 0, (skill.level[ability_level].cooldown or 0.1) + (skill.level[ability_level].animation_point * time_reduction))
                     BlzSetUnitAbilityManaCost(unit_data.Owner, id, 0, skill.level[ability_level].resource_cost or 0)
 
@@ -493,12 +569,41 @@ do
                     --BlzPauseUnitEx(unit_data.Owner, true)
                     SetUnitAnimationByIndex(unit_data.Owner, skill.level[ability_level].animation or 0)
 
-                        if skill.level[ability_level].effect_on_caster ~= nil then
+                    --local cast_effect_pack
+
+
+                    if skill.level[ability_level].sfx_pack then
+                        unit_data.cast_effect_pack = {}
+
+                        local pack = skill.level[ability_level].sfx_pack
+
+                            if pack.on_caster then
+                                for i = 1, #pack.on_caster do
+
+                                    local casteffect = AddSpecialEffectTarget(pack.on_caster[i].effect, unit_data.Owner, pack.on_caster[i].point or "chest")
+                                    BlzSetSpecialEffectScale(casteffect, pack.on_caster[i].scale or 1.)
+
+                                        if pack.on_caster[i].duration and pack.on_caster[i].duration > 0. then
+                                            TimerStart(CreateTimer(), pack.on_caster[i].duration, false, function()
+                                                DestroyEffect(casteffect)
+                                                DestroyTimer(GetExpiredTimer())
+                                            end)
+                                        else
+                                            unit_data.cast_effect_pack[#unit_data.cast_effect_pack+1] = casteffect
+                                        end
+
+                                end
+                            end
+
+                        --unit_data.cast_effect_pack = cast_effect_pack
+                    end
+
+                        if skill.level[ability_level].effect_on_caster then
                             unit_data.cast_effect = AddSpecialEffectTarget(skill.level[ability_level].effect_on_caster, unit_data.Owner, skill.level[ability_level].effect_on_caster_point)
                             BlzSetSpecialEffectScale(unit_data.cast_effect, skill.level[ability_level].effect_on_caster_scale or 1.)
                         end
 
-                        if skill.level[ability_level].start_effect_on_cast_point ~= nil then
+                        if skill.level[ability_level].start_effect_on_cast_point then
                             bj_lastCreatedEffect = AddSpecialEffect(skill.level[ability_level].start_effect_on_cast_point, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner))
                             BlzSetSpecialEffectScale(bj_lastCreatedEffect, skill.level[ability_level].start_effect_on_cast_point_scale or 1.)
                             DestroyEffect(bj_lastCreatedEffect)
@@ -515,6 +620,11 @@ do
                             unit_data.cast_skill = 0
                             DestroyEffect(unit_data.cast_effect)
 
+                            if unit_data.cast_effect_pack then
+                                for i = 1, #unit_data.cast_effect_pack do DestroyEffect(unit_data.cast_effect_pack[i]) end
+                                unit_data.cast_effect_pack = nil
+                            end
+
                             if skill.level[ability_level].end_effect_on_cast_point ~= nil then
                                 bj_lastCreatedEffect = AddSpecialEffect(skill.level[ability_level].end_effect_on_cast_point, spell_x, spell_y)
                                 BlzSetSpecialEffectScale(bj_lastCreatedEffect, skill.level[ability_level].end_effect_on_cast_point_scale or 1.)
@@ -522,7 +632,7 @@ do
                             end
 
                                 if skill.autotrigger then
-                                    if skill.level[ability_level].missile ~= nil then
+                                    if skill.level[ability_level].missile then
                                         if target ~= nil then
                                             local angle = AngleBetweenUnits(unit_data.Owner, target)
                                             SetUnitFacing(unit_data.Owner, angle)
@@ -533,11 +643,11 @@ do
                                                     GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), spell_x, spell_y, AngleBetweenUnitXY(unit_data.Owner, spell_x, spell_y))
                                         end
 
-                                    elseif skill.level[ability_level].effect ~= nil then
-                                        if target ~= nil and target ~= unit_data.Owner then
+                                    elseif skill.level[ability_level].effect then
+                                        if target and target ~= unit_data.Owner then
                                             SetUnitFacing(unit_data.Owner, AngleBetweenUnits(unit_data.Owner, target))
                                             ApplyEffect(unit_data.Owner, target, 0.,0., skill.level[ability_level].effect, ability_level)
-                                        elseif target ~= nil and target == unit_data.Owner then
+                                        elseif target and target == unit_data.Owner then
                                             ApplyEffect(unit_data.Owner, nil, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), skill.level[ability_level].effect, ability_level)
                                         else
                                             ApplyEffect(unit_data.Owner, nil, spell_x, spell_y, skill.level[ability_level].effect, ability_level)

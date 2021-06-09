@@ -79,12 +79,12 @@ do
             TimerStart(CreateTimer(), 0.025, true, function()
                 soundpack.current_volume = soundpack.current_volume - (soundpack.volume_max / fadetime)
 
-                    if soundpack.current_volume <= 0 then
-                        DestroyTimer(soundpack.loop_timer)
-                        DestroyTimer(soundpack.fadeout_timer)
-                        DestroyTimer(GetExpiredTimer())
-                        StopSound(soundpack.current_sound, true, true)
-                    end
+                if soundpack.current_volume <= 0 then
+                    DestroyTimer(soundpack.loop_timer)
+                    if soundpack.fadeout_timer then DestroyTimer(soundpack.fadeout_timer) end
+                    DestroyTimer(GetExpiredTimer())
+                    StopSound(soundpack.current_sound, true, true)
+                end
 
                 SetSoundVolume(soundpack.current_sound, soundpack.current_volume)
             end)
@@ -94,7 +94,7 @@ do
 
 
     local function FadeSound(sound, soundpack, fadetime, vector)
-        local step = soundpack.volume_max / (fadetime / 0.025)
+        local step = R2I(soundpack.volume_max / (fadetime / 0.025))
         if not vector then step = -step end
         local volume = vector and 0 or soundpack.current_volume
 
@@ -105,8 +105,9 @@ do
                     if volume <= 0 and not vector then
                         DestroyTimer(GetExpiredTimer())
                         volume = 0
-                        StopSound(sound, true, true)
-                    elseif volume >= soundpack.current_volume and vector or soundpack.fading ~= nil then
+                        StopSound(sound, true, false)
+                        return
+                    elseif (volume >= soundpack.current_volume and vector) or soundpack.fading then
                         volume = soundpack.current_volume
                         DestroyTimer(GetExpiredTimer())
                     end
@@ -154,9 +155,12 @@ do
 
                 local mysound = soundpack.current_sound
                 soundpack.fadeout_timer = CreateTimer()
-                TimerStart(soundpack.fadeout_timer, sound_duration - fadeout_offset, false, function()
+                local fadepoint = sound_duration - fadeout_offset
+                if fadepoint < 0 then fadepoint = 0. end
+                TimerStart(soundpack.fadeout_timer, fadepoint, false, function()
                     FadeSound(mysound, soundpack, fadeout_offset, false)
                     DestroyTimer(soundpack.fadeout_timer)
+                    soundpack.fadeout_timer = nil
                 end)
 
                 TimerStart(soundpack.loop_timer, sound_duration + delay, false, loop_sound)

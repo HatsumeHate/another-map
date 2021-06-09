@@ -84,6 +84,7 @@ do
             ITEM_TYPE_CONSUMABLE_NAME = "Расходуемое",
             ITEM_TYPE_GEM_NAME        = "Камень",
             ITEM_TYPE_SKILLBOOK       = "Знания",
+            ITEM_TYPE_OTHER           = "Прочее",
 
             BOW_WEAPON_NAME            = "Лук",
             BLUNT_WEAPON_NAME          = "Булава",
@@ -213,6 +214,8 @@ do
             CASTLE_LOCATION = 'Замок',
             SHORE_LOCATION = 'Берег',
             WOODS_LOCATION = 'Леса',
+            RUINS_LOCATION = "Руины",
+
 
             FEEDBACK_MSG_NOSPACE = "В рюкзаке нет места",
             FEEDBACK_MSG_CANTUSE = "Невозможно это использовать",
@@ -266,6 +269,12 @@ do
             STAT_PANEL_INT = "Интеллект: ",
             STAT_PANEL_VIT = "Стойкость: ",
             STAT_PANEL_AGI = "Ловкость: ",
+
+            STAT_PANEL_MAIN_STAT = "Основная характеристика",
+            STAT_PANEL_STR_DESC = "Влияет на силу физических атак.",
+            STAT_PANEL_INT_DESC = "Каждая еденица повышает магическое подавление на 1, влияет на магический урон а так же количество и восстановление магии если вы используете ману.",
+            STAT_PANEL_VIT_DESC = "Повышает здоровье и ее восстановление.",
+            STAT_PANEL_AGI_DESC = "Каждая еденица повышает защиту на 2.",
 
             STAT_PANEL_PHYS_ATTACK = "Физ. урон: ",
             STAT_PANEL_PHYS_DEFENCE = "Защита: ",
@@ -501,6 +510,8 @@ do
             STARTING_ITEM_NAME_STAFF = "Потертый посох",
             --STARTING_ITEM_NAME_ = "",
 
+            SHARD_OF_HATE = "Осколок ненависти",
+            SHARD_OF_HATE_DESC = "Странный светящийся осколок, при прикосновении ощущается прилив ненависти.",
 
             GEM_RUBY = 'Рубин',
             GEM_SAPPHIRE = 'Сапфир',
@@ -679,80 +690,171 @@ do
             GENERATED_TOOLTIP = "урона от атаки",
 
             [FourCC("A007")] = {
-                bind = "Сильный удар наносящий @e!ECRH.dmg# типа @e!ECRH.atr# в секторе перед собой. Поражает эффектом *Сокрушение* снижающим уязвимость к физическому урону на @b!A00W.va1# и снижающим скорость атаки на @b!A00W.va2# на @b!A00W.time# сек.",
+                [1] = "Сильный удар наносящий @e!ECRH.dmg# типа @e!ECRH.atr# в секторе перед собой. Поражает эффектом *Сокрушение* снижающим уязвимость к физическому урону на @b!A00W.va1# и снижающим скорость атаки на @b!A00W.va2# на @b!A00W.time# сек.",
             },
             [FourCC("A00C")] = {
-                bind = "Варвар испускает в радиусе @e!EWCR.aoe# ед. крик который снижает атаку врагов на @b!A00Y.va1# и скорость их перемещения на @b!A00Y.va3# ед.",
+                [1] = "Варвар испускает в радиусе @e!EWCR.aoe# ед. крик который снижает атаку врагов на @b!A00Y.va1# и скорость их перемещения на @b!A00Y.va3# ед.",
             },
             [FourCC("A006")] = {
-                bind = "Молниеносный удар наносящий @e!ECSL.dmg# типа @e!ECSL.atr# в секторе перед собой. Враги начинают кровоточить получая @e!ECSP.dmg# типа @e!ECSP.atr#",
+                [1] = "Молниеносный удар наносящий @e!ECSL.dmg# типа @e!ECSL.atr# в секторе перед собой. Враги начинают кровоточить получая @e!ECSP.dmg# типа @e!ECSP.atr#",
             },
             [FourCC("A00A")] = {
-                bind = "Запускает цепь на расстояние @s!A00A.rng#, притягивая первого врага.",
+                [1] = "Запускает цепь на расстояние @s!A00A.rng#, притягивая первого врага.",
             },
             [FourCC("A010")] = {
-                bind = "Варвар образует яростный вихрь безумно вращаясь, нанося @e!EWHW.dmg# типа @e!EWHW.atr# 3 раза в секунду вокруг себя. При этом постоянно потребляется 9 маны в сек.",
+                [1] = "Варвар образует яростный вихрь безумно вращаясь, нанося @e!EWHW.dmg# типа @e!EWHW.atr# 3 раза в секунду вокруг себя. При этом постоянно потребляется 9 маны в сек.",
             },
             [FourCC("A00Q")] = {
-                bind = "Впадает в ярость, увеличивая свою атаку на @b!A00V.va1#, сопротивлению контролю на @b!A00V.va2# и скорость бега на @b!A00V.va3# в течении @b!A00V.time# сек.",
+                [1] = "Впадает в ярость, увеличивая свою атаку на @b!A00V.va1#, сопротивлению контролю на @b!A00V.va2# и скорость бега на @b!A00V.va3# в течении @b!A00V.time# сек.",
             },
             [FourCC("A00B")] = {
-                bind = "Удар наносящий @e!EUPP.dmg# типа @e!EUPP.atr# и отталкивающий врагов, после чего они оглушаются на @b!A012.time# сек.",
+                [1] = "Удар наносящий @e!EUPP.dmg# типа @e!EUPP.atr# и отталкивающий врагов, после чего они оглушаются на @b!A012.time# сек.",
             },
             [FourCC("A00Z")] = {
-                bind = "Бросает кинжал на расстояние @s!A00Z.rng#, поражающий первого противника, наносит @e!ETHK.dmg# типа @e!ETHK.atr#. Имеет повышенные шансы на критический урон (+@e!ETHK.bcc#).",
+                [1] = "Бросает кинжал на расстояние @s!A00Z.rng#, поражающий первого противника, наносит @e!ETHK.dmg# типа @e!ETHK.atr#. Имеет повышенные шансы на критический урон (+@e!ETHK.bcc#).",
             },
             [FourCC("A00O")] = {
-                bind = "Прыжок, позволяющий переместиться на расстояние до @s!A00O.rng#.",
+                [1] = "Прыжок, позволяющий переместиться на расстояние до @s!A00O.rng#.",
             },
             [FourCC("A020")] = {
-                bind = "Удар, который призван добивать врагов. Наносит @e!EEXC.dmg# типа @e!EEXC.atr#, при применении на противников у которых осталось менее 20%% здоровья сила умения увеличивается втрое, а критический шанс возрастает на 20%%.",
+                [1] = "Удар, который призван добивать врагов. Наносит @e!EEXC.dmg# типа @e!EEXC.atr#, при применении на противников у которых осталось менее 20%% здоровья сила умения увеличивается втрое, а критический шанс возрастает на 20%%.",
             },
             [FourCC("ABFA")] = {
-                bind = "Лечит на @e!EFAA.hp_perc# каждую секунду в течении @b!A01N.time# секунд.",
+                [1] = "Лечит на @e!EFAA.hp_perc# каждую секунду в течении @b!A01N.time# секунд.",
+                [5] = "Лечит на @e!EFAA.hp_perc# каждую секунду в течении @b!A01N.time# секунд. Так же дает @b!A01N.va1# @b!A01N.pa1#.",
             },
             [FourCC("A00I")] = {
-                bind = "Призывает неуязвимую огненную гидру, которая атакует врагов. Она наследует 70%% значений характеристик. С повышением уровня заклинания увеличивается ее время существования.",
+                [1] = "Призывает неуязвимую огненную гидру, которая атакует врагов. Она наследует 70%% значений характеристик. С повышением уровня заклинания увеличивается ее время существования.",
             },
             [FourCC("A00H")] = {
-                bind = "Вошлебница подчиняет себе мощь стихий, весь урон от стихий [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# и @b!A00U.pa4#] увеличивается на @b!A00U.va1#, @b!A00U.pa5# на @b!A00U.va5#. Время эффекта - @b!A00U.time сек. ",
+                [1] = "Вошлебница подчиняет себе мощь стихий, весь урон от стихий [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# и @b!A00U.pa4#] увеличивается на @b!A00U.va1#, @b!A00U.pa5# на @b!A00U.va5#. Время эффекта - @b!A00U.time# сек. ",
             },
             [FourCC("A00E")] = {
-                bind = "Волшебница формирует вокруг себя ледяной барьер, повышающий ее защитные параметры: @b!A011.pa1# на @b!A011.va1# ед., @b!A011.pa2# на @b!A011.va2# ед. и @b!A011.pa3# на @b!A011.va3# ед.",
+                [1] = "Волшебница формирует вокруг себя ледяной барьер, повышающий ее защитные параметры: @b!A011.pa1# на @b!A011.va1# ед., @b!A011.pa2# на @b!A011.va2# ед. и @b!A011.pa3# на @b!A011.va3# ед.",
             },
             [FourCC("A00N")] = {
-                bind = "Волшебница фокусирует энергии тайной магии, улучшая свою защиту: @b!A00T.pa1# на @b!A00T.va1# ед., @b!A00T.pa2# на @b!A00T.va2# и @b!A00T.pa3# на @b!A00T.va3#.",
+                [1] = "Волшебница фокусирует энергии тайной магии, улучшая свою защиту: @b!A00T.pa1# на @b!A00T.va1# ед., @b!A00T.pa2# на @b!A00T.va2# и @b!A00T.pa3# на @b!A00T.va3#.",
             },
             [FourCC("A00K")] = {
-                bind = "Выпускает заряженный сгусток энергии медленно летящий вперед, периодически пульсируя разрядами в радиусе @m!MBLB.rad#, которые наносят @e!ELBL.pwr# ед. урона типа @e!ELBL.atr#",
+                [1] = "Выпускает заряженный сгусток энергии медленно летящий вперед, периодически пульсируя разрядами в радиусе @m!MBLB.rad#, которые наносят @e!ELBL.pwr# ед. урона типа @e!ELBL.atr#",
             },
             [FourCC("A00J")] = {
-                bind = "Выстреливает хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают",
+                [1] = "Выстреливает хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают",
             },
             [FourCC("A00F")] = {
-                bind = "Призывает с неба метеор, падающий на землю после небольшой задержки, нанося @e!EMTR.pwr# ед. урона типа @e!EMTR.atr# в радиусе @e!EMTR.aoe# и отталкивая противников из центра падения. Имеет повышенный бонус к стихии (+@e!EMTR.ab#)",
+                [1] = "Призывает с неба метеор, падающий на землю после небольшой задержки, нанося @e!EMTR.pwr# ед. урона типа @e!EMTR.atr# в радиусе @e!EMTR.aoe# и отталкивая противников из центра падения. Имеет повышенный бонус к стихии (+@e!EMTR.ab#)",
             },
             [FourCC("A00L")] = {
-                bind = "Позволяет мгновенно переместиться на расстояние до @s!A00L.rng#.",
+                [1] = "Позволяет мгновенно переместиться на расстояние до @s!A00L.rng#.",
             },
             [FourCC("A00M")] = {
-                bind = "Призывает мощный разряд, поражающий в радиусе @e!ELST.aoe# нанося @e!ELST.pwr# ед. урона типа @e!ELST.atr#. Имеет повышенный бонус к стихии (+@e!ELST.ab#) и множителю критического урона (+@e!ELST.bcm#)",
+                [1] = "Призывает мощный разряд, поражающий в радиусе @e!ELST.aoe# нанося @e!ELST.pwr# ед. урона типа @e!ELST.atr#. Имеет повышенный бонус к стихии (+@e!ELST.ab#) и множителю критического урона (+@e!ELST.bcm#)",
             },
             [FourCC("A005")] = {
-                bind = "Запускает вперед ледяной шар, который наносит постоянно в радиусе @e!EFOA.aoe# @e!EFOA.pwr# ед. урона типа @e!EFOA.atr# (+@e!EFOA.ab#). В конце пути взрывается, нанося @e!EFRO.pwr# ед. урона типа @e!EFRO.atr#, с повышенном шансом критического урона на (+@e!EFRO.bcc#)",
+                [1] = "Запускает вперед ледяной шар, который наносит постоянно в радиусе @e!EFOA.aoe# @e!EFOA.pwr# ед. урона типа @e!EFOA.atr# (+@e!EFOA.ab#). В конце пути взрывается, нанося @e!EFRO.pwr# ед. урона типа @e!EFRO.atr#, с повышенном шансом критического урона на (+@e!EFRO.bcc#)",
             },
             [FourCC("A00D")] = {
-                bind = "Запускает вперед огненный шар, при столкновении наносящий @e!EGFB.pwr# ед. урона типа @e!EGFB.atr#.",
+                [1] = "Запускает вперед огненный шар, при столкновении наносящий @e!EGFB.pwr# ед. урона типа @e!EGFB.atr#.",
             },
             [FourCC("A001")] = {
-                bind = "Ледяная волна, исходящая от волшебницы до радиуса в @e!EFRN.aoe# ед., которая наносит противникам @e!EFRN.pwr# ед. урона типа @e!EFRN.atr# и замораживающая их на @b!A00S.time# cек.",
+                [1] = "Ледяная волна, исходящая от волшебницы до радиуса в @e!EFRN.aoe# ед., которая наносит противникам @e!EFRN.pwr# ед. урона типа @e!EFRN.atr# и замораживающая их на @b!A00S.time# cек.",
             },
             [FourCC("A003")] = {
-                bind = "Бросает вперед ледяную стрелу, при столкновении с первым противником разлетается на осколки нанося @e!EFRB.pwr# ед. урона типа @e!EFRB.atr# в радиусе @e!EFRB.aoe#. Пораженные охлаждаются, замедляясь на @b!A004.va1#",
+                [1] = "Бросает вперед ледяную стрелу, при столкновении с первым противником разлетается на осколки нанося @e!EFRB.pwr# ед. урона типа @e!EFRB.atr# в радиусе @e!EFRB.aoe#. Пораженные охлаждаются, замедляясь на @b!A004.va1#",
             },
             [FourCC("A019")] = {
-                bind = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на ближайших противников. Количество пораженных целей увеличивается с уровнем.",
+                [1] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 2 ближайших противников.",
+                [15] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 3 ближайших противников.",
+                [30] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 4 ближайших противников.",
+                [45] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 5 ближайших противников.",
+                [60] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 6 ближайших противников.",
+                [75] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 7 ближайших противников.",
+                [90] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 8 ближайших противников.",
+                [105] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 9 ближайших противников.",
+                [120] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 10 ближайших противников.",
             },
+
+            QUEST_REWARD_GOLD_FIRST = "получено ",
+            QUEST_REWARD_GOLD_SECOND = " золота.",
+
+            RESSURECT_TEXT_1 = "Ваш герой возродится через |c008EFFFF",
+            RESSURECT_TEXT_2 = "|r сек. на кладбище.",
+            GOLD_PENALTY_TEXT_1 = "|c00FF4444Погибнув, вы где-то потеряли|r |c00FFFF44",
+            GOLD_PENALTY_TEXT_2 = "|r |c00FF4444золота.|r",
+
+            INTRODUCTION_TEXT_1 = "О, путник. Добро пожаловать в нашу крепость. Здесь конечно неспокойно, но по твоему виду можно сказать что ты не лыком шит.",
+            INTRODUCTION_TEXT_2 = "Возможно ты сможешь помочь нам? Дело в том, что тут стоит чертов артефакт, который возьми да активируйся.",
+            INTRODUCTION_TEXT_3 = "Сначала подумали, ну ладно, а потом на нас всякая нечисть поперла! Нам бы день продержаться да ночь простоять, поможешь?",
+
+            INTRODUCTION_BARBARIAN_RESPONCE = "Похоже это дело для вед... кхм, простите, варвара.",
+            INTRODUCTION_SORCERESS_RESPONCE = "Мои чары сокрушат любое существо.",
+
+
+            VENDOR_BILL_NAME = "Вендор Билл",
+            HEALER_NAME = "Целительница",
+            BLACKSMITH_NAME = "Кузнец",
+            SMORC_NAME = "Сморк",
+
+
+            AIZEK_NAME = "Подмастерье Айзек",
+            GUINPLEN_NAME = "Гуинплен",
+            STEPHAN_NAME = "Целитель Стефан",
+            MORDER_NAME = "Мордер",
+            HUNTRESS_NAME = "Охотница",
+            ABENO_NAME = "Абэ-но",
+            TAKO_NAME = "Провизионист Тако",
+            WITCH_NAME = "Ведьма Леса",
+            HUNTER_NAME = "Охотник Борк",
+
+
+
+            QUEST_1_TITLE = "Потерянный груз",
+            QUEST_1_DESC = "Помощник кузнеца растерял припасы. Так как в  округе очень опасно, он попросил вас помочь ему вернуть утраченное.",
+            QUEST_1_SPEECH = "Оооо, ваша помощь мне будет очень кстати. Я тут груз потерял... а нынче в округе очень опасно. Не могли бы вы помочь мне, а я вам тоже помогу?",
+            QUEST_1_ITEM = "Собранные припасы",
+
+            QUEST_2_TITLE = "Голодовка",
+            QUEST_2_DESC = "Неспокойна обстановка привела к голоду внутри крепости. Необходимо раздобыть съестное, иначе многие умрут от голода.",
+            QUEST_2_SPEECH_1 = "Эй, слушай. Только никому не говори, но у нас очень большая проблема.",
+            QUEST_2_SPEECH_2 = "Тут такое дело, Наши обычные поставки еды обычно не задержвиваются, но сами понимаете, сейчас все в округе кишит тварями.",
+            QUEST_2_SPEECH_3 = "Нам позарез нужно раздобыть провизию, иначе тут все каюк. Смекаешь?",
+            QUEST_2_RESPONCE = "Если я что-то найду, то принесу.",
+            QUEST_2_ITEM1 = "Провизии собрано",
+            QUEST_2_ITEM2 = "Отдать собранное",
+            QUEST_2_SPEECH_DONE = "Мое почтение! Этого нам хватит с запасом. Отличная работа!",
+
+            QUEST_1_M_TITLE = "Нечестивое создание",
+            QUEST_1_M_DESC = "В окрестностях видели особо свирепое демоническое создание. Нас попросили позаботиться о нем, и направили к Гуинплену, который где-то здесь неподалеку на поле возле крученого спуска.",
+            QUEST_1_M_ITEM = "Найти Гуинплена",
+            QUEST_1_M_ITEMVAR1 = "Найти Лилит",
+            QUEST_1_M_ITEMVAR2 = "Найти Посох Надежды",
+            QUEST_1_M_ITEMVAR1END = "Убтиь Лилит",
+            QUEST_1_M_ITEMVAR2END = "Опробовать посох на Лилит",
+            QUEST_1_M_SPEECH_INTRO = "Постойте. Я вижу, вы можете помочь в нашем деле. Дело в том, что в добавок к обычной нечисти, тут завелся один очень свирепый демон.",
+            QUEST_1_M_SPEECH_INTRO_2 = "Он с особой жестокостью расправляется с солдатами, и почти каждый день мы находим новые трупы заблудившихся путников.",
+            QUEST_1_M_SPEECH_INTRO_3 = "Нам бы как то избавиться от него, и как раз тут неподалеку есть рыцарь странник, может он может вам помочь?",
+            QUEST_1_M_SPEECH_GIUN_1 = "Вы по поводу жестокого демона? Знаете... я так скажу, у меня есть сведения, которые объясняют его происхождение.",
+            QUEST_1_M_SPEECH_GIUN_2 = "На самом деле это зачарованная девушка из местной деревушки. Кто то видимо решил отомстить и использовал какой то артефакт из преисподней на ней.",
+            QUEST_1_M_SPEECH_GIUN_3 = "Я уже нашел один посох который может избавить ее от проклятия, но когда я собирался встретиться с продавцом, оказалось что его растерзали, а посох утерян где то на юге-востоке отсюда.",
+            QUEST_1_M_SPEECH_GIUN_4 = "Найдете посох - и сможете избавиться от демона более цивилизованным способом.",
+            QUEST_1_M_SPEECH_END_2 = "О боже... я вернулась! Как вы смогли это сделать? Такое ощущение, что я очень крепко спала... Благодарю вас! Примите это в знак благодарности!",
+            QUEST_1_M_SPEECH_STAFF_FOUND = "Похоже это тот самый посох про который говорил Гуинплен. Теперь стоит найти демона и опробовать его на нем.",
+
+
+
+            QUEST_2_M_TITLE = "Страж Леса",
+            QUEST_2_DESC = "Местные охотники выслеживают Стража Леса - то ли миф, то ли реальное существо. Стоит разузнать побольше у этих самых охотников. Последнее их пристанище было где то на юге от крепости.",
+            QUEST_2_M_ITEM = "Найти лагерь охотников",
+            QUEST_2_M_ITEMVAR1 = "Выследить зверя",
+            QUEST_2_M_ITEMVAR2 = "Найти местную ведьму",
+            QUEST_2_M_ITEMVAR3 = "Cобрать растение Ивенор",
+            QUEST_2_M_ITEMVAR4 = "Поднести растения на алтарь леса",
+            QUEST_2_M_ITEMVAR5 = "Вернуть сердце зверя охотникам",
+
+            QUEST_2_M_RESPONCE = "Посмотрим что это за зверь.",
+            QUEST_2_M_RESPONCE_WITCH = "Я подумаю над этим.",
+            QUEST_2_M_RESPONCE_HUNTERS = "Понятно. Уже выдвигаюсь.",
+            QUEST_2_M_RESPONCE_HUNTERS_2 = "Вот сердце зверя.",
 
 
         },
@@ -811,7 +913,7 @@ do
 
             BLOCK_CHANCE_PARAM            = 'Block chance',
             BLOCK_ABSORB_PARAM            = 'Block damage reduction',
-            
+
             REFLECT_DAMAGE_PARAM   = 'Damage reflection',
             REFLECT_MELEE_DAMAGE_PARAM   = 'Melee damage reflection',
             REFLECT_RANGE_DAMAGE_PARAM   = 'Range damage reflection',
@@ -832,6 +934,7 @@ do
             ITEM_TYPE_CONSUMABLE_NAME = "Consumable",
             ITEM_TYPE_GEM_NAME        = "Gem",
             ITEM_TYPE_SKILLBOOK       = "Knowledge",
+            ITEM_TYPE_OTHER           = "Other",
 
             BOW_WEAPON_NAME            = "Bow",
             BLUNT_WEAPON_NAME          = "Blunt",
@@ -863,8 +966,8 @@ do
             ARCANE_ATTRIBUTE_NAME       = "Arcane",
             DARKNESS_ATTRIBUTE_NAME     = "Darkness",
             HOLY_ATTRIBUTE_NAME         = "Holy",
-            
-            
+
+
             FEEDBACK_GOLD = {
                 [BARBARIAN_CLASS] = {
                     "Sounds\\Responses\\barbarian_gold_1_us.wav",
@@ -960,6 +1063,7 @@ do
             CASTLE_LOCATION = 'Castle',
             SHORE_LOCATION = 'Shore',
             WOODS_LOCATION = 'Woods',
+            RUINS_LOCATION = "Ruins",
 
             FEEDBACK_MSG_NOSPACE = "Not enough space",
             FEEDBACK_MSG_CANTUSE = "Can't use that",
@@ -1013,6 +1117,13 @@ do
             STAT_PANEL_INT = "INT: ",
             STAT_PANEL_VIT = "VIT: ",
             STAT_PANEL_AGI = "AGI: ",
+
+            STAT_PANEL_MAIN_STAT = "Main",
+            STAT_PANEL_STR_DESC = "Boosts physical damage.",
+            STAT_PANEL_INT_DESC = "Each point gives 1 magic suppression. Also boosts magical damage, mana and mana recovery.",
+            STAT_PANEL_VIT_DESC = "Boosts heath amount and its recovery.",
+            STAT_PANEL_AGI_DESC = "Each point gives 2 defence.",
+
 
             STAT_PANEL_PHYS_ATTACK = "Phys. attack: ",
             STAT_PANEL_PHYS_DEFENCE = "Defence: ",
@@ -1248,6 +1359,9 @@ do
             STARTING_ITEM_NAME_LEGS = "Riveted boots",
             STARTING_ITEM_NAME_STAFF = "Worn staff",
 
+            SHARD_OF_HATE = "Shard of Hate",
+            SHARD_OF_HATE_DESC = "Strange glowing shard, you feel rise of hatred upon touching it.",
+
             GEM_RUBY = 'Ruby',
             GEM_SAPPHIRE = 'Sapphire',
             GEM_TOPAZ = 'Topaz',
@@ -1339,13 +1453,13 @@ do
 
             ITEM_LEG_DESCRIPTION_FIREBOND = "Fire abilities are stronger by 35%%.",
             ITEM_LEG_DESCRIPTION_WITCH_MASTERY = "Each casted spell will increase your spell power by 10%% in exhange of 5%% life",
-            ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Each enemy near a hero is increasing his moving speed by 3%%, with maximum of 25%%",
+            ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Each enemy near the hero is increasing his moving speed by 3%%, to a maximum of 25%%",
             ITEM_LEG_DESCRIPTION_RITUAL_DAGGER = " With each attack you gain a stack of Chaos effect. After reaching 15 stacks, attack power and speed gain major boost for short period of time, but health regeneration is inversed.",
             ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "With each fire, ice or lightning attack you apply a negative effect that will decrease target's resistance of that element by 5 for 7 sec. Every attack is refreshing uptime and stacking 3 times.",
             ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Discharge\" now comes out of sorceress, also it's power is increased.",
             ITEM_LEG_DESCRIPTION_PAIN_ECHO = "\"Cutting Slash\"'s bleeding now can be critical and gains 25%% critical chance bonus.",
             ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "With each attack you apply crystallisation on the enemies, decreasing their moving speed. After reaching 5 stacks, enemy will freeze for 3 sec.",
-
+            ITEM_LEG_DESCRIPTION_BOOSTERS = "Upon landing after using \"Jump\" deals 215%% of weapon damage in a small area.",
 
 
             ITEM_NAME_RAT_HUNTER = 'Rat Hunter',
@@ -1371,6 +1485,8 @@ do
             ITEM_NAME_SMORC_PICKAXE = "Smorc's Pickaxe",
             ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE = "Legends have told, that miner Smorc was crushing his enemies with that thing.",
 
+            ITEM_NAME_BOOSTERS = "Boosters",
+            ITEM_SPEC_DESCRIPTION_BOOSTERS = "Invention of an unknown author has found its unique use.",
 
             ITEM_NAME_EYE_OF_THE_STORM = "Eye of the Storm",
             ITEM_SPEC_DESCRIPTION_EYE_OF_THE_STORM = "Unknown sorcerer acquired a magnificent artifact, and shortly after that he became an ash.",
@@ -1421,80 +1537,107 @@ do
             GENERATED_TOOLTIP = " of attack",
 
             [FourCC("A007")] = {
-                bind = "Strong blow that deals @e!ECRH.dmg# @e!ECRH.atr# damage in front. Affected enemies will suffer a loss of physical damage resistance by @b!A00W.va1# and attack speed by @b!A00W.va2# for @b!A00W.time# seconds.",
+                [1] = "Strong blow that deals @e!ECRH.dmg# @e!ECRH.atr# damage in front. Affected enemies will suffer a loss of physical damage resistance by @b!A00W.va1# and attack speed by @b!A00W.va2# for @b!A00W.time# seconds.",
             },
             [FourCC("A00C")] = {
-                bind = "Barbarian screams in @e!EWCR.aoe# range, which reduces enemy attack by @b!A00Y.va1# and movement speed by @b!A00Y.va3#.",
+                [1] = "Barbarian screams in @e!EWCR.aoe# range, which reduces enemy attack by @b!A00Y.va1# and movement speed by @b!A00Y.va3#.",
             },
             [FourCC("A006")] = {
-                bind = "Swift strkike that inflicts @e!ECSL.dmg# of @e!ECSL.atr# in front. Enemies suffer a bloodloss, taking @e!ECSP.dmg# of @e!ECSP.atr# as a periodic damage.",
+                [1] = "Swift strkike that inflicts @e!ECSL.dmg# of @e!ECSL.atr# in front. Enemies suffer a bloodloss, taking @e!ECSP.dmg# of @e!ECSP.atr# as a periodic damage.",
             },
             [FourCC("A00A")] = {
-                bind = "Throws a chain that flies up to @s!A00A.rng# range, pulling first target it hits to you.",
+                [1] = "Throws a chain that flies up to @s!A00A.rng# range, pulling first target it hits to you.",
             },
             [FourCC("A010")] = {
-                bind = "Barbarian forms storm of fury, rapidly spinning around and dealing enemies @e!EWHW.dmg# of @e!EWHW.atr# 3 times per second for a cost of 9 mana per second.",
+                [1] = "Barbarian forms storm of fury, rapidly spinning around and dealing enemies @e!EWHW.dmg# of @e!EWHW.atr# 3 times per second for a cost of 9 mana per second.",
             },
             [FourCC("A00Q")] = {
-                bind = "Falling into pure rage, increasing attack by @b!A00V.va1#, effects control reduction by @b!A00V.va2# and movement speed by @b!A00V.va3# for @b!A00V.time# sec.",
+                [1] = "Falling into pure rage, increasing attack by @b!A00V.va1#, effects control reduction by @b!A00V.va2# and movement speed by @b!A00V.va3# for @b!A00V.time# sec.",
             },
             [FourCC("A00B")] = {
-                bind = "Punch that deals @e!EUPP.dmg# of @e!EUPP.atr# and pushing back targets, after which they are stunned for @b!A012.time# sec.",
+                [1] = "Punch that deals @e!EUPP.dmg# of @e!EUPP.atr# and pushing back targets, after which they are stunned for @b!A012.time# sec.",
             },
             [FourCC("A00Z")] = {
-                bind = "Throws a dagger up to @s!A00Z.rng# range, first enemy it hits will take @e!ETHK.dmg# of @e!ETHK.atr# damage. This skill has increased chance of critical damage (+@e!ETHK.bcc#).",
+                [1] = "Throws a dagger up to @s!A00Z.rng# range, first enemy it hits will take @e!ETHK.dmg# of @e!ETHK.atr# damage. This skill has increased chance of critical damage (+@e!ETHK.bcc#).",
             },
             [FourCC("A00O")] = {
-                bind = "Allows you to jump up to @s!A00O.rng# range.",
+                [1] = "Allows you to jump up to @s!A00O.rng# range.",
             },
             [FourCC("A020")] = {
-                bind = "Finishing strike. Deals @e!EEXC.dmg# @e!EEXC.atr#, if it is used on enemies that have less than 20%% of health its power is increased by 3 times and chances to crit by 20%%.",
+                [1] = "Finishing strike. Deals @e!EEXC.dmg# @e!EEXC.atr#, if it is used on enemies that have less than 20%% of health its power is increased by 3 times and chances to crit by 20%%.",
             },
             [FourCC("ABFA")] = {
-                bind = "Heals you for @e!EFAA.hp_perc# every second during @b!A01N.time# seconds.",
+                [1] = "Heals you for @e!EFAA.hp_perc# every second during @b!A01N.time# seconds.",
+                [5] = "Heals you for @e!EFAA.hp_perc# every second during @b!A01N.time# seconds. Also gives @b!A01N.va1# @b!A01N.pa1#.",
             },
             [FourCC("A00I")] = {
-                bind = "Summons an immortal flame hydra that attacks enemies. Hydra inherits 70% of Sorceress stats. Increasing level of this skill enhances hydra's life duration.",
+                [1] = "Summons an immortal flame hydra that attacks enemies. Hydra inherits 70% of Sorceress stats. Increasing level of this skill enhances hydra's life duration.",
             },
             [FourCC("A00H")] = {
-                bind = "Sorceress binds elemental forces to her will, which boosting her powers: [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# и @b!A00U.pa4#] inscreasing for @b!A00U.va1#, @b!A00U.pa5# на @b!A00U.va5#. Duration - @b!A00U.time sec.",
+                [1] = "Sorceress binds elemental forces to her will, which boosting her powers: [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# и @b!A00U.pa4#] inscreasing for @b!A00U.va1#, @b!A00U.pa5# на @b!A00U.va5#. Duration - @b!A00U.time# sec.",
             },
             [FourCC("A00E")] = {
-                bind = "Sorceress forms frost barrier around herself, boosting @b!A011.pa1# for @b!A011.va1#, @b!A011.pa2# for @b!A011.va2# and @b!A011.pa3# for @b!A011.va3#. Duration - @b!A011.time sec.",
+                [1] = "Sorceress forms frost barrier around herself, boosting @b!A011.pa1# for @b!A011.va1#, @b!A011.pa2# for @b!A011.va2# and @b!A011.pa3# for @b!A011.va3#. Duration - @b!A011.time sec.",
             },
             [FourCC("A00N")] = {
-                bind = "Sorceress focusing her arcane powers that boosting her defence: @b!A00T.pa1# for @b!A00T.va1#, @b!A00T.pa2# for @b!A00T.va2# and @b!A00T.pa3# for @b!A00T.va3#. Duration - @b!A00T.time sec.",
+                [1] = "Sorceress focusing her arcane powers that boosting her defence: @b!A00T.pa1# for @b!A00T.va1#, @b!A00T.pa2# for @b!A00T.va2# and @b!A00T.pa3# for @b!A00T.va3#. Duration - @b!A00T.time sec.",
             },
             [FourCC("A00K")] = {
-                bind = "Forms energized ball that slowly flies forward, periodically pulsing in @e!MBLB.rad# range on a nearby enemies for a @e!ELBL.pwr# @e!ELBL.atr# damage.",
+                [1] = "Forms energized ball that slowly flies forward, periodically pulsing in @e!MBLB.rad# range on a nearby enemies for a @e!ELBL.pwr# @e!ELBL.atr# damage.",
             },
             [FourCC("A00J")] = {
-                bind = "Shots electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# @e!EDSC.atr# damage.",
+                [1] = "Shots electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# @e!EDSC.atr# damage.",
             },
             [FourCC("A00F")] = {
-                bind = "Calls for a meteor from the sky that falling after a short delay, dealing enemies @e!EMTR.pwr# @e!EMTR.atr# damage in a @e!EMTR.aoe# radius, pushing them from an explosion center. Has bonus to an attribute (+@e!EMTR.ab#)",
+                [1] = "Calls for a meteor from the sky that falling after a short delay, dealing enemies @e!EMTR.pwr# @e!EMTR.atr# damage in a @e!EMTR.aoe# radius, pushing them from an explosion center. Has bonus to an attribute (+@e!EMTR.ab#)",
             },
             [FourCC("A00L")] = {
-                bind = "Allows you to instantly move up to @s!A00L.rng# range.",
+                [1] = "Allows you to instantly move up to @s!A00L.rng# range.",
             },
             [FourCC("A00M")] = {
-                bind = "Calls for a powerful discharge with a radius @e!ELST.aoe# that deals @e!ELST.pwr# @e!ELST.atr# damage. This skill has bonus to an attribute (+@e!ELST.ab#) and a critical multiplier (+@e!ELST.bcm#).",
+                [1] = "Calls for a powerful discharge with a radius @e!ELST.aoe# that deals @e!ELST.pwr# @e!ELST.atr# damage. This skill has bonus to an attribute (+@e!ELST.ab#) and a critical multiplier (+@e!ELST.bcm#).",
             },
             [FourCC("A005")] = {
-                bind = "Launching forward a frost orb that constantly damages enemies in a @e!EFOA.aoe# radius inflicting @e!EFOA.pwr# @e!EFOA.atr# damage (+@e!EFOA.ab#). At the end the orb explodes for a @e!EFRO.pwr# @e!EFRO.atr# damage with increased bonus to a critical chance (+@e!EFRO.bcc#)",
+                [1] = "Launching forward a frost orb that constantly damages enemies in a @e!EFOA.aoe# radius inflicting @e!EFOA.pwr# @e!EFOA.atr# damage (+@e!EFOA.ab#). At the end the orb explodes for a @e!EFRO.pwr# @e!EFRO.atr# damage with increased bonus to a critical chance (+@e!EFRO.bcc#)",
             },
             [FourCC("A00D")] = {
-                bind = "Throws forward a fireball, first enemy it hit takes @e!EGFB.pwr# @e!EGFB.atr# damage in small area around.",
+                [1] = "Throws forward a fireball, first enemy it hit takes @e!EGFB.pwr# @e!EGFB.atr# damage in small area around.",
             },
             [FourCC("A001")] = {
-                bind = "Emits wave of frost from yourself with @e!EFRN.aoe# radius, freezing enemies for @b!A00S.time# sec. and dealing them @e!EFRN.pwr# @e!EFRN.atr# damage.",
+                [1] = "Emits wave of frost from yourself with @e!EFRN.aoe# radius, freezing enemies for @b!A00S.time# sec. and dealing them @e!EFRN.pwr# @e!EFRN.atr# damage.",
             },
             [FourCC("A003")] = {
-                bind = "Throws a frostbolt that explodes on a first enemy, dealing @e!EFRB.pwr# @e!EFRB.atr# damage in a @e!EFRB.aoe# radius. Affected targets will suffer a movement speed loss by @b!A004.va1#",
+                [1] = "Throws a frostbolt that explodes on a first enemy, dealing @e!EFRB.pwr# @e!EFRB.atr# damage in a @e!EFRB.aoe# radius. Affected targets will suffer a movement speed loss by @b!A004.va1#",
             },
             [FourCC("A019")] = {
-                bind = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces to a nearby enemy. Bounces amount is increased with the skill level.",
+                [1] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 2 nearby enemies.",
+                [15] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 3 nearby enemies.",
+                [30] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 4 nearby enemies.",
+                [45] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 5 nearby enemies.",
+                [60] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 6 nearby enemies.",
+                [75] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 7 nearby enemies.",
+                [90] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 8 nearby enemies.",
+                [105] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 9 nearby enemies.",
+                [120] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 10 nearby enemies.",
             },
+
+
+            INTRODUCTION_TEXT_1 = "Hey, stranger! Welcome to our fortress. It's kinda unsettling here, but I see you can stand on your own.",
+            INTRODUCTION_TEXT_2 = "Maybe you could help us then? There is one problem - that damn artifact. He became active all of a sudden.",
+            INTRODUCTION_TEXT_3 = "At first we thought \"who cares?\" but then we got attacked by all kind of things! I hope to stay in one piece one more night. So, whaddaya say?",
+
+            INTRODUCTION_BARBARIAN_RESPONCE = "It's looks like this is the work for the wit... ahem, sorry, barbarian.",
+            INTRODUCTION_SORCERESS_RESPONCE = "My spells will crush any creature here.",
+
+
+            RESSURECT_TEXT_1 = "Your hero will be revived after |c008EFFFF",
+            RESSURECT_TEXT_2 = "|r sec. at the cemetary.",
+            GOLD_PENALTY_TEXT_1 = "|c00FF4444Upon dying you lost somewhere|r |c00FFFF44",
+            GOLD_PENALTY_TEXT_2 = "|r |c00FF4444gold.|r",
+
+            QUEST_1_TITLE = "Lost cargo",
+            QUEST_1_DESC = "Blacksmith assistant has lost his supplies. As there are very dangerous he is asking for your help to retrieve them.",
+            QUEST_1_SPEECH = "Aaaah, you help will be very handy to me. I've lost my cargo... and vicinities around the fortress are very dangerous nowadays. Maybe you can help me and I can help you?",
         }
 
     }

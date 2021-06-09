@@ -62,26 +62,26 @@ do
 
         if buff.level[lvl].generated == nil or not buff.level[lvl].generated then
             buff.level[lvl].generated = true
-
+            --print("generated1")
     
                 if buff.effect_delay_delta then
                     buff.level[lvl].effect_delay = (buff.level[1].effect_delay or 0.1) + math.floor(lvl / (buff.effect_delay_delta_level or 1.)) * buff.effect_delay_delta
                 end
-    
+    --print("generated2")
                 if buff.rank_delta then
                     buff.level[lvl].rank = (buff.level[1].rank or 1) + math.floor(lvl / (buff.rank_delta_level or 1.)) * buff.rank_delta
                 end
     
-    
+    --print("generated3")
                 if buff.time_delta then
                     buff.level[lvl].time = (buff.level[1].time or 0.1) + math.floor(lvl / (buff.time_delta_level or 1.)) * buff.time_delta
                 end
 
-
+    --print("generated4")
 
                 if buff.level[1].bonus then
 
-                        for i = 1, #buff.level[lvl].bonus do
+                        for i = 1, #buff.level[1].bonus do
                             local origin_param_data = buff.level[1].bonus[i]
 
                                 if origin_param_data.value_delta then
@@ -101,10 +101,71 @@ do
                         end
 
                 end
+--print("generated done")
+            if buff.breakpoints then
+                for point = 1, #buff.breakpoints do
+                    local current = buff.breakpoints[point]
+                    if lvl > current then
+                        for i = 1, #buff.level[current].bonus do
+                            local param_number = #buff.level[lvl].bonus + 1
+                            local origin_param_data = buff.level[current].bonus[i]
+
+                                if origin_param_data.value_delta then
+                                    local delta_max = math.floor((lvl - current) / (origin_param_data.value_delta_level or 1))
+
+                                    if origin_param_data.value_delta_level_max and delta_max > origin_param_data.value_delta_level_max then
+                                        delta_max = origin_param_data.value_delta_level_max
+                                    end
+
+
+                                    buff.level[lvl].bonus[param_number] = { PARAM = origin_param_data.PARAM, VALUE = origin_param_data.VALUE + delta_max * origin_param_data.value_delta, METHOD = origin_param_data.METHOD }
+                                elseif not buff.level[lvl].bonus[i] then
+                                    buff.level[lvl].bonus[param_number] = { PARAM = origin_param_data.PARAM, VALUE = origin_param_data.VALUE, METHOD = origin_param_data.METHOD }
+                                    --param_data.VALUE = origin_param_data.VALUE + delta_max * origin_param_data.value_delta
+                                end
+
+                        end
+                    end
+                end
+            end
+
 
         end
 
     end
+
+
+        --if buff.breakpoints then
+
+                --for point = 1, #buff.breakpoints do
+                    --if lvl > buff.breakpoints[point] then
+                        --if buff.level[buff.breakpoints[point]].bonus then
+
+                            --for i = 1, #buff.level[lvl].bonus do
+                                --local origin_param_data = buff.level[buff.breakpoints[point]].bonus[i]
+
+                                    --if origin_param_data.value_delta then
+                                       -- local delta_max = math.floor((lvl - 1) / (origin_param_data.value_delta_level or 1))
+
+                                       -- if origin_param_data.value_delta_level_max and delta_max > origin_param_data.value_delta_level_max then
+                                        --    delta_max = origin_param_data.value_delta_level_max
+                                        --end
+
+
+                                        --buff.level[lvl].bonus[i] = { PARAM = origin_param_data.PARAM, VALUE = origin_param_data.VALUE + delta_max * origin_param_data.value_delta, METHOD = origin_param_data.METHOD }
+                                    --elseif not buff.level[lvl].bonus[i] then
+                                      --  buff.level[lvl].bonus[i] = { PARAM = origin_param_data.PARAM, VALUE = origin_param_data.VALUE, METHOD = origin_param_data.METHOD }
+                                        --param_data.VALUE = origin_param_data.VALUE + delta_max * origin_param_data.value_delta
+                                    --end
+
+                            --end
+
+                        --end
+                   -- end
+               -- end
+
+            --end
+
 
     ---@param buff_template table
     function NewBuffTemplate(buff_template)
@@ -239,7 +300,7 @@ do
             level = {
                 [1] = {
                     rank = 10,
-                    time = 6.,
+                    time = 12.,
 
                     current_level = 1,
                     max_level = 1,
@@ -265,7 +326,7 @@ do
             level = {
                 [1] = {
                     rank = 10,
-                    time = 10.,
+                    time = 15.,
 
                     current_level = 1,
                     max_level = 1,
@@ -290,7 +351,7 @@ do
             level = {
                 [1] = {
                     rank = 10,
-                    time = 10.,
+                    time = 15.,
 
                     current_level = 1,
                     max_level = 1,
@@ -520,17 +581,26 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 75,
+            breakpoints = { 10 },
 
             level = {
                 [1] = {
                     rank = 7,
                     time = 10.,
 
-                    current_level = 1,
-                    max_level = 1,
+                    effect = 'EFAA',
+                    effect_delay = 1.,
+                },
+                [10] = {
+                    rank = 7,
+                    time = 10.,
 
                     effect = 'EFAA',
                     effect_delay = 1.,
+
+                    bonus = {
+                        { PARAM = POISON_RESIST, VALUE = 2, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 4, value_delta_level_max = 10 }
+                    }
                 }
             }
         })
@@ -552,8 +622,8 @@ do
                     max_level = 1,
 
                     bonus = {
-                        { PARAM = PHYSICAL_RESIST, VALUE = -15, METHOD = STRAIGHT_BONUS, value_delta = -5, value_delta_level = 5, value_delta_level_max = 10 },
-                        { PARAM = ATTACK_SPEED, VALUE = -25, METHOD = STRAIGHT_BONUS, value_delta = -3, value_delta_level = 3, value_delta_level_max = 16 },
+                        { PARAM = PHYSICAL_RESIST, VALUE = -10, METHOD = STRAIGHT_BONUS, value_delta = -5, value_delta_level = 5, value_delta_level_max = 10 },
+                        { PARAM = ATTACK_SPEED, VALUE = -20, METHOD = STRAIGHT_BONUS, value_delta = -3, value_delta_level = 3, value_delta_level_max = 16 },
                     }
                 }
             }
@@ -574,6 +644,23 @@ do
 
                     current_level = 1,
                     max_level = 1,
+
+                    negative_state = STATE_STUN
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "charge stun debuff",
+            id = 'ABCB',
+            buff_id = 'B00S',
+            buff_type = NEGATIVE_BUFF,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 3.,
 
                     negative_state = STATE_STUN
                 }
@@ -1001,6 +1088,177 @@ do
             }
 
         })
+        --================================================--
+        NewBuffTemplate({
+            name = "web debuff",
+            id = 'A01T',
+            buff_id = 'B00P',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 7,
+                    time = 3.,
+
+                    current_level = 1,
+                    max_level = 1,
+
+                }
+            }
+        })
+         --================================================--
+        NewBuffTemplate({
+            name = "spider queen bile debuff",
+            id = 'A01U',
+            buff_id = 'B00Q',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 75,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 12.,
+
+                    effect = 'ESQB',
+                    effect_delay = 2.,
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "spider bite debuff",
+            id = 'A01V',
+            buff_id = 'B00R',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 2.25,
+                    negative_state = STATE_STUN,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "bandit boldness buff",
+            id = 'ABBS',
+            buff_id = 'B00T',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = true,
+            max_level = 7,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 2.35,
+
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 5, METHOD = STRAIGHT_BONUS },
+                    }
+                },
+                [2] = {
+                    rank = 5,
+                    time = 2.35,
+
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS },
+                    }
+                },
+                [3] = {
+                    rank = 5,
+                    time = 2.35,
+
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 15, METHOD = STRAIGHT_BONUS },
+                    }
+                },
+                [4] = {
+                    rank = 5,
+                    time = 2.35,
+
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 20, METHOD = STRAIGHT_BONUS },
+                    }
+                },
+                [5] = {
+                    rank = 5,
+                    time = 2.35,
+
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 25, METHOD = STRAIGHT_BONUS },
+                    }
+                },
+                [6] = {
+                    rank = 5,
+                    time = 2.35,
+
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 35, METHOD = STRAIGHT_BONUS },
+                    }
+                },
+                [7] = {
+                    rank = 5,
+                    time = 5.,
+
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 50, METHOD = STRAIGHT_BONUS },
+                        { PARAM = CRIT_CHANCE, VALUE = 20, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "arachno bite debuff",
+            id = 'ACLS',
+            buff_id = 'B00R',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 3.25,
+                    negative_state = STATE_STUN,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "curse debuff",
+            id = 'ASCB',
+            buff_id = 'B00U',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 5.25,
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = -50, METHOD = STRAIGHT_BONUS },
+                        { PARAM = CAST_SPEED, VALUE = -50, METHOD = STRAIGHT_BONUS },
+                        { PARAM = MOVING_SPEED, VALUE = -125, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+
+        })
+
+
+        --ACLS
+
+
     end
 
 end

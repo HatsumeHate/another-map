@@ -127,7 +127,7 @@ do
                 --print("UpdateInventoryWindow index " .. I2S(i))
                 local button = ButtonList[GetHandleId(InventorySlots[player][i])]
                 --print("yep")
-                if button.item ~= nil then
+                if button.item then
                     local item_data = GetItemData(button.item)
                     BlzFrameSetTexture(button.image, item_data.frame_texture, 0, true)
                     FrameChangeTexture(button.button, item_data.frame_texture)
@@ -152,7 +152,7 @@ do
                                 BlzFrameSetVisible(button.charges_frame, true)
                                 BlzFrameSetText(button.charges_text_frame, R2I(GetItemCharges(button.item)))
 
-                                    if button.sprite ~= nil and not IsItemInvulnerable(button.item) then
+                                    if button.sprite and not IsItemInvulnerable(button.item) then
                                         BlzDestroyFrame(button.sprite)
                                         button.sprite = nil
                                     elseif button.sprite == nil and IsItemInvulnerable(button.item) then
@@ -173,8 +173,9 @@ do
                     BlzFrameSetTexture(button.image, button.original_texture, 0, true)
                     FrameChangeTexture(button.button, button.original_texture)
                     BlzFrameSetVisible(button.charges_frame, false)
+                    BlzFrameSetText(button.charges_text_frame, "")
 
-                        if button.sprite ~= nil then
+                        if button.sprite then
                             BlzDestroyFrame(button.sprite)
                             button.sprite = nil
                         end
@@ -225,10 +226,9 @@ do
             end
         else
             BlzDestroyFrame(button.sprite)
-
+            SetItemInvulnerable(button.item, false)
             UnitRemoveItem(PlayerHero[player], button.item)
             SetItemVisible(button.item, false)
-            SetItemInvulnerable(button.item, false)
             button.sprite = nil
         end
     end
@@ -247,13 +247,13 @@ do
         local player = GetPlayerId(GetTriggerPlayer()) + 1
         local h = GetHandleId(BlzGetTriggerFrame())
 
-            if PlayerMovingItem[player] ~= nil then
+            if PlayerMovingItem[player] then
                 BlzFrameSetAllPoints(PlayerMovingItem[player].frame, ButtonList[h].image)
                 local scale = 0.0415
                 if PlayerMovingItem[player].mode == 2 then scale = 0.035 end
                 BlzFrameSetSize(PlayerMovingItem[player].frame, scale, scale)
             else
-                if ButtonList[h].item ~= nil then
+                if ButtonList[h].item then
                     local proper_tooltip
                     if ShopFrame[player].state then proper_tooltip = ShopFrame[player].tooltip
                     else proper_tooltip = InventoryTooltip[player] end
@@ -552,7 +552,7 @@ do
 
 
         if TimerGetRemaining(DoubleClickTimer[player]) > 0. then
-            if ButtonList[h].item ~= nil then
+            if ButtonList[h].item then
                 RemoveTooltip(player)
                 DestroyContextMenu(player)
 
@@ -565,11 +565,11 @@ do
             end
         else
             TimerStart(DoubleClickTimer[player], 0.25, false, function()
-                if ButtonList[h].item ~= nil and PlayerMovingItem[player] == nil and ButtonList[h].button_type == INV_SLOT then
+                if ButtonList[h].item and PlayerMovingItem[player] == nil and ButtonList[h].button_type == INV_SLOT then
                     CreatePlayerContextMenu(player, ButtonList[h].button, FRAMEPOINT_LEFT, ButtonList[GetHandleId(InventorySlots[player][32])].image)
-                        if ShopInFocus[player] ~= nil then
+                        if ShopInFocus[player] then
                             AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_SELL, function()
-                                if ShopInFocus[player] ~= nil then
+                                if ShopInFocus[player] then
 
                                     if GetItemCharges(ButtonList[h].item) > 1 then
                                         CreateSlider(player, ButtonList[h], ButtonList[GetHandleId(InventorySlots[player][32])].image, function()
@@ -605,17 +605,17 @@ do
                     if item_data.TYPE == ITEM_TYPE_GEM then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_ENCHANT, function() StartSelectionMode(player, h, SELECTION_MODE_ENCHANT) end)
                     elseif item_data.TYPE == ITEM_TYPE_CONSUMABLE then
-                        AddContextOption(player, ButtonList[h].sprite ~= nil and LOCALE_LIST[my_locale].UI_TEXT_BELT_OFF or LOCALE_LIST[my_locale].UI_TEXT_BELT_ON, function() LockItemOnBelt(player, ButtonList[h]) end)
+                        AddContextOption(player, ButtonList[h].sprite and LOCALE_LIST[my_locale].UI_TEXT_BELT_OFF or LOCALE_LIST[my_locale].UI_TEXT_BELT_ON, function() LockItemOnBelt(player, ButtonList[h]) end)
                     elseif item_data.TYPE == ITEM_TYPE_SKILLBOOK then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_LEARN, function() LearnBook(item_data.item, player) end)
-                    else
+                    elseif item_data.TYPE ~= ITEM_TYPE_OTHER then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_EQUIP, function() InteractWithItemInSlot(h, player) end)
                     end
 
                     AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_MOVE, function() StartSelectionMode(player, h, SELECTION_MODE_MOVE) end)
                     AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_DROP, function()
 
-                        if item_data.soundpack ~= nil and item_data.soundpack.drop ~= nil then
+                        if item_data.soundpack and item_data.soundpack.drop then
                             AddSoundVolumeZ(item_data.soundpack.drop, GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]), BlzGetLocalUnitZ(PlayerHero[player]) + GetUnitFlyHeight(PlayerHero[player]), 127, 2200.)
                         end
 
@@ -646,12 +646,12 @@ do
             DestroySlider(player)
             DestroyContextMenu(player)
 
-            if PlayerMovingItem[player] ~= nil then
+            if PlayerMovingItem[player] then
                 TimerStart(DoubleClickTimer[player], 0., false, nil)
                 local moved_item_data = GetItemData(ButtonList[PlayerMovingItem[player].selected_frame].item)
 
                     if PlayerMovingItem[player].mode == SELECTION_MODE_ENCHANT then
-                            if ButtonList[h].item ~= nil then
+                            if ButtonList[h].item then
                                 if item_data.TYPE >= ITEM_TYPE_WEAPON and item_data.TYPE <= ITEM_TYPE_OFFHAND then
                                     Socket(ButtonList[PlayerMovingItem[player].selected_frame].item, ButtonList[h].item, player, ButtonList[h])
                                 end
@@ -665,7 +665,7 @@ do
                     if ButtonList[h].item == nil then
 
                         if ButtonList[h].button_type == INV_SLOT then
-                            if moved_item_data.soundpack ~= nil and moved_item_data.soundpack.drop ~= nil then PlayLocalSound(moved_item_data.soundpack.drop, player - 1) end
+                            if moved_item_data.soundpack and moved_item_data.soundpack.drop then PlayLocalSound(moved_item_data.soundpack.drop, player - 1) end
                             ButtonList[h].item = ButtonList[PlayerMovingItem[player].selected_frame].item
                             ButtonList[PlayerMovingItem[player].selected_frame].item = nil
                             UpdateInventoryWindow(player)
@@ -705,6 +705,30 @@ do
 
 
     ---@param item item
+    ---@param player number
+    ---@param amount number
+    function RemoveChargesFromInventoryItem(player, item, amount)
+        local button
+        for i = 1, 32 do
+            button = ButtonList[GetHandleId(InventorySlots[player][i])]
+            if button.item == item and GetItemType(item) == ITEM_TYPE_CHARGED then
+                local charges = GetItemCharges(item)
+
+                    if charges - amount <= 0 then
+                        RemoveCustomItem(item)
+                        button.item = nil
+                    else
+                        SetItemCharges(item, charges - amount)
+                    end
+
+                UpdateInventoryWindow(player)
+                break
+            end
+        end
+    end
+
+    ---@param item item
+    ---@param player number
     function RemoveItemFromInventory(player, item)
         local button
         for i = 1, 32 do
@@ -723,15 +747,13 @@ do
     ---@param item item
     function DropItemFromInventory(player, item, is_silent)
         local button
+
             for i = 1, 32 do
                 button = ButtonList[GetHandleId(InventorySlots[player][i])]
 
                     if button.item == item then
 
-                        if button.sprite then
-                            LockItemOnBelt(player, button)
-                        end
-
+                        if button.sprite then LockItemOnBelt(player, button) end
                         IsItemInBlacksmith(player, item)
 
                         SetItemVisible(item, true)
@@ -761,12 +783,13 @@ do
     TriggerAddAction(DropTrigger, function()
         if IsItemInvulnerable(GetManipulatedItem()) then
             SetItemInvulnerable(GetManipulatedItem(), false)
-            DropItemFromInventory(GetPlayerId(GetTriggerPlayer())+1, GetManipulatedItem(), false)
+            DropItemFromInventory(GetPlayerId(GetOwningPlayer(GetManipulatingUnit()))+1, GetManipulatedItem(), false)
         end
     end)
 
 
     ---@param item item
+    ---@param player number
     function IsPlayerHasItem(player, item)
         for i = 1, 32 do
             if ButtonList[GetHandleId(InventorySlots[player][i])].item == item then
@@ -777,6 +800,7 @@ do
     end
 
     ---@param itemid integer
+    ---@param player number
     function IsPlayerHasItemId(player, itemid)
         for i = 1, 32 do
             if GetItemTypeId(ButtonList[GetHandleId(InventorySlots[player][i])].item) == itemid then
@@ -786,7 +810,20 @@ do
         return false
     end
 
+
+    ---@param player number
+    ---@param itemid number
+    function GetItemFromInventory(player, itemid)
+        for i = 1, 32 do
+            if GetItemTypeId(ButtonList[GetHandleId(InventorySlots[player][i])].item) == itemid then
+                return ButtonList[GetHandleId(InventorySlots[player][i])].item
+            end
+        end
+        return nil
+    end
+
     ---@param itemid integer
+    ---@param player number
     function GetSameItemSlotItem(player, itemid)
         for i = 1, 32 do
             if GetItemTypeId(ButtonList[GetHandleId(InventorySlots[player][i])].item) == itemid then
@@ -902,7 +939,7 @@ do
             BlzFrameSetTexture(new_FrameCharges, "GUI\\ChargesTexture.blp", 0, true)
             BlzFrameSetPoint(new_FrameChargesText, FRAMEPOINT_CENTER, new_FrameCharges, FRAMEPOINT_CENTER, 0.,0.)
             BlzFrameSetVisible(new_FrameCharges, false)
-            BlzFrameSetText(new_FrameChargesText, "0")
+            BlzFrameSetText(new_FrameChargesText, "")
 
             BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
             BlzFrameSetSize(new_Frame, size_x, size_y)
@@ -1001,6 +1038,7 @@ do
 
         end)
 
+
         TriggerRegisterUnitEvent(DropTrigger, PlayerHero[player],EVENT_UNIT_DROP_ITEM)
         InventoryTooltip[player] = NewTooltip(InventorySlots[player][45])
         BlzFrameSetVisible(main_frame, false)
@@ -1009,24 +1047,43 @@ do
     end
 
 
-    function ToggleInventory(player, state)
+    local FirstTime_Data = {
+        [1] = { first_time = true },
+        [2] = { first_time = true },
+        [3] = { first_time = true },
+        [4] = { first_time = true },
+        [5] = { first_time = true },
+        [6] = { first_time = true }
+    }
 
-        if GetLocalPlayer() == player then
-            BlzFrameSetVisible(PlayerInventoryFrame[GetPlayerId(player)+1], state)
+    function SetInventoryState(player, state)
+
+        if GetUnitState(PlayerHero[player], UNIT_STATE_LIFE) < 0.045 and state then
+            FrameState[player][INV_PANEL] = false
+            return
+        end
+
+        if GetLocalPlayer() == Player(player-1) then
+            BlzFrameSetVisible(PlayerInventoryFrame[player], state)
         end
 
         PlayerInventoryFrameState[player] = state
 
-        if PlayerInventoryFrameState[player] then
+        if state then
             UpdateInventoryWindow(player)
-        end
-
-
-        if not state then
+        else
             RemoveTooltip(player)
             RemoveSelectionFrames(player)
             DestroyContextMenu(player)
             DestroySlider(player)
+        end
+
+        if FirstTime_Data[player].first_time then
+            ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_INVENTORY_1, GetPlayerId(GetTriggerPlayer()))
+            FirstTime_Data[player].first_time = false
+            DelayAction(12., function()
+                ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_INVENTORY_2, GetPlayerId(GetTriggerPlayer()))
+            end)
         end
 
     end
@@ -1034,10 +1091,10 @@ do
 
     function InventoryInit()
 
-        InventoryTriggerButton = BlzCreateFrame('ScriptDialogButton', GAME_UI, 0, 0)
-        local inv_button_backdrop = BlzCreateFrameByType("BACKDROP", "inventory button backdrop", InventoryTriggerButton, "", 0)
-        local inv_button_tooltip = BlzCreateFrame("BoxedText", inv_button_backdrop, 150, 0)
-
+        --InventoryTriggerButton = BlzCreateFrame('ScriptDialogButton', GAME_UI, 0, 0)
+       -- local inv_button_backdrop = BlzCreateFrameByType("BACKDROP", "inventory button backdrop", InventoryTriggerButton, "", 0)
+        --local inv_button_tooltip = BlzCreateFrame("BoxedText", inv_button_backdrop, 150, 0)
+--[[
 
             BlzFrameSetSize(InventoryTriggerButton, 0.03, 0.03)
             BlzFrameSetPoint(InventoryTriggerButton, FRAMEPOINT_LEFT, CharButton, FRAMEPOINT_RIGHT, 0.01, 0.)
@@ -1070,24 +1127,15 @@ do
                 local player = GetPlayerId(GetTriggerPlayer()) + 1
 
                 if GetUnitState(PlayerHero[player], UNIT_STATE_LIFE) < 0.045 then return end
+                SetInventoryState(player, not PlayerInventoryFrameState[player])
 
-                    if GetLocalPlayer() == Player(player-1) then
-                        BlzFrameSetVisible(PlayerInventoryFrame[player], not BlzFrameIsVisible(PlayerInventoryFrame[player]))
+                    if FirstTime_Data[player].first_time then
+                        ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_INVENTORY_1, GetPlayerId(GetTriggerPlayer()))
+                        FirstTime_Data[player].first_time = false
+                        DelayAction(12., function()
+                            ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_INVENTORY_2, GetPlayerId(GetTriggerPlayer()))
+                        end)
                     end
-
-                PlayerInventoryFrameState[player] = not PlayerInventoryFrameState[player]
-
-                if PlayerInventoryFrameState[player] then
-                    UpdateInventoryWindow(player)
-                end
-
-                if FirstTime_Data[player].first_time then
-                    ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_INVENTORY_1, GetPlayerId(GetTriggerPlayer()))
-                    FirstTime_Data[player].first_time = false
-                    DelayAction(12., function()
-                        ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_INVENTORY_2, GetPlayerId(GetTriggerPlayer()))
-                    end)
-                end
 
                 RemoveTooltip(player)
                 RemoveSelectionFrames(player)
@@ -1095,7 +1143,7 @@ do
                 DestroySlider(player)
             end)
 
-
+]]
 
     end
 

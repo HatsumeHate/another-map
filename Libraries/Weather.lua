@@ -115,7 +115,8 @@ do
         CurrentWeatherRectIndex = CurrentWeatherRectIndex - 1
 
         if CurrentWeatherRectIndex == 0 then
-            PauseTimer(CreationTimer)
+            TimerStart(CreationTimer, 0., false, nil)
+            --PauseTimer(CreationTimer)
             CurrentWeather = 0
         end
 
@@ -152,8 +153,10 @@ do
 
     function StopWeather()
         Weather_Current = 0
-        PauseTimer(CreationTimer)
-        PauseTimer(SpecialTimer)
+        --PauseTimer(CreationTimer)
+       -- PauseTimer(SpecialTimer)
+        TimerStart(CreationTimer, 0., false, nil)
+        TimerStart(SpecialTimer, 0., false, nil)
         StopSound(RainSound, false, true)
         TimerStart(CreationTimer, CREATION_UPDATE, true, DestroyWeatherOnRects)
     end
@@ -193,7 +196,7 @@ do
             TimerStart(SpecialTimer, 0.05, true, LightningEffectUpdate)
         end
 
-        PauseTimer(CreationTimer)
+        TimerStart(CreationTimer, 0., false, nil)
         CurrentWeatherRectIndex = 0
         TimerStart(CreationTimer, CREATION_UPDATE, true, WeatherRectGeneration)
     end

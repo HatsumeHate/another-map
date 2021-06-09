@@ -30,35 +30,35 @@ do
     end
 
 
-    local function GetDamageValues(unit_data, weapon, effects, missile)
+    local function GetDamageValues(weapon, effects, missile)
         local damage_table = { range = 0., damage = 0, attribute = nil, damagetype = nil, targets = 1 }
 
-        if weapon ~= nil then
+        if weapon then
             damage_table.targets = weapon.MAX_TARGETS or 1
-            damage_table.damage = unit_data.equip_point[WEAPON_POINT].DAMAGE or 1
-            damage_table.attribute = unit_data.equip_point[WEAPON_POINT].ATTRIBUTE or PHYSICAL_ATTRIBUTE
-            damage_table.damagetype = unit_data.equip_point[WEAPON_POINT].DAMAGE_TYPE or nil
+            damage_table.damage = weapon.DAMAGE or 0
+            damage_table.attribute = weapon.ATTRIBUTE or PHYSICAL_ATTRIBUTE
+            damage_table.damagetype = weapon.DAMAGE_TYPE or nil
 
-            if damage_table.damagetype == DAMAGE_TYPE_PHYSICAL then damage_table.damage = damage_table.damage + unit_data.stats[PHYSICAL_ATTACK].value end
+            if damage_table.damagetype == DAMAGE_TYPE_PHYSICAL then damage_table.damage = weapon.bonus_phys_attack end
             --elseif damage_table.damagetype == DAMAGE_TYPE_MAGICAL then damage_table.damage = damage_table.damage + unit_data.stats[MAGICAL_ATTACK].value end
 
             damage_table.range = weapon.range or 90.
-        elseif effects ~= nil then
+        elseif effects then
             damage_table.targets = effects.max_targets or 1
             damage_table.damage = effects.power or 0
             damage_table.damagetype = effects.damage_type or nil
 
             if effects.get_attack_bonus then
-                if damage_table.damagetype == DAMAGE_TYPE_PHYSICAL then damage_table.damage = damage_table.damage + unit_data.stats[PHYSICAL_ATTACK].value
-                elseif damage_table.damagetype == DAMAGE_TYPE_MAGICAL then damage_table.damage = damage_table.damage + unit_data.stats[MAGICAL_ATTACK].value end
+                if damage_table.damagetype == DAMAGE_TYPE_PHYSICAL then damage_table.damage = damage_table.damage + weapon.bonus_phys_attack
+                elseif damage_table.damagetype == DAMAGE_TYPE_MAGICAL then damage_table.damage = damage_table.damage + weapon.bonus_mag_attack end
             end
 
-            if effects.attack_percent_bonus ~= nil then
-                damage_table.damage = damage_table.damage + (unit_data.equip_point[WEAPON_POINT].DAMAGE * effects.attack_percent_bonus)
+            if effects.attack_percent_bonus and effects.attack_percent_bonus > 0. then
+                damage_table.damage = damage_table.damage + (weapon.DAMAGE * effects.attack_percent_bonus)
             end
 
             damage_table.attribute = effects.attribute or PHYSICAL_ATTRIBUTE
-            damage_table.range = effects.area_of_effect ~= nil and effects.area_of_effect or missile.radius
+            damage_table.range = effects.area_of_effect and effects.area_of_effect or missile.radius
         end
 
         return damage_table
@@ -74,6 +74,11 @@ do
     ---@param missile table
     ---@param angle real
     function RedirectMissile_Deg(missile, angle)
+
+        if not (missile.time > 0.) then
+            return
+        end
+
         local x = missile.current_x
         local y = missile.current_y
         local z = missile.current_z
@@ -86,8 +91,10 @@ do
             missile.end_point_y = y + (distance * Sin(angle * bj_DEGTORAD))
             missile.end_point_z = GetZ(missile.end_point_x, missile.end_point_y) + missile.end_z
 
-            if missile.lightning_id ~= nil then
+            if missile.lightning_id then
                 missile.lightnings[#missile.lightnings].increment = false
+                missile.lightnings[#missile.lightnings].time = missile.lightnings[#missile.lightnings].length / missile.speed
+
                 missile.lightnings[#missile.lightnings + 1] = {
                     sprite = AddLightningEx(missile.lightning_id, true, x, y, z, x, y, z),
                     head_x = x,
@@ -96,11 +103,14 @@ do
                     tail_x = x,
                     tail_y = y,
                     tail_z = z,
+                    time = distance / missile.speed,
                     increment = true,
                     length = 0.
                 }
 
             end
+
+            missile.distance = distance
 
             local velocity = (missile.speed * PERIOD) / distance
 
@@ -123,6 +133,12 @@ do
 
     local PullList = {}
 
+    ---@param source unit
+    ---@param target unit
+    ---@param speed number
+    ---@param release_range number
+    ---@param power number
+    ---@param sign string
     function PullUnitToUnit(source, target, speed, release_range, power, sign)
         local pull_data = {}
         local h = GetHandleId(source)
@@ -162,6 +178,100 @@ do
             end)
 
     end
+
+
+    local ChargeList = {}
+
+
+    ---@param source unit
+    ---@param speed number
+    ---@param distance number
+    ---@param angle number
+    ---@param max_targets number
+    ---@param radius number
+    ---@param animation string
+    ---@param sign string
+    function ChargeUnit(source, speed, distance, angle, max_targets, radius, animation, sign)
+        local charge_data = {}
+        local h = GetHandleId(source)
+
+
+        if ChargeList[h] then
+            local velocity = (speed * PERIOD) / distance
+
+                charge_data.point_x = GetUnitX(source) + Rx(distance, angle)
+                charge_data.point_y = GetUnitY(source) + Ry(distance, angle)
+                ChargeList[h].vx = (charge_data.point_x - GetUnitX(source)) * velocity
+                ChargeList[h].vy = (charge_data.point_y - GetUnitY(source)) * velocity
+                charge_data = nil
+
+            return
+        end
+
+            ChargeList[h] = charge_data
+            local velocity = (speed * PERIOD) / distance
+            charge_data.point_x = GetUnitX(source) + Rx(distance, angle)
+            charge_data.point_y = GetUnitY(source) + Ry(distance, angle)
+            charge_data.vx = (charge_data.point_x - GetUnitX(source)) * velocity
+            charge_data.vy = (charge_data.point_y - GetUnitY(source)) * velocity
+            local targets_hit = 0
+            local enemy_group = CreateGroup()
+            local player_entity = GetOwningPlayer(source)
+            SafePauseUnit(source, true)
+
+
+        --print("a")
+
+            TimerStart(CreateTimer(), PERIOD, true, function()
+               -- print("atick")
+                local state = HasAnyDisableState(source)
+                if IsUnitInRangeXY(source, charge_data.point_x, charge_data.point_y, 10.) or GetUnitState(source, UNIT_STATE_LIFE) < 0.045 or state or not IsPathable_Ground(GetUnitX(source) + charge_data.vx, GetUnitY(source) + charge_data.vy) then
+                    --print("end")
+                    SetUnitAnimation(source, "stand")
+                    SafePauseUnit(source, false)
+                    OnChargeEnd(source, targets_hit, sign, state)
+                    charge_data = nil
+                    ChargeList[h] = nil
+                    DestroyTimer(GetExpiredTimer())
+                    DestroyGroup(enemy_group)
+                elseif max_targets and GetUnitState(source, UNIT_STATE_LIFE) > 0.045 and not state then
+                    GroupEnumUnitsInRange(enemy_group, GetUnitX(source), GetUnitY(source), radius, nil)
+
+                        for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
+                            local picked = BlzGroupUnitAt(enemy_group, index)
+
+                                if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
+                                    local endcharge = OnChargeHit(source, picked, sign)
+                                    targets_hit = targets_hit + 1
+                                    max_targets = max_targets - 1
+                                    if max_targets <= 0 or endcharge then
+                                        SafePauseUnit(source, false)
+                                        OnChargeEnd(source, targets_hit, sign, state)
+                                        charge_data = nil
+                                        ChargeList[h] = nil
+                                        DestroyTimer(GetExpiredTimer())
+                                        DestroyGroup(enemy_group)
+                                        break
+                                    end
+                                end
+
+                        end
+
+                    SetUnitAnimation(source, animation)
+                    SetUnitX(source, GetUnitX(source) + charge_data.vx)
+                    SetUnitY(source, GetUnitY(source) + charge_data.vy)
+                    --charge_data.current_distance  = charge_data.current_distance + velocity
+
+                else
+                    SetUnitAnimation(source, animation)
+                    SetUnitX(source, GetUnitX(source) + charge_data.vx)
+                    SetUnitY(source, GetUnitY(source) + charge_data.vy)
+                    --harge_data.current_distance  = charge_data.current_distance + velocity
+                end
+            end)
+
+    end
+
 
 
     function MakeUnitJump(target, angle, x, y, speed, arc, sign)
@@ -329,7 +439,8 @@ do
 
 
 
-    function MoveLightning(m, target_x, target_y, target_z)
+    function MoveMyLightning(m, target_x, target_y, target_z)
+        --print("num of l " .. #m.lightnings)
         for i = 1, #m.lightnings do
 
             if i == #m.lightnings then
@@ -348,27 +459,32 @@ do
                 m.lightnings[i].tail_x = m.lightnings[i].tail_x + m.lightnings[i].vector_x
                 m.lightnings[i].tail_y = m.lightnings[i].tail_y + m.lightnings[i].vector_y
                 m.lightnings[i].tail_z = m.lightnings[i].tail_z + m.lightnings[i].vector_z
+                --print("increment")
             end
 
             if not m.lightnings[i].increment and i == 1 then
                 m.lightnings[i].tail_x = m.lightnings[i].tail_x + m.lightnings[i].vector_x
                 m.lightnings[i].tail_y = m.lightnings[i].tail_y + m.lightnings[i].vector_y
                 m.lightnings[i].tail_z = m.lightnings[i].tail_z + m.lightnings[i].vector_z
+                m.lightnings[i].time = m.lightnings[i].time - PERIOD
+                --print("not increment")
             end
 
             MoveLightningEx(m.lightnings[i].sprite, true, m.lightnings[i].head_x, m.lightnings[i].head_y, m.lightnings[i].head_z, m.lightnings[i].tail_x, m.lightnings[i].tail_y, m.lightnings[i].tail_z)
+
         end
 
 
         for i = 1, #m.lightnings do
-            if m.lightnings[i].length <= 1. and not m.lightnings[i].increment then
+            if m.lightnings[i] and m.lightnings[i].time <= 0. and not m.lightnings[i].increment then
                 DestroyLightning(m.lightnings[i].sprite)
+                table.remove(m.lightnings, i)
 
-                for t = 1, #m.lightnings do
-                    if m.lightnings[t] == m.lightnings[i] then
-                        table.remove(m.lightnings, t)
-                    end
-                end
+                --for t = 1, #m.lightnings do
+                    --if m.lightnings[t] == m.lightnings[i] then
+                        --table.remove(m.lightnings, t)
+                    --end
+                --end
 
             end
         end
@@ -389,35 +505,35 @@ do
     ---@param angle real
     function ThrowMissile(from, target, missile, effects, start_x, start_y, end_x, end_y, angle)
         local unit_data = GetUnitData(from)
-        local m = GetMissileData(missile or "0000")
+        local m
         local end_z
         local start_z
-
-        if m ~= nil then
-            end_z = GetZ(end_x, end_y) + m.end_z
-            start_z = GetZ(start_x, start_y) + m.start_z
-        end
-
         local weapon
 
-            if m == nil then
-                if unit_data.equip_point[WEAPON_POINT].missile ~= nil then
-                    weapon = MergeTables({}, unit_data.equip_point[WEAPON_POINT])
-                    m = MergeTables({}, GetMissileData(unit_data.equip_point[WEAPON_POINT].missile))
-                    end_z = GetZ(end_x, end_y) + m.end_z
-                    start_z = GetZ(start_x, start_y) + m.start_z
-                else
-                    return
-                end
-            else
+        if not unit_data then return end
+--print("a0000000")
+            if missile then
+                m = GetMissileData(missile)
+                end_z = GetZ(end_x, end_y) + m.end_z
+                start_z = GetZ(start_x, start_y) + m.start_z
                 m = MergeTables({}, m)
+            elseif unit_data.equip_point[WEAPON_POINT] and unit_data.equip_point[WEAPON_POINT].missile then
+                weapon = MergeTables({}, unit_data.equip_point[WEAPON_POINT])
+                weapon.bonus_phys_attack = unit_data.stats[PHYSICAL_ATTACK].value
+                weapon.bonus_mag_attack = unit_data.stats[MAGICAL_ATTACK].value
+                m = MergeTables({}, GetMissileData(unit_data.equip_point[WEAPON_POINT].missile))
+                end_z = GetZ(end_x, end_y) + m.end_z
+                start_z = GetZ(start_x, start_y) + m.start_z
+            else
+                return
             end
 
-        m.time = 0.
 
+        m.time = 0.
+--print("a000")
             if angle == 0. then angle = AngleBetweenXY_DEG(start_x, start_y, end_x, end_y) end
 
-            if (target ~= nil and not m.full_distance) then
+            if (target and not m.full_distance) then
                 end_x = GetUnitX(target)
                 end_y = GetUnitY(target)
                 end_z = GetZ(end_x, end_y) + m.end_z
@@ -428,21 +544,22 @@ do
                 end_z = GetZ(end_x, end_y) + m.end_z
             end
 
-
+--print("a00")
         m.end_point_x = end_x
         m.end_point_y = end_y
         m.end_point_z = end_z
 
         local distance = SquareRoot((end_x-start_x)*(end_x-start_x) + (end_y-start_y)*(end_y-start_y) + (end_z - start_z)*(end_z - start_z))
+        m.distance = distance
         m.time = distance / m.speed
-
+--print("a0")
         local missile_effect = AddSpecialEffect(m.model, start_x, start_y)
         --BlzSetSpecialEffectHeight(missile_effect, start_z)
         BlzSetSpecialEffectZ(missile_effect, start_z)
-        BlzSetSpecialEffectScale(missile_effect, m.scale)
+        BlzSetSpecialEffectScale(missile_effect, m.scale or 1.)
         BlzSetSpecialEffectYaw(missile_effect, angle * bj_DEGTORAD)
 
-        if m.lightning_id ~= nil then
+        if m.lightning_id then
             m.lightnings = {}
             m.lightnings[1] = {
                 sprite = AddLightningEx(m.lightning_id, true, start_x, start_y, start_z, start_x, start_y, start_z),
@@ -452,25 +569,26 @@ do
                 tail_x = start_x,
                 tail_y = start_y,
                 tail_z = start_z,
+                time = m.time,
                 increment = true,
                 length = 0.
             }
         end
+        --print("a1")
 
-
-        if #m.sound_on_launch > 0 then
+        if m.sound_on_launch and #m.sound_on_launch > 0 then
             AddSound(m.sound_on_launch[GetRandomInt(1, #m.sound_on_launch)], start_x, start_y)
         end
 
-
-        if m.sound_on_fly ~= nil then
+--print("a2")
+        if m.sound_on_fly then
             m.attached_sound = CreateNew3DSound(m.sound_on_fly.pack[GetRandomInt(1, #m.sound_on_fly.pack)], start_x, start_y, start_z, m.sound_on_fly.volume, m.sound_on_fly.cutoff, m.sound_on_fly.looping or nil)
             StartSound(m.attached_sound)
         end
         --[[AddSpecialEffect("Abilities\\Spells\\Other\\Aneu\\AneuCaster.mdl", start_x, start_y)
         AddSpecialEffect("Abilities\\Spells\\Other\\Aneu\\AneuTarget.mdl", end_x, end_y)
         CreateUnit(Player(0), FourCC("hpea"), start_x, start_y, angle)]]
-
+--print("a3")
         local distance2d
         local height
         local length = 0.
@@ -478,7 +596,7 @@ do
         local start_height
         local end_height
 
-        if m.arc > 0. then
+        if m.arc and m.arc > 0. then
             distance2d = DistanceBetweenXY(start_x, start_y, end_x, end_y)
             height = distance2d * m.arc + RMaxBJ(start_z, end_z)
             step = m.speed / (1. / PERIOD)
@@ -486,15 +604,15 @@ do
             end_height = end_z
             m.time = m.time * (1. + m.arc)
         end
-
-        local targets = m.max_targets
+--print("a4")
+        local targets = m.max_targets or 1
 
         local velocity = (m.speed * PERIOD) / distance
         m.vx = (end_x - start_x) * velocity
         m.vy = (end_y - start_y) * velocity
         m.vz = (end_z - start_z) * velocity
-
-        if m.lightnings ~= nil then
+--print("a5")
+        if m.lightnings then
             m.lightnings[1].vector_x = m.vx
             m.lightnings[1].vector_y = m.vy
             m.lightnings[1].vector_z = m.vz
@@ -504,36 +622,44 @@ do
         local hit_group = CreateGroup()
         local my_timer = CreateTimer()
 
+        if m.trackable then
+            m.time = m.time * 1.25
+        end
 
+        --print("aaaaaaa")
         OnMissileLaunch(from, target, m)
-
+        --print("aaaaaaa")
 
         TimerStart(my_timer, PERIOD, true, function()
 
             if IsMapBounds(start_x, start_y) or m.time <= 0. then
                 --print("BOUNDS")
 
-                if #m.sound_on_destroy > 0 then AddSound(m.sound_on_destroy[GetRandomInt(1, #m.sound_on_destroy)], start_x, start_y) end
+                if m.sound_on_destroy and #m.sound_on_destroy > 0 then AddSound(m.sound_on_destroy[GetRandomInt(1, #m.sound_on_destroy)], start_x, start_y) end
                 if m.effect_on_expire ~= nil then ApplyEffect(from, nil, start_x, start_y, m.effect_on_expire, 1) end
-                if m.attached_sound ~= nil then StopSound(m.attached_sound, true, true) end
+
 
                 OnMissileExpire(from, target, m)
                 DestroyEffect(missile_effect)
                 DestroyGroup(hit_group)
 
-                if m.lightnings ~= nil then
-                        TimerStart(my_timer, PERIOD, true, function ()
+                if m.lightnings then
+                    TimerStart(my_timer, PERIOD, true, function ()
+                        if m.lightnings == nil or #m.lightnings == 0 then
+                            if m.attached_sound ~= nil then StopSound(m.attached_sound, true, true) end
+                            DestroyTimer(my_timer)
+                            m = nil
+                        else
+                            --print("remove")
                             m.lightnings[#m.lightnings].increment = false
-                            MoveLightning(m, start_x, start_y, start_z)
-                                if #m.lightnings == nil then
-                                    DestroyTimer(my_timer)
-                                    m = nil
-                                end
-                        end)
-                    else
-                        DestroyTimer(my_timer)
-                        m = nil
-                    end
+                            MoveMyLightning(m, start_x, start_y, start_z)
+                        end
+                    end)
+                else
+                    if m.attached_sound ~= nil then StopSound(m.attached_sound, true, true) end
+                    DestroyTimer(my_timer)
+                    m = nil
+                end
 
             else
                 --TRACKING
@@ -542,11 +668,11 @@ do
                     if GetUnitState(target, UNIT_STATE_LIFE) < 0.045 or target == nil then
                         m.time = 0.
                     else
-                        distance = GetDistance3D(start_x, start_y, start_z, GetUnitX(target), GetUnitY(target), BlzGetLocalUnitZ(target))
+                        distance = GetDistance3D(start_x, start_y, start_z, GetUnitX(target), GetUnitY(target), m.end_z + BlzGetLocalUnitZ(target))
                         velocity = (m.speed * PERIOD) / distance
                         m.vx = (GetUnitX(target) - start_x) * velocity
                         m.vy = (GetUnitY(target) - start_y) * velocity
-                        m.vz = (BlzGetLocalUnitZ(target) - start_z) * velocity
+                        m.vz = (m.end_z + BlzGetLocalUnitZ(target) - start_z) * velocity
                         BlzSetSpecialEffectYaw(missile_effect, AngleBetweenXY(start_x, start_y, GetUnitX(target), GetUnitY(target)))
                     end
                 end
@@ -557,6 +683,7 @@ do
                     impact = true
                     --print("collision")
                 else
+                    --print(BlzGetLocalSpecialEffectZ(missile_effect))
 
                     start_x = start_x + m.vx
                     start_y = start_y + m.vy
@@ -579,26 +706,29 @@ do
 
                     BlzSetSpecialEffectPosition(missile_effect,  start_x, start_y, start_z)
                     if m.attached_sound ~= nil then SetSoundPosition(m.attached_sound, start_x, start_y, start_z) end
-                    if m.lightnings ~= nil then MoveLightning(m, start_x, start_y, start_z) end
+                    if m.lightnings then
+                        MoveMyLightning(m, start_x, start_y, start_z)
+                    end
 
                     m.time = m.time - PERIOD
                 end
             end
             -- movement end
 
-
+            --print("a")
             -- DAMAGE
             if m.only_on_impact then
                 if impact then
+                    --print("eh?????")
                     -- aoe damage
                     m.time = 0.
 
-                        if #m.sound_on_hit > 0 then AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y) end
+                        if m.sound_on_hit and #m.sound_on_hit > 0 then AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], start_x, start_y) end
 
-                        if weapon ~= nil then
+                        if weapon then
                             local group = CreateGroup()
                             local player_entity = GetOwningPlayer(from)
-                            local damage_list = GetDamageValues(unit_data, weapon, effects, m)
+                            local damage_list = GetDamageValues(weapon, effects, m)
                             GroupEnumUnitsInRange(group, start_x, start_y, damage_list.range, nil)
 
                                 for index = BlzGroupGetSize(group) - 1, 0, -1 do
@@ -621,14 +751,16 @@ do
                             damage_list = nil
                         else
 
-                            if m.effect_on_impact ~= nil then ApplyEffect(from, nil, start_x, start_y, m.effect_on_impact, 1) end
-                            if effects ~= nil and effects.effect ~= nil then ApplyEffect(from, nil, start_x, start_y, effects.effect, effects.level) end
+                            if m.effect_on_impact then ApplyEffect(from, nil, start_x, start_y, m.effect_on_impact, 1) end
+                            if effects and effects.effect then ApplyEffect(from, nil, start_x, start_y, effects.effect, effects.level) end
 
                         end
 
+                    --print("?????????")
                     OnMissileImpact(from, m)
                 end
             else
+                --print("why")
                 if m.only_on_target then
                     -- seeking
                     if IsUnitInRangeXY(target, start_x, start_y, m.radius) then
@@ -638,9 +770,9 @@ do
                         ApplySpecialEffectTarget(m.effect_on_target, target, m.effect_on_target_point, m.effect_on_target_scale)
 
 
-                        if weapon ~= nil then
+                        if weapon then
 
-                            local damage_list = GetDamageValues(unit_data, weapon, effects, m)
+                            local damage_list = GetDamageValues(weapon, effects, m)
                             DamageUnit(from, target, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
                             OnMissileHit(from, target, m)
 
@@ -672,9 +804,10 @@ do
                             damage_list = nil
                         else
 
-                            if m.effect_on_hit ~= nil then ApplyEffect(from, target, start_x, start_y, m.effect_on_hit, 1) end
-                            if effects ~= nil and effects.effect ~= nil then ApplyEffect(from, target, start_x, start_y, effects.effect, effects.level) end
+                            if m.effect_on_hit then ApplyEffect(from, target, start_x, start_y, m.effect_on_hit, 1) end
+                            if effects and effects.effect then ApplyEffect(from, target, start_x, start_y, effects.effect, effects.level) end
 
+                            OnMissileHit(from, target, m)
                         end
 
                     end
@@ -705,8 +838,8 @@ do
                                     ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
 
 
-                                    if weapon ~= nil then
-                                        local damage_list = GetDamageValues(unit_data, weapon, effects, m)
+                                    if weapon then
+                                        local damage_list = GetDamageValues(weapon, effects, m)
                                         --print("do damage from a weapon "  .. GetUnitName(from))
                                         DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
                                         --print("do damage from a  - ok")
@@ -719,8 +852,8 @@ do
 
                                     end
 
-                                    if effects ~= nil and effects.effect ~= nil then ApplyEffect(from, picked, start_x, start_y, effects.effect, effects.level) end
-                                    if m.effect_on_hit ~= nil then
+                                    if effects and effects.effect then ApplyEffect(from, picked, start_x, start_y, effects.effect, effects.level) end
+                                    if m.effect_on_hit then
                                         --print("do damage from an effect " .. GetUnitName(from))
                                         ApplyEffect(from, picked, start_x, start_y, m.effect_on_hit, 1)
                                         --print("do damage from an effect - ok")

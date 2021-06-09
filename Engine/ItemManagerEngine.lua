@@ -153,7 +153,6 @@ do
             if result_scale < MIN_GOLD_SCALE then result_scale = MIN_GOLD_SCALE
             elseif result_scale > MAX_GOLD_SCALE then result_scale = MAX_GOLD_SCALE end
 
-
             AddSoundForPlayerVolumeZ("Sound\\gold.wav", x, y, BlzGetLocalSpecialEffectZ(effect), 110, 2100., player)
 
             local trg = CreateTrigger()
@@ -161,6 +160,7 @@ do
             TriggerAddAction(trg, function()
 
                 if GetOwningPlayer(GetTriggerUnit()) == Player(player) then
+                    DestroyEffect(AddSpecialEffectTarget("UI\\Feedback\\GoldCredit\\GoldCredit.mdx", GetTriggerUnit(), "origin"))
                     SetPlayerState(Player(player), PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(Player(player), PLAYER_STATE_RESOURCE_GOLD) + amount)
                     AddSoundForPlayerVolumeZ("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", x, y, BlzGetLocalSpecialEffectZ(effect), 127, 2200., player)
                     GoldText(x, y, amount)
@@ -482,6 +482,7 @@ do
             item_data.NAME = item_preset.name
             item_data.level = level
             item_data.soundpack = item_preset.soundpack
+            item_data.stat_modificator = item_preset.modificator
 
 
                 if item_data.TYPE == ITEM_TYPE_WEAPON then
@@ -707,7 +708,8 @@ do
             [ITEM_TYPE_OFFHAND]    = LOCALE_LIST[my_locale].ITEM_TYPE_OFFHAND_NAME,
             [ITEM_TYPE_CONSUMABLE] = LOCALE_LIST[my_locale].ITEM_TYPE_CONSUMABLE_NAME,
             [ITEM_TYPE_GEM]        = LOCALE_LIST[my_locale].ITEM_TYPE_GEM_NAME,
-            [ITEM_TYPE_SKILLBOOK]  = LOCALE_LIST[my_locale].ITEM_TYPE_SKILLBOOK
+            [ITEM_TYPE_SKILLBOOK]  = LOCALE_LIST[my_locale].ITEM_TYPE_SKILLBOOK,
+            [ITEM_TYPE_OTHER]      = LOCALE_LIST[my_locale].ITEM_TYPE_OTHER
         }
 
         ITEMSUBTYPES_NAMES = {
@@ -768,13 +770,18 @@ do
         TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER)
         TriggerAddAction(trg, function()
 
-            if GetOrderTargetItem() ~= nil and GetItemType(GetOrderTargetItem()) ~= ITEM_TYPE_POWERUP and not PlayerPickUpItemFlag[GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1] then
+            if GetOrderTargetItem() == nil or IsItemInvulnerable(GetOrderTargetItem()) then
+                return
+            end
+
+            if GetItemType(GetOrderTargetItem()) ~= ITEM_TYPE_POWERUP and not PlayerPickUpItemFlag[GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1] then
                 local unit = GetTriggerUnit()
                 local player = GetPlayerId(GetOwningPlayer(unit)) + 1
                 local item = GetOrderTargetItem()
                 local angle = AngleBetweenXY_DEG(GetItemX(item), GetItemY(item), GetUnitX(unit), GetUnitY(unit))
 
                     if IsUnitInRangeXY(unit, GetItemX(item), GetItemY(item), 200.) and not PlayerPickUpItemFlag[player] then
+                        --print("pick up order trigger")
                         PlayerPickUpItemFlag[player] = true
                         local item_data = GetItemData(item)
                         local x = GetItemX(item); local y = GetItemY(item)
@@ -794,6 +801,13 @@ do
 
                 item = nil
                 unit = nil
+            elseif GetItemType(GetOrderTargetItem()) == ITEM_TYPE_POWERUP then
+                --print("powerup")
+                if IsUnitInRangeXY(GetTriggerUnit(), GetItemX(GetOrderTargetItem()), GetItemY(GetOrderTargetItem()), 200.) then
+                    --print("use")
+                    UnitAddItem(GetTriggerUnit(), GetOrderTargetItem())
+                    --UnitUseItem(GetTriggerUnit(), GetOrderTargetItem())
+                end
             end
 
         end)
@@ -802,7 +816,8 @@ do
         trg = CreateTrigger()
         TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_PICKUP_ITEM)
         TriggerAddAction(trg, function()
-            if not IsItemInvulnerable(GetManipulatedItem()) then
+            if not IsItemInvulnerable(GetManipulatedItem()) and GetItemType(GetOrderTargetItem()) ~= ITEM_TYPE_POWERUP then
+                --print("pick up trigger")
                 UnitRemoveItem(GetTriggerUnit(), GetManipulatedItem())
                 SetItemVisible(GetManipulatedItem(), false)
             end

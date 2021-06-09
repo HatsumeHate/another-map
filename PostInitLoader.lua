@@ -7,43 +7,39 @@ do
 		InitLocaleLibrary()
 		InitParameters()
 		DefineSkillsData()
-		--print("skills done")
+		print("skills done")
 		DefineEffectsData()
-		--print("effects done")
+		print("effects done")
 		DefineItemGeneratorTemplates()
-		--print("item generator done")
+		print("item generator done")
 		InitSetBonusTemplates()
         DefineItemsData()
-		--print("items done")
+		print("items done")
 		DefineBuffsData()
-		--print("buffs done")
+		print("buffs done")
 		DefineMissilesData()
-		--print("missiles done")
+		print("missiles done")
         MainEngineInit()
-		--print("main done")
+		print("main done")
 		BasicFramesInit()
-		--print("basic frames done")
+		print("basic frames done")
         EnumItemsOnInit()
 		UnitDataInit()
-		--print("unit data done")
-		StatsPanelInit()
-		--print("stats panel done")
-		InventoryInit()
-		--print("inventory done")
-		SkillPanelInit()
-		--print("skill panel done")
+		print("unit data done")
+		InitGUIManager()
+		print("skill panel done")
         InitWeather(bj_mapInitialPlayableArea)
-		--print("weather done")
+		print("weather done")
 		InitMonsterData()
-		--print("monsters done")
+		print("monsters done")
 		DropListInit()
 		ShakerInit()
-		TeleporterInit()
 		InitVillageData()
 		InitPlayerCamera()
 		InitializeSkillEngine()
 		StartSMorcWandering()
 		InitAltars()
+		InitQuestsData()
 
 		print("init done")
 
@@ -93,18 +89,22 @@ do
 				}
 		)
 
+		BlzSetUnitName(gg_unit_n000_0056, LOCALE_LIST[my_locale].VENDOR_BILL_NAME)
+		BlzSetUnitName(gg_unit_opeo_0031, LOCALE_LIST[my_locale].SMORC_NAME)
 
 		local my_item = CreateCustomItem("I006",  0.,0.)
 		SetItemCharges(my_item, 20)
 		AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 32, true)
-
+		BlzSetUnitName(gg_unit_n001_0055, LOCALE_LIST[my_locale].HEALER_NAME)
 
 		my_item = CreateCustomItem("I003",  0.,0.)
 		SetItemCharges(my_item, 20)
 		AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 31, true)
 		my_item = nil
 
+
 		CreateBlacksmith(gg_unit_n013_0011, "ReplaceableTextures\\CommandButtons\\BTNElfVillager.blp")
+		BlzSetUnitName(gg_unit_n013_0011, LOCALE_LIST[my_locale].BLACKSMITH_NAME)
 
 		CreateHeroSelections()
 
@@ -124,26 +124,40 @@ do
 		TimerStart(CreateTimer(), 5., false, function()
 			WavesInit()
 			AddWaveTimer(325.)
-			--TODO introduction
-			--TransmissionFromUnitWithNameBJ(force, gg_unit_h000_0054, GetUnitName(capt), nil, "", 1, 10., false)
+			NewQuest("Credits", "Thanks for the resources and help.", "ReplaceableTextures\\WorldEditUI\\Editor-MultipleUnits.blp", false, true, "cred")
+			AddQuestItem("cred",  "cred1",  "Hive:|nGeneral Frank, Mythic, Veronnis, JetFangInferno, Daelin, PeeKay(Novart), stonneash, PrinceYaser,",  false)
+			AddQuestItem("cred",  "cred2",  "The Panda, Tasyen, Spellbound, Crazy Russian, Judash137, Kenathorn, stan0033, morbent, Solu9,",  false)
+			AddQuestItem("cred",  "cred3",  "The_Spellweaver, CloudWolf, GooS, zbc, The_Silent", false)
+			AddQuestItem("cred",  "cred4",  "XGM:|nBergiBear, NazarPunk, MF, Empyreal, Beyhut",  false)
+			DelayAction(145., function() EnableQuest1NPC() end)
+			DelayAction(225., function() EnableMainQuest1() end )
 		end)
 
-		RegisterTestCommand("buff", function()
-			if GetUnitAbilityLevel(PlayerHero[1], FourCC("A01P")) == 0 then
-				ApplyBuff(PlayerHero[1], PlayerHero[1], "A01P", 1)
-			else
-				SetBuffLevel(PlayerHero[1], "A01P", GetBuffLevel(PlayerHero[1], "A01P") + 1)
-			end
-			print(GetBuffLevel(PlayerHero[1], "A01P"))
-        end)
 
-		RegisterTestCommand("st", function()
-			SafePauseUnit(PlayerHero[1], true)
+		RegisterTestCommand("qe1m", function()
+			EnableMainQuest1()
 		end)
 
-		RegisterTestCommand("ste", function()
-			SafePauseUnit(PlayerHero[1], false)
+		RegisterTestCommand("fr", function()
+			--local frame = BlzCreateSimpleFrame("InfoPanelTitleTextTemplate", GAME_UI, 0)
+			local frame = BlzCreateFrame("DemoBoxTooltip", GAME_UI, 0, 0)
+			local text = BlzGetFrameByName("DemoBoxTooltipTitle", 0)
+
+			BlzFrameSetPoint(frame, FRAMEPOINT_CENTER, GAME_UI, FRAMEPOINT_CENTER, 0., 0.)
+			BlzFrameSetScale(frame, 1.)
+			BlzFrameSetSize(frame, 0.3, 0.2)
+			BlzFrameSetText(text, "shpaovapa")
+			BlzFrameSetVisible(frame, true)
+			print("aa " .. BlzFrameGetName(frame))
+			print("done " .. BlzFrameGetText(text))
+
 		end)
+
+
+		RegisterTestCommand("stress", function()
+			AddLoopingSoundOnUnit({"Sounds\\Spell\\whirlwind_1.wav", "Sounds\\Spell\\whirlwind_2.wav", "Sounds\\Spell\\whirlwind_3.wav", "Sounds\\Spell\\whirlwind_4.wav"}, PlayerHero[1], 200, 200, -0.15, 110, 1700.)
+		end)
+
 
 		local trg = CreateTrigger()
 		TriggerRegisterPlayerEvent(trg, Player(0), EVENT_PLAYER_LEAVE)
@@ -158,6 +172,8 @@ do
 		DoNotSaveReplay()
 		AirPathingUnit = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("hgry"), 0.,0., 0.)
 		ShowUnit(AirPathingUnit, false)
+		GroundPathingItem = CreateItem(FourCC("rde2"), 0.,0.)
+		SetItemVisible(GroundPathingItem, false)
 	end
 
 end

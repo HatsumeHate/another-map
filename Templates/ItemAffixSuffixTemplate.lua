@@ -37,6 +37,10 @@ do
     ITEM_SUFFIX_DEADLY_PRECISION    = 17
 
 
+    local BOOK_ITEM_LIST = {
+        "I017", "I016", "I015","I014", "I013", "I00V", "I00U"
+    }
+
     local GENERATED_ITEM_LIST = {
         {
             type = ITEM_TYPE_WEAPON,
@@ -78,11 +82,11 @@ do
             subtype = DAGGER_WEAPON,
             id = "IGDR"
         },
-        {
-            type = ITEM_TYPE_WEAPON,
-            subtype = BOW_WEAPON,
-            id = "IGBW"
-        },
+        --{
+           -- type = ITEM_TYPE_WEAPON,
+            --subtype = BOW_WEAPON,
+           -- id = "IGBW"
+       -- },
         {
             type = ITEM_TYPE_ARMOR,
             subtype = CHEST_ARMOR,
@@ -128,11 +132,11 @@ do
             subtype = SHIELD_OFFHAND,
             id = "IGOS"
         },
-        {
-            type = ITEM_TYPE_OFFHAND,
-            subtype = QUIVER_OFFHAND,
-            id = "IGOQ"
-        },
+        --{
+          --  type = ITEM_TYPE_OFFHAND,
+          --  subtype = QUIVER_OFFHAND,
+         --   id = "IGOQ"
+        --},
     }
 
     function GetRandomGeneratedItemId()
@@ -147,6 +151,10 @@ do
             end
         end
         return 0
+    end
+
+    function GetRandomBookItemId()
+        return BOOK_ITEM_LIST[GetRandomInt(1, #BOOK_ITEM_LIST)]
     end
 
     
@@ -1122,14 +1130,14 @@ do
                         icon = "Weapons\\BTNBarbarian Brutal Slasher.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_1,
                         decl = DECL_HE,
-                        modificator = 1.2,
+                        modificator = 1.4,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNRitual Shaman Knife 1Charge.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_2,
                         decl = DECL_HE,
-                        modificator = 1.2,
+                        modificator = 1.4,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
@@ -1161,7 +1169,7 @@ do
                         icon = "Weapons\\BTNMastercraftBattleaxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_1,
                         decl = DECL_HE,
-                        modificator = 1.25,
+                        modificator = 1.45,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
@@ -1200,14 +1208,14 @@ do
                         icon = "Weapons\\BTNMace.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_1,
                         decl = DECL_SHE,
-                        modificator = 1.3,
+                        modificator = 1.5,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNMythril Hammer.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_2,
                         decl = DECL_HE,
-                        modificator = 1.3,
+                        modificator = 1.5,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
@@ -1253,35 +1261,35 @@ do
                         icon = "Weapons\\BTNEmeraldStaff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_1,
                         decl = DECL_HE,
-                        modificator = 1.,
+                        modificator = 1.2,
                         soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNFireWand.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_2,
                         decl = DECL_HE,
-                        modificator = 1.,
+                        modificator = 1.2,
                         soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNFrostJade.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_3,
                         decl = DECL_HE,
-                        modificator = 1.,
+                        modificator = 1.2,
                         soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNIce Staff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_4,
                         decl = DECL_HE,
-                        modificator = 1.,
+                        modificator = 1.2,
                         soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                     {
                         icon = "Weapons\\BTNStick Staff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_5,
                         decl = DECL_THEY,
-                        modificator = 1.,
+                        modificator = 1.2,
                         soundpack = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
                     },
                 },
@@ -1764,14 +1772,14 @@ do
                         icon = "Weapons\\BTNBarbarian Brutal Slasher.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_1,
                         decl = DECL_HE,
-                        modificator = 1.2,
+                        modificator = 1.4,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNRitual Shaman Knife 1Charge.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_2,
                         decl = DECL_HE,
-                        modificator = 1.2,
+                        modificator = 1.4,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
@@ -1803,7 +1811,7 @@ do
                         icon = "Weapons\\BTNMastercraftBattleaxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_1,
                         decl = DECL_HE,
-                        modificator = 1.25,
+                        modificator = 1.45,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
@@ -1842,14 +1850,14 @@ do
                         icon = "Weapons\\BTNMace.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_1,
                         decl = DECL_SHE,
-                        modificator = 1.3,
+                        modificator = 1.5,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNMythril Hammer.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_2,
                         decl = DECL_HE,
-                        modificator = 1.3,
+                        modificator = 1.5,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
@@ -2588,28 +2596,28 @@ do
                         icon = "Weapons\\BTNBarbarian Brutal Slasher.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_1,
                         decl = DECL_HE,
-                        modificator = 1.2,
+                        modificator = 1.4,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNRitual Shaman Knife 1Charge.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_2,
                         decl = DECL_HE,
-                        modificator = 1.2,
+                        modificator = 1.4,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNTier3 Sword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_3,
                         decl = DECL_HE,
-                        modificator = 1.2,
+                        modificator = 1.4,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNTideShamanRitualLance.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_4,
                         decl = DECL_HE,
-                        modificator = 1.2,
+                        modificator = 1.4,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
@@ -2648,14 +2656,14 @@ do
                         icon = "Weapons\\BTNMastercraftBattleaxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_1,
                         decl = DECL_HE,
-                        modificator = 1.25,
+                        modificator = 1.45,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNAxe of Terror.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_2,
                         decl = DECL_HE,
-                        modificator = 1.25,
+                        modificator = 1.45,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                 },
@@ -2708,14 +2716,14 @@ do
                         icon = "Weapons\\BTNMace.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_1,
                         decl = DECL_SHE,
-                        modificator = 1.3,
+                        modificator = 1.5,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
                         icon = "Weapons\\BTNMythril Hammer.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_2,
                         decl = DECL_HE,
-                        modificator = 1.3,
+                        modificator = 1.5,
                         soundpack = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
                     },
                     {
