@@ -11,25 +11,31 @@ do
     local WebRegions
 
     function SpiderQueen_SpawnBrood(boss)
-        local rect = BroodRegions[GetRandomInt(1, #BroodRegions)]
-        local x; local y
+        --local rect = BroodRegions[GetRandomInt(1, #BroodRegions)]
+        local x = GetUnitX(boss); local y = GetUnitY(boss)
         local total_egg_count = GetRandomInt(1, 3)
+        --local distance = GetRandomInt(200, 400)
+
+
+           -- if GetRandomInt(1,2) == 1 then distance = distance * -1 end
 
             for i = 1, total_egg_count do
-                x = GetRandomRectX(rect); y = GetRandomRectY(rect)
-                local egg = CreateUnit(SECOND_MONSTER_PLAYER, GetRandomInt(1,2) == 1 and FourCC("speg") or FourCC("speb"), x, y, GetRandomReal(0., 359.))
-                --DelayAction(0.001, function() ScaleMonsterUnit(egg) end)
-                DelayAction(17., function()
-                    if GetUnitState(egg, UNIT_STATE_LIFE) > 0.045 then
-                        KillUnit(egg)
-                        local spider = CreateUnit(SECOND_MONSTER_PLAYER, FourCC("n00Y"), GetUnitX(egg), GetUnitY(egg), RndAng())
-                        DelayAction(0.001, function()
-                            local unit_data = GetUnitData(spider)
-                            unit_data.classification = 0
-                            --ScaleMonsterUnit(spider)
-                        end)
-                    end
-                end)
+                local angle = GetRandomReal(0., 359.)
+                local max_range = GetMaxAvailableDistance(x, y, angle, GetRandomInt(250, 500))
+                local egg = CreateUnit(SECOND_MONSTER_PLAYER, GetRandomInt(1,2) == 1 and FourCC("speg") or FourCC("speb"), x + Rx(max_range, angle), x + Ry(max_range, angle), GetRandomReal(0., 359.))
+
+                    DelayAction(17., function()
+                        if GetUnitState(egg, UNIT_STATE_LIFE) > 0.045 then
+                            KillUnit(egg)
+                            local spider = CreateUnit(SECOND_MONSTER_PLAYER, FourCC("n00Y"), GetUnitX(egg), GetUnitY(egg), RndAng())
+                            DelayAction(0.001, function()
+                                local unit_data = GetUnitData(spider)
+                                unit_data.classification = 0
+                                --ScaleMonsterUnit(spider)
+                            end)
+                        end
+                    end)
+
             end
 
 
@@ -38,18 +44,17 @@ do
 
     function SpiderQueen_WebTrap(boss)
         local rect = Rect(-16., -16., 16., 16)
+        local angle = GetRandomReal(0., 359.)
+        local max_range = GetMaxAvailableDistance(GetUnitX(boss), GetUnitY(boss), angle, GetRandomInt(200, 400))
 
             SpiderQueenTrapCount = SpiderQueenTrapCount + 1
 
-            local distance = GetRandomInt(200, 400)
-            if GetRandomInt(1,2) == 1 then distance = distance * -1 end
-
-            local x = GetUnitX(boss) + distance
-            local y = GetUnitY(boss) + distance
+            local x = GetUnitX(boss) + Rx(max_range, angle)
+            local y = GetUnitY(boss) + Ry(max_range, angle)
 
             MoveRectTo(rect, x, y)
             local web_effect = AddSpecialEffect("Abilities\\Spells\\Undead\\Web\\WebTarget.mdx", x, y)
-            BlzSetSpecialEffectHeight(web_effect, 80.)
+            BlzSetSpecialEffectHeight(web_effect, 84.)
             BlzSetSpecialEffectScale(web_effect, 1.1)
 
             local trg = CreateTrigger()
@@ -57,7 +62,7 @@ do
             RegionAddRect(region, rect)
             TriggerRegisterEnterRegion(trg, region, nil)
             TriggerAddAction(trg, function()
-                if IsUnitEnemy(GetTriggerUnit(), MONSTER_PLAYER) then
+                if IsUnitEnemy(GetTriggerUnit(), MONSTER_PLAYER) and GetUnitAbilityLevel(GetTriggerUnit(), FourCC("Avul")) == 0 then
                     ApplyBuff(boss, GetTriggerUnit(), "A01T", 1)
                     RemoveRegion(region)
                     RemoveRect(rect)
@@ -178,11 +183,13 @@ do
 
                 if BlzGroupGetSize(enemies) > 0 then
                     local target = RandomFromGroup(enemies)
-                    local ghost = CreateUnit(MONSTER_PLAYER, FourCC("u00H"), GetUnitX(target), GetUnitY(target), GetRandomReal(0., 359.))
+                    local ghost = CreateUnit(MONSTER_PLAYER, FourCC("u00H"), GetUnitX(target) + GetRandomReal(-250., 250.), GetUnitY(target) + GetRandomReal(-250., 250.), GetRandomReal(0., 359.))
 
-                    UnitApplyTimedLife(ghost, 0, 2.)
                     SetUnitVertexColor(ghost, 59, 155, 255, 125)
-                    --TODO stuff
+                    DelayAction(2., function()
+                        KillUnit(ghost)
+                        ShowUnit(ghost, false)
+                    end)
 
                 end
             else
@@ -203,9 +210,8 @@ do
         }
 
 
-        RegisterTestCommand("throw", function()
-            ThrowMissile(PlayerHero[1], nil, "MMLN", nil, GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), 0., 0., 225.)
-        end)
+
+        InitMyAI()
 
     end
 

@@ -27,12 +27,20 @@ do
             if effect.type == ITEM_PASSIVE_EFFECT then
                 if flag then
                     if effect.on_apply and not unit_data.effects[effect.id] then effect.on_apply(unit) end
-                    unit_data.effects[effect.id] = true
+                    --unit_data.effects[effect.id] = true
+                    UnitAddEffect(unit, effect.id)
                 else
                     if effect.on_end and unit_data.effects[effect.id] then effect.on_end(unit) end
-                    unit_data.effects[effect.id] = nil
+                    UnitRemoveEffect(unit, effect.id)
+                    --unit_data.effects[effect.id] = nil
                 end
             else
+                --if flag then
+                    --UnitAddEffect(unit, effect.id)
+                --else
+                    --UnitRemoveEffect(unit, effect.id)
+               -- end
+
                 if flag and not unit_data.effects[effect.id] then
                     unit_data.effects[effect.id] = CreateTimer()
                     TimerStart(unit_data.effects[effect.id], effect.period, true, function()

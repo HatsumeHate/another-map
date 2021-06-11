@@ -81,12 +81,23 @@ do
 
     function UnitAddEffect(unit, effect)
         local unit_data = GetUnitData(unit)
-        unit_data.effects[effect] = true
+
+        if unit_data.effects[effect] then unit_data.effects[effect] = unit_data.effects[effect] + 1
+        else unit_data.effects[effect] = 1 end
+
+        --unit_data.effects[effect] = true
     end
 
     function UnitRemoveEffect(unit, effect)
         local unit_data = GetUnitData(unit)
-        unit_data.effects[effect] = nil
+
+        if unit_data.effects[effect] then
+            unit_data.effects[effect] = unit_data.effects[effect] - 1
+            if unit_data.effects[effect] <= 0 then unit_data.effects[effect] = nil end
+        end
+
+
+        --unit_data.effects[effect] = nil
     end
 
 
@@ -990,7 +1001,8 @@ do
                 { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
-                { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS }
+                { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
+                { param = HP_PER_HIT, value = 5, method = STRAIGHT_BONUS },
             },
             have_mp = false,
             xp = 700,

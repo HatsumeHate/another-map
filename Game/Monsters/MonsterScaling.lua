@@ -34,6 +34,11 @@ do
     BONUS_MONSTER_STAT_RATES = {
         [FourCC("abcd")] = {
             [PHYSICAL_ATTACK] = 0.
+        },
+        [FourCC("U003")] = {
+            scaling = {
+                { stat = HP_PER_HIT,              initial = 0,   delta = 1,  delta_level = 1, method = STRAIGHT_BONUS },
+            }
         }
     }
 
@@ -70,6 +75,24 @@ do
                 end
 
             end
+
+        if BONUS_MONSTER_STAT_RATES[monster_id] and BONUS_MONSTER_STAT_RATES[monster_id].scaling then
+            local scaling = BONUS_MONSTER_STAT_RATES[monster_id].scaling
+            for i = 1, #scaling do
+                local level_scaling = math.floor(Current_Wave / scaling[i].delta_level)
+                local power_scaling = math.floor((unit_data.scale_power - 1) / scaling[i].delta_level)
+                local bonus_delta = 0
+
+                if BONUS_MONSTER_STAT_RATES[monster_id] and BONUS_MONSTER_STAT_RATES[monster_id][scaling[i].stat] then
+                    bonus_delta = BONUS_MONSTER_STAT_RATES[monster_id][scaling[i].stat]
+                end
+
+                if level_scaling > power_scaling then
+                    ModifyStat(target, scaling[i].stat, scaling[i].initial + ((level_scaling - power_scaling) * (scaling[i].delta + bonus_delta + ((scaling[i].per_player or 0.) * (ActivePlayers - 1)))),
+                        scaling[i].method, true)
+                end
+            end
+        end
 
         --print("scale - end "  .. GetUnitName(target))
 

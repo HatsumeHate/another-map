@@ -168,10 +168,6 @@ do
             frame = nil
         end)
 
-
-
-        --TODO sync changes, test
-        --StatsPanelInit()
         TeleporterInit()
 
     end

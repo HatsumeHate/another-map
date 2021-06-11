@@ -199,8 +199,8 @@ do
 
                     if buff_data.level[buff_data.current_level].bonus then
                         for i2 = 1, #buff_data.level[buff_data.current_level].bonus do
-                            print(GetParameterName(buff_data.level[lvl].bonus[i2].PARAM))
-                            print(buff_data.level[lvl].bonus[i2].VALUE)
+                            --print(GetParameterName(buff_data.level[lvl].bonus[i2].PARAM))
+                            --print(buff_data.level[lvl].bonus[i2].VALUE)
                             ModifyStat(target, buff_data.level[buff_data.current_level].bonus[i2].PARAM, buff_data.level[buff_data.current_level].bonus[i2].VALUE, buff_data.level[buff_data.current_level].bonus[i2].METHOD, true)
                         end
                     end
@@ -361,8 +361,8 @@ do
 
                 if buff_data.level[lvl].bonus then
                     for i = 1, #buff_data.level[lvl].bonus do
-                        print(GetParameterName(buff_data.level[lvl].bonus[i].PARAM))
-                        print(buff_data.level[lvl].bonus[i].VALUE)
+                        --print(GetParameterName(buff_data.level[lvl].bonus[i].PARAM))
+                        --print(buff_data.level[lvl].bonus[i].VALUE)
                         ModifyStat(target, buff_data.level[lvl].bonus[i].PARAM, buff_data.level[lvl].bonus[i].VALUE, buff_data.level[lvl].bonus[i].METHOD, true)
                     end
                 end

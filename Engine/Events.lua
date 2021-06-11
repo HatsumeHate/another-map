@@ -279,7 +279,7 @@ do
             if UnitHasEffect(source,"EOTS") then SparkCast_Legendary(source)
             else SparkCast(source, target, x, y) end
         elseif skill.Id == "A019" then ChainLightningCast(source, target)
-        elseif skill.Id == 'A00O' then MakeUnitJump(source, AngleBetweenUnitXY(source, x, y), x, y, 970., 0.6, 'A00O')
+        elseif skill.Id == 'A00O' then MakeUnitJump(source, AngleBetweenUnitXY(source, x, y), x, y, 920., 0.6, 'A00O', { effect = "Spell\\Valiant Charge.mdx", point = "origin" })
         elseif skill.Id == 'A010' then WhirlwindActivate(source)
         elseif skill.Id == 'A00B' then
             local effect = AddSpecialEffect("Spell\\DetroitSmash_Effect.mdx", GetUnitX(source) + Rx(50., GetUnitFacing(source)), GetUnitY(source) + Ry(50., GetUnitFacing(source)))
@@ -312,9 +312,9 @@ do
         elseif skill.Id == "ASQS" then
             SpiderQueen_SpawnBrood(source)
         elseif skill.Id == "ABCH" then
-            ChargeUnit(source, 750., 600., GetUnitFacing(source), 1, 100., "walk", "abch")
+            ChargeUnit(source, 750., 600., GetUnitFacing(source), 1, 100., "walk", "abch", { effect = "Spell\\Valiant Charge.mdx", point = "origin" })
         elseif skill.Id == "AACH" then
-            ChargeUnit(source, 500., 500., GetUnitFacing(source), 1, 100., "walk", "aach")
+            ChargeUnit(source, 500., 500., GetUnitFacing(source), 1, 100., "walk", "aach", { effect = "Spell\\Valiant Charge Fel.mdx", point = "origin" })
         elseif skill.Id == "AAPN" then
             CreatePoisonNova(source)
         elseif skill.Id == "ASSM" then

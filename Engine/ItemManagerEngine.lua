@@ -281,6 +281,25 @@ do
     end
 
 
+
+    local AffixTable = {
+        [COMMON_ITEM] = {
+            { affix = ITEM_AFFIX_IDEAL, chance = 17. },
+            { affix = ITEM_AFFIX_EXCELLENT, chance = 33. },
+            { affix = ITEM_AFFIX_FINE, chance = 50. },
+        },
+        [RARE_ITEM] = {
+            { affix = ITEM_AFFIX_IDEAL, chance = 33. },
+            { affix = ITEM_AFFIX_EXCELLENT, chance = 50. },
+            { affix = ITEM_AFFIX_FINE, chance = 66. },
+        },
+        [MAGIC_ITEM] = {
+            { affix = ITEM_AFFIX_IDEAL, chance = 50. },
+            { affix = ITEM_AFFIX_EXCELLENT, chance = 50. },
+            { affix = ITEM_AFFIX_FINE, chance = 50. },
+        },
+    }
+
     function GenerateItemSuffix(item, variation, quality)
         local item_data = GetItemData(item)
 
@@ -288,7 +307,16 @@ do
 
         local suffix = ITEM_QUALITY_SUFFIX_LIST[quality][item_data.SUBTYPE][GetRandomInt(1, #ITEM_QUALITY_SUFFIX_LIST[quality][item_data.SUBTYPE])]
         --print("suffix number " .. (suffix or "invalid"))
-        local affix = GetRandomInt(ITEM_SUFFIX_LIST[suffix].min_affix, ITEM_SUFFIX_LIST[suffix].max_affix)
+        --local affix = GetRandomInt(ITEM_SUFFIX_LIST[suffix].min_affix, ITEM_SUFFIX_LIST[suffix].max_affix)
+        local affix = ITEM_AFFIX_WORN
+
+        for i = 1, #AffixTable[quality] do
+            if Chance(AffixTable[quality][i].chance) then
+                affix = AffixTable[quality][i].affix
+                break
+            end
+        end
+
         --print("affix number " .. (affix or "invalid"))
         local preset = ITEM_SUFFIX_LIST[suffix].affix_bonus[affix]
         local min = QUALITY_ITEM_BONUS_COUNT[quality].min
@@ -666,7 +694,7 @@ do
             end
 
 
-            if item_data.SKILL_BONUS then
+            if item_data.SKILL_BONUS and #item_data.SKILL_BONUS > 0 then
                 UpdateBindedSkillsData(GetPlayerId(GetOwningPlayer(unit)) + 1)
             end
 

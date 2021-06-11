@@ -26,18 +26,34 @@ do
     end
 
 
-    local ButtonTextureList = {}
+
+    local ButtonClickList = {}
 
     function FrameChangeTexture(frame, texture)
-        ButtonTextureList[GetHandleId(frame)] = texture
+        --ButtonTextureList[GetHandleId(frame)] = texture
+        BlzFrameSetTexture(ButtonClickList[GetHandleId(frame)].image, texture, 0, true)
     end
 
     local ClickTrigger = CreateTrigger()
     TriggerAddAction(ClickTrigger, function()
         local frame = BlzGetTriggerFrame()
+
+            if ButtonClickList[GetHandleId(frame)] then
+                local handle = GetHandleId(frame)
+                BlzFrameSetVisible(ButtonClickList[handle].frame, true)
+
+                TimerStart(ButtonClickList[handle].timer, 0.1, false, function()
+                    BlzFrameSetVisible(ButtonClickList[handle].frame, false)
+                    frame = nil
+                end)
+            end
+
+    end)
+
+    ---@param frame framehandle
+    function FrameRegisterClick(frame, texture)
         local new_Frame_backdrop = BlzCreateFrameByType("BACKDROP", "ABC", frame, "", 0)
         local new_Frame_image = BlzCreateFrameByType("BACKDROP", "ABCD", new_Frame_backdrop, "", 0)
-
         BlzFrameSetAllPoints(new_Frame_backdrop, frame)
         BlzFrameSetPoint(new_Frame_image, FRAMEPOINT_TOPLEFT, new_Frame_backdrop, FRAMEPOINT_TOPLEFT, 0.003, -0.003)
         BlzFrameSetPoint(new_Frame_image, FRAMEPOINT_TOPRIGHT, new_Frame_backdrop, FRAMEPOINT_TOPRIGHT, -0.003, -0.003)
@@ -45,23 +61,14 @@ do
         BlzFrameSetPoint(new_Frame_image, FRAMEPOINT_BOTTOMRIGHT, new_Frame_backdrop, FRAMEPOINT_BOTTOMRIGHT, -0.003, 0.003)
         --BlzFrameSetAllPoints(new_Frame_image, new_Frame_backdrop)
         BlzFrameSetTexture(new_Frame_backdrop, "button_backdrop.blp", 0, true)
-        BlzFrameSetTexture(new_Frame_image, ButtonTextureList[GetHandleId(frame)], 0, true)
-
-
-        TimerStart(CreateTimer(), 0.1, false, function()
-            BlzDestroyFrame(new_Frame_backdrop)
-            DestroyTimer(GetExpiredTimer())
-            new_Frame_image = nil
-            new_Frame_backdrop = nil
-            frame = nil
-        end)
-
-    end)
-
-    ---@param frame framehandle
-    function FrameRegisterClick(frame, texture)
+        BlzFrameSetTexture(new_Frame_image, texture, 0, true)
+        ButtonClickList[GetHandleId(frame)] = {
+            frame = new_Frame_backdrop,
+            image = new_Frame_image,
+            timer = CreateTimer()
+        }
+        BlzFrameSetVisible(new_Frame_backdrop, false)
         BlzTriggerRegisterFrameEvent(ClickTrigger, frame, FRAMEEVENT_CONTROL_CLICK)
-        ButtonTextureList[GetHandleId(frame)] = texture
     end
 
 
@@ -115,7 +122,7 @@ do
         BlzLoadTOCFile("war3mapimported\\BoxedText.toc")
         BlzLoadTOCFile("war3mapImported\\MyTOCfile.toc")
 
-
+        InitContextMenu()
     end
 
 end

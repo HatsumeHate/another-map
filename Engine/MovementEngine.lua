@@ -191,7 +191,7 @@ do
     ---@param radius number
     ---@param animation string
     ---@param sign string
-    function ChargeUnit(source, speed, distance, angle, max_targets, radius, animation, sign)
+    function ChargeUnit(source, speed, distance, angle, max_targets, radius, animation, sign, sfx)
         local charge_data = {}
         local h = GetHandleId(source)
 
@@ -220,6 +220,12 @@ do
             SafePauseUnit(source, true)
 
 
+            if sfx then
+                charge_data.effect = AddSpecialEffectTarget(sfx.effect, source, sfx.point or "chest")
+                BlzSetSpecialEffectScale(charge_data.effect, sfx.scale or 1.)
+            end
+
+
         --print("a")
 
             TimerStart(CreateTimer(), PERIOD, true, function()
@@ -230,6 +236,7 @@ do
                     SetUnitAnimation(source, "stand")
                     SafePauseUnit(source, false)
                     OnChargeEnd(source, targets_hit, sign, state)
+                    DestroyEffect(charge_data.effect)
                     charge_data = nil
                     ChargeList[h] = nil
                     DestroyTimer(GetExpiredTimer())
@@ -247,6 +254,7 @@ do
                                     if max_targets <= 0 or endcharge then
                                         SafePauseUnit(source, false)
                                         OnChargeEnd(source, targets_hit, sign, state)
+                                        DestroyEffect(charge_data.effect)
                                         charge_data = nil
                                         ChargeList[h] = nil
                                         DestroyTimer(GetExpiredTimer())
@@ -274,7 +282,7 @@ do
 
 
 
-    function MakeUnitJump(target, angle, x, y, speed, arc, sign)
+    function MakeUnitJump(target, angle, x, y, speed, arc, sign, sfx)
         local unit_x = GetUnitX(target)
         local unit_y = GetUnitY(target)
         local unit_z = GetZ(unit_x, unit_y)
@@ -306,6 +314,13 @@ do
 
         SafePauseUnit(target, true)
 
+        local effect
+
+        if sfx then
+            effect = AddSpecialEffectTarget(sfx.effect, target, sfx.point or "chest")
+            BlzSetSpecialEffectScale(effect, sfx.scale or 1.)
+        end
+
         --BlzPauseUnitEx(target, true)
 
         TimerStart(CreateTimer(), PERIOD, true, function ()
@@ -318,6 +333,9 @@ do
                 --BlzPauseUnitEx(target, false)
                 SetUnitFlyHeight(target, 0., 0.)
                 DestroyTimer(GetExpiredTimer())
+                if effect then
+                    DestroyEffect(effect)
+                end
             else
                 -- COLLISION
 

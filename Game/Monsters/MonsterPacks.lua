@@ -289,46 +289,6 @@ do
         end
 
 
-        RegisterTestCommand("kill a", function()
-            KillUnit(BossPack[1].boss)
-        end)
-
-        RegisterTestCommand("kill b", function()
-            KillUnit(BossPack[2].boss)
-        end)
-
-        RegisterTestCommand("kill s", function()
-            KillUnit(BossPack[3].boss)
-        end)
-
-
-        RegisterTestCommand("wipe", function()
-            ForGroup(MonsterPack[1].group, function()
-                KillUnit(GetEnumUnit())
-            end)
-        end)
-
-        RegisterTestCommand("wipe1", function()
-            KillUnit(FirstOfGroup(MonsterPack[1].group))
-            GroupRemoveUnit(MonsterPack[1].group, FirstOfGroup(MonsterPack[1].group))
-        end)
-
-
-        RegisterTestCommand("inspect", function()
-
-            ForGroup(MonsterPack[1].group, function()
-                local data = GetUnitData(GetEnumUnit())
-                print("#####################")
-                print(GetUnitName(GetEnumUnit()))
-                for i = 1, #data.stats do
-                    if data.stats[i].value > 0 then
-                        print(GetParameterName(i) .. " " .. data.stats[i].value)
-                    end
-                end
-
-            end)
-
-        end)
 
     end
 

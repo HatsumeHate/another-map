@@ -167,11 +167,6 @@ do
     end
 
 
-
-    RegisterTestCommand("parse", function()
-        print(ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][FourCC("A00C")][1], 1))
-    end)
-
     ---@param unit unit
     ---@param id string
     ---@param player number
@@ -187,12 +182,12 @@ do
                     --local proper_level_data = lvl
 
                     if LOCALE_LIST[my_locale][true_id][lvl] then
-                        print("exists")
+                        --print("exists")
                         BlzSetAbilityExtendedTooltip(ability, ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id][lvl], lvl), 0)
                     else
-                        print("has " .. lvl .. "elemets")
+                        --print("has " .. lvl .. "elemets")
                         for i = lvl, 1, -1 do
-                            print("checking ".. i)
+                            --print("checking ".. i)
                             if LOCALE_LIST[my_locale][true_id][i] then
                                 BlzSetAbilityExtendedTooltip(ability, ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id][i], lvl), 0)
                                 break

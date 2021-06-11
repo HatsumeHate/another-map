@@ -88,11 +88,11 @@ do
 
                     if GetItemCharges(ButtonList[h].item) > 1 then
                         CreateSlider(player, ButtonList[h], ButtonList[GetHandleId(ShopFrame[player].slot[32])].image, function()
-                            local amount = BlzFrameGetValue(SliderFrame[player].slider)
-                            if amount > GetItemCharges(ButtonList[h].item) then
-                                amount = GetItemCharges(ButtonList[h].item)
+                            local value = SliderFrame[player].value
+                            if value > GetItemCharges(ButtonList[h].item) then
+                                value = GetItemCharges(ButtonList[h].item)
                             end
-                            BuyItem(player, ButtonList[h].item, amount)
+                            BuyItem(player, ButtonList[h].item, value)
                         end, nil)
                     else
                         BuyItem(player, ButtonList[h].item, 1)

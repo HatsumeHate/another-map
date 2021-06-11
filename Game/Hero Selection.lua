@@ -71,6 +71,11 @@ do
     end
 
 
+    local HeroDeathSoundpack = {
+        [BARBARIAN_CLASS] = { "Sound\\Barbarian\\death1.wav", "Sound\\Barbarian\\death2.wav" },
+        [SORCERESS_CLASS] = { "Sound\\Sorceress\\death1.wav", "Sound\\Sorceress\\death2.wav", "Sound\\Sorceress\\death3.wav" }
+    }
+
 
     function CreateHeroSelections()
 
@@ -104,8 +109,10 @@ do
                     starting_skills[1] = 'A007'
                     starting_skills[2] = 'A00C'
                     starting_skills[3] = 'A00Z'
-                    starting_skills[4] = 'A010'
-                    starting_skills[5] = 'A006'
+
+                    --starting_skills[4] = 'A010'
+                    --starting_skills[5] = 'A006'
+                    --starting_skills[6] = 'A00O'
                 else
                     id = FourCC("HSRC")
                     starting_items[1] = CreateCustomItem("I012", 0., 0.)
@@ -214,6 +221,7 @@ do
         TriggerAddAction(DeathTrigger, function ()
             local hero = GetTriggerUnit()
             local player = GetOwningPlayer(hero)
+            local unit_data = GetUnitData(hero)
 
             DisplayTextToPlayer(player, 0.,0., LOCALE_LIST[my_locale].RESSURECT_TEXT_1 .. string.format('%%.2f', R2S(7. + (Current_Wave / 4.))) .. LOCALE_LIST[my_locale].RESSURECT_TEXT_2)
             ResetUnitSpellCast(hero)
@@ -225,6 +233,9 @@ do
                 DisplayTextToPlayer(player, 0.,0., LOCALE_LIST[my_locale].GOLD_PENALTY_TEXT_1 .. R2I(gold_lost) .. LOCALE_LIST[my_locale].GOLD_PENALTY_TEXT_2)
                 SetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD) - gold_lost)
             end
+
+
+            AddSoundVolumeZ(HeroDeathSoundpack[unit_data.unit_class][GetRandomInt(1, #HeroDeathSoundpack[unit_data.unit_class])], GetUnitX(hero), GetUnitY(hero), 50., 115, 2200.)
 
                 TimerStart(CreateTimer(), 7. + (Current_Wave / 4.), false, function()
                     ReviveHero(hero, GetRectCenterX(gg_rct_cemetary), GetRectCenterY(gg_rct_cemetary), true)

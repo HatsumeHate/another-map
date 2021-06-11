@@ -25,7 +25,7 @@ do
     end
 
 
-    local DoubleClickTimer = { [1] = CreateTimer() }
+    local DoubleClickTimer = { [1] = CreateTimer(), [2] = CreateTimer(), [3] = CreateTimer(), [4] = CreateTimer(), [5] = CreateTimer(), [6] = CreateTimer() }
 
 
 
@@ -140,9 +140,12 @@ do
                                 FrameChangeTexture(button.button, button.original_texture)
                                 BlzFrameSetVisible(button.charges_frame, false)
 
-                                    if button.sprite ~= nil then
-                                        BlzDestroyFrame(button.sprite)
-                                        button.sprite = nil
+                                    if button.button_state then
+                                        BlzFrameSetVisible(button.sprite, false)
+                                        BlzFrameSetEnable(button.sprite, false)
+                                        button.button_state = false
+                                        --BlzDestroyFrame(button.sprite)
+                                        --button.sprite = nil
                                     end
 
                                 RemoveCustomItem(button.item)
@@ -152,15 +155,16 @@ do
                                 BlzFrameSetVisible(button.charges_frame, true)
                                 BlzFrameSetText(button.charges_text_frame, R2I(GetItemCharges(button.item)))
 
-                                    if button.sprite and not IsItemInvulnerable(button.item) then
-                                        BlzDestroyFrame(button.sprite)
-                                        button.sprite = nil
-                                    elseif button.sprite == nil and IsItemInvulnerable(button.item) then
-                                        button.sprite = BlzCreateFrameByType("SPRITE", "justAName", button.image, "WarCraftIIILogo", 0)
-                                        BlzFrameSetPoint(button.sprite, FRAMEPOINT_BOTTOMLEFT, button.image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
-                                        BlzFrameSetSize(button.sprite, 1., 1.)
-                                        BlzFrameSetScale(button.sprite, 1.)
-                                        BlzFrameSetModel(button.sprite, "selecter3.mdx", 0)
+                                    if button.button_state and not IsItemInvulnerable(button.item) then
+                                        BlzFrameSetVisible(button.sprite, false)
+                                        BlzFrameSetEnable(button.sprite, false)
+                                        button.button_state = false
+                                        --BlzDestroyFrame(button.sprite)
+                                        --button.sprite = nil
+                                    elseif not button.button_state and IsItemInvulnerable(button.item) then
+                                        BlzFrameSetVisible(button.sprite, true)
+                                        BlzFrameSetEnable(button.sprite, true)
+                                        button.button_state = true
                                     end
 
                             end
@@ -175,9 +179,12 @@ do
                     BlzFrameSetVisible(button.charges_frame, false)
                     BlzFrameSetText(button.charges_text_frame, "")
 
-                        if button.sprite then
-                            BlzDestroyFrame(button.sprite)
-                            button.sprite = nil
+                        if button.button_state then
+                            BlzFrameSetVisible(button.sprite, false)
+                            BlzFrameSetEnable(button.sprite, false)
+                            button.button_state = false
+                            --BlzDestroyFrame(button.sprite)
+                            --button.sprite = nil
                         end
 
                 end
@@ -201,15 +208,18 @@ do
             }
 
     local function LockItemOnBelt(player, button)
-        if button.sprite == nil then
+        if not button.button_state then
             if UnitInventoryCount(InventoryOwner[player]) < 6 then
-                button.sprite = BlzCreateFrameByType("SPRITE", "justAName", button.image, "WarCraftIIILogo", 0)
+                --button.sprite = BlzCreateFrameByType("SPRITE", "justAName", button.image, "WarCraftIIILogo", 0)
+                --BlzFrameClearAllPoints()
+                --BlzFrameSetPoint(button.sprite, FRAMEPOINT_BOTTOMLEFT, button.image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
+                --BlzFrameSetSize(button.sprite, 1., 1.)
+                --BlzFrameSetScale(button.sprite, 1.)
 
-                BlzFrameSetPoint(button.sprite, FRAMEPOINT_BOTTOMLEFT, button.image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
-                BlzFrameSetSize(button.sprite, 1., 1.)
-                BlzFrameSetScale(button.sprite, 1.)
-
-                BlzFrameSetModel(button.sprite, "selecter3.mdx", 0)
+                --BlzFrameSetModel(button.sprite, "selecter3.mdx", 0)
+                BlzFrameSetVisible(button.sprite, true)
+                BlzFrameSetEnable(button.sprite, true)
+                button.button_state = true
                 PlayLocalSound("Sound\\Interface\\AutoCastButtonClick1.wav", player)
 
                 SetItemVisible(button.item, true)
@@ -225,11 +235,14 @@ do
                 Feedback_CantUse(player)
             end
         else
-            BlzDestroyFrame(button.sprite)
+            BlzFrameSetVisible(button.sprite, false)
+            BlzFrameSetEnable(button.sprite, false)
+            button.button_state = false
+            --BlzDestroyFrame(button.sprite)
             SetItemInvulnerable(button.item, false)
             UnitRemoveItem(PlayerHero[player], button.item)
             SetItemVisible(button.item, false)
-            button.sprite = nil
+            --button.sprite = nil
         end
     end
 
@@ -247,7 +260,7 @@ do
         local player = GetPlayerId(GetTriggerPlayer()) + 1
         local h = GetHandleId(BlzGetTriggerFrame())
 
-            if PlayerMovingItem[player] then
+            if PlayerMovingItem[player].state then
                 BlzFrameSetAllPoints(PlayerMovingItem[player].frame, ButtonList[h].image)
                 local scale = 0.0415
                 if PlayerMovingItem[player].mode == 2 then scale = 0.035 end
@@ -280,17 +293,19 @@ do
 
     function RemoveSelectionFrames(player)
 
-            if PlayerMovingItem[player] ~= nil then
+            if PlayerMovingItem[player].state then
 
-                if ButtonList[PlayerMovingItem[player].selected_frame].sprite ~= nil then
+                if ButtonList[PlayerMovingItem[player].selected_frame].button_state then
                     BlzFrameSetEnable(ButtonList[PlayerMovingItem[player].selected_frame].sprite, true)
                 end
 
-                BlzDestroyFrame(PlayerMovingItem[player].frame)
-                BlzDestroyFrame(PlayerMovingItem[player].selector_frame)
+                BlzFrameSetVisible(PlayerMovingItem[player].frame, false)
+                BlzFrameSetVisible(PlayerMovingItem[player].selector_frame, false)
+                PlayerMovingItem[player].state = false
+                --BlzDestroyFrame(PlayerMovingItem[player].frame)
+                --BlzDestroyFrame(PlayerMovingItem[player].selector_frame)
             end
 
-        PlayerMovingItem[player] = nil
     end
 
 
@@ -298,21 +313,39 @@ do
     local SELECTION_MODE_MOVE = 1
     local SELECTION_MODE_ENCHANT = 2
 
+
+    local function CreateSelectionFrames(player)
+        PlayerMovingItem[player] = { frame = nil, selector_frame = nil, selected_frame = nil, mode = 0 }
+        PlayerMovingItem[player].selector_frame = BlzCreateFrameByType("SPRITE", "justAName", ButtonList[GetHandleId(InventorySlots[player][32])].image, "WarCraftIIILogo", 0)
+        BlzFrameSetSize(PlayerMovingItem[player].selector_frame, 1., 1.)
+        BlzFrameSetScale(PlayerMovingItem[player].selector_frame, 1.)
+        PlayerMovingItem[player].frame = BlzCreateFrameByType("BACKDROP", "selection frame", PlayerMovingItem[player].selector_frame, "", 0)
+        PlayerMovingItem[player].state = false
+        BlzFrameSetVisible(PlayerMovingItem[player].frame, false)
+        BlzFrameSetVisible(PlayerMovingItem[player].selector_frame, false)
+    end
+
     local function StartSelectionMode(player, h, mode)
         local item_data = GetItemData(ButtonList[h].item)
 
-            PlayerMovingItem[player] = { frame = nil, selector_frame = nil, selected_frame = h, mode = mode }
+            --PlayerMovingItem[player] = { frame = nil, selector_frame = nil, selected_frame = h, mode = mode }
+            PlayerMovingItem[player].state = true
+            --PlayerMovingItem[player].selector_frame = BlzCreateFrameByType("SPRITE", "justAName", ButtonList[GetHandleId(InventorySlots[player][32])].image, "WarCraftIIILogo", 0)
+            PlayerMovingItem[player].selected_frame = h -- = { frame = nil, selector_frame = nil, selected_frame = h, mode = mode }
+            PlayerMovingItem[player].mode = mode
+            BlzFrameClearAllPoints(PlayerMovingItem[player].selector_frame)
 
-            PlayerMovingItem[player].selector_frame = BlzCreateFrameByType("SPRITE", "justAName", ButtonList[GetHandleId(InventorySlots[player][32])].image, "WarCraftIIILogo", 0)
             BlzFrameSetPoint(PlayerMovingItem[player].selector_frame, FRAMEPOINT_BOTTOMLEFT, ButtonList[h].image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
-            BlzFrameSetSize(PlayerMovingItem[player].selector_frame, 1., 1.)
-            BlzFrameSetScale(PlayerMovingItem[player].selector_frame, 1.)
 
-            if ButtonList[h].sprite ~= nil then BlzFrameSetEnable(ButtonList[h].sprite, false) end
 
-            PlayerMovingItem[player].frame = BlzCreateFrameByType("BACKDROP", "selection frame", PlayerMovingItem[player].selector_frame, "", 0)
+            if ButtonList[h].button_state then BlzFrameSetEnable(ButtonList[h].sprite, false) end
+
+            BlzFrameClearAllPoints(PlayerMovingItem[player].frame)
             BlzFrameSetTexture(PlayerMovingItem[player].frame, item_data.frame_texture, 0, true)
             BlzFrameSetAllPoints(PlayerMovingItem[player].frame, ButtonList[h].image)
+
+            BlzFrameSetVisible(PlayerMovingItem[player].frame, true)
+            BlzFrameSetVisible(PlayerMovingItem[player].selector_frame, true)
 
                 if mode == SELECTION_MODE_MOVE then
                     BlzFrameSetSize(PlayerMovingItem[player].frame, 0.041, 0.041)
@@ -442,6 +475,7 @@ do
                         local unequipped_item = EquipItem(InventoryOwner[id], ButtonList[h].item, true, offhand)
 
                         if item_data.soundpack and item_data.soundpack.equip then PlayLocalSound(item_data.soundpack.equip, id - 1) end
+                       -- print("interact")
 
                         ButtonList[h].item = unequipped_item
                         UpdateEquipPointsWindow(id)
@@ -452,6 +486,7 @@ do
                     else
                         EquipItem(InventoryOwner[id], ButtonList[h].item, false, (ButtonList[h].button_type == OFFHAND_POINT and item_data.TYPE == ITEM_TYPE_WEAPON))
                         if item_data.soundpack ~= nil and item_data.soundpack.uneqip ~= nil then PlayLocalSound(item_data.soundpack.uneqip, id - 1) end
+                        --print("interact2")
 
                         local free_slot = GetFirstFreeSlotButton(id)
                         free_slot.item = ButtonList[h].item
@@ -476,6 +511,7 @@ do
                 local unequipped_item = EquipItem(InventoryOwner[player], selected_item, true) or nil
 
                 if item_data.soundpack ~= nil and item_data.soundpack.equip ~= nil then PlayLocalSound(item_data.soundpack.equip, player - 1) end
+                --print("force")
 
                 ButtonList[PlayerMovingItem[player].selected_frame].item = unequipped_item or nil
                 UpdateEquipPointsWindow(player)
@@ -537,6 +573,7 @@ do
             local new_item = CreateCustomItem_Id(GetItemTypeId(item), GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]))
             GenerateItemLevel(new_item, 1)
             SetItemCharges(new_item, count)
+        --print("compare charges - " .. count .. " and " .. GetItemCharges(new_item))
         return new_item
     end
 
@@ -565,17 +602,23 @@ do
             end
         else
             TimerStart(DoubleClickTimer[player], 0.25, false, function()
-                if ButtonList[h].item and PlayerMovingItem[player] == nil and ButtonList[h].button_type == INV_SLOT then
-                    CreatePlayerContextMenu(player, ButtonList[h].button, FRAMEPOINT_LEFT, ButtonList[GetHandleId(InventorySlots[player][32])].image)
+                if ButtonList[h].item and not PlayerMovingItem[player].state and ButtonList[h].button_type == INV_SLOT then
+                    CreatePlayerContextMenu(player, ButtonList[h].button, FRAMEPOINT_LEFT, InventorySlots[player][45])
+
                         if ShopInFocus[player] then
                             AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_SELL, function()
                                 if ShopInFocus[player] then
 
                                     if GetItemCharges(ButtonList[h].item) > 1 then
                                         CreateSlider(player, ButtonList[h], ButtonList[GetHandleId(InventorySlots[player][32])].image, function()
+                                            local value = SliderFrame[player].value
+                                            --local value = BlzFrameGetValue(SliderFrame[player].slider)
+                                            --print("item charges are " .. GetItemCharges(ButtonList[h].item))
+                                            --print("frame value is " .. value)
 
-                                            if BlzFrameGetValue(SliderFrame[player].slider) < GetItemCharges(ButtonList[h].item) then
-                                                local new_item = SplitChargedItem(ButtonList[h].item, BlzFrameGetValue(SliderFrame[player].slider), player)
+
+                                            if value < GetItemCharges(ButtonList[h].item) then
+                                                local new_item = SplitChargedItem(ButtonList[h].item, value, player)
                                                 SellItem(player, new_item)
                                                 UpdateInventoryWindow(player)
                                             else
@@ -605,7 +648,7 @@ do
                     if item_data.TYPE == ITEM_TYPE_GEM then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_ENCHANT, function() StartSelectionMode(player, h, SELECTION_MODE_ENCHANT) end)
                     elseif item_data.TYPE == ITEM_TYPE_CONSUMABLE then
-                        AddContextOption(player, ButtonList[h].sprite and LOCALE_LIST[my_locale].UI_TEXT_BELT_OFF or LOCALE_LIST[my_locale].UI_TEXT_BELT_ON, function() LockItemOnBelt(player, ButtonList[h]) end)
+                        AddContextOption(player, ButtonList[h].button_state and LOCALE_LIST[my_locale].UI_TEXT_BELT_OFF or LOCALE_LIST[my_locale].UI_TEXT_BELT_ON, function() LockItemOnBelt(player, ButtonList[h]) end)
                     elseif item_data.TYPE == ITEM_TYPE_SKILLBOOK then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_LEARN, function() LearnBook(item_data.item, player) end)
                     elseif item_data.TYPE ~= ITEM_TYPE_OTHER then
@@ -624,12 +667,14 @@ do
                         else
                             if GetItemCharges(ButtonList[h].item) > 1 then
                                 CreateSlider(player, ButtonList[h], ButtonList[GetHandleId(InventorySlots[player][32])].image, function()
-
-                                    if BlzFrameGetValue(SliderFrame[player].slider) < GetItemCharges(ButtonList[h].item) then
-                                        SetItemCharges(ButtonList[h].item, GetItemCharges(ButtonList[h].item) - BlzFrameGetValue(SliderFrame[player].slider))
+                                    local value = SliderFrame[player].value
+                                    if value < GetItemCharges(ButtonList[h].item) then
+                                        SetItemCharges(ButtonList[h].item, GetItemCharges(ButtonList[h].item) - value)
                                         local new_item = CreateCustomItem_Id(GetItemTypeId(ButtonList[h].item), GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]))
-                                        SetItemCharges(new_item, BlzFrameGetValue(SliderFrame[player].slider))
+                                        SetItemCharges(new_item, value)
+                                        --print("bbbb")
                                     else
+                                        --print("aaa")
                                         DropItemFromInventory(player, ButtonList[h].item, false)
                                     end
                                     UpdateInventoryWindow(player)
@@ -637,6 +682,7 @@ do
                                 end, nil)
                             else
                                 DropItemFromInventory(player, ButtonList[h].item, false)
+                                --print("ccccccc")
                             end
                         end
                     end)
@@ -646,7 +692,7 @@ do
             DestroySlider(player)
             DestroyContextMenu(player)
 
-            if PlayerMovingItem[player] then
+            if PlayerMovingItem[player].state then
                 TimerStart(DoubleClickTimer[player], 0., false, nil)
                 local moved_item_data = GetItemData(ButtonList[PlayerMovingItem[player].selected_frame].item)
 
@@ -665,6 +711,7 @@ do
                     if ButtonList[h].item == nil then
 
                         if ButtonList[h].button_type == INV_SLOT then
+                            --print("moved")
                             if moved_item_data.soundpack and moved_item_data.soundpack.drop then PlayLocalSound(moved_item_data.soundpack.drop, player - 1) end
                             ButtonList[h].item = ButtonList[PlayerMovingItem[player].selected_frame].item
                             ButtonList[PlayerMovingItem[player].selected_frame].item = nil
@@ -753,7 +800,7 @@ do
 
                     if button.item == item then
 
-                        if button.sprite then LockItemOnBelt(player, button) end
+                        if button.button_state then LockItemOnBelt(player, button) end
                         IsItemInBlacksmith(player, item)
 
                         SetItemVisible(item, true)
@@ -761,13 +808,14 @@ do
                         local y = GetUnitY(PlayerHero[player]) + GetRandomReal(-55., 55.)
                         SetItemPosition(item, x, y)
                         local item_data = GetItemData(item)
-
-                            if item_data.flippy and not is_silent then
+                        --print("drop")
+                            if item_data.flippy or not is_silent then
                                 if item_data.soundpack then
                                     AddSoundVolume(item_data.soundpack.drop, x, y, 128, 2100.)
                                 end
 
-                                CreateQualityEffect(item)
+                                if item_data.flippy then CreateQualityEffect(item) end
+
                             end
 
                         button.item = nil
@@ -913,6 +961,7 @@ do
         local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
         local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", new_Frame, "", 0)
         local new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
+        local new_Sprite = BlzCreateFrameByType("SPRITE", "justAName", new_FrameImage, "WarCraftIIILogo", 0)
 
         
             ButtonList[GetHandleId(new_Frame)] = {
@@ -923,8 +972,16 @@ do
                 original_texture = texture,
                 charges_frame = new_FrameCharges,
                 charges_text_frame = new_FrameChargesText,
-                sprite = nil
+                sprite = new_Sprite,
+                button_state = false
             }
+
+            BlzFrameSetPoint(new_Sprite, FRAMEPOINT_BOTTOMLEFT, new_FrameImage, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
+            BlzFrameSetSize(new_Sprite, 1., 1.)
+            BlzFrameSetScale(new_Sprite, 1.)
+            BlzFrameSetModel(new_Sprite, "selecter3.mdx", 0)
+            BlzFrameSetVisible(new_Sprite, false)
+            BlzFrameSetEnable(new_Sprite, false)
 
             FrameRegisterNoFocus(new_Frame)
             FrameRegisterClick(new_Frame, texture)
@@ -1038,7 +1095,7 @@ do
 
         end)
 
-
+        CreateSelectionFrames(player)
         TriggerRegisterUnitEvent(DropTrigger, PlayerHero[player],EVENT_UNIT_DROP_ITEM)
         InventoryTooltip[player] = NewTooltip(InventorySlots[player][45])
         BlzFrameSetVisible(main_frame, false)

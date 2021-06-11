@@ -91,7 +91,7 @@ do
             end
 
             BlzFrameSetMinMaxValue(SkillPanelFrame[player].slider, 1., max_skill_count)
-            local current_position = max_skill_count - BlzFrameGetValue(SkillPanelFrame[player].slider)
+            local current_position = max_skill_count - SkillPanelFrame[player].slider_value
 
             for i = 1, 4 do
                 local button_data = GetButtonData(SkillPanelFrame[player].displayed_skill_button[i])
@@ -294,22 +294,53 @@ do
 
             SkillPanelFrame[player].slider = new_Frame
 
-            local trg = CreateTrigger()
-            BlzTriggerRegisterFrameEvent(trg, SkillPanelFrame[player].slider, FRAMEEVENT_SLIDER_VALUE_CHANGED)
-            TriggerAddAction(trg, function ()
-                local id = GetPlayerId(GetTriggerPlayer()) + 1
+            SkillPanelFrame[player].slider_trigger = CreateTrigger()
+            BlzTriggerRegisterFrameEvent(SkillPanelFrame[player].slider_trigger, SkillPanelFrame[player].slider, FRAMEEVENT_SLIDER_VALUE_CHANGED)
+            TriggerAddAction(SkillPanelFrame[player].slider_trigger, function ()
+               -- local id = G etPlayerId(GetTriggerPlayer()) + 1
+                    --DisableTrigger(GetTriggeringTrigger())
+
+                    --BlzFrameSetValue(SkillPanelFrame[player].slider, SkillPanelFrame[player].slider_value)
+                    --print(SkillPanelFrame[player].slider_value)
                     if BlzGetTriggerFrameEvent() == FRAMEEVENT_MOUSE_WHEEL then
                         if BlzGetTriggerFrameValue() > 0 then
-                            BlzFrameSetValue(SkillPanelFrame[id].slider, BlzFrameGetValue(SkillPanelFrame[id].slider) + 1)
+                            SkillPanelFrame[player].slider_value = SkillPanelFrame[player].slider_value + 1
+                            BlzFrameSetValue(SkillPanelFrame[player].slider, SkillPanelFrame[player].slider_value)
                         else
-                            BlzFrameSetValue(SkillPanelFrame[id].slider, BlzFrameGetValue(SkillPanelFrame[id].slider) - 1)
+                            SkillPanelFrame[player].slider_value = SkillPanelFrame[player].slider_value - 1
+                            BlzFrameSetValue(SkillPanelFrame[player].slider, SkillPanelFrame[player].slider_value)
                         end
+                    else
+                        SkillPanelFrame[player].slider_value = BlzGetTriggerFrameValue()
                     end
-                    UpdateSkillWindow(id)
+
+                    UpdateSkillWindow(player)
+                    --EnableTrigger(GetTriggeringTrigger())
                 end)
 
-            BlzTriggerRegisterFrameEvent(trg, SkillPanelFrame[player].slider, FRAMEEVENT_MOUSE_WHEEL)
+            BlzTriggerRegisterFrameEvent(SkillPanelFrame[player].slider_trigger, SkillPanelFrame[player].slider, FRAMEEVENT_MOUSE_WHEEL)
 
+        --[[trg = CreateTrigger()
+
+        TriggerRegisterPlayerEvent(trg, Player(player-1), EVENT_PLAYER_MOUSE_DOWN)
+        TriggerRegisterPlayerEvent(trg, Player(player-1), EVENT_PLAYER_MOUSE_UP)
+        --TriggerRegisterPlayerMouseEventBJ(trg, Player(player-1), EVENT_PLAYER_MOUSE_DOWN)
+        --TriggerRegisterPlayerMouseEventBJ(trg, Player(player-1), EVENT_PLAYER_MOUSE_UP)
+        TriggerAddAction(trg, function()
+            if SkillPanelFrame[player].state then
+                if EVENT_PLAYER_MOUSE_UP == ConvertPlayerEvent(GetTriggerEventId())  then
+                    --SkillPanelFrame[player].slider_value = SkillPanelFrame[player].slider_value + 1
+                    BlzFrameSetValue(SkillPanelFrame[player].slider, SkillPanelFrame[player].slider_value)
+                    UpdateSkillWindow(player)
+                else
+                    --SkillPanelFrame[player].slider_value = SkillPanelFrame[player].slider_value - 1
+                    BlzFrameSetValue(SkillPanelFrame[player].slider, SkillPanelFrame[player].slider_value)
+                    UpdateSkillWindow(player)
+                end
+            end
+        end)]]
+       -- BlzTriggerRegisterPlayerKeyEvent()
+        --BlzTriggerRegisterPlayerKeyEvent(trg, player-1, OSKEY_, KEY)
 
         SkillPanelFrame[player].tooltip = NewTooltip(SkillPanelFrame[player].slider)
 
