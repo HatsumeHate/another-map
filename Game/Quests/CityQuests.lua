@@ -72,16 +72,29 @@ do
     ---@param leash_range number
     function CreateLeashForUnit(unit, leash_range)
         local x = GetUnitX(unit); local y = GetUnitY(unit)
+        local returning = false
 
             TimerStart(CreateTimer(), 3.25, true, function()
                 local state = GetUnitState(unit, UNIT_STATE_LIFE) > 0.045
 
-                    if state and not IsUnitInRangeXY(unit, x, y, leash_range) then
-                        IssuePointOrderById(unit, order_move, x, y)
-                    elseif IsUnitInRangeXY(unit, x, y, 35.) and state then
+                    if state and not returning and not IsUnitInRangeXY(unit, x, y, leash_range) then
+                        UnitAddAbility(unit, FourCC("AAIM"))
+                        UnitAddAbility(unit, FourCC("Avul"))
+                        UnitAddAbility(unit, FourCC("Abun"))
+                        returning = true
+                        IssueImmediateOrderById(unit, order_stop)
+                        DelayAction(0., function() IssuePointOrderById(unit, order_move, x, y) end)
+                    elseif IsUnitInRangeXY(unit, x, y, 35.) and state and returning then
                         SetUnitState(unit, UNIT_STATE_LIFE, GetUnitState(unit, UNIT_STATE_MAX_LIFE))
+                        UnitRemoveAbility(unit, FourCC("AAIM"))
+                        UnitRemoveAbility(unit, FourCC("Avul"))
+                        UnitRemoveAbility(unit, FourCC("Abun"))
+                        IssueImmediateOrderById(unit, order_stop)
+                        returning = false
                     elseif not state then
                         DestroyTimer(GetExpiredTimer())
+                    elseif returning then
+                        IssuePointOrderById(unit, order_move, x, y)
                     end
 
             end)
@@ -154,7 +167,7 @@ do
                 BlzSetUnitName(npc, LOCALE_LIST[my_locale].AIZEK_NAME)
                 PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_SPEECH, 8.)
 
-                CreateQuestItems(20, "I01M", { gg_rct_quest_1_itemrect, gg_rct_quest_2_itemrect, gg_rct_quest_3_itemrect, gg_rct_quest_4_itemrect, gg_rct_quest_5_itemrect })
+                CreateQuestItems(20, FourCC("I01M"), { gg_rct_quest_1_itemrect, gg_rct_quest_2_itemrect, gg_rct_quest_3_itemrect, gg_rct_quest_4_itemrect, gg_rct_quest_5_itemrect })
 
 
                 local trg = CreateTrigger()
@@ -226,6 +239,154 @@ do
 
     end
 
+
+
+    function EnableMainQuest2()
+        local npc = CreateNPC("n01F", gg_rct_npc_5, 235.)
+        local effect  = AddMark(npc, MARK_TYPE_EXCLAMATION, MARK_SPECIAL)
+        local npc_hunter = CreateNPC("n01D", gg_rct_npc_6, 180.)
+        local hunter_effect = AddMark(npc_hunter, MARK_TYPE_QUESTION, MARK_SPECIAL)
+        local npc_witch = CreateNPC("n01E", gg_rct_npc_7, 180.)
+        local witch_effect = AddMark(npc_witch, MARK_TYPE_QUESTION, MARK_SPECIAL)
+        local guard = CreateUnit(MONSTER_PLAYER, FourCC("u007"), GetRectCenterX(gg_rct_npc_8), GetRectCenterY(gg_rct_npc_8), RndAng())
+        local proximity = CreateTrigger()
+        local DeathTrg = CreateTrigger()
+
+
+            CreateLeashForUnit(guard, 1000.)
+            ShowUnit(npc_hunter, false)
+            ShowUnit(npc_witch, false)
+            ShowUnit(guard, false)
+
+
+        local main_feedback = RegisterClickFeedbackOnNPC(npc, function()
+                ClickFunctionsRemove(npc, GetTriggeringTrigger())
+                DestroyEffect(effect)
+
+                PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_2_M_INTRO_1, 5., 5.)
+                PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_2_M_INTRO_2, 5., 5.)
+                PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_2_M_INTRO_3, 5., 5.)
+                PlayCinematicSpeechForEveryone(GetTriggerUnit(), LOCALE_LIST[my_locale].QUEST_2_M_RESPONCE, 5., 5.)
+
+                NewQuest(LOCALE_LIST[my_locale].QUEST_2_M_TITLE, LOCALE_LIST[my_locale].QUEST_2_M_DESC, "ReplaceableTextures\\CommandButtons\\BTNBearForm.blp", true, true, "q2m")
+                AddQuestItem("q2m", "q2mi1", LOCALE_LIST[my_locale].QUEST_2_M_ITEM, false)
+                ShowUnit(npc_hunter, true)
+
+            end)
+
+
+          local hunter_feedback = RegisterClickFeedbackOnNPC(npc_hunter, function()
+                UnitRemoveAbility(npc_hunter, Click_Ability)
+
+                    if IsMyQuestItemCompleted("q2m", "q2mivar6") then
+                        DestroyEffect(hunter_effect)
+                        ClickFunctionsRemove(npc_hunter, GetTriggeringTrigger())
+                        --ClickFunctionsRemove(npc_witch, witch_feedback)
+                        PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_2_M_RESPONCE_HUNTERS_2, 5., 5.)
+                        PlayCinematicSpeechForEveryone(npc_hunter, LOCALE_LIST[my_locale].QUEST_2_M_HUNTER_6, 7., 7.)
+                        MarkQuestAsCompleted("q2m")
+
+                        GiveExp(700)
+                        local gold = GiveGold(320)
+                        ShowQuestAlert(LOCALE_LIST[my_locale].QUEST_REWARD_GOLD_FIRST .. gold .. LOCALE_LIST[my_locale].QUEST_REWARD_GOLD_SECOND)
+
+                        DelayAction(60., function() RemoveUnit(npc_hunter) end)
+                        RemoveUnit(npc_witch)
+                        RemoveUnit(npc)
+                    elseif not IsMyQuestItemCompleted("q2m", "q2mi1") then
+                        DestroyEffect(hunter_effect)
+
+                        PlayCinematicSpeechForEveryone(npc_hunter, LOCALE_LIST[my_locale].QUEST_2_M_HUNTER_1, 4., 4.)
+                        PlayCinematicSpeechForEveryone(npc_hunter, LOCALE_LIST[my_locale].QUEST_2_M_HUNTER_2, 5., 5.)
+                        PlayCinematicSpeechForEveryone(npc_hunter, LOCALE_LIST[my_locale].QUEST_2_M_HUNTER_3, 7., 7.)
+                        PlayCinematicSpeechForEveryone(npc_hunter, LOCALE_LIST[my_locale].QUEST_2_M_HUNTER_4, 8., 8.)
+                        PlayCinematicSpeechForEveryone(npc_hunter, LOCALE_LIST[my_locale].QUEST_2_M_HUNTER_5, 8., 8.)
+                        PlayCinematicSpeechForEveryone(GetTriggerUnit(), LOCALE_LIST[my_locale].QUEST_2_M_RESPONCE_HUNTERS, 5., 5.)
+
+                        AddQuestItem("q2m", "q2mi2var1", LOCALE_LIST[my_locale].QUEST_2_M_ITEMVAR1, true)
+                        AddQuestItem("q2m", "q2mi2var2", LOCALE_LIST[my_locale].QUEST_2_M_ITEMVAR2, true)
+                        SetQuestItemState("q2m", "q2mi1", true)
+                        ShowUnit(npc_witch, true)
+                        ShowUnit(npc_hunter, true)
+                        ShowUnit(guard, true)
+                    end
+
+            end)
+
+
+        local witch_feedback = RegisterClickFeedbackOnNPC(npc_witch, function()
+                UnitRemoveAbility(npc_witch, Click_Ability)
+
+                    if not IsMyQuestItemCompleted("q2m", "q2mi2var2") then
+                        DestroyEffect(witch_effect)
+
+                        PlayCinematicSpeechForEveryone(npc_witch, LOCALE_LIST[my_locale].QUEST_2_M_WITCH_1, 8., 8.)
+                        PlayCinematicSpeechForEveryone(npc_witch, LOCALE_LIST[my_locale].QUEST_2_M_WITCH_2, 8., 8.)
+                        PlayCinematicSpeechForEveryone(npc_witch, LOCALE_LIST[my_locale].QUEST_2_M_WITCH_3, 8., 8.)
+                        PlayCinematicSpeechForEveryone(npc_witch, LOCALE_LIST[my_locale].QUEST_2_M_WITCH_4, 8., 8.)
+                        PlayCinematicSpeechForEveryone(GetTriggerUnit(), LOCALE_LIST[my_locale].QUEST_2_M_RESPONCE_WITCH, 6., 6)
+
+                        AddQuestItem("q2m", "q2mi2var3", LOCALE_LIST[my_locale].QUEST_2_M_ITEMVAR3, true)
+                        AddQuestItemPool("q2m", "q2mi2var3", 15)
+                        SetQuestItemState("q2m", "q2mi2var2", true)
+                        CreateQuestItems(15, FourCC("I01T"), { gg_rct_quest_1_itemrect }, 3)
+
+                        PickUpItemReaction(function()
+                            if GetItemTypeId(GetManipulatedItem()) == FourCC("I01T") then
+                                if SetQuestItemPool("q2m", "q2mi2var3", 15) then
+                                    witch_effect = AddMark(npc_witch, MARK_TYPE_QUESTION, MARK_SPECIAL)
+                                    UnitAddAbility(npc_witch, Click_Ability)
+                                    DestroyTrigger(GetTriggeringTrigger())
+                                end
+                            end
+                        end)
+
+                    elseif IsMyQuestItemCompleted("q2m", "q2mi2var3") then
+                        DestroyEffect(witch_effect)
+
+                        ClickFunctionsRemove(npc_witch, GetTriggeringTrigger())
+                        ClickFunctionsRemove(npc_hunter, hunter_feedback)
+                        PlayCinematicSpeechForEveryone(npc_witch, LOCALE_LIST[my_locale].QUEST_2_M_WITCH_5, 6., 6.)
+
+                        for i = 1, 6 do AddPointsToPlayer(i, 5) end
+                        ShowQuestAlert(LOCALE_LIST[my_locale].QUEST_REWARD_POINTS_FIRST .. "5" .. LOCALE_LIST[my_locale].QUEST_REWARD_POINTS_SECOND)
+                        GiveExp(700)
+
+                        MarkQuestAsCompleted("q2m")
+                        DelayAction(60., function() RemoveUnit(npc_witch) end)
+
+                        RemoveUnit(npc_hunter)
+                        RemoveUnit(npc)
+                        DestroyTrigger(DeathTrg)
+                        DestroyTrigger(proximity)
+                        ShowUnit(guard, false)
+                        KillUnit(guard)
+                    end
+
+            end)
+
+
+
+        TriggerRegisterUnitInRange(proximity, guard, 800., nil)
+        TriggerAddAction(proximity, function()
+            if IsAHero(GetTriggerUnit()) then
+                AddQuestItem("q2m", "q2mivar6", LOCALE_LIST[my_locale].QUEST_2_M_ITEMVAR6, true)
+                SetQuestItemState("q2m", "q2mi2var1", true)
+                DestroyTrigger(proximity)
+            end
+        end)
+
+
+        TriggerRegisterUnitEvent(DeathTrg, guard, EVENT_UNIT_DEATH)
+        TriggerAddAction(DeathTrg, function()
+            AddQuestItem("q2m", "q2mivar5", LOCALE_LIST[my_locale].QUEST_2_M_ITEMVAR5, true)
+            SetQuestItemState("q2m", "q2mivar6", true)
+            hunter_effect = AddMark(npc_hunter, MARK_TYPE_QUESTION, MARK_SPECIAL)
+            UnitAddAbility(npc_hunter, Click_Ability)
+        end)
+
+
+    end
 
 
     Guinplen = nil
@@ -301,6 +462,8 @@ do
         if Guinplen.staff then RemoveItem(Guinplen.staff) end
         if Guinplen.staff_trg then DestroyTrigger(Guinplen.staff_trg) end
         Guinplen = nil
+
+        DelayAction(670., function() EnableMainQuest2()  end)
     end
 
 
@@ -376,7 +539,7 @@ do
                 end)
 
 
-                TriggerRegisterUnitEvent(lilith_death_trg, EVENT_UNIT_DEATH)
+                TriggerRegisterUnitEvent(lilith_death_trg, Lilith, EVENT_UNIT_DEATH)
                 TriggerAddAction(lilith_death_trg, function()
                     SetQuestItemState("que1m", "que1mitemvar1end", true)
                     EndMainQuest1(lilith_proximity_trigger, lilith_death_trg)

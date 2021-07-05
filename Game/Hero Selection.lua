@@ -37,7 +37,7 @@ do
 
                 if xp_rate < MIN_XP_LOSS_RATE then xp_rate = MIN_XP_LOSS_RATE end
                 SuspendHeroXP(PlayerHero[i], false)
-                AddHeroXP(PlayerHero[i], math.ceil((amount + (Current_Wave * 3)) * xp_rate), false)
+                AddHeroXP(PlayerHero[i], math.ceil(amount * xp_rate), false)
                 SuspendHeroXP(PlayerHero[i], true)
             end
         end
@@ -98,7 +98,7 @@ do
             local starting_items = {}
             local starting_skills = {}
 
-
+                ActivePlayers = ActivePlayers + 1
                 if region == barbarian_region then
                     id = FourCC("HBRB")
                     starting_items[1] = CreateCustomItem("I011", 0., 0.)
@@ -123,7 +123,8 @@ do
                     starting_skills[1] = 'A003'
                     starting_skills[2] = 'A00J'
                     starting_skills[3] = 'A00D'
-
+                    starting_skills[4] = "AMLT"
+                    --[[
                     starting_skills[4] = 'A005'
                     starting_skills[5] = 'A00L'
                     starting_skills[6] = 'A001'
@@ -134,7 +135,7 @@ do
                     starting_skills[11] = 'A00I'
                     starting_skills[12] = 'A00N'
                     starting_skills[13] = 'A00E'
-                    starting_skills[14] = 'A00H'
+                    starting_skills[14] = 'A00H']]
                 end
 
                 local hero = CreateUnit(Player(player_id), id, GetRectCenterX(gg_rct_starting_location) , GetRectCenterY(gg_rct_starting_location), 270.)
@@ -146,10 +147,10 @@ do
 
 
                 local player_number = player_id
-                TimerStart(CreateTimer(), 0.05, true, function()
+                TimerStart(CreateTimer(), 0.03, true, function()
                     if GetLocalPlayer() == Player(player_number) then
                         if not IsUnitSelected(hero, Player(player_number)) then
-                             ClearSelection()
+                            ClearSelection()
                             SelectUnit(hero, true)
                         end
                     end
@@ -177,9 +178,19 @@ do
                     SetItemCharges(potions, 5)
                     AddToInventory(player_id, potions)
 
+                    potions = CreateCustomItem(ITEM_POTION_MANA_WEAK, 0, 0, false)
+                    SetItemCharges(potions, 5)
+                    AddToInventory(player_id, potions)
+
 
                     for i = 1, #starting_skills do
                         UnitAddMyAbility(hero, starting_skills[i])
+                    end
+
+                    if id == FourCC("HBRB") then
+                        BlzSetUnitName(hero, LOCALE_LIST[my_locale].BARBARIAN_NAME)
+                    else
+                        BlzSetUnitName(hero, LOCALE_LIST[my_locale].SORCERESS_NAME)
                     end
 
 

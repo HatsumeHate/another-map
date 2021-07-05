@@ -143,8 +143,10 @@ do
     ---@param quest_item questitem
     ---@param state boolean
     function SetQuestItemState(quest_id, quest_item, state)
-        local quest = QuestsList[quest_id]
+        local quest = QuestsList[quest_id] or nil
         local completed_quest_items = 0
+
+        if quest == nil then return end
 
         for i = 1, #quest.quest_items do
             if quest.quest_items[i].id == quest_item then
@@ -179,11 +181,12 @@ do
 
         if not qitem_table or player_quest.completed then return true end
 
-            qitem_table.current_pool_count = qitem_table.current_pool_count + number
+            qitem_table.current_pool_count = (qitem_table.current_pool_count or 0) + number
             QuestItemSetDescription(qitem_table.qitem, qitem_table.description .. " " ..  qitem_table.current_pool_count .. "/" .. qitem_table.pool_count)
 
             if qitem_table.current_pool_count >= qitem_table.pool_count then
-                return SetQuestItemState(quest_id, qitem_table, true)
+                SetQuestItemState(quest_id, id, true)
+                return true
             else
                 HintQuestUpdated(quest_id)
             end

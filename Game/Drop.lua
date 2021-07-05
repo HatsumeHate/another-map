@@ -23,6 +23,7 @@ do
         --drop_list = unit_data.classification and UNIT_DROP_LIST[unit_data.classification] or UNIT_DROP_LIST[GetUnitTypeId(unit)]
         --print("1")
         if drop_list == nil then return end
+        local unit_x = GetUnitX(unit); local unit_y = GetUnitY(unit)
         --print("2")
         local quality_list = drop_list.quality_list
         local number_list = GetRandomIntTable(1, #drop_list.item_list, drop_list.rolls)
@@ -39,7 +40,19 @@ do
                     if GetRandomReal(0., 100.) <= current_item.chance then
                         --print("drop!")
                         DelayAction(current_offset + time_offset, function()
-                            local my_item = CreateCustomItem(current_item.id, GetUnitX(unit) + GetRandomReal(-45. + (drop_list.bonus_range or 0.), 45 + (drop_list.bonus_range or 0.)), GetUnitY(unit) + GetRandomReal(-45. + (drop_list.bonus_range or 0.), 45. + (drop_list.bonus_range or 0.)), true)
+                            local id = current_item.id
+
+                            if id == "class_book" then
+                                if Chance(75.) and PlayerHero[player] then
+                                    local hero_unit_data = GetUnitData(PlayerHero[player])
+                                    id = BOOK_CLASS_ITEM_LIST[hero_unit_data.unit_class or 1][GetRandomInt(1, #BOOK_CLASS_ITEM_LIST[hero_unit_data.unit_class or 1])]
+                                else
+                                    id = GetRandomBookItemId()
+                                end
+                            end
+
+
+                            local my_item = CreateCustomItem(id, unit_x + GetRandomReal(-45. + (drop_list.bonus_range or 0.), 45 + (drop_list.bonus_range or 0.)), unit_y + GetRandomReal(-45. + (drop_list.bonus_range or 0.), 45. + (drop_list.bonus_range or 0.)), true)
 
                                 if current_item.generate then
                                     local item_data = GetItemData(my_item)
@@ -50,8 +63,9 @@ do
                                             local quality = COMMON_ITEM
 
                                                 for k = 1, #quality_list do
-                                                    if quality_list[k].chance then
+                                                    if Chance(quality_list[k].chance) then
                                                         quality = quality_list[k].quality
+                                                        break
                                                     end
                                                 end
 
@@ -81,7 +95,7 @@ do
 
         if drop_list.gold and GetRandomReal(0., 100.) <= drop_list.gold.chance then
             DelayAction(current_offset + time_offset, function()
-                CreateGoldStack(GetRandomInt(drop_list.gold.min_gold, drop_list.gold.max_gold), GetUnitX(unit) + GetRandomReal(-45., 45), GetUnitY(unit) + GetRandomReal(-45., 45), player)
+                CreateGoldStack(GetRandomInt(drop_list.gold.min_gold, drop_list.gold.max_gold), unit_x + GetRandomReal(-45., 45), unit_y + GetRandomReal(-45., 45), player)
             end)
         end
 
@@ -89,6 +103,13 @@ do
 
 
     function DropListInit()
+
+        RegisterTestCommand("splash", function()
+            local unit = CreateUnit(MONSTER_PLAYER, FourCC("n00Y"), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), 0.)
+            DelayAction(1., function()
+                DamageUnit(PlayerHero[1], unit, 10000., PHYSICAL_ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, true, nil)
+            end)
+        end)
 
         UNIT_DROP_LIST = {
             [MONSTER_RANK_COMMON] = {
@@ -113,13 +134,9 @@ do
                     { id = GetGeneratedItemId(LEGS_ARMOR), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(RING_JEWELRY), chance = 5.3, generate = true },
-                    { id = "I00U", chance = 7.3, min = 1, max = 1 },
-                    { id = "I00V", chance = 7.3, min = 1, max = 1 },
-                    { id = "I013", chance = 7.3, min = 1, max = 1 },
-                    { id = "I014", chance = 7.3, min = 1, max = 1 },
-                    { id = "I015", chance = 7.3, min = 1, max = 1 },
-                    { id = "I016", chance = 7.3, min = 1, max = 1 },
-                    { id = "I017", chance = 7.3, min = 1, max = 1 },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 5.3, generate = true },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 1 },
@@ -131,20 +148,20 @@ do
                     { id = ITEM_STONE_SAPPHIRE, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 1 },
-                    { id = ITEM_POTION_HEALTH_WEAK, chance = 15.3, min = 1, max = 3 },
-                    { id = ITEM_POTION_MANA_WEAK, chance = 15.3, min = 1, max = 3 },
-                    { id = ITEM_SCROLL_OF_TOWN_PORTAL, chance = 15.3, min = 1, max = 1 },
-                    { id = "I00U", chance = 11.7, min = 1, max = 1 },
-                    { id = "I00V", chance = 11.7, min = 1, max = 1 },
-                    { id = "I013", chance = 11.7, min = 1, max = 1 },
-                    { id = "I014", chance = 11.7, min = 1, max = 1 },
-                    { id = "I015", chance = 11.7, min = 1, max = 1 },
-                    { id = "I016", chance = 11.7, min = 1, max = 1 },
-                    { id = "I017", chance = 11.7, min = 1, max = 1 },
+                    { id = ITEM_POTION_HEALTH_WEAK, chance = 10.7, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_WEAK, chance = 10.7, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_HALF, chance = 8.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_HALF, chance = 8.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_ANTIDOTE, chance = 5.9, min = 1, max = 1 },
+                    { id = ITEM_POTION_ADRENALINE, chance = 6.5, min = 1, max = 1 },
+                    { id = ITEM_SCROLL_OF_TOWN_PORTAL, chance = 8.3, min = 1, max = 1 },
+                    { id = ITEM_SCROLL_OF_PROTECTION, chance = 7.4, min = 1, max = 1 },
+                    { id = "I01V", chance = 5. },
+                    { id = "class_book", chance = 76.3 }
                 },
-                gold = { min_gold = 15, max_gold = 65, chance = 70. },
-                min_gold = 15, max_gold = 75,
-                rolls = 7,
+                gold = { min_gold = 11, max_gold = 37, chance = 70. },
+                min_gold = 5, max_gold = 17,
+                rolls = 8,
                 max_items = 2,
             },
             [MONSTER_RANK_ADVANCED] = {
@@ -169,13 +186,9 @@ do
                     { id = GetGeneratedItemId(LEGS_ARMOR), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(RING_JEWELRY), chance = 5.3, generate = true },
-                    { id = "I00U", chance = 7.3, min = 1, max = 1 },
-                    { id = "I00V", chance = 7.3, min = 1, max = 1 },
-                    { id = "I013", chance = 7.3, min = 1, max = 1 },
-                    { id = "I014", chance = 7.3, min = 1, max = 1 },
-                    { id = "I015", chance = 7.3, min = 1, max = 1 },
-                    { id = "I016", chance = 7.3, min = 1, max = 1 },
-                    { id = "I017", chance = 7.3, min = 1, max = 1 },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 5.3, generate = true },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 1 },
@@ -188,19 +201,20 @@ do
                     { id = ITEM_STONE_SAPPHIRE, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 1 },
-                    { id = ITEM_POTION_HEALTH_WEAK, chance = 15.3, min = 1, max = 3 },
-                    { id = ITEM_POTION_MANA_WEAK, chance = 15.3, min = 1, max = 3 },
-                    { id = "I01O", chance = 3. },
-                    { id = "I00U", chance = 11.7, min = 1, max = 1 },
-                    { id = "I00V", chance = 11.7, min = 1, max = 1 },
-                    { id = "I013", chance = 11.7, min = 1, max = 1 },
-                    { id = "I014", chance = 11.7, min = 1, max = 1 },
-                    { id = "I015", chance = 11.7, min = 1, max = 1 },
-                    { id = "I016", chance = 11.7, min = 1, max = 1 },
-                    { id = "I017", chance = 11.7, min = 1, max = 1 },
+                    { id = ITEM_POTION_HEALTH_WEAK, chance = 10.7, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_WEAK, chance = 10.7, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_HALF, chance = 8.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_HALF, chance = 8.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_ANTIDOTE, chance = 5.9, min = 1, max = 1 },
+                    { id = ITEM_POTION_ADRENALINE, chance = 6.5, min = 1, max = 1 },
+                    { id = ITEM_SCROLL_OF_TOWN_PORTAL, chance = 8.3, min = 1, max = 1 },
+                    { id = ITEM_SCROLL_OF_PROTECTION, chance = 7.4, min = 1, max = 1 },
+                    { id = "I01V", chance = 7.6 },
+                    { id = "I01O", chance = 25. },
+                    { id = "class_book", chance = 71.3 }
                 },
-                gold = { min_gold = 25, max_gold = 85, chance = 70. },
-                rolls = 7,
+                gold = { min_gold = 20, max_gold = 45, chance = 70. },
+                rolls = 9,
                 max_items = 3,
             },
             -- chest
@@ -211,21 +225,24 @@ do
                     { quality = COMMON_ITEM, chance = 100. }
                 },
                 item_list = {
-                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 45.3, generate = true  },
-                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 45.3, generate = true },
-                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 45.3, generate = true },
-                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 45.3, generate = true },
-                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 45.3, generate = true },
-                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
-                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
-                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 12.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 12.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 12.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 12.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 12.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 12.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 12.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 12.3, generate = true },
                     --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
-                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
-                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
-                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
-                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
-                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 12.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 12.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 12.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 12.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 12.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 12.3, generate = true },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 12.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 12.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 12.3, generate = true },
                     { id = "I01B", chance = 3., generate = true  },
                     { id = "I01A", chance = 3., generate = true  },
                     { id = "I01E", chance = 3., generate = true  },
@@ -250,11 +267,15 @@ do
                     { id = ITEM_POTION_HEALTH_HALF, chance = 65.3, min = 1, max = 3 },
                     { id = ITEM_POTION_MANA_HALF, chance = 65.3, min = 1, max = 3 },
                     { id = ITEM_POTION_HEALTH_STRONG, chance = 55.3, min = 1, max = 3 },
-                    { id = ITEM_POTION_MANA_STRONG, chance = 55.3, min = 1, max = 3 }
+                    { id = ITEM_POTION_MANA_STRONG, chance = 55.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_ANTIDOTE, chance = 33., min = 1, max = 3 },
+                    { id = ITEM_POTION_ADRENALINE, chance = 33., min = 1, max = 3 },
+                    { id = ITEM_SCROLL_OF_PROTECTION, chance = 25., min = 1, max = 2 },
+                    { id = "I01V", chance = 7. },
                 },
-                gold = { min_gold = 70, max_gold = 165, chance = 90. },
+                gold = { min_gold = 33, max_gold = 100, chance = 90. },
                 rolls = 9,
-                max_items = 6,
+                max_items = 5,
                 bonus_range = 75.
             },
             -- bandit's boss
@@ -280,6 +301,9 @@ do
                     { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -344,6 +368,9 @@ do
                     { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -408,6 +435,9 @@ do
                     { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -472,6 +502,9 @@ do
                     { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -536,6 +569,9 @@ do
                     { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -600,6 +636,9 @@ do
                     { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -664,6 +703,9 @@ do
                     { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -728,6 +770,9 @@ do
                     { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -792,6 +837,9 @@ do
                     { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -856,6 +904,9 @@ do
                     { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -920,6 +971,9 @@ do
                     { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown

@@ -250,7 +250,7 @@
     end
 
 
-        --TODO rework this
+
     ---@param player integer
     ---@param originframe framehandle
     ---@param parent framehandle
@@ -416,6 +416,11 @@ do
     end
 
 
+
+    ---@param frame framehandle
+    function GetTooltip(frame)
+        return TooltipList[GetHandleId(frame)]
+    end
 
     ---@param parent framehandle
     function NewTooltip(parent)
@@ -593,7 +598,7 @@ do
     end
 
 
-    function ShowItemTooltip(item, tooltip, button, player, direction)
+    function ShowItemTooltip(item, tooltip, button, player, direction, fallback_tooltip)
         local item_data = GetItemData(item)
         local width = 0.
         local height = 0.
@@ -830,8 +835,11 @@ do
                 end
 
                 if total_cost > 0 then
+                    if ((fallback_tooltip and fallback_tooltip.is_sell_penalty) or tooltip.is_sell_penalty) and item_data.sell_penalty then
+                        total_cost = total_cost * item_data.sell_penalty
+                    end
                     myframe = SetTooltipIcon(6, tooltip, "UI\\Widgets\\ToolTips\\Human\\ToolTipGoldIcon.blp", 0.0085, 0.0085, 1.05, tooltip.backdrop, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.0055, 0.0055)
-                    height = height + BlzFrameGetHeight(myframe) * 1.75
+                    height = height + BlzFrameGetHeight(myframe) * 2.55
                     SetTooltipText(master_index, tooltip, R2I(total_cost), TEXT_JUSTIFY_LEFT, myframe, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.002, 0.)
                 end
 

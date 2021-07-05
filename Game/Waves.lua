@@ -17,6 +17,7 @@ do
     }
 
     function GetRandomMusicMix()
+        
         local result_mix = ""
         local order_table = GetRandomIntTable(1, #MusicMix, #MusicMix)
 
@@ -24,6 +25,7 @@ do
             result_mix = result_mix .. MusicMix[order_table[i]] .. ";"
         end
 
+       -- print(result_mix)
         return result_mix
     end
 
@@ -34,11 +36,14 @@ do
             VictoryScreen()
         else
             Current_Wave = Current_Wave + 1
-            AddWaveTimer(330.)
+            AddWaveTimer(295.)
+            --print("reset shops")
             ResetShops()
+            --print("toggle citizens")
             ToggleCitizens(true)
+            --print("prescale")
             ScaleMonsterPacks()
-
+           -- print("scaling done")
             StopMusic(true)
             ClearMapMusic()
             PlayMusic(GetRandomMusicMix())
@@ -121,13 +126,35 @@ do
             end
 
 
-            item_count = GetRandomInt(0, 4)
+            item_count = GetRandomInt(0, 6)
             if item_count > 0 then
                  AddItemToShop(gg_unit_n001_0055, CreateCustomItem(GetRandomBookItemId(), 0, 0, false), false)
             end
 
         end
 
+
+        local item_count = GetRandomInt(0, 2)
+        local item
+            if item_count > 0 then
+                item = CreateCustomItem(ITEM_POTION_ADRENALINE, 0, 0, false)
+                SetItemCharges(item, item_count)
+                 AddItemToShop(gg_unit_n001_0055, item, false)
+            end
+
+            item_count = GetRandomInt(0, 2)
+            if item_count > 0 then
+                item = CreateCustomItem(ITEM_POTION_ANTIDOTE, 0, 0, false)
+                SetItemCharges(item, item_count)
+                 AddItemToShop(gg_unit_n001_0055, item, false)
+            end
+
+            item_count = GetRandomInt(0, 2)
+            if item_count > 0 then
+                item = CreateCustomItem(ITEM_SCROLL_OF_PROTECTION, 0, 0, false)
+                SetItemCharges(item, item_count)
+                 AddItemToShop(gg_unit_n001_0055, item, false)
+            end
 
             local scrolls = CreateCustomItem(ITEM_SCROLL_OF_TOWN_PORTAL, 0., 0.)
             SetItemCharges(scrolls, 5)
@@ -173,6 +200,8 @@ do
         WaveTimer = CreateTimer()
 
         RegisterTestCommand("run", function() AddWaveTimer(3.) end)
+
+        RegisterTestCommand("lvl4", function() Current_Wave = 4 end)
 
     end
 

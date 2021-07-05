@@ -565,30 +565,6 @@ do
 			end
 
 		UpdateUnitParameter(target, param)
-		--[[
-		if param == STR_STAT then
-			PARAMETER_UPDATE_FUNC[PHYSICAL_ATTACK](unit_data)
-		elseif param == VIT_STAT then
-			PARAMETER_UPDATE_FUNC[HP_VALUE](unit_data)
-			PARAMETER_UPDATE_FUNC[HP_REGEN](unit_data)
-		elseif param == AGI_STAT then
-			PARAMETER_UPDATE_FUNC[PHYSICAL_DEFENCE](unit_data)
-		elseif param == INT_STAT then
-			PARAMETER_UPDATE_FUNC[MAGICAL_SUPPRESSION](unit_data)
-			PARAMETER_UPDATE_FUNC[MAGICAL_ATTACK](unit_data)
-			PARAMETER_UPDATE_FUNC[MP_VALUE](unit_data)
-			PARAMETER_UPDATE_FUNC[MP_REGEN](unit_data)
-		elseif param == ALL_RESIST then
-			PARAMETER_UPDATE_FUNC[PHYSICAL_RESIST](unit_data)
-			PARAMETER_UPDATE_FUNC[FIRE_RESIST](unit_data)
-			PARAMETER_UPDATE_FUNC[ICE_RESIST](unit_data)
-			PARAMETER_UPDATE_FUNC[LIGHTNING_RESIST](unit_data)
-			PARAMETER_UPDATE_FUNC[POISON_RESIST](unit_data)
-			PARAMETER_UPDATE_FUNC[DARKNESS_RESIST](unit_data)
-			PARAMETER_UPDATE_FUNC[HOLY_RESIST](unit_data)
-		end
-
-		PARAMETER_UPDATE_FUNC[param](unit_data)]]
 	end
 
 	---@param unit_data table

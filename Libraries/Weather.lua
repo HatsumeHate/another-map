@@ -103,7 +103,7 @@ do
             Visibility(RectList[CurrentWeatherRectIndex].weather)
 
         if CurrentWeatherRectIndex == #RectList then
-            PauseTimer(CreationTimer)
+            TimerStart(CreationTimer, 0., false, nil)
         end
     end
 
@@ -117,7 +117,7 @@ do
         if CurrentWeatherRectIndex == 0 then
             TimerStart(CreationTimer, 0., false, nil)
             --PauseTimer(CreationTimer)
-            CurrentWeather = 0
+            Weather_Current = 0
         end
 
     end
@@ -152,7 +152,7 @@ do
 
 
     function StopWeather()
-        Weather_Current = 0
+        --Weather_Current = 0
         --PauseTimer(CreationTimer)
        -- PauseTimer(SpecialTimer)
         TimerStart(CreationTimer, 0., false, nil)
@@ -243,6 +243,7 @@ do
 
 
     function InitWeather(area)
+
         AREA = area
         X_BLOCKS = R2I((GetRectMaxX(AREA) - GetRectMinX(AREA)) / GENERATOR_BLOCK_VALUE) + 1
         Y_BLOCKS = R2I((GetRectMaxY(AREA) - GetRectMinY(AREA)) / GENERATOR_BLOCK_VALUE) + 1

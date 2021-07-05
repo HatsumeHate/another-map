@@ -5,7 +5,7 @@ do
 
     function OnUnitCreated(new_unit)
         if GetOwningPlayer(new_unit) == SECOND_MONSTER_PLAYER or GetOwningPlayer(new_unit) == MONSTER_PLAYER then
-            ScaleMonsterUnit(new_unit)
+            ScaleMonsterUnit(new_unit, Current_Wave)
         end
 
         if GetUnitTypeId(new_unit) == FourCC("U000") then
@@ -28,6 +28,8 @@ do
         elseif sign == "aach" then
             ApplyEffect(source, target, 0.,0., "EACH", Current_Wave)
             PushUnit(source, target, AngleBetweenUnits(source,target), 150., 0.7, "aach")
+        elseif sign == "brch" then
+            ApplyBuff(source, target, "ABRS", 1)
         end
         return false
     end
@@ -217,13 +219,18 @@ do
     ---@param source unit
     ---@param target unit
     ---@param damage table
-    function OnDamage_End(source, target, damage)
-
+    function OnDamage_End(source, target, damage, damage_data)
+        if damage_data.effect and damage_data.effect.id == "EEXC" then
+            local ability_level = UnitGetAbilityLevel(source, "A020")
+            if ability_level >= 10 and GetUnitState(target, UNIT_STATE_LIFE) < 0.045 then
+                ApplyBuff(source, source, "ANRD", ability_level)
+            end
+        end
     end
 
     ---@param source unit
     ---@param damage table
-    function OnDamage_PreHit(source, target, damage)
+    function OnDamage_PreHit(source, target, damage, damage_data)
 
     end
 
@@ -240,22 +247,23 @@ do
         --local attacker_data = GetUnitData(source)
 
             if UnitHasEffect(source, "ECRA") then
-                if GetUnitAbilityLevel(target, FourCC("A01P")) == 0 then
-                    ApplyBuff(source, target, "A01P", 1)
-                else
-                    SetBuffLevel(target, "A01P", GetBuffLevel(target, "A01P") + 1)
-                end
+                if GetUnitAbilityLevel(target, FourCC("A01P")) == 0 then ApplyBuff(source, target, "A01P", 1)
+                else SetBuffLevel(target, "A01P", GetBuffLevel(target, "A01P") + 1) end
             elseif UnitHasEffect(source, "MOFE") then
 
                 if attack_data.attribute == ICE_ATTRIBUTE then ApplyEffect(source, target, 0,0, "EMEI", 1)
                 elseif attack_data.attribute == FIRE_ATTRIBUTE then ApplyEffect(source, target, 0,0, "EMEF", 1)
                 elseif attack_data.attribute == LIGHTNING_ATTRIBUTE then ApplyEffect(source, target, 0,0, "EMEL", 1) end
 
-            elseif UnitHasEffect(source, "RDAG") then
-                ApplyEffect(source, source, 0, 0, "ERIT", 1)
-            elseif UnitHasEffect(source, "EBBS") then
-                ApplyEffect(source, target, 0.,0., "EBBS", 1)
+            elseif UnitHasEffect(source, "RDAG") then ApplyEffect(source, source, 0, 0, "ERIT", 1)
+            elseif UnitHasEffect(source, "EBBS") then ApplyEffect(source, target, 0.,0., "EBBS", 1)
+            elseif UnitHasEffect(target, "ECBG") then
+                if Chance(15.) then ApplyEffect(target, target, 0, 0, "ECBG", 1) end
+            elseif UnitHasEffect(source, "EHOR") then
+                if Chance(20.) then ApplyEffect(source, target, 0, 0, "EHOR", 1) end
             end
+
+        AI_AttackReaction(source, target)
 
         attack_data = nil
     end
@@ -272,21 +280,27 @@ do
     ---@param skill table
     ---@param x real
     ---@param y real
-    function OnSkillCastEnd(source, target, x, y, skill)
-        if skill.Id == 'A00L' then CastSorceressBlink(source, x, y, skill)
-        elseif skill.Id == 'A00I' then SummonHydra(source, x, y)
-        elseif skill.Id == 'A00J' then
+    function OnSkillCastEnd(source, target, x, y, skill, ability_level)
+        local id = skill.Id
+
+        if id == 'A00L' then CastSorceressBlink(source, x, y, skill)
+        elseif id == 'A00I' then SummonHydra(source, x, y)
+        elseif id == "A003" and UnitHasEffect(source, "ITCH") then
+            skill.level[ability_level].missile = "MFRB"
+            CastFrostbolt_Legendary(source, target, x, y)
+        elseif id == "AMLT" then CastMeltdown(source)
+        elseif id == 'A00J' then
             if UnitHasEffect(source,"EOTS") then SparkCast_Legendary(source)
             else SparkCast(source, target, x, y) end
-        elseif skill.Id == "A019" then ChainLightningCast(source, target)
-        elseif skill.Id == 'A00O' then MakeUnitJump(source, AngleBetweenUnitXY(source, x, y), x, y, 920., 0.6, 'A00O', { effect = "Spell\\Valiant Charge.mdx", point = "origin" })
-        elseif skill.Id == 'A010' then WhirlwindActivate(source)
-        elseif skill.Id == 'A00B' then
+        elseif id == "A019" then ChainLightningCast(source, target)
+        elseif id == 'A00O' then MakeUnitJump(source, AngleBetweenUnitXY(source, x, y), x, y, 920., 0.6, 'A00O', { effect = "Spell\\Valiant Charge.mdx", point = "origin" })
+        elseif id == 'A010' then WhirlwindActivate(source)
+        elseif id == 'A00B' then
             local effect = AddSpecialEffect("Spell\\DetroitSmash_Effect.mdx", GetUnitX(source) + Rx(50., GetUnitFacing(source)), GetUnitY(source) + Ry(50., GetUnitFacing(source)))
             BlzSetSpecialEffectYaw(effect, GetUnitFacing(source) * bj_DEGTORAD)
             BlzSetSpecialEffectScale(effect, 0.7)
             DestroyEffect(effect)
-        elseif skill.Id == "A006" then
+        elseif id == "A006" then
             local angle = target and AngleBetweenUnits(source, target) or AngleBetweenUnitXY(source, x, y)
             local effect_x = GetUnitX(source); local effect_y = GetUnitY(source)
             local time = 0.3
@@ -307,20 +321,15 @@ do
                     time = time - 0.025
                 end)
 
-        elseif skill.Id == "ASQT" then
-            SpiderQueen_WebTrap(source)
-        elseif skill.Id == "ASQS" then
-            SpiderQueen_SpawnBrood(source)
-        elseif skill.Id == "ABCH" then
-            ChargeUnit(source, 750., 600., GetUnitFacing(source), 1, 100., "walk", "abch", { effect = "Spell\\Valiant Charge.mdx", point = "origin" })
-        elseif skill.Id == "AACH" then
-            ChargeUnit(source, 500., 500., GetUnitFacing(source), 1, 100., "walk", "aach", { effect = "Spell\\Valiant Charge Fel.mdx", point = "origin" })
-        elseif skill.Id == "AAPN" then
-            CreatePoisonNova(source)
-        elseif skill.Id == "ASSM" then
-            SpawnSkeletons(source)
-        elseif skill.Id == "AMLN" then
-            LightningNovaBoss(source)
+        elseif id == "ASQT" then SpiderQueen_WebTrap(source)
+        elseif id == "ASQS" then SpiderQueen_SpawnBrood(source)
+        elseif id == "ABCH" then ChargeUnit(source, 750., 600., GetUnitFacing(source), 1, 100., "walk", "abch", { effect = "Spell\\Valiant Charge.mdx", point = "origin" } )
+        elseif id == "AACH" then ChargeUnit(source, 500., 500., GetUnitFacing(source), 1, 100., "walk", "aach", { effect = "Spell\\Valiant Charge Fel.mdx", point = "origin" } )
+        elseif id == "AAPN" then CreatePoisonNova(source)
+        elseif id == "ASSM" then SpawnSkeletons(source)
+        elseif id == "AMLN" then LightningNovaBoss(source)
+        elseif id == "AQBC" then ChargeUnit(source, 600., 350., GetUnitFacing(source), 1, 75., "walk", "brch", { effect = "Spell\\Valiant Charge.mdx", point = "origin" } )
+        elseif id == "AWRG" then ApplyBuff(source, target, "AWRB", 1)
         end
 
     end
@@ -330,7 +339,7 @@ do
     ---@param x real
     ---@param y real
     ---@param skill table
-    function OnSkillCast(source, target, x, y, skill)
+    function OnSkillCast(source, target, x, y, skill, ability_level)
 
         if UnitHasEffect(source, "EWTM") then
             if skill.type == SKILL_MAGICAL then
@@ -339,6 +348,10 @@ do
                     SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) - (BlzGetUnitMaxHP(source) * 0.05))
                 end
             end
+        elseif skill.Id == "AMLT" then
+            SetUnitFacing(source, AngleBetweenUnitXY(source, PlayerMousePosition[GetPlayerId(GetOwningPlayer(source)) + 1].x or 0., PlayerMousePosition[GetPlayerId(GetOwningPlayer(source)) + 1].y or 0.))
+        elseif skill.Id == "A003" and UnitHasEffect(source, "ITCH") then
+            skill.level[ability_level].missile = nil
         end
 
     end
@@ -347,24 +360,19 @@ do
 
     function OnItemUse(source, item, target)
         local id = GetItemTypeId(item)
-            if id == FourCC(ITEM_POTION_HEALTH_WEAK) then
-                ApplyEffect(source, nil, 0.,0., "PHWK", 1)
-            elseif id == FourCC(ITEM_POTION_MANA_WEAK) then
-                ApplyEffect(source, source, 0.,0., "PMWK", 1)
-            elseif id == FourCC(ITEM_POTION_HEALTH_HALF) then
-                ApplyEffect(source, source, 0.,0., "PHWK", 2)
-            elseif id == FourCC(ITEM_POTION_MANA_HALF) then
-                ApplyEffect(source, source, 0.,0., "PMWK", 2)
-            elseif id == FourCC(ITEM_POTION_HEALTH_STRONG) then
-                ApplyEffect(source, source, 0.,0., "PHWK", 3)
-            elseif id == FourCC(ITEM_POTION_MANA_STRONG) then
-                ApplyEffect(source, source, 0.,0., "PMWK", 3)
-            elseif id == FourCC(ITEM_POTION_MIX_WEAK) then
-                ApplyEffect(source, source, 0.,0., "PHUN", 1)
-            elseif id == FourCC(ITEM_POTION_MIX_HALF) then
-                ApplyEffect(source, source, 0.,0., "PHUN", 2)
-            elseif id == FourCC(ITEM_POTION_MIX_STRONG) then
-                ApplyEffect(source, source, 0.,0., "PHUN", 3)
+
+            if id == FourCC(ITEM_POTION_HEALTH_WEAK) then ApplyEffect(source, nil, 0.,0., "PHWK", 1)
+            elseif id == FourCC(ITEM_POTION_MANA_WEAK) then ApplyEffect(source, source, 0.,0., "PMWK", 1)
+            elseif id == FourCC(ITEM_POTION_HEALTH_HALF) then ApplyEffect(source, source, 0.,0., "PHWK", 2)
+            elseif id == FourCC(ITEM_POTION_MANA_HALF) then ApplyEffect(source, source, 0.,0., "PMWK", 2)
+            elseif id == FourCC(ITEM_POTION_HEALTH_STRONG) then ApplyEffect(source, source, 0.,0., "PHWK", 3)
+            elseif id == FourCC(ITEM_POTION_MANA_STRONG) then ApplyEffect(source, source, 0.,0., "PMWK", 3)
+            elseif id == FourCC(ITEM_POTION_MIX_WEAK) then ApplyEffect(source, source, 0.,0., "PHUN", 1)
+            elseif id == FourCC(ITEM_POTION_MIX_HALF) then ApplyEffect(source, source, 0.,0., "PHUN", 2)
+            elseif id == FourCC(ITEM_POTION_MIX_STRONG) then ApplyEffect(source, source, 0.,0., "PHUN", 3)
+            elseif id == FourCC(ITEM_POTION_ANTIDOTE) then ApplyEffect(source, source, 0.,0., "PANT", 1)
+            elseif id == FourCC(ITEM_POTION_ADRENALINE) then ApplyEffect(source, source, 0.,0., "PADR", 1)
+            elseif id == FourCC(ITEM_SCROLL_OF_PROTECTION) then ApplyEffect(source, source, 0.,0., "SOTP", 1)
             elseif id == FourCC(ITEM_SCROLL_OF_TOWN_PORTAL) then
                 local x = GetUnitX(source); local y = GetUnitY(source)
                 local portal = AddSpecialEffect("Spell\\D2Portal.mdx", x + 50., y + 50.)

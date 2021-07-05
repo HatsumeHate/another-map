@@ -7,6 +7,7 @@ do
 		InitLocaleLibrary()
 		InitParameters()
 		DefineSkillsData()
+		MouseTrackingInit()
 		print("skills done")
 		DefineEffectsData()
 		print("effects done")
@@ -106,6 +107,9 @@ do
 		CreateBlacksmith(gg_unit_n013_0011, "ReplaceableTextures\\CommandButtons\\BTNElfVillager.blp")
 		BlzSetUnitName(gg_unit_n013_0011, LOCALE_LIST[my_locale].BLACKSMITH_NAME)
 
+		CreateLibrarian(gg_unit_n01V_0110, "ReplaceableTextures\\CommandButtons\\BTNNightElfRunner.blp")
+		BlzSetUnitName(gg_unit_n01V_0110, LOCALE_LIST[my_locale].LIBRARIAN_NAME)
+
 		CreateHeroSelections()
 
 		--CreatePlayerUI(1)
@@ -137,6 +141,12 @@ do
 		RegisterTestCommand("qe1m", function()
 			EnableMainQuest1()
 		end)
+
+		RegisterTestCommand("qe2m", function()
+			EnableMainQuest2()
+		end)
+
+
 
 		RegisterTestCommand("fr", function()
 			--local frame = BlzCreateSimpleFrame("InfoPanelTitleTextTemplate", GAME_UI, 0)

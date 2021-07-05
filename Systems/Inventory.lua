@@ -86,15 +86,27 @@ do
     end
 
 
+    local Feedback_InventoryNoSpace_Table = { true, true, true, true, true, true }
+
     function Feedback_InventoryNoSpace(player)
-        SimError(LOCALE_LIST[my_locale].FEEDBACK_MSG_NOSPACE, player-1)
-        PlayLocalSound(LOCALE_LIST[my_locale].FEEDBACK_BAG[GetUnitClass(PlayerHero[player])][GetRandomInt(1, 5)], player-1)
+        if Feedback_InventoryNoSpace_Table[player] then
+            SimError(LOCALE_LIST[my_locale].FEEDBACK_MSG_NOSPACE, player-1)
+            local snd = PlayLocalSound(LOCALE_LIST[my_locale].FEEDBACK_BAG[GetUnitClass(PlayerHero[player])][GetRandomInt(1, 5)], player-1)
+            Feedback_InventoryNoSpace_Table[player] = false
+            TimerStart(CreateTimer(), GetSoundDuration(snd) * 0.001, false, function() Feedback_InventoryNoSpace_Table[player] = true; DestroyTimer(GetExpiredTimer()) end)
+        end
     end
 
 
+    local Feedback_CantUse_Table = { true, true, true, true, true, true }
+
     function Feedback_CantUse(player)
-        SimError(LOCALE_LIST[my_locale].FEEDBACK_MSG_CANTUSE, player-1)
-        PlayLocalSound(LOCALE_LIST[my_locale].FEEDBACK_CLASSRESTRICTED[GetUnitClass(PlayerHero[player])][GetRandomInt(1, 4)], player-1)
+        if Feedback_CantUse_Table[player] then
+            SimError(LOCALE_LIST[my_locale].FEEDBACK_MSG_CANTUSE, player-1)
+            local snd = PlayLocalSound(LOCALE_LIST[my_locale].FEEDBACK_CLASSRESTRICTED[GetUnitClass(PlayerHero[player])][GetRandomInt(1, 4)], player-1)
+            Feedback_CantUse_Table[player] = false
+            TimerStart(CreateTimer(), GetSoundDuration(snd) * 0.001, false, function() Feedback_CantUse_Table[player] = true; DestroyTimer(GetExpiredTimer()) end)
+        end
     end
 
 
@@ -270,7 +282,7 @@ do
                     local proper_tooltip
                     if ShopFrame[player].state then proper_tooltip = ShopFrame[player].tooltip
                     else proper_tooltip = InventoryTooltip[player] end
-                    ShowItemTooltip(ButtonList[h].item, proper_tooltip, ButtonList[h], player, FRAMEPOINT_LEFT)
+                    ShowItemTooltip(ButtonList[h].item, proper_tooltip, ButtonList[h], player, FRAMEPOINT_LEFT, GetTooltip(InventoryTooltip[player]))
                     --ShowTooltip(player, h, FRAMEPOINT_LEFT, MASTER_FRAME)--ButtonList[GetHandleId(InventorySlots[32])].image)
                 else
                     RemoveTooltip(player)
@@ -299,6 +311,8 @@ do
                     BlzFrameSetEnable(ButtonList[PlayerMovingItem[player].selected_frame].sprite, true)
                 end
 
+                PlayerMovingItem[player].selected_frame = nil
+                PlayerMovingItem[player].mode = 0
                 BlzFrameSetVisible(PlayerMovingItem[player].frame, false)
                 BlzFrameSetVisible(PlayerMovingItem[player].selector_frame, false)
                 PlayerMovingItem[player].state = false
@@ -528,6 +542,7 @@ do
 
 
             if item_data.MAX_SLOTS ~= #item_data.STONE_SLOTS then
+
                 for i = 1, item_data.MAX_SLOTS do
                     if item_data.STONE_SLOTS[i] == nil then
                         local flag = slot.button_type >= WEAPON_POINT and slot.button_type <= NECKLACE_POINT
@@ -547,6 +562,10 @@ do
                         break
                     end
                 end
+
+                PlayLocalSound("Sounds\\UI\\Socket".. GetRandomInt(1,2) ..".wav", 120, player-1)
+            else
+                Feedback_CantUse(player - 1)
             end
 
     end
@@ -555,16 +574,23 @@ do
     local function LearnBook(item, player)
         local item_data = GetItemData(item)
 
-            if item_data.restricted_to ~= GetUnitClass(PlayerHero[player]) then
+            if item_data.restricted_to and item_data.restricted_to ~= GetUnitClass(PlayerHero[player]) then
                 Feedback_CantUse(player)
                 return
             end
 
             DestroyEffect(AddSpecialEffectTarget(item_data.learn_effect, PlayerHero[player], "origin"))
-            if not UnitAddMyAbility(PlayerHero[player], item_data.improving_skill) then UnitAddAbilityLevel(PlayerHero[player], item_data.improving_skill, 1) end
+
+            if item_data.improving_skill then
+                if not UnitAddMyAbility(PlayerHero[player], item_data.improving_skill) then UnitAddAbilityLevel(PlayerHero[player], item_data.improving_skill, 1) end
+                if SkillPanelFrame[player].state then UpdateSkillList(player) end
+            elseif item_data.bonus_points then
+                AddPointsToPlayer(player, item_data.bonus_points)
+                --ShowQuestAlert(LOCALE_LIST[my_locale].QUEST_REWARD_POINTS_FIRST .. item_data.bonus_points .. LOCALE_LIST[my_locale].QUEST_REWARD_POINTS_SECOND)
+            end
+
 
             RemoveItemFromInventory(player, item)
-            if SkillPanelFrame[player].state then UpdateSkillList(player) end
     end
 
 
@@ -645,6 +671,10 @@ do
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_RESOCKET, function() GiveItemToBlacksmith(player, ButtonList[h].item, BLACKSMITH_RESOCKET) end)
                     end
 
+                    if LibrarianFrame[player].state and item_data.restricted_to then
+                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_EXCHANGE, function() GiveItemToLibrarian(player, ButtonList[h].item) end)
+                    end
+
                     if item_data.TYPE == ITEM_TYPE_GEM then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_ENCHANT, function() StartSelectionMode(player, h, SELECTION_MODE_ENCHANT) end)
                     elseif item_data.TYPE == ITEM_TYPE_CONSUMABLE then
@@ -700,6 +730,8 @@ do
                             if ButtonList[h].item then
                                 if item_data.TYPE >= ITEM_TYPE_WEAPON and item_data.TYPE <= ITEM_TYPE_OFFHAND then
                                     Socket(ButtonList[PlayerMovingItem[player].selected_frame].item, ButtonList[h].item, player, ButtonList[h])
+                                else
+                                    Feedback_CantUse(player - 1)
                                 end
                             else
                                 RemoveSelectionFrames(player)
@@ -990,7 +1022,7 @@ do
             BlzTriggerRegisterFrameEvent(EnterTrigger, new_Frame, FRAMEEVENT_MOUSE_ENTER)
             BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
 
-
+            --DestructableAddIndicatorBJ()
             BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMRIGHT, new_FrameImage, FRAMEPOINT_BOTTOMRIGHT, -0.002, 0.002)
             BlzFrameSetSize(new_FrameCharges, 0.012, 0.012)
             BlzFrameSetTexture(new_FrameCharges, "GUI\\ChargesTexture.blp", 0, true)
@@ -1098,6 +1130,8 @@ do
         CreateSelectionFrames(player)
         TriggerRegisterUnitEvent(DropTrigger, PlayerHero[player],EVENT_UNIT_DROP_ITEM)
         InventoryTooltip[player] = NewTooltip(InventorySlots[player][45])
+        local tooltip = GetTooltip(InventoryTooltip[player] )
+        tooltip.is_sell_penalty = true
         BlzFrameSetVisible(main_frame, false)
         PlayerInventoryFrameState[player] = false
         main_frame = nil

@@ -41,6 +41,11 @@ do
         "I017", "I016", "I015","I014", "I013", "I00V", "I00U"
     }
 
+    BOOK_CLASS_ITEM_LIST = {
+        [BARBARIAN_CLASS] = { "I017", "I016", "I015" },
+        [SORCERESS_CLASS] = { "I014", "I013", "I00V", "I00U" }
+    }
+
     local GENERATED_ITEM_LIST = {
         {
             type = ITEM_TYPE_WEAPON,
@@ -782,7 +787,8 @@ do
             [SKILL_CATEGORY_FIRE] = {
                 "A00D",
                 "A00F",
-                "A00I"
+                "A00I",
+                "AMLT"
             },
             [SKILL_CATEGORY_ARCANE] = {
                 "A00L",
@@ -2310,7 +2316,7 @@ do
                     {
                         icon = "Armor\\BTNHalfArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_11,
-                        decl = DECL_HE,
+                        decl = DECL_SHE,
                         modificator = 0.85,
                         soundpack = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" }
                     },

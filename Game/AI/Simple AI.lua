@@ -10,17 +10,73 @@ do
     local AITable
 
 
+    function AI_AttackReaction(attacker, attacked)
+        local unit
+
+            if attacked and AITable[GetUnitTypeId(attacked)] then
+                unit = attacked
+                if GetUnitAbilityLevel(unit, FourCC("AAIM")) > 0 then return end
+                local ai = AITable[GetUnitTypeId(unit)]
+
+
+                    for i = 1, #ai.ability_list do
+                        if Chance(ai.ability_list[i].on_hit_chance) then
+
+                            UnitAddAbility(unit, FourCC("AAIM"))
+
+                            if ai.ability_list[i].activation == SELF_CAST then IssueImmediateOrderById(unit, ai.ability_list[i].order)
+                            elseif ai.ability_list[i].activation == TARGET_CAST then IssueTargetOrderById(unit, ai.ability_list[i].order, GetAttacker())
+                            elseif ai.ability_list[i].activation == POINT_CAST then IssuePointOrderById(unit, ai.ability_list[i].order, GetUnitX(GetAttacker()), GetUnitY(GetAttacker())) end
+
+                            DelayAction(3., function() UnitRemoveAbility(unit, FourCC("AAIM")) end)
+
+                            break
+                        end
+                    end
+
+                if GetUnitAbilityLevel(unit, FourCC("AAIM")) == 0 then
+                    IssuePointOrderById(unit, order_attack, GetUnitX(attacker), GetUnitY(attacker))
+                end
+
+            elseif attacker and AITable[GetUnitTypeId(attacker)] then
+                unit = attacker
+                if GetUnitAbilityLevel(unit, FourCC("AAIM")) > 0 then return end
+                local ai = AITable[GetUnitTypeId(unit)]
+
+
+                for i = 1, #ai.ability_list do
+                    if Chance(ai.ability_list[i].on_attack_chance) then
+
+                        UnitAddAbility(unit, FourCC("AAIM"))
+
+                        if ai.ability_list[i].activation == SELF_CAST then IssueImmediateOrderById(unit, ai.ability_list[i].order)
+                        elseif ai.ability_list[i].activation == TARGET_CAST then IssueTargetOrderById(unit, ai.ability_list[i].order, attacked)
+                        elseif ai.ability_list[i].activation == POINT_CAST then IssuePointOrderById(unit, ai.ability_list[i].order, GetUnitX(attacked), GetUnitY(attacked)) end
+
+                        DelayAction(3., function() UnitRemoveAbility(unit, FourCC("AAIM")) end)
+
+                        break
+                    end
+                end
+
+            end
+    end
+
 
     function AttackReaction()
         local unit
 
+
             if AITable[GetUnitTypeId(GetTriggerUnit())] then
                 unit = GetTriggerUnit()
+                if GetUnitAbilityLevel(unit, FourCC("AAIM")) > 0 then return end
                 local ai = AITable[GetUnitTypeId(unit)]
 
 
                 for i = 1, #ai.ability_list do
                     if Chance(ai.ability_list[i].on_hit_chance) then
+
+                        UnitAddAbility(unit, FourCC("AAIM"))
 
                         if ai.ability_list[i].activation == SELF_CAST then
                             IssueImmediateOrderById(unit, ai.ability_list[i].order)
@@ -30,17 +86,25 @@ do
                             IssuePointOrderById(unit, ai.ability_list[i].order, GetUnitX(GetAttacker()), GetUnitY(GetAttacker()))
                         end
 
+
+                        DelayAction(3., function()
+                            UnitRemoveAbility(unit, FourCC("AAIM"))
+                        end)
+
                         break
                     end
                 end
 
             elseif AITable[GetUnitTypeId(GetAttacker())] then
                 unit = GetAttacker()
+                if GetUnitAbilityLevel(unit, FourCC("AAIM")) > 0 then return end
                 local ai = AITable[GetUnitTypeId(unit)]
 
 
                 for i = 1, #ai.ability_list do
                     if Chance(ai.ability_list[i].on_attack_chance) then
+
+                        UnitAddAbility(unit, FourCC("AAIM"))
 
                         if ai.ability_list[i].activation == SELF_CAST then
                             IssueImmediateOrderById(unit, ai.ability_list[i].order)
@@ -49,6 +113,10 @@ do
                         elseif ai.ability_list[i].activation == POINT_CAST then
                             IssuePointOrderById(unit, ai.ability_list[i].order, GetUnitX(GetTriggerUnit()), GetUnitY(GetTriggerUnit()))
                         end
+
+                        DelayAction(3., function()
+                            UnitRemoveAbility(unit, FourCC("AAIM"))
+                        end)
 
                         break
                     end
@@ -92,13 +160,33 @@ do
                     { order = order_forkedlightning, activation = TARGET_CAST, on_attack_chance = 7., on_hit_chance = 7. },
                     { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 7. },
                 }
+            },
+            [FourCC("n01N")] = {
+                ability_list = {
+                    { order = order_freezingbreath, activation = POINT_CAST, on_attack_chance = 0., on_hit_chance = 7. }
+                }
+            },
+            [FourCC("n01J")] = {
+                ability_list = {
+                    { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 6., on_hit_chance = 4. }
+                }
+            },
+            [FourCC("u00J")] = {
+                ability_list = {
+                    { order = order_freezingbreath, activation = TARGET_CAST, on_attack_chance = 6., on_hit_chance = 0. }
+                }
+            },
+            [FourCC("n01T")] = {
+                ability_list = {
+                    { order = order_freezingbreath, activation = TARGET_CAST, on_attack_chance = 6., on_hit_chance = 4. }
+                }
             }
         }
 
 
-        local AttackTrg = CreateTrigger()
-        TriggerRegisterAnyUnitEventBJ(AttackTrg, EVENT_PLAYER_UNIT_ATTACKED)
-        TriggerAddAction(AttackTrg, AttackReaction)
+        --local AttackTrg = CreateTrigger()
+        --TriggerRegisterAnyUnitEventBJ(AttackTrg, EVENT_PLAYER_UNIT_ATTACKED)
+        --TriggerAddAction(AttackTrg, AttackReaction)
 
     end
 

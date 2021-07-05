@@ -609,7 +609,7 @@ do
                         end
 
 
-                    OnSkillCast(unit_data.Owner, target, spell_x, spell_y, skill)
+                    OnSkillCast(unit_data.Owner, target, spell_x, spell_y, skill, ability_level)
 
                         TimerStart(unit_data.action_timer, (skill.level[ability_level].animation_point or 0.) * time_reduction, false, function()
                             unit_data.cast_skill = 0
@@ -628,14 +628,19 @@ do
 
                                 if skill.autotrigger then
                                     if skill.level[ability_level].missile then
-                                        if target ~= nil then
-                                            local angle = AngleBetweenUnits(unit_data.Owner, target)
-                                            SetUnitFacing(unit_data.Owner, angle)
-                                            ThrowMissile(unit_data.Owner, target, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level },
-                                                    GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), GetUnitX(target), GetUnitY(target), angle)
+                                        if target then
+                                            if target == unit_data.Owner then
+                                                ThrowMissile(unit_data.Owner, target, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level },
+                                                    GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), GetUnitX(target), GetUnitY(target), GetUnitFacing(unit_data.Owner), skill.level[ability_level].from_unit)
+                                            else
+                                                local angle = AngleBetweenUnits(unit_data.Owner, target)
+                                                SetUnitFacing(unit_data.Owner, angle)
+                                                ThrowMissile(unit_data.Owner, target, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level },
+                                                    GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), GetUnitX(target), GetUnitY(target), angle, skill.level[ability_level].from_unit)
+                                            end
                                         else
                                             ThrowMissile(unit_data.Owner, nil, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level },
-                                                    GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), spell_x, spell_y, AngleBetweenUnitXY(unit_data.Owner, spell_x, spell_y))
+                                                    GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), spell_x, spell_y, AngleBetweenUnitXY(unit_data.Owner, spell_x, spell_y), skill.level[ability_level].from_unit)
                                         end
 
                                     elseif skill.level[ability_level].effect then
@@ -654,7 +659,7 @@ do
                                 SpellBackswing(unit_data.Owner)
                             end)
 
-                            OnSkillCastEnd(unit_data.Owner, target, spell_x, spell_y, skill)
+                            OnSkillCastEnd(unit_data.Owner, target, spell_x, spell_y, skill, ability_level)
 
                             --print("cast")
                         end)

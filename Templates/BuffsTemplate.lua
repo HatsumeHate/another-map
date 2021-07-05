@@ -67,17 +67,17 @@ do
                 if buff.effect_delay_delta then
                     buff.level[lvl].effect_delay = (buff.level[1].effect_delay or 0.1) + math.floor(lvl / (buff.effect_delay_delta_level or 1.)) * buff.effect_delay_delta
                 end
-    --print("generated2")
+            --print("generated2")
                 if buff.rank_delta then
                     buff.level[lvl].rank = (buff.level[1].rank or 1) + math.floor(lvl / (buff.rank_delta_level or 1.)) * buff.rank_delta
                 end
     
-    --print("generated3")
+            --print("generated3")
                 if buff.time_delta then
                     buff.level[lvl].time = (buff.level[1].time or 0.1) + math.floor(lvl / (buff.time_delta_level or 1.)) * buff.time_delta
                 end
 
-    --print("generated4")
+            --print("generated4")
 
                 if buff.level[1].bonus then
 
@@ -101,7 +101,7 @@ do
                         end
 
                 end
---print("generated done")
+            --print("generated done")
             if buff.breakpoints then
                 for point = 1, #buff.breakpoints do
                     local current = buff.breakpoints[point]
@@ -260,7 +260,7 @@ do
                     max_level = 1,
 
                     bonus = {
-                        { PARAM = MOVING_SPEED, VALUE = 0.7, METHOD = MULTIPLY_BONUS }
+                        { PARAM = MOVING_SPEED, VALUE = 0.7, METHOD = MULTIPLY_BONUS, value_delta = -0.05, value_delta_level = 5, value_delta_level_max = 5 }
                     }
                 }
             }
@@ -274,6 +274,8 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
             max_level = 75,
+            time_delta = 0.25,
+            time_delta_level = 3,
 
             level = {
                 [1] = {
@@ -334,7 +336,8 @@ do
                     bonus = {
                         { PARAM = FIRE_RESIST, VALUE = 7, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
                         { PARAM = PHYSICAL_DEFENCE, VALUE = 1.15, METHOD = MULTIPLY_BONUS, value_delta = 0.05, value_delta_level = 5, value_delta_level_max = 10 },
-                        { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 10., METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 }
+                        { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 10., METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
+                        { PARAM = REFLECT_MELEE_DAMAGE, VALUE = 25, METHOD = STRAIGHT_BONUS, value_delta = 5, value_delta_level = 1, value_delta_level_max = 40 }
                     }
                 }
             }
@@ -569,6 +572,27 @@ do
                         { PARAM = PHYSICAL_ATTACK, VALUE = 1.3, METHOD = MULTIPLY_BONUS, value_delta = 0.03, value_delta_level = 3, value_delta_level_max = 15 },
                         { PARAM = CONTROL_REDUCTION, VALUE = 30, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
                         { PARAM = MOVING_SPEED, VALUE = 40, METHOD = STRAIGHT_BONUS, value_delta = 4, value_delta_level = 5, value_delta_level_max = 15 },
+                    }
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "smell of death buff",
+            id = 'ANRD',
+            buff_id = 'B014',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = true,
+            max_level = 75,
+            level_penalty = 9,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 7.,
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 15, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 25 },
+                        { PARAM = HP_PER_HIT, VALUE = 3, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
                     }
                 }
             }
@@ -1254,6 +1278,188 @@ do
             }
 
         })
+        --================================================--
+        NewBuffTemplate({
+            name = "antidote buff",
+            id = 'AANT',
+            buff_id = 'B00V',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 15.,
+                    bonus = {
+                        { PARAM = POISON_RESIST, VALUE = 50, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "adrenaline buff",
+            id = 'AADR',
+            buff_id = 'B00W',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 7.5,
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = 1.35, METHOD = MULTIPLY_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "scroll of protection buff",
+            id = 'ASOP',
+            buff_id = 'B00X',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 25.,
+                    bonus = {
+                        { PARAM = ALL_RESIST, VALUE = 15, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "bone guard buff",
+            id = 'ACBG',
+            buff_id = 'B00Y',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 6.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 1.45, METHOD = MULTIPLY_BONUS },
+                        { PARAM = MAGICAL_SUPPRESSION, VALUE = 1.45, METHOD = MULTIPLY_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "horror buff",
+            id = 'AHRF',
+            buff_id = 'B00Z',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 5,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 6.,
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = -10, METHOD = STRAIGHT_BONUS, value_delta = -10, value_delta_level = 1 },
+                        { PARAM = CAST_SPEED, VALUE = -20, METHOD = STRAIGHT_BONUS, value_delta = -10, value_delta_level = 1 },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "boar stun debuff",
+            id = 'ABRS',
+            buff_id = 'B010',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 1.25,
+                    negative_state = STATE_STUN,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "wolf rage buff",
+            id = 'AWRB',
+            buff_id = 'B013',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 6.,
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 25, METHOD = STRAIGHT_BONUS },
+                        { PARAM = MOVING_SPEED, VALUE = 40, METHOD = STRAIGHT_BONUS },
+                        { PARAM = CRIT_CHANCE, VALUE = 14, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "ghoul stun debuff",
+            id = 'AGHB',
+            buff_id = 'B011',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 1.25,
+                    negative_state = STATE_STUN,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "antimagic debuff",
+            id = 'AHBB',
+            buff_id = 'B012',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = MAGICAL_ATTACK, VALUE = 0.5, METHOD = MULTIPLY_BONUS },
+                    }
+                }
+            }
+
+        })
+
+
 
 
         --ACLS

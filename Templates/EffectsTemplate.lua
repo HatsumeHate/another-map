@@ -239,8 +239,8 @@ do
             get_level_from_skill = "A003",
             level = {
                 [1] = {
-                    power = 10,
-                    attack_percent_bonus = 1.,
+                    power = 47,
+                    --attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -273,8 +273,8 @@ do
             get_level_from_skill = "A001",
             level = {
                 [1] = {
-                    power = 10,
-                    attack_percent_bonus = 1.,
+                    power = 49,
+                    --attack_percent_bonus = 1.,
                     delay = 0.3,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -309,8 +309,8 @@ do
             get_level_from_skill = "A00D",
             level = {
                 [1] = {
-                    power = 17,
-                    attack_percent_bonus = 1.,
+                    power = 65,
+                    --attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -320,8 +320,32 @@ do
                     area_of_effect = 175.,
                     max_targets = 300,
 
-                    SFX_on_unit = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx",
-                    SFX_on_unit_point = "chest",
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx", point = "chest", duration = 1. }, } },
+                    --SFX_on_unit = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx",
+                    --SFX_on_unit_point = "chest",
+                }
+            }
+
+        })
+
+        NewEffectTemplate('EMLT', {
+            name = "meltdown effect",
+            power_delta = 1,
+            power_delta_level = 1,
+            get_level_from_skill = "AMLT",
+            level = {
+                [1] = {
+                    power = 3,
+                    --attack_percent_bonus = 1.,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = FIRE_ATTRIBUTE,
+
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Items\\AIfb\\AIfbSpecialArt.mdl", point = "chest" }, } },
+                    --SFX_on_unit = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx",
+                    --SFX_on_unit_point = "chest",
                 }
             }
 
@@ -336,8 +360,8 @@ do
             get_level_from_skill = "A005",
             level = {
                 [1] = {
-                    power = 20,
-                    attack_percent_bonus = 1.,
+                    power = 66,
+                    --attack_percent_bonus = 1.,
                     delay = 0.1,
                     can_crit = true,
                     is_direct = true,
@@ -371,8 +395,8 @@ do
             get_level_from_skill = "A005",
             level = {
                 [1] = {
-                    power = 5,
-                    attack_percent_bonus = 1.,
+                    power = 21,
+                    --attack_percent_bonus = 1.,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = ICE_ATTRIBUTE,
@@ -396,8 +420,8 @@ do
             get_level_from_skill = "A00M",
             level = {
                 [1] = {
-                    power = 30,
-                    attack_percent_bonus = 1.,
+                    power = 75,
+                    --attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -437,8 +461,8 @@ do
                     delay = 0.86,
                     timescale = 1.34,
 
-                    power = 27,
-                    attack_percent_bonus = 1.,
+                    power = 94,
+                    --attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -468,8 +492,8 @@ do
             get_level_from_skill = "A00J",
             level = {
                 [1] = {
-                    power = 5,
-                    attack_percent_bonus = 1.,
+                    power = 33,
+                    --attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -497,8 +521,8 @@ do
             get_level_from_skill = "A019",
             level = {
                 [1] = {
-                    power = 11,
-                    attack_percent_bonus = 1.,
+                    power = 72,
+                    --attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -527,8 +551,8 @@ do
             get_level_from_skill = "A00K",
             level = {
                 [1] = {
-                    power = 5,
-                    attack_percent_bonus = 1.,
+                    power = 27,
+                    --attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -594,7 +618,7 @@ do
             get_level_from_skill = "A00Z",
             level = {
                 [1] = {
-                    power = 5,
+                    power = 14,
                     attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
@@ -614,11 +638,11 @@ do
             get_level_from_skill = "A00B",
             level = {
                 [1] = {
-                    power = 3,
+                    power = 7,
                     attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
-                    area_of_effect = 175.,
+                    area_of_effect = 255.,
                     angle_window  = 45.,
                     force_from_caster_position = true,
                     shake_magnitude = 1.,
@@ -639,12 +663,12 @@ do
             get_level_from_skill = "A020",
             level = {
                 [1] = {
-                    power = 3,
+                    power = 5,
                     attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     is_sound = true,
-                    area_of_effect = 175.,
+                    area_of_effect = 255.,
                     angle_window  = 45,
                     force_from_caster_position = true,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
@@ -680,7 +704,7 @@ do
             get_level_from_skill = "A010",
             level = {
                 [1] = {
-                    power = 7,
+                    power = 6,
                     attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
@@ -701,14 +725,14 @@ do
             get_level_from_skill = "A007",
             level = {
                 [1] = {
-                    power = 10,
+                    power = 16,
                     attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = MELEE_ATTACK,
                     attribute = PHYSICAL_ATTRIBUTE,
-                    area_of_effect = 200.,
+                    area_of_effect = 255.,
                     angle_window  = 45.,
                     force_from_caster_position = true,
                     max_targets = 300,
@@ -807,15 +831,15 @@ do
             get_level_from_skill = "A006",
             level = {
                 [1] = {
-                    power = 4,
+                    power = 7,
                     attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = MELEE_ATTACK,
                     attribute = PHYSICAL_ATTRIBUTE,
-                    area_of_effect = 200.,
-                    angle_window  = 40.,
+                    area_of_effect = 255.,
+                    angle_window  = 45.,
                     force_from_caster_position = true,
                     max_targets = 300,
                     --SFX_used               = 'Spell\\Coup de Grace.mdx',
@@ -1099,6 +1123,54 @@ do
             }
         })
         --==========================================--
+        NewEffectTemplate('PANT', {
+            name = "antidote",
+            level = {
+                [1] = {
+                    max_targets  = 1,
+                    sound = {
+                        pack = { "Sound\\cure_poison_potion.wav" },
+                        volume = 120, cutoff = 1600.
+                    },
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'AANT', target_type = ON_SELF }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('PADR', {
+            name = "adrenaline",
+            level = {
+                [1] = {
+                    max_targets  = 1,
+                    sound = {
+                        pack = { "Sound\\strengh_potion.wav" },
+                        volume = 120, cutoff = 1600.
+                    },
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'AADR', target_type = ON_SELF }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('SOTP', {
+            name = "scroll of protection",
+            level = {
+                [1] = {
+                    max_targets  = 1,
+                    --sound = {
+                      --  pack = { "Sound\\strengh_potion.wav" },
+                      --  volume = 120, cutoff = 1600.
+                    --},
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'ASOP', target_type = ON_SELF }
+                    },
+                }
+            }
+        })
+        --==========================================--
         NewEffectTemplate('ESQM', {
             name = "spider queen bile missile effect",
             --get_level_from_skill = "A006",
@@ -1274,6 +1346,74 @@ do
                 }
             }
         })
+        --==========================================--
+        NewEffectTemplate('ECBG', {
+            name = "bone guard effect",
+
+            level = {
+                [1] = {
+                    max_targets = 1,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'ACBG', target_type = ON_SELF }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EHOR', {
+            name = "horror effect",
+
+            level = {
+                [1] = {
+                    max_targets = 1,
+                    applied_buff = {
+                        [1] = { modificator = INCREASE_BUFF_LEVEL, buff_id = 'AHRF', target_type = ON_ENEMY },
+                        [2] = { modificator = SET_BUFF_TIME, buff_id = 'AHRF', target_type = ON_ENEMY, value = -1 }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EGHC', {
+            name = "ghoul clac effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            level = {
+                [1] = {
+                    power = 7,
+                    attack_percent_bonus = 1.05,
+                    can_crit = true,
+                    is_direct = true,
+                    is_sound = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    max_targets = 50,
+                    area_of_effect = 200.,
+                    angle_window  = 48.,
+                    force_from_caster_position = true,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'AGHB', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('EHBA', {
+            name = "antimagic effect",
+
+            level = {
+                [1] = {
+                    max_targets = 1,
+                    SFX_on_unit = 'Abilities\\Spells\\Human\\DispelMagic\\DispelMagicTarget.mdч',
+                    SFX_on_unit_point = 'origin',
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'AHBB', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --Spell\Bone Guard.mdx
 
 
 

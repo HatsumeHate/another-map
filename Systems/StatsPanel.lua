@@ -89,18 +89,22 @@ do
         local button = BlzGetTriggerFrame()
         local h = GetHandleId(button)
 
-            ModifyStat(PlayerHero[id], MainStatButtons[id].frames[h].stat, 1, STRAIGHT_BONUS, true)
-            MainStatButtons[id].frames[h].allocated = MainStatButtons[id].frames[h].allocated + 1
-            MainStatButtons[id].points = MainStatButtons[id].points - 1
-            BlzFrameSetText(MainStatButtons[id].points_text_frame, MainStatButtons[id].points)
 
-                if MainStatButtons[id].points <= 0 then
-                    for i = STR_STAT, VIT_STAT do
-                        BlzFrameSetVisible(MainStatButtons[id].frames[i], false)
-                        BlzFrameSetEnable(MainStatButtons[id].frames[i], false)
-                        BlzFrameSetVisible(MainStatButtons[id].points_frame, false)
+            if MainStatButtons[id].points > 0 then
+                ModifyStat(PlayerHero[id], MainStatButtons[id].frames[h].stat, 1, STRAIGHT_BONUS, true)
+                MainStatButtons[id].frames[h].allocated = MainStatButtons[id].frames[h].allocated + 1
+                MainStatButtons[id].points = MainStatButtons[id].points - 1
+                BlzFrameSetText(MainStatButtons[id].points_text_frame, MainStatButtons[id].points)
+
+                    if MainStatButtons[id].points <= 0 then
+                        MainStatButtons[id].points = 0
+                        for i = STR_STAT, VIT_STAT do
+                            BlzFrameSetVisible(MainStatButtons[id].frames[i], false)
+                            BlzFrameSetEnable(MainStatButtons[id].frames[i], false)
+                            BlzFrameSetVisible(MainStatButtons[id].points_frame, false)
+                        end
                     end
-                end
+            end
 
     end
 
@@ -108,13 +112,15 @@ do
     ---@param player integer
     ---@param count integer
     function AddPointsToPlayer(player, count)
-        MainStatButtons[player].points = MainStatButtons[player].points + count
-        for i = STR_STAT, VIT_STAT do
-            BlzFrameSetVisible(MainStatButtons[player].frames[i], true)
-            BlzFrameSetEnable(MainStatButtons[player].frames[i], true)
+        if PlayerHero[player] then
+            MainStatButtons[player].points = math.ceil(MainStatButtons[player].points) + math.ceil(count)
+            for i = STR_STAT, VIT_STAT do
+                BlzFrameSetVisible(MainStatButtons[player].frames[i], true)
+                BlzFrameSetEnable(MainStatButtons[player].frames[i], true)
+            end
+            BlzFrameSetVisible(MainStatButtons[player].points_frame, true)
+            BlzFrameSetText(MainStatButtons[player].points_text_frame, MainStatButtons[player].points)
         end
-        BlzFrameSetVisible(MainStatButtons[player].points_frame, true)
-        BlzFrameSetText(MainStatButtons[player].points_text_frame, MainStatButtons[player].points)
     end
 
 

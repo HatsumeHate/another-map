@@ -198,6 +198,20 @@ do
             full_distance = true
         })
         --==============================================--
+        NewMissileTemplate('MSSM', {
+            name = "sorceress nightmare",
+            model = "Abilities\\Weapons\\FireBallMissile\\FireBallMissile.mdx",
+            max_distance = 1000.,
+            radius = 55.,
+            speed = 725.,
+            start_z = 60.,
+            end_z = 60.,
+            arc = 0.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
         NewMissileTemplate('MVWS', {
             name = "void walker small",
             model = "Abilities\\Weapons\\VoidWalkerMissile\\VoidWalkerMissile.mdx",
@@ -219,8 +233,8 @@ do
             max_distance = 1000.,
             radius = 55.,
             speed = 600.,
-            start_z = 65.,
-            end_z = 65.,
+            start_z = 85.,
+            end_z = 85.,
             arc = 0.,
             ignore_terrain = true,
             penetrate = false,
@@ -233,8 +247,8 @@ do
             max_distance = 1000.,
             radius = 57.,
             speed = 550.,
-            start_z = 65.,
-            end_z = 65.,
+            start_z = 95.,
+            end_z = 95.,
             arc = 0.,
             scale = 1.1,
             ignore_terrain = true,
@@ -248,8 +262,8 @@ do
             max_distance = 1000.,
             radius = 57.,
             speed = 620.,
-            start_z = 65.,
-            end_z = 65.,
+            start_z = 85.,
+            end_z = 85.,
             arc = 0.,
             ignore_terrain = true,
             penetrate = false,
@@ -293,6 +307,35 @@ do
             start_z = 65.,
             end_z = 65.,
             arc = 0.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MBON', {
+            name = "banshee n missile",
+            model = "Abilities\\Weapons\\LichMissile\\LichMissile.mdl",
+            max_distance = 1000.,
+            radius = 55.,
+            speed = 780.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MSTR', {
+            name = "satyr missile",
+            model = "Abilities\\Weapons\\NecromancerMissile\\NecromancerMissile.mdx",
+            max_distance = 1000.,
+            radius = 52.,
+            speed = 550.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.,
+            scale = 0.7,
             ignore_terrain = true,
             penetrate = false,
             full_distance = true
@@ -352,7 +395,7 @@ do
             start_z = 45.,
             end_z = 45.,
             arc = 0.1,
-            scale = 1.,
+            scale = 0.8,
             ignore_terrain = true,
             penetrate = false,
             full_distance = true
@@ -472,8 +515,8 @@ do
             max_distance = 1000.,
             radius = 70.,
             speed = 800.,
-            start_z = 65.,
-            end_z = 65.,
+            start_z = 75.,
+            end_z = 75.,
             arc = 0.,
             scale = 0.75,
             effect_on_hit = 'EFRB',
@@ -483,15 +526,14 @@ do
             penetrate = false,
             trackable = false
         })
-
         NewMissileTemplate('MGFB', {
             name = "firebolt missile",
             model = "Spell\\Fireball Medium.mdx",
             max_distance = 1000.,
             radius = 100.,
             speed = 625.,
-            start_z = 65.,
-            end_z = 65.,
+            start_z = 75.,
+            end_z = 75.,
             arc = 0.,
             scale = 0.8,
             effect_on_hit = 'EGFB',
@@ -500,6 +542,25 @@ do
                 volume = 100,
                 cutoff = 1700.
             },
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+
+        --==============================================--
+        NewMissileTemplate('MMLT', {
+            name = "meltdown missile",
+            model = "Spell\\Fire Spear.mdx",
+            max_distance = 750.,
+            radius = 50.,
+            speed = 1550.,
+            start_z = 75.,
+            end_z = 75.,
+            arc = 0.,
+            scale = 1.,
+            effect_on_hit = 'EMLT',
+            --sound_on_launch = { "Sounds\\Spells\\fire_light_launch_1.wav", "Sounds\\Spells\\fire_light_launch_2.wav", "Sounds\\Spells\\fire_light_launch_3.wav" },
             ignore_terrain = true,
             full_distance = true,
             penetrate = false,
@@ -556,8 +617,8 @@ do
             max_distance = 800.,
             radius = 65.,
             speed = 275.,
-            start_z = 10.,
-            end_z = 10.,
+            start_z = 15.,
+            end_z = 15.,
             arc = 0.,
             max_targets = 1,
             effect_on_hit = 'EDSC',

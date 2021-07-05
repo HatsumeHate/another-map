@@ -9,9 +9,17 @@ do
     local MAXIMUM_ITEMS = 32
 
 
+    local Feedback_NoGold_Table = {
+        true, true, true, true, true, true
+    }
+
     function Feedback_NoGold(player)
-        SimError(LOCALE_LIST[my_locale].FEEDBACK_MSG_NOGOLD, player-1)
-        PlayLocalSound(LOCALE_LIST[my_locale].FEEDBACK_GOLD[GetUnitClass(PlayerHero[player])][GetRandomInt(1, 5)], player-1)
+        if Feedback_NoGold_Table[player] then
+            SimError(LOCALE_LIST[my_locale].FEEDBACK_MSG_NOGOLD, player-1)
+            local snd = PlayLocalSound(LOCALE_LIST[my_locale].FEEDBACK_GOLD[GetUnitClass(PlayerHero[player])][GetRandomInt(1, 5)], player-1)
+            Feedback_NoGold_Table[player] = false
+            TimerStart(CreateTimer(), GetSoundDuration(snd) * 0.001, false, function() Feedback_NoGold_Table[player] = true; DestroyTimer(GetExpiredTimer()) end)
+        end
     end
 
 
@@ -212,7 +220,6 @@ do
         BlzFrameSetTextAlignment(new_Frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
         BlzFrameSetScale(new_Frame, 1.35)
         ShopFrame[player].name = new_Frame
-
         ShopFrame[player].tooltip = NewTooltip(ShopFrame[player].masterframe)
         ShopFrame[player].main_frame = main_frame
         BlzFrameSetVisible(ShopFrame[player].main_frame, false)
@@ -269,7 +276,6 @@ do
         local gold = GetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD)
         local total_cost = item_data.cost + item_data.sell_value
 
-
             if CountFreeBagSlots(player) <= 0 then
                 Feedback_InventoryNoSpace(player)
                 return false
@@ -316,10 +322,16 @@ do
         local gold = GetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD)
         local total_cost = item_data.cost + item_data.sell_value
 
+
             if CountFreeSlotsShop(ShopInFocus[player]) <= 0 then
                 SimError("В магазине нет места", player-1)
                 return false
             end
+
+            if item_data.sell_penalty then
+                total_cost = R2I(total_cost * item_data.sell_penalty)
+            end
+
 
             if GetItemCharges(item) > 1 then
                 total_cost = total_cost * GetItemCharges(item)
@@ -416,7 +428,8 @@ do
                 SetItemVisible(item, false)
                 UpdateShopWindow()
             elseif my_shop_data.item_list[slot].item and GetItemType(item) == ITEM_TYPE_CHARGED and GetItemTypeId(item) == GetItemTypeId(my_shop_data.item_list[slot].item) then
-                my_shop_data.item_list[slot].charges = my_shop_data.item_list[slot].charges + GetItemCharges(item)
+                SetItemCharges(my_shop_data.item_list[slot].item, GetItemCharges(my_shop_data.item_list[slot].item) + GetItemCharges(item))
+                --my_shop_data.item_list[slot].charges = my_shop_data.item_list[slot].charges + GetItemCharges(item)
                 RemoveCustomItem(item)
                 UpdateShopWindow()
             end

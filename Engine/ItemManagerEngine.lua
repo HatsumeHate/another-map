@@ -199,8 +199,8 @@ do
 
             ITEM_DATA[handle] = data
 
-            if drop_animation ~= nil then
-                DelayAction(0.001, function()
+            if drop_animation then
+                DelayAction(0., function()
                     local volume = 128
 
                     for i = 1, 6 do
@@ -230,7 +230,8 @@ do
             end
 
             GenerateItemLevel(item, 1)
-            if data.TYPE == ITEM_TYPE_SKILLBOOK then GenerateItemBookSkill(item) end
+            if data.TYPE == ITEM_TYPE_SKILLBOOK then GenerateItemBookSkill(item)
+            elseif data.TYPE == ITEM_TYPE_CONSUMABLE and data.cooldown_type then BlzSetItemIntegerField(item, ITEM_IF_COOLDOWN_GROUP, data.cooldown_type) end
 
 		return item
 	end
@@ -250,9 +251,10 @@ do
             if IsRandomGeneratedId(id) then GenerateItemStats(item, 1, COMMON_ITEM)
             else GenerateItemLevel(item, 1) end
 
-            if data.TYPE == ITEM_TYPE_SKILLBOOK then GenerateItemBookSkill(item) end
+            if data.TYPE == ITEM_TYPE_SKILLBOOK then GenerateItemBookSkill(item)
+            elseif data.TYPE == ITEM_TYPE_CONSUMABLE and data.cooldown_type then BlzSetItemIntegerField(item, ITEM_IF_COOLDOWN_GROUP, data.cooldown_type) end
 
-                if data.flippy ~= nil and data.flippy then
+                if data.flippy then
                     CreateQualityEffect(item)
                 end
 
@@ -275,8 +277,10 @@ do
     function GenerateItemBookSkill(item)
         local item_data = GetItemData(item)
 
+        if item_data.skill_category then
             item_data.improving_skill = item_data.skill_category[GetRandomInt(1, #item_data.skill_category)]
             item_data.item_description = item_data.item_description .. "|n" .. GetSkillName(item_data.improving_skill)
+        end
 
     end
 
@@ -441,12 +445,17 @@ do
         local stats_bonus = 0
         local stone_bonus = 0
 
-                if item_data.BONUS then stats_bonus = #item_data.BONUS * 50 end
-                if item_data.MAX_SLOTS then stone_bonus = 30 * item_data.MAX_SLOTS end
-                if item_data.legendary_effect then stats_bonus = stats_bonus * 2 end
+            if item_data.BONUS then stats_bonus = #item_data.BONUS * 75 end
+            if item_data.MAX_SLOTS then stone_bonus = 50 * item_data.MAX_SLOTS end
 
             item_data.level = level
-            item_data.cost = level * 30 + stats_bonus + stone_bonus
+
+            if stats_bonus > 0 or stone_bonus > 0 then
+                item_data.cost = R2I((level * 30 + stats_bonus + stone_bonus) * item_data.stat_modificator)
+            end
+
+            if item_data.legendary_effect then item_data.cost = item_data.cost * 2 end
+
     end
 
 

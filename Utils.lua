@@ -197,11 +197,13 @@
 	function GetMaxAvailableDistance(x, y, angle, distance)
 		local step = math.ceil(distance / 32.)
 		local total_distance = 0.
+		local cos = Cos(angle * bj_DEGTORAD)
+		local sin = Sin(angle * bj_DEGTORAD)
 
 			for i = 1, step do
 
-				x = x + (32. * Cos(angle * bj_DEGTORAD))
-				y = y + (32. * Sin(angle * bj_DEGTORAD))
+				x = x + (32. * cos)
+				y = y + (32. * sin)
 
 				if not IsPathable_Air(x, y) then return total_distance
 				else total_distance = total_distance + 32. end

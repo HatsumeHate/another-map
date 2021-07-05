@@ -39,19 +39,20 @@ do
                 local reforge_button = GetButtonData(BlacksmithFrame[player].reforge_item_slot)
                 local gold = GetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD)
                 --local cost = BlacksmithFrame[player].reforge_cost
-                    if reforge_button.item and gold >= BlacksmithFrame[player].reforge_cost then
 
-                        SetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD, gold - BlacksmithFrame[player].reforge_cost)
-                        PlayLocalSound("Buildings\\Human\\Blacksmith\\BlacksmithWhat1.wav", player-1, 115)
-                        BlzFrameSetText(BlacksmithFrame[player].reforge_cost_frame, "")
+                    if reforge_button.item then
+                        if gold >= BlacksmithFrame[player].reforge_cost then
+                            SetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD, gold - BlacksmithFrame[player].reforge_cost)
+                            PlayLocalSound("Buildings\\Human\\Blacksmith\\BlacksmithWhat1.wav", player-1, 115)
+                            BlzFrameSetText(BlacksmithFrame[player].reforge_cost_frame, "")
 
-                        local soundpack = {
-                            "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes3.wav",
-                            "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes4.wav",
-                            "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes5.wav",
-                        }
+                            local soundpack = {
+                               "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes3.wav",
+                               "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes4.wav",
+                               "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes5.wav",
+                            }
 
-                        PlayLocalSound(soundpack[GetRandomInt(1, #soundpack)], player-1, 125)
+                            PlayLocalSound(soundpack[GetRandomInt(1, #soundpack)], player-1, 125)
 
                             if IsItemEquipped(PlayerHero[player], reforge_button.item) then
                                 EquipItem(PlayerHero[player], reforge_button.item, false)
@@ -60,6 +61,10 @@ do
                             else
                                 GenerateItemLevel(reforge_button.item, Current_Wave)
                             end
+
+                        else
+                            Feedback_NoGold(player - 1)
+                        end
 
                     end
             elseif button.button_type == BUTTON_SOCKET then

@@ -267,6 +267,11 @@ do
             buff_data.buff_source = source
             buff_data.current_level = lvl
 
+        if buff_data.level_penalty then
+            buff_data.current_level = buff_data.current_level - buff_data.level_penalty
+            if buff_data.current_level < 1 then buff_data.current_level = 1 end
+        end
+
             if buff_data.inherit_level == nil or not buff_data.inherit_level then buff_data.current_level = 1
             elseif buff_data.current_level > buff_data.max_level then buff_data.current_level = buff_data.max_level end
 

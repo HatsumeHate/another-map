@@ -38,7 +38,7 @@ do
                 if PlayerCameraState[i] then
                     CameraSetupSetDestPosition(PlayerCameraSetup[i], GetUnitX(PlayerHero[i]) + Rx(90., GetUnitFacing(PlayerHero[i])), GetUnitY(PlayerHero[i]) + Ry(90., GetUnitFacing(PlayerHero[i])), 0.12)
                     if GetLocalPlayer() == Player(i-1) then
-                        BlzCameraSetupApplyForceDurationSmooth(PlayerCameraSetup[i], true, 0.12, 1., 1., 1.)
+                        BlzCameraSetupApplyForceDurationSmooth(PlayerCameraSetup[i], true, 0.12, 2.46, 2.46, 1.25)
                     end
                 end
             end

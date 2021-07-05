@@ -254,12 +254,13 @@
                 [1] = {
                     range               = 1000.,
                     missile             = 'MFRB',
+                    from_unit           = true,
                     resource_cost       = 10.,
                     cooldown            = 0.3,
                     animation           = 2,
-                    animation_point     = 1.3,
+                    animation_point     = 1.1,
                     animation_backswing = 0.3,
-                    animation_scale     = 0.4,
+                    animation_scale     = 0.6,
                     sfx_pack = {
                         on_caster = {
                             { effect = "Spell\\Sweep_True_Ice_Small.mdx", point = "origin" },
@@ -310,15 +311,45 @@
                 [1] = {
                     range               = 1000.,
                     missile             = 'MGFB',
+                    from_unit           = true,
                     resource_cost       = 10.,
                     cooldown            = 0.3,
                     animation           = 2,
-                    animation_point     = 1.3,
+                    animation_point     = 1.1,
                     animation_backswing = 0.3,
-                    animation_scale     = 0.4,
+                    animation_scale     = 0.6,
                     sfx_pack = {
                         on_caster = {
                             { effect = "Spell\\Sweep_Fire_Small.mdx", point = "weapon" },
+                            { effect = "Spell\\Fire Low.mdx", point = 'hand right' }
+                        }
+                    },
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('AMLT', {
+            name            = LOCALE_LIST[my_locale].SKILL_MELTDOWN,
+            icon            = "Spell\\BTNFireBreaker.blp",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_FIRE,
+            sound = { pack = { "Sounds\\Spells\\fire_launch_1.wav", "Sounds\\Spells\\fire_launch_2.wav", "Sounds\\Spells\\fire_launch_3.wav" }, volume = 117, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    range               = 700.,
+                    --missile             = 'MGFB',
+                    --from_unit           = true,
+                    resource_cost       = 20.,
+                    cooldown            = 6.,
+                    animation           = 3,
+                    animation_point     = 2.3,
+                    animation_backswing = 0.433,
+                    animation_scale     = 0.25,
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Spell\\Sweep_Fire_Medium.mdx", point = "weapon" },
                             { effect = "Spell\\Fire Low.mdx", point = 'hand right' }
                         }
                     },
@@ -338,7 +369,8 @@
                 [1] = {
                     range               = 800.,
                     missile             = 'MFRO',
-                    resource_cost       = 10.,
+                    from_unit           = true,
+                    resource_cost       = 14.,
                     cooldown            = 0.3,
                     animation           = 3,
                     animation_point     = 2.1,
@@ -366,12 +398,12 @@
                 [1] = {
                     range               = 800.,
                     effect              = 'ELST',
-                    resource_cost       = 17.,
+                    resource_cost       = 24.,
                     cooldown            = 0.3,
                     animation           = 2,
-                    animation_point     = 1.3,
+                    animation_point     = 1.1,
                     animation_backswing = 0.3,
-                    animation_scale     = 0.4,
+                    animation_scale     = 0.7,
                     sfx_pack = {
                         on_caster = {
                             { effect = "Spell\\Sweep_Lightning_Large.mdx", point = "weapon" },
@@ -396,7 +428,7 @@
 
             level = {
                 [1] = {
-                    range = 400.,
+                    range = 300.,
 
                     start_effect_on_cast_point = 'Spell\\Blink Blue Caster.mdx',
                     start_effect_on_cast_point_scale = 1.,
@@ -420,6 +452,7 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_FIRE,
+            sound = { pack = { "Sounds\\Spells\\fire_launch_1.wav", "Sounds\\Spells\\fire_launch_2.wav", "Sounds\\Spells\\fire_launch_3.wav" }, volume = 117, cutoff = 1500.},
 
             level = {
                 [1] = {
@@ -458,10 +491,7 @@
                     animation           = 2,
                     animation_point     = 1.3,
                     animation_backswing = 0.3,
-                    animation_scale     = 0.4,
-                    --effect_on_caster        = "Spell\\Storm Cast.mdx",
-                    --effect_on_caster_point  = 'hand right',
-                    --effect_on_caster_scale  = 0.8,
+                    animation_scale     = 0.6,
 
                     sfx_pack = {
                         on_caster = {
@@ -484,12 +514,12 @@
             level = {
                 [1] = {
                     range               = 870.,
-                    resource_cost       = 16.,
+                    resource_cost       = 13.,
                     cooldown            = 3.,
                     animation           = 2,
                     animation_point     = 1.3,
                     animation_backswing = 0.3,
-                    animation_scale     = 0.4,
+                    animation_scale     = 0.6,
                     --effect_on_caster        = "Spell\\Storm Cast.mdx",
                     --effect_on_caster_point  = 'hand right',
                     --effect_on_caster_scale  = 1.,
@@ -516,6 +546,7 @@
                     range               = 900.,
                     resource_cost       = 25.,
                     missile             = 'MBLB',
+                    from_unit           = true,
                     cooldown            = 11.,
                     animation           = 3,
                     animation_point     = 2.1,
@@ -537,6 +568,8 @@
             activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_ARCANE,
+            sound = { pack = { "Sounds\\Spell\\focus_cast_1.wav", "Sounds\\Spell\\focus_cast_2.wav", "Sounds\\Spell\\focus_cast_3.wav" }, volume = 120, cutoff = 1500.},
+            --
 
             level = {
                 [1] = {
@@ -596,9 +629,9 @@
                     resource_cost       = 5.,
                     cooldown            = 20.,
                     animation           = 3,
-                    animation_point     = 0.1,
-                    animation_backswing = 0.1,
-                    animation_scale     = 0.3,
+                    animation_point     = 0.15,
+                    animation_backswing = 0.15,
+                    animation_scale     = 0.6,
                     sfx_pack = {
                         on_caster = {
                             { effect = "Abilities\\Spells\\Orc\\AncestralSpirit\\AncestralSpiritCaster.mdx", point = "origin", duration = 1.233 }
@@ -666,6 +699,7 @@
                 [1] = {
                     range               = 800.,
                     missile             = 'MTHK',
+                    from_unit           = true,
                     resource_cost       = 5.,
                     cooldown            = 12.,
                     animation           = 3,
@@ -686,7 +720,7 @@
 
             level = {
                 [1] = {
-                    range               = 75.,
+                    range               = 135.,
                     effect              = 'EUPP',
                     cooldown            = 12.,
                     animation           = 5,
@@ -746,7 +780,7 @@
 
             level = {
                 [1] = {
-                    range               = 75.,
+                    range               = 135.,
                     effect              = 'ECRH',
                     cooldown            = 2.3,
                     resource_cost = 5.,
@@ -771,7 +805,7 @@
 
             level = {
                 [1] = {
-                    range               = 75.,
+                    range               = 135.,
                     effect              = 'EEXC',
                     cooldown            = 5.,
                     resource_cost = 5.,
@@ -797,6 +831,7 @@
                 [1] = {
                     range               = 600.,
                     missile             = 'MBCH',
+                    from_unit           = true,
                     resource_cost       = 6,
                     cooldown            = 2.3,
                     animation           = 3,
@@ -817,7 +852,7 @@
 
             level = {
                 [1] = {
-                    range               = 100.,
+                    range               = 135.,
                     effect              = 'ECSL',
                     cooldown            = 7.3,
                     resource_cost       = 5.,
@@ -1102,6 +1137,168 @@
                     animation_point     = 0.445,
                     animation_backswing = 0.555,
                     animation_scale     = 1.25,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('AQBC', {
+            name            = "boar charge",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+            sound = { pack = { "Units\\Creeps\\QuillBeast\\QuillBoarYes1.wav", "Units\\Creeps\\QuillBeast\\QuillBoarYes2.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    cooldown            = 12.,
+                    resource_cost       = 0.,
+                    animation           = 3,
+                    animation_point     = 0.35,
+                    animation_backswing = 0.01,
+                    animation_scale     = 1.15,
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Spell\\Sweep_Chaos_Small.mdx", point = "weapon", scale = 1.25 },
+                        }
+                    },
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('AWRG', {
+            name            = "wolf rage",
+            activation_type = SELF_CAST,
+            type            = SKILL_PHYSICAL,
+            sound = { pack = { "Units\\Orc\\Spiritwolf\\SpiritWolfBirth1.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    cooldown            = 17.,
+                    resource_cost       = 0.,
+                    animation           = 3,
+                    animation_point     = 0.933,
+                    animation_backswing = 0.734,
+                    animation_scale     = 0.8,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('AGHS', {
+            name            = "ghoul cut",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+            --sound = { pack = { "Units\\Orc\\Spiritwolf\\SpiritWolfBirth1.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    cooldown            = 9.,
+                    resource_cost       = 0.,
+                    animation           = 3,
+                    animation_point     = 0.466,
+                    animation_backswing = 0.367,
+                    animation_scale     = 1.1,
+                    effect = "EGHC",
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Spell\\Sweep_Chaos_Small.mdx", point = "hand right", scale = 1.25 },
+                        }
+                    },
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('AHBA', {
+            name            = "hell beast antimagic",
+            activation_type = TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            --sound = { pack = { "Units\\Orc\\Spiritwolf\\SpiritWolfBirth1.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    cooldown            = 14.,
+                    resource_cost       = 0.,
+                    animation           = 3,
+                    animation_point     = 0.6,
+                    animation_backswing = 0.4,
+                    animation_scale     = 1.15,
+                    effect = "EHBA",
+                    sfx_pack = {
+                        on_caster = {
+                            { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand right", scale = 1.25 },
+                            { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand left", scale = 1.25 },
+                        }
+                    },
+                }
+            }
+        })
+         --============================================--
+        NewSkillData('AABS', {
+            name            = "abo slam",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+            --sound = { pack = { "Units\\Orc\\Spiritwolf\\SpiritWolfBirth1.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    cooldown            = 8.,
+                    resource_cost       = 0.,
+                    animation           = 8,
+                    animation_point     = 0.01,
+                    animation_backswing = 0.01,
+                    animation_scale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ANRA', {
+            name            = "necro reanim",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            --sound = { pack = { "Units\\Orc\\Spiritwolf\\SpiritWolfBirth1.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    cooldown            = 8.,
+                    resource_cost       = 0.,
+                    animation           = 8,
+                    animation_point     = 0.01,
+                    animation_backswing = 0.01,
+                    animation_scale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ABLB', {
+            name            = "vampire bite",
+            activation_type = POINT_CAST,
+            type            = SKILL_PHYSICAL,
+            --sound = { pack = { "Units\\Orc\\Spiritwolf\\SpiritWolfBirth1.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    cooldown            = 8.,
+                    resource_cost       = 0.,
+                    animation           = 8,
+                    animation_point     = 0.01,
+                    animation_backswing = 0.01,
+                    animation_scale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ASKB', {
+            name            = "ske mage blast",
+            activation_type = POINT_CAST,
+            type            = SKILL_MAGICAL,
+            --sound = { pack = { "Units\\Orc\\Spiritwolf\\SpiritWolfBirth1.wav" }, volume = 123, cutoff = 1500.},
+
+            level = {
+                [1] = {
+                    cooldown            = 8.,
+                    resource_cost       = 0.,
+                    animation           = 8,
+                    animation_point     = 0.01,
+                    animation_backswing = 0.01,
+                    animation_scale     = 1.,
                 }
             }
         })

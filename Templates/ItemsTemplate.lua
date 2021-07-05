@@ -71,7 +71,11 @@ do
 	ITEM_POTION_MANA_STRONG = "I008"
 	ITEM_POTION_MIX_STRONG = "I00L"
 
+	ITEM_POTION_ANTIDOTE = "I01R"
+	ITEM_POTION_ADRENALINE = "I01S"
+
 	ITEM_SCROLL_OF_TOWN_PORTAL = "I01K"
+	ITEM_SCROLL_OF_PROTECTION = "I01Q"
 
 
 	EQUIP_SOUND = 1
@@ -207,7 +211,6 @@ do
                 ANGLE              = 30, --math.pi * 2, 360 градусов
                 MAX_TARGETS        = 1,
 
-                missile = 0,
                 EFFECT_ON_ATTACK   = 0,
                 WEAPON_SOUND       = nil,
 				frame_texture      = nil,
@@ -478,7 +481,8 @@ do
 			model = "FlippySword.mdx",
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
-			sell_value = 50
+			sell_value = 50,
+			sell_penalty = 0.55
 		})
 		ItemAddData('IGST', {
 			NAME    = 'NAN',
@@ -489,7 +493,8 @@ do
 			model = "FlippyGreatSword.mdx",
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
-			sell_value = 50
+			sell_value = 50,
+			sell_penalty = 0.55
 		})
 
 		ItemAddData('IGAO', {
@@ -500,7 +505,8 @@ do
 			QUALITY = RARE_ITEM,
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
-			sell_value = 50
+			sell_value = 50,
+			sell_penalty = 0.55
 		})
 		ItemAddData('IGAT', {
 			NAME    = 'NAN',
@@ -510,7 +516,8 @@ do
 			QUALITY = RARE_ITEM,
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
-			sell_value = 50
+			sell_value = 50,
+			sell_penalty = 0.55
 		})
 
 		ItemAddData('IGBO', {
@@ -521,7 +528,8 @@ do
 			QUALITY = RARE_ITEM,
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
-			sell_value = 50
+			sell_value = 50,
+			sell_penalty = 0.55
 		})
 		ItemAddData('IGBT', {
 			NAME    = 'NAN',
@@ -531,7 +539,8 @@ do
 			QUALITY = RARE_ITEM,
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
-			sell_value = 50
+			sell_value = 50,
+			sell_penalty = 0.55
 		})
 
 		ItemAddData('IGDR', {
@@ -542,7 +551,8 @@ do
 			QUALITY = RARE_ITEM,
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
-			sell_value = 50
+			sell_value = 50,
+			sell_penalty = 0.55
 		})
 		ItemAddData('IGSF', {
 			NAME    = 'NAN',
@@ -552,7 +562,8 @@ do
 			QUALITY = RARE_ITEM,
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
-			sell_value = 50
+			sell_value = 50,
+			sell_penalty = 0.55
 		})
 		ItemAddData('IGBW', {
 			NAME    = 'NAN',
@@ -562,7 +573,8 @@ do
 			QUALITY = RARE_ITEM,
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp",
-			sell_value = 50
+			sell_value = 50,
+			sell_penalty = 0.55
 		})
 		ItemAddData('IGAC', {
 			NAME    = 'NAN',
@@ -573,6 +585,7 @@ do
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
+			sell_penalty = 0.55
 		})
 		ItemAddData('IGAD', {
 			NAME    = 'NAN',
@@ -583,6 +596,7 @@ do
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
+			sell_penalty = 0.55
 		})
 		ItemAddData('IGAH', {
 			NAME    = 'NAN',
@@ -593,6 +607,7 @@ do
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
+			sell_penalty = 0.55
 		})
 		ItemAddData('IGAL', {
 			NAME    = 'NAN',
@@ -603,6 +618,7 @@ do
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
+			sell_penalty = 0.55
 		})
 		ItemAddData('IGAB', {
 			NAME    = 'NAN',
@@ -613,6 +629,7 @@ do
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
+			sell_penalty = 0.55
 		})
 		ItemAddData('IGJN', {
 			NAME    = 'NAN',
@@ -623,6 +640,7 @@ do
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
+			sell_penalty = 0.55
 		})
 		ItemAddData('IGJR', {
 			NAME    = 'NAN',
@@ -633,6 +651,7 @@ do
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
+			sell_penalty = 0.55
 		})
 		ItemAddData('IGOO', {
 			NAME    = 'NAN',
@@ -642,6 +661,7 @@ do
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
+			sell_penalty = 0.55
 		})
 		ItemAddData('IGOS', {
 			NAME    = 'NAN',
@@ -651,6 +671,7 @@ do
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
+			sell_penalty = 0.55
 		})
 		ItemAddData('IGOQ', {
 			NAME    = 'NAN',
@@ -660,6 +681,7 @@ do
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
 			sell_value = 50,
+			sell_penalty = 0.55
 		})
         --
         ItemAddData('I001', {
@@ -671,7 +693,7 @@ do
 			stat_modificator = 0.9,
 			flippy = true,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNCloak.blp",
-			sell_value = 50,
+			cost = 50,
 			soundpack = { equip = "Sound\\cloth_armor_equip.wav", uneqip = "Sound\\cloth_armor_unequip.wav", drop = "Sound\\lightarmor.wav" }
         })
 
@@ -681,7 +703,8 @@ do
 			QUALITY 		   = MAGIC_ITEM,
 			frame_texture      = "GUI\\BTNRuby.blp",
 			item_description = LOCALE_LIST[my_locale].SHARD_OF_HATE_DESC,
-			sell_value = 50,
+			cost = 150,
+			sell_penalty = 0.5,
 			soundpack = { drop = "Sound\\gem.wav" }
 		})
 
@@ -695,7 +718,7 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = FIRE_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = REFLECT_MELEE_DAMAGE, VALUE = 20, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50,
+			cost = 50,
 			soundpack = { drop = "Sound\\gem.wav" }
 		})
 
@@ -709,7 +732,7 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = ICE_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = REFLECT_RANGE_DAMAGE, VALUE = 20, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50,
+			cost = 50,
 			soundpack = {
 				drop = "Sound\\gem.wav"
 			}
@@ -725,7 +748,7 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = HOLY_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = BLOCK_CHANCE, VALUE = 20, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50,
+			cost = 50,
 			soundpack = {
 				drop = "Sound\\gem.wav"
 			}
@@ -738,10 +761,10 @@ do
 			point_bonus 	   = {
 				[ITEM_TYPE_WEAPON] 		= {  PARAM = CRIT_MULTIPLIER, VALUE = .4, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = MOVING_SPEED, VALUE = 15, METHOD = STRAIGHT_BONUS },
-				[ITEM_TYPE_JEWELRY]  	= {  PARAM = CONTROL_REDUCTION, VALUE = 5, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = HP_REGEN, VALUE = 1.13, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = PHYSICAL_ATTACK, VALUE = 22, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50,
+			cost = 50,
 			soundpack = {
 				drop = "Sound\\gem.wav"
 			}
@@ -757,7 +780,7 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = LIGHTNING_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = CAST_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50,
+			cost = 50,
 			soundpack = {
 				drop = "Sound\\gem.wav"
 			}
@@ -773,7 +796,7 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = ALL_RESIST, VALUE = 5, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = ATTACK_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50,
+			cost = 50,
 			soundpack = {
 				drop = "Sound\\gem.wav"
 			}
@@ -789,7 +812,7 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = ARCANE_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = PHYSICAL_DEFENCE, VALUE = 70, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50,
+			cost = 50,
 			soundpack = {
 				drop = "Sound\\gem.wav"
 			}
@@ -805,7 +828,7 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = MP_REGEN, VALUE = 1.13, METHOD = MULTIPLY_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = CRIT_MULTIPLIER, VALUE = 0.12, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50,
+			cost = 50,
 			soundpack = {
 				drop = "Sound\\gem.wav"
 			}
@@ -821,7 +844,7 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = POISON_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = MAGICAL_ATTACK, VALUE = 27, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50,
+			cost = 50,
 			soundpack = {
 				drop = "Sound\\gem.wav"
 			}
@@ -837,7 +860,7 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = DARKNESS_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = MP_VALUE, VALUE = 1.1, METHOD = MULTIPLY_BONUS }
 			},
-			sell_value = 50,
+			cost = 50,
 			soundpack = { drop = "Sound\\gem.wav" }
 		})
 
@@ -851,7 +874,7 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = CONTROL_REDUCTION, VALUE = 5, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = CRIT_CHANCE, VALUE = 5, METHOD = STRAIGHT_BONUS }
 			},
-			sell_value = 50,
+			cost = 50,
 			soundpack = { drop = "Sound\\gem.wav" }
 		})
 
@@ -865,7 +888,7 @@ do
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = PHYSICAL_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = HP_VALUE, VALUE = 1.1, METHOD = MULTIPLY_BONUS }
 			},
-			sell_value = 50,
+			cost = 50,
 			soundpack = { drop = "Sound\\gem.wav" }
 		})
 
@@ -876,7 +899,18 @@ do
 			frame_texture      = "ReplaceableTextures\\CommandButtons\\BTNScrollOfHealing.blp",
 			item_description = LOCALE_LIST[my_locale].SCROLL_OF_TOWN_PORTAL_DESC,
 			soundpack = { drop = "Sound\\scroll.wav" },
-			cost = 50
+			cost = 50,
+			cooldown_type = 2
+		})
+
+		ItemAddData('I01Q', {
+			NAME    		   = LOCALE_LIST[my_locale].SCROLL_OF_PROTECTION_NAME,
+			TYPE    		   = ITEM_TYPE_CONSUMABLE,
+			frame_texture      = "ReplaceableTextures\\CommandButtons\\BTNScrollOfProtection.blp",
+			item_description = LOCALE_LIST[my_locale].SCROLL_OF_PROTECTION_DESC,
+			soundpack = { drop = "Sound\\scroll.wav" },
+			cost = 150,
+			cooldown_type = 3
 		})
 
 		ItemAddData('I003', {
@@ -884,7 +918,9 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredAApotionGS.blp",
 			item_description = LOCALE_LIST[my_locale].POTION_WEAK_HP_DESC_TEXT,
-			soundpack = { drop = "Sound\\potionui.wav" }
+			soundpack = { drop = "Sound\\potionui.wav" },
+			cost = 25,
+			cooldown_type = 1,
 		})
 
 		ItemAddData('I005', {
@@ -892,7 +928,9 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredEApotionGS.blp",
 			item_description = LOCALE_LIST[my_locale].POTION_HALF_HP_DESC_TEXT,
-			soundpack = { drop = "Sound\\potionui.wav" }
+			soundpack = { drop = "Sound\\potionui.wav" },
+			cost = 50,
+			cooldown_type = 1
 		})
 
 		ItemAddData('I004', {
@@ -900,7 +938,9 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredJApotionGS.blp",
 			item_description = LOCALE_LIST[my_locale].POTION_STRONG_HP_DESC_TEXT,
-			soundpack = { drop = "Sound\\potionui.wav" }
+			soundpack = { drop = "Sound\\potionui.wav" },
+			cost = 75,
+			cooldown_type = 1
 		})
 
 		ItemAddData('I006', {
@@ -908,7 +948,9 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNblueAApotionGS.blp",
 			item_description = LOCALE_LIST[my_locale].POTION_WEAK_MP_DESC_TEXT,
-			soundpack = { drop = "Sound\\potionui.wav" }
+			soundpack = { drop = "Sound\\potionui.wav" },
+			cost = 25,
+			cooldown_type = 1
 		})
 
 		ItemAddData('I007', {
@@ -916,7 +958,9 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNblueEApotionGS.blp",
 			item_description = LOCALE_LIST[my_locale].POTION_HALF_MP_DESC_TEXT,
-			soundpack = { drop = "Sound\\potionui.wav" }
+			soundpack = { drop = "Sound\\potionui.wav" },
+			cost = 50,
+			cooldown_type = 1
 		})
 
 		ItemAddData('I008', {
@@ -924,7 +968,9 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNblueJApotionGS.blp",
 			item_description = LOCALE_LIST[my_locale].POTION_STRONG_MP_DESC_TEXT,
-			soundpack = { drop = "Sound\\potionui.wav" }
+			soundpack = { drop = "Sound\\potionui.wav" },
+			cost = 75,
+			cooldown_type = 1
 		})
 
 		ItemAddData('I00K', {
@@ -932,7 +978,9 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNpurpleAApotionGS.blp",
 			item_description   = LOCALE_LIST[my_locale].POTION_WEAK_MIX_DESC_TEXT,
-			soundpack = { drop = "Sound\\potionui.wav" }
+			soundpack = { drop = "Sound\\potionui.wav" },
+			cost = 75,
+			cooldown_type = 1
 		})
 
 		ItemAddData('I00M', {
@@ -940,7 +988,9 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNpurpleEApotionGS.blp",
 			item_description = LOCALE_LIST[my_locale].POTION_HALF_MIX_DESC_TEXT,
-			soundpack = { drop = "Sound\\potionui.wav" }
+			soundpack = { drop = "Sound\\potionui.wav" },
+			cost = 100,
+			cooldown_type = 1
 		})
 
 		ItemAddData('I00L', {
@@ -948,7 +998,44 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNpurpleJApotionGS.blp",
 			item_description   = LOCALE_LIST[my_locale].POTION_STRONG_MIX_DESC_TEXT,
-			soundpack = { drop = "Sound\\potionui.wav" }
+			soundpack = { drop = "Sound\\potionui.wav" },
+			cost = 125,
+			cooldown_type = 1
+		})
+
+		ItemAddData('I01S', {
+			NAME    		   = LOCALE_LIST[my_locale].POTION_ADRENALINE_TEXT,
+			TYPE    		   = ITEM_TYPE_CONSUMABLE,
+			frame_texture      = "GUI\\BTNYellowBottle.blp",
+			item_description   = LOCALE_LIST[my_locale].POTION_ADRENALINE_DESC_TEXT,
+			soundpack = { drop = "Sound\\potionui.wav" },
+			cost = 50,
+			cooldown_type = 3
+		})
+
+		ItemAddData('I01R', {
+			NAME    		   = LOCALE_LIST[my_locale].POTION_ANTIDOTE_TEXT,
+			TYPE    		   = ITEM_TYPE_CONSUMABLE,
+			frame_texture      = "ReplaceableTextures\\CommandButtons\\BTNPotionGreenSmall.blp",
+			item_description   = LOCALE_LIST[my_locale].POTION_ANTIDOTE_DESC_TEXT,
+			soundpack = { drop = "Sound\\potionui.wav" },
+			cost = 25,
+			cooldown_type = 3
+		})
+
+		ItemAddData('I01V', {
+			NAME    		   = LOCALE_LIST[my_locale].BOOK_TOME_NAME,
+			TYPE    		   = ITEM_TYPE_SKILLBOOK,
+			frame_texture      = "ReplaceableTextures\\CommandButtons\\BTNTomeOfRetraining.blp",
+			item_description = LOCALE_LIST[my_locale].BOOK_TOME_NAME_TEXT,
+			bonus_points = 1,
+			QUALITY = MAGIC_ITEM,
+			--restricted_to = SORCERESS_CLASS,
+			--skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_FIRE],
+			learn_effect = "Abilities\\Spells\\Items\\AIem\\AIemTarget.mdx",
+			soundpack = { drop = "Sound\\book.wav" },
+			cost = 500,
+			sell_penalty = 0.5
 		})
 
 		ItemAddData('I00U', {
@@ -959,7 +1046,9 @@ do
 			restricted_to = SORCERESS_CLASS,
 			skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_FIRE],
 			learn_effect = "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
-			soundpack = { drop = "Sound\\book.wav" }
+			soundpack = { drop = "Sound\\book.wav" },
+			cost = 200,
+			sell_penalty = 0.5
 		})
 
 		ItemAddData('I00V', {
@@ -970,7 +1059,9 @@ do
 			restricted_to = SORCERESS_CLASS,
 			skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_ICE],
 			learn_effect = "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
-			soundpack = { drop = "Sound\\book.wav" }
+			soundpack = { drop = "Sound\\book.wav" },
+			cost = 200,
+			sell_penalty = 0.5
 		})
 
 		ItemAddData('I013', {
@@ -981,7 +1072,9 @@ do
 			restricted_to = SORCERESS_CLASS,
 			skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_LIGHTNING],
 			learn_effect = "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
-			soundpack = { drop = "Sound\\book.wav" }
+			soundpack = { drop = "Sound\\book.wav" },
+			cost = 200,
+			sell_penalty = 0.5
 		})
 
 		ItemAddData('I014', {
@@ -992,7 +1085,9 @@ do
 			restricted_to = SORCERESS_CLASS,
 			skill_category = CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_ARCANE],
 			learn_effect = "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
-			soundpack = { drop = "Sound\\book.wav" }
+			soundpack = { drop = "Sound\\book.wav" },
+			cost = 200,
+			sell_penalty = 0.5
 		})
 
 		ItemAddData('I015', {
@@ -1003,7 +1098,9 @@ do
 			restricted_to = BARBARIAN_CLASS,
 			skill_category = CLASS_SKILL_LIST[BARBARIAN_CLASS][SKILL_CATEGORY_FIGHTING_MASTERY],
 			learn_effect = "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
-			soundpack = { drop = "Sound\\book.wav" }
+			soundpack = { drop = "Sound\\book.wav" },
+			cost = 200,
+			sell_penalty = 0.5
 		})
 
 		ItemAddData('I016', {
@@ -1014,7 +1111,9 @@ do
 			restricted_to = BARBARIAN_CLASS,
 			skill_category = CLASS_SKILL_LIST[BARBARIAN_CLASS][SKILL_CATEGORY_INNER_STRENGTH],
 			learn_effect = "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
-			soundpack = { drop = "Sound\\book.wav" }
+			soundpack = { drop = "Sound\\book.wav" },
+			cost = 200,
+			sell_penalty = 0.5
 		})
 
 		ItemAddData('I017', {
@@ -1025,7 +1124,9 @@ do
 			restricted_to = BARBARIAN_CLASS,
 			skill_category = CLASS_SKILL_LIST[BARBARIAN_CLASS][SKILL_CATEGORY_BATTLE_ADVANTAGE],
 			learn_effect = "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
-			soundpack = { drop = "Sound\\book.wav" }
+			soundpack = { drop = "Sound\\book.wav" },
+			cost = 200,
+			sell_penalty = 0.5
 		})
 
 		ItemAddData('I00N', {
@@ -1454,11 +1555,31 @@ do
 			soundpack = { equip = "Sound\\gem.wav", uneqip = "Sound\\gem.wav", drop = "Sound\\gem.wav" }
 		})
 
+		ItemAddData('I01W', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_ICE_TOUCH,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = HANDS_ARMOR,
+			QUALITY = UNIQUE_ITEM,
+			stat_modificator = 1.1,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = ICE_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CRIT_MULTIPLIER, VALUE = 0.1, METHOD = STRAIGHT_BONUS },
+				{ PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 5, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 2,
+			frame_texture = "Armor\\BTNWater Composite Gloves.blp",
+			legendary_effect = GetLegendaryEffect("ITCH"), --{ id = "MOFE", type = ITEM_PASSIVE_EFFECT },
+			--legendary_description = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS,
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_ICE_TOUCH .."\"",
+			soundpack = { equip = "Sound\\gloveschain.wav", uneqip = "Sound\\gloveschain.wav", drop = "Sound\\gloveschain.wav" }
+		})
+
+
     end
 
 	--[[
-	ух сет Короля и шута
-	дуальные оружия король а второе шут
 
 	Кукла вуду
 	Содержит чьи-то волосы. Опасная игрушка.
@@ -1468,12 +1589,6 @@ do
 
 		Амулет хаоса
 	Переодически нестабильным и начинается дичь.
-
-	Кирка Сморка
-	Легенды гласят, что шахтёр Сморк наповал косил ей врагов.
-
-		Кристальный топор
-	Превращает в кристаллы всё что коснётся. Специальные перчатки прилагаются.
 
 	Рубик в Кубике
 	Маленькое существо в кубике. Вы чувствуете что его зовут Рубик.

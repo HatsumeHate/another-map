@@ -8,14 +8,22 @@ do
     ---@param point string
     local function PlaySpecialEffect(sfx, target, point, scale, duration)
 
-        if sfx ~= nil then
+        if sfx then
             local new_effect = AddSpecialEffectTarget(sfx, target, point or "chest")
                 BlzSetSpecialEffectScale(new_effect, scale or 1.)
-                DelayAction(duration or 0., function()
-                    DestroyEffect(new_effect)
-                end)
+                DelayAction(duration or 0., function() DestroyEffect(new_effect) end)
         end
 
+    end
+
+    local function PlaySpecialEffectPack(pack, target)
+        if pack then
+            for i = 1, #pack do
+                local new_effect = AddSpecialEffectTarget(pack[i].effect, target, pack[i].point or "chest")
+                BlzSetSpecialEffectScale(new_effect, pack[i].scale or 1.)
+                DelayAction(pack[i].duration or 0., function() DestroyEffect(new_effect) end)
+            end
+        end
     end
 
 
@@ -104,6 +112,7 @@ do
     function ApplyBuffEffect(source, target, data, lvl, target_type)
         local myeffect = data.level[lvl]
         PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
+        if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_unit, target) end
         --print("add buff")
         -- delay for effect animation
             TimerStart(CreateTimer(), myeffect.hit_delay or 0., false, function()
@@ -121,6 +130,7 @@ do
         local myeffect = data.level[lvl]
 
         PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
+        if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_unit, target) end
 
             -- delay for effect animation
             TimerStart(CreateTimer(), myeffect.hit_delay or 0., false, function()
@@ -144,6 +154,7 @@ do
         local myeffect = data.level[lvl]
 
             PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
+            if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_unit, target) end
             -- delay for effect animation
             TimerStart(CreateTimer(), myeffect.hit_delay or 0., false, function()
                 if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
@@ -236,9 +247,9 @@ do
 
 
             TimerStart(CreateTimer(), myeffect.SFX_delay or 0., false, function()
+                --if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_point, target or source) end
                 if myeffect.SFX_used then
                     local effect = AddSpecialEffect(myeffect.SFX_used, x, y)
-
                         BlzSetSpecialEffectScale(effect, myeffect.SFX_used_scale or 1.)
                         if myeffect.timescale then BlzSetSpecialEffectTimeScale(effect, 1. + (1. - myeffect.timescale)) end
                         if myeffect.SFX_inherit_angle then BlzSetSpecialEffectYaw(effect, GetUnitFacing(source) * bj_DEGTORAD)
@@ -254,6 +265,7 @@ do
 
 
         PlaySpecialEffect(myeffect.SFX_on_caster, source, myeffect.SFX_on_caster_point, myeffect.SFX_on_caster_scale, myeffect.SFX_on_caster_duration)
+        if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_caster, source) end
 
             if myeffect.sound and myeffect.sound.pack then
                 AddSoundVolumeZ(myeffect.sound.pack[GetRandomInt(1, #myeffect.sound.pack)], x, y, 35., myeffect.sound.volume, myeffect.sound.cutoff)
@@ -268,6 +280,7 @@ do
 
                 if myeffect.life_percent_restored or myeffect.resource_percent_restored then
                     PlaySpecialEffect(myeffect.SFX_on_unit, target or source, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
+                    if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_unit, target or source) end
 
                     TimerStart(CreateTimer(), myeffect.hit_delay or 0., false, function()
                         ApplyRestoreEffect(source, target or source, data, lvl)
@@ -292,7 +305,7 @@ do
                             for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
                                 local picked = BlzGroupUnitAt(enemy_group, index)
 
-                                if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
+                                if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
 
                                     if myeffect.angle_window ~= nil and myeffect.angle_window > 0. then
                                         if IsAngleInFace(source, myeffect.angle_window, GetUnitX(picked), GetUnitY(picked), false) then
@@ -313,7 +326,7 @@ do
                     else
                         --print("single target")
                         -- single target damage
-                        if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 and IsUnitEnemy(target, player_entity) then
+                        if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 and IsUnitEnemy(target, player_entity) and GetUnitAbilityLevel(target, FourCC("Avul")) == 0 then
                             if myeffect.angle_window ~= nil and myeffect.angle_window > 0. then
                                 if IsAngleInFace(source, myeffect.angle_window, GetUnitX(target), GetUnitY(target), false) then
                                     ApplyEffectDamage(source, target, data, lvl)
@@ -342,7 +355,7 @@ do
                                 for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
                                     local picked = BlzGroupUnitAt(enemy_group, index)
 
-                                    if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
+                                    if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
                                         GroupRemoveUnit(enemy_group, picked)
                                         GroupAddUnit(result_group, picked)
                                         targets = targets - 1
@@ -363,7 +376,7 @@ do
                             GroupClear(enemy_group)
                             DestroyGroup(enemy_group)
                         else
-                            if IsUnitEnemy(target, player_entity) and GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
+                            if IsUnitEnemy(target, player_entity) and GetUnitState(target, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(target, FourCC("Avul")) == 0 then
                                 ApplyBuffEffect(source, target, data, lvl, ON_ENEMY)
                             end
                         end
@@ -382,7 +395,7 @@ do
                             for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
                                 local picked = BlzGroupUnitAt(enemy_group, index)
 
-                                if IsUnitAlly(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
+                                if IsUnitAlly(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
                                     ApplyEffectHealing(source, picked, data, lvl)
                                     targets = targets - 1
                                     if targets <= 0 then break end
@@ -412,7 +425,7 @@ do
                                 for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
                                     local picked = BlzGroupUnitAt(enemy_group, index)
 
-                                    if not (IsUnitAlly(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045) then
+                                    if not (IsUnitAlly(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0) then
                                         GroupRemoveUnit(enemy_group, picked)
                                         GroupAddUnit(result_group, picked)
                                         targets = targets - 1
@@ -430,7 +443,7 @@ do
                             GroupClear(enemy_group)
                             DestroyGroup(enemy_group)
                         else
-                            if IsUnitAlly(target, player_entity) and GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
+                            if IsUnitAlly(target, player_entity) and GetUnitState(target, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(target, FourCC("Avul")) == 0 then
                                 ApplyBuffEffect(source, target, data, lvl, ON_ALLY)
                             end
                         end

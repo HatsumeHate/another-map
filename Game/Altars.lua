@@ -314,7 +314,7 @@ do
                                 AddUnitAnimationProperties(altar_unit, "First", true)
                                 AddUnitAnimationProperties(altar_unit, "Third", false)
                             elseif altar.altar_type == ALTAR_TYPE_CHEST then
-                                GroupRemoveUnit(ChestRects, altar_unit)
+                                GroupRemoveUnit(ChestGroup, altar_unit)
                                 RemoveUnit(altar_unit)
                                 AltarsList[GetHandleId(altar_unit)] = nil
                             end
@@ -446,31 +446,26 @@ do
 
 
         TimerStart(CreateTimer(), 27.5, true, function()
-            if Chance(75. - (100. * (1. - (BlzGroupGetSize(ChestGroup) / ChestMax)))) then
-                local rect_index = GetRandomInt(1, #ChestRects)
-                local gr = CreateGroup()
-                local dobreak = false
+            if BlzGroupGetSize(ChestGroup) < ChestMax then
+                if Chance(75. - (100. * (1. - (BlzGroupGetSize(ChestGroup) / ChestMax)))) then
+                    --local rect_index = GetRandomInt(1, #ChestRects)
+                    local gr = CreateGroup()
+                    local rect_index = GetRandomIntTable(1, #ChestRects, #ChestRects)
 
+                        for i = 1, #rect_index do
+                            GroupClear(gr)
+                            GroupEnumUnitsInRect(gr, ChestRects[rect_index[i]], nil)
+                            if BlzGroupGetSize(gr) == 0 and not IsAnyHeroInRange(GetRectCenterX(ChestRects[rect_index[i]]), GetRectCenterY(ChestRects[rect_index[i]]), 1450.) then
+                                CreateChest(ChestRects[rect_index[i]])
+                                break
+                            end
+                        end
 
-                    while(true) do
-                        dobreak = true
-                        GroupClear(gr)
-                        GroupEnumUnitsInRect(gr, ChestRects[rect_index], nil)
-
-                            ForGroup(gr, function()
-                                if GetUnitTypeId(GetEnumUnit()) == FourCC("n00N") then
-                                    dobreak = false
-                                end
-                            end)
-
-                        if dobreak then break
-                        else rect_index = GetRandomInt(1, #ChestRects) end
-
-                    end
-
-                CreateChest(ChestRects[rect_index])
-                DestroyGroup(gr)
+                    DestroyGroup(gr)
+                end
+                --IsAnyHeroInRange(GetRectCenterX(MonsterPack[i].spawner), GetRectCenterY(MonsterPack[i].spawner), 1550.)
             end
+
 
         end)
 

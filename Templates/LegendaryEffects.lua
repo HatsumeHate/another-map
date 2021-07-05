@@ -143,6 +143,12 @@ do
             type = ITEM_PASSIVE_EFFECT
         })
         --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_ICE_TOUCH,
+            id = "ITCH",
+            type = ITEM_PASSIVE_EFFECT
+        })
+        --=========================================================================
 
     end
 
