@@ -56,6 +56,7 @@ do
     function ResetShops()
 
         WavesUntilShopsUpdate = WavesUntilShopsUpdate + 1
+        ClearShop(gg_unit_n01W_0111)
 
         if WavesUntilShopsUpdate == 3 then
             local item_count = GetRandomInt(7, 12)

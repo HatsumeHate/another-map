@@ -132,6 +132,13 @@ do
 			value_by_percent_2 = 13,
 			second_limit = 340,
 			value_by_percent_3 = 17
+		},
+		[CRIT_CHANCE] = {
+			value_by_percent_1 = 1,
+			first_limit = 37,
+			value_by_percent_2 = 2,
+			second_limit = 45,
+			value_by_percent_3 = 4
 		}
 	}
 
@@ -142,7 +149,7 @@ do
 			return value / ParameterLimits[param].value_by_percent_1
 		elseif value > ParameterLimits[param].first_limit and value <= ParameterLimits[param].second_limit then
 			return ParameterLimits[param].first_limit / ParameterLimits[param].value_by_percent_1
-					+ (value - ParameterLimits[param].first_limit) / ParameterLimits[param].second_limit
+					+ (value - ParameterLimits[param].first_limit) / ParameterLimits[param].value_by_percent_2
 		elseif value > ParameterLimits[param].second_limit then
 			return ParameterLimits[param].first_limit / ParameterLimits[param].value_by_percent_1
 					+ (ParameterLimits[param].second_limit - ParameterLimits[param].first_limit) / ParameterLimits[param].value_by_percent_2

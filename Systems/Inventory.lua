@@ -563,9 +563,9 @@ do
                     end
                 end
 
-                PlayLocalSound("Sounds\\UI\\Socket".. GetRandomInt(1,2) ..".wav", 120, player-1)
+                PlayLocalSound("Sounds\\UI\\Socket".. GetRandomInt(1,2) ..".wav", player-1, 100)
             else
-                Feedback_CantUse(player - 1)
+                Feedback_CantUse(player)
             end
 
     end
@@ -731,7 +731,7 @@ do
                                 if item_data.TYPE >= ITEM_TYPE_WEAPON and item_data.TYPE <= ITEM_TYPE_OFFHAND then
                                     Socket(ButtonList[PlayerMovingItem[player].selected_frame].item, ButtonList[h].item, player, ButtonList[h])
                                 else
-                                    Feedback_CantUse(player - 1)
+                                    Feedback_CantUse(player)
                                 end
                             else
                                 RemoveSelectionFrames(player)

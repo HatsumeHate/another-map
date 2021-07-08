@@ -266,17 +266,12 @@ do
 
         PlaySpecialEffect(myeffect.SFX_on_caster, source, myeffect.SFX_on_caster_point, myeffect.SFX_on_caster_scale, myeffect.SFX_on_caster_duration)
         if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_caster, source) end
-
-            if myeffect.sound and myeffect.sound.pack then
-                AddSoundVolumeZ(myeffect.sound.pack[GetRandomInt(1, #myeffect.sound.pack)], x, y, 35., myeffect.sound.volume, myeffect.sound.cutoff)
-                --AddSound(myeffect.sound, x, y)
-            end
+        if myeffect.sound and myeffect.sound.pack then AddSoundVolumeZ(myeffect.sound.pack[GetRandomInt(1, #myeffect.sound.pack)], x, y, 35., myeffect.sound.volume, myeffect.sound.cutoff) end
 
             TimerStart(CreateTimer(), (myeffect.delay or 0.) * (myeffect.timescale or 1.), false, function()
 
-                if myeffect.shake_magnitude ~= nil then
-                    ShakeByCoords(x, y, myeffect.shake_magnitude, myeffect.shake_duration, myeffect.shake_distance)
-                end
+                if myeffect.sound_timed and myeffect.sound_timed.pack then AddSoundVolumeZ(myeffect.sound.pack[GetRandomInt(1, #myeffect.sound_timed.pack)], x, y, 35., myeffect.sound_timed.volume, myeffect.sound_timed.cutoff) end
+                if myeffect.shake_magnitude then ShakeByCoords(x, y, myeffect.shake_magnitude, myeffect.shake_duration, myeffect.shake_distance) end
 
                 if myeffect.life_percent_restored or myeffect.resource_percent_restored then
                     PlaySpecialEffect(myeffect.SFX_on_unit, target or source, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)

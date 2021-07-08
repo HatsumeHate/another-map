@@ -553,8 +553,8 @@ do
             name = "meltdown missile",
             model = "Spell\\Fire Spear.mdx",
             max_distance = 750.,
-            radius = 50.,
-            speed = 1550.,
+            radius = 55.,
+            speed = 1750.,
             start_z = 75.,
             end_z = 75.,
             arc = 0.,
@@ -623,7 +623,7 @@ do
             max_targets = 1,
             effect_on_hit = 'EDSC',
             sound_on_fly = {
-                pack = { "Sounds\\Spells\\lightning_zap_loop_1.wav", "Sounds\\Spells\\lightning_zap_loop_2.wav", "Sounds\\Spells\\lightning_zap_loop_3.wav" },
+                pack = { "Sounds\\Spells\\lightning_wave_loop_1.wav" },
                 volume = 25,
                 cutoff = 1600.,
                 looping = true

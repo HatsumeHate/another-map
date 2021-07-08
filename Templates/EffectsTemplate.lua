@@ -287,8 +287,13 @@ do
                     SFX_used_scale = 1.,
 
                     sound = {
+                        pack = { "Sounds\\Spells\\IceNova.wav" },
+                        volume = 128, cutoff = 1800.
+                    },
+
+                    sound_on_hit = {
                         pack = { "Sounds\\Spells\\frost_nova_hit_1.wav", "Sounds\\Spells\\frost_nova_hit_2.wav", "Sounds\\Spells\\frost_nova_hit_3.wav" },
-                        volume = 122, cutoff = 1800.
+                        volume = 117, cutoff = 1800.
                     },
 
                     applied_buff = {
@@ -333,6 +338,7 @@ do
             power_delta = 1,
             power_delta_level = 1,
             get_level_from_skill = "AMLT",
+            stack_hitnumbers = true,
             level = {
                 [1] = {
                     power = 3,
@@ -393,6 +399,7 @@ do
             attribute_bonus_delta = 2,
             attribute_bonus_delta_level = 5,
             get_level_from_skill = "A005",
+            stack_hitnumbers = true,
             level = {
                 [1] = {
                     power = 21,
@@ -475,6 +482,11 @@ do
 
                     SFX_used = "Spell\\Meteor2.mdx",
                     SFX_used_scale = 1.25,
+
+                    sound = {
+                        pack = { "Sounds\\Spells\\meteorimpact.wav" },
+                        volume = 128, cutoff = 1800.
+                    },
 
                     SFX_on_unit = "Abilities\\Spells\\Other\\Incinerate\\FireLordDeathExplode.mdx",
                     SFX_on_unit_point = "origin",

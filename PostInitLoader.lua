@@ -89,9 +89,25 @@ do
 					},
 				}
 		)
+		CreateShop(gg_unit_n01W_0111, "ReplaceableTextures\\CommandButtons\\BTNAcolyte.blp",
+				{
+					open = {
+						"Units\\Undead\\Acolyte\\AcolyteReady1.wav",
+						"Units\\Undead\\Acolyte\\AcolyteWhat5.wav",
+						"Units\\Undead\\Acolyte\\AcolyteYes4.wav",
+					},
+					close = {
+						"Units\\Undead\\Acolyte\\AcolyteYes1.wav",
+						"Units\\Undead\\Acolyte\\AcolyteYesAttack2.wav",
+						"Units\\Undead\\Acolyte\\AcolytePissed1.wav",
+					},
+				}
+		)
+
 
 		BlzSetUnitName(gg_unit_n000_0056, LOCALE_LIST[my_locale].VENDOR_BILL_NAME)
 		BlzSetUnitName(gg_unit_opeo_0031, LOCALE_LIST[my_locale].SMORC_NAME)
+		BlzSetUnitName(gg_unit_n01W_0111, LOCALE_LIST[my_locale].SCAVENGER_NAME)
 
 		local my_item = CreateCustomItem("I006",  0.,0.)
 		SetItemCharges(my_item, 20)

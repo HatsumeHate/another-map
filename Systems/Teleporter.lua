@@ -21,6 +21,7 @@ do
                 if PlayerCurrentButtonList[player].buttonlist[i].button == frame then
                     SetUnitX(PlayerHero[player], GetRectCenterX(PlayerCurrentButtonList[player].buttonlist[i].teleport))
                     SetUnitY(PlayerHero[player], GetRectCenterY(PlayerCurrentButtonList[player].buttonlist[i].teleport))
+                    IssueImmediateOrderById(PlayerHero[player], order_stop)
                     break
                 end
             end
@@ -44,19 +45,19 @@ do
                     BlzFrameSetText(TeleportFrame[player].slots[slot].text, TeleportLocation[i].name)
 
                         if slot == 1 then
-                            BlzFrameSetPoint(TeleportFrame[player].slots[slot].button, FRAMEPOINT_TOP, TeleportFrame[i].mainframe, FRAMEPOINT_TOP, 0., -0.04)
+                            BlzFrameSetPoint(TeleportFrame[player].slots[slot].button, FRAMEPOINT_TOP, TeleportFrame[player].mainframe, FRAMEPOINT_TOP, 0., -0.01)
                         else
                             BlzFrameSetPoint(TeleportFrame[player].slots[slot].button, FRAMEPOINT_TOP, TeleportFrame[player].slots[slot-1].button, FRAMEPOINT_BOTTOM, 0., -0.001)
                         end
 
-                PlayerCurrentButtonList[player].buttonlist[i].button = TeleportFrame[player].slots[slot].button
-                PlayerCurrentButtonList[player].buttonlist[i].teleport = TeleportLocation[i].rect
+                PlayerCurrentButtonList[player].buttonlist[slot].button = TeleportFrame[player].slots[slot].button
+                PlayerCurrentButtonList[player].buttonlist[slot].teleport = TeleportLocation[i].rect
                 slot = slot + 1
                 end
             end
 
-
-        BlzFrameSetSize(TeleportFrame[player].mainframe, BlzFrameGetWidth(TeleportFrame[player].mainframe), (BlzFrameGetHeight(TeleportFrame[player].slots[slot].button) + (0.001 * slot)) * slot + 0.04)
+        --BlzFrameSetPoint(TeleportFrame[player].mainframe, FRAMEPOINT_BOTTOM, TeleportFrame[player].slots[slot].button, FRAMEPOINT_BOTTOM, 0., -0.04)
+        BlzFrameSetSize(TeleportFrame[player].mainframe, BlzFrameGetWidth(TeleportFrame[player].mainframe), (BlzFrameGetHeight(TeleportFrame[player].slots[slot].button) * (slot - 1)) + 0.02)
     end
 
 
@@ -107,6 +108,8 @@ do
     end
 
     function TeleporterInit()
+
+        InitLocations()
 
         TeleportLocation[1] = {
             name = LOCALE_LIST[my_locale].CASTLE_LOCATION,

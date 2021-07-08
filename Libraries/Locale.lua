@@ -213,9 +213,25 @@ do
             SKILL_PANEL_RANGE_TEXT = " дальность",
 
             CASTLE_LOCATION = 'Замок',
-            SHORE_LOCATION = 'Берег',
-            WOODS_LOCATION = 'Леса',
+            SHORE_LOCATION = 'Берег леса',
+            WOODS_LOCATION = 'Ущелье',
             RUINS_LOCATION = "Руины",
+
+            CASTLE_LOCATION_NAME = "СТАРЫЙ ЗАМОК",
+            MAINROAD_LOCATION_NAME = "ГЛАВНЫЙ ТРАКТ",
+            WILDFOREST_LOCATION_NAME = "ДИКИЙ ЛЕС",
+            NARROWPASS_LOCATION_NAME = "УЩЕЛЬЕ",
+            OUTSKIRTS_LOCATION_NAME = "ДАЛЕКИЕ ОКРАИНЫ",
+            SACREDGROVE_LOCATION_NAME = "СВЯЩЕННАЯ РОЩА",
+            MEADOWS_LOCATION_NAME = "ЦВЕТУЩИЕ ЛУГА",
+
+            CASTLE_LOCATION_TEXTURE = "vagrant_fortress_ru.blp",
+            MAINROAD_LOCATION_TEXTURE = "trading_path_ru.blp",
+            WILDFOREST_LOCATION_TEXTURE = "duskwood_ru.blp",
+            NARROWPASS_LOCATION_TEXTURE = "narrow_pass_ru.blp",
+            OUTSKIRTS_LOCATION_TEXTURE = "forgotten_lands_ru.blp",
+            SACREDGROVE_LOCATION_TEXTURE = "sacred_grove_ru.blp",
+            MEADOWS_LOCATION_TEXTURE = "blooming_meadows_ru.blp",
 
 
             FEEDBACK_MSG_NOSPACE = "В рюкзаке нет места",
@@ -800,7 +816,7 @@ do
                 [80] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 10 ближайших противников.",
             },
             [FourCC("AMLT")] = {
-                [1] = "Чародейка концентрирует энергию в своих руках испуская огненный луч который поражает первого противника нанося ему @e!EMLT.pwr# ед. урона типа @e!EMLT.atr#. Во время поддержания необходимо стоять на месте. Луч следует за указателем мыши. Увеличение уровня способности увеличивает время поддержания.",
+                [1] = "Чародейка концентрирует энергию в своих руках, испуская огненный луч который поражает первого противника нанося ему @e!EMLT.pwr# ед. урона типа @e!EMLT.atr#. Во время поддержания необходимо стоять на месте. Луч следует за указателем мыши. Увеличение уровня способности увеличивает время поддержания.",
             },
 
 
@@ -830,6 +846,7 @@ do
             BLACKSMITH_NAME = "Кузнец",
             SMORC_NAME = "Сморк",
             LIBRARIAN_NAME = "Библиотекарь",
+            SCAVENGER_NAME = "Странствующий скупщик",
 
 
             AIZEK_NAME = "Подмастерье Айзек",
@@ -1120,6 +1137,22 @@ do
             SHORE_LOCATION = 'Shore',
             WOODS_LOCATION = 'Woods',
             RUINS_LOCATION = "Ruins",
+
+            CASTLE_LOCATION_NAME = "OLD CASTLE",
+            MAINROAD_LOCATION_NAME = "MAIN TRACT",
+            WILDFOREST_LOCATION_NAME = "WILD FOREST",
+            NARROWPASS_LOCATION_NAME = "NARROW PASS",
+            OUTSKIRTS_LOCATION_NAME = "FAR OUTSKIRTS",
+            SACREDGROVE_LOCATION_NAME = "SACRED GROVE",
+            MEADOWS_LOCATION_NAME = "BLOOMING MEADOWS",
+
+            CASTLE_LOCATION_TEXTURE = "vagrant_fortress_en.blp",
+            MAINROAD_LOCATION_TEXTURE = "trading_path_en.blp",
+            WILDFOREST_LOCATION_TEXTURE = "duskwood_en.blp",
+            NARROWPASS_LOCATION_TEXTURE = "narrow_pass_en.blp",
+            OUTSKIRTS_LOCATION_TEXTURE = "forgotten_lands_en.blp",
+            SACREDGROVE_LOCATION_TEXTURE = "sacred_grove_en.blp",
+            MEADOWS_LOCATION_TEXTURE = "blooming_meadows_en.blp",
 
             FEEDBACK_MSG_NOSPACE = "Not enough space",
             FEEDBACK_MSG_CANTUSE = "Can't use that",
@@ -1715,6 +1748,7 @@ do
             BLACKSMITH_NAME = "Blacksith",
             SMORC_NAME = "SMorc",
             LIBRARIAN_NAME = "Librarian",
+            SCAVENGER_NAME = "Wandering scavenger",
 
             AIZEK_NAME = "Apprentice Aizek",
             GUINPLEN_NAME = "Guinplen",

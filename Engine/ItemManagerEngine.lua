@@ -42,6 +42,79 @@ do
         [QUIVER_OFFHAND]        = 0.65,
     }
 
+
+    SOUNDPACK_SWORD_1 = 1; SOUNDPACK_SWORD_2 = 2; SOUNDPACK_2HSWORD = 3
+    SOUNDPACK_BLUNT = 4
+    SOUNDPACK_BOW = 5
+    SOUNDPACK_DAGGER = 6
+    SOUNDPACK_STAFF = 7
+    SOUNDPACK_JAVELIN = 8
+
+    SOUNDPACK_SHIELD_METAL = 9; SOUNDPACK_SHIELD_WOOD = 10; SOUNDPACK_ORB = 11; SOUNDPACK_QUIVER = 12
+
+    SOUNDPACK_CHEST_HEAVY_ARMOR = 13
+    SOUNDPACK_CHEST_MID_ARMOR = 14
+    SOUNDPACK_CHEST_LIGHT_ARMOR = 15
+    SOUNDPACK_HEAD_HEAVY_ARMOR = 16
+    SOUNDPACK_HEAD_MID_ARMOR = 17
+    SOUNDPACK_HEAD_LIGHT_ARMOR = 18
+    SOUNDPACK_HANDS_HEAVY_ARMOR = 29
+    SOUNDPACK_HANDS_MID_ARMOR = 20
+    SOUNDPACK_HANDS_LIGHT_ARMOR = 21
+    SOUNDPACK_BOOTS_HEAVY_ARMOR = 22
+    SOUNDPACK_BOOTS_MID_ARMOR = 23
+    SOUNDPACK_BOOTS_LIGHT_ARMOR = 24
+    SOUNDPACK_BELT = 25
+
+    SOUNDPACK_AMULET = 26; SOUNDPACK_RING = 27
+
+    SOUNDPACK_POTION = 28; SOUNDPACK_SCROLL = 29; SOUNDPACK_GEM = 30; SOUNDPACK_BOOK = 32
+
+
+    ITEM_SOUNDPACK = {
+        [SOUNDPACK_SWORD_1]               = { equip = "Sound\\sword_equip01.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" },
+        [SOUNDPACK_SWORD_2]               = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" },
+        [SOUNDPACK_2HSWORD]               = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" },
+        [SOUNDPACK_BLUNT]                 = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" },
+        [SOUNDPACK_STAFF]                 = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" },
+        [SOUNDPACK_DAGGER]                = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" },
+        --[SOUNDPACK_STAFF]                 = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" },
+        [SOUNDPACK_JAVELIN]               = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" },
+        [SOUNDPACK_BOW]                   = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" },
+
+        [SOUNDPACK_SHIELD_WOOD]           = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\woodshield.wav" },
+        [SOUNDPACK_SHIELD_METAL]          = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\metalshield.wav" },
+        [SOUNDPACK_ORB]                   = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" },
+        [SOUNDPACK_QUIVER]                = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" },
+
+        [SOUNDPACK_AMULET]                = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" },
+        [SOUNDPACK_RING]                  = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" },
+
+
+        [SOUNDPACK_CHEST_HEAVY_ARMOR]    = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\platearmor.wav" },
+        [SOUNDPACK_CHEST_MID_ARMOR]      = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" },
+        [SOUNDPACK_CHEST_LIGHT_ARMOR]    = { equip = "Sound\\cloth_armor_equip.wav", uneqip = "Sound\\cloth_armor_unequip.wav", drop = "Sound\\lightarmor.wav" },
+
+        [SOUNDPACK_HEAD_HEAVY_ARMOR]     = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" },
+        [SOUNDPACK_HEAD_MID_ARMOR]       = { equip = "Sound\\cap.wav", uneqip = "Sound\\cap.wav", drop = "Sound\\cap.wav" },
+        [SOUNDPACK_HEAD_LIGHT_ARMOR]     = { equip = "Sound\\rare.wav", uneqip = "Sound\\rare.wav", drop = "Sound\\rare.wav" },
+
+        [SOUNDPACK_HANDS_HEAVY_ARMOR]    = { equip = "Sound\\glovesmetal.wav", uneqip = "Sound\\glovesmetal.wav", drop = "Sound\\glovesmetal.wav" },
+        [SOUNDPACK_HANDS_MID_ARMOR]      = { equip = "Sound\\gloveschain.wav", uneqip = "Sound\\gloveschain.wav", drop = "Sound\\gloveschain.wav" },
+        [SOUNDPACK_HANDS_LIGHT_ARMOR]    = { equip = "Sound\\gloves.wav", uneqip = "Sound\\gloves.wav", drop = "Sound\\gloves.wav" },
+
+        [SOUNDPACK_BOOTS_HEAVY_ARMOR]    = { equip = "Sound\\bootsmetal.wav", uneqip = "Sound\\bootsmetal.wav", drop = "Sound\\bootsmetal.wav" },
+        [SOUNDPACK_BOOTS_MID_ARMOR]      = { equip = "Sound\\bootschain.wav", uneqip = "Sound\\bootschain.wav", drop = "Sound\\bootschain.wav" },
+        [SOUNDPACK_BOOTS_LIGHT_ARMOR]    = { equip = "Sound\\boots.wav", uneqip = "Sound\\boots.wav", drop = "Sound\\boots.wav" },
+
+        [SOUNDPACK_BELT]                 = { equip = "Sound\\belt.wav", uneqip = "Sound\\belt.wav", drop = "Sound\\belt.wav" },
+
+        [SOUNDPACK_POTION]               = { drop = "Sound\\potionui.wav" },
+        [SOUNDPACK_SCROLL]               = { drop = "Sound\\scroll.wav" },
+        [SOUNDPACK_GEM]                  = { drop = "Sound\\gem.wav" },
+        [SOUNDPACK_BOOK]                 = { drop = "Sound\\book.wav" }
+    }
+
     local ITEMTYPES_NAMES = {
 
     }

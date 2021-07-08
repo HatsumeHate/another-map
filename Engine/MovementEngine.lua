@@ -789,10 +789,10 @@ do
                             local current_terrain_z = GetZ(m.current_x, m.current_y)
                             --print("current terrain " .. current_terrain_z)
                             --print("current z " .. BlzGetLocalSpecialEffectZ(missile_effect))
+                            --print("z from calc " .. m.current_z)
                             --print("----")
-                            if current_terrain_z > BlzGetLocalSpecialEffectZ(missile_effect) then
-                                bonus_z = current_terrain_z - BlzGetLocalSpecialEffectZ(missile_effect)
-                                --if current_terrain_z < 0. then bonus_z = bonus_z * -1. end
+                            if current_terrain_z > m.current_z then
+                                bonus_z = current_terrain_z - m.current_z
                             end
                         end
 

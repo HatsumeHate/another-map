@@ -304,13 +304,13 @@ do
                     { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
-                    { id = "I00O", chance = 3., generate = true }, --COWARD
+                    { id = "I00O", chance = 5., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
                     { id = "I00R", chance = 3., generate = true  }, --ritual
                     { id = "I00S", chance = 3., generate = true  }, --acolyte
                     { id = "I00T", chance = 3., generate = true  }, --smorc
-                    { id = "I018", chance = 3., generate = true  }, --boosters
+                    { id = "I018", chance = 5., generate = true  }, --boosters
                     { id = "I019", chance = 3., generate = true  }, --storm
                     { id = "I01A", chance = 3., generate = true  }, --princess
                     { id = "I01B", chance = 3., generate = true  }, --queen
@@ -322,6 +322,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01W", chance = 3., generate = true  }, --ice touch
                     { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
@@ -373,9 +374,9 @@ do
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
-                    { id = "I00Q", chance = 3., generate = true  }, --crown
+                    { id = "I00Q", chance = 5., generate = true  }, --crown
                     { id = "I00R", chance = 3., generate = true  }, --ritual
-                    { id = "I00S", chance = 3., generate = true  }, --acolyte
+                    { id = "I00S", chance = 4., generate = true  }, --acolyte
                     { id = "I00T", chance = 3., generate = true  }, --smorc
                     { id = "I018", chance = 3., generate = true  }, --boosters
                     { id = "I019", chance = 3., generate = true  }, --storm
@@ -389,6 +390,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01W", chance = 3., generate = true  }, --ice touch
                     { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
@@ -442,7 +444,7 @@ do
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
                     { id = "I00R", chance = 3., generate = true  }, --ritual
-                    { id = "I00S", chance = 3., generate = true  }, --acolyte
+                    { id = "I00S", chance = 4., generate = true  }, --acolyte
                     { id = "I00T", chance = 3., generate = true  }, --smorc
                     { id = "I018", chance = 3., generate = true  }, --boosters
                     { id = "I019", chance = 3., generate = true  }, --storm
@@ -456,6 +458,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01W", chance = 3., generate = true  }, --ice touch
                     { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
@@ -511,7 +514,7 @@ do
                     { id = "I00R", chance = 3., generate = true  }, --ritual
                     { id = "I00S", chance = 3., generate = true  }, --acolyte
                     { id = "I00T", chance = 3., generate = true  }, --smorc
-                    { id = "I018", chance = 3., generate = true  }, --boosters
+                    { id = "I018", chance = 4., generate = true  }, --boosters
                     { id = "I019", chance = 3., generate = true  }, --storm
                     { id = "I01A", chance = 3., generate = true  }, --princess
                     { id = "I01B", chance = 3., generate = true  }, --queen
@@ -522,7 +525,8 @@ do
                     { id = "I01G", chance = 3., generate = true  }, --headpain
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
-                    { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01J", chance = 4., generate = true  }, --master
+                    { id = "I01W", chance = 3., generate = true  }, --ice touch
                     { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
@@ -579,7 +583,7 @@ do
                     { id = "I00S", chance = 3., generate = true  }, --acolyte
                     { id = "I00T", chance = 3., generate = true  }, --smorc
                     { id = "I018", chance = 3., generate = true  }, --boosters
-                    { id = "I019", chance = 3., generate = true  }, --storm
+                    { id = "I019", chance = 5., generate = true  }, --storm
                     { id = "I01A", chance = 3., generate = true  }, --princess
                     { id = "I01B", chance = 3., generate = true  }, --queen
                     { id = "I01C", chance = 3., generate = true  }, --pain
@@ -590,6 +594,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01W", chance = 4., generate = true  }, --ice touch
                     { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
@@ -657,6 +662,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01W", chance = 3., generate = true  }, --ice touch
                     { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
@@ -707,7 +713,7 @@ do
                     { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
-                    { id = "I00P", chance = 3., generate = true  }, --witch
+                    { id = "I00P", chance = 5., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
                     { id = "I00R", chance = 3., generate = true  }, --ritual
                     { id = "I00S", chance = 3., generate = true  }, --acolyte
@@ -716,7 +722,7 @@ do
                     { id = "I019", chance = 3., generate = true  }, --storm
                     { id = "I01A", chance = 3., generate = true  }, --princess
                     { id = "I01B", chance = 3., generate = true  }, --queen
-                    { id = "I01C", chance = 3., generate = true  }, --pain
+                    { id = "I01C", chance = 4., generate = true  }, --pain
                     { id = "I01D", chance = 3., generate = true  }, --axe
                     { id = "I01E", chance = 3., generate = true  }, --bootpain
                     { id = "I01F", chance = 3., generate = true  }, --chestpain
@@ -724,6 +730,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01W", chance = 3., generate = true  }, --ice touch
                     { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
@@ -791,6 +798,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01W", chance = 3., generate = true  }, --ice touch
                     { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
@@ -842,22 +850,23 @@ do
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
-                    { id = "I00Q", chance = 3., generate = true  }, --crown
+                    { id = "I00Q", chance = 5., generate = true  }, --crown
                     { id = "I00R", chance = 3., generate = true  }, --ritual
                     { id = "I00S", chance = 3., generate = true  }, --acolyte
                     { id = "I00T", chance = 3., generate = true  }, --smorc
                     { id = "I018", chance = 3., generate = true  }, --boosters
                     { id = "I019", chance = 3., generate = true  }, --storm
-                    { id = "I01A", chance = 3., generate = true  }, --princess
-                    { id = "I01B", chance = 3., generate = true  }, --queen
+                    { id = "I01A", chance = 4., generate = true  }, --princess
+                    { id = "I01B", chance = 4., generate = true  }, --queen
                     { id = "I01C", chance = 3., generate = true  }, --pain
                     { id = "I01D", chance = 3., generate = true  }, --axe
                     { id = "I01E", chance = 3., generate = true  }, --bootpain
                     { id = "I01F", chance = 3., generate = true  }, --chestpain
                     { id = "I01G", chance = 3., generate = true  }, --headpain
-                    { id = "I01H", chance = 3., generate = true  }, --king
-                    { id = "I01I", chance = 3., generate = true  }, --jester
+                    { id = "I01H", chance = 4., generate = true  }, --king
+                    { id = "I01I", chance = 4., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01W", chance = 3., generate = true  }, --ice touch
                     { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
@@ -908,16 +917,16 @@ do
                     { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
-                    { id = "I00P", chance = 3., generate = true  }, --witch
+                    { id = "I00P", chance = 5., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
-                    { id = "I00R", chance = 3., generate = true  }, --ritual
-                    { id = "I00S", chance = 3., generate = true  }, --acolyte
+                    { id = "I00R", chance = 6., generate = true  }, --ritual
+                    { id = "I00S", chance = 4., generate = true  }, --acolyte
                     { id = "I00T", chance = 3., generate = true  }, --smorc
                     { id = "I018", chance = 3., generate = true  }, --boosters
                     { id = "I019", chance = 3., generate = true  }, --storm
                     { id = "I01A", chance = 3., generate = true  }, --princess
                     { id = "I01B", chance = 3., generate = true  }, --queen
-                    { id = "I01C", chance = 3., generate = true  }, --pain
+                    { id = "I01C", chance = 5., generate = true  }, --pain
                     { id = "I01D", chance = 3., generate = true  }, --axe
                     { id = "I01E", chance = 3., generate = true  }, --bootpain
                     { id = "I01F", chance = 3., generate = true  }, --chestpain
@@ -925,6 +934,7 @@ do
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01W", chance = 3., generate = true  }, --ice touch
                     { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
@@ -975,23 +985,24 @@ do
                     { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
-                    { id = "I00P", chance = 3., generate = true  }, --witch
+                    { id = "I00P", chance = 5., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
-                    { id = "I00R", chance = 3., generate = true  }, --ritual
-                    { id = "I00S", chance = 3., generate = true  }, --acolyte
+                    { id = "I00R", chance = 5., generate = true  }, --ritual
+                    { id = "I00S", chance = 4., generate = true  }, --acolyte
                     { id = "I00T", chance = 3., generate = true  }, --smorc
                     { id = "I018", chance = 3., generate = true  }, --boosters
                     { id = "I019", chance = 3., generate = true  }, --storm
                     { id = "I01A", chance = 3., generate = true  }, --princess
                     { id = "I01B", chance = 3., generate = true  }, --queen
-                    { id = "I01C", chance = 3., generate = true  }, --pain
+                    { id = "I01C", chance = 7., generate = true  }, --pain
                     { id = "I01D", chance = 3., generate = true  }, --axe
-                    { id = "I01E", chance = 3., generate = true  }, --bootpain
-                    { id = "I01F", chance = 3., generate = true  }, --chestpain
-                    { id = "I01G", chance = 3., generate = true  }, --headpain
+                    { id = "I01E", chance = 5., generate = true  }, --bootpain
+                    { id = "I01F", chance = 5., generate = true  }, --chestpain
+                    { id = "I01G", chance = 5., generate = true  }, --headpain
                     { id = "I01H", chance = 3., generate = true  }, --king
                     { id = "I01I", chance = 3., generate = true  }, --jester
                     { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01W", chance = 3., generate = true  }, --ice touch
                     { id = "I01O", chance = 3., min = 1, max = 2 },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },

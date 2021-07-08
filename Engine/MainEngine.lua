@@ -25,7 +25,7 @@ do
     ---@param bonus real
     function  GetCriticalChance(a, bonus)
         local source = GetUnitData(a)
-        local chance = 0. + bonus + source.stats[CRIT_CHANCE].value
+        local chance = 0. + math.floor(ParamToPercent(bonus + source.stats[CRIT_CHANCE].value, CRIT_CHANCE))
 
             if chance > MAX_CRITICAL then
                 return MAX_CRITICAL
@@ -282,7 +282,12 @@ do
                 OnDamage_End(source, target, damage, damage_table)
                 --print("17")
                 --print(damage)
-                CreateHitnumber(damage, source, target, attack_status)
+                if myeffect and myeffect.eff.stack_hitnumbers then
+                    CreateHitnumber2(damage, source, target, attack_status, myeffect and myeffect.eff.id or nil)
+                else
+                    CreateHitnumber(damage, source, target, attack_status)
+                end
+                --CreateHitnumber2(damage, source, target, attack_status, myeffect and myeffect.eff.id or nil)
             end
 
             --print("18")
