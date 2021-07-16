@@ -19,6 +19,10 @@ do
     RESOURCE_STATUS = 4
     REFLECT_STATUS = 8
 
+    OrderInterceptionTrigger = nil
+
+
+    --call AddUnitAnimationProperties(gg_unit_H003_0009, "lumber", true)
 
 
     ---@param a unit
@@ -359,6 +363,15 @@ do
                 end
 
             end)
+
+
+        OrderInterceptionTrigger = CreateTrigger()
+
+        TriggerAddAction(OrderInterceptionTrigger, function()
+            if GetOrderTargetUnit() and GetIssuedOrderId() == order_attack and IsAHero(GetOrderTargetUnit()) then
+                DelayAction(0., function() IssueImmediateOrderById(GetTriggerUnit(), order_stop) end)
+            end
+        end)
 
     end
 

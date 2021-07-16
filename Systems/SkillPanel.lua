@@ -9,9 +9,9 @@ do
 
     SkillPanelButton = nil
 
-    local ClickTrigger = CreateTrigger()
-    local EnterTrigger = CreateTrigger()
-    local LeaveTrigger = CreateTrigger()
+    local ClickTrigger
+    local EnterTrigger
+    local LeaveTrigger
 
     local SKILL_BUTTON = 0
 
@@ -373,6 +373,7 @@ do
             RemoveTooltip(player)
         end
 
+        return state
     end
 
     
@@ -396,6 +397,10 @@ do
                 RemoveTooltip(player)
                 SkillPanelFrame[player].state = not SkillPanelFrame[player].state
                 end)]]
+
+        ClickTrigger = CreateTrigger()
+        EnterTrigger = CreateTrigger()
+        LeaveTrigger = CreateTrigger()
 
 
         TriggerAddAction(LeaveTrigger, function()

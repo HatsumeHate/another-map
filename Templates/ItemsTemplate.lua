@@ -83,6 +83,9 @@ do
 	INTERACT_SOUND = 3
 
 
+	CLASS_SKILL_LIST = nil
+
+
 	local weapons = {
 		[FIST_WEAPON]       = {
 			DAMAGE          = 4,
@@ -178,10 +181,7 @@ do
 		}
 	}
 	
-	for k, v in pairs(weapons) do
-		v.TYPE    = ITEM_TYPE_WEAPON
-		v.SUBTYPE = k
-	end
+
 
 
     local function GetItemTemplate()
@@ -308,6 +308,60 @@ do
 
 
     function DefineItemsData()
+
+		for k, v in pairs(weapons) do
+			v.TYPE    = ITEM_TYPE_WEAPON
+			v.SUBTYPE = k
+		end
+
+		CLASS_SKILL_LIST = {
+        [BARBARIAN_CLASS] = {
+            [SKILL_CATEGORY_FIGHTING_MASTERY] = {
+                'A00B',
+                "A010",
+                "A007",
+                "A006",
+                "A020"
+            },
+            [SKILL_CATEGORY_BATTLE_ADVANTAGE] = {
+                "A00O",
+                "A00Z",
+                "A00A",
+            },
+            [SKILL_CATEGORY_INNER_STRENGTH] = {
+                "A00Q",
+                "A00C",
+                "ABFA"
+            }
+        },
+        [SORCERESS_CLASS] = {
+            [SKILL_CATEGORY_LIGHTNING] = {
+                'A00M',
+                "A00J",
+                "A00K",
+                "A019",
+            },
+            [SKILL_CATEGORY_ICE] = {
+                "A003",
+                "A001",
+                "A005",
+                "A00E"
+            },
+            [SKILL_CATEGORY_FIRE] = {
+                "A00D",
+                "A00F",
+                "A00I",
+                "AMLT"
+            },
+            [SKILL_CATEGORY_ARCANE] = {
+                "A00L",
+                "A00N",
+                "A00H"
+            }
+        }
+    }
+
+
 		ItemAddData('0000', {
 			NAME    = 'Fists',
 			TYPE = ITEM_TYPE_WEAPON,
@@ -902,7 +956,7 @@ do
 			TYPE    		   = ITEM_TYPE_CONSUMABLE,
 			frame_texture      = "GUI\\BTNredAApotionGS.blp",
 			item_description = LOCALE_LIST[my_locale].POTION_WEAK_HP_DESC_TEXT,
-			soundpack = ITEM_SOUNDPACK[SOUNDPACK_SCROLL],
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_POTION],
 			cost = 25,
 			cooldown_type = 1,
 		})

@@ -26,6 +26,10 @@ do
         AddToPanel(hero, player_id)
         DrawQuartermeisterFrames(player_id)
         RegisterUnitForTeleport(hero)
+        BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_TAB, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_C, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_B, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_ESCAPE, 0, true)
         if GetLocalPlayer() == Player(player_id - 1) then
             BlzFrameSetVisible(GlobalButton[player_id].char_panel_button, true)
             BlzFrameSetVisible(GlobalButton[player_id].inventory_panel_button, true)
@@ -34,25 +38,47 @@ do
     end
 
 
+    local PlayerUIQueue
+
+    function RemoveUIFromQueue(player, ui_type)
+        if #PlayerUIQueue[player] > 0 then
+            for i = 1, #PlayerUIQueue[player] do
+                if PlayerUIQueue[player][i] == ui_type then
+                    table.remove(PlayerUIQueue[player], i)
+                end
+            end
+        end
+    end
+
 
     function SetUIState(player, ui_type, state)
 
         FrameState[player][ui_type] = state
 
             if ui_type == INV_PANEL then
-                SetInventoryState(player, FrameState[player][INV_PANEL])
+                if SetInventoryState(player, FrameState[player][INV_PANEL]) then
+                    PlayerUIQueue[player][#PlayerUIQueue[player] + 1] = INV_PANEL
+                else
+                    RemoveUIFromQueue(player, INV_PANEL)
+                end
             elseif ui_type == SKILL_PANEL then
                 if FrameState[player][SKILL_PANEL] and FrameState[player][CHAR_PANEL] then
                     FrameState[player][CHAR_PANEL] = false
                     SetStatsPanelState(player, false)
+                    RemoveUIFromQueue(player, CHAR_PANEL)
                 end
-                SetSkillPanelState(player, FrameState[player][SKILL_PANEL])
+                if SetSkillPanelState(player, FrameState[player][SKILL_PANEL]) then
+                    PlayerUIQueue[player][#PlayerUIQueue[player] + 1] = SKILL_PANEL
+                end
             elseif ui_type == CHAR_PANEL then
                 if FrameState[player][SKILL_PANEL] and FrameState[player][CHAR_PANEL] then
                     FrameState[player][SKILL_PANEL] = false
                     SetSkillPanelState(player, false)
+                    RemoveUIFromQueue(player, SKILL_PANEL)
                 end
-                SetStatsPanelState(player, FrameState[player][CHAR_PANEL])
+                if SetStatsPanelState(player, FrameState[player][CHAR_PANEL]) then
+                    PlayerUIQueue[player][#PlayerUIQueue[player] + 1] = CHAR_PANEL
+                end
             end
 
     end
@@ -75,13 +101,22 @@ do
     end
 
 
+    GUIManagerHotkeyTrigger = nil
+
     function InitGUIManager()
+        GUIManagerHotkeyTrigger = CreateTrigger()
+
+        PlayerUIQueue = {}
+
 
         StatsPanelInit()
 		--InventoryInit()
+        InventoryInit()
+        InitShopData()
 		SkillPanelInit()
 
         for i = 1, 6 do
+            PlayerUIQueue[i] = {}
             FrameState[i] = {
                 [CHAR_PANEL] = false,
                 [INV_PANEL] = false,
@@ -120,22 +155,32 @@ do
             --FrameRegisterNoFocus(GlobalButton[i].inventory_panel_button)
             --FrameRegisterClick(GlobalButton[i].inventory_panel_button, "ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp")
 
-            BlzTriggerRegisterPlayerKeyEvent(trg, Player(i-1), OSKEY_TAB, 0, true)
-            BlzTriggerRegisterPlayerKeyEvent(trg, Player(i-1), OSKEY_C, 0, true)
-            BlzTriggerRegisterPlayerKeyEvent(trg, Player(i-1), OSKEY_B, 0, true)
         end
 
 
-        TriggerAddAction(trg, function()
+        TriggerAddAction(GUIManagerHotkeyTrigger, function()
             local player = GetPlayerId(GetTriggerPlayer()) + 1
             local key = BlzGetTriggerPlayerKey()
 
                 if key == OSKEY_TAB then
-                    SetUIState(player, INV_PANEL, not FrameState[player][INV_PANEL])
+                    BlzFrameClick(GlobalButton[player].inventory_panel_button)
+                    PlayLocalSound("Sound\\Interface\\BigButtonClick.wav", player-1)
+                    --SetUIState(player, INV_PANEL, not FrameState[player][INV_PANEL])
                 elseif key == OSKEY_C then
-                    SetUIState(player, CHAR_PANEL, not FrameState[player][CHAR_PANEL])
+                    BlzFrameClick(GlobalButton[player].char_panel_button)
+                    PlayLocalSound("Sound\\Interface\\BigButtonClick.wav", player-1)
+                    --SetUIState(player, CHAR_PANEL, not FrameState[player][CHAR_PANEL])
                 elseif key == OSKEY_B then
-                    SetUIState(player, SKILL_PANEL, not FrameState[player][SKILL_PANEL])
+                    BlzFrameClick(GlobalButton[player].skill_panel_button)
+                    PlayLocalSound("Sound\\Interface\\BigButtonClick.wav", player-1)
+                    --SetUIState(player, SKILL_PANEL, not FrameState[player][SKILL_PANEL])
+                elseif key == OSKEY_ESCAPE then
+                    if #PlayerUIQueue[player] > 0 then
+                        PlayLocalSound("Sound\\Interface\\Click.wav", player-1)
+                        local ui_type = PlayerUIQueue[player][#PlayerUIQueue[player]]
+                        SetUIState(player, ui_type, false)
+                        RemoveUIFromQueue(player, ui_type)
+                    end
                 end
 
         end)

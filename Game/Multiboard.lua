@@ -49,6 +49,32 @@ do
         [6] = "|c00FF8B00",
     }
 
+    local PlayerNames = {
+        [1] = "|c00FF0000",
+        [2] = "|c000000FF",
+        [3] = "|c0000FFFF",
+        [4] = "|c0071007D",
+        [5] = "|c00FFFF00",
+        [6] = "|c00FF8B00",
+    }
+
+    function PlayerLeft(player)
+        local gold = GetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD)
+        local per_player = math.ceil(gold / ActivePlayers)
+
+            MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + player, 0), "|c006F6F6F" .. PlayerNames[player] .. "|r")
+            ShowUnit(PlayerHero[player], false)
+
+                if per_player > 0 then
+                    for i = 1, 6 do
+                        if PlayerHero[player] and not IsUnitHidden(PlayerHero[player]) then
+                            SetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD) + per_player)
+                        end
+                    end
+                end
+
+    end
+
 
     function InitMultiboard()
 
@@ -67,7 +93,8 @@ do
 
             for i = 1, 6 do
                 if GetPlayerSlotState(Player(i-1)) == PLAYER_SLOT_STATE_PLAYING then
-                    MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), PlayerColors[i] .. GetPlayerName(Player(i-1)) .. "|r")
+                    PlayerNames[i] = GetPlayerName(Player(i-1))
+                    MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), PlayerColors[i] .. PlayerNames[i] .. "|r")
                     --MultiboardSetItemWidth(MAIN_MULTIBOARD, 6.5 / 175.0)
                 end
             end

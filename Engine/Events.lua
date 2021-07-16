@@ -46,7 +46,7 @@ do
 
     function OnPullRelease(source, target, sign)
         if sign == 'EBCH' then
-            local abil_level = UnitGetAbilityLevel(source, "A00A")
+            local abil_level = UnitGetAbilityLevel(target, "A00A")
             if abil_level >= 10 then
                 --ApplyBuff(source, target, "", abil_level)
             end

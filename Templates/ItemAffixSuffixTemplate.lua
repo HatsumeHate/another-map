@@ -751,53 +751,6 @@ do
     }
 
 
-    CLASS_SKILL_LIST = {
-        [BARBARIAN_CLASS] = {
-            [SKILL_CATEGORY_FIGHTING_MASTERY] = {
-                'A00B',
-                "A010",
-                "A007",
-                "A006",
-                "A020"
-            },
-            [SKILL_CATEGORY_BATTLE_ADVANTAGE] = {
-                "A00O",
-                "A00Z",
-                "A00A",
-            },
-            [SKILL_CATEGORY_INNER_STRENGTH] = {
-                "A00Q",
-                "A00C",
-                "ABFA"
-            }
-        },
-        [SORCERESS_CLASS] = {
-            [SKILL_CATEGORY_LIGHTNING] = {
-                'A00M',
-                "A00J",
-                "A00K",
-                "A019",
-            },
-            [SKILL_CATEGORY_ICE] = {
-                "A003",
-                "A001",
-                "A005",
-                "A00E"
-            },
-            [SKILL_CATEGORY_FIRE] = {
-                "A00D",
-                "A00F",
-                "A00I",
-                "AMLT"
-            },
-            [SKILL_CATEGORY_ARCANE] = {
-                "A00L",
-                "A00N",
-                "A00H"
-            }
-        }
-    }
-
 
     SINGLE_PARAMETER = 1
     MULTIPLE_PARAMETER = 2

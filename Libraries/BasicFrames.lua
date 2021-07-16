@@ -6,13 +6,7 @@ do
     ButtonList = {}
 
 
-    local FocusTrigger = CreateTrigger()
-        TriggerAddAction(FocusTrigger, function()
-            if GetTriggerPlayer() == GetLocalPlayer() then
-                BlzFrameSetEnable(BlzGetTriggerFrame(), false)
-                BlzFrameSetEnable(BlzGetTriggerFrame(), true)
-            end
-    end)
+    local FocusTrigger
 
     ---@param frame framehandle
     function FrameRegisterNoFocus(frame)
@@ -34,21 +28,7 @@ do
         BlzFrameSetTexture(ButtonClickList[GetHandleId(frame)].image, texture, 0, true)
     end
 
-    local ClickTrigger = CreateTrigger()
-    TriggerAddAction(ClickTrigger, function()
-        local frame = BlzGetTriggerFrame()
-
-            if ButtonClickList[GetHandleId(frame)] then
-                local handle = GetHandleId(frame)
-                BlzFrameSetVisible(ButtonClickList[handle].frame, true)
-
-                TimerStart(ButtonClickList[handle].timer, 0.1, false, function()
-                    BlzFrameSetVisible(ButtonClickList[handle].frame, false)
-                    frame = nil
-                end)
-            end
-
-    end)
+    local ClickTrigger
 
     ---@param frame framehandle
     function FrameRegisterClick(frame, texture)
@@ -119,10 +99,35 @@ do
         GAME_UI     = BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0)
         WORLD_FRAME = BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0)
 
+        FocusTrigger = CreateTrigger()
+        TriggerAddAction(FocusTrigger, function()
+            if GetTriggerPlayer() == GetLocalPlayer() then
+                BlzFrameSetEnable(BlzGetTriggerFrame(), false)
+                BlzFrameSetEnable(BlzGetTriggerFrame(), true)
+            end
+        end)
+
+        ClickTrigger = CreateTrigger()
+        TriggerAddAction(ClickTrigger, function()
+            local frame = BlzGetTriggerFrame()
+
+                if ButtonClickList[GetHandleId(frame)] then
+                    local handle = GetHandleId(frame)
+                    BlzFrameSetVisible(ButtonClickList[handle].frame, true)
+
+                    TimerStart(ButtonClickList[handle].timer, 0.1, false, function()
+                        BlzFrameSetVisible(ButtonClickList[handle].frame, false)
+                        frame = nil
+                    end)
+                end
+
+        end)
+
         BlzLoadTOCFile("war3mapimported\\BoxedText.toc")
         BlzLoadTOCFile("war3mapImported\\MyTOCfile.toc")
 
         InitContextMenu()
+        InitSlider()
     end
 
 end

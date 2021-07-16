@@ -13,7 +13,7 @@ do
     function DrawQuartermeisterFrames(player)
         local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
 
-            print("player number is " .. player)
+            --print("player number is " .. player)
             BlzFrameSetPoint(main_frame, FRAMEPOINT_TOP, GAME_UI, FRAMEPOINT_TOP, 0., -0.06)
             BlzFrameSetSize(main_frame, 0.56, 0.35)
             --RegisterConstructor(main_frame, 0.4, 0.38)

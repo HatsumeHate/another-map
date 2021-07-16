@@ -58,7 +58,7 @@ do
     SOUNDPACK_HEAD_HEAVY_ARMOR = 16
     SOUNDPACK_HEAD_MID_ARMOR = 17
     SOUNDPACK_HEAD_LIGHT_ARMOR = 18
-    SOUNDPACK_HANDS_HEAVY_ARMOR = 29
+    SOUNDPACK_HANDS_HEAVY_ARMOR = 19
     SOUNDPACK_HANDS_MID_ARMOR = 20
     SOUNDPACK_HANDS_LIGHT_ARMOR = 21
     SOUNDPACK_BOOTS_HEAVY_ARMOR = 22
@@ -68,7 +68,7 @@ do
 
     SOUNDPACK_AMULET = 26; SOUNDPACK_RING = 27
 
-    SOUNDPACK_POTION = 28; SOUNDPACK_SCROLL = 29; SOUNDPACK_GEM = 30; SOUNDPACK_BOOK = 32
+    SOUNDPACK_POTION = 28; SOUNDPACK_SCROLL = 29; SOUNDPACK_GEM = 30; SOUNDPACK_BOOK = 31
 
 
     ITEM_SOUNDPACK = {
@@ -78,7 +78,6 @@ do
         [SOUNDPACK_BLUNT]                 = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" },
         [SOUNDPACK_STAFF]                 = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" },
         [SOUNDPACK_DAGGER]                = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" },
-        --[SOUNDPACK_STAFF]                 = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" },
         [SOUNDPACK_JAVELIN]               = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" },
         [SOUNDPACK_BOW]                   = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" },
 
@@ -165,7 +164,7 @@ do
 
     ---@param my_item item
     function GetItemData(my_item)
-        return ITEM_DATA[GetHandleId(my_item)]
+        return ITEM_DATA[GetHandleId(my_item)] or nil
     end
 
 
@@ -185,20 +184,22 @@ do
 
     function CreateQualityEffect(item)
         local data = GetItemData(item)
-        local string = "QualityGlow.mdx"
+        local color_table = GetQualityEffectColor(data.QUALITY)
 
-            for i = 1, 6 do
-                if GetLocalPlayer() == Player(i-1) then
-                    if not IsItemVisible(item) then
-                        string = ""
-                    end
+            if data.owner then
+                if GetLocalPlayer() == Player(data.owner) then
+                    data.quality_effect = AddSpecialEffect("QualityGlow.mdx", GetItemX(item), GetItemY(item))
+                    BlzSetSpecialEffectColor(data.quality_effect, color_table.r, color_table.g, color_table.b)
+                    BlzSetSpecialEffectScale(data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[data.SUBTYPE])
+                else
+                    data.quality_effect = AddSpecialEffect("", GetItemX(item), GetItemY(item))
                 end
+            elseif not data.picked_up then
+                data.quality_effect = AddSpecialEffect("QualityGlow.mdx", GetItemX(item), GetItemY(item))
+                BlzSetSpecialEffectColor(data.quality_effect, color_table.r, color_table.g, color_table.b)
+                BlzSetSpecialEffectScale(data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[data.SUBTYPE])
             end
 
-            local color_table = GetQualityEffectColor(data.QUALITY)
-            data.quality_effect = AddSpecialEffect(string, GetItemX(item), GetItemY(item))
-            BlzSetSpecialEffectColor(data.quality_effect, color_table.r, color_table.g, color_table.b)
-            BlzSetSpecialEffectScale(data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[data.SUBTYPE])
     end
 
 
@@ -226,7 +227,7 @@ do
             if result_scale < MIN_GOLD_SCALE then result_scale = MIN_GOLD_SCALE
             elseif result_scale > MAX_GOLD_SCALE then result_scale = MAX_GOLD_SCALE end
 
-            AddSoundForPlayerVolumeZ("Sound\\gold.wav", x, y, BlzGetLocalSpecialEffectZ(effect), 110, 2100., player)
+            AddSoundForPlayerVolumeZ("Sound\\gold.wav", x, y, 35., 110, 2100., player)
 
             local trg = CreateTrigger()
             TriggerRegisterEnterRegionSimple(trg, region)
@@ -235,7 +236,7 @@ do
                 if GetOwningPlayer(GetTriggerUnit()) == Player(player) then
                     DestroyEffect(AddSpecialEffectTarget("UI\\Feedback\\GoldCredit\\GoldCredit.mdx", GetTriggerUnit(), "origin"))
                     SetPlayerState(Player(player), PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(Player(player), PLAYER_STATE_RESOURCE_GOLD) + amount)
-                    AddSoundForPlayerVolumeZ("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", x, y, BlzGetLocalSpecialEffectZ(effect), 127, 2200., player)
+                    AddSoundForPlayerVolumeZ("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", x, y, 35., 127, 2200., player)
                     GoldText(x, y, amount)
                     DestroyEffect(effect)
                     RemoveRegion(region)
@@ -269,20 +270,16 @@ do
 
             data.item = item
             BlzSetItemName(item, GetQualityColor(data.QUALITY) .. data.NAME .. "|r")
+            data.actual_name = GetQualityColor(data.QUALITY) .. data.NAME .. '|r'
 
             ITEM_DATA[handle] = data
 
             if drop_animation then
                 DelayAction(0., function()
-                    local volume = 128
+                    local volume = 0
 
-                    for i = 1, 6 do
-                        if GetLocalPlayer() == Player(i-1) then
-                            if not IsItemVisible(item) then
-                                volume = 0
-                            end
-                        end
-                    end
+                    if ITEM_DATA[handle].owner then if GetLocalPlayer() == Player(ITEM_DATA[handle].owner) then volume = 128 end
+                    else volume = 128 end
 
                         if data.flippy then
 
@@ -319,6 +316,7 @@ do
 
             data.item = item
             BlzSetItemName(item, GetQualityColor(data.QUALITY) .. data.NAME .. "|r")
+            data.actual_name = GetQualityColor(data.QUALITY) .. data.NAME .. '|r'
             ITEM_DATA[handle] = data
 
             if IsRandomGeneratedId(id) then GenerateItemStats(item, 1, COMMON_ITEM)
@@ -349,6 +347,9 @@ do
     ---@param item item
     function GenerateItemBookSkill(item)
         local item_data = GetItemData(item)
+
+        --item_data.improving_skill = "invalid"
+        --item_data.item_description = "invalid"
 
         if item_data.skill_category then
             item_data.improving_skill = item_data.skill_category[GetRandomInt(1, #item_data.skill_category)]
@@ -485,6 +486,7 @@ do
             end
             --print("generator skills done")
 
+            item_data.actual_name = GetQualityColor(quality) .. item_data.NAME .. '|r'
             BlzSetItemName(item, GetQualityColor(quality) .. item_data.NAME .. '|r')
 
     end
@@ -593,7 +595,7 @@ do
             item_data.level = level
             item_data.soundpack = item_preset.soundpack
             item_data.stat_modificator = item_preset.modificator
-
+            --print("1")
 
                 if item_data.TYPE == ITEM_TYPE_WEAPON then
 
@@ -626,7 +628,7 @@ do
                     end
 
                 end
-
+            --print("2")
             GenerateItemLevel(item, level)
             --print("generate level")
             GenerateItemStoneSlots(item)
@@ -637,60 +639,26 @@ do
             --print("generate cost")
             --GenerateItemStatPreset(item, item_preset.modificator)
 
+            --item_data.NAME =
+            --DelayAction(0.01, function()   end)
             BlzSetItemName(item, GetQualityColor(quality) .. item_data.NAME .. '|r')
+            item_data.actual_name = GetQualityColor(quality) .. item_data.NAME .. '|r'
+
+            --print("generator done")
     end
 
 
-    local TWOHANDED_LIST = {
-        [FIST_WEAPON]           = false,
-        [BOW_WEAPON]            = true,
-        [BLUNT_WEAPON]          = false,
-        [GREATBLUNT_WEAPON]     = true,
-        [SWORD_WEAPON]          = false,
-        [GREATSWORD_WEAPON]     = true,
-        [AXE_WEAPON]            = false,
-        [GREATAXE_WEAPON]       = true,
-        [DAGGER_WEAPON]         = false,
-        [STAFF_WEAPON]          = true,
-        [JAWELIN_WEAPON]        = false,
-        [THROWING_KNIFE_WEAPON] = false,
-    }
+    local TWOHANDED_LIST
 
 
     ---@param itemtype number
     function IsWeaponTypeTwohanded(itemtype)
-        return TWOHANDED_LIST[itemtype]
+        return TWOHANDED_LIST[itemtype] or false
     end
 
 
 
 
-
-
-
-    function ApplyLegendaryEffectEx(item, unit, id, flag)
-        local item_data = GetItemData(item)
-        local unit_data = GetUnitData(unit)
-
-            if item_data.legendary_effect.type == ITEM_PASSIVE_EFFECT then
-                if flag then unit_data.effects[id] = true
-                else unit_data.effects[id] = nil end
-            else
-                if flag then
-                    unit_data.effects[id] = CreateTimer()
-                    TimerStart(unit_data.effects[id], item_data.legendary_effect.period, true, function()
-                        item_data.legendary_effect.func(unit, id)
-                    end)
-                else
-                    item_data.legendary_effect.endfunc(unit, id)
-                    DestroyTimer(unit_data.effects[id])
-                    unit_data.effects[id] = nil
-                end
-            end
-
-    end
-
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA??????????????????????????????3")
 
     function IsItemEquipped(unit, item)
         local unit_data = GetUnitData(unit)
@@ -732,8 +700,17 @@ do
             elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
 
                 if item_data.SUBTYPE == RING_JEWELRY then
-                    if flag then point = unit_data.equip_point[RING_1_POINT] ~= nil and RING_2_POINT or RING_1_POINT
-                    else point = unit_data.equip_point[RING_1_POINT].item == item and RING_1_POINT or RING_2_POINT end
+
+                    if flag then
+                        if unit_data.equip_point[RING_1_POINT] then point = RING_2_POINT
+                        else point = RING_1_POINT end
+                    else
+                        if unit_data.equip_point[RING_1_POINT] and unit_data.equip_point[RING_1_POINT].item == item then point = RING_1_POINT
+                        elseif unit_data.equip_point[RING_2_POINT] and unit_data.equip_point[RING_2_POINT].item == item then point = RING_2_POINT end
+                    end
+
+                    --if flag then point = unit_data.equip_point[RING_1_POINT] ~= nil and RING_2_POINT or RING_1_POINT
+                    --else point = unit_data.equip_point[RING_1_POINT].item == item and RING_1_POINT or RING_2_POINT end
                 else point = NECKLACE_POINT end
 
             elseif item_data.TYPE == ITEM_TYPE_OFFHAND then point = OFFHAND_POINT
@@ -788,21 +765,13 @@ do
 
 
 
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA?????????????????????????????? 1")
     function GiveItemToPlayerByUnit(unit, item)
         SetItemVisible(item, false)
         AddToInventory(GetPlayerId(GetOwningPlayer(unit))+1, item)
     end
 
 
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA?????????????????????????????? 2")
     PlayerPickUpItemFlag = {  }
-
-
-
-
-
-
 
 
 
@@ -856,6 +825,21 @@ do
             [ARCANE_ATTRIBUTE]       = LOCALE_LIST[my_locale].ARCANE_ATTRIBUTE_NAME,
             [DARKNESS_ATTRIBUTE]     = LOCALE_LIST[my_locale].DARKNESS_ATTRIBUTE_NAME,
             [HOLY_ATTRIBUTE]         = LOCALE_LIST[my_locale].HOLY_ATTRIBUTE_NAME
+        }
+
+        TWOHANDED_LIST = {
+            [FIST_WEAPON]           = false,
+            [BOW_WEAPON]            = true,
+            [BLUNT_WEAPON]          = false,
+            [GREATBLUNT_WEAPON]     = true,
+            [SWORD_WEAPON]          = false,
+            [GREATSWORD_WEAPON]     = true,
+            [AXE_WEAPON]            = false,
+            [GREATAXE_WEAPON]       = true,
+            [DAGGER_WEAPON]         = false,
+            [STAFF_WEAPON]          = true,
+            [JAWELIN_WEAPON]        = false,
+            [THROWING_KNIFE_WEAPON] = false,
         }
 
 
@@ -944,7 +928,17 @@ do
 
         end)
 
-    end
 
+        RegisterTestCommand("dd", function()
+            local item = CreateCustomItem(GetRandomGeneratedItemId(), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), true)
+            GenerateItemStats(item, 1, COMMON_ITEM)
+        end)
+
+        RegisterTestCommand("db", function()
+            local item = CreateCustomItem(GetRandomBookItemId(), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), true)
+            --GenerateItemStats(item, 1, COMMON_ITEM)
+        end)
+
+    end
 
 end

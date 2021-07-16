@@ -123,7 +123,7 @@ do
                     starting_skills[1] = 'A003'
                     starting_skills[2] = 'A00J'
                     starting_skills[3] = 'A00D'
-                    starting_skills[4] = "AMLT"
+                    --starting_skills[4] = "AMLT"
                     --[[
                     starting_skills[4] = 'A005'
                     starting_skills[5] = 'A00L'
@@ -162,6 +162,7 @@ do
 
                     TriggerRegisterDeathEvent(DeathTrigger, hero)
                     TriggerRegisterUnitEvent(LvlupTrigger, hero, EVENT_UNIT_HERO_LEVEL)
+                    TriggerRegisterUnitEvent(OrderInterceptionTrigger, hero, EVENT_UNIT_ISSUED_TARGET_ORDER)
 
 
                     CreateGUILayoutForPlayer(player_id, hero)
@@ -263,6 +264,11 @@ do
 
         RegisterTestCommand("ded", function()
             KillUnit(PlayerHero[1])
+        end)
+
+
+        RegisterTestCommand("handle", function()
+            print(GetHandleId(PlayerHero[1]))
         end)
 
 

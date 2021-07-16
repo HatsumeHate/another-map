@@ -256,6 +256,9 @@ do
             UI_TEXT_ALT_WEAPON = "Левая рука",
             UI_TEXT_EXCHANGE = "Обмен книги",
 
+            UI_TEXT_OK = "ок",
+            UI_TEXT_CANCEL = "отмена",
+
             UI_TOOLTIP_REFORGE_TITLE = "Перековать предмет",
             UI_TOOLTIP_REFORGE_DESC = "Перековка повышает уровень предмета до актуального.",
 
@@ -759,7 +762,7 @@ do
             },
             [FourCC("ABFA")] = {
                 [1] = "Лечит на @e!EFAA.hp_perc# каждую секунду в течении @b!A01N.time# секунд.",
-                [5] = "Лечит на @e!EFAA.hp_perc# каждую секунду в течении @b!A01N.time# секунд. Так же дает @b!A01N.va1# @b!A01N.pa1#.",
+                [10] = "Лечит на @e!EFAA.hp_perc# каждую секунду в течении @b!A01N.time# секунд. Так же дает @b!A01N.va1# @b!A01N.pa1#.",
             },
             [FourCC("A00I")] = {
                 [1] = "Призывает неуязвимую огненную гидру, которая атакует врагов. Она наследует 70%% значений характеристик. С повышением уровня заклинания увеличивается ее время существования.",
@@ -1033,7 +1036,7 @@ do
 
             PHYSICAL_ATTRIBUTE_NAME     = "Physical",
             FIRE_ATTRIBUTE_NAME         = "Fire",
-            ICE_ATTRIBUTE_NAME          = "Ice",
+            ICE_ATTRIBUTE_NAME          = "Cold",
             LIGHTNING_ATTRIBUTE_NAME    = "Lightning",
             POISON_ATTRIBUTE_NAME       = "Poison",
             ARCANE_ATTRIBUTE_NAME       = "Arcane",
@@ -1174,6 +1177,9 @@ do
             UI_TEXT_RESOCKET = "Resocket",
             UI_TEXT_ALT_WEAPON = "Left hand",
             UI_TEXT_EXCHANGE = "Exchange",
+
+            UI_TEXT_OK = "ok",
+            UI_TEXT_CANCEL = "cancel",
 
             UI_TOOLTIP_REFORGE_TITLE = "Reforge an item",
             UI_TOOLTIP_REFORGE_DESC = "Improving the item level.",
@@ -1647,13 +1653,13 @@ do
             GENERATED_TOOLTIP = " of attack",
 
             [FourCC("A007")] = {
-                [1] = "Strong blow that deals @e!ECRH.dmg# @e!ECRH.atr# damage in front. Affected enemies will suffer a loss of physical damage resistance by @b!A00W.va1# and attack speed by @b!A00W.va2# for @b!A00W.time# seconds.",
+                [1] = "Strong blow that deals @e!ECRH.dmg# as @e!ECRH.atr# damage in front. Affected enemies will suffer a loss of physical damage resistance by @b!A00W.va1# and attack speed by @b!A00W.va2# for @b!A00W.time# seconds.",
             },
             [FourCC("A00C")] = {
                 [1] = "Barbarian screams in @e!EWCR.aoe# range, which reduces enemy attack by @b!A00Y.va1# and movement speed by @b!A00Y.va3#.",
             },
             [FourCC("A006")] = {
-                [1] = "Swift strkike that inflicts @e!ECSL.dmg# of @e!ECSL.atr# in front. Enemies suffer a bloodloss, taking @e!ECSP.dmg# of @e!ECSP.atr# as a periodic damage.",
+                [1] = "Swift strkike that inflicts @e!ECSL.dmg# as @e!ECSL.atr# in front. Enemies suffer a bloodloss, taking @e!ECSP.dmg# as @e!ECSP.atr# as a periodic damage.",
             },
             [FourCC("A00A")] = {
                 [1] = "Throws a chain that flies up to @s!A00A.rng# range, pulling first target it hits to you.",
@@ -1665,21 +1671,21 @@ do
                 [1] = "Falling into pure rage, increasing attack by @b!A00V.va1#, effects control reduction by @b!A00V.va2# and movement speed by @b!A00V.va3# for @b!A00V.time# sec.",
             },
             [FourCC("A00B")] = {
-                [1] = "Punch that deals @e!EUPP.dmg# of @e!EUPP.atr# and pushing back targets, after which they are stunned for @b!A012.time# sec.",
+                [1] = "Punch that deals @e!EUPP.dmg# as @e!EUPP.atr# and pushing back targets, after which they are stunned for @b!A012.time# sec.",
             },
             [FourCC("A00Z")] = {
-                [1] = "Throws a dagger up to @s!A00Z.rng# range, first enemy it hits will take @e!ETHK.dmg# of @e!ETHK.atr# damage. This skill has increased chance of critical damage (+@e!ETHK.bcc#).",
+                [1] = "Throws a dagger up to @s!A00Z.rng# range, first enemy it hits will take @e!ETHK.dmg# as @e!ETHK.atr# damage. This skill has increased chance of critical damage (+@e!ETHK.bcc#).",
             },
             [FourCC("A00O")] = {
                 [1] = "Allows you to jump up to @s!A00O.rng# range.",
             },
             [FourCC("A020")] = {
-                [1] = "Finishing strike. Deals @e!EEXC.dmg# @e!EEXC.atr#, if it is used on enemies that have less than 20%% of health its power is increased by 3 times and chances to crit by 20%%.",
-                [10] = "Finishing strike. Deals @e!EEXC.dmg# @e!EEXC.atr#, if it is used on enemies that have less than 20%% of health its power is increased by 3 times and chances to crit by 20%%. If enemy is killed by it, you gain @b!ANRD.pa1# на @b!ANRD.va1# and @b!ANRD.pa2# на @b!ANRD.va2#.",
+                [1] = "Finishing strike. Deals @e!EEXC.dmg# as @e!EEXC.atr#, if it is used on enemies that have less than 20%% of health its power is increased by 3 times and chances to crit by 20%%.",
+                [10] = "Finishing strike. Deals @e!EEXC.dmg# as @e!EEXC.atr#, if it is used on enemies that have less than 20%% of health its power is increased by 3 times and chances to crit by 20%%. If enemy is killed by it, you gain @b!ANRD.pa1# на @b!ANRD.va1# and @b!ANRD.pa2# на @b!ANRD.va2#.",
             },
             [FourCC("ABFA")] = {
                 [1] = "Heals you for @e!EFAA.hp_perc# every second during @b!A01N.time# seconds.",
-                [5] = "Heals you for @e!EFAA.hp_perc# every second during @b!A01N.time# seconds. Also gives @b!A01N.va1# @b!A01N.pa1#.",
+                [10] = "Heals you for @e!EFAA.hp_perc# every second during @b!A01N.time# seconds. Also gives @b!A01N.va1# @b!A01N.pa1#.",
             },
             [FourCC("A00I")] = {
                 [1] = "Summons an immortal flame hydra that attacks enemies. Hydra inherits 70% of Sorceress stats. Increasing level of this skill enhances hydra's life duration.",
@@ -1697,46 +1703,46 @@ do
                 [1] = "Forms energized ball that slowly flies forward, periodically pulsing in @e!MBLB.rad# range on a nearby enemies for a @e!ELBL.pwr# @e!ELBL.atr# damage.",
             },
             [FourCC("A00J")] = {
-                [1] = "Shots 3 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# @e!EDSC.atr# damage.",
-                [10] = "Shots 4 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# @e!EDSC.atr# damage.",
-                [20] = "Shots 5 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# @e!EDSC.atr# damage.",
-                [30] = "Shots 6 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# @e!EDSC.atr# damage.",
-                [40] = "Shots 7 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# @e!EDSC.atr# damage.",
+                [1] = "Shots 3 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
+                [10] = "Shots 4 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
+                [20] = "Shots 5 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
+                [30] = "Shots 6 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
+                [40] = "Shots 7 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
             },
             [FourCC("A00F")] = {
-                [1] = "Calls for a meteor from the sky that falling after a short delay, dealing enemies @e!EMTR.pwr# @e!EMTR.atr# damage in a @e!EMTR.aoe# radius, pushing them from an explosion center. Has bonus to an attribute (+@e!EMTR.ab#)",
+                [1] = "Calls for a meteor from the sky that falling after a short delay, dealing enemies @e!EMTR.pwr# as @e!EMTR.atr# damage in a @e!EMTR.aoe# radius, pushing them from an explosion center. Has bonus to an attribute (+@e!EMTR.ab#)",
             },
             [FourCC("A00L")] = {
                 [1] = "Allows you to instantly move up to @s!A00L.rng# range.",
             },
             [FourCC("A00M")] = {
-                [1] = "Calls for a powerful discharge with a radius @e!ELST.aoe# that deals @e!ELST.pwr# @e!ELST.atr# damage. This skill has bonus to an attribute (+@e!ELST.ab#) and a critical multiplier (+@e!ELST.bcm#).",
+                [1] = "Calls for a powerful discharge with a radius @e!ELST.aoe# that deals @e!ELST.pwr# as @e!ELST.atr# damage. This skill has bonus to an attribute (+@e!ELST.ab#) and a critical multiplier (+@e!ELST.bcm#).",
             },
             [FourCC("A005")] = {
-                [1] = "Launching forward a frost orb that constantly damages enemies in a @e!EFOA.aoe# radius inflicting @e!EFOA.pwr# @e!EFOA.atr# damage (+@e!EFOA.ab#). At the end the orb explodes for a @e!EFRO.pwr# @e!EFRO.atr# damage with increased bonus to a critical chance (+@e!EFRO.bcc#)",
+                [1] = "Launching forward a frost orb that constantly damages enemies in a @e!EFOA.aoe# radius inflicting @e!EFOA.pwr# as @e!EFOA.atr# damage (+@e!EFOA.ab#). At the end the orb explodes for a @e!EFRO.pwr# as @e!EFRO.atr# damage with increased bonus to a critical chance (+@e!EFRO.bcc#)",
             },
             [FourCC("A00D")] = {
-                [1] = "Throws forward a fireball, first enemy it hit takes @e!EGFB.pwr# @e!EGFB.atr# damage in small area around.",
+                [1] = "Throws forward a fireball, first enemy it hit takes @e!EGFB.pwr# as @e!EGFB.atr# damage in small area around.",
             },
             [FourCC("A001")] = {
-                [1] = "Emits wave of frost from yourself with @e!EFRN.aoe# radius, freezing enemies for @b!A00S.time# sec. and dealing them @e!EFRN.pwr# @e!EFRN.atr# damage.",
+                [1] = "Emits a wave of frost from Sorceress with @e!EFRN.aoe# radius, freezing enemies for @b!A00S.time# sec. and dealing them @e!EFRN.pwr# as @e!EFRN.atr# damage.",
             },
             [FourCC("A003")] = {
-                [1] = "Throws a frostbolt that explodes on a first enemy, dealing @e!EFRB.pwr# @e!EFRB.atr# damage in a @e!EFRB.aoe# radius. Affected targets will suffer a movement speed loss by @b!A004.va1#",
+                [1] = "Throws a frostbolt that explodes on a first enemy, dealing @e!EFRB.pwr# as @e!EFRB.atr# damage in a @e!EFRB.aoe# radius. Affected targets will suffer a movement speed loss by @b!A004.va1#",
             },
             [FourCC("A019")] = {
-                [1] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 2 nearby enemies.",
-                [10] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 3 nearby enemies.",
-                [20] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 4 nearby enemies.",
-                [30] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 5 nearby enemies.",
-                [40] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 6 nearby enemies.",
-                [50] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 7 nearby enemies.",
-                [60] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 8 nearby enemies.",
-                [70] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 9 nearby enemies.",
-                [80] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# @e!ECHL.atr# which then bounces up to 10 nearby enemies.",
+                [1] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 2 nearby enemies.",
+                [10] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 3 nearby enemies.",
+                [20] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 4 nearby enemies.",
+                [30] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 5 nearby enemies.",
+                [40] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 6 nearby enemies.",
+                [50] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 7 nearby enemies.",
+                [60] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 8 nearby enemies.",
+                [70] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 9 nearby enemies.",
+                [80] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 10 nearby enemies.",
             },
             [FourCC("AMLT")] = {
-                [1] = "Sorceress emits a fire beam that hits first enemy on its path dealing @e!EMLT.pwr# @e!EMLT.atr# damage. While casting sorceress have to stand still. The beam direction follows the mouse. Improving level of this skill increasing its channel time.",
+                [1] = "Sorceress emits a fire beam that hits first enemy on its path dealing @e!EMLT.pwr# as @e!EMLT.atr# damage. While casting sorceress have to stand still. The beam direction follows the mouse. Improving level of this skill increasing its channel time.",
             },
 
 
@@ -1857,6 +1863,9 @@ do
         if GetLocalPlayer() then
             my_locale = BlzGetLocale()
             if my_locale ~= "ruRU" and my_locale ~= "enUS" then my_locale = "enUS" end
+            --my_locale = "enUS"
+        else
+
         end --"ruRU" --"enUS"BlzGetLocale() --
     end
 

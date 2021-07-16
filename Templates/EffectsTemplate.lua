@@ -630,7 +630,7 @@ do
             get_level_from_skill = "A00Z",
             level = {
                 [1] = {
-                    power = 14,
+                    power = 19,
                     attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
@@ -650,7 +650,7 @@ do
             get_level_from_skill = "A00B",
             level = {
                 [1] = {
-                    power = 7,
+                    power = 15,
                     attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
@@ -675,7 +675,7 @@ do
             get_level_from_skill = "A020",
             level = {
                 [1] = {
-                    power = 5,
+                    power = 7,
                     attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
@@ -737,7 +737,7 @@ do
             get_level_from_skill = "A007",
             level = {
                 [1] = {
-                    power = 16,
+                    power = 25,
                     attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
@@ -843,7 +843,7 @@ do
             get_level_from_skill = "A006",
             level = {
                 [1] = {
-                    power = 7,
+                    power = 13,
                     attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
@@ -879,7 +879,7 @@ do
             get_level_from_skill = "A006",
             level = {
                 [1] = {
-                    power = 1,
+                    power = 2,
                     attack_percent_bonus = 0.45,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = nil,

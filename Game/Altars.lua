@@ -20,103 +20,7 @@ do
 
 
 
-    local AltarEffects = {
-        obelisk = {
-            [1] = {
-                name = "Fury Blessing",
-                recharge_time = 120.,
-                effect = function(target)
-                    ApplyBuff(target, target, "A01G", 1)
-                    AddSoundVolume("Sounds\\Altar\\exploding.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
-                end
-            },
-            [2] = {
-                name = "Power Blessing",
-                recharge_time = 120.,
-                effect = function(target)
-                    ApplyBuff(target, target, "A01L", 1)
-                    AddSoundVolume("Sounds\\Altar\\combatboost.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
-                end
-            },
-            [3] = {
-                name = "Elemental Blessing",
-                recharge_time = 120.,
-                effect = function(target)
-                    ApplyBuff(target, target, "A01K", 1)
-                    AddSoundVolume("Sounds\\Altar\\shrineofenirhs.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
-                end
-            },
-            [4] = {
-                name = "Enduring Blessing",
-                recharge_time = 120.,
-                effect = function(target)
-                    ApplyBuff(target, target, "A01J", 1)
-                    AddSoundVolume("Sounds\\Altar\\warping.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
-                end
-            }
-        },
-        well_hp = {
-            recharge_time = 120.,
-            effect = function(target)
-                local effect = AddSpecialEffectTarget("Abilities\\Spells\\Human\\Heal\\HealTarget.mdx", target, "origin")
-                SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_MAX_LIFE))
-                AddSoundVolume("Sounds\\Altar\\refill.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
-                DelayAction(1.833, function()
-                    DestroyEffect(effect)
-                end)
-            end
-        },
-        well_mp = {
-            recharge_time = 120.,
-            effect = function(target)
-                DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Items\\AIma\\AImaTarget.mdx", target, "origin"))
-                SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MAX_MANA))
-                AddSoundVolume("Sounds\\Altar\\recharge.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
-            end
-        },
-        chest_open = {
-            recharge_time = 30.,
-            effect = function(target)
-                for i = 1, 6 do
-                    DropForPlayer(target, i-1)
-                end
-                AddSoundVolume("Sounds\\Altar\\chestbig.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
-            end
-        },
-        shrine_of_hatred = {
-            --recharge_time = 10.,
-            effect = function(altar, source)
-                local player = GetPlayerId(GetOwningPlayer(source)) + 1
-                local item = GetItemFromInventory(player, FourCC("I01O"))
-
-                    if item then
-                        local charges = GetItemCharges(item)
-                        if charges >= 5 then
-                            RemoveChargesFromInventoryItem(player, item, 5)
-                            SetUnitAnimation(altar, "Spell First")
-                            DelayAction(2., function()
-                                AddUnitAnimationProperties(altar, "Work", true)
-                                DelayAction(5., function()
-                                    Current_Wave = Current_Wave + 5
-                                    AddUnitAnimationProperties(altar, "Work", false)
-                                    ScaleMonsterPacks()
-                                    UnitAddAbility(altar, FourCC("A01H"))
-                                    MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 0, 0),  LOCALE_LIST[my_locale].WAVE_LEVEL .. I2S(Current_Wave))
-                                end)
-                                --SetUnitAnimation(altar, "Stand Work")
-                            end)
-                        else
-                            Feedback_CantUse(player)
-                            UnitAddAbility(altar, FourCC("A01H"))
-                        end
-                    else
-                        Feedback_CantUse(player)
-                        UnitAddAbility(altar, FourCC("A01H"))
-                    end
-                --AddSoundVolume("Sounds\\Altar\\chestbig.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
-            end
-        }
-    }
+    local AltarEffects
 
 
 
@@ -233,6 +137,104 @@ do
 
 
     function InitAltars()
+
+        AltarEffects = {
+            obelisk = {
+                [1] = {
+                    name = "Fury Blessing",
+                    recharge_time = 120.,
+                    effect = function(target)
+                        ApplyBuff(target, target, "A01G", 1)
+                        AddSoundVolume("Sounds\\Altar\\exploding.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
+                    end
+                },
+                [2] = {
+                    name = "Power Blessing",
+                    recharge_time = 120.,
+                    effect = function(target)
+                        ApplyBuff(target, target, "A01L", 1)
+                        AddSoundVolume("Sounds\\Altar\\combatboost.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
+                    end
+                },
+                [3] = {
+                    name = "Elemental Blessing",
+                    recharge_time = 120.,
+                    effect = function(target)
+                        ApplyBuff(target, target, "A01K", 1)
+                        AddSoundVolume("Sounds\\Altar\\shrineofenirhs.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
+                    end
+                },
+                [4] = {
+                    name = "Enduring Blessing",
+                    recharge_time = 120.,
+                    effect = function(target)
+                        ApplyBuff(target, target, "A01J", 1)
+                        AddSoundVolume("Sounds\\Altar\\warping.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
+                    end
+                }
+            },
+            well_hp = {
+                recharge_time = 120.,
+                effect = function(target)
+                    local effect = AddSpecialEffectTarget("Abilities\\Spells\\Human\\Heal\\HealTarget.mdx", target, "origin")
+                    SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_MAX_LIFE))
+                    AddSoundVolume("Sounds\\Altar\\refill.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
+                    DelayAction(1.833, function()
+                        DestroyEffect(effect)
+                    end)
+                end
+            },
+            well_mp = {
+                recharge_time = 120.,
+                effect = function(target)
+                    DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Items\\AIma\\AImaTarget.mdx", target, "origin"))
+                    SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MAX_MANA))
+                    AddSoundVolume("Sounds\\Altar\\recharge.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
+                end
+            },
+            chest_open = {
+                recharge_time = 30.,
+                effect = function(target)
+                    for i = 1, 6 do
+                        DropForPlayer(target, i-1)
+                    end
+                    AddSoundVolume("Sounds\\Altar\\chestbig.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
+                end
+            },
+            shrine_of_hatred = {
+                --recharge_time = 10.,
+                effect = function(altar, source)
+                    local player = GetPlayerId(GetOwningPlayer(source)) + 1
+                    local item = GetItemFromInventory(player, FourCC("I01O"))
+
+                        if item then
+                            local charges = GetItemCharges(item)
+                            if charges >= 5 then
+                                RemoveChargesFromInventoryItem(player, item, 5)
+                                SetUnitAnimation(altar, "Spell First")
+                                DelayAction(2., function()
+                                    AddUnitAnimationProperties(altar, "Work", true)
+                                    DelayAction(5., function()
+                                        Current_Wave = Current_Wave + 5
+                                        AddUnitAnimationProperties(altar, "Work", false)
+                                        ScaleMonsterPacks()
+                                        UnitAddAbility(altar, FourCC("A01H"))
+                                        MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 0, 0),  LOCALE_LIST[my_locale].WAVE_LEVEL .. I2S(Current_Wave))
+                                    end)
+                                    --SetUnitAnimation(altar, "Stand Work")
+                                end)
+                            else
+                                Feedback_CantUse(player)
+                                UnitAddAbility(altar, FourCC("A01H"))
+                            end
+                        else
+                            Feedback_CantUse(player)
+                            UnitAddAbility(altar, FourCC("A01H"))
+                        end
+                    --AddSoundVolume("Sounds\\Altar\\chestbig.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
+                end
+            }
+        }
 
         FirstTime_Data = {
             [1] = { first_time = true, proximity_trigger = CreateTrigger() },

@@ -18,130 +18,9 @@ do
 
 
 
-    local ClickTrigger = CreateTrigger()
-    TriggerAddAction(ClickTrigger, function()
-        local button = GetButtonData(BlzGetTriggerFrame())
-        local player = GetPlayerId(GetTriggerPlayer()) + 1
-
-
-            if button.item then
-                button.item = nil
-                BlzFrameSetTexture(button.image, "GUI\\inventory_slot.blp", 0, true)
-
-                    if button.button_type == BUTTON_RESOCKET then
-                        BlzFrameSetVisible(BlacksmithFrame[player].socket_buttons[1], false)
-                        BlzFrameSetVisible(BlacksmithFrame[player].socket_buttons[2], false)
-                        BlzFrameSetVisible(BlacksmithFrame[player].socket_buttons[3], false)
-                        BlzFrameSetVisible(BlacksmithFrame[player].socket_buttons[4], false)
-                    end
-
-            elseif button.button_type == BUTTON_REFORGE and BlacksmithFrame[player].reforge_cost > 0 then
-                local reforge_button = GetButtonData(BlacksmithFrame[player].reforge_item_slot)
-                local gold = GetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD)
-                --local cost = BlacksmithFrame[player].reforge_cost
-
-                    if reforge_button.item then
-                        if gold >= BlacksmithFrame[player].reforge_cost then
-                            SetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD, gold - BlacksmithFrame[player].reforge_cost)
-                            PlayLocalSound("Buildings\\Human\\Blacksmith\\BlacksmithWhat1.wav", player-1, 115)
-                            BlzFrameSetText(BlacksmithFrame[player].reforge_cost_frame, "")
-
-                            local soundpack = {
-                               "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes3.wav",
-                               "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes4.wav",
-                               "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes5.wav",
-                            }
-
-                            PlayLocalSound(soundpack[GetRandomInt(1, #soundpack)], player-1, 125)
-
-                            if IsItemEquipped(PlayerHero[player], reforge_button.item) then
-                                EquipItem(PlayerHero[player], reforge_button.item, false)
-                                GenerateItemLevel(reforge_button.item, Current_Wave)
-                                EquipItem(PlayerHero[player], reforge_button.item, true)
-                            else
-                                GenerateItemLevel(reforge_button.item, Current_Wave)
-                            end
-
-                        else
-                            Feedback_NoGold(player - 1)
-                        end
-
-                    end
-            elseif button.button_type == BUTTON_SOCKET then
-                local resocket_button = GetButtonData(BlacksmithFrame[player].socket_item_slot)
-
-                    if resocket_button.item then
-                        local item_data = GetItemData(resocket_button.item)
-
-                            for i = 1, 4 do
-                                local socket_button = GetButtonData(BlacksmithFrame[player].socket_buttons[i])
-                                    if socket_button.button == button.button then
-                                        local soundpack = {
-                                            "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes1.wav",
-                                            "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes2.wav",
-                                            "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerWhat2.wav",
-                                        }
-
-                                        PlayLocalSound(soundpack[GetRandomInt(1, #soundpack)], player-1, 125)
-
-                                        PlayLocalSound("Sound\\UI\\reforge_".. GetRandomInt(1,3) ..".wav", player-1, 115)
-
-                                        local equipped = IsItemEquipped(PlayerHero[player], resocket_button.item)
-
-                                        if equipped then EquipItem(PlayerHero[player], resocket_button.item, false) end
-
-                                        item_data.STONE_SLOTS[i] = nil
-
-                                            for i2 = 2, 4 do
-                                                --print("slot " .. i)
-                                                if item_data.STONE_SLOTS[i2] then
-                                                    --print("get slot " .. i)
-                                                    for second_i = 1, 4 do
-                                                        if not item_data.STONE_SLOTS[second_i] then
-                                                            item_data.STONE_SLOTS[second_i] = MergeTables({}, item_data.STONE_SLOTS[i2])
-                                                            item_data.STONE_SLOTS[i2] = nil
-                                                            --print("moved to " .. second_i)
-                                                            break
-                                                        end
-                                                    end
-                                                end
-                                            end
-
-                                        if equipped then EquipItem(PlayerHero[player], resocket_button.item, true) end
-                                        UpdateBlacksmithWindow(player)
-                                        break
-                                    end
-                            end
-
-                    end
-
-            end
-
-    end)
-
-    local EnterTrigger = CreateTrigger()
-    TriggerAddAction(EnterTrigger, function()
-        local button = GetButtonData(BlzGetTriggerFrame())
-        local player = GetPlayerId(GetTriggerPlayer()) + 1
-
-        if button.item then
-            ShowItemTooltip(button.item, BlacksmithFrame[player].tooltip, button, player, FRAMEPOINT_RIGHT)
-        else
-            RemoveTooltip(player)
-        end
-
-    end)
-
-    local LeaveTrigger = CreateTrigger()
-    TriggerAddAction(LeaveTrigger, function()
-        local button = GetButtonData(BlzGetTriggerFrame())
-        local player = GetPlayerId(GetTriggerPlayer()) + 1
-
-            if button.item then
-                RemoveTooltip(player)
-            end
-
-    end)
+    local ClickTrigger
+    local EnterTrigger
+    local LeaveTrigger
 
 
     local function CreateTextBox(player, size_x, size_y, scale, relative_frame, from, to, offset_x, offset_y, owning_frame)
@@ -409,6 +288,135 @@ do
     ---@param unit_owner unit
     ---@param texture string
     function CreateBlacksmith(unit_owner, texture)
+
+        ClickTrigger = CreateTrigger()
+        TriggerAddAction(ClickTrigger, function()
+            local button = GetButtonData(BlzGetTriggerFrame())
+            local player = GetPlayerId(GetTriggerPlayer()) + 1
+
+
+                if button.item then
+                    button.item = nil
+
+                    BlzFrameSetTexture(button.image, "GUI\\inventory_slot.blp", 0, true)
+
+                        if button.button_type == BUTTON_RESOCKET then
+                            BlzFrameSetVisible(BlacksmithFrame[player].socket_buttons[1], false)
+                            BlzFrameSetVisible(BlacksmithFrame[player].socket_buttons[2], false)
+                            BlzFrameSetVisible(BlacksmithFrame[player].socket_buttons[3], false)
+                            BlzFrameSetVisible(BlacksmithFrame[player].socket_buttons[4], false)
+                        elseif button.button_type == BUTTON_FREE then
+                            BlzFrameSetText(BlacksmithFrame[player].reforge_cost_frame, "")
+                        end
+
+                elseif button.button_type == BUTTON_REFORGE and BlacksmithFrame[player].reforge_cost > 0 then
+                    local reforge_button = GetButtonData(BlacksmithFrame[player].reforge_item_slot)
+                    local gold = GetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD)
+                    --local cost = BlacksmithFrame[player].reforge_cost
+
+                        if reforge_button.item then
+                            if gold >= BlacksmithFrame[player].reforge_cost then
+                                SetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD, gold - BlacksmithFrame[player].reforge_cost)
+                                PlayLocalSound("Buildings\\Human\\Blacksmith\\BlacksmithWhat1.wav", player-1, 115)
+                                BlzFrameSetText(BlacksmithFrame[player].reforge_cost_frame, "")
+
+                                local soundpack = {
+                                   "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes3.wav",
+                                   "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes4.wav",
+                                   "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes5.wav",
+                                }
+
+                                PlayLocalSound(soundpack[GetRandomInt(1, #soundpack)], player-1, 125)
+
+                                if IsItemEquipped(PlayerHero[player], reforge_button.item) then
+                                    EquipItem(PlayerHero[player], reforge_button.item, false)
+                                    GenerateItemLevel(reforge_button.item, Current_Wave)
+                                    EquipItem(PlayerHero[player], reforge_button.item, true)
+                                else
+                                    GenerateItemLevel(reforge_button.item, Current_Wave)
+                                end
+
+                            else
+                                Feedback_NoGold(player - 1)
+                            end
+
+                        end
+                elseif button.button_type == BUTTON_SOCKET then
+                    local resocket_button = GetButtonData(BlacksmithFrame[player].socket_item_slot)
+
+                        if resocket_button.item then
+                            local item_data = GetItemData(resocket_button.item)
+
+                                for i = 1, 4 do
+                                    local socket_button = GetButtonData(BlacksmithFrame[player].socket_buttons[i])
+                                        if socket_button.button == button.button then
+                                            local soundpack = {
+                                                "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes1.wav",
+                                                "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes2.wav",
+                                                "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerWhat2.wav",
+                                            }
+
+                                            PlayLocalSound(soundpack[GetRandomInt(1, #soundpack)], player-1, 125)
+
+                                            PlayLocalSound("Sound\\UI\\reforge_".. GetRandomInt(1,3) ..".wav", player-1, 115)
+
+                                            local equipped = IsItemEquipped(PlayerHero[player], resocket_button.item)
+
+                                            if equipped then EquipItem(PlayerHero[player], resocket_button.item, false) end
+
+                                            item_data.STONE_SLOTS[i] = nil
+
+                                                for i2 = 2, 4 do
+                                                    --print("slot " .. i)
+                                                    if item_data.STONE_SLOTS[i2] then
+                                                        --print("get slot " .. i)
+                                                        for second_i = 1, 4 do
+                                                            if not item_data.STONE_SLOTS[second_i] then
+                                                                item_data.STONE_SLOTS[second_i] = MergeTables({}, item_data.STONE_SLOTS[i2])
+                                                                item_data.STONE_SLOTS[i2] = nil
+                                                                --print("moved to " .. second_i)
+                                                                break
+                                                            end
+                                                        end
+                                                    end
+                                                end
+
+                                            if equipped then EquipItem(PlayerHero[player], resocket_button.item, true) end
+                                            UpdateBlacksmithWindow(player)
+                                            break
+                                        end
+                                end
+
+                        end
+
+                end
+
+        end)
+
+        LeaveTrigger = CreateTrigger()
+        TriggerAddAction(LeaveTrigger, function()
+            local button = GetButtonData(BlzGetTriggerFrame())
+            local player = GetPlayerId(GetTriggerPlayer()) + 1
+
+                if button.item then
+                    RemoveTooltip(player)
+                end
+
+        end)
+
+        EnterTrigger = CreateTrigger()
+        TriggerAddAction(EnterTrigger, function()
+            local button = GetButtonData(BlzGetTriggerFrame())
+            local player = GetPlayerId(GetTriggerPlayer()) + 1
+
+            if button.item then
+                ShowItemTooltip(button.item, BlacksmithFrame[player].tooltip, button, player, FRAMEPOINT_RIGHT)
+            else
+                RemoveTooltip(player)
+            end
+
+        end)
+
         local trg = CreateTrigger()
         local soundpack = {
             open = {
@@ -475,7 +483,7 @@ do
                             end)
 
                         if FirstTime_Data[player].first_time then
-                            ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_BLACKSMITH_1, GetPlayerId(GetTriggerPlayer()))
+                            ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_BLACKSMITH_1, player-1)
                             DestroyEffect(FirstTime_Data[player].effect)
                             FirstTime_Data[player].first_time = false
                         end

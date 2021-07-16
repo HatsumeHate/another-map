@@ -1,9 +1,9 @@
 
 	do
-		hash         = InitHashtable()
+		hash         = nil
 		udg_SimError = nil
 		Stop         = false
-		Loc 		 = Location(0., 0.)
+		Loc 		 = nil
 		ForFilter1   = nil
 		ForFilter2   = nil
 		IGNORE_ID    = 'A00Z'
@@ -177,7 +177,15 @@
 		end
 	end
 
+	function UtilsInit()
+		hash         = InitHashtable()
+		Loc 		 = Location(0., 0.)
+	end
 
+
+	function LogReplayMessage(msg)
+
+	end
 
 	AirPathingUnit = nil
 	GroundPathingItem = nil
@@ -751,3 +759,5 @@
 		RemoveDestructable(bj_lastCreatedDestructable)
 		SetUnitAnimation(u, "stand")
 	end
+
+

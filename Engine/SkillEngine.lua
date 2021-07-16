@@ -10,42 +10,7 @@ do
 
 
     KEYBIND_LIST = {
-        [KEY_Q] =  {
-            ability = FourCC('A016'),
-            name_string = " (|cffffcc00Q|r)",
-            bind_name = "[Q]",
-            player_skill_bind = {}
-        },
-        [KEY_W] =  {
-            ability = FourCC('A01A'),
-            name_string = " (|cffffcc00W|r)",
-            bind_name = "[W]",
-            player_skill_bind = {}
-        },
-        [KEY_E] =  {
-            ability = FourCC('A01E'),
-            name_string = " (|cffffcc00E|r)",
-            bind_name = "[E]",
-            player_skill_bind = {}
-        },
-        [KEY_R] =  {
-            ability = FourCC('A01I'),
-            name_string = " (|cffffcc00R|r)",
-            bind_name = "[R]",
-            player_skill_bind = {}
-        },
-        [KEY_F] =  {
-            ability = FourCC('A018'),
-            name_string = " (|cffffcc00F|r)",
-            bind_name = "[F]",
-            player_skill_bind = {}
-        },
-        [KEY_D] =  {
-            ability = FourCC('A017'),
-            name_string = " (|cffffcc00D|r)",
-            bind_name = "[D]",
-            player_skill_bind = {}
-        }
+
     }
 
 
@@ -86,7 +51,7 @@ do
                     return "invalid effect"
                 end
 
-                 GenerateEffectLevelData(effect, lvl)
+                GenerateEffectLevelData(effect, lvl)
 
                     if value_str == "pwr" then return "|c00FF7600" .. (effect.level[lvl].power or 0) .. "|r"
                     elseif value_str == "dmg" then return "|c00FF7600" .. (effect.level[lvl].power or 0) .. " + " .. S2I(R2S((effect.level[lvl].attack_percent_bonus or 1.) * 100.)) .. "%%|r " .. LOCALE_LIST[my_locale].GENERATED_TOOLTIP
@@ -100,8 +65,8 @@ do
                     elseif value_str == "hp_perc" then return "|c0000FF00" .. string.format('%%.1f', (effect.level[lvl].life_percent_restored or 0.) * 100.) .. "%%|r"
                     elseif value_str == "mp_perc" then return "|c000066FF" .. string.format('%%.1f', (effect.level[lvl].resource_percent_restored or 0.) * 100.) .. "%%|r"
                     elseif value_str == "hp" then return "|c0000FF00" .. (effect.level[lvl].life_restored or 0.) .. "|r"
-                    elseif value_str == "mp" then return "|c000066FF" .. (effect.level[lvl].resource_restored or 0.) .. "|r"
-                    end
+                    elseif value_str == "mp" then return "|c000066FF" .. (effect.level[lvl].resource_restored or 0.) .. "|r" end
+
             elseif tag == "s" then
                 local skill = GetSkillData(FourCC(id))
 
@@ -109,8 +74,8 @@ do
 
                     if value_str == "rc" then return R2I(skill.level[lvl].resource_cost or 0)
                     elseif value_str == "cld" then return skill.level[lvl].cooldown or 0.1
-                    elseif value_str == "rng" then return "|c0000DBA4" .. R2I(skill.level[lvl].range or 0.) .. "|r"
-                    end
+                    elseif value_str == "rng" then return "|c0000DBA4" .. R2I(skill.level[lvl].range or 0.) .. "|r" end
+
             elseif tag == "b" then
                 local buff = GetBuffData(id)
 
@@ -133,8 +98,7 @@ do
                 local missile = GetMissileData(id)
 
                     if value_str == "rad" then return "|c0000DBA4" .. (R2I(missile.radius or 0)) .. "|r"
-                    elseif value_str == "maxd" then return R2I(missile.max_distance) or 0
-                    end
+                    elseif value_str == "maxd" then return R2I(missile.max_distance) or 0 end
 
             end
 
@@ -174,29 +138,43 @@ do
         local true_id = FourCC(id)
         local ability = GetKeybindKeyAbility(true_id, player)
 
+        --print("================================")
+        --print("SetAbilityExtendedTooltip - ability " .. ability)
+        --print("SetAbilityExtendedTooltip - id " .. true_id)
+
+
             if ability == 0 then return end
             local lvl = UnitGetAbilityLevel(unit, id)
+            --print("SetAbilityExtendedTooltip - ability level " .. lvl)
 
-            if GetLocalPlayer() == Player(player-1) then
                 if LOCALE_LIST[my_locale][true_id] then
                     --local proper_level_data = lvl
 
                     if LOCALE_LIST[my_locale][true_id][lvl] then
-                        --print("exists")
-                        BlzSetAbilityExtendedTooltip(ability, ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id][lvl], lvl), 0)
+                        --print("SetAbilityExtendedTooltip - exists")
+                        local description = ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id][lvl], lvl)
+                        --print("SetAbilityExtendedTooltip - description " .. description)
+                        if GetLocalPlayer() == Player(player-1) then
+                            BlzSetAbilityExtendedTooltip(ability, description, 0)
+                        end
                     else
-                        --print("has " .. lvl .. "elemets")
+                        --print("has " .. lvl .. " elemets")
                         for i = lvl, 1, -1 do
                             --print("checking ".. i)
                             if LOCALE_LIST[my_locale][true_id][i] then
-                                BlzSetAbilityExtendedTooltip(ability, ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id][i], lvl), 0)
+                                --print("SetAbilityExtendedTooltip - local string" .. LOCALE_LIST[my_locale][true_id][i])
+                                local description = ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id][i], lvl)
+                                --print("SetAbilityExtendedTooltip - description " .. description)
+                                if GetLocalPlayer() == Player(player-1) then
+                                    BlzSetAbilityExtendedTooltip(ability, description, 0)
+                                end
                                 break
                             end
                         end
                     end
                     --BlzSetAbilityExtendedTooltip(ability, ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id].bind, lvl), 0)
                 end
-            end
+
 
     end
 
@@ -225,16 +203,27 @@ do
     function UpdateBindedSkillData(id, player)
 
         if IsAbilityKeybinded(FourCC(id), player) then
-            local skill = GetSkillData(FourCC(id))
+            --print("UpdateBindedSkillData - ability keybinded!")
+            --print("UpdateBindedSkillData - id " .. FourCC(id))
+            local skill = GetUnitSkillData(PlayerHero[player], id)
+            --print("UpdateBindedSkillData - skill id " .. skill.Id)
             local ability_id = GetKeybindKeyAbility(FourCC(id), player)
+            --print("UpdateBindedSkillData - ability id " .. ability_id)
             local ability = BlzGetUnitAbility(PlayerHero[player], ability_id)
+            --print("UpdateBindedSkillData - ability handle " .. GetHandleId(ability))
             local level = UnitGetAbilityLevel(PlayerHero[player], id)
+            --print("UpdateBindedSkillData - ability level " .. level)
 
                 BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[level].range or 0.)
+                --print("UpdateBindedSkillData - cast range done")
                 BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[level].radius or 0.)
+                --print("UpdateBindedSkillData - radius done")
                 BlzSetAbilityIntegerLevelField(ability, ABILITY_ILF_TARGET_TYPE, 0, skill.activation_type)
+                --print("UpdateBindedSkillData - activation type done")
                 BlzSetUnitAbilityManaCost(PlayerHero[player], ability_id, 0, R2I(skill.level[level].resource_cost or 0.))
+                --print("UpdateBindedSkillData - mana cost done")
                 SetAbilityExtendedTooltip(PlayerHero[player], id, player)
+                --print("UpdateBindedSkillData - SetAbilityExtendedTooltip done")
         end
 
     end
@@ -262,12 +251,18 @@ do
             BlzSetUnitAbilityManaCost(unit, ability_id, 0, R2I(skill.level[level].resource_cost or 0.))
 
                 if GetLocalPlayer() == GetOwningPlayer(unit) then
+                    --print("BindAbilityKey - local - start")
+                    --print("BindAbilityKey - local - id ".. ability_id)
+                    --print("BindAbilityKey - local - id ".. skill.name)
+                    --print("BindAbilityKey - local - bind name ".. KEYBIND_LIST[key].name_string)
+                    --print("BindAbilityKey - local - icon ".. skill.icon)
                     BlzSetAbilityTooltip(ability_id, skill.name .. KEYBIND_LIST[key].name_string, 0)
                     BlzSetAbilityIcon(ability_id, skill.icon)
                 end
 
 
         KEYBIND_LIST[key].player_skill_bind[GetPlayerId(GetOwningPlayer(unit)) + 1] = FourCC(id)
+        --print("keybind done")
         SetAbilityExtendedTooltip(unit, id, GetPlayerId(GetOwningPlayer(unit)) + 1)
     end
 
@@ -323,6 +318,7 @@ do
                     unit_data.skill_list[i].current_level = unit_data.skill_list[i].current_level + amount
                     GenerateSkillLevelData(unit_data.skill_list[i], unit_data.skill_list[i].current_level)
                     UpdateBindedSkillData(id, GetPlayerId(GetOwningPlayer(unit)) + 1)
+                    print("current unit ability level " .. unit_data.skill_list[i].current_level)
                     return true
                 end
             end
@@ -341,7 +337,7 @@ do
                 if unit_data.skill_list[i].Id == id then
                     unit_data.skill_list[i].current_level = lvl
                     UpdateBindedSkillData(id, GetPlayerId(GetOwningPlayer(unit)) + 1)
-                    --print("set unit ability level " .. unit_data.skill_list[i].current_level)
+                    print("set unit ability level " .. unit_data.skill_list[i].current_level)
                     return true
                 end
             end
@@ -395,13 +391,14 @@ do
 
             for i = 1, #unit_data.skill_list do
                 if unit_data.skill_list[i].Id == id then
+                    print("ability ".. unit_data.skill_list[i].name .. " exists!")
                     return false
                 end
             end
 
             unit_data.skill_list[#unit_data.skill_list + 1] = MergeTables({}, skill_data)
 
-            --print("new skill added ".. unit_data.skill_list[#unit_data.skill_list].name)
+            print("new skill added ".. unit_data.skill_list[#unit_data.skill_list].name)
 
         return true
     end
@@ -488,6 +485,52 @@ do
 
     function InitializeSkillEngine()
         TimerStart(CreateTimer(), 1., false, function()
+
+
+            KEYBIND_LIST = {
+                [KEY_Q] =  {
+                    ability = FourCC('A016'),
+                    name_string = " (|cffffcc00Q|r)",
+                    bind_name = "[Q]",
+                    player_skill_bind = {}
+                },
+                [KEY_W] =  {
+                    ability = FourCC('A01A'),
+                    name_string = " (|cffffcc00W|r)",
+                    bind_name = "[W]",
+                    player_skill_bind = {}
+                },
+                [KEY_E] =  {
+                    ability = FourCC('A01E'),
+                    name_string = " (|cffffcc00E|r)",
+                    bind_name = "[E]",
+                    player_skill_bind = {}
+                },
+                [KEY_R] =  {
+                    ability = FourCC('A01I'),
+                    name_string = " (|cffffcc00R|r)",
+                    bind_name = "[R]",
+                    player_skill_bind = {}
+                },
+                [KEY_F] =  {
+                    ability = FourCC('A018'),
+                    name_string = " (|cffffcc00F|r)",
+                    bind_name = "[F]",
+                    player_skill_bind = {}
+                },
+                [KEY_D] =  {
+                    ability = FourCC('A017'),
+                    name_string = " (|cffffcc00D|r)",
+                    bind_name = "[D]",
+                    player_skill_bind = {}
+                }
+            }
+
+            for i = 1, 6 do
+                for key = KEY_Q, KEY_D do
+                    KEYBIND_LIST[key].player_skill_bind[i] = 0
+                end
+            end
 
             local SkillCastTrigger = CreateTrigger()
             TriggerRegisterAnyUnitEventBJ(SkillCastTrigger, EVENT_PLAYER_UNIT_SPELL_EFFECT)
@@ -671,7 +714,6 @@ do
             DestroyTimer(GetExpiredTimer())
         end)
     end
-
 
 
 end

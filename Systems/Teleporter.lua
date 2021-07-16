@@ -35,7 +35,7 @@ do
     end
 
     function ShowTeleportList(trackable, player)
-        BlzFrameSetVisible(TeleportFrame[player].mainframe, true)
+        BlzFrameSetVisible(TeleportFrame[player].mainframe, GetLocalPlayer() == Player(player-1))
         local slot = 1
 
             for i = 1, #TeleportLocation do
@@ -96,7 +96,7 @@ do
     end
 
 
-    local HitTrigger = CreateTrigger()
+    local HitTrigger
 
     function RegisterUnitForTeleport(unit)
         TriggerRegisterUnitEvent(HitTrigger, unit, EVENT_UNIT_ISSUED_TARGET_ORDER)
@@ -110,6 +110,8 @@ do
     function TeleporterInit()
 
         InitLocations()
+
+        HitTrigger = CreateTrigger()
 
         TeleportLocation[1] = {
             name = LOCALE_LIST[my_locale].CASTLE_LOCATION,

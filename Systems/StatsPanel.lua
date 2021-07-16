@@ -97,6 +97,7 @@ do
                 BlzFrameSetText(MainStatButtons[id].points_text_frame, MainStatButtons[id].points)
 
                     if MainStatButtons[id].points <= 0 then
+                        BlzFrameSetVisible(MainStatButtons[id].glow_frame, false)
                         MainStatButtons[id].points = 0
                         for i = STR_STAT, VIT_STAT do
                             BlzFrameSetVisible(MainStatButtons[id].frames[i], false)
@@ -118,6 +119,7 @@ do
                 BlzFrameSetVisible(MainStatButtons[player].frames[i], true)
                 BlzFrameSetEnable(MainStatButtons[player].frames[i], true)
             end
+            BlzFrameSetVisible(MainStatButtons[player].glow_frame, true)
             BlzFrameSetVisible(MainStatButtons[player].points_frame, true)
             BlzFrameSetText(MainStatButtons[player].points_text_frame, MainStatButtons[player].points)
         end
@@ -143,12 +145,20 @@ do
             }
 
 
+            --local new_FrameGlow = BlzCreateFrameByType("BACKDROP", "ButtonCharges", GlobalButton[player].char_panel_button, "", 0)
+            --BlzFrameSetPoint(new_FrameGlow, FRAMEPOINT_BOTTOMLEFT, GlobalButton[player].char_panel_button, FRAMEPOINT_BOTTOMLEFT, 0.002, 0.002)
+            --BlzFrameSetSize(new_FrameGlow, 0.012, 0.012)
+            --BlzFrameSetTexture(new_FrameGlow, "GUI\\ChargesTexture.blp", 0, true)
+            MainStatButtons[player].glow_frame = CreateSprite("UI\\Buttons\\HeroLevel\\HeroLevel.mdx", 0.8, GlobalButton[player].char_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.,0., GlobalButton[player].char_panel_button)
+            --BlzFrameSetPoint(MainStatButtons[player].glow_frame, FRAMEPOINT_TOPRIGHT, GlobalButton[player].char_panel_button, FRAMEPOINT_TOPRIGHT, 0., 0.)
+            BlzFrameSetVisible(MainStatButtons[player].glow_frame, false)
 
             local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", GlobalButton[player].char_panel_button, "", 0)
             BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMLEFT, GlobalButton[player].char_panel_button, FRAMEPOINT_BOTTOMLEFT, 0.002, 0.002)
             BlzFrameSetSize(new_FrameCharges, 0.012, 0.012)
             BlzFrameSetTexture(new_FrameCharges, "GUI\\ChargesTexture.blp", 0, true)
             MainStatButtons[player].points_frame = new_FrameCharges
+
 
             local new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
             BlzFrameSetAllPoints(new_FrameChargesText, new_FrameCharges)
@@ -243,10 +253,11 @@ do
         --BlzFrameSetVisible(SkillPanelFrame[player].main_frame, state)
 
             if FirstTime_Data[GetPlayerId(GetTriggerPlayer()) + 1].first_time then
-                ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_STATS_1, GetPlayerId(GetTriggerPlayer()))
+                ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_STATS_1, player-1)
                 FirstTime_Data[GetPlayerId(GetTriggerPlayer()) + 1].first_time = false
             end
 
+        return state
     end
 
 

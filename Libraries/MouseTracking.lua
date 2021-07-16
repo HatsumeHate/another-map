@@ -7,10 +7,12 @@ do
 
 
     PlayerMousePosition = {}
-    local mouse_track_trigger = CreateTrigger()
+    local mouse_track_trigger
 
 
     function MouseTrackingInit()
+        mouse_track_trigger = CreateTrigger()
+
         for i = 0, 5 do
             TriggerRegisterPlayerEvent(mouse_track_trigger, Player(i), EVENT_PLAYER_MOUSE_MOVE)
             PlayerMousePosition[i+1] = {}

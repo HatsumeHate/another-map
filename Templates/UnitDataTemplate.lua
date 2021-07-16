@@ -1486,6 +1486,19 @@ do
             xp = 10,
         })
 
+        -- Forest Guard
+        NewUnitTemplate('n01X', {
+            unit_class = NO_CLASS,
+            classification = 0,
+            trait = TRAIT_BEAST,
+            time_before_remove = 10.,
+            base_stats = { health = 962., hp_regen = 0.75, moving_speed = 285. },
+            weapon = { ATTACK_SPEED = 1.4, DAMAGE = 22, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 7 },
+            have_mp = false,
+            colours = { r = 255, g = 255, b = 255, a = 255 },
+            xp = 10,
+        })
+
 
         local group = CreateGroup()
 

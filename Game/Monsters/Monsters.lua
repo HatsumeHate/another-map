@@ -8,8 +8,8 @@ do
     ActivePlayers = 0
     SPAWN_POINTS = nil
     MAIN_POINT = nil
-    MONSTER_PLAYER = Player(10)
-    SECOND_MONSTER_PLAYER = Player(11)
+    MONSTER_PLAYER = nil
+    SECOND_MONSTER_PLAYER = nil
     WaveGroup = nil
     local WaveWaypointTimer
 
@@ -787,6 +787,10 @@ do
 
     function InitMonsterData()
 
+
+        MONSTER_PLAYER = Player(10)
+        SECOND_MONSTER_PLAYER = Player(11)
+
         SPAWN_POINTS = {
             gg_rct_spawn_left,
             gg_rct_spawn_down,
@@ -854,7 +858,12 @@ do
                         local unit_Data = GetUnitData(unit)
 
                         --print("pre drop")
-                        DropForPlayer(unit, GetPlayerId(GetOwningPlayer(GetKillingUnit())))
+                        for i = 1, 6 do
+                            if PlayerHero[i] and IsUnitInRangeXY(PlayerHero[i], GetUnitX(unit), GetUnitY(unit), 2700.) then
+                                DropForPlayer(unit, i-1)
+                            end
+                        end
+
                         if unit_Data.xp and unit_Data.xp > 0 then
                             local bonus = MONSTER_EXP_RATES.const_per_level * Current_Wave
                             local mult = 1. + (MONSTER_EXP_RATES.modf_per_level * Current_Wave)

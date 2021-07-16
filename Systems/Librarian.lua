@@ -15,75 +15,17 @@ do
 
         if button_data.item then
             button_data.item = nil
+
+
         end
 
     end
 
 
-    local ClickTrigger = CreateTrigger()
-    TriggerAddAction(ClickTrigger, function()
-        local button = GetButtonData(BlzGetTriggerFrame())
-        local player = GetPlayerId(GetTriggerPlayer()) + 1
-        local exchange_button = GetButtonData(LibrarianFrame[player].exchange_item_slot)
+    local ClickTrigger
+    local EnterTrigger
+    local LeaveTrigger
 
-         if button.item then
-             button.item = nil
-             BlzFrameSetTexture(button.image, "GUI\\inventory_slot.blp", 0, true)
-         elseif button.button_type == 1 and exchange_button.item then
-             local unit_data = GetUnitData(PlayerHero[player])
-             local item_data = GetItemData(exchange_button.item)
-             local gold = GetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD)
-
-             if item_data.restricted_to then
-                 if item_data.restricted_to == unit_data.unit_class then
-                     Feedback_CantUse(player)
-                 else
-                     if gold >= EXCHANGE_COST then
-                         SetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD, gold - EXCHANGE_COST)
-                         PlayLocalSound("Sound\\altarshop_buymagicspell.wav", player-1, 115)
-                         BlzFrameSetText(LibrarianFrame[player].exchange_frame, "")
-
-                         DropItemFromInventory(player, exchange_button.item)
-                         RemoveCustomItem(exchange_button.item)
-                         exchange_button.item = nil
-                         UpdateLibrarianWindow(player)
-                         local new_book = CreateCustomItem(BOOK_CLASS_ITEM_LIST[unit_data.unit_class][GetRandomInt(1, #BOOK_CLASS_ITEM_LIST[unit_data.unit_class])], 0.,0., false)
-                         AddToInventory(player, new_book)
-                     else
-                         Feedback_NoGold(player)
-                     end
-                 end
-             end
-
-         end
-
-    end)
-
-
-    local EnterTrigger = CreateTrigger()
-    TriggerAddAction(EnterTrigger, function()
-        local button = GetButtonData(BlzGetTriggerFrame())
-        local player = GetPlayerId(GetTriggerPlayer()) + 1
-
-        if button.item then
-            ShowItemTooltip(button.item, LibrarianFrame[player].tooltip, button, player, FRAMEPOINT_RIGHT)
-        else
-            RemoveTooltip(player)
-        end
-
-    end)
-
-
-    local LeaveTrigger = CreateTrigger()
-    TriggerAddAction(LeaveTrigger, function()
-        local button = GetButtonData(BlzGetTriggerFrame())
-        local player = GetPlayerId(GetTriggerPlayer()) + 1
-
-            if button.item then
-                RemoveTooltip(player)
-            end
-
-    end)
 
     local function CreateTextBox(player, size_x, size_y, scale, relative_frame, from, to, offset_x, offset_y, owning_frame)
         local new_frame = BlzCreateFrame('ScoreScreenButtonBackdropTemplate', owning_frame, 0, 0)
@@ -255,6 +197,74 @@ do
     ---@param unit_owner unit
     ---@param texture string
     function CreateLibrarian(unit_owner, texture)
+
+
+
+        ClickTrigger = CreateTrigger()
+        TriggerAddAction(ClickTrigger, function()
+            local button = GetButtonData(BlzGetTriggerFrame())
+            local player = GetPlayerId(GetTriggerPlayer()) + 1
+            local exchange_button = GetButtonData(LibrarianFrame[player].exchange_item_slot)
+
+             if button.item then
+                 button.item = nil
+                 BlzFrameSetTexture(button.image, "GUI\\inventory_slot.blp", 0, true)
+                 BlzFrameSetText(LibrarianFrame[player].exchange_frame, "")
+                 RemoveTooltip(player)
+             elseif button.button_type == 1 and exchange_button.item then
+                 local unit_data = GetUnitData(PlayerHero[player])
+                 local item_data = GetItemData(exchange_button.item)
+                 local gold = GetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD)
+
+                 if item_data.restricted_to then
+                     if item_data.restricted_to == unit_data.unit_class then
+                         Feedback_CantUse(player)
+                     else
+                         if gold >= EXCHANGE_COST then
+                             SetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD, gold - EXCHANGE_COST)
+                             PlayLocalSound("Sound\\altarshop_buymagicspell.wav", player-1, 115)
+                             BlzFrameSetText(LibrarianFrame[player].exchange_frame, "")
+
+                             DropItemFromInventory(player, exchange_button.item)
+                             RemoveCustomItem(exchange_button.item)
+                             exchange_button.item = nil
+                             UpdateLibrarianWindow(player)
+                             local new_book = CreateCustomItem(BOOK_CLASS_ITEM_LIST[unit_data.unit_class][GetRandomInt(1, #BOOK_CLASS_ITEM_LIST[unit_data.unit_class])], 0.,0., false)
+                             AddToInventory(player, new_book)
+                         else
+                             Feedback_NoGold(player)
+                         end
+                     end
+                 end
+
+             end
+
+        end)
+
+        LeaveTrigger = CreateTrigger()
+        TriggerAddAction(LeaveTrigger, function()
+            local button = GetButtonData(BlzGetTriggerFrame())
+            local player = GetPlayerId(GetTriggerPlayer()) + 1
+
+                if button.item then
+                    RemoveTooltip(player)
+                end
+
+        end)
+
+        EnterTrigger = CreateTrigger()
+        TriggerAddAction(EnterTrigger, function()
+            local button = GetButtonData(BlzGetTriggerFrame())
+            local player = GetPlayerId(GetTriggerPlayer()) + 1
+
+            if button.item then
+                ShowItemTooltip(button.item, LibrarianFrame[player].tooltip, button, player, FRAMEPOINT_RIGHT)
+            else
+                RemoveTooltip(player)
+            end
+
+        end)
+
         local trg = CreateTrigger()
         local soundpack = {
             open = {

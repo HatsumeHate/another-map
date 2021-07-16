@@ -132,30 +132,40 @@
         if lvl == 1 then return end
 
         if skill.level[lvl] == nil then
+            --print("GenerateSkillLevelData - level nil")
             skill.level[lvl] = NewSkillDataLevel()
             MergeTables(skill.level[lvl], skill.level[1])
             skill.level[lvl].generated = false
+            --print("GenerateSkillLevelData - ready for generate")
         end
 
 
         if skill.level[lvl].generated == nil or not skill.level[lvl].generated then
+            --print("GenerateSkillLevelData - gen start")
 
-            if skill.cooldown_delta ~= nil then
+            if skill.cooldown_delta then
+                --print("GenerateSkillLevelData - cooldown_delta")
                 skill.level[lvl].cooldown = (skill.level[1].cooldown or 0.1) + math.floor(lvl / (skill.cooldown_delta_level or 1.)) * skill.cooldown_delta
                 if skill.level[lvl].cooldown < 0.1 then skill.level[lvl].cooldown = 0.1 end
+               -- print("GenerateSkillLevelData - cooldown_delta end")
             end
 
-            if skill.resource_cost_delta ~= nil then
+            if skill.resource_cost_delta then
+                --print("GenerateSkillLevelData - resource_cost_delta")
                 skill.level[lvl].resource_cost = (skill.level[1].resource_cost or 0) + math.floor(lvl / (skill.resource_cost_delta_level or 1.)) * skill.resource_cost_delta
                 if skill.level[lvl].resource_cost < 0 then skill.level[lvl].resource_cost = 0 end
+                --print("GenerateSkillLevelData - resource_cost_delta end")
             end
 
-            if skill.range_delta ~= nil then
+            if skill.range_delta then
+                --print("GenerateSkillLevelData - range_delta")
                 skill.level[lvl].range = (skill.level[1].range or 0.) + math.floor(lvl / (skill.range_delta_level or 1.)) * skill.range_delta
                 if skill.level[lvl].range < 0. then skill.level[lvl].range = 0. end
+                --print("GenerateSkillLevelData - range_delta done")
             end
 
             skill.level[lvl].generated = true
+            --print("GenerateSkillLevelData - gen done")
         end
     end
 

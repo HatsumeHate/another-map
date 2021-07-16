@@ -748,17 +748,17 @@ do
                         if GetUnitState(target, UNIT_STATE_LIFE) < 0.045 or target == nil then
                             m.time = 0.
                         else
-                            distance = GetDistance3D(m.current_x, m.current_y, m.current_z, GetUnitX(target), GetUnitY(target), m.end_z + BlzGetLocalUnitZ(target))
+                            distance = GetDistance3D(m.current_x, m.current_y, m.current_z, GetUnitX(target), GetUnitY(target), m.end_z + GetUnitZ(target))
                             velocity = (m.speed * PERIOD) / distance
                             m.vx = (GetUnitX(target) - m.current_x) * velocity
                             m.vy = (GetUnitY(target) - m.current_y) * velocity
-                            m.vz = (m.end_z + BlzGetLocalUnitZ(target) - m.current_z) * velocity
+                            m.vz = (m.end_z + GetUnitZ(target) - m.current_z) * velocity
                             BlzSetSpecialEffectYaw(missile_effect, AngleBetweenXY(m.current_x, m.current_y, GetUnitX(target), GetUnitY(target)))
                         end
                     end
 
                     -- COLLISION
-                    if BlzGetLocalSpecialEffectZ(missile_effect) <= GetZ(m.current_x, m.current_y) + 1. and not m.ignore_terrain then
+                    if m.current_z <= GetZ(m.current_x, m.current_y) + 1. and not m.ignore_terrain then
                         m.time = 0.
                         impact = true
                         --print("collision")

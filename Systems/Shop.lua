@@ -13,14 +13,6 @@ do
         true, true, true, true, true, true
     }
 
-    function Feedback_NoGold(player)
-        if Feedback_NoGold_Table[player] then
-            SimError(LOCALE_LIST[my_locale].FEEDBACK_MSG_NOGOLD, player-1)
-            local snd = PlayLocalSound(LOCALE_LIST[my_locale].FEEDBACK_GOLD[GetUnitClass(PlayerHero[player])][GetRandomInt(1, 5)], player-1)
-            Feedback_NoGold_Table[player] = false
-            TimerStart(CreateTimer(), GetSoundDuration(snd) * 0.001, false, function() Feedback_NoGold_Table[player] = true; DestroyTimer(GetExpiredTimer()) end)
-        end
-    end
 
 
 
@@ -58,9 +50,9 @@ do
     end
 
 
-    local LeaveTrigger = CreateTrigger()
-    local EnterTrigger = CreateTrigger()
-    local ClickTrigger = CreateTrigger()
+    local LeaveTrigger
+    local EnterTrigger
+    local ClickTrigger
 
     local function EnterAction()
         local player = GetPlayerId(GetTriggerPlayer()) + 1
@@ -116,9 +108,7 @@ do
     end
 
 
-    TriggerAddAction(LeaveTrigger, LeaveAction)
-    TriggerAddAction(EnterTrigger, EnterAction)
-    TriggerAddAction(ClickTrigger, ShopSlot_Clicked)
+
 
 
     ---@param button_type number
@@ -522,7 +512,7 @@ do
 
 
                         if FirstTime_Data[player].first_time then
-                            ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_SHOP_1, GetPlayerId(GetTriggerPlayer()))
+                            ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_SHOP_1, id)
                             DestroyEffect(FirstTime_Data[player].effect)
                             FirstTime_Data[player].first_time = false
                         end
@@ -533,6 +523,17 @@ do
             end)
 
         return ShopData[handle]
+    end
+
+    function InitShopData()
+
+        LeaveTrigger = CreateTrigger()
+        EnterTrigger = CreateTrigger()
+        ClickTrigger = CreateTrigger()
+
+        TriggerAddAction(LeaveTrigger, LeaveAction)
+        TriggerAddAction(EnterTrigger, EnterAction)
+        TriggerAddAction(ClickTrigger, ShopSlot_Clicked)
     end
 
 end

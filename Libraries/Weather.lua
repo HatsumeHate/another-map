@@ -19,14 +19,14 @@ do
 
     local MAX_PLAYERS = 6
     local LIGHTNING_KEY = 50
-    local RainSound = CreateSound("rain.wav", true, false, false, 100, 100, "")
+    local RainSound
     local LIGHTNING_MODEL = "Weather Lightnings.mdx"
     local GENERATOR_BLOCK_VALUE = 1536.
     local CREATION_UPDATE = 0.03
     local AREA
-    local DurationTimer = CreateTimer()
-    local CreationTimer = CreateTimer()
-    local SpecialTimer = CreateTimer()
+    local DurationTimer
+    local CreationTimer
+    local SpecialTimer
     local RectList = {}
     local Showed = {}
 
@@ -51,6 +51,10 @@ do
         local snd = CreateSound(s, false, true, true, 10, 10, "CombatSoundsEAX")
             SetSoundChannel(snd, 5)
             SetSoundVolume(snd, 127)
+            TimerStart(CreateTimer(), GetSoundDuration() * 0.001, false, function()
+                StopSound(snd, true, false)
+                DestroyTimer(GetExpiredTimer())
+            end)
             SetSoundPitch(snd, 1)
             SetSoundDistances(snd, 600, 10000)
             SetSoundDistanceCutoff(snd, 2100)
@@ -58,7 +62,7 @@ do
             SetSoundConeOrientation(snd, 0.0, 0.0, 0.0)
             SetSoundPosition(snd, x, y, 50.)
             StartSound(snd)
-            KillSoundWhenDone(snd)
+            --KillSoundWhenDone(snd)
         snd = nil
     end
 
@@ -67,16 +71,8 @@ do
 
 
     local function StartLocalSound(volume)
-        for i = 0, MAX_PLAYERS do
-            if GetLocalPlayer() == Player(i) then
-                if Showed[i] then
-                    StartSound(RainSound)
-                    SetSoundVolume(RainSound, volume)
-                else
-                    StopSound(RainSound, false, false)
-                end
-            end
-        end
+        StartSound(RainSound)
+        SetSoundVolume(RainSound, volume)
     end
 
 
@@ -100,7 +96,8 @@ do
 
             RectList[CurrentWeatherRectIndex].weather = AddWeatherEffect(RectList[CurrentWeatherRectIndex].rect, FourCC(WeatherList[Weather_Current].id))
             EnableWeatherEffect(RectList[CurrentWeatherRectIndex].weather, true)
-            Visibility(RectList[CurrentWeatherRectIndex].weather)
+            --Visibility(RectList[CurrentWeatherRectIndex].weather)
+            --EnableWeatherEffect(RectList[CurrentWeatherRectIndex].weather, true)
 
         if CurrentWeatherRectIndex == #RectList then
             TimerStart(CreationTimer, 0., false, nil)
@@ -192,7 +189,7 @@ do
         Weather_Current = weather_id
         TimerStart(DurationTimer, GetRandomReal(WeatherList[weather_id].min_time + 3., WeatherList[weather_id].max_time), false, StopWeather)
 
-        if WeatherList[weather_id].volume ~= nil then
+        if WeatherList[weather_id].volume then
             TimerStart(SpecialTimer, 0.05, true, LightningEffectUpdate)
         end
 
@@ -221,8 +218,10 @@ do
                     else
                         StartWeather(i)
 
-                            if WeatherList[i].volume ~= nil then
-                                StartLocalSound(WeatherList[i].volume)
+                            if WeatherList[i].volume then
+                                StartSound(RainSound)
+                                SetSoundVolume(RainSound, WeatherList[i].volume)
+                                --StartLocalSound(WeatherList[i].volume)
                             end
 
                     end
@@ -244,6 +243,10 @@ do
 
     function InitWeather(area)
 
+        RainSound = CreateSound("rain.wav", true, false, false, 100, 100, "")
+        DurationTimer = CreateTimer()
+        CreationTimer = CreateTimer()
+        SpecialTimer = CreateTimer()
         AREA = area
         X_BLOCKS = R2I((GetRectMaxX(AREA) - GetRectMinX(AREA)) / GENERATOR_BLOCK_VALUE) + 1
         Y_BLOCKS = R2I((GetRectMaxY(AREA) - GetRectMinY(AREA)) / GENERATOR_BLOCK_VALUE) + 1
@@ -280,9 +283,9 @@ do
                     x = x + 1
                 end
 
-            PreloadSound("Thunder High.wav")
-            PreloadSound("Thunder Normal.wav.wav")
-            PreloadSound("Thunder Low.wav")
+            --PreloadSound("Thunder High.wav")
+            --PreloadSound("Thunder Normal.wav.wav")
+            --PreloadSound("Thunder Low.wav")
 
             Y_BLOCKS = Y_BLOCKS - 1
             if Y_BLOCKS <= 0 then

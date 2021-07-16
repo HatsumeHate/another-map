@@ -86,7 +86,7 @@ do
             end
 
 
-           if missile ~= nil and missile.time <= 0. then
+           if missile and missile.time <= 0. then
                 if BlzGroupGetSize(unit_data.chain.group) > 0 then
                     ForGroup(unit_data.chain.group, function()
                         PullUnitToUnit(GetEnumUnit(), caster, 1000., 125., 15, "EBCH")
@@ -108,7 +108,7 @@ do
             local distance
             local angle
 
-                if target ~= nil then
+                if target then
                     distance = DistanceBetweenUnits(caster, target) / 25
                     angle = AngleBetweenXY(x, y, GetUnitX(target), GetUnitY(target))
                     BlzSetSpecialEffectX(unit_data.chain.element[25], GetUnitX(target))

@@ -312,30 +312,31 @@ do
             respawn_type = RESPAWN_TYPE_SAME
         }
 
+        DelayAction(30., function()
+            for i = 1, #MonsterPack do
+                MonsterPack[i].group = SpawnMonsterPack(MonsterPack[i].spawner, MonsterPack[i].tags[GetRandomInt(1, #MonsterPack[i].tags)], MonsterPack[i].min, MonsterPack[i].max, MonsterPack[i].elite or 0, 0.)
+                --print("pack spawned " .. I2S(i))
+                MonsterPack[i].pack_count = BlzGroupGetSize(MonsterPack[i].group)
 
-        for i = 1, #MonsterPack do
-            MonsterPack[i].group = SpawnMonsterPack(MonsterPack[i].spawner, MonsterPack[i].tags[GetRandomInt(1, #MonsterPack[i].tags)], MonsterPack[i].min, MonsterPack[i].max, MonsterPack[i].elite or 0, 0.)
-            --print("pack spawned " .. I2S(i))
-            MonsterPack[i].pack_count = BlzGroupGetSize(MonsterPack[i].group)
+                if MonsterPack[i].respawn then
+                    MonsterPack[i].death_trigger = CreateTrigger()
 
-            if MonsterPack[i].respawn then
-                MonsterPack[i].death_trigger = CreateTrigger()
-
-                    TriggerAddAction(MonsterPack[i].death_trigger, function()
-                        GroupRemoveUnit(MonsterPack[i].group, GetTriggerUnit())
-                    end)
+                        TriggerAddAction(MonsterPack[i].death_trigger, function()
+                            GroupRemoveUnit(MonsterPack[i].group, GetTriggerUnit())
+                        end)
 
 
-                    for index = BlzGroupGetSize(MonsterPack[i].group) - 1, 0, -1 do
-                        TriggerRegisterUnitEvent(MonsterPack[i].death_trigger, BlzGroupUnitAt(MonsterPack[i].group, index), EVENT_UNIT_DEATH)
-                    end
+                        for index = BlzGroupGetSize(MonsterPack[i].group) - 1, 0, -1 do
+                            TriggerRegisterUnitEvent(MonsterPack[i].death_trigger, BlzGroupUnitAt(MonsterPack[i].group, index), EVENT_UNIT_DEATH)
+                        end
 
+                end
+            --print("pack initialized")
             end
-           --print("pack initialized")
-        end
 
+            TimerStart(CreateTimer(), 2.25, true, MonsterWandering)
+        end)
 
-        TimerStart(CreateTimer(), 2.25, true, MonsterWandering)
         --print("bosses ok")
         for i = 1, #BossPack do
             local x = GetRectCenterX(BossPack[i].spawner); local y = GetRectCenterY(BossPack[i].spawner)

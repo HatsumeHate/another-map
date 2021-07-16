@@ -244,11 +244,11 @@ do
     function EnableMainQuest2()
         local npc = CreateNPC("n01F", gg_rct_npc_5, 235.)
         local effect  = AddMark(npc, MARK_TYPE_EXCLAMATION, MARK_SPECIAL)
-        local npc_hunter = CreateNPC("n01D", gg_rct_npc_6, 180.)
+        local npc_hunter = CreateNPC("n01D", gg_rct_npc_6, 270.)
         local hunter_effect = AddMark(npc_hunter, MARK_TYPE_QUESTION, MARK_SPECIAL)
-        local npc_witch = CreateNPC("n01E", gg_rct_npc_7, 180.)
+        local npc_witch = CreateNPC("n01E", gg_rct_npc_7, 270.)
         local witch_effect = AddMark(npc_witch, MARK_TYPE_QUESTION, MARK_SPECIAL)
-        local guard = CreateUnit(MONSTER_PLAYER, FourCC("u007"), GetRectCenterX(gg_rct_npc_8), GetRectCenterY(gg_rct_npc_8), RndAng())
+        local guard = CreateUnit(MONSTER_PLAYER, FourCC("n01X"), GetRectCenterX(gg_rct_npc_8), GetRectCenterY(gg_rct_npc_8), RndAng())
         local proximity = CreateTrigger()
         local DeathTrg = CreateTrigger()
 
@@ -329,11 +329,11 @@ do
                         AddQuestItem("q2m", "q2mi2var3", LOCALE_LIST[my_locale].QUEST_2_M_ITEMVAR3, true)
                         AddQuestItemPool("q2m", "q2mi2var3", 15)
                         SetQuestItemState("q2m", "q2mi2var2", true)
-                        CreateQuestItems(15, FourCC("I01T"), { gg_rct_quest_1_itemrect }, 3)
+                        CreateQuestItems(15, FourCC("I01T"), { gg_rct_quest_1_itemrect, gg_rct_quest_5_itemrect, gg_rct_quest_rect_4, gg_rct_quest_rect_5, gg_rct_quest_rect_6 }, 3)
 
                         PickUpItemReaction(function()
                             if GetItemTypeId(GetManipulatedItem()) == FourCC("I01T") then
-                                if SetQuestItemPool("q2m", "q2mi2var3", 15) then
+                                if SetQuestItemPool("q2m", "q2mi2var3", 1) then
                                     witch_effect = AddMark(npc_witch, MARK_TYPE_QUESTION, MARK_SPECIAL)
                                     UnitAddAbility(npc_witch, Click_Ability)
                                     DestroyTrigger(GetTriggeringTrigger())

@@ -25,9 +25,7 @@ do
 
     QuestsList = {}
 
-    for i = 1, bj_MAX_PLAYERS do
-        QuestsList[i] = {}
-    end
+
 
 
     local function NewQuestTemplate(title, description)
@@ -312,6 +310,11 @@ do
 
 
     function InitQuestMaster()
+
+        for i = 1, bj_MAX_PLAYERS do
+            QuestsList[i] = {}
+        end
+
         QUEST_REVEALED_STRING = "|c00FFCE00Задание получено: |r"
         QUEST_DONE_STRING = "|c005AFF00Задание выполнено: |r"
         QUEST_FAILED_STRING = "|c00FF5151Задание провалено: |r"

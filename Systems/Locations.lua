@@ -94,13 +94,14 @@ do
 
         TriggerAddAction(LocationChangeTrigger, function()
             if IsAHero(GetTriggerUnit()) then
+                local player = GetOwningPlayer(GetTriggerUnit())
                 local new_location = GetNewLocation(GetTriggeringRegion())
                 local player_location = PlayerLocation[GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1]
 
                     if player_location.location ~= new_location then
                         player_location.location = new_location
                         BlzFrameSetAlpha(player_location.frame, 255)
-                        BlzFrameSetVisible(player_location.frame, true)
+                        BlzFrameSetVisible(player_location.frame, GetLocalPlayer() == player)
                         BlzFrameSetTexture(player_location.frame, Locations[new_location].name, 0, true)
                         --BlzFrameSetText(player_location.frame, Locations[new_location].name)
                         PlayLocalSound("Sound\\quest_done_3.wav", GetPlayerId(GetOwningPlayer(GetTriggerUnit())), 110)

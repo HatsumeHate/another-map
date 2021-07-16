@@ -32,7 +32,7 @@ do
         local time_offset = 0.
         --print("3")
 
-
+            --GetLocalPlayer()
             for i = 1, #number_list do
 
                 local current_item = drop_list.item_list[number_list[i]]
@@ -43,8 +43,8 @@ do
                             local id = current_item.id
 
                             if id == "class_book" then
-                                if Chance(75.) and PlayerHero[player] then
-                                    local hero_unit_data = GetUnitData(PlayerHero[player])
+                                if Chance(10.) and PlayerHero[player+1] then
+                                    local hero_unit_data = GetUnitData(PlayerHero[player+1])
                                     id = BOOK_CLASS_ITEM_LIST[hero_unit_data.unit_class or 1][GetRandomInt(1, #BOOK_CLASS_ITEM_LIST[hero_unit_data.unit_class or 1])]
                                 else
                                     id = GetRandomBookItemId()
@@ -78,9 +78,10 @@ do
                                     SetItemCharges(my_item, GetRandomInt(current_item.min or 1, current_item.max or 1))
                                 end
 
-                                if GetLocalPlayer() ~= Player(player) then
-                                    SetItemVisible(my_item, false)
-                                end
+
+                            local item_data = GetItemData(my_item)
+                            item_data.owner = player
+                            SetItemVisible(my_item, GetLocalPlayer() == Player(player))
 
                         end)
 
