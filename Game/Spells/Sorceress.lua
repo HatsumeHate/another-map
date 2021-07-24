@@ -53,7 +53,8 @@ do
         local bolt = AddLightningEx(id, true, source_x, source_y, source_z, target_x, target_y, target_z)
         local fade_time = faderate
 
-            TimerStart(CreateTimer(), 0.025, true, function()
+            local timer = CreateTimer()
+            TimerStart(timer, 0.025, true, function()
                 if faderate <= 0. then
                     DestroyLightning(bolt)
                     DestroyTimer(GetExpiredTimer())
@@ -85,7 +86,8 @@ do
         local missile_z = missile.current_z
         local missile_end_z = missile.end_z
 
-            TimerStart(CreateTimer(), 0.025, true, function()
+            local timer = CreateTimer()
+            TimerStart(timer, 0.025, true, function()
                 if faderate <= 0. then
                     DestroyLightning(bolt)
                     DestroyTimer(GetExpiredTimer())
@@ -151,7 +153,8 @@ do
                 local rebounds = 2 + math.floor(UnitGetAbilityLevel(source, "A019") / 10)
                 GroupAddUnit(damaged_group, next_target)
 
-                TimerStart(CreateTimer(), 0.25, true, function()
+                local timer = CreateTimer()
+                TimerStart(timer, 0.25, true, function()
 
                     LightningEffect_Units(from, next_target, "BLNL", 0.45, 50., 50.)
                     ApplyEffect(source, next_target, 0., 0.,"ECHL", 1)
@@ -304,7 +307,8 @@ do
 
         local timeouts = { 1., 0.7, 0.85 }
 
-        TimerStart(CreateTimer(), 0.02, true, function()
+        local timer = CreateTimer()
+        TimerStart(timer, 0.02, true, function()
             for i = 1, 3 do
                 if timeouts[i] then
                     if timeouts[i] <= 0. then
@@ -319,7 +323,8 @@ do
                         if target and target == caster then angle = GetUnitFacing(caster) * bj_DEGTORAD
                         elseif target then angle = AngleBetweenXY_DEG(frostbolts[i].current_x, frostbolts[i].current_y, GetUnitX(target), GetUnitY(target)) * bj_DEGTORAD
                         else angle = AngleBetweenXY_DEG(frostbolts[i].current_x, frostbolts[i].current_y, x, y) * bj_DEGTORAD end
-                        BlzSetSpecialEffectYaw(frostbolts[i].my_missile, angle)
+                        BlzSetSpecialEffectOrientation(frostbolts[i].my_missile, angle, 0., 0.)
+                        --BlzSetSpecialEffectYaw(frostbolts[i].my_missile, angle)
                         timeouts[i] = timeouts[i] - 0.02
                     end
                 end
@@ -443,7 +448,8 @@ do
                     local x = GetUnitX(unit) + Rx(unit_data.missile_eject_range, facing); local y = GetUnitY(unit) + Ry(unit_data.missile_eject_range, facing)
                     SetUnitFacingTimed(unit, AngleBetweenUnitXY(unit, PlayerMousePosition[player_id].x or 0., PlayerMousePosition[player_id].y or 0.), 0.2)
                     local effect = AddSpecialEffect("Abilities\\Weapons\\LordofFlameMissile\\LordofFlameMissile.mdx", x, y)
-                    BlzSetSpecialEffectYaw(effect, facing * bj_DEGTORAD)
+                    BlzSetSpecialEffectOrientation(effect, facing * bj_DEGTORAD, 0., 0.)
+                    --BlzSetSpecialEffectYaw(effect, facing * bj_DEGTORAD)
                     BlzSetSpecialEffectZ(effect, GetZ(x, y) + 75.)
                     DestroyEffect(effect)
                     ThrowMissile(unit, nil, "MMLT", nil, GetUnitX(unit), GetUnitY(unit), 0.,0., facing, true)

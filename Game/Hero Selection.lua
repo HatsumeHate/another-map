@@ -147,27 +147,46 @@ do
 
 
                 local player_number = player_id
-                TimerStart(CreateTimer(), 0.03, true, function()
-                    if GetLocalPlayer() == Player(player_number) then
-                        if not IsUnitSelected(hero, Player(player_number)) then
-                            ClearSelection()
-                            SelectUnit(hero, true)
-                        end
-                    end
-                end)
+                --local SelectTrigger = CreateTrigger()
 
-                TimerStart(CreateTimer(), 0.1, false, function()
+                --TimerStart(CreateTimer(), 0.03, true,
+                --TriggerAddAction(trg, )
+                    --function()
+                    --if GetLocalPlayer() == Player(player_number) then
+                      --  if not IsUnitSelected(hero, Player(player_number)) then
+                       --     ClearSelection()
+                       --     SelectUnit(hero, true)
+                      --  end
+                    --end
+                    --SelectUnitSingle()
+                    --SyncSelections()
+                    --SelectUnitSingle(hero)
+                        --if not IsUnitSelected(hero, Player(player_number)) then
+                           -- if GetLocalPlayer() == Player(player_number) then
+                             --   ClearSelection()
+                             --   SelectUnit(hero, true)
+                            --end
+                        --end
+               -- end)
+
+
+                TimerStart(CreateTimer(), 0., false, function()
                     player_id = player_id + 1
                     PlayerHero[player_id] = hero
 
                     TriggerRegisterDeathEvent(DeathTrigger, hero)
                     TriggerRegisterUnitEvent(LvlupTrigger, hero, EVENT_UNIT_HERO_LEVEL)
-                    TriggerRegisterUnitEvent(OrderInterceptionTrigger, hero, EVENT_UNIT_ISSUED_TARGET_ORDER)
+                    TriggerRegisterUnitEvent(OrderInterceptionTrigger, hero, EVENT_UNIT_ATTACKED)
+                    --TriggerRegisterUnitEvent(OrderInterceptionTrigger, hero, EVENT_UNIT_ISSUED_TARGET_ORDER)
 
 
                     CreateGUILayoutForPlayer(player_id, hero)
                     AddPointsToPlayer(player_id, 0)
                     LockCameraForPlayer(player_id)
+                    RegisterItemPickUp(PlayerHero[player_id])
+                    --SetUIState(player_id, INV_PANEL, false)
+                    --SetUIState(player_id, SKILL_PANEL, false)
+                    --SetUIState(player_id, CHAR_PANEL, false)
 
                     for i = 1, #starting_items do
                         EquipItem(hero, starting_items[i], true)
@@ -207,12 +226,17 @@ do
                                     else
                                         PlayCinematicSpeech(player_id-1, PlayerHero[player_id], LOCALE_LIST[my_locale].INTRODUCTION_SORCERESS_RESPONCE, 6.)
                                     end
+                                    SelectUnitForPlayerSingle(hero, Player(player_number))
+                                    EnableGUIForPlayer(player_id)
+                                    --SetUIState(player_id, INV_PANEL, true)
+                                    --SetUIState(player_id, SKILL_PANEL, true)
+                                    --SetUIState(player_id, CHAR_PANEL, true)
                                 end)
                             end)
                         end)
                     end)
 
-
+                    --GetHandleId()
                     if GetLocalPlayer() == Player(player_id - 1) then
                         PanCameraToTimed(GetUnitX(hero), GetUnitY(hero), 0.)
                     end
@@ -248,8 +272,8 @@ do
 
 
             AddSoundVolumeZ(HeroDeathSoundpack[unit_data.unit_class][GetRandomInt(1, #HeroDeathSoundpack[unit_data.unit_class])], GetUnitX(hero), GetUnitY(hero), 50., 115, 2200.)
-
-                TimerStart(CreateTimer(), 7. + (Current_Wave / 4.), false, function()
+                local timer = CreateTimer()
+                TimerStart(timer, 7. + (Current_Wave / 4.), false, function()
                     ReviveHero(hero, GetRectCenterX(gg_rct_cemetary), GetRectCenterY(gg_rct_cemetary), true)
                     SetUnitTimeScale(hero, 1.)
                     SetUnitAnimationByIndex(hero, 0)
@@ -257,6 +281,7 @@ do
                     SetUnitState(hero, UNIT_STATE_LIFE, GetUnitState(hero, UNIT_STATE_MAX_LIFE) * 0.5)
                     SetUnitState(hero, UNIT_STATE_MANA, GetUnitState(hero, UNIT_STATE_MAX_MANA) * 0.5)
                     DestroyTimer(GetExpiredTimer())
+                    SelectUnitForPlayerSingle(hero, player)
                 end)
 
         end)

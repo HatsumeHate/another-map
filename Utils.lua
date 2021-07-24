@@ -224,19 +224,20 @@
 
 	local PauseDataTable = {}
 
+	---@param target unit
+	---@param flag boolean
 	function SafePauseUnit(target, flag)
-		local handle = GetHandleId(target)
 
-			if flag then PauseDataTable[handle] = (PauseDataTable[handle] or 0) + 1
-			else PauseDataTable[handle] = (PauseDataTable[handle] or -10) - 1 end
+			if flag then PauseDataTable[target] = (PauseDataTable[target] or 0) + 1
+			else PauseDataTable[target] = (PauseDataTable[target] or -10) - 1 end
 
-		if PauseDataTable[handle] == -11 then
-			PauseDataTable[handle] = nil
+		if PauseDataTable[target] == -11 then
+			PauseDataTable[target] = nil
 			return
 		end
 
-			if PauseDataTable[handle] == 1 and flag then BlzPauseUnitEx(target, true)
-			elseif PauseDataTable[handle] <= 0 and not flag then BlzPauseUnitEx(target, false); PauseDataTable[handle] = nil end
+			if PauseDataTable[target] == 1 and flag then BlzPauseUnitEx(target, true)
+			elseif PauseDataTable[target] <= 0 and not flag then BlzPauseUnitEx(target, false); PauseDataTable[target] = nil end
 
 	end
 
@@ -336,7 +337,8 @@
 	---@param duration real
 	---@param callback function
 	function DelayAction(duration, callback)
-		TimerStart(CreateTimer(), duration or 0., false, function ()
+		local timer = CreateTimer()
+		TimerStart(timer, duration or 0., false, function()
 			callback()
 			DestroyTimer(GetExpiredTimer())
 		end)

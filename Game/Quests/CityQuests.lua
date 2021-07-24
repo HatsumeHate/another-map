@@ -13,7 +13,7 @@ do
     local Click_Condition
 
     function ClickCondition()
-        return GetUnitAbilityLevel(GetOrderTargetUnit(), Click_Ability) > 0 and GetIssuedOrderId() == order_smart and IsUnitInRange(GetOrderTargetUnit(), GetTriggerUnit(), 200.)
+        return GetOrderTargetItem() == nil and GetUnitAbilityLevel(GetOrderTargetUnit(), Click_Ability) > 0 and GetIssuedOrderId() == order_smart and IsUnitInRange(GetOrderTargetUnit(), GetTriggerUnit(), 200.)
     end
 
     ---@param unit unit
@@ -74,7 +74,8 @@ do
         local x = GetUnitX(unit); local y = GetUnitY(unit)
         local returning = false
 
-            TimerStart(CreateTimer(), 3.25, true, function()
+            local timer = CreateTimer()
+            TimerStart(timer, 3.25, true, function()
                 local state = GetUnitState(unit, UNIT_STATE_LIFE) > 0.045
 
                     if state and not returning and not IsUnitInRangeXY(unit, x, y, leash_range) then
@@ -501,6 +502,7 @@ do
                 TriggerRegisterUnitInRange(lilith_proximity_trigger, Lilith, 650., nil)
                 TriggerAddAction(lilith_proximity_trigger, function()
                     if IsAHero(GetTriggerUnit()) then
+                        DisableTrigger(lilith_proximity_trigger)
                         SetQuestItemState("que1m", "que1mitemvar1", true)
 
                         if IsMyQuestItemCompleted("que1m", "que1mitemvar2") then
@@ -525,7 +527,8 @@ do
                                     for i = 1, 6 do
                                         local item = CreateCustomItem(GetGeneratedItemId(CHEST_ARMOR), GetUnitX(Lilith), GetUnitY(Lilith), true)
                                         GenerateItemStats(item, Current_Wave + 5, MAGIC_ITEM)
-                                        if GetLocalPlayer() ~= Player(i-1) then SetItemVisible(item, false) end
+                                        local item_data = GetItemData(item)
+                                        item_data.owner = i-1
                                     end
 
                                     KillUnit(Lilith)

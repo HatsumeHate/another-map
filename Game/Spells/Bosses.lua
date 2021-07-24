@@ -167,7 +167,8 @@ do
     function MephistoSouls(boss)
         local enemies = CreateGroup()
 
-        TimerStart(CreateTimer(), 6., true, function()
+        local timer = CreateTimer()
+        TimerStart(timer, 6., true, function()
 
             if GetUnitState(boss, UNIT_STATE_LIFE) > 0.045 then
 

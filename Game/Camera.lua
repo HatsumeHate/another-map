@@ -31,8 +31,8 @@ do
             CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_FARZ, 5000., 0.)
         end
 
-
-        TimerStart(CreateTimer(), 0.03, true, function ()
+        local timer = CreateTimer()
+        TimerStart(timer, 0.03, true, function ()
 
             for i = 1, 6 do
                 if PlayerCameraState[i] then

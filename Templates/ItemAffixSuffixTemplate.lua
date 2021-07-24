@@ -2545,7 +2545,7 @@ do
                     {
                         icon = "Weapons\\BTNrapier.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_6,
-                        decl = DECL_HE,
+                        decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1]
                     },

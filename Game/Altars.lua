@@ -25,7 +25,7 @@ do
 
 
     function GetAltarData(unit)
-        return AltarsList[GetHandleId(unit)]
+        return AltarsList[unit]
     end
 
 
@@ -38,7 +38,7 @@ do
     end
 
     function GenerateAltarEffect(altar)
-        AltarsList[GetHandleId(altar)].obelisk_effect = AltarEffects.obelisk[GetRandomInt(1, #AltarEffects.obelisk)]
+        AltarsList[altar].obelisk_effect = AltarEffects.obelisk[GetRandomInt(1, #AltarEffects.obelisk)]
     end
 
 
@@ -46,7 +46,7 @@ do
     function CreateChest(rect)
         local altar = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("n00N"), GetRectCenterX(rect), GetRectCenterY(rect), GetRandomReal(230., 310.))
 
-            AltarsList[GetHandleId(altar)] = {
+            AltarsList[altar] = {
                 rect = rect,
                 altar_type = ALTAR_TYPE_CHEST,
                 obelisk_effect = AltarEffects.chest_open
@@ -68,7 +68,7 @@ do
     function CreateWell(well_type, rect)
         local altar = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), well_type == ALTAR_TYPE_WELL_HP and FourCC("n014") or FourCC("n00L"), GetRectCenterX(rect), GetRectCenterY(rect), 270.)
 
-            AltarsList[GetHandleId(altar)] = {
+            AltarsList[altar] = {
                 rect = rect,
                 altar_type = well_type,
                 obelisk_effect = well_type == ALTAR_TYPE_WELL_HP and AltarEffects.well_hp or AltarEffects.well_mp
@@ -88,7 +88,7 @@ do
     function CreateObelisk(rect)
         local id = GetRandomInt(1, 2) == 1 and "n00M" or "n00K"
         local altar = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC(id), GetRectCenterX(rect), GetRectCenterY(rect), 270.)
-        local handle = GetHandleId(altar)
+        local handle = altar
         --local effect_id = GetRandomInt(1, #AltarEffects.obelisk)
 
             local trg = CreateTrigger()
@@ -99,8 +99,9 @@ do
             TriggerRegisterUnitInRange(trg, altar, 1000., nil)
             TriggerAddAction(trg, function()
                 if IsAHero(GetTriggerUnit()) and not AltarsList[handle].texttag then
-                    AltarsList[handle].texttag = CreateObeliskText(AltarsList[handle].obelisk_effect.name, rect)
-                    TimerStart(CreateTimer(), 5., true, function()
+                    --AltarsList[handle].texttag = CreateObeliskText(AltarsList[handle].obelisk_effect.name, rect)
+                    local timer = CreateTimer()
+                    TimerStart(timer, 5., true, function()
                         local count = 0
 
                         for i = 1, 6 do
@@ -110,7 +111,7 @@ do
                         end
 
                         if count == 0 then
-                            DestroyTextTag(AltarsList[handle].texttag)
+                            --DestroyTextTag(AltarsList[handle].texttag)
                             AltarsList[handle].texttag = nil
                         end
 
@@ -129,7 +130,7 @@ do
 
     function CreateShrineOfHatred(rect)
         local altar = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("n01B"), GetRectCenterX(rect), GetRectCenterY(rect), 270.)
-        local handle = GetHandleId(altar)
+        local handle = altar
 
             AltarsList[handle] = { rect = rect, altar_type = ALTAR_TYPE_HATRED, obelisk_effect = AltarEffects.shrine_of_hatred }
 
@@ -269,6 +270,10 @@ do
         TriggerRegisterPlayerUnitEvent(trg, Player(5), EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER, nil)
         TriggerAddAction(trg, function()
 
+            if GetOrderTargetItem() ~= nil then
+                return
+            end
+
             if GetUnitAbilityLevel(GetOrderTargetUnit(), FourCC("A01H")) <= 0 then return end
             local hero = GetTriggerUnit()
 
@@ -290,7 +295,7 @@ do
 
 
                     if altar.altar_type == ALTAR_TYPE_OBELISK then
-                        DestroyTextTag(altar.texttag)
+                        --DestroyTextTag(altar.texttag)
                         if GetUnitTypeId(altar_unit) == FourCC("n00K") then AddUnitAnimationProperties(altar_unit, "alternate", false) end
                     elseif altar.altar_type == ALTAR_TYPE_WELL_HP or altar.altar_type == ALTAR_TYPE_WELL_MP then
                         SetUnitState(altar_unit, UNIT_STATE_MANA, 0.)
@@ -304,7 +309,8 @@ do
 
 
                     if altar.obelisk_effect.recharge_time then
-                        TimerStart(CreateTimer(), altar.obelisk_effect.recharge_time, false, function()
+                        local timer = CreateTimer()
+                        TimerStart(timer, altar.obelisk_effect.recharge_time, false, function()
 
                             UnitAddAbility(altar_unit, FourCC("A01H"))
 
@@ -318,7 +324,7 @@ do
                             elseif altar.altar_type == ALTAR_TYPE_CHEST then
                                 GroupRemoveUnit(ChestGroup, altar_unit)
                                 RemoveUnit(altar_unit)
-                                AltarsList[GetHandleId(altar_unit)] = nil
+                                AltarsList[altar_unit] = nil
                             end
 
                             DestroyTimer(GetExpiredTimer())
@@ -446,8 +452,8 @@ do
             CreateChest(ChestRects[chest_index_table[i]])
         end
 
-
-        TimerStart(CreateTimer(), 27.5, true, function()
+        local timer = CreateTimer()
+        TimerStart(timer, 27.5, true, function()
             if BlzGroupGetSize(ChestGroup) < ChestMax then
                 if Chance(75. - (100. * (1. - (BlzGroupGetSize(ChestGroup) / ChestMax)))) then
                     --local rect_index = GetRandomInt(1, #ChestRects)

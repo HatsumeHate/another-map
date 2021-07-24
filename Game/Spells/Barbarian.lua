@@ -71,7 +71,8 @@ do
             end
         end
 
-        TimerStart(CreateTimer(), 0.025, true, function()
+        local timer = CreateTimer()
+        TimerStart(timer, 0.025, true, function()
 
             if GetUnitState(caster, UNIT_STATE_LIFE) < 0.045 or (target ~= nil and IsUnitInRange(caster, target, 125.)) then
 
@@ -113,7 +114,7 @@ do
                     angle = AngleBetweenXY(x, y, GetUnitX(target), GetUnitY(target))
                     BlzSetSpecialEffectX(unit_data.chain.element[25], GetUnitX(target))
                     BlzSetSpecialEffectY(unit_data.chain.element[25], GetUnitY(target))
-                    BlzSetSpecialEffectZ(unit_data.chain.element[25], BlzGetLocalUnitZ(target) + z)
+                    BlzSetSpecialEffectZ(unit_data.chain.element[25], GetUnitZ(target) + z)
                 else
                     distance = DistanceBetweenUnitXY(caster, missile.current_x, missile.current_y) / 25
                     angle = AngleBetweenXY(x, y, missile.current_x, missile.current_y)
@@ -130,10 +131,12 @@ do
                         BlzSetSpecialEffectX(unit_data.chain.element[i], effect_x)
                         BlzSetSpecialEffectY(unit_data.chain.element[i], effect_y)
                         BlzSetSpecialEffectZ(unit_data.chain.element[i], effect_z)
-                        BlzSetSpecialEffectYaw(unit_data.chain.element[i], angle)
+                        --BlzSetSpecialEffectYaw(unit_data.chain.element[i], angle)
+                        BlzSetSpecialEffectOrientation(unit_data.chain.element[i], angle, 0., 0.)
                     end
 
-                BlzSetSpecialEffectYaw(unit_data.chain.element[25], angle)
+                --BlzSetSpecialEffectYaw(unit_data.chain.element[25], angle)
+                BlzSetSpecialEffectOrientation(unit_data.chain.element[25], angle, 0., 0.)
 
 
         end)

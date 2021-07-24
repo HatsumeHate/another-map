@@ -132,6 +132,12 @@ do
                  AddItemToShop(gg_unit_n001_0055, CreateCustomItem(GetRandomBookItemId(), 0, 0, false), false)
             end
 
+            if GetRandomInt(1, 2) == 2 then
+                local item = CreateCustomItem("I01O", 0, 0, false)
+                SetItemCharges(item, GetRandomInt(1, 2))
+                AddItemToShop(gg_unit_n001_0055, item, false)
+            end
+
         end
 
 

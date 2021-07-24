@@ -7,6 +7,7 @@ do
 
 
 		EnableDragSelect(false, false)
+		BlzEnableSelections(false, true)
 		--EnablePreSelect(true, false)
 		SetCameraBoundsToRect(gg_rct_super_starting_location)
 		ClearMapMusic()
@@ -17,9 +18,10 @@ do
 		--print("Initialization.... Wait for it.")
 		local countdown = 10
 		print("Init begins in ".. countdown)
-		TimerStart(CreateTimer(), 1., true, function()
+		local timer = CreateTimer()
+		TimerStart(timer, 1., true, function()
 			countdown = countdown - 1
-			print("Init begings in ".. countdown)
+			print("Init begins in ".. countdown)
 			if countdown == 0 then
 				--DestroyTimer(GetExpiredTimer())
 				local func_id = 0
@@ -129,8 +131,8 @@ do
 						--PushUnit(gg_unit_HBRB_0005, 270., 400., 1.25)
 						--MakeUnitJump(gg_unit_HBRB_0005, 0., GetUnitX(gg_unit_HBRB_0005) + 500., GetUnitY(gg_unit_HBRB_0005), 500., 0.6)
 						--EnablePreSelect(false, false)
-
-						TimerStart(CreateTimer(), 5., false, function()
+						local timer = CreateTimer()
+						TimerStart(timer, 5., false, function()
 							WavesInit()
 							AddWaveTimer(325.)
 							NewQuest("Credits", "Thanks for the resources and help.", "ReplaceableTextures\\WorldEditUI\\Editor-MultipleUnits.blp", false, true, "cred")

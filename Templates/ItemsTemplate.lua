@@ -757,8 +757,8 @@ do
 			QUALITY 		   = MAGIC_ITEM,
 			frame_texture      = "GUI\\BTNRuby.blp",
 			item_description = LOCALE_LIST[my_locale].SHARD_OF_HATE_DESC,
-			cost = 150,
-			sell_penalty = 0.5,
+			cost = 5000,
+			sell_penalty = 0.04,
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_GEM]
 		})
 

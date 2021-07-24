@@ -115,7 +115,8 @@ do
         if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_unit, target) end
         --print("add buff")
         -- delay for effect animation
-            TimerStart(CreateTimer(), myeffect.hit_delay or 0., false, function()
+            local timer = CreateTimer()
+            TimerStart(timer, myeffect.hit_delay or 0., false, function()
                 ModifyBuffsEffect(source, target, data, lvl, target_type)
                 OnEffectApply(source, target, data)
                 DestroyTimer(GetExpiredTimer())
@@ -133,7 +134,8 @@ do
         if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_unit, target) end
 
             -- delay for effect animation
-            TimerStart(CreateTimer(), myeffect.hit_delay or 0., false, function()
+            local timer = CreateTimer()
+            TimerStart(timer, myeffect.hit_delay or 0., false, function()
                 if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
                     local value = GetUnitState(target, UNIT_STATE_LIFE) + myeffect.heal_amount
                     SetUnitState(target, value)
@@ -156,7 +158,8 @@ do
             PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
             if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_unit, target) end
             -- delay for effect animation
-            TimerStart(CreateTimer(), myeffect.hit_delay or 0., false, function()
+            local timer = CreateTimer()
+            TimerStart(timer, myeffect.hit_delay or 0., false, function()
                 if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
                     --print("effect level data : ".. "attribute " .. GetItemAttributeName(myeffect.attribute) .. " damage type " .. I2S(myeffect.damage_type) .. " power " .. I2S(myeffect.power))
 
@@ -245,15 +248,15 @@ do
         data.effect_x = x
         data.effect_y = y
 
-
-            TimerStart(CreateTimer(), myeffect.SFX_delay or 0., false, function()
+            local timer = CreateTimer()
+            TimerStart(timer, myeffect.SFX_delay or 0., false, function()
                 --if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_point, target or source) end
                 if myeffect.SFX_used then
                     local effect = AddSpecialEffect(myeffect.SFX_used, x, y)
                         BlzSetSpecialEffectScale(effect, myeffect.SFX_used_scale or 1.)
                         if myeffect.timescale then BlzSetSpecialEffectTimeScale(effect, 1. + (1. - myeffect.timescale)) end
-                        if myeffect.SFX_inherit_angle then BlzSetSpecialEffectYaw(effect, GetUnitFacing(source) * bj_DEGTORAD)
-                        elseif myeffect.SFX_facing then BlzSetSpecialEffectYaw(effect, myeffect.SFX_facing * bj_DEGTORAD) end
+                        if myeffect.SFX_inherit_angle then BlzSetSpecialEffectOrientation(effect, GetUnitFacing(source) * bj_DEGTORAD, 0., 0.)--BlzSetSpecialEffectYaw(effect, GetUnitFacing(source) * bj_DEGTORAD)
+                        elseif myeffect.SFX_facing then BlzSetSpecialEffectOrientation(effect, myeffect.SFX_facing * bj_DEGTORAD, 0., 0.) end -- BlzSetSpecialEffectYaw(effect, myeffect.SFX_facing * bj_DEGTORAD) end
                         if myeffect.SFX_bonus_z then BlzSetSpecialEffectZ(effect, BlzGetLocalSpecialEffectZ(effect) + myeffect.SFX_bonus_z) end
 
                         DelayAction(myeffect.SFX_lifetime or 0., function() DestroyEffect(effect) end)
@@ -267,8 +270,8 @@ do
         PlaySpecialEffect(myeffect.SFX_on_caster, source, myeffect.SFX_on_caster_point, myeffect.SFX_on_caster_scale, myeffect.SFX_on_caster_duration)
         if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_caster, source) end
         if myeffect.sound and myeffect.sound.pack then AddSoundVolumeZ(myeffect.sound.pack[GetRandomInt(1, #myeffect.sound.pack)], x, y, 35., myeffect.sound.volume, myeffect.sound.cutoff) end
-
-            TimerStart(CreateTimer(), (myeffect.delay or 0.) * (myeffect.timescale or 1.), false, function()
+            local timer = CreateTimer()
+            TimerStart(timer, (myeffect.delay or 0.) * (myeffect.timescale or 1.), false, function()
 
                 if myeffect.sound_timed and myeffect.sound_timed.pack then AddSoundVolumeZ(myeffect.sound.pack[GetRandomInt(1, #myeffect.sound_timed.pack)], x, y, 35., myeffect.sound_timed.volume, myeffect.sound_timed.cutoff) end
                 if myeffect.shake_magnitude then ShakeByCoords(x, y, myeffect.shake_magnitude, myeffect.shake_duration, myeffect.shake_distance) end
@@ -277,7 +280,8 @@ do
                     PlaySpecialEffect(myeffect.SFX_on_unit, target or source, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
                     if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_unit, target or source) end
 
-                    TimerStart(CreateTimer(), myeffect.hit_delay or 0., false, function()
+                    local timer = CreateTimer()
+                    TimerStart(timer, myeffect.hit_delay or 0., false, function()
                         ApplyRestoreEffect(source, target or source, data, lvl)
                         DestroyTimer(GetExpiredTimer())
                     end)

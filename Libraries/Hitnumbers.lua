@@ -215,7 +215,8 @@ do
         SetTextTagLifespan(tag, DURATION)
         SetTextTagFadepoint(tag, FADEPOINT)
 
-            TimerStart(CreateTimer(), UPDATE, true, function()
+            local timer = CreateTimer()
+            TimerStart(timer, UPDATE, true, function()
 
                 time = time + UPDATE
 

@@ -17,15 +17,17 @@ do
     ---@param range real
     function ShakeByCoords(shake_x, shake_y, power, time, range)
 
+        --if true then return end
+
         if time < 0.1 then time = 0.1 end
         if range < 50. then range = 50. end
 
-            for i = 0, bj_MAX_PLAYERS do
-                if GetLocalPlayer() == Player(i) then
-                    if DistanceBetweenXY(GetCameraEyePositionX(), GetCameraEyePositionY(), shake_x or 0., shake_y or 0.) <= range then
-                        table.insert(PlayerNoiseTable[i+1], { power = power, fade_power = power / (time / 0.1) })
+            for i = 1, 6 do
+                --if GetLocalPlayer() == Player(i) then
+                    if DistanceBetweenXY(GetUnitX(PlayerHero[i]), GetUnitY(PlayerHero[i]), shake_x or 0., shake_y or 0.) <= range then
+                        table.insert(PlayerNoiseTable[i], { power = power, fade_power = power / (time / 0.1) })
                     end
-                end
+                --end
             end
 
     end
@@ -34,21 +36,24 @@ do
 
     function ShakerInit()
 
+        --if true then return end
+
+
         PlayerNoiseTable = {}
 
-        for i = 0, bj_MAX_PLAYERS do
-            PlayerNoiseTable[i+1] = {  }
+        for i = 1, 6 do
+            PlayerNoiseTable[i] = {  }
         end
 
-        TimerStart(CreateTimer(), 0.1, true, function()
+        local timer = CreateTimer()
+        TimerStart(timer, 0.1, true, function()
 
-            for i = 0, bj_MAX_PLAYERS do
-                if GetLocalPlayer() == Player(i) then
+            for i = 1, 6 do
+                --if GetLocalPlayer() == Player(i) then
                     local total_power = 0
-                    local playernum = i+1
 
-                    for powercell = 1, #PlayerNoiseTable[playernum] do
-                        total_power = total_power + PlayerNoiseTable[playernum][powercell].power
+                    for powercell = 1, #PlayerNoiseTable[i] do
+                        total_power = total_power + PlayerNoiseTable[i][powercell].power
                     end
 
                     if total_power > 0. then
@@ -58,23 +63,28 @@ do
                         velocity = total_power * velocity^10
                         total_power = total_power * 2.
 
-                        CameraSetTargetNoiseEx(total_power, velocity, true)
-                        CameraSetSourceNoiseEx(total_power, velocity, true)
-                        CameraSetEQNoiseForPlayer(Player(i), total_power)
+                        if GetLocalPlayer() == Player(i-1) then
+                            CameraSetTargetNoiseEx(total_power, velocity, true)
+                            CameraSetSourceNoiseEx(total_power, velocity, true)
+                            CameraSetEQNoiseForPlayer(Player(i-1), total_power)
+                        end
+
                     else
-                        CameraSetSourceNoise(0., 0.)
-                        CameraSetTargetNoise(0., 0.)
+                        if GetLocalPlayer() == Player(i-1) then
+                            CameraSetSourceNoise(0., 0.)
+                            CameraSetTargetNoise(0., 0.)
+                        end
                     end
 
-                    for k = 1, #PlayerNoiseTable[playernum] do
-                        PlayerNoiseTable[playernum][k].power = PlayerNoiseTable[playernum][k].power - PlayerNoiseTable[playernum][k].fade_power
+                    for k = 1, #PlayerNoiseTable[i] do
+                        PlayerNoiseTable[i][k].power = PlayerNoiseTable[i][k].power - PlayerNoiseTable[i][k].fade_power
                     end
 
-                    for k = 1, #PlayerNoiseTable[playernum] do
-                        if PlayerNoiseTable[playernum][k].power <= 0. then table.remove(PlayerNoiseTable[playernum], k) end
+                    for k = 1, #PlayerNoiseTable[i] do
+                        if PlayerNoiseTable[i][k].power <= 0. then table.remove(PlayerNoiseTable[i], k) end
                     end
                     
-                end
+                --end
             end
 
         end)

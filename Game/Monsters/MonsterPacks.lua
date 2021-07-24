@@ -16,7 +16,8 @@ do
     local function RespawnMonsterPack(i)
 
         if IsAnyHeroInRange(GetRectCenterX(MonsterPack[i].spawner), GetRectCenterY(MonsterPack[i].spawner), 1550.) then
-            TimerStart(CreateTimer(), 15., false, function()
+            local timer = CreateTimer()
+            TimerStart(timer, 15., false, function()
                 DestroyTimer(GetExpiredTimer())
                 RespawnMonsterPack(i)
             end)
@@ -80,7 +81,8 @@ do
                     if BlzGroupGetSize(MonsterPack[i].group) <= 0 then
                         MonsterPack[i].respawn_executed = true
                         --print("respawn start")
-                        TimerStart(CreateTimer(), MonsterPack[i].respawn, false, function()
+                        local timer = CreateTimer()
+                        TimerStart(timer, MonsterPack[i].respawn, false, function()
                             DestroyTimer(GetExpiredTimer())
                             RespawnMonsterPack(i)
                         end)
@@ -333,8 +335,8 @@ do
                 end
             --print("pack initialized")
             end
-
-            TimerStart(CreateTimer(), 2.25, true, MonsterWandering)
+            local timer = CreateTimer()
+            TimerStart(timer, 2.25, true, MonsterWandering)
         end)
 
         --print("bosses ok")
@@ -363,8 +365,8 @@ do
                     TriggerRegisterUnitEvent(trg, BossPack[i].boss, EVENT_UNIT_DEATH)
                     TriggerAddAction(trg, function()
                         local id = GetUnitTypeId(GetTriggerUnit())
-
-                            TimerStart(CreateTimer(), BossPack[i].respawn, false, function()
+                            local timer = CreateTimer()
+                            TimerStart(timer, BossPack[i].respawn, false, function()
 
                                     if BossPack[i].respawn_type == RESPAWN_TYPE_SAME then
                                         BossPack[i].boss = CreateUnit(SECOND_MONSTER_PLAYER, id, x, y, GetRandomReal(0.,359.))

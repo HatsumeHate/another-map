@@ -132,6 +132,9 @@ do
 
             BlzFrameSetMinMaxValue(SkillPanelFrame[player].slider, 1., #SkillPanelFrame[player].category[c].skill_list)
             BlzFrameSetValue(SkillPanelFrame[player].slider, #SkillPanelFrame[player].category[c].skill_list)
+            local last_category_button = GetButtonData(SkillPanelFrame[player].category[c].button)
+            BlzFrameSetVisible(last_category_button.sprite, true)
+
 
         UpdateSkillWindow(player)
     end
@@ -151,7 +154,7 @@ do
     local function NewButton(button_type, texture, size_x, size_y, relative_frame, frame_point_from, frame_point_to, offset_x, offset_y, parent_frame)
         local new_Frame = BlzCreateFrame('ScriptDialogButton', parent_frame, 0, 0)
         local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
-        local handle = GetHandleId(new_Frame)
+        local handle = new_Frame
 
             ButtonList[handle] = {
                 button_type = button_type,
@@ -242,13 +245,17 @@ do
                 SkillPanelFrame[player].category[i].skill_list = {}
 
                     if i == 1 then
-                        local button_data
                         SkillPanelFrame[player].category[i].button = NewButton(-1, icon_path, 0.035, 0.035, category_border_panel, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.02, main_frame)
-                        button_data = GetButtonData(SkillPanelFrame[player].category[i].button)
+                        local button_data = GetButtonData(SkillPanelFrame[player].category[i].button)
                         button_data.sprite = CreateSprite("selecter2.mdx", 0.9, SkillPanelFrame[player].category[i].button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, button_data.image)
+                        BlzFrameSetVisible(button_data.sprite, false)
                     else
                         SkillPanelFrame[player].category[i].button = NewButton(i * -1, icon_path, 0.035, 0.035, SkillPanelFrame[player].category[i-1].button, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., -0.0055, SkillPanelFrame[player].category[i-1].button)
+                        local button_data = GetButtonData(SkillPanelFrame[player].category[i].button)
+                        button_data.sprite = CreateSprite("selecter2.mdx", 0.9, SkillPanelFrame[player].category[i].button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, button_data.image)
+                        BlzFrameSetVisible(button_data.sprite, false)
                     end
+
 
             end
 
@@ -425,9 +432,10 @@ do
 
                 if button_data.button_type < 0 then
                     local last_category_button = GetButtonData(SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].button)
-                    if last_category_button.sprite ~= nil then BlzDestroyFrame(last_category_button.sprite) end
-
-                    button_data.sprite = CreateSprite("selecter2.mdx", 0.9, SkillPanelFrame[player].category[button_data.button_type * -1].button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, button_data.image)
+                    BlzFrameSetVisible(last_category_button.sprite, false)
+                    --BlzDestroyFrame(last_category_button.sprite)
+                    BlzFrameSetVisible(button_data.sprite, true)
+                    --button_data.sprite = CreateSprite("selecter2.mdx", 0.9, SkillPanelFrame[player].category[button_data.button_type * -1].button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, button_data.image)
                     SkillPanelFrame[player].current_category = button_data.button_type * -1
                     UpdateSkillList(player)
                     DestroyContextMenu(player)

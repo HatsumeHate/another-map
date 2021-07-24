@@ -104,7 +104,7 @@ do
 
 
     function HitCond()
-        return GetUnitTypeId(GetOrderTargetUnit()) == FourCC("ntel") and GetIssuedOrderId() == order_smart and IsUnitInRange(GetOrderTargetUnit(), GetTriggerUnit(), 200.)
+        return GetOrderTargetUnit() ~= nil and GetUnitTypeId(GetOrderTargetUnit()) == FourCC("ntel") and GetIssuedOrderId() == order_smart and IsUnitInRange(GetOrderTargetUnit(), GetTriggerUnit(), 200.)
     end
 
     function TeleporterInit()
@@ -158,7 +158,8 @@ do
                 for i = 1, #TeleportLocation do if trackable == TeleportLocation[i].trackable then id = i; break end end
 
                 ShowTeleportList(trackable, player)
-                TimerStart(CreateTimer(), 0.3, true, function()
+                local timer = CreateTimer()
+                TimerStart(timer, 0.3, true, function()
                     if not IsUnitInRange(PlayerHero[player], TeleportLocation[id].trackable, 200.) then
                         BlzFrameSetVisible(TeleportFrame[player].mainframe, false)
                         DestroyTimer(GetExpiredTimer())

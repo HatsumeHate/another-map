@@ -3,7 +3,7 @@
 
 
     function GetButtonData(button)
-        return ButtonList[GetHandleId(button)]
+        return ButtonList[button]
     end
 
 
@@ -324,7 +324,8 @@
             --BlzFrameSetEnable(ContextFrame[player].backdrop, false)
             BlzFrameSetVisible(ContextFrame[player].backdrop, false)
 
-            TimerStart(CreateTimer(), 5., false, function()
+            local timer = CreateTimer()
+            TimerStart(timer, 5., false, function()
                 for i = #buttons, 1, -1 do
                     BlzDestroyFrame(buttons.frames[i])
                 end
@@ -556,13 +557,13 @@ do
 
     ---@param frame framehandle
     function GetTooltip(frame)
-        return TooltipList[GetHandleId(frame)]
+        return TooltipList[frame]
     end
 
     ---@param parent framehandle
     function NewTooltip(parent)
         local backdrop = BlzCreateFrame("BoxedText", parent, 15, 0)
-        local handle = GetHandleId(backdrop)
+        local handle = backdrop
 
             TooltipList[handle] = {}
             TooltipList[handle].textframe = {}
@@ -668,7 +669,7 @@ do
         if ContextFrame[player].state or SliderFrame[player].state then return end
         RemoveTooltip(player)
 
-        local my_tooltip = TooltipList[GetHandleId(tooltip)]
+        local my_tooltip = TooltipList[tooltip]
         PlayerTooltip[player] = my_tooltip.backdrop
         BlzFrameSetVisible(my_tooltip.backdrop, true)
 
@@ -747,7 +748,7 @@ do
             if ContextFrame[player].state or SliderFrame[player].state then return end
             RemoveTooltip(player)
 
-            tooltip = TooltipList[GetHandleId(tooltip)]
+            tooltip = TooltipList[tooltip]
             PlayerTooltip[player] = tooltip.backdrop
             BlzFrameSetVisible(tooltip.backdrop, true)
 
@@ -1009,7 +1010,7 @@ do
 
     function RemoveTooltip(player)
         if PlayerTooltip[player] ~= nil then
-            local tooltip = TooltipList[GetHandleId(PlayerTooltip[player])]
+            local tooltip = TooltipList[PlayerTooltip[player]]
 
                 for i = 1, 15 do
                     BlzFrameSetScale(tooltip.imageframe[i], 1.)

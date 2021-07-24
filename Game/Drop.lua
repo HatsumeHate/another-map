@@ -81,7 +81,10 @@ do
 
                             local item_data = GetItemData(my_item)
                             item_data.owner = player
-                            SetItemVisible(my_item, GetLocalPlayer() == Player(player))
+                            --if GetLocalPlayer() ~= Player(item_data.owner) then
+                             --  BlzSetItemSkin(my_item, FourCC("I01X"))
+                            --end
+                            --SetItemVisible(my_item, GetLocalPlayer() == Player(player))
 
                         end)
 
@@ -100,16 +103,44 @@ do
             end)
         end
 
+
     end
 
 
     function DropListInit()
 
-        RegisterTestCommand("splash", function()
+        RegisterTestCommand("sp", function()
             local unit = CreateUnit(MONSTER_PLAYER, FourCC("n00Y"), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), 0.)
-            DelayAction(1., function()
+            DelayAction(0.1, function()
                 DamageUnit(PlayerHero[1], unit, 10000., PHYSICAL_ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, true, true, nil)
             end)
+        end)
+
+
+        RegisterTestCommand("gd1", function()
+            local delay = 0.3
+
+            for i = 1, GetRandomInt(7, 17) do
+                DelayAction(delay, function()
+                    local offset = GetRandomReal(75., 225)
+                    CreateGoldStack(GetRandomInt(10, 100), GetUnitX(PlayerHero[1]) + GetRandomReal(-offset, offset), GetUnitY(PlayerHero[1]) + GetRandomReal(-offset, offset), 0)
+                end)
+                delay = delay + 0.347
+            end
+
+        end)
+
+        RegisterTestCommand("gd2", function()
+            local delay = 0.3
+
+            for i = 1, GetRandomInt(7, 17) do
+                DelayAction(delay, function()
+                    local offset = GetRandomReal(75., 225)
+                    CreateGoldStack(GetRandomInt(10, 100), GetUnitX(PlayerHero[1]) + GetRandomReal(-offset, offset), GetUnitY(PlayerHero[1]) + GetRandomReal(-offset, offset), 1)
+                end)
+                delay = delay + 0.347
+            end
+
         end)
 
         UNIT_DROP_LIST = {

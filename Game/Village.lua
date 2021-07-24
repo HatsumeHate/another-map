@@ -48,7 +48,8 @@ do
 
 
     function InitVillageData()
-        TimerStart(CreateTimer(),1.,false, function()
+        local timer = CreateTimer()
+        TimerStart(timer,1.,false, function()
             CitizenGroup = CreateGroup()
 
             --print("group yep")
@@ -90,7 +91,8 @@ do
 
             --################################################################
 
-            TimerStart(CreateTimer(), 1.5, true, function()
+            local timer = CreateTimer()
+            TimerStart(timer, 1.5, true, function()
 
                 ForGroup(CitizenGroup, function()
                     if Chance(12.) and GetUnitCurrentOrder(GetEnumUnit()) == 0 and not IsUnitHidden(GetEnumUnit()) then

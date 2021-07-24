@@ -125,8 +125,8 @@ do
             end
 
             --AddSpecialEffect("Abilities\\Spells\\Other\\Aneu\\AneuTarget.mdl", missile.end_point_x, missile.end_point_y)
-            BlzSetSpecialEffectYaw(missile.missile_effect, AngleBetweenXY(x, y, missile.end_point_x, missile.end_point_y))
-
+            --BlzSetSpecialEffectYaw(missile.missile_effect, AngleBetweenXY(x, y, missile.end_point_x, missile.end_point_y))
+            BlzSetSpecialEffectOrientation(missile.missile_effect, AngleBetweenXY(x, y, missile.end_point_x, missile.end_point_y) * bj_DEGTORAD, missile.last_pitch or 0., 0.)
     end
 
 
@@ -141,7 +141,7 @@ do
     ---@param sign string
     function PullUnitToUnit(source, target, speed, release_range, power, sign)
         local pull_data = {}
-        local h = GetHandleId(source)
+        local h = source
 
         if PullList[h] ~= nil then
             if PullList[h].power < power then
@@ -161,8 +161,8 @@ do
             pull_data.vx = (GetUnitX(target) - GetUnitX(source)) * velocity
             pull_data.vy = (GetUnitY(target) - GetUnitY(source)) * velocity
 
-
-            TimerStart(CreateTimer(), PERIOD, true, function()
+            local timer = CreateTimer()
+            TimerStart(timer, PERIOD, true, function()
                 if IsUnitInRange(source, pull_data.target, pull_data.release_range) or GetUnitState(source, UNIT_STATE_LIFE) < 0.045 or GetUnitState(pull_data.target, UNIT_STATE_LIFE) < 0.045 then
                     OnPullRelease(source, pull_data.target, sign)
                     pull_data = nil
@@ -193,7 +193,7 @@ do
     ---@param sign string
     function ChargeUnit(source, speed, distance, angle, max_targets, radius, animation, sign, sfx)
         local charge_data = {}
-        local h = GetHandleId(source)
+        local h = source
 
 
         if ChargeList[h] then
@@ -227,8 +227,8 @@ do
 
 
         --print("a")
-
-            TimerStart(CreateTimer(), PERIOD, true, function()
+            local timer = CreateTimer()
+            TimerStart(timer, PERIOD, true, function()
                -- print("atick")
                 local state = HasAnyDisableState(source)
                 if IsUnitInRangeXY(source, charge_data.point_x, charge_data.point_y, 10.) or GetUnitState(source, UNIT_STATE_LIFE) < 0.045 or state or not IsPathable_Ground(GetUnitX(source) + charge_data.vx, GetUnitY(source) + charge_data.vy) then
@@ -322,8 +322,8 @@ do
         end
 
         --BlzPauseUnitEx(target, true)
-
-        TimerStart(CreateTimer(), PERIOD, true, function ()
+        local timer = CreateTimer()
+        TimerStart(timer, PERIOD, true, function ()
 
             if IsMapBounds(unit_x, unit_y) or time <= 0. then
                 --print("total jump distance was "..DistanceBetweenUnitXY(target, start_x, start_y))
@@ -371,7 +371,7 @@ do
     local PushList = {}
 
     function PushUnit(source, target, angle, power, time, sign)
-        local handle = GetHandleId(target)
+        local handle = target
         local push_data = { x = GetUnitX(target), y = GetUnitY(target), vx = 0., vy = 0. }
 
 
@@ -632,7 +632,8 @@ do
         --BlzSetSpecialEffectHeight(missile_effect, start_z)
         BlzSetSpecialEffectZ(missile_effect, start_z)
         BlzSetSpecialEffectScale(missile_effect, m.scale or 1.)
-        BlzSetSpecialEffectYaw(missile_effect, angle * bj_DEGTORAD)
+        BlzSetSpecialEffectOrientation(missile_effect, angle * bj_DEGTORAD, 0., 0.)
+        --BlzSetSpecialEffectYaw(missile_effect, angle * bj_DEGTORAD)
 
         if m.lightning_id then
             m.lightnings = {}
@@ -753,7 +754,8 @@ do
                             m.vx = (GetUnitX(target) - m.current_x) * velocity
                             m.vy = (GetUnitY(target) - m.current_y) * velocity
                             m.vz = (m.end_z + GetUnitZ(target) - m.current_z) * velocity
-                            BlzSetSpecialEffectYaw(missile_effect, AngleBetweenXY(m.current_x, m.current_y, GetUnitX(target), GetUnitY(target)))
+                            BlzSetSpecialEffectOrientation(missile_effect, AngleBetweenXY(m.current_x, m.current_y, GetUnitX(target), GetUnitY(target)), 0., 0.)
+                            --BlzSetSpecialEffectYaw(missile_effect, AngleBetweenXY(m.current_x, m.current_y, GetUnitX(target), GetUnitY(target)))
                         end
                     end
 
@@ -774,7 +776,9 @@ do
                             local zDiff = m.current_z - old_z
                             local speed_step = m.speed * PERIOD
                             local pitch = zDiff > 0. and math.atan(speed_step / zDiff) - math.pi / 2. or math.atan(-zDiff / speed_step) - math.pi * 2.
-                            BlzSetSpecialEffectPitch(missile_effect, pitch)
+                            --BlzSetSpecialEffectPitch(missile_effect, pitch)
+                            m.last_pitch = pitch
+                            BlzSetSpecialEffectOrientation(missile_effect, angle * bj_DEGTORAD, pitch, 0.)
                             length = length + step
                         else
                             m.current_z = m.current_z + m.vz
@@ -956,7 +960,8 @@ do
                                             if m.hit_once_in > 0. then
                                                 local damaged_unit = picked
                                                 GroupAddUnit(hit_group, damaged_unit)
-                                                TimerStart(CreateTimer(), m.hit_once_in, false, function()
+                                                local timer = CreateTimer()
+                                                TimerStart(timer, m.hit_once_in, false, function()
                                                     GroupRemoveUnit(hit_group, damaged_unit)
                                                     DestroyTimer(GetExpiredTimer())
                                                 end)

@@ -75,10 +75,10 @@ do
 
 
     local function NewStatData(player, stat, trg, button)
-        MainStatButtons[player].frames[GetHandleId(button)] = {}
+        MainStatButtons[player].frames[button] = {}
         MainStatButtons[player].frames[stat] = button
-        MainStatButtons[player].frames[GetHandleId(button)].stat = stat
-        MainStatButtons[player].frames[GetHandleId(button)].allocated = 0
+        MainStatButtons[player].frames[button].stat = stat
+        MainStatButtons[player].frames[button].allocated = 0
         BlzTriggerRegisterFrameEvent(trg, button, FRAMEEVENT_CONTROL_CLICK)
     end
 
@@ -87,12 +87,11 @@ do
     local function StatButtonClick()
         local id = GetPlayerId(GetTriggerPlayer())+ 1
         local button = BlzGetTriggerFrame()
-        local h = GetHandleId(button)
 
 
             if MainStatButtons[id].points > 0 then
-                ModifyStat(PlayerHero[id], MainStatButtons[id].frames[h].stat, 1, STRAIGHT_BONUS, true)
-                MainStatButtons[id].frames[h].allocated = MainStatButtons[id].frames[h].allocated + 1
+                ModifyStat(PlayerHero[id], MainStatButtons[id].frames[button].stat, 1, STRAIGHT_BONUS, true)
+                MainStatButtons[id].frames[button].allocated = MainStatButtons[id].frames[button].allocated + 1
                 MainStatButtons[id].points = MainStatButtons[id].points - 1
                 BlzFrameSetText(MainStatButtons[id].points_text_frame, MainStatButtons[id].points)
 
@@ -267,9 +266,14 @@ do
         --CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_DESCRIPTION, CharButton, 0.14, 0.06)
 
         --BlzFrameSetVisible(CharButton, false)
+        local timer = CreateTimer()
+        TimerStart(timer, STAT_PANEL_UPDATE, true, StatPanelUpdate)
 
-        TimerStart(CreateTimer(), STAT_PANEL_UPDATE, true, StatPanelUpdate)
 
+        RegisterTestCommand("stat", function()
+            AddPointsToPlayer(1, 5)
+            AddPointsToPlayer(2, 5)
+        end)
         --[[
         local trg = CreateTrigger()
         BlzTriggerRegisterFrameEvent(trg, CharButton, FRAMEEVENT_CONTROL_CLICK)

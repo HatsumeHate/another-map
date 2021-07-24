@@ -18,11 +18,11 @@ do
 
     function UpdateShopWindow()
             for player = 1, 6 do
-                local my_shop_data = ShopData[GetHandleId(ShopInFocus[player])]
+                local my_shop_data = ShopData[ShopInFocus[player]]
 
                     if my_shop_data then
                         for i = 1, MAXIMUM_ITEMS do
-                            local button = ButtonList[GetHandleId(ShopFrame[player].slot[i])]
+                            local button = ButtonList[ShopFrame[player].slot[i]]
                             button.item = my_shop_data.item_list[i].item
 
                             if button.item then
@@ -56,11 +56,9 @@ do
 
     local function EnterAction()
         local player = GetPlayerId(GetTriggerPlayer()) + 1
-        local h = GetHandleId(BlzGetTriggerFrame())
+        local h = BlzGetTriggerFrame()
 
-            if ButtonList[h].item ~= nil then
-                --ButtonList[GetHandleId(ShopFrame[player].slot[32])].image
-                --ShowTooltip(player, h, FRAMEPOINT_RIGHT, MASTER_FRAME)
+            if ButtonList[h].item then
                 ShowItemTooltip(ButtonList[h].item, ShopFrame[player].tooltip, ButtonList[h], player, FRAMEPOINT_RIGHT)
             else
                 RemoveTooltip(player)
@@ -69,25 +67,22 @@ do
     end
 
     local function LeaveAction()
-        --local player = GetPlayerId(GetTriggerPlayer()) + 1
-        --local h = GetHandleId(BlzGetTriggerFrame())
-
         RemoveTooltip(GetPlayerId(GetTriggerPlayer()) + 1)
     end
 
 
     local function ShopSlot_Clicked()
         local player = GetPlayerId(GetTriggerPlayer()) + 1
-        local h = GetHandleId(BlzGetTriggerFrame())
+        local h = BlzGetTriggerFrame()
         --local item_data = GetItemData(ButtonList[h].item)
 
             if ButtonList[h].item then
                 local button_data = GetButtonData(ShopFrame[player].slot[32])
-                CreatePlayerContextMenu(player, ButtonList[h].button, FRAMEPOINT_RIGHT, ButtonList[GetHandleId(button_data.image)])
+                CreatePlayerContextMenu(player, ButtonList[h].button, FRAMEPOINT_RIGHT, ButtonList[button_data.image])
                 AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_BUY, function()
 
                     if GetItemCharges(ButtonList[h].item) > 1 then
-                        CreateSlider(player, ButtonList[h], ButtonList[GetHandleId(ShopFrame[player].slot[32])].image, function()
+                        CreateSlider(player, ButtonList[h], ButtonList[ShopFrame[player].slot[32]].image, function()
                             local value = SliderFrame[player].value
                             if value > GetItemCharges(ButtonList[h].item) then
                                 value = GetItemCharges(ButtonList[h].item)
@@ -128,7 +123,7 @@ do
         local new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
 
 
-        ButtonList[GetHandleId(new_Frame)] = {
+        ButtonList[new_Frame] = {
             button_type = button_type,
             item = nil,
             button = new_Frame,
@@ -224,7 +219,7 @@ do
     ---@param shop unit
     ---@param item item
     function RemoveItemFromShop(shop, item)
-        local my_shop_data = ShopData[GetHandleId(shop)]
+        local my_shop_data = ShopData[shop]
 
             for i = 1, MAXIMUM_ITEMS do
                 if my_shop_data.item_list[i].item == item then
@@ -247,7 +242,7 @@ do
 
     ---@param shop unit
     function ClearShop(shop)
-        local my_shop_data = ShopData[GetHandleId(shop)]
+        local my_shop_data = ShopData[shop]
 
             for i = 1, MAXIMUM_ITEMS do
                 if not my_shop_data.item_list[i].perm then
@@ -338,7 +333,7 @@ do
 
     ---@param shop unit
     function CountFreeSlotsShop(shop)
-        local my_shop_data = ShopData[GetHandleId(shop)]
+        local my_shop_data = ShopData[shop]
         local count = 0
 
             for i = 1, MAXIMUM_ITEMS do
@@ -355,7 +350,7 @@ do
     ---@param item item
     ---@param permanent boolean
     function AddItemToShop(shop, item, permanent)
-        local my_shop_data = ShopData[GetHandleId(shop)]
+        local my_shop_data = ShopData[shop]
 
 
             if GetItemType(item) == ITEM_TYPE_CHARGED then
@@ -398,7 +393,7 @@ do
     ---@param permanent boolean
     ---@param slot integer
     function AddItemToShopWithSlot(shop, item, slot, permanent)
-        local my_shop_data = ShopData[GetHandleId(shop)]
+        local my_shop_data = ShopData[shop]
 
             if slot > MAXIMUM_ITEMS then
                 slot = MAXIMUM_ITEMS
@@ -432,7 +427,7 @@ do
     ---@param unit_owner unit
     ---@param texture string
     function CreateShop(unit_owner, texture, soundpack)
-        local handle = GetHandleId(unit_owner)
+        local handle = unit_owner
 
             ShopData[handle] = {}
             ShopData[handle].item_list = {}
@@ -495,7 +490,8 @@ do
                             PlayLocalSound(soundpack.open[GetRandomInt(1, #soundpack.open)], id, 125)
                         end
 
-                            TimerStart(CreateTimer(), 0.1, true, function()
+                            local timer = CreateTimer()
+                            TimerStart(timer, 0.1, true, function()
                                 if not IsUnitInRange(hero, unit_owner, 299.) or IsUnitHidden(unit_owner) then
                                     DestroySlider(player)
                                     DestroyContextMenu(player)

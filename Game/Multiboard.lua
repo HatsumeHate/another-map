@@ -63,6 +63,8 @@ do
         local per_player = math.ceil(gold / ActivePlayers)
 
             MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + player, 0), "|c006F6F6F" .. PlayerNames[player] .. "|r")
+            SetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD, 0)
+            --MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + player, 1), "|c00FFFF00".."0".."|r")
             ShowUnit(PlayerHero[player], false)
 
                 if per_player > 0 then
@@ -99,11 +101,10 @@ do
                 end
             end
             --MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 2, 0), )
-
-            TimerStart(CreateTimer(), 2.25, true, function()
+            local timer = CreateTimer()
+            TimerStart(timer, 2.25, true, function()
                 for i = 1, 6 do
-                    local gold = GetPlayerState(Player(i-1), PLAYER_STATE_RESOURCE_GOLD)
-                    if gold > 0 then MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 1), "|c00FFFF00"..gold.."|r") end
+                    MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 1), "|c00FFFF00"..GetPlayerState(Player(i-1), PLAYER_STATE_RESOURCE_GOLD).."|r")
                 end
             end)
 

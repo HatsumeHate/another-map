@@ -25,7 +25,7 @@ do
 
     function FrameChangeTexture(frame, texture)
         --ButtonTextureList[GetHandleId(frame)] = texture
-        BlzFrameSetTexture(ButtonClickList[GetHandleId(frame)].image, texture, 0, true)
+        BlzFrameSetTexture(ButtonClickList[frame].image, texture, 0, true)
     end
 
     local ClickTrigger
@@ -42,7 +42,7 @@ do
         --BlzFrameSetAllPoints(new_Frame_image, new_Frame_backdrop)
         BlzFrameSetTexture(new_Frame_backdrop, "button_backdrop.blp", 0, true)
         BlzFrameSetTexture(new_Frame_image, texture, 0, true)
-        ButtonClickList[GetHandleId(frame)] = {
+        ButtonClickList[frame] = {
             frame = new_Frame_backdrop,
             image = new_Frame_image,
             timer = CreateTimer()
@@ -111,13 +111,10 @@ do
         TriggerAddAction(ClickTrigger, function()
             local frame = BlzGetTriggerFrame()
 
-                if ButtonClickList[GetHandleId(frame)] then
-                    local handle = GetHandleId(frame)
-                    BlzFrameSetVisible(ButtonClickList[handle].frame, true)
-
-                    TimerStart(ButtonClickList[handle].timer, 0.1, false, function()
-                        BlzFrameSetVisible(ButtonClickList[handle].frame, false)
-                        frame = nil
+                if ButtonClickList[frame] then
+                    BlzFrameSetVisible(ButtonClickList[frame].frame, true)
+                    TimerStart(ButtonClickList[frame].timer, 0.1, false, function()
+                        BlzFrameSetVisible(ButtonClickList[frame].frame, false)
                     end)
                 end
 

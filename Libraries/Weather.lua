@@ -51,18 +51,19 @@ do
         local snd = CreateSound(s, false, true, true, 10, 10, "CombatSoundsEAX")
             SetSoundChannel(snd, 5)
             SetSoundVolume(snd, 127)
-            TimerStart(CreateTimer(), GetSoundDuration() * 0.001, false, function()
-                StopSound(snd, true, false)
-                DestroyTimer(GetExpiredTimer())
-            end)
+            --local timer = CreateTimer()
+            --TimerStart(timer, GetSoundDuration() * 0.001, false, function()
+               --StopSound(snd, true, false)
+                --DestroyTimer(GetExpiredTimer())
+           -- end)
             SetSoundPitch(snd, 1)
-            SetSoundDistances(snd, 600, 10000)
-            SetSoundDistanceCutoff(snd, 2100)
+            SetSoundDistances(snd, 600., 10000.)
+            SetSoundDistanceCutoff(snd, 2100.)
             SetSoundConeAngles(snd, 0.0, 0.0, 127)
             SetSoundConeOrientation(snd, 0.0, 0.0, 0.0)
             SetSoundPosition(snd, x, y, 50.)
             StartSound(snd)
-            --KillSoundWhenDone(snd)
+            KillSoundWhenDone(snd)
         snd = nil
     end
 
@@ -243,6 +244,8 @@ do
 
     function InitWeather(area)
 
+        --if true then return end
+
         RainSound = CreateSound("rain.wav", true, false, false, 100, 100, "")
         DurationTimer = CreateTimer()
         CreationTimer = CreateTimer()
@@ -256,7 +259,8 @@ do
             Showed[i] = true
         end
 
-        TimerStart(CreateTimer(), CREATION_UPDATE, true, function()
+        local timer = CreateTimer()
+        TimerStart(timer, CREATION_UPDATE, true, function()
             local start_x = GetRectMinX(AREA)
             local start_y = GetRectMaxY(AREA)
             local x = 0
@@ -294,7 +298,8 @@ do
 
         end)
 
-        TimerStart(CreateTimer(), 1., true, WeatherUpdate)
+        local timer = CreateTimer()
+        TimerStart(timer, 1., true, WeatherUpdate)
     end
 
 end

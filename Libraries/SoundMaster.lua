@@ -8,7 +8,8 @@ do
         SetSoundPitch(sound, 1)
         SetSoundDistances(sound, 600., 10000.)
         SetSoundDistanceCutoff(sound, 99999999999999999.)
-        TimerStart(CreateTimer(), 0.000, false, function()
+        local timer = CreateTimer()
+        TimerStart(timer, 0.000, false, function()
             SetSoundDistanceCutoff(sound, cutoff or 2100.)
             DestroyTimer(GetExpiredTimer())
         end)
@@ -76,7 +77,8 @@ do
 
         fadetime = fadetime / 0.025
 
-            TimerStart(CreateTimer(), 0.025, true, function()
+            local timer = CreateTimer()
+            TimerStart(timer, 0.025, true, function()
                 soundpack.current_volume = soundpack.current_volume - (soundpack.volume_max / fadetime)
 
                 if soundpack.current_volume <= 0 then
@@ -98,8 +100,8 @@ do
         if not vector then step = -step end
         local volume = vector and 0 or soundpack.current_volume
 
-
-            TimerStart(CreateTimer(), 0.025, true, function()
+            local timer = CreateTimer()
+            TimerStart(timer, 0.025, true, function()
                 volume = volume + step
 
                     if volume <= 0 and not vector then

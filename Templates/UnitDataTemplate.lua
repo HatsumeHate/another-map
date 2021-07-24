@@ -61,13 +61,13 @@ do
 
         ---@param source unit
         function GetUnitData(source)
-            return UnitsList[GetHandleId(source)]
+            return UnitsList[source]
         end
 
 
         ---@param unit unit
         function GetUnitClass(unit)
-            return UnitsList[GetHandleId(unit)].unit_class or NO_CLASS
+            return UnitsList[unit].unit_class or NO_CLASS
         end
 
 
@@ -162,7 +162,7 @@ do
         if reference_data.missile_eject_range then data.missile_eject_range = reference_data.missile_eject_range end
         if reference_data.missile_eject_angle then data.missile_eject_angle = reference_data.missile_eject_angle end
 
-        UnitsList[GetHandleId(source)] = data
+        UnitsList[source] = data
 
         if reference_data.skill_list then
             for i = 1, #reference_data.skill_list do
@@ -1522,7 +1522,7 @@ do
 
             local unit = GetTriggerUnit()
 
-                if UnitsList[GetHandleId(unit)] == nil and UnitsData[GetUnitTypeId(unit)] then
+                if UnitsList[unit] == nil and UnitsData[GetUnitTypeId(unit)] then
                     NewUnitByTemplate(unit, UnitsData[GetUnitTypeId(unit)])
                     OnUnitCreated(unit)
                 end
@@ -1542,9 +1542,10 @@ do
                     --PauseTimer(unit_data.attack_timer)
 
                     if unit_data.time_before_remove > 0. then
-                        local handle = GetHandleId(unit_data.Owner)
+                        local handle = unit_data.Owner
 
-                            TimerStart(CreateTimer(), unit_data.time_before_remove, false, function ()
+                            local timer = CreateTimer()
+                            TimerStart(timer, unit_data.time_before_remove, false, function ()
                                 DestroyTimer(unit_data.action_timer)
                                 DestroyTimer(unit_data.attack_timer)
                                 UnitsList[handle] = nil

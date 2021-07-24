@@ -255,8 +255,8 @@ do
 
                 if damage_type == DAMAGE_TYPE_PHYSICAL then
                     local damage_effect = AddSpecialEffect("DamageEffect.mdx", GetUnitX(target), GetUnitY(target))
-
-                        BlzSetSpecialEffectYaw(damage_effect, AngleBetweenUnits(target, source) * bj_DEGTORAD)
+                        BlzSetSpecialEffectOrientation(damage_effect, AngleBetweenUnits(target, source) * bj_DEGTORAD, 0., 0.)
+                        --BlzSetSpecialEffectYaw(damage_effect, AngleBetweenUnits(target, source) * bj_DEGTORAD)
                         BlzSetSpecialEffectZ(damage_effect, GetUnitZ(target) + 55.)
 
                     DestroyEffect(damage_effect)
@@ -367,9 +367,11 @@ do
 
         OrderInterceptionTrigger = CreateTrigger()
 
+
         TriggerAddAction(OrderInterceptionTrigger, function()
-            if GetOrderTargetUnit() and GetIssuedOrderId() == order_attack and IsAHero(GetOrderTargetUnit()) then
-                DelayAction(0., function() IssueImmediateOrderById(GetTriggerUnit(), order_stop) end)
+            if IsAHero(GetTriggerUnit()) and IsAHero(GetAttacker()) then
+                BlzUnitInterruptAttack(GetAttacker())
+                --DelayAction(0., function() IssueImmediateOrderById(GetAttacker(), order_stop) end)
             end
         end)
 

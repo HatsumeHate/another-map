@@ -7,6 +7,7 @@ do
 
     GlobalButton = {}
     FrameState = {}
+    GlobalFrameState = {}
 
 
     CHAR_PANEL = 1
@@ -30,13 +31,22 @@ do
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_C, 0, true)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_B, 0, true)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_ESCAPE, 0, true)
+        GlobalFrameState[player_id] = false
+        --if GetLocalPlayer() == Player(player_id - 1) then
+            --BlzFrameSetVisible(GlobalButton[player_id].char_panel_button, true)
+            --BlzFrameSetVisible(GlobalButton[player_id].inventory_panel_button, true)
+            --BlzFrameSetVisible(GlobalButton[player_id].skill_panel_button, true)
+        --end
+    end
+
+    function EnableGUIForPlayer(player_id)
+        GlobalFrameState[player_id] = true
         if GetLocalPlayer() == Player(player_id - 1) then
             BlzFrameSetVisible(GlobalButton[player_id].char_panel_button, true)
             BlzFrameSetVisible(GlobalButton[player_id].inventory_panel_button, true)
             BlzFrameSetVisible(GlobalButton[player_id].skill_panel_button, true)
         end
     end
-
 
     local PlayerUIQueue
 
@@ -162,18 +172,22 @@ do
             local player = GetPlayerId(GetTriggerPlayer()) + 1
             local key = BlzGetTriggerPlayerKey()
 
+                if not GlobalFrameState[player] then
+                    return
+                end
+
                 if key == OSKEY_TAB then
-                    BlzFrameClick(GlobalButton[player].inventory_panel_button)
+                    --BlzFrameClick(GlobalButton[player].inventory_panel_button)
                     PlayLocalSound("Sound\\Interface\\BigButtonClick.wav", player-1)
-                    --SetUIState(player, INV_PANEL, not FrameState[player][INV_PANEL])
+                    SetUIState(player, INV_PANEL, not FrameState[player][INV_PANEL])
                 elseif key == OSKEY_C then
-                    BlzFrameClick(GlobalButton[player].char_panel_button)
+                    --BlzFrameClick(GlobalButton[player].char_panel_button)
                     PlayLocalSound("Sound\\Interface\\BigButtonClick.wav", player-1)
-                    --SetUIState(player, CHAR_PANEL, not FrameState[player][CHAR_PANEL])
+                    SetUIState(player, CHAR_PANEL, not FrameState[player][CHAR_PANEL])
                 elseif key == OSKEY_B then
-                    BlzFrameClick(GlobalButton[player].skill_panel_button)
+                    --BlzFrameClick(GlobalButton[player].skill_panel_button)
                     PlayLocalSound("Sound\\Interface\\BigButtonClick.wav", player-1)
-                    --SetUIState(player, SKILL_PANEL, not FrameState[player][SKILL_PANEL])
+                    SetUIState(player, SKILL_PANEL, not FrameState[player][SKILL_PANEL])
                 elseif key == OSKEY_ESCAPE then
                     if #PlayerUIQueue[player] > 0 then
                         PlayLocalSound("Sound\\Interface\\Click.wav", player-1)

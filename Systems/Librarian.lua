@@ -56,7 +56,7 @@ do
         local new_Frame = BlzCreateFrame('ScriptDialogButton', parent_frame, 0, 0)
         local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
 
-        ButtonList[GetHandleId(new_Frame)] = {
+        ButtonList[new_Frame] = {
             button_type = button_type,
             item = nil,
             button = new_Frame,
@@ -104,7 +104,7 @@ do
 
             BlzTriggerRegisterFrameEvent(ClickTrigger, frame, FRAMEEVENT_CONTROL_CLICK)
 
-            ButtonList[GetHandleId(frame)] = {
+            ButtonList[frame] = {
                 button = frame,
                 button_type = 1
             }
@@ -295,7 +295,8 @@ do
                             PlayLocalSound(soundpack.open[GetRandomInt(1, #soundpack.open)], id, 125)
                         end
 
-                            TimerStart(CreateTimer(), 0.1, true, function()
+                            local timer = CreateTimer()
+                            TimerStart(timer, 0.1, true, function()
                                 if not IsUnitInRange(hero, unit_owner, 299.) or IsUnitHidden(unit_owner) then
                                     --DestroySlider(player)
                                     RemovePlayerItems(player)

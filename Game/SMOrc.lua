@@ -30,8 +30,8 @@ do
         }
 
         ShowUnit(SMOrc, false)
-
-            TimerStart(CreateTimer(), 360., true, function()
+            local timer = CreateTimer()
+            TimerStart(timer, 360., true, function()
 
                 if IsUnitHidden(SMOrc) then
                     SMOrc_location = SMOrc_potential_locations[GetRandomInt(1, #SMOrc_potential_locations)]

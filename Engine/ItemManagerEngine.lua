@@ -42,6 +42,30 @@ do
         [QUIVER_OFFHAND]        = 0.65,
     }
 
+    ITEMSUBTYPES_MODELS = {
+        [BOW_WEAPON]            = { model = "FlippyBow.mdx", scale = 0.8  },
+        [BLUNT_WEAPON]          = { model = "FlippyBlunt.mdx", scale = 0.8  },
+        [GREATBLUNT_WEAPON]     = { model = "FlippyGreatBlunt.mdx", scale = 0.8  },
+        [SWORD_WEAPON]          = { model = "FlippySword.mdx", scale = 0.7  },
+        [GREATSWORD_WEAPON]     = { model = "FlippyGreatSword.mdx", scale = 0.6  },
+        [AXE_WEAPON]            = { model = "FlippyAxe.mdx", scale = 0.9  },
+        [GREATAXE_WEAPON]       = { model = "FlippyGreatAxe.mdx", scale = 0.7  },
+        [DAGGER_WEAPON]         = { model = "FlippyDagger.mdx", scale = 0.7  },
+        [STAFF_WEAPON]          = { model = "FlippyStaff.mdx", scale = 0.8  },
+        [JAWELIN_WEAPON]        = { model = "FlippyAmulet.mdx", scale = 0.9  },
+        [HEAD_ARMOR]            = { model = "FlippyHelmet.mdx", scale = 1.  },
+        [CHEST_ARMOR]           = { model = "FlippyChest.mdx", scale = 1.  },
+        [LEGS_ARMOR]            = { model = "FlippyBoots.mdx", scale = 1.  },
+        [HANDS_ARMOR]           = { model = "FlippyHands.mdx", scale = 0.8  },
+        [BELT_ARMOR]            = { model = "FlippyBelt.mdx", scale = 0.8  },
+        [RING_JEWELRY]          = { model = "FlippyRing.mdx", scale = 1.  },
+        [NECKLACE_JEWELRY]      = { model = "FlippyAmulet.mdx", scale = 1.  },
+        [THROWING_KNIFE_WEAPON] = { model = "FlippyAmulet.mdx", scale = 0.9  },
+        [SHIELD_OFFHAND]        = { model = "FlippyShield.mdx", scale = 0.8  },
+        [ORB_OFFHAND]           = { model = "FlippyOrb.mdx", scale = 0.9  },
+        [QUIVER_OFFHAND]        = { model = "FlippyQuiver.mdx", scale = 1.  },
+    }
+
 
     SOUNDPACK_SWORD_1 = 1; SOUNDPACK_SWORD_2 = 2; SOUNDPACK_2HSWORD = 3
     SOUNDPACK_BLUNT = 4
@@ -157,19 +181,21 @@ do
 
     ---@param my_item item
     function GetItemNameColorized(my_item)
-        local item_data = ITEM_DATA[GetHandleId(my_item)]
+        local item_data = GetItemData(my_item)
         return QUALITY_COLOR[item_data.QUALITY] .. item_data.NAME .. '|r'
     end
 
 
     ---@param my_item item
     function GetItemData(my_item)
-        return ITEM_DATA[GetHandleId(my_item)] or nil
+        return ITEM_DATA[my_item] or nil
     end
 
 
     function RemoveCustomItem(item)
-        ITEM_DATA[GetHandleId(item)] = nil
+        if item == nil then return end
+        if ITEM_DATA[item].quality_effect then DestroyEffect(ITEM_DATA[item].quality_effect) end
+        ITEM_DATA[item] = nil
         RemoveItem(item)
     end
 
@@ -200,6 +226,16 @@ do
                 BlzSetSpecialEffectScale(data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[data.SUBTYPE])
             end
 
+
+
+    end
+
+    function ApplyQualityGlowColour(item)
+        local item_data = GetItemData(item)
+        local color_table = GetQualityEffectColor(item_data.QUALITY)
+        BlzSetSpecialEffectColor(item_data.quality_effect, color_table.r, color_table.g, color_table.b)
+        BlzSetSpecialEffectScale(item_data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[item_data.SUBTYPE])
+        --print("apply colour")
     end
 
 
@@ -220,7 +256,8 @@ do
         local timer = CreateTimer()
 
             RegionAddRect(region, rect)
-            BlzSetSpecialEffectYaw(effect, GetRandomInt(1, 360) * bj_DEGTORAD)
+            BlzSetSpecialEffectOrientation(effect, GetRandomInt(1, 360) * bj_DEGTORAD, 0.,0.)
+            --BlzSetSpecialEffectYaw(effect, GetRandomInt(1, 360) * bj_DEGTORAD)
 
             local result_scale = (amount  / MAX_GOLD_SCALE_AMOUNT) + MIN_GOLD_SCALE
 
@@ -265,38 +302,89 @@ do
         if raw == 0 then return end
 		local id     = FourCC(raw)
 		local item   = CreateItem(id, x, y)
-		local handle = GetHandleId(item)
+		--local handle = GetHandleId(item)
 		local data   = MergeTables({}, ITEM_TEMPLATE_DATA[id])
 
             data.item = item
             BlzSetItemName(item, GetQualityColor(data.QUALITY) .. data.NAME .. "|r")
             data.actual_name = GetQualityColor(data.QUALITY) .. data.NAME .. '|r'
 
-            ITEM_DATA[handle] = data
+
+            if data.flippy then
+                local color_table = GetQualityEffectColor(data.QUALITY)
+                data.quality_effect = AddSpecialEffect("QualityGlow.mdx", x, y)
+                BlzSetSpecialEffectColor(data.quality_effect, color_table.r, color_table.g, color_table.b)
+                BlzSetSpecialEffectScale(data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[data.SUBTYPE])
+                BlzSetSpecialEffectAlpha(data.quality_effect, 0)
+                BlzSetItemSkin(item, FourCC("I01X"))
+            end
+
+            ITEM_DATA[item] = data
+
 
             if drop_animation then
                 DelayAction(0., function()
-                    local volume = 0
 
-                    if ITEM_DATA[handle].owner then if GetLocalPlayer() == Player(ITEM_DATA[handle].owner) then volume = 128 end
-                    else volume = 128 end
+                    if data.flippy then
 
-                        if data.flippy then
+                        local model_path = ITEMSUBTYPES_MODELS[data.SUBTYPE].model
 
-                            AddSoundVolume("Sound\\flippy.wav", x, y, volume, 2100.)
-                            TimerStart(CreateTimer(), 0.48, false, function()
-                                if data.soundpack then AddSoundVolume(data.soundpack.drop, x, y, volume, 2100.) end
-                                CreateQualityEffect(item)
-                                DestroyTimer(GetExpiredTimer())
-                            end)
-
-                        else
-
-                            if data.soundpack then AddSoundVolume(data.soundpack.drop, x, y, volume, 2100.) end
-
+                        if data.owner then
+                            if GetLocalPlayer() ~= Player(data.owner) then
+                                model_path = ""
+                            end
                         end
 
+                        local item_effect = AddSpecialEffect(model_path, x, y)
+                        BlzPlaySpecialEffect(item_effect, ANIM_TYPE_BIRTH)
+                        BlzSetSpecialEffectScale(item_effect, ITEMSUBTYPES_MODELS[data.SUBTYPE].scale)
+                        BlzSetSpecialEffectOrientation(item_effect, 270. * bj_DEGTORAD, 0., 0.)
+                        --BlzSetSpecialEffectYaw(item_effect, 270. * bj_DEGTORAD)
+
+
+                        if data.owner then AddSoundForPlayerVolumeZ("Sound\\flippy.wav", x, y, 35., 128, 2100., data.owner)
+                        else AddSoundVolume("Sound\\flippy.wav", x, y, 128, 2100.) end
+                        local timer = CreateTimer()
+                        TimerStart(timer, 0.48, false, function()
+
+                            if data.owner then
+                                if GetLocalPlayer() == Player(data.owner) then
+                                    BlzSetSpecialEffectAlpha(data.quality_effect, 255)
+                                    BlzSetItemSkin(item, GetItemTypeId(item))
+                                end
+                                if data.soundpack then AddSoundForPlayerVolumeZ(data.soundpack.drop, x, y, 35., 128, 2100., data.owner) end
+                            else
+                                if not data.picked_up then
+                                    BlzSetSpecialEffectAlpha(data.quality_effect, 255)
+                                    BlzSetItemSkin(item, GetItemTypeId(item))
+                                    if data.soundpack then AddSoundVolume(data.soundpack.drop, x, y, 128, 2100.) end
+                                end
+                            end
+
+                            DestroyEffect(item_effect)
+                            DestroyTimer(GetExpiredTimer())
+                        end)
+
+                    else
+
+                        if data.owner then AddSoundForPlayerVolumeZ(data.soundpack.drop, x, y, 35., 128, 2100., data.owner)
+                        else AddSoundVolume(data.soundpack.drop, x, y, 128, 2100.) end
+
+                    end
+
                 end)
+            else
+                if data.owner then
+                    if GetLocalPlayer() == Player(data.owner) then
+                        BlzSetSpecialEffectAlpha(data.quality_effect, 255)
+                        BlzSetItemSkin(item, GetItemTypeId(item))
+                    else BlzSetSpecialEffectAlpha(data.quality_effect, 0) end
+                else
+                    if not data.picked_up then
+                        BlzSetSpecialEffectAlpha(data.quality_effect, 255)
+                        BlzSetItemSkin(item, GetItemTypeId(item))
+                    end
+                end
             end
 
             GenerateItemLevel(item, 1)
@@ -311,13 +399,20 @@ do
     ---@param y real
     function CreateCustomItem_Id(id, x, y)
         local item   = CreateItem(id, x, y)
-        local handle = GetHandleId(item)
+        --local handle = GetHandleId(item)
         local data   = MergeTables({}, ITEM_TEMPLATE_DATA[id])
 
             data.item = item
             BlzSetItemName(item, GetQualityColor(data.QUALITY) .. data.NAME .. "|r")
             data.actual_name = GetQualityColor(data.QUALITY) .. data.NAME .. '|r'
-            ITEM_DATA[handle] = data
+            ITEM_DATA[item] = data
+
+            if data.flippy then
+                local color_table = GetQualityEffectColor(data.QUALITY)
+                data.quality_effect = AddSpecialEffect("QualityGlow.mdx", x, y)
+                BlzSetSpecialEffectColor(data.quality_effect, color_table.r, color_table.g, color_table.b)
+                BlzSetSpecialEffectScale(data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[data.SUBTYPE])
+            end
 
             if IsRandomGeneratedId(id) then GenerateItemStats(item, 1, COMMON_ITEM)
             else GenerateItemLevel(item, 1) end
@@ -325,9 +420,6 @@ do
             if data.TYPE == ITEM_TYPE_SKILLBOOK then GenerateItemBookSkill(item)
             elseif data.TYPE == ITEM_TYPE_CONSUMABLE and data.cooldown_type then BlzSetItemIntegerField(item, ITEM_IF_COOLDOWN_GROUP, data.cooldown_type) end
 
-                if data.flippy then
-                    CreateQualityEffect(item)
-                end
 
         return item
     end
@@ -596,6 +688,7 @@ do
             item_data.soundpack = item_preset.soundpack
             item_data.stat_modificator = item_preset.modificator
             --print("1")
+            ApplyQualityGlowColour(item)
 
                 if item_data.TYPE == ITEM_TYPE_WEAPON then
 
@@ -775,7 +868,81 @@ do
 
 
 
+    function RegisterItemPickUp(unit)
+        local trg = CreateTrigger()
 
+        TriggerRegisterUnitEvent(trg, unit, EVENT_UNIT_ISSUED_TARGET_ORDER)
+        TriggerAddAction(trg, function()
+
+            if GetOrderTargetItem() == nil or IsItemInvulnerable(GetOrderTargetItem()) then
+                return
+            end
+
+            if GetItemType(GetOrderTargetItem()) ~= ITEM_TYPE_POWERUP then
+                local player = GetPlayerId(GetOwningPlayer(unit)) + 1
+                local item = GetOrderTargetItem()
+                local item_data = GetItemData(item)
+
+                if not item_data.picked_up then
+                    --SetItemVisible(item, true)
+                    local angle = AngleBetweenXY_DEG(GetItemX(item), GetItemY(item), GetUnitX(unit), GetUnitY(unit))
+
+                        if IsUnitInRangeXY(unit, GetItemX(item), GetItemY(item), 200.) then
+                            --DisableTrigger(trg)
+                            --print("pick up order trigger")
+                            --local item_data = GetItemData(item)
+                            --local x = GetItemX(item); local y = GetItemY(item)
+                            --BlzSetItemStringField(item, ITEM_SF_MODEL_USED)
+                            AddToInventory(player, item)
+                            --IssueImmediateOrderById(unit, order_stop)
+                            SetUnitFacingTimed(unit, angle+180.,0.)
+                            --IssueImmediateOrderById(unit, order_stop)
+                            --SafePauseUnit(unit, true)
+                            --IssueImmediateOrderById(unit, order_stop)
+                            --DelayAction(0.3, function()
+                                --IssueImmediateOrderById(unit, order_stop)
+                                --SafePauseUnit(unit, false)
+                                --EnableTrigger(trg)
+                           -- end)
+                        else
+                            IssuePointOrderById(unit, order_move, GetItemX(item) + Rx(25., angle), GetItemY(item) + Ry(25., angle))
+                        end
+
+                end
+
+            elseif GetItemType(GetOrderTargetItem()) == ITEM_TYPE_POWERUP then
+                --print("powerup")
+                if IsUnitInRangeXY(unit, GetItemX(GetOrderTargetItem()), GetItemY(GetOrderTargetItem()), 200.) then
+                    --print("use")
+                    UnitAddItem(unit, GetOrderTargetItem())
+                end
+            end
+
+        end)
+
+
+        local trg2 = CreateTrigger()
+        TriggerRegisterUnitEvent(trg2, unit, EVENT_UNIT_PICKUP_ITEM)
+        TriggerAddAction(trg2, function()
+            if not IsItemInvulnerable(GetManipulatedItem()) and GetItemType(GetOrderTargetItem()) ~= ITEM_TYPE_POWERUP then
+                --print("pick up trigger")
+                UnitRemoveItem(unit, GetManipulatedItem())
+                SetItemVisible(GetManipulatedItem(), false)
+            end
+        end)
+
+        local trg3 = CreateTrigger()
+        TriggerRegisterUnitEvent(trg3, unit, EVENT_UNIT_USE_ITEM)
+        TriggerAddAction(trg3, function()
+            local player = GetPlayerId(GetOwningPlayer(unit)) + 1
+                OnItemUse(unit, GetManipulatedItem(), GetEventTargetUnit() or nil)
+                if PlayerInventoryFrameState[player] or GetItemType(GetManipulatedItem()) == ITEM_TYPE_CHARGED then
+                    UpdateInventoryWindow(player)
+                end
+
+        end)
+
+    end
 
 
     function EnumItemsOnInit()
@@ -855,11 +1022,11 @@ do
             item = nil
         end)
 
-        for i = 1, bj_MAX_PLAYERS do
+        for i = 1, 6 do
             PlayerPickUpItemFlag[i] = false
         end
 
-
+--[[
         local trg = CreateTrigger()
         TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER)
         TriggerAddAction(trg, function()
@@ -868,39 +1035,33 @@ do
                 return
             end
 
-            if GetItemType(GetOrderTargetItem()) ~= ITEM_TYPE_POWERUP and not PlayerPickUpItemFlag[GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1] then
+            if GetItemType(GetOrderTargetItem()) ~= ITEM_TYPE_POWERUP then
                 local unit = GetTriggerUnit()
                 local player = GetPlayerId(GetOwningPlayer(unit)) + 1
                 local item = GetOrderTargetItem()
                 local angle = AngleBetweenXY_DEG(GetItemX(item), GetItemY(item), GetUnitX(unit), GetUnitY(unit))
 
-                    if IsUnitInRangeXY(unit, GetItemX(item), GetItemY(item), 200.) and not PlayerPickUpItemFlag[player] then
+                    if IsUnitInRangeXY(unit, GetItemX(item), GetItemY(item), 200.) then
+                        --and not PlayerPickUpItemFlag[player]
+                        --PlayerPickUpItemFlag[player] = true
+                        SetItemVisible(item, true)
                         --print("pick up order trigger")
-                        PlayerPickUpItemFlag[player] = true
                         local item_data = GetItemData(item)
                         local x = GetItemX(item); local y = GetItemY(item)
-                        UnitRemoveItem(unit, item)
-                        IssuePointOrderById(unit, order_move, GetUnitX(unit) + 0.01, GetUnitY(unit) - 0.01)
-                        local done = AddToInventory(player, item)
-                        if done and item_data.quality_effect ~= nil then DestroyEffect(item_data.quality_effect) end
-                        IssueImmediateOrderById(unit, order_stop)
+                        AddToInventory(player, item)
                         SetUnitFacingTimed(unit, angle+180.,0.)
-                        DelayAction(0.035, function()
-                            PlayerPickUpItemFlag[player] = false
-                            --IssuePointOrderById(unit, order_move, x + Rx(5., angle), y + Ry(5., angle))
-                        end)
+                        --DelayAction(0.1, function()
+                            --PlayerPickUpItemFlag[player] = false
+                        --end)
                     else
                         IssuePointOrderById(unit, order_move, GetItemX(item) + Rx(25., angle), GetItemY(item) + Ry(25., angle))
                     end
 
-                item = nil
-                unit = nil
             elseif GetItemType(GetOrderTargetItem()) == ITEM_TYPE_POWERUP then
                 --print("powerup")
                 if IsUnitInRangeXY(GetTriggerUnit(), GetItemX(GetOrderTargetItem()), GetItemY(GetOrderTargetItem()), 200.) then
                     --print("use")
                     UnitAddItem(GetTriggerUnit(), GetOrderTargetItem())
-                    --UnitUseItem(GetTriggerUnit(), GetOrderTargetItem())
                 end
             end
 
@@ -927,11 +1088,36 @@ do
                 end
 
         end)
-
+        ]]
 
         RegisterTestCommand("dd", function()
             local item = CreateCustomItem(GetRandomGeneratedItemId(), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), true)
-            GenerateItemStats(item, 1, COMMON_ITEM)
+            GenerateItemStats(item, 1, GetRandomInt(COMMON_ITEM, MAGIC_ITEM))
+        end)
+
+        RegisterTestCommand("dd1", function()
+            local item = CreateCustomItem(GetRandomGeneratedItemId(), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), true)
+            GenerateItemStats(item, 1, GetRandomInt(COMMON_ITEM, MAGIC_ITEM))
+            local item_data = GetItemData(item)
+            item_data.owner = 0
+            --if GetLocalPlayer() ~= Player(item_data.owner) then
+                --BlzSetItemSkin(item, FourCC("I01X"))
+            --end
+            --SetItemVisible(item, GetLocalPlayer() == Player(0))
+        end)
+
+        RegisterTestCommand("dd2", function()
+            local item = CreateCustomItem(GetRandomGeneratedItemId(), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), true)
+            GenerateItemStats(item, 1, GetRandomInt(COMMON_ITEM, MAGIC_ITEM))
+            local item_data = GetItemData(item)
+            item_data.owner = 1
+           -- if GetLocalPlayer() ~= Player(item_data.owner) then
+              --  BlzSetItemSkin(item, FourCC("I01X"))
+           -- end
+            DelayAction(10., function()
+                BlzSetItemSkin(item, GetItemTypeId(item))
+            end)
+            --SetItemVisible(item, GetLocalPlayer() == Player(1))
         end)
 
         RegisterTestCommand("db", function()

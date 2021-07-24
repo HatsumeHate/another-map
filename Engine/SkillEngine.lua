@@ -215,13 +215,13 @@ do
             --print("UpdateBindedSkillData - ability level " .. level)
 
                 BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[level].range or 0.)
-                --print("UpdateBindedSkillData - cast range done")
+                --print("UpdateBindedSkillData - cast range done " .. skill.level[level].range)
                 BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[level].radius or 0.)
-                --print("UpdateBindedSkillData - radius done")
+                --print("UpdateBindedSkillData - radius done " .. skill.level[level].radius)
                 BlzSetAbilityIntegerLevelField(ability, ABILITY_ILF_TARGET_TYPE, 0, skill.activation_type)
-                --print("UpdateBindedSkillData - activation type done")
+                --print("UpdateBindedSkillData - activation type done " .. skill.activation_type)
                 BlzSetUnitAbilityManaCost(PlayerHero[player], ability_id, 0, R2I(skill.level[level].resource_cost or 0.))
-                --print("UpdateBindedSkillData - mana cost done")
+                --print("UpdateBindedSkillData - mana cost done " .. R2I(skill.level[level].resource_cost))
                 SetAbilityExtendedTooltip(PlayerHero[player], id, player)
                 --print("UpdateBindedSkillData - SetAbilityExtendedTooltip done")
         end
@@ -250,12 +250,13 @@ do
             BlzSetAbilityIntegerLevelField(ability, ABILITY_ILF_TARGET_TYPE, 0, skill.activation_type)
             BlzSetUnitAbilityManaCost(unit, ability_id, 0, R2I(skill.level[level].resource_cost or 0.))
 
+            --print("BindAbilityKey - start")
+            --print("BindAbilityKey - id ".. ability_id)
+            --print("BindAbilityKey - name ".. skill.name)
+            --print("BindAbilityKey - bind name ".. KEYBIND_LIST[key].name_string)
+            --print("BindAbilityKey - icon ".. skill.icon)
+
                 if GetLocalPlayer() == GetOwningPlayer(unit) then
-                    --print("BindAbilityKey - local - start")
-                    --print("BindAbilityKey - local - id ".. ability_id)
-                    --print("BindAbilityKey - local - id ".. skill.name)
-                    --print("BindAbilityKey - local - bind name ".. KEYBIND_LIST[key].name_string)
-                    --print("BindAbilityKey - local - icon ".. skill.icon)
                     BlzSetAbilityTooltip(ability_id, skill.name .. KEYBIND_LIST[key].name_string, 0)
                     BlzSetAbilityIcon(ability_id, skill.icon)
                 end
@@ -318,7 +319,7 @@ do
                     unit_data.skill_list[i].current_level = unit_data.skill_list[i].current_level + amount
                     GenerateSkillLevelData(unit_data.skill_list[i], unit_data.skill_list[i].current_level)
                     UpdateBindedSkillData(id, GetPlayerId(GetOwningPlayer(unit)) + 1)
-                    print("current unit ability level " .. unit_data.skill_list[i].current_level)
+                    --print("current unit ability level " .. unit_data.skill_list[i].current_level)
                     return true
                 end
             end
@@ -337,7 +338,7 @@ do
                 if unit_data.skill_list[i].Id == id then
                     unit_data.skill_list[i].current_level = lvl
                     UpdateBindedSkillData(id, GetPlayerId(GetOwningPlayer(unit)) + 1)
-                    print("set unit ability level " .. unit_data.skill_list[i].current_level)
+                    --print("set unit ability level " .. unit_data.skill_list[i].current_level)
                     return true
                 end
             end
@@ -391,14 +392,14 @@ do
 
             for i = 1, #unit_data.skill_list do
                 if unit_data.skill_list[i].Id == id then
-                    print("ability ".. unit_data.skill_list[i].name .. " exists!")
+                    --print("ability ".. unit_data.skill_list[i].name .. " exists!")
                     return false
                 end
             end
 
             unit_data.skill_list[#unit_data.skill_list + 1] = MergeTables({}, skill_data)
 
-            print("new skill added ".. unit_data.skill_list[#unit_data.skill_list].name)
+            --print("new skill added ".. unit_data.skill_list[#unit_data.skill_list].name)
 
         return true
     end
@@ -484,7 +485,8 @@ do
 
 
     function InitializeSkillEngine()
-        TimerStart(CreateTimer(), 1., false, function()
+        local timer = CreateTimer()
+        TimerStart(timer, 1., false, function()
 
 
             KEYBIND_LIST = {
@@ -622,7 +624,8 @@ do
                                     BlzSetSpecialEffectScale(casteffect, pack.on_caster[i].scale or 1.)
 
                                         if pack.on_caster[i].duration and pack.on_caster[i].duration > 0. then
-                                            TimerStart(CreateTimer(), pack.on_caster[i].duration, false, function()
+                                            local timer = CreateTimer()
+                                            TimerStart(timer, pack.on_caster[i].duration, false, function()
                                                 DestroyEffect(casteffect)
                                                 DestroyTimer(GetExpiredTimer())
                                             end)

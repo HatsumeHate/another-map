@@ -98,7 +98,8 @@ do
 
     function OnMissileLaunch(source, target, missile)
         if missile.id == 'M001' then
-            TimerStart(CreateTimer(), 0.25, true, function ()
+            local timer = CreateTimer()
+            TimerStart(timer, 0.25, true, function ()
                 RedirectMissile_Deg(missile, GetRandomReal(0., 359.))
                 if missile == nil then
                     DestroyTimer(GetExpiredTimer())
@@ -297,7 +298,8 @@ do
         elseif id == 'A010' then WhirlwindActivate(source)
         elseif id == 'A00B' then
             local effect = AddSpecialEffect("Spell\\DetroitSmash_Effect.mdx", GetUnitX(source) + Rx(50., GetUnitFacing(source)), GetUnitY(source) + Ry(50., GetUnitFacing(source)))
-            BlzSetSpecialEffectYaw(effect, GetUnitFacing(source) * bj_DEGTORAD)
+            BlzSetSpecialEffectOrientation(effect, GetUnitFacing(source) * bj_DEGTORAD, 0., 0.)
+            --BlzSetSpecialEffectYaw(effect, GetUnitFacing(source) * bj_DEGTORAD)
             BlzSetSpecialEffectScale(effect, 0.7)
             DestroyEffect(effect)
         elseif id == "A006" then
@@ -307,9 +309,10 @@ do
             local effect = AddSpecialEffect("Spell\\Coup de Grace.mdx", GetUnitX(source), GetUnitY(source))
             local z = GetUnitZ(source) + 50.
 
-                BlzSetSpecialEffectYaw(effect, angle * bj_DEGTORAD)
-
-                TimerStart(CreateTimer(), 0.025, true, function()
+                BlzSetSpecialEffectOrientation(effect, angle * bj_DEGTORAD, 0., 0.)
+                --BlzSetSpecialEffectYaw(effect, angle * bj_DEGTORAD)
+                local timer = CreateTimer()
+                TimerStart(timer, 0.025, true, function()
                     if time > 0. then
                         effect_x = effect_x + Rx(17., angle)
                         effect_y = effect_y + Ry(17., angle)

@@ -366,7 +366,7 @@ do
             get_level_from_skill = "A005",
             level = {
                 [1] = {
-                    power = 66,
+                    power = 63,
                     --attack_percent_bonus = 1.,
                     delay = 0.1,
                     can_crit = true,
@@ -402,7 +402,7 @@ do
             stack_hitnumbers = true,
             level = {
                 [1] = {
-                    power = 21,
+                    power = 15,
                     --attack_percent_bonus = 1.,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
@@ -717,7 +717,7 @@ do
             level = {
                 [1] = {
                     power = 6,
-                    attack_percent_bonus = 1.,
+                    attack_percent_bonus = 0.65,
                     can_crit = true,
                     is_direct = true,
                     is_sound = true,
