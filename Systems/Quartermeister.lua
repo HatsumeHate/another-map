@@ -5,12 +5,13 @@
 ---
 do
 
-    PlayerQuartermeisterFrame = {}
+    PlayerQuartermeisterFrame = nil
 
 
     
     ---@param player number
     function DrawQuartermeisterFrames(player)
+        if true then return end
         local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
 
             --print("player number is " .. player)

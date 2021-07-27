@@ -7,8 +7,8 @@ do
 
 
 
-    local Locations = {}
-    local PlayerLocation = {}
+    local Locations
+    local PlayerLocation
     LOCATION_CASTLE = 1
     LOCATION_MAINROAD = 2
 
@@ -32,6 +32,10 @@ do
     end
 
     function InitLocations()
+
+        Locations = {}
+        PlayerLocation = {}
+
         local LocationChangeTrigger = CreateTrigger()
 
         for i = 1, 6 do

@@ -5,9 +5,9 @@
 ---
 do
 
-    GlobalButton = {}
-    FrameState = {}
-    GlobalFrameState = {}
+    GlobalButton = nil
+    FrameState = nil
+    GlobalFrameState = nil
 
 
     CHAR_PANEL = 1
@@ -114,6 +114,10 @@ do
     GUIManagerHotkeyTrigger = nil
 
     function InitGUIManager()
+
+        GlobalButton = {}
+        FrameState = {}
+        GlobalFrameState = {}
         GUIManagerHotkeyTrigger = CreateTrigger()
 
         PlayerUIQueue = {}

@@ -6,49 +6,8 @@
 do
 
 
-    MONSTER_STATS_RATES = {
-        { stat = PHYSICAL_ATTACK,       initial = 0,      delta = 1,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 1 },
-        { stat = MAGICAL_ATTACK,        initial = 0,      delta = 1,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 1 },
-        { stat = PHYSICAL_DEFENCE,      initial = 0,      delta = 3,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 5 },
-        { stat = MAGICAL_SUPPRESSION,   initial = 0,      delta = 2,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 3 },
-        { stat = PHYSICAL_ATTACK,       initial = 1.,   delta = 0.011,  delta_level = 1, method = MULTIPLY_BONUS },
-        { stat = PHYSICAL_DEFENCE,      initial = 1.,   delta = 0.01,  delta_level = 1, method = MULTIPLY_BONUS },
-        { stat = MAGICAL_ATTACK,        initial = 1.,   delta = 0.011,  delta_level = 1, method = MULTIPLY_BONUS },
-        { stat = MAGICAL_SUPPRESSION,   initial = 1.,   delta = 0.01,  delta_level = 1, method = MULTIPLY_BONUS },
-        { stat = CRIT_CHANCE,           initial = 0,      delta = 1.,    delta_level = 5, method = STRAIGHT_BONUS },
-        { stat = ALL_RESIST,            initial = 0,      delta = 1,     delta_level = 5, method = STRAIGHT_BONUS },
-        { stat = PHYSICAL_BONUS,        initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = ICE_BONUS,             initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = LIGHTNING_BONUS,       initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = FIRE_BONUS,            initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = DARKNESS_BONUS,        initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = HOLY_BONUS,            initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = POISON_BONUS,          initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = ARCANE_BONUS,          initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-        { stat = HP_VALUE,              initial = 0,      delta = 7,    delta_level = 1, method = STRAIGHT_BONUS, per_player = 15 },
-        { stat = HP_VALUE,              initial = 1.,   delta = 0.04,  delta_level = 1, method = MULTIPLY_BONUS },
-    }
-
-    BONUS_MONSTER_STAT_RATES = {
-        [FourCC("abcd")] = {
-            [PHYSICAL_ATTACK] = 0.
-        },
-        [FourCC("U003")] = {
-            scaling = {
-                { stat = HP_PER_HIT,              initial = 0,   delta = 1,  delta_level = 1, method = STRAIGHT_BONUS },
-            }
-        },
-        [FourCC("n01O")] = {
-            scaling = {
-                { stat = HP_PER_HIT,              initial = 0,   delta = 1,  delta_level = 1, method = STRAIGHT_BONUS },
-            }
-        },
-        [FourCC("u00N")] = {
-            scaling = {
-                { stat = HP_PER_HIT,              initial = 0,   delta = 1,  delta_level = 1, method = STRAIGHT_BONUS },
-            }
-        }
-    }
+    MONSTER_STATS_RATES = nil
+    BONUS_MONSTER_STAT_RATES = nil
 
 
     ---@param target unit

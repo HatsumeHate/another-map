@@ -5,7 +5,7 @@
 ---
 do
 
-    LibrarianFrame = {}
+    LibrarianFrame = nil
     local EXCHANGE_COST = 500
 
 
@@ -199,6 +199,7 @@ do
     function CreateLibrarian(unit_owner, texture)
 
 
+        LibrarianFrame = {}
 
         ClickTrigger = CreateTrigger()
         TriggerAddAction(ClickTrigger, function()

@@ -7,7 +7,7 @@ do
 
     local ChestRects
     local AltarRects
-    local AltarsList = {}
+    local AltarsList
     ALTAR_TYPE_WELL_HP = 1
     ALTAR_TYPE_WELL_MP = 2
     ALTAR_TYPE_OBELISK = 3
@@ -16,10 +16,6 @@ do
     local ChestMax = 15
     local ChestGroup
     local FirstTime_Data
-
-
-
-
     local AltarEffects
 
 
@@ -99,7 +95,7 @@ do
             TriggerRegisterUnitInRange(trg, altar, 1000., nil)
             TriggerAddAction(trg, function()
                 if IsAHero(GetTriggerUnit()) and not AltarsList[handle].texttag then
-                    --AltarsList[handle].texttag = CreateObeliskText(AltarsList[handle].obelisk_effect.name, rect)
+                    AltarsList[handle].texttag = CreateObeliskText(AltarsList[handle].obelisk_effect.name, rect)
                     local timer = CreateTimer()
                     TimerStart(timer, 5., true, function()
                         local count = 0
@@ -111,7 +107,7 @@ do
                         end
 
                         if count == 0 then
-                            --DestroyTextTag(AltarsList[handle].texttag)
+                            DestroyTextTag(AltarsList[handle].texttag)
                             AltarsList[handle].texttag = nil
                         end
 
@@ -138,6 +134,8 @@ do
 
 
     function InitAltars()
+
+        AltarsList = {}
 
         AltarEffects = {
             obelisk = {
@@ -295,7 +293,7 @@ do
 
 
                     if altar.altar_type == ALTAR_TYPE_OBELISK then
-                        --DestroyTextTag(altar.texttag)
+                        DestroyTextTag(altar.texttag)
                         if GetUnitTypeId(altar_unit) == FourCC("n00K") then AddUnitAnimationProperties(altar_unit, "alternate", false) end
                     elseif altar.altar_type == ALTAR_TYPE_WELL_HP or altar.altar_type == ALTAR_TYPE_WELL_MP then
                         SetUnitState(altar_unit, UNIT_STATE_MANA, 0.)
@@ -432,7 +430,6 @@ do
             [14] = gg_rct_altar_14,
             [15] = gg_rct_altar_15
         }
-
 
         for i = 1, #AltarRects do
             if Chance(65.) then

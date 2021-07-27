@@ -8,14 +8,7 @@ do
     WEATHER_MOONLIGHT = 5
     WEATHER_SUNLIGHT = 6
 
-    WeatherList = {
-        [WEATHER_WIND_LIGHT]    = { id = 'WOlw', min_time = 15., max_time = 55., key = 75 },
-        [WEATHER_WIND_HEAVY]    = { id = 'WOcw', min_time = 15., max_time = 45., key = 95 },
-        [WEATHER_RAIN_LIGHT]    = { id = 'RAlr', min_time = 15., max_time = 85., key = 65, volume = 40 },
-        [WEATHER_RAIN_HEAVY]    = { id = 'RLhr', min_time = 15., max_time = 85., key = 45, volume = 65 },
-        [WEATHER_MOONLIGHT]     = { id = 'LRma', min_time = 12., max_time = 27., key = 45 },
-        [WEATHER_SUNLIGHT]      = { id = 'LRaa', min_time = 15., max_time = 45., key = 55 }
-    }
+    WeatherList = nil
 
     local MAX_PLAYERS = 6
     local LIGHTNING_KEY = 50
@@ -27,8 +20,8 @@ do
     local DurationTimer
     local CreationTimer
     local SpecialTimer
-    local RectList = {}
-    local Showed = {}
+    local RectList
+    local Showed
 
 
 
@@ -245,6 +238,18 @@ do
     function InitWeather(area)
 
         --if true then return end
+
+        WeatherList = {
+            [WEATHER_WIND_LIGHT]    = { id = 'WOlw', min_time = 15., max_time = 55., key = 75 },
+            [WEATHER_WIND_HEAVY]    = { id = 'WOcw', min_time = 15., max_time = 45., key = 95 },
+            [WEATHER_RAIN_LIGHT]    = { id = 'RAlr', min_time = 15., max_time = 85., key = 65, volume = 40 },
+            [WEATHER_RAIN_HEAVY]    = { id = 'RLhr', min_time = 15., max_time = 85., key = 45, volume = 65 },
+            [WEATHER_MOONLIGHT]     = { id = 'LRma', min_time = 12., max_time = 27., key = 45 },
+            [WEATHER_SUNLIGHT]      = { id = 'LRaa', min_time = 15., max_time = 45., key = 55 }
+        }
+
+        RectList = {}
+        Showed = {}
 
         RainSound = CreateSound("rain.wav", true, false, false, 100, 100, "")
         DurationTimer = CreateTimer()

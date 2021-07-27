@@ -175,11 +175,14 @@
 			end
 			return false
 		end
-	end
+
+
+	local PauseDataTable
 
 	function UtilsInit()
 		hash         = InitHashtable()
 		Loc 		 = Location(0., 0.)
+		PauseDataTable = {}
 	end
 
 
@@ -220,9 +223,6 @@
 
 		return total_distance
 	end
-
-
-	local PauseDataTable = {}
 
 	---@param target unit
 	---@param flag boolean
@@ -763,3 +763,4 @@
 	end
 
 
+end

@@ -111,36 +111,7 @@ do
 
 
 
-	local ParameterLimits = {
-		[PHYSICAL_DEFENCE] = {
-			value_by_percent_1 = 11,
-			first_limit = 350,
-			value_by_percent_2 = 15,
-			second_limit = 650,
-			value_by_percent_3 = 19
-		},
-		[MAGICAL_ATTACK] = {
-			value_by_percent_1 = 5,
-			first_limit = 275,
-			value_by_percent_2 = 7,
-			second_limit = 340,
-			value_by_percent_3 = 12
-		},
-		[REFLECT_DAMAGE] = {
-			value_by_percent_1 = 7,
-			first_limit = 200,
-			value_by_percent_2 = 13,
-			second_limit = 340,
-			value_by_percent_3 = 17
-		},
-		[CRIT_CHANCE] = {
-			value_by_percent_1 = 1,
-			first_limit = 37,
-			value_by_percent_2 = 2,
-			second_limit = 45,
-			value_by_percent_3 = 4
-		}
-	}
+	local ParameterLimits
 
 
 
@@ -238,303 +209,8 @@ do
 	}
 
 
-	local PARAMETER_UPDATE_FUNC = {
-		---@param data table
-		[PHYSICAL_ATTACK]        = function(data)
-			local total_damage = data.equip_point[WEAPON_POINT].DAMAGE
-			
-			if data.equip_point[OFFHAND_POINT] then
-				if data.equip_point[OFFHAND_POINT].TYPE == ITEM_TYPE_WEAPON then
-					total_damage = total_damage + (data.equip_point[OFFHAND_POINT].DAMAGE * 0.5)
-				end
-			end
+	local PARAMETER_UPDATE_FUNC
 
-			data.stats[PHYSICAL_ATTACK].value = (total_damage * GetBonus_STR(data.stats[STR_STAT].value) + data.stats[PHYSICAL_ATTACK].bonus) * data.stats[PHYSICAL_ATTACK].multiplier
-		end,
-		
-		---@param data table
-		[PHYSICAL_DEFENCE]       = function(data)
-			local defence = data.stats[AGI_STAT].value * 2
-			
-			for i = OFFHAND_POINT, HANDS_POINT do
-				if data.equip_point[i] ~= nil then
-					defence = defence + (data.equip_point[i].DEFENCE or 0)
-				end
-			end
-			
-			data.stats[PHYSICAL_DEFENCE].value = (defence + data.stats[PHYSICAL_DEFENCE].bonus) * data.stats[PHYSICAL_DEFENCE].multiplier
-		end,
-
-
-		---@param data table
-		[MAGICAL_ATTACK]        = function(data)
-			local total_damage = data.equip_point[WEAPON_POINT].DAMAGE
-			data.stats[MAGICAL_ATTACK].value = (total_damage * GetBonus_INT(data.stats[INT_STAT].value) + data.stats[MAGICAL_ATTACK].bonus) * data.stats[MAGICAL_ATTACK].multiplier
-		end,
-
-        ---@param data table
-        [MAGICAL_SUPPRESSION]       = function(data)
-            local defence = data.stats[INT_STAT].value
-
-            for i = RING_1_POINT, NECKLACE_POINT do
-                if data.equip_point[i] ~= nil then
-                    defence = defence + (data.equip_point[i].SUPPRESSION or 0)
-                end
-            end
-
-            data.stats[MAGICAL_SUPPRESSION].value = (defence + data.stats[MAGICAL_SUPPRESSION].bonus) * data.stats[MAGICAL_SUPPRESSION].multiplier
-        end,
-
-		---@param data table
-		[CRIT_CHANCE]            = function(data)
-			data.stats[CRIT_CHANCE].value = ((data.equip_point[WEAPON_POINT].CRIT_CHANCE or 0.) + data.stats[CRIT_CHANCE].bonus) * data.stats[CRIT_CHANCE].multiplier
-		end,
-		
-		---@param data table
-		[CRIT_MULTIPLIER]        = function(data)
-			data.stats[CRIT_MULTIPLIER].value = ((data.equip_point[WEAPON_POINT].CRIT_MULTIPLIER or 0.) + data.stats[CRIT_MULTIPLIER].bonus) * data.stats[CRIT_MULTIPLIER].multiplier
-		end,
-		
-		---@param data table
-		[HP_REGEN]               = function(data)
-			data.stats[HP_REGEN].value = (data.base_stats.hp_regen + data.stats[HP_REGEN].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data.stats[HP_REGEN].multiplier
-            BlzSetUnitRealField(data.Owner, UNIT_RF_HIT_POINTS_REGENERATION_RATE, data.hp_vector and data.stats[HP_REGEN].value or -data.stats[HP_REGEN].value)
-		end,
-		
-		---@param data table
-		[MP_REGEN]               = function(data)
-			data.stats[MP_REGEN].value = (data.base_stats.mp_regen + data.stats[MP_REGEN].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data.stats[MP_REGEN].multiplier
-				if not data.is_mp_static then
-					BlzSetUnitRealField(data.Owner, UNIT_RF_MANA_REGENERATION, data.mp_vector and data.stats[MP_REGEN].value or -data.stats[MP_REGEN].value)
-				end
-		end,
-		
-		---@param data table
-		[HP_VALUE]               = function(data)
-			local ratio = GetUnitState(data.Owner, UNIT_STATE_LIFE) / BlzGetUnitMaxHP(data.Owner)
-				data.stats[HP_VALUE].value = (data.base_stats.health + data.stats[HP_VALUE].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data.stats[HP_VALUE].multiplier
-				BlzSetUnitMaxHP(data.Owner, R2I(data.stats[HP_VALUE].value))
-				if ratio >= 0.9 then SetUnitState(data.Owner, UNIT_STATE_LIFE, R2I(data.stats[HP_VALUE].value) * ratio) end
-		end,
-
-		---@param data table
-		[MP_VALUE]               = function(data)
-			data.stats[MP_VALUE].value = (data.base_stats.mana + data.stats[MP_VALUE].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data.stats[MP_VALUE].multiplier
-				if data.have_mp then
-					local ratio = GetUnitState(data.Owner, UNIT_STATE_MANA) / BlzGetUnitMaxMana(data.Owner)
-					BlzSetUnitMaxMana(data.Owner, R2I(data.stats[MP_VALUE].value))
-					SetUnitState(data.Owner, UNIT_STATE_MANA, R2I(data.stats[MP_VALUE].value) * ratio)
-				end
-		end,
-
-		---@param data table
-		[PHYSICAL_RESIST]       = function(data)
-			data.stats[PHYSICAL_RESIST].value = data.stats[PHYSICAL_RESIST].bonus + data.stats[ALL_RESIST].value
-		end,
-		
-		---@param data table
-		[FIRE_RESIST]            = function(data)
-			data.stats[FIRE_RESIST].value = data.stats[FIRE_RESIST].bonus + data.stats[ALL_RESIST].value
-		end,
-		
-		---@param data table
-		[ICE_RESIST]             = function(data)
-			data.stats[ICE_RESIST].value = data.stats[ICE_RESIST].bonus + data.stats[ALL_RESIST].value
-		end,
-		
-		---@param data table
-		[LIGHTNING_RESIST]       = function(data)
-			data.stats[LIGHTNING_RESIST].value = data.stats[LIGHTNING_RESIST].bonus + data.stats[ALL_RESIST].value
-		end,
-		
-		---@param data table
-		[POISON_RESIST]          = function(data)
-			data.stats[POISON_RESIST].value = data.stats[POISON_RESIST].bonus + data.stats[ALL_RESIST].value
-		end,
-		
-		---@param data table
-		[ARCANE_RESIST]          = function(data)
-			data.stats[ARCANE_RESIST].value = data.stats[ARCANE_RESIST].bonus + data.stats[ALL_RESIST].value
-		end,
-		
-		---@param data table
-		[DARKNESS_RESIST]        = function(data)
-			data.stats[DARKNESS_RESIST].value = data.stats[DARKNESS_RESIST].bonus + data.stats[ALL_RESIST].value
-		end,
-		
-		---@param data table
-		[HOLY_RESIST]            = function(data)
-			data.stats[HOLY_RESIST].value = data.stats[HOLY_RESIST].bonus + data.stats[ALL_RESIST].value
-		end,
-		
-		---@param data table
-		[PHYSICAL_BONUS]         = function(data)
-			data.stats[PHYSICAL_BONUS].value = data.stats[PHYSICAL_BONUS].bonus
-		end,
-		
-		---@param data table
-		[FIRE_BONUS]             = function(data)
-			data.stats[FIRE_BONUS].value = data.stats[FIRE_BONUS].bonus
-		end,
-		
-		---@param data table
-		[ICE_BONUS]              = function(data)
-			data.stats[ICE_BONUS].value = data.stats[ICE_BONUS].bonus
-		end,
-		
-		---@param data table
-		[LIGHTNING_BONUS]        = function(data)
-			data.stats[LIGHTNING_BONUS].value = data.stats[LIGHTNING_BONUS].bonus
-		end,
-
-		---@param data table
-		[POISON_BONUS]           = function(data)
-			data.stats[POISON_BONUS].value = data.stats[POISON_BONUS].bonus
-		end,
-		
-		---@param data table
-		[ARCANE_BONUS]           = function(data)
-			data.stats[ARCANE_BONUS].value = data.stats[ARCANE_BONUS].bonus
-		end,
-		
-		---@param data table
-		[DARKNESS_BONUS]         = function(data)
-			data.stats[DARKNESS_BONUS].value = data.stats[DARKNESS_BONUS].bonus
-		end,
-		
-		---@param data table
-		[HOLY_BONUS]             = function(data)
-			data.stats[HOLY_BONUS].value = data.stats[HOLY_BONUS].bonus
-		end,
-		
-		---@param data table
-		[STR_STAT]               = function(data)
-			data.stats[STR_STAT].value = data.base_stats.strength + data.stats[STR_STAT].bonus
-		end,
-		
-		---@param data table
-		[VIT_STAT]               = function(data)
-			data.stats[VIT_STAT].value = data.base_stats.vitality + data.stats[VIT_STAT].bonus
-		end,
-		
-		---@param data table
-		[AGI_STAT]               = function(data)
-			data.stats[AGI_STAT].value = data.base_stats.agility + data.stats[AGI_STAT].bonus
-		end,
-		
-		---@param data table
-		[INT_STAT]               = function(data)
-			data.stats[INT_STAT].value = data.base_stats.intellect + data.stats[INT_STAT].bonus
-		end,
-		
-		---@param data table
-		[MELEE_DAMAGE_REDUCTION] = function(data)
-			data.stats[MELEE_DAMAGE_REDUCTION].value = data.stats[MELEE_DAMAGE_REDUCTION].bonus
-		end,
-		
-		---@param data table
-		[RANGE_DAMAGE_REDUCTION] = function(data)
-			data.stats[RANGE_DAMAGE_REDUCTION].value = data.stats[RANGE_DAMAGE_REDUCTION].bonus
-		end,
-
-        ---@param data table
-        [CONTROL_REDUCTION] = function(data)
-            data.stats[CONTROL_REDUCTION].value = data.stats[CONTROL_REDUCTION].bonus
-        end,
-
-        ---@param data table
-        [ATTACK_SPEED] = function(data)
-            data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].ATTACK_SPEED * (1. - data.stats[ATTACK_SPEED].bonus * 0.01)
-			if data.stats[ATTACK_SPEED].value > 0.1 then
-				BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 0)
-				BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 1)
-			else
-				BlzSetUnitAttackCooldown(data.Owner, 0.1, 0)
-				BlzSetUnitAttackCooldown(data.Owner, 0.1, 1)
-			end
-		end,
-
-        ---@param data table
-        [CAST_SPEED] = function(data)
-            data.stats[CAST_SPEED].value = data.stats[CAST_SPEED].bonus
-        end,
-
-        ---@param data table
-        [MOVING_SPEED] = function(data)
-            data.stats[MOVING_SPEED].value = (data.base_stats.moving_speed + data.stats[MOVING_SPEED].bonus) * data.stats[MOVING_SPEED].multiplier
-            SetUnitMoveSpeed(data.Owner, data.stats[MOVING_SPEED].value < 0. and 0. or data.stats[MOVING_SPEED].value)
-        end,
-
-		---@param data table
-		[ALL_RESIST] = function(data)
-			data.stats[ALL_RESIST].value = data.stats[ALL_RESIST].bonus
-
-		end,
-
-		---@param data table
-		[BLOCK_CHANCE] = function(data)
-			local base = 0.
-			if data.equip_point[OFFHAND_POINT] ~= nil and data.equip_point[OFFHAND_POINT].SUBTYPE == SHIELD_OFFHAND then
-				base = data.equip_point[OFFHAND_POINT].BLOCK or 0.
-			end
-			data.stats[BLOCK_CHANCE].value = data.stats[BLOCK_CHANCE].bonus + base
-		end,
-
-		---@param data table
-		[BLOCK_ABSORB] = function(data)
-			local base = 0.
-			if data.equip_point[OFFHAND_POINT] ~= nil and data.equip_point[OFFHAND_POINT].SUBTYPE == SHIELD_OFFHAND then
-				base = data.equip_point[OFFHAND_POINT].BLOCK_RATE or 40.
-			end
-			data.stats[BLOCK_ABSORB].value = data.stats[BLOCK_ABSORB].bonus + base
-		end,
-
-		---@param data table
-		[REFLECT_DAMAGE] = function(data)
-			data.stats[REFLECT_DAMAGE].value = data.stats[REFLECT_DAMAGE].bonus
-		end,
-
-		---@param data table
-		[REFLECT_MELEE_DAMAGE] = function(data)
-			data.stats[REFLECT_MELEE_DAMAGE].value = (data.stats[REFLECT_MELEE_DAMAGE].bonus + data.stats[REFLECT_DAMAGE].value) * data.stats[REFLECT_DAMAGE].multiplier
-		end,
-
-		---@param data table
-		[REFLECT_RANGE_DAMAGE] = function(data)
-			data.stats[REFLECT_RANGE_DAMAGE].value = (data.stats[REFLECT_RANGE_DAMAGE].bonus + data.stats[REFLECT_DAMAGE].value) * data.stats[REFLECT_DAMAGE].multiplier
-		end,
-
-		---@param data table
-		[HP_PER_HIT] = function(data)
-			data.stats[HP_PER_HIT].value = data.stats[HP_PER_HIT].bonus
-		end,
-
-		---@param data table
-		[MP_PER_HIT] = function(data)
-			data.stats[MP_PER_HIT].value = data.stats[MP_PER_HIT].bonus
-		end,
-
-		---@param data table
-		[BONUS_DEMON_DAMAGE] = function(data)
-			data.stats[BONUS_DEMON_DAMAGE].value = data.stats[BONUS_DEMON_DAMAGE].bonus
-		end,
-
-		---@param data table
-		[BONUS_UNDEAD_DAMAGE] = function(data)
-			data.stats[BONUS_UNDEAD_DAMAGE].value = data.stats[BONUS_UNDEAD_DAMAGE].bonus
-		end,
-
-		---@param data table
-		[BONUS_BEAST_DAMAGE] = function(data)
-			data.stats[BONUS_BEAST_DAMAGE].value = data.stats[BONUS_BEAST_DAMAGE].bonus
-		end,
-
-		---@param data table
-		[BONUS_HUMAN_DAMAGE] = function(data)
-			data.stats[BONUS_HUMAN_DAMAGE].value = data.stats[BONUS_HUMAN_DAMAGE].bonus
-		end
-
-	}
 
 	---@param type integer
 	function GetParameterName(type)
@@ -625,7 +301,339 @@ do
 		return parameters
 	end
 
+
 	function InitParameters()
+
+		ParameterLimits = {
+			[PHYSICAL_DEFENCE] = {
+				value_by_percent_1 = 11,
+				first_limit = 350,
+				value_by_percent_2 = 15,
+				second_limit = 650,
+				value_by_percent_3 = 19
+			},
+			[MAGICAL_ATTACK] = {
+				value_by_percent_1 = 5,
+				first_limit = 275,
+				value_by_percent_2 = 7,
+				second_limit = 340,
+				value_by_percent_3 = 12
+			},
+			[REFLECT_DAMAGE] = {
+				value_by_percent_1 = 7,
+				first_limit = 200,
+				value_by_percent_2 = 13,
+				second_limit = 340,
+				value_by_percent_3 = 17
+			},
+			[CRIT_CHANCE] = {
+				value_by_percent_1 = 1,
+				first_limit = 37,
+				value_by_percent_2 = 2,
+				second_limit = 45,
+				value_by_percent_3 = 4
+			}
+		}
+
+		PARAMETER_UPDATE_FUNC = {
+			---@param data table
+			[PHYSICAL_ATTACK]        = function(data)
+				local total_damage = data.equip_point[WEAPON_POINT].DAMAGE
+
+				if data.equip_point[OFFHAND_POINT] then
+					if data.equip_point[OFFHAND_POINT].TYPE == ITEM_TYPE_WEAPON then
+						total_damage = total_damage + (data.equip_point[OFFHAND_POINT].DAMAGE * 0.5)
+					end
+				end
+
+				data.stats[PHYSICAL_ATTACK].value = (total_damage * GetBonus_STR(data.stats[STR_STAT].value) + data.stats[PHYSICAL_ATTACK].bonus) * data.stats[PHYSICAL_ATTACK].multiplier
+			end,
+
+			---@param data table
+			[PHYSICAL_DEFENCE]       = function(data)
+				local defence = data.stats[AGI_STAT].value * 2
+
+				for i = OFFHAND_POINT, HANDS_POINT do
+					if data.equip_point[i] ~= nil then
+						defence = defence + (data.equip_point[i].DEFENCE or 0)
+					end
+				end
+
+				data.stats[PHYSICAL_DEFENCE].value = (defence + data.stats[PHYSICAL_DEFENCE].bonus) * data.stats[PHYSICAL_DEFENCE].multiplier
+			end,
+
+
+			---@param data table
+			[MAGICAL_ATTACK]        = function(data)
+				local total_damage = data.equip_point[WEAPON_POINT].DAMAGE
+				data.stats[MAGICAL_ATTACK].value = (total_damage * GetBonus_INT(data.stats[INT_STAT].value) + data.stats[MAGICAL_ATTACK].bonus) * data.stats[MAGICAL_ATTACK].multiplier
+			end,
+
+			---@param data table
+			[MAGICAL_SUPPRESSION]       = function(data)
+				local defence = data.stats[INT_STAT].value
+
+				for i = RING_1_POINT, NECKLACE_POINT do
+					if data.equip_point[i] ~= nil then
+						defence = defence + (data.equip_point[i].SUPPRESSION or 0)
+					end
+				end
+
+				data.stats[MAGICAL_SUPPRESSION].value = (defence + data.stats[MAGICAL_SUPPRESSION].bonus) * data.stats[MAGICAL_SUPPRESSION].multiplier
+			end,
+
+			---@param data table
+			[CRIT_CHANCE]            = function(data)
+				data.stats[CRIT_CHANCE].value = ((data.equip_point[WEAPON_POINT].CRIT_CHANCE or 0.) + data.stats[CRIT_CHANCE].bonus) * data.stats[CRIT_CHANCE].multiplier
+			end,
+
+			---@param data table
+			[CRIT_MULTIPLIER]        = function(data)
+				data.stats[CRIT_MULTIPLIER].value = ((data.equip_point[WEAPON_POINT].CRIT_MULTIPLIER or 0.) + data.stats[CRIT_MULTIPLIER].bonus) * data.stats[CRIT_MULTIPLIER].multiplier
+			end,
+
+			---@param data table
+			[HP_REGEN]               = function(data)
+				data.stats[HP_REGEN].value = (data.base_stats.hp_regen + data.stats[HP_REGEN].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data.stats[HP_REGEN].multiplier
+				BlzSetUnitRealField(data.Owner, UNIT_RF_HIT_POINTS_REGENERATION_RATE, data.hp_vector and data.stats[HP_REGEN].value or -data.stats[HP_REGEN].value)
+			end,
+
+			---@param data table
+			[MP_REGEN]               = function(data)
+				data.stats[MP_REGEN].value = (data.base_stats.mp_regen + data.stats[MP_REGEN].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data.stats[MP_REGEN].multiplier
+					if not data.is_mp_static then
+						BlzSetUnitRealField(data.Owner, UNIT_RF_MANA_REGENERATION, data.mp_vector and data.stats[MP_REGEN].value or -data.stats[MP_REGEN].value)
+					end
+			end,
+
+			---@param data table
+			[HP_VALUE]               = function(data)
+				local ratio = GetUnitState(data.Owner, UNIT_STATE_LIFE) / BlzGetUnitMaxHP(data.Owner)
+					data.stats[HP_VALUE].value = (data.base_stats.health + data.stats[HP_VALUE].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data.stats[HP_VALUE].multiplier
+					BlzSetUnitMaxHP(data.Owner, R2I(data.stats[HP_VALUE].value))
+					if ratio >= 0.9 then SetUnitState(data.Owner, UNIT_STATE_LIFE, R2I(data.stats[HP_VALUE].value) * ratio) end
+			end,
+
+			---@param data table
+			[MP_VALUE]               = function(data)
+				data.stats[MP_VALUE].value = (data.base_stats.mana + data.stats[MP_VALUE].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data.stats[MP_VALUE].multiplier
+					if data.have_mp then
+						local ratio = GetUnitState(data.Owner, UNIT_STATE_MANA) / BlzGetUnitMaxMana(data.Owner)
+						BlzSetUnitMaxMana(data.Owner, R2I(data.stats[MP_VALUE].value))
+						SetUnitState(data.Owner, UNIT_STATE_MANA, R2I(data.stats[MP_VALUE].value) * ratio)
+					end
+			end,
+
+			---@param data table
+			[PHYSICAL_RESIST]       = function(data)
+				data.stats[PHYSICAL_RESIST].value = data.stats[PHYSICAL_RESIST].bonus + data.stats[ALL_RESIST].value
+			end,
+
+			---@param data table
+			[FIRE_RESIST]            = function(data)
+				data.stats[FIRE_RESIST].value = data.stats[FIRE_RESIST].bonus + data.stats[ALL_RESIST].value
+			end,
+
+			---@param data table
+			[ICE_RESIST]             = function(data)
+				data.stats[ICE_RESIST].value = data.stats[ICE_RESIST].bonus + data.stats[ALL_RESIST].value
+			end,
+
+			---@param data table
+			[LIGHTNING_RESIST]       = function(data)
+				data.stats[LIGHTNING_RESIST].value = data.stats[LIGHTNING_RESIST].bonus + data.stats[ALL_RESIST].value
+			end,
+
+			---@param data table
+			[POISON_RESIST]          = function(data)
+				data.stats[POISON_RESIST].value = data.stats[POISON_RESIST].bonus + data.stats[ALL_RESIST].value
+			end,
+
+			---@param data table
+			[ARCANE_RESIST]          = function(data)
+				data.stats[ARCANE_RESIST].value = data.stats[ARCANE_RESIST].bonus + data.stats[ALL_RESIST].value
+			end,
+
+			---@param data table
+			[DARKNESS_RESIST]        = function(data)
+				data.stats[DARKNESS_RESIST].value = data.stats[DARKNESS_RESIST].bonus + data.stats[ALL_RESIST].value
+			end,
+
+			---@param data table
+			[HOLY_RESIST]            = function(data)
+				data.stats[HOLY_RESIST].value = data.stats[HOLY_RESIST].bonus + data.stats[ALL_RESIST].value
+			end,
+
+			---@param data table
+			[PHYSICAL_BONUS]         = function(data)
+				data.stats[PHYSICAL_BONUS].value = data.stats[PHYSICAL_BONUS].bonus
+			end,
+
+			---@param data table
+			[FIRE_BONUS]             = function(data)
+				data.stats[FIRE_BONUS].value = data.stats[FIRE_BONUS].bonus
+			end,
+
+			---@param data table
+			[ICE_BONUS]              = function(data)
+				data.stats[ICE_BONUS].value = data.stats[ICE_BONUS].bonus
+			end,
+
+			---@param data table
+			[LIGHTNING_BONUS]        = function(data)
+				data.stats[LIGHTNING_BONUS].value = data.stats[LIGHTNING_BONUS].bonus
+			end,
+
+			---@param data table
+			[POISON_BONUS]           = function(data)
+				data.stats[POISON_BONUS].value = data.stats[POISON_BONUS].bonus
+			end,
+
+			---@param data table
+			[ARCANE_BONUS]           = function(data)
+				data.stats[ARCANE_BONUS].value = data.stats[ARCANE_BONUS].bonus
+			end,
+
+			---@param data table
+			[DARKNESS_BONUS]         = function(data)
+				data.stats[DARKNESS_BONUS].value = data.stats[DARKNESS_BONUS].bonus
+			end,
+
+			---@param data table
+			[HOLY_BONUS]             = function(data)
+				data.stats[HOLY_BONUS].value = data.stats[HOLY_BONUS].bonus
+			end,
+
+			---@param data table
+			[STR_STAT]               = function(data)
+				data.stats[STR_STAT].value = data.base_stats.strength + data.stats[STR_STAT].bonus
+			end,
+
+			---@param data table
+			[VIT_STAT]               = function(data)
+				data.stats[VIT_STAT].value = data.base_stats.vitality + data.stats[VIT_STAT].bonus
+			end,
+
+			---@param data table
+			[AGI_STAT]               = function(data)
+				data.stats[AGI_STAT].value = data.base_stats.agility + data.stats[AGI_STAT].bonus
+			end,
+
+			---@param data table
+			[INT_STAT]               = function(data)
+				data.stats[INT_STAT].value = data.base_stats.intellect + data.stats[INT_STAT].bonus
+			end,
+
+			---@param data table
+			[MELEE_DAMAGE_REDUCTION] = function(data)
+				data.stats[MELEE_DAMAGE_REDUCTION].value = data.stats[MELEE_DAMAGE_REDUCTION].bonus
+			end,
+
+			---@param data table
+			[RANGE_DAMAGE_REDUCTION] = function(data)
+				data.stats[RANGE_DAMAGE_REDUCTION].value = data.stats[RANGE_DAMAGE_REDUCTION].bonus
+			end,
+
+			---@param data table
+			[CONTROL_REDUCTION] = function(data)
+				data.stats[CONTROL_REDUCTION].value = data.stats[CONTROL_REDUCTION].bonus
+			end,
+
+			---@param data table
+			[ATTACK_SPEED] = function(data)
+				data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].ATTACK_SPEED * (1. - data.stats[ATTACK_SPEED].bonus * 0.01)
+				if data.stats[ATTACK_SPEED].value > 0.1 then
+					BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 0)
+					BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 1)
+				else
+					BlzSetUnitAttackCooldown(data.Owner, 0.1, 0)
+					BlzSetUnitAttackCooldown(data.Owner, 0.1, 1)
+				end
+			end,
+
+			---@param data table
+			[CAST_SPEED] = function(data)
+				data.stats[CAST_SPEED].value = data.stats[CAST_SPEED].bonus
+			end,
+
+			---@param data table
+			[MOVING_SPEED] = function(data)
+				data.stats[MOVING_SPEED].value = (data.base_stats.moving_speed + data.stats[MOVING_SPEED].bonus) * data.stats[MOVING_SPEED].multiplier
+				SetUnitMoveSpeed(data.Owner, data.stats[MOVING_SPEED].value < 0. and 0. or data.stats[MOVING_SPEED].value)
+			end,
+
+			---@param data table
+			[ALL_RESIST] = function(data)
+				data.stats[ALL_RESIST].value = data.stats[ALL_RESIST].bonus
+
+			end,
+
+			---@param data table
+			[BLOCK_CHANCE] = function(data)
+				local base = 0.
+				if data.equip_point[OFFHAND_POINT] ~= nil and data.equip_point[OFFHAND_POINT].SUBTYPE == SHIELD_OFFHAND then
+					base = data.equip_point[OFFHAND_POINT].BLOCK or 0.
+				end
+				data.stats[BLOCK_CHANCE].value = data.stats[BLOCK_CHANCE].bonus + base
+			end,
+
+			---@param data table
+			[BLOCK_ABSORB] = function(data)
+				local base = 0.
+				if data.equip_point[OFFHAND_POINT] ~= nil and data.equip_point[OFFHAND_POINT].SUBTYPE == SHIELD_OFFHAND then
+					base = data.equip_point[OFFHAND_POINT].BLOCK_RATE or 40.
+				end
+				data.stats[BLOCK_ABSORB].value = data.stats[BLOCK_ABSORB].bonus + base
+			end,
+
+			---@param data table
+			[REFLECT_DAMAGE] = function(data)
+				data.stats[REFLECT_DAMAGE].value = data.stats[REFLECT_DAMAGE].bonus
+			end,
+
+			---@param data table
+			[REFLECT_MELEE_DAMAGE] = function(data)
+				data.stats[REFLECT_MELEE_DAMAGE].value = (data.stats[REFLECT_MELEE_DAMAGE].bonus + data.stats[REFLECT_DAMAGE].value) * data.stats[REFLECT_DAMAGE].multiplier
+			end,
+
+			---@param data table
+			[REFLECT_RANGE_DAMAGE] = function(data)
+				data.stats[REFLECT_RANGE_DAMAGE].value = (data.stats[REFLECT_RANGE_DAMAGE].bonus + data.stats[REFLECT_DAMAGE].value) * data.stats[REFLECT_DAMAGE].multiplier
+			end,
+
+			---@param data table
+			[HP_PER_HIT] = function(data)
+				data.stats[HP_PER_HIT].value = data.stats[HP_PER_HIT].bonus
+			end,
+
+			---@param data table
+			[MP_PER_HIT] = function(data)
+				data.stats[MP_PER_HIT].value = data.stats[MP_PER_HIT].bonus
+			end,
+
+			---@param data table
+			[BONUS_DEMON_DAMAGE] = function(data)
+				data.stats[BONUS_DEMON_DAMAGE].value = data.stats[BONUS_DEMON_DAMAGE].bonus
+			end,
+
+			---@param data table
+			[BONUS_UNDEAD_DAMAGE] = function(data)
+				data.stats[BONUS_UNDEAD_DAMAGE].value = data.stats[BONUS_UNDEAD_DAMAGE].bonus
+			end,
+
+			---@param data table
+			[BONUS_BEAST_DAMAGE] = function(data)
+				data.stats[BONUS_BEAST_DAMAGE].value = data.stats[BONUS_BEAST_DAMAGE].bonus
+			end,
+
+			---@param data table
+			[BONUS_HUMAN_DAMAGE] = function(data)
+				data.stats[BONUS_HUMAN_DAMAGE].value = data.stats[BONUS_HUMAN_DAMAGE].bonus
+			end
+
+		}
+
+
 		PARAMETER_NAME = {
 			[PHYSICAL_ATTACK]     = LOCALE_LIST[my_locale].PHYSICAL_ATTACK_PARAM,
 			[PHYSICAL_DEFENCE]    = LOCALE_LIST[my_locale].PHYSICAL_DEFENCE_PARAM,

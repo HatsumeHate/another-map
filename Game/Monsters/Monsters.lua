@@ -118,20 +118,310 @@ do
     MONSTER_WAYPOINTS = nil
 
 
-    MONSTER_EXP_RATES = {
-        [MONSTER_RANK_COMMON] = 1.,
-        [MONSTER_RANK_ADVANCED] = 1.25,
-        [MONSTER_RANK_BOSS] = 1.,
-        const_per_level = 5,
-        modf_per_level = 0.02
-    }
+    MONSTER_EXP_RATES = nil
 
 
 
     -- attack type focus (melee/range ratio) => monster type =>
 
 
-    MONSTER_LIST = {
+    MONSTER_LIST = nil
+
+
+    function GetRandomMonsterPack(rank)
+        local pack = GetRandomInt(1, #MONSTER_LIST-1)
+
+            while true do
+                if MONSTER_LIST[pack][rank] ~= nil then return MONSTER_LIST[pack] end
+                pack = GetRandomInt(1, #MONSTER_LIST-1)
+            end
+
+        return MONSTER_LIST[pack]
+    end
+
+
+    function GetRandomMonsterPackTag(rank, tag)
+        local pack = GetRandomInt(1, #MONSTER_LIST-1)
+        local num = 10
+
+            while num > 0 do
+                pack = GetRandomInt(1, #MONSTER_LIST-1)
+                    if MONSTER_LIST[pack][rank] ~= nil and MONSTER_LIST[pack][rank][tag] ~= nil then
+                        return MONSTER_LIST[pack]
+                    end
+                num = num - 1
+            end
+
+        return MONSTER_LIST[pack]
+    end
+
+
+    
+    ---@param pack number
+    ---@param rect rect
+    ---@param amount number
+    ---@param group group
+    function CreateUnits_Pack(pack, rect, amount, group)
+        if pack == nil then return 0 end
+
+        local id
+        local newunit
+
+        if amount <= 0 then return end
+
+            for i = 1, amount do
+                for k = 1, #pack do if GetRandomReal(0.,100.) <= pack[k].chance then id = FourCC(pack[k].id); break end end
+                newunit = CreateUnit(SECOND_MONSTER_PLAYER, id, GetRandomReal(GetRectMinX(rect), GetRectMaxX(rect)), GetRandomReal(GetRectMinY(rect), GetRectMaxY(rect)), GetRandomInt(0, 359))
+                GroupAddUnit(group, newunit)
+            end
+
+        return amount
+    end
+    
+
+    ---@param pack number
+    ---@param rect rect
+    ---@param amount number
+    function CreateUnits(pack, rect, amount)
+        if pack == nil then return 0 end
+
+        local id
+        local newunit
+
+        if amount <= 0 then return end
+
+            for i = 1, amount do
+                for k = 1, #pack do if GetRandomReal(0.,100.) <= pack[k].chance then id = FourCC(pack[k].id); break end end
+                newunit = CreateUnit(MONSTER_PLAYER, id, GetRandomReal(GetRectMinX(rect), GetRectMaxX(rect)), GetRandomReal(GetRectMinY(rect), GetRectMaxY(rect)), GetRandomInt(0, 359))
+                GroupAddUnit(WaveGroup, newunit)
+            end
+
+        return amount
+    end
+
+
+
+
+
+    local function GetProperAttackTypeSwitch(current_type, pack_attack_type)
+        local monster_attack_type = current_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
+
+        if pack_attack_type == nil then
+            monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
+        end
+
+        return monster_attack_type
+    end
+
+
+
+    ---@param point rect
+    ---@param monster_pack number
+    ---@param min number
+    ---@param max number
+    ---@param bonus_elite number
+    ---@param range_type_chance_delta number
+    function SpawnMonsterPack(point, monster_pack, min, max, bonus_elite, range_type_chance_delta)
+        if point == nil or monster_pack == nil then return end
+        local total_monster_count = GetRandomInt(min, max) + math.floor(Current_Wave / 3.)
+        local first_pack_count = math.ceil(total_monster_count * COMMON_MONSTER_RATE)
+        local monster_attack_type = GetRandomReal(0., 100.) <= (MELEE_MONSTER_CHANCE + (range_type_chance_delta or 0.)) and MONSTER_TAG_MELEE or MONSTER_TAG_RANGE
+        local monster_group = CreateGroup()
+
+        monster_pack = MONSTER_LIST[monster_pack]
+        local original_pack = monster_pack
+
+        local last_attack_type = monster_attack_type
+        local rank = MONSTER_RANK_COMMON
+        local to_spawn = first_pack_count
+        local rank_switch = 0
+
+
+        while total_monster_count > 0 do
+            monster_pack = original_pack
+            --print("begin")
+            --print("total now is " .. total_monster_count)
+            if not monster_pack[rank] or not monster_pack[rank][last_attack_type] then
+                monster_pack = GetRandomMonsterPack(rank)
+                --print("total remaining " .. total_monster_count)
+            end
+
+            total_monster_count = total_monster_count - CreateUnits_Pack(monster_pack[rank][last_attack_type] or nil, point, to_spawn, monster_group)
+
+            rank_switch = rank_switch + 1
+
+            if last_attack_type == MONSTER_TAG_MELEE then last_attack_type = MONSTER_TAG_RANGE
+            else last_attack_type = MONSTER_TAG_MELEE end
+
+            if rank_switch == 2 then
+                if rank == MONSTER_RANK_COMMON then rank = MONSTER_RANK_ADVANCED; to_spawn = GetRandomInt(1, 3)
+                else rank = MONSTER_RANK_COMMON; to_spawn = GetRandomInt(1, 5) end
+                rank_switch = 0
+            end
+
+
+
+        end
+
+        return monster_group
+    end
+
+
+    local BossCounter = 0
+
+    function RemoveGuardPosition(hUnit) end
+
+
+    local function CreateSpecialUnits(pack, rank, attack_type, amount, where)
+        return CreateUnits(pack[rank][attack_type] or nil, where, amount)
+    end
+
+
+    ---@param point rect
+    function SpawnMonstersWave(point)
+        local monster_pack = GetRandomMonsterPack(MONSTER_RANK_COMMON)
+        --local point = SPAWN_POINTS[1]
+        local total_monster_count = math.floor((GetRandomInt(WAVE_MINIMUM_COUNT, WAVE_MAXIMUM_COUNT) + Current_Wave + (ActivePlayers-1 * WAVE_PLAYER_BONUS)) * WaveDifficultyModificator)
+        --print("total is "..total_monster_count)
+        local first_pack_count = math.floor(total_monster_count * COMMON_MONSTER_RATE)
+        --print("first pack counter is "..first_pack_count)
+        local monster_attack_type = GetRandomReal(0., 100.) <= MELEE_MONSTER_CHANCE and MONSTER_TAG_MELEE or MONSTER_TAG_RANGE
+
+        BossCounter = BossCounter + 1
+        --print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
+        --print("pack is "..monster_pack)
+
+        local last_attack_type = monster_attack_type
+        local rank = MONSTER_RANK_COMMON
+        local to_spawn = first_pack_count
+        local rank_switch = 0
+
+
+        while total_monster_count > 0 do
+            --print("begin")
+            --print("total now is " .. total_monster_count)
+            if monster_pack[rank] and monster_pack[rank][last_attack_type] then
+                total_monster_count = total_monster_count - CreateUnits(monster_pack[rank][last_attack_type] or nil, point, to_spawn)
+                --print("total remaining " .. total_monster_count)
+            end
+
+            rank_switch = rank_switch + 1
+
+            if last_attack_type == MONSTER_TAG_MELEE then last_attack_type = MONSTER_TAG_RANGE
+            else last_attack_type = MONSTER_TAG_MELEE end
+
+            if rank_switch == 2 then
+                if rank == MONSTER_RANK_COMMON then rank = MONSTER_RANK_ADVANCED; to_spawn = GetRandomInt(1, 3)
+                else rank = MONSTER_RANK_COMMON; to_spawn = GetRandomInt(1, 5) end
+                rank_switch = 0
+            end
+
+
+
+        end
+
+        if BossCounter == 5 then
+            local boss
+
+            if monster_pack[MONSTER_RANK_BOSS] then
+                boss = CreateUnit(MONSTER_PLAYER, FourCC(monster_pack[MONSTERPACK_BOSS][GetRandomInt(1, #monster_pack[MONSTERPACK_BOSS])]), GetRectCenterX(point), GetRectCenterY(point), 270.)
+            else
+                boss = CreateUnit(MONSTER_PLAYER, FourCC(MONSTER_LIST[MONSTERPACK_BOSS][GetRandomInt(1, #MONSTER_LIST[MONSTERPACK_BOSS])]), GetRectCenterX(point), GetRectCenterY(point), 270.)
+            end
+
+            GroupAddUnit(WaveGroup, boss)
+            BossCounter = 0
+        end
+
+
+        local waypoint = 2
+        --local switch_waypoint = false
+        local waypoint_type = 1
+        local guard_group = CreateGroup()
+
+        for i = 1, #MONSTER_WAYPOINTS do
+            if MONSTER_WAYPOINTS[i][1] == point then
+                waypoint_type = i
+                break
+            end
+        end
+        
+        TimerStart(WaveWaypointTimer, 3., true, function()
+            if BlzGroupGetSize(WaveGroup) <= 0 then
+                TimerStart(WaveWaypointTimer, 0., false, nil)
+                DestroyGroup(guard_group)
+            else
+
+                if MONSTER_WAYPOINTS[waypoint_type][waypoint] ~= MAIN_POINT then
+                    --switch_waypoint = true
+                    local counter = 0
+                    local x = GetRectCenterX(MONSTER_WAYPOINTS[waypoint_type][waypoint]); local y = GetRectCenterY(MONSTER_WAYPOINTS[waypoint_type][waypoint])
+
+                    ForGroup(WaveGroup, function()
+                        if IsUnitInRangeXY(GetEnumUnit(), x, y, 650.) and not IsUnitInGroup(GetEnumUnit(), guard_group) then
+                            local unit = GetEnumUnit()
+                            DelayAction(GetRandomReal(0.15, 1.), function()
+                                IssueImmediateOrderById(unit, order_stop)
+                                GroupAddUnit(guard_group, unit)
+                                --print("stop")
+                            end)
+                        end
+
+                        if IsUnitInRangeXY(GetEnumUnit(), x, y, 650.) then
+                            counter = counter + 1
+                            --switch_waypoint = false
+                        end
+                    end)
+
+                    if counter / BlzGroupGetSize(WaveGroup) >= 0.65 then
+                        waypoint = waypoint + 1
+                        GroupClear(guard_group)
+                    end
+
+                    --print(counter / BlzGroupGetSize(WaveGroup))
+
+                end
+
+
+                ForGroup(WaveGroup, function()
+                    RemoveGuardPosition(GetEnumUnit())
+                    IssuePointOrderById(GetEnumUnit(), order_attack, GetRectCenterX(MONSTER_WAYPOINTS[waypoint_type][waypoint]), GetRectCenterY(MONSTER_WAYPOINTS[waypoint_type][waypoint]))
+                end)
+                PingMinimap(GetRectCenterX(MONSTER_WAYPOINTS[waypoint_type][waypoint]), GetRectCenterY(MONSTER_WAYPOINTS[waypoint_type][waypoint]), 5.)
+
+            end
+        end)
+
+
+        PingMinimap(GetRectCenterX(point), GetRectCenterY(point), 7.)
+
+        local penta = AddSpecialEffect("Other\\MagicCircle_Fire.mdx", GetRectCenterX(point), GetRectCenterY(point))
+        BlzSetSpecialEffectScale(penta, 3.)
+        DestroyEffect(penta)
+
+    end
+
+
+    function GetRandomMonsterSpawnPoint()
+        return SPAWN_POINTS[GetRandomInt(1, #SPAWN_POINTS)]
+    end
+
+
+    function InitMonsterData()
+
+        MONSTER_PLAYER = Player(10)
+        SECOND_MONSTER_PLAYER = Player(11)
+
+
+        MONSTER_EXP_RATES = {
+            [MONSTER_RANK_COMMON] = 1.,
+            [MONSTER_RANK_ADVANCED] = 1.25,
+            [MONSTER_RANK_BOSS] = 1.,
+            const_per_level = 5,
+            modf_per_level = 0.02
+        }
+
+        MONSTER_LIST = {
             [MONSTERPACK_SUCCUBUS] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
@@ -376,420 +666,54 @@ do
                 MONSTER_ID_BANDIT_BOSS,
                 MONSTER_ID_SKELETON_KING
             }
-    }
+        }
+
+
+        MONSTER_STATS_RATES = {
+            { stat = PHYSICAL_ATTACK,       initial = 0,      delta = 1,     delta_level = 1, method = STRAIGHT_BONUS },
+            { stat = MAGICAL_ATTACK,        initial = 0,      delta = 1,     delta_level = 1, method = STRAIGHT_BONUS },
+            { stat = PHYSICAL_DEFENCE,      initial = 0,      delta = 3,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 5 },
+            { stat = MAGICAL_SUPPRESSION,   initial = 0,      delta = 2,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 3 },
+            { stat = PHYSICAL_ATTACK,       initial = 1.,   delta = 0.011,  delta_level = 1, method = MULTIPLY_BONUS },
+            { stat = PHYSICAL_DEFENCE,      initial = 1.,   delta = 0.01,  delta_level = 1, method = MULTIPLY_BONUS },
+            { stat = MAGICAL_ATTACK,        initial = 1.,   delta = 0.011,  delta_level = 1, method = MULTIPLY_BONUS },
+            { stat = MAGICAL_SUPPRESSION,   initial = 1.,   delta = 0.01,  delta_level = 1, method = MULTIPLY_BONUS },
+            { stat = CRIT_CHANCE,           initial = 0,      delta = 1.,    delta_level = 5, method = STRAIGHT_BONUS },
+            { stat = ALL_RESIST,            initial = 0,      delta = 1,     delta_level = 5, method = STRAIGHT_BONUS },
+            { stat = PHYSICAL_BONUS,        initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+            { stat = ICE_BONUS,             initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+            { stat = LIGHTNING_BONUS,       initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+            { stat = FIRE_BONUS,            initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+            { stat = DARKNESS_BONUS,        initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+            { stat = HOLY_BONUS,            initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+            { stat = POISON_BONUS,          initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+            { stat = ARCANE_BONUS,          initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
+            { stat = HP_VALUE,              initial = 0,      delta = 7,    delta_level = 1, method = STRAIGHT_BONUS, per_player = 45 },
+            { stat = HP_VALUE,              initial = 1.,   delta = 0.04,  delta_level = 1, method = MULTIPLY_BONUS },
+        }
+
+        BONUS_MONSTER_STAT_RATES = {
+            [FourCC("abcd")] = {
+                [PHYSICAL_ATTACK] = 0.
+            },
+            [FourCC("U003")] = {
+                scaling = {
+                    { stat = HP_PER_HIT,              initial = 0,   delta = 1,  delta_level = 1, method = STRAIGHT_BONUS },
+                }
+            },
+            [FourCC("n01O")] = {
+                scaling = {
+                    { stat = HP_PER_HIT,              initial = 0,   delta = 1,  delta_level = 1, method = STRAIGHT_BONUS },
+                }
+            },
+            [FourCC("u00N")] = {
+                scaling = {
+                    { stat = HP_PER_HIT,              initial = 0,   delta = 1,  delta_level = 1, method = STRAIGHT_BONUS },
+                }
+            }
+        }
 
 
-    function GetRandomMonsterPack(rank)
-        local pack = GetRandomInt(1, #MONSTER_LIST-1)
-
-            while true do
-                if MONSTER_LIST[pack][rank] ~= nil then return MONSTER_LIST[pack] end
-                pack = GetRandomInt(1, #MONSTER_LIST-1)
-            end
-
-        return MONSTER_LIST[pack]
-    end
-
-
-    function GetRandomMonsterPackTag(rank, tag)
-        local pack = GetRandomInt(1, #MONSTER_LIST-1)
-        local num = 10
-
-            while num > 0 do
-                pack = GetRandomInt(1, #MONSTER_LIST-1)
-                    if MONSTER_LIST[pack][rank] ~= nil and MONSTER_LIST[pack][rank][tag] ~= nil then
-                        return MONSTER_LIST[pack]
-                    end
-                num = num - 1
-            end
-
-        return MONSTER_LIST[pack]
-    end
-
-
-    
-    ---@param pack number
-    ---@param rect rect
-    ---@param amount number
-    ---@param group group
-    function CreateUnits_Pack(pack, rect, amount, group)
-        if pack == nil then return 0 end
-
-        local id
-        local newunit
-
-        if amount <= 0 then return end
-
-            for i = 1, amount do
-                for k = 1, #pack do if GetRandomReal(0.,100.) <= pack[k].chance then id = FourCC(pack[k].id); break end end
-                newunit = CreateUnit(SECOND_MONSTER_PLAYER, id, GetRandomReal(GetRectMinX(rect), GetRectMaxX(rect)), GetRandomReal(GetRectMinY(rect), GetRectMaxY(rect)), GetRandomInt(0, 359))
-                GroupAddUnit(group, newunit)
-            end
-
-        return amount
-    end
-    
-
-    ---@param pack number
-    ---@param rect rect
-    ---@param amount number
-    function CreateUnits(pack, rect, amount)
-        if pack == nil then return 0 end
-
-        local id
-        local newunit
-
-        if amount <= 0 then return end
-
-            for i = 1, amount do
-                for k = 1, #pack do if GetRandomReal(0.,100.) <= pack[k].chance then id = FourCC(pack[k].id); break end end
-                newunit = CreateUnit(MONSTER_PLAYER, id, GetRandomReal(GetRectMinX(rect), GetRectMaxX(rect)), GetRandomReal(GetRectMinY(rect), GetRectMaxY(rect)), GetRandomInt(0, 359))
-                GroupAddUnit(WaveGroup, newunit)
-            end
-
-        return amount
-    end
-
-
-
-
-
-    local function GetProperAttackTypeSwitch(current_type, pack_attack_type)
-        local monster_attack_type = current_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
-
-        if pack_attack_type == nil then
-            monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
-        end
-
-        return monster_attack_type
-    end
-
-
-
-    ---@param point rect
-    ---@param monster_pack number
-    ---@param min number
-    ---@param max number
-    ---@param bonus_elite number
-    ---@param range_type_chance_delta number
-    function SpawnMonsterPack(point, monster_pack, min, max, bonus_elite, range_type_chance_delta)
-        if point == nil or monster_pack == nil then return end
-        local total_monster_count = GetRandomInt(min, max) + math.floor(Current_Wave / 3.)
-        local first_pack_count = math.ceil(total_monster_count * COMMON_MONSTER_RATE)
-        local monster_attack_type = GetRandomReal(0., 100.) <= (MELEE_MONSTER_CHANCE + (range_type_chance_delta or 0.)) and MONSTER_TAG_MELEE or MONSTER_TAG_RANGE
-        local monster_group = CreateGroup()
-
-        monster_pack = MONSTER_LIST[monster_pack]
-        local original_pack = monster_pack
-
-        local last_attack_type = monster_attack_type
-        local rank = MONSTER_RANK_COMMON
-        local to_spawn = first_pack_count
-        local rank_switch = 0
-
-
-        while total_monster_count > 0 do
-            monster_pack = original_pack
-            --print("begin")
-            --print("total now is " .. total_monster_count)
-            if not monster_pack[rank] or not monster_pack[rank][last_attack_type] then
-                monster_pack = GetRandomMonsterPack(rank)
-                --print("total remaining " .. total_monster_count)
-            end
-
-            total_monster_count = total_monster_count - CreateUnits_Pack(monster_pack[rank][last_attack_type] or nil, point, to_spawn, monster_group)
-
-            rank_switch = rank_switch + 1
-
-            if last_attack_type == MONSTER_TAG_MELEE then last_attack_type = MONSTER_TAG_RANGE
-            else last_attack_type = MONSTER_TAG_MELEE end
-
-            if rank_switch == 2 then
-                if rank == MONSTER_RANK_COMMON then rank = MONSTER_RANK_ADVANCED; to_spawn = GetRandomInt(1, 3)
-                else rank = MONSTER_RANK_COMMON; to_spawn = GetRandomInt(1, 5) end
-                rank_switch = 0
-            end
-
-
-
-        end
-
-        --[[
-        if monster_pack[MONSTER_RANK_COMMON] == nil then
-            monster_pack = GetRandomMonsterPack(MONSTER_RANK_COMMON)
-        end
-        print("spawn init")
-        print(total_monster_count)
-
-        if monster_pack[MONSTER_RANK_COMMON][monster_attack_type] == nil then
-            monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
-        end
-
-        total_monster_count = total_monster_count - CreateUnits_Pack(monster_pack[MONSTER_RANK_COMMON][monster_attack_type] or nil, point, first_pack_count, monster_group)
-        print("spawn first")
-        print(total_monster_count)
-        local second_pack_count = GetRandomInt(1, total_monster_count)
-
-        --monster_attack_type = GetProperAttackTypeSwitch(monster_attack_type, monster_pack[MONSTER_RANK_COMMON][monster_attack_type])
-
-        monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
-
-        if monster_pack[MONSTER_RANK_COMMON][monster_attack_type] == nil then
-            monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
-        end
-
-        total_monster_count = total_monster_count - CreateUnits_Pack(monster_pack[MONSTER_RANK_COMMON][monster_attack_type] or nil, point, second_pack_count, monster_group)
-        print("spawn second")
-        print(total_monster_count)
-
-            if total_monster_count + (bonus_elite or 0) > 0 then
-                print("spawn elite - yes")
-                local elite_monster_count = GetRandomInt(1, total_monster_count + (bonus_elite or 0))
-                monster_attack_type = GetRandomReal(0., 100.) <= (MELEE_MONSTER_CHANCE + range_type_chance_delta) and MONSTER_TAG_MELEE or MONSTER_TAG_RANGE
-
-                if monster_pack[MONSTER_RANK_ADVANCED] == nil then
-                    monster_pack = GetRandomMonsterPack(MONSTER_RANK_ADVANCED)
-                end
-
-                if monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] == nil then
-                    monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
-                end
-
-                total_monster_count = total_monster_count - CreateUnits_Pack(monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] or nil, point, elite_monster_count, monster_group)
-                print("spawn elite type")
-                print(total_monster_count)
-
-                if  total_monster_count > 0 then
-                    monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
-
-                        if monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] == nil then
-                            monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
-                        end
-
-                    local elite_second_monster_count = GetRandomInt(1, total_monster_count)
-                    CreateUnits_Pack(monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] or nil, point, elite_second_monster_count, monster_group)
-                    print("spawn second elite type")
-                    print(total_monster_count)
-                end
-
-            end
-
-        --DelayAction(0.015, function()
-            --ScaleMonsterGroup(monster_group)
-        --end)]]
-
-        return monster_group
-    end
-
-
-    local BossCounter = 0
-
-    function RemoveGuardPosition(hUnit) end
-
-
-    local function CreateSpecialUnits(pack, rank, attack_type, amount, where)
-        return CreateUnits(pack[rank][attack_type] or nil, where, amount)
-    end
-
-
-    ---@param point rect
-    function SpawnMonstersWave(point)
-        local monster_pack = GetRandomMonsterPack(MONSTER_RANK_COMMON)
-        --local point = SPAWN_POINTS[1]
-        local total_monster_count = math.floor((GetRandomInt(WAVE_MINIMUM_COUNT, WAVE_MAXIMUM_COUNT) + Current_Wave + (ActivePlayers-1 * WAVE_PLAYER_BONUS)) * WaveDifficultyModificator)
-        --print("total is "..total_monster_count)
-        local first_pack_count = math.floor(total_monster_count * COMMON_MONSTER_RATE)
-        --print("first pack counter is "..first_pack_count)
-        local monster_attack_type = GetRandomReal(0., 100.) <= MELEE_MONSTER_CHANCE and MONSTER_TAG_MELEE or MONSTER_TAG_RANGE
-
-        BossCounter = BossCounter + 1
-        --print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
-        --print("pack is "..monster_pack)
-
-        local last_attack_type = monster_attack_type
-        local rank = MONSTER_RANK_COMMON
-        local to_spawn = first_pack_count
-        local rank_switch = 0
-
-
-        while total_monster_count > 0 do
-            --print("begin")
-            --print("total now is " .. total_monster_count)
-            if monster_pack[rank] and monster_pack[rank][last_attack_type] then
-                total_monster_count = total_monster_count - CreateUnits(monster_pack[rank][last_attack_type] or nil, point, to_spawn)
-                --print("total remaining " .. total_monster_count)
-            end
-
-            rank_switch = rank_switch + 1
-
-            if last_attack_type == MONSTER_TAG_MELEE then last_attack_type = MONSTER_TAG_RANGE
-            else last_attack_type = MONSTER_TAG_MELEE end
-
-            if rank_switch == 2 then
-                if rank == MONSTER_RANK_COMMON then rank = MONSTER_RANK_ADVANCED; to_spawn = GetRandomInt(1, 3)
-                else rank = MONSTER_RANK_COMMON; to_spawn = GetRandomInt(1, 5) end
-                rank_switch = 0
-            end
-
-
-
-        end
-        --[[
-        total_monster_count = total_monster_count - CreateUnits(monster_pack[MONSTER_RANK_COMMON][monster_attack_type] or nil, point, first_pack_count)
-        --print("there are " .. total_monster_count .. " free slots")
-
-
-        local second_pack_count = GetRandomInt(1, total_monster_count)
-        monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
-
-        total_monster_count = total_monster_count - CreateUnits(monster_pack[MONSTER_RANK_COMMON][monster_attack_type] or nil, point, second_pack_count)
-        --print("second pack counter is "..second_pack_count)
-        --print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
-        --print("there are " .. total_monster_count .. " free slots")
-
-        if total_monster_count > 0 then
-            local elite_monster_count = GetRandomInt(1, total_monster_count)
-            monster_attack_type = GetRandomReal(0., 100.) <= MELEE_MONSTER_CHANCE and MONSTER_TAG_MELEE or MONSTER_TAG_RANGE
-
-                if monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] == nil then
-                    monster_pack = GetRandomMonsterPackTag(MONSTER_RANK_ADVANCED, monster_attack_type)
-                end
-
-            total_monster_count = total_monster_count - CreateUnits(monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] or nil, point, elite_monster_count)
-            --print("elite pack counter is "..elite_monster_count)
-            --print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
-            --print("there is " .. total_monster_count .. " free slots")
-
-            if  total_monster_count > 0 then
-                monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
-
-                if monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] == nil then
-                    monster_pack = GetRandomMonsterPackTag(MONSTER_RANK_ADVANCED, monster_attack_type)
-                end
-
-                local elite_second_monster_count = GetRandomInt(1, total_monster_count)
-                CreateUnits(monster_pack[MONSTER_RANK_ADVANCED][monster_attack_type] or nil, point, elite_second_monster_count)
-                --print("alternate elite pack counter is "..elite_second_monster_count)
-                --print("monster attack type is "..(monster_attack_type == MONSTER_TAG_MELEE and "melee" or "range"))
-                --print("there are " .. total_monster_count .. " free slots")
-            end
-
-        end
-]]
-
-        if BossCounter == 5 then
-            local boss
-
-            if monster_pack[MONSTER_RANK_BOSS] then
-                boss = CreateUnit(MONSTER_PLAYER, FourCC(monster_pack[MONSTERPACK_BOSS][GetRandomInt(1, #monster_pack[MONSTERPACK_BOSS])]), GetRectCenterX(point), GetRectCenterY(point), 270.)
-            else
-                boss = CreateUnit(MONSTER_PLAYER, FourCC(MONSTER_LIST[MONSTERPACK_BOSS][GetRandomInt(1, #MONSTER_LIST[MONSTERPACK_BOSS])]), GetRectCenterX(point), GetRectCenterY(point), 270.)
-            end
-
-            GroupAddUnit(WaveGroup, boss)
-            BossCounter = 0
-            --CreateUnit()
-        end
-
-
-            --DelayAction(0.015, function()
-                --ForGroup(WaveGroup, function ()
-                    --ScaleMonsterUnit(GetEnumUnit())
-                   -- IssuePointOrderById(GetEnumUnit(), order_attack, GetRectCenterX(MAIN_POINT), GetRectCenterY(MAIN_POINT))
-                --end)
-            --end)
-
-
-        local waypoint = 2
-        --local switch_waypoint = false
-        local waypoint_type = 1
-        local guard_group = CreateGroup()
-
-        for i = 1, #MONSTER_WAYPOINTS do
-            if MONSTER_WAYPOINTS[i][1] == point then
-                waypoint_type = i
-                break
-            end
-        end
-        
-        TimerStart(WaveWaypointTimer, 3., true, function()
-            if BlzGroupGetSize(WaveGroup) <= 0 then
-                TimerStart(WaveWaypointTimer, 0., false, nil)
-                DestroyGroup(guard_group)
-            else
-
-                if MONSTER_WAYPOINTS[waypoint_type][waypoint] ~= MAIN_POINT then
-                    --switch_waypoint = true
-                    local counter = 0
-                    local x = GetRectCenterX(MONSTER_WAYPOINTS[waypoint_type][waypoint]); local y = GetRectCenterY(MONSTER_WAYPOINTS[waypoint_type][waypoint])
-
-                    ForGroup(WaveGroup, function()
-                        if IsUnitInRangeXY(GetEnumUnit(), x, y, 650.) and not IsUnitInGroup(GetEnumUnit(), guard_group) then
-                            local unit = GetEnumUnit()
-                            DelayAction(GetRandomReal(0.15, 1.), function()
-                                IssueImmediateOrderById(unit, order_stop)
-                                GroupAddUnit(guard_group, unit)
-                                --print("stop")
-                            end)
-                        end
-
-                        if IsUnitInRangeXY(GetEnumUnit(), x, y, 650.) then
-                            counter = counter + 1
-                            --switch_waypoint = false
-                        end
-                    end)
-
-                    if counter / BlzGroupGetSize(WaveGroup) >= 0.65 then
-                        waypoint = waypoint + 1
-                        GroupClear(guard_group)
-                    end
-
-                    --print(counter / BlzGroupGetSize(WaveGroup))
-
-                    --if switch_waypoint then
-                      --  waypoint = waypoint + 1
-                    --end
-                end
-
-
-                ForGroup(WaveGroup, function()
-                    RemoveGuardPosition(GetEnumUnit())
-                    IssuePointOrderById(GetEnumUnit(), order_attack, GetRectCenterX(MONSTER_WAYPOINTS[waypoint_type][waypoint]), GetRectCenterY(MONSTER_WAYPOINTS[waypoint_type][waypoint]))
-                end)
-                PingMinimap(GetRectCenterX(MONSTER_WAYPOINTS[waypoint_type][waypoint]), GetRectCenterY(MONSTER_WAYPOINTS[waypoint_type][waypoint]), 5.)
-
-            end
-        end)
-
-        --TimerStart(CreateTimer(), 12.5, true, function()
-           -- if BlzGroupGetSize(WaveGroup) <= 0 then
-            --    DestroyTimer(GetExpiredTimer())
-            --else
-             --   ForGroup(WaveGroup, function()
-              --      IssuePointOrderById(GetEnumUnit(), order_attack, GetRectCenterX(MAIN_POINT), GetRectCenterY(MAIN_POINT))
-             --   end)
-            --end
-        --end)
-
-        PingMinimap(GetRectCenterX(point), GetRectCenterY(point), 7.)
-
-        local penta = AddSpecialEffect("Other\\MagicCircle_Fire.mdx", GetRectCenterX(point), GetRectCenterY(point))
-        BlzSetSpecialEffectScale(penta, 3.)
-        DestroyEffect(penta)
-
-    end
-
-
-    function GetRandomMonsterSpawnPoint()
-        return SPAWN_POINTS[GetRandomInt(1, #SPAWN_POINTS)]
-    end
-
-
-    function InitMonsterData()
-
-
-        MONSTER_PLAYER = Player(10)
-        SECOND_MONSTER_PLAYER = Player(11)
 
         SPAWN_POINTS = {
             gg_rct_spawn_left,

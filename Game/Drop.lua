@@ -6,9 +6,7 @@
 do
 
 
-    local UNIT_DROP_LIST = {
-
-    }
+    local UNIT_DROP_LIST
 
 
     ---@param unit unit
@@ -52,7 +50,7 @@ do
                             end
 
 
-                            local my_item = CreateCustomItem(id, unit_x + GetRandomReal(-45. + (drop_list.bonus_range or 0.), 45 + (drop_list.bonus_range or 0.)), unit_y + GetRandomReal(-45. + (drop_list.bonus_range or 0.), 45. + (drop_list.bonus_range or 0.)), true)
+                            local my_item = CreateCustomItem(id, unit_x + GetRandomReal(-45. + (drop_list.bonus_range or 0.), 45 + (drop_list.bonus_range or 0.)), unit_y + GetRandomReal(-45. + (drop_list.bonus_range or 0.), 45. + (drop_list.bonus_range or 0.)), true, player)
 
                                 if current_item.generate then
                                     local item_data = GetItemData(my_item)
@@ -78,14 +76,6 @@ do
                                     SetItemCharges(my_item, GetRandomInt(current_item.min or 1, current_item.max or 1))
                                 end
 
-
-                            local item_data = GetItemData(my_item)
-                            item_data.owner = player
-                            --if GetLocalPlayer() ~= Player(item_data.owner) then
-                             --  BlzSetItemSkin(my_item, FourCC("I01X"))
-                            --end
-                            --SetItemVisible(my_item, GetLocalPlayer() == Player(player))
-
                         end)
 
                         time_offset = time_offset + 0.347
@@ -108,6 +98,7 @@ do
 
 
     function DropListInit()
+
 
         RegisterTestCommand("sp", function()
             local unit = CreateUnit(MONSTER_PLAYER, FourCC("n00Y"), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), 0.)
@@ -142,6 +133,7 @@ do
             end
 
         end)
+
 
         UNIT_DROP_LIST = {
             [MONSTER_RANK_COMMON] = {
@@ -242,7 +234,7 @@ do
                     { id = ITEM_SCROLL_OF_TOWN_PORTAL, chance = 8.3, min = 1, max = 1 },
                     { id = ITEM_SCROLL_OF_PROTECTION, chance = 7.4, min = 1, max = 1 },
                     { id = "I01V", chance = 7.6 },
-                    { id = "I01O", chance = 25. },
+                    { id = "I01O", chance = 55. },
                     { id = "class_book", chance = 71.3 }
                 },
                 gold = { min_gold = 20, max_gold = 45, chance = 70. },

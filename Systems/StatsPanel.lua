@@ -1,10 +1,10 @@
 do
 
     STAT_PANEL_UPDATE = 0.3
-    PlayerStatsFrame = {}
-    StatsList = {}
-    PlayerHero = {}
-    MainStatButtons = {}
+    PlayerStatsFrame = nil
+    StatsList = nil
+    PlayerHero = nil
+    MainStatButtons = nil
     CharButton = nil
 
 
@@ -234,14 +234,7 @@ do
     end
 
 
-    local FirstTime_Data = {
-        [1] = { first_time = true },
-        [2] = { first_time = true },
-        [3] = { first_time = true },
-        [4] = { first_time = true },
-        [5] = { first_time = true },
-        [6] = { first_time = true }
-    }
+    local FirstTime_Data
 
 
     function SetStatsPanelState(player, state)
@@ -266,6 +259,21 @@ do
         --CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_DESCRIPTION, CharButton, 0.14, 0.06)
 
         --BlzFrameSetVisible(CharButton, false)
+
+        PlayerStatsFrame = {}
+        StatsList = {}
+        PlayerHero = {}
+        MainStatButtons = {}
+
+        FirstTime_Data = {
+            [1] = { first_time = true },
+            [2] = { first_time = true },
+            [3] = { first_time = true },
+            [4] = { first_time = true },
+            [5] = { first_time = true },
+            [6] = { first_time = true }
+        }
+
         local timer = CreateTimer()
         TimerStart(timer, STAT_PANEL_UPDATE, true, StatPanelUpdate)
 

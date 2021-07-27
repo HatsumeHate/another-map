@@ -1,5 +1,5 @@
-    SkillsData           = {}
-    SkillList            = {}
+    SkillsData           = nil
+    SkillList            = nil
     local MaxSkillLevels = 10
 
     -- target types
@@ -22,34 +22,9 @@
     SKILL_CATEGORY_BATTLE_ADVANTAGE = 6
     SKILL_CATEGORY_INNER_STRENGTH = 7
 
-
-    SKILL_CATEGORY_NAME = {
-
-    }
-
-    SKILL_CATEGORY_ICON = {
-        [SKILL_CATEGORY_LIGHTNING] = "GUI\\BTNLightning Mastery.blp",
-        [SKILL_CATEGORY_FIRE] = "GUI\\BTNFireMastery.blp",
-        [SKILL_CATEGORY_ICE] = "GUI\\BTNWaterMastery.blp",
-        [SKILL_CATEGORY_ARCANE] = "GUI\\BTNAstral Blessing.blp",
-        [SKILL_CATEGORY_FIGHTING_MASTERY] = "GUI\\BTN_CR_HOLDINGGROUND.blp",
-        [SKILL_CATEGORY_BATTLE_ADVANTAGE] = "GUI\\BTN_cr_Warp3.blp",
-        [SKILL_CATEGORY_INNER_STRENGTH] = "GUI\\BTN_cr_HOLYllllcharge.blp",
-    }
-
-    CLASS_SKILL_CATEGORY = {
-        [BARBARIAN_CLASS] = {
-            SKILL_CATEGORY_FIGHTING_MASTERY,
-            SKILL_CATEGORY_BATTLE_ADVANTAGE,
-            SKILL_CATEGORY_INNER_STRENGTH
-        },
-        [SORCERESS_CLASS] = {
-            SKILL_CATEGORY_FIRE,
-            SKILL_CATEGORY_LIGHTNING,
-            SKILL_CATEGORY_ICE,
-            SKILL_CATEGORY_ARCANE
-        }
-    }
+    SKILL_CATEGORY_NAME = nil
+    SKILL_CATEGORY_ICON = nil
+    CLASS_SKILL_CATEGORY = nil
 
 
     function GetSkillName(id)
@@ -214,6 +189,34 @@
 
     function DefineSkillsData()
 
+        SkillsData           = {}
+        SkillList            = {}
+
+
+        SKILL_CATEGORY_ICON = {
+            [SKILL_CATEGORY_LIGHTNING] = "GUI\\BTNLightning Mastery.blp",
+            [SKILL_CATEGORY_FIRE] = "GUI\\BTNFireMastery.blp",
+            [SKILL_CATEGORY_ICE] = "GUI\\BTNWaterMastery.blp",
+            [SKILL_CATEGORY_ARCANE] = "GUI\\BTNAstral Blessing.blp",
+            [SKILL_CATEGORY_FIGHTING_MASTERY] = "GUI\\BTN_CR_HOLDINGGROUND.blp",
+            [SKILL_CATEGORY_BATTLE_ADVANTAGE] = "GUI\\BTN_cr_Warp3.blp",
+            [SKILL_CATEGORY_INNER_STRENGTH] = "GUI\\BTN_cr_HOLYllllcharge.blp",
+        }
+
+        CLASS_SKILL_CATEGORY = {
+            [BARBARIAN_CLASS] = {
+                SKILL_CATEGORY_FIGHTING_MASTERY,
+                SKILL_CATEGORY_BATTLE_ADVANTAGE,
+                SKILL_CATEGORY_INNER_STRENGTH
+            },
+            [SORCERESS_CLASS] = {
+                SKILL_CATEGORY_FIRE,
+                SKILL_CATEGORY_LIGHTNING,
+                SKILL_CATEGORY_ICE,
+                SKILL_CATEGORY_ARCANE
+            }
+        }
+
         SKILL_CATEGORY_NAME = {
             [SKILL_CATEGORY_LIGHTNING] = LOCALE_LIST[my_locale].SKILL_CATEGORY_LIGHTNING_ADVANCED,
             [SKILL_CATEGORY_FIRE] = LOCALE_LIST[my_locale].SKILL_CATEGORY_FIRE_ADVANCED,
@@ -223,6 +226,7 @@
             [SKILL_CATEGORY_BATTLE_ADVANTAGE] = LOCALE_LIST[my_locale].SKILL_CATEGORY_BATTLE_ADVANTAGE_ADVANCED,
             [SKILL_CATEGORY_INNER_STRENGTH] = LOCALE_LIST[my_locale].SKILL_CATEGORY_INNER_STRENGTH_ADVANCED,
         }
+
         -- defined skills
         NewSkillData('A000', {
             name            = "test skill",

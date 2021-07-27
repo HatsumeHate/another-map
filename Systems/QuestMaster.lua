@@ -23,7 +23,7 @@ do
     QUEST_ALERT_SOUND = nil
 
 
-    QuestsList = {}
+    QuestsList = nil
 
 
 
@@ -311,9 +311,8 @@ do
 
     function InitQuestMaster()
 
-        for i = 1, bj_MAX_PLAYERS do
-            QuestsList[i] = {}
-        end
+        QuestsList = {}
+
 
         QUEST_REVEALED_STRING = "|c00FFCE00Задание получено: |r"
         QUEST_DONE_STRING = "|c005AFF00Задание выполнено: |r"
@@ -331,7 +330,7 @@ do
         QUEST_HINT_SOUND = nil
         QUEST_ALERT_SOUND = nil
 
-
+        --[[
         QUEST_REVEALED_SOUND = CreateSound("", false, false, false, 100, 100, "")
         SetSoundVolume(QUEST_REVEALED_SOUND, 0)
         SetSoundChannel(QUEST_REVEALED_SOUND, 1)
@@ -343,7 +342,7 @@ do
         QUEST_DONE_SOUND = CreateSound("", false, false, false, 100, 100, "")
         SetSoundVolume(QUEST_DONE_SOUND, 0)
         SetSoundChannel(QUEST_DONE_SOUND, 1)
-
+        ]]
     end
 
 end

@@ -1,6 +1,6 @@
 do
 
-    MissileList = {}
+    MissileList = nil
 
     function GetMissileData(id)
         return MissileList[FourCC(id)] or nil
@@ -94,6 +94,7 @@ do
 
 
     function DefineMissilesData()
+        MissileList = {}
         NewMissileTemplate('M001', {
             name = "test missile",
             model = ".mdx",

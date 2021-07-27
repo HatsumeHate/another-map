@@ -1,6 +1,6 @@
 do
 
-    BUFF_DATA = {}
+    BUFF_DATA = nil
     local MAX_BUFF_LEVEL = 10
 
 
@@ -210,6 +210,8 @@ do
 
 
     function DefineBuffsData()
+
+        BUFF_DATA = {}
         --================================================--
         NewBuffTemplate({
             name = "test buff",

@@ -36,113 +36,21 @@ do
     ITEM_SUFFIX_ENDLESS_FURY        = 16
     ITEM_SUFFIX_DEADLY_PRECISION    = 17
 
+    QUALITY_ITEM_LIST = nil
+    QUALITY_STONE_COUNT = nil
+    QUALITY_ITEM_BONUS_COUNT = nil
+    ITEM_AFFIX_NAME_LIST = nil
+    ITEM_SUFFIX_LIST = nil
+    ITEM_QUALITY_SUFFIX_LIST = nil
 
-    local BOOK_ITEM_LIST = {
-        "I017", "I016", "I015","I014", "I013", "I00V", "I00U"
-    }
 
-    BOOK_CLASS_ITEM_LIST = {
-        [BARBARIAN_CLASS] = { "I017", "I016", "I015" },
-        [SORCERESS_CLASS] = { "I014", "I013", "I00V", "I00U" }
-    }
+    SINGLE_PARAMETER = 1
+    MULTIPLE_PARAMETER = 2
 
-    local GENERATED_ITEM_LIST = {
-        {
-            type = ITEM_TYPE_WEAPON,
-            subtype = SWORD_WEAPON,
-            id = "IGSO"
-        },
-        {
-            type = ITEM_TYPE_WEAPON,
-            subtype = GREATSWORD_WEAPON,
-            id = "IGST"
-        },
-        {
-            type = ITEM_TYPE_WEAPON,
-            subtype = BLUNT_WEAPON,
-            id = "IGBO"
-        },
-        {
-            type = ITEM_TYPE_WEAPON,
-            subtype = GREATBLUNT_WEAPON,
-            id = "IGBT"
-        },
-        {
-            type = ITEM_TYPE_WEAPON,
-            subtype = AXE_WEAPON,
-            id = "IGAO"
-        },
-        {
-            type = ITEM_TYPE_WEAPON,
-            subtype = GREATAXE_WEAPON,
-            id = "IGAT"
-        },
-        {
-            type = ITEM_TYPE_WEAPON,
-            subtype = STAFF_WEAPON,
-            id = "IGSF"
-        },
-        {
-            type = ITEM_TYPE_WEAPON,
-            subtype = DAGGER_WEAPON,
-            id = "IGDR"
-        },
-        --{
-           -- type = ITEM_TYPE_WEAPON,
-            --subtype = BOW_WEAPON,
-           -- id = "IGBW"
-       -- },
-        {
-            type = ITEM_TYPE_ARMOR,
-            subtype = CHEST_ARMOR,
-            id = "IGAC"
-        },
-        {
-            type = ITEM_TYPE_ARMOR,
-            subtype = HANDS_ARMOR,
-            id = "IGAD"
-        },
-        {
-            type = ITEM_TYPE_ARMOR,
-            subtype = HEAD_ARMOR,
-            id = "IGAH"
-        },
-        {
-            type = ITEM_TYPE_ARMOR,
-            subtype = LEGS_ARMOR,
-            id = "IGAL"
-        },
-        {
-            type = ITEM_TYPE_ARMOR,
-            subtype = BELT_ARMOR,
-            id = "IGAB"
-        },
-        {
-            type = ITEM_TYPE_JEWELRY,
-            subtype = RING_JEWELRY,
-            id = "IGJR"
-        },
-        {
-            type = ITEM_TYPE_JEWELRY,
-            subtype = NECKLACE_JEWELRY,
-            id = "IGJN"
-        },
-        {
-            type = ITEM_TYPE_OFFHAND,
-            subtype = ORB_OFFHAND,
-            id = "IGOO"
-        },
-        {
-            type = ITEM_TYPE_OFFHAND,
-            subtype = SHIELD_OFFHAND,
-            id = "IGOS"
-        },
-        --{
-          --  type = ITEM_TYPE_OFFHAND,
-          --  subtype = QUIVER_OFFHAND,
-         --   id = "IGOQ"
-        --},
-    }
+    local BOOK_ITEM_LIST
+    BOOK_CLASS_ITEM_LIST = nil
+    local GENERATED_ITEM_LIST
+
 
     function GetRandomGeneratedItemId()
         return GENERATED_ITEM_LIST[GetRandomInt(1, #GENERATED_ITEM_LIST)].id
@@ -192,571 +100,119 @@ do
     end
 
 
-    QUALITY_ITEM_LIST = {
-
-    }
-
-    QUALITY_STONE_COUNT = {
-        [COMMON_ITEM] = {
-            rolls = {
-                [1] = 35,
-                [2] = 25,
-                [3] = 15
-            }
-        },
-        [RARE_ITEM] = {
-            rolls = {
-                [1] = 45,
-                [2] = 35,
-                [3] = 25
-            }
-        },
-        [UNIQUE_ITEM] = {
-            rolls = {
-                [1] = 45,
-                [2] = 35,
-                [3] = 25
-            }
-        },
-        [MAGIC_ITEM] = {
-            rolls = {
-                [1] = 50,
-                [2] = 33,
-                [3] = 22,
-                [4] = 11
-            }
-        }
-    }
-
-    QUALITY_ITEM_BONUS_COUNT = {
-        [COMMON_ITEM] = {min = 1, max = 3},
-        [RARE_ITEM] =   {min = 2, max = 4},
-        [MAGIC_ITEM] =  {min = 3, max = 5},
-    }
-
-
-    ITEM_AFFIX_NAME_LIST = {
-
-    }
-
-
-
-    ITEM_SUFFIX_LIST = {
-
-    }
-
-    ITEM_QUALITY_SUFFIX_LIST = {
-        [COMMON_ITEM] = {
-            [RING_JEWELRY] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_KNOWLEDGE
-            },
-            [NECKLACE_JEWELRY] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_KNOWLEDGE
-            },
-            [HEAD_ARMOR] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_MYSTERY,
-            },
-            [HANDS_ARMOR] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_MYSTERY,
-            },
-            [CHEST_ARMOR] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_MYSTERY,
-            },
-            [LEGS_ARMOR] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_MYSTERY,
-            },
-            [BELT_ARMOR] = {
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_KNOWLEDGE
-            },
-            [SWORD_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
-            },
-            [GREATSWORD_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
-            },
-            [BLUNT_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
-            },
-            [GREATBLUNT_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
-            },
-            [AXE_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
-            },
-            [GREATAXE_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
-            },
-            [DAGGER_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
-            },
-            [STAFF_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ICE_WIZARD,
-                ITEM_SUFFIX_LIGHTNING_WIZARD,
-                ITEM_SUFFIX_FIRE_WIZARD,
-                ITEM_SUFFIX_SLAYER
-            },
-            [BOW_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
-            },
-            [ORB_OFFHAND] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_KNOWLEDGE,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_KNOWLEDGE,
-                ITEM_SUFFIX_ICE_WIZARD,
-                ITEM_SUFFIX_LIGHTNING_WIZARD,
-                ITEM_SUFFIX_FIRE_WIZARD
-            },
-            [SHIELD_OFFHAND] = {
-                ITEM_SUFFIX_KNOWLEDGE,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_FURY
-            },
-            [QUIVER_OFFHAND] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ANGER
-            }
-        },
-        [RARE_ITEM] = {
-            [RING_JEWELRY] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_ENDLESS_FURY,
-                ITEM_SUFFIX_PURE_CONCENTRATION,
-                ITEM_SUFFIX_DEADLY_PRECISION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_KNOWLEDGE
-            },
-            [NECKLACE_JEWELRY] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_ENDLESS_FURY,
-                ITEM_SUFFIX_PURE_CONCENTRATION,
-                ITEM_SUFFIX_DEADLY_PRECISION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_KNOWLEDGE
-            },
-            [HEAD_ARMOR] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ENDLESS_FURY,
-                ITEM_SUFFIX_PURE_CONCENTRATION,
-                ITEM_SUFFIX_DEADLY_PRECISION,
-                ITEM_SUFFIX_HIGH_KNIGHT,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_MYSTERY,
-            },
-            [HANDS_ARMOR] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_ENDLESS_FURY,
-                ITEM_SUFFIX_PURE_CONCENTRATION,
-                ITEM_SUFFIX_DEADLY_PRECISION,
-                ITEM_SUFFIX_HIGH_KNIGHT,
-            },
-            [CHEST_ARMOR] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_ENDLESS_FURY,
-                ITEM_SUFFIX_PURE_CONCENTRATION,
-                ITEM_SUFFIX_DEADLY_PRECISION,
-                ITEM_SUFFIX_HIGH_KNIGHT,
-            },
-            [LEGS_ARMOR] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_ENDLESS_FURY,
-                ITEM_SUFFIX_PURE_CONCENTRATION,
-                ITEM_SUFFIX_DEADLY_PRECISION,
-                ITEM_SUFFIX_HIGH_KNIGHT,
-            },
-            [BELT_ARMOR] = {
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_KNOWLEDGE,
-                ITEM_SUFFIX_HIGH_KNIGHT
-            },
-            [SWORD_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER,
-                ITEM_SUFFIX_ENDLESS_FURY,
-                ITEM_SUFFIX_PURE_CONCENTRATION,
-                ITEM_SUFFIX_DEADLY_PRECISION,
-                ITEM_SUFFIX_SLAYER_GENIUS
-            },
-            [GREATSWORD_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER,
-                ITEM_SUFFIX_ENDLESS_FURY,
-                ITEM_SUFFIX_PURE_CONCENTRATION,
-                ITEM_SUFFIX_DEADLY_PRECISION,
-                ITEM_SUFFIX_SLAYER_GENIUS
-            },
-            [BLUNT_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER,
-                ITEM_SUFFIX_ENDLESS_FURY,
-                ITEM_SUFFIX_PURE_CONCENTRATION,
-                ITEM_SUFFIX_DEADLY_PRECISION,
-                ITEM_SUFFIX_SLAYER_GENIUS
-            },
-            [GREATBLUNT_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER,
-                ITEM_SUFFIX_ENDLESS_FURY,
-                ITEM_SUFFIX_PURE_CONCENTRATION,
-                ITEM_SUFFIX_DEADLY_PRECISION,
-                ITEM_SUFFIX_SLAYER_GENIUS
-            },
-            [AXE_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER,
-                ITEM_SUFFIX_ENDLESS_FURY,
-                ITEM_SUFFIX_PURE_CONCENTRATION,
-                ITEM_SUFFIX_DEADLY_PRECISION,
-                ITEM_SUFFIX_SLAYER_GENIUS
-            },
-            [GREATAXE_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER,
-                ITEM_SUFFIX_ENDLESS_FURY,
-                ITEM_SUFFIX_PURE_CONCENTRATION,
-                ITEM_SUFFIX_DEADLY_PRECISION,
-                ITEM_SUFFIX_SLAYER_GENIUS
-            },
-            [DAGGER_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER,
-                ITEM_SUFFIX_ENDLESS_FURY,
-                ITEM_SUFFIX_PURE_CONCENTRATION,
-                ITEM_SUFFIX_DEADLY_PRECISION,
-                ITEM_SUFFIX_SLAYER_GENIUS
-            },
-            [STAFF_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ICE_WIZARD,
-                ITEM_SUFFIX_LIGHTNING_WIZARD,
-                ITEM_SUFFIX_FIRE_WIZARD,
-                ITEM_SUFFIX_SLAYER,
-                ITEM_SUFFIX_ENDLESS_FURY,
-                ITEM_SUFFIX_PURE_CONCENTRATION,
-                ITEM_SUFFIX_DEADLY_PRECISION,
-                ITEM_SUFFIX_SLAYER_GENIUS
-            },
-            [BOW_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER,
-                ITEM_SUFFIX_ENDLESS_FURY,
-                ITEM_SUFFIX_PURE_CONCENTRATION,
-                ITEM_SUFFIX_DEADLY_PRECISION,
-                ITEM_SUFFIX_SLAYER_GENIUS
-            },
-            [ORB_OFFHAND] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_KNOWLEDGE,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_KNOWLEDGE,
-                ITEM_SUFFIX_ICE_WIZARD,
-                ITEM_SUFFIX_LIGHTNING_WIZARD,
-                ITEM_SUFFIX_FIRE_WIZARD,
-                ITEM_SUFFIX_ENDLESS_FURY,
-                ITEM_SUFFIX_PURE_CONCENTRATION,
-                ITEM_SUFFIX_DEADLY_PRECISION,
-            },
-            [SHIELD_OFFHAND] = {
-                ITEM_SUFFIX_KNOWLEDGE,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_HIGH_KNIGHT,
-                ITEM_SUFFIX_ENDLESS_FURY,
-            },
-            [QUIVER_OFFHAND] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ANGER,
-            }
-        },
-        [MAGIC_ITEM] = {
-            [RING_JEWELRY] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_KNOWLEDGE
-            },
-            [NECKLACE_JEWELRY] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_KNOWLEDGE
-            },
-            [HEAD_ARMOR] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_MYSTERY,
-            },
-            [HANDS_ARMOR] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_MYSTERY,
-            },
-            [CHEST_ARMOR] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_MYSTERY,
-            },
-            [LEGS_ARMOR] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_MYSTERY,
-            },
-            [BELT_ARMOR] = {
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_KNOWLEDGE
-            },
-            [SWORD_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
-            },
-            [GREATSWORD_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
-            },
-            [BLUNT_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
-            },
-            [GREATBLUNT_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
-            },
-            [AXE_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
-            },
-            [GREATAXE_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
-            },
-            [DAGGER_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
-            },
-            [STAFF_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ICE_WIZARD,
-                ITEM_SUFFIX_LIGHTNING_WIZARD,
-                ITEM_SUFFIX_FIRE_WIZARD,
-                ITEM_SUFFIX_SLAYER
-            },
-            [BOW_WEAPON] = {
-                ITEM_SUFFIX_ANGER,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_SLAYER
-            },
-            [ORB_OFFHAND] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_CONCENTRATION,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_KNOWLEDGE,
-                ITEM_SUFFIX_MYSTERY,
-                ITEM_SUFFIX_KNOWLEDGE,
-                ITEM_SUFFIX_ICE_WIZARD,
-                ITEM_SUFFIX_LIGHTNING_WIZARD,
-                ITEM_SUFFIX_FIRE_WIZARD,
-            },
-            [SHIELD_OFFHAND] = {
-                ITEM_SUFFIX_KNOWLEDGE,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_ROCK,
-                ITEM_SUFFIX_KNIGHT,
-                ITEM_SUFFIX_FURY,
-            },
-            [QUIVER_OFFHAND] = {
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_FURY,
-                ITEM_SUFFIX_PRECISION,
-                ITEM_SUFFIX_ANGER,
-            }
-        },
-    }
-
-
-
-    SINGLE_PARAMETER = 1
-    MULTIPLE_PARAMETER = 2
-
 
     function DefineItemGeneratorTemplates()
+
+
+
+        BOOK_ITEM_LIST = {
+            "I017", "I016", "I015","I014", "I013", "I00V", "I00U"
+        }
+
+        BOOK_CLASS_ITEM_LIST = {
+            [BARBARIAN_CLASS] = { "I017", "I016", "I015" },
+            [SORCERESS_CLASS] = { "I014", "I013", "I00V", "I00U" }
+        }
+
+        GENERATED_ITEM_LIST = {
+            {
+                type = ITEM_TYPE_WEAPON,
+                subtype = SWORD_WEAPON,
+                id = "IGSO"
+            },
+            {
+                type = ITEM_TYPE_WEAPON,
+                subtype = GREATSWORD_WEAPON,
+                id = "IGST"
+            },
+            {
+                type = ITEM_TYPE_WEAPON,
+                subtype = BLUNT_WEAPON,
+                id = "IGBO"
+            },
+            {
+                type = ITEM_TYPE_WEAPON,
+                subtype = GREATBLUNT_WEAPON,
+                id = "IGBT"
+            },
+            {
+                type = ITEM_TYPE_WEAPON,
+                subtype = AXE_WEAPON,
+                id = "IGAO"
+            },
+            {
+                type = ITEM_TYPE_WEAPON,
+                subtype = GREATAXE_WEAPON,
+                id = "IGAT"
+            },
+            {
+                type = ITEM_TYPE_WEAPON,
+                subtype = STAFF_WEAPON,
+                id = "IGSF"
+            },
+            {
+                type = ITEM_TYPE_WEAPON,
+                subtype = DAGGER_WEAPON,
+                id = "IGDR"
+            },
+            --{
+               -- type = ITEM_TYPE_WEAPON,
+                --subtype = BOW_WEAPON,
+               -- id = "IGBW"
+           -- },
+            {
+                type = ITEM_TYPE_ARMOR,
+                subtype = CHEST_ARMOR,
+                id = "IGAC"
+            },
+            {
+                type = ITEM_TYPE_ARMOR,
+                subtype = HANDS_ARMOR,
+                id = "IGAD"
+            },
+            {
+                type = ITEM_TYPE_ARMOR,
+                subtype = HEAD_ARMOR,
+                id = "IGAH"
+            },
+            {
+                type = ITEM_TYPE_ARMOR,
+                subtype = LEGS_ARMOR,
+                id = "IGAL"
+            },
+            {
+                type = ITEM_TYPE_ARMOR,
+                subtype = BELT_ARMOR,
+                id = "IGAB"
+            },
+            {
+                type = ITEM_TYPE_JEWELRY,
+                subtype = RING_JEWELRY,
+                id = "IGJR"
+            },
+            {
+                type = ITEM_TYPE_JEWELRY,
+                subtype = NECKLACE_JEWELRY,
+                id = "IGJN"
+            },
+            {
+                type = ITEM_TYPE_OFFHAND,
+                subtype = ORB_OFFHAND,
+                id = "IGOO"
+            },
+            {
+                type = ITEM_TYPE_OFFHAND,
+                subtype = SHIELD_OFFHAND,
+                id = "IGOS"
+            },
+            --{
+              --  type = ITEM_TYPE_OFFHAND,
+              --  subtype = QUIVER_OFFHAND,
+             --   id = "IGOQ"
+            --},
+        }
+
+
 
         ITEM_AFFIX_NAME_LIST = {
             [ITEM_AFFIX_WORN] = {
@@ -785,6 +241,44 @@ do
             }
         }
 
+
+        QUALITY_STONE_COUNT = {
+            [COMMON_ITEM] = {
+                rolls = {
+                    [1] = 35,
+                    [2] = 25,
+                    [3] = 15
+                }
+            },
+            [RARE_ITEM] = {
+                rolls = {
+                    [1] = 45,
+                    [2] = 35,
+                    [3] = 25
+                }
+            },
+            [UNIQUE_ITEM] = {
+                rolls = {
+                    [1] = 45,
+                    [2] = 35,
+                    [3] = 25
+                }
+            },
+            [MAGIC_ITEM] = {
+                rolls = {
+                    [1] = 50,
+                    [2] = 33,
+                    [3] = 22,
+                    [4] = 11
+                }
+            }
+        }
+
+        QUALITY_ITEM_BONUS_COUNT = {
+            [COMMON_ITEM] = {min = 1, max = 3},
+            [RARE_ITEM] =   {min = 2, max = 4},
+            [MAGIC_ITEM] =  {min = 3, max = 5},
+        }
 
         QUALITY_ITEM_LIST = {
             [COMMON_ITEM] = {
@@ -3033,7 +2527,510 @@ do
         }
 
 
-
+        ITEM_QUALITY_SUFFIX_LIST = {
+            [COMMON_ITEM] = {
+                [RING_JEWELRY] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_KNOWLEDGE
+                },
+                [NECKLACE_JEWELRY] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_KNOWLEDGE
+                },
+                [HEAD_ARMOR] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_MYSTERY,
+                },
+                [HANDS_ARMOR] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_MYSTERY,
+                },
+                [CHEST_ARMOR] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_MYSTERY,
+                },
+                [LEGS_ARMOR] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_MYSTERY,
+                },
+                [BELT_ARMOR] = {
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_KNOWLEDGE
+                },
+                [SWORD_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [GREATSWORD_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [BLUNT_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [GREATBLUNT_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [AXE_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [GREATAXE_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [DAGGER_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [STAFF_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ICE_WIZARD,
+                    ITEM_SUFFIX_LIGHTNING_WIZARD,
+                    ITEM_SUFFIX_FIRE_WIZARD,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [BOW_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [ORB_OFFHAND] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_KNOWLEDGE,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_KNOWLEDGE,
+                    ITEM_SUFFIX_ICE_WIZARD,
+                    ITEM_SUFFIX_LIGHTNING_WIZARD,
+                    ITEM_SUFFIX_FIRE_WIZARD
+                },
+                [SHIELD_OFFHAND] = {
+                    ITEM_SUFFIX_KNOWLEDGE,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_FURY
+                },
+                [QUIVER_OFFHAND] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ANGER
+                }
+            },
+            [RARE_ITEM] = {
+                [RING_JEWELRY] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                    ITEM_SUFFIX_PURE_CONCENTRATION,
+                    ITEM_SUFFIX_DEADLY_PRECISION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_KNOWLEDGE
+                },
+                [NECKLACE_JEWELRY] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                    ITEM_SUFFIX_PURE_CONCENTRATION,
+                    ITEM_SUFFIX_DEADLY_PRECISION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_KNOWLEDGE
+                },
+                [HEAD_ARMOR] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                    ITEM_SUFFIX_PURE_CONCENTRATION,
+                    ITEM_SUFFIX_DEADLY_PRECISION,
+                    ITEM_SUFFIX_HIGH_KNIGHT,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_MYSTERY,
+                },
+                [HANDS_ARMOR] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                    ITEM_SUFFIX_PURE_CONCENTRATION,
+                    ITEM_SUFFIX_DEADLY_PRECISION,
+                    ITEM_SUFFIX_HIGH_KNIGHT,
+                },
+                [CHEST_ARMOR] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                    ITEM_SUFFIX_PURE_CONCENTRATION,
+                    ITEM_SUFFIX_DEADLY_PRECISION,
+                    ITEM_SUFFIX_HIGH_KNIGHT,
+                },
+                [LEGS_ARMOR] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                    ITEM_SUFFIX_PURE_CONCENTRATION,
+                    ITEM_SUFFIX_DEADLY_PRECISION,
+                    ITEM_SUFFIX_HIGH_KNIGHT,
+                },
+                [BELT_ARMOR] = {
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_KNOWLEDGE,
+                    ITEM_SUFFIX_HIGH_KNIGHT
+                },
+                [SWORD_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                    ITEM_SUFFIX_PURE_CONCENTRATION,
+                    ITEM_SUFFIX_DEADLY_PRECISION,
+                    ITEM_SUFFIX_SLAYER_GENIUS
+                },
+                [GREATSWORD_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                    ITEM_SUFFIX_PURE_CONCENTRATION,
+                    ITEM_SUFFIX_DEADLY_PRECISION,
+                    ITEM_SUFFIX_SLAYER_GENIUS
+                },
+                [BLUNT_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                    ITEM_SUFFIX_PURE_CONCENTRATION,
+                    ITEM_SUFFIX_DEADLY_PRECISION,
+                    ITEM_SUFFIX_SLAYER_GENIUS
+                },
+                [GREATBLUNT_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                    ITEM_SUFFIX_PURE_CONCENTRATION,
+                    ITEM_SUFFIX_DEADLY_PRECISION,
+                    ITEM_SUFFIX_SLAYER_GENIUS
+                },
+                [AXE_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                    ITEM_SUFFIX_PURE_CONCENTRATION,
+                    ITEM_SUFFIX_DEADLY_PRECISION,
+                    ITEM_SUFFIX_SLAYER_GENIUS
+                },
+                [GREATAXE_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                    ITEM_SUFFIX_PURE_CONCENTRATION,
+                    ITEM_SUFFIX_DEADLY_PRECISION,
+                    ITEM_SUFFIX_SLAYER_GENIUS
+                },
+                [DAGGER_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                    ITEM_SUFFIX_PURE_CONCENTRATION,
+                    ITEM_SUFFIX_DEADLY_PRECISION,
+                    ITEM_SUFFIX_SLAYER_GENIUS
+                },
+                [STAFF_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ICE_WIZARD,
+                    ITEM_SUFFIX_LIGHTNING_WIZARD,
+                    ITEM_SUFFIX_FIRE_WIZARD,
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                    ITEM_SUFFIX_PURE_CONCENTRATION,
+                    ITEM_SUFFIX_DEADLY_PRECISION,
+                    ITEM_SUFFIX_SLAYER_GENIUS
+                },
+                [BOW_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                    ITEM_SUFFIX_PURE_CONCENTRATION,
+                    ITEM_SUFFIX_DEADLY_PRECISION,
+                    ITEM_SUFFIX_SLAYER_GENIUS
+                },
+                [ORB_OFFHAND] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_KNOWLEDGE,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_KNOWLEDGE,
+                    ITEM_SUFFIX_ICE_WIZARD,
+                    ITEM_SUFFIX_LIGHTNING_WIZARD,
+                    ITEM_SUFFIX_FIRE_WIZARD,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                    ITEM_SUFFIX_PURE_CONCENTRATION,
+                    ITEM_SUFFIX_DEADLY_PRECISION,
+                },
+                [SHIELD_OFFHAND] = {
+                    ITEM_SUFFIX_KNOWLEDGE,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_HIGH_KNIGHT,
+                    ITEM_SUFFIX_ENDLESS_FURY,
+                },
+                [QUIVER_OFFHAND] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ANGER,
+                }
+            },
+            [MAGIC_ITEM] = {
+                [RING_JEWELRY] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_KNOWLEDGE
+                },
+                [NECKLACE_JEWELRY] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_KNOWLEDGE
+                },
+                [HEAD_ARMOR] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_MYSTERY,
+                },
+                [HANDS_ARMOR] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_MYSTERY,
+                },
+                [CHEST_ARMOR] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_MYSTERY,
+                },
+                [LEGS_ARMOR] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_MYSTERY,
+                },
+                [BELT_ARMOR] = {
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_KNOWLEDGE
+                },
+                [SWORD_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [GREATSWORD_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [BLUNT_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [GREATBLUNT_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [AXE_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [GREATAXE_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [DAGGER_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [STAFF_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ICE_WIZARD,
+                    ITEM_SUFFIX_LIGHTNING_WIZARD,
+                    ITEM_SUFFIX_FIRE_WIZARD,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [BOW_WEAPON] = {
+                    ITEM_SUFFIX_ANGER,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_SLAYER
+                },
+                [ORB_OFFHAND] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_CONCENTRATION,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_KNOWLEDGE,
+                    ITEM_SUFFIX_MYSTERY,
+                    ITEM_SUFFIX_KNOWLEDGE,
+                    ITEM_SUFFIX_ICE_WIZARD,
+                    ITEM_SUFFIX_LIGHTNING_WIZARD,
+                    ITEM_SUFFIX_FIRE_WIZARD,
+                },
+                [SHIELD_OFFHAND] = {
+                    ITEM_SUFFIX_KNOWLEDGE,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_ROCK,
+                    ITEM_SUFFIX_KNIGHT,
+                    ITEM_SUFFIX_FURY,
+                },
+                [QUIVER_OFFHAND] = {
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_FURY,
+                    ITEM_SUFFIX_PRECISION,
+                    ITEM_SUFFIX_ANGER,
+                }
+            },
+        }
 
         ITEM_SUFFIX_LIST = {
             [ITEM_SUFFIX_ANGER] = {

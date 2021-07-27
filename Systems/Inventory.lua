@@ -1,10 +1,10 @@
 do
 
-    PlayerInventoryFrame = {}
-    PlayerInventoryFrameState = {}
-    InventorySlots = {}
-    InventoryOwner = {}
-    InventoryTooltip = {}
+    PlayerInventoryFrame = nil
+    PlayerInventoryFrameState = nil
+    InventorySlots = nil
+    InventoryOwner = nil
+    InventoryTooltip = nil
     InventoryTriggerButton = nil
     INV_SLOT = 0
     local ClickTrigger
@@ -26,49 +26,8 @@ do
 
 
     local DoubleClickTimer
-
-
-
-
-    local UNIT_POINT_LIST = {
-        [WEAPON_POINT]    = 33,
-        [OFFHAND_POINT]   = 34,
-        [HEAD_POINT]      = 35,
-        [CHEST_POINT]     = 36,
-        [LEGS_POINT]      = 38,
-        [HANDS_POINT]     = 37,
-        [BELT_POINT]      = 42,
-        [RING_1_POINT]    = 40,
-        [RING_2_POINT]    = 41,
-        [NECKLACE_POINT]  = 39
-    }
-
-    local POINT_TO_TYPE = {
-        [WEAPON_POINT]    = {
-            AXE_WEAPON,
-            BOW_WEAPON,
-            DAGGER_WEAPON,
-            SWORD_WEAPON,
-            STAFF_WEAPON,
-            GREATAXE_WEAPON,
-            GREATBLUNT_WEAPON,
-            GREATSWORD_WEAPON,
-            BLUNT_WEAPON
-        },
-        [OFFHAND_POINT]   = {
-            ORB_OFFHAND,
-            SHIELD_OFFHAND,
-            QUIVER_OFFHAND
-        },
-        [HEAD_POINT]      = HEAD_ARMOR,
-        [CHEST_POINT]     = CHEST_ARMOR,
-        [LEGS_POINT]      = LEGS_ARMOR,
-        [HANDS_POINT]     = HANDS_ARMOR,
-        [BELT_POINT]      = BELT_ARMOR,
-        [RING_1_POINT]    = RING_JEWELRY,
-        [RING_2_POINT]    = RING_JEWELRY,
-        [NECKLACE_POINT]  = NECKLACE_JEWELRY
-    }
+    local UNIT_POINT_LIST
+    local POINT_TO_TYPE
 
 
     ---@param point number
@@ -294,7 +253,7 @@ do
 
 
 
-    local PlayerMovingItem = {}
+    local PlayerMovingItem
     local EnterTrigger
     local LeaveTrigger
 
@@ -410,7 +369,7 @@ do
 
 
 
-    local function CanEquipOffhand2(item, equipped_item)
+    local function CanEquipOffhand(item, equipped_item)
         local item_data = GetItemData(item)
         local item_button_data = GetItemData(equipped_item)
 
@@ -423,7 +382,7 @@ do
         return true
     end
 
-    local function OffhandPointCheck2(item, player, target_slot)
+    local function OffhandPointCheck(item, player, target_slot)
         local item_data = GetItemData(item)
         local unit_Data = GetUnitData(InventoryOwner[player])
         local offhand_point = unit_Data.equip_point[OFFHAND_POINT]
@@ -435,7 +394,7 @@ do
             --print("item in offhand point is  " .. GetItemName(unit_Data.equip_point[OFFHAND_POINT].item))
 
 
-            if (item_data.TYPE == ITEM_TYPE_OFFHAND or (item_data.TYPE == ITEM_TYPE_WEAPON and target_slot)) and unit_Data.equip_point[WEAPON_POINT].item and not CanEquipOffhand2(item, unit_Data.equip_point[WEAPON_POINT].item) then
+            if (item_data.TYPE == ITEM_TYPE_OFFHAND or (item_data.TYPE == ITEM_TYPE_WEAPON and target_slot)) and unit_Data.equip_point[WEAPON_POINT].item and not CanEquipOffhand(item, unit_Data.equip_point[WEAPON_POINT].item) then
                 Feedback_CantUse(player)
                 return false
             elseif offhand_point and (IsWeaponTypeTwohanded(item_data.SUBTYPE) or (item_data.SUBTYPE ~= BOW_WEAPON and unit_Data.equip_point[OFFHAND_POINT].SUBTYPE == QUIVER_OFFHAND)) then
@@ -450,61 +409,6 @@ do
                 end
             end
 
-
-            --[[if (item_data.TYPE == ITEM_TYPE_OFFHAND or (target_slot and item_data.TYPE == ITEM_TYPE_WEAPON)) and not unit_Data.equip_point[OFFHAND_POINT] then
-                if unit_Data.equip_point[WEAPON_POINT].item and not CanEquipOffhand2(item, unit_Data.equip_point[WEAPON_POINT].item) then
-                    Feedback_CantUse(player)
-                    return false
-                end
-            elseif (unit_Data.equip_point[OFFHAND_POINT] or (target_slot and item_data.TYPE == ITEM_TYPE_WEAPON and IsWeaponTypeTwohanded(item_data.SUBTYPE))) and ((item_data.SUBTYPE ~= BOW_WEAPON and unit_Data.equip_point[OFFHAND_POINT].SUBTYPE == QUIVER_OFFHAND) or IsWeaponTypeTwohanded(item_data.SUBTYPE)) then
-                if CountFreeBagSlots(player) == 0 then
-                    Feedback_InventoryNoSpace(player)
-                    return false
-                else
-                    local free_slot = GetFirstFreeSlotButton(player)
-                    free_slot.item = unit_Data.equip_point[OFFHAND_POINT].item
-                    print(GetItemName(unit_Data.equip_point[OFFHAND_POINT].item))
-                    EquipItem(InventoryOwner[player], unit_Data.equip_point[OFFHAND_POINT].item, false, target_slot)
-                end
-            end]]
-
-        return true
-    end
-
-
-    local function CanEquipOffhand(item, equipped_item)
-        local item_data = GetItemData(item)
-        local item_button_data = GetItemData(equipped_item)
-
-            if item_data.SUBTYPE == QUIVER_OFFHAND and item_button_data.SUBTYPE ~= BOW_WEAPON then
-                return false
-            elseif (item_data.SUBTYPE == ORB_OFFHAND or item_data.SUBTYPE == SHIELD_OFFHAND) and IsWeaponTypeTwohanded(item_button_data.SUBTYPE) then
-                return false
-            end
-
-        return true
-    end
-
-    local function OffhandPointCheck(item, player)
-        local item_data = GetItemData(item)
-        local unit_Data = GetUnitData(InventoryOwner[player])
-
-            if item_data.TYPE == ITEM_TYPE_OFFHAND then
-                if unit_Data.equip_point[WEAPON_POINT].item and not CanEquipOffhand(item, unit_Data.equip_point[WEAPON_POINT].item) then
-                    Feedback_CantUse(player)
-                    return false
-                end
-            elseif unit_Data.equip_point[OFFHAND_POINT] and ((item_data.SUBTYPE ~= BOW_WEAPON and unit_Data.equip_point[OFFHAND_POINT].SUBTYPE == QUIVER_OFFHAND) or IsWeaponTypeTwohanded(item_data.SUBTYPE)) then
-                if CountFreeBagSlots(player) == 0 then
-                    Feedback_InventoryNoSpace(player)
-                    return false
-                else
-                    local free_slot = GetFirstFreeSlotButton(player)
-                    free_slot.item = unit_Data.equip_point[OFFHAND_POINT].item
-                    EquipItem(InventoryOwner[player], unit_Data.equip_point[OFFHAND_POINT].item, false)
-                end
-            end
-
         return true
     end
 
@@ -516,7 +420,7 @@ do
 
                 if ButtonList[h].button_type == INV_SLOT then
 
-                        if not OffhandPointCheck2(ButtonList[h].item, id, offhand) then return end
+                        if not OffhandPointCheck(ButtonList[h].item, id, offhand) then return end
 
                         local unequipped_item = EquipItem(InventoryOwner[id], ButtonList[h].item, true, offhand)
 
@@ -546,23 +450,30 @@ do
     end
 
 
-    local function ForceEquip(h, player)
+    local function ForceEquip(h, player, offhand)
         local selected_item = ButtonList[PlayerMovingItem[player].selected_frame].item
         local item_data = GetItemData(selected_item)
 
             if (ButtonList[h].button_type >= WEAPON_POINT and ButtonList[h].button_type <= NECKLACE_POINT) and IsItemPointEqualToType(ButtonList[h].button_type, item_data.SUBTYPE) then
 
-                if not OffhandPointCheck(selected_item, player) then return end
+                if not OffhandPointCheck(selected_item, player, offhand) then return end
 
-                local unequipped_item = EquipItem(InventoryOwner[player], selected_item, true) or nil
+                local unequipped_item = EquipItem(InventoryOwner[player], selected_item, true, offhand) or nil
 
-                if item_data.soundpack ~= nil and item_data.soundpack.equip ~= nil then PlayLocalSound(item_data.soundpack.equip, player - 1) end
+                if item_data.soundpack and item_data.soundpack.equip then PlayLocalSound(item_data.soundpack.equip, player - 1) end
                 --print("force")
+
+                --if unequipped_item then
+                 --   local free_slot = GetFirstFreeSlotButton(player)
+                 --   free_slot.item = ButtonList[h].item
+               -- end
 
                 ButtonList[PlayerMovingItem[player].selected_frame].item = unequipped_item or nil
                 UpdateEquipPointsWindow(player)
                 UpdateInventoryWindow(player)
 
+            else
+                Feedback_CantUse(player)
             end
 
     end
@@ -892,25 +803,15 @@ do
                         --local item_data = GetItemData(item)
                         item_data.picked_up = nil
                         --print("drop")
-                            if item_data.flippy or not is_silent then
-                                if item_data.soundpack then
+                            if item_data.flippy then
+                                if item_data.soundpack and not is_silent then
                                     AddSoundVolume(item_data.soundpack.drop, x, y, 128, 2100.)
                                 end
 
                                 if item_data.flippy and item_data.quality_effect then
+                                    BlzSetSpecialEffectPosition(item_data.quality_effect, GetItemX(item), GetItemY(item), GetZ(GetItemX(item), GetItemY(item)))
                                     BlzSetItemSkin(item, GetItemTypeId(item))
-                                    DestroyEffect(item_data.quality_effect)
-                                    item_data.quality_effect = AddSpecialEffect("QualityGlow.mdx", x, y)
-                                    local color_table = GetQualityEffectColor(item_data.QUALITY)
-                                    BlzSetSpecialEffectColor(item_data.quality_effect, color_table.r, color_table.g, color_table.b)
-                                    BlzSetSpecialEffectScale(item_data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[item_data.SUBTYPE])
-                                    --BlzSetSpecialEffectAlpha(data.quality_effect, 255)
-                                    --BlzSetSpecialEffectAlpha(item_data.quality_effect, 255)
-                                    --BlzSetSpecialEffectPosition(item_data.quality_effect, x, y, GetZ(x, y) + 10.)
-                                    --print(x .. "/" .. y)
-                                    --BlzSetSpecialEffectX(item_data.quality_effect, x)
-                                    --BlzSetSpecialEffectY(item_data.quality_effect, y)
-                                    --print("drop quality " .. GetHandleId(item_data.quality_effect))
+                                    BlzSetSpecialEffectAlpha(item_data.quality_effect, 255)
                                 end
 
                             end
@@ -1259,6 +1160,53 @@ do
 
 
     function InventoryInit()
+
+        PlayerInventoryFrame = {}
+        PlayerInventoryFrameState = {}
+        InventorySlots = {}
+        InventoryOwner = {}
+        InventoryTooltip = {}
+        PlayerMovingItem = {}
+
+        UNIT_POINT_LIST = {
+            [WEAPON_POINT]    = 33,
+            [OFFHAND_POINT]   = 34,
+            [HEAD_POINT]      = 35,
+            [CHEST_POINT]     = 36,
+            [LEGS_POINT]      = 38,
+            [HANDS_POINT]     = 37,
+            [BELT_POINT]      = 42,
+            [RING_1_POINT]    = 40,
+            [RING_2_POINT]    = 41,
+            [NECKLACE_POINT]  = 39
+        }
+
+        POINT_TO_TYPE = {
+            [WEAPON_POINT]    = {
+                AXE_WEAPON,
+                BOW_WEAPON,
+                DAGGER_WEAPON,
+                SWORD_WEAPON,
+                STAFF_WEAPON,
+                GREATAXE_WEAPON,
+                GREATBLUNT_WEAPON,
+                GREATSWORD_WEAPON,
+                BLUNT_WEAPON
+            },
+            [OFFHAND_POINT]   = {
+                ORB_OFFHAND,
+                SHIELD_OFFHAND,
+                QUIVER_OFFHAND
+            },
+            [HEAD_POINT]      = HEAD_ARMOR,
+            [CHEST_POINT]     = CHEST_ARMOR,
+            [LEGS_POINT]      = LEGS_ARMOR,
+            [HANDS_POINT]     = HANDS_ARMOR,
+            [BELT_POINT]      = BELT_ARMOR,
+            [RING_1_POINT]    = RING_JEWELRY,
+            [RING_2_POINT]    = RING_JEWELRY,
+            [NECKLACE_POINT]  = NECKLACE_JEWELRY
+        }
 
         ClickTrigger = CreateTrigger()
         EnterTrigger = CreateTrigger()

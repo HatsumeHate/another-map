@@ -5,8 +5,7 @@
 ---
 do
 
-    SkillPanelFrame = {}
-
+    SkillPanelFrame = nil
     SkillPanelButton = nil
 
     local ClickTrigger
@@ -404,6 +403,8 @@ do
                 RemoveTooltip(player)
                 SkillPanelFrame[player].state = not SkillPanelFrame[player].state
                 end)]]
+
+        SkillPanelFrame = {}
 
         ClickTrigger = CreateTrigger()
         EnterTrigger = CreateTrigger()

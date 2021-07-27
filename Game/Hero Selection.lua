@@ -71,10 +71,7 @@ do
     end
 
 
-    local HeroDeathSoundpack = {
-        [BARBARIAN_CLASS] = { "Sound\\Barbarian\\death1.wav", "Sound\\Barbarian\\death2.wav" },
-        [SORCERESS_CLASS] = { "Sound\\Sorceress\\death1.wav", "Sound\\Sorceress\\death2.wav", "Sound\\Sorceress\\death3.wav" }
-    }
+    local HeroDeathSoundpack
 
 
     function CreateHeroSelections()
@@ -147,27 +144,6 @@ do
 
 
                 local player_number = player_id
-                --local SelectTrigger = CreateTrigger()
-
-                --TimerStart(CreateTimer(), 0.03, true,
-                --TriggerAddAction(trg, )
-                    --function()
-                    --if GetLocalPlayer() == Player(player_number) then
-                      --  if not IsUnitSelected(hero, Player(player_number)) then
-                       --     ClearSelection()
-                       --     SelectUnit(hero, true)
-                      --  end
-                    --end
-                    --SelectUnitSingle()
-                    --SyncSelections()
-                    --SelectUnitSingle(hero)
-                        --if not IsUnitSelected(hero, Player(player_number)) then
-                           -- if GetLocalPlayer() == Player(player_number) then
-                             --   ClearSelection()
-                             --   SelectUnit(hero, true)
-                            --end
-                        --end
-               -- end)
 
 
                 TimerStart(CreateTimer(), 0., false, function()
@@ -184,9 +160,6 @@ do
                     AddPointsToPlayer(player_id, 0)
                     LockCameraForPlayer(player_id)
                     RegisterItemPickUp(PlayerHero[player_id])
-                    --SetUIState(player_id, INV_PANEL, false)
-                    --SetUIState(player_id, SKILL_PANEL, false)
-                    --SetUIState(player_id, CHAR_PANEL, false)
 
                     for i = 1, #starting_items do
                         EquipItem(hero, starting_items[i], true)
@@ -217,6 +190,8 @@ do
                     DelayAction(6., function()
                         PlayCinematicSpeech(player_id-1, gg_unit_h000_0054, LOCALE_LIST[my_locale].INTRODUCTION_TEXT_1, 6.)
                         DelayAction(7., function()
+                            SelectUnitForPlayerSingle(hero, Player(player_number))
+                            EnableGUIForPlayer(player_id)
                             PlayCinematicSpeech(player_id-1, gg_unit_h000_0054, LOCALE_LIST[my_locale].INTRODUCTION_TEXT_2, 6.)
                             DelayAction(7., function()
                                 PlayCinematicSpeech(player_id-1, gg_unit_h000_0054, LOCALE_LIST[my_locale].INTRODUCTION_TEXT_3, 6.)
@@ -226,11 +201,6 @@ do
                                     else
                                         PlayCinematicSpeech(player_id-1, PlayerHero[player_id], LOCALE_LIST[my_locale].INTRODUCTION_SORCERESS_RESPONCE, 6.)
                                     end
-                                    SelectUnitForPlayerSingle(hero, Player(player_number))
-                                    EnableGUIForPlayer(player_id)
-                                    --SetUIState(player_id, INV_PANEL, true)
-                                    --SetUIState(player_id, SKILL_PANEL, true)
-                                    --SetUIState(player_id, CHAR_PANEL, true)
                                 end)
                             end)
                         end)
@@ -295,6 +265,11 @@ do
         RegisterTestCommand("handle", function()
             print(GetHandleId(PlayerHero[1]))
         end)
+
+        HeroDeathSoundpack = {
+            [BARBARIAN_CLASS] = { "Sound\\Barbarian\\death1.wav", "Sound\\Barbarian\\death2.wav" },
+            [SORCERESS_CLASS] = { "Sound\\Sorceress\\death1.wav", "Sound\\Sorceress\\death2.wav", "Sound\\Sorceress\\death3.wav" }
+        }
 
 
     end

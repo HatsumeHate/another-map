@@ -5,9 +5,9 @@
 ---
 do
 
-    TeleportFrame = {}
-    TeleportLocation = {}
-    local PlayerCurrentButtonList = {}
+    TeleportFrame = nil
+    TeleportLocation = nil
+    local PlayerCurrentButtonList
 
 
     local function TeleportButtonPressed()
@@ -27,12 +27,6 @@ do
             end
     end
 
-
-
-
-    for i = 1, 6 do
-        PlayerCurrentButtonList[i] = {}
-    end
 
     function ShowTeleportList(trackable, player)
         BlzFrameSetVisible(TeleportFrame[player].mainframe, GetLocalPlayer() == Player(player-1))
@@ -110,6 +104,12 @@ do
     function TeleporterInit()
 
         InitLocations()
+
+        TeleportFrame = {}
+        TeleportLocation = {}
+        PlayerCurrentButtonList = {}
+
+        for i = 1, 6 do PlayerCurrentButtonList[i] = {} end
 
         HitTrigger = CreateTrigger()
 

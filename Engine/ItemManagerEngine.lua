@@ -2,153 +2,25 @@ do
 
 
 
-    local QUALITY_COLOR = {
-        [COMMON_ITEM] = '|c00FFFFFF',
-        [RARE_ITEM] = '|c00669FFF',
-        [MAGIC_ITEM] = '|c00FFFF00',
-        [SET_ITEM] = '|c0000FF00',
-        [UNIQUE_ITEM] = '|c00FFD574'
-    }
+    local QUALITY_COLOR
+    local EFFECT_QUALITY_COLOR
 
-    local EFFECT_QUALITY_COLOR = {
-        [COMMON_ITEM]   = { r = 255, g = 255, b = 255 },
-        [RARE_ITEM]     = { r = 102, g = 159, b = 255 },
-        [MAGIC_ITEM]    = { r = 255, g = 255, b = 0 },
-        [SET_ITEM]      = { r = 0, g = 255, b = 0 },
-        [UNIQUE_ITEM]   = { r = 255, g = 213, b = 116 },
-    }
+    ITEMSUBTYPES_EFFECT_SCALE = nil
+    ITEMSUBTYPES_MODELS = nil
+    PlayerPickUpItemFlag = nil
 
-    ITEMSUBTYPES_EFFECT_SCALE = {
-        [BOW_WEAPON]            = 0.85,
-        [BLUNT_WEAPON]          = 0.75,
-        [GREATBLUNT_WEAPON]     = 0.85,
-        [SWORD_WEAPON]          = 0.75,
-        [GREATSWORD_WEAPON]     = 0.85,
-        [AXE_WEAPON]            = 0.75,
-        [GREATAXE_WEAPON]       = 0.85,
-        [DAGGER_WEAPON]         = 0.65,
-        [STAFF_WEAPON]          = 0.85,
-        [JAWELIN_WEAPON]        = 1.,
-        [HEAD_ARMOR]            = 0.5,
-        [CHEST_ARMOR]           = 0.65,
-        [LEGS_ARMOR]            = 0.55,
-        [HANDS_ARMOR]           = 0.55,
-        [BELT_ARMOR]            = 0.55,
-        [RING_JEWELRY]          = 0.5,
-        [NECKLACE_JEWELRY]      = 0.7,
-        [THROWING_KNIFE_WEAPON] = 0.7,
-        [SHIELD_OFFHAND]        = 0.7,
-        [ORB_OFFHAND]           = 0.65,
-        [QUIVER_OFFHAND]        = 0.65,
-    }
+    local ITEMTYPES_NAMES
+    local ITEMSUBTYPES_NAMES
+    local ATTRIBUTE_NAMES
+    local TWOHANDED_LIST
+    local AffixTable
 
-    ITEMSUBTYPES_MODELS = {
-        [BOW_WEAPON]            = { model = "FlippyBow.mdx", scale = 0.8  },
-        [BLUNT_WEAPON]          = { model = "FlippyBlunt.mdx", scale = 0.8  },
-        [GREATBLUNT_WEAPON]     = { model = "FlippyGreatBlunt.mdx", scale = 0.8  },
-        [SWORD_WEAPON]          = { model = "FlippySword.mdx", scale = 0.7  },
-        [GREATSWORD_WEAPON]     = { model = "FlippyGreatSword.mdx", scale = 0.6  },
-        [AXE_WEAPON]            = { model = "FlippyAxe.mdx", scale = 0.9  },
-        [GREATAXE_WEAPON]       = { model = "FlippyGreatAxe.mdx", scale = 0.7  },
-        [DAGGER_WEAPON]         = { model = "FlippyDagger.mdx", scale = 0.7  },
-        [STAFF_WEAPON]          = { model = "FlippyStaff.mdx", scale = 0.8  },
-        [JAWELIN_WEAPON]        = { model = "FlippyAmulet.mdx", scale = 0.9  },
-        [HEAD_ARMOR]            = { model = "FlippyHelmet.mdx", scale = 1.  },
-        [CHEST_ARMOR]           = { model = "FlippyChest.mdx", scale = 1.  },
-        [LEGS_ARMOR]            = { model = "FlippyBoots.mdx", scale = 1.  },
-        [HANDS_ARMOR]           = { model = "FlippyHands.mdx", scale = 0.8  },
-        [BELT_ARMOR]            = { model = "FlippyBelt.mdx", scale = 0.8  },
-        [RING_JEWELRY]          = { model = "FlippyRing.mdx", scale = 1.  },
-        [NECKLACE_JEWELRY]      = { model = "FlippyAmulet.mdx", scale = 1.  },
-        [THROWING_KNIFE_WEAPON] = { model = "FlippyAmulet.mdx", scale = 0.9  },
-        [SHIELD_OFFHAND]        = { model = "FlippyShield.mdx", scale = 0.8  },
-        [ORB_OFFHAND]           = { model = "FlippyOrb.mdx", scale = 0.9  },
-        [QUIVER_OFFHAND]        = { model = "FlippyQuiver.mdx", scale = 1.  },
-    }
+    MIN_GOLD_SCALE = 0.6
+    MAX_GOLD_SCALE = 1.
+    MIN_GOLD_SCALE_AMOUNT = 25
+    MAX_GOLD_SCALE_AMOUNT = 150
 
 
-    SOUNDPACK_SWORD_1 = 1; SOUNDPACK_SWORD_2 = 2; SOUNDPACK_2HSWORD = 3
-    SOUNDPACK_BLUNT = 4
-    SOUNDPACK_BOW = 5
-    SOUNDPACK_DAGGER = 6
-    SOUNDPACK_STAFF = 7
-    SOUNDPACK_JAVELIN = 8
-
-    SOUNDPACK_SHIELD_METAL = 9; SOUNDPACK_SHIELD_WOOD = 10; SOUNDPACK_ORB = 11; SOUNDPACK_QUIVER = 12
-
-    SOUNDPACK_CHEST_HEAVY_ARMOR = 13
-    SOUNDPACK_CHEST_MID_ARMOR = 14
-    SOUNDPACK_CHEST_LIGHT_ARMOR = 15
-    SOUNDPACK_HEAD_HEAVY_ARMOR = 16
-    SOUNDPACK_HEAD_MID_ARMOR = 17
-    SOUNDPACK_HEAD_LIGHT_ARMOR = 18
-    SOUNDPACK_HANDS_HEAVY_ARMOR = 19
-    SOUNDPACK_HANDS_MID_ARMOR = 20
-    SOUNDPACK_HANDS_LIGHT_ARMOR = 21
-    SOUNDPACK_BOOTS_HEAVY_ARMOR = 22
-    SOUNDPACK_BOOTS_MID_ARMOR = 23
-    SOUNDPACK_BOOTS_LIGHT_ARMOR = 24
-    SOUNDPACK_BELT = 25
-
-    SOUNDPACK_AMULET = 26; SOUNDPACK_RING = 27
-
-    SOUNDPACK_POTION = 28; SOUNDPACK_SCROLL = 29; SOUNDPACK_GEM = 30; SOUNDPACK_BOOK = 31
-
-
-    ITEM_SOUNDPACK = {
-        [SOUNDPACK_SWORD_1]               = { equip = "Sound\\sword_equip01.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" },
-        [SOUNDPACK_SWORD_2]               = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" },
-        [SOUNDPACK_2HSWORD]               = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" },
-        [SOUNDPACK_BLUNT]                 = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" },
-        [SOUNDPACK_STAFF]                 = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" },
-        [SOUNDPACK_DAGGER]                = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" },
-        [SOUNDPACK_JAVELIN]               = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" },
-        [SOUNDPACK_BOW]                   = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" },
-
-        [SOUNDPACK_SHIELD_WOOD]           = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\woodshield.wav" },
-        [SOUNDPACK_SHIELD_METAL]          = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\metalshield.wav" },
-        [SOUNDPACK_ORB]                   = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" },
-        [SOUNDPACK_QUIVER]                = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" },
-
-        [SOUNDPACK_AMULET]                = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" },
-        [SOUNDPACK_RING]                  = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" },
-
-
-        [SOUNDPACK_CHEST_HEAVY_ARMOR]    = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\platearmor.wav" },
-        [SOUNDPACK_CHEST_MID_ARMOR]      = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" },
-        [SOUNDPACK_CHEST_LIGHT_ARMOR]    = { equip = "Sound\\cloth_armor_equip.wav", uneqip = "Sound\\cloth_armor_unequip.wav", drop = "Sound\\lightarmor.wav" },
-
-        [SOUNDPACK_HEAD_HEAVY_ARMOR]     = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" },
-        [SOUNDPACK_HEAD_MID_ARMOR]       = { equip = "Sound\\cap.wav", uneqip = "Sound\\cap.wav", drop = "Sound\\cap.wav" },
-        [SOUNDPACK_HEAD_LIGHT_ARMOR]     = { equip = "Sound\\rare.wav", uneqip = "Sound\\rare.wav", drop = "Sound\\rare.wav" },
-
-        [SOUNDPACK_HANDS_HEAVY_ARMOR]    = { equip = "Sound\\glovesmetal.wav", uneqip = "Sound\\glovesmetal.wav", drop = "Sound\\glovesmetal.wav" },
-        [SOUNDPACK_HANDS_MID_ARMOR]      = { equip = "Sound\\gloveschain.wav", uneqip = "Sound\\gloveschain.wav", drop = "Sound\\gloveschain.wav" },
-        [SOUNDPACK_HANDS_LIGHT_ARMOR]    = { equip = "Sound\\gloves.wav", uneqip = "Sound\\gloves.wav", drop = "Sound\\gloves.wav" },
-
-        [SOUNDPACK_BOOTS_HEAVY_ARMOR]    = { equip = "Sound\\bootsmetal.wav", uneqip = "Sound\\bootsmetal.wav", drop = "Sound\\bootsmetal.wav" },
-        [SOUNDPACK_BOOTS_MID_ARMOR]      = { equip = "Sound\\bootschain.wav", uneqip = "Sound\\bootschain.wav", drop = "Sound\\bootschain.wav" },
-        [SOUNDPACK_BOOTS_LIGHT_ARMOR]    = { equip = "Sound\\boots.wav", uneqip = "Sound\\boots.wav", drop = "Sound\\boots.wav" },
-
-        [SOUNDPACK_BELT]                 = { equip = "Sound\\belt.wav", uneqip = "Sound\\belt.wav", drop = "Sound\\belt.wav" },
-
-        [SOUNDPACK_POTION]               = { drop = "Sound\\potionui.wav" },
-        [SOUNDPACK_SCROLL]               = { drop = "Sound\\scroll.wav" },
-        [SOUNDPACK_GEM]                  = { drop = "Sound\\gem.wav" },
-        [SOUNDPACK_BOOK]                 = { drop = "Sound\\book.wav" }
-    }
-
-    local ITEMTYPES_NAMES = {
-
-    }
-
-    local ITEMSUBTYPES_NAMES = {
-
-    }
-
-    local ATTRIBUTE_NAMES = {
-
-    }
 
 
     function GetRandomWeaponType()
@@ -202,10 +74,6 @@ do
 
 
 
-    MIN_GOLD_SCALE = 0.6
-    MAX_GOLD_SCALE = 1.
-    MIN_GOLD_SCALE_AMOUNT = 25
-    MAX_GOLD_SCALE_AMOUNT = 150
 
 
     function CreateQualityEffect(item)
@@ -298,17 +166,25 @@ do
     ---@param x real
     ---@param y real
     ---@param drop_animation boolean
-	function CreateCustomItem(raw, x, y, drop_animation)
+	function CreateCustomItem(raw, x, y, drop_animation, owner)
         if raw == 0 then return end
 		local id     = FourCC(raw)
 		local item   = CreateItem(id, x, y)
-		--local handle = GetHandleId(item)
 		local data   = MergeTables({}, ITEM_TEMPLATE_DATA[id])
 
             data.item = item
+            --print(GetQualityColor(data.QUALITY) .. data.NAME .. "|r")
             BlzSetItemName(item, GetQualityColor(data.QUALITY) .. data.NAME .. "|r")
             data.actual_name = GetQualityColor(data.QUALITY) .. data.NAME .. '|r'
 
+            data.owner = owner or nil
+
+
+            if owner then
+                if GetLocalPlayer() ~= Player(owner) then
+                    BlzSetItemSkin(item, FourCC("I01X"))
+                end
+            end
 
             if data.flippy then
                 local color_table = GetQualityEffectColor(data.QUALITY)
@@ -316,8 +192,8 @@ do
                 BlzSetSpecialEffectColor(data.quality_effect, color_table.r, color_table.g, color_table.b)
                 BlzSetSpecialEffectScale(data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[data.SUBTYPE])
                 BlzSetSpecialEffectAlpha(data.quality_effect, 0)
-                BlzSetItemSkin(item, FourCC("I01X"))
             end
+
 
             ITEM_DATA[item] = data
 
@@ -339,8 +215,6 @@ do
                         BlzPlaySpecialEffect(item_effect, ANIM_TYPE_BIRTH)
                         BlzSetSpecialEffectScale(item_effect, ITEMSUBTYPES_MODELS[data.SUBTYPE].scale)
                         BlzSetSpecialEffectOrientation(item_effect, 270. * bj_DEGTORAD, 0., 0.)
-                        --BlzSetSpecialEffectYaw(item_effect, 270. * bj_DEGTORAD)
-
 
                         if data.owner then AddSoundForPlayerVolumeZ("Sound\\flippy.wav", x, y, 35., 128, 2100., data.owner)
                         else AddSoundVolume("Sound\\flippy.wav", x, y, 128, 2100.) end
@@ -350,6 +224,7 @@ do
                             if data.owner then
                                 if GetLocalPlayer() == Player(data.owner) then
                                     BlzSetSpecialEffectAlpha(data.quality_effect, 255)
+                                    BlzSetSpecialEffectPosition(data.quality_effect, GetItemX(item), GetItemY(item), GetZ(GetItemX(item), GetItemY(item)))
                                     BlzSetItemSkin(item, GetItemTypeId(item))
                                 end
                                 if data.soundpack then AddSoundForPlayerVolumeZ(data.soundpack.drop, x, y, 35., 128, 2100., data.owner) end
@@ -361,6 +236,7 @@ do
                                 end
                             end
 
+                            BlzSetSpecialEffectAlpha(item_effect, 0)
                             DestroyEffect(item_effect)
                             DestroyTimer(GetExpiredTimer())
                         end)
@@ -377,11 +253,17 @@ do
                 if data.owner then
                     if GetLocalPlayer() == Player(data.owner) then
                         BlzSetSpecialEffectAlpha(data.quality_effect, 255)
+                        DelayAction(0., function()
+                            BlzSetSpecialEffectPosition(data.quality_effect, GetItemX(item), GetItemY(item), GetZ(GetItemX(item), GetItemY(item)))
+                        end)
                         BlzSetItemSkin(item, GetItemTypeId(item))
                     else BlzSetSpecialEffectAlpha(data.quality_effect, 0) end
                 else
                     if not data.picked_up then
                         BlzSetSpecialEffectAlpha(data.quality_effect, 255)
+                        DelayAction(0., function()
+                            BlzSetSpecialEffectPosition(data.quality_effect, GetItemX(item), GetItemY(item), GetZ(GetItemX(item), GetItemY(item)))
+                        end)
                         BlzSetItemSkin(item, GetItemTypeId(item))
                     end
                 end
@@ -452,23 +334,6 @@ do
 
 
 
-    local AffixTable = {
-        [COMMON_ITEM] = {
-            { affix = ITEM_AFFIX_IDEAL, chance = 17. },
-            { affix = ITEM_AFFIX_EXCELLENT, chance = 33. },
-            { affix = ITEM_AFFIX_FINE, chance = 50. },
-        },
-        [RARE_ITEM] = {
-            { affix = ITEM_AFFIX_IDEAL, chance = 33. },
-            { affix = ITEM_AFFIX_EXCELLENT, chance = 50. },
-            { affix = ITEM_AFFIX_FINE, chance = 66. },
-        },
-        [MAGIC_ITEM] = {
-            { affix = ITEM_AFFIX_IDEAL, chance = 50. },
-            { affix = ITEM_AFFIX_EXCELLENT, chance = 50. },
-            { affix = ITEM_AFFIX_FINE, chance = 50. },
-        },
-    }
 
     function GenerateItemSuffix(item, variation, quality)
         local item_data = GetItemData(item)
@@ -680,7 +545,6 @@ do
         local item_variation = GetRandomInt(1, #QUALITY_ITEM_LIST[quality][item_data.SUBTYPE])
         local item_preset = QUALITY_ITEM_LIST[quality][item_data.SUBTYPE][item_variation]
 
-
             item_data.QUALITY = quality
             item_data.frame_texture = item_preset.icon
             item_data.NAME = item_preset.name
@@ -721,7 +585,7 @@ do
                     end
 
                 end
-            --print("2")
+
             GenerateItemLevel(item, level)
             --print("generate level")
             GenerateItemStoneSlots(item)
@@ -741,7 +605,6 @@ do
     end
 
 
-    local TWOHANDED_LIST
 
 
     ---@param itemtype number
@@ -864,7 +727,7 @@ do
     end
 
 
-    PlayerPickUpItemFlag = {  }
+
 
 
 
@@ -946,6 +809,93 @@ do
 
 
     function EnumItemsOnInit()
+
+        PlayerPickUpItemFlag = {  }
+
+        QUALITY_COLOR = {
+            [COMMON_ITEM] = '|c00FFFFFF',
+            [RARE_ITEM] = '|c00669FFF',
+            [MAGIC_ITEM] = '|c00FFFF00',
+            [SET_ITEM] = '|c0000FF00',
+            [UNIQUE_ITEM] = '|c00FFD574'
+        }
+
+        EFFECT_QUALITY_COLOR = {
+            [COMMON_ITEM]   = { r = 255, g = 255, b = 255 },
+            [RARE_ITEM]     = { r = 102, g = 159, b = 255 },
+            [MAGIC_ITEM]    = { r = 255, g = 255, b = 0 },
+            [SET_ITEM]      = { r = 0, g = 255, b = 0 },
+            [UNIQUE_ITEM]   = { r = 255, g = 213, b = 116 },
+        }
+
+        ITEMSUBTYPES_EFFECT_SCALE = {
+            [BOW_WEAPON]            = 0.85,
+            [BLUNT_WEAPON]          = 0.75,
+            [GREATBLUNT_WEAPON]     = 0.85,
+            [SWORD_WEAPON]          = 0.75,
+            [GREATSWORD_WEAPON]     = 0.85,
+            [AXE_WEAPON]            = 0.75,
+            [GREATAXE_WEAPON]       = 0.85,
+            [DAGGER_WEAPON]         = 0.65,
+            [STAFF_WEAPON]          = 0.85,
+            [JAWELIN_WEAPON]        = 1.,
+            [HEAD_ARMOR]            = 0.5,
+            [CHEST_ARMOR]           = 0.65,
+            [LEGS_ARMOR]            = 0.55,
+            [HANDS_ARMOR]           = 0.55,
+            [BELT_ARMOR]            = 0.55,
+            [RING_JEWELRY]          = 0.5,
+            [NECKLACE_JEWELRY]      = 0.7,
+            [THROWING_KNIFE_WEAPON] = 0.7,
+            [SHIELD_OFFHAND]        = 0.7,
+            [ORB_OFFHAND]           = 0.65,
+            [QUIVER_OFFHAND]        = 0.65,
+        }
+
+        ITEMSUBTYPES_MODELS = {
+            [BOW_WEAPON]            = { model = "FlippyBow.mdx", scale = 0.8  },
+            [BLUNT_WEAPON]          = { model = "FlippyBlunt.mdx", scale = 0.8  },
+            [GREATBLUNT_WEAPON]     = { model = "FlippyGreatBlunt.mdx", scale = 0.8  },
+            [SWORD_WEAPON]          = { model = "FlippySword.mdx", scale = 0.7  },
+            [GREATSWORD_WEAPON]     = { model = "FlippyGreatSword.mdx", scale = 0.6  },
+            [AXE_WEAPON]            = { model = "FlippyAxe.mdx", scale = 0.9  },
+            [GREATAXE_WEAPON]       = { model = "FlippyGreatAxe.mdx", scale = 0.7  },
+            [DAGGER_WEAPON]         = { model = "FlippyDagger.mdx", scale = 0.7  },
+            [STAFF_WEAPON]          = { model = "FlippyStaff.mdx", scale = 0.8  },
+            [JAWELIN_WEAPON]        = { model = "FlippyAmulet.mdx", scale = 0.9  },
+            [HEAD_ARMOR]            = { model = "FlippyHelmet.mdx", scale = 1.  },
+            [CHEST_ARMOR]           = { model = "FlippyChest.mdx", scale = 1.  },
+            [LEGS_ARMOR]            = { model = "FlippyBoots.mdx", scale = 1.  },
+            [HANDS_ARMOR]           = { model = "FlippyHands.mdx", scale = 0.8  },
+            [BELT_ARMOR]            = { model = "FlippyBelt.mdx", scale = 0.8  },
+            [RING_JEWELRY]          = { model = "FlippyRing.mdx", scale = 1.  },
+            [NECKLACE_JEWELRY]      = { model = "FlippyAmulet.mdx", scale = 1.  },
+            [THROWING_KNIFE_WEAPON] = { model = "FlippyAmulet.mdx", scale = 0.9  },
+            [SHIELD_OFFHAND]        = { model = "FlippyShield.mdx", scale = 0.8  },
+            [ORB_OFFHAND]           = { model = "FlippyOrb.mdx", scale = 0.9  },
+            [QUIVER_OFFHAND]        = { model = "FlippyQuiver.mdx", scale = 1.  },
+        }
+
+
+        AffixTable = {
+            [COMMON_ITEM] = {
+                { affix = ITEM_AFFIX_IDEAL, chance = 17. },
+                { affix = ITEM_AFFIX_EXCELLENT, chance = 33. },
+                { affix = ITEM_AFFIX_FINE, chance = 50. },
+            },
+            [RARE_ITEM] = {
+                { affix = ITEM_AFFIX_IDEAL, chance = 33. },
+                { affix = ITEM_AFFIX_EXCELLENT, chance = 50. },
+                { affix = ITEM_AFFIX_FINE, chance = 66. },
+            },
+            [MAGIC_ITEM] = {
+                { affix = ITEM_AFFIX_IDEAL, chance = 50. },
+                { affix = ITEM_AFFIX_EXCELLENT, chance = 50. },
+                { affix = ITEM_AFFIX_FINE, chance = 50. },
+            },
+        }
+
+
 
         ITEMTYPES_NAMES = {
             [ITEM_TYPE_WEAPON]     = LOCALE_LIST[my_locale].ITEM_TYPE_WEAPON_NAME,
@@ -1096,24 +1046,14 @@ do
         end)
 
         RegisterTestCommand("dd1", function()
-            local item = CreateCustomItem(GetRandomGeneratedItemId(), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), true)
+            local item = CreateCustomItem(GetRandomGeneratedItemId(), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), true, 0)
             GenerateItemStats(item, 1, GetRandomInt(COMMON_ITEM, MAGIC_ITEM))
-            local item_data = GetItemData(item)
-            item_data.owner = 0
-            --if GetLocalPlayer() ~= Player(item_data.owner) then
-                --BlzSetItemSkin(item, FourCC("I01X"))
-            --end
-            --SetItemVisible(item, GetLocalPlayer() == Player(0))
         end)
 
         RegisterTestCommand("dd2", function()
-            local item = CreateCustomItem(GetRandomGeneratedItemId(), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), true)
+            local item = CreateCustomItem(GetRandomGeneratedItemId(), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), true, 1)
             GenerateItemStats(item, 1, GetRandomInt(COMMON_ITEM, MAGIC_ITEM))
-            local item_data = GetItemData(item)
-            item_data.owner = 1
-           -- if GetLocalPlayer() ~= Player(item_data.owner) then
-              --  BlzSetItemSkin(item, FourCC("I01X"))
-           -- end
+
             DelayAction(10., function()
                 BlzSetItemSkin(item, GetItemTypeId(item))
             end)

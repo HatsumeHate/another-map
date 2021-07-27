@@ -7,7 +7,7 @@ do
 
 
     local CitizenGroup
-    local CitizenZones = {}
+    local CitizenZones
 
     function SpawnCitizens(rect, min, max)
         for i = 1, GetRandomInt(min, max) do
@@ -48,6 +48,8 @@ do
 
 
     function InitVillageData()
+
+        CitizenZones = {}
         local timer = CreateTimer()
         TimerStart(timer,1.,false, function()
             CitizenGroup = CreateGroup()

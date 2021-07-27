@@ -5,7 +5,7 @@
 ---
 
 
-    SetBonusList = {}
+    SetBonusList = nil
 
 
     function GetItemSet(id)
@@ -70,7 +70,9 @@
 
     function InitSetBonusTemplates()
 
+        SetBonusList = {}
         InitLegendaryEffects()
+
 
         NewItemSet({
             id = "STST",

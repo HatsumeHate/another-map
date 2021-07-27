@@ -16,7 +16,7 @@ do
 
 
 		--print("Initialization.... Wait for it.")
-		local countdown = 10
+		local countdown = 5
 		print("Init begins in ".. countdown)
 		local timer = CreateTimer()
 		TimerStart(timer, 1., true, function()
@@ -26,9 +26,9 @@ do
 				--DestroyTimer(GetExpiredTimer())
 				local func_id = 0
 				local init_que = {
-					UtilsInit, InitLocaleLibrary, InitParameters, DefineSkillsData, MouseTrackingInit, DefineEffectsData, DefineItemGeneratorTemplates, InitSetBonusTemplates, DefineItemsData, DefineBuffsData, DefineMissilesData,
-					MainEngineInit, BasicFramesInit, EnumItemsOnInit, UnitDataInit, InitGUIManager, InitMonsterData, DropListInit, ShakerInit, InitVillageData, InitPlayerCamera, InitializeSkillEngine, StartSMorcWandering,
-					InitAltars, InitQuestsData
+					UtilsInit, InitLocaleLibrary, HitnumbersInit, InitParameters, DefineSkillsData, MouseTrackingInit, DefineEffectsData, InitSetBonusTemplates, DefineItemsData, DefineItemGeneratorTemplates, DefineBuffsData, DefineMissilesData,
+					MainEngineInit, InitMovementEngine, BasicFramesInit, EnumItemsOnInit, UnitDataInit, InitGUIManager, InitMonsterData, DropListInit, ShakerInit, InitVillageData, InitPlayerCamera, InitializeSkillEngine, StartSMorcWandering,
+					InitAltars, InitQuestMaster, InitQuestsData
 				}
 
 				TimerStart(GetExpiredTimer(), 0.1, true, function()
@@ -53,6 +53,7 @@ do
 									},
 								}
 						)
+						--print("shop 1")
 						CreateShop(gg_unit_opeo_0031, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp",
 								{
 									open = {
@@ -70,6 +71,7 @@ do
 									},
 								}
 						)
+						--print("shop 2")
 						CreateShop(gg_unit_n001_0055, "ReplaceableTextures\\CommandButtons\\BTNVillagerWoman.blp",
 								{
 									open = {
@@ -86,6 +88,7 @@ do
 									},
 								}
 						)
+						--print("shop 3")
 						CreateShop(gg_unit_n01W_0111, "ReplaceableTextures\\CommandButtons\\BTNAcolyte.blp",
 								{
 									open = {
@@ -101,11 +104,12 @@ do
 								}
 						)
 
-
+						--print("names")
 						BlzSetUnitName(gg_unit_n000_0056, LOCALE_LIST[my_locale].VENDOR_BILL_NAME)
 						BlzSetUnitName(gg_unit_opeo_0031, LOCALE_LIST[my_locale].SMORC_NAME)
 						BlzSetUnitName(gg_unit_n01W_0111, LOCALE_LIST[my_locale].SCAVENGER_NAME)
 
+						--print("items")
 						local my_item = CreateCustomItem("I006",  0.,0.)
 						SetItemCharges(my_item, 20)
 						AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 32, true)
@@ -115,16 +119,16 @@ do
 						SetItemCharges(my_item, 20)
 						AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 31, true)
 						my_item = nil
-
+						--print("items end")
 
 						CreateBlacksmith(gg_unit_n013_0011, "ReplaceableTextures\\CommandButtons\\BTNElfVillager.blp")
 						BlzSetUnitName(gg_unit_n013_0011, LOCALE_LIST[my_locale].BLACKSMITH_NAME)
-
+						--print("blacksmith")
 						CreateLibrarian(gg_unit_n01V_0110, "ReplaceableTextures\\CommandButtons\\BTNNightElfRunner.blp")
 						BlzSetUnitName(gg_unit_n01V_0110, LOCALE_LIST[my_locale].LIBRARIAN_NAME)
-
+						--print("librarian")
 						CreateHeroSelections()
-
+						--print("selections")
 						--CreatePlayerUI(1)
 						--PostInitTestUI()
 

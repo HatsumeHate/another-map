@@ -1,6 +1,6 @@
 do
 
-    EffectsData           = {}
+    EffectsData = nil
     local MAX_LEVELS = 5
 
     ON_ENEMY = 1
@@ -202,6 +202,8 @@ do
 
 
     function DefineEffectsData()
+
+        EffectsData = {}
 
         NewEffectTemplate('EFF2', {
             name = "test effect on buff 2",

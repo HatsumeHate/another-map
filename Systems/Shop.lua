@@ -6,14 +6,10 @@
 
 do
 
+    ShopFrame = nil
+    ShopInFocus = nil
+    ShopData = nil
     local MAXIMUM_ITEMS = 32
-
-
-    local Feedback_NoGold_Table = {
-        true, true, true, true, true, true
-    }
-
-
 
 
     function UpdateShopWindow()
@@ -158,7 +154,7 @@ do
 
 
 
-    ShopFrame = {}
+
 
     ---@param player integer
     function DrawShopFrames(player)
@@ -212,8 +208,7 @@ do
     end
 
 
-    ShopInFocus = {}
-    ShopData = {}
+
 
 
     ---@param shop unit
@@ -290,6 +285,7 @@ do
 
 
                 AddToInventory(player, item)
+                if item_data.soundpack and item_data.soundpack.drop then PlayLocalSound(item_data.soundpack.drop, player-1, 128) end
                 PlayLocalSound("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", player-1)
                 return true
             else
@@ -309,7 +305,7 @@ do
 
 
             if CountFreeSlotsShop(ShopInFocus[player]) <= 0 then
-                SimError("В магазине нет места", player-1)
+                SimError(LOCALE_LIST[my_locale].SHOP_MESSAGE_NO_SPACE, player-1)
                 return false
             end
 
@@ -325,6 +321,8 @@ do
             SetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD, gold + total_cost)
             DropItemFromInventory(player, item, true)
             AddItemToShop(ShopInFocus[player], item, false)
+
+            if item_data.soundpack and item_data.soundpack.drop then PlayLocalSound(item_data.soundpack.drop, player-1, 128) end
             PlayLocalSound("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", player-1)
 
         return true
@@ -379,7 +377,7 @@ do
                     SetItemVisible(item, false)
 
                     local item_data = GetItemData(item)
-                    if item_data.quality_effect ~= nil then DestroyEffect(item_data.quality_effect) end
+                    if item_data.quality_effect then BlzSetSpecialEffectAlpha(item_data.quality_effect, 0) end
 
                     UpdateShopWindow()
                     break
@@ -521,7 +519,12 @@ do
         return ShopData[handle]
     end
 
+
     function InitShopData()
+
+        ShopFrame = {}
+        ShopInFocus = {}
+        ShopData = {}
 
         LeaveTrigger = CreateTrigger()
         EnterTrigger = CreateTrigger()

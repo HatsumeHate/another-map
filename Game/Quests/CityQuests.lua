@@ -122,29 +122,8 @@ do
     MARK_TEAMCOLOR = 8
     MARK_ATTENTION = 9
 
-    local MarkList = {
-        [MARK_TYPE_QUESTION] = {
-            [MARK_COMMON] = "Quest\\Completed_Quest.mdx",
-            [MARK_SPECIAL] = "Quest\\Completed_Quest_Special.mdx",
-            [MARK_DAILY] = "Quest\\Completed_Quest_Daily.mdx",
-            [MARK_EMERGENCY] = "Quest\\Completed_Quest_Emergency.mdx",
-            [MARK_LOW_COMMON] = "Quest\\Completed_Quest_Low.mdx",
-            [MARK_LOW_DAILY] = "Quest\\Completed_Quest_Low_Daily.mdx",
-            [MARK_UNAVAILABLE] = "Quest\\Completed_Quest_NOT.mdx",
-            [MARK_TEAMCOLOR] = "Quest\\Completed_Quest_TEAMCOLOR.mdx"
-        },
-        [MARK_TYPE_EXCLAMATION] = {
-            [MARK_COMMON] = "Quest\\ExcMark_Gold_NonrepeatableQuest.mdx",
-            [MARK_SPECIAL] = "Quest\\ExcMark_Orange_ClassQuest.mdx",
-            [MARK_DAILY] = "Quest\\ExcMark_Blue_RepetableQuest.mdx",
-            [MARK_EMERGENCY] = "Quest\\ExcMark_Red_Emergency.mdx",
-            [MARK_LOW_COMMON] = "Quest\\ExcMark_Gold_LowNonrepeatableQuest.mdx",
-            [MARK_LOW_DAILY] = "Quest\\ExcMark_Blue_LowRepeatableQuest.mdx",
-            [MARK_UNAVAILABLE] = "Quest\\ExcMark_Grey_UnavailableQuest.mdx",
-            [MARK_TEAMCOLOR] = "Quest\\ExcMark_TeamColor.mdx",
-            [MARK_ATTENTION] = "Quest\\ExcMark_Green_FlightPath.mdx",
-        }
-    }
+    local MarkList
+
 
     function AddMark(unit, mark_type, mark_var)
         return AddSpecialEffectTarget(MarkList[mark_type or 1][mark_var or 1], unit, "overhead")
@@ -525,10 +504,8 @@ do
                                     ShowQuestAlert(LOCALE_LIST[my_locale].QUEST_REWARD_GOLD_FIRST .. gold .. LOCALE_LIST[my_locale].QUEST_REWARD_GOLD_SECOND)
 
                                     for i = 1, 6 do
-                                        local item = CreateCustomItem(GetGeneratedItemId(CHEST_ARMOR), GetUnitX(Lilith), GetUnitY(Lilith), true)
+                                        local item = CreateCustomItem(GetGeneratedItemId(CHEST_ARMOR), GetUnitX(Lilith), GetUnitY(Lilith), true, i-1)
                                         GenerateItemStats(item, Current_Wave + 5, MAGIC_ITEM)
-                                        local item_data = GetItemData(item)
-                                        item_data.owner = i-1
                                     end
 
                                     KillUnit(Lilith)
@@ -567,6 +544,31 @@ do
     function InitQuestsData()
         Click_Ability = FourCC("A01W")
         Click_Condition = Condition(ClickCondition)
+
+        MarkList = {
+            [MARK_TYPE_QUESTION] = {
+                [MARK_COMMON] = "Quest\\Completed_Quest.mdx",
+                [MARK_SPECIAL] = "Quest\\Completed_Quest_Special.mdx",
+                [MARK_DAILY] = "Quest\\Completed_Quest_Daily.mdx",
+                [MARK_EMERGENCY] = "Quest\\Completed_Quest_Emergency.mdx",
+                [MARK_LOW_COMMON] = "Quest\\Completed_Quest_Low.mdx",
+                [MARK_LOW_DAILY] = "Quest\\Completed_Quest_Low_Daily.mdx",
+                [MARK_UNAVAILABLE] = "Quest\\Completed_Quest_NOT.mdx",
+                [MARK_TEAMCOLOR] = "Quest\\Completed_Quest_TEAMCOLOR.mdx"
+            },
+            [MARK_TYPE_EXCLAMATION] = {
+                [MARK_COMMON] = "Quest\\ExcMark_Gold_NonrepeatableQuest.mdx",
+                [MARK_SPECIAL] = "Quest\\ExcMark_Orange_ClassQuest.mdx",
+                [MARK_DAILY] = "Quest\\ExcMark_Blue_RepetableQuest.mdx",
+                [MARK_EMERGENCY] = "Quest\\ExcMark_Red_Emergency.mdx",
+                [MARK_LOW_COMMON] = "Quest\\ExcMark_Gold_LowNonrepeatableQuest.mdx",
+                [MARK_LOW_DAILY] = "Quest\\ExcMark_Blue_LowRepeatableQuest.mdx",
+                [MARK_UNAVAILABLE] = "Quest\\ExcMark_Grey_UnavailableQuest.mdx",
+                [MARK_TEAMCOLOR] = "Quest\\ExcMark_TeamColor.mdx",
+                [MARK_ATTENTION] = "Quest\\ExcMark_Green_FlightPath.mdx",
+            }
+        }
+
     end
     
 end 

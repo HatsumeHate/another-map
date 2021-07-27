@@ -5,8 +5,8 @@
 ---
 do
 
-    local MonsterPack = {}
-    local BossPack = {}
+    local MonsterPack
+    local BossPack
     QuestMonsters = nil
     local RESPAWN_TYPE_RANDOM = 1
     local RESPAWN_TYPE_SAME = 1
@@ -110,6 +110,9 @@ do
 
 
     function InitMonsterPacks()
+
+        MonsterPack = {}
+        BossPack = {}
 
         --##########################################################
         --#######################SPAWNER_DATA#######################

@@ -6,11 +6,13 @@
 do
 
 
-    PlayerMousePosition = {}
+    PlayerMousePosition = nil
     local mouse_track_trigger
 
 
     function MouseTrackingInit()
+
+        PlayerMousePosition = {}
         mouse_track_trigger = CreateTrigger()
 
         for i = 0, 5 do

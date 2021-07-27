@@ -9,9 +9,7 @@ do
     KEY_D = 6
 
 
-    KEYBIND_LIST = {
-
-    }
+    KEYBIND_LIST = nil
 
 
     function UnbindAbilityKey(unit, id)

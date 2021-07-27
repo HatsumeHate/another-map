@@ -8,1855 +8,7 @@ do
 
 
     my_locale = nil
-
-    LOCALE_LIST = {
-        ["ruRU"] = {
-            BLOCK_TEXT = "Блок ",
-            WAVE_INCOMING_TEXT = "Волна:",
-            WAVE_LEVEL = "Уровень ",
-            WAVE_COUNTDOWN = "До атаки: ",
-
-            PHYSICAL_ATTACK_PARAM = "Физическая атака",
-            PHYSICAL_DEFENCE_PARAM = 'Физическая защита',
-            MAGICAL_ATTACK_PARAM    = 'Магическая атака',
-            MAGICAL_SUPPRESSION_PARAM = 'Подавление магии',
-
-            CRIT_CHANCE_PARAM         = 'Критический шанс',
-            CRIT_MULTIPLIER_PARAM     = 'Критический множитель',
-
-            PHYSICAL_BONUS_PARAM      = 'Физический урон',
-            ICE_BONUS_PARAM           = 'Урон от льда',
-            FIRE_BONUS_PARAM          = 'Урон от огня',
-            LIGHTNING_BONUS_PARAM     = 'Урон от молнии',
-            POISON_BONUS_PARAM        = 'Урон от яда',
-            ARCANE_BONUS_PARAM        = 'Урон от тайной магии',
-            DARKNESS_BONUS_PARAM      = 'Урон от тьмы',
-            HOLY_BONUS_PARAM          = 'Урон от святости',
-
-            ALL_RESIST_PARAM          = 'Сопротивления',
-            PHYSICAL_RESIST_PARAM     = 'Сопротивление физ атакам',
-            ICE_RESIST_PARAM          = 'Сопротивление холоду',
-            FIRE_RESIST_PARAM         = 'Сопротивление огню',
-            LIGHTNING_RESIST_PARAM    = 'Сопротивление молнии',
-            POISON_RESIST_PARAM       = 'Сопротивление ядам',
-            ARCANE_RESIST_PARAM       = 'Сопротивление тайной магии',
-            DARKNESS_RESIST_PARAM     = 'Сопротивление тьме',
-            HOLY_RESIST_PARAM         = 'Сопротивление святости',
-
-            HP_REGEN_PARAM            = 'Восстановление здоровья',
-            MP_REGEN_PARAM            = 'Восстановление ресурса',
-
-            HP_VALUE_PARAM            = 'Здоровье',
-            MP_VALUE_PARAM            = 'Ресурс',
-
-            STR_STAT_PARAM            = 'Сила',
-            AGI_STAT_PARAM            = 'Ловкость',
-            INT_STAT_PARAM            = 'Разум',
-            VIT_STAT_PARAM            = 'Выносливость',
-
-            MELEE_DAMAGE_REDUCTION_PARAM  = 'Урон от атак ближнего боя',
-            RANGE_DAMAGE_REDUCTION_PARAM  = 'Урон от атак дальнего боя',
-            CONTROL_REDUCTION_PARAM       = 'Снижение времени контроля',
-
-            ATTACK_SPEED_PARAM            = 'Скорость атаки',
-            CAST_SPEED_PARAM              = 'Скорость заклинаний',
-            MOVING_SPEED_PARAM            = 'Скорость бега',
-
-            BLOCK_CHANCE_PARAM            = 'Шанс блока',
-            BLOCK_ABSORB_PARAM            = 'Поглощение урона',
-
-
-            REFLECT_DAMAGE_PARAM   = 'Отражение урона',
-            REFLECT_MELEE_DAMAGE_PARAM   = 'Отражение урона ближнего боя',
-            REFLECT_RANGE_DAMAGE_PARAM   = 'Отражение урона дальнего боя',
-
-            HP_PER_HIT_PARAM   = 'Здоровье за атаку',
-            MP_PER_HIT_PARAM   = 'Ресурса за атаку',
-
-            BONUS_DEMON_DAMAGE_PARAM = "Урон демонам",
-            BONUS_UNDEAD_DAMAGE_PARAM = "Урон нежити",
-            BONUS_HUMAN_DAMAGE_PARAM = "Урон людям",
-            BONUS_BEAST_DAMAGE_PARAM = "Урон зверям",
-
-            ITEM_TYPE_WEAPON_NAME     = "Оружие",
-            ITEM_TYPE_ARMOR_NAME      = "Броня",
-            ITEM_TYPE_JEWELRY_NAME    = "Бижутерия",
-            ITEM_TYPE_OFFHAND_NAME    = "Альтернативное оружие",
-            ITEM_TYPE_CONSUMABLE_NAME = "Расходуемое",
-            ITEM_TYPE_GEM_NAME        = "Камень",
-            ITEM_TYPE_SKILLBOOK       = "Знания",
-            ITEM_TYPE_OTHER           = "Прочее",
-
-            BOW_WEAPON_NAME            = "Лук",
-            BLUNT_WEAPON_NAME          = "Булава",
-            GREATBLUNT_WEAPON_NAME     = "Двуручная булава",
-            SWORD_WEAPON_NAME          = "Меч",
-            GREATSWORD_WEAPON_NAME     = "Двуручный меч",
-            AXE_WEAPON_NAME            = "Топор",
-            GREATAXE_WEAPON_NAME       = "Двуручный топор",
-            DAGGER_WEAPON_NAME         = "Кинжал",
-            STAFF_WEAPON_NAME          = "Посох",
-            JAWELIN_WEAPON_NAME        = "Копье",
-            HEAD_ARMOR_NAME            = "Шлем",
-            CHEST_ARMOR_NAME           = "Нагрудник",
-            LEGS_ARMOR_NAME            = "Сапоги",
-            HANDS_ARMOR_NAME           = "Перчатки",
-            BELT_ARMOR_NAME            = "Пояс",
-            RING_JEWELRY_NAME          = "Кольцо",
-            NECKLACE_JEWELRY_NAME      = "Ожерелье",
-            THROWING_KNIFE_WEAPON_NAME = "Метательный нож",
-            SHIELD_OFFHAND_NAME	       = "Щит",
-            ORB_OFFHAND_NAME 		   = "Сфера",
-            QUIVER_OFFHAND_NAME        = "Колчан",
-
-            PHYSICAL_ATTRIBUTE_NAME     = "Физический",
-            FIRE_ATTRIBUTE_NAME         = "Огненный",
-            ICE_ATTRIBUTE_NAME          = "Ледяной",
-            LIGHTNING_ATTRIBUTE_NAME    = "Молния",
-            POISON_ATTRIBUTE_NAME       = "Яд",
-            ARCANE_ATTRIBUTE_NAME       = "Тайна",
-            DARKNESS_ATTRIBUTE_NAME     = "Тьма",
-            HOLY_ATTRIBUTE_NAME         = "Свет",
-
-
-            FEEDBACK_GOLD = {
-                [BARBARIAN_CLASS] = {
-                    "Sounds\\Responses\\barbarian_gold_1_ru.wav",
-                    "Sounds\\Responses\\barbarian_gold_2_ru.wav",
-                    "Sounds\\Responses\\barbarian_gold_3_ru.wav",
-                    "Sounds\\Responses\\barbarian_gold_4_ru.wav",
-                    "Sounds\\Responses\\barbarian_gold_5_ru.wav",
-                },
-                [SORCERESS_CLASS] = {
-                    "Sounds\\Responses\\sorceress_gold_1_ru.wav",
-                    "Sounds\\Responses\\sorceress_gold_2_ru.wav",
-                    "Sounds\\Responses\\sorceress_gold_3_ru.wav",
-                    "Sounds\\Responses\\sorceress_gold_4_ru.wav",
-                    "Sounds\\Responses\\sorceress_gold_5_ru.wav",
-                }
-            },
-
-            FEEDBACK_HEAL = {
-                [BARBARIAN_CLASS] = {
-                    "Sounds\\Responses\\barbarian_healing_1_ru.wav",
-                    "Sounds\\Responses\\barbarian_healing_2_ru.wav",
-                    "Sounds\\Responses\\barbarian_healing_3_ru.wav",
-                    "Sounds\\Responses\\barbarian_healing_4_ru.wav",
-                    "Sounds\\Responses\\barbarian_healing_5_ru.wav",
-                },
-                [SORCERESS_CLASS] = {
-                    "Sounds\\Responses\\sorceress_healing_1_ru.wav",
-                    "Sounds\\Responses\\sorceress_healing_2_ru.wav",
-                    "Sounds\\Responses\\sorceress_healing_3_ru.wav",
-                    "Sounds\\Responses\\sorceress_healing_4_ru.wav",
-                    "Sounds\\Responses\\sorceress_healing_5_ru.wav",
-                }
-            },
-
-            FEEDBACK_BAG = {
-                [BARBARIAN_CLASS] = {
-                    "Sounds\\Responses\\barbarian_bag_1_ru.wav",
-                    "Sounds\\Responses\\barbarian_bag_2_ru.wav",
-                    "Sounds\\Responses\\barbarian_bag_3_ru.wav",
-                    "Sounds\\Responses\\barbarian_bag_4_ru.wav",
-                    "Sounds\\Responses\\barbarian_bag_5_ru.wav",
-                },
-                [SORCERESS_CLASS] = {
-                    "Sounds\\Responses\\sorceress_bag_1_ru.wav",
-                    "Sounds\\Responses\\sorceress_bag_2_ru.wav",
-                    "Sounds\\Responses\\sorceress_bag_3_ru.wav",
-                    "Sounds\\Responses\\sorceress_bag_4_ru.wav",
-                    "Sounds\\Responses\\sorceress_bag_5_ru.wav",
-                }
-            },
-
-
-            FEEDBACK_CLASSRESTRICTED = {
-                [BARBARIAN_CLASS] = {
-                    "Sounds\\Responses\\barbarian_classrestricted_1_ru.wav",
-                    "Sounds\\Responses\\barbarian_classrestricted_2_ru.wav",
-                    "Sounds\\Responses\\barbarian_classrestricted_3_ru.wav",
-                    "Sounds\\Responses\\barbarian_classrestricted_4_ru.wav",
-                },
-                [SORCERESS_CLASS] = {
-                    "Sounds\\Responses\\sorceress_classrestricted_1_ru.wav",
-                    "Sounds\\Responses\\sorceress_classrestricted_2_ru.wav",
-                    "Sounds\\Responses\\sorceress_classrestricted_3_ru.wav",
-                    "Sounds\\Responses\\sorceress_classrestricted_4_ru.wav",
-                }
-            },
-
-            SKILL_PANEL_TOOLTIP_NAME = "Умения",
-            SKILL_PANEL_TOOLTIP_DESCRIPTION = "Настройка и просмотр всех умений",
-
-            SKILL_CATEGORY_LIGHTNING = "Молнии",
-            SKILL_CATEGORY_FIRE = "Огонь",
-            SKILL_CATEGORY_ICE = "Лед",
-            SKILL_CATEGORY_ARCANE = "Тайная магия",
-            SKILL_CATEGORY_FIGHTING_MASTERY = "Боебое мастерство",
-            SKILL_CATEGORY_BATTLE_ADVANTAGE = "Боевое преимущество",
-            SKILL_CATEGORY_INNER_STRENGTH = "Внутренние силы",
-
-            SKILL_CATEGORY_LIGHTNING_ADVANCED = "Умения молнии: ",
-            SKILL_CATEGORY_FIRE_ADVANCED = "Умения огня: ",
-            SKILL_CATEGORY_ICE_ADVANCED = "Умения льда: ",
-            SKILL_CATEGORY_ARCANE_ADVANCED = "Умения тайной магии: ",
-            SKILL_CATEGORY_FIGHTING_MASTERY_ADVANCED = "Умения боевого мастерства: ",
-            SKILL_CATEGORY_BATTLE_ADVANTAGE_ADVANCED = "Умения боевого преимущества: ",
-            SKILL_CATEGORY_INNER_STRENGTH_ADVANCED = "Умения внутренних сил: ",
-
-            SKILL_PANEL_LVL_TEXT = "Уровень: ",
-            SKILL_PANEL_UNBIND = "Убрать",
-
-            SKILL_PANEL_MANA_TEXT = " маны",
-            SKILL_PANEL_COOLDOWN_TEXT = " перезарядка",
-            SKILL_PANEL_RANGE_TEXT = " дальность",
-
-            CASTLE_LOCATION = 'Замок',
-            SHORE_LOCATION = 'Берег леса',
-            WOODS_LOCATION = 'Ущелье',
-            RUINS_LOCATION = "Руины",
-
-            CASTLE_LOCATION_NAME = "СТАРЫЙ ЗАМОК",
-            MAINROAD_LOCATION_NAME = "ГЛАВНЫЙ ТРАКТ",
-            WILDFOREST_LOCATION_NAME = "ДИКИЙ ЛЕС",
-            NARROWPASS_LOCATION_NAME = "УЩЕЛЬЕ",
-            OUTSKIRTS_LOCATION_NAME = "ДАЛЕКИЕ ОКРАИНЫ",
-            SACREDGROVE_LOCATION_NAME = "СВЯЩЕННАЯ РОЩА",
-            MEADOWS_LOCATION_NAME = "ЦВЕТУЩИЕ ЛУГА",
-
-            CASTLE_LOCATION_TEXTURE = "vagrant_fortress_ru.blp",
-            MAINROAD_LOCATION_TEXTURE = "trading_path_ru.blp",
-            WILDFOREST_LOCATION_TEXTURE = "duskwood_ru.blp",
-            NARROWPASS_LOCATION_TEXTURE = "narrow_pass_ru.blp",
-            OUTSKIRTS_LOCATION_TEXTURE = "forgotten_lands_ru.blp",
-            SACREDGROVE_LOCATION_TEXTURE = "sacred_grove_ru.blp",
-            MEADOWS_LOCATION_TEXTURE = "blooming_meadows_ru.blp",
-
-
-            FEEDBACK_MSG_NOSPACE = "В рюкзаке нет места",
-            FEEDBACK_MSG_CANTUSE = "Невозможно это использовать",
-            FEEDBACK_MSG_NOGOLD = "Недостаточно золота",
-            --FEEDBACK_MSG_ = "",
-
-            INVENTORY_PANEL_TOOLTIP_NAME = "Инвентарь",
-            INVENTORY_PANEL_TOOLTIP_DESCRIPTION =  "Содержит все ваши вещи и экипировку",
-
-            UI_TEXT_SELL = "Продать",
-            UI_TEXT_BUY = "Купить",
-            UI_TEXT_ENCHANT = "Вставить",
-            UI_TEXT_LEARN = "Изучить",
-            UI_TEXT_MOVE = "Переместить",
-            UI_TEXT_EQUIP = "Надеть",
-            UI_TEXT_DROP = "Выкинуть",
-            UI_TEXT_BELT_ON = "Закрепить",
-            UI_TEXT_BELT_OFF = "Открепить",
-            UI_TEXT_REFORGE = "Перековка",
-            UI_TEXT_RESOCKET = "Извлечение",
-            UI_TEXT_ALT_WEAPON = "Левая рука",
-            UI_TEXT_EXCHANGE = "Обмен книги",
-
-            UI_TEXT_OK = "ок",
-            UI_TEXT_CANCEL = "отмена",
-
-            UI_TOOLTIP_REFORGE_TITLE = "Перековать предмет",
-            UI_TOOLTIP_REFORGE_DESC = "Перековка повышает уровень предмета до актуального.",
-
-            UI_TOOLTIP_EXCHANGE_TITLE = "Обмен",
-            UI_TOOLTIP_EXCHANGE_DESC = "Можно менять книги на более подходящие.",
-
-            HINT_INVENTORY_1 = "Используйте одиночный клик по предмету для вызова контекстного меню или двойной для быстрого взаимодействия с предметом.",
-            HINT_INVENTORY_2 = "Например, двойной клик по оружию возьмет его в основную руку, а по расходуемому предмету - вынесет его в инвентарь героя.",
-            HINT_SHOP_1 = "Каждую волну нападения ассортимент магазинов обновляется, так что не стесняйтесь продавать ненужное. Пока магазин открыт, контекстное меню на предмете в инвентаре откроет кнопку %<Продать%>",
-            HINT_BLACKSMITH_1 = "У кузнеца можно перековать предметы до текущего уровня волны, а так же изъять ненужные камни. Камни утрачиваются безвозвратно.",
-            HINT_STATS_1 = "Базовые параметры очень важная часть развития героя. Наведите курсором на каждый, и узнаете немного подробнее о них. Каждый новый уровень дает 3 очка развития.",
-            HINT_ALTARS = "Взаимодействовать с алтарями и сундуками можно кликнув правой кнопкой мыши по ним находясь поблизости. Алтари дают случайный эффект, сундуки содержат предметы и золото, колодцы восстанавливают здоровье или ману.",
-            HINT_BELT = "Можно быстро использовать предметы на поясе нажимая 1-2-3-4-5-6. Нумерация предметов начинается слева сверху.",
-
-
-            DAMAGE_UI = "Урон: ",
-            BLOCK_UI = "Блок: ",
-            DAMAGE_TYPE_UI = "Тип урона: ",
-            DEFENCE_UI = "Защита: ",
-            SUPPRESSION_UI = "Подавление: ",
-
-            ADDITIONAL_INFO_UI = "|nДополнительные свойства:|n",
-            AUGMENTS_UI = "|nАугментации:|n",
-            SLOTS_UI = "|nГнезда:|n",
-            SET_PART_UI = " части:|n",
-            UNIQUE_EFFECT_UI = "Уникальный эффект",
-
-            STAT_PANEL_TOOLTIP_NAME = "Характеристики",
-            STAT_PANEL_TOOLTIP_DESCRIPTION =  "Повышение и отслеживание характеристик",
-
-            STAT_PANEL_STR = "Сила: ",
-            STAT_PANEL_INT = "Интеллект: ",
-            STAT_PANEL_VIT = "Стойкость: ",
-            STAT_PANEL_AGI = "Ловкость: ",
-
-            STAT_PANEL_MAIN_STAT = "Основная характеристика",
-            STAT_PANEL_STR_DESC = "Влияет на силу физических атак.",
-            STAT_PANEL_INT_DESC = "Каждая еденица повышает магическое подавление на 1, влияет на магический урон а так же количество и восстановление магии если вы используете ману.",
-            STAT_PANEL_VIT_DESC = "Повышает здоровье и ее восстановление.",
-            STAT_PANEL_AGI_DESC = "Каждая еденица повышает защиту на 2.",
-
-            STAT_PANEL_PHYS_ATTACK = "Физ. урон: ",
-            STAT_PANEL_PHYS_DEFENCE = "Защита: ",
-            STAT_PANEL_MAG_ATTACK = "Маг. урон: ",
-            STAT_PANEL_MAG_DEFENCE = "Подавление: ",
-            STAT_PANEL_ATTACK_SPEED = "Атак в сек.: ",
-            STAT_PANEL_CRIT_CHANCE = "Крит. Шанс: ",
-
-            STAT_PANEL_FIRE = "Огонь: ",
-            STAT_PANEL_PHYSICAL = "Физ.: ",
-            STAT_PANEL_ICE = "Лед: ",
-            STAT_PANEL_LIGHTNING = "Молния: ",
-            STAT_PANEL_DARKNESS = "Тьма: ",
-            STAT_PANEL_HOLY = "Свет: ",
-            STAT_PANEL_POISON = "Яд: ",
-            STAT_PANEL_ARCANE = "Тайное: ",
-
-            REFORGE_BUTTON_TEXT = "Перековать",
-            SOCKET_BUTTON_TEXT = "Изьять",
-            EXCHANGE_BUTTON_TEXT = "Обменять",
-
-
-            WORN_DECL_HE = "Изношенный ",
-            WORN_DECL_SHE = "Изношенная ",
-            WORN_DECL_THEY = "Изношенные ",
-            WORN_DECL_IT = "Изношенное ",
-
-            FINE_DECL_HE = "Качественный ",
-            FINE_DECL_SHE = "Качественная ",
-            FINE_DECL_THEY = "Качественные ",
-            FINE_DECL_IT = "Качественное ",
-
-            EXCELLENT_DECL_HE = "Превосходный ",
-            EXCELLENT_DECL_SHE = "Превосходная ",
-            EXCELLENT_DECL_THEY = "Превосходные ",
-            EXCELLENT_DECL_IT = "Превосходное ",
-
-            IDEAL_DECL_HE = "Безупречный ",
-            IDEAL_DECL_SHE = "Безупречная ",
-            IDEAL_DECL_THEY = "Безупречные ",
-            IDEAL_DECL_IT = "Безупречное ",
-
-            ITEM_SUFFIX_ANGER                   = " Злости",
-            ITEM_SUFFIX_FURY                    = " Ярости",
-            ITEM_SUFFIX_CONCENTRATION           = " Концентрации",
-            ITEM_SUFFIX_PRECISION               = " Точности",
-            ITEM_SUFFIX_ICE_WIZARD              = " Ледяного Колдуна",
-            ITEM_SUFFIX_FIRE_WIZARD             = " Огненного Колдуна",
-            ITEM_SUFFIX_LIGHTNING_WIZARD        = " Электрического Колдуна",
-            ITEM_SUFFIX_SLAYER                  = " Убийцы",
-            ITEM_SUFFIX_TRICKSTER               = " Обманщика",
-            ITEM_SUFFIX_ROCK                    = " Скалы",
-            ITEM_SUFFIX_KNIGHT                  = " Рыцаря",
-            ITEM_SUFFIX_MYSTERY                 = " Загадки",
-            ITEM_SUFFIX_KNOWLEDGE               = " Знаний",
-            ITEM_SUFFIX_PURE_CONCENTRATION      = " Сосредоточенности",
-            ITEM_SUFFIX_SLAYER_GENIUS           = " Гениального убийцы",
-            ITEM_SUFFIX_HIGH_KNIGHT             = " Благородного рыцаря",
-            ITEM_SUFFIX_ENDLESS_FURY            = " Бесконечной ярости",
-            ITEM_SUFFIX_DEADLY_PRECISION        = " Смертельной точности",
-
-            GENERIC_SWORD_NAME_1 = "необработанный клинок",
-            GENERIC_SWORD_NAME_2 = "короткий меч",
-            GENERIC_SWORD_NAME_3 = "рунический клинок",
-            GENERIC_SWORD_NAME_4 = "широкий меч",
-            GENERIC_SWORD_NAME_5 = "зачарованный меч",
-            GENERIC_SWORD_NAME_6 = "рапира",
-
-            GENERIC_GREATSWORD_NAME_1 = "варварский разрезатель",
-            GENERIC_GREATSWORD_NAME_2 = "нож великанов",
-            GENERIC_GREATSWORD_NAME_3 = "клеймор",
-            GENERIC_GREATSWORD_NAME_4 = "эсток",
-
-            GENERIC_AXE_NAME_1 = "широкий топор",
-            GENERIC_AXE_NAME_2 = "зазубренный топор",
-            GENERIC_AXE_NAME_3 = "стальной топор",
-            GENERIC_AXE_NAME_4 = "мистический топор",
-
-            GENERIC_GREATAXE_NAME_1 = "огромный резак",
-            GENERIC_GREATAXE_NAME_2 = "изогнутый топор",
-
-            GENERIC_BLUNT_NAME_1 = "древняя булава",
-            GENERIC_BLUNT_NAME_2 = "дубина",
-            GENERIC_BLUNT_NAME_3 = "шипованная палица",
-            GENERIC_BLUNT_NAME_4 = "цеп",
-            GENERIC_BLUNT_NAME_5 = "скипетр наследника",
-            GENERIC_BLUNT_NAME_6 = "моргерншерн",
-
-            GENERIC_GREATBLUNT_NAME_1 = "большая шипованная палица",
-            GENERIC_GREATBLUNT_NAME_2 = "мифриловый молот",
-            GENERIC_GREATBLUNT_NAME_3 = "зачарованный скипетр",
-            GENERIC_GREATBLUNT_NAME_4 = "рунический боевой молот",
-
-            GENERIC_DAGGER_NAME_1 = "изогнутый нож",
-            GENERIC_DAGGER_NAME_2 = "позолоченный нож",
-            GENERIC_DAGGER_NAME_3 = "нож",
-            GENERIC_DAGGER_NAME_4 = "заточка",
-            GENERIC_DAGGER_NAME_5 = "разделочный нож",
-            GENERIC_DAGGER_NAME_6 = "жало",
-            GENERIC_DAGGER_NAME_7 = "расплавленный кинжал",
-
-            GENERIC_STAFF_NAME_1 = "Сверток Природы",
-            GENERIC_STAFF_NAME_2 = "огненный скипетр",
-            GENERIC_STAFF_NAME_3 = "Нефритовый Свет",
-            GENERIC_STAFF_NAME_4 = "Лунный Свет",
-            GENERIC_STAFF_NAME_5 = "Путы Мира",
-            GENERIC_STAFF_NAME_6 = "Пророк",
-            GENERIC_STAFF_NAME_7 = "посох Ночного Сияния",
-            GENERIC_STAFF_NAME_8 = "Дар Смерти",
-            GENERIC_STAFF_NAME_9 = "Искатель",
-
-            GENERIC_BOW_NAME_1 = "Позолоченное Древо",
-            GENERIC_BOW_NAME_2 = "длинный лук",
-            GENERIC_BOW_NAME_3 = "грубый лук",
-            GENERIC_BOW_NAME_4 = "лук разведчика",
-            GENERIC_BOW_NAME_5 = "тяжелый лук",
-            GENERIC_BOW_NAME_6 = "Рог",
-            GENERIC_BOW_NAME_7 = "рунный лук",
-            GENERIC_BOW_NAME_8 = "усиленный лук",
-            GENERIC_BOW_NAME_9 = "дергающийся лук",
-            GENERIC_BOW_NAME_10 = "мистический лук",
-            GENERIC_BOW_NAME_11 = "заиневший лук",
-
-            GENERIC_QUIVER_NAME_1 = "колчан",
-            GENERIC_QUIVER_NAME_2 = "кожанный колчан",
-            GENERIC_QUIVER_NAME_3 = "рейнджерский колчан",
-            GENERIC_QUIVER_NAME_4 = "обработанный колчан",
-            GENERIC_QUIVER_NAME_5 = "искусный колчан",
-            GENERIC_QUIVER_NAME_6 = "военный колчан",
-            GENERIC_QUIVER_NAME_7 = "укрепленный колчан",
-            GENERIC_QUIVER_NAME_8 = "егерьский колчан",
-            GENERIC_QUIVER_NAME_9 = "мастерский колчан",
-            GENERIC_QUIVER_NAME_10 = "легковесный колчан",
-
-            GENERIC_ORB_NAME_1 = "ветрянная сфера",
-            GENERIC_ORB_NAME_2 = "водная сфера",
-            GENERIC_ORB_NAME_3 = "песочная сфера",
-            GENERIC_ORB_NAME_4 = "опаляющая сфера",
-            GENERIC_ORB_NAME_5 = "сгусток хаоса",
-            GENERIC_ORB_NAME_6 = "заряженная сфера",
-            GENERIC_ORB_NAME_7 = "капля тьмы",
-
-            GENERIC_SHIELD_NAME_1 = "широкий щит",
-            GENERIC_SHIELD_NAME_2 = "рыцарский щит",
-            GENERIC_SHIELD_NAME_3 = "фамильный щит",
-            GENERIC_SHIELD_NAME_4 = "баклер",
-            GENERIC_SHIELD_NAME_5 = "защитник",
-            GENERIC_SHIELD_NAME_6 = "башенный щит",
-            GENERIC_SHIELD_NAME_7 = "рунический щит",
-            GENERIC_SHIELD_NAME_8 = "отражатель",
-            GENERIC_SHIELD_NAME_9 = "рондаш",
-   
-
-            GENERIC_CHEST_NAME_1 = "композитный нагрудник",
-            GENERIC_CHEST_NAME_2 = "Воронье Крыло",
-            GENERIC_CHEST_NAME_3 = "укрепленный нагрудник",
-            GENERIC_CHEST_NAME_4 = "панцирь",
-            GENERIC_CHEST_NAME_5 = "легкая броня",
-            GENERIC_CHEST_NAME_6 = "тяжелая броня",
-            GENERIC_CHEST_NAME_7 = "стальная броня",
-            GENERIC_CHEST_NAME_8 = "роба",
-            GENERIC_CHEST_NAME_9 = "крепкий доспех",
-            GENERIC_CHEST_NAME_10 = "бронированный нагрудник",
-            GENERIC_CHEST_NAME_11 = "кираса",
-            GENERIC_CHEST_NAME_12 = "составной нагрудник",
-            GENERIC_CHEST_NAME_13 = "Сияние Ночи",
-
-
-            GENERIC_HANDS_NAME_1 = "меховые перчатки",
-            GENERIC_HANDS_NAME_2 = "кожанные перчатки",
-            GENERIC_HANDS_NAME_3 = "кольчужные перчатки",
-            GENERIC_HANDS_NAME_4 = "латные перчатки",
-            GENERIC_HANDS_NAME_5 = "укрепленные латные перчатки",
-            GENERIC_HANDS_NAME_6 = "перчатки дуэлянта",
-            GENERIC_HANDS_NAME_7 = "зачарованные перчатки",
-
-            GENERIC_LEGS_NAME_1 = "походные сапоги",
-            GENERIC_LEGS_NAME_2 = "сандали",
-            GENERIC_LEGS_NAME_3 = "кожанные сандали",
-            GENERIC_LEGS_NAME_4 = "укрепленные сандали",
-            GENERIC_LEGS_NAME_5 = "латные сапоги",
-            GENERIC_LEGS_NAME_6 = "бронированные сапоги",
-            GENERIC_LEGS_NAME_7 = "композитные сапоги",
-
-            GENERIC_HEAD_NAME_1 = "латный шлем",
-            GENERIC_HEAD_NAME_2 = "демоническая каска",
-            GENERIC_HEAD_NAME_3 = "рогатый шлем",
-            GENERIC_HEAD_NAME_4 = "шлем фанатиков",
-            GENERIC_HEAD_NAME_5 = "накидка",
-            GENERIC_HEAD_NAME_6 = "легкий шлем",
-            GENERIC_HEAD_NAME_7 = "стальной шлем",
-            GENERIC_HEAD_NAME_8 = "шлем охотника на драконов",
-            GENERIC_HEAD_NAME_9 = "укрепленный шлем",
-            GENERIC_HEAD_NAME_10 = "каска юстициария",
-            GENERIC_HEAD_NAME_11 = "королевский шлем",
-
-            GENERIC_BELT_NAME_1 = "ремень",
-            GENERIC_BELT_NAME_2 = "укрепленный ремень",
-            GENERIC_BELT_NAME_3 = "охотничий пояс",
-            GENERIC_BELT_NAME_4 = "ремень",
-            GENERIC_BELT_NAME_5 = "боевой пояс",
-            GENERIC_BELT_NAME_6 = "шипованный ремень",
-            GENERIC_BELT_NAME_7 = "зачарованный кушак",
-            GENERIC_BELT_NAME_8 = "отделанный пояс",
-
-
-            GENERIC_RING_NAME_1 = "адамантитовое кольцо",
-            GENERIC_RING_NAME_2 = "позолоченное кольцо",
-            GENERIC_RING_NAME_3 = "рыцарская печатка",
-            GENERIC_RING_NAME_4 = "фамильный перстень",
-            GENERIC_RING_NAME_5 = "золотое кольцо",
-            GENERIC_RING_NAME_6 = "адамантитовое кольцо",
-            GENERIC_RING_NAME_7 = "почерневшее кольцо",
-            GENERIC_RING_NAME_8 = "арканитовый перстень",
-            GENERIC_RING_NAME_9 = "жестокое кольцо",
-            GENERIC_RING_NAME_10 = "руническое кольцо",
-            GENERIC_RING_NAME_11 = "заиневшее кольцо",
-
-            GENERIC_NECKLACE_NAME_1 = "подвеска с камнем",
-            GENERIC_NECKLACE_NAME_2 = "серебрянный амулет",
-            GENERIC_NECKLACE_NAME_3 = "древний амулет",
-            GENERIC_NECKLACE_NAME_4 = "четки колдуна",
-            GENERIC_NECKLACE_NAME_5 = "зачарованная подвеска",
-            GENERIC_NECKLACE_NAME_6 = "заряженный амулет",
-            GENERIC_NECKLACE_NAME_7 = "изумрудная подвеска",
-            GENERIC_NECKLACE_NAME_8 = "рубиновая подвеска",
-            GENERIC_NECKLACE_NAME_9 = "сапфировая подвеска",
-
-            STARTING_ITEM_NAME_2HSWORD = "Клеймор",
-            STARTING_ITEM_NAME_CHEST = "Клепанная броня",
-            STARTING_ITEM_NAME_HEAD = "Шлем",
-            STARTING_ITEM_NAME_HANDS = "Стеганные рукавицы",
-            STARTING_ITEM_NAME_LEGS = "Клепанные сапоги",
-            STARTING_ITEM_NAME_STAFF = "Потертый посох",
-            --STARTING_ITEM_NAME_ = "",
-
-            SHARD_OF_HATE = "Осколок ненависти",
-            SHARD_OF_HATE_DESC = "Странный светящийся осколок, при прикосновении ощущается прилив ненависти.",
-
-            GEM_RUBY = 'Рубин',
-            GEM_SAPPHIRE = 'Сапфир',
-            GEM_TOPAZ = 'Топаз',
-            GEM_AMBER = 'Янтарь',
-            GEM_AQUAMARINE = 'Аквамарин',
-            GEM_DIAMOND = 'Алмаз',
-            GEM_AMETHYST = "Аметист",
-            GEM_TURQUOISE = 'Бирюза',
-            GEM_EMERALD = 'Изумруд',
-            GEM_MALACHITE = 'Малахит',
-            GEM_JADE = 'Нефрит',
-            GEM_OPAL = 'Опал',
-
-
-            POTION_WEAK_HP_NAME_TEXT = "Зелье исцеления",
-            POTION_HALF_HP_NAME_TEXT = "Большое зелье исцеления",
-            POTION_STRONG_HP_NAME_TEXT = "Великое зелье исцеления",
-
-            POTION_WEAK_HP_DESC_TEXT = "Восстанавливает 25%% здоровья",
-            POTION_HALF_HP_DESC_TEXT = "Восстанавливает 50%% здоровья",
-            POTION_STRONG_HP_DESC_TEXT = "Восстанавливает 75%% здоровья",
-
-            POTION_WEAK_MP_NAME_TEXT = "Зелье маны",
-            POTION_HALF_MP_NAME_TEXT = "Большое зелье маны",
-            POTION_STRONG_MP_NAME_TEXT = "Великое зелье маны",
-
-            POTION_WEAK_MP_DESC_TEXT = "Восстанавливает 25%% маны",
-            POTION_HALF_MP_DESC_TEXT = "Восстанавливает 50%% маны",
-            POTION_STRONG_MP_DESC_TEXT = "Восстанавливает 75%% маны",
-
-            POTION_WEAK_MIX_NAME_TEXT = "Зелье восстановления",
-            POTION_HALF_MIX_NAME_TEXT = "Большое зелье восстановления",
-            POTION_STRONG_MIX_NAME_TEXT = "Великое зелье восстановления",
-
-            POTION_WEAK_MIX_DESC_TEXT = "Восстанавливает 25%% здоровья и маны",
-            POTION_HALF_MIX_DESC_TEXT = "Восстанавливает 50%% здоровья и маны",
-            POTION_STRONG_MIX_DESC_TEXT = "Восстанавливает 75%% здоровья и маны",
-
-            POTION_ADRENALINE_TEXT = "Зелье Адреналина",
-            POTION_ADRENALINE_DESC_TEXT = "На непродолжительное время повышает скорость передвижения на 35%%.",
-
-            POTION_ANTIDOTE_TEXT = "Антидот",
-            POTION_ANTIDOTE_DESC_TEXT = "Повышает сопротивляемость ядам.",
-
-            SCROLL_OF_TOWN_PORTAL_NAME = "Свиток Городского Портала",
-            SCROLL_OF_TOWN_PORTAL_DESC = "При использовании открывает ненадолго портал в город.",
-
-            SCROLL_OF_PROTECTION_NAME = "Свиток Защиты",
-            SCROLL_OF_PROTECTION_DESC = "Повышает сопротивления ко всем стихиям.",
-
-
-            SKILLBOOK_FIRE = "Книга пламени",
-            SKILLBOOK_LIGHTNING = "Книга молний",
-            SKILLBOOK_ICE = "Книга льда",
-            SKILLBOOK_ARCANE = "Книга тайн",
-            SKILLBOOK_FIGHTING_MASTERY = "Книга бойца",
-            SKILLBOOK_INNER_STRENGTH = "Книга сил",
-            SKILLBOOK_BATTLE_ADVANTAGE = "Книга превосходства",
-
-            SKILLBOOK_TEXT = "Позволяет увеличить знания:",
-
-            BOOK_TOME_NAME = "Том знаний",
-            BOOK_TOME_NAME_TEXT = "Дает 1 очко характеристик.",
-
-            SKILL_WARCRY = 'Боевой Клич',
-            SKILL_CUTTINGSLASH = 'Рассекающий Взмах',
-            SKILL_HARPOON = 'Гарпун',
-            SKILL_CRUSHINGBLOW = 'Сокрущающий Удар',
-            SKILL_WHIRLWIND = 'Вихрь',
-            SKILL_BERSERK = 'Берсерк',
-            SKILL_UPPERCUT = 'Апперкот',
-            SKILL_THROWKNIFE = 'Бросок Кинжала',
-            SKILL_JUMP = 'Прыжок',
-            SKILL_EXECUTION = "Казнь",
-            SKILL_FIRSTAID = "Перевязка",
-            SKILL_SUMMONHYDRA = 'Призвать Гидру',
-            SKILL_ELEMENTALMASTERY = 'Мастерство Стихий',
-            SKILL_FOCUS = 'Сосредоточенность',
-            SKILL_FROSTARMOR = 'Ледяная Броня',
-            SKILL_LIGHTNINGBALL = 'Шаровая Молния',
-            SKILL_DISCHARGE = 'Разряд',
-            SKILL_METEOR = 'Метеор',
-            SKILL_TELEPORT = 'Телепорт',
-            SKILL_LIGHTNINGSTRIKE = 'Удар Молнии',
-            SKILL_FROSTORB = 'Ледяной Шар',
-            SKILL_FROSTBOLT = 'Ледяная Стрела',
-            SKILL_FIREBALL = 'Огненный Шар',
-            SKILL_FROSTNOVA = 'Кольцо Льда',
-            SKILL_CHAIN_LIGHTNING = "Электрошок",
-            SKILL_MELTDOWN = "Расплавление",
-
-
-            SET_NAME_ANCIENT_LEGACY = "Наследие предков",
-            SET_NAME_JESTERANDKING = "Король и Шут",
-            SET_NAME_FIREBOND = "Огненная связь",
-            SET_NAME_FRENDLINESS = "Приветливость",
-
-
-            ITEM_LEG_DESCRIPTION_FIREBOND = "Все огненные умения на 35%% сильнее.",
-            ITEM_LEG_DESCRIPTION_WITCH_MASTERY = "Каждое произнесенное заклинание увеличивает силу магии на 10%%, однако взамен пожирает 5%% здоровья",
-            ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Каждый противник неподалеку повышает скорость передвижения на 3%% до максимума в 25%%",
-            ITEM_LEG_DESCRIPTION_RITUAL_DAGGER = "При атаке вы накапливаете эффекты Хаоса. Накопив 15 эффектов, сила и скорость атаки на короткое время сильно повышаются, но на это время регенерация здоровья идет в обратную сторону.",
-            ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Разряд\" теперь идет из позиции чародейки, а их урон и количество зарядов увеличивается.",
-            ITEM_LEG_DESCRIPTION_BOOSTERS = "После приземления от использования умения \"Прыжок\" варвар наносит 215%% урона от оружия в небольшом радиусе.",
-            ITEM_LEG_DESCRIPTION_PAIN_ECHO = "Кровотечение от умения \"Рассекающий взмах\" теперь может быть критическим, так же его шанс на крит повышен на 25%%.",
-            ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "Каждая атака по врагу накладывает на него эффект кристаллизации, снижающий скорость передвижения. После накопления 5 зарядов, противник замораживается на 3 сек.",
-            ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "Каждая атака льдом, огнем или молнией накладывает уязвимость к соответствующей стихии понижающая сопротивление ей на 5 ед. на 7 секунд, повторная атака любой стихией обновляет эффект. Суммируется до 3 раз.",
-            ITEM_LEG_DESCRIPTION_ICE_TOUCH = "При применении \"Ледяной Стрелы\" вместо одной стрелы, позади волшебницы создаются 3, которые зависают, а затем летят в указанную цель.",
-
-
-            ITEM_NAME_RAT_HUNTER = 'Охотник на крыс',
-            ITEM_SPEC_DESCRIPTION_RAT_HUNTER = "Даже у крысоловов был легендарный лук, коего желали все охотники на крыс",
-
-            ITEM_NAME_BOOT_OF_COWARD = 'Сапог труса',
-            ITEM_SPEC_DESCRIPTION_BOOT_OF_COWARD = "Владелец этого сапога применял секретную тактику своего знатного рода, передававшуюся в течении 300 лет. До поры до времени...",
-
-            ITEM_NAME_WITCH_MASTERY = "Мастерство Ведьмы",
-            ITEM_SPEC_DESCRIPTION_WITCH_MASTERY = "Принадлежал очень древней ведьме. Впитал в себя часть заклинаний крови, которыми может поделиться.",
-
-            ITEM_NAME_DARK_CROWN = "Темная Корона",
-            ITEM_SPEC_DESCRIPTION_DARK_CROWN = "Хочешь сопротивляться тьме - стань тьмой сам",
-
-            ITEM_NAME_RITUAL_DAGGER = "Ритуальный Кинжал",
-            ITEM_SPEC_DESCRIPTION_RITUAL_DAGGER = "Сила, заточенная в этом клинке раскрывается с каждым порезом. И пусть тот кто ею завладеет, справится с ней",
-
-
-            ITEM_NAME_ACOLYTE_MANTLE = "Мантия Аколита",
-            ITEM_SPEC_DESCRIPTION_ACOLYTE_MANTLE = "Идеальное решение что бы уйти в себя",
-
-
-            ITEM_NAME_SMORC_PICKAXE = "Кирка Сморка",
-            ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE = "Легенды гласят, что шахтёр Сморк наповал косил ею врагов",
-
-            ITEM_NAME_BOOSTERS = "Усилители",
-            ITEM_SPEC_DESCRIPTION_BOOSTERS = "Изобретение неизвестного автора нашло свое уникальное применение.",
-
-            ITEM_NAME_EYE_OF_THE_STORM = "Око бури",
-            ITEM_SPEC_DESCRIPTION_EYE_OF_THE_STORM = "Неизвестный чародей смог заполучить себе невероятный артефакт, после чего вскоре превратился в пепел.",
-
-
-            ITEM_NAME_FIREPRINCESS = "Пламенная Принцесса",
-            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_FIREPRINCESS = "Принцесса одного древнего королевства проявляла интерес к пламени, сжигая предателей и окружая себя огнем.",
-
-
-            ITEM_NAME_FIREQUEEN = "Пламенная Королева",
-            --ITEM_LEG_DESCRIPTION_FIREQUEEN = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_FIREQUEEN = "Став королевой, страсть пламени лишь разгоралась, и однажды, войдя в ее покои, слуги не нашли их королеву, только лишь амулет и кольцо на обуглившимся полу.",
-
-
-            ITEM_NAME_PAIN_ECHO = "Эхо Боли",
-            ITEM_SPEC_DESCRIPTION_PAIN_ECHO = "Чьей кровью ты будешь насыщать это кольцо?",
-
-            ITEM_NAME_CRYSTAL_AXE = "Кристальный топор",
-            ITEM_SPEC_DESCRIPTION_CRYSTAL_AXE = "Превращает в кристаллы всё чего коснётся, держите острие подальше от себя.",
-
-            ITEM_NAME_BOOTSOFPAIN = "Сапоги Боли",
-            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_BOOTSOFPAIN = "Больно ли тебе ходить?",
-
-            ITEM_NAME_CHESTOFPAIN = "Нагрудник Боли",
-            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_CHESTOFPAIN = "Больно ли тебе дышать?",
-
-            ITEM_NAME_HEADOFPAIN = "Шлем Боли",
-            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_HEADOFPAIN = "Больно ли тебе находиться в сознании?",
-
-
-            ITEM_NAME_THE_KING = "Король",
-            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_THE_KING = "Правитель...",
-
-            ITEM_NAME_THE_JESTER = "Шут",
-            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_THE_JESTER = "...Посмещище",
-
-
-            ITEM_NAME_MASTER_OF_ELEMENTS = "Мастер стихий",
-            --ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "Каждая атака накладывает уязвимость к своей стихии понижающая сопротивление ей на 5 ед. на 7 секунд, повторная атака любой стихией обновляет эффект. Суммируется до 3 раз.",
-            ITEM_SPEC_DESCRIPTION_MASTER_OF_ELEMENTS = "Редкая, уникальная вещь которой будет завидовать любой чародей.",
-
-            ITEM_NAME_ICE_TOUCH = "Касание Зимы",
-            ITEM_SPEC_DESCRIPTION_ICE_TOUCH = "Холод обволакивает руки, и пробирает до костей.",
-
-
-
-
-
-            GENERATED_TOOLTIP = "урона от атаки",
-
-            [FourCC("A007")] = {
-                [1] = "Сильный удар наносящий @e!ECRH.dmg# типа @e!ECRH.atr# в секторе перед собой. Поражает эффектом *Сокрушение* снижающим уязвимость к физическому урону на @b!A00W.va1# и снижающим скорость атаки на @b!A00W.va2# на @b!A00W.time# сек.",
-            },
-            [FourCC("A00C")] = {
-                [1] = "Варвар испускает в радиусе @e!EWCR.aoe# ед. крик который снижает атаку врагов на @b!A00Y.va1# и скорость их перемещения на @b!A00Y.va3# ед.",
-            },
-            [FourCC("A006")] = {
-                [1] = "Молниеносный удар наносящий @e!ECSL.dmg# типа @e!ECSL.atr# в секторе перед собой. Враги начинают кровоточить получая @e!ECSP.dmg# типа @e!ECSP.atr#",
-            },
-            [FourCC("A00A")] = {
-                [1] = "Запускает цепь на расстояние @s!A00A.rng#, притягивая первого врага.",
-            },
-            [FourCC("A010")] = {
-                [1] = "Варвар образует яростный вихрь безумно вращаясь, нанося @e!EWHW.dmg# типа @e!EWHW.atr# 3 раза в секунду вокруг себя. При этом постоянно потребляется 9 маны в сек.",
-            },
-            [FourCC("A00Q")] = {
-                [1] = "Впадает в ярость, увеличивая свою атаку на @b!A00V.va1#, сопротивлению контролю на @b!A00V.va2# и скорость бега на @b!A00V.va3# в течении @b!A00V.time# сек.",
-            },
-            [FourCC("A00B")] = {
-                [1] = "Удар наносящий @e!EUPP.dmg# типа @e!EUPP.atr# и отталкивающий врагов, после чего они оглушаются на @b!A012.time# сек.",
-            },
-            [FourCC("A00Z")] = {
-                [1] = "Бросает кинжал на расстояние @s!A00Z.rng#, поражающий первого противника, наносит @e!ETHK.dmg# типа @e!ETHK.atr#. Имеет повышенные шансы на критический урон (+@e!ETHK.bcc#).",
-            },
-            [FourCC("A00O")] = {
-                [1] = "Прыжок, позволяющий переместиться на расстояние до @s!A00O.rng#.",
-            },
-            [FourCC("A020")] = {
-                [1] = "Добивающий удар. Наносит @e!EEXC.dmg# типа @e!EEXC.atr#, при применении на противников у которых осталось менее 20%% здоровья сила умения увеличивается втрое, а критический шанс возрастает на 20%%.",
-                [10] = "Добивающий удар. Наносит @e!EEXC.dmg# типа @e!EEXC.atr#, при применении на противников у которых осталось менее 20%% здоровья сила умения увеличивается втрое, а критический шанс возрастает на 20%%. Если противник умирает от удара, дает эффект \"Близость Смерти\", который увеличивает @b!ANRD.pa1# на @b!ANRD.va1# и @b!ANRD.pa2# на @b!ANRD.va2#. ",
-            },
-            [FourCC("ABFA")] = {
-                [1] = "Лечит на @e!EFAA.hp_perc# каждую секунду в течении @b!A01N.time# секунд.",
-                [10] = "Лечит на @e!EFAA.hp_perc# каждую секунду в течении @b!A01N.time# секунд. Так же дает @b!A01N.va1# @b!A01N.pa1#.",
-            },
-            [FourCC("A00I")] = {
-                [1] = "Призывает неуязвимую огненную гидру, которая атакует врагов. Она наследует 70%% значений характеристик. С повышением уровня заклинания увеличивается ее время существования.",
-            },
-            [FourCC("A00H")] = {
-                [1] = "Вошлебница подчиняет себе мощь стихий, весь урон от стихий [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# и @b!A00U.pa4#] увеличивается на @b!A00U.va1#, @b!A00U.pa5# на @b!A00U.va5#. Время эффекта - @b!A00U.time# сек. ",
-            },
-            [FourCC("A00E")] = {
-                [1] = "Волшебница формирует вокруг себя ледяной барьер, повышающий ее защитные параметры: @b!A011.pa1# на @b!A011.va1# ед., @b!A011.pa2# на @b!A011.va2# ед., @b!A011.pa3# на @b!A011.va3# ед. и @b!A011.pa4# на @b!A011.va4# ед.",
-            },
-            [FourCC("A00N")] = {
-                [1] = "Волшебница фокусирует энергии тайной магии, улучшая свою защиту: @b!A00T.pa1# на @b!A00T.va1# ед., @b!A00T.pa2# на @b!A00T.va2# и @b!A00T.pa3# на @b!A00T.va3#.",
-            },
-            [FourCC("A00K")] = {
-                [1] = "Выпускает заряженный сгусток энергии медленно летящий вперед, периодически пульсируя разрядами в радиусе @m!MBLB.rad#, которые наносят @e!ELBL.pwr# ед. урона типа @e!ELBL.atr#",
-            },
-            [FourCC("A00J")] = {
-                [1] = "Выстреливает 3 хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают.",
-                [10] = "Выстреливает 4 хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают.",
-                [20] = "Выстреливает 5 хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают.",
-                [30] = "Выстреливает 6 хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают.",
-                [40] = "Выстреливает 7 хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают.",
-            },
-            [FourCC("A00F")] = {
-                [1] = "Призывает с неба метеор, падающий на землю после небольшой задержки, нанося @e!EMTR.pwr# ед. урона типа @e!EMTR.atr# в радиусе @e!EMTR.aoe# и отталкивая противников из центра падения. Имеет повышенный бонус к стихии (+@e!EMTR.ab#)",
-            },
-            [FourCC("A00L")] = {
-                [1] = "Позволяет мгновенно переместиться на расстояние до @s!A00L.rng#.",
-            },
-            [FourCC("A00M")] = {
-                [1] = "Призывает мощный разряд, поражающий в радиусе @e!ELST.aoe# нанося @e!ELST.pwr# ед. урона типа @e!ELST.atr#. Имеет повышенный бонус к стихии (+@e!ELST.ab#) и множителю критического урона (+@e!ELST.bcm#)",
-            },
-            [FourCC("A005")] = {
-                [1] = "Запускает вперед ледяной шар, который наносит постоянно в радиусе @e!EFOA.aoe# @e!EFOA.pwr# ед. урона типа @e!EFOA.atr# (+@e!EFOA.ab#). В конце пути взрывается, нанося @e!EFRO.pwr# ед. урона типа @e!EFRO.atr#, с повышенном шансом критического урона на (+@e!EFRO.bcc#)",
-            },
-            [FourCC("A00D")] = {
-                [1] = "Запускает вперед огненный шар, при столкновении наносящий @e!EGFB.pwr# ед. урона типа @e!EGFB.atr#.",
-            },
-            [FourCC("A001")] = {
-                [1] = "Ледяная волна, исходящая от волшебницы до радиуса в @e!EFRN.aoe# ед., которая наносит противникам @e!EFRN.pwr# ед. урона типа @e!EFRN.atr# и замораживающая их на @b!A00S.time# cек.",
-            },
-            [FourCC("A003")] = {
-                [1] = "Бросает вперед ледяную стрелу, при столкновении с первым противником разлетается на осколки нанося @e!EFRB.pwr# ед. урона типа @e!EFRB.atr# в радиусе @e!EFRB.aoe#. Пораженные охлаждаются, замедляясь на @b!A004.va1#",
-            },
-            [FourCC("A019")] = {
-                [1] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 2 ближайших противников.",
-                [10] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 3 ближайших противников.",
-                [20] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 4 ближайших противников.",
-                [30] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 5 ближайших противников.",
-                [40] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 6 ближайших противников.",
-                [50] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 7 ближайших противников.",
-                [60] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 8 ближайших противников.",
-                [70] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 9 ближайших противников.",
-                [80] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 10 ближайших противников.",
-            },
-            [FourCC("AMLT")] = {
-                [1] = "Чародейка концентрирует энергию в своих руках, испуская огненный луч который поражает первого противника нанося ему @e!EMLT.pwr# ед. урона типа @e!EMLT.atr#. Во время поддержания необходимо стоять на месте. Луч следует за указателем мыши. Увеличение уровня способности увеличивает время поддержания.",
-            },
-
-
-            QUEST_REWARD_GOLD_FIRST = "получено ",
-            QUEST_REWARD_GOLD_SECOND = " золота.",
-            QUEST_REWARD_POINTS_FIRST = "получено ",
-            QUEST_REWARD_POINTS_SECOND = " очков характеристик.",
-
-            RESSURECT_TEXT_1 = "Ваш герой возродится через |c008EFFFF",
-            RESSURECT_TEXT_2 = "|r сек. на кладбище.",
-            GOLD_PENALTY_TEXT_1 = "|c00FF4444Погибнув, вы где-то потеряли|r |c00FFFF44",
-            GOLD_PENALTY_TEXT_2 = "|r |c00FF4444золота.|r",
-
-            INTRODUCTION_TEXT_1 = "О, путник. Добро пожаловать в нашу крепость. Здесь конечно неспокойно, но по твоему виду можно сказать что ты не лыком шит.",
-            INTRODUCTION_TEXT_2 = "Возможно ты сможешь помочь нам? Дело в том, что тут стоит чертов артефакт, который возьми да активируйся.",
-            INTRODUCTION_TEXT_3 = "Сначала подумали, ну ладно, а потом на нас всякая нечисть поперла! Нам бы день продержаться да ночь простоять, поможешь?",
-
-            INTRODUCTION_BARBARIAN_RESPONCE = "Похоже это дело для вед... кхм, простите, варвара.",
-            INTRODUCTION_SORCERESS_RESPONCE = "Мои чары сокрушат любое существо.",
-
-
-            BARBARIAN_NAME = "Варвар",
-            SORCERESS_NAME = "Волшебница",
-
-            VENDOR_BILL_NAME = "Вендор Билл",
-            HEALER_NAME = "Целительница",
-            BLACKSMITH_NAME = "Кузнец",
-            SMORC_NAME = "Сморк",
-            LIBRARIAN_NAME = "Библиотекарь",
-            SCAVENGER_NAME = "Странствующий скупщик",
-
-
-            AIZEK_NAME = "Подмастерье Айзек",
-            GUINPLEN_NAME = "Гуинплен",
-            STEPHAN_NAME = "Целитель Стефан",
-            MORDER_NAME = "Мордер",
-            HUNTRESS_NAME = "Охотница",
-            ABENO_NAME = "Абэ-но",
-            TAKO_NAME = "Провизионист Тако",
-            WITCH_NAME = "Ведьма Леса",
-            HUNTER_NAME = "Охотник Борк",
-            DON_NAME = "Управляющий Дон",
-
-
-            QUEST_1_TITLE = "Потерянный груз",
-            QUEST_1_DESC = "Помощник кузнеца растерял припасы. Так как в  округе очень опасно, он попросил вас помочь ему вернуть утраченное.",
-            QUEST_1_SPEECH = "Оооо, ваша помощь мне будет очень кстати. Я тут груз потерял... а нынче в округе очень опасно. Не могли бы вы помочь мне, а я вам тоже помогу?",
-            QUEST_1_ITEM = "Собранные припасы",
-
-            QUEST_2_TITLE = "Голодовка",
-            QUEST_2_DESC = "Неспокойна обстановка привела к голоду внутри крепости. Необходимо раздобыть съестное, иначе многие умрут от голода.",
-            QUEST_2_SPEECH_1 = "Эй, слушай. Только никому не говори, но у нас очень большая проблема.",
-            QUEST_2_SPEECH_2 = "Тут такое дело, Наши обычные поставки еды обычно не задерживаются, но сами понимаете, сейчас все в округе кишит тварями.",
-            QUEST_2_SPEECH_3 = "Нам позарез нужно раздобыть провизию, иначе тут все каюк. Смекаешь?",
-            QUEST_2_RESPONCE = "Если я что-то найду, то принесу.",
-            QUEST_2_ITEM1 = "Провизии собрано",
-            QUEST_2_ITEM2 = "Отдать собранное",
-            QUEST_2_SPEECH_DONE = "Мое почтение! Этого нам хватит с запасом. Отличная работа!",
-
-            QUEST_1_M_TITLE = "Нечестивое создание",
-            QUEST_1_M_DESC = "В окрестностях видели особо свирепое демоническое создание. Нас попросили позаботиться о нем, и направили к Гуинплену, который где-то здесь неподалеку на поле возле крученого спуска.",
-            QUEST_1_M_ITEM = "Найти Гуинплена",
-            QUEST_1_M_ITEMVAR1 = "Найти Лилит",
-            QUEST_1_M_ITEMVAR2 = "Найти Посох Надежды",
-            QUEST_1_M_ITEMVAR1END = "Убтиь Лилит",
-            QUEST_1_M_ITEMVAR2END = "Опробовать посох на Лилит",
-            QUEST_1_M_SPEECH_INTRO = "Постойте. Я вижу, вы можете помочь в нашем деле. Дело в том, что в добавок к обычной нечисти, тут завелся один очень свирепый демон.",
-            QUEST_1_M_SPEECH_INTRO_2 = "Он с особой жестокостью расправляется с солдатами, и почти каждый день мы находим новые трупы заблудившихся путников.",
-            QUEST_1_M_SPEECH_INTRO_3 = "Нам бы как то избавиться от него, и как раз тут неподалеку есть рыцарь странник, может он может вам помочь?",
-            QUEST_1_M_SPEECH_GIUN_1 = "Вы по поводу жестокого демона? Знаете... я так скажу, у меня есть сведения, которые объясняют его происхождение.",
-            QUEST_1_M_SPEECH_GIUN_2 = "На самом деле это зачарованная девушка из местной деревушки. Кто то видимо решил отомстить и использовал какой то артефакт из преисподней на ней.",
-            QUEST_1_M_SPEECH_GIUN_3 = "Я уже нашел один посох который может избавить ее от проклятия, но когда я собирался встретиться с продавцом, оказалось что его растерзали, а посох утерян где то на юге-востоке отсюда.",
-            QUEST_1_M_SPEECH_GIUN_4 = "Найдете посох - и сможете избавиться от демона более цивилизованным способом.",
-            QUEST_1_M_SPEECH_END_2 = "О боже... я вернулась! Как вы смогли это сделать? Такое ощущение, что я очень крепко спала... Благодарю вас! Примите это в знак благодарности!",
-            QUEST_1_M_SPEECH_STAFF_FOUND = "Похоже это тот самый посох про который говорил Гуинплен. Теперь стоит найти демона и опробовать его на нем.",
-
-
-
-            QUEST_2_M_TITLE = "Страж Леса",
-            QUEST_2_M_DESC = "Местные охотники выслеживают Стража Леса - то ли миф, то ли реальное существо. Стоит разузнать побольше у этих самых охотников. Последнее их пристанище было где то на юге от крепости.",
-            QUEST_2_M_ITEM = "Найти лагерь охотников",
-            QUEST_2_M_ITEMVAR1 = "Выследить зверя",
-            QUEST_2_M_ITEMVAR2 = "Найти местную ведьму",
-            QUEST_2_M_ITEMVAR3 = "Cобрать растение Ивенор",
-            QUEST_2_M_ITEMVAR4 = "Поднести растения на алтарь леса",
-            QUEST_2_M_ITEMVAR5 = "Вернуть сердце зверя охотникам",
-            QUEST_2_M_ITEMVAR6 = "Убить зверя",
-
-            QUEST_2_M_RESPONCE = "Посмотрим что это за зверь.",
-            QUEST_2_M_RESPONCE_WITCH = "Я подумаю над этим.",
-            QUEST_2_M_RESPONCE_HUNTERS = "Понятно. Уже выдвигаюсь.",
-            QUEST_2_M_RESPONCE_HUNTERS_2 = "Вот сердце зверя.",
-
-            QUEST_2_M_INTRO_1 = "Постой! Тут на днях наш отряд охотников намеревался выследить какую то опасную зверину в лесах.",
-            QUEST_2_M_INTRO_2 = "Однако прошло уже пара недель, а от них никаких вестей, и никто не возвращается.",
-            QUEST_2_M_INTRO_3 = "Возможно ты сможешь помочь? Разузнать где они да как. Кто знает чем все обернулось...",
-
-
-            QUEST_2_M_HUNTER_1 = "О, дарова! Че, уже нас обыскались? Да не ссы, все путем.",
-            QUEST_2_M_HUNTER_2 = "Сложно конечно добраться обратно до крепости, пока тут нечисть всякая, но прорвемся.",
-            QUEST_2_M_HUNTER_3 = "Самое главное то - это местный Хозяин Леса! Знаешь, а мы почти его выследили. Добротный зверь такой, разворотил несколько караванов.",
-            QUEST_2_M_HUNTER_4 = "Может ты как раз сможешь нам подсобить и грохнуть его? Хотя тут ошивалась старая кляча, орала что бы мы не смели его трогать.",
-            QUEST_2_M_HUNTER_5 = "Мы ее конечно послали на три буквы, так что в голову ее не бери. Мы разберемся с этой шаболдой.",
-
-            QUEST_2_M_WITCH_1 = "Мг... Вижу, что тоже зверя ищете. Прошу, прекратите! Он страж этих земель, и вреда не приносит. Сами они разграбили грузы и свалили всю вину на него.",
-            QUEST_2_M_WITCH_2 = "Ему не зачем это делать, голода он не испытывает, а врагов у него нет. Кроме конечно тех, кто хочет его убить. Но вы бы не стали сами защищаться?",
-            QUEST_2_M_WITCH_3 = "Если его не станет, этому лесу точно придет погибель... я не хочу этого, да и жители сами увидят как лес умирает. Животных не станет.",
-            QUEST_2_M_WITCH_4 = "Вы можете помочь мне - соберите особую траву растущую здесь. Я проведу ритуал, и сокрою его от посторонних. Так мы спасем лес и зверя.",
-
-
-            QUEST_2_M_HUNTER_6 = "Ух ты, отлично! Теперь нам будет чем похвастаться! Эй, парни! Айда в город!",
-            QUEST_2_M_WITCH_5 = "Благодарю за вашу благосклонность и благоразумие. Теперь ему ничего не угрожает. Примите это в знак благодарности.",
-
-        },
-        ["enUS"] = {
-            WAVE_INCOMING_TEXT = "Stats:",
-            WAVE_LEVEL = "Level ",
-            WAVE_COUNTDOWN = "Attack in: ",
-
-            BLOCK_TEXT = "Block ",
-
-            PHYSICAL_ATTACK_PARAM = "Physical attack",
-            PHYSICAL_DEFENCE_PARAM = 'Physical defence',
-            MAGICAL_ATTACK_PARAM    = 'Magical attack',
-            MAGICAL_SUPPRESSION_PARAM = 'Magic suppression',
-
-            CRIT_CHANCE_PARAM         = 'Critical chance',
-            CRIT_MULTIPLIER_PARAM     = 'Critical multiplier',
-
-            PHYSICAL_BONUS_PARAM      = 'Physical damage',
-            ICE_BONUS_PARAM           = 'Cold damage',
-            FIRE_BONUS_PARAM          = 'Fire damage',
-            LIGHTNING_BONUS_PARAM     = 'Lightning damage',
-            POISON_BONUS_PARAM        = 'Poison damage',
-            ARCANE_BONUS_PARAM        = 'Arcane damage',
-            DARKNESS_BONUS_PARAM      = 'Darkness damage',
-            HOLY_BONUS_PARAM          = 'Holy damage',
-
-            ALL_RESIST_PARAM          = 'Resistances',
-            PHYSICAL_RESIST_PARAM     = 'Physical resistance',
-            ICE_RESIST_PARAM          = 'Cold resistance',
-            FIRE_RESIST_PARAM         = 'Fire resistance',
-            LIGHTNING_RESIST_PARAM    = 'Lightning resistance',
-            POISON_RESIST_PARAM       = 'Poison resistance',
-            ARCANE_RESIST_PARAM       = 'Arcane resistance',
-            DARKNESS_RESIST_PARAM     = 'Darkness resistance',
-            HOLY_RESIST_PARAM         = 'Holy resistance',
-
-            HP_REGEN_PARAM            = 'Health regeneration',
-            MP_REGEN_PARAM            = 'Resource regeneration',
-
-            HP_VALUE_PARAM            = 'Health',
-            MP_VALUE_PARAM            = 'Resource',
-
-            STR_STAT_PARAM            = 'Strength',
-            AGI_STAT_PARAM            = 'Agility',
-            INT_STAT_PARAM            = 'Intelligence',
-            VIT_STAT_PARAM            = 'Vitality',
-
-            MELEE_DAMAGE_REDUCTION_PARAM  = 'Melee damage',
-            RANGE_DAMAGE_REDUCTION_PARAM  = 'Range damage',
-            CONTROL_REDUCTION_PARAM       = 'Control resistance',
-
-            ATTACK_SPEED_PARAM            = 'Attack speed',
-            CAST_SPEED_PARAM              = 'Cast speed',
-            MOVING_SPEED_PARAM            = 'Moving speed',
-
-            BLOCK_CHANCE_PARAM            = 'Block chance',
-            BLOCK_ABSORB_PARAM            = 'Block damage reduction',
-
-            REFLECT_DAMAGE_PARAM   = 'Damage reflection',
-            REFLECT_MELEE_DAMAGE_PARAM   = 'Melee damage reflection',
-            REFLECT_RANGE_DAMAGE_PARAM   = 'Range damage reflection',
-
-            HP_PER_HIT_PARAM   = 'Health per hit',
-            MP_PER_HIT_PARAM   = 'Resource per hit',
-
-            BONUS_DEMON_DAMAGE_PARAM = "Damage to demons",
-            BONUS_UNDEAD_DAMAGE_PARAM = "Damage to undead",
-            BONUS_HUMAN_DAMAGE_PARAM = "Damage to humans",
-            BONUS_BEAST_DAMAGE_PARAM = "Damage to beasts",
-
-
-            ITEM_TYPE_WEAPON_NAME     = "Weapon",
-            ITEM_TYPE_ARMOR_NAME      = "Armor",
-            ITEM_TYPE_JEWELRY_NAME    = "Jewelry",
-            ITEM_TYPE_OFFHAND_NAME    = "Alternate",
-            ITEM_TYPE_CONSUMABLE_NAME = "Consumable",
-            ITEM_TYPE_GEM_NAME        = "Gem",
-            ITEM_TYPE_SKILLBOOK       = "Knowledge",
-            ITEM_TYPE_OTHER           = "Other",
-
-            BOW_WEAPON_NAME            = "Bow",
-            BLUNT_WEAPON_NAME          = "Blunt",
-            GREATBLUNT_WEAPON_NAME     = "Twohanded blunt",
-            SWORD_WEAPON_NAME          = "Sword",
-            GREATSWORD_WEAPON_NAME     = "Twohanded sword",
-            AXE_WEAPON_NAME            = "Axe",
-            GREATAXE_WEAPON_NAME       = "Twohanded axe",
-            DAGGER_WEAPON_NAME         = "Dagger",
-            STAFF_WEAPON_NAME          = "Staff",
-            JAWELIN_WEAPON_NAME        = "Jawelin",
-            HEAD_ARMOR_NAME            = "Head",
-            CHEST_ARMOR_NAME           = "Chest",
-            LEGS_ARMOR_NAME            = "Boots",
-            HANDS_ARMOR_NAME           = "Gloves",
-            BELT_ARMOR_NAME            = "Belt",
-            RING_JEWELRY_NAME          = "Ring",
-            NECKLACE_JEWELRY_NAME      = "Necklace",
-            THROWING_KNIFE_WEAPON_NAME = "Throwing knife",
-            SHIELD_OFFHAND_NAME	       = "Shield",
-            ORB_OFFHAND_NAME 		   = "Orb",
-            QUIVER_OFFHAND_NAME        = "Quiver",
-
-            PHYSICAL_ATTRIBUTE_NAME     = "Physical",
-            FIRE_ATTRIBUTE_NAME         = "Fire",
-            ICE_ATTRIBUTE_NAME          = "Cold",
-            LIGHTNING_ATTRIBUTE_NAME    = "Lightning",
-            POISON_ATTRIBUTE_NAME       = "Poison",
-            ARCANE_ATTRIBUTE_NAME       = "Arcane",
-            DARKNESS_ATTRIBUTE_NAME     = "Darkness",
-            HOLY_ATTRIBUTE_NAME         = "Holy",
-
-
-            FEEDBACK_GOLD = {
-                [BARBARIAN_CLASS] = {
-                    "Sounds\\Responses\\barbarian_gold_1_us.wav",
-                    "Sounds\\Responses\\barbarian_gold_2_us.wav",
-                    "Sounds\\Responses\\barbarian_gold_3_us.wav",
-                    "Sounds\\Responses\\barbarian_gold_4_us.wav",
-                    "Sounds\\Responses\\barbarian_gold_5_us.wav",
-                },
-                [SORCERESS_CLASS] = {
-                    "Sounds\\Responses\\sorceress_gold_1_us.wav",
-                    "Sounds\\Responses\\sorceress_gold_2_us.wav",
-                    "Sounds\\Responses\\sorceress_gold_3_us.wav",
-                    "Sounds\\Responses\\sorceress_gold_4_us.wav",
-                    "Sounds\\Responses\\sorceress_gold_5_us.wav",
-                }
-            },
-
-            FEEDBACK_HEAL = {
-                [BARBARIAN_CLASS] = {
-                    "Sounds\\Responses\\barbarian_healing_1_us.wav",
-                    "Sounds\\Responses\\barbarian_healing_2_us.wav",
-                    "Sounds\\Responses\\barbarian_healing_3_us.wav",
-                    "Sounds\\Responses\\barbarian_healing_4_us.wav",
-                    "Sounds\\Responses\\barbarian_healing_5_us.wav",
-                },
-                [SORCERESS_CLASS] = {
-                    "Sounds\\Responses\\sorceress_healing_1_us.wav",
-                    "Sounds\\Responses\\sorceress_healing_2_us.wav",
-                    "Sounds\\Responses\\sorceress_healing_3_us.wav",
-                    "Sounds\\Responses\\sorceress_healing_4_us.wav",
-                    "Sounds\\Responses\\sorceress_healing_5_us.wav",
-                }
-            },
-
-            FEEDBACK_BAG = {
-                [BARBARIAN_CLASS] = {
-                    "Sounds\\Responses\\barbarian_bag_1_us.wav",
-                    "Sounds\\Responses\\barbarian_bag_2_us.wav",
-                    "Sounds\\Responses\\barbarian_bag_3_us.wav",
-                    "Sounds\\Responses\\barbarian_bag_4_us.wav",
-                    "Sounds\\Responses\\barbarian_bag_5_us.wav",
-                },
-                [SORCERESS_CLASS] = {
-                    "Sounds\\Responses\\sorceress_bag_1_us.wav",
-                    "Sounds\\Responses\\sorceress_bag_2_us.wav",
-                    "Sounds\\Responses\\sorceress_bag_3_us.wav",
-                    "Sounds\\Responses\\sorceress_bag_4_us.wav",
-                    "Sounds\\Responses\\sorceress_bag_5_us.wav",
-                }
-            },
-
-            FEEDBACK_CLASSRESTRICTED = {
-                [BARBARIAN_CLASS] = {
-                    "Sounds\\Responses\\barbarian_classrestricted_1_us.wav",
-                    "Sounds\\Responses\\barbarian_classrestricted_2_us.wav",
-                    "Sounds\\Responses\\barbarian_classrestricted_3_us.wav",
-                    "Sounds\\Responses\\barbarian_classrestricted_4_us.wav",
-                },
-                [SORCERESS_CLASS] = {
-                    "Sounds\\Responses\\sorceress_classrestricted_1_us.wav",
-                    "Sounds\\Responses\\sorceress_classrestricted_2_us.wav",
-                    "Sounds\\Responses\\sorceress_classrestricted_3_us.wav",
-                    "Sounds\\Responses\\sorceress_classrestricted_4_us.wav",
-                }
-            },
-
-            SKILL_PANEL_TOOLTIP_NAME = "Skills",
-            SKILL_PANEL_TOOLTIP_DESCRIPTION = "Overlook and bind settings for all abilities.",
-
-            SKILL_CATEGORY_LIGHTNING = "Lightning",
-            SKILL_CATEGORY_FIRE = "Fire",
-            SKILL_CATEGORY_ICE = "Ice",
-            SKILL_CATEGORY_ARCANE = "Arcane",
-            SKILL_CATEGORY_FIGHTING_MASTERY = "Fighting Mastery",
-            SKILL_CATEGORY_BATTLE_ADVANTAGE = "Battle Advantage",
-            SKILL_CATEGORY_INNER_STRENGTH = "Inner Strength",
-
-            SKILL_CATEGORY_LIGHTNING_ADVANCED = "Lightning skills: ",
-            SKILL_CATEGORY_FIRE_ADVANCED = "Fire skills: ",
-            SKILL_CATEGORY_ICE_ADVANCED = "Ice skills: ",
-            SKILL_CATEGORY_ARCANE_ADVANCED = "Arcane skills: ",
-            SKILL_CATEGORY_FIGHTING_MASTERY_ADVANCED = "Fighting Mastery skills: ",
-            SKILL_CATEGORY_BATTLE_ADVANTAGE_ADVANCED = "Battle Advantage skills: ",
-            SKILL_CATEGORY_INNER_STRENGTH_ADVANCED = "Inner Strength skills: ",
-
-            SKILL_PANEL_LVL_TEXT = "Level: ",
-            SKILL_PANEL_UNBIND = "Unbind",
-
-            SKILL_PANEL_MANA_TEXT = " mana",
-            SKILL_PANEL_COOLDOWN_TEXT = " cooldown",
-            SKILL_PANEL_RANGE_TEXT = " range",
-
-            CASTLE_LOCATION = 'Castle',
-            SHORE_LOCATION = 'Shore',
-            WOODS_LOCATION = 'Woods',
-            RUINS_LOCATION = "Ruins",
-
-            CASTLE_LOCATION_NAME = "OLD CASTLE",
-            MAINROAD_LOCATION_NAME = "MAIN TRACT",
-            WILDFOREST_LOCATION_NAME = "WILD FOREST",
-            NARROWPASS_LOCATION_NAME = "NARROW PASS",
-            OUTSKIRTS_LOCATION_NAME = "FAR OUTSKIRTS",
-            SACREDGROVE_LOCATION_NAME = "SACRED GROVE",
-            MEADOWS_LOCATION_NAME = "BLOOMING MEADOWS",
-
-            CASTLE_LOCATION_TEXTURE = "vagrant_fortress_en.blp",
-            MAINROAD_LOCATION_TEXTURE = "trading_path_en.blp",
-            WILDFOREST_LOCATION_TEXTURE = "duskwood_en.blp",
-            NARROWPASS_LOCATION_TEXTURE = "narrow_pass_en.blp",
-            OUTSKIRTS_LOCATION_TEXTURE = "forgotten_lands_en.blp",
-            SACREDGROVE_LOCATION_TEXTURE = "sacred_grove_en.blp",
-            MEADOWS_LOCATION_TEXTURE = "blooming_meadows_en.blp",
-
-            FEEDBACK_MSG_NOSPACE = "Not enough space",
-            FEEDBACK_MSG_CANTUSE = "Can't use that",
-            FEEDBACK_MSG_NOGOLD = "Not enough gold",
-
-            INVENTORY_PANEL_TOOLTIP_NAME = "Inventory",
-            INVENTORY_PANEL_TOOLTIP_DESCRIPTION =  "Contains all of your items.",
-
-            UI_TEXT_SELL = "Sell",
-            UI_TEXT_BUY = "Buy",
-            UI_TEXT_ENCHANT = "Socket",
-            UI_TEXT_LEARN = "Learn",
-            UI_TEXT_MOVE = "Move",
-            UI_TEXT_EQUIP = "Equip",
-            UI_TEXT_DROP = "Drop",
-            UI_TEXT_BELT_ON = "Take on",
-            UI_TEXT_BELT_OFF = "Take off",
-            UI_TEXT_REFORGE = "Reforge",
-            UI_TEXT_RESOCKET = "Resocket",
-            UI_TEXT_ALT_WEAPON = "Left hand",
-            UI_TEXT_EXCHANGE = "Exchange",
-
-            UI_TEXT_OK = "ok",
-            UI_TEXT_CANCEL = "cancel",
-
-            UI_TOOLTIP_REFORGE_TITLE = "Reforge an item",
-            UI_TOOLTIP_REFORGE_DESC = "Improving the item level.",
-
-            UI_TOOLTIP_EXCHANGE_TITLE = "Exchange",
-            UI_TOOLTIP_EXCHANGE_DESC = "Switching books to the ones that can be learned.",
-
-            HINT_INVENTORY_1 = "You can use single click on any item in the inventory to open up a context menu or double click to do a fast interaction depending on an item type.",
-            HINT_INVENTORY_2 = "For example you can do double click on a weapon to equip it in the main hand. Doing the same on a consumable item will bind it in the basic hero inventory.",
-            HINT_SHOP_1 = "Every wave stock of each shop will get updated so feel free to sell unnecessary items. While you have any shop opened context menu in the invenrory unlocks <Sell> button.",
-            HINT_BLACKSMITH_1 = "Blacksmith can reforge your item to the wave level, upgrading its basic parameters. Also he can remove socket stones. That action won't return the stone.",
-            HINT_STATS_1 = "Basic parameters are crucial in a hero development. You can hover over any of it to know more about each. You gain 3 parameter points with a new level.",
-            HINT_ALTARS = "You can interact with altars, chests or wells via right click while being nearby. Altars give random positive effect, chests contain loot and gold and wells recover your's hero hp or mana.",
-            HINT_BELT = "You can use items on the belt by pressing 1-2-3-4-5-6. Items numeration starts with the top-left item.",
-
-
-            DAMAGE_UI = "Damage: ",
-            BLOCK_UI = "Block: ",
-            DAMAGE_TYPE_UI = "Damage Type: ",
-            DEFENCE_UI = "Defence: ",
-            SUPPRESSION_UI = "Suppression: ",
-
-            ADDITIONAL_INFO_UI = "|nBonuses:|n",
-            AUGMENTS_UI = "|nAugments:|n",
-            SLOTS_UI = "|nSockets:|n",
-            SET_PART_UI = " parts:|n",
-            UNIQUE_EFFECT_UI = "Unique effect",
-
-
-            STAT_PANEL_TOOLTIP_NAME = "Stats",
-            STAT_PANEL_TOOLTIP_DESCRIPTION =  "Manage and overview your stats",
-
-            STAT_PANEL_STR = "STR: ",
-            STAT_PANEL_INT = "INT: ",
-            STAT_PANEL_VIT = "VIT: ",
-            STAT_PANEL_AGI = "AGI: ",
-
-            STAT_PANEL_MAIN_STAT = "Main",
-            STAT_PANEL_STR_DESC = "Boosts physical damage.",
-            STAT_PANEL_INT_DESC = "Each point gives 1 magic suppression. Also boosts magical damage, mana and mana recovery.",
-            STAT_PANEL_VIT_DESC = "Boosts heath amount and its recovery.",
-            STAT_PANEL_AGI_DESC = "Each point gives 2 defence.",
-
-
-            STAT_PANEL_PHYS_ATTACK = "Phys. attack: ",
-            STAT_PANEL_PHYS_DEFENCE = "Defence: ",
-            STAT_PANEL_MAG_ATTACK = "Mag. attack: ",
-            STAT_PANEL_MAG_DEFENCE = "Suppress: ",
-            STAT_PANEL_ATTACK_SPEED = "Attacks per sec.: ",
-            STAT_PANEL_CRIT_CHANCE = "Crit. chance: ",
-
-            STAT_PANEL_FIRE = "Fire: ",
-            STAT_PANEL_PHYSICAL = "Phys.: ",
-            STAT_PANEL_ICE = "Ice: ",
-            STAT_PANEL_LIGHTNING = "Lightning: ",
-            STAT_PANEL_DARKNESS = "Darkness: ",
-            STAT_PANEL_HOLY = "Holy: ",
-            STAT_PANEL_POISON = "Poison: ",
-            STAT_PANEL_ARCANE = "Arcane: ",
-
-            REFORGE_BUTTON_TEXT = "Reforge",
-            SOCKET_BUTTON_TEXT = "Remove",
-            EXCHANGE_BUTTON_TEXT = "Exchange",
-
-
-            WORN_DECL_HE = "Worn ",
-            WORN_DECL_SHE = "Worn ",
-            WORN_DECL_THEY = "Worn ",
-            WORN_DECL_IT = "Worn ",
-
-            FINE_DECL_HE = "Fine ",
-            FINE_DECL_SHE = "Fine ",
-            FINE_DECL_THEY = "Fine ",
-            FINE_DECL_IT = "Fine ",
-
-            EXCELLENT_DECL_HE = "Excellent ",
-            EXCELLENT_DECL_SHE = "Excellent ",
-            EXCELLENT_DECL_THEY = "Excellent ",
-            EXCELLENT_DECL_IT = "Excellent ",
-
-            IDEAL_DECL_HE = "Perfect ",
-            IDEAL_DECL_SHE = "Perfect ",
-            IDEAL_DECL_THEY = "Perfect ",
-            IDEAL_DECL_IT = "Perfect ",
-
-            ITEM_SUFFIX_ANGER = " of Anger",
-            ITEM_SUFFIX_FURY = " of Fury",
-            ITEM_SUFFIX_CONCENTRATION = " of Concentration",
-            ITEM_SUFFIX_PRECISION = " of Precision",
-            ITEM_SUFFIX_ICE_WIZARD = " of Frost Wizard",
-            ITEM_SUFFIX_FIRE_WIZARD = " of Fire Wizard",
-            ITEM_SUFFIX_LIGHTNING_WIZARD = " of Lightning Wizard",
-            ITEM_SUFFIX_SLAYER = " of Slayer",
-            ITEM_SUFFIX_TRICKSTER = " of Trickster",
-            ITEM_SUFFIX_ROCK = " of Rock",
-            ITEM_SUFFIX_KNIGHT = " of Knight",
-            ITEM_SUFFIX_MYSTERY = " of Mystery",
-            ITEM_SUFFIX_KNOWLEDGE = " of Knowledge",
-            ITEM_SUFFIX_PURE_CONCENTRATION      = " of Focus",
-            ITEM_SUFFIX_SLAYER_GENIUS           = " of Genius Slayer",
-            ITEM_SUFFIX_HIGH_KNIGHT             = " of Noble Knight",
-            ITEM_SUFFIX_ENDLESS_FURY            = " of Endless Fury",
-            ITEM_SUFFIX_DEADLY_PRECISION        = " of Deadly Precision",
-
-            GENERIC_SWORD_NAME_1 = "rough blade",
-            GENERIC_SWORD_NAME_2 = "short blade",
-            GENERIC_SWORD_NAME_3 = "runic blade",
-            GENERIC_SWORD_NAME_4 = "broadsword",
-            GENERIC_SWORD_NAME_5 = "charmed blade",
-            GENERIC_SWORD_NAME_6 = "rapier",
-
-            GENERIC_GREATSWORD_NAME_1 = "barbaric cutter",
-            GENERIC_GREATSWORD_NAME_2 = "giants knife",
-            GENERIC_GREATSWORD_NAME_3 = "claymore",
-            GENERIC_GREATSWORD_NAME_4 = "estoc",
-
-            GENERIC_AXE_NAME_1 = "broad axe",
-            GENERIC_AXE_NAME_2 = "serrated axe",
-            GENERIC_AXE_NAME_3 = "steel axe",
-            GENERIC_AXE_NAME_4 = "mystic axe",
-
-            GENERIC_GREATAXE_NAME_1 = "huge cutter",
-            GENERIC_GREATAXE_NAME_2 = "curved axe",
-
-            GENERIC_BLUNT_NAME_1 = "ancient mace",
-            GENERIC_BLUNT_NAME_2 = "club",
-            GENERIC_BLUNT_NAME_3 = "studded club",
-            GENERIC_BLUNT_NAME_4 = "flail",
-            GENERIC_BLUNT_NAME_5 = "harbringer's mace",
-            GENERIC_BLUNT_NAME_6 = "morgenstern",
-
-            GENERIC_GREATBLUNT_NAME_1 = "large studded club",
-            GENERIC_GREATBLUNT_NAME_2 = "mithril hammer",
-            GENERIC_GREATBLUNT_NAME_3 = "charmed scepter",
-            GENERIC_GREATBLUNT_NAME_4 = "runic warhammer",
-
-            GENERIC_DAGGER_NAME_1 = "curved knife",
-            GENERIC_DAGGER_NAME_2 = "gilded knife",
-            GENERIC_DAGGER_NAME_3 = "knife",
-            GENERIC_DAGGER_NAME_4 = "sharpening",
-            GENERIC_DAGGER_NAME_5 = "chopping knife",
-            GENERIC_DAGGER_NAME_6 = "stinger",
-            GENERIC_DAGGER_NAME_7 = "molten dagger",
-
-            GENERIC_STAFF_NAME_1 = "Parcel of Nature",
-            GENERIC_STAFF_NAME_2 = "fiery scepter",
-            GENERIC_STAFF_NAME_3 = "Jade Light",
-            GENERIC_STAFF_NAME_4 = "Moonlight",
-            GENERIC_STAFF_NAME_5 = "The ways of World",
-            GENERIC_STAFF_NAME_6 = "Prophet",
-            GENERIC_STAFF_NAME_7 = "Moonglade staff",
-            GENERIC_STAFF_NAME_8 = "Death's Gift",
-            GENERIC_STAFF_NAME_9 = "Seeker",
-
-            GENERIC_BOW_NAME_1 = "Gilded Tree",
-            GENERIC_BOW_NAME_2 = "Longbow",
-            GENERIC_BOW_NAME_3 = "Rough bow",
-            GENERIC_BOW_NAME_4 = "Scouter bow",
-            GENERIC_BOW_NAME_5 = "Heavy bow",
-            GENERIC_BOW_NAME_6 = "Horn",
-            GENERIC_BOW_NAME_7 = "runic bow",
-            GENERIC_BOW_NAME_8 = "empowered bow",
-            GENERIC_BOW_NAME_9 = "twitching bow",
-            GENERIC_BOW_NAME_10 = "mystic bow",
-            GENERIC_BOW_NAME_11 = "iced bow",
-
-            GENERIC_QUIVER_NAME_1 = "quiver",
-            GENERIC_QUIVER_NAME_2 = "leather quiver",
-            GENERIC_QUIVER_NAME_3 = "ranger's quiver",
-            GENERIC_QUIVER_NAME_4 = "crafted quiver",
-            GENERIC_QUIVER_NAME_5 = "skillful quiver",
-            GENERIC_QUIVER_NAME_6 = "military quiver",
-            GENERIC_QUIVER_NAME_7 = "fortified quiver",
-            GENERIC_QUIVER_NAME_8 = "huntsman's quiver",
-            GENERIC_QUIVER_NAME_9 = "master quiver",
-            GENERIC_QUIVER_NAME_10 = "lightweight quiver",
-
-            GENERIC_ORB_NAME_1 = "wind orb",
-            GENERIC_ORB_NAME_2 = "water orb",
-            GENERIC_ORB_NAME_3 = "sand orb",
-            GENERIC_ORB_NAME_4 = "scorching orb",
-            GENERIC_ORB_NAME_5 = "clot of chaos",
-            GENERIC_ORB_NAME_6 = "charged orb",
-            GENERIC_ORB_NAME_7 = "drop of darkness",
-
-            GENERIC_SHIELD_NAME_1 = "wide shield",
-            GENERIC_SHIELD_NAME_2 = "knight's shield",
-            GENERIC_SHIELD_NAME_3 = "heir's shield",
-            GENERIC_SHIELD_NAME_4 = "buckler",
-            GENERIC_SHIELD_NAME_5 = "defender",
-            GENERIC_SHIELD_NAME_6 = "tower shield",
-            GENERIC_SHIELD_NAME_7 = "runic shield",
-            GENERIC_SHIELD_NAME_8 = "reflector",
-            GENERIC_SHIELD_NAME_9 = "rondache",
-
-            GENERIC_CHEST_NAME_1 = "composite chest",
-            GENERIC_CHEST_NAME_2 = "Raven Wing",
-            GENERIC_CHEST_NAME_3 = "enforced plate",
-            GENERIC_CHEST_NAME_4 = "carapace",
-            GENERIC_CHEST_NAME_5 = "light armor",
-            GENERIC_CHEST_NAME_6 = "heavy armor",
-            GENERIC_CHEST_NAME_7 = "steel armor",
-            GENERIC_CHEST_NAME_8 = "robe",
-            GENERIC_CHEST_NAME_9 = "sturdy armor",
-            GENERIC_CHEST_NAME_10 = "armored chest",
-            GENERIC_CHEST_NAME_11 = "cuirass",
-            GENERIC_CHEST_NAME_12 = "complex chest",
-            GENERIC_CHEST_NAME_13 = "Moonglade",
-
-            GENERIC_HANDS_NAME_1 = "fur gloves",
-            GENERIC_HANDS_NAME_2 = "leather gloves",
-            GENERIC_HANDS_NAME_3 = "chain gauntlets",
-            GENERIC_HANDS_NAME_4 = "plate gauntlets",
-            GENERIC_HANDS_NAME_5 = "enforced plate gauntlets",
-            GENERIC_HANDS_NAME_6 = "duelist's gauntlets",
-            GENERIC_HANDS_NAME_7 = "charmed gloves",
-
-            GENERIC_LEGS_NAME_1 = "hiking boots",
-            GENERIC_LEGS_NAME_2 = "sandals",
-            GENERIC_LEGS_NAME_3 = "leather sandals",
-            GENERIC_LEGS_NAME_4 = "reinforced sandals",
-            GENERIC_LEGS_NAME_5 = "plate boots",
-            GENERIC_LEGS_NAME_6 = "armored boots",
-            GENERIC_LEGS_NAME_7 = "composite boots",
-
-
-            GENERIC_HEAD_NAME_1 = "plate cape",
-            GENERIC_HEAD_NAME_2 = "demonic helmet",
-            GENERIC_HEAD_NAME_3 = "horned helmet",
-            GENERIC_HEAD_NAME_4 = "fanatic's helmet",
-            GENERIC_HEAD_NAME_5 = "cape",
-            GENERIC_HEAD_NAME_6 = "light helmet",
-            GENERIC_HEAD_NAME_7 = "steel cap",
-            GENERIC_HEAD_NAME_8 = "dragonhunter's helmet",
-            GENERIC_HEAD_NAME_9 = "enforced helmet",
-            GENERIC_HEAD_NAME_10 = "justicars helmet",
-            GENERIC_HEAD_NAME_11 = "royal helmet",
-
-            GENERIC_BELT_NAME_1 = "belt",
-            GENERIC_BELT_NAME_2 = "armored belt",
-            GENERIC_BELT_NAME_3 = "hunter's belt",
-            GENERIC_BELT_NAME_4 = "belt",
-            GENERIC_BELT_NAME_5 = "combat belt",
-            GENERIC_BELT_NAME_6 = "studded belt",
-            GENERIC_BELT_NAME_7 = "charmed sash",
-            GENERIC_BELT_NAME_8 = "cast belt",
-
-
-            GENERIC_RING_NAME_1 = "adamantite ring",
-            GENERIC_RING_NAME_2 = "gold-plated ring",
-            GENERIC_RING_NAME_3 = "knight's signet",
-            GENERIC_RING_NAME_4 = "heir's ring",
-            GENERIC_RING_NAME_5 = "golden ring",
-            GENERIC_RING_NAME_6 = "aquamarine ring",
-            GENERIC_RING_NAME_7 = "blackened ring",
-            GENERIC_RING_NAME_8 = "arcanite ring",
-            GENERIC_RING_NAME_9 = "cruel ring",
-            GENERIC_RING_NAME_10 = "runic ring",
-            GENERIC_RING_NAME_11 = "hoarfrost ring",
-
-
-            GENERIC_NECKLACE_NAME_1 = "pendant with stone",
-            GENERIC_NECKLACE_NAME_2 = "silver amulet",
-            GENERIC_NECKLACE_NAME_3 = "ancient amulet",
-            GENERIC_NECKLACE_NAME_4 = "sorcerer rosary",
-            GENERIC_NECKLACE_NAME_5 = "charmed pendant",
-            GENERIC_NECKLACE_NAME_6 = "energized amulet",
-            GENERIC_NECKLACE_NAME_7 = "emerald pendant",
-            GENERIC_NECKLACE_NAME_8 = "ruby pendant",
-            GENERIC_NECKLACE_NAME_9 = "sapphire pendant",
-
-
-            STARTING_ITEM_NAME_2HSWORD = "Claymore",
-            STARTING_ITEM_NAME_CHEST = "Riveted armor",
-            STARTING_ITEM_NAME_HEAD = "Helmet",
-            STARTING_ITEM_NAME_HANDS = "Quilted Gauntlets",
-            STARTING_ITEM_NAME_LEGS = "Riveted boots",
-            STARTING_ITEM_NAME_STAFF = "Worn staff",
-
-            SHARD_OF_HATE = "Shard of Hate",
-            SHARD_OF_HATE_DESC = "Strange glowing shard, you feel rise of hatred upon touching it.",
-
-            GEM_RUBY = 'Ruby',
-            GEM_SAPPHIRE = 'Sapphire',
-            GEM_TOPAZ = 'Topaz',
-            GEM_AMBER = 'Abmer',
-            GEM_AQUAMARINE = 'Aquamarine',
-            GEM_DIAMOND = 'Diamond',
-            GEM_AMETHYST = "Amethyst",
-            GEM_TURQUOISE = 'Turquoise',
-            GEM_EMERALD = 'Emerald',
-            GEM_MALACHITE = 'Malachite',
-            GEM_JADE = 'Jade',
-            GEM_OPAL = 'Opal',
-
-
-            POTION_WEAK_HP_NAME_TEXT = "Health Potion",
-            POTION_HALF_HP_NAME_TEXT = "Great Health Potion",
-            POTION_STRONG_HP_NAME_TEXT = "Large Health Potion",
-
-            POTION_WEAK_HP_DESC_TEXT = "Restoring 25%% of health",
-            POTION_HALF_HP_DESC_TEXT = "Restoring 50%% of health",
-            POTION_STRONG_HP_DESC_TEXT = "Restoring 75%% of health",
-
-            POTION_WEAK_MP_NAME_TEXT = "Mana Potion",
-            POTION_HALF_MP_NAME_TEXT = "Great Mana Potion",
-            POTION_STRONG_MP_NAME_TEXT = "Large Mana Potion",
-
-            POTION_WEAK_MP_DESC_TEXT = "Restoring 25%% of mana",
-            POTION_HALF_MP_DESC_TEXT = "Restoring 50%% of mana",
-            POTION_STRONG_MP_DESC_TEXT = "Restoring 75%% of mana",
-
-            POTION_WEAK_MIX_NAME_TEXT = "Restoration Potion",
-            POTION_HALF_MIX_NAME_TEXT = "Great Restoration Potion",
-            POTION_STRONG_MIX_NAME_TEXT = "Large Restoration Potion",
-
-            POTION_WEAK_MIX_DESC_TEXT = "Restoring 25%% of health and mana over time",
-            POTION_HALF_MIX_DESC_TEXT = "Restoring 50%% of health and mana over time",
-            POTION_STRONG_MIX_DESC_TEXT = "Restoring 75%% of health and mana over time",
-
-            SCROLL_OF_TOWN_PORTAL_NAME = "Scroll of the Town portal",
-            SCROLL_OF_TOWN_PORTAL_DESC = "Opens up a temporary portal to the town.",
-
-            POTION_ADRENALINE_TEXT = "Adrenaline Potion",
-            POTION_ADRENALINE_DESC_TEXT = "For a short period of time gives 35%% move speed.",
-
-            POTION_ANTIDOTE_TEXT = "Antidote",
-            POTION_ANTIDOTE_DESC_TEXT = "Gives moderate poison resist.",
-
-            SCROLL_OF_PROTECTION_NAME = "Scroll of Protection",
-            SCROLL_OF_PROTECTION_DESC = "Grants resistance to all attributes.",
-
-
-            SKILLBOOK_FIRE = "Book of fire",
-            SKILLBOOK_LIGHTNING = "Book of lightning",
-            SKILLBOOK_ICE = "Book of ice",
-            SKILLBOOK_ARCANE = "Book of arcane",
-            SKILLBOOK_FIGHTING_MASTERY = "Book of fighter",
-            SKILLBOOK_INNER_STRENGTH = "Book of strength",
-            SKILLBOOK_BATTLE_ADVANTAGE = "Book of superiority",
-
-            SKILLBOOK_TEXT = "Improving your knowledge:",
-
-            BOOK_TOME_NAME = "Knowledge Tome",
-            BOOK_TOME_NAME_TEXT = "Gives 1 stat point.",
-
-            SKILL_WARCRY = 'Warcry',
-            SKILL_CUTTINGSLASH = 'Cutting Slash',
-            SKILL_HARPOON = 'Harpoon',
-            SKILL_CRUSHINGBLOW = 'Crushing Blow',
-            SKILL_WHIRLWIND = 'Whirlwind',
-            SKILL_BERSERK = 'Berserk',
-            SKILL_UPPERCUT = 'Uppercut',
-            SKILL_THROWKNIFE = 'Knife Throw',
-            SKILL_JUMP = 'Jump',
-            SKILL_EXECUTION = "Execution",
-            SKILL_FIRSTAID = "Bandage",
-            SKILL_SUMMONHYDRA = 'Summon Hydra',
-            SKILL_ELEMENTALMASTERY = 'Elemental Mastery',
-            SKILL_FOCUS = 'Focus',
-            SKILL_FROSTARMOR = 'Frost Armor',
-            SKILL_LIGHTNINGBALL = 'Lightning Ball',
-            SKILL_DISCHARGE = 'Discharge',
-            SKILL_METEOR = 'Meteor',
-            SKILL_TELEPORT = 'Teleport',
-            SKILL_LIGHTNINGSTRIKE = 'Lightning Strike',
-            SKILL_FROSTORB = 'Frost Orb',
-            SKILL_FROSTBOLT = 'Frostbolt',
-            SKILL_FIREBALL = 'Fireball',
-            SKILL_FROSTNOVA = 'Frost Nova',
-            SKILL_CHAIN_LIGHTNING = "Electrocute",
-            SKILL_MELTDOWN = "Meltdown",
-
-            --SKILL_ = 'Summon',
-
-
-
-            SET_NAME_ANCIENT_LEGACY = "Ancient legacy",
-            SET_NAME_JESTERANDKING = "Jester and King",
-            SET_NAME_FIREBOND = "Fire bond",
-            SET_NAME_FRENDLINESS = "Frendliness",
-
-
-            ITEM_LEG_DESCRIPTION_FIREBOND = "Fire abilities are stronger by 35%%.",
-            ITEM_LEG_DESCRIPTION_WITCH_MASTERY = "Each casted spell will increase your spell power by 10%% in exhange of 5%% life",
-            ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Each enemy near the hero is increasing his moving speed by 3%%, to a maximum of 25%%",
-            ITEM_LEG_DESCRIPTION_RITUAL_DAGGER = " With each attack you gain a stack of Chaos effect. After reaching 15 stacks, attack power and speed gain major boost for short period of time, but health regeneration is inversed.",
-            ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "With each fire, ice or lightning attack you apply a negative effect that will decrease target's resistance of that element by 5 for 7 sec. Every attack is refreshing uptime and stacking 3 times.",
-            ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Discharge\" now comes out of sorceress, also it's power is increased.",
-            ITEM_LEG_DESCRIPTION_PAIN_ECHO = "\"Cutting Slash\"'s bleeding now can be critical and gains 25%% critical chance bonus.",
-            ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "With each attack you apply crystallisation on the enemies, decreasing their moving speed. After reaching 5 stacks, enemy will freeze for 3 sec.",
-            ITEM_LEG_DESCRIPTION_BOOSTERS = "Upon landing after using \"Jump\" deals 215%% of weapon damage in a small area.",
-            ITEM_LEG_DESCRIPTION_ICE_TOUCH = "After using \"Frostbolt\" instead of 1 missile it creates 3 behind the sorceress that after a short delay launch on a target.",
-
-
-            ITEM_NAME_RAT_HUNTER = 'Rat Hunter',
-            ITEM_SPEC_DESCRIPTION_RAT_HUNTER = "Even the rat-hunters had a legendary bows, which all rat hunters are desired.",
-
-            ITEM_NAME_BOOT_OF_COWARD = 'Boot of Coward',
-            ITEM_SPEC_DESCRIPTION_BOOT_OF_COWARD = "The owner of this boot used a secret tactic of his noble family, that was inherited over 300 years. But that wasn't for long...",
-
-
-            ITEM_NAME_WITCH_MASTERY = "Witch Mastery",
-            ITEM_SPEC_DESCRIPTION_WITCH_MASTERY = "This staff is belonged to a very ancient witch. It is absorbed some blood magic, and can share it with wielder.",
-
-
-            ITEM_NAME_DARK_CROWN = "Dark Crown",
-            ITEM_SPEC_DESCRIPTION_DARK_CROWN = "If you want to resist the darkness, became darkness yourself.",
-
-            ITEM_NAME_RITUAL_DAGGER = "Ritual Dagger",
-            ITEM_SPEC_DESCRIPTION_RITUAL_DAGGER = "Power within this blade is revealed with every slash. And let the one who takes possession of it can bear it.",
-
-            ITEM_NAME_ACOLYTE_MANTLE = "Acolyte's Mantle",
-            ITEM_SPEC_DESCRIPTION_ACOLYTE_MANTLE = "The ideal solution for withdrawing into yourself.",
-
-            ITEM_NAME_SMORC_PICKAXE = "Smorc's Pickaxe",
-            ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE = "Legends have told, that miner Smorc was crushing his enemies with that thing.",
-
-            ITEM_NAME_BOOSTERS = "Boosters",
-            ITEM_SPEC_DESCRIPTION_BOOSTERS = "Invention of an unknown author has found its unique use.",
-
-            ITEM_NAME_EYE_OF_THE_STORM = "Eye of the Storm",
-            ITEM_SPEC_DESCRIPTION_EYE_OF_THE_STORM = "Unknown sorcerer acquired a magnificent artifact, and shortly after that he became an ash.",
-
-            ITEM_NAME_FIREPRINCESS = "Fiery Princess",
-            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_FIREPRINCESS = "Princess of an ancient kingdom has had an special interest to a flame, burning her traitors and surrounding herself in a lot of fire.",
-
-
-            ITEM_NAME_FIREQUEEN = "Fiery Queen",
-            --ITEM_LEG_DESCRIPTION_FIREQUEEN = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_FIREQUEEN = "After becoming a queen, her passion towards the flames only grew stronger. One day, when her servants entered her chamber, only ring and an amulet lied down on the charred floor, with no trace of the Queen whatsoever.",
-
-
-            ITEM_NAME_PAIN_ECHO = "Pain Echo",
-            ITEM_SPEC_DESCRIPTION_PAIN_ECHO = "Whose blood will be fed to this ring?",
-
-            ITEM_NAME_CRYSTAL_AXE = "Crystal Axe",
-            ITEM_SPEC_DESCRIPTION_CRYSTAL_AXE = "That axe freezing everything it's touching, mind yourself keeping its blade away.",
-
-
-            ITEM_NAME_BOOTSOFPAIN = "Boots of Pain",
-            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_BOOTSOFPAIN = "Is walking so painful for you?",
-
-            ITEM_NAME_CHESTOFPAIN = "Chest of Pain",
-            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_CHESTOFPAIN = "How painful it is for you to breath?",
-
-            ITEM_NAME_HEADOFPAIN = "Helmet of Pain",
-            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_HEADOFPAIN = "Is your mind in pain?",
-
-
-            ITEM_NAME_THE_KING = "King",
-            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_THE_KING = "The Ruler",
-
-            ITEM_NAME_THE_JESTER = "Jester",
-            --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
-            ITEM_SPEC_DESCRIPTION_THE_JESTER = "The Fool",
-
-
-            ITEM_NAME_MASTER_OF_ELEMENTS = "Master of Elements",
-            ITEM_SPEC_DESCRIPTION_MASTER_OF_ELEMENTS = "Every wizard will be envy that you own such a rare and unique item.",
-
-            ITEM_NAME_ICE_TOUCH = "Ice Touch",
-            ITEM_SPEC_DESCRIPTION_ICE_TOUCH = "Cold envelops hands, chilling it to the bones.",
-
-
-            GENERATED_TOOLTIP = " of attack",
-
-            [FourCC("A007")] = {
-                [1] = "Strong blow that deals @e!ECRH.dmg# as @e!ECRH.atr# damage in front. Affected enemies will suffer a loss of physical damage resistance by @b!A00W.va1# and attack speed by @b!A00W.va2# for @b!A00W.time# seconds.",
-            },
-            [FourCC("A00C")] = {
-                [1] = "Barbarian screams in @e!EWCR.aoe# range, which reduces enemy attack by @b!A00Y.va1# and movement speed by @b!A00Y.va3#.",
-            },
-            [FourCC("A006")] = {
-                [1] = "Swift strkike that inflicts @e!ECSL.dmg# as @e!ECSL.atr# in front. Enemies suffer a bloodloss, taking @e!ECSP.dmg# as @e!ECSP.atr# as a periodic damage.",
-            },
-            [FourCC("A00A")] = {
-                [1] = "Throws a chain that flies up to @s!A00A.rng# range, pulling first target it hits to you.",
-            },
-            [FourCC("A010")] = {
-                [1] = "Barbarian forms storm of fury, rapidly spinning around and dealing enemies @e!EWHW.dmg# of @e!EWHW.atr# 3 times per second for a cost of 9 mana per second.",
-            },
-            [FourCC("A00Q")] = {
-                [1] = "Falling into pure rage, increasing attack by @b!A00V.va1#, effects control reduction by @b!A00V.va2# and movement speed by @b!A00V.va3# for @b!A00V.time# sec.",
-            },
-            [FourCC("A00B")] = {
-                [1] = "Punch that deals @e!EUPP.dmg# as @e!EUPP.atr# and pushing back targets, after which they are stunned for @b!A012.time# sec.",
-            },
-            [FourCC("A00Z")] = {
-                [1] = "Throws a dagger up to @s!A00Z.rng# range, first enemy it hits will take @e!ETHK.dmg# as @e!ETHK.atr# damage. This skill has increased chance of critical damage (+@e!ETHK.bcc#).",
-            },
-            [FourCC("A00O")] = {
-                [1] = "Allows you to jump up to @s!A00O.rng# range.",
-            },
-            [FourCC("A020")] = {
-                [1] = "Finishing strike. Deals @e!EEXC.dmg# as @e!EEXC.atr#, if it is used on enemies that have less than 20%% of health its power is increased by 3 times and chances to crit by 20%%.",
-                [10] = "Finishing strike. Deals @e!EEXC.dmg# as @e!EEXC.atr#, if it is used on enemies that have less than 20%% of health its power is increased by 3 times and chances to crit by 20%%. If enemy is killed by it, you gain @b!ANRD.pa1# на @b!ANRD.va1# and @b!ANRD.pa2# на @b!ANRD.va2#.",
-            },
-            [FourCC("ABFA")] = {
-                [1] = "Heals you for @e!EFAA.hp_perc# every second during @b!A01N.time# seconds.",
-                [10] = "Heals you for @e!EFAA.hp_perc# every second during @b!A01N.time# seconds. Also gives @b!A01N.va1# @b!A01N.pa1#.",
-            },
-            [FourCC("A00I")] = {
-                [1] = "Summons an immortal flame hydra that attacks enemies. Hydra inherits 70% of Sorceress stats. Increasing level of this skill enhances hydra's life duration.",
-            },
-            [FourCC("A00H")] = {
-                [1] = "Sorceress binds elemental forces to her will, which boosting her powers: [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# и @b!A00U.pa4#] inscreasing for @b!A00U.va1#, @b!A00U.pa5# на @b!A00U.va5#. Duration - @b!A00U.time# sec.",
-            },
-            [FourCC("A00E")] = {
-                [1] = "Sorceress forms frost barrier around herself, boosting @b!A011.pa1# for @b!A011.va1#, @b!A011.pa2# for @b!A011.va2#, @b!A011.pa3# for @b!A011.va3# and @b!A011.pa4# for @b!A011.va4#. Duration - @b!A011.time sec.",
-            },
-            [FourCC("A00N")] = {
-                [1] = "Sorceress focusing her arcane powers that boosting her defence: @b!A00T.pa1# for @b!A00T.va1#, @b!A00T.pa2# for @b!A00T.va2# and @b!A00T.pa3# for @b!A00T.va3#. Duration - @b!A00T.time sec.",
-            },
-            [FourCC("A00K")] = {
-                [1] = "Forms energized ball that slowly flies forward, periodically pulsing in @e!MBLB.rad# range on a nearby enemies for a @e!ELBL.pwr# @e!ELBL.atr# damage.",
-            },
-            [FourCC("A00J")] = {
-                [1] = "Shots 3 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
-                [10] = "Shots 4 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
-                [20] = "Shots 5 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
-                [30] = "Shots 6 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
-                [40] = "Shots 7 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
-            },
-            [FourCC("A00F")] = {
-                [1] = "Calls for a meteor from the sky that falling after a short delay, dealing enemies @e!EMTR.pwr# as @e!EMTR.atr# damage in a @e!EMTR.aoe# radius, pushing them from an explosion center. Has bonus to an attribute (+@e!EMTR.ab#)",
-            },
-            [FourCC("A00L")] = {
-                [1] = "Allows you to instantly move up to @s!A00L.rng# range.",
-            },
-            [FourCC("A00M")] = {
-                [1] = "Calls for a powerful discharge with a radius @e!ELST.aoe# that deals @e!ELST.pwr# as @e!ELST.atr# damage. This skill has bonus to an attribute (+@e!ELST.ab#) and a critical multiplier (+@e!ELST.bcm#).",
-            },
-            [FourCC("A005")] = {
-                [1] = "Launching forward a frost orb that constantly damages enemies in a @e!EFOA.aoe# radius inflicting @e!EFOA.pwr# as @e!EFOA.atr# damage (+@e!EFOA.ab#). At the end the orb explodes for a @e!EFRO.pwr# as @e!EFRO.atr# damage with increased bonus to a critical chance (+@e!EFRO.bcc#)",
-            },
-            [FourCC("A00D")] = {
-                [1] = "Throws forward a fireball, first enemy it hit takes @e!EGFB.pwr# as @e!EGFB.atr# damage in small area around.",
-            },
-            [FourCC("A001")] = {
-                [1] = "Emits a wave of frost from Sorceress with @e!EFRN.aoe# radius, freezing enemies for @b!A00S.time# sec. and dealing them @e!EFRN.pwr# as @e!EFRN.atr# damage.",
-            },
-            [FourCC("A003")] = {
-                [1] = "Throws a frostbolt that explodes on a first enemy, dealing @e!EFRB.pwr# as @e!EFRB.atr# damage in a @e!EFRB.aoe# radius. Affected targets will suffer a movement speed loss by @b!A004.va1#",
-            },
-            [FourCC("A019")] = {
-                [1] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 2 nearby enemies.",
-                [10] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 3 nearby enemies.",
-                [20] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 4 nearby enemies.",
-                [30] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 5 nearby enemies.",
-                [40] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 6 nearby enemies.",
-                [50] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 7 nearby enemies.",
-                [60] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 8 nearby enemies.",
-                [70] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 9 nearby enemies.",
-                [80] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 10 nearby enemies.",
-            },
-            [FourCC("AMLT")] = {
-                [1] = "Sorceress emits a fire beam that hits first enemy on its path dealing @e!EMLT.pwr# as @e!EMLT.atr# damage. While casting sorceress have to stand still. The beam direction follows the mouse. Improving level of this skill increasing its channel time.",
-            },
-
-
-            BARBARIAN_NAME = "Barbarian",
-            SORCERESS_NAME = "Sorceress",
-
-            VENDOR_BILL_NAME = "Vendor Bill",
-            HEALER_NAME = "Healer",
-            BLACKSMITH_NAME = "Blacksith",
-            SMORC_NAME = "SMorc",
-            LIBRARIAN_NAME = "Librarian",
-            SCAVENGER_NAME = "Wandering scavenger",
-
-            AIZEK_NAME = "Apprentice Aizek",
-            GUINPLEN_NAME = "Guinplen",
-            STEPHAN_NAME = "Stephan the Healer",
-            MORDER_NAME = "Morder",
-            HUNTRESS_NAME = "Huntress",
-            ABENO_NAME = "Abe-no",
-            TAKO_NAME = "Provisionist Tako",
-            WITCH_NAME = "Witch of the Woods",
-            HUNTER_NAME = "Hunter Bork",
-            DON_NAME = "Manager Don",
-
-
-            INTRODUCTION_TEXT_1 = "Hey, stranger! Welcome to our fortress. It's kinda unsettling here, but I see you can stand on your own.",
-            INTRODUCTION_TEXT_2 = "Maybe you could help us then? There is one problem - that damn artifact. He became active all of a sudden.",
-            INTRODUCTION_TEXT_3 = "At first we thought \"who cares?\" but then we got attacked by all kind of things! I hope to stay in one piece one more night. So, whaddaya say?",
-
-            INTRODUCTION_BARBARIAN_RESPONCE = "It's looks like this is the work for the wit... ahem, sorry, barbarian.",
-            INTRODUCTION_SORCERESS_RESPONCE = "My spells will crush any creature here.",
-
-
-            RESSURECT_TEXT_1 = "Your hero will be revived after |c008EFFFF",
-            RESSURECT_TEXT_2 = "|r sec. at the cemetary.",
-            GOLD_PENALTY_TEXT_1 = "|c00FF4444Upon dying you lost somewhere|r |c00FFFF44",
-            GOLD_PENALTY_TEXT_2 = "|r |c00FF4444gold.|r",
-
-            QUEST_REWARD_GOLD_FIRST = "recieved ",
-            QUEST_REWARD_GOLD_SECOND = " gold.",
-            QUEST_REWARD_POINTS_FIRST = "recieved ",
-            QUEST_REWARD_POINTS_SECOND = " stat points.",
-
-            QUEST_1_TITLE = "Lost Cargo",
-            QUEST_1_DESC = "Blacksmith assistant has lost his supplies. As there are very dangerous he is asking for your help to retrieve them.",
-            QUEST_1_SPEECH = "Aaaah, you help will be very handy to me. I've lost my cargo... and vicinities around the fortress are very dangerous nowadays. Maybe you can help me and I can help you?",
-            QUEST_1_ITEM = "Cargo found",
-
-            QUEST_2_TITLE = "Hunger Strike",
-            QUEST_2_DESC = "The situation around a castle led to a hunger strike. You have to find food or many people will die.",
-            QUEST_2_SPEECH_1 = "Hey, you. Listen. Don't tell anyone, but we have one problem.",
-            QUEST_2_SPEECH_2 = "Usually our supply lines have never been late, but you know, the situation around the castle is dangerous.",
-            QUEST_2_SPEECH_3 = "We have to find some food, our we are screwed. Got it?",
-            QUEST_2_RESPONCE = "I'll bring food to you if I find any.",
-            QUEST_2_ITEM1 = "Food crates gathered",
-            QUEST_2_ITEM2 = "Return the food",
-            QUEST_2_SPEECH_DONE = "Ah, nice! That will be plenty enough. Well done!",
-
-            QUEST_1_M_TITLE = "A Unholy Creature",
-            QUEST_1_M_DESC = "There is some dangerous creature have been seen in the nearby forests. You have to find out what it is and talk to Guinplen. He is present nearby the castle.",
-            QUEST_1_M_ITEM = "Find Guinplen",
-            QUEST_1_M_ITEMVAR1 = "Find Lilith",
-            QUEST_1_M_ITEMVAR2 = "Find Staff of Hope",
-            QUEST_1_M_ITEMVAR1END = "Kill Lilith",
-            QUEST_1_M_ITEMVAR2END = "Try the staff on Lilith",
-            QUEST_1_M_SPEECH_INTRO = "Wait. Looks like you can help us with one case. There is one mysterious demon here around.",
-            QUEST_1_M_SPEECH_INTRO_2 = "He is vicious and make short work of our soldiers, almost every day we find new corpses on the road.",
-            QUEST_1_M_SPEECH_INTRO_3 = "We have to deal with it somehow, there is one wandering knight nearby, maybe he can help with it?",
-            QUEST_1_M_SPEECH_GIUN_1 = "Ah, so you are about that demon... You see, I have some information that lead to its origins.",
-            QUEST_1_M_SPEECH_GIUN_2 = "It is a cursed girl from a village nearby. Looks like someone wanted revenge and casted a curse on her with unholy artefact from hell.",
-            QUEST_1_M_SPEECH_GIUN_3 = "I have found a staff that can release that curse, but when I wanted to meet with a trader I found out that he was slaughered by demons and stuff is lost somewhere south-east from here.",
-            QUEST_1_M_SPEECH_GIUN_4 = "Find that stuff - and you can break this curse with a more civl way.",
-            QUEST_1_M_SPEECH_END_2 = "Oh! I came back! How did you do that? I feel like I was in a dream for so long... Thank you for my salvation! Take this as my gratitude.",
-            QUEST_1_M_SPEECH_STAFF_FOUND = "Looks like this is the staff that I need. Now I need to find that demon.",
-
-
-
-            QUEST_2_M_TITLE = "Forest Guard",
-            QUEST_2_M_DESC = "Local hunters are tracking down a legendary beast - Forest Guard. Myth or reality, you have to find the lost hunters. Their last known location was on the south of the castle.",
-            QUEST_2_M_ITEM = "Find the hunters",
-            QUEST_2_M_ITEMVAR1 = "Track down the beast",
-            QUEST_2_M_ITEMVAR2 = "Find the Witch",
-            QUEST_2_M_ITEMVAR3 = "Gather Ivenor",
-            QUEST_2_M_ITEMVAR4 = "Поднести растения на алтарь леса",
-            QUEST_2_M_ITEMVAR5 = "Return Hearth to the hunters",
-            QUEST_2_M_ITEMVAR6 = "Slay the beast",
-
-            QUEST_2_M_RESPONCE = "We'll see.",
-            QUEST_2_M_RESPONCE_WITCH = "I will think about it.",
-            QUEST_2_M_RESPONCE_HUNTERS = "Got it. On my way.",
-            QUEST_2_M_RESPONCE_HUNTERS_2 = "Here, hearth of the beast.",
-
-            QUEST_2_M_INTRO_1 = "Wait! Recently our hunter squad was intended to track down some dangerous beast around here.",
-            QUEST_2_M_INTRO_2 = "But few weeks have been passed and we didnt recieved any messages or new from them, noone has returned.",
-            QUEST_2_M_INTRO_3 = "Maybe you could help? Find out what happened with them? Who knows...",
-
-
-            QUEST_2_M_HUNTER_1 = "Yo, wassap. Hey, did they miss us? Waah, everything is alrighty.",
-            QUEST_2_M_HUNTER_2 = "Kinda hard to get back to the castle now, but we'll be fine.",
-            QUEST_2_M_HUNTER_3 = "More importantly - the Forest Guard beast! Yaknow, we almost track him down. Hell of a beast, shuuush, it wrecked few caravans here.",
-            QUEST_2_M_HUNTER_4 = "You can make us a favor and down him? Although there was one old mad witch that screamed at us for trying to kill it.",
-            QUEST_2_M_HUNTER_5 = "We told her to mind her own business, so don't care about it much. We'll take care of her.",
-
-            QUEST_2_M_WITCH_1 = "Huh... I see, you are looking for it too. Listen, stop it! He is a guard of this land, he is not a threat. They are looted caravans themselves and shifted the blame on it.",
-            QUEST_2_M_WITCH_2 = "It don't feel any hunger or madness. Of course it will fight back if you attempt to kill it, wouldn't you do the same?",
-            QUEST_2_M_WITCH_3 = "If guard is gone this forest will die... I don't want this, and everyone will see how it die. No animals will be left.",
-            QUEST_2_M_WITCH_4 = "You can help me. Garher special herb that grows here. I'll do the rest and we hide the beast from everyone. That way the forest and the beast will be safe.",
-
-
-            QUEST_2_M_HUNTER_6 = "Yay, well done! Now we are talking! Hey, boys, time to get back!",
-            QUEST_2_M_WITCH_5 = "Thank you for your understanding and prudence. Now the beast is safe. Take this, with best regards.",
-        }
-
-    }
+    LOCALE_LIST = nil
 
 
     function InitLocaleLibrary()
@@ -1867,6 +19,1859 @@ do
         else
 
         end --"ruRU" --"enUS"BlzGetLocale() --
+
+        LOCALE_LIST = {
+            ["ruRU"] = {
+                BLOCK_TEXT = "Блок ",
+                WAVE_INCOMING_TEXT = "Волна:",
+                WAVE_LEVEL = "Уровень ",
+                WAVE_COUNTDOWN = "До атаки: ",
+
+                PHYSICAL_ATTACK_PARAM = "Физическая атака",
+                PHYSICAL_DEFENCE_PARAM = 'Физическая защита',
+                MAGICAL_ATTACK_PARAM    = 'Магическая атака',
+                MAGICAL_SUPPRESSION_PARAM = 'Подавление магии',
+
+                CRIT_CHANCE_PARAM         = 'Критический шанс',
+                CRIT_MULTIPLIER_PARAM     = 'Критический множитель',
+
+                PHYSICAL_BONUS_PARAM      = 'Физический урон',
+                ICE_BONUS_PARAM           = 'Урон от льда',
+                FIRE_BONUS_PARAM          = 'Урон от огня',
+                LIGHTNING_BONUS_PARAM     = 'Урон от молнии',
+                POISON_BONUS_PARAM        = 'Урон от яда',
+                ARCANE_BONUS_PARAM        = 'Урон от тайной магии',
+                DARKNESS_BONUS_PARAM      = 'Урон от тьмы',
+                HOLY_BONUS_PARAM          = 'Урон от святости',
+
+                ALL_RESIST_PARAM          = 'Сопротивления',
+                PHYSICAL_RESIST_PARAM     = 'Сопротивление физ атакам',
+                ICE_RESIST_PARAM          = 'Сопротивление холоду',
+                FIRE_RESIST_PARAM         = 'Сопротивление огню',
+                LIGHTNING_RESIST_PARAM    = 'Сопротивление молнии',
+                POISON_RESIST_PARAM       = 'Сопротивление ядам',
+                ARCANE_RESIST_PARAM       = 'Сопротивление тайной магии',
+                DARKNESS_RESIST_PARAM     = 'Сопротивление тьме',
+                HOLY_RESIST_PARAM         = 'Сопротивление святости',
+
+                HP_REGEN_PARAM            = 'Восстановление здоровья',
+                MP_REGEN_PARAM            = 'Восстановление ресурса',
+
+                HP_VALUE_PARAM            = 'Здоровье',
+                MP_VALUE_PARAM            = 'Ресурс',
+
+                STR_STAT_PARAM            = 'Сила',
+                AGI_STAT_PARAM            = 'Ловкость',
+                INT_STAT_PARAM            = 'Разум',
+                VIT_STAT_PARAM            = 'Выносливость',
+
+                MELEE_DAMAGE_REDUCTION_PARAM  = 'Урон от атак ближнего боя',
+                RANGE_DAMAGE_REDUCTION_PARAM  = 'Урон от атак дальнего боя',
+                CONTROL_REDUCTION_PARAM       = 'Снижение времени контроля',
+
+                ATTACK_SPEED_PARAM            = 'Скорость атаки',
+                CAST_SPEED_PARAM              = 'Скорость заклинаний',
+                MOVING_SPEED_PARAM            = 'Скорость бега',
+
+                BLOCK_CHANCE_PARAM            = 'Шанс блока',
+                BLOCK_ABSORB_PARAM            = 'Поглощение урона',
+
+
+                REFLECT_DAMAGE_PARAM   = 'Отражение урона',
+                REFLECT_MELEE_DAMAGE_PARAM   = 'Отражение урона ближнего боя',
+                REFLECT_RANGE_DAMAGE_PARAM   = 'Отражение урона дальнего боя',
+
+                HP_PER_HIT_PARAM   = 'Здоровье за атаку',
+                MP_PER_HIT_PARAM   = 'Ресурса за атаку',
+
+                BONUS_DEMON_DAMAGE_PARAM = "Урон демонам",
+                BONUS_UNDEAD_DAMAGE_PARAM = "Урон нежити",
+                BONUS_HUMAN_DAMAGE_PARAM = "Урон людям",
+                BONUS_BEAST_DAMAGE_PARAM = "Урон зверям",
+
+                ITEM_TYPE_WEAPON_NAME     = "Оружие",
+                ITEM_TYPE_ARMOR_NAME      = "Броня",
+                ITEM_TYPE_JEWELRY_NAME    = "Бижутерия",
+                ITEM_TYPE_OFFHAND_NAME    = "Альтернативное оружие",
+                ITEM_TYPE_CONSUMABLE_NAME = "Расходуемое",
+                ITEM_TYPE_GEM_NAME        = "Камень",
+                ITEM_TYPE_SKILLBOOK       = "Знания",
+                ITEM_TYPE_OTHER           = "Прочее",
+
+                BOW_WEAPON_NAME            = "Лук",
+                BLUNT_WEAPON_NAME          = "Булава",
+                GREATBLUNT_WEAPON_NAME     = "Двуручная булава",
+                SWORD_WEAPON_NAME          = "Меч",
+                GREATSWORD_WEAPON_NAME     = "Двуручный меч",
+                AXE_WEAPON_NAME            = "Топор",
+                GREATAXE_WEAPON_NAME       = "Двуручный топор",
+                DAGGER_WEAPON_NAME         = "Кинжал",
+                STAFF_WEAPON_NAME          = "Посох",
+                JAWELIN_WEAPON_NAME        = "Копье",
+                HEAD_ARMOR_NAME            = "Шлем",
+                CHEST_ARMOR_NAME           = "Нагрудник",
+                LEGS_ARMOR_NAME            = "Сапоги",
+                HANDS_ARMOR_NAME           = "Перчатки",
+                BELT_ARMOR_NAME            = "Пояс",
+                RING_JEWELRY_NAME          = "Кольцо",
+                NECKLACE_JEWELRY_NAME      = "Ожерелье",
+                THROWING_KNIFE_WEAPON_NAME = "Метательный нож",
+                SHIELD_OFFHAND_NAME	       = "Щит",
+                ORB_OFFHAND_NAME 		   = "Сфера",
+                QUIVER_OFFHAND_NAME        = "Колчан",
+
+                PHYSICAL_ATTRIBUTE_NAME     = "Физический",
+                FIRE_ATTRIBUTE_NAME         = "Огненный",
+                ICE_ATTRIBUTE_NAME          = "Ледяной",
+                LIGHTNING_ATTRIBUTE_NAME    = "Молния",
+                POISON_ATTRIBUTE_NAME       = "Яд",
+                ARCANE_ATTRIBUTE_NAME       = "Тайна",
+                DARKNESS_ATTRIBUTE_NAME     = "Тьма",
+                HOLY_ATTRIBUTE_NAME         = "Свет",
+
+
+                FEEDBACK_GOLD = {
+                    [BARBARIAN_CLASS] = {
+                        "Sounds\\Responses\\barbarian_gold_1_ru.wav",
+                        "Sounds\\Responses\\barbarian_gold_2_ru.wav",
+                        "Sounds\\Responses\\barbarian_gold_3_ru.wav",
+                        "Sounds\\Responses\\barbarian_gold_4_ru.wav",
+                        "Sounds\\Responses\\barbarian_gold_5_ru.wav",
+                    },
+                    [SORCERESS_CLASS] = {
+                        "Sounds\\Responses\\sorceress_gold_1_ru.wav",
+                        "Sounds\\Responses\\sorceress_gold_2_ru.wav",
+                        "Sounds\\Responses\\sorceress_gold_3_ru.wav",
+                        "Sounds\\Responses\\sorceress_gold_4_ru.wav",
+                        "Sounds\\Responses\\sorceress_gold_5_ru.wav",
+                    }
+                },
+
+                FEEDBACK_HEAL = {
+                    [BARBARIAN_CLASS] = {
+                        "Sounds\\Responses\\barbarian_healing_1_ru.wav",
+                        "Sounds\\Responses\\barbarian_healing_2_ru.wav",
+                        "Sounds\\Responses\\barbarian_healing_3_ru.wav",
+                        "Sounds\\Responses\\barbarian_healing_4_ru.wav",
+                        "Sounds\\Responses\\barbarian_healing_5_ru.wav",
+                    },
+                    [SORCERESS_CLASS] = {
+                        "Sounds\\Responses\\sorceress_healing_1_ru.wav",
+                        "Sounds\\Responses\\sorceress_healing_2_ru.wav",
+                        "Sounds\\Responses\\sorceress_healing_3_ru.wav",
+                        "Sounds\\Responses\\sorceress_healing_4_ru.wav",
+                        "Sounds\\Responses\\sorceress_healing_5_ru.wav",
+                    }
+                },
+
+                FEEDBACK_BAG = {
+                    [BARBARIAN_CLASS] = {
+                        "Sounds\\Responses\\barbarian_bag_1_ru.wav",
+                        "Sounds\\Responses\\barbarian_bag_2_ru.wav",
+                        "Sounds\\Responses\\barbarian_bag_3_ru.wav",
+                        "Sounds\\Responses\\barbarian_bag_4_ru.wav",
+                        "Sounds\\Responses\\barbarian_bag_5_ru.wav",
+                    },
+                    [SORCERESS_CLASS] = {
+                        "Sounds\\Responses\\sorceress_bag_1_ru.wav",
+                        "Sounds\\Responses\\sorceress_bag_2_ru.wav",
+                        "Sounds\\Responses\\sorceress_bag_3_ru.wav",
+                        "Sounds\\Responses\\sorceress_bag_4_ru.wav",
+                        "Sounds\\Responses\\sorceress_bag_5_ru.wav",
+                    }
+                },
+
+
+                FEEDBACK_CLASSRESTRICTED = {
+                    [BARBARIAN_CLASS] = {
+                        "Sounds\\Responses\\barbarian_classrestricted_1_ru.wav",
+                        "Sounds\\Responses\\barbarian_classrestricted_2_ru.wav",
+                        "Sounds\\Responses\\barbarian_classrestricted_3_ru.wav",
+                        "Sounds\\Responses\\barbarian_classrestricted_4_ru.wav",
+                    },
+                    [SORCERESS_CLASS] = {
+                        "Sounds\\Responses\\sorceress_classrestricted_1_ru.wav",
+                        "Sounds\\Responses\\sorceress_classrestricted_2_ru.wav",
+                        "Sounds\\Responses\\sorceress_classrestricted_3_ru.wav",
+                        "Sounds\\Responses\\sorceress_classrestricted_4_ru.wav",
+                    }
+                },
+
+                SKILL_PANEL_TOOLTIP_NAME = "Умения",
+                SKILL_PANEL_TOOLTIP_DESCRIPTION = "Настройка и просмотр всех умений",
+
+                SKILL_CATEGORY_LIGHTNING = "Молнии",
+                SKILL_CATEGORY_FIRE = "Огонь",
+                SKILL_CATEGORY_ICE = "Лед",
+                SKILL_CATEGORY_ARCANE = "Тайная магия",
+                SKILL_CATEGORY_FIGHTING_MASTERY = "Боебое мастерство",
+                SKILL_CATEGORY_BATTLE_ADVANTAGE = "Боевое преимущество",
+                SKILL_CATEGORY_INNER_STRENGTH = "Внутренние силы",
+
+                SKILL_CATEGORY_LIGHTNING_ADVANCED = "Умения молнии: ",
+                SKILL_CATEGORY_FIRE_ADVANCED = "Умения огня: ",
+                SKILL_CATEGORY_ICE_ADVANCED = "Умения льда: ",
+                SKILL_CATEGORY_ARCANE_ADVANCED = "Умения тайной магии: ",
+                SKILL_CATEGORY_FIGHTING_MASTERY_ADVANCED = "Умения боевого мастерства: ",
+                SKILL_CATEGORY_BATTLE_ADVANTAGE_ADVANCED = "Умения боевого преимущества: ",
+                SKILL_CATEGORY_INNER_STRENGTH_ADVANCED = "Умения внутренних сил: ",
+
+                SKILL_PANEL_LVL_TEXT = "Уровень: ",
+                SKILL_PANEL_UNBIND = "Убрать",
+
+                SKILL_PANEL_MANA_TEXT = " маны",
+                SKILL_PANEL_COOLDOWN_TEXT = " перезарядка",
+                SKILL_PANEL_RANGE_TEXT = " дальность",
+
+                CASTLE_LOCATION = 'Замок',
+                SHORE_LOCATION = 'Берег леса',
+                WOODS_LOCATION = 'Ущелье',
+                RUINS_LOCATION = "Руины",
+
+                CASTLE_LOCATION_NAME = "СТАРЫЙ ЗАМОК",
+                MAINROAD_LOCATION_NAME = "ГЛАВНЫЙ ТРАКТ",
+                WILDFOREST_LOCATION_NAME = "ДИКИЙ ЛЕС",
+                NARROWPASS_LOCATION_NAME = "УЩЕЛЬЕ",
+                OUTSKIRTS_LOCATION_NAME = "ДАЛЕКИЕ ОКРАИНЫ",
+                SACREDGROVE_LOCATION_NAME = "СВЯЩЕННАЯ РОЩА",
+                MEADOWS_LOCATION_NAME = "ЦВЕТУЩИЕ ЛУГА",
+
+                CASTLE_LOCATION_TEXTURE = "vagrant_fortress_ru.blp",
+                MAINROAD_LOCATION_TEXTURE = "trading_path_ru.blp",
+                WILDFOREST_LOCATION_TEXTURE = "duskwood_ru.blp",
+                NARROWPASS_LOCATION_TEXTURE = "narrow_pass_ru.blp",
+                OUTSKIRTS_LOCATION_TEXTURE = "forgotten_lands_ru.blp",
+                SACREDGROVE_LOCATION_TEXTURE = "sacred_grove_ru.blp",
+                MEADOWS_LOCATION_TEXTURE = "blooming_meadows_ru.blp",
+
+
+                FEEDBACK_MSG_NOSPACE = "В рюкзаке нет места",
+                FEEDBACK_MSG_CANTUSE = "Невозможно это использовать",
+                FEEDBACK_MSG_NOGOLD = "Недостаточно золота",
+
+                SHOP_MESSAGE_NO_SPACE = "В магазине нет места",
+                --FEEDBACK_MSG_ = "",
+
+                INVENTORY_PANEL_TOOLTIP_NAME = "Инвентарь",
+                INVENTORY_PANEL_TOOLTIP_DESCRIPTION =  "Содержит все ваши вещи и экипировку",
+
+                UI_TEXT_SELL = "Продать",
+                UI_TEXT_BUY = "Купить",
+                UI_TEXT_ENCHANT = "Вставить",
+                UI_TEXT_LEARN = "Изучить",
+                UI_TEXT_MOVE = "Переместить",
+                UI_TEXT_EQUIP = "Надеть",
+                UI_TEXT_DROP = "Выкинуть",
+                UI_TEXT_BELT_ON = "Закрепить",
+                UI_TEXT_BELT_OFF = "Открепить",
+                UI_TEXT_REFORGE = "Перековка",
+                UI_TEXT_RESOCKET = "Извлечение",
+                UI_TEXT_ALT_WEAPON = "Левая рука",
+                UI_TEXT_EXCHANGE = "Обмен книги",
+
+                UI_TEXT_OK = "ок",
+                UI_TEXT_CANCEL = "отмена",
+
+                UI_TOOLTIP_REFORGE_TITLE = "Перековать предмет",
+                UI_TOOLTIP_REFORGE_DESC = "Перековка повышает уровень предмета до актуального.",
+
+                UI_TOOLTIP_EXCHANGE_TITLE = "Обмен",
+                UI_TOOLTIP_EXCHANGE_DESC = "Можно менять книги на более подходящие.",
+
+                HINT_INVENTORY_1 = "Используйте одиночный клик по предмету для вызова контекстного меню или двойной для быстрого взаимодействия с предметом.",
+                HINT_INVENTORY_2 = "Например, двойной клик по оружию возьмет его в основную руку, а по расходуемому предмету - вынесет его в инвентарь героя.",
+                HINT_SHOP_1 = "Каждую волну нападения ассортимент магазинов обновляется, так что не стесняйтесь продавать ненужное. Пока магазин открыт, контекстное меню на предмете в инвентаре откроет кнопку %<Продать%>",
+                HINT_BLACKSMITH_1 = "У кузнеца можно перековать предметы до текущего уровня волны, а так же изъять ненужные камни. Камни утрачиваются безвозвратно.",
+                HINT_STATS_1 = "Базовые параметры очень важная часть развития героя. Наведите курсором на каждый, и узнаете немного подробнее о них. Каждый новый уровень дает 3 очка развития.",
+                HINT_ALTARS = "Взаимодействовать с алтарями и сундуками можно кликнув правой кнопкой мыши по ним находясь поблизости. Алтари дают случайный эффект, сундуки содержат предметы и золото, колодцы восстанавливают здоровье или ману.",
+                HINT_BELT = "Можно быстро использовать предметы на поясе нажимая 1-2-3-4-5-6. Нумерация предметов начинается слева сверху.",
+
+
+                DAMAGE_UI = "Урон: ",
+                BLOCK_UI = "Блок: ",
+                DAMAGE_TYPE_UI = "Тип урона: ",
+                DEFENCE_UI = "Защита: ",
+                SUPPRESSION_UI = "Подавление: ",
+
+                ADDITIONAL_INFO_UI = "|nДополнительные свойства:|n",
+                AUGMENTS_UI = "|nАугментации:|n",
+                SLOTS_UI = "|nГнезда:|n",
+                SET_PART_UI = " части:|n",
+                UNIQUE_EFFECT_UI = "Уникальный эффект",
+
+                STAT_PANEL_TOOLTIP_NAME = "Характеристики",
+                STAT_PANEL_TOOLTIP_DESCRIPTION =  "Повышение и отслеживание характеристик",
+
+                STAT_PANEL_STR = "Сила: ",
+                STAT_PANEL_INT = "Интеллект: ",
+                STAT_PANEL_VIT = "Стойкость: ",
+                STAT_PANEL_AGI = "Ловкость: ",
+
+                STAT_PANEL_MAIN_STAT = "Основная характеристика",
+                STAT_PANEL_STR_DESC = "Влияет на силу физических атак.",
+                STAT_PANEL_INT_DESC = "Каждая еденица повышает магическое подавление на 1, влияет на магический урон а так же количество и восстановление магии если вы используете ману.",
+                STAT_PANEL_VIT_DESC = "Повышает здоровье и ее восстановление.",
+                STAT_PANEL_AGI_DESC = "Каждая еденица повышает защиту на 2.",
+
+                STAT_PANEL_PHYS_ATTACK = "Физ. урон: ",
+                STAT_PANEL_PHYS_DEFENCE = "Защита: ",
+                STAT_PANEL_MAG_ATTACK = "Маг. урон: ",
+                STAT_PANEL_MAG_DEFENCE = "Подавление: ",
+                STAT_PANEL_ATTACK_SPEED = "Атак в сек.: ",
+                STAT_PANEL_CRIT_CHANCE = "Крит. Шанс: ",
+
+                STAT_PANEL_FIRE = "Огонь: ",
+                STAT_PANEL_PHYSICAL = "Физ.: ",
+                STAT_PANEL_ICE = "Лед: ",
+                STAT_PANEL_LIGHTNING = "Молния: ",
+                STAT_PANEL_DARKNESS = "Тьма: ",
+                STAT_PANEL_HOLY = "Свет: ",
+                STAT_PANEL_POISON = "Яд: ",
+                STAT_PANEL_ARCANE = "Тайное: ",
+
+                REFORGE_BUTTON_TEXT = "Перековать",
+                SOCKET_BUTTON_TEXT = "Изьять",
+                EXCHANGE_BUTTON_TEXT = "Обменять",
+
+
+                WORN_DECL_HE = "Изношенный ",
+                WORN_DECL_SHE = "Изношенная ",
+                WORN_DECL_THEY = "Изношенные ",
+                WORN_DECL_IT = "Изношенное ",
+
+                FINE_DECL_HE = "Качественный ",
+                FINE_DECL_SHE = "Качественная ",
+                FINE_DECL_THEY = "Качественные ",
+                FINE_DECL_IT = "Качественное ",
+
+                EXCELLENT_DECL_HE = "Превосходный ",
+                EXCELLENT_DECL_SHE = "Превосходная ",
+                EXCELLENT_DECL_THEY = "Превосходные ",
+                EXCELLENT_DECL_IT = "Превосходное ",
+
+                IDEAL_DECL_HE = "Безупречный ",
+                IDEAL_DECL_SHE = "Безупречная ",
+                IDEAL_DECL_THEY = "Безупречные ",
+                IDEAL_DECL_IT = "Безупречное ",
+
+                ITEM_SUFFIX_ANGER                   = " Злости",
+                ITEM_SUFFIX_FURY                    = " Ярости",
+                ITEM_SUFFIX_CONCENTRATION           = " Концентрации",
+                ITEM_SUFFIX_PRECISION               = " Точности",
+                ITEM_SUFFIX_ICE_WIZARD              = " Ледяного Колдуна",
+                ITEM_SUFFIX_FIRE_WIZARD             = " Огненного Колдуна",
+                ITEM_SUFFIX_LIGHTNING_WIZARD        = " Электрического Колдуна",
+                ITEM_SUFFIX_SLAYER                  = " Убийцы",
+                ITEM_SUFFIX_TRICKSTER               = " Обманщика",
+                ITEM_SUFFIX_ROCK                    = " Скалы",
+                ITEM_SUFFIX_KNIGHT                  = " Рыцаря",
+                ITEM_SUFFIX_MYSTERY                 = " Загадки",
+                ITEM_SUFFIX_KNOWLEDGE               = " Знаний",
+                ITEM_SUFFIX_PURE_CONCENTRATION      = " Сосредоточенности",
+                ITEM_SUFFIX_SLAYER_GENIUS           = " Гениального убийцы",
+                ITEM_SUFFIX_HIGH_KNIGHT             = " Благородного рыцаря",
+                ITEM_SUFFIX_ENDLESS_FURY            = " Бесконечной ярости",
+                ITEM_SUFFIX_DEADLY_PRECISION        = " Смертельной точности",
+
+                GENERIC_SWORD_NAME_1 = "необработанный клинок",
+                GENERIC_SWORD_NAME_2 = "короткий меч",
+                GENERIC_SWORD_NAME_3 = "рунический клинок",
+                GENERIC_SWORD_NAME_4 = "широкий меч",
+                GENERIC_SWORD_NAME_5 = "зачарованный меч",
+                GENERIC_SWORD_NAME_6 = "рапира",
+
+                GENERIC_GREATSWORD_NAME_1 = "варварский разрезатель",
+                GENERIC_GREATSWORD_NAME_2 = "нож великанов",
+                GENERIC_GREATSWORD_NAME_3 = "клеймор",
+                GENERIC_GREATSWORD_NAME_4 = "эсток",
+
+                GENERIC_AXE_NAME_1 = "широкий топор",
+                GENERIC_AXE_NAME_2 = "зазубренный топор",
+                GENERIC_AXE_NAME_3 = "стальной топор",
+                GENERIC_AXE_NAME_4 = "мистический топор",
+
+                GENERIC_GREATAXE_NAME_1 = "огромный резак",
+                GENERIC_GREATAXE_NAME_2 = "изогнутый топор",
+
+                GENERIC_BLUNT_NAME_1 = "древняя булава",
+                GENERIC_BLUNT_NAME_2 = "дубина",
+                GENERIC_BLUNT_NAME_3 = "шипованная палица",
+                GENERIC_BLUNT_NAME_4 = "цеп",
+                GENERIC_BLUNT_NAME_5 = "скипетр наследника",
+                GENERIC_BLUNT_NAME_6 = "моргерншерн",
+
+                GENERIC_GREATBLUNT_NAME_1 = "большая шипованная палица",
+                GENERIC_GREATBLUNT_NAME_2 = "мифриловый молот",
+                GENERIC_GREATBLUNT_NAME_3 = "зачарованный скипетр",
+                GENERIC_GREATBLUNT_NAME_4 = "рунический боевой молот",
+
+                GENERIC_DAGGER_NAME_1 = "изогнутый нож",
+                GENERIC_DAGGER_NAME_2 = "позолоченный нож",
+                GENERIC_DAGGER_NAME_3 = "нож",
+                GENERIC_DAGGER_NAME_4 = "заточка",
+                GENERIC_DAGGER_NAME_5 = "разделочный нож",
+                GENERIC_DAGGER_NAME_6 = "жало",
+                GENERIC_DAGGER_NAME_7 = "расплавленный кинжал",
+
+                GENERIC_STAFF_NAME_1 = "Сверток Природы",
+                GENERIC_STAFF_NAME_2 = "огненный скипетр",
+                GENERIC_STAFF_NAME_3 = "Нефритовый Свет",
+                GENERIC_STAFF_NAME_4 = "Лунный Свет",
+                GENERIC_STAFF_NAME_5 = "Путы Мира",
+                GENERIC_STAFF_NAME_6 = "Пророк",
+                GENERIC_STAFF_NAME_7 = "посох Ночного Сияния",
+                GENERIC_STAFF_NAME_8 = "Дар Смерти",
+                GENERIC_STAFF_NAME_9 = "Искатель",
+
+                GENERIC_BOW_NAME_1 = "Позолоченное Древо",
+                GENERIC_BOW_NAME_2 = "длинный лук",
+                GENERIC_BOW_NAME_3 = "грубый лук",
+                GENERIC_BOW_NAME_4 = "лук разведчика",
+                GENERIC_BOW_NAME_5 = "тяжелый лук",
+                GENERIC_BOW_NAME_6 = "Рог",
+                GENERIC_BOW_NAME_7 = "рунный лук",
+                GENERIC_BOW_NAME_8 = "усиленный лук",
+                GENERIC_BOW_NAME_9 = "дергающийся лук",
+                GENERIC_BOW_NAME_10 = "мистический лук",
+                GENERIC_BOW_NAME_11 = "заиневший лук",
+
+                GENERIC_QUIVER_NAME_1 = "колчан",
+                GENERIC_QUIVER_NAME_2 = "кожанный колчан",
+                GENERIC_QUIVER_NAME_3 = "рейнджерский колчан",
+                GENERIC_QUIVER_NAME_4 = "обработанный колчан",
+                GENERIC_QUIVER_NAME_5 = "искусный колчан",
+                GENERIC_QUIVER_NAME_6 = "военный колчан",
+                GENERIC_QUIVER_NAME_7 = "укрепленный колчан",
+                GENERIC_QUIVER_NAME_8 = "егерьский колчан",
+                GENERIC_QUIVER_NAME_9 = "мастерский колчан",
+                GENERIC_QUIVER_NAME_10 = "легковесный колчан",
+
+                GENERIC_ORB_NAME_1 = "ветрянная сфера",
+                GENERIC_ORB_NAME_2 = "водная сфера",
+                GENERIC_ORB_NAME_3 = "песочная сфера",
+                GENERIC_ORB_NAME_4 = "опаляющая сфера",
+                GENERIC_ORB_NAME_5 = "сгусток хаоса",
+                GENERIC_ORB_NAME_6 = "заряженная сфера",
+                GENERIC_ORB_NAME_7 = "капля тьмы",
+
+                GENERIC_SHIELD_NAME_1 = "широкий щит",
+                GENERIC_SHIELD_NAME_2 = "рыцарский щит",
+                GENERIC_SHIELD_NAME_3 = "фамильный щит",
+                GENERIC_SHIELD_NAME_4 = "баклер",
+                GENERIC_SHIELD_NAME_5 = "защитник",
+                GENERIC_SHIELD_NAME_6 = "башенный щит",
+                GENERIC_SHIELD_NAME_7 = "рунический щит",
+                GENERIC_SHIELD_NAME_8 = "отражатель",
+                GENERIC_SHIELD_NAME_9 = "рондаш",
+
+
+                GENERIC_CHEST_NAME_1 = "композитный нагрудник",
+                GENERIC_CHEST_NAME_2 = "Воронье Крыло",
+                GENERIC_CHEST_NAME_3 = "укрепленный нагрудник",
+                GENERIC_CHEST_NAME_4 = "панцирь",
+                GENERIC_CHEST_NAME_5 = "легкая броня",
+                GENERIC_CHEST_NAME_6 = "тяжелая броня",
+                GENERIC_CHEST_NAME_7 = "стальная броня",
+                GENERIC_CHEST_NAME_8 = "роба",
+                GENERIC_CHEST_NAME_9 = "крепкий доспех",
+                GENERIC_CHEST_NAME_10 = "бронированный нагрудник",
+                GENERIC_CHEST_NAME_11 = "кираса",
+                GENERIC_CHEST_NAME_12 = "составной нагрудник",
+                GENERIC_CHEST_NAME_13 = "Сияние Ночи",
+
+
+                GENERIC_HANDS_NAME_1 = "меховые перчатки",
+                GENERIC_HANDS_NAME_2 = "кожанные перчатки",
+                GENERIC_HANDS_NAME_3 = "кольчужные перчатки",
+                GENERIC_HANDS_NAME_4 = "латные перчатки",
+                GENERIC_HANDS_NAME_5 = "укрепленные латные перчатки",
+                GENERIC_HANDS_NAME_6 = "перчатки дуэлянта",
+                GENERIC_HANDS_NAME_7 = "зачарованные перчатки",
+
+                GENERIC_LEGS_NAME_1 = "походные сапоги",
+                GENERIC_LEGS_NAME_2 = "сандали",
+                GENERIC_LEGS_NAME_3 = "кожанные сандали",
+                GENERIC_LEGS_NAME_4 = "укрепленные сандали",
+                GENERIC_LEGS_NAME_5 = "латные сапоги",
+                GENERIC_LEGS_NAME_6 = "бронированные сапоги",
+                GENERIC_LEGS_NAME_7 = "композитные сапоги",
+
+                GENERIC_HEAD_NAME_1 = "латный шлем",
+                GENERIC_HEAD_NAME_2 = "демоническая каска",
+                GENERIC_HEAD_NAME_3 = "рогатый шлем",
+                GENERIC_HEAD_NAME_4 = "шлем фанатиков",
+                GENERIC_HEAD_NAME_5 = "накидка",
+                GENERIC_HEAD_NAME_6 = "легкий шлем",
+                GENERIC_HEAD_NAME_7 = "стальной шлем",
+                GENERIC_HEAD_NAME_8 = "шлем охотника на драконов",
+                GENERIC_HEAD_NAME_9 = "укрепленный шлем",
+                GENERIC_HEAD_NAME_10 = "каска юстициария",
+                GENERIC_HEAD_NAME_11 = "королевский шлем",
+
+                GENERIC_BELT_NAME_1 = "ремень",
+                GENERIC_BELT_NAME_2 = "укрепленный ремень",
+                GENERIC_BELT_NAME_3 = "охотничий пояс",
+                GENERIC_BELT_NAME_4 = "ремень",
+                GENERIC_BELT_NAME_5 = "боевой пояс",
+                GENERIC_BELT_NAME_6 = "шипованный ремень",
+                GENERIC_BELT_NAME_7 = "зачарованный кушак",
+                GENERIC_BELT_NAME_8 = "отделанный пояс",
+
+
+                GENERIC_RING_NAME_1 = "адамантитовое кольцо",
+                GENERIC_RING_NAME_2 = "позолоченное кольцо",
+                GENERIC_RING_NAME_3 = "рыцарская печатка",
+                GENERIC_RING_NAME_4 = "фамильный перстень",
+                GENERIC_RING_NAME_5 = "золотое кольцо",
+                GENERIC_RING_NAME_6 = "адамантитовое кольцо",
+                GENERIC_RING_NAME_7 = "почерневшее кольцо",
+                GENERIC_RING_NAME_8 = "арканитовый перстень",
+                GENERIC_RING_NAME_9 = "жестокое кольцо",
+                GENERIC_RING_NAME_10 = "руническое кольцо",
+                GENERIC_RING_NAME_11 = "заиневшее кольцо",
+
+                GENERIC_NECKLACE_NAME_1 = "подвеска с камнем",
+                GENERIC_NECKLACE_NAME_2 = "серебрянный амулет",
+                GENERIC_NECKLACE_NAME_3 = "древний амулет",
+                GENERIC_NECKLACE_NAME_4 = "четки колдуна",
+                GENERIC_NECKLACE_NAME_5 = "зачарованная подвеска",
+                GENERIC_NECKLACE_NAME_6 = "заряженный амулет",
+                GENERIC_NECKLACE_NAME_7 = "изумрудная подвеска",
+                GENERIC_NECKLACE_NAME_8 = "рубиновая подвеска",
+                GENERIC_NECKLACE_NAME_9 = "сапфировая подвеска",
+
+                STARTING_ITEM_NAME_2HSWORD = "Клеймор",
+                STARTING_ITEM_NAME_CHEST = "Клепанная броня",
+                STARTING_ITEM_NAME_HEAD = "Шлем",
+                STARTING_ITEM_NAME_HANDS = "Стеганные рукавицы",
+                STARTING_ITEM_NAME_LEGS = "Клепанные сапоги",
+                STARTING_ITEM_NAME_STAFF = "Потертый посох",
+                --STARTING_ITEM_NAME_ = "",
+
+                SHARD_OF_HATE = "Осколок ненависти",
+                SHARD_OF_HATE_DESC = "Странный светящийся осколок, при прикосновении ощущается прилив ненависти.",
+
+                GEM_RUBY = 'Рубин',
+                GEM_SAPPHIRE = 'Сапфир',
+                GEM_TOPAZ = 'Топаз',
+                GEM_AMBER = 'Янтарь',
+                GEM_AQUAMARINE = 'Аквамарин',
+                GEM_DIAMOND = 'Алмаз',
+                GEM_AMETHYST = "Аметист",
+                GEM_TURQUOISE = 'Бирюза',
+                GEM_EMERALD = 'Изумруд',
+                GEM_MALACHITE = 'Малахит',
+                GEM_JADE = 'Нефрит',
+                GEM_OPAL = 'Опал',
+
+
+                POTION_WEAK_HP_NAME_TEXT = "Зелье исцеления",
+                POTION_HALF_HP_NAME_TEXT = "Большое зелье исцеления",
+                POTION_STRONG_HP_NAME_TEXT = "Великое зелье исцеления",
+
+                POTION_WEAK_HP_DESC_TEXT = "Восстанавливает 25%% здоровья",
+                POTION_HALF_HP_DESC_TEXT = "Восстанавливает 50%% здоровья",
+                POTION_STRONG_HP_DESC_TEXT = "Восстанавливает 75%% здоровья",
+
+                POTION_WEAK_MP_NAME_TEXT = "Зелье маны",
+                POTION_HALF_MP_NAME_TEXT = "Большое зелье маны",
+                POTION_STRONG_MP_NAME_TEXT = "Великое зелье маны",
+
+                POTION_WEAK_MP_DESC_TEXT = "Восстанавливает 25%% маны",
+                POTION_HALF_MP_DESC_TEXT = "Восстанавливает 50%% маны",
+                POTION_STRONG_MP_DESC_TEXT = "Восстанавливает 75%% маны",
+
+                POTION_WEAK_MIX_NAME_TEXT = "Зелье восстановления",
+                POTION_HALF_MIX_NAME_TEXT = "Большое зелье восстановления",
+                POTION_STRONG_MIX_NAME_TEXT = "Великое зелье восстановления",
+
+                POTION_WEAK_MIX_DESC_TEXT = "Восстанавливает 25%% здоровья и маны",
+                POTION_HALF_MIX_DESC_TEXT = "Восстанавливает 50%% здоровья и маны",
+                POTION_STRONG_MIX_DESC_TEXT = "Восстанавливает 75%% здоровья и маны",
+
+                POTION_ADRENALINE_TEXT = "Зелье Адреналина",
+                POTION_ADRENALINE_DESC_TEXT = "На непродолжительное время повышает скорость передвижения на 35%%.",
+
+                POTION_ANTIDOTE_TEXT = "Антидот",
+                POTION_ANTIDOTE_DESC_TEXT = "Повышает сопротивляемость ядам.",
+
+                SCROLL_OF_TOWN_PORTAL_NAME = "Свиток Городского Портала",
+                SCROLL_OF_TOWN_PORTAL_DESC = "При использовании открывает ненадолго портал в город.",
+
+                SCROLL_OF_PROTECTION_NAME = "Свиток Защиты",
+                SCROLL_OF_PROTECTION_DESC = "Повышает сопротивления ко всем стихиям.",
+
+
+                SKILLBOOK_FIRE = "Книга пламени",
+                SKILLBOOK_LIGHTNING = "Книга молний",
+                SKILLBOOK_ICE = "Книга льда",
+                SKILLBOOK_ARCANE = "Книга тайн",
+                SKILLBOOK_FIGHTING_MASTERY = "Книга бойца",
+                SKILLBOOK_INNER_STRENGTH = "Книга сил",
+                SKILLBOOK_BATTLE_ADVANTAGE = "Книга превосходства",
+
+                SKILLBOOK_TEXT = "Позволяет увеличить знания:",
+
+                BOOK_TOME_NAME = "Том знаний",
+                BOOK_TOME_NAME_TEXT = "Дает 1 очко характеристик.",
+
+                SKILL_WARCRY = 'Боевой Клич',
+                SKILL_CUTTINGSLASH = 'Рассекающий Взмах',
+                SKILL_HARPOON = 'Гарпун',
+                SKILL_CRUSHINGBLOW = 'Сокрущающий Удар',
+                SKILL_WHIRLWIND = 'Вихрь',
+                SKILL_BERSERK = 'Берсерк',
+                SKILL_UPPERCUT = 'Апперкот',
+                SKILL_THROWKNIFE = 'Бросок Кинжала',
+                SKILL_JUMP = 'Прыжок',
+                SKILL_EXECUTION = "Казнь",
+                SKILL_FIRSTAID = "Перевязка",
+                SKILL_SUMMONHYDRA = 'Призвать Гидру',
+                SKILL_ELEMENTALMASTERY = 'Мастерство Стихий',
+                SKILL_FOCUS = 'Сосредоточенность',
+                SKILL_FROSTARMOR = 'Ледяная Броня',
+                SKILL_LIGHTNINGBALL = 'Шаровая Молния',
+                SKILL_DISCHARGE = 'Разряд',
+                SKILL_METEOR = 'Метеор',
+                SKILL_TELEPORT = 'Телепорт',
+                SKILL_LIGHTNINGSTRIKE = 'Удар Молнии',
+                SKILL_FROSTORB = 'Ледяной Шар',
+                SKILL_FROSTBOLT = 'Ледяная Стрела',
+                SKILL_FIREBALL = 'Огненный Шар',
+                SKILL_FROSTNOVA = 'Кольцо Льда',
+                SKILL_CHAIN_LIGHTNING = "Электрошок",
+                SKILL_MELTDOWN = "Расплавление",
+
+
+                SET_NAME_ANCIENT_LEGACY = "Наследие предков",
+                SET_NAME_JESTERANDKING = "Король и Шут",
+                SET_NAME_FIREBOND = "Огненная связь",
+                SET_NAME_FRENDLINESS = "Приветливость",
+
+
+                ITEM_LEG_DESCRIPTION_FIREBOND = "Все огненные умения на 35%% сильнее.",
+                ITEM_LEG_DESCRIPTION_WITCH_MASTERY = "Каждое произнесенное заклинание увеличивает силу магии на 10%%, однако взамен пожирает 5%% здоровья",
+                ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Каждый противник неподалеку повышает скорость передвижения на 3%% до максимума в 25%%",
+                ITEM_LEG_DESCRIPTION_RITUAL_DAGGER = "При атаке вы накапливаете эффекты Хаоса. Накопив 15 эффектов, сила и скорость атаки на короткое время сильно повышаются, но на это время регенерация здоровья идет в обратную сторону.",
+                ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Разряд\" теперь идет из позиции чародейки, а их урон и количество зарядов увеличивается.",
+                ITEM_LEG_DESCRIPTION_BOOSTERS = "После приземления от использования умения \"Прыжок\" варвар наносит 215%% урона от оружия в небольшом радиусе.",
+                ITEM_LEG_DESCRIPTION_PAIN_ECHO = "Кровотечение от умения \"Рассекающий взмах\" теперь может быть критическим, так же его шанс на крит повышен на 25%%.",
+                ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "Каждая атака по врагу накладывает на него эффект кристаллизации, снижающий скорость передвижения. После накопления 5 зарядов, противник замораживается на 3 сек.",
+                ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "Каждая атака льдом, огнем или молнией накладывает уязвимость к соответствующей стихии понижающая сопротивление ей на 5 ед. на 7 секунд, повторная атака любой стихией обновляет эффект. Суммируется до 3 раз.",
+                ITEM_LEG_DESCRIPTION_ICE_TOUCH = "При применении \"Ледяной Стрелы\" вместо одной стрелы, позади волшебницы создаются 3, которые зависают, а затем летят в указанную цель.",
+
+
+                ITEM_NAME_RAT_HUNTER = 'Охотник на крыс',
+                ITEM_SPEC_DESCRIPTION_RAT_HUNTER = "Даже у крысоловов был легендарный лук, коего желали все охотники на крыс",
+
+                ITEM_NAME_BOOT_OF_COWARD = 'Сапог труса',
+                ITEM_SPEC_DESCRIPTION_BOOT_OF_COWARD = "Владелец этого сапога применял секретную тактику своего знатного рода, передававшуюся в течении 300 лет. До поры до времени...",
+
+                ITEM_NAME_WITCH_MASTERY = "Мастерство Ведьмы",
+                ITEM_SPEC_DESCRIPTION_WITCH_MASTERY = "Принадлежал очень древней ведьме. Впитал в себя часть заклинаний крови, которыми может поделиться.",
+
+                ITEM_NAME_DARK_CROWN = "Темная Корона",
+                ITEM_SPEC_DESCRIPTION_DARK_CROWN = "Хочешь сопротивляться тьме - стань тьмой сам",
+
+                ITEM_NAME_RITUAL_DAGGER = "Ритуальный Кинжал",
+                ITEM_SPEC_DESCRIPTION_RITUAL_DAGGER = "Сила, заточенная в этом клинке раскрывается с каждым порезом. И пусть тот кто ею завладеет, справится с ней",
+
+
+                ITEM_NAME_ACOLYTE_MANTLE = "Мантия Аколита",
+                ITEM_SPEC_DESCRIPTION_ACOLYTE_MANTLE = "Идеальное решение что бы уйти в себя",
+
+
+                ITEM_NAME_SMORC_PICKAXE = "Кирка Сморка",
+                ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE = "Легенды гласят, что шахтёр Сморк наповал косил ею врагов",
+
+                ITEM_NAME_BOOSTERS = "Усилители",
+                ITEM_SPEC_DESCRIPTION_BOOSTERS = "Изобретение неизвестного автора нашло свое уникальное применение.",
+
+                ITEM_NAME_EYE_OF_THE_STORM = "Око бури",
+                ITEM_SPEC_DESCRIPTION_EYE_OF_THE_STORM = "Неизвестный чародей смог заполучить себе невероятный артефакт, после чего вскоре превратился в пепел.",
+
+
+                ITEM_NAME_FIREPRINCESS = "Пламенная Принцесса",
+                --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+                ITEM_SPEC_DESCRIPTION_FIREPRINCESS = "Принцесса одного древнего королевства проявляла интерес к пламени, сжигая предателей и окружая себя огнем.",
+
+
+                ITEM_NAME_FIREQUEEN = "Пламенная Королева",
+                --ITEM_LEG_DESCRIPTION_FIREQUEEN = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+                ITEM_SPEC_DESCRIPTION_FIREQUEEN = "Став королевой, страсть пламени лишь разгоралась, и однажды, войдя в ее покои, слуги не нашли их королеву, только лишь амулет и кольцо на обуглившимся полу.",
+
+
+                ITEM_NAME_PAIN_ECHO = "Эхо Боли",
+                ITEM_SPEC_DESCRIPTION_PAIN_ECHO = "Чьей кровью ты будешь насыщать это кольцо?",
+
+                ITEM_NAME_CRYSTAL_AXE = "Кристальный топор",
+                ITEM_SPEC_DESCRIPTION_CRYSTAL_AXE = "Превращает в кристаллы всё чего коснётся, держите острие подальше от себя.",
+
+                ITEM_NAME_BOOTSOFPAIN = "Сапоги Боли",
+                --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+                ITEM_SPEC_DESCRIPTION_BOOTSOFPAIN = "Больно ли тебе ходить?",
+
+                ITEM_NAME_CHESTOFPAIN = "Нагрудник Боли",
+                --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+                ITEM_SPEC_DESCRIPTION_CHESTOFPAIN = "Больно ли тебе дышать?",
+
+                ITEM_NAME_HEADOFPAIN = "Шлем Боли",
+                --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+                ITEM_SPEC_DESCRIPTION_HEADOFPAIN = "Больно ли тебе находиться в сознании?",
+
+
+                ITEM_NAME_THE_KING = "Король",
+                --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+                ITEM_SPEC_DESCRIPTION_THE_KING = "Правитель...",
+
+                ITEM_NAME_THE_JESTER = "Шут",
+                --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+                ITEM_SPEC_DESCRIPTION_THE_JESTER = "...Посмещище",
+
+
+                ITEM_NAME_MASTER_OF_ELEMENTS = "Мастер стихий",
+                --ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "Каждая атака накладывает уязвимость к своей стихии понижающая сопротивление ей на 5 ед. на 7 секунд, повторная атака любой стихией обновляет эффект. Суммируется до 3 раз.",
+                ITEM_SPEC_DESCRIPTION_MASTER_OF_ELEMENTS = "Редкая, уникальная вещь которой будет завидовать любой чародей.",
+
+                ITEM_NAME_ICE_TOUCH = "Касание Зимы",
+                ITEM_SPEC_DESCRIPTION_ICE_TOUCH = "Холод обволакивает руки, и пробирает до костей.",
+
+
+
+
+
+                GENERATED_TOOLTIP = "урона от атаки",
+
+                [FourCC("A007")] = {
+                    [1] = "Сильный удар наносящий @e!ECRH.dmg# типа @e!ECRH.atr# в секторе перед собой. Поражает эффектом *Сокрушение* снижающим уязвимость к физическому урону на @b!A00W.va1# и снижающим скорость атаки на @b!A00W.va2# на @b!A00W.time# сек.",
+                },
+                [FourCC("A00C")] = {
+                    [1] = "Варвар испускает в радиусе @e!EWCR.aoe# ед. крик который снижает атаку врагов на @b!A00Y.va1# и скорость их перемещения на @b!A00Y.va3# ед.",
+                },
+                [FourCC("A006")] = {
+                    [1] = "Молниеносный удар наносящий @e!ECSL.dmg# типа @e!ECSL.atr# в секторе перед собой. Враги начинают кровоточить получая @e!ECSP.dmg# типа @e!ECSP.atr#",
+                },
+                [FourCC("A00A")] = {
+                    [1] = "Запускает цепь на расстояние @s!A00A.rng#, притягивая первого врага.",
+                },
+                [FourCC("A010")] = {
+                    [1] = "Варвар образует яростный вихрь безумно вращаясь, нанося @e!EWHW.dmg# типа @e!EWHW.atr# 3 раза в секунду вокруг себя. При этом постоянно потребляется 9 маны в сек.",
+                },
+                [FourCC("A00Q")] = {
+                    [1] = "Впадает в ярость, увеличивая свою атаку на @b!A00V.va1#, сопротивлению контролю на @b!A00V.va2# и скорость бега на @b!A00V.va3# в течении @b!A00V.time# сек.",
+                },
+                [FourCC("A00B")] = {
+                    [1] = "Удар наносящий @e!EUPP.dmg# типа @e!EUPP.atr# и отталкивающий врагов, после чего они оглушаются на @b!A012.time# сек.",
+                },
+                [FourCC("A00Z")] = {
+                    [1] = "Бросает кинжал на расстояние @s!A00Z.rng#, поражающий первого противника, наносит @e!ETHK.dmg# типа @e!ETHK.atr#. Имеет повышенные шансы на критический урон (+@e!ETHK.bcc#).",
+                },
+                [FourCC("A00O")] = {
+                    [1] = "Прыжок, позволяющий переместиться на расстояние до @s!A00O.rng#.",
+                },
+                [FourCC("A020")] = {
+                    [1] = "Добивающий удар. Наносит @e!EEXC.dmg# типа @e!EEXC.atr#, при применении на противников у которых осталось менее 20%% здоровья сила умения увеличивается втрое, а критический шанс возрастает на 20%%.",
+                    [10] = "Добивающий удар. Наносит @e!EEXC.dmg# типа @e!EEXC.atr#, при применении на противников у которых осталось менее 20%% здоровья сила умения увеличивается втрое, а критический шанс возрастает на 20%%. Если противник умирает от удара, дает эффект \"Близость Смерти\", который увеличивает @b!ANRD.pa1# на @b!ANRD.va1# и @b!ANRD.pa2# на @b!ANRD.va2#. ",
+                },
+                [FourCC("ABFA")] = {
+                    [1] = "Лечит на @e!EFAA.hp_perc# каждую секунду в течении @b!A01N.time# секунд.",
+                    [10] = "Лечит на @e!EFAA.hp_perc# каждую секунду в течении @b!A01N.time# секунд. Так же дает @b!A01N.va1# @b!A01N.pa1#.",
+                },
+                [FourCC("A00I")] = {
+                    [1] = "Призывает неуязвимую огненную гидру, которая атакует врагов. Она наследует 70%% значений характеристик. С повышением уровня заклинания увеличивается ее время существования.",
+                },
+                [FourCC("A00H")] = {
+                    [1] = "Вошлебница подчиняет себе мощь стихий, весь урон от стихий [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# и @b!A00U.pa4#] увеличивается на @b!A00U.va1#, @b!A00U.pa5# на @b!A00U.va5#. Время эффекта - @b!A00U.time# сек. ",
+                },
+                [FourCC("A00E")] = {
+                    [1] = "Волшебница формирует вокруг себя ледяной барьер, повышающий ее защитные параметры: @b!A011.pa1# на @b!A011.va1# ед., @b!A011.pa2# на @b!A011.va2# ед., @b!A011.pa3# на @b!A011.va3# ед. и @b!A011.pa4# на @b!A011.va4# ед.",
+                },
+                [FourCC("A00N")] = {
+                    [1] = "Волшебница фокусирует энергии тайной магии, улучшая свою защиту: @b!A00T.pa1# на @b!A00T.va1# ед., @b!A00T.pa2# на @b!A00T.va2# и @b!A00T.pa3# на @b!A00T.va3#.",
+                },
+                [FourCC("A00K")] = {
+                    [1] = "Выпускает заряженный сгусток энергии медленно летящий вперед, периодически пульсируя разрядами в радиусе @m!MBLB.rad#, которые наносят @e!ELBL.pwr# ед. урона типа @e!ELBL.atr#",
+                },
+                [FourCC("A00J")] = {
+                    [1] = "Выстреливает 3 хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают.",
+                    [10] = "Выстреливает 4 хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают.",
+                    [20] = "Выстреливает 5 хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают.",
+                    [30] = "Выстреливает 6 хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают.",
+                    [40] = "Выстреливает 7 хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают.",
+                },
+                [FourCC("A00F")] = {
+                    [1] = "Призывает с неба метеор, падающий на землю после небольшой задержки, нанося @e!EMTR.pwr# ед. урона типа @e!EMTR.atr# в радиусе @e!EMTR.aoe# и отталкивая противников из центра падения. Имеет повышенный бонус к стихии (+@e!EMTR.ab#)",
+                },
+                [FourCC("A00L")] = {
+                    [1] = "Позволяет мгновенно переместиться на расстояние до @s!A00L.rng#.",
+                },
+                [FourCC("A00M")] = {
+                    [1] = "Призывает мощный разряд, поражающий в радиусе @e!ELST.aoe# нанося @e!ELST.pwr# ед. урона типа @e!ELST.atr#. Имеет повышенный бонус к стихии (+@e!ELST.ab#) и множителю критического урона (+@e!ELST.bcm#)",
+                },
+                [FourCC("A005")] = {
+                    [1] = "Запускает вперед ледяной шар, который наносит постоянно в радиусе @e!EFOA.aoe# @e!EFOA.pwr# ед. урона типа @e!EFOA.atr# (+@e!EFOA.ab#). В конце пути взрывается, нанося @e!EFRO.pwr# ед. урона типа @e!EFRO.atr#, с повышенном шансом критического урона на (+@e!EFRO.bcc#)",
+                },
+                [FourCC("A00D")] = {
+                    [1] = "Запускает вперед огненный шар, при столкновении наносящий @e!EGFB.pwr# ед. урона типа @e!EGFB.atr#.",
+                },
+                [FourCC("A001")] = {
+                    [1] = "Ледяная волна, исходящая от волшебницы до радиуса в @e!EFRN.aoe# ед., которая наносит противникам @e!EFRN.pwr# ед. урона типа @e!EFRN.atr# и замораживающая их на @b!A00S.time# cек.",
+                },
+                [FourCC("A003")] = {
+                    [1] = "Бросает вперед ледяную стрелу, при столкновении с первым противником разлетается на осколки нанося @e!EFRB.pwr# ед. урона типа @e!EFRB.atr# в радиусе @e!EFRB.aoe#. Пораженные охлаждаются, замедляясь на @b!A004.va1#",
+                },
+                [FourCC("A019")] = {
+                    [1] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 2 ближайших противников.",
+                    [10] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 3 ближайших противников.",
+                    [20] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 4 ближайших противников.",
+                    [30] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 5 ближайших противников.",
+                    [40] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 6 ближайших противников.",
+                    [50] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 7 ближайших противников.",
+                    [60] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 8 ближайших противников.",
+                    [70] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 9 ближайших противников.",
+                    [80] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 10 ближайших противников.",
+                },
+                [FourCC("AMLT")] = {
+                    [1] = "Чародейка концентрирует энергию в своих руках, испуская огненный луч который поражает первого противника нанося ему @e!EMLT.pwr# ед. урона типа @e!EMLT.atr#. Во время поддержания необходимо стоять на месте. Луч следует за указателем мыши. Увеличение уровня способности увеличивает время поддержания.",
+                },
+
+
+                QUEST_REWARD_GOLD_FIRST = "получено ",
+                QUEST_REWARD_GOLD_SECOND = " золота.",
+                QUEST_REWARD_POINTS_FIRST = "получено ",
+                QUEST_REWARD_POINTS_SECOND = " очков характеристик.",
+
+                RESSURECT_TEXT_1 = "Ваш герой возродится через |c008EFFFF",
+                RESSURECT_TEXT_2 = "|r сек. на кладбище.",
+                GOLD_PENALTY_TEXT_1 = "|c00FF4444Погибнув, вы где-то потеряли|r |c00FFFF44",
+                GOLD_PENALTY_TEXT_2 = "|r |c00FF4444золота.|r",
+
+                INTRODUCTION_TEXT_1 = "О, путник. Добро пожаловать в нашу крепость. Здесь конечно неспокойно, но по твоему виду можно сказать что ты не лыком шит.",
+                INTRODUCTION_TEXT_2 = "Возможно ты сможешь помочь нам? Дело в том, что тут стоит чертов артефакт, который возьми да активируйся.",
+                INTRODUCTION_TEXT_3 = "Сначала подумали, ну ладно, а потом на нас всякая нечисть поперла! Нам бы день продержаться да ночь простоять, поможешь?",
+
+                INTRODUCTION_BARBARIAN_RESPONCE = "Похоже это дело для вед... кхм, простите, варвара.",
+                INTRODUCTION_SORCERESS_RESPONCE = "Мои чары сокрушат любое существо.",
+
+
+                BARBARIAN_NAME = "Варвар",
+                SORCERESS_NAME = "Волшебница",
+
+                VENDOR_BILL_NAME = "Вендор Билл",
+                HEALER_NAME = "Целительница",
+                BLACKSMITH_NAME = "Кузнец",
+                SMORC_NAME = "Сморк",
+                LIBRARIAN_NAME = "Библиотекарь",
+                SCAVENGER_NAME = "Странствующий скупщик",
+
+
+                AIZEK_NAME = "Подмастерье Айзек",
+                GUINPLEN_NAME = "Гуинплен",
+                STEPHAN_NAME = "Целитель Стефан",
+                MORDER_NAME = "Мордер",
+                HUNTRESS_NAME = "Охотница",
+                ABENO_NAME = "Абэ-но",
+                TAKO_NAME = "Провизионист Тако",
+                WITCH_NAME = "Ведьма Леса",
+                HUNTER_NAME = "Охотник Борк",
+                DON_NAME = "Управляющий Дон",
+
+
+                QUEST_1_TITLE = "Потерянный груз",
+                QUEST_1_DESC = "Помощник кузнеца растерял припасы. Так как в  округе очень опасно, он попросил вас помочь ему вернуть утраченное.",
+                QUEST_1_SPEECH = "Оооо, ваша помощь мне будет очень кстати. Я тут груз потерял... а нынче в округе очень опасно. Не могли бы вы помочь мне, а я вам тоже помогу?",
+                QUEST_1_ITEM = "Собранные припасы",
+
+                QUEST_2_TITLE = "Голодовка",
+                QUEST_2_DESC = "Неспокойна обстановка привела к голоду внутри крепости. Необходимо раздобыть съестное, иначе многие умрут от голода.",
+                QUEST_2_SPEECH_1 = "Эй, слушай. Только никому не говори, но у нас очень большая проблема.",
+                QUEST_2_SPEECH_2 = "Тут такое дело, Наши обычные поставки еды обычно не задерживаются, но сами понимаете, сейчас все в округе кишит тварями.",
+                QUEST_2_SPEECH_3 = "Нам позарез нужно раздобыть провизию, иначе тут все каюк. Смекаешь?",
+                QUEST_2_RESPONCE = "Если я что-то найду, то принесу.",
+                QUEST_2_ITEM1 = "Провизии собрано",
+                QUEST_2_ITEM2 = "Отдать собранное",
+                QUEST_2_SPEECH_DONE = "Мое почтение! Этого нам хватит с запасом. Отличная работа!",
+
+                QUEST_1_M_TITLE = "Нечестивое создание",
+                QUEST_1_M_DESC = "В окрестностях видели особо свирепое демоническое создание. Нас попросили позаботиться о нем, и направили к Гуинплену, который где-то здесь неподалеку на поле возле крученого спуска.",
+                QUEST_1_M_ITEM = "Найти Гуинплена",
+                QUEST_1_M_ITEMVAR1 = "Найти Лилит",
+                QUEST_1_M_ITEMVAR2 = "Найти Посох Надежды",
+                QUEST_1_M_ITEMVAR1END = "Убтиь Лилит",
+                QUEST_1_M_ITEMVAR2END = "Опробовать посох на Лилит",
+                QUEST_1_M_SPEECH_INTRO = "Постойте. Я вижу, вы можете помочь в нашем деле. Дело в том, что в добавок к обычной нечисти, тут завелся один очень свирепый демон.",
+                QUEST_1_M_SPEECH_INTRO_2 = "Он с особой жестокостью расправляется с солдатами, и почти каждый день мы находим новые трупы заблудившихся путников.",
+                QUEST_1_M_SPEECH_INTRO_3 = "Нам бы как то избавиться от него, и как раз тут неподалеку есть рыцарь странник, может он может вам помочь?",
+                QUEST_1_M_SPEECH_GIUN_1 = "Вы по поводу жестокого демона? Знаете... я так скажу, у меня есть сведения, которые объясняют его происхождение.",
+                QUEST_1_M_SPEECH_GIUN_2 = "На самом деле это зачарованная девушка из местной деревушки. Кто то видимо решил отомстить и использовал какой то артефакт из преисподней на ней.",
+                QUEST_1_M_SPEECH_GIUN_3 = "Я уже нашел один посох который может избавить ее от проклятия, но когда я собирался встретиться с продавцом, оказалось что его растерзали, а посох утерян где то на юге-востоке отсюда.",
+                QUEST_1_M_SPEECH_GIUN_4 = "Найдете посох - и сможете избавиться от демона более цивилизованным способом.",
+                QUEST_1_M_SPEECH_END_2 = "О боже... я вернулась! Как вы смогли это сделать? Такое ощущение, что я очень крепко спала... Благодарю вас! Примите это в знак благодарности!",
+                QUEST_1_M_SPEECH_STAFF_FOUND = "Похоже это тот самый посох про который говорил Гуинплен. Теперь стоит найти демона и опробовать его на нем.",
+
+
+
+                QUEST_2_M_TITLE = "Страж Леса",
+                QUEST_2_M_DESC = "Местные охотники выслеживают Стража Леса - то ли миф, то ли реальное существо. Стоит разузнать побольше у этих самых охотников. Последнее их пристанище было где то на юге от крепости.",
+                QUEST_2_M_ITEM = "Найти лагерь охотников",
+                QUEST_2_M_ITEMVAR1 = "Выследить зверя",
+                QUEST_2_M_ITEMVAR2 = "Найти местную ведьму",
+                QUEST_2_M_ITEMVAR3 = "Cобрать растение Ивенор",
+                QUEST_2_M_ITEMVAR4 = "Поднести растения на алтарь леса",
+                QUEST_2_M_ITEMVAR5 = "Вернуть сердце зверя охотникам",
+                QUEST_2_M_ITEMVAR6 = "Убить зверя",
+
+                QUEST_2_M_RESPONCE = "Посмотрим что это за зверь.",
+                QUEST_2_M_RESPONCE_WITCH = "Я подумаю над этим.",
+                QUEST_2_M_RESPONCE_HUNTERS = "Понятно. Уже выдвигаюсь.",
+                QUEST_2_M_RESPONCE_HUNTERS_2 = "Вот сердце зверя.",
+
+                QUEST_2_M_INTRO_1 = "Постой! Тут на днях наш отряд охотников намеревался выследить какую то опасную зверину в лесах.",
+                QUEST_2_M_INTRO_2 = "Однако прошло уже пара недель, а от них никаких вестей, и никто не возвращается.",
+                QUEST_2_M_INTRO_3 = "Возможно ты сможешь помочь? Разузнать где они да как. Кто знает чем все обернулось...",
+
+
+                QUEST_2_M_HUNTER_1 = "О, дарова! Че, уже нас обыскались? Да не ссы, все путем.",
+                QUEST_2_M_HUNTER_2 = "Сложно конечно добраться обратно до крепости, пока тут нечисть всякая, но прорвемся.",
+                QUEST_2_M_HUNTER_3 = "Самое главное то - это местный Хозяин Леса! Знаешь, а мы почти его выследили. Добротный зверь такой, разворотил несколько караванов.",
+                QUEST_2_M_HUNTER_4 = "Может ты как раз сможешь нам подсобить и грохнуть его? Хотя тут ошивалась старая кляча, орала что бы мы не смели его трогать.",
+                QUEST_2_M_HUNTER_5 = "Мы ее конечно послали на три буквы, так что в голову ее не бери. Мы разберемся с этой шаболдой.",
+
+                QUEST_2_M_WITCH_1 = "Мг... Вижу, что тоже зверя ищете. Прошу, прекратите! Он страж этих земель, и вреда не приносит. Сами они разграбили грузы и свалили всю вину на него.",
+                QUEST_2_M_WITCH_2 = "Ему не зачем это делать, голода он не испытывает, а врагов у него нет. Кроме конечно тех, кто хочет его убить. Но вы бы не стали сами защищаться?",
+                QUEST_2_M_WITCH_3 = "Если его не станет, этому лесу точно придет погибель... я не хочу этого, да и жители сами увидят как лес умирает. Животных не станет.",
+                QUEST_2_M_WITCH_4 = "Вы можете помочь мне - соберите особую траву растущую здесь. Я проведу ритуал, и сокрою его от посторонних. Так мы спасем лес и зверя.",
+
+
+                QUEST_2_M_HUNTER_6 = "Ух ты, отлично! Теперь нам будет чем похвастаться! Эй, парни! Айда в город!",
+                QUEST_2_M_WITCH_5 = "Благодарю за вашу благосклонность и благоразумие. Теперь ему ничего не угрожает. Примите это в знак благодарности.",
+
+            },
+            ["enUS"] = {
+                WAVE_INCOMING_TEXT = "Stats:",
+                WAVE_LEVEL = "Level ",
+                WAVE_COUNTDOWN = "Attack in: ",
+
+                BLOCK_TEXT = "Block ",
+
+                PHYSICAL_ATTACK_PARAM = "Physical attack",
+                PHYSICAL_DEFENCE_PARAM = 'Physical defence',
+                MAGICAL_ATTACK_PARAM    = 'Magical attack',
+                MAGICAL_SUPPRESSION_PARAM = 'Magic suppression',
+
+                CRIT_CHANCE_PARAM         = 'Critical chance',
+                CRIT_MULTIPLIER_PARAM     = 'Critical multiplier',
+
+                PHYSICAL_BONUS_PARAM      = 'Physical damage',
+                ICE_BONUS_PARAM           = 'Cold damage',
+                FIRE_BONUS_PARAM          = 'Fire damage',
+                LIGHTNING_BONUS_PARAM     = 'Lightning damage',
+                POISON_BONUS_PARAM        = 'Poison damage',
+                ARCANE_BONUS_PARAM        = 'Arcane damage',
+                DARKNESS_BONUS_PARAM      = 'Darkness damage',
+                HOLY_BONUS_PARAM          = 'Holy damage',
+
+                ALL_RESIST_PARAM          = 'Resistances',
+                PHYSICAL_RESIST_PARAM     = 'Physical resistance',
+                ICE_RESIST_PARAM          = 'Cold resistance',
+                FIRE_RESIST_PARAM         = 'Fire resistance',
+                LIGHTNING_RESIST_PARAM    = 'Lightning resistance',
+                POISON_RESIST_PARAM       = 'Poison resistance',
+                ARCANE_RESIST_PARAM       = 'Arcane resistance',
+                DARKNESS_RESIST_PARAM     = 'Darkness resistance',
+                HOLY_RESIST_PARAM         = 'Holy resistance',
+
+                HP_REGEN_PARAM            = 'Health regeneration',
+                MP_REGEN_PARAM            = 'Resource regeneration',
+
+                HP_VALUE_PARAM            = 'Health',
+                MP_VALUE_PARAM            = 'Resource',
+
+                STR_STAT_PARAM            = 'Strength',
+                AGI_STAT_PARAM            = 'Agility',
+                INT_STAT_PARAM            = 'Intelligence',
+                VIT_STAT_PARAM            = 'Vitality',
+
+                MELEE_DAMAGE_REDUCTION_PARAM  = 'Melee damage',
+                RANGE_DAMAGE_REDUCTION_PARAM  = 'Range damage',
+                CONTROL_REDUCTION_PARAM       = 'Control resistance',
+
+                ATTACK_SPEED_PARAM            = 'Attack speed',
+                CAST_SPEED_PARAM              = 'Cast speed',
+                MOVING_SPEED_PARAM            = 'Moving speed',
+
+                BLOCK_CHANCE_PARAM            = 'Block chance',
+                BLOCK_ABSORB_PARAM            = 'Block damage reduction',
+
+                REFLECT_DAMAGE_PARAM   = 'Damage reflection',
+                REFLECT_MELEE_DAMAGE_PARAM   = 'Melee damage reflection',
+                REFLECT_RANGE_DAMAGE_PARAM   = 'Range damage reflection',
+
+                HP_PER_HIT_PARAM   = 'Health per hit',
+                MP_PER_HIT_PARAM   = 'Resource per hit',
+
+                BONUS_DEMON_DAMAGE_PARAM = "Damage to demons",
+                BONUS_UNDEAD_DAMAGE_PARAM = "Damage to undead",
+                BONUS_HUMAN_DAMAGE_PARAM = "Damage to humans",
+                BONUS_BEAST_DAMAGE_PARAM = "Damage to beasts",
+
+
+                ITEM_TYPE_WEAPON_NAME     = "Weapon",
+                ITEM_TYPE_ARMOR_NAME      = "Armor",
+                ITEM_TYPE_JEWELRY_NAME    = "Jewelry",
+                ITEM_TYPE_OFFHAND_NAME    = "Alternate",
+                ITEM_TYPE_CONSUMABLE_NAME = "Consumable",
+                ITEM_TYPE_GEM_NAME        = "Gem",
+                ITEM_TYPE_SKILLBOOK       = "Knowledge",
+                ITEM_TYPE_OTHER           = "Other",
+
+                BOW_WEAPON_NAME            = "Bow",
+                BLUNT_WEAPON_NAME          = "Blunt",
+                GREATBLUNT_WEAPON_NAME     = "Twohanded blunt",
+                SWORD_WEAPON_NAME          = "Sword",
+                GREATSWORD_WEAPON_NAME     = "Twohanded sword",
+                AXE_WEAPON_NAME            = "Axe",
+                GREATAXE_WEAPON_NAME       = "Twohanded axe",
+                DAGGER_WEAPON_NAME         = "Dagger",
+                STAFF_WEAPON_NAME          = "Staff",
+                JAWELIN_WEAPON_NAME        = "Jawelin",
+                HEAD_ARMOR_NAME            = "Head",
+                CHEST_ARMOR_NAME           = "Chest",
+                LEGS_ARMOR_NAME            = "Boots",
+                HANDS_ARMOR_NAME           = "Gloves",
+                BELT_ARMOR_NAME            = "Belt",
+                RING_JEWELRY_NAME          = "Ring",
+                NECKLACE_JEWELRY_NAME      = "Necklace",
+                THROWING_KNIFE_WEAPON_NAME = "Throwing knife",
+                SHIELD_OFFHAND_NAME	       = "Shield",
+                ORB_OFFHAND_NAME 		   = "Orb",
+                QUIVER_OFFHAND_NAME        = "Quiver",
+
+                PHYSICAL_ATTRIBUTE_NAME     = "Physical",
+                FIRE_ATTRIBUTE_NAME         = "Fire",
+                ICE_ATTRIBUTE_NAME          = "Cold",
+                LIGHTNING_ATTRIBUTE_NAME    = "Lightning",
+                POISON_ATTRIBUTE_NAME       = "Poison",
+                ARCANE_ATTRIBUTE_NAME       = "Arcane",
+                DARKNESS_ATTRIBUTE_NAME     = "Darkness",
+                HOLY_ATTRIBUTE_NAME         = "Holy",
+
+
+                FEEDBACK_GOLD = {
+                    [BARBARIAN_CLASS] = {
+                        "Sounds\\Responses\\barbarian_gold_1_us.wav",
+                        "Sounds\\Responses\\barbarian_gold_2_us.wav",
+                        "Sounds\\Responses\\barbarian_gold_3_us.wav",
+                        "Sounds\\Responses\\barbarian_gold_4_us.wav",
+                        "Sounds\\Responses\\barbarian_gold_5_us.wav",
+                    },
+                    [SORCERESS_CLASS] = {
+                        "Sounds\\Responses\\sorceress_gold_1_us.wav",
+                        "Sounds\\Responses\\sorceress_gold_2_us.wav",
+                        "Sounds\\Responses\\sorceress_gold_3_us.wav",
+                        "Sounds\\Responses\\sorceress_gold_4_us.wav",
+                        "Sounds\\Responses\\sorceress_gold_5_us.wav",
+                    }
+                },
+
+                FEEDBACK_HEAL = {
+                    [BARBARIAN_CLASS] = {
+                        "Sounds\\Responses\\barbarian_healing_1_us.wav",
+                        "Sounds\\Responses\\barbarian_healing_2_us.wav",
+                        "Sounds\\Responses\\barbarian_healing_3_us.wav",
+                        "Sounds\\Responses\\barbarian_healing_4_us.wav",
+                        "Sounds\\Responses\\barbarian_healing_5_us.wav",
+                    },
+                    [SORCERESS_CLASS] = {
+                        "Sounds\\Responses\\sorceress_healing_1_us.wav",
+                        "Sounds\\Responses\\sorceress_healing_2_us.wav",
+                        "Sounds\\Responses\\sorceress_healing_3_us.wav",
+                        "Sounds\\Responses\\sorceress_healing_4_us.wav",
+                        "Sounds\\Responses\\sorceress_healing_5_us.wav",
+                    }
+                },
+
+                FEEDBACK_BAG = {
+                    [BARBARIAN_CLASS] = {
+                        "Sounds\\Responses\\barbarian_bag_1_us.wav",
+                        "Sounds\\Responses\\barbarian_bag_2_us.wav",
+                        "Sounds\\Responses\\barbarian_bag_3_us.wav",
+                        "Sounds\\Responses\\barbarian_bag_4_us.wav",
+                        "Sounds\\Responses\\barbarian_bag_5_us.wav",
+                    },
+                    [SORCERESS_CLASS] = {
+                        "Sounds\\Responses\\sorceress_bag_1_us.wav",
+                        "Sounds\\Responses\\sorceress_bag_2_us.wav",
+                        "Sounds\\Responses\\sorceress_bag_3_us.wav",
+                        "Sounds\\Responses\\sorceress_bag_4_us.wav",
+                        "Sounds\\Responses\\sorceress_bag_5_us.wav",
+                    }
+                },
+
+                FEEDBACK_CLASSRESTRICTED = {
+                    [BARBARIAN_CLASS] = {
+                        "Sounds\\Responses\\barbarian_classrestricted_1_us.wav",
+                        "Sounds\\Responses\\barbarian_classrestricted_2_us.wav",
+                        "Sounds\\Responses\\barbarian_classrestricted_3_us.wav",
+                        "Sounds\\Responses\\barbarian_classrestricted_4_us.wav",
+                    },
+                    [SORCERESS_CLASS] = {
+                        "Sounds\\Responses\\sorceress_classrestricted_1_us.wav",
+                        "Sounds\\Responses\\sorceress_classrestricted_2_us.wav",
+                        "Sounds\\Responses\\sorceress_classrestricted_3_us.wav",
+                        "Sounds\\Responses\\sorceress_classrestricted_4_us.wav",
+                    }
+                },
+
+                SKILL_PANEL_TOOLTIP_NAME = "Skills",
+                SKILL_PANEL_TOOLTIP_DESCRIPTION = "Overlook and bind settings for all abilities.",
+
+                SKILL_CATEGORY_LIGHTNING = "Lightning",
+                SKILL_CATEGORY_FIRE = "Fire",
+                SKILL_CATEGORY_ICE = "Ice",
+                SKILL_CATEGORY_ARCANE = "Arcane",
+                SKILL_CATEGORY_FIGHTING_MASTERY = "Fighting Mastery",
+                SKILL_CATEGORY_BATTLE_ADVANTAGE = "Battle Advantage",
+                SKILL_CATEGORY_INNER_STRENGTH = "Inner Strength",
+
+                SKILL_CATEGORY_LIGHTNING_ADVANCED = "Lightning skills: ",
+                SKILL_CATEGORY_FIRE_ADVANCED = "Fire skills: ",
+                SKILL_CATEGORY_ICE_ADVANCED = "Ice skills: ",
+                SKILL_CATEGORY_ARCANE_ADVANCED = "Arcane skills: ",
+                SKILL_CATEGORY_FIGHTING_MASTERY_ADVANCED = "Fighting Mastery skills: ",
+                SKILL_CATEGORY_BATTLE_ADVANTAGE_ADVANCED = "Battle Advantage skills: ",
+                SKILL_CATEGORY_INNER_STRENGTH_ADVANCED = "Inner Strength skills: ",
+
+                SKILL_PANEL_LVL_TEXT = "Level: ",
+                SKILL_PANEL_UNBIND = "Unbind",
+
+                SKILL_PANEL_MANA_TEXT = " mana",
+                SKILL_PANEL_COOLDOWN_TEXT = " cooldown",
+                SKILL_PANEL_RANGE_TEXT = " range",
+
+                CASTLE_LOCATION = 'Castle',
+                SHORE_LOCATION = 'Shore',
+                WOODS_LOCATION = 'Woods',
+                RUINS_LOCATION = "Ruins",
+
+                CASTLE_LOCATION_NAME = "OLD CASTLE",
+                MAINROAD_LOCATION_NAME = "MAIN TRACT",
+                WILDFOREST_LOCATION_NAME = "WILD FOREST",
+                NARROWPASS_LOCATION_NAME = "NARROW PASS",
+                OUTSKIRTS_LOCATION_NAME = "FAR OUTSKIRTS",
+                SACREDGROVE_LOCATION_NAME = "SACRED GROVE",
+                MEADOWS_LOCATION_NAME = "BLOOMING MEADOWS",
+
+                CASTLE_LOCATION_TEXTURE = "vagrant_fortress_en.blp",
+                MAINROAD_LOCATION_TEXTURE = "trading_path_en.blp",
+                WILDFOREST_LOCATION_TEXTURE = "duskwood_en.blp",
+                NARROWPASS_LOCATION_TEXTURE = "narrow_pass_en.blp",
+                OUTSKIRTS_LOCATION_TEXTURE = "forgotten_lands_en.blp",
+                SACREDGROVE_LOCATION_TEXTURE = "sacred_grove_en.blp",
+                MEADOWS_LOCATION_TEXTURE = "blooming_meadows_en.blp",
+
+                FEEDBACK_MSG_NOSPACE = "Not enough space",
+                FEEDBACK_MSG_CANTUSE = "Can't use that",
+                FEEDBACK_MSG_NOGOLD = "Not enough gold",
+
+                SHOP_MESSAGE_NO_SPACE = "Shop doesn't have empty space",
+
+                INVENTORY_PANEL_TOOLTIP_NAME = "Inventory",
+                INVENTORY_PANEL_TOOLTIP_DESCRIPTION =  "Contains all of your items.",
+
+                UI_TEXT_SELL = "Sell",
+                UI_TEXT_BUY = "Buy",
+                UI_TEXT_ENCHANT = "Socket",
+                UI_TEXT_LEARN = "Learn",
+                UI_TEXT_MOVE = "Move",
+                UI_TEXT_EQUIP = "Equip",
+                UI_TEXT_DROP = "Drop",
+                UI_TEXT_BELT_ON = "Take on",
+                UI_TEXT_BELT_OFF = "Take off",
+                UI_TEXT_REFORGE = "Reforge",
+                UI_TEXT_RESOCKET = "Resocket",
+                UI_TEXT_ALT_WEAPON = "Left hand",
+                UI_TEXT_EXCHANGE = "Exchange",
+
+                UI_TEXT_OK = "ok",
+                UI_TEXT_CANCEL = "cancel",
+
+                UI_TOOLTIP_REFORGE_TITLE = "Reforge an item",
+                UI_TOOLTIP_REFORGE_DESC = "Improving the item level.",
+
+                UI_TOOLTIP_EXCHANGE_TITLE = "Exchange",
+                UI_TOOLTIP_EXCHANGE_DESC = "Switching books to the ones that can be learned.",
+
+                HINT_INVENTORY_1 = "You can use single click on any item in the inventory to open up a context menu or double click to do a fast interaction depending on an item type.",
+                HINT_INVENTORY_2 = "For example you can do double click on a weapon to equip it in the main hand. Doing the same on a consumable item will bind it in the basic hero inventory.",
+                HINT_SHOP_1 = "Every wave stock of each shop will get updated so feel free to sell unnecessary items. While you have any shop opened context menu in the invenrory unlocks <Sell> button.",
+                HINT_BLACKSMITH_1 = "Blacksmith can reforge your item to the wave level, upgrading its basic parameters. Also he can remove socket stones. That action won't return the stone.",
+                HINT_STATS_1 = "Basic parameters are crucial in a hero development. You can hover over any of it to know more about each. You gain 3 parameter points with a new level.",
+                HINT_ALTARS = "You can interact with altars, chests or wells via right click while being nearby. Altars give random positive effect, chests contain loot and gold and wells recover your's hero hp or mana.",
+                HINT_BELT = "You can use items on the belt by pressing 1-2-3-4-5-6. Items numeration starts with the top-left item.",
+
+
+                DAMAGE_UI = "Damage: ",
+                BLOCK_UI = "Block: ",
+                DAMAGE_TYPE_UI = "Damage Type: ",
+                DEFENCE_UI = "Defence: ",
+                SUPPRESSION_UI = "Suppression: ",
+
+                ADDITIONAL_INFO_UI = "|nBonuses:|n",
+                AUGMENTS_UI = "|nAugments:|n",
+                SLOTS_UI = "|nSockets:|n",
+                SET_PART_UI = " parts:|n",
+                UNIQUE_EFFECT_UI = "Unique effect",
+
+
+                STAT_PANEL_TOOLTIP_NAME = "Stats",
+                STAT_PANEL_TOOLTIP_DESCRIPTION =  "Manage and overview your stats",
+
+                STAT_PANEL_STR = "STR: ",
+                STAT_PANEL_INT = "INT: ",
+                STAT_PANEL_VIT = "VIT: ",
+                STAT_PANEL_AGI = "AGI: ",
+
+                STAT_PANEL_MAIN_STAT = "Main",
+                STAT_PANEL_STR_DESC = "Boosts physical damage.",
+                STAT_PANEL_INT_DESC = "Each point gives 1 magic suppression. Also boosts magical damage, mana and mana recovery.",
+                STAT_PANEL_VIT_DESC = "Boosts heath amount and its recovery.",
+                STAT_PANEL_AGI_DESC = "Each point gives 2 defence.",
+
+
+                STAT_PANEL_PHYS_ATTACK = "Phys. attack: ",
+                STAT_PANEL_PHYS_DEFENCE = "Defence: ",
+                STAT_PANEL_MAG_ATTACK = "Mag. attack: ",
+                STAT_PANEL_MAG_DEFENCE = "Suppress: ",
+                STAT_PANEL_ATTACK_SPEED = "Attacks per sec.: ",
+                STAT_PANEL_CRIT_CHANCE = "Crit. chance: ",
+
+                STAT_PANEL_FIRE = "Fire: ",
+                STAT_PANEL_PHYSICAL = "Phys.: ",
+                STAT_PANEL_ICE = "Ice: ",
+                STAT_PANEL_LIGHTNING = "Lightning: ",
+                STAT_PANEL_DARKNESS = "Darkness: ",
+                STAT_PANEL_HOLY = "Holy: ",
+                STAT_PANEL_POISON = "Poison: ",
+                STAT_PANEL_ARCANE = "Arcane: ",
+
+                REFORGE_BUTTON_TEXT = "Reforge",
+                SOCKET_BUTTON_TEXT = "Remove",
+                EXCHANGE_BUTTON_TEXT = "Exchange",
+
+
+                WORN_DECL_HE = "Worn ",
+                WORN_DECL_SHE = "Worn ",
+                WORN_DECL_THEY = "Worn ",
+                WORN_DECL_IT = "Worn ",
+
+                FINE_DECL_HE = "Fine ",
+                FINE_DECL_SHE = "Fine ",
+                FINE_DECL_THEY = "Fine ",
+                FINE_DECL_IT = "Fine ",
+
+                EXCELLENT_DECL_HE = "Excellent ",
+                EXCELLENT_DECL_SHE = "Excellent ",
+                EXCELLENT_DECL_THEY = "Excellent ",
+                EXCELLENT_DECL_IT = "Excellent ",
+
+                IDEAL_DECL_HE = "Perfect ",
+                IDEAL_DECL_SHE = "Perfect ",
+                IDEAL_DECL_THEY = "Perfect ",
+                IDEAL_DECL_IT = "Perfect ",
+
+                ITEM_SUFFIX_ANGER = " of Anger",
+                ITEM_SUFFIX_FURY = " of Fury",
+                ITEM_SUFFIX_CONCENTRATION = " of Concentration",
+                ITEM_SUFFIX_PRECISION = " of Precision",
+                ITEM_SUFFIX_ICE_WIZARD = " of Frost Wizard",
+                ITEM_SUFFIX_FIRE_WIZARD = " of Fire Wizard",
+                ITEM_SUFFIX_LIGHTNING_WIZARD = " of Lightning Wizard",
+                ITEM_SUFFIX_SLAYER = " of Slayer",
+                ITEM_SUFFIX_TRICKSTER = " of Trickster",
+                ITEM_SUFFIX_ROCK = " of Rock",
+                ITEM_SUFFIX_KNIGHT = " of Knight",
+                ITEM_SUFFIX_MYSTERY = " of Mystery",
+                ITEM_SUFFIX_KNOWLEDGE = " of Knowledge",
+                ITEM_SUFFIX_PURE_CONCENTRATION      = " of Focus",
+                ITEM_SUFFIX_SLAYER_GENIUS           = " of Genius Slayer",
+                ITEM_SUFFIX_HIGH_KNIGHT             = " of Noble Knight",
+                ITEM_SUFFIX_ENDLESS_FURY            = " of Endless Fury",
+                ITEM_SUFFIX_DEADLY_PRECISION        = " of Deadly Precision",
+
+                GENERIC_SWORD_NAME_1 = "rough blade",
+                GENERIC_SWORD_NAME_2 = "short blade",
+                GENERIC_SWORD_NAME_3 = "runic blade",
+                GENERIC_SWORD_NAME_4 = "broadsword",
+                GENERIC_SWORD_NAME_5 = "charmed blade",
+                GENERIC_SWORD_NAME_6 = "rapier",
+
+                GENERIC_GREATSWORD_NAME_1 = "barbaric cutter",
+                GENERIC_GREATSWORD_NAME_2 = "giants knife",
+                GENERIC_GREATSWORD_NAME_3 = "claymore",
+                GENERIC_GREATSWORD_NAME_4 = "estoc",
+
+                GENERIC_AXE_NAME_1 = "broad axe",
+                GENERIC_AXE_NAME_2 = "serrated axe",
+                GENERIC_AXE_NAME_3 = "steel axe",
+                GENERIC_AXE_NAME_4 = "mystic axe",
+
+                GENERIC_GREATAXE_NAME_1 = "huge cutter",
+                GENERIC_GREATAXE_NAME_2 = "curved axe",
+
+                GENERIC_BLUNT_NAME_1 = "ancient mace",
+                GENERIC_BLUNT_NAME_2 = "club",
+                GENERIC_BLUNT_NAME_3 = "studded club",
+                GENERIC_BLUNT_NAME_4 = "flail",
+                GENERIC_BLUNT_NAME_5 = "harbringer's mace",
+                GENERIC_BLUNT_NAME_6 = "morgenstern",
+
+                GENERIC_GREATBLUNT_NAME_1 = "large studded club",
+                GENERIC_GREATBLUNT_NAME_2 = "mithril hammer",
+                GENERIC_GREATBLUNT_NAME_3 = "charmed scepter",
+                GENERIC_GREATBLUNT_NAME_4 = "runic warhammer",
+
+                GENERIC_DAGGER_NAME_1 = "curved knife",
+                GENERIC_DAGGER_NAME_2 = "gilded knife",
+                GENERIC_DAGGER_NAME_3 = "knife",
+                GENERIC_DAGGER_NAME_4 = "sharpening",
+                GENERIC_DAGGER_NAME_5 = "chopping knife",
+                GENERIC_DAGGER_NAME_6 = "stinger",
+                GENERIC_DAGGER_NAME_7 = "molten dagger",
+
+                GENERIC_STAFF_NAME_1 = "Parcel of Nature",
+                GENERIC_STAFF_NAME_2 = "fiery scepter",
+                GENERIC_STAFF_NAME_3 = "Jade Light",
+                GENERIC_STAFF_NAME_4 = "Moonlight",
+                GENERIC_STAFF_NAME_5 = "The ways of World",
+                GENERIC_STAFF_NAME_6 = "Prophet",
+                GENERIC_STAFF_NAME_7 = "Moonglade staff",
+                GENERIC_STAFF_NAME_8 = "Death's Gift",
+                GENERIC_STAFF_NAME_9 = "Seeker",
+
+                GENERIC_BOW_NAME_1 = "Gilded Tree",
+                GENERIC_BOW_NAME_2 = "Longbow",
+                GENERIC_BOW_NAME_3 = "Rough bow",
+                GENERIC_BOW_NAME_4 = "Scouter bow",
+                GENERIC_BOW_NAME_5 = "Heavy bow",
+                GENERIC_BOW_NAME_6 = "Horn",
+                GENERIC_BOW_NAME_7 = "runic bow",
+                GENERIC_BOW_NAME_8 = "empowered bow",
+                GENERIC_BOW_NAME_9 = "twitching bow",
+                GENERIC_BOW_NAME_10 = "mystic bow",
+                GENERIC_BOW_NAME_11 = "iced bow",
+
+                GENERIC_QUIVER_NAME_1 = "quiver",
+                GENERIC_QUIVER_NAME_2 = "leather quiver",
+                GENERIC_QUIVER_NAME_3 = "ranger's quiver",
+                GENERIC_QUIVER_NAME_4 = "crafted quiver",
+                GENERIC_QUIVER_NAME_5 = "skillful quiver",
+                GENERIC_QUIVER_NAME_6 = "military quiver",
+                GENERIC_QUIVER_NAME_7 = "fortified quiver",
+                GENERIC_QUIVER_NAME_8 = "huntsman's quiver",
+                GENERIC_QUIVER_NAME_9 = "master quiver",
+                GENERIC_QUIVER_NAME_10 = "lightweight quiver",
+
+                GENERIC_ORB_NAME_1 = "wind orb",
+                GENERIC_ORB_NAME_2 = "water orb",
+                GENERIC_ORB_NAME_3 = "sand orb",
+                GENERIC_ORB_NAME_4 = "scorching orb",
+                GENERIC_ORB_NAME_5 = "clot of chaos",
+                GENERIC_ORB_NAME_6 = "charged orb",
+                GENERIC_ORB_NAME_7 = "drop of darkness",
+
+                GENERIC_SHIELD_NAME_1 = "wide shield",
+                GENERIC_SHIELD_NAME_2 = "knight's shield",
+                GENERIC_SHIELD_NAME_3 = "heir's shield",
+                GENERIC_SHIELD_NAME_4 = "buckler",
+                GENERIC_SHIELD_NAME_5 = "defender",
+                GENERIC_SHIELD_NAME_6 = "tower shield",
+                GENERIC_SHIELD_NAME_7 = "runic shield",
+                GENERIC_SHIELD_NAME_8 = "reflector",
+                GENERIC_SHIELD_NAME_9 = "rondache",
+
+                GENERIC_CHEST_NAME_1 = "composite chest",
+                GENERIC_CHEST_NAME_2 = "Raven Wing",
+                GENERIC_CHEST_NAME_3 = "enforced plate",
+                GENERIC_CHEST_NAME_4 = "carapace",
+                GENERIC_CHEST_NAME_5 = "light armor",
+                GENERIC_CHEST_NAME_6 = "heavy armor",
+                GENERIC_CHEST_NAME_7 = "steel armor",
+                GENERIC_CHEST_NAME_8 = "robe",
+                GENERIC_CHEST_NAME_9 = "sturdy armor",
+                GENERIC_CHEST_NAME_10 = "armored chest",
+                GENERIC_CHEST_NAME_11 = "cuirass",
+                GENERIC_CHEST_NAME_12 = "complex chest",
+                GENERIC_CHEST_NAME_13 = "Moonglade",
+
+                GENERIC_HANDS_NAME_1 = "fur gloves",
+                GENERIC_HANDS_NAME_2 = "leather gloves",
+                GENERIC_HANDS_NAME_3 = "chain gauntlets",
+                GENERIC_HANDS_NAME_4 = "plate gauntlets",
+                GENERIC_HANDS_NAME_5 = "enforced plate gauntlets",
+                GENERIC_HANDS_NAME_6 = "duelist's gauntlets",
+                GENERIC_HANDS_NAME_7 = "charmed gloves",
+
+                GENERIC_LEGS_NAME_1 = "hiking boots",
+                GENERIC_LEGS_NAME_2 = "sandals",
+                GENERIC_LEGS_NAME_3 = "leather sandals",
+                GENERIC_LEGS_NAME_4 = "reinforced sandals",
+                GENERIC_LEGS_NAME_5 = "plate boots",
+                GENERIC_LEGS_NAME_6 = "armored boots",
+                GENERIC_LEGS_NAME_7 = "composite boots",
+
+
+                GENERIC_HEAD_NAME_1 = "plate cape",
+                GENERIC_HEAD_NAME_2 = "demonic helmet",
+                GENERIC_HEAD_NAME_3 = "horned helmet",
+                GENERIC_HEAD_NAME_4 = "fanatic's helmet",
+                GENERIC_HEAD_NAME_5 = "cape",
+                GENERIC_HEAD_NAME_6 = "light helmet",
+                GENERIC_HEAD_NAME_7 = "steel cap",
+                GENERIC_HEAD_NAME_8 = "dragonhunter's helmet",
+                GENERIC_HEAD_NAME_9 = "enforced helmet",
+                GENERIC_HEAD_NAME_10 = "justicars helmet",
+                GENERIC_HEAD_NAME_11 = "royal helmet",
+
+                GENERIC_BELT_NAME_1 = "belt",
+                GENERIC_BELT_NAME_2 = "armored belt",
+                GENERIC_BELT_NAME_3 = "hunter's belt",
+                GENERIC_BELT_NAME_4 = "belt",
+                GENERIC_BELT_NAME_5 = "combat belt",
+                GENERIC_BELT_NAME_6 = "studded belt",
+                GENERIC_BELT_NAME_7 = "charmed sash",
+                GENERIC_BELT_NAME_8 = "cast belt",
+
+
+                GENERIC_RING_NAME_1 = "adamantite ring",
+                GENERIC_RING_NAME_2 = "gold-plated ring",
+                GENERIC_RING_NAME_3 = "knight's signet",
+                GENERIC_RING_NAME_4 = "heir's ring",
+                GENERIC_RING_NAME_5 = "golden ring",
+                GENERIC_RING_NAME_6 = "aquamarine ring",
+                GENERIC_RING_NAME_7 = "blackened ring",
+                GENERIC_RING_NAME_8 = "arcanite ring",
+                GENERIC_RING_NAME_9 = "cruel ring",
+                GENERIC_RING_NAME_10 = "runic ring",
+                GENERIC_RING_NAME_11 = "hoarfrost ring",
+
+
+                GENERIC_NECKLACE_NAME_1 = "pendant with stone",
+                GENERIC_NECKLACE_NAME_2 = "silver amulet",
+                GENERIC_NECKLACE_NAME_3 = "ancient amulet",
+                GENERIC_NECKLACE_NAME_4 = "sorcerer rosary",
+                GENERIC_NECKLACE_NAME_5 = "charmed pendant",
+                GENERIC_NECKLACE_NAME_6 = "energized amulet",
+                GENERIC_NECKLACE_NAME_7 = "emerald pendant",
+                GENERIC_NECKLACE_NAME_8 = "ruby pendant",
+                GENERIC_NECKLACE_NAME_9 = "sapphire pendant",
+
+
+                STARTING_ITEM_NAME_2HSWORD = "Claymore",
+                STARTING_ITEM_NAME_CHEST = "Riveted armor",
+                STARTING_ITEM_NAME_HEAD = "Helmet",
+                STARTING_ITEM_NAME_HANDS = "Quilted Gauntlets",
+                STARTING_ITEM_NAME_LEGS = "Riveted boots",
+                STARTING_ITEM_NAME_STAFF = "Worn staff",
+
+                SHARD_OF_HATE = "Shard of Hate",
+                SHARD_OF_HATE_DESC = "Strange glowing shard, you feel rise of hatred upon touching it.",
+
+                GEM_RUBY = 'Ruby',
+                GEM_SAPPHIRE = 'Sapphire',
+                GEM_TOPAZ = 'Topaz',
+                GEM_AMBER = 'Abmer',
+                GEM_AQUAMARINE = 'Aquamarine',
+                GEM_DIAMOND = 'Diamond',
+                GEM_AMETHYST = "Amethyst",
+                GEM_TURQUOISE = 'Turquoise',
+                GEM_EMERALD = 'Emerald',
+                GEM_MALACHITE = 'Malachite',
+                GEM_JADE = 'Jade',
+                GEM_OPAL = 'Opal',
+
+
+                POTION_WEAK_HP_NAME_TEXT = "Health Potion",
+                POTION_HALF_HP_NAME_TEXT = "Great Health Potion",
+                POTION_STRONG_HP_NAME_TEXT = "Large Health Potion",
+
+                POTION_WEAK_HP_DESC_TEXT = "Restoring 25%% of health",
+                POTION_HALF_HP_DESC_TEXT = "Restoring 50%% of health",
+                POTION_STRONG_HP_DESC_TEXT = "Restoring 75%% of health",
+
+                POTION_WEAK_MP_NAME_TEXT = "Mana Potion",
+                POTION_HALF_MP_NAME_TEXT = "Great Mana Potion",
+                POTION_STRONG_MP_NAME_TEXT = "Large Mana Potion",
+
+                POTION_WEAK_MP_DESC_TEXT = "Restoring 25%% of mana",
+                POTION_HALF_MP_DESC_TEXT = "Restoring 50%% of mana",
+                POTION_STRONG_MP_DESC_TEXT = "Restoring 75%% of mana",
+
+                POTION_WEAK_MIX_NAME_TEXT = "Restoration Potion",
+                POTION_HALF_MIX_NAME_TEXT = "Great Restoration Potion",
+                POTION_STRONG_MIX_NAME_TEXT = "Large Restoration Potion",
+
+                POTION_WEAK_MIX_DESC_TEXT = "Restoring 25%% of health and mana over time",
+                POTION_HALF_MIX_DESC_TEXT = "Restoring 50%% of health and mana over time",
+                POTION_STRONG_MIX_DESC_TEXT = "Restoring 75%% of health and mana over time",
+
+                SCROLL_OF_TOWN_PORTAL_NAME = "Scroll of the Town portal",
+                SCROLL_OF_TOWN_PORTAL_DESC = "Opens up a temporary portal to the town.",
+
+                POTION_ADRENALINE_TEXT = "Adrenaline Potion",
+                POTION_ADRENALINE_DESC_TEXT = "For a short period of time gives 35%% move speed.",
+
+                POTION_ANTIDOTE_TEXT = "Antidote",
+                POTION_ANTIDOTE_DESC_TEXT = "Gives moderate poison resist.",
+
+                SCROLL_OF_PROTECTION_NAME = "Scroll of Protection",
+                SCROLL_OF_PROTECTION_DESC = "Grants resistance to all attributes.",
+
+
+                SKILLBOOK_FIRE = "Book of fire",
+                SKILLBOOK_LIGHTNING = "Book of lightning",
+                SKILLBOOK_ICE = "Book of ice",
+                SKILLBOOK_ARCANE = "Book of arcane",
+                SKILLBOOK_FIGHTING_MASTERY = "Book of fighter",
+                SKILLBOOK_INNER_STRENGTH = "Book of strength",
+                SKILLBOOK_BATTLE_ADVANTAGE = "Book of superiority",
+
+                SKILLBOOK_TEXT = "Improving your knowledge:",
+
+                BOOK_TOME_NAME = "Knowledge Tome",
+                BOOK_TOME_NAME_TEXT = "Gives 1 stat point.",
+
+                SKILL_WARCRY = 'Warcry',
+                SKILL_CUTTINGSLASH = 'Cutting Slash',
+                SKILL_HARPOON = 'Harpoon',
+                SKILL_CRUSHINGBLOW = 'Crushing Blow',
+                SKILL_WHIRLWIND = 'Whirlwind',
+                SKILL_BERSERK = 'Berserk',
+                SKILL_UPPERCUT = 'Uppercut',
+                SKILL_THROWKNIFE = 'Knife Throw',
+                SKILL_JUMP = 'Jump',
+                SKILL_EXECUTION = "Execution",
+                SKILL_FIRSTAID = "Bandage",
+                SKILL_SUMMONHYDRA = 'Summon Hydra',
+                SKILL_ELEMENTALMASTERY = 'Elemental Mastery',
+                SKILL_FOCUS = 'Focus',
+                SKILL_FROSTARMOR = 'Frost Armor',
+                SKILL_LIGHTNINGBALL = 'Lightning Ball',
+                SKILL_DISCHARGE = 'Discharge',
+                SKILL_METEOR = 'Meteor',
+                SKILL_TELEPORT = 'Teleport',
+                SKILL_LIGHTNINGSTRIKE = 'Lightning Strike',
+                SKILL_FROSTORB = 'Frost Orb',
+                SKILL_FROSTBOLT = 'Frostbolt',
+                SKILL_FIREBALL = 'Fireball',
+                SKILL_FROSTNOVA = 'Frost Nova',
+                SKILL_CHAIN_LIGHTNING = "Electrocute",
+                SKILL_MELTDOWN = "Meltdown",
+
+                --SKILL_ = 'Summon',
+
+
+
+                SET_NAME_ANCIENT_LEGACY = "Ancient legacy",
+                SET_NAME_JESTERANDKING = "Jester and King",
+                SET_NAME_FIREBOND = "Fire bond",
+                SET_NAME_FRENDLINESS = "Frendliness",
+
+
+                ITEM_LEG_DESCRIPTION_FIREBOND = "Fire abilities are stronger by 35%%.",
+                ITEM_LEG_DESCRIPTION_WITCH_MASTERY = "Each casted spell will increase your spell power by 10%% in exhange of 5%% life",
+                ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Each enemy near the hero is increasing his moving speed by 3%%, to a maximum of 25%%",
+                ITEM_LEG_DESCRIPTION_RITUAL_DAGGER = " With each attack you gain a stack of Chaos effect. After reaching 15 stacks, attack power and speed gain major boost for short period of time, but health regeneration is inversed.",
+                ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "With each fire, ice or lightning attack you apply a negative effect that will decrease target's resistance of that element by 5 for 7 sec. Every attack is refreshing uptime and stacking 3 times.",
+                ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Discharge\" now comes out of sorceress, also it's power is increased.",
+                ITEM_LEG_DESCRIPTION_PAIN_ECHO = "\"Cutting Slash\"'s bleeding now can be critical and gains 25%% critical chance bonus.",
+                ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "With each attack you apply crystallisation on the enemies, decreasing their moving speed. After reaching 5 stacks, enemy will freeze for 3 sec.",
+                ITEM_LEG_DESCRIPTION_BOOSTERS = "Upon landing after using \"Jump\" deals 215%% of weapon damage in a small area.",
+                ITEM_LEG_DESCRIPTION_ICE_TOUCH = "After using \"Frostbolt\" instead of 1 missile it creates 3 behind the sorceress that after a short delay launch on a target.",
+
+
+                ITEM_NAME_RAT_HUNTER = 'Rat Hunter',
+                ITEM_SPEC_DESCRIPTION_RAT_HUNTER = "Even the rat-hunters had a legendary bows, which all rat hunters are desired.",
+
+                ITEM_NAME_BOOT_OF_COWARD = 'Boot of Coward',
+                ITEM_SPEC_DESCRIPTION_BOOT_OF_COWARD = "The owner of this boot used a secret tactic of his noble family, that was inherited over 300 years. But that wasn't for long...",
+
+
+                ITEM_NAME_WITCH_MASTERY = "Witch Mastery",
+                ITEM_SPEC_DESCRIPTION_WITCH_MASTERY = "This staff is belonged to a very ancient witch. It is absorbed some blood magic, and can share it with wielder.",
+
+
+                ITEM_NAME_DARK_CROWN = "Dark Crown",
+                ITEM_SPEC_DESCRIPTION_DARK_CROWN = "If you want to resist the darkness, became darkness yourself.",
+
+                ITEM_NAME_RITUAL_DAGGER = "Ritual Dagger",
+                ITEM_SPEC_DESCRIPTION_RITUAL_DAGGER = "Power within this blade is revealed with every slash. And let the one who takes possession of it can bear it.",
+
+                ITEM_NAME_ACOLYTE_MANTLE = "Acolyte's Mantle",
+                ITEM_SPEC_DESCRIPTION_ACOLYTE_MANTLE = "The ideal solution for withdrawing into yourself.",
+
+                ITEM_NAME_SMORC_PICKAXE = "Smorc's Pickaxe",
+                ITEM_SPEC_DESCRIPTION_SMORC_PICKAXE = "Legends have told, that miner Smorc was crushing his enemies with that thing.",
+
+                ITEM_NAME_BOOSTERS = "Boosters",
+                ITEM_SPEC_DESCRIPTION_BOOSTERS = "Invention of an unknown author has found its unique use.",
+
+                ITEM_NAME_EYE_OF_THE_STORM = "Eye of the Storm",
+                ITEM_SPEC_DESCRIPTION_EYE_OF_THE_STORM = "Unknown sorcerer acquired a magnificent artifact, and shortly after that he became an ash.",
+
+                ITEM_NAME_FIREPRINCESS = "Fiery Princess",
+                --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+                ITEM_SPEC_DESCRIPTION_FIREPRINCESS = "Princess of an ancient kingdom has had an special interest to a flame, burning her traitors and surrounding herself in a lot of fire.",
+
+
+                ITEM_NAME_FIREQUEEN = "Fiery Queen",
+                --ITEM_LEG_DESCRIPTION_FIREQUEEN = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+                ITEM_SPEC_DESCRIPTION_FIREQUEEN = "After becoming a queen, her passion towards the flames only grew stronger. One day, when her servants entered her chamber, only ring and an amulet lied down on the charred floor, with no trace of the Queen whatsoever.",
+
+
+                ITEM_NAME_PAIN_ECHO = "Pain Echo",
+                ITEM_SPEC_DESCRIPTION_PAIN_ECHO = "Whose blood will be fed to this ring?",
+
+                ITEM_NAME_CRYSTAL_AXE = "Crystal Axe",
+                ITEM_SPEC_DESCRIPTION_CRYSTAL_AXE = "That axe freezing everything it's touching, mind yourself keeping its blade away.",
+
+
+                ITEM_NAME_BOOTSOFPAIN = "Boots of Pain",
+                --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+                ITEM_SPEC_DESCRIPTION_BOOTSOFPAIN = "Is walking so painful for you?",
+
+                ITEM_NAME_CHESTOFPAIN = "Chest of Pain",
+                --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+                ITEM_SPEC_DESCRIPTION_CHESTOFPAIN = "How painful it is for you to breath?",
+
+                ITEM_NAME_HEADOFPAIN = "Helmet of Pain",
+                --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+                ITEM_SPEC_DESCRIPTION_HEADOFPAIN = "Is your mind in pain?",
+
+
+                ITEM_NAME_THE_KING = "King",
+                --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+                ITEM_SPEC_DESCRIPTION_THE_KING = "The Ruler",
+
+                ITEM_NAME_THE_JESTER = "Jester",
+                --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
+                ITEM_SPEC_DESCRIPTION_THE_JESTER = "The Fool",
+
+
+                ITEM_NAME_MASTER_OF_ELEMENTS = "Master of Elements",
+                ITEM_SPEC_DESCRIPTION_MASTER_OF_ELEMENTS = "Every wizard will be envy that you own such a rare and unique item.",
+
+                ITEM_NAME_ICE_TOUCH = "Ice Touch",
+                ITEM_SPEC_DESCRIPTION_ICE_TOUCH = "Cold envelops hands, chilling it to the bones.",
+
+
+                GENERATED_TOOLTIP = " of attack",
+
+                [FourCC("A007")] = {
+                    [1] = "Strong blow that deals @e!ECRH.dmg# as @e!ECRH.atr# damage in front. Affected enemies will suffer a loss of physical damage resistance by @b!A00W.va1# and attack speed by @b!A00W.va2# for @b!A00W.time# seconds.",
+                },
+                [FourCC("A00C")] = {
+                    [1] = "Barbarian screams in @e!EWCR.aoe# range, which reduces enemy attack by @b!A00Y.va1# and movement speed by @b!A00Y.va3#.",
+                },
+                [FourCC("A006")] = {
+                    [1] = "Swift strkike that inflicts @e!ECSL.dmg# as @e!ECSL.atr# in front. Enemies suffer a bloodloss, taking @e!ECSP.dmg# as @e!ECSP.atr# as a periodic damage.",
+                },
+                [FourCC("A00A")] = {
+                    [1] = "Throws a chain that flies up to @s!A00A.rng# range, pulling first target it hits to you.",
+                },
+                [FourCC("A010")] = {
+                    [1] = "Barbarian forms storm of fury, rapidly spinning around and dealing enemies @e!EWHW.dmg# of @e!EWHW.atr# 3 times per second for a cost of 9 mana per second.",
+                },
+                [FourCC("A00Q")] = {
+                    [1] = "Falling into pure rage, increasing attack by @b!A00V.va1#, effects control reduction by @b!A00V.va2# and movement speed by @b!A00V.va3# for @b!A00V.time# sec.",
+                },
+                [FourCC("A00B")] = {
+                    [1] = "Punch that deals @e!EUPP.dmg# as @e!EUPP.atr# and pushing back targets, after which they are stunned for @b!A012.time# sec.",
+                },
+                [FourCC("A00Z")] = {
+                    [1] = "Throws a dagger up to @s!A00Z.rng# range, first enemy it hits will take @e!ETHK.dmg# as @e!ETHK.atr# damage. This skill has increased chance of critical damage (+@e!ETHK.bcc#).",
+                },
+                [FourCC("A00O")] = {
+                    [1] = "Allows you to jump up to @s!A00O.rng# range.",
+                },
+                [FourCC("A020")] = {
+                    [1] = "Finishing strike. Deals @e!EEXC.dmg# as @e!EEXC.atr#, if it is used on enemies that have less than 20%% of health its power is increased by 3 times and chances to crit by 20%%.",
+                    [10] = "Finishing strike. Deals @e!EEXC.dmg# as @e!EEXC.atr#, if it is used on enemies that have less than 20%% of health its power is increased by 3 times and chances to crit by 20%%. If enemy is killed by it, you gain @b!ANRD.pa1# на @b!ANRD.va1# and @b!ANRD.pa2# на @b!ANRD.va2#.",
+                },
+                [FourCC("ABFA")] = {
+                    [1] = "Heals you for @e!EFAA.hp_perc# every second during @b!A01N.time# seconds.",
+                    [10] = "Heals you for @e!EFAA.hp_perc# every second during @b!A01N.time# seconds. Also gives @b!A01N.va1# @b!A01N.pa1#.",
+                },
+                [FourCC("A00I")] = {
+                    [1] = "Summons an immortal flame hydra that attacks enemies. Hydra inherits 70% of Sorceress stats. Increasing level of this skill enhances hydra's life duration.",
+                },
+                [FourCC("A00H")] = {
+                    [1] = "Sorceress binds elemental forces to her will, which boosting her powers: [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# и @b!A00U.pa4#] inscreasing for @b!A00U.va1#, @b!A00U.pa5# на @b!A00U.va5#. Duration - @b!A00U.time# sec.",
+                },
+                [FourCC("A00E")] = {
+                    [1] = "Sorceress forms frost barrier around herself, boosting @b!A011.pa1# for @b!A011.va1#, @b!A011.pa2# for @b!A011.va2#, @b!A011.pa3# for @b!A011.va3# and @b!A011.pa4# for @b!A011.va4#. Duration - @b!A011.time sec.",
+                },
+                [FourCC("A00N")] = {
+                    [1] = "Sorceress focusing her arcane powers that boosting her defence: @b!A00T.pa1# for @b!A00T.va1#, @b!A00T.pa2# for @b!A00T.va2# and @b!A00T.pa3# for @b!A00T.va3#. Duration - @b!A00T.time sec.",
+                },
+                [FourCC("A00K")] = {
+                    [1] = "Forms energized ball that slowly flies forward, periodically pulsing in @e!MBLB.rad# range on a nearby enemies for a @e!ELBL.pwr# @e!ELBL.atr# damage.",
+                },
+                [FourCC("A00J")] = {
+                    [1] = "Shots 3 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
+                    [10] = "Shots 4 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
+                    [20] = "Shots 5 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
+                    [30] = "Shots 6 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
+                    [40] = "Shots 7 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
+                },
+                [FourCC("A00F")] = {
+                    [1] = "Calls for a meteor from the sky that falling after a short delay, dealing enemies @e!EMTR.pwr# as @e!EMTR.atr# damage in a @e!EMTR.aoe# radius, pushing them from an explosion center. Has bonus to an attribute (+@e!EMTR.ab#)",
+                },
+                [FourCC("A00L")] = {
+                    [1] = "Allows you to instantly move up to @s!A00L.rng# range.",
+                },
+                [FourCC("A00M")] = {
+                    [1] = "Calls for a powerful discharge with a radius @e!ELST.aoe# that deals @e!ELST.pwr# as @e!ELST.atr# damage. This skill has bonus to an attribute (+@e!ELST.ab#) and a critical multiplier (+@e!ELST.bcm#).",
+                },
+                [FourCC("A005")] = {
+                    [1] = "Launching forward a frost orb that constantly damages enemies in a @e!EFOA.aoe# radius inflicting @e!EFOA.pwr# as @e!EFOA.atr# damage (+@e!EFOA.ab#). At the end the orb explodes for a @e!EFRO.pwr# as @e!EFRO.atr# damage with increased bonus to a critical chance (+@e!EFRO.bcc#)",
+                },
+                [FourCC("A00D")] = {
+                    [1] = "Throws forward a fireball, first enemy it hit takes @e!EGFB.pwr# as @e!EGFB.atr# damage in small area around.",
+                },
+                [FourCC("A001")] = {
+                    [1] = "Emits a wave of frost from Sorceress with @e!EFRN.aoe# radius, freezing enemies for @b!A00S.time# sec. and dealing them @e!EFRN.pwr# as @e!EFRN.atr# damage.",
+                },
+                [FourCC("A003")] = {
+                    [1] = "Throws a frostbolt that explodes on a first enemy, dealing @e!EFRB.pwr# as @e!EFRB.atr# damage in a @e!EFRB.aoe# radius. Affected targets will suffer a movement speed loss by @b!A004.va1#",
+                },
+                [FourCC("A019")] = {
+                    [1] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 2 nearby enemies.",
+                    [10] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 3 nearby enemies.",
+                    [20] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 4 nearby enemies.",
+                    [30] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 5 nearby enemies.",
+                    [40] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 6 nearby enemies.",
+                    [50] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 7 nearby enemies.",
+                    [60] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 8 nearby enemies.",
+                    [70] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 9 nearby enemies.",
+                    [80] = "Strikes a chosen enemy with an electric strike with power @e!ECHL.pwr# as @e!ECHL.atr# which then bounces up to 10 nearby enemies.",
+                },
+                [FourCC("AMLT")] = {
+                    [1] = "Sorceress emits a fire beam that hits first enemy on its path dealing @e!EMLT.pwr# as @e!EMLT.atr# damage. While casting sorceress have to stand still. The beam direction follows the mouse. Improving level of this skill increasing its channel time.",
+                },
+
+
+                BARBARIAN_NAME = "Barbarian",
+                SORCERESS_NAME = "Sorceress",
+
+                VENDOR_BILL_NAME = "Vendor Bill",
+                HEALER_NAME = "Healer",
+                BLACKSMITH_NAME = "Blacksith",
+                SMORC_NAME = "SMorc",
+                LIBRARIAN_NAME = "Librarian",
+                SCAVENGER_NAME = "Wandering scavenger",
+
+                AIZEK_NAME = "Apprentice Aizek",
+                GUINPLEN_NAME = "Guinplen",
+                STEPHAN_NAME = "Stephan the Healer",
+                MORDER_NAME = "Morder",
+                HUNTRESS_NAME = "Huntress",
+                ABENO_NAME = "Abe-no",
+                TAKO_NAME = "Provisionist Tako",
+                WITCH_NAME = "Witch of the Woods",
+                HUNTER_NAME = "Hunter Bork",
+                DON_NAME = "Manager Don",
+
+
+                INTRODUCTION_TEXT_1 = "Hey, stranger! Welcome to our fortress. It's kinda unsettling here, but I see you can stand on your own.",
+                INTRODUCTION_TEXT_2 = "Maybe you could help us then? There is one problem - that damn artifact. He became active all of a sudden.",
+                INTRODUCTION_TEXT_3 = "At first we thought \"who cares?\" but then we got attacked by all kind of things! I hope to stay in one piece one more night. So, whaddaya say?",
+
+                INTRODUCTION_BARBARIAN_RESPONCE = "It's looks like this is the work for the wit... ahem, sorry, barbarian.",
+                INTRODUCTION_SORCERESS_RESPONCE = "My spells will crush any creature here.",
+
+
+                RESSURECT_TEXT_1 = "Your hero will be revived after |c008EFFFF",
+                RESSURECT_TEXT_2 = "|r sec. at the cemetary.",
+                GOLD_PENALTY_TEXT_1 = "|c00FF4444Upon dying you lost somewhere|r |c00FFFF44",
+                GOLD_PENALTY_TEXT_2 = "|r |c00FF4444gold.|r",
+
+                QUEST_REWARD_GOLD_FIRST = "recieved ",
+                QUEST_REWARD_GOLD_SECOND = " gold.",
+                QUEST_REWARD_POINTS_FIRST = "recieved ",
+                QUEST_REWARD_POINTS_SECOND = " stat points.",
+
+                QUEST_1_TITLE = "Lost Cargo",
+                QUEST_1_DESC = "Blacksmith assistant has lost his supplies. As there are very dangerous he is asking for your help to retrieve them.",
+                QUEST_1_SPEECH = "Aaaah, you help will be very handy to me. I've lost my cargo... and vicinities around the fortress are very dangerous nowadays. Maybe you can help me and I can help you?",
+                QUEST_1_ITEM = "Cargo found",
+
+                QUEST_2_TITLE = "Hunger Strike",
+                QUEST_2_DESC = "The situation around a castle led to a hunger strike. You have to find food or many people will die.",
+                QUEST_2_SPEECH_1 = "Hey, you. Listen. Don't tell anyone, but we have one problem.",
+                QUEST_2_SPEECH_2 = "Usually our supply lines have never been late, but you know, the situation around the castle is dangerous.",
+                QUEST_2_SPEECH_3 = "We have to find some food, our we are screwed. Got it?",
+                QUEST_2_RESPONCE = "I'll bring food to you if I find any.",
+                QUEST_2_ITEM1 = "Food crates gathered",
+                QUEST_2_ITEM2 = "Return the food",
+                QUEST_2_SPEECH_DONE = "Ah, nice! That will be plenty enough. Well done!",
+
+                QUEST_1_M_TITLE = "A Unholy Creature",
+                QUEST_1_M_DESC = "There is some dangerous creature have been seen in the nearby forests. You have to find out what it is and talk to Guinplen. He is present nearby the castle.",
+                QUEST_1_M_ITEM = "Find Guinplen",
+                QUEST_1_M_ITEMVAR1 = "Find Lilith",
+                QUEST_1_M_ITEMVAR2 = "Find Staff of Hope",
+                QUEST_1_M_ITEMVAR1END = "Kill Lilith",
+                QUEST_1_M_ITEMVAR2END = "Try the staff on Lilith",
+                QUEST_1_M_SPEECH_INTRO = "Wait. Looks like you can help us with one case. There is one mysterious demon here around.",
+                QUEST_1_M_SPEECH_INTRO_2 = "He is vicious and make short work of our soldiers, almost every day we find new corpses on the road.",
+                QUEST_1_M_SPEECH_INTRO_3 = "We have to deal with it somehow, there is one wandering knight nearby, maybe he can help with it?",
+                QUEST_1_M_SPEECH_GIUN_1 = "Ah, so you are about that demon... You see, I have some information that lead to its origins.",
+                QUEST_1_M_SPEECH_GIUN_2 = "It is a cursed girl from a village nearby. Looks like someone wanted revenge and casted a curse on her with unholy artefact from hell.",
+                QUEST_1_M_SPEECH_GIUN_3 = "I have found a staff that can release that curse, but when I wanted to meet with a trader I found out that he was slaughered by demons and stuff is lost somewhere south-east from here.",
+                QUEST_1_M_SPEECH_GIUN_4 = "Find that stuff - and you can break this curse with a more civl way.",
+                QUEST_1_M_SPEECH_END_2 = "Oh! I came back! How did you do that? I feel like I was in a dream for so long... Thank you for my salvation! Take this as my gratitude.",
+                QUEST_1_M_SPEECH_STAFF_FOUND = "Looks like this is the staff that I need. Now I need to find that demon.",
+
+
+
+                QUEST_2_M_TITLE = "Forest Guard",
+                QUEST_2_M_DESC = "Local hunters are tracking down a legendary beast - Forest Guard. Myth or reality, you have to find the lost hunters. Their last known location was on the south of the castle.",
+                QUEST_2_M_ITEM = "Find the hunters",
+                QUEST_2_M_ITEMVAR1 = "Track down the beast",
+                QUEST_2_M_ITEMVAR2 = "Find the Witch",
+                QUEST_2_M_ITEMVAR3 = "Gather Ivenor",
+                QUEST_2_M_ITEMVAR4 = "Поднести растения на алтарь леса",
+                QUEST_2_M_ITEMVAR5 = "Return Hearth to the hunters",
+                QUEST_2_M_ITEMVAR6 = "Slay the beast",
+
+                QUEST_2_M_RESPONCE = "We'll see.",
+                QUEST_2_M_RESPONCE_WITCH = "I will think about it.",
+                QUEST_2_M_RESPONCE_HUNTERS = "Got it. On my way.",
+                QUEST_2_M_RESPONCE_HUNTERS_2 = "Here, hearth of the beast.",
+
+                QUEST_2_M_INTRO_1 = "Wait! Recently our hunter squad was intended to track down some dangerous beast around here.",
+                QUEST_2_M_INTRO_2 = "But few weeks have been passed and we didnt recieved any messages or new from them, noone has returned.",
+                QUEST_2_M_INTRO_3 = "Maybe you could help? Find out what happened with them? Who knows...",
+
+
+                QUEST_2_M_HUNTER_1 = "Yo, wassap. Hey, did they miss us? Waah, everything is alrighty.",
+                QUEST_2_M_HUNTER_2 = "Kinda hard to get back to the castle now, but we'll be fine.",
+                QUEST_2_M_HUNTER_3 = "More importantly - the Forest Guard beast! Yaknow, we almost track him down. Hell of a beast, shuuush, it wrecked few caravans here.",
+                QUEST_2_M_HUNTER_4 = "You can make us a favor and down him? Although there was one old mad witch that screamed at us for trying to kill it.",
+                QUEST_2_M_HUNTER_5 = "We told her to mind her own business, so don't care about it much. We'll take care of her.",
+
+                QUEST_2_M_WITCH_1 = "Huh... I see, you are looking for it too. Listen, stop it! He is a guard of this land, he is not a threat. They are looted caravans themselves and shifted the blame on it.",
+                QUEST_2_M_WITCH_2 = "It don't feel any hunger or madness. Of course it will fight back if you attempt to kill it, wouldn't you do the same?",
+                QUEST_2_M_WITCH_3 = "If guard is gone this forest will die... I don't want this, and everyone will see how it die. No animals will be left.",
+                QUEST_2_M_WITCH_4 = "You can help me. Garher special herb that grows here. I'll do the rest and we hide the beast from everyone. That way the forest and the beast will be safe.",
+
+
+                QUEST_2_M_HUNTER_6 = "Yay, well done! Now we are talking! Hey, boys, time to get back!",
+                QUEST_2_M_WITCH_5 = "Thank you for your understanding and prudence. Now the beast is safe. Take this, with best regards.",
+            }
+
+        }
     end
 
 

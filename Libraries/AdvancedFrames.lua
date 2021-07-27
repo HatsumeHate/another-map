@@ -1,5 +1,9 @@
 
 
+    ContextFrame = nil
+    SliderFrame = nil
+    local TooltipList
+    local PlayerTooltip
 
 
     function GetButtonData(button)
@@ -65,7 +69,7 @@
     --======================================================================
     -- SLIDER MODE =========================================================
 
-    SliderFrame = {}
+
 
 
 
@@ -102,6 +106,7 @@
 
     function InitSlider()
 
+        SliderFrame = {}
         for i = 1, 6 do
             SliderFrame[i] = {}
             SliderFrame[i].backdrop = BlzCreateFrame("ScoreScreenButtonBackdropTemplate", GAME_UI, 0, 0)
@@ -303,130 +308,6 @@
 
     --======================================================================
     -- CONTEXT MENU   ======================================================
-    ContextFrame = {}
-
-    function DestroyContextMenuL(player)
-        if ContextFrame[player] ~= nil then
-            local backdrop = ContextFrame[player].backdrop
-            local buttons = {}
-
-            for i = 1, #ContextFrame[player].frames do
-                buttons[i] = ContextFrame[player].frames[i]
-            end
-
-
-            BlzFrameClearAllPoints(ContextFrame[player].backdrop)
-            for i = #ContextFrame[player].frames, 1, -1 do
-                BlzFrameSetVisible(ContextFrame[player].frames[i], false)
-                BlzFrameClearAllPoints(ContextFrame[player].frames[i])
-                --BlzDestroyFrame(ContextFrame[player].frames[i])
-            end
-            --BlzFrameSetEnable(ContextFrame[player].backdrop, false)
-            BlzFrameSetVisible(ContextFrame[player].backdrop, false)
-
-            local timer = CreateTimer()
-            TimerStart(timer, 5., false, function()
-                for i = #buttons, 1, -1 do
-                    BlzDestroyFrame(buttons.frames[i])
-                end
-                DestroyTimer(GetExpiredTimer())
-                BlzDestroyFrame(backdrop)
-            end)
-
-            --DestroyTrigger(ContextFrame[player].focus_trigger)
-            ContextFrame[player].frames = nil
-            ContextFrame[player] = nil
-        end
-    end
-
-
-
-     function AddContextOptionL(player, text, result)
-        local frame = BlzCreateFrame('ScriptDialogButton', ContextFrame[player].backdrop, 0, 0)
-        local position = #ContextFrame[player].frames + 1
-
-        local textframe = BlzGetFrameByName("ScriptDialogButtonText", 0)
-        BlzFrameSetText(textframe, text)
-        BlzFrameSetScale(textframe, 0.8)
-        BlzFrameSetTextAlignment(textframe, TEXT_JUSTIFY_CENTER , TEXT_JUSTIFY_MIDDLE)
-
-
-        if position == 1 or position == nil then
-            if ContextFrame[player].inverted_side then
-                BlzFrameSetPoint(frame, FRAMEPOINT_RIGHT, ContextFrame[player].originframe, FRAMEPOINT_LEFT, 0., 0.)
-            else
-                BlzFrameSetPoint(frame, FRAMEPOINT_LEFT, ContextFrame[player].originframe, FRAMEPOINT_RIGHT, 0., 0.)
-            end
-            position = 1
-        else
-            BlzFrameSetPoint(frame, FRAMEPOINT_TOP, ContextFrame[player].frames[position - 1], FRAMEPOINT_BOTTOM, 0., 0.004)
-        end
-
-        BlzFrameSetSize(frame, 0.074, 0.025)
-
-        local trg = CreateTrigger()
-        BlzTriggerRegisterFrameEvent(trg, frame, FRAMEEVENT_CONTROL_CLICK)
-        TriggerAddAction(trg, function()
-            result()
-            DestroyContextMenu(player)
-            DestroyTrigger(GetTriggeringTrigger())
-        end)
-
-        ContextFrame[player].frames[position] = frame
-
-        BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_TOP, ContextFrame[player].frames[1], FRAMEPOINT_TOP, 0., 0.003)
-        BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_TOPLEFT, ContextFrame[player].frames[1], FRAMEPOINT_TOPLEFT, -0.003, 0.003)
-        BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_TOPRIGHT, ContextFrame[player].frames[1], FRAMEPOINT_TOPRIGHT, 0.003, 0.003)
-        BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_BOTTOMLEFT, frame, FRAMEPOINT_BOTTOMLEFT, -0.003, -0.003)
-        BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_BOTTOMRIGHT, frame, FRAMEPOINT_BOTTOMRIGHT, -0.003, 0.003)
-        BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_BOTTOM, frame, FRAMEPOINT_BOTTOM, 0., -0.003)
-
-        --BlzFrameSetPoint(ContextFrame[player].focus_frame, FRAMEPOINT_CENTER, ContextFrame[player].backdrop, FRAMEPOINT_CENTER, 0.,0.)
-        --BlzFrameSetSize(ContextFrame[player].focus_frame, BlzFrameGetWidth(ContextFrame[player].backdrop) + 0.02, BlzFrameGetHeight(ContextFrame[player].backdrop) + 0.02)
-        FrameRegisterNoFocus(frame)
-
-    end
-
-
-
-    ---@param player integer
-    ---@param originframe framehandle
-    ---@param parent framehandle
-    ---@param direction framepointtype
-    function CreatePlayerContextMenuL(player, originframe, direction, parent)
-        DestroyContextMenu(player)
-        parent = GetMasterParentFrame(player) or parent
-        --BlzFrameSetVisible(parent, true)
-        ContextFrame[player] = {}
-        ContextFrame[player].frames = {}
-        ContextFrame[player].backdrop = BlzCreateFrame('ScoreScreenButtonBackdropTemplate', parent, 0, 0)
-        ContextFrame[player].originframe = originframe
-        --ContextFrame[player].focus_frame = BlzCreateFrameByType("TEXT", "123asd", ContextFrame[player].backdrop, "", 0)
-        --ContextFrame[player].focus_trigger = CreateTrigger()
-        --BlzTriggerRegisterFrameEvent(ContextFrame[player].focus_trigger, ContextFrame[player].focus_frame, FRAMEEVENT_MOUSE_LEAVE)
-        --BlzFrameSetPoint(ContextFrame[player].focus_frame, FRAMEPOINT_CENTER, ContextFrame[player].backdrop, FRAMEPOINT_CENTER, 0.,0.)
-
-        --TriggerAddAction(ContextFrame[player].focus_trigger, function()
-            --DestroyContextMenu(player)
-        --end)
-
-        local from --= direction == FRAMEPOINT_RIGHT and FRAMEPOINT_LEFT or FRAMEPOINT_RIGHT
-
-
-        if direction == FRAMEPOINT_RIGHT then
-            from = FRAMEPOINT_LEFT
-        else
-            from = FRAMEPOINT_RIGHT
-            ContextFrame[player].inverted_side = true
-        end
-
-        local to = direction == FRAMEPOINT_RIGHT and FRAMEPOINT_RIGHT or FRAMEPOINT_LEFT
-
-        BlzFrameSetPoint(ContextFrame[player].backdrop, from, originframe, to, 0.,0.)
-        RemoveTooltip(player)
-        return ContextFrame[player].backdrop
-    end
-
 
     function DestroyContextMenu(player)
         for i = 8, 1, -1 do
@@ -458,14 +339,6 @@
         end
 
         ContextFrame[player].frames[position].react = result
-
-        --ContextFrame[player].frames[position].trigger = CreateTrigger()
-        --BlzTriggerRegisterFrameEvent(ContextFrame[player].frames[position].trigger, frame, FRAMEEVENT_CONTROL_CLICK)
-        --TriggerAddAction(ContextFrame[player].frames[position].trigger, function()
-           -- result()
-            --DestroyContextMenu(player)
-           -- DestroyTrigger(GetTriggeringTrigger())
-        --end)
 
         BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_TOP, ContextFrame[player].frames[1].button, FRAMEPOINT_TOP, 0., 0.003)
         BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_TOPLEFT, ContextFrame[player].frames[1].button, FRAMEPOINT_TOPLEFT, -0.003, 0.003)
@@ -506,6 +379,11 @@
 
     function InitContextMenu()
 
+        ContextFrame = {}
+        TooltipList = {}
+        PlayerTooltip = {}
+
+
         for i = 1, 6 do
             ContextFrame[i] = {
                 frames = {},
@@ -538,8 +416,6 @@
 do
     --======================================================================
     -- TOOLTIP        ======================================================
-    local TooltipList = {}
-    local PlayerTooltip = {}
 
 
     local function LockWidth(frame, width, min, max)

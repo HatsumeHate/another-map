@@ -1,7 +1,7 @@
 do
 
-    UnitsData       = { }
-    UnitsList       = { }
+    UnitsData       = nil
+    UnitsList       = nil
 
     BARBARIAN_CLASS     = 1
     SORCERESS_CLASS     = 2
@@ -46,17 +46,7 @@ do
 
 
         -- STR_STAT, VIT_STAT, AGI_STAT, INT_STAT
-        local BASE_STATS = {
-            [BARBARIAN_CLASS]   = { 10, 9, 6, 5 },
-            [SORCERESS_CLASS]   = { 5, 6, 5, 10 },
-            [PALADIN_CLASS]     = { 8, 11, 6, 5 },
-            [ASSASSIN_CLASS]    = { 6, 6, 10, 6 },
-            [AMAZON_CLASS]      = { 6, 8, 7, 5 },
-            [NECROMANCER_CLASS] = { 5, 6, 5, 10 },
-            [DRUID_CLASS]       = { 5, 9, 5, 9 },
-            [SPECIAL_CLASS]     = { 20, 20, 20, 20 },
-            [NO_CLASS]          = { 10, 10, 10, 10 }
-        }
+        local BASE_STATS
 
 
         ---@param source unit
@@ -221,6 +211,23 @@ do
 
 
     function UnitDataInit()
+
+        UnitsData       = { }
+        UnitsList       = { }
+
+
+        BASE_STATS = {
+            [BARBARIAN_CLASS]   = { 10, 9, 6, 5 },
+            [SORCERESS_CLASS]   = { 5, 6, 5, 10 },
+            [PALADIN_CLASS]     = { 8, 11, 6, 5 },
+            [ASSASSIN_CLASS]    = { 6, 6, 10, 6 },
+            [AMAZON_CLASS]      = { 6, 8, 7, 5 },
+            [NECROMANCER_CLASS] = { 5, 6, 5, 10 },
+            [DRUID_CLASS]       = { 5, 9, 5, 9 },
+            [SPECIAL_CLASS]     = { 20, 20, 20, 20 },
+            [NO_CLASS]          = { 10, 10, 10, 10 }
+        }
+
 
         NewUnitTemplate('h000', {
             unit_class = SPECIAL_CLASS,

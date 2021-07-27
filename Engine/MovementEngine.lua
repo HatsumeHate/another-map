@@ -4,6 +4,10 @@ do
     local MapArea
 
 
+    local PullList
+    local ChargeList
+    local PushList
+
 
 
     local function ApplySpecialEffectTarget(effect, target, point, scale)
@@ -131,7 +135,7 @@ do
 
 
 
-    local PullList = {}
+
 
     ---@param source unit
     ---@param target unit
@@ -180,7 +184,7 @@ do
     end
 
 
-    local ChargeList = {}
+
 
 
     ---@param source unit
@@ -367,8 +371,6 @@ do
 
     end
 
-
-    local PushList = {}
 
     function PushUnit(source, target, angle, power, time, sign)
         local handle = target
@@ -992,6 +994,10 @@ do
 
     --end
 
-
+    function InitMovementEngine()
+        PullList = {}
+        ChargeList = {}
+        PushList = {}
+    end
 
 end

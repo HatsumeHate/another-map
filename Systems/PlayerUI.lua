@@ -5,7 +5,7 @@
 ---
 do
 
-    local PlayerUI = { }
+    local PlayerUI
 
 
 

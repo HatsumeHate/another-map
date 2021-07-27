@@ -40,23 +40,8 @@ do
     end
 
 
-    local PlayerColors = {
-        [1] = "|c00FF0000",
-        [2] = "|c000000FF",
-        [3] = "|c0000FFFF",
-        [4] = "|c0071007D",
-        [5] = "|c00FFFF00",
-        [6] = "|c00FF8B00",
-    }
-
-    local PlayerNames = {
-        [1] = "|c00FF0000",
-        [2] = "|c000000FF",
-        [3] = "|c0000FFFF",
-        [4] = "|c0071007D",
-        [5] = "|c00FFFF00",
-        [6] = "|c00FF8B00",
-    }
+    local PlayerColors
+    local PlayerNames
 
     function PlayerLeft(player)
         local gold = GetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD)
@@ -79,6 +64,24 @@ do
 
 
     function InitMultiboard()
+
+        PlayerColors = {
+            [1] = "|c00FF0000",
+            [2] = "|c000000FF",
+            [3] = "|c0000FFFF",
+            [4] = "|c0071007D",
+            [5] = "|c00FFFF00",
+            [6] = "|c00FF8B00",
+        }
+
+         PlayerNames = {
+            [1] = "|c00FF0000",
+            [2] = "|c000000FF",
+            [3] = "|c0000FFFF",
+            [4] = "|c0071007D",
+            [5] = "|c00FFFF00",
+            [6] = "|c00FF8B00",
+        }
 
             MAIN_MULTIBOARD = CreateMultiboard()
             MultiboardSetTitleText(MAIN_MULTIBOARD, LOCALE_LIST[my_locale].WAVE_INCOMING_TEXT)

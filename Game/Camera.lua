@@ -7,8 +7,8 @@ do
 
 
 
-    PlayerCameraState = {}
-    PlayerCameraSetup = {}
+    PlayerCameraState = nil
+    PlayerCameraSetup = nil
 
 
 
@@ -21,6 +21,9 @@ do
 
 
     function InitPlayerCamera()
+
+        PlayerCameraState = {}
+        PlayerCameraSetup = {}
 
         for i = 1, 6 do
             PlayerCameraSetup[i] = CreateCameraSetup()

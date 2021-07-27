@@ -5,7 +5,7 @@
 ---
 do
 
-    BlacksmithFrame = {}
+    BlacksmithFrame = nil
 
     local BUTTON_FREE = 1
     local BUTTON_REFORGE = 2
@@ -145,6 +145,13 @@ do
                 if button.item then
                     item_data = GetItemData(button.item)
                     local cost = (Current_Wave - item_data.level) * REFORGE_COST_PER_LEVEL
+
+                    if item_data.level < Current_Wave then
+                        cost = (Current_Wave - item_data.level) * REFORGE_COST_PER_LEVEL + REFORGE_COST_PER_LEVEL
+                    else
+                        cost = REFORGE_COST_PER_LEVEL
+                    end
+
 
                     if cost > 0 then BlzFrameSetText(BlacksmithFrame[player].reforge_cost_frame, "|c00FFFF00" ..I2S(cost) .. "|r") end
                     BlacksmithFrame[player].reforge_cost = cost
@@ -289,6 +296,8 @@ do
     ---@param texture string
     function CreateBlacksmith(unit_owner, texture)
 
+        BlacksmithFrame = {}
+
         ClickTrigger = CreateTrigger()
         TriggerAddAction(ClickTrigger, function()
             local button = GetButtonData(BlzGetTriggerFrame())
@@ -318,12 +327,13 @@ do
                             if gold >= BlacksmithFrame[player].reforge_cost then
                                 SetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD, gold - BlacksmithFrame[player].reforge_cost)
                                 PlayLocalSound("Buildings\\Human\\Blacksmith\\BlacksmithWhat1.wav", player-1, 115)
-                                BlzFrameSetText(BlacksmithFrame[player].reforge_cost_frame, "")
+                                BlzFrameSetText(BlacksmithFrame[player].reforge_cost_frame, "|c00FFFF00" .. I2S(REFORGE_COST_PER_LEVEL) .. "|r")
+                                BlacksmithFrame[player].reforge_cost = REFORGE_COST_PER_LEVEL
 
                                 local soundpack = {
-                                   "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes3.wav",
-                                   "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes4.wav",
-                                   "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes5.wav",
+                                    "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes3.wav",
+                                    "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes4.wav",
+                                    "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes5.wav",
                                 }
 
                                 PlayLocalSound(soundpack[GetRandomInt(1, #soundpack)], player-1, 125)
@@ -340,7 +350,10 @@ do
                                 Feedback_NoGold(player - 1)
                             end
 
+                        else
+                            Feedback_CantUse(player - 1)
                         end
+
                 elseif button.button_type == BUTTON_SOCKET then
                     local resocket_button = GetButtonData(BlacksmithFrame[player].socket_item_slot)
 

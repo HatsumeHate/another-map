@@ -1,7 +1,7 @@
 -- Ставь блоки если уж так хочется отступов
 do
-	ITEM_TEMPLATE_DATA = {} -- данные для ТИПОВ предметов по равкоду
-	ITEM_DATA          = {} -- данные для КАЖДОГО предмета по хэндлу
+	ITEM_TEMPLATE_DATA = nil
+	ITEM_DATA          = nil
 	
 	ITEM_TYPE_WEAPON     = 1
 	ITEM_TYPE_ARMOR      = 2
@@ -37,6 +37,37 @@ do
 	ORB_OFFHAND 		  = 20
 	QUIVER_OFFHAND 		  = 21
 	BELT_ARMOR 			  = 22
+
+
+    SOUNDPACK_SWORD_1 = 1; SOUNDPACK_SWORD_2 = 2; SOUNDPACK_2HSWORD = 3
+    SOUNDPACK_BLUNT = 4
+    SOUNDPACK_BOW = 5
+    SOUNDPACK_DAGGER = 6
+    SOUNDPACK_STAFF = 7
+    SOUNDPACK_JAVELIN = 8
+
+    SOUNDPACK_SHIELD_METAL = 9; SOUNDPACK_SHIELD_WOOD = 10; SOUNDPACK_ORB = 11; SOUNDPACK_QUIVER = 12
+
+    SOUNDPACK_CHEST_HEAVY_ARMOR = 13
+    SOUNDPACK_CHEST_MID_ARMOR = 14
+    SOUNDPACK_CHEST_LIGHT_ARMOR = 15
+    SOUNDPACK_HEAD_HEAVY_ARMOR = 16
+    SOUNDPACK_HEAD_MID_ARMOR = 17
+    SOUNDPACK_HEAD_LIGHT_ARMOR = 18
+    SOUNDPACK_HANDS_HEAVY_ARMOR = 19
+    SOUNDPACK_HANDS_MID_ARMOR = 20
+    SOUNDPACK_HANDS_LIGHT_ARMOR = 21
+    SOUNDPACK_BOOTS_HEAVY_ARMOR = 22
+    SOUNDPACK_BOOTS_MID_ARMOR = 23
+    SOUNDPACK_BOOTS_LIGHT_ARMOR = 24
+    SOUNDPACK_BELT = 25
+
+    SOUNDPACK_AMULET = 26; SOUNDPACK_RING = 27
+
+    SOUNDPACK_POTION = 28; SOUNDPACK_SCROLL = 29; SOUNDPACK_GEM = 30; SOUNDPACK_BOOK = 31
+
+
+    ITEM_SOUNDPACK = nil
 
 	
 	COMMON_ITEM        = 1
@@ -86,102 +117,7 @@ do
 	CLASS_SKILL_LIST = nil
 
 
-	local weapons = {
-		[FIST_WEAPON]       = {
-			DAMAGE          = 4,
-			ATTACK_SPEED    = 1.8,
-			CRIT_CHANCE     = 0,
-			CRIT_MULTIPLIER = 1.5,
-			RANGE           = 90,
-			DISPERSION      = { 0.9, 1.1 },
-			WEAPON_SOUND    = WEAPON_TYPE_WOOD_LIGHT_BASH
-		},
-		[SWORD_WEAPON]      = {
-			ATTACK_SPEED    = 1.6,
-			CRIT_CHANCE     = 4,
-			CRIT_MULTIPLIER = 2.1,
-			RANGE           = 90,
-			DISPERSION      = { 0.9, 1.1 },
-			WEAPON_SOUND    = WEAPON_TYPE_METAL_MEDIUM_SLICE
-		},
-		[GREATSWORD_WEAPON] = {
-			ATTACK_SPEED    = 2.3,
-			CRIT_CHANCE     = 5,
-			CRIT_MULTIPLIER = 1.6,
-			RANGE           = 100,
-			ANGLE           = 35, --math.pi / 5,  36 градусов
-			DISPERSION      = { 0.9, 1.1 },
-			WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_SLICE
-		},
-		[AXE_WEAPON]        = {
-			ATTACK_SPEED    = 1.5,
-			CRIT_CHANCE     = 6,
-			CRIT_MULTIPLIER = 1.7,
-			RANGE           = 100,
-			DISPERSION      = { 0.85, 1.15 },
-			WEAPON_SOUND    = WEAPON_TYPE_METAL_MEDIUM_CHOP
-		},
-		[GREATAXE_WEAPON]   = {
-			ATTACK_SPEED    = 2.2,
-			CRIT_CHANCE     = 6,
-			CRIT_MULTIPLIER = 1.7,
-			RANGE           = 110,
-			DISPERSION      = { 0.85, 1.15 },
-			WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_CHOP
-		},
-		[DAGGER_WEAPON]     = {
-			ATTACK_SPEED    = 1.4,
-			CRIT_CHANCE     = 9,
-			CRIT_MULTIPLIER = 2.3,
-			RANGE           = 90,
-			ANGLE           = 25, --math.pi / 7.2, -- 25 градусов
-			DISPERSION      = { 0.9, 1.1 },
-			WEAPON_SOUND    = WEAPON_TYPE_METAL_LIGHT_SLICE
-		},
-		[STAFF_WEAPON]      = {
-			ATTACK_SPEED    = 2.4,
-			CRIT_CHANCE     = 9,
-			CRIT_MULTIPLIER = 2.3,
-			RANGE           = 100,
-			DISPERSION      = { 0.85, 1.15 },
-			WEAPON_SOUND    = WEAPON_TYPE_WOOD_MEDIUM_BASH
-		},
-		[JAWELIN_WEAPON]    = {
-			ATTACK_SPEED    = 2.3,
-			CRIT_CHANCE     = 5,
-			CRIT_MULTIPLIER = 1.7,
-			RANGE           = 110,
-			DISPERSION      = { 0.85, 1.15 },
-			WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_BASH
-		},
-		[BLUNT_WEAPON]      = {
-			ATTACK_SPEED    = 1.7,
-			CRIT_CHANCE     = 5,
-			CRIT_MULTIPLIER = 1.6,
-			RANGE           = 90,
-			DISPERSION      = { 0.8, 1.2 },
-			WEAPON_SOUND    = WEAPON_TYPE_METAL_MEDIUM_BASH
-		},
-		[GREATBLUNT_WEAPON] = {
-			ATTACK_SPEED    = 2.4,
-			CRIT_CHANCE     = 5,
-			CRIT_MULTIPLIER = 1.7,
-			RANGE           = 100,
-			DISPERSION      = { 0.8, 1.2 },
-			WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_BASH
-		},
-		[BOW_WEAPON]        = {
-			ATTACK_SPEED    = 2.6,
-			CRIT_CHANCE     = 7,
-			CRIT_MULTIPLIER = 2.2,
-			RANGE           = 1000,
-            ranged          = true,
-			DISPERSION      = { 0.75, 1.25 },
-			WEAPON_SOUND    = nil
-		}
-	}
-	
-
+	local weapons
 
 
     local function GetItemTemplate()
@@ -309,57 +245,199 @@ do
 
     function DefineItemsData()
 
+		ITEM_TEMPLATE_DATA = {}
+		ITEM_DATA          = {}
+
+		weapons = {
+			[FIST_WEAPON]       = {
+				DAMAGE          = 4,
+				ATTACK_SPEED    = 1.8,
+				CRIT_CHANCE     = 0,
+				CRIT_MULTIPLIER = 1.5,
+				RANGE           = 90,
+				DISPERSION      = { 0.9, 1.1 },
+				WEAPON_SOUND    = WEAPON_TYPE_WOOD_LIGHT_BASH
+			},
+			[SWORD_WEAPON]      = {
+				ATTACK_SPEED    = 1.6,
+				CRIT_CHANCE     = 4,
+				CRIT_MULTIPLIER = 2.1,
+				RANGE           = 90,
+				DISPERSION      = { 0.9, 1.1 },
+				WEAPON_SOUND    = WEAPON_TYPE_METAL_MEDIUM_SLICE
+			},
+			[GREATSWORD_WEAPON] = {
+				ATTACK_SPEED    = 2.3,
+				CRIT_CHANCE     = 5,
+				CRIT_MULTIPLIER = 1.6,
+				RANGE           = 100,
+				ANGLE           = 35, --math.pi / 5,  36 градусов
+				DISPERSION      = { 0.9, 1.1 },
+				WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_SLICE
+			},
+			[AXE_WEAPON]        = {
+				ATTACK_SPEED    = 1.5,
+				CRIT_CHANCE     = 6,
+				CRIT_MULTIPLIER = 1.7,
+				RANGE           = 100,
+				DISPERSION      = { 0.85, 1.15 },
+				WEAPON_SOUND    = WEAPON_TYPE_METAL_MEDIUM_CHOP
+			},
+			[GREATAXE_WEAPON]   = {
+				ATTACK_SPEED    = 2.2,
+				CRIT_CHANCE     = 6,
+				CRIT_MULTIPLIER = 1.7,
+				RANGE           = 110,
+				DISPERSION      = { 0.85, 1.15 },
+				WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_CHOP
+			},
+			[DAGGER_WEAPON]     = {
+				ATTACK_SPEED    = 1.4,
+				CRIT_CHANCE     = 9,
+				CRIT_MULTIPLIER = 2.3,
+				RANGE           = 90,
+				ANGLE           = 25, --math.pi / 7.2, -- 25 градусов
+				DISPERSION      = { 0.9, 1.1 },
+				WEAPON_SOUND    = WEAPON_TYPE_METAL_LIGHT_SLICE
+			},
+			[STAFF_WEAPON]      = {
+				ATTACK_SPEED    = 2.4,
+				CRIT_CHANCE     = 9,
+				CRIT_MULTIPLIER = 2.3,
+				RANGE           = 100,
+				DISPERSION      = { 0.85, 1.15 },
+				WEAPON_SOUND    = WEAPON_TYPE_WOOD_MEDIUM_BASH
+			},
+			[JAWELIN_WEAPON]    = {
+				ATTACK_SPEED    = 2.3,
+				CRIT_CHANCE     = 5,
+				CRIT_MULTIPLIER = 1.7,
+				RANGE           = 110,
+				DISPERSION      = { 0.85, 1.15 },
+				WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_BASH
+			},
+			[BLUNT_WEAPON]      = {
+				ATTACK_SPEED    = 1.7,
+				CRIT_CHANCE     = 5,
+				CRIT_MULTIPLIER = 1.6,
+				RANGE           = 90,
+				DISPERSION      = { 0.8, 1.2 },
+				WEAPON_SOUND    = WEAPON_TYPE_METAL_MEDIUM_BASH
+			},
+			[GREATBLUNT_WEAPON] = {
+				ATTACK_SPEED    = 2.4,
+				CRIT_CHANCE     = 5,
+				CRIT_MULTIPLIER = 1.7,
+				RANGE           = 100,
+				DISPERSION      = { 0.8, 1.2 },
+				WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_BASH
+			},
+			[BOW_WEAPON]        = {
+				ATTACK_SPEED    = 2.6,
+				CRIT_CHANCE     = 7,
+				CRIT_MULTIPLIER = 2.2,
+				RANGE           = 1000,
+				ranged          = true,
+				DISPERSION      = { 0.75, 1.25 },
+				WEAPON_SOUND    = nil
+			}
+		}
+
 		for k, v in pairs(weapons) do
 			v.TYPE    = ITEM_TYPE_WEAPON
 			v.SUBTYPE = k
 		end
 
 		CLASS_SKILL_LIST = {
-        [BARBARIAN_CLASS] = {
-            [SKILL_CATEGORY_FIGHTING_MASTERY] = {
-                'A00B',
-                "A010",
-                "A007",
-                "A006",
-                "A020"
-            },
-            [SKILL_CATEGORY_BATTLE_ADVANTAGE] = {
-                "A00O",
-                "A00Z",
-                "A00A",
-            },
-            [SKILL_CATEGORY_INNER_STRENGTH] = {
-                "A00Q",
-                "A00C",
-                "ABFA"
-            }
-        },
-        [SORCERESS_CLASS] = {
-            [SKILL_CATEGORY_LIGHTNING] = {
-                'A00M',
-                "A00J",
-                "A00K",
-                "A019",
-            },
-            [SKILL_CATEGORY_ICE] = {
-                "A003",
-                "A001",
-                "A005",
-                "A00E"
-            },
-            [SKILL_CATEGORY_FIRE] = {
-                "A00D",
-                "A00F",
-                "A00I",
-                "AMLT"
-            },
-            [SKILL_CATEGORY_ARCANE] = {
-                "A00L",
-                "A00N",
-                "A00H"
-            }
+			[BARBARIAN_CLASS] = {
+				[SKILL_CATEGORY_FIGHTING_MASTERY] = {
+					'A00B',
+					"A010",
+					"A007",
+					"A006",
+					"A020"
+				},
+				[SKILL_CATEGORY_BATTLE_ADVANTAGE] = {
+					"A00O",
+					"A00Z",
+					"A00A",
+				},
+				[SKILL_CATEGORY_INNER_STRENGTH] = {
+					"A00Q",
+					"A00C",
+					"ABFA"
+				}
+			},
+			[SORCERESS_CLASS] = {
+				[SKILL_CATEGORY_LIGHTNING] = {
+					'A00M',
+					"A00J",
+					"A00K",
+					"A019",
+				},
+				[SKILL_CATEGORY_ICE] = {
+					"A003",
+					"A001",
+					"A005",
+					"A00E"
+				},
+				[SKILL_CATEGORY_FIRE] = {
+					"A00D",
+					"A00F",
+					"A00I",
+					"AMLT"
+				},
+				[SKILL_CATEGORY_ARCANE] = {
+					"A00L",
+					"A00N",
+					"A00H"
+				}
+			}
+		}
+
+
+		ITEM_SOUNDPACK = {
+            [SOUNDPACK_SWORD_1]               = { equip = "Sound\\sword_equip01.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" },
+            [SOUNDPACK_SWORD_2]               = { equip = "Sound\\sword_equip02.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" },
+            [SOUNDPACK_2HSWORD]               = { equip = "Sound\\weapon_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" },
+            [SOUNDPACK_BLUNT]                 = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\sword.wav" },
+            [SOUNDPACK_STAFF]                 = { equip = "Sound\\staff_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" },
+            [SOUNDPACK_DAGGER]                = { equip = "Sound\\dagger_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" },
+            [SOUNDPACK_JAVELIN]               = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" },
+            [SOUNDPACK_BOW]                   = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav" },
+
+            [SOUNDPACK_SHIELD_WOOD]           = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\woodshield.wav" },
+            [SOUNDPACK_SHIELD_METAL]          = { equip = "Sound\\shield_equip.wav", uneqip = "Sound\\shield_unequip.wav", drop = "Sound\\metalshield.wav" },
+            [SOUNDPACK_ORB]                   = { equip = "Sound\\amulet.wav", uneqip = "Sound\\amulet.wav", drop = "Sound\\amulet.wav" },
+            [SOUNDPACK_QUIVER]                = { equip = "Sound\\quiver.wav", uneqip = "Sound\\quiver.wav", drop = "Sound\\quiver.wav" },
+
+            [SOUNDPACK_AMULET]                = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\amulet.wav" },
+            [SOUNDPACK_RING]                  = { equip = "Sound\\ring_equip.wav", uneqip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" },
+
+
+            [SOUNDPACK_CHEST_HEAVY_ARMOR]    = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\platearmor.wav" },
+            [SOUNDPACK_CHEST_MID_ARMOR]      = { equip = "Sound\\chain_armor_equip.wav", uneqip = "Sound\\chain_armor_unequip.wav", drop = "Sound\\chainarmor.wav" },
+            [SOUNDPACK_CHEST_LIGHT_ARMOR]    = { equip = "Sound\\cloth_armor_equip.wav", uneqip = "Sound\\cloth_armor_unequip.wav", drop = "Sound\\lightarmor.wav" },
+
+            [SOUNDPACK_HEAD_HEAVY_ARMOR]     = { equip = "Sound\\helmet_equip.wav", uneqip = "Sound\\helmet_unequip.wav", drop = "Sound\\helm.wav" },
+            [SOUNDPACK_HEAD_MID_ARMOR]       = { equip = "Sound\\cap.wav", uneqip = "Sound\\cap.wav", drop = "Sound\\cap.wav" },
+            [SOUNDPACK_HEAD_LIGHT_ARMOR]     = { equip = "Sound\\rare.wav", uneqip = "Sound\\rare.wav", drop = "Sound\\rare.wav" },
+
+            [SOUNDPACK_HANDS_HEAVY_ARMOR]    = { equip = "Sound\\glovesmetal.wav", uneqip = "Sound\\glovesmetal.wav", drop = "Sound\\glovesmetal.wav" },
+            [SOUNDPACK_HANDS_MID_ARMOR]      = { equip = "Sound\\gloveschain.wav", uneqip = "Sound\\gloveschain.wav", drop = "Sound\\gloveschain.wav" },
+            [SOUNDPACK_HANDS_LIGHT_ARMOR]    = { equip = "Sound\\gloves.wav", uneqip = "Sound\\gloves.wav", drop = "Sound\\gloves.wav" },
+
+            [SOUNDPACK_BOOTS_HEAVY_ARMOR]    = { equip = "Sound\\bootsmetal.wav", uneqip = "Sound\\bootsmetal.wav", drop = "Sound\\bootsmetal.wav" },
+            [SOUNDPACK_BOOTS_MID_ARMOR]      = { equip = "Sound\\bootschain.wav", uneqip = "Sound\\bootschain.wav", drop = "Sound\\bootschain.wav" },
+            [SOUNDPACK_BOOTS_LIGHT_ARMOR]    = { equip = "Sound\\boots.wav", uneqip = "Sound\\boots.wav", drop = "Sound\\boots.wav" },
+
+            [SOUNDPACK_BELT]                 = { equip = "Sound\\belt.wav", uneqip = "Sound\\belt.wav", drop = "Sound\\belt.wav" },
+
+            [SOUNDPACK_POTION]               = { drop = "Sound\\potionui.wav" },
+            [SOUNDPACK_SCROLL]               = { drop = "Sound\\scroll.wav" },
+            [SOUNDPACK_GEM]                  = { drop = "Sound\\gem.wav" },
+            [SOUNDPACK_BOOK]                 = { drop = "Sound\\book.wav" }
         }
-    }
 
 
 		ItemAddData('0000', {

@@ -6,7 +6,7 @@
 do
 
 
-    LegendaryEffectsList = {}
+    LegendaryEffectsList = nil
 
 
 
@@ -57,6 +57,7 @@ do
     
 
     function InitLegendaryEffects()
+        LegendaryEffectsList = {}
         --=========================================================================
         NewLegendaryEffect({
             name =  LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_FIREBOND,

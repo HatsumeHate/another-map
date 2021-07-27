@@ -3,10 +3,12 @@ do
     GAME_UI = nil
     WORLD_FRAME = nil
     MASTER_FRAME = nil
-    ButtonList = {}
-
+    ButtonList = nil
 
     local FocusTrigger
+    local ButtonClickList
+    local ClickTrigger
+
 
     ---@param frame framehandle
     function FrameRegisterNoFocus(frame)
@@ -21,14 +23,12 @@ do
 
 
 
-    local ButtonClickList = {}
-
     function FrameChangeTexture(frame, texture)
         --ButtonTextureList[GetHandleId(frame)] = texture
         BlzFrameSetTexture(ButtonClickList[frame].image, texture, 0, true)
     end
 
-    local ClickTrigger
+
 
     ---@param frame framehandle
     function FrameRegisterClick(frame, texture)
@@ -96,6 +96,8 @@ do
 
 
     function BasicFramesInit()
+        ButtonList = {}
+        ButtonClickList = {}
         GAME_UI     = BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0)
         WORLD_FRAME = BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0)
 
