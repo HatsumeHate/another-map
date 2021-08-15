@@ -7,7 +7,7 @@ do
 
 
 
-    local AITable
+    local AITable = 0
 
 
     function AI_AttackReaction(attacker, attacked)

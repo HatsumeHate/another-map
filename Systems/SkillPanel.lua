@@ -5,12 +5,12 @@
 ---
 do
 
-    SkillPanelFrame = nil
-    SkillPanelButton = nil
+    SkillPanelFrame = 0
+    SkillPanelButton = 0
 
-    local ClickTrigger
-    local EnterTrigger
-    local LeaveTrigger
+    local ClickTrigger = 0
+    local EnterTrigger = 0
+    local LeaveTrigger = 0
 
     local SKILL_BUTTON = 0
 
@@ -101,7 +101,7 @@ do
                         button_data.skill = SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].skill_list[position]
                         BlzFrameSetTexture(button_data.image, button_data.skill.icon, 0, true)
                         FrameChangeTexture(button_data.button, button_data.skill.icon)
-                        BlzFrameSetVisible(SkillPanelFrame[player].displayed_skill_button[i], true)
+                        if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(SkillPanelFrame[player].displayed_skill_button[i], true) end
                         BlzFrameSetText(button_data.name_text, button_data.skill.name)
                         BlzFrameSetText(button_data.level_text, LOCALE_LIST[my_locale].SKILL_PANEL_LVL_TEXT .. UnitGetAbilityLevel(PlayerHero[player], button_data.skill.Id))
 
@@ -132,7 +132,7 @@ do
             BlzFrameSetMinMaxValue(SkillPanelFrame[player].slider, 1., #SkillPanelFrame[player].category[c].skill_list)
             BlzFrameSetValue(SkillPanelFrame[player].slider, #SkillPanelFrame[player].category[c].skill_list)
             local last_category_button = GetButtonData(SkillPanelFrame[player].category[c].button)
-            BlzFrameSetVisible(last_category_button.sprite, true)
+            if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(last_category_button.sprite, true) end
 
 
         UpdateSkillWindow(player)
@@ -326,36 +326,13 @@ do
 
             BlzTriggerRegisterFrameEvent(SkillPanelFrame[player].slider_trigger, SkillPanelFrame[player].slider, FRAMEEVENT_MOUSE_WHEEL)
 
-        --[[trg = CreateTrigger()
-
-        TriggerRegisterPlayerEvent(trg, Player(player-1), EVENT_PLAYER_MOUSE_DOWN)
-        TriggerRegisterPlayerEvent(trg, Player(player-1), EVENT_PLAYER_MOUSE_UP)
-        --TriggerRegisterPlayerMouseEventBJ(trg, Player(player-1), EVENT_PLAYER_MOUSE_DOWN)
-        --TriggerRegisterPlayerMouseEventBJ(trg, Player(player-1), EVENT_PLAYER_MOUSE_UP)
-        TriggerAddAction(trg, function()
-            if SkillPanelFrame[player].state then
-                if EVENT_PLAYER_MOUSE_UP == ConvertPlayerEvent(GetTriggerEventId())  then
-                    --SkillPanelFrame[player].slider_value = SkillPanelFrame[player].slider_value + 1
-                    BlzFrameSetValue(SkillPanelFrame[player].slider, SkillPanelFrame[player].slider_value)
-                    UpdateSkillWindow(player)
-                else
-                    --SkillPanelFrame[player].slider_value = SkillPanelFrame[player].slider_value - 1
-                    BlzFrameSetValue(SkillPanelFrame[player].slider, SkillPanelFrame[player].slider_value)
-                    UpdateSkillWindow(player)
-                end
-            end
-        end)]]
-       -- BlzTriggerRegisterPlayerKeyEvent()
-        --BlzTriggerRegisterPlayerKeyEvent(trg, player-1, OSKEY_, KEY)
 
         SkillPanelFrame[player].tooltip = NewTooltip(SkillPanelFrame[player].slider)
 
-        BlzFrameSetVisible(main_frame, false)
 
         SkillPanelFrame[player].main_frame = main_frame
         SkillPanelFrame[player].state = false
-
-
+        BlzFrameSetVisible(SkillPanelFrame[player].main_frame, false)
         --SkillPanelFrame[player].default_category = CLASS_SKILL_CATEGORY[unit_data.unit_class][1]
     end
 
@@ -363,11 +340,13 @@ do
 
          if GetUnitState(PlayerHero[player], UNIT_STATE_LIFE) < 0.045 and state then
             FrameState[player][SKILL_PANEL] = false
-            return
+            return false
         end
 
-        if GetLocalPlayer() == Player(player-1) then
-            BlzFrameSetVisible(SkillPanelFrame[player].main_frame, state)
+
+        BlzFrameSetVisible(SkillPanelFrame[player].main_frame, state)
+        if GetLocalPlayer() ~= Player(player-1) then
+            BlzFrameSetVisible(SkillPanelFrame[player].main_frame, false)
         end
         --BlzFrameSetVisible(SkillPanelFrame[player].main_frame, state)
         SkillPanelFrame[player].state = state
@@ -384,25 +363,6 @@ do
 
     
     function SkillPanelInit()
-        --SkillPanelButton = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSpellBookBLS.blp", 0.03, 0.03, InventoryTriggerButton, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.01, 0., GAME_UI)
-        --CreateTooltip(LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_DESCRIPTION, SkillPanelButton, 0.14, 0.06)
-        --BlzFrameSetVisible(SkillPanelButton, false)
-            --[[
-            local trg = CreateTrigger()
-            BlzTriggerRegisterFrameEvent(trg, SkillPanelButton, FRAMEEVENT_CONTROL_CLICK)
-            TriggerAddAction(trg, function()
-                local player = GetPlayerId(GetTriggerPlayer()) + 1
-
-                    if GetLocalPlayer() == Player(player-1) then
-                        BlzFrameSetVisible(SkillPanelFrame[player].main_frame, not BlzFrameIsVisible(SkillPanelFrame[player].main_frame))
-                        BlzFrameSetVisible(PlayerStatsFrame[player], false)
-                    end
-
-                UpdateSkillList(player)
-                DestroyContextMenu(player)
-                RemoveTooltip(player)
-                SkillPanelFrame[player].state = not SkillPanelFrame[player].state
-                end)]]
 
         SkillPanelFrame = {}
 
@@ -435,7 +395,7 @@ do
                     local last_category_button = GetButtonData(SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].button)
                     BlzFrameSetVisible(last_category_button.sprite, false)
                     --BlzDestroyFrame(last_category_button.sprite)
-                    BlzFrameSetVisible(button_data.sprite, true)
+                    if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(button_data.sprite, true) end
                     --button_data.sprite = CreateSprite("selecter2.mdx", 0.9, SkillPanelFrame[player].category[button_data.button_type * -1].button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, button_data.image)
                     SkillPanelFrame[player].current_category = button_data.button_type * -1
                     UpdateSkillList(player)

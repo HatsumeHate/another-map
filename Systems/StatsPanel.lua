@@ -1,11 +1,11 @@
 do
 
     STAT_PANEL_UPDATE = 0.3
-    PlayerStatsFrame = nil
-    StatsList = nil
-    PlayerHero = nil
-    MainStatButtons = nil
-    CharButton = nil
+    PlayerStatsFrame = 0
+    StatsList = 0
+    PlayerHero = 0
+    MainStatButtons = 0
+    CharButton = 0
 
 
     function StatPanelUpdate()
@@ -100,7 +100,7 @@ do
                         MainStatButtons[id].points = 0
                         for i = STR_STAT, VIT_STAT do
                             BlzFrameSetVisible(MainStatButtons[id].frames[i], false)
-                            BlzFrameSetEnable(MainStatButtons[id].frames[i], false)
+                            --BlzFrameSetEnable(MainStatButtons[id].frames[i], false)
                             BlzFrameSetVisible(MainStatButtons[id].points_frame, false)
                         end
                     end
@@ -112,16 +112,23 @@ do
     ---@param player integer
     ---@param count integer
     function AddPointsToPlayer(player, count)
+
         if PlayerHero[player] then
             MainStatButtons[player].points = math.ceil(MainStatButtons[player].points) + math.ceil(count)
+
             for i = STR_STAT, VIT_STAT do
-                BlzFrameSetVisible(MainStatButtons[player].frames[i], true)
-                BlzFrameSetEnable(MainStatButtons[player].frames[i], true)
+                if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(MainStatButtons[player].frames[i], true) end
+                --BlzFrameSetEnable(MainStatButtons[player].frames[i], true)
             end
-            BlzFrameSetVisible(MainStatButtons[player].glow_frame, true)
-            BlzFrameSetVisible(MainStatButtons[player].points_frame, true)
+
+            if GetLocalPlayer() == Player(player-1) then
+                BlzFrameSetVisible(MainStatButtons[player].glow_frame, true)
+                BlzFrameSetVisible(MainStatButtons[player].points_frame, true)
+            end
+
             BlzFrameSetText(MainStatButtons[player].points_text_frame, MainStatButtons[player].points)
         end
+
     end
 
 
@@ -224,22 +231,19 @@ do
 
 
 
-
-
-
-
         --RegisterConstructor(main_frame, 0.29, 0.33)
-        BlzFrameSetVisible(main_frame, false)
         PlayerStatsFrame[player] = main_frame
+        BlzFrameSetVisible(PlayerStatsFrame[player], false)
     end
 
 
-    local FirstTime_Data
+    local FirstTime_Data = 0
 
 
     function SetStatsPanelState(player, state)
 
-        if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(PlayerStatsFrame[player], state) end
+        BlzFrameSetVisible(PlayerStatsFrame[player], state)
+        if GetLocalPlayer() ~= Player(player-1) then BlzFrameSetVisible(PlayerStatsFrame[player], false) end
 
         --BlzFrameSetVisible(PlayerStatsFrame[player], state)
         --BlzFrameSetVisible(SkillPanelFrame[player].main_frame, state)
@@ -254,11 +258,6 @@ do
 
 
     function StatsPanelInit()
-        --CharButton = NewButton("ReplaceableTextures\\CommandButtons\\BTNTomeRed.blp", 0.03, 0.03, GAME_UI, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0., -0.12, GAME_UI)
-
-        --CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_DESCRIPTION, CharButton, 0.14, 0.06)
-
-        --BlzFrameSetVisible(CharButton, false)
 
         PlayerStatsFrame = {}
         StatsList = {}
@@ -282,26 +281,6 @@ do
             AddPointsToPlayer(1, 5)
             AddPointsToPlayer(2, 5)
         end)
-        --[[
-        local trg = CreateTrigger()
-        BlzTriggerRegisterFrameEvent(trg, CharButton, FRAMEEVENT_CONTROL_CLICK)
-        TriggerAddAction(trg, function()
-
-            BlzFrameSetVisible(PlayerStatsFrame[GetPlayerId(GetTriggerPlayer()) + 1], not BlzFrameIsVisible(PlayerStatsFrame[GetPlayerId(GetTriggerPlayer()) + 1]))
-            BlzFrameSetVisible(SkillPanelFrame[GetPlayerId(GetTriggerPlayer()) + 1].main_frame, false)
-
-                if FirstTime_Data[GetPlayerId(GetTriggerPlayer()) + 1].first_time then
-                    ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_STATS_1, GetPlayerId(GetTriggerPlayer()))
-                    FirstTime_Data[GetPlayerId(GetTriggerPlayer()) + 1].first_time = false
-                end
-        end)]]
-
-
-
-
-
-        --TimerStart(CreateTimer(), STAT_PANEL_UPDATE, true, StatPanelUpdate)
-        --RegisterConstructor(PlayerStatsFrame[1], 0.2, 0.2)
 
     end
 

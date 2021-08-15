@@ -41,6 +41,7 @@ do
 						DestroyTimer(GetExpiredTimer())
 						InitWeather(bj_mapInitialPlayableArea)
 						print("Done")
+
 						CreateShop(gg_unit_n000_0056, "ReplaceableTextures\\CommandButtons\\BTNVillagerMan1.blp",
 								{
 									open = {
@@ -104,11 +105,6 @@ do
 								}
 						)
 
-						--print("names")
-						BlzSetUnitName(gg_unit_n000_0056, LOCALE_LIST[my_locale].VENDOR_BILL_NAME)
-						BlzSetUnitName(gg_unit_opeo_0031, LOCALE_LIST[my_locale].SMORC_NAME)
-						BlzSetUnitName(gg_unit_n01W_0111, LOCALE_LIST[my_locale].SCAVENGER_NAME)
-
 						--print("items")
 						local my_item = CreateCustomItem("I006",  0.,0.)
 						SetItemCharges(my_item, 20)
@@ -121,11 +117,20 @@ do
 						my_item = nil
 						--print("items end")
 
-						CreateBlacksmith(gg_unit_n013_0011, "ReplaceableTextures\\CommandButtons\\BTNElfVillager.blp")
-						BlzSetUnitName(gg_unit_n013_0011, LOCALE_LIST[my_locale].BLACKSMITH_NAME)
 						--print("blacksmith")
-						CreateLibrarian(gg_unit_n01V_0110, "ReplaceableTextures\\CommandButtons\\BTNNightElfRunner.blp")
+
+						--print("names")
+						BlzSetUnitName(gg_unit_n000_0056, LOCALE_LIST[my_locale].VENDOR_BILL_NAME)
+						BlzSetUnitName(gg_unit_opeo_0031, LOCALE_LIST[my_locale].SMORC_NAME)
+						BlzSetUnitName(gg_unit_n01W_0111, LOCALE_LIST[my_locale].SCAVENGER_NAME)
+						BlzSetUnitName(gg_unit_n013_0011, LOCALE_LIST[my_locale].BLACKSMITH_NAME)
 						BlzSetUnitName(gg_unit_n01V_0110, LOCALE_LIST[my_locale].LIBRARIAN_NAME)
+
+
+						CreateLibrarian(gg_unit_n01V_0110, "ReplaceableTextures\\CommandButtons\\BTNNightElfRunner.blp")
+						CreateBlacksmith(gg_unit_n013_0011, "ReplaceableTextures\\CommandButtons\\BTNElfVillager.blp")
+
+
 						--print("librarian")
 						CreateHeroSelections()
 						--print("selections")

@@ -6,12 +6,12 @@
 do
 
     ActivePlayers = 0
-    SPAWN_POINTS = nil
-    MAIN_POINT = nil
-    MONSTER_PLAYER = nil
-    SECOND_MONSTER_PLAYER = nil
-    WaveGroup = nil
-    local WaveWaypointTimer
+    SPAWN_POINTS = 0
+    MAIN_POINT = 0
+    MONSTER_PLAYER = 0
+    SECOND_MONSTER_PLAYER = 0
+    WaveGroup = 0
+    local WaveWaypointTimer = 0
 
     local WaveDifficultyModificator = 1.
     local WavePlayerCountModificator = 1.
@@ -113,19 +113,14 @@ do
 
 
 
-
-
-    MONSTER_WAYPOINTS = nil
-
-
-    MONSTER_EXP_RATES = nil
-
+    MONSTER_WAYPOINTS = 0
+    MONSTER_EXP_RATES = 0
+    MONSTER_LIST = 0
 
 
     -- attack type focus (melee/range ratio) => monster type =>
 
 
-    MONSTER_LIST = nil
 
 
     function GetRandomMonsterPack(rank)

@@ -9,8 +9,8 @@ do
 
 
 
-    local Click_Ability
-    local Click_Condition
+    local Click_Ability = 0
+    local Click_Condition = 0
 
     function ClickCondition()
         return GetOrderTargetItem() == nil and GetUnitAbilityLevel(GetOrderTargetUnit(), Click_Ability) > 0 and GetIssuedOrderId() == order_smart and IsUnitInRange(GetOrderTargetUnit(), GetTriggerUnit(), 200.)
@@ -122,7 +122,7 @@ do
     MARK_TEAMCOLOR = 8
     MARK_ATTENTION = 9
 
-    local MarkList
+    local MarkList = 0
 
 
     function AddMark(unit, mark_type, mark_var)
@@ -369,7 +369,7 @@ do
     end
 
 
-    Guinplen = nil
+    Guinplen = 0
 
 
     function EnableMainQuest1_Guinplen_2()

@@ -1,7 +1,7 @@
 do
 
-    UnitsData       = nil
-    UnitsList       = nil
+    UnitsData       = 0
+    UnitsList       = 0
 
     BARBARIAN_CLASS     = 1
     SORCERESS_CLASS     = 2
@@ -46,7 +46,7 @@ do
 
 
         -- STR_STAT, VIT_STAT, AGI_STAT, INT_STAT
-        local BASE_STATS
+        local BASE_STATS = 0
 
 
         ---@param source unit

@@ -5,9 +5,9 @@
 ---
 do
 
-    TeleportFrame = nil
-    TeleportLocation = nil
-    local PlayerCurrentButtonList
+    TeleportFrame = 0
+    TeleportLocation = 0
+    local PlayerCurrentButtonList = 0
 
 
     local function TeleportButtonPressed()
@@ -90,7 +90,7 @@ do
     end
 
 
-    local HitTrigger
+    local HitTrigger = 0
 
     function RegisterUnitForTeleport(unit)
         TriggerRegisterUnitEvent(HitTrigger, unit, EVENT_UNIT_ISSUED_TARGET_ORDER)

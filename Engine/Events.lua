@@ -120,11 +120,23 @@ do
     function OnEffectPrecast(source, target, x, y, effect)
         local leveled_effect = effect.level[effect.current_level]
 
+
             if effect.id == "EEXC" then
                 if GetUnitState(target, UNIT_STATE_LIFE) / GetUnitState(target, UNIT_STATE_MAX_LIFE) <= 0.2  then
                     leveled_effect.power = R2I(leveled_effect.power * 3)
                     leveled_effect.bonus_crit_chance = 20.
                 end
+            elseif effect.id == "ELST" then
+                DelayAction(0.25, function()
+                    local speceffect
+
+                    if target then speceffect = AddSpecialEffect("Spell\\Lightnings Long_".. GetRandomInt(1,5) ..".mdl", GetUnitX(target), GetUnitY(target))
+                    else speceffect = AddSpecialEffect("Spell\\Lightnings Long_".. GetRandomInt(1,5) ..".mdl", x, y) end
+
+                    BlzPlaySpecialEffect(speceffect, ANIM_TYPE_BIRTH)
+                    BlzSetSpecialEffectScale(speceffect, 0.6)
+                    DelayAction(0.5, function() DestroyEffect(speceffect) end)
+                end)
             elseif UnitHasEffect(source, "FRBD") then
                 if leveled_effect.attribute and (leveled_effect.power or leveled_effect.attack_percent_bonus) and leveled_effect.attribute == FIRE_ATTRIBUTE then
                     leveled_effect.power = leveled_effect.power * 1.35
@@ -134,6 +146,11 @@ do
                     leveled_effect.can_crit = true
                     leveled_effect.bonus_crit_chance = 25.
                 end
+            elseif effect.id == "EBLZ" then
+                local unit_data = GetUnitData(source)
+
+                    effect.level[effect.current_level].area_of_effect = 200. * (1. + unit_data.blz_scale)
+
             elseif UnitHasEffect(source, "EOTS") then
                 if effect.id == "EDSC" then
                     leveled_effect.power = leveled_effect.power * 1.15
@@ -290,6 +307,7 @@ do
             skill.level[ability_level].missile = "MFRB"
             CastFrostbolt_Legendary(source, target, x, y)
         elseif id == "AMLT" then CastMeltdown(source)
+        elseif id == "ABLZ" then CastBlizzard(source)
         elseif id == 'A00J' then
             if UnitHasEffect(source,"EOTS") then SparkCast_Legendary(source)
             else SparkCast(source, target, x, y) end

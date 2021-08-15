@@ -1,13 +1,13 @@
 do
 
-    PlayerInventoryFrame = nil
-    PlayerInventoryFrameState = nil
-    InventorySlots = nil
-    InventoryOwner = nil
-    InventoryTooltip = nil
-    InventoryTriggerButton = nil
+    PlayerInventoryFrame = 0
+    PlayerInventoryFrameState = 0
+    InventorySlots = 0
+    InventoryOwner = 0
+    InventoryTooltip = 0
+    InventoryTriggerButton = 0
     INV_SLOT = 0
-    local ClickTrigger
+    local ClickTrigger = 0
 
 
 
@@ -25,9 +25,9 @@ do
     end
 
 
-    local DoubleClickTimer
-    local UNIT_POINT_LIST
-    local POINT_TO_TYPE
+    local DoubleClickTimer = 0
+    local UNIT_POINT_LIST = 0
+    local POINT_TO_TYPE = 0
 
 
     ---@param point number
@@ -45,7 +45,7 @@ do
     end
 
 
-    HeroSpeechFeedbacks = nil
+    HeroSpeechFeedbacks = 0
 
 
     function Feedback_NoGold(player)
@@ -147,11 +147,12 @@ do
 
                                 BlzFrameSetTexture(button.image, button.original_texture, 0, true)
                                 FrameChangeTexture(button.button, button.original_texture)
-                                BlzFrameSetVisible(button.charges_frame, false)
+                                if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.charges_frame, false) end
+                                button.charges_frame_state = false
 
                                     if button.button_state then
-                                        BlzFrameSetVisible(button.sprite, false)
-                                        BlzFrameSetEnable(button.sprite, false)
+                                        if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.sprite, false) end
+                                        --BlzFrameSetEnable(button.sprite, false)
                                         button.button_state = false
                                         --BlzDestroyFrame(button.sprite)
                                         --button.sprite = nil
@@ -161,36 +162,43 @@ do
                                 button.item = nil
 
                             else
-                                BlzFrameSetVisible(button.charges_frame, true)
+                                button.charges_frame_state = true
+                                if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.charges_frame, true) end
                                 BlzFrameSetText(button.charges_text_frame, R2I(GetItemCharges(button.item)))
 
                                     if button.button_state and not IsItemInvulnerable(button.item) then
-                                        BlzFrameSetVisible(button.sprite, false)
-                                        BlzFrameSetEnable(button.sprite, false)
+                                        if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.sprite, false) end
+                                        --BlzFrameSetEnable(button.sprite, false)
                                         button.button_state = false
                                         --BlzDestroyFrame(button.sprite)
                                         --button.sprite = nil
                                     elseif not button.button_state and IsItemInvulnerable(button.item) then
-                                        BlzFrameSetVisible(button.sprite, true)
-                                        BlzFrameSetEnable(button.sprite, true)
+                                        if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.sprite, true) end
+                                        --BlzFrameSetEnable(button.sprite, true)
                                         button.button_state = true
                                     end
 
                             end
 
-                        else
-                            BlzFrameSetVisible(button.charges_frame, false)
+                        elseif button.charges_frame_state then
+                            button.charges_frame_state = false
+                            if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.charges_frame, false) end
                         end
 
                 else
                     BlzFrameSetTexture(button.image, button.original_texture, 0, true)
                     FrameChangeTexture(button.button, button.original_texture)
-                    BlzFrameSetVisible(button.charges_frame, false)
+
+                    if button.charges_frame_state then
+                        button.charges_frame_state = false
+                        if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.charges_frame, false) end
+                    end
+
                     BlzFrameSetText(button.charges_text_frame, "")
 
                         if button.button_state then
-                            BlzFrameSetVisible(button.sprite, false)
-                            BlzFrameSetEnable(button.sprite, false)
+                            if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.sprite, false) end
+                            --BlzFrameSetEnable(button.sprite, false)
                             button.button_state = false
                             --BlzDestroyFrame(button.sprite)
                             --button.sprite = nil
@@ -207,7 +215,7 @@ do
     --======================================================================
     -- BELT LOCK   =========================================================
 
-    local FirstTime_Data_Belt
+    local FirstTime_Data_Belt = 0
 
     local function LockItemOnBelt(player, button)
         if not button.button_state then
@@ -219,8 +227,8 @@ do
                 --BlzFrameSetScale(button.sprite, 1.)
 
                 --BlzFrameSetModel(button.sprite, "selecter3.mdx", 0)
-                BlzFrameSetVisible(button.sprite, true)
-                BlzFrameSetEnable(button.sprite, true)
+                if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.sprite, true) end
+                --BlzFrameSetEnable(button.sprite, true)
                 button.button_state = true
                 PlayLocalSound("Sound\\Interface\\AutoCastButtonClick1.wav", player)
 
@@ -237,8 +245,8 @@ do
                 Feedback_CantUse(player)
             end
         else
-            BlzFrameSetVisible(button.sprite, false)
-            BlzFrameSetEnable(button.sprite, false)
+            if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.sprite, false) end
+            --BlzFrameSetEnable(button.sprite, false)
             button.button_state = false
             --BlzDestroyFrame(button.sprite)
             SetItemInvulnerable(button.item, false)
@@ -253,15 +261,16 @@ do
 
 
 
-    local PlayerMovingItem
-    local EnterTrigger
-    local LeaveTrigger
+    local PlayerMovingItem = 0
+    local EnterTrigger = 0
+    local LeaveTrigger = 0
 
 
     local function EnterAction()
         local player = GetPlayerId(GetTriggerPlayer()) + 1
         local frame = BlzGetTriggerFrame()
         --local h = GetHandleId()
+        --print("Entering trigger "..GetHandleId(GetTriggeringTrigger()))
 
             if PlayerMovingItem[player].state then
                 BlzFrameSetAllPoints(PlayerMovingItem[player].frame, ButtonList[frame].image)
@@ -285,6 +294,7 @@ do
     local function LeaveAction()
         --local player = GetPlayerId(GetTriggerPlayer()) + 1
         --local h = GetHandleId(BlzGetTriggerFrame())
+        --print("Leaving trigger "..GetHandleId(GetTriggeringTrigger()))
 
             RemoveTooltip(GetPlayerId(GetTriggerPlayer()) + 1)
     end
@@ -297,18 +307,22 @@ do
     function RemoveSelectionFrames(player)
 
             if PlayerMovingItem[player].state then
+                PlayerMovingItem[player].state = false
 
-                if ButtonList[PlayerMovingItem[player].selected_frame].button_state then
-                    BlzFrameSetEnable(ButtonList[PlayerMovingItem[player].selected_frame].sprite, true)
+                if PlayerMovingItem[player].selected_frame and ButtonList[PlayerMovingItem[player].selected_frame].button_state then
+                    if GetLocalPlayer() == Player(player - 1) then
+                        BlzFrameSetVisible(ButtonList[PlayerMovingItem[player].selected_frame].sprite, true)
+                    end
                 end
 
                 PlayerMovingItem[player].selected_frame = nil
                 PlayerMovingItem[player].mode = 0
-                BlzFrameSetVisible(PlayerMovingItem[player].frame, false)
-                BlzFrameSetVisible(PlayerMovingItem[player].selector_frame, false)
-                PlayerMovingItem[player].state = false
-                --BlzDestroyFrame(PlayerMovingItem[player].frame)
-                --BlzDestroyFrame(PlayerMovingItem[player].selector_frame)
+
+                if GetLocalPlayer() == Player(player - 1) then
+                    BlzFrameSetVisible(PlayerMovingItem[player].frame, false)
+                    BlzFrameSetVisible(PlayerMovingItem[player].selector_frame, false)
+                end
+
             end
 
     end
@@ -320,14 +334,22 @@ do
 
 
     local function CreateSelectionFrames(player)
-        PlayerMovingItem[player] = { frame = nil, selector_frame = nil, selected_frame = nil, mode = 0 }
+        PlayerMovingItem[player] = {
+            frame = nil,
+            selector_frame = nil,
+            selected_frame = nil,
+            mode = 0
+        }
         PlayerMovingItem[player].selector_frame = BlzCreateFrameByType("SPRITE", "justAName", ButtonList[InventorySlots[player][32]].image, "WarCraftIIILogo", 0)
+        BlzFrameSetPoint(PlayerMovingItem[player].selector_frame, FRAMEPOINT_BOTTOMLEFT, ButtonList[InventorySlots[player][32]].image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
         BlzFrameSetSize(PlayerMovingItem[player].selector_frame, 1., 1.)
         BlzFrameSetScale(PlayerMovingItem[player].selector_frame, 1.)
         PlayerMovingItem[player].frame = BlzCreateFrameByType("BACKDROP", "selection frame", PlayerMovingItem[player].selector_frame, "", 0)
         PlayerMovingItem[player].state = false
-        BlzFrameSetVisible(PlayerMovingItem[player].frame, false)
-        BlzFrameSetVisible(PlayerMovingItem[player].selector_frame, false)
+        if GetLocalPlayer() == Player(player - 1) then
+            BlzFrameSetVisible(PlayerMovingItem[player].frame, false)
+            BlzFrameSetVisible(PlayerMovingItem[player].selector_frame, false)
+        end
     end
 
     local function StartSelectionMode(player, h, mode)
@@ -340,17 +362,20 @@ do
             PlayerMovingItem[player].mode = mode
             BlzFrameClearAllPoints(PlayerMovingItem[player].selector_frame)
 
+            if GetLocalPlayer() == Player(player - 1) then
+                BlzFrameSetVisible(PlayerMovingItem[player].frame, true)
+                BlzFrameSetVisible(PlayerMovingItem[player].selector_frame, true)
+            end
+
             BlzFrameSetPoint(PlayerMovingItem[player].selector_frame, FRAMEPOINT_BOTTOMLEFT, ButtonList[h].image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
 
 
-            if ButtonList[h].button_state then BlzFrameSetEnable(ButtonList[h].sprite, false) end
+            if ButtonList[h].button_state then if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(ButtonList[h].sprite, false) end end
+
 
             BlzFrameClearAllPoints(PlayerMovingItem[player].frame)
             BlzFrameSetTexture(PlayerMovingItem[player].frame, item_data.frame_texture, 0, true)
             BlzFrameSetAllPoints(PlayerMovingItem[player].frame, ButtonList[h].image)
-
-            BlzFrameSetVisible(PlayerMovingItem[player].frame, true)
-            BlzFrameSetVisible(PlayerMovingItem[player].selector_frame, true)
 
                 if mode == SELECTION_MODE_MOVE then
                     BlzFrameSetSize(PlayerMovingItem[player].frame, 0.041, 0.041)
@@ -826,7 +851,7 @@ do
     end
 
 
-    local DropTrigger
+    local DropTrigger = 0
 
 
     ---@param item item
@@ -905,8 +930,6 @@ do
             item_data.picked_up = true
 
 
-
-
             if GetItemType(item) == ITEM_TYPE_CHARGED then
                 local inv_item = GetSameItemSlotItem(player, GetItemTypeId(item))
 
@@ -963,6 +986,13 @@ do
     end
 
 
+    function Inventory_SetAllSprites(player, state)
+        for i = 1, 42 do
+            if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(ButtonList[InventorySlots[player][i]].sprite, state) end
+        end
+    end
+
+
     ---@param button_type number
     ---@param texture string
     ---@param size_x real
@@ -989,16 +1019,12 @@ do
                 original_texture = texture,
                 charges_frame = new_FrameCharges,
                 charges_text_frame = new_FrameChargesText,
+                charges_frame_state = false,
                 sprite = new_Sprite,
                 button_state = false
             }
 
-            BlzFrameSetPoint(new_Sprite, FRAMEPOINT_BOTTOMLEFT, new_FrameImage, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
-            BlzFrameSetSize(new_Sprite, 1., 1.)
-            BlzFrameSetScale(new_Sprite, 1.)
-            BlzFrameSetModel(new_Sprite, "selecter3.mdx", 0)
-            BlzFrameSetVisible(new_Sprite, false)
-            BlzFrameSetEnable(new_Sprite, false)
+            --BlzFrameSetEnable(new_Sprite, false)
 
             FrameRegisterNoFocus(new_Frame)
             FrameRegisterClick(new_Frame, texture)
@@ -1019,6 +1045,13 @@ do
             BlzFrameSetSize(new_Frame, size_x, size_y)
             BlzFrameSetTexture(new_FrameImage, texture, 0, true)
             BlzFrameSetAllPoints(new_FrameImage, new_Frame)
+
+            BlzFrameSetPoint(new_Sprite, FRAMEPOINT_BOTTOMLEFT, new_FrameImage, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
+            BlzFrameSetSize(new_Sprite, 1., 1.)
+            BlzFrameSetScale(new_Sprite, 1.)
+            BlzFrameSetModel(new_Sprite, "selecter3.mdx", 0)
+            --BlzFrameSetAlpha(new_Sprite, 0)
+            BlzFrameSetVisible(new_Sprite, false)
 
         return new_Frame
     end
@@ -1063,6 +1096,8 @@ do
         end
 
         InventorySlots[player][45] = BlzCreateFrameByType("BACKDROP", "ButtonIcon", InventorySlots[player][32], "", 0)
+        BlzFrameSetAllPoints(InventorySlots[player][45], InventorySlots[player][32])
+        BlzFrameSetAlpha(InventorySlots[player][45], 0)
 
         -- equip slots
         InventorySlots[player][33] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.044, 0.044, slots_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.03, 0.03, slots_Frame)
@@ -1117,23 +1152,25 @@ do
         InventoryTooltip[player] = NewTooltip(InventorySlots[player][45])
         local tooltip = GetTooltip(InventoryTooltip[player] )
         tooltip.is_sell_penalty = true
-        BlzFrameSetVisible(main_frame, false)
+        BlzFrameSetVisible(PlayerInventoryFrame[player], false)
         PlayerInventoryFrameState[player] = false
-        main_frame = nil
+
+        UpdateInventoryWindow(player)
     end
 
 
-    local FirstTime_Data
+    local FirstTime_Data = 0
 
     function SetInventoryState(player, state)
 
         if GetUnitState(PlayerHero[player], UNIT_STATE_LIFE) < 0.045 and state then
             FrameState[player][INV_PANEL] = false
-            return
+            return false
         end
 
-        if GetLocalPlayer() == Player(player-1) then
-            BlzFrameSetVisible(PlayerInventoryFrame[player], state)
+        BlzFrameSetVisible(PlayerInventoryFrame[player], state)
+        if GetLocalPlayer() ~= Player(player-1) then
+            BlzFrameSetVisible(PlayerInventoryFrame[player], false)
         end
 
         PlayerInventoryFrameState[player] = state
@@ -1245,68 +1282,13 @@ do
         }
 
         HeroSpeechFeedbacks = {
-            { state = true, timer = CreateTimer() },
-            { state = true, timer = CreateTimer() },
-            { state = true, timer = CreateTimer() },
-            { state = true, timer = CreateTimer() },
-            { state = true, timer = CreateTimer() },
-            { state = true, timer = CreateTimer() }
+            [1] = { state = true, timer = CreateTimer() },
+            [2] = { state = true, timer = CreateTimer() },
+            [3] = { state = true, timer = CreateTimer() },
+            [4] = { state = true, timer = CreateTimer() },
+            [5] = { state = true, timer = CreateTimer() },
+            [6] = { state = true, timer = CreateTimer() }
         }
-
-
-        --InventoryTriggerButton = BlzCreateFrame('ScriptDialogButton', GAME_UI, 0, 0)
-       -- local inv_button_backdrop = BlzCreateFrameByType("BACKDROP", "inventory button backdrop", InventoryTriggerButton, "", 0)
-        --local inv_button_tooltip = BlzCreateFrame("BoxedText", inv_button_backdrop, 150, 0)
---[[
-
-            BlzFrameSetSize(InventoryTriggerButton, 0.03, 0.03)
-            BlzFrameSetPoint(InventoryTriggerButton, FRAMEPOINT_LEFT, CharButton, FRAMEPOINT_RIGHT, 0.01, 0.)
-            BlzFrameSetAllPoints(inv_button_backdrop, InventoryTriggerButton)
-            BlzFrameSetTexture(inv_button_backdrop, "ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp", 0, true)
-
-            BlzFrameSetTooltip(InventoryTriggerButton, inv_button_tooltip)
-            BlzFrameSetPoint(inv_button_tooltip, FRAMEPOINT_TOPLEFT, inv_button_backdrop, FRAMEPOINT_RIGHT, 0, 0)
-            BlzFrameSetSize(inv_button_tooltip, 0.11, 0.05)
-            BlzFrameSetText(BlzGetFrameByName("BoxedTextValue", 0), LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_DESCRIPTION)--BoxedText has a child showing the text, set that childs Text.
-            BlzFrameSetText(BlzGetFrameByName("BoxedTextTitle", 0), LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_NAME)--BoxedText has a child showing the Title-text, set that childs Text.
-
-            FrameRegisterNoFocus(InventoryTriggerButton)
-            FrameRegisterClick(InventoryTriggerButton, "ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp")
-
-            BlzFrameSetVisible(InventoryTriggerButton, false)
-
-            local FirstTime_Data = {
-                [1] = { first_time = true },
-                [2] = { first_time = true },
-                [3] = { first_time = true },
-                [4] = { first_time = true },
-                [5] = { first_time = true },
-                [6] = { first_time = true }
-            }
-
-            local trg = CreateTrigger()
-            BlzTriggerRegisterFrameEvent(trg, InventoryTriggerButton, FRAMEEVENT_CONTROL_CLICK)
-            TriggerAddAction(trg, function()
-                local player = GetPlayerId(GetTriggerPlayer()) + 1
-
-                if GetUnitState(PlayerHero[player], UNIT_STATE_LIFE) < 0.045 then return end
-                SetInventoryState(player, not PlayerInventoryFrameState[player])
-
-                    if FirstTime_Data[player].first_time then
-                        ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_INVENTORY_1, GetPlayerId(GetTriggerPlayer()))
-                        FirstTime_Data[player].first_time = false
-                        DelayAction(12., function()
-                            ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_INVENTORY_2, GetPlayerId(GetTriggerPlayer()))
-                        end)
-                    end
-
-                RemoveTooltip(player)
-                RemoveSelectionFrames(player)
-                DestroyContextMenu(player)
-                DestroySlider(player)
-            end)
-
-]]
 
     end
 

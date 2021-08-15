@@ -6,8 +6,8 @@
 do
 
 
-    PlayerMousePosition = nil
-    local mouse_track_trigger
+    PlayerMousePosition = 0
+    local mouse_track_trigger = 0
 
 
     function MouseTrackingInit()

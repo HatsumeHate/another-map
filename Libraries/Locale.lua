@@ -7,8 +7,8 @@
 do
 
 
-    my_locale = nil
-    LOCALE_LIST = nil
+    my_locale = 0
+    LOCALE_LIST = 0
 
 
     function InitLocaleLibrary()
@@ -641,6 +641,7 @@ do
                 SKILL_FROSTNOVA = 'Кольцо Льда',
                 SKILL_CHAIN_LIGHTNING = "Электрошок",
                 SKILL_MELTDOWN = "Расплавление",
+                SKILL_BLIZZARD = "Буран",
 
 
                 SET_NAME_ANCIENT_LEGACY = "Наследие предков",
@@ -833,6 +834,9 @@ do
                 },
                 [FourCC("AMLT")] = {
                     [1] = "Чародейка концентрирует энергию в своих руках, испуская огненный луч который поражает первого противника нанося ему @e!EMLT.pwr# ед. урона типа @e!EMLT.atr#. Во время поддержания необходимо стоять на месте. Луч следует за указателем мыши. Увеличение уровня способности увеличивает время поддержания.",
+                },
+                [FourCC("ABLZ")] = {
+                    [1] = "Создает вокруг чародейки ледяную бурю, которая постепенно расширяется и замедляет скорость атаки, наложение заклинаний и скорость передвижения пораженных противников. Так же они периодически получают @e!EBLZ.pwr# ед. урона типа @e!EBLZ.atr#. Во время поддержания необходимо стоять на месте. Уровень умения увеличивает максимальный радиус и время поддержания.",
                 },
 
 
@@ -1567,6 +1571,7 @@ do
                 SKILL_FROSTNOVA = 'Frost Nova',
                 SKILL_CHAIN_LIGHTNING = "Electrocute",
                 SKILL_MELTDOWN = "Meltdown",
+                SKILL_BLIZZARD = "Blizzard",
 
                 --SKILL_ = 'Summon',
 
@@ -1758,6 +1763,9 @@ do
                 },
                 [FourCC("AMLT")] = {
                     [1] = "Sorceress emits a fire beam that hits first enemy on its path dealing @e!EMLT.pwr# as @e!EMLT.atr# damage. While casting sorceress have to stand still. The beam direction follows the mouse. Improving level of this skill increasing its channel time.",
+                },
+                [FourCC("ABLZ")] = {
+                    [1] = "Forms a sleet storm around the sorceress that is increasing in size and slows enemy attack speed, cast and moving speed. Enemies inside the storm take @e!EBLZ.pwr# as @e!EBLZ.atr#. While casting sorceress have to stand still. Improving skill level will increase maximum radius and channel time.",
                 },
 
 

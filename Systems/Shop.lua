@@ -6,9 +6,9 @@
 
 do
 
-    ShopFrame = nil
-    ShopInFocus = nil
-    ShopData = nil
+    ShopFrame = 0
+    ShopInFocus = 0
+    ShopData = 0
     local MAXIMUM_ITEMS = 32
 
 
@@ -46,9 +46,9 @@ do
     end
 
 
-    local LeaveTrigger
-    local EnterTrigger
-    local ClickTrigger
+    local LeaveTrigger = 0
+    local EnterTrigger = 0
+    local ClickTrigger = 0
 
     local function EnterAction()
         local player = GetPlayerId(GetTriggerPlayer()) + 1
@@ -419,7 +419,7 @@ do
 
     end
 
-    local FirstTime_Data = nil
+    local FirstTime_Data = 0
 
 
     ---@param unit_owner unit

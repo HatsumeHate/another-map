@@ -1,6 +1,6 @@
 do
 
-    BUFF_DATA = nil
+    BUFF_DATA = 0
     local MAX_BUFF_LEVEL = 10
 
 
@@ -343,6 +343,28 @@ do
                     }
                 }
             }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "blizzard debuff",
+            id = 'ABBZ',
+            buff_id = 'B015',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 8,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 6.,
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = -4, METHOD = STRAIGHT_BONUS, value_delta = -2, value_delta_level = 1 },
+                        { PARAM = CAST_SPEED, VALUE = -4, METHOD = STRAIGHT_BONUS, value_delta = -2, value_delta_level = 1 },
+                        { PARAM = MOVING_SPEED, VALUE = -8, METHOD = STRAIGHT_BONUS, value_delta = -8, value_delta_level = 1 },
+                    }
+                }
+            }
+
         })
         --================================================--
         NewBuffTemplate({

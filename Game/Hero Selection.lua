@@ -7,6 +7,9 @@ do
 
     local MAX_RANGE_XP_LOSS = 1700.
     local MIN_XP_LOSS_RATE = 0.35
+    local DeathTrigger = 0
+    local LvlupTrigger = 0
+    local HeroDeathSoundpack = 0
 
 
 
@@ -71,32 +74,18 @@ do
     end
 
 
-    local HeroDeathSoundpack
 
 
-    function CreateHeroSelections()
+    function HeroSelect()
+        local region = GetTriggeringRegion()
+        local id
+        local player_id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
+        local starting_items = {}
+        local starting_skills = {}
 
-        local DeathTrigger = CreateTrigger()
-        local LvlupTrigger = CreateTrigger()
-        local trg = CreateTrigger()
-        local barbarian_region = CreateRegion()
-        RegionAddRect(barbarian_region, gg_rct_barbarian_select)
+            ActivePlayers = ActivePlayers + 1
 
-        local sorc_region = CreateRegion()
-        RegionAddRect(sorc_region, gg_rct_sorceress_select)
-
-        TriggerRegisterEnterRegionSimple(trg, barbarian_region)
-        TriggerRegisterEnterRegionSimple(trg, sorc_region)
-
-        TriggerAddAction(trg, function ()
-            local region = GetTriggeringRegion()
-            local id
-            local player_id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
-            local starting_items = {}
-            local starting_skills = {}
-
-                ActivePlayers = ActivePlayers + 1
-                if region == barbarian_region then
+                if region == BarbarianRegion then
                     id = FourCC("HBRB")
                     starting_items[1] = CreateCustomItem("I011", 0., 0.)
                     starting_items[2] = CreateCustomItem("I00X", 0., 0.)
@@ -144,11 +133,8 @@ do
 
 
                 local player_number = player_id
-
-
-                TimerStart(CreateTimer(), 0., false, function()
-                    player_id = player_id + 1
-                    PlayerHero[player_id] = hero
+                player_id = player_id + 1
+                PlayerHero[player_id] = hero
 
                     TriggerRegisterDeathEvent(DeathTrigger, hero)
                     TriggerRegisterUnitEvent(LvlupTrigger, hero, EVENT_UNIT_HERO_LEVEL)
@@ -157,41 +143,44 @@ do
 
 
                     CreateGUILayoutForPlayer(player_id, hero)
-                    AddPointsToPlayer(player_id, 0)
                     LockCameraForPlayer(player_id)
                     RegisterItemPickUp(PlayerHero[player_id])
 
-                    for i = 1, #starting_items do
-                        EquipItem(hero, starting_items[i], true)
-                        SetItemVisible(starting_items[i], false)
-                        UpdateEquipPointsWindow(player_id)
-                    end
+                    local timer = CreateTimer()
+                    TimerStart(timer, 3., false, function()
+                        local pid = player_id
 
-                    local potions = CreateCustomItem(ITEM_POTION_HEALTH_WEAK, 0, 0, false)
-                    SetItemCharges(potions, 5)
-                    AddToInventory(player_id, potions)
+                            for i = 1, #starting_items do
+                                --AddToInventory(pid, starting_items[i])
+                                EquipItem(hero, starting_items[i], true)
+                                SetItemVisible(starting_items[i], false)
+                            end
 
-                    potions = CreateCustomItem(ITEM_POTION_MANA_WEAK, 0, 0, false)
-                    SetItemCharges(potions, 5)
-                    AddToInventory(player_id, potions)
+                        local potions = CreateCustomItem(ITEM_POTION_HEALTH_WEAK, 0, 0, false)
+                        SetItemCharges(potions, 5)
+                        AddToInventory(pid, potions)
+                        potions = CreateCustomItem(ITEM_POTION_MANA_WEAK, 0, 0, false)
+                        SetItemCharges(potions, 5)
+                        AddToInventory(pid, potions)
+                        UpdateEquipPointsWindow(pid)
+
+                        for i = 1, #starting_skills do
+                            UnitAddMyAbility(hero, starting_skills[i])
+                        end
+
+                    end)
 
 
-                    for i = 1, #starting_skills do
-                        UnitAddMyAbility(hero, starting_skills[i])
-                    end
-
-                    if id == FourCC("HBRB") then
-                        BlzSetUnitName(hero, LOCALE_LIST[my_locale].BARBARIAN_NAME)
-                    else
-                        BlzSetUnitName(hero, LOCALE_LIST[my_locale].SORCERESS_NAME)
-                    end
+                    if id == FourCC("HBRB") then BlzSetUnitName(hero, LOCALE_LIST[my_locale].BARBARIAN_NAME)
+                    else BlzSetUnitName(hero, LOCALE_LIST[my_locale].SORCERESS_NAME) end
 
 
                     DelayAction(6., function()
+                        SelectUnitForPlayerSingle(hero, Player(player_number))
+                        AddPointsToPlayer(player_id, 0)
+                        EnableGUIForPlayer(player_id)
                         PlayCinematicSpeech(player_id-1, gg_unit_h000_0054, LOCALE_LIST[my_locale].INTRODUCTION_TEXT_1, 6.)
                         DelayAction(7., function()
-                            SelectUnitForPlayerSingle(hero, Player(player_number))
-                            EnableGUIForPlayer(player_id)
                             PlayCinematicSpeech(player_id-1, gg_unit_h000_0054, LOCALE_LIST[my_locale].INTRODUCTION_TEXT_2, 6.)
                             DelayAction(7., function()
                                 PlayCinematicSpeech(player_id-1, gg_unit_h000_0054, LOCALE_LIST[my_locale].INTRODUCTION_TEXT_3, 6.)
@@ -211,12 +200,33 @@ do
                         PanCameraToTimed(GetUnitX(hero), GetUnitY(hero), 0.)
                     end
 
-                    SuspendHeroXP(hero, true)
-                    SetPlayerHandicapXP(Player(player_id-1), 0.)
-                    DestroyTimer(GetExpiredTimer())
-                end)
+        SuspendHeroXP(hero, true)
+        SetPlayerHandicapXP(Player(player_id-1), 0.)
+        --DestroyTimer(GetExpiredTimer())
 
-        end)
+    end
+
+
+
+    BarbarianRegion = 0
+    SorceressRegion = 0
+
+
+    function CreateHeroSelections()
+
+        DeathTrigger = CreateTrigger()
+        LvlupTrigger = CreateTrigger()
+        local trg = CreateTrigger()
+        BarbarianRegion = CreateRegion()
+        RegionAddRect(BarbarianRegion, gg_rct_barbarian_select)
+
+        SorceressRegion = CreateRegion()
+        RegionAddRect(SorceressRegion, gg_rct_sorceress_select)
+
+        TriggerRegisterEnterRegionSimple(trg, BarbarianRegion)
+        TriggerRegisterEnterRegionSimple(trg, SorceressRegion)
+
+        TriggerAddAction(trg, HeroSelect)
 
 
         TriggerAddAction(LvlupTrigger, function()

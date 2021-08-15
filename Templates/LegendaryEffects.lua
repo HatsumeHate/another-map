@@ -6,7 +6,7 @@
 do
 
 
-    LegendaryEffectsList = nil
+    LegendaryEffectsList = 0
 
 
 

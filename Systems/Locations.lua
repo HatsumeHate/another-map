@@ -7,8 +7,8 @@ do
 
 
 
-    local Locations
-    local PlayerLocation
+    local Locations = 0
+    local PlayerLocation = 0
     LOCATION_CASTLE = 1
     LOCATION_MAINROAD = 2
 

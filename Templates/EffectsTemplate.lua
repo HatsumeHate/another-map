@@ -1,6 +1,6 @@
 do
 
-    EffectsData = nil
+    EffectsData = 0
     local MAX_LEVELS = 5
 
     ON_ENEMY = 1
@@ -359,6 +359,35 @@ do
 
         })
 
+        NewEffectTemplate('EBLZ', {
+            name = "blizzard effect",
+            power_delta = 1,
+            power_delta_level = 1,
+            get_level_from_skill = "ABLZ",
+            stack_hitnumbers = true,
+            level = {
+                [1] = {
+                    power = 15,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = ICE_ATTRIBUTE,
+                    area_of_effect = 200.,
+                    max_targets = 300,
+
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Items\\AIob\\AIobSpecialArt.mdx", point = "chest" }, } },
+
+                    applied_buff = {
+                        [1] = { modificator = INCREASE_BUFF_LEVEL, buff_id = 'ABBZ', target_type = ON_ENEMY },
+                        [2] = { modificator = SET_BUFF_TIME, buff_id = 'ABBZ', target_type = ON_ENEMY, value = -1 }
+                    },
+
+                }
+            }
+
+        })
+
         NewEffectTemplate('EFRO', {
             name = "frost orb end effect",
             power_delta = 2,
@@ -437,16 +466,16 @@ do
                     attack_type = RANGE_ATTACK,
                     attribute = LIGHTNING_ATTRIBUTE,
 
-                    SFX_delay = 0.5,
-                    SFX_used = "Spell\\Lightnings Long.mdx",
-                    SFX_used_scale = 1.,
+                    --SFX_delay = 0.25,
+                    --SFX_used = "Spell\\Lightnings Long.mdx",
+                    --SFX_used_scale = 1.,
 
                     shake_magnitude = 1.5,
                     shake_distance = 1450.,
                     shake_duration = 0.7,
 
                     delay = 0.5,
-                    area_of_effect = 255.,
+                    area_of_effect = 235.,
                     max_targets = 300,
                     sound = {
                         pack = { "Sounds\\Spells\\lightning_hit_1.wav", "Sounds\\Spells\\lightning_hit_2.wav", "Sounds\\Spells\\lightning_hit_3.wav" },
@@ -467,7 +496,7 @@ do
             get_level_from_skill = "A00F",
             level = {
                 [1] = {
-                    delay = 0.86,
+                    delay = 1.56,
                     timescale = 1.34,
 
                     power = 94,
@@ -484,11 +513,13 @@ do
 
                     SFX_used = "Spell\\Meteor2.mdx",
                     SFX_used_scale = 1.25,
+                    SFX_delay = 0.7,
 
                     sound = {
                         pack = { "Sounds\\Spells\\meteorimpact.wav" },
                         volume = 128, cutoff = 1800.
                     },
+
 
                     SFX_on_unit = "Abilities\\Spells\\Other\\Incinerate\\FireLordDeathExplode.mdx",
                     SFX_on_unit_point = "origin",

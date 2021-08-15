@@ -8,20 +8,20 @@ do
     WEATHER_MOONLIGHT = 5
     WEATHER_SUNLIGHT = 6
 
-    WeatherList = nil
+    WeatherList = 0
 
     local MAX_PLAYERS = 6
     local LIGHTNING_KEY = 50
-    local RainSound
+    local RainSound = 0
     local LIGHTNING_MODEL = "Weather Lightnings.mdx"
     local GENERATOR_BLOCK_VALUE = 1536.
-    local CREATION_UPDATE = 0.03
-    local AREA
-    local DurationTimer
-    local CreationTimer
-    local SpecialTimer
-    local RectList
-    local Showed
+    local CREATION_UPDATE = 0.025
+    local AREA = 0
+    local DurationTimer = 0
+    local CreationTimer = 0
+    local SpecialTimer = 0
+    local RectList = 0
+    local Showed = 0
 
 
 
@@ -230,9 +230,9 @@ do
 
 
 
-    local X_BLOCKS
-    local Y_BLOCKS
-    local TOTAL_Y_BLOCKS
+    local X_BLOCKS = 0
+    local Y_BLOCKS = 0
+    local TOTAL_Y_BLOCKS = 0
 
 
     function InitWeather(area)

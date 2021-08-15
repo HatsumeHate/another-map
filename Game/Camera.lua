@@ -7,8 +7,8 @@ do
 
 
 
-    PlayerCameraState = nil
-    PlayerCameraSetup = nil
+    PlayerCameraState = 0
+    PlayerCameraSetup = 0
 
 
 
@@ -34,11 +34,12 @@ do
             CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_FARZ, 5000., 0.)
         end
 
+
         local timer = CreateTimer()
-        TimerStart(timer, 0.03, true, function ()
+        TimerStart(timer, 0.025, true, function ()
 
             for i = 1, 6 do
-                if PlayerCameraState[i] then
+                if PlayerCameraState[i] and PlayerHero[i] then
                     CameraSetupSetDestPosition(PlayerCameraSetup[i], GetUnitX(PlayerHero[i]), GetUnitY(PlayerHero[i]), 0.07)
                     if GetLocalPlayer() == Player(i-1) then
                         CameraSetupApply(PlayerCameraSetup[i], true, true)

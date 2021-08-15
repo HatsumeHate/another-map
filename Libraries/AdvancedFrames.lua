@@ -1,9 +1,9 @@
+do
 
-
-    ContextFrame = nil
-    SliderFrame = nil
-    local TooltipList
-    local PlayerTooltip
+    ContextFrame = 0
+    SliderFrame = 0
+    local TooltipList = 0
+    local PlayerTooltip = 0
 
 
     function GetButtonData(button)
@@ -97,8 +97,7 @@
         SliderFrame[player].value = GetItemCharges(origin_button.item)
         SliderFrame[player].okreact = ok_func
         SliderFrame[player].cancelreact = cancel_func
-
-        BlzFrameSetVisible(SliderFrame[player].backdrop, true)
+        if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(SliderFrame[player].backdrop, true) end
         BlzFrameSetFocus(SliderFrame[player].slider, true)
         SliderFrame[player].state = true
     end
@@ -167,141 +166,6 @@
         end
 
 
-        --BlzFrameSetPoint(SliderFrame[player].text_frame, FRAMEPOINT_BOTTOM, SliderFrame[player].slider, FRAMEPOINT_TOP, 0., 0.)
-
-
-
-        --BlzFrameSetPoint(SliderFrame[player].backdrop, FRAMEPOINT_TOPLEFT, origin_button.image, FRAMEPOINT_TOPRIGHT, 0., 0.)
-
-
-
-    end
-
-    function InitContextMenu2222()
-
-        for i = 1, 6 do
-            ContextFrame[i] = {
-                frames = {},
-                backdrop = BlzCreateFrame('ScoreScreenButtonBackdropTemplate', GAME_UI, 0, 0),
-                options = 0
-            }
-            for button = 1, 8 do
-                ContextFrame[i].frames[button] = { button = BlzCreateFrame('ScriptDialogButton', ContextFrame[i].backdrop, 0, 0) }
-                ContextFrame[i].frames[button].text = BlzGetFrameByName("ScriptDialogButtonText", 0)
-                BlzFrameSetScale(ContextFrame[i].frames[button].text, 0.8)
-                BlzFrameSetSize(ContextFrame[i].frames[button].button, 0.074, 0.025)
-                BlzFrameSetTextAlignment(ContextFrame[i].frames[button].text, TEXT_JUSTIFY_CENTER , TEXT_JUSTIFY_MIDDLE)
-                FrameRegisterNoFocus(ContextFrame[i].frames[button].button)
-                BlzFrameSetVisible(ContextFrame[i].frames[button].button, false)
-                ContextFrame[i].frames[button].react = nil
-
-                local trg = CreateTrigger()
-                BlzTriggerRegisterFrameEvent(trg, ContextFrame[i].frames[button].button, FRAMEEVENT_CONTROL_CLICK)
-                TriggerAddAction(trg, function()
-                    ContextFrame[i].frames[button].react()
-                    DestroyContextMenu(i)
-                end)
-
-            end
-            BlzFrameSetVisible(ContextFrame[i].backdrop, false)
-
-        end
-
-    end
-
-
-    function DestroySliderL(player)
-        if SliderFrame[player] ~= nil then
-            BlzDestroyFrame(SliderFrame[player].backdrop)
-            --DestroyTimer(SliderFrame[player].timer)
-            DestroyTrigger(SliderFrame[player].trigger)
-            DestroyTrigger(SliderFrame[player].trigger2)
-            SliderFrame[player] = nil
-        end
-    end
-
-
-    function CreateSliderL(player, origin_button, parent, ok_func, cancel_func)
-
-        parent = GetMasterParentFrame(player) or parent
-
-        DestroySlider(player)
-
-        SliderFrame[player] = {}
-        SliderFrame[player].backdrop = BlzCreateFrame("ScoreScreenButtonBackdropTemplate", parent, 0, 0)
-        SliderFrame[player].slider = BlzCreateFrame("EscMenuSliderTemplate", SliderFrame[player].backdrop, 0, 0)
-        SliderFrame[player].text_frame = BlzCreateFrameByType("BACKDROP", "text backdrop", SliderFrame[player].slider, "", 0)
-        SliderFrame[player].text = BlzCreateFrame("EscMenuLabelTextTemplate",  SliderFrame[player].slider, 0, 0)
-
-
-        BlzFrameSetPoint(SliderFrame[player].text_frame, FRAMEPOINT_BOTTOM, SliderFrame[player].slider, FRAMEPOINT_TOP, 0., 0.)
-        BlzFrameSetSize(SliderFrame[player].text_frame, 0.012, 0.012)
-        BlzFrameSetTexture(SliderFrame[player].text_frame, "GUI\\ChargesTexture.blp", 0, true)
-
-        BlzFrameSetPoint(SliderFrame[player].backdrop, FRAMEPOINT_TOPLEFT, origin_button.image, FRAMEPOINT_TOPRIGHT, 0., 0.)
-
-        BlzFrameSetMinMaxValue(SliderFrame[player].slider, 1, GetItemCharges(origin_button.item))
-        BlzFrameSetStepSize(SliderFrame[player].slider, 1)
-        --BlzFrameSetValue(SliderFrame[player].slider, 1)
-        --BlzFrameSetText(SliderFrame[player].text, "1")
-        --print(BlzFrameGetValue(SliderFrame[player].slider))
-
-        BlzFrameSetSize(SliderFrame[player].backdrop, 0.115, 0.035)
-
-        BlzFrameSetPoint(SliderFrame[player].slider, FRAMEPOINT_CENTER, SliderFrame[player].backdrop, FRAMEPOINT_CENTER, 0., 0.)
-        BlzFrameSetSize(SliderFrame[player].slider, 0.1, 0.015)
-
-        BlzFrameSetPoint(SliderFrame[player].text, FRAMEPOINT_CENTER, SliderFrame[player].text_frame, FRAMEPOINT_CENTER, 0., 0.)
-        BlzFrameSetText(SliderFrame[player].text, GetItemCharges(origin_button.item))
-        BlzFrameSetValue(SliderFrame[player].slider, GetItemCharges(origin_button.item))
-        SliderFrame[player].value = GetItemCharges(origin_button.item)
-        BlzFrameSetScale(SliderFrame[player].text_frame, 1.15)
-
-        SliderFrame[player].button_ok = BlzCreateFrame("ScriptDialogButton", SliderFrame[player].slider, 0, 0)
-        SliderFrame[player].button_cancel = BlzCreateFrame("ScriptDialogButton", SliderFrame[player].slider, 0, 1)
-
-        BlzFrameSetPoint(SliderFrame[player].button_ok, FRAMEPOINT_TOPLEFT, SliderFrame[player].slider, FRAMEPOINT_BOTTOM, 0., 0.)
-        BlzFrameSetPoint(SliderFrame[player].button_cancel, FRAMEPOINT_TOPRIGHT, SliderFrame[player].slider, FRAMEPOINT_BOTTOM, 0., 0.)
-
-        BlzFrameSetSize(SliderFrame[player].button_ok, 0.05, 0.025)
-        BlzFrameSetSize(SliderFrame[player].button_cancel, 0.05, 0.025)
-        BlzFrameSetText(SliderFrame[player].button_ok, "ок")
-        BlzFrameSetText(SliderFrame[player].button_cancel, "отмена")
-        BlzFrameSetTextAlignment(SliderFrame[player].button_ok, TEXT_JUSTIFY_TOP, TEXT_JUSTIFY_MIDDLE)
-        BlzFrameSetTextAlignment(SliderFrame[player].button_cancel, TEXT_JUSTIFY_TOP, TEXT_JUSTIFY_MIDDLE)
-
-        BlzFrameSetFocus(SliderFrame[player].slider, true)
-        BlzFrameSetLevel(SliderFrame[player].slider, 3)
-
-
-        --SliderFrame[player].timer = CreateTimer()
-
-        --TimerStart(SliderFrame[player].timer, 0.08, true, function()
-           -- BlzFrameSetText(SliderFrame[player].text, R2I(BlzFrameGetValue(SliderFrame[player].slider)))
-            --SliderFrame[player].value = BlzFrameGetValue(SliderFrame[player].slider)
-       -- end)
-
-        SliderFrame[player].trigger = CreateTrigger()
-        BlzTriggerRegisterFrameEvent(SliderFrame[player].trigger, SliderFrame[player].button_ok, FRAMEEVENT_CONTROL_CLICK)
-        BlzTriggerRegisterFrameEvent(SliderFrame[player].trigger, SliderFrame[player].button_cancel, FRAMEEVENT_CONTROL_CLICK)
-        TriggerAddAction(SliderFrame[player].trigger, function()
-            if BlzGetTriggerFrame() == SliderFrame[player].button_ok then
-                --print(SliderFrame[player].value)
-                if ok_func ~= nil then ok_func() end
-            else
-                if cancel_func ~= nil then cancel_func() end
-            end
-            DestroySlider(player)
-        end)
-
-        SliderFrame[player].trigger2 = CreateTrigger()
-        BlzTriggerRegisterFrameEvent(SliderFrame[player].trigger2, SliderFrame[player].slider, FRAMEEVENT_SLIDER_VALUE_CHANGED)
-        TriggerAddAction(SliderFrame[player].trigger2, function()
-            SliderFrame[player].value = BlzGetTriggerFrameValue() or 1
-            if SliderFrame[player].value < 0 then SliderFrame[player].value = 1 end
-            BlzFrameSetText(SliderFrame[player].text, R2I(SliderFrame[player].value))
-            --print("slider value " .. BlzFrameGetValue(SliderFrame[player].slider))
-        end)
     end
 
 
@@ -346,7 +210,7 @@
         BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_BOTTOMLEFT, frame, FRAMEPOINT_BOTTOMLEFT, -0.003, -0.003)
         BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_BOTTOMRIGHT, frame, FRAMEPOINT_BOTTOMRIGHT, -0.003, 0.003)
         BlzFrameSetPoint(ContextFrame[player].backdrop, FRAMEPOINT_BOTTOM, frame, FRAMEPOINT_BOTTOM, 0., -0.003)
-        BlzFrameSetVisible(frame, true)
+        if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(frame, true) end
 
     end
 
@@ -370,7 +234,7 @@
             local to = direction == FRAMEPOINT_RIGHT and FRAMEPOINT_RIGHT or FRAMEPOINT_LEFT
             BlzFrameSetPoint(ContextFrame[player].backdrop, from, originframe, to, 0.,0.)
 
-            BlzFrameSetVisible(ContextFrame[player].backdrop, true)
+            if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(ContextFrame[player].backdrop, true) end
             RemoveTooltip(player)
             ContextFrame[player].originframe = originframe
             ContextFrame[player].state = true
@@ -413,7 +277,7 @@
         end
 
     end
-do
+
     --======================================================================
     -- TOOLTIP        ======================================================
 
@@ -445,12 +309,15 @@ do
             TooltipList[handle].textframe = {}
             TooltipList[handle].imageframe = {}
 
-            for i = 1, 15 do
-                TooltipList[handle].textframe[i] = BlzCreateFrameByType("TEXT", "text", backdrop, "", 0)
-                TooltipList[handle].imageframe[i] = BlzCreateFrameByType("BACKDROP", "image", backdrop, "", 0)
-            end
+                for i = 1, 15 do
+                    TooltipList[handle].textframe[i] = BlzCreateFrameByType("TEXT", "text", backdrop, "", 0)
+                    TooltipList[handle].imageframe[i] = BlzCreateFrameByType("BACKDROP", "image", backdrop, "", 0)
+                end
 
             TooltipList[handle].backdrop = backdrop
+
+            BlzFrameSetPoint(backdrop, FRAMEPOINT_TOPLEFT, parent, FRAMEPOINT_TOPRIGHT, 0.01, 0.01)
+            BlzFrameSetSize(backdrop, 0.01, 0.01)
             BlzFrameSetVisible(backdrop, false)
 
         return backdrop
@@ -468,9 +335,11 @@ do
     ---@param offset_x real
     ---@param offset_y real
     ---@param text_orientation textaligntype
-    function AddExtendedSkillValue(index, tooltip, icon, value, relative_frame, from, to, offset_x, offset_y, text_orientation)
-        BlzFrameSetVisible(tooltip.imageframe[index], true)
-        BlzFrameSetVisible(tooltip.textframe[index], true)
+    function AddExtendedSkillValue(index, tooltip, icon, value, relative_frame, from, to, offset_x, offset_y, text_orientation, player)
+        if GetLocalPlayer() == Player(player-1) then
+            BlzFrameSetVisible(tooltip.imageframe[index], true)
+            BlzFrameSetVisible(tooltip.textframe[index], true)
+        end
 
         BlzFrameClearAllPoints(tooltip.imageframe[index])
         BlzFrameSetTexture(tooltip.imageframe[index], icon, 0, true)
@@ -508,9 +377,9 @@ do
     ---@param offset_x real
     ---@param offset_y real
     ---@param align textaligntype
-    function SetTooltipText(index, tooltip, text, align, relative, from, to, offset_x, offset_y)
+    function SetTooltipText(index, tooltip, text, align, relative, from, to, offset_x, offset_y, player)
         BlzFrameClearAllPoints(tooltip.textframe[index])
-        BlzFrameSetVisible(tooltip.textframe[index], true)
+        if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(tooltip.textframe[index], true) end
         BlzFrameSetText(tooltip.textframe[index], text)
         BlzFrameSetPoint(tooltip.textframe[index], from, relative, to, offset_x, offset_y)
         BlzFrameSetTextAlignment(tooltip.textframe[index], TEXT_JUSTIFY_CENTER, align)
@@ -529,9 +398,9 @@ do
     ---@param to framepointtype
     ---@param offset_x real
     ---@param offset_y real
-    function SetTooltipIcon(index, tooltip, icon, size_x, size_y, scale, relative, from, to, offset_x, offset_y)
+    function SetTooltipIcon(index, tooltip, icon, size_x, size_y, scale, relative, from, to, offset_x, offset_y, player)
         BlzFrameClearAllPoints(tooltip.imageframe[index])
-        BlzFrameSetVisible(tooltip.imageframe[index], true)
+        if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(tooltip.imageframe[index], true) end
         BlzFrameSetTexture(tooltip.imageframe[index], icon, 0, true)
         BlzFrameSetPoint(tooltip.imageframe[index], from, relative, to, offset_x, offset_y)
         BlzFrameSetSize(tooltip.imageframe[index], size_x, size_y)
@@ -547,7 +416,7 @@ do
 
         local my_tooltip = TooltipList[tooltip]
         PlayerTooltip[player] = my_tooltip.backdrop
-        BlzFrameSetVisible(my_tooltip.backdrop, true)
+        if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(my_tooltip.backdrop, true) end
 
         local ability_level = UnitGetAbilityLevel(PlayerHero[player], skill.Id) or 1
        -- local proper_level_data = ability_level
@@ -575,7 +444,7 @@ do
             BlzFrameSetSize(my_tooltip.backdrop, 0.1, 0.1)
 
 
-            SetTooltipText(1, my_tooltip, main_description, TEXT_JUSTIFY_MIDDLE,  my_tooltip.backdrop, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.01)
+            SetTooltipText(1, my_tooltip, main_description, TEXT_JUSTIFY_MIDDLE,  my_tooltip.backdrop, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.01, player)
             LockWidth(my_tooltip.textframe[1], BlzFrameGetWidth(my_tooltip.textframe[1]), 0.06, 0.15)
 
             height = height + BlzFrameGetHeight(my_tooltip.textframe[1]) + 0.01
@@ -584,7 +453,8 @@ do
             local master_index = 1
 
             master_index = master_index + 1
-            AddExtendedSkillValue(master_index, my_tooltip, "ReplaceableTextures\\CommandButtons\\BTNSlow.blp", (skill.level[ability_level].cooldown or 0.1) .. LOCALE_LIST[my_locale].SKILL_PANEL_COOLDOWN_TEXT, my_tooltip.textframe[1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMLEFT, 0., -0.004, TEXT_JUSTIFY_LEFT)
+            AddExtendedSkillValue(master_index, my_tooltip, "ReplaceableTextures\\CommandButtons\\BTNSlow.blp", (skill.level[ability_level].cooldown or 0.1) .. LOCALE_LIST[my_locale].SKILL_PANEL_COOLDOWN_TEXT,
+                    my_tooltip.textframe[1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMLEFT, 0., -0.004, TEXT_JUSTIFY_LEFT, player)
             height = height + BlzFrameGetHeight(my_tooltip.imageframe[master_index]) + 0.005
 
 
@@ -592,7 +462,7 @@ do
                 master_index = master_index + 1
                 AddExtendedSkillValue(master_index, my_tooltip,
                         "UI\\Widgets\\ToolTips\\Human\\ToolTipManaIcon.blp", (R2I(skill.level[ability_level].resource_cost) or 0) .. LOCALE_LIST[my_locale].SKILL_PANEL_MANA_TEXT,
-                        my_tooltip.imageframe[master_index-1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMLEFT, 0., -0.004, TEXT_JUSTIFY_LEFT)
+                        my_tooltip.imageframe[master_index-1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMLEFT, 0., -0.004, TEXT_JUSTIFY_LEFT, player)
 
                 height = height + BlzFrameGetHeight(my_tooltip.imageframe[master_index]) + 0.005
             end
@@ -601,7 +471,7 @@ do
                 master_index = master_index + 1
                 AddExtendedSkillValue(master_index, my_tooltip,
                         "ReplaceableTextures\\CommandButtons\\BTNMarksmanship.blp", (R2I(skill.level[ability_level].range) or 0) .. LOCALE_LIST[my_locale].SKILL_PANEL_RANGE_TEXT,
-                        my_tooltip.imageframe[master_index-1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMLEFT, 0., -0.004, TEXT_JUSTIFY_LEFT)
+                        my_tooltip.imageframe[master_index-1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMLEFT, 0., -0.004, TEXT_JUSTIFY_LEFT, player)
 
                 height = height + BlzFrameGetHeight(my_tooltip.imageframe[master_index]) + 0.005
             end
@@ -613,6 +483,8 @@ do
 
 
     function ShowItemTooltip(item, tooltip, button, player, direction, fallback_tooltip)
+
+        --if true then return end
 
         if item == nil then return end
 
@@ -626,7 +498,10 @@ do
 
             tooltip = TooltipList[tooltip]
             PlayerTooltip[player] = tooltip.backdrop
-            BlzFrameSetVisible(tooltip.backdrop, true)
+
+            if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(tooltip.backdrop, true) end
+
+            BlzFrameSetAlpha(tooltip.backdrop, 255)
 
             BlzFrameClearAllPoints(tooltip.backdrop)
 
@@ -689,8 +564,8 @@ do
                 local skill_bonus_text = ""
 
                 for i = 1, #item_data.SKILL_BONUS do
-                    if item_data.SKILL_BONUS[i].id ~= nil then skill_bonus_text = skill_bonus_text .. GetSkillName(item_data.SKILL_BONUS[i].id) .. " +" .. item_data.SKILL_BONUS[i].bonus_levels .. "|n"
-                    elseif item_data.SKILL_BONUS[i].category ~= nil then skill_bonus_text = skill_bonus_text .. GetSkillCategoryName(item_data.SKILL_BONUS[i].category) .. " +" .. item_data.SKILL_BONUS[i].bonus_levels .. "|n" end
+                    if item_data.SKILL_BONUS[i].id then skill_bonus_text = skill_bonus_text .. "|c00EFD572" .. GetSkillName(item_data.SKILL_BONUS[i].id) .. "|r" .. " +" .. item_data.SKILL_BONUS[i].bonus_levels .. "|n"
+                    elseif item_data.SKILL_BONUS[i].category then skill_bonus_text = skill_bonus_text .. "|c00FFC2FF" ..  GetSkillCategoryName(item_data.SKILL_BONUS[i].category) .. "|r" .. " +" .. item_data.SKILL_BONUS[i].bonus_levels .. "|n" end
                 end
 
                 if bonus_text ~= nil then bonus_text = bonus_text..skill_bonus_text
@@ -715,7 +590,7 @@ do
             end
 
 
-            local myframe = SetTooltipText(1, tooltip, item_data.actual_name, TEXT_JUSTIFY_MIDDLE, tooltip.backdrop, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.01)
+            local myframe = SetTooltipText(1, tooltip, item_data.actual_name, TEXT_JUSTIFY_MIDDLE, tooltip.backdrop, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.01, player)
             LockWidth(myframe, BlzFrameGetWidth(myframe), 0.1, 0.16)
             BlzFrameSetScale(myframe, 1.2)
             --print("name " .. BlzFrameGetWidth(myframe))
@@ -724,7 +599,7 @@ do
             height = height + BlzFrameGetHeight(myframe)
 
 
-            myframe = SetTooltipText(2, tooltip, property_text, TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., -0.005)
+            myframe = SetTooltipText(2, tooltip, property_text, TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., -0.005, player)
             BlzFrameSetScale(myframe, 0.95)
              --if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
             height = height + BlzFrameGetHeight(myframe)
@@ -733,7 +608,7 @@ do
             local master_index = 3
 
             if bonus_text then
-                myframe = SetTooltipText(master_index, tooltip, bonus_text, TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0)
+                myframe = SetTooltipText(master_index, tooltip, bonus_text, TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0, player)
                 BlzFrameSetScale(myframe, 0.95)
                 LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.21)
                 master_index = master_index + 1
@@ -744,7 +619,7 @@ do
 
 
             if item_data.legendary_effect then
-                myframe = SetTooltipText(master_index, tooltip, LOCALE_LIST[my_locale].UNIQUE_EFFECT_UI ..":|n|c00DF0000".. item_data.legendary_effect.name.."|r", TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., -0.005)
+                myframe = SetTooltipText(master_index, tooltip, LOCALE_LIST[my_locale].UNIQUE_EFFECT_UI ..":|n|c00DF0000".. item_data.legendary_effect.name.."|r", TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., -0.005, player)
                 LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.2)
                 BlzFrameSetScale(myframe, 0.97)
                 master_index = master_index + 1
@@ -770,7 +645,7 @@ do
                     end
 
                 BlzFrameSetSize(tooltip.textframe[master_index], 0., 0.)
-                myframe = SetTooltipText(master_index, tooltip, set_bonus_text, TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., -0.005)
+                myframe = SetTooltipText(master_index, tooltip, set_bonus_text, TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., -0.005, player)
                 BlzFrameSetScale(myframe, 0.95)
                 LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.45)
                 master_index = master_index + 1
@@ -794,7 +669,7 @@ do
 
 
 
-                myframe = SetTooltipText(master_index, tooltip, stones_text, TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0)
+                myframe = SetTooltipText(master_index, tooltip, stones_text, TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0, player)
                 LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.45)
                 master_index = master_index + 1
                  --if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
@@ -803,10 +678,10 @@ do
                     if free_stone_slots > 0 then
                         local stones = {}
 
-                        myframe = SetTooltipText(master_index, tooltip, "", TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0)
+                        myframe = SetTooltipText(master_index, tooltip, "", TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0, player)
                         master_index = master_index + 1
                         BlzFrameSetSize(myframe, 0.01, 0.02)
-                         --if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
+                        --if BlzFrameGetWidth(myframe) > width then width = BlzFrameGetWidth(myframe) end
                         height = height + BlzFrameGetHeight(myframe)
 
                         local offset_bonus = 4 - free_stone_slots
@@ -815,22 +690,24 @@ do
                         offset_bonus = offset_bonus * 0.15
                         local last_stone_frame
 
-                            for i = 1, free_stone_slots do
+                        for i = 1, free_stone_slots do
 
-                                if i == 1 then
-                                    last_stone_frame = SetTooltipIcon(i, tooltip, "GUI\\empty stone.blp", 0.015, 0.015, 1., myframe, FRAMEPOINT_CENTER, FRAMEPOINT_CENTER, free_stone_slots*((free_stone_slots * 0.0015) * (-1. - offset_bonus)),  0.)
-                                else
-                                    last_stone_frame = SetTooltipIcon(i, tooltip, "GUI\\empty stone.blp", 0.015, 0.015, 1., last_stone_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.,  0.)
-                                end
+                            if i == 1 then
+                                last_stone_frame = SetTooltipIcon(i, tooltip, "GUI\\empty stone.blp", 0.015, 0.015, 1., myframe, FRAMEPOINT_CENTER, FRAMEPOINT_CENTER, free_stone_slots*((free_stone_slots * 0.0015) * (-1. - offset_bonus)),  0., player)
+                            else
+                                last_stone_frame = SetTooltipIcon(i, tooltip, "GUI\\empty stone.blp", 0.015, 0.015, 1., last_stone_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.,  0., player)
                             end
+                        end
 
-                        stones = nil
+                    elseif free_stone_slots == 0 then
+                        myframe = SetTooltipText(master_index, tooltip, "", TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0, player)
+                        master_index = master_index + 1
                     end
             end
 
 
             if item_data.special_description then
-                myframe = SetTooltipText(master_index, tooltip, "|c00FF9748"..item_data.special_description.."|r", TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0)
+                myframe = SetTooltipText(master_index, tooltip, "|c00FF9748"..item_data.special_description.."|r", TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0, player)
                 LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.2)
                 BlzFrameSetScale(myframe, 0.9)
                 master_index = master_index + 1
@@ -855,9 +732,9 @@ do
                     if ((fallback_tooltip and fallback_tooltip.is_sell_penalty) or tooltip.is_sell_penalty) and item_data.sell_penalty then
                         total_cost = total_cost * item_data.sell_penalty
                     end
-                    myframe = SetTooltipIcon(6, tooltip, "UI\\Widgets\\ToolTips\\Human\\ToolTipGoldIcon.blp", 0.0085, 0.0085, 1.05, tooltip.backdrop, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.0055, 0.0055)
+                    myframe = SetTooltipIcon(6, tooltip, "UI\\Widgets\\ToolTips\\Human\\ToolTipGoldIcon.blp", 0.0085, 0.0085, 1.05, tooltip.backdrop, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.0055, 0.0055, player)
                     height = height + BlzFrameGetHeight(myframe) * 2.55
-                    SetTooltipText(master_index, tooltip, R2I(total_cost), TEXT_JUSTIFY_LEFT, myframe, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.002, 0.)
+                    SetTooltipText(master_index, tooltip, R2I(total_cost), TEXT_JUSTIFY_LEFT, myframe, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.002, 0., player)
                 end
 
             end
@@ -885,10 +762,13 @@ do
 
 
     function RemoveTooltip(player)
+
+        --if true then return end
+
         if PlayerTooltip[player] ~= nil then
             local tooltip = TooltipList[PlayerTooltip[player]]
 
-                for i = 1, 15 do
+                for i = 15, 1, -1 do
                     BlzFrameSetScale(tooltip.imageframe[i], 1.)
                     BlzFrameSetVisible(tooltip.imageframe[i], false)
                     BlzFrameSetText(tooltip.textframe[i], "")

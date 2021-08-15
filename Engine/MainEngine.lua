@@ -19,7 +19,7 @@ do
     RESOURCE_STATUS = 4
     REFLECT_STATUS = 8
 
-    OrderInterceptionTrigger = nil
+    OrderInterceptionTrigger = 0
 
 
     --call AddUnitAnimationProperties(gg_unit_H003_0009, "lumber", true)
@@ -253,7 +253,7 @@ do
                 end
 
 
-                if damage_type == DAMAGE_TYPE_PHYSICAL then
+                if damage_type == DAMAGE_TYPE_PHYSICAL and direct then
                     local damage_effect = AddSpecialEffect("DamageEffect.mdx", GetUnitX(target), GetUnitY(target))
                         BlzSetSpecialEffectOrientation(damage_effect, AngleBetweenUnits(target, source) * bj_DEGTORAD, 0., 0.)
                         --BlzSetSpecialEffectYaw(damage_effect, AngleBetweenUnits(target, source) * bj_DEGTORAD)
@@ -369,7 +369,7 @@ do
 
 
         TriggerAddAction(OrderInterceptionTrigger, function()
-            if IsAHero(GetTriggerUnit()) and IsAHero(GetAttacker()) then
+            if (IsAHero(GetTriggerUnit()) or GetTriggerUnit() == gg_unit_h001_0057) and IsAHero(GetAttacker()) then
                 BlzUnitInterruptAttack(GetAttacker())
                 --DelayAction(0., function() IssueImmediateOrderById(GetAttacker(), order_stop) end)
             end

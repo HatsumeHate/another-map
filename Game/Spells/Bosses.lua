@@ -7,8 +7,8 @@ do
 
 
     SpiderQueenTrapCount = 0
-    local BroodRegions
-    local WebRegions
+    local BroodRegions = 0
+    local WebRegions = 0
 
     function SpiderQueen_SpawnBrood(boss)
         --local rect = BroodRegions[GetRandomInt(1, #BroodRegions)]

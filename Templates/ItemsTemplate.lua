@@ -1,7 +1,7 @@
 -- Ставь блоки если уж так хочется отступов
 do
-	ITEM_TEMPLATE_DATA = nil
-	ITEM_DATA          = nil
+	ITEM_TEMPLATE_DATA = 0
+	ITEM_DATA          = 0
 	
 	ITEM_TYPE_WEAPON     = 1
 	ITEM_TYPE_ARMOR      = 2
@@ -67,7 +67,7 @@ do
     SOUNDPACK_POTION = 28; SOUNDPACK_SCROLL = 29; SOUNDPACK_GEM = 30; SOUNDPACK_BOOK = 31
 
 
-    ITEM_SOUNDPACK = nil
+    ITEM_SOUNDPACK = 0
 
 	
 	COMMON_ITEM        = 1
@@ -114,10 +114,10 @@ do
 	INTERACT_SOUND = 3
 
 
-	CLASS_SKILL_LIST = nil
+	CLASS_SKILL_LIST = 0
 
 
-	local weapons
+	local weapons = 0
 
 
     local function GetItemTemplate()
@@ -336,9 +336,10 @@ do
 				ATTACK_SPEED    = 2.6,
 				CRIT_CHANCE     = 7,
 				CRIT_MULTIPLIER = 2.2,
-				RANGE           = 1000,
+				RANGE           = 800.,
 				ranged          = true,
 				DISPERSION      = { 0.75, 1.25 },
+				missile  		= "MSTA",
 				WEAPON_SOUND    = nil
 			}
 		}
@@ -379,7 +380,8 @@ do
 					"A003",
 					"A001",
 					"A005",
-					"A00E"
+					"A00E",
+					"ABLZ"
 				},
 				[SKILL_CATEGORY_FIRE] = {
 					"A00D",

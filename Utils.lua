@@ -1,13 +1,13 @@
 
 	do
-		hash         = nil
-		udg_SimError = nil
+		hash         = 0
+		udg_SimError = 0
 		Stop         = false
-		Loc 		 = nil
-		ForFilter1   = nil
-		ForFilter2   = nil
+		Loc 		 = 0
+		ForFilter1   = 0
+		ForFilter2   = 0
 		IGNORE_ID    = 'A00Z'
-		local SOURCE_UNIT
+		local SOURCE_UNIT = 0
 
 		-- cjass legacy support
 		function GetHp(u)
@@ -177,7 +177,7 @@
 		end
 
 
-	local PauseDataTable
+	local PauseDataTable = 0
 
 	function UtilsInit()
 		hash         = InitHashtable()
@@ -190,8 +190,8 @@
 
 	end
 
-	AirPathingUnit = nil
-	GroundPathingItem = nil
+	AirPathingUnit = 0
+	GroundPathingItem = 0
 
 	function IsPathable_Air(x, y)
 		SetUnitPosition(AirPathingUnit, x, y)
@@ -705,7 +705,7 @@
 	---@param p integer
 	function SimError(msg1, p)
 
-		if udg_SimError == nil then
+		if udg_SimError == 0 then
 			udg_SimError = CreateSoundFromLabel("InterfaceError", false, false, false, 10, 10)
 		end
 

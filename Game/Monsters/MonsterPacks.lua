@@ -5,9 +5,9 @@
 ---
 do
 
-    local MonsterPack
-    local BossPack
-    QuestMonsters = nil
+    local MonsterPack = 0
+    local BossPack = 0
+    QuestMonsters = 0
     local RESPAWN_TYPE_RANDOM = 1
     local RESPAWN_TYPE_SAME = 1
 
@@ -110,6 +110,7 @@ do
 
 
     function InitMonsterPacks()
+
 
         MonsterPack = {}
         BossPack = {}
@@ -350,7 +351,7 @@ do
             CreateLeashForUnit(BossPack[i].boss, BossPack[i].leash_range)
 
 
-            --[[
+
             TimerStart(CreateTimer(), 3.25, true, function()
                 local state = GetUnitState(BossPack[i].boss, UNIT_STATE_LIFE) > 0.045
 
@@ -361,7 +362,7 @@ do
                         IssueImmediateOrderById(BossPack[i].boss, order_stop)
                     end
 
-            end)]]
+            end)
 
                 if BossPack[i].respawn then
                     local trg = CreateTrigger()

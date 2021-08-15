@@ -1,7 +1,7 @@
 do
 
-    HITNUMBERS = nil
-    local HitnumbersPool = nil
+    HITNUMBERS = 0
+    local HitnumbersPool = 0
 
     local UPDATE = 0.04
     local DURATION = 1.
@@ -10,8 +10,8 @@ do
     local CONSTANT_TEXT_SIZE =  (9. * 0.023) / 10
 
 
-    local ATTACK_STATUS_COLOR
-    local STATUS_OFFSET
+    local ATTACK_STATUS_COLOR = 0
+    local STATUS_OFFSET = 0
 
 
 
@@ -135,7 +135,11 @@ do
                 end)
 
         elseif tag_id and (not HitnumbersPool[source][tag_id] or not HitnumbersPool[source][tag_id][victim]) then
-            HitnumbersPool[source][tag_id] = {}
+
+            if not HitnumbersPool[source][tag_id] then
+                HitnumbersPool[source][tag_id] = {}
+            end
+
             HitnumbersPool[source][tag_id][victim] = {
                 timer = CreateTimer(),
                 tag = CreateTextTag(),

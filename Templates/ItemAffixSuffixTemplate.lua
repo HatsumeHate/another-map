@@ -36,20 +36,20 @@ do
     ITEM_SUFFIX_ENDLESS_FURY        = 16
     ITEM_SUFFIX_DEADLY_PRECISION    = 17
 
-    QUALITY_ITEM_LIST = nil
-    QUALITY_STONE_COUNT = nil
-    QUALITY_ITEM_BONUS_COUNT = nil
-    ITEM_AFFIX_NAME_LIST = nil
-    ITEM_SUFFIX_LIST = nil
-    ITEM_QUALITY_SUFFIX_LIST = nil
+    QUALITY_ITEM_LIST = 0
+    QUALITY_STONE_COUNT = 0
+    QUALITY_ITEM_BONUS_COUNT = 0
+    ITEM_AFFIX_NAME_LIST = 0
+    ITEM_SUFFIX_LIST = 0
+    ITEM_QUALITY_SUFFIX_LIST = 0
 
 
     SINGLE_PARAMETER = 1
     MULTIPLE_PARAMETER = 2
 
-    local BOOK_ITEM_LIST
-    BOOK_CLASS_ITEM_LIST = nil
-    local GENERATED_ITEM_LIST
+    local BOOK_ITEM_LIST = 0
+    BOOK_CLASS_ITEM_LIST = 0
+    local GENERATED_ITEM_LIST = 0
 
 
     function GetRandomGeneratedItemId()
@@ -155,11 +155,11 @@ do
                 subtype = DAGGER_WEAPON,
                 id = "IGDR"
             },
-            --{
-               -- type = ITEM_TYPE_WEAPON,
-                --subtype = BOW_WEAPON,
-               -- id = "IGBW"
-           -- },
+            {
+                type = ITEM_TYPE_WEAPON,
+                subtype = BOW_WEAPON,
+                id = "IGBW"
+            },
             {
                 type = ITEM_TYPE_ARMOR,
                 subtype = CHEST_ARMOR,
@@ -205,11 +205,11 @@ do
                 subtype = SHIELD_OFFHAND,
                 id = "IGOS"
             },
-            --{
-              --  type = ITEM_TYPE_OFFHAND,
-              --  subtype = QUIVER_OFFHAND,
-             --   id = "IGOQ"
-            --},
+            {
+                type = ITEM_TYPE_OFFHAND,
+                subtype = QUIVER_OFFHAND,
+                id = "IGOQ"
+            },
         }
 
 
@@ -355,56 +355,64 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_2,
                         decl = DECL_IT,
                         modificator = 0.8,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_5,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_6,
                         decl = DECL_SHE,
                         modificator = 1.2,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_7,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_8,
                         decl = DECL_SHE,
                         modificator = 0.75,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
+                        model = "",
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -554,28 +562,32 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNAnother Sword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNDKSword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNSword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
+                        model = "",
                     },
                 },
                 [GREATSWORD_WEAPON] = {
@@ -584,14 +596,16 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.4,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNRitual Shaman Knife 1Charge.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.4,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                 },
                 [AXE_WEAPON] = {
@@ -600,21 +614,24 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNGrandAxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNSteelAxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "",
                     },
                 },
                 [GREATAXE_WEAPON] = {
@@ -623,7 +640,8 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.45,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                 },
                 [BLUNT_WEAPON] = {
@@ -632,28 +650,32 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
+                        model = "Weapons\\Weapon_Hammer_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNBeatstickV4.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_2,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
+                        model = "Weapons\\Weapon_Hammer_2.mdx",
                     },
                     {
                         icon = "Weapons\\BTNSpikedClub.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_3,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
+                        model = "Weapons\\Weapon_Hammer_2.mdx",
                     },
                     {
                         icon = "Weapons\\BTNFlail.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
+                        model = "Weapons\\Weapon_Hammer_1.mdx",
                     },
                 },
                 [GREATBLUNT_WEAPON] = {
@@ -662,14 +684,16 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.5,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNMythril Hammer.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.5,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                 },
                 [DAGGER_WEAPON] = {
@@ -678,35 +702,40 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_1,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNGoldenDagger.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_2,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNDagger3.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_3,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNNastyShiv.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_4,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNMecheteOfFury.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_5,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
                 },
                 [STAFF_WEAPON] = {
@@ -715,35 +744,40 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "Weapons\\Weapon_Staff.mdx",
                     },
                     {
                         icon = "Weapons\\BTNFireWand.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "Weapons\\Weapon_Staff.mdx",
                     },
                     {
                         icon = "Weapons\\BTNFrostJade.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "Weapons\\Weapon_Staff.mdx",
                     },
                     {
                         icon = "Weapons\\BTNIce Staff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "Weapons\\Weapon_Staff.mdx",
                     },
                     {
                         icon = "Weapons\\BTNStick Staff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_5,
                         decl = DECL_THEY,
                         modificator = 1.2,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "Weapons\\Weapon_Staff.mdx",
                     },
                 },
                 [BOW_WEAPON] = {
@@ -752,42 +786,48 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_1,
                         decl = DECL_IT,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNHardBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNRoughwoodBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNScoutsBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNStrongBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNWoodenHornBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                 },
                 [QUIVER_OFFHAND] = {
@@ -796,42 +836,42 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_02.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_07.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_7,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_08.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_8,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_09.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_9,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_10.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_10,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                 },
                 [ORB_OFFHAND] = {
@@ -840,28 +880,32 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNWaterOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_2,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNSandOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_3,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNOrbOfTheSun.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_4,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                 },
                 [SHIELD_OFFHAND] = {
@@ -870,42 +914,48 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_1,
                         decl = DECL_HE,
                         modificator = 0.9,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_WOOD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_WOOD],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNKiteShield1.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_2,
                         decl = DECL_HE,
                         modificator = 0.8,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_WOOD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_WOOD],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNLancelot_Shield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.1,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNBuckler.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_4,
                         decl = DECL_HE,
                         modificator = 0.8,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNrcgs.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_WOOD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_WOOD],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNTowerShield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
+                        model = "",
                     },
                 },
             },
@@ -983,56 +1033,64 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_2,
                         decl = DECL_IT,
                         modificator = 0.8,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_5,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_6,
                         decl = DECL_SHE,
                         modificator = 1.2,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_7,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_8,
                         decl = DECL_SHE,
                         modificator = 0.75,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
+                        model = "",
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -1196,28 +1254,32 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNAnother Sword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNDKSword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNSword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
+                        model = "",
                     },
                 },
                 [GREATSWORD_WEAPON] = {
@@ -1226,14 +1288,16 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.4,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNRitual Shaman Knife 1Charge.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.4,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                 },
                 [AXE_WEAPON] = {
@@ -1242,21 +1306,24 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNGrandAxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNSteelAxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "",
                     },
                 },
                 [GREATAXE_WEAPON] = {
@@ -1265,7 +1332,8 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.45,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                 },
                 [BLUNT_WEAPON] = {
@@ -1274,28 +1342,32 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNBeatstickV4.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_2,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNSpikedClub.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_3,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNFlail.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
+                        model = "",
                     },
                 },
                 [GREATBLUNT_WEAPON] = {
@@ -1304,14 +1376,16 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.5,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNMythril Hammer.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.5,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                 },
                 [DAGGER_WEAPON] = {
@@ -1320,35 +1394,40 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_1,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNGoldenDagger.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_2,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNDagger3.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_3,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNNastyShiv.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_4,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNMecheteOfFury.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_5,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
                 },
                 [STAFF_WEAPON] = {
@@ -1357,35 +1436,40 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNFireWand.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNFrostJade.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNIce Staff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNStick Staff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_5,
                         decl = DECL_THEY,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "",
                     },
                 },
                 [BOW_WEAPON] = {
@@ -1394,42 +1478,48 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_1,
                         decl = DECL_IT,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNHardBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNRoughwoodBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNScoutsBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNStrongBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNWoodenHornBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                 },
                 [QUIVER_OFFHAND] = {
@@ -1438,42 +1528,42 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_1,
                         decl = DECL_IT,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_02.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_07.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_7,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_08.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_8,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_03.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_04.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                 },
                 [ORB_OFFHAND] = {
@@ -1482,42 +1572,48 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNWaterOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_2,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNSandOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_3,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNOrbOfTheSun.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_4,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNChaosOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNOrbOfLightningNew.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_6,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                 },
                 [SHIELD_OFFHAND] = {
@@ -1526,42 +1622,48 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_2,
                         decl = DECL_HE,
                         modificator = 0.8,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_WOOD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_WOOD],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNLancelot_Shield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.1,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNBuckler.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_4,
                         decl = DECL_HE,
                         modificator = 0.8,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNTowerShield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNRunestoneShield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_7,
                         decl = DECL_HE,
                         modificator = 1.1,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNMastercraftShield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_8,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
+                        model = "",
                     },
                 },
             },
@@ -1695,91 +1797,104 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_2,
                         decl = DECL_IT,
                         modificator = 0.8,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_5,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_6,
                         decl = DECL_SHE,
                         modificator = 1.2,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_7,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_8,
                         decl = DECL_SHE,
                         modificator = 0.75,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNArbalestersArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_9,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNDivineArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_10,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNHalfArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_11,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNHalfArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_12,
                         decl = DECL_HE,
                         modificator = 1.1,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
+                        model = "",
                     },
                     {
                         icon = "Armor\\BTNMoongladeArmor.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_13,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "",
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -2013,35 +2128,40 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNAnother Sword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNDKSword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNSword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNrapier.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_6,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
+                        model = "",
                     },
                 },
                 [GREATSWORD_WEAPON] = {
@@ -2050,28 +2170,32 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.4,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNRitual Shaman Knife 1Charge.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.4,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNTier3 Sword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.4,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNTideShamanRitualLance.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.4,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                 },
                 [AXE_WEAPON] = {
@@ -2080,28 +2204,32 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNGrandAxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNSteelAxe.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNMysticHatchet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "",
                     },
                 },
                 [GREATAXE_WEAPON] = {
@@ -2110,14 +2238,16 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.45,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNAxe of Terror.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.45,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                 },
                 [BLUNT_WEAPON] = {
@@ -2126,42 +2256,48 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNBeatstickV4.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_2,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNSpikedClub.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_3,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNFlail.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNHarbingerStaff-Mace.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNMorningStar.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BLUNT_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
+                        model = "",
                     },
                 },
                 [GREATBLUNT_WEAPON] = {
@@ -2170,28 +2306,32 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.5,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNMythril Hammer.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.5,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTN_NerubianScepter.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.3,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNRunestoneWarhammer.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.3,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "",
                     },
                 },
                 [DAGGER_WEAPON] = {
@@ -2200,49 +2340,56 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_1,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNGoldenDagger.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_2,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNDagger3.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_3,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNNastyShiv.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_4,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNMecheteOfFury.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_5,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNAcid Stinger.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_6,
                         decl = DECL_SHE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNMolten Dagger.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_7,
                         decl = DECL_HE,
                         modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "",
                     },
 
                 },
@@ -2252,63 +2399,72 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNFireWand.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNFrostJade.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNIce Staff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNStick Staff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_5,
                         decl = DECL_THEY,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNDeadProphetStaff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNMoongladeWand.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_7,
                         decl = DECL_IT,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNNecromancerStaff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_8,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNSeerStaff.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_9,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
+                        model = "",
                     },
                 },
                 [BOW_WEAPON] = {
@@ -2317,36 +2473,40 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_7,
                         decl = DECL_IT,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNSimpleBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_8,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNFireyBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_9,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNDarkBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_10,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { equip = "Sound\\bow_equip.wav", uneqip = "Sound\\bow_unequip.wav", drop = "Sound\\bow.wav"
-                        }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                     {
                         icon = "Weapons\\BTNIceyBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_11,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
+                        model = "",
                     },
                 },
                 [QUIVER_OFFHAND] = {
@@ -2355,70 +2515,70 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_1,
                         decl = DECL_IT,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_02.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_05.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_5,
                         decl = DECL_IT,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_06.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_07.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_7,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_08.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_8,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_09.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_9,
                         decl = DECL_IT,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_10.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_10,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_03.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_04.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = { ITEM_SOUNDPACK[SOUNDPACK_QUIVER] }
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
                 },
                 [ORB_OFFHAND] = {
@@ -2427,49 +2587,56 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_1,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNWaterOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_2,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNSandOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_3,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNOrbOfTheSun.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_4,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNChaosOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNOrbOfLightningNew.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_6,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNOrbPain.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_7,
                         decl = DECL_SHE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "",
                     },
                 },
                 [SHIELD_OFFHAND] = {
@@ -2478,49 +2645,56 @@ do
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_2,
                         decl = DECL_HE,
                         modificator = 0.8,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_WOOD]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_WOOD],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNLancelot_Shield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.1,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNBuckler.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_4,
                         decl = DECL_HE,
                         modificator = 0.8,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNTowerShield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.2,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNRunestoneShield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_7,
                         decl = DECL_HE,
                         modificator = 1.1,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNMastercraftShield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_8,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
+                        model = "",
                     },
                     {
                         icon = "Offhand\\BTNShield.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SHIELD_NAME_9,
                         decl = DECL_HE,
                         modificator = 1.,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL]
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
+                        model = "",
                     },
                 },
             },

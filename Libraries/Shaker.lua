@@ -5,7 +5,7 @@
 ---
 do
 
-    local PlayerNoiseTable
+    local PlayerNoiseTable = 0
     local NOISE_FREQ_MIN = 1.5
     local NOISE_FREQ_MAX = 5.
 
@@ -56,7 +56,7 @@ do
                         total_power = total_power + PlayerNoiseTable[i][powercell].power
                     end
 
-                    if total_power > 0. then
+                    if total_power > 0.1 then
                         local velocity = total_power > NOISE_FREQ_MAX and NOISE_FREQ_MAX or total_power
                         if velocity < NOISE_FREQ_MIN then velocity = NOISE_FREQ_MIN end
 
@@ -66,8 +66,9 @@ do
                         if GetLocalPlayer() == Player(i-1) then
                             CameraSetTargetNoiseEx(total_power, velocity, true)
                             CameraSetSourceNoiseEx(total_power, velocity, true)
-                            CameraSetEQNoiseForPlayer(Player(i-1), total_power)
                         end
+
+                        --CameraSetEQNoiseForPlayer(Player(i-1), total_power)
 
                     else
                         if GetLocalPlayer() == Player(i-1) then

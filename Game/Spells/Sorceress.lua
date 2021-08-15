@@ -388,7 +388,7 @@ do
             TimerStart(unit_data.action_timer, 0., false, nil)
             --SetSoundVolume(unit_data.channel_sound, 0)
             StopSound(unit_data.channel_sound, true, true)
-            DestroyEffect(unit_data.weapon_sfx); DestroyEffect(unit_data.hand_sfx)
+            DestroyEffect(unit_data.hand_right_sfx); DestroyEffect(unit_data.hand_left_sfx)
             UnitRemoveAbility(unit, FourCC("A002")); UnitRemoveAbility(unit, FourCC("B000"))
             DestroyTrigger(unit_data.channel_trigger)
             SetUnitTimeScale(unit, 1.)
@@ -421,8 +421,9 @@ do
             unit_data.channel_sound = CreateNew3DSound("Sounds\\Spells\\disintegration_loop_1.wav", GetUnitX(unit), GetUnitY(unit), 65., 120, 1500., true)
             StartSound(unit_data.channel_sound)
             UnitAddAbility(unit, FourCC("A002"))
-            unit_data.weapon_sfx = AddSpecialEffectTarget("Spell\\Sweep_Fire_Medium.mdx", unit, "weapon")
-            unit_data.hand_sfx = AddSpecialEffectTarget("Spell\\Fire Uber.mdx", unit, "hand")
+            --unit_data.weapon_sfx = AddSpecialEffectTarget("Spell\\Sweep_Fire_Medium.mdx", unit, "weapon")
+            unit_data.hand_right_sfx = AddSpecialEffectTarget("Spell\\Fire Uber.mdx", unit, "hand right")
+            unit_data.hand_left_sfx = AddSpecialEffectTarget("Spell\\Fire Uber.mdx", unit, "hand left")
 
             --SafePauseUnit(unit, true)
 
@@ -435,7 +436,7 @@ do
             local breakpoint = duration - 0.25
 
             TriggerAddAction(unit_data.channel_trigger, function()
-                if duration <= breakpoint then MeltdownDeactivate(unit) end
+                if not IsItemOrder(GetIssuedOrderId()) and duration <= breakpoint then MeltdownDeactivate(unit) end
             end)
 
             SetUnitTimeScale(unit, 0.05)
@@ -464,6 +465,105 @@ do
         end
     end
 
+
+
+    function BlizzardDeactivate(unit)
+        local unit_data = GetUnitData(unit)
+        --local skill = GetUnitSkillData(unit, "ABLZ")
+        --local ability_level = UnitGetAbilityLevel(unit, "ABLZ")
+
+            --BlzSetUnitAbilityCooldown(unit, GetKeybindKeyAbility(FourCC("AMLT"), GetPlayerId(GetOwningPlayer(unit)) + 1), 0, skill.level[ability_level].cooldown)
+            UnitRemoveAbility(unit, FourCC('Abun'))
+            SpellBackswing(unit)
+            unit_data.channeled_destructor = nil
+            unit_data.channeled_ability = nil
+            TimerStart(unit_data.action_timer, 0., false, nil)
+            DestroyLoopingSound(unit_data.channel_sound, 0.3)
+            DestroyEffect(unit_data.hand_left_sfx); DestroyEffect(unit_data.hand_right_sfx); DestroyEffect(unit_data.channel_sfx)
+            UnitRemoveAbility(unit, FourCC("A002")); UnitRemoveAbility(unit, FourCC("B000"))
+            DestroyTrigger(unit_data.channel_trigger)
+            SetUnitTimeScale(unit, 1.)
+
+    end
+
+    function IsItemOrder(order_id)
+        return order_id == order_itemuse00 or order_id == order_itemuse01 or order_id == order_itemuse02 or order_id == order_itemuse03 or order_id == order_itemuse04 or order_id == order_itemuse05
+    end
+
+    function CastBlizzard(unit)
+        local unit_data = GetUnitData(unit)
+
+        if unit_data.channeled_destructor then
+            unit_data.channeled_destructor(unit)
+        else
+
+            ResetUnitSpellCast(unit)
+
+            local time_point = 0.3
+            local start_scale = 1.3
+
+            unit_data.channeled_destructor = BlizzardDeactivate
+            unit_data.channeled_ability = "ABLZ"
+
+            UnitAddAbility(unit, FourCC('Abun'))
+            local player_id = GetPlayerId(GetOwningPlayer(unit)) + 1
+
+            unit_data.channel_sound = AddLoopingSoundOnUnit({ "Sounds\\Spells\\blizzard_loop_1.wav", "Sounds\\Spells\\blizzard_loop_2.wav", "Sounds\\Spells\\blizzard_loop_3.wav", }, unit, 150, 150, -0.15, 100, 1500.) --CreateNew3DSound("Sounds\\Spells\\disintegration_loop_1.wav", GetUnitX(unit), GetUnitY(unit), 65., 120, 1500., true)
+            UnitAddAbility(unit, FourCC("A002"))
+            --unit_data.weapon_sfx = AddSpecialEffectTarget("Spell\\Sweep_True_Ice_Medium.mdx", unit, "weapon")
+            unit_data.hand_right_sfx = AddSpecialEffectTarget("Spell\\Ice High.mdx", unit, "hand right")
+            unit_data.hand_left_sfx = AddSpecialEffectTarget("Spell\\Ice High.mdx", unit, "hand left")
+            unit_data.channel_sfx = AddSpecialEffect("Spell\\Sleet Storm.mdx", GetUnitX(unit), GetUnitY(unit))
+            BlzSetSpecialEffectZ(unit_data.channel_sfx, GetUnitZ(unit) + 100.)
+            --BlzSetSpecialEffectHeight(unit_data.channel_sfx, 0.)
+
+
+            unit_data.channel_trigger = CreateTrigger()
+            TriggerRegisterUnitEvent(unit_data.channel_trigger, unit, EVENT_UNIT_ISSUED_POINT_ORDER)
+            TriggerRegisterUnitEvent(unit_data.channel_trigger, unit, EVENT_UNIT_ISSUED_ORDER)
+
+            local level = UnitGetAbilityLevel(unit, "ABLZ")
+            local duration = 2. + level * 0.1
+            local breakpoint = duration - 0.25
+            local scale = start_scale
+            local max_scale = RMinBJ(2., 1. + level * 0.02)
+            BlzSetSpecialEffectScale(unit_data.channel_sfx, scale)
+            unit_data.blz_scale = (scale - start_scale) / (max_scale - start_scale)
+
+            TriggerAddAction(unit_data.channel_trigger, function()
+                if not IsItemOrder(GetIssuedOrderId()) and duration <= breakpoint then BlizzardDeactivate(unit) end
+            end)
+
+            SetUnitTimeScale(unit, 0.05)
+            SetUnitFacingTimed(unit, AngleBetweenUnitXY(unit, PlayerMousePosition[player_id].x or 0., PlayerMousePosition[player_id].y or 0.), 0.1)
+
+            TimerStart(unit_data.action_timer, 0.025, true, function()
+
+                if duration > 0. and GetUnitState(unit, UNIT_STATE_LIFE) > 0.045 and unit_data.channeled_ability == "ABLZ" then
+                    time_point = time_point - 0.025
+
+                    if time_point <= 0. then
+                        ApplyEffect(unit, nil, GetUnitX(unit), GetUnitY(unit), "EBLZ", 1)
+                        time_point = 0.3
+                    end
+
+                    if scale < max_scale then
+                        scale = scale + 0.005
+                        BlzSetSpecialEffectScale(unit_data.channel_sfx, scale)
+                        unit_data.blz_scale = (scale - start_scale) / (max_scale - start_scale)
+                    end
+
+                    SetUnitFacingTimed(unit, AngleBetweenUnitXY(unit, PlayerMousePosition[player_id].x or 0., PlayerMousePosition[player_id].y or 0.), 0.1)
+
+                else
+                    BlizzardDeactivate(unit)
+                end
+
+                duration = duration - 0.025
+            end)
+
+        end
+    end
 
 end
 

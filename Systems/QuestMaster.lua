@@ -14,16 +14,16 @@ do
     QUEST_HINT_STRING = "|c004FFFE4Подсказка: |r"
     QUEST_ALERT_STRING = "|c00FF7D63Внимание: |r"
 
-    QUEST_REVEALED_SOUND = nil
-    QUEST_DONE_SOUND = nil
-    QUEST_FAILED_SOUND = nil
-    QUEST_UPDATED_SOUND = nil
-    QUEST_REQUIREMENT_SOUND = nil
-    QUEST_HINT_SOUND = nil
-    QUEST_ALERT_SOUND = nil
+    QUEST_REVEALED_SOUND = 0
+    QUEST_DONE_SOUND = 0
+    QUEST_FAILED_SOUND = 0
+    QUEST_UPDATED_SOUND = 0
+    QUEST_REQUIREMENT_SOUND = 0
+    QUEST_HINT_SOUND = 0
+    QUEST_ALERT_SOUND = 0
 
 
-    QuestsList = nil
+    QuestsList = 0
 
 
 
@@ -260,24 +260,6 @@ do
         UnitAddIndicator(unit, bj_TRANSMISSION_IND_RED, bj_TRANSMISSION_IND_BLUE, bj_TRANSMISSION_IND_GREEN, bj_TRANSMISSION_IND_ALPHA)
         if waittime then TriggerSleepAction(waittime) end
     end
-    
-
-    RegisterTestCommand("it", function()
-        SetQuestItemPool("MQ01", 1, 1)
-    end)
-
-    RegisterTestCommand("qip", function()
-        AddQuestItemPool("MQ01", 1, 6)
-    end)
-
-    RegisterTestCommand("qi1", function()
-        AddQuestItem("MQ01", 1, "item_description",  true)
-    end)
-
-    RegisterTestCommand("quest1", function()
-        NewQuest("myquest1", "description?", "ReplaceableTextures\\CommandButtons\\BTNDivineIntervention.blp", true, true, "MQ01")
-    end)
-
 
     ---@param quest_type boolean
     ---@param description string

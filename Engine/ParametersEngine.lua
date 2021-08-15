@@ -110,8 +110,9 @@ do
 	REFLECT_VALUE_BY_PERCENT_3  = 12
 
 
-
-	local ParameterLimits
+	local PARAMETER_NAME = 0
+	local PARAMETER_UPDATE_FUNC = 0
+	local ParameterLimits = 0
 
 
 
@@ -202,14 +203,6 @@ do
         end
         return value
     end
-
-
-	local PARAMETER_NAME = {
-
-	}
-
-
-	local PARAMETER_UPDATE_FUNC
 
 
 	---@param type integer

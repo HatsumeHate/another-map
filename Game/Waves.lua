@@ -6,10 +6,10 @@
 do
 
 
-    WaveTimer = nil
+    WaveTimer = 0
     Current_Wave = 1
     WavesUntilShopsUpdate = 2
-    local MusicMix
+    local MusicMix = 0
 
 
     function GetRandomMusicMix()
@@ -33,13 +33,13 @@ do
         else
             Current_Wave = Current_Wave + 1
             AddWaveTimer(295.)
-            print("reset shops")
+            --print("reset shops")
             ResetShops()
-            print("toggle citizens")
+            --print("toggle citizens")
             ToggleCitizens(true)
-            print("prescale")
+            --print("prescale")
             ScaleMonsterPacks()
-            print("scaling done")
+            --print("scaling done")
             StopMusic(true)
             ClearMapMusic()
             PlayMusic(GetRandomMusicMix())

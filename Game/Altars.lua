@@ -5,18 +5,18 @@
 ---
 do
 
-    local ChestRects
-    local AltarRects
-    local AltarsList
+    local ChestRects = 0
+    local AltarRects = 0
+    local AltarsList = 0
     ALTAR_TYPE_WELL_HP = 1
     ALTAR_TYPE_WELL_MP = 2
     ALTAR_TYPE_OBELISK = 3
     ALTAR_TYPE_CHEST = 4
     ALTAR_TYPE_HATRED = 5
     local ChestMax = 15
-    local ChestGroup
-    local FirstTime_Data
-    local AltarEffects
+    local ChestGroup = 0
+    local FirstTime_Data = 0
+    local AltarEffects = 0
 
 
 
@@ -257,7 +257,7 @@ do
             TriggerAddAction(FirstTime_Data[i].proximity_trigger, hint_action)
         end
         
-        
+
 
         local trg = CreateTrigger()
         TriggerRegisterPlayerUnitEvent(trg, Player(0), EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER, nil)
@@ -446,33 +446,33 @@ do
         local chest_index_table = GetRandomIntTable(1, #ChestRects, 15)
 
         for i = 1, #chest_index_table do
-            CreateChest(ChestRects[chest_index_table[i]])
+            CreateChest(ChestRects[chest_index_table[i] ])
         end
+
 
         local timer = CreateTimer()
         TimerStart(timer, 27.5, true, function()
+
             if BlzGroupGetSize(ChestGroup) < ChestMax then
                 if Chance(75. - (100. * (1. - (BlzGroupGetSize(ChestGroup) / ChestMax)))) then
-                    --local rect_index = GetRandomInt(1, #ChestRects)
                     local gr = CreateGroup()
                     local rect_index = GetRandomIntTable(1, #ChestRects, #ChestRects)
 
                         for i = 1, #rect_index do
                             GroupClear(gr)
-                            GroupEnumUnitsInRect(gr, ChestRects[rect_index[i]], nil)
-                            if BlzGroupGetSize(gr) == 0 and not IsAnyHeroInRange(GetRectCenterX(ChestRects[rect_index[i]]), GetRectCenterY(ChestRects[rect_index[i]]), 1450.) then
-                                CreateChest(ChestRects[rect_index[i]])
+                            GroupEnumUnitsInRect(gr, ChestRects[ rect_index[i] ], nil)
+                            if BlzGroupGetSize(gr) == 0 and not IsAnyHeroInRange(GetRectCenterX(ChestRects[ rect_index[i] ]), GetRectCenterY(ChestRects[ rect_index[i] ]), 1450.) then
+                                CreateChest(ChestRects[ rect_index[i] ])
                                 break
                             end
                         end
 
                     DestroyGroup(gr)
                 end
-                --IsAnyHeroInRange(GetRectCenterX(MonsterPack[i].spawner), GetRectCenterY(MonsterPack[i].spawner), 1550.)
             end
 
-
         end)
+
 
         CreateWell(ALTAR_TYPE_WELL_HP, gg_rct_test_a_2)
         CreateWell(ALTAR_TYPE_WELL_MP, gg_rct_test_a_1)

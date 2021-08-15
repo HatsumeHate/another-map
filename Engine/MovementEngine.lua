@@ -1,12 +1,12 @@
 do
 
     local PERIOD = 0.025
-    local MapArea
+    local MapArea = 0
 
 
-    local PullList
-    local ChargeList
-    local PushList
+    local PullList = 0
+    local ChargeList = 0
+    local PushList = 0
 
 
 

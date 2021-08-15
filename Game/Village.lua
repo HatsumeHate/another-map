@@ -6,8 +6,9 @@
 do
 
 
-    local CitizenGroup
-    local CitizenZones
+    local CitizenGroup = 0
+    local CitizenZones = 0
+
 
     function SpawnCitizens(rect, min, max)
         for i = 1, GetRandomInt(min, max) do

@@ -5,8 +5,9 @@
 ---
 do
 
-    MAIN_MULTIBOARD = nil
-
+    MAIN_MULTIBOARD = 0
+    local PlayerColors = 0
+    local PlayerNames = 0
 
 
 
@@ -14,7 +15,13 @@ do
         local mins = math.floor(time / 60.)
         local secs = time - (mins * 60.)
 
-        return LOCALE_LIST[my_locale].WAVE_COUNTDOWN .. R2I(mins) .. ":" .. R2I(secs)
+        if secs < 10 then
+            secs = "0" .. I2S(R2I((secs)))
+        else
+            secs = I2S(R2I((secs)))
+        end
+
+        return LOCALE_LIST[my_locale].WAVE_COUNTDOWN .. R2I(mins) .. ":" .. secs
     end
 
 
@@ -40,8 +47,7 @@ do
     end
 
 
-    local PlayerColors
-    local PlayerNames
+
 
     function PlayerLeft(player)
         local gold = GetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD)

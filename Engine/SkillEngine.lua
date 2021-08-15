@@ -9,7 +9,7 @@ do
     KEY_D = 6
 
 
-    KEYBIND_LIST = nil
+    KEYBIND_LIST = 0
 
 
     function UnbindAbilityKey(unit, id)
@@ -432,6 +432,36 @@ do
     end
 
 
+    local function PlayCastSfx(unit_data, pack)
+
+        if pack then
+
+            unit_data.cast_effect_pack = {}
+
+                if pack.on_caster then
+                    for i = 1, #pack.on_caster do
+
+                        local casteffect = AddSpecialEffectTarget(pack.on_caster[i].effect, unit_data.Owner, pack.on_caster[i].point or "chest")
+                        BlzSetSpecialEffectScale(casteffect, pack.on_caster[i].scale or 1.)
+
+                        if pack.on_caster[i].duration and pack.on_caster[i].duration > 0. then
+                            local timer = CreateTimer()
+                            TimerStart(timer, pack.on_caster[i].duration, false, function()
+                                DestroyEffect(casteffect)
+                                DestroyTimer(GetExpiredTimer())
+                            end)
+                        else
+                            unit_data.cast_effect_pack[#unit_data.cast_effect_pack+1] = casteffect
+                        end
+
+                    end
+                end
+
+        end
+
+    end
+
+
     ---@param unit unit
     function ResetUnitSpellCast(unit)
         local unit_data = GetUnitData(unit)
@@ -539,16 +569,12 @@ do
                 local skill = GetKeybindAbility(id, GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1)
 
 
-                if skill == 0 then
-                    --print("skill 0")
-                    skill = GetSkillData(id)
-                else
-                    --print("skill data")
-                    skill = GetSkillData(skill)
-                end
+                if skill == 0 then skill = GetSkillData(id)
+                else skill = GetSkillData(skill) end
 
 
                 if skill then
+
                     local unit_data = GetUnitData(GetTriggerUnit())
                     skill = GetUnitSkillData(unit_data.Owner, skill.Id)
 
@@ -557,6 +583,18 @@ do
                     local ability_level = UnitGetAbilityLevel(unit_data.Owner, skill.Id)
                     GenerateSkillLevelData(skill, ability_level)
 
+
+                    if skill.level[ability_level].required_weapon then
+                        if not skill.level[ability_level].required_weapon[unit_data.equip_point[WEAPON_POINT].SUBTYPE] then
+                            local player = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
+                            IssueImmediateOrderById(GetTriggerUnit(), order_stop)
+                            SimError("Cant use", player)
+                            Feedback_CantUse(player + 1)
+                            return
+                        end
+                    end
+
+
                     if not skill.channel then
                         if unit_data.channeled_destructor then
                             unit_data.channeled_destructor(unit_data.Owner)
@@ -564,8 +602,9 @@ do
                     end
 
 
-                    local time_reduction = skill.level[ability_level].animation_scale or 1.
-                    --print("basic reduction "..time_reduction)
+                    local animation = skill.animation
+
+                    local time_reduction = animation.timescale or 1.
 
                         if skill.type == SKILL_PHYSICAL then
                             time_reduction = time_reduction * (1. - unit_data.stats[ATTACK_SPEED].bonus * 0.01)
@@ -577,12 +616,11 @@ do
 
                     SetUnitAnimationByIndex(unit_data.Owner, 0)
                     ResetUnitAnimation(unit_data.Owner)
-                    --print("after bonus reduction "..time_reduction)
 
 
-                    local scale = 1.
-                    if time_reduction > 1. then scale = 1. / time_reduction
-                    else scale = 1. + (1. - time_reduction) end
+                    local scale = 1. / time_reduction
+                    --if time_reduction < 1. then scale = 1. / time_reduction
+                    --else scale = 1. + (1. - time_reduction) end
 
                     if scale <= 0.01 then scale = 0.01 end
                     SetUnitTimeScale(unit_data.Owner, scale)
@@ -591,7 +629,7 @@ do
                     --print("skill cooldown is " .. R2S(skill.level[ability_level].cooldown))
                     --print("ability level is " .. I2S(ability_level))
                     -- 0.4 * 2. -> 0.8 /// 0.4 * 0.5 -> 0.2
-                    BlzSetUnitAbilityCooldown(unit_data.Owner, id, 0, (skill.level[ability_level].cooldown or 0.1) + (skill.level[ability_level].animation_point * time_reduction))
+                    BlzSetUnitAbilityCooldown(unit_data.Owner, id, 0, (skill.level[ability_level].cooldown or 0.1) + (animation.sequence.animation_point * time_reduction))
                     BlzSetUnitAbilityManaCost(unit_data.Owner, id, 0, skill.level[ability_level].resource_cost or 0)
 
 
@@ -605,37 +643,13 @@ do
 
                     SafePauseUnit(unit_data.Owner, true)
                     --BlzPauseUnitEx(unit_data.Owner, true)
-                    SetUnitAnimationByIndex(unit_data.Owner, skill.level[ability_level].animation or 0)
+                    SetUnitAnimationByIndex(unit_data.Owner, animation.sequence.animation or 0)
 
                     --local cast_effect_pack
 
 
-                    if skill.level[ability_level].sfx_pack then
-                        unit_data.cast_effect_pack = {}
+                    PlayCastSfx(unit_data, skill.sfx_pack)
 
-                        local pack = skill.level[ability_level].sfx_pack
-
-                            if pack.on_caster then
-                                for i = 1, #pack.on_caster do
-
-                                    local casteffect = AddSpecialEffectTarget(pack.on_caster[i].effect, unit_data.Owner, pack.on_caster[i].point or "chest")
-                                    BlzSetSpecialEffectScale(casteffect, pack.on_caster[i].scale or 1.)
-
-                                        if pack.on_caster[i].duration and pack.on_caster[i].duration > 0. then
-                                            local timer = CreateTimer()
-                                            TimerStart(timer, pack.on_caster[i].duration, false, function()
-                                                DestroyEffect(casteffect)
-                                                DestroyTimer(GetExpiredTimer())
-                                            end)
-                                        else
-                                            unit_data.cast_effect_pack[#unit_data.cast_effect_pack+1] = casteffect
-                                        end
-
-                                end
-                            end
-
-                        --unit_data.cast_effect_pack = cast_effect_pack
-                    end
 
                         if skill.level[ability_level].effect_on_caster then
                             unit_data.cast_effect = AddSpecialEffectTarget(skill.level[ability_level].effect_on_caster, unit_data.Owner, skill.level[ability_level].effect_on_caster_point)
@@ -655,7 +669,7 @@ do
 
                     OnSkillCast(unit_data.Owner, target, spell_x, spell_y, skill, ability_level)
 
-                        TimerStart(unit_data.action_timer, (skill.level[ability_level].animation_point or 0.) * time_reduction, false, function()
+                        TimerStart(unit_data.action_timer, (animation.sequence.animation_point or 0.) * time_reduction, false, function()
                             unit_data.cast_skill = 0
                             DestroyEffect(unit_data.cast_effect)
 
@@ -699,7 +713,7 @@ do
                                     end
                                 end
 
-                            TimerStart(unit_data.action_timer, skill.level[ability_level].animation_backswing * time_reduction, false, function ()
+                            TimerStart(unit_data.action_timer, animation.sequence.animation_backswing * time_reduction, false, function ()
                                 SpellBackswing(unit_data.Owner)
                             end)
 

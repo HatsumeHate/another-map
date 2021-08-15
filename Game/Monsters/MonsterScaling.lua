@@ -6,8 +6,8 @@
 do
 
 
-    MONSTER_STATS_RATES = nil
-    BONUS_MONSTER_STAT_RATES = nil
+    MONSTER_STATS_RATES = 0
+    BONUS_MONSTER_STAT_RATES = 0
 
 
     ---@param target unit
@@ -89,7 +89,6 @@ do
 
             end
 
-        -- TODO test scaling
         if BONUS_MONSTER_STAT_RATES[monster_id] and BONUS_MONSTER_STAT_RATES[monster_id].scaling then
             local scaling = BONUS_MONSTER_STAT_RATES[monster_id].scaling
             for i = 1, #scaling do

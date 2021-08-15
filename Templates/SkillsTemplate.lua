@@ -1,5 +1,8 @@
-    SkillsData           = nil
-    SkillList            = nil
+do
+
+
+    SkillsData           = 0
+    SkillList            = 0
     local MaxSkillLevels = 10
 
     -- target types
@@ -22,9 +25,9 @@
     SKILL_CATEGORY_BATTLE_ADVANTAGE = 6
     SKILL_CATEGORY_INNER_STRENGTH = 7
 
-    SKILL_CATEGORY_NAME = nil
-    SKILL_CATEGORY_ICON = nil
-    CLASS_SKILL_CATEGORY = nil
+    SKILL_CATEGORY_NAME = 0
+    SKILL_CATEGORY_ICON = 0
+    CLASS_SKILL_CATEGORY = 0
 
 
     function GetSkillName(id)
@@ -41,17 +44,17 @@
     function GetUnitSkillData(unit, id)
         local unit_data = GetUnitData(unit)
 
-            for i = 1, #unit_data.skill_list do
-                if unit_data.skill_list[i].Id == id then
-                    local skill = unit_data.skill_list[i]
+        for i = 1, #unit_data.skill_list do
+            if unit_data.skill_list[i].Id == id then
+                local skill = unit_data.skill_list[i]
 
-                        if skill.level[skill.current_level] == nil then
-                            GenerateSkillLevelData(skill, skill.current_level)
-                        end
-
-                    return skill
+                if skill.level[skill.current_level] == nil then
+                    GenerateSkillLevelData(skill, skill.current_level)
                 end
+
+                return skill
             end
+        end
 
         return nil
     end
@@ -97,7 +100,7 @@
             animation               = 0,
             animation_point         = 0.,
             animation_backswing     = 0.,
-            animation_scale         = 0.,
+            timescale         = 0.,
         }
     end
 
@@ -122,7 +125,7 @@
                 --print("GenerateSkillLevelData - cooldown_delta")
                 skill.level[lvl].cooldown = (skill.level[1].cooldown or 0.1) + math.floor(lvl / (skill.cooldown_delta_level or 1.)) * skill.cooldown_delta
                 if skill.level[lvl].cooldown < 0.1 then skill.level[lvl].cooldown = 0.1 end
-               -- print("GenerateSkillLevelData - cooldown_delta end")
+                -- print("GenerateSkillLevelData - cooldown_delta end")
             end
 
             if skill.resource_cost_delta then
@@ -146,7 +149,7 @@
 
     ---@param skillId integer
     ---@param data table
-     function NewSkillData(skillId, data)
+    function NewSkillData(skillId, data)
         local my_new_skill = {
             Id                      = skillId,
             current_level           = 1,
@@ -171,15 +174,15 @@
 
         my_new_skill.current_level = 1
 
-            for i = 1, MaxSkillLevels do
-                if  my_new_skill.level[i] ~= nil then
+        for i = 1, MaxSkillLevels do
+            if  my_new_skill.level[i] ~= nil then
 
-                    if my_new_skill.level[i].autotrigger == nil then
-                        my_new_skill.level[i].autotrigger = false
-                    end
-
+                if my_new_skill.level[i].autotrigger == nil then
+                    my_new_skill.level[i].autotrigger = false
                 end
+
             end
+        end
 
         SkillsData[FourCC(skillId)] = my_new_skill
         return my_new_skill
@@ -188,6 +191,8 @@
 
 
     function DefineSkillsData()
+
+        DefineAnimationData()
 
         SkillsData           = {}
         SkillList            = {}
@@ -241,7 +246,7 @@
                     animation           = 3,
                     animation_point     = 1.5,
                     animation_backswing = 0.1666,
-                    animation_scale     = 0.5,
+                    timescale     = 0.5,
                 },
                 [7] = {
                     missile             = 'M001',
@@ -250,7 +255,7 @@
                     animation           = 3,
                     animation_point     = 1.5,
                     animation_backswing = 0.1666,
-                    animation_scale     = 0.5,
+                    timescale     = 0.5,
                 }
             }
 
@@ -262,7 +267,15 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_ICE,
-
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_throw_twohanded"), timescale = 1.25,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_True_Ice_Small.mdx", point = "origin" },
+                    { effect = "Spell\\Ice Low.mdx", point = 'hand right' }
+                }
+            },
 
             level = {
                 [1] = {
@@ -271,16 +284,11 @@
                     from_unit           = true,
                     resource_cost       = 10.,
                     cooldown            = 0.3,
-                    animation           = 2,
-                    animation_point     = 1.1,
-                    animation_backswing = 0.3,
-                    animation_scale     = 0.6,
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Spell\\Sweep_True_Ice_Small.mdx", point = "origin" },
-                            { effect = "Spell\\Ice Low.mdx", point = 'hand right' }
-                        }
-                    },
+                    --animation           = 2,
+                    --animation_point     = 1.1,
+                    --animation_backswing = 0.3,
+                    --timescale     = 0.6,
+
                 },
             }
 
@@ -292,22 +300,26 @@
             activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_ICE,
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 1.,
+            },
+            sfx_pack = {
+                on_caster = {
+                            --{ effect = "war3mapImported\\FrostNova.MDX", point = "origin" },
+                    { effect = "Spell\\Ice Low.mdx", point = 'hand right' },
+                    { effect = "Spell\\Ice Low.mdx", point = 'hand left' }
+                }
+            },
 
             level = {
                 [1] = {
                     effect              = 'EFRN',
                     resource_cost       = 10.,
                     cooldown            = 10.,
-                    animation           = 3,
-                    animation_point     = 2.1,
-                    animation_backswing = 0.633,
-                    animation_scale     = 0.3,
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "war3mapImported\\FrostNova.MDX", point = "origin" },
-                            { effect = "Spell\\Ice Low.mdx", point = 'hand right' }
-                        }
-                    },
+                    --animation           = 3,
+                    --animation_point     = 2.1,
+                    --animation_backswing = 0.633,
+                    --timescale     = 0.3,
                 }
             }
 
@@ -320,6 +332,15 @@
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_FIRE,
             sound = { pack = { "Sounds\\Spells\\fire_light_launch_1.wav", "Sounds\\Spells\\fire_light_launch_2.wav", "Sounds\\Spells\\fire_light_launch_3.wav" }, volume = 117, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_throw_twohanded"), timescale = 1.25,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Fire_Small.mdx", point = "weapon" },
+                    { effect = "Spell\\Fire Low.mdx", point = 'hand right' }
+                }
+            },
 
             level = {
                 [1] = {
@@ -328,16 +349,10 @@
                     from_unit           = true,
                     resource_cost       = 10.,
                     cooldown            = 0.3,
-                    animation           = 2,
-                    animation_point     = 1.1,
-                    animation_backswing = 0.3,
-                    animation_scale     = 0.6,
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Spell\\Sweep_Fire_Small.mdx", point = "weapon" },
-                            { effect = "Spell\\Fire Low.mdx", point = 'hand right' }
-                        }
-                    },
+                    --animation           = 2,
+                    --animation_point     = 1.1,
+                    --animation_backswing = 0.3,
+                    --timescale     = 0.6,
                 }
             }
         })
@@ -349,6 +364,16 @@
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_FIRE,
             sound = { pack = { "Sounds\\Spells\\fire_launch_1.wav", "Sounds\\Spells\\fire_launch_2.wav", "Sounds\\Spells\\fire_launch_3.wav" }, volume = 117, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_throw_big"), timescale = 0.85,
+            },
+            sfx_pack = {
+                on_caster = {
+                    --{ effect = "Spell\\Sweep_Fire_Medium.mdx", point = "weapon" },
+                    { effect = "Spell\\Fire Low.mdx", point = 'hand right' },
+                    { effect = "Spell\\Fire Low.mdx", point = 'hand left' }
+                }
+            },
 
             level = {
                 [1] = {
@@ -357,19 +382,47 @@
                     --from_unit           = true,
                     resource_cost       = 20.,
                     cooldown            = 6.,
-                    animation           = 3,
-                    animation_point     = 2.3,
-                    animation_backswing = 0.433,
-                    animation_scale     = 0.25,
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Spell\\Sweep_Fire_Medium.mdx", point = "weapon" },
-                            { effect = "Spell\\Fire Low.mdx", point = 'hand right' }
-                        }
-                    },
+                    --animation           = 3,
+                    --animation_point     = 2.3,
+                   -- animation_backswing = 0.433,
+                   -- timescale     = 0.25,
                 }
             }
         })
+        --============================================--
+        NewSkillData('ABLZ', {
+            name            = LOCALE_LIST[my_locale].SKILL_BLIZZARD,
+            icon            = "Spell\\BTNFreezeField.blp",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_ICE,
+            sound = { pack = { "Sounds\\Spells\\cast_large_1.wav", "Sounds\\Spells\\cast_large_2.wav", "Sounds\\Spells\\cast_large_3.wav" }, volume = 117, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 0.85,
+            },
+            sfx_pack = {
+                on_caster = {
+                            --{ effect = "Spell\\Sweep_True_Ice_Medium.mdx", point = "weapon" },
+                    { effect = "Spell\\Ice Low.mdx", point = 'hand right' },
+                    { effect = "Spell\\Ice Low.mdx", point = 'hand left' }
+                }
+            },
+
+            level = {
+                [1] = {
+                    resource_cost       = 18.,
+                    cooldown            = 10.,
+                    --animation           = 3,
+                    --animation_point     = 2.3,
+                    --animation_backswing = 0.433,
+                    --timescale     = 0.25,
+                }
+            }
+        })
+
+        RegisterTestCommand("blz", function()
+            UnitSetAbilityLevel(PlayerHero[1], "ABLZ", 50)
+        end)
         --============================================--
         NewSkillData('A005', {
             name            = LOCALE_LIST[my_locale].SKILL_FROSTORB,
@@ -378,6 +431,16 @@
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_ICE,
             sound = { pack = { "Sounds\\Spells\\cast_large_1.wav", "Sounds\\Spells\\cast_large_2.wav", "Sounds\\Spells\\cast_large_3.wav" }, volume = 110, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_throw_big"), timescale = 0.9,
+            },
+            sfx_pack = {
+                on_caster = {
+                            --{ effect = "Spell\\Sweep_True_Ice_Medium.mdx", point = "weapon" },
+                    { effect = "Spell\\Ice High.mdx", point = 'hand right' },
+                    { effect = "Spell\\Ice High.mdx", point = 'hand left' }
+                }
+            },
 
             level = {
                 [1] = {
@@ -386,16 +449,10 @@
                     from_unit           = true,
                     resource_cost       = 14.,
                     cooldown            = 0.3,
-                    animation           = 3,
-                    animation_point     = 2.1,
-                    animation_backswing = 0.633,
-                    animation_scale     = 0.35,
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Spell\\Sweep_True_Ice_Medium.mdx", point = "weapon" },
-                            { effect = "Spell\\Ice High.mdx", point = 'hand right' }
-                        }
-                    },
+                    --animation           = 3,
+                    --animation_point     = 2.1,
+                    --animation_backswing = 0.633,
+                    --timescale     = 0.35,
                 }
             }
         })
@@ -407,6 +464,16 @@
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_LIGHTNING,
             sound = { pack = { "Sounds\\Spells\\cast_lightning_1.wav", "Sounds\\Spells\\cast_lightning_2.wav", "Sounds\\Spells\\cast_lightning_3.wav" }, volume = 110, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 1.35,
+            },
+            sfx_pack = {
+                on_caster = {
+                            --{ effect = "Spell\\Sweep_Lightning_Large.mdx", point = "weapon" },
+                    { effect = "Spell\\Storm Cast.mdx", point = 'hand right' },
+                    { effect = "Spell\\Storm Cast.mdx", point = 'hand left' }
+                }
+            },
 
             level = {
                 [1] = {
@@ -414,19 +481,10 @@
                     effect              = 'ELST',
                     resource_cost       = 24.,
                     cooldown            = 0.3,
-                    animation           = 2,
-                    animation_point     = 1.1,
-                    animation_backswing = 0.3,
-                    animation_scale     = 0.7,
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Spell\\Sweep_Lightning_Large.mdx", point = "weapon" },
-                            { effect = "Spell\\Storm Cast.mdx", point = 'hand right' }
-                        }
-                    },
-                    --effect_on_caster        = "Spell\\Storm Cast.mdx",
-                    --effect_on_caster_point  = 'hand right',
-                    --effect_on_caster_scale  = 1.,
+                    --animation           = 2,
+                    --animation_point     = 1.1,
+                    --animation_backswing = 0.3,
+                    --timescale     = 0.7,
                 }
             }
         })
@@ -437,8 +495,12 @@
             activation_type = POINT_CAST,
             type            = SKILL_UNIQUE,
             category = SKILL_CATEGORY_ARCANE,
+            animation = {
+                sequence  = GetAnimationSequence("sorc_blink"), timescale = 0.5,
+            },
             range_delta = 5.,
             range_delta_level = 1,
+
 
             level = {
                 [1] = {
@@ -447,15 +509,13 @@
                     start_effect_on_cast_point = 'Spell\\Blink Blue Caster.mdx',
                     start_effect_on_cast_point_scale = 1.,
 
-                    --end_effect_on_cast_point = 'Spell\\Blink Blue Target.mdx',
-                    --end_effect_on_cast_point_scale = 1.,
-
                     resource_cost       = 5.,
                     cooldown            = 5.,
-                    animation           = 3,
-                    animation_point     = 0.1,
-                    animation_backswing = 0.1,
-                    animation_scale     = 0.3,
+                    --animation           = 3,
+                    --animation_point     = 0.1,
+                    --animation_backswing = 0.1,
+                    --timescale     = 0.3,
+
                 }
             }
         })
@@ -467,6 +527,15 @@
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_FIRE,
             sound = { pack = { "Sounds\\Spells\\fire_launch_1.wav", "Sounds\\Spells\\fire_launch_2.wav", "Sounds\\Spells\\fire_launch_3.wav" }, volume = 117, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_throw_air"), timescale = 1.8,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Fire_Medium.mdx", point = "weapon" },
+                    { effect = "Spell\\Fire Uber.mdx", point = 'hand right' }
+                }
+            },
 
             level = {
                 [1] = {
@@ -474,17 +543,10 @@
                     effect              = 'EMTR',
                     resource_cost       = 20.,
                     cooldown            = 7.,
-                    animation           = 2,
-                    animation_point     = 1.3,
-                    animation_backswing = 0.3,
-                    animation_scale     = 0.4,
-
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Spell\\Sweep_Fire_Medium.mdx", point = "weapon" },
-                            { effect = "Spell\\Fire Uber.mdx", point = 'hand right' }
-                        }
-                    },
+                    --animation           = 2,
+                    --animation_point     = 1.3,
+                    --animation_backswing = 0.3,
+                    --timescale     = 0.4,
                 }
             }
         })
@@ -496,23 +558,24 @@
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_LIGHTNING,
             sound = { pack = { "Sounds\\Spells\\cast_lightning_1.wav", "Sounds\\Spells\\cast_lightning_2.wav", "Sounds\\Spells\\cast_lightning_3.wav" }, volume = 120, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_throw_air"), timescale = 1.48,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Lightning_Small.mdx", point = "weapon" }, { effect = "Spell\\Storm Cast.mdx", point = 'hand right' }
+                }
+            },
 
             level = {
                 [1] = {
                     range               = 700.,
                     resource_cost       = 10.,
                     cooldown            = 0.3,
-                    animation           = 2,
-                    animation_point     = 1.3,
-                    animation_backswing = 0.3,
-                    animation_scale     = 0.6,
-
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Spell\\Sweep_Lightning_Small.mdx", point = "weapon" },
-                            { effect = "Spell\\Storm Cast.mdx", point = 'hand right', scale = 0.8 }
-                        }
-                    },
+                    --animation           = 2,
+                    --animation_point     = 1.3,
+                    --animation_backswing = 0.3,
+                    --timescale     = 0.6,
                 }
             }
         })
@@ -524,25 +587,25 @@
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_LIGHTNING,
             sound = { pack = { "Sounds\\Spells\\cast_lightning_1.wav", "Sounds\\Spells\\cast_lightning_2.wav", "Sounds\\Spells\\cast_lightning_3.wav" }, volume = 120, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_throw_small"), timescale = 0.95,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Lightning_Medium.mdx", point = "weapon" },
+                    { effect = "Spell\\Storm Cast.mdx", point = 'hand right' }
+                }
+            },
 
             level = {
                 [1] = {
                     range               = 870.,
                     resource_cost       = 13.,
                     cooldown            = 3.,
-                    animation           = 2,
-                    animation_point     = 1.3,
-                    animation_backswing = 0.3,
-                    animation_scale     = 0.6,
-                    --effect_on_caster        = "Spell\\Storm Cast.mdx",
-                    --effect_on_caster_point  = 'hand right',
-                    --effect_on_caster_scale  = 1.,
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Spell\\Sweep_Lightning_Medium.mdx", point = "weapon" },
-                            { effect = "Spell\\Storm Cast.mdx", point = 'hand right' }
-                        }
-                    },
+                    --animation           = 2,
+                    --animation_point     = 1.3,
+                    --animation_backswing = 0.3,
+                    --timescale     = 0.6,
                 }
             }
         })
@@ -554,6 +617,14 @@
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_LIGHTNING,
             sound = { pack = { "Sounds\\Spells\\cast_lightning_1_diff.wav", "Sounds\\Spells\\cast_lightning_2_diff.wav" }, volume = 120, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_throw_big"), timescale = 0.95,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Lightning_Medium.mdx", point = "weapon" }, { effect = "Spell\\Storm Cast.mdx", point = 'hand right' }, { effect = "Spell\\Storm Cast.mdx", point = 'hand left' }
+                }
+            },
 
             level = {
                 [1] = {
@@ -562,16 +633,10 @@
                     missile             = 'MBLB',
                     from_unit           = true,
                     cooldown            = 11.,
-                    animation           = 3,
-                    animation_point     = 2.1,
-                    animation_backswing = 0.633,
-                    animation_scale     = 0.5,
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Spell\\Sweep_Lightning_Medium.mdx", point = "weapon" },
-                            { effect = "Spell\\Storm Cast.mdx", point = 'hand right' }
-                        }
-                    },
+                    --animation           = 3,
+                    --animation_point     = 2.1,
+                    --animation_backswing = 0.633,
+                    --timescale     = 0.5,
                 }
             }
         })
@@ -583,22 +648,24 @@
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_ARCANE,
             sound = { pack = { "Sounds\\Spell\\focus_cast_1.wav", "Sounds\\Spell\\focus_cast_2.wav", "Sounds\\Spell\\focus_cast_3.wav" }, volume = 120, cutoff = 1500.},
-            --
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 0.95,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdx", point = "origin", scale = 0.4 }
+                }
+            },
 
             level = {
                 [1] = {
                     effect             = 'EFCS',
                     resource_cost       = 5.,
                     cooldown            = 25.,
-                    animation           = 3,
-                    animation_point     = 0.3,
-                    animation_backswing = 0.3,
-                    animation_scale     = 1.,
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdx", point = "origin", scale = 0.4 }
-                        }
-                    }
+                    --animation           = 3,
+                    --animation_point     = 0.3,
+                    --animation_backswing = 0.3,
+                    --timescale     = 1.,
                 }
             }
         })
@@ -610,22 +677,24 @@
             type            = SKILL_UNIQUE,
             category = SKILL_CATEGORY_ICE,
             sound = { pack = { "Sounds\\Spells\\frost_armor_launch_2.wav" }, volume = 110, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 0.95,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\ShivasEnchantment.mdx", point = "origin", duration = 1.233 }, { effect = "Spell\\ColdRitual.mdx", point = "origin" }
+                }
+            },
 
             level = {
                 [1] = {
                     effect             = 'EFAR',
                     resource_cost       = 5.,
                     cooldown            = 20.,
-                    animation           = 3,
-                    animation_point     = 0.3,
-                    animation_backswing = 0.3,
-                    animation_scale     = 1.,
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Spell\\ShivasEnchantment.mdx", point = "origin", duration = 1.233 },
-                            { effect = "Spell\\ColdRitual.mdx", point = "origin" }
-                        }
-                    }
+                    --animation           = 3,
+                    --animation_point     = 0.3,
+                    --animation_backswing = 0.3,
+                    --timescale     = 1.,
                 }
             }
         })
@@ -636,21 +705,24 @@
             activation_type = SELF_CAST,
             type            = SKILL_UNIQUE,
             category = SKILL_CATEGORY_ARCANE,
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 0.95,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Abilities\\Spells\\Orc\\AncestralSpirit\\AncestralSpiritCaster.mdx", point = "origin", duration = 1.233 }
+                }
+            },
 
             level = {
                 [1] = {
                     effect             = 'EEMA',
                     resource_cost       = 5.,
                     cooldown            = 20.,
-                    animation           = 3,
-                    animation_point     = 0.15,
-                    animation_backswing = 0.15,
-                    animation_scale     = 0.6,
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Abilities\\Spells\\Orc\\AncestralSpirit\\AncestralSpiritCaster.mdx", point = "origin", duration = 1.233 }
-                        }
-                    }
+                    --animation           = 3,
+                    --animation_point     = 0.15,
+                    --animation_backswing = 0.15,
+                    --timescale     = 0.6,
                 }
             }
         })
@@ -662,21 +734,24 @@
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_FIRE,
             autotrigger = false,
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_throw_air"), timescale = 1.45,
+            },
 
             level = {
                 [1] = {
                     range               = 600.,
                     cooldown            = 5.,
                     resource_cost       = 10.,
-                    animation           = 2,
-                    animation_point     = 1.3,
-                    animation_backswing = 0.3,
-                    animation_scale     = 0.4,
+                    --animation           = 2,
+                    --animation_point     = 1.3,
+                    --animation_backswing = 0.3,
+                    --timescale     = 0.4,
                     effect_on_caster        = "Spell\\Fire Low.mdx",
                     effect_on_caster_point  = 'hand right',
                     effect_on_caster_scale  = 1.,
                     end_effect_on_cast_point = "Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeTarget.mdx",
-                    end_effect_on_cast_point_scale = 0.7,
+                    end_effect_on_cast_point_scale = 0.5,
                 }
             }
         })
@@ -687,16 +762,19 @@
             activation_type = POINT_CAST,
             type            = SKILL_UNIQUE,
             category = SKILL_CATEGORY_BATTLE_ADVANTAGE,
+            range_delta = 3.,
+            range_delta_level = 1,
+
 
             level = {
                 [1] = {
-                    range               = 500.,
+                    range               = 300.,
                     cooldown            = 12.,
                     resource_cost       = 5.,
                     animation           = 3,
                     animation_point     = 0.3,
                     animation_backswing = 0.3,
-                    animation_scale     = 1.,
+                    timescale     = 1.,
                 }
             }
         })
@@ -719,7 +797,7 @@
                     animation           = 3,
                     animation_point     = 1.4,
                     animation_backswing = 0.2666,
-                    animation_scale     = 0.3
+                    timescale     = 0.3
                 }
             }
         })
@@ -740,7 +818,7 @@
                     animation           = 5,
                     animation_point     = 0.6,
                     animation_backswing = 0.3,
-                    animation_scale     = 0.7,
+                    timescale     = 0.7,
                 }
             }
         })
@@ -760,7 +838,7 @@
                     animation           = 3,
                     animation_point     = 1.4,
                     animation_backswing = 0.2666,
-                    animation_scale     = 0.5
+                    timescale     = 0.5
                 }
             }
         })
@@ -779,7 +857,7 @@
                     animation           = 3,
                     animation_point     = 0.001,
                     animation_backswing = 0.001,
-                    animation_scale     = 1.,
+                    timescale     = 1.,
                 }
             }
         })
@@ -797,11 +875,69 @@
                     range               = 135.,
                     effect              = 'ECRH',
                     cooldown            = 2.3,
-                    resource_cost = 5.,
+                    resource_cost       = 5.,
+                    animation_sequence = {
+                        [SWORD_WEAPON] = {
+                            animation           = 2,
+                            animation_point     = 1.1,
+                            animation_backswing = 0.3,
+                            timescale     = 0.6,
+                        },
+                        [GREATSWORD_WEAPON] = {
+                            animation           = 2,
+                            animation_point     = 1.1,
+                            animation_backswing = 0.3,
+                            timescale     = 0.6,
+                        },
+                        [BLUNT_WEAPON] = {
+                            animation           = 2,
+                            animation_point     = 1.1,
+                            animation_backswing = 0.3,
+                            timescale     = 0.6,
+                        },
+                        [GREATBLUNT_WEAPON] = {
+                            animation           = 2,
+                            animation_point     = 1.1,
+                            animation_backswing = 0.3,
+                            timescale     = 0.6,
+                        },
+                        [AXE_WEAPON] = {
+                            animation           = 2,
+                            animation_point     = 1.1,
+                            animation_backswing = 0.3,
+                            timescale     = 0.6,
+                        },
+                        [GREATAXE_WEAPON] = {
+                            animation           = 2,
+                            animation_point     = 1.1,
+                            animation_backswing = 0.3,
+                            timescale     = 0.6,
+                        },
+                        [STAFF_WEAPON] = {
+                            animation           = 2,
+                            animation_point     = 1.1,
+                            animation_backswing = 0.3,
+                            timescale     = 0.6,
+                        },
+                        [DAGGER_WEAPON] = {
+                            animation           = 2,
+                            animation_point     = 1.1,
+                            animation_backswing = 0.3,
+                            timescale     = 0.6,
+                        },
+                        [FIST_WEAPON] = {
+                            animation           = 2,
+                            animation_point     = 1.1,
+                            animation_backswing = 0.3,
+                            timescale     = 0.6,
+                        },
+                    },
+                    required_weapon = { [SWORD_WEAPON] = 0, [GREATSWORD_WEAPON] = 0, [AXE_WEAPON] = 0, [GREATAXE_WEAPON] = 0, [BLUNT_WEAPON] = 0, [GREATBLUNT_WEAPON] = 0, [STAFF_WEAPON] = 0, [DAGGER_WEAPON] = 0, [JAWELIN_WEAPON] = 0, [FIST_WEAPON] = 0 },
+                    --[[
                     animation           = 4,
                     animation_point     = 0.6,
                     animation_backswing = 0.3,
-                    animation_scale     = 0.9,
+                    timescale     = 0.9,]]
                     effect_on_caster        = "Spell\\Sweep_Fire_Medium.mdx",
                     effect_on_caster_point  = 'weapon left',
                     effect_on_caster_scale  = 1.,
@@ -826,7 +962,7 @@
                     animation           = 6,
                     animation_point     = 0.6,
                     animation_backswing = 0.3,
-                    animation_scale     = 0.9,
+                    timescale     = 0.9,
                     effect_on_caster        = "Spell\\Sweep_Fire_Medium.mdx",
                     effect_on_caster_point  = 'weapon right',
                     effect_on_caster_scale  = 1.,
@@ -851,7 +987,7 @@
                     animation           = 3,
                     animation_point     = 1.4,
                     animation_backswing = 0.2666,
-                    animation_scale     = 0.4
+                    timescale     = 0.4
                 }
             }
         })
@@ -873,7 +1009,7 @@
                     animation           = 6,
                     animation_point     = 0.6,
                     animation_backswing = 0.3,
-                    animation_scale     = 0.7,
+                    timescale     = 0.7,
                     effect_on_caster        = "Spell\\Sweep_Blood_Medium.mdx",
                     effect_on_caster_point  = 'weapon right',
                     effect_on_caster_scale  = 1.,
@@ -897,7 +1033,7 @@
                     animation           = 3,
                     animation_point     = 1.4,
                     animation_backswing = 0.2666,
-                    animation_scale     = 0.5
+                    timescale     = 0.5
                 }
             }
         })
@@ -917,7 +1053,7 @@
                     animation           = 3,
                     animation_point     = 1.4,
                     animation_backswing = 0.2666,
-                    animation_scale     = 0.5
+                    timescale     = 0.5
                 }
             }
         })
@@ -927,16 +1063,15 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_UNIQUE,
             sound = { pack = { "Units\\Creeps\\Spider\\SpiderYes1.wav" }, volume = 123, cutoff = 1500.},
+            animation = {
+                sequence = GetAnimationSequence("spider_venom_bile"), timescale     = 2.,
+            },
 
             level = {
                 [1] = {
                     range               = 700.,
                     resource_cost       = 0.,
                     cooldown            = 7.3,
-                    animation           = 3,
-                    animation_point     = 0.7,
-                    animation_backswing = 0.3,
-                    animation_scale     = 2.,
                     missile             = "MSQB",
                     effect_on_caster        = "Spell\\Sweep_Acid_Small.mdx",
                     effect_on_caster_point  = 'weapon',
@@ -950,16 +1085,15 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
             sound = { pack = { "Units\\Creeps\\Spider\\SpiderYesAttack1.wav", "Units\\Creeps\\Spider\\SpiderYesAttack2.wav" }, volume = 123, cutoff = 1500.},
+            animation = {
+                sequence = GetAnimationSequence("spider_bite"), timescale     = 1.8,
+            },
 
             level = {
                 [1] = {
                     range               = 200.,
                     resource_cost       = 0.,
                     cooldown            = 5.3,
-                    animation           = 4,
-                    animation_point     = 0.7,
-                    animation_backswing = 0.3,
-                    animation_scale     = 1.8,
                     effect              = "ECSC",
                     effect_on_caster        = "Spell\\Sweep_Chaos_Small.mdx",
                     effect_on_caster_point  = 'weapon',
@@ -972,15 +1106,14 @@
             name            = "spider queen trap",
             activation_type = SELF_CAST,
             type            = SKILL_UNIQUE,
+            animation = {
+                sequence  = GetAnimationSequence("spider_spell"), timescale = 1.,
+            },
 
             level = {
                 [1] = {
                     resource_cost       = 0.,
                     cooldown            = 12.,
-                    animation           = 6,
-                    animation_point     = 0.4,
-                    animation_backswing = 0.3,
-                    animation_scale     = 1.,
                 }
             }
         })
@@ -990,15 +1123,14 @@
             activation_type = SELF_CAST,
             type            = SKILL_UNIQUE,
             sound = { pack = { "Units\\Creeps\\Spider\\SpiderYes2.wav" }, volume = 123, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("spider_spell"), timescale = 1.2,
+            },
 
             level = {
                 [1] = {
                     resource_cost       = 0.,
                     cooldown            = 6.,
-                    animation           = 6,
-                    animation_point     = 0.4,
-                    animation_backswing = 0.3,
-                    animation_scale     = 1.2,
                 }
             }
         })
@@ -1008,16 +1140,15 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
             sound = { pack = { "Units\\Creeps\\Bandit\\BanditYesAttack2.wav", "Units\\Creeps\\Bandit\\BanditYesAttack3.wav" }, volume = 123, cutoff = 1500.},
+            animation = {
+                sequence = GetAnimationSequence("bandit_charge"), timescale     = 0.9,
+            },
 
             level = {
                 [1] = {
                     range               = 700.,
                     cooldown            = 5.3,
                     resource_cost       = 0.,
-                    animation           = 4,
-                    animation_point     = 0.6,
-                    animation_backswing = 0.3,
-                    animation_scale     = 0.9,
                 }
             }
         })
@@ -1027,23 +1158,22 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
             sound = { pack = { "Units\\Creeps\\Arachnathid\\ArachnathidYes1.wav", "Units\\Creeps\\Arachnathid\\ArachnathidYes2.wav" }, volume = 123, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("arachno_bite"), timescale = 1.75,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Chaos_Medium.mdx", point = "hand right", scale = 1.5 },
+                    { effect = "Spell\\Sweep_Chaos_Medium.mdx", point = "hand left", scale = 1.5 }
+                }
+            },
 
             level = {
                 [1] = {
                     range               = 215.,
                     resource_cost       = 0.,
                     cooldown            = 5.3,
-                    animation           = 2,
-                    animation_point     = 0.566,
-                    animation_backswing = 0.35,
-                    animation_scale     = 1.75,
-                    effect              = "EACL",
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Spell\\Sweep_Chaos_Medium.mdx", point = "hand right", scale = 1.5 },
-                            { effect = "Spell\\Sweep_Chaos_Medium.mdx", point = "hand left", scale = 1.5 }
-                        }
-                    },
+                    effect = "EACL",
                 }
             }
         })
@@ -1053,15 +1183,14 @@
             activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
             sound = { pack = { "Units\\Creeps\\Arachnathid\\ArachnathidYes1.wav", "Units\\Creeps\\Arachnathid\\ArachnathidYes2.wav" }, volume = 128, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("arachno_spell"), timescale = 1.9,
+            },
 
             level = {
                 [1] = {
                     resource_cost       = 0.,
                     cooldown            = 8.,
-                    animation           = 2,
-                    animation_point     = 0.667,
-                    animation_backswing = 0.4,
-                    animation_scale     = 1.9,
                     effect              = "EACL",
                     effect_on_caster        = "Spell\\Sweep_Acid_Small.mdx",
                     effect_on_caster_point  = 'weapon',
@@ -1074,6 +1203,9 @@
             name            = "arachno charge",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
+            animation = {
+                sequence  = GetAnimationSequence("arachno_charge"), timescale = 0.9,
+            },
             --sound = { pack = { "Units\\Creeps\\Bandit\\BanditYesAttack2.wav", "Units\\Creeps\\Bandit\\BanditYesAttack3.wav" }, volume = 123, cutoff = 1500.},
 
             level = {
@@ -1081,10 +1213,6 @@
                     range               = 700.,
                     cooldown            = 9.,
                     resource_cost       = 0.,
-                    animation           = 4,
-                    animation_point     = 0.6,
-                    animation_backswing = 0.1,
-                    animation_scale     = 0.9,
                 }
             }
         })
@@ -1093,21 +1221,20 @@
             name            = "summon skele",
             activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
+            animation = {
+                sequence  = GetAnimationSequence("skele_boss_spell"), timescale = 1.2,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = "hand right", scale = 1.25 },
+                }
+            },
             --sound = { pack = { "Units\\Creeps\\Bandit\\BanditYesAttack2.wav", "Units\\Creeps\\Bandit\\BanditYesAttack3.wav" }, volume = 123, cutoff = 1500.},
 
             level = {
                 [1] = {
                     cooldown            = 14.,
                     resource_cost       = 0.,
-                    animation           = 4,
-                    animation_point     = 0.5,
-                    animation_backswing = 0.45,
-                    animation_scale     = 1.2,
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = "hand right", scale = 1.25 },
-                        }
-                    },
                 }
             }
         })
@@ -1117,22 +1244,21 @@
             activation_type = TARGET_CAST,
             type            = SKILL_MAGICAL,
             sound = { pack = { "Abilities\\Spells\\Undead\\Possession\\PossessionMissileLaunch1.wav" }, volume = 123, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("skele_boss_spell"), timescale = 1.65,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Soul_Medium.mdx", point = "hand right", scale = 1.25 },
+                }
+            },
 
             level = {
                 [1] = {
                     range               = 550.,
                     resource_cost       = 0.,
                     cooldown            = 5.,
-                    animation           = 4,
-                    animation_point     = 0.5,
-                    animation_backswing = 0.45,
-                    animation_scale     = 1.65,
                     missile             = "MSCN",
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Spell\\Sweep_Soul_Medium.mdx", point = "hand right", scale = 1.25 },
-                        }
-                    },
                 }
             }
         })
@@ -1142,15 +1268,14 @@
             activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
             sound = { pack = { "Sounds\\Spells\\cast_lightning_1_diff.wav", "Sounds\\Spells\\cast_lightning_2_diff.wav" }, volume = 123, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("meph_spell"), timescale = 1.25,
+            },
 
             level = {
                 [1] = {
                     cooldown            = 5.,
                     resource_cost       = 0.,
-                    animation           = 8,
-                    animation_point     = 0.445,
-                    animation_backswing = 0.555,
-                    animation_scale     = 1.25,
                 }
             }
         })
@@ -1160,20 +1285,19 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
             sound = { pack = { "Units\\Creeps\\QuillBeast\\QuillBoarYes1.wav", "Units\\Creeps\\QuillBeast\\QuillBoarYes2.wav" }, volume = 123, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("boar_charge"), timescale = 1.15,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Chaos_Small.mdx", point = "weapon", scale = 1.25 },
+                }
+            },
 
             level = {
                 [1] = {
                     cooldown            = 12.,
                     resource_cost       = 0.,
-                    animation           = 3,
-                    animation_point     = 0.35,
-                    animation_backswing = 0.01,
-                    animation_scale     = 1.15,
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Spell\\Sweep_Chaos_Small.mdx", point = "weapon", scale = 1.25 },
-                        }
-                    },
                 }
             }
         })
@@ -1183,15 +1307,14 @@
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
             sound = { pack = { "Units\\Orc\\Spiritwolf\\SpiritWolfBirth1.wav" }, volume = 123, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("wolf_spell"), timescale = 0.8,
+            },
 
             level = {
                 [1] = {
                     cooldown            = 17.,
                     resource_cost       = 0.,
-                    animation           = 3,
-                    animation_point     = 0.933,
-                    animation_backswing = 0.734,
-                    animation_scale     = 0.8,
                 }
             }
         })
@@ -1201,21 +1324,20 @@
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
             --sound = { pack = { "Units\\Orc\\Spiritwolf\\SpiritWolfBirth1.wav" }, volume = 123, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("ghoul_spell"), timescale = 1.1,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Chaos_Small.mdx", point = "hand right", scale = 1.25 },
+                }
+            },
 
             level = {
                 [1] = {
                     cooldown            = 9.,
                     resource_cost       = 0.,
-                    animation           = 3,
-                    animation_point     = 0.466,
-                    animation_backswing = 0.367,
-                    animation_scale     = 1.1,
                     effect = "EGHC",
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Spell\\Sweep_Chaos_Small.mdx", point = "hand right", scale = 1.25 },
-                        }
-                    },
                 }
             }
         })
@@ -1224,27 +1346,26 @@
             name            = "hell beast antimagic",
             activation_type = TARGET_CAST,
             type            = SKILL_MAGICAL,
+            animation = {
+                sequence  = GetAnimationSequence("hellbeast_spell"), timescale = 1.15,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand right", scale = 1.25 },
+                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand left", scale = 1.25 },
+                }
+            },
             --sound = { pack = { "Units\\Orc\\Spiritwolf\\SpiritWolfBirth1.wav" }, volume = 123, cutoff = 1500.},
 
             level = {
                 [1] = {
                     cooldown            = 14.,
                     resource_cost       = 0.,
-                    animation           = 3,
-                    animation_point     = 0.6,
-                    animation_backswing = 0.4,
-                    animation_scale     = 1.15,
                     effect = "EHBA",
-                    sfx_pack = {
-                        on_caster = {
-                            { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand right", scale = 1.25 },
-                            { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand left", scale = 1.25 },
-                        }
-                    },
                 }
             }
         })
-         --============================================--
+        --============================================--
         NewSkillData('AABS', {
             name            = "abo slam",
             activation_type = POINT_AND_TARGET_CAST,
@@ -1258,7 +1379,7 @@
                     animation           = 8,
                     animation_point     = 0.01,
                     animation_backswing = 0.01,
-                    animation_scale     = 1.,
+                    timescale     = 1.,
                 }
             }
         })
@@ -1276,7 +1397,7 @@
                     animation           = 8,
                     animation_point     = 0.01,
                     animation_backswing = 0.01,
-                    animation_scale     = 1.,
+                    timescale     = 1.,
                 }
             }
         })
@@ -1294,7 +1415,7 @@
                     animation           = 8,
                     animation_point     = 0.01,
                     animation_backswing = 0.01,
-                    animation_scale     = 1.,
+                    timescale     = 1.,
                 }
             }
         })
@@ -1312,8 +1433,10 @@
                     animation           = 8,
                     animation_point     = 0.01,
                     animation_backswing = 0.01,
-                    animation_scale     = 1.,
+                    timescale     = 1.,
                 }
             }
         })
     end
+
+end

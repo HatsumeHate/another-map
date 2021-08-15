@@ -1,6 +1,6 @@
 do
 
-    MissileList = nil
+    MissileList = 0
 
     function GetMissileData(id)
         return MissileList[FourCC(id)] or nil
@@ -138,6 +138,21 @@ do
             arc = 0.05,
             scale = 0.55,
             ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+
+        --==============================================--
+        NewMissileTemplate('MSTA', {
+            name = "standart bow attack",
+            model = "Abilities\\Weapons\\Arrow\\ArrowMissile.mdx",
+            max_distance = 900.,
+            radius = 50.,
+            speed = 950.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.11,
+            ignore_terrain = false,
             penetrate = false,
             full_distance = true
         })

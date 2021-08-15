@@ -1,13 +1,13 @@
 do
 
-    GAME_UI = nil
-    WORLD_FRAME = nil
-    MASTER_FRAME = nil
-    ButtonList = nil
+    GAME_UI = 0
+    WORLD_FRAME = 0
+    MASTER_FRAME = 0
+    ButtonList = 0
 
-    local FocusTrigger
-    local ButtonClickList
-    local ClickTrigger
+    local FocusTrigger = 0
+    local ButtonClickList = 0
+    local ClickTrigger = 0
 
 
     ---@param frame framehandle
@@ -112,9 +112,10 @@ do
         ClickTrigger = CreateTrigger()
         TriggerAddAction(ClickTrigger, function()
             local frame = BlzGetTriggerFrame()
+            local player = GetTriggerPlayer()
 
                 if ButtonClickList[frame] then
-                    BlzFrameSetVisible(ButtonClickList[frame].frame, true)
+                    if GetLocalPlayer() == player then BlzFrameSetVisible(ButtonClickList[frame].frame, true) end
                     TimerStart(ButtonClickList[frame].timer, 0.1, false, function()
                         BlzFrameSetVisible(ButtonClickList[frame].frame, false)
                     end)

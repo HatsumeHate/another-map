@@ -5,9 +5,9 @@
 ---
 do
 
-    GlobalButton = nil
-    FrameState = nil
-    GlobalFrameState = nil
+    GlobalButton = 0
+    FrameState = 0
+    GlobalFrameState = 0
 
 
     CHAR_PANEL = 1
@@ -20,35 +20,59 @@ do
     ---@param player_id integer
     ---@param hero unit
     function CreateGUILayoutForPlayer(player_id, hero)
-        DrawStatsPanelInterface(player_id)
-        DrawInventoryFrames(player_id, hero)
-        DrawSkillPanel(player_id)
-        DrawShopFrames(player_id)
-        AddToPanel(hero, player_id)
-        DrawQuartermeisterFrames(player_id)
-        RegisterUnitForTeleport(hero)
+
+        local first_timer = CreateTimer()
+        TimerStart(first_timer, 1., false, function()
+            DrawStatsPanelInterface(player_id)
+            AddToPanel(hero, player_id)
+        end)
+
+        local second_timer = CreateTimer()
+        TimerStart(second_timer, 2., false, function()
+            DrawInventoryFrames(player_id, hero)
+        end)
+
+        local third_timer = CreateTimer()
+        TimerStart(third_timer, 3., false, function()
+            DrawSkillPanel(player_id)
+        end)
+
+        local forth_timer = CreateTimer()
+        TimerStart(forth_timer, 4., false, function()
+            RegisterUnitForTeleport(hero)
+        end)
+
+        local fifth_timer = CreateTimer()
+        TimerStart(fifth_timer, 5., false, function()
+            DrawShopFrames(player_id)
+        end)
+
+        --DrawInventoryFrames(player_id, hero)
+        --DrawSkillPanel(player_id)
+        --DrawShopFrames(player_id)
+        --DrawQuartermeisterFrames(player_id)
+        --RegisterUnitForTeleport(hero)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_TAB, 0, true)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_C, 0, true)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_B, 0, true)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_ESCAPE, 0, true)
         GlobalFrameState[player_id] = false
-        --if GetLocalPlayer() == Player(player_id - 1) then
-            --BlzFrameSetVisible(GlobalButton[player_id].char_panel_button, true)
-            --BlzFrameSetVisible(GlobalButton[player_id].inventory_panel_button, true)
-            --BlzFrameSetVisible(GlobalButton[player_id].skill_panel_button, true)
-        --end
+
     end
 
     function EnableGUIForPlayer(player_id)
         GlobalFrameState[player_id] = true
-        if GetLocalPlayer() == Player(player_id - 1) then
-            BlzFrameSetVisible(GlobalButton[player_id].char_panel_button, true)
-            BlzFrameSetVisible(GlobalButton[player_id].inventory_panel_button, true)
-            BlzFrameSetVisible(GlobalButton[player_id].skill_panel_button, true)
+        BlzFrameSetVisible(GlobalButton[player_id].char_panel_button, true)
+        BlzFrameSetVisible(GlobalButton[player_id].inventory_panel_button, true)
+        BlzFrameSetVisible(GlobalButton[player_id].skill_panel_button, true)
+        if GetLocalPlayer() ~= Player(player_id - 1) then
+            BlzFrameSetVisible(GlobalButton[player_id].char_panel_button, false)
+            BlzFrameSetVisible(GlobalButton[player_id].inventory_panel_button, false)
+            BlzFrameSetVisible(GlobalButton[player_id].skill_panel_button, false)
         end
     end
 
-    local PlayerUIQueue
+    local PlayerUIQueue = 0
 
     function RemoveUIFromQueue(player, ui_type)
         if #PlayerUIQueue[player] > 0 then
@@ -111,7 +135,7 @@ do
     end
 
 
-    GUIManagerHotkeyTrigger = nil
+    GUIManagerHotkeyTrigger = 0
 
     function InitGUIManager()
 
@@ -157,17 +181,12 @@ do
             BlzFrameSetVisible(GlobalButton[i].skill_panel_button, false)
             BlzTriggerRegisterFrameEvent(ClickTrigger, GlobalButton[i].skill_panel_button, FRAMEEVENT_CONTROL_CLICK)
             CreateSimpleChargesText(GlobalButton[i].skill_panel_button, "B", 0.9, 0.9)
-            --FrameRegisterNoFocus(GlobalButton[i].skill_panel_button)
-            --FrameRegisterClick(GlobalButton[i].skill_panel_button, "ReplaceableTextures\\CommandButtons\\BTNSpellBookBLS.blp")
-
 
             GlobalButton[i].inventory_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp", 0.03, 0.03, GlobalButton[i].skill_panel_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.01, 0., GAME_UI)
             CreateTooltip(LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].inventory_panel_button, 0.14, 0.06)
             BlzFrameSetVisible(GlobalButton[i].inventory_panel_button, false)
             BlzTriggerRegisterFrameEvent(ClickTrigger, GlobalButton[i].inventory_panel_button, FRAMEEVENT_CONTROL_CLICK)
             CreateSimpleChargesText(GlobalButton[i].inventory_panel_button, "TAB", 0.9, 0.7, 0.008)
-            --FrameRegisterNoFocus(GlobalButton[i].inventory_panel_button)
-            --FrameRegisterClick(GlobalButton[i].inventory_panel_button, "ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp")
 
         end
 
@@ -232,6 +251,26 @@ do
         end)
 
         TeleporterInit()
+
+        
+
+        RegisterTestCommand("des1", function()
+            local SelfFrame = BlzCreateFrameByType('GLUEBUTTON', 'FaceButton', BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0), 'ScoreScreenTabButtonTemplate', 0)
+            local buttonIconFrame = BlzCreateFrameByType('BACKDROP', 'FaceButtonIcon', SelfFrame, '', 0)
+            BlzFrameSetAllPoints(buttonIconFrame, SelfFrame)
+            BlzFrameSetTexture(buttonIconFrame, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0, true)
+            BlzFrameSetSize(SelfFrame, 0.04, 0.04)
+            BlzFrameSetAbsPoint(SelfFrame, FRAMEPOINT_CENTER, 0.4, 0.3)
+            BlzFrameSetVisible(SelfFrame, false)
+            
+            DelayAction(5., function()
+                if GetLocalPlayer() == Player(0) then BlzFrameSetVisible(SelfFrame, true) end
+            end)
+        end)
+
+        RegisterTestCommand("des2", function()
+            
+        end)
 
     end
 

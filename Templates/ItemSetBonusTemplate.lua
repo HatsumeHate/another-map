@@ -3,9 +3,9 @@
 --- Created by Stasik.
 --- DateTime: 13.02.2020 14:07
 ---
+do
 
-
-    SetBonusList = nil
+    SetBonusList = 0
 
 
     function GetItemSet(id)
@@ -174,3 +174,4 @@
 
     end
 
+end

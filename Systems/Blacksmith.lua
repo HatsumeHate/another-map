@@ -5,7 +5,7 @@
 ---
 do
 
-    BlacksmithFrame = nil
+    BlacksmithFrame = 0
 
     local BUTTON_FREE = 1
     local BUTTON_REFORGE = 2
@@ -18,9 +18,9 @@ do
 
 
 
-    local ClickTrigger
-    local EnterTrigger
-    local LeaveTrigger
+    local ClickTrigger = 0
+    local EnterTrigger = 0
+    local LeaveTrigger = 0
 
 
     local function CreateTextBox(player, size_x, size_y, scale, relative_frame, from, to, offset_x, offset_y, owning_frame)

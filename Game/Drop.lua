@@ -6,7 +6,7 @@
 do
 
 
-    local UNIT_DROP_LIST
+    local UNIT_DROP_LIST = 0
 
 
     ---@param unit unit
