@@ -834,12 +834,16 @@ do
 
                                         if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
 
-                                            ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
-                                            DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
-                                            OnMissileHit(from, target, m)
+                                            if (m.angle_window and IsPointInAngleWindow(angle, m.angle_window, m.current_x, m.current_y, GetUnitX(picked), GetUnitY(picked))) or not m.angle_window then
 
-                                            damage_list.targets = damage_list.targets - 1
-                                            if damage_list.targets <= 0 then break end
+                                                ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
+                                                DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
+                                                OnMissileHit(from, target, m)
+
+                                                damage_list.targets = damage_list.targets - 1
+                                                if damage_list.targets <= 0 then break end
+
+                                            end
                                         end
 
                                     end
@@ -885,12 +889,15 @@ do
 
                                                 if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
 
-                                                    ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
-                                                    DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
-                                                    OnMissileHit(from, target, m)
+                                                    if (m.angle_window and IsPointInAngleWindow(angle, m.angle_window, m.current_x, m.current_y, GetUnitX(picked), GetUnitY(picked))) or not m.angle_window then
+                                                        ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
+                                                        DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
+                                                        OnMissileHit(from, target, m)
 
-                                                    damage_list.targets = damage_list.targets - 1
-                                                    if damage_list.targets <= 0 then break end
+                                                        damage_list.targets = damage_list.targets - 1
+                                                        if damage_list.targets <= 0 then break end
+                                                    end
+
                                                 end
 
                                             end
@@ -923,18 +930,21 @@ do
                             end
 
 
+
                             if BlzGroupGetSize(group) > 0 then
+                                local do_sound = true
 
                                 --print("MISSILE HIT")
-
-                                    if #m.sound_on_hit > 0 then AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], m.current_x, m.current_y) end
 
                                 for index = BlzGroupGetSize(group) - 1, 0, -1 do
                                     local picked = BlzGroupUnitAt(group, index)
 
+                                    if (m.angle_window and IsPointInAngleWindow(angle, m.angle_window, m.current_x, m.current_y, GetUnitX(picked), GetUnitY(picked))) or not m.angle_window then
+
+                                        if do_sound and #m.sound_on_hit > 0 then AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], m.current_x, m.current_y); do_sound = false end
+
                                         targets = targets - 1
                                         ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
-
 
                                         if weapon then
                                             local damage_list = GetDamageValues(weapon, effects, m)
@@ -952,9 +962,7 @@ do
 
                                         if effects and effects.effect then ApplyEffect(from, picked, m.current_x, m.current_y, effects.effect, effects.level) end
                                         if m.effect_on_hit then
-                                            --print("do damage from an effect " .. GetUnitName(from))
                                             ApplyEffect(from, picked, m.current_x, m.current_y, m.effect_on_hit, 1)
-                                            --print("do damage from an effect - ok")
                                         end
 
                                         OnMissileHit(from, picked, m)
@@ -973,6 +981,8 @@ do
                                                 m.time = 0.
                                                 break
                                             end
+
+                                    end
 
                                 end
                             end

@@ -265,9 +265,7 @@ do
         --#######################SPAWNER_DATA#######################
         MonsterPack[14] = {
             spawner = gg_rct_monster_pack_14_spawner,
-            wander_region = {
-                gg_rct_monster_pack_14_1
-            },
+            wander_region = { gg_rct_monster_pack_14_1 },
             tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS },
             respawn = 365., min = 5, max = 7, elite = 3
         }
@@ -275,9 +273,7 @@ do
         --#######################SPAWNER_DATA#######################
         MonsterPack[15] = {
             spawner = gg_rct_monster_pack_15_spawner,
-            wander_region = {
-                gg_rct_monster_pack_15_1
-            },
+            wander_region = { gg_rct_monster_pack_15_1 },
             tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS },
             respawn = 400., min = 7, max = 12, elite = 4
         }
@@ -285,14 +281,19 @@ do
         --#######################SPAWNER_DATA#######################
         MonsterPack[16] = {
             spawner = gg_rct_monster_pack_16_spawner,
-            wander_region = {
-                gg_rct_monster_pack_16_1,
-                gg_rct_monster_pack_16_2
-            },
+            wander_region = { gg_rct_monster_pack_16_1, gg_rct_monster_pack_16_2 },
             tags = { MONSTERPACK_SPIDERS },
             respawn = 400., min = 1, max = 3, elite = 1
         }
+        --#######################SPAWNER_DATA#######################
+        MonsterPack[17] = {
+            spawner = gg_rct_monster_pack_17_spawner,
+            wander_region = { gg_rct_monster_pack_17_1, gg_rct_monster_pack_17_2, gg_rct_monster_pack_17_3 },
+            tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS },
+            respawn = 440., min = 7, max = 14, elite = 3
+        }
         --##########################################################
+
 
         BossPack[1] = {
             spawner = gg_rct_arachnid_boss,

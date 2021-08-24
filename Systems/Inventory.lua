@@ -12,6 +12,21 @@ do
 
 
 
+    function GetWeaponAnimationTag(weapon_type)
+        if weapon_type == FIST_WEAPON then
+            return ANIM_TAG_FISTS
+        elseif weapon_type == SWORD_WEAPON or weapon_type == AXE_WEAPON or weapon_type == BLUNT_WEAPON or weapon_type == DAGGER_WEAPON then
+            return ANIM_TAG_ONEHANDED
+        elseif weapon_type == GREATSWORD_WEAPON or weapon_type == GREATAXE_WEAPON or weapon_type == GREATBLUNT_WEAPON then
+            return ANIM_TAG_TWOHANDED
+        elseif weapon_type == STAFF_WEAPON or weapon_type == JAWELIN_WEAPON then
+            return ANIM_TAG_STAFF
+        elseif weapon_type == BOW_WEAPON then
+            return ANIM_TAG_BOW
+        end
+    end
+
+
     local function GetFirstFreeSlotButton(player)
         for i = 1, 32 do
             --local h = GetHandleId(InventorySlots[player][i])
@@ -83,6 +98,22 @@ do
 
     function UpdateEquipPointsWindow(player)
         local unit_data = GetUnitData(InventoryOwner[player])
+        local last_tag = unit_data.animation_tag
+
+
+            unit_data.animation_tag = GetWeaponAnimationTag(unit_data.equip_point[WEAPON_POINT].SUBTYPE)
+
+            if unit_data.animation_tag ~= last_tag then
+                AddUnitAnimationProperties(PlayerHero[player], last_tag or "", false)
+                AddUnitAnimationProperties(PlayerHero[player], unit_data.animation_tag, true)
+            end
+
+            if unit_data.equip_point[OFFHAND_POINT] and unit_data.equip_point[OFFHAND_POINT].TYPE == ITEM_TYPE_WEAPON then
+                AddUnitAnimationProperties(PlayerHero[player], "Victory", true)
+            else
+                AddUnitAnimationProperties(PlayerHero[player], "Victory", false)
+            end
+
 
             --print("equip points start")
             for i = WEAPON_POINT, NECKLACE_POINT do
@@ -113,7 +144,7 @@ do
             local button = ButtonList[InventorySlots[player][34]]
 
             --("loaded")
-                if IsWeaponTypeTwohanded(item_data.SUBTYPE) then
+                if IsWeaponTypeTwohanded(item_data.SUBTYPE) and item_data.SUBTYPE ~= BOW_WEAPON then
                     --print("twohanded")
                     BlzFrameSetTexture(button.image, "ReplaceableTextures\\CommandButtons\\BTNCancel.blp", 0, true)
                     FrameChangeTexture(button.button, "ReplaceableTextures\\CommandButtons\\BTNCancel.blp")
@@ -230,7 +261,7 @@ do
                 if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.sprite, true) end
                 --BlzFrameSetEnable(button.sprite, true)
                 button.button_state = true
-                PlayLocalSound("Sound\\Interface\\AutoCastButtonClick1.wav", player)
+                PlayLocalSound("Sound\\Interface\\AutoCastButtonClick1.wav", player-1)
 
                 SetItemVisible(button.item, true)
                 SetItemInvulnerable(button.item, true)
@@ -679,6 +710,9 @@ do
                                         SetItemCharges(ButtonList[h].item, GetItemCharges(ButtonList[h].item) - value)
                                         local new_item = CreateCustomItem_Id(GetItemTypeId(ButtonList[h].item), GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]))
                                         SetItemCharges(new_item, value)
+                                        if item_data.soundpack and item_data.soundpack.drop then
+                                            AddSoundVolumeZ(item_data.soundpack.drop, GetItemX(new_item), GetItemY(new_item), 25., 127, 1100.)
+                                        end
                                         --print("bbbb")
                                     else
                                         --print("aaa")
@@ -828,11 +862,12 @@ do
                         --local item_data = GetItemData(item)
                         item_data.picked_up = nil
                         --print("drop")
-                            if item_data.flippy then
-                                if item_data.soundpack and not is_silent then
-                                    AddSoundVolume(item_data.soundpack.drop, x, y, 128, 2100.)
-                                end
 
+                        if item_data.soundpack and not is_silent then
+                            AddSoundVolume(item_data.soundpack.drop, x, y, 128, 2100.)
+                        end
+
+                            if item_data.flippy then
                                 if item_data.flippy and item_data.quality_effect then
                                     BlzSetSpecialEffectPosition(item_data.quality_effect, GetItemX(item), GetItemY(item), GetZ(GetItemX(item), GetItemY(item)))
                                     BlzSetItemSkin(item, GetItemTypeId(item))

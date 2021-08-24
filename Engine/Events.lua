@@ -107,6 +107,8 @@ do
             end)
         elseif missile.id == "MBCH" then
             BuildChain(source, missile)
+        elseif missile.id == "MSHG" then
+            CastShatterGround(source, missile)
         elseif missile.id == "MSCN" then
             SummonCurse(missile)
         end
@@ -317,7 +319,7 @@ do
         elseif id == 'A00B' then
             local effect = AddSpecialEffect("Spell\\DetroitSmash_Effect.mdx", GetUnitX(source) + Rx(50., GetUnitFacing(source)), GetUnitY(source) + Ry(50., GetUnitFacing(source)))
             BlzSetSpecialEffectOrientation(effect, GetUnitFacing(source) * bj_DEGTORAD, 0., 0.)
-            --BlzSetSpecialEffectYaw(effect, GetUnitFacing(source) * bj_DEGTORAD)
+            BlzSetSpecialEffectZ(effect, GetUnitZ(source) + 40.)
             BlzSetSpecialEffectScale(effect, 0.7)
             DestroyEffect(effect)
         elseif id == "A006" then
@@ -325,10 +327,9 @@ do
             local effect_x = GetUnitX(source); local effect_y = GetUnitY(source)
             local time = 0.3
             local effect = AddSpecialEffect("Spell\\Coup de Grace.mdx", GetUnitX(source), GetUnitY(source))
-            local z = GetUnitZ(source) + 50.
+            local z = GetUnitZ(source) + 70.
 
                 BlzSetSpecialEffectOrientation(effect, angle * bj_DEGTORAD, 0., 0.)
-                --BlzSetSpecialEffectYaw(effect, angle * bj_DEGTORAD)
                 local timer = CreateTimer()
                 TimerStart(timer, 0.025, true, function()
                     if time > 0. then

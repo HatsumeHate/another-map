@@ -6,10 +6,11 @@ do
         local unit_data = GetUnitData(unit)
 
             UnitRemoveAbility(unit, FourCC('Abun'))
-            AddUnitAnimationProperties(unit, "alternate", false)
+            AddUnitAnimationProperties(unit, "channel", false)
+            AddUnitAnimationProperties(unit, unit_data.animation_tag or "", true)
             PauseTimer(unit_data.action_timer)
-            DestroyEffect(unit_data.weapon_sfx_right)
-            DestroyEffect(unit_data.weapon_sfx_left)
+            BlzSetSpecialEffectScale(unit_data.whirlwind_sfx, 1.)
+            DestroyEffect(unit_data.whirlwind_sfx)
             DestroyLoopingSound(unit_data.looping_sound, 0.2)
             SpellBackswing(unit)
             unit_data.channeled_destructor = nil
@@ -30,13 +31,13 @@ do
             unit_data.channeled_destructor = WhirlwindDeactivate
             unit_data.channeled_ability = "A010"
 
-            AddUnitAnimationProperties(unit, "alternate", true)
+            AddUnitAnimationProperties(unit, unit_data.animation_tag, false)
+            AddUnitAnimationProperties(unit, "channel", true)
             UnitAddAbility(unit, FourCC('Abun'))
 
             unit_data.looping_sound = AddLoopingSoundOnUnit({"Sounds\\Spell\\whirlwind_1.wav", "Sounds\\Spell\\whirlwind_2.wav", "Sounds\\Spell\\whirlwind_3.wav", "Sounds\\Spell\\whirlwind_4.wav"}, unit, 200, 200, -0.15, 110, 1700.)
-            unit_data.weapon_sfx_right = AddSpecialEffectTarget("Spell\\Sweep_Chaos_Medium.mdx", unit, "weapon right")
-            unit_data.weapon_sfx_left = AddSpecialEffectTarget("Spell\\Sweep_Chaos_Medium.mdx", unit, "weapon left")
-            --unit_data.whirlwind_sfx = AddSpecialEffectTarget("Spell\\Sweep_TeamColor_Medium.mdx", unit, "origin")
+            unit_data.whirlwind_sfx = AddSpecialEffectTarget("Spell\\whirlwind.mdx", unit, "origin")
+            BlzSetSpecialEffectScale(unit_data.whirlwind_sfx, 0.75)
 
             TimerStart(unit_data.action_timer, 0.33, true, function()
                 local mp = GetUnitState(unit, UNIT_STATE_MANA)
@@ -140,6 +141,28 @@ do
 
 
         end)
+
+    end
+
+
+    function CastShatterGround(source, missile)
+        local timer = CreateTimer()
+        local max = 400.
+        local delta_radius = (max - 100.) / (missile.time / 0.025)
+        local effect = AddSpecialEffect("Spell\\arc_fire.mdx", GetUnitX(source), GetUnitY(source))
+
+            BlzSetSpecialEffectScale(effect, 0.7)
+            BlzSetSpecialEffectYaw(effect, GetUnitFacing(source) * bj_DEGTORAD)
+            ShakeByCoords(GetUnitX(source), GetUnitY(source), 1.6, missile.time, 1450.)
+
+
+            TimerStart(timer, 0.025, true, function()
+                if missile and missile.time > 0. then
+                    if missile.radius < max then missile.radius = missile.radius + delta_radius end
+                else
+                    DestroyTimer(timer)
+                end
+            end)
 
     end
 

@@ -466,10 +466,6 @@ do
                     attack_type = RANGE_ATTACK,
                     attribute = LIGHTNING_ATTRIBUTE,
 
-                    --SFX_delay = 0.25,
-                    --SFX_used = "Spell\\Lightnings Long.mdx",
-                    --SFX_used_scale = 1.,
-
                     shake_magnitude = 1.5,
                     shake_distance = 1450.,
                     shake_duration = 0.7,
@@ -726,6 +722,31 @@ do
             }
         })
         --==========================================--
+        NewEffectTemplate('ESHG', {
+            name = "shatter ground effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            bonus_crit_multiplier_delta = 0.1,
+            bonus_crit_multiplier_delta_level = 5.,
+            get_level_from_skill = "ASHG",
+            level = {
+                [1] = {
+                    power = 8,
+                    attack_percent_bonus = 0.6,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+
+                    max_targets = 1,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'ASHS', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
         NewEffectTemplate('EBRS', {
             name = "berserk effect",
             get_level_from_skill = "A00Q",
@@ -828,7 +849,7 @@ do
                     area_of_effect = 300.,
                     max_targets = 300,
 
-                    SFX_used = "Abilities\\Spells\\Human\\Thunderclap\\ThunderClapCaster.mdx",
+                    SFX_used = "Spell\\impact_flash.mdx",
 
                 }
             }
@@ -951,10 +972,10 @@ do
             level = {
                 [1] = {
                     max_targets = 1,
-                    SFX_on_caster            = 'Abilities\\Spells\\Items\\VampiricPotion\\VampPotionCaster.mdx',
-                    SFX_on_caster_point      = 'origin',
+                    SFX_on_caster            = 'Spell\\consume_whirl.mdx',
+                    SFX_on_caster_point      = 'chest',
                     SFX_on_caster_scale      = 1.,
-                    SFX_on_caster_duration = 0.95,
+                    --SFX_on_caster_duration = 0.95,
                     sound = {
                         pack = { "Abilities\\Spells\\Undead\\DeathPact\\DeathPactTargetBirth1.wav" },
                         volume = 127, cutoff = 1500.

@@ -12,40 +12,14 @@ do
 
 
     function TimeToText(time)
-        local mins = math.floor(time / 60.)
+        local mins = R2I(math.floor(time / 60.) or 0.)
         local secs = time - (mins * 60.)
 
-        if secs < 10 then
-            secs = "0" .. I2S(R2I((secs)))
-        else
-            secs = I2S(R2I((secs)))
-        end
+        if secs < 10 then secs = "0" .. I2S(R2I((secs)))
+        else secs = I2S(R2I((secs))) end
 
-        return LOCALE_LIST[my_locale].WAVE_COUNTDOWN .. R2I(mins) .. ":" .. secs
+        return LOCALE_LIST[my_locale].WAVE_COUNTDOWN .. mins .. ":" .. secs
     end
-
-
-    local function AddWaveTimer(total_time)
-        local item = MultiboardGetItem(MAIN_MULTIBOARD, 1, 1)
-
-        MultiboardSetItemStyle(item, true, false)
-        MultiboardSetItemValue(item, TimeToText(total_time))
-        TimerStart(WaveTimer, 0., false, nil)
-
-        TimerStart(WaveTimer, 1., true, function()
-            total_time = total_time - 1.
-            MultiboardSetItemValue(item, TimeToText(total_time))
-
-            if total_time <= 0. then
-                PauseTimer(WaveTimer)
-                SpawnMonsters()
-                ToggleCitizens(false)
-            end
-
-        end)
-
-    end
-
 
 
 
@@ -56,6 +30,7 @@ do
             MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + player, 0), "|c006F6F6F" .. PlayerNames[player] .. "|r")
             SetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD, 0)
             --MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + player, 1), "|c00FFFF00".."0".."|r")
+            IssueImmediateOrderById(PlayerHero[player], order_stop)
             ShowUnit(PlayerHero[player], false)
 
                 if per_player > 0 then
@@ -116,6 +91,8 @@ do
                     MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 1), "|c00FFFF00"..GetPlayerState(Player(i-1), PLAYER_STATE_RESOURCE_GOLD).."|r")
                 end
             end)
+
+            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 1), 7. / 100.0)
 
     end
 

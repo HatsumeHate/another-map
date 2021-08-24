@@ -717,7 +717,7 @@ do
 
 
 
-            if (unit_data.equip_point[point] and unit_data.equip_point[point].item) and item_data.model then
+            if item_data.model then
                 if flag then
                     local ref_point = "chest"
 
@@ -725,8 +725,13 @@ do
                     elseif point == WEAPON_POINT then ref_point = "hand right" end
 
                     item_data.model_effect = AddSpecialEffectTarget(item_data.model, unit, ref_point)
+
+                    if unit_data.unit_class == BARBARIAN_CLASS and point == CHEST_POINT then
+                        BlzSetSpecialEffectScale(item_data.model_effect, 1.1)
+                    end
+
                 else
-                    if item_data.model_effect then DestroyEffect(item_data.model_effect) end
+                    if item_data.model_effect then BlzSetSpecialEffectScale(item_data.model_effect, 1.); DestroyEffect(item_data.model_effect) end
                 end
             end
 

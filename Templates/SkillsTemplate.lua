@@ -272,7 +272,8 @@ do
             },
             sfx_pack = {
                 on_caster = {
-                    { effect = "Spell\\Sweep_True_Ice_Small.mdx", point = "origin" },
+                    { effect = "Spell\\Sweep_True_Ice_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON } },
+                    { effect = "Spell\\Sweep_True_Ice_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON } },
                     { effect = "Spell\\Ice Low.mdx", point = 'hand right' }
                 }
             },
@@ -284,11 +285,6 @@ do
                     from_unit           = true,
                     resource_cost       = 10.,
                     cooldown            = 0.3,
-                    --animation           = 2,
-                    --animation_point     = 1.1,
-                    --animation_backswing = 0.3,
-                    --timescale     = 0.6,
-
                 },
             }
 
@@ -316,10 +312,6 @@ do
                     effect              = 'EFRN',
                     resource_cost       = 10.,
                     cooldown            = 10.,
-                    --animation           = 3,
-                    --animation_point     = 2.1,
-                    --animation_backswing = 0.633,
-                    --timescale     = 0.3,
                 }
             }
 
@@ -332,12 +324,11 @@ do
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_FIRE,
             sound = { pack = { "Sounds\\Spells\\fire_light_launch_1.wav", "Sounds\\Spells\\fire_light_launch_2.wav", "Sounds\\Spells\\fire_light_launch_3.wav" }, volume = 117, cutoff = 1500.},
-            animation = {
-                sequence  = GetAnimationSequence("sorc_spell_throw_twohanded"), timescale = 1.25,
-            },
+            animation = { sequence  = GetAnimationSequence("sorc_spell_throw_twohanded"), timescale = 1.25, },
             sfx_pack = {
                 on_caster = {
-                    { effect = "Spell\\Sweep_Fire_Small.mdx", point = "weapon" },
+                    { effect = "Spell\\Sweep_Fire_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON } },
+                    { effect = "Spell\\Sweep_Fire_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON } },
                     { effect = "Spell\\Fire Low.mdx", point = 'hand right' }
                 }
             },
@@ -349,10 +340,6 @@ do
                     from_unit           = true,
                     resource_cost       = 10.,
                     cooldown            = 0.3,
-                    --animation           = 2,
-                    --animation_point     = 1.1,
-                    --animation_backswing = 0.3,
-                    --timescale     = 0.6,
                 }
             }
         })
@@ -464,12 +451,11 @@ do
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_LIGHTNING,
             sound = { pack = { "Sounds\\Spells\\cast_lightning_1.wav", "Sounds\\Spells\\cast_lightning_2.wav", "Sounds\\Spells\\cast_lightning_3.wav" }, volume = 110, cutoff = 1500.},
-            animation = {
-                sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 1.35,
-            },
+            animation = { sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 1.35, },
             sfx_pack = {
                 on_caster = {
-                            --{ effect = "Spell\\Sweep_Lightning_Large.mdx", point = "weapon" },
+                    { effect = "Spell\\Sweep_Lightning_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON } },
+                    { effect = "Spell\\Sweep_Lightning_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON } },
                     { effect = "Spell\\Storm Cast.mdx", point = 'hand right' },
                     { effect = "Spell\\Storm Cast.mdx", point = 'hand left' }
                 }
@@ -592,7 +578,9 @@ do
             },
             sfx_pack = {
                 on_caster = {
-                    { effect = "Spell\\Sweep_Lightning_Medium.mdx", point = "weapon" },
+                    { effect = "Spell\\Sweep_Lightning_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON } },
+                    { effect = "Spell\\Sweep_Lightning_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON } },
+                    --{ effect = "Spell\\Sweep_Lightning_Medium.mdx", point = "weapon", conditional_weapon = {  } },
                     { effect = "Spell\\Storm Cast.mdx", point = 'hand right' }
                 }
             },
@@ -653,7 +641,7 @@ do
             },
             sfx_pack = {
                 on_caster = {
-                    { effect = "Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdx", point = "origin", scale = 0.4 }
+                    { effect = "Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdx", point = "origin", scale = 0.4, permanent = true }
                 }
             },
 
@@ -682,7 +670,7 @@ do
             },
             sfx_pack = {
                 on_caster = {
-                    { effect = "Spell\\ShivasEnchantment.mdx", point = "origin", duration = 1.233 }, { effect = "Spell\\ColdRitual.mdx", point = "origin" }
+                    { effect = "Spell\\ShivasEnchantment.mdx", point = "origin", duration = 1.233 }, { effect = "Spell\\ColdRitual.mdx", point = "origin", permanent = true }
                 }
             },
 
@@ -691,10 +679,6 @@ do
                     effect             = 'EFAR',
                     resource_cost       = 5.,
                     cooldown            = 20.,
-                    --animation           = 3,
-                    --animation_point     = 0.3,
-                    --animation_backswing = 0.3,
-                    --timescale     = 1.,
                 }
             }
         })
@@ -704,10 +688,8 @@ do
             icon            = "Spell\\BTN_cr_Dark Arts.blp",
             activation_type = SELF_CAST,
             type            = SKILL_UNIQUE,
-            category = SKILL_CATEGORY_ARCANE,
-            animation = {
-                sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 0.95,
-            },
+            category        = SKILL_CATEGORY_ARCANE,
+            animation       = { sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 0.95, },
             sfx_pack = {
                 on_caster = {
                     { effect = "Abilities\\Spells\\Orc\\AncestralSpirit\\AncestralSpiritCaster.mdx", point = "origin", duration = 1.233 }
@@ -719,10 +701,6 @@ do
                     effect             = 'EEMA',
                     resource_cost       = 5.,
                     cooldown            = 20.,
-                    --animation           = 3,
-                    --animation_point     = 0.15,
-                    --animation_backswing = 0.15,
-                    --timescale     = 0.6,
                 }
             }
         })
@@ -743,10 +721,6 @@ do
                     range               = 600.,
                     cooldown            = 5.,
                     resource_cost       = 10.,
-                    --animation           = 2,
-                    --animation_point     = 1.3,
-                    --animation_backswing = 0.3,
-                    --timescale     = 0.4,
                     effect_on_caster        = "Spell\\Fire Low.mdx",
                     effect_on_caster_point  = 'hand right',
                     effect_on_caster_scale  = 1.,
@@ -764,6 +738,7 @@ do
             category = SKILL_CATEGORY_BATTLE_ADVANTAGE,
             range_delta = 3.,
             range_delta_level = 1,
+            animation = { sequence  = GetAnimationSequence("barb_jump"), timescale = 1., },
 
 
             level = {
@@ -771,10 +746,6 @@ do
                     range               = 300.,
                     cooldown            = 12.,
                     resource_cost       = 5.,
-                    animation           = 3,
-                    animation_point     = 0.3,
-                    animation_backswing = 0.3,
-                    timescale     = 1.,
                 }
             }
         })
@@ -785,6 +756,7 @@ do
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_BATTLE_ADVANTAGE,
+            animation = { sequence = GetAnimationSequence("barb_spell_throw"), timescale = 1.1 },
 
 
             level = {
@@ -794,10 +766,6 @@ do
                     from_unit           = true,
                     resource_cost       = 5.,
                     cooldown            = 12.,
-                    animation           = 3,
-                    animation_point     = 1.4,
-                    animation_backswing = 0.2666,
-                    timescale     = 0.3
                 }
             }
         })
@@ -809,6 +777,10 @@ do
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_FIGHTING_MASTERY,
             sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 128, cutoff = 1500.},
+            animation = {
+                sequence = GetAnimationSequence("barb_spell_punch"), timescale = 1.1
+            },
+
 
             level = {
                 [1] = {
@@ -829,16 +801,15 @@ do
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_INNER_STRENGTH,
+            animation = {
+                sequence = GetAnimationSequence("barb_spell_howl"), timescale = 1.
+            },
 
             level = {
                 [1] = {
                     effect              = 'EBRS',
                     resource_cost       = 10.,
                     cooldown            = 22.,
-                    animation           = 3,
-                    animation_point     = 1.4,
-                    animation_backswing = 0.2666,
-                    timescale     = 0.5
                 }
             }
         })
@@ -850,14 +821,14 @@ do
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_FIGHTING_MASTERY,
             channel = true,
+            animation = {
+                sequence  = GetAnimationSequence("barb_whirlwind"), timescale = 1.,
+            },
 
             level = {
                 [1] = {
-                    cooldown            = 0.3,
-                    animation           = 3,
-                    animation_point     = 0.001,
-                    animation_backswing = 0.001,
-                    timescale     = 1.,
+                    cooldown = 0.3,
+                    required_weapon = { SWORD_WEAPON, GREATSWORD_WEAPON, AXE_WEAPON, GREATAXE_WEAPON, BLUNT_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON, DAGGER_WEAPON, JAWELIN_WEAPON, FIST_WEAPON },
                 }
             }
         })
@@ -869,78 +840,24 @@ do
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_FIGHTING_MASTERY,
             sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 128, cutoff = 1500.},
+            animation = {
+                sequence = GetAnimationSequence("barb_swing_1"), timescale = 1.2
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Fire_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Fire_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Fire_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
+                }
+            },
 
             level = {
                 [1] = {
                     range               = 135.,
                     effect              = 'ECRH',
-                    cooldown            = 2.3,
+                    cooldown            = 5.,
                     resource_cost       = 5.,
-                    animation_sequence = {
-                        [SWORD_WEAPON] = {
-                            animation           = 2,
-                            animation_point     = 1.1,
-                            animation_backswing = 0.3,
-                            timescale     = 0.6,
-                        },
-                        [GREATSWORD_WEAPON] = {
-                            animation           = 2,
-                            animation_point     = 1.1,
-                            animation_backswing = 0.3,
-                            timescale     = 0.6,
-                        },
-                        [BLUNT_WEAPON] = {
-                            animation           = 2,
-                            animation_point     = 1.1,
-                            animation_backswing = 0.3,
-                            timescale     = 0.6,
-                        },
-                        [GREATBLUNT_WEAPON] = {
-                            animation           = 2,
-                            animation_point     = 1.1,
-                            animation_backswing = 0.3,
-                            timescale     = 0.6,
-                        },
-                        [AXE_WEAPON] = {
-                            animation           = 2,
-                            animation_point     = 1.1,
-                            animation_backswing = 0.3,
-                            timescale     = 0.6,
-                        },
-                        [GREATAXE_WEAPON] = {
-                            animation           = 2,
-                            animation_point     = 1.1,
-                            animation_backswing = 0.3,
-                            timescale     = 0.6,
-                        },
-                        [STAFF_WEAPON] = {
-                            animation           = 2,
-                            animation_point     = 1.1,
-                            animation_backswing = 0.3,
-                            timescale     = 0.6,
-                        },
-                        [DAGGER_WEAPON] = {
-                            animation           = 2,
-                            animation_point     = 1.1,
-                            animation_backswing = 0.3,
-                            timescale     = 0.6,
-                        },
-                        [FIST_WEAPON] = {
-                            animation           = 2,
-                            animation_point     = 1.1,
-                            animation_backswing = 0.3,
-                            timescale     = 0.6,
-                        },
-                    },
-                    required_weapon = { [SWORD_WEAPON] = 0, [GREATSWORD_WEAPON] = 0, [AXE_WEAPON] = 0, [GREATAXE_WEAPON] = 0, [BLUNT_WEAPON] = 0, [GREATBLUNT_WEAPON] = 0, [STAFF_WEAPON] = 0, [DAGGER_WEAPON] = 0, [JAWELIN_WEAPON] = 0, [FIST_WEAPON] = 0 },
-                    --[[
-                    animation           = 4,
-                    animation_point     = 0.6,
-                    animation_backswing = 0.3,
-                    timescale     = 0.9,]]
-                    effect_on_caster        = "Spell\\Sweep_Fire_Medium.mdx",
-                    effect_on_caster_point  = 'weapon left',
-                    effect_on_caster_scale  = 1.,
+                    required_weapon = { SWORD_WEAPON, GREATSWORD_WEAPON, AXE_WEAPON, GREATAXE_WEAPON, BLUNT_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON, DAGGER_WEAPON, JAWELIN_WEAPON, FIST_WEAPON },
                 }
             }
         })
@@ -952,20 +869,22 @@ do
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_FIGHTING_MASTERY,
             sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 128, cutoff = 1500.},
+            animation = { sequence = GetAnimationSequence("barb_swing_1"), timescale = 1. },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Chaos_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Chaos_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Chaos_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
+                }
+            },
 
             level = {
                 [1] = {
                     range               = 135.,
                     effect              = 'EEXC',
-                    cooldown            = 5.,
-                    resource_cost = 5.,
-                    animation           = 6,
-                    animation_point     = 0.6,
-                    animation_backswing = 0.3,
-                    timescale     = 0.9,
-                    effect_on_caster        = "Spell\\Sweep_Fire_Medium.mdx",
-                    effect_on_caster_point  = 'weapon right',
-                    effect_on_caster_scale  = 1.,
+                    cooldown            = 6.,
+                    resource_cost       = 5.,
+                    required_weapon = { SWORD_WEAPON, GREATSWORD_WEAPON, AXE_WEAPON, GREATAXE_WEAPON, BLUNT_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON, DAGGER_WEAPON, JAWELIN_WEAPON, FIST_WEAPON },
                 }
             }
         })
@@ -976,6 +895,7 @@ do
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_BATTLE_ADVANTAGE,
+            animation = { sequence = GetAnimationSequence("barb_spell_throw"), timescale = 0.8 },
 
             level = {
                 [1] = {
@@ -999,6 +919,13 @@ do
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_FIGHTING_MASTERY,
             sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 120, cutoff = 1500.},
+            animation = { sequence = GetAnimationSequence("barb_swing_2"), timescale = 1.1 },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Blood_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON } },
+                    { effect = "Spell\\Sweep_Blood_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON } },
+                }
+            },
 
             level = {
                 [1] = {
@@ -1006,13 +933,33 @@ do
                     effect              = 'ECSL',
                     cooldown            = 7.3,
                     resource_cost       = 5.,
-                    animation           = 6,
-                    animation_point     = 0.6,
-                    animation_backswing = 0.3,
-                    timescale     = 0.7,
-                    effect_on_caster        = "Spell\\Sweep_Blood_Medium.mdx",
-                    effect_on_caster_point  = 'weapon right',
-                    effect_on_caster_scale  = 1.,
+                    required_weapon = { SWORD_WEAPON, GREATSWORD_WEAPON, AXE_WEAPON, GREATAXE_WEAPON, BLUNT_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON, DAGGER_WEAPON, JAWELIN_WEAPON },
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ASHG', {
+            name            = LOCALE_LIST[my_locale].SKILL_SHATTERGROUND,
+            icon            = "Spell\\BTN_cr_VeeR9.blp",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+            category = SKILL_CATEGORY_BATTLE_ADVANTAGE,
+            sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 120, cutoff = 1500.},
+            animation = { sequence = GetAnimationSequence("barb_swing_2"), timescale = 1.25 },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Fire_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON } },
+                    { effect = "Spell\\Sweep_Fire_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON } },
+                }
+            },
+
+            level = {
+                [1] = {
+                    range               = 400.,
+                    missile             = "MSHG",
+                    cooldown            = 14.,
+                    resource_cost       = 5.,
+                    required_weapon = { SWORD_WEAPON, GREATSWORD_WEAPON, AXE_WEAPON, GREATAXE_WEAPON, BLUNT_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON, DAGGER_WEAPON, JAWELIN_WEAPON },
                 }
             }
         })
@@ -1023,6 +970,9 @@ do
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_INNER_STRENGTH,
+            animation = {
+                sequence = GetAnimationSequence("barb_spell_howl"), timescale = 1.1
+            },
 
 
             level = {
@@ -1030,10 +980,6 @@ do
                     effect              = 'EWCR',
                     resource_cost       = 5,
                     cooldown            = 22.,
-                    animation           = 3,
-                    animation_point     = 1.4,
-                    animation_backswing = 0.2666,
-                    timescale     = 0.5
                 }
             }
         })
@@ -1044,16 +990,15 @@ do
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_INNER_STRENGTH,
+            animation = {
+                sequence = GetAnimationSequence("barb_spell_howl"), timescale = 0.6
+            },
 
             level = {
                 [1] = {
                     effect              = 'EBFA',
                     resource_cost       = 3.,
                     cooldown            = 30.,
-                    animation           = 3,
-                    animation_point     = 1.4,
-                    animation_backswing = 0.2666,
-                    timescale     = 0.5
                 }
             }
         })

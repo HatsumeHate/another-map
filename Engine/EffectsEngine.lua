@@ -133,6 +133,7 @@ do
         PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
         if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_unit, target) end
 
+        --print("healing effect")
             -- delay for effect animation
             local timer = CreateTimer()
             TimerStart(timer, myeffect.hit_delay or 0., false, function()
@@ -154,6 +155,7 @@ do
     ---@param lvl integer
     function ApplyEffectDamage(source, target, data, lvl)
         local myeffect = data.level[lvl]
+
 
             PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
             if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_unit, target) end
@@ -384,7 +386,7 @@ do
                 end
 
                 -- healing
-                if myeffect.heal_amount then
+                if myeffect.heal_amount and myeffect.heal_amount > 0 then
                     -- multiple target healing
                     if myeffect.area_of_effect and myeffect.area_of_effect > 0. then
                         local targets = myeffect.max_targets or 1

@@ -95,11 +95,11 @@ do
 	VALUE_BY_PERCENT_3     = 19
 	
 	-- маг атака
-	MA_VALUE_BY_PERCENT_1  = 5
+	MA_VALUE_BY_PERCENT_1  = 1
 	MA_FIRST_LIMIT         = 275
-	MA_VALUE_BY_PERCENT_2  = 7
+	MA_VALUE_BY_PERCENT_2  = 3
 	MA_SECOND_LIMIT        = 340
-	MA_VALUE_BY_PERCENT_3  = 12
+	MA_VALUE_BY_PERCENT_3  = 6
 
 
 	-- отражение урона
@@ -306,11 +306,11 @@ do
 				value_by_percent_3 = 19
 			},
 			[MAGICAL_ATTACK] = {
-				value_by_percent_1 = 5,
+				value_by_percent_1 = 3,
 				first_limit = 275,
-				value_by_percent_2 = 7,
+				value_by_percent_2 = 5,
 				second_limit = 340,
-				value_by_percent_3 = 12
+				value_by_percent_3 = 7
 			},
 			[REFLECT_DAMAGE] = {
 				value_by_percent_1 = 7,

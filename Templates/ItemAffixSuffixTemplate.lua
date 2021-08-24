@@ -356,7 +356,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_06.mdx",
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
@@ -364,7 +364,7 @@ do
                         decl = DECL_IT,
                         modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_08.mdx",
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
@@ -372,7 +372,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_10.mdx",
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
@@ -380,7 +380,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_10.mdx",
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
@@ -388,7 +388,7 @@ do
                         decl = DECL_SHE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_10.mdx",
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
@@ -396,7 +396,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_06.mdx",
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
@@ -404,7 +404,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_10.mdx",
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
@@ -412,7 +412,7 @@ do
                         decl = DECL_SHE,
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_04.mdx",
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -563,7 +563,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
-                        model = "",
+                        model = "Items\\Weapon_Sword_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNAnother Sword.blp",
@@ -571,7 +571,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
-                        model = "",
+                        model = "Items\\Weapon_Sword_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNDKSword.blp",
@@ -579,7 +579,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
-                        model = "",
+                        model = "Items\\Weapon_Sword_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNSword.blp",
@@ -587,7 +587,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
-                        model = "",
+                        model = "Items\\Weapon_Sword_1.mdx",
                     },
                 },
                 [GREATSWORD_WEAPON] = {
@@ -597,7 +597,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.4,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandSword_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNRitual Shaman Knife 1Charge.blp",
@@ -605,7 +605,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.4,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandSword_1.mdx",
                     },
                 },
                 [AXE_WEAPON] = {
@@ -615,7 +615,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
-                        model = "",
+                        model = "Items\\Weapon_Axe_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNGrandAxe.blp",
@@ -623,7 +623,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
-                        model = "",
+                        model = "Items\\Weapon_Axe_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNSteelAxe.blp",
@@ -631,7 +631,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
-                        model = "",
+                        model = "Items\\Weapon_Axe_1.mdx",
                     },
                 },
                 [GREATAXE_WEAPON] = {
@@ -641,7 +641,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.45,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandAxe_1.mdx",
                     },
                 },
                 [BLUNT_WEAPON] = {
@@ -651,7 +651,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
-                        model = "Weapons\\Weapon_Hammer_1.mdx",
+                        model = "Items\\Weapon_Hammer_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNBeatstickV4.blp",
@@ -659,7 +659,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
-                        model = "Weapons\\Weapon_Hammer_2.mdx",
+                        model = "Items\\Weapon_Hammer_2.mdx",
                     },
                     {
                         icon = "Weapons\\BTNSpikedClub.blp",
@@ -667,7 +667,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
-                        model = "Weapons\\Weapon_Hammer_2.mdx",
+                        model = "Items\\Weapon_Hammer_2.mdx",
                     },
                     {
                         icon = "Weapons\\BTNFlail.blp",
@@ -675,7 +675,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
-                        model = "Weapons\\Weapon_Hammer_1.mdx",
+                        model = "Items\\Weapon_Hammer_1.mdx",
                     },
                 },
                 [GREATBLUNT_WEAPON] = {
@@ -685,7 +685,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.5,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandHammer_2.mdx",
                     },
                     {
                         icon = "Weapons\\BTNMythril Hammer.blp",
@@ -693,7 +693,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.5,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandHammer_2.mdx",
                     },
                 },
                 [DAGGER_WEAPON] = {
@@ -703,7 +703,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNGoldenDagger.blp",
@@ -711,7 +711,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNDagger3.blp",
@@ -719,7 +719,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNNastyShiv.blp",
@@ -727,7 +727,7 @@ do
                         decl = DECL_SHE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNMecheteOfFury.blp",
@@ -735,7 +735,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
                 },
                 [STAFF_WEAPON] = {
@@ -745,7 +745,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
-                        model = "Weapons\\Weapon_Staff.mdx",
+                        model = "Items\\Weapon_Staff.mdx",
                     },
                     {
                         icon = "Weapons\\BTNFireWand.blp",
@@ -753,7 +753,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
-                        model = "Weapons\\Weapon_Staff.mdx",
+                        model = "Items\\Weapon_Staff.mdx",
                     },
                     {
                         icon = "Weapons\\BTNFrostJade.blp",
@@ -761,7 +761,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
-                        model = "Weapons\\Weapon_Staff.mdx",
+                        model = "Items\\Weapon_Staff.mdx",
                     },
                     {
                         icon = "Weapons\\BTNIce Staff.blp",
@@ -769,7 +769,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
-                        model = "Weapons\\Weapon_Staff.mdx",
+                        model = "Items\\Weapon_Staff.mdx",
                     },
                     {
                         icon = "Weapons\\BTNStick Staff.blp",
@@ -777,7 +777,7 @@ do
                         decl = DECL_THEY,
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
-                        model = "Weapons\\Weapon_Staff.mdx",
+                        model = "Items\\Weapon_Staff.mdx",
                     },
                 },
                 [BOW_WEAPON] = {
@@ -787,7 +787,7 @@ do
                         decl = DECL_IT,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNHardBow.blp",
@@ -795,7 +795,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNRoughwoodBow.blp",
@@ -803,7 +803,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNScoutsBow.blp",
@@ -811,7 +811,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNStrongBow.blp",
@@ -819,7 +819,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNWoodenHornBow.blp",
@@ -827,7 +827,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                 },
                 [QUIVER_OFFHAND] = {
@@ -881,7 +881,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\AIlb\\AIlbTarget.mdx",
                     },
                     {
                         icon = "Offhand\\BTNWaterOrb.blp",
@@ -889,7 +889,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\AIob\\AIobTarget.mdx",
                     },
                     {
                         icon = "Offhand\\BTNSandOrb.blp",
@@ -897,7 +897,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\AIfb\\AIfbTarget.mdx",
                     },
                     {
                         icon = "Offhand\\BTNOrbOfTheSun.blp",
@@ -905,7 +905,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\AIfb\\AIfbTarget.mdx",
                     },
                 },
                 [SHIELD_OFFHAND] = {
@@ -915,7 +915,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.9,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_WOOD],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                     {
                         icon = "Offhand\\BTNKiteShield1.blp",
@@ -923,7 +923,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_WOOD],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                     {
                         icon = "Offhand\\BTNLancelot_Shield.blp",
@@ -931,7 +931,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.1,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                     {
                         icon = "Offhand\\BTNBuckler.blp",
@@ -939,7 +939,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                     {
                         icon = "Offhand\\BTNrcgs.blp",
@@ -947,7 +947,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_WOOD],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                     {
                         icon = "Offhand\\BTNTowerShield.blp",
@@ -955,7 +955,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                 },
             },
@@ -1034,7 +1034,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_06.mdx",
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
@@ -1042,7 +1042,7 @@ do
                         decl = DECL_IT,
                         modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_08.mdx",
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
@@ -1050,7 +1050,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_10.mdx",
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
@@ -1058,7 +1058,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_06.mdx",
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
@@ -1066,7 +1066,7 @@ do
                         decl = DECL_SHE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_10.mdx",
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
@@ -1074,7 +1074,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_06.mdx",
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
@@ -1082,7 +1082,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_10.mdx",
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
@@ -1090,7 +1090,7 @@ do
                         decl = DECL_SHE,
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_04.mdx",
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -1255,7 +1255,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
-                        model = "",
+                        model = "Items\\Weapon_Sword_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNAnother Sword.blp",
@@ -1263,7 +1263,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
-                        model = "",
+                        model = "Items\\Weapon_Sword_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNDKSword.blp",
@@ -1271,7 +1271,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
-                        model = "",
+                        model = "Items\\Weapon_Sword_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNSword.blp",
@@ -1279,7 +1279,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
-                        model = "",
+                        model = "Items\\Weapon_Sword_1.mdx",
                     },
                 },
                 [GREATSWORD_WEAPON] = {
@@ -1289,7 +1289,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.4,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandSword_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNRitual Shaman Knife 1Charge.blp",
@@ -1297,7 +1297,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.4,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandSword_1.mdx",
                     },
                 },
                 [AXE_WEAPON] = {
@@ -1307,7 +1307,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
-                        model = "",
+                        model = "Items\\Weapon_Axe_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNGrandAxe.blp",
@@ -1315,7 +1315,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
-                        model = "",
+                        model = "Items\\Weapon_Axe_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNSteelAxe.blp",
@@ -1323,7 +1323,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
-                        model = "",
+                        model = "Items\\Weapon_Axe_1.mdx",
                     },
                 },
                 [GREATAXE_WEAPON] = {
@@ -1333,7 +1333,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.45,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandAxe_1.mdx",
                     },
                 },
                 [BLUNT_WEAPON] = {
@@ -1343,7 +1343,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
-                        model = "",
+                        model = "Items\\Weapon_Hammer_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNBeatstickV4.blp",
@@ -1351,7 +1351,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
-                        model = "",
+                        model = "Items\\Weapon_Hammer_2.mdx",
                     },
                     {
                         icon = "Weapons\\BTNSpikedClub.blp",
@@ -1359,7 +1359,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
-                        model = "",
+                        model = "Items\\Weapon_Hammer_2.mdx",
                     },
                     {
                         icon = "Weapons\\BTNFlail.blp",
@@ -1367,7 +1367,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
-                        model = "",
+                        model = "Items\\Weapon_Hammer_1.mdx",
                     },
                 },
                 [GREATBLUNT_WEAPON] = {
@@ -1377,7 +1377,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.5,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandHammer_2.mdx",
                     },
                     {
                         icon = "Weapons\\BTNMythril Hammer.blp",
@@ -1385,7 +1385,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.5,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandHammer_2.mdx",
                     },
                 },
                 [DAGGER_WEAPON] = {
@@ -1395,7 +1395,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNGoldenDagger.blp",
@@ -1403,7 +1403,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNDagger3.blp",
@@ -1411,7 +1411,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNNastyShiv.blp",
@@ -1419,7 +1419,7 @@ do
                         decl = DECL_SHE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNMecheteOfFury.blp",
@@ -1427,7 +1427,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
                 },
                 [STAFF_WEAPON] = {
@@ -1437,7 +1437,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
-                        model = "",
+                        model = "Items\\Weapon_Staff.mdx",
                     },
                     {
                         icon = "Weapons\\BTNFireWand.blp",
@@ -1445,7 +1445,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
-                        model = "",
+                        model = "Items\\Weapon_Staff.mdx",
                     },
                     {
                         icon = "Weapons\\BTNFrostJade.blp",
@@ -1453,7 +1453,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
-                        model = "",
+                        model = "Items\\Weapon_Staff.mdx",
                     },
                     {
                         icon = "Weapons\\BTNIce Staff.blp",
@@ -1461,7 +1461,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
-                        model = "",
+                        model = "Items\\Weapon_Staff.mdx",
                     },
                     {
                         icon = "Weapons\\BTNStick Staff.blp",
@@ -1469,7 +1469,7 @@ do
                         decl = DECL_THEY,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
-                        model = "",
+                        model = "Items\\Weapon_Staff.mdx",
                     },
                 },
                 [BOW_WEAPON] = {
@@ -1479,7 +1479,7 @@ do
                         decl = DECL_IT,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNHardBow.blp",
@@ -1487,7 +1487,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNRoughwoodBow.blp",
@@ -1495,7 +1495,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNScoutsBow.blp",
@@ -1503,7 +1503,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNStrongBow.blp",
@@ -1511,7 +1511,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNWoodenHornBow.blp",
@@ -1519,7 +1519,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                 },
                 [QUIVER_OFFHAND] = {
@@ -1573,7 +1573,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\AIlb\\AIlbTarget.mdx",
                     },
                     {
                         icon = "Offhand\\BTNWaterOrb.blp",
@@ -1581,7 +1581,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\AIob\\AIobTarget.mdx",
                     },
                     {
                         icon = "Offhand\\BTNSandOrb.blp",
@@ -1589,7 +1589,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\AIfb\\AIfbTarget.mdx",
                     },
                     {
                         icon = "Offhand\\BTNOrbOfTheSun.blp",
@@ -1597,7 +1597,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\AIfb\\AIfbTarget.mdx",
                     },
                     {
                         icon = "Offhand\\BTNChaosOrb.blp",
@@ -1605,7 +1605,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\OrbVenom\\OrbVenom.mdx",
                     },
                     {
                         icon = "Offhand\\BTNOrbOfLightningNew.blp",
@@ -1613,7 +1613,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\AIlb\\AIlbTarget.mdx",
                     },
                 },
                 [SHIELD_OFFHAND] = {
@@ -1623,7 +1623,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_WOOD],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                     {
                         icon = "Offhand\\BTNLancelot_Shield.blp",
@@ -1631,7 +1631,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.1,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                     {
                         icon = "Offhand\\BTNBuckler.blp",
@@ -1639,7 +1639,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                     {
                         icon = "Offhand\\BTNTowerShield.blp",
@@ -1647,7 +1647,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                     {
                         icon = "Offhand\\BTNRunestoneShield.blp",
@@ -1655,7 +1655,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.1,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                     {
                         icon = "Offhand\\BTNMastercraftShield.blp",
@@ -1663,7 +1663,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                 },
             },
@@ -1798,7 +1798,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_06.mdx",
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
@@ -1806,7 +1806,7 @@ do
                         decl = DECL_IT,
                         modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_8.mdx",
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
@@ -1814,7 +1814,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_10.mdx",
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
@@ -1822,7 +1822,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_06.mdx",
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
@@ -1830,7 +1830,7 @@ do
                         decl = DECL_SHE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_10.mdx",
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
@@ -1838,7 +1838,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_06.mdx",
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
@@ -1846,7 +1846,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_10.mdx",
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
@@ -1854,7 +1854,7 @@ do
                         decl = DECL_SHE,
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_04.mdx",
                     },
                     {
                         icon = "Armor\\BTNArbalestersArmor.blp",
@@ -1862,7 +1862,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_09.mdx",
                     },
                     {
                         icon = "Armor\\BTNDivineArmor.blp",
@@ -1870,7 +1870,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_07.mdx",
                     },
                     {
                         icon = "Armor\\BTNHalfArmor.blp",
@@ -1878,7 +1878,7 @@ do
                         decl = DECL_SHE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_10.mdx",
                     },
                     {
                         icon = "Armor\\BTNHalfArmor.blp",
@@ -1886,7 +1886,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.1,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_10.mdx",
                     },
                     {
                         icon = "Armor\\BTNMoongladeArmor.blp",
@@ -1894,7 +1894,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
-                        model = "",
+                        model = "Items\\Armor_10.mdx",
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -2129,7 +2129,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
-                        model = "",
+                        model = "Items\\Weapon_Sword_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNAnother Sword.blp",
@@ -2137,7 +2137,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
-                        model = "",
+                        model = "Items\\Weapon_Sword_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNDKSword.blp",
@@ -2145,7 +2145,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
-                        model = "",
+                        model = "Items\\Weapon_Sword_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNSword.blp",
@@ -2153,7 +2153,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
-                        model = "",
+                        model = "Items\\Weapon_Sword_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNrapier.blp",
@@ -2161,7 +2161,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
-                        model = "",
+                        model = "Items\\Weapon_Sword_1.mdx",
                     },
                 },
                 [GREATSWORD_WEAPON] = {
@@ -2171,7 +2171,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.4,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandSword_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNRitual Shaman Knife 1Charge.blp",
@@ -2179,7 +2179,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.4,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandSword_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNTier3 Sword.blp",
@@ -2187,7 +2187,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.4,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandSword_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNTideShamanRitualLance.blp",
@@ -2195,7 +2195,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.4,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandSword_1.mdx",
                     },
                 },
                 [AXE_WEAPON] = {
@@ -2205,7 +2205,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
-                        model = "",
+                        model = "Items\\Weapon_Axe_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNGrandAxe.blp",
@@ -2213,7 +2213,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
-                        model = "",
+                        model = "Items\\Weapon_Axe_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNSteelAxe.blp",
@@ -2221,7 +2221,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
-                        model = "",
+                        model = "Items\\Weapon_Axe_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNMysticHatchet.blp",
@@ -2229,7 +2229,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
-                        model = "",
+                        model = "Items\\Weapon_Axe_1.mdx",
                     },
                 },
                 [GREATAXE_WEAPON] = {
@@ -2239,7 +2239,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.45,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandAxe_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNAxe of Terror.blp",
@@ -2247,7 +2247,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.45,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandAxe_1.mdx",
                     },
                 },
                 [BLUNT_WEAPON] = {
@@ -2257,7 +2257,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
-                        model = "",
+                        model = "Items\\Weapon_Hammer_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNBeatstickV4.blp",
@@ -2265,7 +2265,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
-                        model = "",
+                        model = "Items\\Weapon_Hammer_2.mdx",
                     },
                     {
                         icon = "Weapons\\BTNSpikedClub.blp",
@@ -2273,7 +2273,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
-                        model = "",
+                        model = "Items\\Weapon_Hammer_2.mdx",
                     },
                     {
                         icon = "Weapons\\BTNFlail.blp",
@@ -2281,7 +2281,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
-                        model = "",
+                        model = "Items\\Weapon_Hammer_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNHarbingerStaff-Mace.blp",
@@ -2289,7 +2289,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
-                        model = "",
+                        model = "Items\\Weapon_Hammer_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNMorningStar.blp",
@@ -2297,7 +2297,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
-                        model = "",
+                        model = "Items\\Weapon_Hammer_2.mdx",
                     },
                 },
                 [GREATBLUNT_WEAPON] = {
@@ -2307,7 +2307,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.5,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandHammer_2.mdx",
                     },
                     {
                         icon = "Weapons\\BTNMythril Hammer.blp",
@@ -2315,7 +2315,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.5,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandHammer_2.mdx",
                     },
                     {
                         icon = "Weapons\\BTN_NerubianScepter.blp",
@@ -2323,7 +2323,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.3,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandHammer_2.mdx",
                     },
                     {
                         icon = "Weapons\\BTNRunestoneWarhammer.blp",
@@ -2331,7 +2331,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.3,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
-                        model = "",
+                        model = "Items\\Weapon_TwoHandHammer_2.mdx",
                     },
                 },
                 [DAGGER_WEAPON] = {
@@ -2341,7 +2341,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNGoldenDagger.blp",
@@ -2349,7 +2349,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNDagger3.blp",
@@ -2357,7 +2357,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNNastyShiv.blp",
@@ -2365,7 +2365,7 @@ do
                         decl = DECL_SHE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNMecheteOfFury.blp",
@@ -2373,7 +2373,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNAcid Stinger.blp",
@@ -2381,7 +2381,7 @@ do
                         decl = DECL_SHE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNMolten Dagger.blp",
@@ -2389,7 +2389,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
-                        model = "",
+                        model = "Items\\Weapon_Dagger_1.mdx",
                     },
 
                 },
@@ -2474,7 +2474,7 @@ do
                         decl = DECL_IT,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNSimpleBow.blp",
@@ -2482,7 +2482,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNFireyBow.blp",
@@ -2490,7 +2490,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNDarkBow.blp",
@@ -2498,7 +2498,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                     {
                         icon = "Weapons\\BTNIceyBow.blp",
@@ -2506,7 +2506,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
-                        model = "",
+                        model = "Items\\Weapon_Bow_1.mdx",
                     },
                 },
                 [QUIVER_OFFHAND] = {
@@ -2588,7 +2588,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\AIlb\\AIlbTarget.mdx",
                     },
                     {
                         icon = "Offhand\\BTNWaterOrb.blp",
@@ -2596,7 +2596,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\AIob\\AIobTarget.mdx",
                     },
                     {
                         icon = "Offhand\\BTNSandOrb.blp",
@@ -2604,7 +2604,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\AIfb\\AIfbTarget.mdx",
                     },
                     {
                         icon = "Offhand\\BTNOrbOfTheSun.blp",
@@ -2612,7 +2612,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\AIfb\\AIfbTarget.mdx",
                     },
                     {
                         icon = "Offhand\\BTNChaosOrb.blp",
@@ -2620,7 +2620,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\OrbVenom\\OrbVenom.mdx",
                     },
                     {
                         icon = "Offhand\\BTNOrbOfLightningNew.blp",
@@ -2628,7 +2628,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\AIlb\\AIlbTarget.mdx",
                     },
                     {
                         icon = "Offhand\\BTNOrbPain.blp",
@@ -2636,7 +2636,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "",
+                        model = "Abilities\\Spells\\Items\\OrbDarkness\\OrbDarkness.mdx",
                     },
                 },
                 [SHIELD_OFFHAND] = {
@@ -2646,7 +2646,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_WOOD],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                     {
                         icon = "Offhand\\BTNLancelot_Shield.blp",
@@ -2654,7 +2654,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.1,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                     {
                         icon = "Offhand\\BTNBuckler.blp",
@@ -2662,7 +2662,7 @@ do
                         decl = DECL_HE,
                         modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                     {
                         icon = "Offhand\\BTNTowerShield.blp",
@@ -2670,7 +2670,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                     {
                         icon = "Offhand\\BTNRunestoneShield.blp",
@@ -2678,7 +2678,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.1,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                     {
                         icon = "Offhand\\BTNMastercraftShield.blp",
@@ -2686,7 +2686,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                     {
                         icon = "Offhand\\BTNShield.blp",
@@ -2694,7 +2694,7 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_METAL],
-                        model = "",
+                        model = "Items\\Weapon_Shield_1.mdx",
                     },
                 },
             },

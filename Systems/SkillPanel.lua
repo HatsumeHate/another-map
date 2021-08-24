@@ -20,7 +20,7 @@ do
     ---@param skip_key integer
     function CreateBindContext(player, button_data, skip_key)
 
-        for key = KEY_Q, KEY_D do
+        for key = KEY_Q, KEY_F do
             if skip_key ~= key then
                 AddContextOption(player, KEYBIND_LIST[key].bind_name, function()
                     local skill = button_data.skill
@@ -37,7 +37,7 @@ do
     ---@param skill table
     function UnregisterPlayerSkillHotkey(player, skill)
 
-        for i = KEY_Q, KEY_D do
+        for i = KEY_Q, KEY_F do
             local button = GetButtonData(SkillPanelFrame[player].button_keys[i])
                 -- and not BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindAbilityId(FourCC(skill.Id), player-1)) > 0.
                 --print(R2S(BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindAbilityId(skill.Id, player-1))))
@@ -268,7 +268,7 @@ do
             SkillPanelFrame[player].button_keys = {}
             SkillPanelFrame[player].button_keys[KEY_Q] = NewButton(KEY_Q, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.035, 0.035, skill_bind_panel, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.017, 0., main_frame)
 
-                for key = 2, KEY_D do
+                for key = 2, KEY_F do
                     SkillPanelFrame[player].button_keys[key] = NewButton(key, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.035, 0.035, SkillPanelFrame[player].button_keys[key-1], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0012, 0., SkillPanelFrame[player].button_keys[key-1])
                 end
 

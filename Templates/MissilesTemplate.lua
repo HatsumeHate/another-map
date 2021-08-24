@@ -712,6 +712,24 @@ do
                 cutoff = 1700.
             },
         })
+        --===============================================--
+        NewMissileTemplate('MSHG', {
+            name = "shatter ground missile",
+            model = ".mdx",
+            max_distance = 400.,
+            effect_on_hit = 'ESHG',
+            angle_window = 90.,
+            radius = 100.,
+            speed = 800.,
+            start_z = 70.,
+            end_z = 70.,
+            arc = 0.,
+            hit_once_in = 5.,
+            max_targets = 300,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+        })
     end
 
 end

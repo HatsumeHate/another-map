@@ -577,6 +577,29 @@ do
         })
         --================================================--
         NewBuffTemplate({
+            name = "shatter debuff",
+            id = 'ASHS',
+            buff_id = 'B016',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 75,
+            time_delta = 0.1,
+            time_delta_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 7,
+                    time = 3.,
+
+                    current_level = 1,
+                    max_level = 1,
+
+                    negative_state = STATE_STUN
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
             name = "berserk buff",
             id = 'A00V',
             buff_id = 'B007',

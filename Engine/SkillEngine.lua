@@ -5,8 +5,8 @@ do
     KEY_W = 2
     KEY_E = 3
     KEY_R = 4
-    KEY_F = 5
-    KEY_D = 6
+    KEY_D = 5
+    KEY_F = 6
 
 
     KEYBIND_LIST = 0
@@ -15,7 +15,7 @@ do
     function UnbindAbilityKey(unit, id)
         local player = GetPlayerId(GetOwningPlayer(unit)) + 1
 
-            for i = KEY_Q, KEY_D do
+            for i = KEY_Q, KEY_F do
                 if KEYBIND_LIST[i].player_skill_bind[player] == FourCC(id) then
                     UnitRemoveAbility(unit, KEYBIND_LIST[i].ability)
                     KEYBIND_LIST[i].player_skill_bind[player] = 0
@@ -179,7 +179,7 @@ do
 
     function UpdateBindedSkillsData(player)
 
-            for key = KEY_Q, KEY_D do
+            for key = KEY_Q, KEY_F do
                 if KEYBIND_LIST[key].player_skill_bind[player] and KEYBIND_LIST[key].player_skill_bind[player] ~= 0 then
                     local skill = GetSkillData(KEYBIND_LIST[key].player_skill_bind[player])
                     local ability = BlzGetUnitAbility(PlayerHero[player], KEYBIND_LIST[key].ability)
@@ -270,7 +270,7 @@ do
     ---@param player integer
     function IsAbilityKeybinded(id, player)
 
-        for key = KEY_Q, KEY_D do
+        for key = KEY_Q, KEY_F do
             if KEYBIND_LIST[key].player_skill_bind[player] == id then
                 return true
             end
@@ -283,7 +283,7 @@ do
     ---@param player integer
     function GetKeybindKeyAbility(id, player)
 
-        for key = KEY_Q, KEY_D do
+        for key = KEY_Q, KEY_F do
             if KEYBIND_LIST[key].player_skill_bind[player] == id then
                 return KEYBIND_LIST[key].ability
             end
@@ -296,7 +296,7 @@ do
     ---@param player integer
     function GetKeybindAbility(id, player)
 
-        for key = KEY_Q, KEY_D do
+        for key = KEY_Q, KEY_F do
             if KEYBIND_LIST[key].ability == id then
                 return KEYBIND_LIST[key].player_skill_bind[player]
             end
@@ -432,26 +432,43 @@ do
     end
 
 
+    local function HasConditionalWeapon(pack, weapontype)
+
+        for i = 1, #pack.conditional_weapon do
+            if pack.conditional_weapon[i] == weapontype then
+                return true
+            end
+        end
+
+        return false
+    end
+
     local function PlayCastSfx(unit_data, pack)
 
         if pack then
 
             unit_data.cast_effect_pack = {}
+            unit_data.cast_effect_permanent_pack = {}
 
                 if pack.on_caster then
                     for i = 1, #pack.on_caster do
 
-                        local casteffect = AddSpecialEffectTarget(pack.on_caster[i].effect, unit_data.Owner, pack.on_caster[i].point or "chest")
-                        BlzSetSpecialEffectScale(casteffect, pack.on_caster[i].scale or 1.)
+                        if not pack.on_caster[i].conditional_weapon or HasConditionalWeapon(pack.on_caster[i], unit_data.equip_point[WEAPON_POINT].SUBTYPE) then
+                            local casteffect = AddSpecialEffectTarget(pack.on_caster[i].effect, unit_data.Owner, pack.on_caster[i].point or "chest")
+                            BlzSetSpecialEffectScale(casteffect, pack.on_caster[i].scale or 1.)
 
-                        if pack.on_caster[i].duration and pack.on_caster[i].duration > 0. then
-                            local timer = CreateTimer()
-                            TimerStart(timer, pack.on_caster[i].duration, false, function()
-                                DestroyEffect(casteffect)
-                                DestroyTimer(GetExpiredTimer())
-                            end)
-                        else
-                            unit_data.cast_effect_pack[#unit_data.cast_effect_pack+1] = casteffect
+                                if pack.on_caster[i].duration and pack.on_caster[i].duration > 0. then
+                                    local timer = CreateTimer()
+                                    TimerStart(timer, pack.on_caster[i].duration, false, function()
+                                        DestroyEffect(casteffect)
+                                        DestroyTimer(GetExpiredTimer())
+                                    end)
+                                elseif pack.on_caster[i].permanent then
+                                    unit_data.cast_effect_pack[#unit_data.cast_effect_pack+1] = casteffect
+                                else
+                                    unit_data.cast_effect_permanent_pack[#unit_data.cast_effect_permanent_pack+1] = casteffect
+                                end
+
                         end
 
                     end
@@ -486,6 +503,13 @@ do
                 unit_data.cast_effect_pack = nil
             end
 
+            if unit_data.cast_effect_permanent_pack then
+                for i = 1, #unit_data.cast_effect_permanent_pack do
+                    DestroyEffect(unit_data.cast_effect_permanent_pack[i])
+                end
+                unit_data.cast_effect_permanent_pack = nil
+            end
+
             TimerStart(unit_data.action_timer, 0., false, nil)
             --PauseTimer(unit_data.action_timer)
 
@@ -504,12 +528,31 @@ do
 
     ---@param unit unit
     function SpellBackswing(unit)
-        SafePauseUnit(unit, false)
-        IssueImmediateOrderById(unit, order_stop)
-        SetUnitAnimation(unit, "Stand Ready")
-        SetUnitTimeScale(unit, 1.)
+        local unit_data = GetUnitData(unit)
+
+            SafePauseUnit(unit, false)
+            IssueImmediateOrderById(unit, order_stop)
+            SetUnitAnimation(unit, "Stand Ready")
+            SetUnitTimeScale(unit, 1.)
+
+            if unit_data.cast_effect_permanent_pack then
+                for i = 1, #unit_data.cast_effect_permanent_pack do
+                    DestroyEffect(unit_data.cast_effect_permanent_pack[i])
+                end
+                unit_data.cast_effect_permanent_pack = nil
+            end
+
     end
 
+
+    function CanCastSkillWithWeapon(skill, level, weapontype)
+
+        for i = 1, #skill.level[level].required_weapon do
+            if skill.level[level].required_weapon[i] == weapontype then return true end
+        end
+
+        return false
+    end
 
 
     function InitializeSkillEngine()
@@ -542,22 +585,22 @@ do
                     bind_name = "[R]",
                     player_skill_bind = {}
                 },
-                [KEY_F] =  {
-                    ability = FourCC('A018'),
-                    name_string = " (|cffffcc00F|r)",
-                    bind_name = "[F]",
-                    player_skill_bind = {}
-                },
                 [KEY_D] =  {
                     ability = FourCC('A017'),
                     name_string = " (|cffffcc00D|r)",
                     bind_name = "[D]",
                     player_skill_bind = {}
+                },
+                [KEY_F] =  {
+                    ability = FourCC('A018'),
+                    name_string = " (|cffffcc00F|r)",
+                    bind_name = "[F]",
+                    player_skill_bind = {}
                 }
             }
 
             for i = 1, 6 do
-                for key = KEY_Q, KEY_D do
+                for key = KEY_Q, KEY_F do
                     KEYBIND_LIST[key].player_skill_bind[i] = 0
                 end
             end
@@ -585,10 +628,12 @@ do
 
 
                     if skill.level[ability_level].required_weapon then
-                        if not skill.level[ability_level].required_weapon[unit_data.equip_point[WEAPON_POINT].SUBTYPE] then
-                            local player = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
-                            IssueImmediateOrderById(GetTriggerUnit(), order_stop)
-                            SimError("Cant use", player)
+                        if not CanCastSkillWithWeapon(skill, ability_level, unit_data.equip_point[WEAPON_POINT].SUBTYPE) then
+                            local unit = GetTriggerUnit()
+                            local player = GetPlayerId(GetOwningPlayer(unit))
+                            IssueImmediateOrderById(unit, order_stop)
+                            SetUnitState(unit, UNIT_STATE_MANA, GetUnitState(unit, UNIT_STATE_MANA) + skill.level[ability_level].resource_cost)
+                            SimError(LOCALE_LIST[my_locale].INVALID_WEAPON_FEEDBACK, player)
                             Feedback_CantUse(player + 1)
                             return
                         end
@@ -602,9 +647,19 @@ do
                     end
 
 
-                    local animation = skill.animation
+                    local animation = nil
+                    local sequence = nil
 
-                    local time_reduction = animation.timescale or 1.
+                    if skill.animation then
+                        animation = skill.animation
+                        sequence = animation.sequence
+                    end
+
+                    if sequence and sequence.tags and unit_data.animation_tag then
+                        sequence = sequence.tags[unit_data.animation_tag] or skill.animation.sequence
+                    end
+
+                    local time_reduction = (animation.timescale or 1.) + (sequence.bonus_timescale or 0.)
 
                         if skill.type == SKILL_PHYSICAL then
                             time_reduction = time_reduction * (1. - unit_data.stats[ATTACK_SPEED].bonus * 0.01)
@@ -629,7 +684,7 @@ do
                     --print("skill cooldown is " .. R2S(skill.level[ability_level].cooldown))
                     --print("ability level is " .. I2S(ability_level))
                     -- 0.4 * 2. -> 0.8 /// 0.4 * 0.5 -> 0.2
-                    BlzSetUnitAbilityCooldown(unit_data.Owner, id, 0, (skill.level[ability_level].cooldown or 0.1) + (animation.sequence.animation_point * time_reduction))
+                    BlzSetUnitAbilityCooldown(unit_data.Owner, id, 0, (skill.level[ability_level].cooldown or 0.1) + ((sequence.animation_point or 0.) * time_reduction))
                     BlzSetUnitAbilityManaCost(unit_data.Owner, id, 0, skill.level[ability_level].resource_cost or 0)
 
 
@@ -643,7 +698,7 @@ do
 
                     SafePauseUnit(unit_data.Owner, true)
                     --BlzPauseUnitEx(unit_data.Owner, true)
-                    SetUnitAnimationByIndex(unit_data.Owner, animation.sequence.animation or 0)
+                    SetUnitAnimationByIndex(unit_data.Owner, sequence.animation or 0)
 
                     --local cast_effect_pack
 
@@ -669,7 +724,9 @@ do
 
                     OnSkillCast(unit_data.Owner, target, spell_x, spell_y, skill, ability_level)
 
-                        TimerStart(unit_data.action_timer, (animation.sequence.animation_point or 0.) * time_reduction, false, function()
+                    if GetUnitState(unit_data.Owner, UNIT_STATE_LIFE) < 0.045 or HasAnyDisableState(unit_data.Owner) then return end
+
+                        TimerStart(unit_data.action_timer, (sequence.animation_point or 0.) * time_reduction, false, function()
                             unit_data.cast_skill = 0
                             DestroyEffect(unit_data.cast_effect)
 
@@ -713,7 +770,7 @@ do
                                     end
                                 end
 
-                            TimerStart(unit_data.action_timer, animation.sequence.animation_backswing * time_reduction, false, function ()
+                            TimerStart(unit_data.action_timer, (sequence.animation_backswing or 0.) * time_reduction, false, function ()
                                 SpellBackswing(unit_data.Owner)
                             end)
 

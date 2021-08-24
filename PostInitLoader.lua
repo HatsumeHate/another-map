@@ -143,6 +143,7 @@ do
 						local timer = CreateTimer()
 						TimerStart(timer, 5., false, function()
 							WavesInit()
+							--AddWaveTimer(20.)
 							AddWaveTimer(325.)
 							NewQuest("Credits", "Thanks for the resources and help.", "ReplaceableTextures\\WorldEditUI\\Editor-MultipleUnits.blp", false, true, "cred")
 							AddQuestItem("cred",  "cred1",  "Hive:|nGeneral Frank, Mythic, Veronnis, JetFangInferno, Daelin, PeeKay(Novart), stonneash, PrinceYaser,",  false)

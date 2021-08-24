@@ -7,6 +7,12 @@ do
 
     local AnimationSequences
 
+    ANIM_TAG_TWOHANDED  = "Alternate"
+    ANIM_TAG_FISTS      = "Gold"
+    ANIM_TAG_STAFF      = "Lumber"
+    ANIM_TAG_ONEHANDED  = "Cinematic"
+    ANIM_TAG_BOW        = "Hit"
+
 
     function GetAnimationSequence(tag)
         return AnimationSequences[tag] or AnimationSequences["default"]
@@ -25,6 +31,12 @@ do
             animation           = 0,
             animation_point     = 0.5,
             animation_backswing = 0.5,
+        })
+
+        NewAnimationSequence("no_anim", {
+            animation           = 0,
+            animation_point     = 0.,
+            animation_backswing = 0.,
         })
 
         NewAnimationSequence("sorc_spell_throw_twohanded", {
@@ -54,13 +66,92 @@ do
         NewAnimationSequence("sorc_spell_empower", {
             animation           = 14,
             animation_point     = 0.623,
-            animation_backswing = 0.458,
+            animation_backswing = 0.42,
         })
 
         NewAnimationSequence("sorc_spell_throw_big", {
             animation           = 7,
             animation_point     = 1.5,
             animation_backswing = 0.6,
+        })
+
+
+        NewAnimationSequence("barb_spell_throw", {
+            animation           = 1,
+            animation_point     = 0.458,
+            animation_backswing = 0.4,
+        })
+
+        NewAnimationSequence("barb_spell_howl", {
+            animation           = 22,
+            animation_point     = 0.792,
+            animation_backswing = 0.5,
+        })
+
+        NewAnimationSequence("barb_spell_punch", {
+            animation           = 26,
+            animation_point     = 0.750,
+            animation_backswing = 0.4,
+        })
+
+        NewAnimationSequence("barb_swing_1", {
+            animation           = 24,
+            animation_point     = 0.542,
+            animation_backswing = 0.33,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 10,
+                    animation_point     = 0.625,
+                    animation_backswing = 0.33,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 3,
+                    animation_point     = 0.583,
+                    animation_backswing = 0.33,
+                },
+                [ANIM_TAG_STAFF] = {
+                    animation           = 20,
+                    animation_point     = 0.500,
+                    animation_backswing = 0.33,
+                    bonus_timescale = 0.25
+                }
+            }
+        })
+
+        NewAnimationSequence("barb_swing_2", {
+            animation           = 18,
+            animation_point     = 0.583,
+            animation_backswing = 0.33,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 8,
+                    animation_point     = 0.686,
+                    animation_backswing = 0.33,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 5,
+                    animation_point     = 0.584,
+                    animation_backswing = 0.33,
+                },
+                [ANIM_TAG_STAFF] = {
+                    animation           = 20,
+                    animation_point     = 0.500,
+                    animation_backswing = 0.33,
+                    bonus_timescale = 0.25
+                }
+            }
+        })
+
+        NewAnimationSequence("barb_whirlwind", {
+            animation           = 28,
+            animation_point     = 0.,
+            animation_backswing = 0.,
+        })
+
+        NewAnimationSequence("barb_jump", {
+            animation           = 2,
+            animation_point     = 0.3,
+            animation_backswing = 0.,
         })
 
 

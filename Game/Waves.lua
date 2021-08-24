@@ -180,17 +180,17 @@ do
             total_time = total_time - 1.
             MultiboardSetItemValue(item, TimeToText(total_time))
 
-            if total_time <= 0. then
-                PauseTimer(WaveTimer)
-                SpawnMonstersWave(GetRandomMonsterSpawnPoint())
-                ToggleCitizens(false)
-                Play2DSound("Sound\\Interface\\Warning.wav", 127)
-                StopMusic(true)
-                ClearMapMusic()
-                PlayMusic("Sound\\Music\\mp3Music\\PursuitTheme.mp3")
-                --SetMapMusic("Sound\\Music\\mp3Music\\PursuitTheme.mp3", false, 0)
-                ResumeMusic()
-            end
+                if total_time <= 0. then
+                    PauseTimer(WaveTimer)
+                    SpawnMonstersWave(GetRandomMonsterSpawnPoint())
+                    ToggleCitizens(false)
+                    Play2DSound("Sound\\Interface\\Warning.wav", 127)
+                    StopMusic(true)
+                    ClearMapMusic()
+                    PlayMusic("Sound\\Music\\mp3Music\\PursuitTheme.mp3")
+                    --SetMapMusic("Sound\\Music\\mp3Music\\PursuitTheme.mp3", false, 0)
+                    ResumeMusic()
+                end
 
         end)
 

@@ -197,6 +197,9 @@ do
                     }
                 },
 
+                INVALID_WEAPON_FEEDBACK = "Неподходящее оружие для этого умения.",
+
+
                 SKILL_PANEL_TOOLTIP_NAME = "Умения",
                 SKILL_PANEL_TOOLTIP_DESCRIPTION = "Настройка и просмотр всех умений",
 
@@ -625,6 +628,7 @@ do
                 SKILL_THROWKNIFE = 'Бросок Кинжала',
                 SKILL_JUMP = 'Прыжок',
                 SKILL_EXECUTION = "Казнь",
+                SKILL_SHATTERGROUND = "Раскол",
                 SKILL_FIRSTAID = "Перевязка",
                 SKILL_SUMMONHYDRA = 'Призвать Гидру',
                 SKILL_ELEMENTALMASTERY = 'Мастерство Стихий',
@@ -767,6 +771,9 @@ do
                 [FourCC("A00Z")] = {
                     [1] = "Бросает кинжал на расстояние @s!A00Z.rng#, поражающий первого противника, наносит @e!ETHK.dmg# типа @e!ETHK.atr#. Имеет повышенные шансы на критический урон (+@e!ETHK.bcc#).",
                 },
+                [FourCC("ASHG")] = {
+                    [1] = "Раскалывает ударом землю в конусе перед собой. Задетые расколом противники получают @e!ESHG.dmg# типа @e!ESHG.atr# и оглушаются на @b!ASHS.time# сек. Имеет повышенный критический множитель (+@e!ESHG.bcm#).",
+                },
                 [FourCC("A00O")] = {
                     [1] = "Прыжок, позволяющий переместиться на расстояние до @s!A00O.rng#.",
                 },
@@ -788,7 +795,7 @@ do
                     [1] = "Волшебница формирует вокруг себя ледяной барьер, повышающий ее защитные параметры: @b!A011.pa1# на @b!A011.va1# ед., @b!A011.pa2# на @b!A011.va2# ед., @b!A011.pa3# на @b!A011.va3# ед. и @b!A011.pa4# на @b!A011.va4# ед.",
                 },
                 [FourCC("A00N")] = {
-                    [1] = "Волшебница фокусирует энергии тайной магии, улучшая свою защиту: @b!A00T.pa1# на @b!A00T.va1# ед., @b!A00T.pa2# на @b!A00T.va2# и @b!A00T.pa3# на @b!A00T.va3#.",
+                    [1] = "Волшебница фокусирует энергии тайной магии, улучшая свою защиту: @b!A00T.pa1# на @b!A00T.va1# ед., @b!A00T.pa2# на @b!A00T.va2# и @b!A00T.pa3# на @b!A00T.va3# в течении @b!A00T.time#.",
                 },
                 [FourCC("A00K")] = {
                     [1] = "Выпускает заряженный сгусток энергии медленно летящий вперед, периодически пульсируя разрядами в радиусе @m!MBLB.rad#, которые наносят @e!ELBL.pwr# ед. урона типа @e!ELBL.atr#",
@@ -1126,6 +1133,8 @@ do
                         "Sounds\\Responses\\sorceress_classrestricted_4_us.wav",
                     }
                 },
+
+                INVALID_WEAPON_FEEDBACK = "Invalid weapon for using that skill.",
 
                 SKILL_PANEL_TOOLTIP_NAME = "Skills",
                 SKILL_PANEL_TOOLTIP_DESCRIPTION = "Overlook and bind settings for all abilities.",
@@ -1555,6 +1564,7 @@ do
                 SKILL_THROWKNIFE = 'Knife Throw',
                 SKILL_JUMP = 'Jump',
                 SKILL_EXECUTION = "Execution",
+                SKILL_SHATTERGROUND = "Shatter Ground",
                 SKILL_FIRSTAID = "Bandage",
                 SKILL_SUMMONHYDRA = 'Summon Hydra',
                 SKILL_ELEMENTALMASTERY = 'Elemental Mastery',
@@ -1696,6 +1706,9 @@ do
                 [FourCC("A00Z")] = {
                     [1] = "Throws a dagger up to @s!A00Z.rng# range, first enemy it hits will take @e!ETHK.dmg# as @e!ETHK.atr# damage. This skill has increased chance of critical damage (+@e!ETHK.bcc#).",
                 },
+                [FourCC("ASHG")] = {
+                    [1] = "Shatters ground in an arc in front of you. Enemies that caught in it take @e!ESHG.dmg# as @e!ESHG.atr# and stunned for @b!ASHS.time# secs. This skill has increased critical multiplier (+@e!ESHG.bcm#).",
+                },
                 [FourCC("A00O")] = {
                     [1] = "Allows you to jump up to @s!A00O.rng# range.",
                 },
@@ -1708,16 +1721,16 @@ do
                     [10] = "Heals you for @e!EFAA.hp_perc# every second during @b!A01N.time# seconds. Also gives @b!A01N.va1# @b!A01N.pa1#.",
                 },
                 [FourCC("A00I")] = {
-                    [1] = "Summons an immortal flame hydra that attacks enemies. Hydra inherits 70% of Sorceress stats. Increasing level of this skill enhances hydra's life duration.",
+                    [1] = "Summons an immortal flame hydra that attacks enemies. Hydra inherits 70%% of Sorceress stats. Increasing level of this skill enhances hydra's life duration.",
                 },
                 [FourCC("A00H")] = {
                     [1] = "Sorceress binds elemental forces to her will, which boosting her powers: [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# и @b!A00U.pa4#] inscreasing for @b!A00U.va1#, @b!A00U.pa5# на @b!A00U.va5#. Duration - @b!A00U.time# sec.",
                 },
                 [FourCC("A00E")] = {
-                    [1] = "Sorceress forms frost barrier around herself, boosting @b!A011.pa1# for @b!A011.va1#, @b!A011.pa2# for @b!A011.va2#, @b!A011.pa3# for @b!A011.va3# and @b!A011.pa4# for @b!A011.va4#. Duration - @b!A011.time sec.",
+                    [1] = "Sorceress forms frost barrier around herself, boosting @b!A011.pa1# for @b!A011.va1#, @b!A011.pa2# for @b!A011.va2#, @b!A011.pa3# for @b!A011.va3# and @b!A011.pa4# for @b!A011.va4#. Duration - @b!A011.time# sec.",
                 },
                 [FourCC("A00N")] = {
-                    [1] = "Sorceress focusing her arcane powers that boosting her defence: @b!A00T.pa1# for @b!A00T.va1#, @b!A00T.pa2# for @b!A00T.va2# and @b!A00T.pa3# for @b!A00T.va3#. Duration - @b!A00T.time sec.",
+                    [1] = "Sorceress focusing her arcane powers that boosting her defence: @b!A00T.pa1# for @b!A00T.va1#, @b!A00T.pa2# for @b!A00T.va2# and @b!A00T.pa3# for @b!A00T.va3#. Duration - @b!A00T.time# sec.",
                 },
                 [FourCC("A00K")] = {
                     [1] = "Forms energized ball that slowly flies forward, periodically pulsing in @e!MBLB.rad# range on a nearby enemies for a @e!ELBL.pwr# @e!ELBL.atr# damage.",
@@ -1742,7 +1755,7 @@ do
                     [1] = "Launching forward a frost orb that constantly damages enemies in a @e!EFOA.aoe# radius inflicting @e!EFOA.pwr# as @e!EFOA.atr# damage (+@e!EFOA.ab#). At the end the orb explodes for a @e!EFRO.pwr# as @e!EFRO.atr# damage with increased bonus to a critical chance (+@e!EFRO.bcc#)",
                 },
                 [FourCC("A00D")] = {
-                    [1] = "Throws forward a fireball, first enemy it hit takes @e!EGFB.pwr# as @e!EGFB.atr# damage in small area around.",
+                    [1] = "Throws forward a fireball, first enemy it hits takes @e!EGFB.pwr# as @e!EGFB.atr# damage in small area around.",
                 },
                 [FourCC("A001")] = {
                     [1] = "Emits a wave of frost from Sorceress with @e!EFRN.aoe# radius, freezing enemies for @b!A00S.time# sec. and dealing them @e!EFRN.pwr# as @e!EFRN.atr# damage.",
