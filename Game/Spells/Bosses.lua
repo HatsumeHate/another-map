@@ -10,6 +10,45 @@ do
     local BroodRegions = 0
     local WebRegions = 0
 
+
+    function SummonTentacle(caster, x, y)
+        local angle = GetRandomReal(0., 359.)
+        local range = GetRandomReal(50., 250.)
+        local max_range = GetMaxAvailableDistance(x, y, angle, range)
+
+            local tentacle = CreateUnit(SECOND_MONSTER_PLAYER, FourCC("u00I"), x + Rx(max_range, angle), y + Ry(max_range, angle), GetRandomReal(0., 359.))
+            SetUnitAnimation(tentacle, "birth")
+            SafePauseUnit(tentacle, true)
+            DelayAction(0.667, function()
+                SafePauseUnit(tentacle, false)
+                UnitApplyTimedLife(tentacle, 0, 15.)
+            end)
+
+    end
+
+
+    function PoisonBarrage(caster, x, y)
+        local timer = CreateTimer()
+        local missile_amount = 4
+        local angle_delta = 40. / missile_amount
+        local throw_angle = AngleBetweenUnitXY(caster, x, y) - 40.
+
+
+        ThrowMissile(caster, nil, "poison_barrage_missile", nil, GetUnitX(caster), GetUnitY(caster), 0.,0., throw_angle)
+
+            TimerStart(timer, 0.17, true, function()
+                if missile_amount > 0 then
+                    throw_angle = throw_angle + angle_delta
+                    ThrowMissile(caster, nil, "poison_barrage_missile", nil, GetUnitX(caster), GetUnitY(caster), 0.,0., throw_angle)
+                    missile_amount = missile_amount - 1
+                else
+                    DestroyTimer(timer)
+                end
+            end)
+
+    end
+
+
     function SpiderQueen_SpawnBrood(boss)
         --local rect = BroodRegions[GetRandomInt(1, #BroodRegions)]
         local x = GetUnitX(boss); local y = GetUnitY(boss)

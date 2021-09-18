@@ -4,9 +4,9 @@ do
     local MapArea = 0
 
 
-    local PullList = 0
-    local ChargeList = 0
-    local PushList = 0
+    local PullList
+    local ChargeList
+    local PushList
 
 
 
@@ -130,7 +130,8 @@ do
 
             --AddSpecialEffect("Abilities\\Spells\\Other\\Aneu\\AneuTarget.mdl", missile.end_point_x, missile.end_point_y)
             --BlzSetSpecialEffectYaw(missile.missile_effect, AngleBetweenXY(x, y, missile.end_point_x, missile.end_point_y))
-            BlzSetSpecialEffectOrientation(missile.missile_effect, AngleBetweenXY(x, y, missile.end_point_x, missile.end_point_y) * bj_DEGTORAD, missile.last_pitch or 0., 0.)
+            missile.heading_angle = AngleBetweenXY(x, y, missile.end_point_x, missile.end_point_y)
+            BlzSetSpecialEffectOrientation(missile.missile_effect, missile.heading_angle * bj_DEGTORAD, missile.last_pitch or 0., 0.)
     end
 
 
@@ -223,7 +224,6 @@ do
             local player_entity = GetOwningPlayer(source)
             SafePauseUnit(source, true)
 
-
             if sfx then
                 charge_data.effect = AddSpecialEffectTarget(sfx.effect, source, sfx.point or "chest")
                 BlzSetSpecialEffectScale(charge_data.effect, sfx.scale or 1.)
@@ -233,8 +233,9 @@ do
         --print("a")
             local timer = CreateTimer()
             TimerStart(timer, PERIOD, true, function()
-               -- print("atick")
+               --print("tick")
                 local state = HasAnyDisableState(source)
+
                 if IsUnitInRangeXY(source, charge_data.point_x, charge_data.point_y, 10.) or GetUnitState(source, UNIT_STATE_LIFE) < 0.045 or state or not IsPathable_Ground(GetUnitX(source) + charge_data.vx, GetUnitY(source) + charge_data.vy) then
                     --print("end")
                     SetUnitAnimation(source, "stand")
@@ -251,7 +252,7 @@ do
                         for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
                             local picked = BlzGroupUnitAt(enemy_group, index)
 
-                                if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
+                                if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
                                     local endcharge = OnChargeHit(source, picked, sign)
                                     targets_hit = targets_hit + 1
                                     max_targets = max_targets - 1
@@ -374,10 +375,13 @@ do
 
     function PushUnit(source, target, angle, power, time, sign)
         local handle = target
+        local unit_data = GetUnitData(target)
         local push_data = { x = GetUnitX(target), y = GetUnitY(target), vx = 0., vy = 0. }
 
 
-        if power <= 0. then
+        power = power * math.floor(((100. - unit_data.stats[CONTROL_REDUCTION].value) * 0.01) + 0.5)
+
+        if power <= 5. then
             push_data = nil
             return
         end
@@ -415,16 +419,17 @@ do
         PushList[handle] = push_data
         push_data.timer = CreateTimer()
 
+        ResetUnitSpellCast(target)
         SafePauseUnit(target, true)
 
             TimerStart(push_data.timer, PERIOD, true, function()
                 if IsMapBounds(push_data.x, push_data.y) or push_data.time < 0. then
+                    DestroyTimer(push_data.timer)
                     SafePauseUnit(target, false)
                     OnPushExpire(target, push_data)
                     PushList[handle] = nil
                     --if GetUnitAbilityLevel(target, FourCC("A01M")) > 0 then BlzPauseUnitEx(target, false) end
                     --BlzPauseUnitEx(target, false)
-                    DestroyTimer(push_data.timer)
                 else
                     --BlzPauseUnitEx(target, true)
                     SetUnitPositionSmooth(target, push_data.x + push_data.vx, push_data.y + push_data.vy)
@@ -585,7 +590,7 @@ do
         if from_unit and unit_data.missile_eject_range then
             start_x = start_x + Rx(unit_data.missile_eject_range, GetUnitFacing(from) - (unit_data.missile_eject_angle or 0.))
             start_y = start_y + Ry(unit_data.missile_eject_range, GetUnitFacing(from) - (unit_data.missile_eject_angle or 0.))
-            start_z = GetUnitFlyHeight(from)
+            start_z = GetUnitFlyHeight(from) + (unit_data.missile_eject_z or 0.)
         end
 
             if missile then
@@ -711,6 +716,7 @@ do
         m.current_x = start_x
         m.current_y = start_y
         m.current_z = start_z
+        m.heading_angle = angle
 
         TimerStart(my_timer, PERIOD, true, function()
 
@@ -719,6 +725,7 @@ do
                     --print("BOUNDS")
 
                     if m.sound_on_destroy and #m.sound_on_destroy > 0 then AddSound(m.sound_on_destroy[GetRandomInt(1, #m.sound_on_destroy)], m.current_x, m.current_y) end
+                    --if effects and effects.effect then ApplyEffect(from, nil, m.current_x, m.current_y, effects.effect, effects.level) end
                     if m.effect_on_expire then ApplyEffect(from, nil, m.current_x, m.current_y, m.effect_on_expire, 1) end
 
 
@@ -756,7 +763,8 @@ do
                             m.vx = (GetUnitX(target) - m.current_x) * velocity
                             m.vy = (GetUnitY(target) - m.current_y) * velocity
                             m.vz = (m.end_z + GetUnitZ(target) - m.current_z) * velocity
-                            BlzSetSpecialEffectOrientation(missile_effect, AngleBetweenXY(m.current_x, m.current_y, GetUnitX(target), GetUnitY(target)), 0., 0.)
+                            m.heading_angle = AngleBetweenXY_DEG(m.current_x, m.current_y, GetUnitX(target), GetUnitY(target))
+                            BlzSetSpecialEffectOrientation(missile_effect, m.heading_angle * bj_DEGTORAD, 0., 0.)
                             --BlzSetSpecialEffectYaw(missile_effect, AngleBetweenXY(m.current_x, m.current_y, GetUnitX(target), GetUnitY(target)))
                         end
                     end
@@ -790,6 +798,8 @@ do
                         --m.current_y = m.current_y
                         --m.current_z = m.current_z
 
+                        --print("current terrain " .. GetZ(m.current_x, m.current_y))
+                        --print("current z " .. m.current_z)
                         local bonus_z = 0.
                         if m.ignore_terrain then
                             local current_terrain_z = GetZ(m.current_x, m.current_y)
@@ -832,7 +842,7 @@ do
                                     for index = BlzGroupGetSize(group) - 1, 0, -1 do
                                         local picked = BlzGroupUnitAt(group, index)
 
-                                        if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
+                                        if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
 
                                             if (m.angle_window and IsPointInAngleWindow(angle, m.angle_window, m.current_x, m.current_y, GetUnitX(picked), GetUnitY(picked))) or not m.angle_window then
 
@@ -887,7 +897,7 @@ do
                                             for index = BlzGroupGetSize(group) - 1, 0, -1 do
                                                 local picked = BlzGroupUnitAt(group, index)
 
-                                                if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
+                                                if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
 
                                                     if (m.angle_window and IsPointInAngleWindow(angle, m.angle_window, m.current_x, m.current_y, GetUnitX(picked), GetUnitY(picked))) or not m.angle_window then
                                                         ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
@@ -924,7 +934,7 @@ do
 
                             for index = BlzGroupGetSize(group) - 1, 0, -1 do
                                 local picked = BlzGroupUnitAt(group, index)
-                                    if not (IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and not IsUnitInGroup(picked, hit_group)) then
+                                    if not (IsUnitEnemy(picked, player_entity) and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and not IsUnitInGroup(picked, hit_group)) then
                                         GroupRemoveUnit(group, picked)
                                     end
                             end

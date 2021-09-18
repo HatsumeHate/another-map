@@ -499,6 +499,7 @@ do
                         if FirstTime_Data[player].first_time then
                             ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_BLACKSMITH_1, player-1)
                             DestroyEffect(FirstTime_Data[player].effect)
+                            AddSpecialEffectTarget("Marker\\BlacksmithIcon.mdx", unit_owner, "overhead")
                             FirstTime_Data[player].first_time = false
                         end
 

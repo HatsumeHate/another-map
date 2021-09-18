@@ -32,6 +32,7 @@ do
             --MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + player, 1), "|c00FFFF00".."0".."|r")
             IssueImmediateOrderById(PlayerHero[player], order_stop)
             ShowUnit(PlayerHero[player], false)
+            ShowQuestAlert(string.gsub(LOCALE_LIST[my_locale].PLAYER_LEFT, "#", PlayerNames[player]))
 
                 if per_player > 0 then
                     for i = 1, 6 do
@@ -41,6 +42,17 @@ do
                     end
                 end
 
+    end
+
+
+    ---@param name string
+    function ParsePlayerName(name)
+        local ending = string.find(name, "#")
+
+        if ending then ending = ending - 1
+        else ending = #name end
+
+        return string.sub(name, 0, ending)
     end
 
 
@@ -73,13 +85,19 @@ do
             MultiboardDisplay(MAIN_MULTIBOARD, true)
 
 
+            --local minimap = BlzGetOriginFrame(ORIGIN_FRAME_MINIMAP, 0)
+            local multiboard = BlzGetFrameByName("Multiboard", 0)
+            BlzFrameClearAllPoints(multiboard)
+            BlzFrameSetPoint(multiboard, FRAMEPOINT_TOPLEFT, PlayerUI.minimap_border, FRAMEPOINT_TOPRIGHT, 0.,0.)
+
+
             for i = 0, 4 do
                 MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1, i), "==================")
             end
 
             for i = 1, 6 do
                 if GetPlayerSlotState(Player(i-1)) == PLAYER_SLOT_STATE_PLAYING then
-                    PlayerNames[i] = GetPlayerName(Player(i-1))
+                    PlayerNames[i] = ParsePlayerName(GetPlayerName(Player(i-1)))
                     MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), PlayerColors[i] .. PlayerNames[i] .. "|r")
                     --MultiboardSetItemWidth(MAIN_MULTIBOARD, 6.5 / 175.0)
                 end

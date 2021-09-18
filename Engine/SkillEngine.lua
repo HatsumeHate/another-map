@@ -26,21 +26,10 @@ do
     end
 
 
-    local function GetStringEnding(string, from)
-
-        for i = from, StringLength(string) do
-            if SubString(string, i, i + 1) == "#" then
-                return i + 1
-            end
-        end
-
-        return StringLength(string)
-    end
-
-
-    function ParseString(str, tag, lvl)
-        local value_str = SubString(str, 8, GetStringEnding(str, 8)-1)
-        local id = SubString(str, 3,  7)
+    function ParseString(str, lvl)
+        local tag = string.sub(str, 2, 2)
+        local value_str = string.sub(str, string.find(str, ".", 1, true)+1, string.find(str, "#", 1, true)-1)
+        local id = string.sub(str, string.find(str, "!", 1, true)+1,  string.find(str, ".", 1, true)-1)
 
             if tag == "e" then
                 local effect = GetEffectData(id)
@@ -53,7 +42,7 @@ do
 
                     if value_str == "pwr" then return "|c00FF7600" .. (effect.level[lvl].power or 0) .. "|r"
                     elseif value_str == "dmg" then return "|c00FF7600" .. (effect.level[lvl].power or 0) .. " + " .. S2I(R2S((effect.level[lvl].attack_percent_bonus or 1.) * 100.)) .. "%%|r " .. LOCALE_LIST[my_locale].GENERATED_TOOLTIP
-                    elseif value_str == "atr" then return "|c007AB3FF" .. GetItemAttributeName(effect.level[lvl].attribute) .. "|r"
+                    elseif value_str == "atr" then return GetAttributeColor(effect.level[lvl].attribute) .. GetAttributeName(effect.level[lvl].attribute) .. "|r"
                     elseif value_str == "ap" then return math.floor((effect.level[lvl].attack_percent_bonus or 1.) * 100.)
                     elseif value_str == "ab" then return "|c007AB3FF" ..  (effect.level[lvl].attribute_bonus or 0) .. "|r"
                     elseif value_str == "wdpb" then return math.floor((effect.level[lvl].weapon_damage_percent_bonus or 1.) * 100.)
@@ -104,15 +93,28 @@ do
     end
 
 
-
-
     function ParseLocalizationSkillTooltipString(str, level)
+        local new_block = 0
         local last_sector = 0
         local result_string = ""
-        local my_string_table = {}
-        local ending_number = 0
 
-            for i = 0, StringLength(str) do
+
+        while(true) do
+            local new_parse_block = string.find(str, "@", last_sector)
+
+            if new_parse_block then
+                local parse_block_ending = string.find(str, "#", last_sector)
+                result_string = result_string .. string.sub(str, new_block, new_parse_block-1) .. ParseString(string.sub(str, new_parse_block, parse_block_ending), level)
+                last_sector = parse_block_ending + 1
+                new_block = last_sector
+            else
+                result_string = result_string .. string.sub(str, last_sector, #str)
+                break
+            end
+
+        end
+            --[[
+            for i = 0, #str do
                 if SubString(str, i, i+1) == "@" then
                     ending_number = GetStringEnding(str, i)
                     local value_string = SubString(str, i, ending_number)
@@ -120,10 +122,10 @@ do
                     i = ending_number
                     last_sector = i
                 end
-            end
+            end]]
 
-        my_string_table[#my_string_table+1] = SubString(str, last_sector, StringLength(str))
-        for i = 1, #my_string_table do result_string = result_string .. my_string_table[i] end
+        --my_string_table[#my_string_table+1] = SubString(str, last_sector, #str)
+        --for i = 1, #my_string_table do result_string = result_string .. my_string_table[i] end
 
         return result_string
     end
@@ -255,7 +257,7 @@ do
             --print("BindAbilityKey - icon ".. skill.icon)
 
                 if GetLocalPlayer() == GetOwningPlayer(unit) then
-                    BlzSetAbilityTooltip(ability_id, skill.name .. KEYBIND_LIST[key].name_string, 0)
+                    BlzSetAbilityTooltip(ability_id, skill.name, 0)
                     BlzSetAbilityIcon(ability_id, skill.icon)
                 end
 
@@ -311,6 +313,8 @@ do
     ---@param amount integer
     function UnitAddAbilityLevel(unit, id, amount)
         local unit_data = GetUnitData(unit)
+
+        if amount <= 0 then return false end
 
             for i = 1, #unit_data.skill_list do
                 if unit_data.skill_list[i].Id == id then
@@ -443,7 +447,7 @@ do
         return false
     end
 
-    local function PlayCastSfx(unit_data, pack)
+    local function PlayCastSfx(unit_data, pack, animation_timescale)
 
         if pack then
 
@@ -452,27 +456,76 @@ do
 
                 if pack.on_caster then
                     for i = 1, #pack.on_caster do
+                        local effect = pack.on_caster[i]
 
-                        if not pack.on_caster[i].conditional_weapon or HasConditionalWeapon(pack.on_caster[i], unit_data.equip_point[WEAPON_POINT].SUBTYPE) then
-                            local casteffect = AddSpecialEffectTarget(pack.on_caster[i].effect, unit_data.Owner, pack.on_caster[i].point or "chest")
-                            BlzSetSpecialEffectScale(casteffect, pack.on_caster[i].scale or 1.)
+                        if not effect.conditional_weapon or HasConditionalWeapon(effect, unit_data.equip_point[WEAPON_POINT].SUBTYPE) then
+                            local casteffect = AddSpecialEffectTarget(effect.effect, unit_data.Owner, effect.point or "chest")
+                            BlzSetSpecialEffectScale(casteffect, effect.scale or 1.)
 
-                                if pack.on_caster[i].duration and pack.on_caster[i].duration > 0. then
+                                if effect.duration and effect.duration > 0. then
                                     local timer = CreateTimer()
-                                    TimerStart(timer, pack.on_caster[i].duration, false, function()
+                                    TimerStart(timer, effect.duration, false, function()
                                         DestroyEffect(casteffect)
-                                        DestroyTimer(GetExpiredTimer())
+                                        DestroyTimer(timer)
                                     end)
-                                elseif pack.on_caster[i].permanent then
-                                    unit_data.cast_effect_pack[#unit_data.cast_effect_pack+1] = casteffect
-                                else
+                                elseif effect.permanent then
                                     unit_data.cast_effect_permanent_pack[#unit_data.cast_effect_permanent_pack+1] = casteffect
+                                else
+                                    unit_data.cast_effect_pack[#unit_data.cast_effect_pack+1] = casteffect
                                 end
 
                         end
 
                     end
                 end
+
+            if pack.on_terrain then
+                for i = 1, #pack.on_terrain do
+                    local effect = pack.on_terrain[i]
+
+                    if not effect.conditional_weapon or HasConditionalWeapon(effect, unit_data.equip_point[WEAPON_POINT].SUBTYPE) then
+
+                        DelayAction(effect.appear_delay and (effect.appear_delay * animation_timescale) or 0., function()
+                            local casteffect = AddSpecialEffect(effect.effect, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner))
+
+                                BlzSetSpecialEffectScale(casteffect, effect.scale or 1.)
+                                BlzSetSpecialEffectOrientation(casteffect, (effect.yaw or GetUnitFacing(unit_data.Owner) * bj_DEGTORAD), 0., (effect.roll or 0.) * bj_DEGTORAD)
+
+
+                                    if effect.animation_time_influence then
+                                        BlzSetSpecialEffectTimeScale(casteffect, (effect.timescale or 1.) * animation_timescale)
+                                    else
+                                        BlzSetSpecialEffectTimeScale(casteffect, effect.timescale or 1.)
+                                    end
+
+
+                                    if effect.plane_offset then
+                                        BlzSetSpecialEffectPosition(casteffect,
+                                                GetUnitX(unit_data.Owner) + Rx(effect.plane_offset, effect.plane_offset_angle and effect.plane_offset_angle or GetUnitFacing(unit_data.Owner)),
+                                                GetUnitY(unit_data.Owner) + Ry(effect.plane_offset, effect.plane_offset_angle and effect.plane_offset_angle or GetUnitFacing(unit_data.Owner)),
+                                                GetUnitZ(unit_data.Owner) + (effect.height or 0.))
+                                    elseif effect.height then
+                                        BlzSetSpecialEffectZ(casteffect, GetUnitZ(unit_data.Owner) + (effect.height or 0.))
+                                    end
+
+                                    if effect.duration and effect.duration > 0. then
+                                        local timer = CreateTimer()
+                                        TimerStart(timer, effect.duration, false, function()
+                                            DestroyEffect(casteffect)
+                                            DestroyTimer(timer)
+                                        end)
+                                    elseif effect.permanent then
+                                       unit_data.cast_effect_permanent_pack[#unit_data.cast_effect_permanent_pack+1] = casteffect
+                                    else
+                                        unit_data.cast_effect_pack[#unit_data.cast_effect_pack+1] = casteffect
+                                    end
+
+                        end)
+
+                    end
+
+                end
+            end
 
         end
 
@@ -514,6 +567,7 @@ do
             --PauseTimer(unit_data.action_timer)
 
                 if unit_data.castsound then
+                    DestroyTimer(unit_data.sound_delay_timer)
                     StopSound(unit_data.castsound, true, true)
                 end
 
@@ -534,6 +588,7 @@ do
             IssueImmediateOrderById(unit, order_stop)
             SetUnitAnimation(unit, "Stand Ready")
             SetUnitTimeScale(unit, 1.)
+            --DestroyTimer(unit_data.sound_delay_timer)
 
             if unit_data.cast_effect_permanent_pack then
                 for i = 1, #unit_data.cast_effect_permanent_pack do
@@ -682,7 +737,7 @@ do
 
                     --print("result cast time is " .. (skill.level[ability_level].animation_point or 0.) * time_reduction)
                     --print("skill cooldown is " .. R2S(skill.level[ability_level].cooldown))
-                    --print("ability level is " .. I2S(ability_level))
+                   -- print("ability level is " .. I2S(ability_level))
                     -- 0.4 * 2. -> 0.8 /// 0.4 * 0.5 -> 0.2
                     BlzSetUnitAbilityCooldown(unit_data.Owner, id, 0, (skill.level[ability_level].cooldown or 0.1) + ((sequence.animation_point or 0.) * time_reduction))
                     BlzSetUnitAbilityManaCost(unit_data.Owner, id, 0, skill.level[ability_level].resource_cost or 0)
@@ -702,9 +757,7 @@ do
 
                     --local cast_effect_pack
 
-
-                    PlayCastSfx(unit_data, skill.sfx_pack)
-
+                    PlayCastSfx(unit_data, skill.sfx_pack, time_reduction)
 
                         if skill.level[ability_level].effect_on_caster then
                             unit_data.cast_effect = AddSpecialEffectTarget(skill.level[ability_level].effect_on_caster, unit_data.Owner, skill.level[ability_level].effect_on_caster_point)
@@ -718,9 +771,17 @@ do
                         end
 
                         if skill.sound and skill.sound.pack then
-                            unit_data.castsound = AddSoundVolumeZ(skill.sound.pack[GetRandomInt(1, #skill.sound.pack)], GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), 35., skill.sound.volume, skill.sound.cutoff)
-                        end
+                            unit_data.castsound = CreateNew3DSound(skill.sound.pack[GetRandomInt(1, #skill.sound.pack)], GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), 35., skill.sound.volume, skill.sound.cutoff, false)
+                            unit_data.sound_delay_timer = CreateTimer()
+                            local delay = (skill.sound.delay or 0.) * time_reduction
+                            if delay < 0. then delay = 0. end
 
+                                TimerStart(unit_data.sound_delay_timer, delay, false, function()
+                                    if unit_data.castsound then StartSound(unit_data.castsound) end
+                                    DestroyTimer(GetExpiredTimer())
+                                end)
+
+                        end
 
                     OnSkillCast(unit_data.Owner, target, spell_x, spell_y, skill, ability_level)
 

@@ -41,11 +41,12 @@ do
                             local id = current_item.id
 
                             if id == "class_book" then
-                                if Chance(10.) and PlayerHero[player+1] then
+                                if Chance(20.) and PlayerHero[player+1] then
                                     local hero_unit_data = GetUnitData(PlayerHero[player+1])
-                                    id = BOOK_CLASS_ITEM_LIST[hero_unit_data.unit_class or 1][GetRandomInt(1, #BOOK_CLASS_ITEM_LIST[hero_unit_data.unit_class or 1])]
+                                    id = GetRandomBookClass(hero_unit_data.unit_class or BARBARIAN_CLASS, GetRandomInt(1, 4) == 1 and RARE_ITEM or COMMON_ITEM)
+                                    --id = BOOK_CLASS_ITEM_LIST[hero_unit_data.unit_class or 1][GetRandomInt(1, #BOOK_CLASS_ITEM_LIST[hero_unit_data.unit_class or 1])]
                                 else
-                                    id = GetRandomBookItemId()
+                                    id = GetRandomBookItemId(GetRandomInt(1, 4) == 1 and RARE_ITEM or COMMON_ITEM)
                                 end
                             end
 
@@ -90,6 +91,14 @@ do
         if drop_list.gold and GetRandomReal(0., 100.) <= drop_list.gold.chance then
             DelayAction(current_offset + time_offset, function()
                 CreateGoldStack(GetRandomInt(drop_list.gold.min_gold, drop_list.gold.max_gold), unit_x + GetRandomReal(-45., 45), unit_y + GetRandomReal(-45., 45), player)
+            end)
+            time_offset = time_offset + 0.347
+        end
+
+        if unit_data and unit_data.event_boss then
+            DelayAction(current_offset + time_offset, function()
+                local shards = CreateCustomItem("I01O", unit_x + GetRandomReal(-45., 45), unit_y + GetRandomReal(-45., 45))
+                SetItemCharges(shards, GetRandomInt(1, 3))
             end)
         end
 
@@ -143,24 +152,25 @@ do
                     { quality = COMMON_ITEM, chance = 100. },
                 },
                 item_list = {
-                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 5.3, generate = true  },
-                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 5.3, generate = true },
-                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 1.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 1.3, generate = true },
+                    { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 1.3, generate = true },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 1 },
@@ -195,24 +205,25 @@ do
                     { quality = COMMON_ITEM, chance = 100. },
                 },
                 item_list = {
-                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 5.3, generate = true  },
-                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 5.3, generate = true },
-                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 5.3, generate = true },
-                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 3.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 3.3, generate = true },
+                    { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 3.3, generate = true },
                     { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 1 },
                     { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 1 },
@@ -257,7 +268,7 @@ do
                     { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 12.3, generate = true },
                     { id = GetGeneratedItemId(STAFF_WEAPON), chance = 12.3, generate = true },
                     { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 12.3, generate = true },
-                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(CHEST_ARMOR), chance = 12.3, generate = true },
                     { id = GetGeneratedItemId(HEAD_ARMOR), chance = 12.3, generate = true },
                     { id = GetGeneratedItemId(HANDS_ARMOR), chance = 12.3, generate = true },
@@ -267,6 +278,7 @@ do
                     { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 12.3, generate = true },
                     { id = GetGeneratedItemId(ORB_OFFHAND), chance = 12.3, generate = true },
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 12.3, generate = true },
+                    { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 12.3, generate = true },
                     { id = "I01B", chance = 3., generate = true  },
                     { id = "I01A", chance = 3., generate = true  },
                     { id = "I01E", chance = 3., generate = true  },
@@ -318,7 +330,7 @@ do
                     { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
-                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
@@ -328,6 +340,7 @@ do
                     { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 45.3, generate = true },
                     { id = "I00O", chance = 5., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -386,7 +399,7 @@ do
                     { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
-                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
@@ -396,6 +409,7 @@ do
                     { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 5., generate = true  }, --crown
@@ -454,7 +468,7 @@ do
                     { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
-                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
@@ -464,6 +478,7 @@ do
                     { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -522,7 +537,7 @@ do
                     { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
-                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
@@ -532,6 +547,7 @@ do
                     { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -590,7 +606,7 @@ do
                     { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
-                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
@@ -600,6 +616,7 @@ do
                     { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -658,7 +675,7 @@ do
                     { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
-                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
@@ -668,6 +685,7 @@ do
                     { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -726,7 +744,7 @@ do
                     { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
-                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
@@ -736,6 +754,7 @@ do
                     { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 5., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -794,7 +813,7 @@ do
                     { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
-                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
@@ -804,6 +823,7 @@ do
                     { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -862,7 +882,7 @@ do
                     { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
-                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
@@ -872,6 +892,7 @@ do
                     { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 3., generate = true  }, --witch
                     { id = "I00Q", chance = 5., generate = true  }, --crown
@@ -930,7 +951,7 @@ do
                     { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
-                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
@@ -940,6 +961,7 @@ do
                     { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 5., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown
@@ -998,7 +1020,7 @@ do
                     { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
-                    --{ id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
                     { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
@@ -1008,6 +1030,76 @@ do
                     { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
                     { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 45.3, generate = true },
+                    { id = "I00O", chance = 3., generate = true }, --COWARD
+                    { id = "I00P", chance = 5., generate = true  }, --witch
+                    { id = "I00Q", chance = 3., generate = true  }, --crown
+                    { id = "I00R", chance = 5., generate = true  }, --ritual
+                    { id = "I00S", chance = 4., generate = true  }, --acolyte
+                    { id = "I00T", chance = 3., generate = true  }, --smorc
+                    { id = "I018", chance = 3., generate = true  }, --boosters
+                    { id = "I019", chance = 3., generate = true  }, --storm
+                    { id = "I01A", chance = 3., generate = true  }, --princess
+                    { id = "I01B", chance = 3., generate = true  }, --queen
+                    { id = "I01C", chance = 7., generate = true  }, --pain
+                    { id = "I01D", chance = 3., generate = true  }, --axe
+                    { id = "I01E", chance = 5., generate = true  }, --bootpain
+                    { id = "I01F", chance = 5., generate = true  }, --chestpain
+                    { id = "I01G", chance = 5., generate = true  }, --headpain
+                    { id = "I01H", chance = 3., generate = true  }, --king
+                    { id = "I01I", chance = 3., generate = true  }, --jester
+                    { id = "I01J", chance = 3., generate = true  }, --master
+                    { id = "I01W", chance = 3., generate = true  }, --ice touch
+                    { id = "I01O", chance = 3., min = 1, max = 2 },
+                    { id = ITEM_STONE_AQUAMARINE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_DIAMOND, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMETHYST, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TURQUOISE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_EMERALD, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_MALACHITE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_JADE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_OPAL, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_RUBY, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_SAPPHIRE, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_TOPAZ, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_STONE_AMBER, chance = 7.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_HALF, chance = 65.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_HEALTH_STRONG, chance = 55.3, min = 1, max = 3 },
+                    { id = ITEM_POTION_MANA_STRONG, chance = 55.3, min = 1, max = 3 }
+                },
+                gold = { min_gold = 250, max_gold = 1250, chance = 90. },
+                rolls = 9,
+                max_items = 6,
+                bonus_range = 165.
+            },
+            -- andariel
+            [FourCC("n022")] = {
+                quality_list = {
+                    { quality = MAGIC_ITEM, chance = 50. },
+                    { quality = RARE_ITEM, chance = 50. },
+                    { quality = COMMON_ITEM, chance = 100. }
+                },
+                item_list = {
+                    { id = GetGeneratedItemId(SWORD_WEAPON), chance = 45.3, generate = true  },
+                    { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(AXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(STAFF_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BOW_WEAPON), chance = 5.3, generate = true },
+                    { id = GetGeneratedItemId(CHEST_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HEAD_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(HANDS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(LEGS_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(RING_JEWELRY), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(ORB_OFFHAND), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(BELT_ARMOR), chance = 45.3, generate = true },
+                    { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 45.3, generate = true },
                     { id = "I00O", chance = 3., generate = true }, --COWARD
                     { id = "I00P", chance = 5., generate = true  }, --witch
                     { id = "I00Q", chance = 3., generate = true  }, --crown

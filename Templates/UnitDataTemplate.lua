@@ -72,22 +72,24 @@ do
     function UnitAddEffect(unit, effect)
         local unit_data = GetUnitData(unit)
 
-        if unit_data.effects[effect] then unit_data.effects[effect] = unit_data.effects[effect] + 1
-        else unit_data.effects[effect] = 1 end
+            if unit_data.effects[effect] then unit_data.effects[effect] = unit_data.effects[effect] + 1
+            else unit_data.effects[effect] = 1 end
 
-        --unit_data.effects[effect] = true
+            OnUnitEffectApply(unit, effect)
+
     end
 
     function UnitRemoveEffect(unit, effect)
         local unit_data = GetUnitData(unit)
 
-        if unit_data.effects[effect] then
-            unit_data.effects[effect] = unit_data.effects[effect] - 1
-            if unit_data.effects[effect] <= 0 then unit_data.effects[effect] = nil end
-        end
+            if unit_data.effects[effect] then
+                unit_data.effects[effect] = unit_data.effects[effect] - 1
+                if unit_data.effects[effect] <= 0 then
+                    unit_data.effects[effect] = nil
+                    OnUnitEffectEnd(unit, effect)
+                end
+            end
 
-
-        --unit_data.effects[effect] = nil
     end
 
 
@@ -115,13 +117,16 @@ do
             is_mp_static = reference_data.is_mp_static or false,
             mp_vector = reference_data.mp_vector or true,
             time_before_remove = reference_data.time_before_remove or 10.,
+            proper_declension = reference_data.proper_declension or DECL_HE,
+
 
             cast_skill = 0,
             cast_skill_level = 0,
             cast_effect = nil,
 
+            scale = reference_data.scale or 1.,
             classification = reference_data.classification or nil,
-            trait = reference_data.trait or nil,
+            unit_trait = reference_data.unit_trait or nil,
             xp = reference_data.xp or 15,
 
             default_weapon = nil,
@@ -147,10 +152,14 @@ do
         if reference_data.weapon then MergeTables(data.default_weapon, reference_data.weapon) end
         if reference_data.chest then data.equip_point[CHEST_POINT] = MergeTables({}, reference_data.chest) end
         if reference_data.necklace then data.equip_point[NECKLACE_POINT] = MergeTables({}, reference_data.necklace) end
-        if reference_data.offhand then data.equip_point[OFFHAND_POINT] = MergeTables({}, reference_data.offhand) end
+        --if reference_data.offhand then data.equip_point[OFFHAND_POINT] = MergeTables(data.equip_point[OFFHAND_POINT], reference_data.offhand) end
 
         if reference_data.missile_eject_range then data.missile_eject_range = reference_data.missile_eject_range end
         if reference_data.missile_eject_angle then data.missile_eject_angle = reference_data.missile_eject_angle end
+
+        if reference_data.death_sound then
+            data.death_sound = MergeTables({}, reference_data.death_sound)
+        end
 
         UnitsList[source] = data
 
@@ -188,6 +197,8 @@ do
         if new_data.is_hp_static == nil then new_data.is_hp_static = false end
         if new_data.have_mp == nil then new_data.have_mp = true end
         if new_data.is_mp_static == nil then new_data.is_mp_static = false end
+
+        if not new_data.scale then new_data.scale = 1. end
 
 
         if new_data.base_stats == nil then
@@ -239,6 +250,7 @@ do
             unit_class = BARBARIAN_CLASS,
             have_mp = true,
             time_before_remove = 0.,
+            base_stats = { health = 175. },
             missile_eject_range = 50.,
             --weapon = { ATTACK_SPEED = 0.4, DAMAGE = 15, CRIT_CHANCE = 15. }
         })
@@ -248,6 +260,7 @@ do
             have_mp = true,
             time_before_remove = 0.,
             missile_eject_range = 50.,
+            base_stats = { health = 175. },
             --base_stats = { health = 3000., hp_regen = 30. },
         })
 
@@ -291,9 +304,12 @@ do
 
         -- fiend
         NewUnitTemplate('u007', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_FIEND,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_DEMON,
+            --trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 125., hp_regen = 0.4, moving_speed = 275. },
             weapon = { ATTACK_SPEED = 1.4, DAMAGE = 5, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
@@ -303,9 +319,12 @@ do
 
         -- ghoul of nightmare
         NewUnitTemplate('u00J', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GHOUL,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 155., hp_regen = 0.4, moving_speed = 262. },
             weapon = { ATTACK_SPEED = 1.33, DAMAGE = 5, CRIT_CHANCE = 14., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
@@ -319,9 +338,12 @@ do
 
         -- armored scele
         NewUnitTemplate('u00B', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ARMORED_SKELETON,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 220., hp_regen = 0.4, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 1.8, DAMAGE = 4, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
@@ -330,30 +352,38 @@ do
             bonus_parameters = {
                 { param = PHYSICAL_DEFENCE, value = 70, method = STRAIGHT_BONUS }
             },
+            scale = 1.2,
             have_mp = false,
             xp = 35,
         })
 
         -- zombie
         NewUnitTemplate('n00C', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ZOMBIE,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 370., hp_regen = 0.7, moving_speed = 170. },
             weapon = { ATTACK_SPEED = 2.1, DAMAGE = 3, CRIT_CHANCE = 5., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             bonus_parameters = {
                 { param = MELEE_DAMAGE_REDUCTION, value = 11, method = STRAIGHT_BONUS }
             },
+            scale = 1.15,
             have_mp = false,
             xp = 20,
         })
 
         -- zombie of nightmare
         NewUnitTemplate('n01G', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ZOMBIE_NIGHTMARE,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 370., hp_regen = 0.83, moving_speed = 176. },
             weapon = { ATTACK_SPEED = 1.85, DAMAGE = 6, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
@@ -362,15 +392,19 @@ do
                 { param = ALL_RESIST, value = 6, method = STRAIGHT_BONUS }
             },
             colours = { r = 255, g = 150, b = 150 },
+            scale = 1.15,
             have_mp = false,
             xp = 24,
         })
         --==========================================================--
         -- skeleton
         NewUnitTemplate('u00D', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SKELETON,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 180., hp_regen = 0.4, moving_speed = 250. },
             weapon = { ATTACK_SPEED = 1.7, DAMAGE = 5, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
@@ -382,9 +416,12 @@ do
         --==========================================================--
         -- skeleton of nightmare
         NewUnitTemplate('u00O', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SKELETON_NIGHTMARE,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 194., hp_regen = 0.6, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 1.7, DAMAGE = 5, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
@@ -396,9 +433,12 @@ do
         --==========================================================--
         -- skeleton archer
         NewUnitTemplate('n005', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SKELETON_ARCHER,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 150., hp_regen = 0.4, moving_speed = 240. },
             weapon = { ATTACK_SPEED = 1.9, DAMAGE = 4, CRIT_CHANCE = 11., missile = "MSKA" },
@@ -408,9 +448,12 @@ do
         --==========================================================--
         -- skeleton archer of nightmare
         NewUnitTemplate('n01P', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SKELETON_ARCHER_NIGHTMARE,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 157., hp_regen = 0.44, moving_speed = 240. },
             weapon = { ATTACK_SPEED = 1.9, DAMAGE = 6, CRIT_CHANCE = 16., missile = "MSKA" },
@@ -420,51 +463,65 @@ do
         --==========================================================--
         -- skeleton mage
         NewUnitTemplate('u00E', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SKELETON_MAGE,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 140., hp_regen = 0.4, moving_speed = 240. },
             weapon = { ATTACK_SPEED = 1.6, DAMAGE = 4, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSKM" },
             bonus_parameters = {
                 { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS }
             },
+            skill_list = { "ASKC" },
             have_mp = false,
             xp = 35,
         })
         --==========================================================--
         -- skeleton improved
         NewUnitTemplate('n00D', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SKELETON_IMPROVED,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 200., hp_regen = 0.4, moving_speed = 250. },
             weapon = { ATTACK_SPEED = 1.65, DAMAGE = 6, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             bonus_parameters = {
                 { param = PHYSICAL_DEFENCE, value = 50, method = STRAIGHT_BONUS }
             },
+            scale = 1.1,
             have_mp = false,
             xp = 35,
         })
         --==========================================================--
         -- necromancer
         NewUnitTemplate('u00F', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_NECROMANCER,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_HUMAN,
+            unit_trait = { TRAIT_HUMAN },
+            --trait = TRAIT_HUMAN,
             time_before_remove = 10.,
             base_stats = { health = 215., hp_regen = 0.4, moving_speed = 245. },
             weapon = { ATTACK_SPEED = 1.9, DAMAGE = 9, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MNCR" },
+            skill_list = { "ANRA" },
             have_mp = false,
             xp = 45,
         })
         --==========================================================--
         -- necromancer of nightmare
         NewUnitTemplate('u00L', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_NECROMANCER_NIGHTMARE,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_HUMAN, TRAIT_UNDEAD },
             time_before_remove = 10.,
             base_stats = { health = 235., hp_regen = 0.47, moving_speed = 245. },
             weapon = { ATTACK_SPEED = 1.7, DAMAGE = 10, CRIT_CHANCE = 16., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 14, missile = "MNCR" },
@@ -473,27 +530,35 @@ do
                 { param = FIRE_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = LIGHTNING_RESIST, value = 5, method = STRAIGHT_BONUS }
             },
+            skill_list = { "ANRA" },
             have_mp = false,
             xp = 45,
         })
         --==========================================================--
         -- sorceress of nightmare
         NewUnitTemplate('h002', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SORCERESS_NIGHTMARE,
+            proper_declension = DECL_SHE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_HUMAN, TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 235., hp_regen = 0.43, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 1.9, DAMAGE = 10, CRIT_CHANCE = 16., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MSSM" },
+            skill_list = { "AFRR", "ACNF" },
             have_mp = false,
             xp = 48,
         })
         --==========================================================--
         -- bloodsucker
         NewUnitTemplate('n01O', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_BLOODSUCKER,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
+            --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 170., hp_regen = 0.4, moving_speed = 277. },
             weapon = { ATTACK_SPEED = 1.53, DAMAGE = 7, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 5 },
@@ -501,15 +566,19 @@ do
                 { param = MAGICAL_SUPPRESSION, value = 16, method = STRAIGHT_BONUS },
                 { param = HP_PER_HIT, value = 5, method = STRAIGHT_BONUS }
             },
+            scale = 1.2,
             have_mp = false,
             xp = 37,
         })
         --==========================================================--
         -- vampire
         NewUnitTemplate('u00N', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_VAMPIRE,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
+            --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 220., hp_regen = 0.47, moving_speed = 277. },
             weapon = { ATTACK_SPEED = 1.37, DAMAGE = 10, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 5 },
@@ -523,9 +592,12 @@ do
         --==========================================================--
         -- banshee
         NewUnitTemplate('u00C', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_BANSHEE,
+            proper_declension = DECL_SHE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 190., hp_regen = 0.4, moving_speed = 270. },
             weapon = { ATTACK_SPEED = 1.6, DAMAGE = 7, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MBNS" },
@@ -540,9 +612,12 @@ do
         --==========================================================--
         -- banshee of nightmare
         NewUnitTemplate('u00K', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_BANSHEE_NIGHTMARE,
+            proper_declension = DECL_SHE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 210., hp_regen = 0.4, moving_speed = 276. },
             weapon = { ATTACK_SPEED = 1.66, DAMAGE = 9, CRIT_CHANCE = 22., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 11, missile = "MBON" },
@@ -556,21 +631,28 @@ do
         --==========================================================--
         -- succubus improved
         NewUnitTemplate('n00B', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SUCCUBUS_IMPROVED,
+            proper_declension = DECL_SHE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
+            --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 227., hp_regen = 0.55, moving_speed = 265. },
             weapon = { ATTACK_SPEED = 2.2, DAMAGE = 15, CRIT_CHANCE = 10., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSCB" },
             have_mp = false,
+            scale = 1.2,
             xp = 36,
         })
         --==========================================================--
         -- succubus
         NewUnitTemplate('n002', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SUCCUBUS,
+            proper_declension = DECL_SHE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
+            --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 210., hp_regen = 0.6, moving_speed = 265. },
             weapon = { ATTACK_SPEED = 1.65, DAMAGE = 5, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
@@ -580,65 +662,85 @@ do
         --==========================================================--
         -- blood succubus
         NewUnitTemplate('n01Q', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_BLOOD_SUCCUBUS,
+            proper_declension = DECL_SHE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
+            --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 253., hp_regen = 0.65, moving_speed = 265. },
             weapon = { ATTACK_SPEED = 1.61, DAMAGE = 7, CRIT_CHANCE = 11., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
             have_mp = false,
+            scale = 1.18,
             xp = 39,
         })
         --==========================================================--
         -- void walker small
         NewUnitTemplate('n00A', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_VOID_WALKER_SMALL,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
+            --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 200., hp_regen = 0.4, moving_speed = 240. },
             weapon = { ATTACK_SPEED = 2., DAMAGE = 8, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 5, missile = "MVWS" },
             have_mp = false,
+            scale = 0.75,
             xp = 25,
         })
         --==========================================================--
         -- void walker normal
         NewUnitTemplate('n008', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_VOID_WALKER_NORMAL,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 225., hp_regen = 0.4, moving_speed = 240. },
             weapon = { ATTACK_SPEED = 2.1, DAMAGE = 12, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MVWM" },
+            skill_list = { "AVDS" },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 5, method = STRAIGHT_BONUS }
             },
+            scale = 1.15,
             have_mp = false,
             xp = 35,
         })
         --==========================================================--
         -- void walker big
         NewUnitTemplate('n009', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_VOID_WALKER_BIG,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
+            --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 270., hp_regen = 0.4, moving_speed = 225. },
             weapon = { ATTACK_SPEED = 2.1, DAMAGE = 16, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MVWB" },
+            skill_list = { "AVDS", "AVDR" },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 15, method = STRAIGHT_BONUS }
             },
+            scale = 1.3,
             have_mp = false,
             xp = 45,
         })
         --==========================================================--
         -- ghost
         NewUnitTemplate('n006', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GHOST,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 213., hp_regen = 0.4, moving_speed = 260. },
             weapon = { ATTACK_SPEED = 1.74, DAMAGE = 12, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MGHO" },
@@ -647,15 +749,20 @@ do
                 { param = RANGE_DAMAGE_REDUCTION, value = 15, method = STRAIGHT_BONUS },
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS }
             },
+            skill_list = { "AFRD" },
+            scale = 1.4,
             have_mp = false,
             xp = 35,
         })
         --==========================================================--
         -- zombie big
         NewUnitTemplate('n00E', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ZOMBIE_BIG,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 680., hp_regen = 1.2, moving_speed = 180. },
             weapon = { ATTACK_SPEED = 2.3, DAMAGE = 6, CRIT_CHANCE = 5., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
@@ -663,15 +770,19 @@ do
                 { param = MELEE_DAMAGE_REDUCTION, value = 11, method = STRAIGHT_BONUS },
                 { param = ALL_RESIST, value = 4, method = STRAIGHT_BONUS }
             },
+            scale = 1.75,
             have_mp = false,
             xp = 50,
         })
         --==========================================================--
         -- meat golem
         NewUnitTemplate('e000', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_MEAT_GOLEM,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON, TRAIT_UNDEAD },
+            --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 963., hp_regen = 1.2, moving_speed = 210. },
             weapon = { ATTACK_SPEED = 2.43, DAMAGE = 16, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_WOOD_HEAVY_BASH },
@@ -687,9 +798,12 @@ do
         --==========================================================--
         -- abomination
         NewUnitTemplate('u00M', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ABOMINATION,
+            proper_declension = DECL_IT,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_DEMON, TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 736., hp_regen = 1., moving_speed = 243. },
             weapon = { ATTACK_SPEED = 2.21, DAMAGE = 13, CRIT_CHANCE = 11., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_CHOP },
@@ -705,9 +819,12 @@ do
         --==========================================================--
         -- hell beast
         NewUnitTemplate('n01T', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_HELL_BEAST,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON, TRAIT_BEAST },
+            --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 159., hp_regen = 0.3, moving_speed = 285. },
             weapon = { ATTACK_SPEED = 1.41, DAMAGE = 6, CRIT_CHANCE = 14., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10 },
@@ -715,6 +832,7 @@ do
                 { param = MAGICAL_SUPPRESSION, value = 189, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
             },
+            scale = 0.9,
             skill_list = { "AHBA" },
             have_mp = false,
             xp = 33,
@@ -722,9 +840,12 @@ do
         --==========================================================--
         -- quillbeast
         NewUnitTemplate('n01N', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_QUILLBEAST,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_UNDEAD, TRAIT_BEAST },
+            --trait = TRAIT_BEAST,
             time_before_remove = 10.,
             base_stats = { health = 137., hp_regen = 0.3, moving_speed = 267. },
             weapon = { ATTACK_SPEED = 1.36, DAMAGE = 6, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
@@ -732,6 +853,7 @@ do
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = PHYSICAL_DEFENCE, value = 55, method = STRAIGHT_BONUS },
             },
+            scale = 1.3,
             skill_list = { "AQBC" },
             have_mp = false,
             xp = 33,
@@ -739,25 +861,50 @@ do
         --==========================================================--
         -- wolf
         NewUnitTemplate('n01J', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_WOLF,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_UNDEAD, TRAIT_BEAST },
+            --trait = TRAIT_BEAST,
             time_before_remove = 10.,
             base_stats = { health = 143., hp_regen = 0.3, moving_speed = 267. },
             weapon = { ATTACK_SPEED = 1.28, DAMAGE = 8, CRIT_CHANCE = 13., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             bonus_parameters = {
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
             },
+            scale = 0.75,
             skill_list = { "AWRG" },
             have_mp = false,
             xp = 33,
         })
+        -- insect
+        NewUnitTemplate('n023', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_INSECT,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_BEAST },
+            --trait = TRAIT_BEAST,
+            time_before_remove = 10.,
+            base_stats = { health = 120., hp_regen = 0.3, moving_speed = 288. },
+            weapon = { ATTACK_SPEED = 1.41, DAMAGE = 5, CRIT_CHANCE = 16., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_SLICE },
+            bonus_parameters = {
+                { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
+            },
+            scale = 0.6,
+            have_mp = false,
+            xp = 27,
+        })
         --==========================================================--
         -- satyr
         NewUnitTemplate('n01K', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SATYR,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
+            --trait = TRAIT_BEAST,
             time_before_remove = 10.,
             base_stats = { health = 178., hp_regen = 0.3, moving_speed = 252. },
             weapon = { ATTACK_SPEED = 1.33, DAMAGE = 6, CRIT_CHANCE = 14., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
@@ -765,15 +912,18 @@ do
                 { param = LIGHTNING_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 7, method = STRAIGHT_BONUS },
             },
+            scale = 1.15,
             have_mp = false,
             xp = 33,
         })
         --==========================================================--
         -- satyr trickster
         NewUnitTemplate('n01L', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SATYR_TRICKSTER,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 153., hp_regen = 0.3, moving_speed = 252. },
             weapon = { ATTACK_SPEED = 1.48, DAMAGE = 8, CRIT_CHANCE = 14., missile = "MSTR", ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10 },
@@ -787,9 +937,11 @@ do
         --==========================================================--
         -- hell satyr
         NewUnitTemplate('n01M', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SATYR_HELL,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 245., hp_regen = 0.3, moving_speed = 252. },
             weapon = { ATTACK_SPEED = 1.37, DAMAGE = 10, CRIT_CHANCE = 16., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_SLICE },
@@ -797,21 +949,26 @@ do
                 { param = LIGHTNING_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 18, method = STRAIGHT_BONUS },
             },
+            scale = 1.05,
             have_mp = false,
             xp = 42,
         })
         --==========================================================--
         -- revenant
         NewUnitTemplate('n01U', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_REVENANT,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
+            --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 175., hp_regen = 0.2, moving_speed = 245. },
             weapon = { ATTACK_SPEED = 1.6, DAMAGE = 6, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             bonus_parameters = {
                 { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS },
             },
+            skill_list = { "ARLR" },
             offhand = { BLOCK = 20., BLOCK_RATE = 30. },
             have_mp = false,
             xp = 33,
@@ -819,9 +976,12 @@ do
         --==========================================================--
         -- revenant horror
         NewUnitTemplate('n01I', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_REVENANT_NIGHTMARE,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
+            --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 200., hp_regen = 0.2, moving_speed = 245. },
             weapon = { ATTACK_SPEED = 1.4, DAMAGE = 8, CRIT_CHANCE = 14., ranged = true, LIGHTNING = { id = "RENL", fade = 0.65, bonus_z = 135., range = 45., angle = 50. } , ATTRIBUTE = LIGHTNING_ATTRIBUTE, ATTRIBUTE_BONUS = 10 },
@@ -829,6 +989,7 @@ do
                 { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 78, method = STRAIGHT_BONUS },
             },
+            skill_list = { "ARLR" },
             offhand = { BLOCK = 25., BLOCK_RATE = 35. },
             have_mp = false,
             xp = 33,
@@ -836,9 +997,12 @@ do
         --==========================================================--
         -- skeleton hell archer
         NewUnitTemplate('n004', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SKELETON_HELL_ARCHER,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
+            --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 200., hp_regen = 0.4, moving_speed = 230. },
             weapon = { ATTACK_SPEED = 1.8, DAMAGE = 9, CRIT_CHANCE = 11., ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MSKH" },
@@ -851,9 +1015,11 @@ do
         --==========================================================--
         -- skeleton frost archer
         NewUnitTemplate('n007', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SKELETON_FROST_ARCHER,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
             time_before_remove = 10.,
             base_stats = { health = 240., hp_regen = 0.4, moving_speed = 230. },
             weapon = { ATTACK_SPEED = 1.95, DAMAGE = 8, CRIT_CHANCE = 11., ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MSKF" },
@@ -866,52 +1032,63 @@ do
         --==========================================================--
         -- hell wizard
         NewUnitTemplate('n003', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_HELL_WIZARD,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 270., hp_regen = 0.7, moving_speed = 240. },
-            weapon = { ATTACK_SPEED = 1.63, DAMAGE = 11, CRIT_CHANCE = 11., ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MDWZ" },
+            weapon = { ATTACK_SPEED = 1.63, DAMAGE = 11, CRIT_CHANCE = 11., ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MDWZ" },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 8, method = STRAIGHT_BONUS }
             },
+            scale = 1.55,
             have_mp = false,
             xp = 37,
         })
         --==========================================================--
         -- demon assassin
         NewUnitTemplate('u009', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_DEMON_ASSASSIN,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 310., hp_regen = 1.7, moving_speed = 260. },
             weapon = { ATTACK_SPEED = 1.5, DAMAGE = 13, CRIT_CHANCE = 14., WEAPON_SOUND = WEAPON_TYPE_METAL_LIGHT_SLICE },
             have_mp = false,
+            scale = 0.9,
             xp = 40,
         })
 
         -- fallen angel
         NewUnitTemplate('u008', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_FALLEN_ANGEL,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             time_before_remove = 10.,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
             base_stats = { health = 375., hp_regen = 2.1, moving_speed = 280. },
             weapon = { ATTACK_SPEED = 1.8, DAMAGE = 11, ATTRIBUTE = HOLY_ATTRIBUTE, ATTRIBUTE_BONUS = 15, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_CHOP },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = 15, method = STRAIGHT_BONUS },
             },
+            scale = 0.9,
             have_mp = false,
             xp = 40,
         })
 
         -- hells guardian
         NewUnitTemplate('u00A', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_HELLS_GUARDIAN,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 270., hp_regen = 1.4, moving_speed = 245. },
             weapon = { ATTACK_SPEED = 1.8, DAMAGE = 8, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_SLICE },
@@ -920,6 +1097,7 @@ do
                 { param = PHYSICAL_DEFENCE, value = 70, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS },
             },
+            scale = 1.3,
             have_mp = false,
             xp = 35,
         })
@@ -927,39 +1105,47 @@ do
         --==========================================================--
         -- arachnid
         NewUnitTemplate('n00P', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ARACHNID,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 195., hp_regen = 0.46, moving_speed = 270. },
             weapon = { ATTACK_SPEED = 1.35, DAMAGE = 7, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
             bonus_parameters = {
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
+            scale = 0.65,
             have_mp = false,
             xp = 25,
         })
         --==========================================================--
         -- arachnid thrower
         NewUnitTemplate('n00O', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ARACHNID_THROWER,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 165., hp_regen = 0.46, moving_speed = 265. },
             weapon = { ATTACK_SPEED = 1.77, DAMAGE = 7, CRIT_CHANCE = 11., missile = "MSAT", ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 7 },
             bonus_parameters = {
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
+            scale = 0.65,
             have_mp = false,
             xp = 30,
         })
         --==========================================================--
         -- arachnid warrior
         NewUnitTemplate('n00Q', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ARACHNID_WARRIOR,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 195., hp_regen = 0.49, moving_speed = 270. },
             weapon = { ATTACK_SPEED = 1.35, DAMAGE = 10, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
@@ -968,15 +1154,18 @@ do
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS }
             },
+            scale = 0.9,
             have_mp = false,
             xp = 45,
         })
         --==========================================================--
         -- arachnid burrower
         NewUnitTemplate('n00R', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ARACHNID_BURROWER,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 165., hp_regen = 0.49, moving_speed = 275. },
             weapon = { ATTACK_SPEED = 1.7, DAMAGE = 15, CRIT_CHANCE = 9., missile = "MSAT", ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 12 },
@@ -991,9 +1180,11 @@ do
         --==========================================================--
         -- arachnid boss
         NewUnitTemplate('n00S', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ARACHNID_BOSS,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_BOSS,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 1500., hp_regen = 0.74, moving_speed = 280. },
             weapon = { ATTACK_SPEED = 1.35, DAMAGE = 22, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
@@ -1008,6 +1199,7 @@ do
                 { param = CONTROL_REDUCTION, value = 55, method = STRAIGHT_BONUS },
                 { param = MAGICAL_ATTACK, value = 100, method = STRAIGHT_BONUS }
             },
+            scale = 1.2,
             skill_list = { "AACL", "AAPN", "AACH" },
             respawn_rect = gg_rct_arachnid_boss,
             respawn_time = 20.,
@@ -1017,9 +1209,11 @@ do
         --==========================================================--
         -- spider
         NewUnitTemplate('n00Y', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SPIDER,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 121., hp_regen = 0.46, moving_speed = 240. },
             weapon = { ATTACK_SPEED = 1.55, DAMAGE = 10, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
@@ -1028,15 +1222,18 @@ do
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS }
             },
+            scale = 0.6,
             have_mp = false,
             xp = 25,
         })
         --==========================================================--
         -- black spider
         NewUnitTemplate('n00Z', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SPIDER_BLACK,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 207., hp_regen = 0.46, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 1.43, DAMAGE = 17, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
@@ -1051,9 +1248,11 @@ do
         --==========================================================--
         -- black spider of nightmare
         NewUnitTemplate('n01H', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SPIDER_BLACK_NIGHTMARE,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 265., hp_regen = 0.46, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 1.43, DAMAGE = 22, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
@@ -1068,9 +1267,11 @@ do
         --==========================================================--
         -- spider hunter
         NewUnitTemplate('n010', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SPIDER_HUNTER,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 191., hp_regen = 0.49, moving_speed = 250. },
             weapon = { ATTACK_SPEED = 1.75, DAMAGE = 16, CRIT_CHANCE = 9., missile = "MSSP", ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 7 },
@@ -1085,9 +1286,11 @@ do
         --==========================================================--
         -- gigantic spider
         NewUnitTemplate('n011', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SPIDER_GIGANTIC,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 246., hp_regen = 0.49, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 1.5, DAMAGE = 24, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 11.5, WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
@@ -1096,15 +1299,18 @@ do
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS }
             },
+            scale = 1.25,
             have_mp = false,
             xp = 40,
         })
         --==========================================================--
         -- spider boss
         NewUnitTemplate('n012', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SPIDER_BOSS,
+            proper_declension = DECL_SHE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_BOSS,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 1500., hp_regen = 0.86, moving_speed = 265. },
             weapon = { ATTACK_SPEED = 1.35, DAMAGE = 33, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
@@ -1118,6 +1324,7 @@ do
                 { param = FIRE_RESIST, value = -25, method = STRAIGHT_BONUS },
                 { param = CONTROL_REDUCTION, value = 55, method = STRAIGHT_BONUS },
             },
+            scale = 1.5,
             skill_list = { "ASQB", "ASQT", "ASQS", "ASQC" },
             respawn_rect = gg_rct_spider_boss,
             respawn_time = 20.,
@@ -1127,9 +1334,11 @@ do
         --==========================================================--
         -- bandit
         NewUnitTemplate('n00T', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_BANDIT,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_HUMAN,
+            unit_trait = { TRAIT_HUMAN },
             time_before_remove = 10.,
             base_stats = { health = 195., hp_regen = 0.3, moving_speed = 245. },
             weapon = { ATTACK_SPEED = 1.35, DAMAGE = 10, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
@@ -1144,9 +1353,11 @@ do
         --==========================================================--
         -- robber
         NewUnitTemplate('n00U', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ROBBER,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
-            trait = TRAIT_HUMAN,
+            unit_trait = { TRAIT_HUMAN },
             time_before_remove = 10.,
             base_stats = { health = 155., hp_regen = 0.3, moving_speed = 245. },
             weapon = { ATTACK_SPEED = 1.6, DAMAGE = 10, CRIT_CHANCE = 12., missile = "MSBN" },
@@ -1156,15 +1367,18 @@ do
                 { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = CRIT_MULTIPLIER, value = 0.3, method = STRAIGHT_BONUS },
             },
+            scale = 1.1,
             have_mp = false,
             xp = 30,
         })
         --==========================================================--
         -- rogue
         NewUnitTemplate('n00V', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ROGUE,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_HUMAN,
+            unit_trait = { TRAIT_HUMAN },
             time_before_remove = 10.,
             base_stats = { health = 225., hp_regen = 0.3, moving_speed = 245. },
             weapon = { ATTACK_SPEED = 1.45, DAMAGE = 16, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
@@ -1173,15 +1387,18 @@ do
                 { param = RANGE_DAMAGE_REDUCTION, value = 10, method = STRAIGHT_BONUS },
                 { param = PHYSICAL_RESIST, value = 10, method = STRAIGHT_BONUS }
             },
+            scale = 1.3,
             have_mp = false,
             xp = 45,
         })
         --==========================================================--
         -- assassin
         NewUnitTemplate('n00W', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ASSASSIN,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
-            trait = TRAIT_HUMAN,
+            unit_trait = { TRAIT_HUMAN },
             time_before_remove = 10.,
             base_stats = { health = 187., hp_regen = 0.3, moving_speed = 245. },
             weapon = { ATTACK_SPEED = 1.45, DAMAGE = 17, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 14., missile = "MSBN" },
@@ -1191,15 +1408,18 @@ do
                 { param = PHYSICAL_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = CRIT_MULTIPLIER, value = 0.3, method = STRAIGHT_BONUS },
             },
+            scale = 1.3,
             have_mp = false,
             xp = 42,
         })
         --==========================================================--
         -- bandit's boss
         NewUnitTemplate('n00X', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_BANDIT_BOSS,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_BOSS,
-            trait = TRAIT_HUMAN,
+            unit_trait = { TRAIT_HUMAN },
             time_before_remove = 10.,
             base_stats = { health = 1750., hp_regen = 0.4, moving_speed = 275. },
             weapon = { ATTACK_SPEED = 1.45, DAMAGE = 32, CRIT_CHANCE = 13., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
@@ -1214,15 +1434,18 @@ do
             effect_list = { "EBBS" },
             respawn_rect = gg_rct_bandit_boss,
             respawn_time = 20.,
+            scale = 1.3,
             have_mp = false,
             xp = 700,
         })
         --==========================================================--
         -- Skeleton King
         NewUnitTemplate('n015', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SKELETON_KING,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_BOSS,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
             time_before_remove = 10.,
             base_stats = { health = 1750., hp_regen = 0.4, moving_speed = 250. },
             weapon = { ATTACK_SPEED = 1.45, DAMAGE = 35, CRIT_CHANCE = 13., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
@@ -1248,9 +1471,11 @@ do
         --==========================================================--
         -- skeleton summoned
         NewUnitTemplate('u00G', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SKELETON,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = 0,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
             time_before_remove = 10.,
             base_stats = { health = 66., hp_regen = 0.4, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 1.66, DAMAGE = 5, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
@@ -1260,9 +1485,10 @@ do
         --==========================================================--
         -- meph ghost summoned
         NewUnitTemplate('u00H', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SKELETON,
             unit_class = NO_CLASS,
             classification = 0,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_UNDEAD },
             time_before_remove = 10.,
             base_stats = { health = 66., hp_regen = 0.4, moving_speed = 0. },
             weapon = { ATTACK_SPEED = 1.33, DAMAGE = 7, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
@@ -1272,9 +1498,11 @@ do
          --==========================================================--
         -- MEPH
         NewUnitTemplate('U000', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_MEPHISTO,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_BOSS,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 1370., hp_regen = 0.4, moving_speed = 245. },
             weapon = { ATTACK_SPEED = 1.75, DAMAGE = 15, CRIT_CHANCE = 13., ranged = true, LIGHTNING = { id = "YENL", fade = 0.65 }, DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = LIGHTNING_ATTRIBUTE, ATTRIBUTE_BONUS = 15 },
@@ -1287,10 +1515,11 @@ do
                 { param = POISON_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = LIGHTNING_RESIST, value = 45, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 15, method = STRAIGHT_BONUS },
-                { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = MAGICAL_ATTACK, value = 125, method = STRAIGHT_BONUS }
             },
+            death_sound = { pack = { "Sounds\\Monsters\\mephisto_death.wav" }, volume = 110, cutoff = 1700. },
             skill_list = { "AMLN" },
             have_mp = false,
             xp = 700,
@@ -1298,9 +1527,11 @@ do
         --==========================================================--
         -- baal
         NewUnitTemplate('U001', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_BAAL,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_BOSS,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 1750., hp_regen = 0.4, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 1.51, DAMAGE = 35, CRIT_CHANCE = 13., missile = "MBAL", DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 15 },
@@ -1317,15 +1548,18 @@ do
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
+            skill_list = { "ABSS" },
             have_mp = false,
             xp = 700,
         })
         --==========================================================--
         -- underworld queen
         NewUnitTemplate('U002', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_UNDERWORLD_QUEEN,
+            proper_declension = DECL_SHE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_BOSS,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 1520., hp_regen = 0.47, moving_speed = 260. },
             weapon = { ATTACK_SPEED = 1.46, DAMAGE = 43, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
@@ -1348,12 +1582,14 @@ do
         --==========================================================--
         -- butcher
         NewUnitTemplate('U003', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_BUTCHER,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_BOSS,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 1720., hp_regen = 0.49, moving_speed = 260. },
-            weapon = { ATTACK_SPEED = 1.43, DAMAGE = 55, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_CHOP },
+            weapon = { ATTACK_SPEED = 1.43, DAMAGE = 52, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_CHOP },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = PHYSICAL_DEFENCE, value = 650, method = STRAIGHT_BONUS },
@@ -1371,14 +1607,43 @@ do
             xp = 700,
         })
         --==========================================================--
-        -- REANIMATED
-        NewUnitTemplate('U004', {
+        -- ANDARIEL
+        NewUnitTemplate("n022", {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ANDARIEL,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_BOSS,
-            trait = TRAIT_UNDEAD,
+            unit_trait = { TRAIT_DEMON },
+            time_before_remove = 10.,
+            base_stats = { health = 1570., hp_regen = 0.44, moving_speed = 270. },
+            weapon = { ATTACK_SPEED = 1.33, DAMAGE = 34, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE, ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 10 },
+            bonus_parameters = {
+                { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_DEFENCE, value = 650, method = STRAIGHT_BONUS },
+                { param = MAGICAL_SUPPRESSION, value = 150, method = STRAIGHT_BONUS },
+                { param = CONTROL_REDUCTION, value = 55, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = 35, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = -15, method = STRAIGHT_BONUS },
+                { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
+            },
+            death_sound = { pack = { "Sounds\\Monsters\\andariel_death.wav" }, volume = 110, cutoff = 1700. },
+            skill_list = { "AAPB" },
+            have_mp = false,
+            xp = 700,
+        })
+        --==========================================================--
+        -- REANIMATED
+        NewUnitTemplate('U004', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_REANIMATED,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_BOSS,
+            unit_trait = { TRAIT_UNDEAD },
             time_before_remove = 10.,
             base_stats = { health = 1325., hp_regen = 0.41, moving_speed = 250. },
-            weapon = { ATTACK_SPEED = 1.5, DAMAGE = 31, CRIT_CHANCE = 12., missile = "MREA" },
+            weapon = { ATTACK_SPEED = 1.5, DAMAGE = 55, CRIT_CHANCE = 12., missile = "MREA" },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = PHYSICAL_DEFENCE, value = 150, method = STRAIGHT_BONUS },
@@ -1397,9 +1662,11 @@ do
         --==========================================================--
         -- DEMON LORD
         NewUnitTemplate('U005', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_DEMON_LORD,
+            proper_declension = DECL_HE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_BOSS,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 1145., hp_regen = 0.41, moving_speed = 250. },
             weapon = { ATTACK_SPEED = 1.46, DAMAGE = 33, CRIT_CHANCE = 14., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
@@ -1422,9 +1689,11 @@ do
         --==========================================================--
         -- demoness
         NewUnitTemplate('U006', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_DEMONESS,
+            proper_declension = DECL_SHE,
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_BOSS,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 1445., hp_regen = 0.44, moving_speed = 264. },
             weapon = { ATTACK_SPEED = 1.46, DAMAGE = 36, CRIT_CHANCE = 14., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
@@ -1446,9 +1715,10 @@ do
         --==========================================================--
         -- spider egg 1
         NewUnitTemplate('speb', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_EGG,
             unit_class = NO_CLASS,
             classification = 0,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 300., hp_regen = 0.2, moving_speed = 0. },
             bonus_parameters = {
@@ -1464,9 +1734,10 @@ do
         --==========================================================--
         -- spider egg 2
         NewUnitTemplate('speg', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_EGG,
             unit_class = NO_CLASS,
             classification = 0,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 300., hp_regen = 0.2, moving_speed = 0. },
             bonus_parameters = {
@@ -1480,11 +1751,42 @@ do
             xp = 0,
         })
         --==========================================================--
-        -- Lilith
-        NewUnitTemplate('n017', {
+        -- tentacle summoned
+        NewUnitTemplate('u00I', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_TENTACLE,
             unit_class = NO_CLASS,
             classification = 0,
-            trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
+            time_before_remove = 10.,
+            base_stats = { health = 92., hp_regen = 0.2, moving_speed = 0. },
+            weapon = { ATTACK_SPEED = 1.44, DAMAGE = 7, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
+            bonus_parameters = {
+                { param = CONTROL_REDUCTION, value = 100, method = STRAIGHT_BONUS },
+            },
+            have_mp = false,
+            xp = 0,
+        })
+        --==========================================================--
+        -- curse totem
+        NewUnitTemplate('o000', {
+            name = GetLocalString("Проклятый Тотем", "Cursed Totem"),
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            time_before_remove = 10.,
+            base_stats = { health = 1100., hp_regen = 0.21, moving_speed = 0. },
+            bonus_parameters = {
+                { param = CONTROL_REDUCTION, value = 100, method = STRAIGHT_BONUS },
+            },
+            have_mp = false,
+            xp = 5,
+        })
+        --==========================================================--
+        -- Lilith
+        NewUnitTemplate('n017', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_LILITH,
+            unit_class = NO_CLASS,
+            classification = 0,
+            unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 662., hp_regen = 0.55, moving_speed = 275. },
             weapon = { ATTACK_SPEED = 1.6, DAMAGE = 17, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSCB" },
@@ -1495,9 +1797,10 @@ do
 
         -- Forest Guard
         NewUnitTemplate('n01X', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_FOREST_GUARD,
             unit_class = NO_CLASS,
             classification = 0,
-            trait = TRAIT_BEAST,
+            unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 962., hp_regen = 0.75, moving_speed = 285. },
             weapon = { ATTACK_SPEED = 1.4, DAMAGE = 22, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 7 },
@@ -1516,6 +1819,7 @@ do
 
                     if UnitsData[handle] then
                         NewUnitByTemplate(GetEnumUnit(), UnitsData[handle])
+                        if UnitsData[handle].name then BlzSetUnitName(GetEnumUnit(), UnitsData[handle].name) end
                         OnUnitCreated(GetEnumUnit())
                     end
 
@@ -1531,6 +1835,7 @@ do
 
                 if UnitsList[unit] == nil and UnitsData[GetUnitTypeId(unit)] then
                     NewUnitByTemplate(unit, UnitsData[GetUnitTypeId(unit)])
+                    if UnitsData[GetUnitTypeId(unit)].name then BlzSetUnitName(unit, UnitsData[GetUnitTypeId(unit)].name) end
                     OnUnitCreated(unit)
                 end
 
@@ -1545,8 +1850,12 @@ do
                     ResetUnitSpellCast(unit_data.Owner)
                     TimerStart(unit_data.action_timer, 0., false, nil)
                     TimerStart(unit_data.attack_timer, 0., false, nil)
-                    --PauseTimer(unit_data.action_timer)
-                    --PauseTimer(unit_data.attack_timer)
+
+                    if unit_data.death_sound then
+                        AddSoundVolume(unit_data.death_sound.pack[GetRandomInt(1, #unit_data.death_sound.pack)], GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), unit_data.death_sound.volume, unit_data.death_sound.cutoff)
+                    end
+
+                    if unit_data.minimap_icon then DestroyMinimapIcon(unit_data.minimap_icon) end
 
                     if unit_data.time_before_remove > 0. then
                         local handle = unit_data.Owner
@@ -1563,21 +1872,27 @@ do
 
                 end
 
+                OnUnitDeath(GetTriggerUnit())
+
         end)
+
 
 
         RegisterTestCommand("t1", function()
-        print("dummy spawned")
+            print("dummy spawned")
+                        CreateUnit(Player(10), FourCC("dmmy"), GetRectCenterX(gg_rct_dummy1), GetRectCenterY(gg_rct_dummy1), 135.)
+            local d2 =  CreateUnit(Player(10), FourCC("dmmy"), GetRectCenterX(gg_rct_dummy2), GetRectCenterY(gg_rct_dummy2), 135.)
+            local d3 =  CreateUnit(Player(10), FourCC("dmmy"), GetRectCenterX(gg_rct_dummy3), GetRectCenterY(gg_rct_dummy3), 135.)
 
-                    CreateUnit(Player(10), FourCC("dmmy"), GetRectCenterX(gg_rct_dummy1), GetRectCenterY(gg_rct_dummy1), 135.)
-        local d2 =  CreateUnit(Player(10), FourCC("dmmy"), GetRectCenterX(gg_rct_dummy2), GetRectCenterY(gg_rct_dummy2), 135.)
-        local d3 =  CreateUnit(Player(10), FourCC("dmmy"), GetRectCenterX(gg_rct_dummy3), GetRectCenterY(gg_rct_dummy3), 135.)
 
-        DelayAction(0.01, function()
-            ModifyStat(d2, PHYSICAL_DEFENCE, 250, STRAIGHT_BONUS, true)
-            ModifyStat(d3, PHYSICAL_DEFENCE, 500, STRAIGHT_BONUS, true)
+            DelayAction(0.01, function()
+                ApplyMonsterTrait(d3, MONSTER_TRAIT_BURNING)
+                ModifyStat(d2, PHYSICAL_DEFENCE, 250, STRAIGHT_BONUS, true)
+                ModifyStat(d3, PHYSICAL_DEFENCE, 500, STRAIGHT_BONUS, true)
+            end)
+
+
         end)
-    end)
 
     end
 

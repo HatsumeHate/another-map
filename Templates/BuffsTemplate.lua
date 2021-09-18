@@ -41,7 +41,8 @@ do
             buff_sfx_scale = 1.,
             buff_sfx_point = "",
 
-            bonus = { }
+            bonus = { },
+            effects = { }
 
         }
     end
@@ -106,6 +107,7 @@ do
                 for point = 1, #buff.breakpoints do
                     local current = buff.breakpoints[point]
                     if lvl > current then
+
                         for i = 1, #buff.level[current].bonus do
                             local param_number = #buff.level[lvl].bonus + 1
                             local origin_param_data = buff.level[current].bonus[i]
@@ -125,6 +127,11 @@ do
                                 end
 
                         end
+
+                        for i = 1, #buff.level[current].effects do
+                            buff.level[lvl].effects[#buff.level[lvl].effects + 1] = buff.level[current].effects[i]
+                        end
+
                     end
                 end
             end
@@ -134,37 +141,6 @@ do
 
     end
 
-
-        --if buff.breakpoints then
-
-                --for point = 1, #buff.breakpoints do
-                    --if lvl > buff.breakpoints[point] then
-                        --if buff.level[buff.breakpoints[point]].bonus then
-
-                            --for i = 1, #buff.level[lvl].bonus do
-                                --local origin_param_data = buff.level[buff.breakpoints[point]].bonus[i]
-
-                                    --if origin_param_data.value_delta then
-                                       -- local delta_max = math.floor((lvl - 1) / (origin_param_data.value_delta_level or 1))
-
-                                       -- if origin_param_data.value_delta_level_max and delta_max > origin_param_data.value_delta_level_max then
-                                        --    delta_max = origin_param_data.value_delta_level_max
-                                        --end
-
-
-                                        --buff.level[lvl].bonus[i] = { PARAM = origin_param_data.PARAM, VALUE = origin_param_data.VALUE + delta_max * origin_param_data.value_delta, METHOD = origin_param_data.METHOD }
-                                    --elseif not buff.level[lvl].bonus[i] then
-                                      --  buff.level[lvl].bonus[i] = { PARAM = origin_param_data.PARAM, VALUE = origin_param_data.VALUE, METHOD = origin_param_data.METHOD }
-                                        --param_data.VALUE = origin_param_data.VALUE + delta_max * origin_param_data.value_delta
-                                    --end
-
-                            --end
-
-                        --end
-                   -- end
-               -- end
-
-            --end
 
 
     ---@param buff_template table
@@ -185,7 +161,6 @@ do
 
             level = {}
         }
-
 
         MergeTables(new_buff, buff_template)
 
@@ -1420,7 +1395,7 @@ do
                     rank = 15,
                     time = 6.,
                     bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = -10, METHOD = STRAIGHT_BONUS, value_delta = -10, value_delta_level = 1 },
+                        { PARAM = ATTACK_SPEED, VALUE = -20, METHOD = STRAIGHT_BONUS, value_delta = -10, value_delta_level = 1 },
                         { PARAM = CAST_SPEED, VALUE = -20, METHOD = STRAIGHT_BONUS, value_delta = -10, value_delta_level = 1 },
                     }
                 }
@@ -1505,10 +1480,166 @@ do
             }
 
         })
+        --================================================--
+        NewBuffTemplate({
+            name = "chill freeze debuff",
+            id = 'ATCH',
+            buff_id = 'B017',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
 
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 2.25,
+                    negative_state = STATE_FREEZE,
+                }
+            }
 
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "curse debuff",
+            id = 'ASKD',
+            buff_id = 'B018',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
 
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 10.,
+                    bonus = {
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 0.7, METHOD = MULTIPLY_BONUS },
+                        { PARAM = MAGICAL_ATTACK, VALUE = 0.7, METHOD = MULTIPLY_BONUS },
+                    }
+                }
+            }
 
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "conflagrate debuff",
+            id = 'ACND',
+            buff_id = 'B019',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 4.,
+                    effect = 'conflagrate_effect_periodic',
+                    effect_delay = 1.,
+                    bonus = {
+                        { PARAM = MAGICAL_SUPPRESSION, VALUE = -75, METHOD = STRAIGHT_BONUS, value_delta = 3, value_delta_level = 1 },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "curse weakness debuff",
+            id = 'ACWK',
+            buff_id = 'B01A',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 999999999999.,
+                    bonus = {
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 0.8, METHOD = MULTIPLY_BONUS },
+                        { PARAM = MAGICAL_ATTACK, VALUE = 0.8, METHOD = MULTIPLY_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "curse indecisiveness debuff",
+            id = 'ACIN',
+            buff_id = 'B01B',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 999999999999.,
+                    bonus = {
+                        { PARAM = CRIT_CHANCE, VALUE = -20, METHOD = STRAIGHT_BONUS },
+                        { PARAM = CRIT_MULTIPLIER, VALUE = -0.3, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "curse vulnerability debuff",
+            id = 'ACVN',
+            buff_id = 'B01C',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 999999999999.,
+                    bonus = {
+                        { PARAM = ALL_RESIST, VALUE = -20, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "curse withering debuff",
+            id = 'ACWT',
+            buff_id = 'B01D',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 999999999999.,
+                    bonus = {
+                        { PARAM = HP_REGEN, VALUE = 0.7, METHOD = MULTIPLY_BONUS },
+                        { PARAM = MP_REGEN, VALUE = 0.7, METHOD = MULTIPLY_BONUS },
+                        { PARAM = HP_PER_HIT, VALUE = -15, METHOD = STRAIGHT_BONUS },
+                        { PARAM = MP_PER_HIT, VALUE = -15, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+
+        })
+
+        RegisterTestCommand("buffme", function()
+            ApplyBuff(PlayerHero[1], PlayerHero[1], "A01K", 1)
+        end)
+
+        RegisterTestCommand("buffbug1", function()
+            ApplyBuff(PlayerHero[1], PlayerHero[1], "ATCH", 1)
+            --ApplyBuff(PlayerHero[1], PlayerHero[1], "ATCH", 1)
+        end)
+
+        RegisterTestCommand("buffbug2", function()
+            ApplyBuff(PlayerHero[1], PlayerHero[1], "ATCH", 1)
+            ApplyBuff(PlayerHero[1], PlayerHero[1], "ACLS", 1)
+        end)
         --ACLS
 
 

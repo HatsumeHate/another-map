@@ -126,6 +126,28 @@ do
             full_distance = true
         })
 
+        --===============================================--
+        NewMissileTemplate('MLtrait', {
+            name = "discharge trait missile",
+            model = "Spell\\LightningSpark.mdx",
+            max_distance = 800.,
+            radius = 65.,
+            speed = 275.,
+            start_z = 15.,
+            end_z = 15.,
+            arc = 0.,
+            max_targets = 1,
+            effect_on_hit = 'ELtrait',
+            sound_on_fly = {
+                pack = { "Sounds\\Spells\\lightning_wave_loop_1.wav" },
+                volume = 25,
+                cutoff = 1600.,
+                looping = true
+            },
+            ignore_terrain = true,
+            full_distance = true,
+        })
+
         --==============================================--
         NewMissileTemplate('SRHD', {
             name = "hydra missile",
@@ -230,7 +252,7 @@ do
         --==============================================--
         NewMissileTemplate('MVWS', {
             name = "void walker small",
-            model = "Abilities\\Weapons\\VoidWalkerMissile\\VoidWalkerMissile.mdx",
+            model = "Effect\\Voidball Minor.mdx",
             max_distance = 1000.,
             radius = 55.,
             speed = 600.,
@@ -245,7 +267,7 @@ do
         --==============================================--
         NewMissileTemplate('MVWM', {
             name = "void walker normal",
-            model = "Abilities\\Weapons\\VoidWalkerMissile\\VoidWalkerMissile.mdx",
+            model = "Effect\\Voidball Minor.mdx",
             max_distance = 1000.,
             radius = 55.,
             speed = 600.,
@@ -259,14 +281,13 @@ do
         --==============================================--
         NewMissileTemplate('MVWB', {
             name = "void walker big",
-            model = "Abilities\\Weapons\\VoidWalkerMissile\\VoidWalkerMissile.mdx",
+            model = "Effect\\Voidball Medium.mdx",
             max_distance = 1000.,
             radius = 57.,
             speed = 550.,
             start_z = 95.,
             end_z = 95.,
             arc = 0.,
-            scale = 1.1,
             ignore_terrain = true,
             penetrate = false,
             full_distance = true
@@ -632,7 +653,7 @@ do
             model = "Spell\\LightningSpark.mdx",
             max_distance = 800.,
             radius = 65.,
-            speed = 275.,
+            speed = 375.,
             start_z = 15.,
             end_z = 15.,
             arc = 0.,
@@ -729,6 +750,73 @@ do
             ignore_terrain = true,
             full_distance = true,
             penetrate = true,
+        })
+        --==============================================--
+        NewMissileTemplate('void_rain_missile', {
+            name = "void rain",
+            model = "Effect\\Void Rain Missile.mdx",
+            max_distance = 1000.,
+            radius = 57.,
+            speed = 1100.,
+            start_z = 900.,
+            end_z = 0.,
+            arc = 0.,
+            effect_on_expire = "EVDR",
+            ignore_terrain = true,
+            --penetrate = false,
+            only_on_impact = true
+        })
+        --==============================================--
+        NewMissileTemplate('fire_rain_missile', {
+            name = "fire rain",
+            model = "Effect\\Rain of Fire Vol. II Missile.mdx",
+            max_distance = 1000.,
+            radius = 57.,
+            speed = 1100.,
+            start_z = 900.,
+            end_z = 0.,
+            arc = 0.,
+            effect_on_expire = "fire_rain_effect",
+            ignore_terrain = true,
+            --penetrate = false,
+            only_on_impact = true
+        })
+        --==============================================--
+        NewMissileTemplate('poison_barrage_missile', {
+            name = "andariel missile",
+            model = "Abilities\\Weapons\\ChimaeraAcidMissile\\ChimaeraAcidMissile.mdx",
+            max_distance = 750.,
+            radius = 57.,
+            speed = 1000.,
+            start_z = 95.,
+            end_z = 95.,
+            scale = 1.,
+            effect_on_hit = "poison_barrage_effect",
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --===============================================--
+        NewMissileTemplate('MRLR', {
+            name = "revenant lightning missile",
+            model = "Spell\\Accelerator Gate Red.mdx",
+            max_distance = 700.,
+            sound_on_fly = {
+                pack = { "Sounds\\Spells\\lightning_loop_7.wav", "Sounds\\Spells\\lightning_loop_2.wav" },
+                volume = 30,
+                cutoff = 1600.,
+                looping = true
+            },
+            --effect_on_hit = 'revenant_lightning_effect',
+            radius = 100.,
+            speed = 175.,
+            start_z = 70.,
+            end_z = 70.,
+            arc = 0.,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            only_on_impact = true
         })
     end
 

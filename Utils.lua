@@ -205,6 +205,10 @@
 	end
 
 
+	---@param x real
+	---@param y real
+	---@param angle real
+	---@param distance real
 	function GetMaxAvailableDistance(x, y, angle, distance)
 		local step = math.ceil(distance / 32.)
 		local total_distance = 0.

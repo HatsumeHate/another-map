@@ -145,6 +145,10 @@ do
             SetUnitPathing(TeleportLocation[i].trackable, false)
             SetUnitX(TeleportLocation[i].trackable, GetRectCenterX(TeleportLocation[i].rect))
             SetUnitY(TeleportLocation[i].trackable, GetRectCenterY(TeleportLocation[i].rect))
+            local additional_sfx = AddSpecialEffect("Other\\MagicPlatform.mdx", GetRectCenterX(TeleportLocation[i].rect), GetRectCenterY(TeleportLocation[i].rect))
+            if i == 2 then
+                BlzSetSpecialEffectZ(additional_sfx, GetZ(GetRectCenterX(TeleportLocation[i].rect), GetRectCenterY(TeleportLocation[i].rect)) - 55.)
+            end
         end
 
 

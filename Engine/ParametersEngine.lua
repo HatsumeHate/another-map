@@ -1,6 +1,5 @@
 do
 	-- parameters types
-	PARAMETERS_COUNT       = 48
 
     STR_STAT               = 1
     AGI_STAT               = 2
@@ -63,6 +62,9 @@ do
 	BONUS_UNDEAD_DAMAGE = 46
 	BONUS_BEAST_DAMAGE = 47
 	BONUS_HUMAN_DAMAGE = 48
+
+	GOLD_BONUS = 49
+	EXP_BONUS = 50
 
 
 
@@ -245,7 +247,7 @@ do
 
 	---@param unit_data table
 	function UpdateParameters(unit_data)
-		for i = 1, PARAMETERS_COUNT do
+		for i = 1, #PARAMETER_UPDATE_FUNC do
 			PARAMETER_UPDATE_FUNC[i](unit_data)
 		end
 	end
@@ -262,6 +264,8 @@ do
 					PARAMETER_UPDATE_FUNC[HP_REGEN](unit_data)
 				elseif param == AGI_STAT then
 					PARAMETER_UPDATE_FUNC[PHYSICAL_DEFENCE](unit_data)
+					PARAMETER_UPDATE_FUNC[CAST_SPEED](unit_data)
+					PARAMETER_UPDATE_FUNC[ATTACK_SPEED](unit_data)
 				elseif param == INT_STAT then
 					PARAMETER_UPDATE_FUNC[MAGICAL_SUPPRESSION](unit_data)
 					PARAMETER_UPDATE_FUNC[MAGICAL_ATTACK](unit_data)
@@ -287,7 +291,7 @@ do
 	function CreateParametersData()
 		local parameters = { }
 
-		for i = 1, PARAMETERS_COUNT do
+		for i = 1, #PARAMETER_UPDATE_FUNC do
 			parameters[i] = NewStat(i)
 		end
 
@@ -335,7 +339,7 @@ do
 
 				if data.equip_point[OFFHAND_POINT] then
 					if data.equip_point[OFFHAND_POINT].TYPE == ITEM_TYPE_WEAPON then
-						total_damage = total_damage + (data.equip_point[OFFHAND_POINT].DAMAGE * 0.5)
+						total_damage = total_damage + (data.equip_point[OFFHAND_POINT].DAMAGE * 0.35)
 					end
 				end
 
@@ -359,6 +363,13 @@ do
 			---@param data table
 			[MAGICAL_ATTACK]        = function(data)
 				local total_damage = data.equip_point[WEAPON_POINT].DAMAGE
+
+				if data.equip_point[OFFHAND_POINT] then
+					if data.equip_point[OFFHAND_POINT].TYPE == ITEM_TYPE_WEAPON then
+						total_damage = total_damage + (data.equip_point[OFFHAND_POINT].DAMAGE * 0.35)
+					end
+				end
+
 				data.stats[MAGICAL_ATTACK].value = (total_damage * GetBonus_INT(data.stats[INT_STAT].value) + data.stats[MAGICAL_ATTACK].bonus) * data.stats[MAGICAL_ATTACK].multiplier
 			end,
 
@@ -534,7 +545,10 @@ do
 
 			---@param data table
 			[ATTACK_SPEED] = function(data)
-				data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].ATTACK_SPEED * (1. - data.stats[ATTACK_SPEED].bonus * 0.01)
+				local agility_bonus = math.floor((data.stats[AGI_STAT].value / 3) + 0.5)
+
+
+				data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].ATTACK_SPEED * (1. - (data.stats[ATTACK_SPEED].bonus + agility_bonus) * 0.01)
 				if data.stats[ATTACK_SPEED].value > 0.1 then
 					BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 0)
 					BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 1)
@@ -546,7 +560,8 @@ do
 
 			---@param data table
 			[CAST_SPEED] = function(data)
-				data.stats[CAST_SPEED].value = data.stats[CAST_SPEED].bonus
+				local agility_bonus = math.floor((data.stats[AGI_STAT].value / 3) + 0.5)
+				data.stats[CAST_SPEED].value = data.stats[CAST_SPEED].bonus + agility_bonus
 			end,
 
 			---@param data table
@@ -558,7 +573,6 @@ do
 			---@param data table
 			[ALL_RESIST] = function(data)
 				data.stats[ALL_RESIST].value = data.stats[ALL_RESIST].bonus
-
 			end,
 
 			---@param data table
@@ -622,7 +636,17 @@ do
 			---@param data table
 			[BONUS_HUMAN_DAMAGE] = function(data)
 				data.stats[BONUS_HUMAN_DAMAGE].value = data.stats[BONUS_HUMAN_DAMAGE].bonus
-			end
+			end,
+
+			---@param data table
+			[GOLD_BONUS] = function(data)
+				data.stats[GOLD_BONUS].value = data.stats[GOLD_BONUS].bonus
+			end,
+
+			---@param data table
+			[EXP_BONUS] = function(data)
+				data.stats[EXP_BONUS].value = data.stats[EXP_BONUS].bonus
+			end,
 
 		}
 
@@ -689,6 +713,9 @@ do
 			[BONUS_UNDEAD_DAMAGE]   = LOCALE_LIST[my_locale].BONUS_UNDEAD_DAMAGE_PARAM,
 			[BONUS_BEAST_DAMAGE]   = LOCALE_LIST[my_locale].BONUS_BEAST_DAMAGE_PARAM,
 			[BONUS_HUMAN_DAMAGE]   = LOCALE_LIST[my_locale].BONUS_HUMAN_DAMAGE_PARAM,
+
+			[GOLD_BONUS]   = LOCALE_LIST[my_locale].GOLD_BONUS_PARAM,
+			[EXP_BONUS]   = LOCALE_LIST[my_locale].EXP_BONUS_PARAM,
 		}
 	end
 

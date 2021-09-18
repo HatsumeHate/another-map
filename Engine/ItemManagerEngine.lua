@@ -12,6 +12,7 @@ do
     local ITEMTYPES_NAMES = 0
     local ITEMSUBTYPES_NAMES = 0
     local ATTRIBUTE_NAMES = 0
+    local ATTRIBUTE_COLOR = 0
     local TWOHANDED_LIST = 0
     local AffixTable = 0
 
@@ -29,8 +30,12 @@ do
 
     --ATTACK_SPEED
 
-    function GetItemAttributeName(attribute)
+    function GetAttributeName(attribute)
         return ATTRIBUTE_NAMES[attribute]
+    end
+
+    function GetAttributeColor(attribute)
+        return ATTRIBUTE_COLOR[attribute]
     end
 
     function GetItemSubTypeName(my_itemtype)
@@ -181,11 +186,7 @@ do
             data.owner = owner or nil
 
 
-            if owner then
-                if GetLocalPlayer() ~= Player(owner) then
-                    BlzSetItemSkin(item, FourCC("I01X"))
-                end
-            end
+            if owner then BlzSetItemSkin(item, FourCC("I01X")) end
 
             if data.flippy then
                 local color_table = GetQualityEffectColor(data.QUALITY)
@@ -244,8 +245,13 @@ do
 
                     else
 
-                        if data.owner then AddSoundForPlayerVolumeZ(data.soundpack.drop, x, y, 35., 128, 2100., data.owner)
-                        else AddSoundVolume(data.soundpack.drop, x, y, 128, 2100.) end
+                        if data.owner then
+                            AddSoundForPlayerVolumeZ(data.soundpack.drop, x, y, 35., 128, 2100., data.owner)
+                            if GetLocalPlayer() == Player(data.owner) then BlzSetItemSkin(item, GetItemTypeId(item)) end
+                        else
+                            AddSoundVolume(data.soundpack.drop, x, y, 128, 2100.)
+                            BlzSetItemSkin(item, GetItemTypeId(item))
+                        end
 
                     end
 
@@ -262,7 +268,10 @@ do
                         else
                             BlzSetSpecialEffectAlpha(data.quality_effect, 0)
                         end
-
+                    else
+                        if GetLocalPlayer() == Player(data.owner) then
+                            BlzSetItemSkin(item, GetItemTypeId(item))
+                        end
                     end
 
                 else
@@ -511,15 +520,16 @@ do
         local item_data = GetItemData(item)
 
             if item_data.TYPE == ITEM_TYPE_WEAPON then
-                item_data.DAMAGE = item_data.DAMAGE * value
+                item_data.DAMAGE = math.ceil(item_data.DAMAGE * value)
             elseif item_data.TYPE == ITEM_TYPE_ARMOR then
-                item_data.DEFENCE = item_data.DEFENCE * value
+                item_data.DEFENCE = math.ceil(item_data.DEFENCE * value)
+                if item_data.SUBTYPE == BELT_ARMOR then item_data.SUPPRESSION = math.ceil(item_data.SUPPRESSION * value) end
             elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
-                item_data.SUPPRESSION = item_data.SUPPRESSION * value
+                item_data.SUPPRESSION = math.ceil(item_data.SUPPRESSION * value)
             elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
                 if item_data.SUBTYPE == SHIELD_OFFHAND then
-                    item_data.DEFENCE = item_data.DEFENCE * value
-                    item_data.BLOCK = item_data.BLOCK * value
+                    item_data.DEFENCE = math.ceil(item_data.DEFENCE * value)
+                    item_data.BLOCK = math.ceil(item_data.BLOCK * value)
                 end
             end
     end
@@ -537,8 +547,8 @@ do
                 elseif item_data.TYPE == ITEM_TYPE_ARMOR then
                     item_data.DEFENCE = R2I(15 * GetRandomReal(0.75, 1.25)) + 1 * level
                     if item_data.SUBTYPE == BELT_ARMOR then
-                        item_data.DEFENCE = item_data.DEFENCE * 0.5
-                        item_data.SUPPRESSION = (R2I(7 * GetRandomReal(0.75, 1.25)) + 1 * level) * 0.5
+                        item_data.DEFENCE = math.ceil(item_data.DEFENCE * 0.5)
+                        item_data.SUPPRESSION = math.ceil((R2I(7 * GetRandomReal(0.75, 1.25)) + 1 * level) * 0.5)
                     end
                 elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
                     item_data.SUPPRESSION = R2I(7 * GetRandomReal(0.75, 1.25)) + 1 * level
@@ -566,21 +576,22 @@ do
             item_data.soundpack = item_preset.soundpack
             item_data.stat_modificator = item_preset.modificator
             item_data.model = item_preset.model or nil
+            item_data.item_variation = item_variation
             --print("1")
             ApplyQualityGlowColour(item)
 
                 if item_data.TYPE == ITEM_TYPE_WEAPON then
 
                     if item_data.SUBTYPE ~= BOW_WEAPON then
-                        local physical_archetype = 65
+                        local physical_archetype = 70
 
-                        if item_data.SUBTYPE == STAFF_WEAPON then physical_archetype = 35
-                        elseif item_data.SUBTYPE == AXE_WEAPON or item_data.SUBTYPE == GREATAXE_WEAPON or item_data.SUBTYPE == GREATSWORD_WEAPON or item_data.SUBTYPE == GREATBLUNT_WEAPON then physical_archetype = 75
-                        elseif item_data.SUBTYPE == SWORD_WEAPON or item_data.SUBTYPE == DAGGER_WEAPON or item_data.SUBTYPE == BLUNT_WEAPON then physical_archetype = 50 end
+                        if item_data.SUBTYPE == STAFF_WEAPON then physical_archetype = 30
+                        elseif item_data.SUBTYPE == AXE_WEAPON or item_data.SUBTYPE == GREATAXE_WEAPON or item_data.SUBTYPE == GREATSWORD_WEAPON or item_data.SUBTYPE == GREATBLUNT_WEAPON then physical_archetype = 80
+                        elseif item_data.SUBTYPE == SWORD_WEAPON or item_data.SUBTYPE == DAGGER_WEAPON or item_data.SUBTYPE == BLUNT_WEAPON then physical_archetype = 60 end
 
                         if GetRandomInt(0, 100) <= physical_archetype then
                             item_data.DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL
-                            local attribute_roll = GetRandomInt(1, 6)
+                            local attribute_roll = GetRandomInt(1, 8)
 
                                 if attribute_roll == 1 or attribute_roll > 4 then item_data.ATTRIBUTE = PHYSICAL_ATTRIBUTE
                                 elseif attribute_roll == 2 then item_data.ATTRIBUTE = HOLY_ATTRIBUTE
@@ -628,8 +639,13 @@ do
     end
 
     
-    ---@param point number
-    function PointToReference(point)
+    ---@param item item
+    function GetItemPoint(item)
+        local item_data = GetItemData(item)
+
+        if item_data.TYPE == ITEM_TYPE_WEAPON then
+
+        end
 
     end
 
@@ -774,9 +790,16 @@ do
         AddToInventory(GetPlayerId(GetOwningPlayer(unit))+1, item)
     end
 
+    function GetItemSlot(unit, item)
 
+        for i = 0, 5 do
+            if UnitItemInSlot(unit, i) == item then
+                return i
+            end
+        end
 
-
+        return 0
+    end
 
 
     function RegisterItemPickUp(unit)
@@ -818,7 +841,6 @@ do
 
         end)
 
-
         local trg2 = CreateTrigger()
         TriggerRegisterUnitEvent(trg2, unit, EVENT_UNIT_PICKUP_ITEM)
         TriggerAddAction(trg2, function()
@@ -843,8 +865,10 @@ do
         TriggerRegisterUnitEvent(trg3, unit, EVENT_UNIT_USE_ITEM)
         TriggerAddAction(trg3, function()
             local player = GetPlayerId(GetOwningPlayer(unit)) + 1
-                OnItemUse(unit, GetManipulatedItem(), GetEventTargetUnit() or nil)
-                if PlayerInventoryFrameState[player] or GetItemType(GetManipulatedItem()) == ITEM_TYPE_CHARGED then
+            local item = GetManipulatedItem()
+                OnItemUse(unit, item, GetEventTargetUnit() or nil)
+
+                if PlayerInventoryFrameState[player] or GetItemType(item) == ITEM_TYPE_CHARGED then
                     UpdateInventoryWindow(player)
                 end
 
@@ -863,6 +887,17 @@ do
             [MAGIC_ITEM] = '|c00FFFF00',
             [SET_ITEM] = '|c0000FF00',
             [UNIQUE_ITEM] = '|c00FFD574'
+        }
+
+        ATTRIBUTE_COLOR = {
+            [PHYSICAL_ATTRIBUTE]    = "|c00FFA582",
+            [FIRE_ATTRIBUTE]        = "|c00FF5454",
+            [ICE_ATTRIBUTE]         = "|c00D3D6FF",
+            [LIGHTNING_ATTRIBUTE]   = "|c00CBD0FF",
+            [POISON_ATTRIBUTE]      = "|c006CFF76",
+            [HOLY_ATTRIBUTE]        = "|c00FFFF5B",
+            [DARKNESS_ATTRIBUTE]    = "|c006944C4",
+            [ARCANE_ATTRIBUTE]      = "|c00FF93FF",
         }
 
         EFFECT_QUALITY_COLOR = {

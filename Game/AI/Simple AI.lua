@@ -8,10 +8,124 @@ do
 
 
     local AITable = 0
+    local InCombat
+    local CombatTimeout = 10.
+    local AI_Tick = 0.75
+    local PingGroup
+
+
+
+
+
+    function GetClosestHero(unit, within_range)
+        local closest_hero
+
+            for i = 1, 6 do
+                if PlayerHero[i] then
+                    local distance = DistanceBetweenUnits(unit, PlayerHero[i])
+                    if distance < within_range and IsUnitVisible(PlayerHero[i], MONSTER_PLAYER) then
+                        closest_hero = PlayerHero[i]
+                        within_range = DistanceBetweenUnits(unit, PlayerHero[i])
+                    end
+                end
+            end
+
+        return closest_hero
+    end
+
+
+    function IsAIActive(unit)
+        return GetUnitAbilityLevel(unit, FourCC("AAIM")) == 0
+    end
+
+    function AI_AddSleep(unit, time)
+        UnitAddAbility(unit, FourCC("AAIM"))
+        DelayAction(time, function() UnitRemoveAbility(unit, FourCC("AAIM")) end)
+    end
+
+
+    function UpdateInCombatState(unit)
+        local ai_timer
+
+        if not InCombat[unit] then
+            InCombat[unit] = CreateTimer()
+            ai_timer = CreateTimer()
+            TimerStart(ai_timer, AI_Tick, true, function()
+
+                if GetUnitState(unit, UNIT_STATE_LIFE) < 0.045 then
+                    PauseTimer(ai_timer)
+                end
+
+                if BlzGetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 0) > 500. or BlzGetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 1) > 500. then
+                    local closest_hero =  GetClosestHero(unit, 400.)
+
+                        if closest_hero then
+                            local hero_data = GetUnitData(closest_hero)
+                            if hero_data.unit_class == BARBARIAN_CLASS then
+                                if GetRandomInt(1, 5) == 1 then
+                                    local angle = AngleBetweenUnits(closest_hero, unit)
+                                    local runaway_angle = angle + GetRandomReal(-35., 35.)
+                                    local max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+
+                                    if max_runaway_distance < 50. then
+                                        runaway_angle = angle - 90.
+                                        max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                        if max_runaway_distance < 50. then
+                                            runaway_angle = angle + 180.
+                                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                        end
+                                    end
+
+                                    IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(max_runaway_distance, runaway_angle), GetUnitY(unit) + Ry(max_runaway_distance, runaway_angle))
+                                end
+                            end
+                        end
+
+                end
+
+                if AITable[GetUnitTypeId(unit)].on_period and GetUnitAbilityLevel(unit, FourCC("AAIM")) == 0 then
+                    AITable[GetUnitTypeId(unit)].on_period(unit)
+                end
+
+            end)
+        end
+
+        TimerStart(InCombat[unit], CombatTimeout, false, function()
+            DestroyTimer(InCombat[unit])
+            DestroyTimer(ai_timer)
+            InCombat[unit] = nil
+        end)
+
+    end
+
+
+    function PingAllNearbyAI(unit)
+
+        GroupEnumUnitsInRange(PingGroup, GetUnitX(unit), GetUnitY(unit), 700., nil)
+
+        for index = BlzGroupGetSize(PingGroup) - 1, 0, -1 do
+            local picked = BlzGroupUnitAt(PingGroup, index)
+            if not IsUnitEnemy(picked, MONSTER_PLAYER) and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 then
+                UpdateInCombatState(picked)
+            end
+        end
+
+    end
 
 
     function AI_AttackReaction(attacker, attacked)
         local unit
+
+
+        if GetOwningPlayer(attacker) == MONSTER_PLAYER or GetOwningPlayer(attacker) == SECOND_MONSTER_PLAYER then
+            --UpdateInCombatState(attacker)
+            PingAllNearbyAI(attacker)
+        elseif GetOwningPlayer(attacked) == MONSTER_PLAYER or GetOwningPlayer(attacked) == SECOND_MONSTER_PLAYER then
+            if GetUnitAbilityLevel(attacked, FourCC("AAIM")) == 0 then IssuePointOrderById(attacked, order_attack, GetUnitX(attacker), GetUnitY(attacker)) end
+            --UpdateInCombatState(attacked)
+            PingAllNearbyAI(attacked)
+        end
+
 
             if attacked and AITable[GetUnitTypeId(attacked)] then
                 unit = attacked
@@ -21,12 +135,22 @@ do
 
                     for i = 1, #ai.ability_list do
                         if Chance(ai.ability_list[i].on_hit_chance) then
-
                             UnitAddAbility(unit, FourCC("AAIM"))
 
                             if ai.ability_list[i].activation == SELF_CAST then IssueImmediateOrderById(unit, ai.ability_list[i].order)
-                            elseif ai.ability_list[i].activation == TARGET_CAST then IssueTargetOrderById(unit, ai.ability_list[i].order, GetAttacker())
-                            elseif ai.ability_list[i].activation == POINT_CAST then IssuePointOrderById(unit, ai.ability_list[i].order, GetUnitX(GetAttacker()), GetUnitY(GetAttacker())) end
+                            elseif ai.ability_list[i].activation == TARGET_CAST then IssueTargetOrderById(unit, ai.ability_list[i].order, attacker)
+                            elseif ai.ability_list[i].activation == POINT_CAST then
+                                local x, y = GetUnitX(attacker), GetUnitY(attacker)
+
+                                if ai.ability_list[i].point_min_offset or ai.ability_list[i].point_max_offset then
+                                    local offset_range = GetRandomReal(ai.ability_list[i].point_min_offset or 0., ai.ability_list[i].point_max_offset or 50.)
+                                    local angle = GetRandomReal(0., 359.)
+                                    x = x + Rx(offset_range, angle)
+                                    y = y + Ry(offset_range, angle)
+                                end
+
+                                IssuePointOrderById(unit, ai.ability_list[i].order, x, y)
+                            end
 
                             DelayAction(3., function() UnitRemoveAbility(unit, FourCC("AAIM")) end)
 
@@ -34,24 +158,31 @@ do
                         end
                     end
 
-                if GetUnitAbilityLevel(unit, FourCC("AAIM")) == 0 then
-                    IssuePointOrderById(unit, order_attack, GetUnitX(attacker), GetUnitY(attacker))
-                end
-
             elseif attacker and AITable[GetUnitTypeId(attacker)] then
                 unit = attacker
                 if GetUnitAbilityLevel(unit, FourCC("AAIM")) > 0 then return end
                 local ai = AITable[GetUnitTypeId(unit)]
 
-
                 for i = 1, #ai.ability_list do
+
                     if Chance(ai.ability_list[i].on_attack_chance) then
 
                         UnitAddAbility(unit, FourCC("AAIM"))
 
                         if ai.ability_list[i].activation == SELF_CAST then IssueImmediateOrderById(unit, ai.ability_list[i].order)
                         elseif ai.ability_list[i].activation == TARGET_CAST then IssueTargetOrderById(unit, ai.ability_list[i].order, attacked)
-                        elseif ai.ability_list[i].activation == POINT_CAST then IssuePointOrderById(unit, ai.ability_list[i].order, GetUnitX(attacked), GetUnitY(attacked)) end
+                        elseif ai.ability_list[i].activation == POINT_CAST then
+                            local x, y = GetUnitX(attacked), GetUnitY(attacked)
+
+                                if ai.ability_list[i].point_min_offset or ai.ability_list[i].point_max_offset then
+                                    local offset_range = GetRandomReal(ai.ability_list[i].point_min_offset or 0., ai.ability_list[i].point_max_offset or 50.)
+                                    local angle = GetRandomReal(0., 359.)
+                                    x = x + Rx(offset_range, angle)
+                                    y = y + Ry(offset_range, angle)
+                                end
+
+                           IssuePointOrderById(unit, ai.ability_list[i].order, x, y)
+                        end
 
                         DelayAction(3., function() UnitRemoveAbility(unit, FourCC("AAIM")) end)
 
@@ -63,127 +194,200 @@ do
     end
 
 
-    function AttackReaction()
-        local unit
-
-
-            if AITable[GetUnitTypeId(GetTriggerUnit())] then
-                unit = GetTriggerUnit()
-                if GetUnitAbilityLevel(unit, FourCC("AAIM")) > 0 then return end
-                local ai = AITable[GetUnitTypeId(unit)]
-
-
-                for i = 1, #ai.ability_list do
-                    if Chance(ai.ability_list[i].on_hit_chance) then
-
-                        UnitAddAbility(unit, FourCC("AAIM"))
-
-                        if ai.ability_list[i].activation == SELF_CAST then
-                            IssueImmediateOrderById(unit, ai.ability_list[i].order)
-                        elseif ai.ability_list[i].activation == TARGET_CAST then
-                            IssueTargetOrderById(unit, ai.ability_list[i].order, GetAttacker())
-                        elseif ai.ability_list[i].activation == POINT_CAST then
-                            IssuePointOrderById(unit, ai.ability_list[i].order, GetUnitX(GetAttacker()), GetUnitY(GetAttacker()))
-                        end
-
-
-                        DelayAction(3., function()
-                            UnitRemoveAbility(unit, FourCC("AAIM"))
-                        end)
-
-                        break
-                    end
-                end
-
-            elseif AITable[GetUnitTypeId(GetAttacker())] then
-                unit = GetAttacker()
-                if GetUnitAbilityLevel(unit, FourCC("AAIM")) > 0 then return end
-                local ai = AITable[GetUnitTypeId(unit)]
-
-
-                for i = 1, #ai.ability_list do
-                    if Chance(ai.ability_list[i].on_attack_chance) then
-
-                        UnitAddAbility(unit, FourCC("AAIM"))
-
-                        if ai.ability_list[i].activation == SELF_CAST then
-                            IssueImmediateOrderById(unit, ai.ability_list[i].order)
-                        elseif ai.ability_list[i].activation == TARGET_CAST then
-                            IssueTargetOrderById(unit, ai.ability_list[i].order, GetTriggerUnit())
-                        elseif ai.ability_list[i].activation == POINT_CAST then
-                            IssuePointOrderById(unit, ai.ability_list[i].order, GetUnitX(GetTriggerUnit()), GetUnitY(GetTriggerUnit()))
-                        end
-
-                        DelayAction(3., function()
-                            UnitRemoveAbility(unit, FourCC("AAIM"))
-                        end)
-
-                        break
-                    end
-                end
-
-            end
-
-    end
-
 
     function InitMyAI()
 
+        InCombat = {}
         AITable = {
             [FourCC("U000")] = {
                 ability_list = {
-                    { order = order_forceboard, activation = SELF_CAST, on_attack_chance = 10., on_hit_chance = 10. }
+                    { order = order_forceboard, activation = SELF_CAST, on_attack_chance = 15., on_hit_chance = 15. }
                 }
             },
             [FourCC("n00S")] = {
                 ability_list = {
-                    { order = order_forkedlightning, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 10. },
+                    { order = order_forkedlightning, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 12. },
                     { order = order_forceofnature, activation = TARGET_CAST, on_attack_chance = 15., on_hit_chance = 0. },
-                    { order = order_freezingbreath, activation = TARGET_CAST, on_attack_chance = 3., on_hit_chance = 10. }
+                    { order = order_cripple, activation = TARGET_CAST, on_attack_chance = 3., on_hit_chance = 10. }
                 }
             },
             [FourCC("n00X")] = {
                 ability_list = {
-                    { order = order_forceofnature, activation = TARGET_CAST, on_attack_chance = 0., on_hit_chance = 10. },
+                    { order = order_forceofnature, activation = TARGET_CAST, on_attack_chance = 0., on_hit_chance = 14. },
                 }
             },
             [FourCC("n015")] = {
                 ability_list = {
-                    { order = order_forceofnature, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 10. },
-                    { order = order_forceboard, activation = TARGET_CAST, on_attack_chance = 7., on_hit_chance = 7. },
+                    { order = order_forceofnature, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 12. },
+                    { order = order_slow, activation = TARGET_CAST, on_attack_chance = 7., on_hit_chance = 7. },
                 }
             },
             [FourCC("n012")] = {
                 ability_list = {
-                    { order = order_frenzy, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 10. },
-                    { order = order_forceofnature, activation = TARGET_CAST, on_attack_chance = 10., on_hit_chance = 0. },
+                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 10. },
+                    { order = order_forceofnature, activation = TARGET_CAST, on_attack_chance = 14., on_hit_chance = 0. },
                     { order = order_forkedlightning, activation = TARGET_CAST, on_attack_chance = 7., on_hit_chance = 7. },
-                    { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 7. },
+                    { order = order_hex, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 7. },
                 }
             },
             [FourCC("n01N")] = {
                 ability_list = {
-                    { order = order_freezingbreath, activation = POINT_CAST, on_attack_chance = 0., on_hit_chance = 7. }
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 0., on_hit_chance = 22. }
                 }
             },
             [FourCC("n01J")] = {
                 ability_list = {
-                    { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 6., on_hit_chance = 4. }
+                    { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 15., on_hit_chance = 4. }
                 }
             },
             [FourCC("u00J")] = {
                 ability_list = {
-                    { order = order_freezingbreath, activation = TARGET_CAST, on_attack_chance = 6., on_hit_chance = 0. }
+                    { order = order_cripple, activation = TARGET_CAST, on_attack_chance = 15., on_hit_chance = 0. }
                 }
             },
             [FourCC("n01T")] = {
                 ability_list = {
-                    { order = order_freezingbreath, activation = TARGET_CAST, on_attack_chance = 6., on_hit_chance = 4. }
+                    { order = order_cripple, activation = TARGET_CAST, on_attack_chance = 12., on_hit_chance = 10. }
+                }
+            },
+            [FourCC("n008")] = {
+                ability_list = {
+                    { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 15., on_hit_chance = 9., point_max_offset = 275. }
+                }
+            },
+            [FourCC("n009")] = {
+                ability_list = {
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 16., on_hit_chance = 10., point_max_offset = 150. },
+                    { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 20., on_hit_chance = 10., point_max_offset = 270. }
+                }
+            },
+            [FourCC("u00F")] = {
+                ability_list = {
+                    { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 15., on_hit_chance = 10.},
+                }
+            },
+            [FourCC("u00L")] = {
+                ability_list = {
+                    { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 20., on_hit_chance = 10.},
+                }
+            },
+            [FourCC("n006")] = {
+                ability_list = {
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 20., on_hit_chance = 10., point_max_offset = 150. },
+                }
+            },
+            [FourCC("n022")] = {
+                ability_list = {
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 17., on_hit_chance = 15., point_max_offset = 150. },
+                }
+            },
+            [FourCC("U001")] = {
+                ability_list = {
+                    { order = order_frenzy, activation = POINT_CAST, on_attack_chance = 13., on_hit_chance = 12. },
+                }
+            },
+            [FourCC("u00E")] = {
+                ability_list = {
+                    { order = order_cripple, activation = TARGET_CAST, on_attack_chance = 17., on_hit_chance = 3. },
+                }
+            },
+            [FourCC("h002")] = {
+                ability_list = {
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 19., on_hit_chance = 7., point_max_offset = 150. },
+                }
+            },
+            [FourCC("n01U")] = {
+                ability_list = {
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 19., on_hit_chance = 7., point_max_offset = 150. },
+                }
+            },
+            [FourCC("n01I")] = {
+                ability_list = {
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 19., on_hit_chance = 7., point_max_offset = 150. },
                 }
             }
         }
 
 
+        AITable[FourCC("h002")].on_period = function(unit)
+
+            if IsAnyHeroInRange(GetUnitX(unit), GetUnitY(unit), 270.) then
+                if GetRandomInt(1, 3) == 1 and IssueImmediateOrderById(unit, order_freezingbreath) then
+                    AI_AddSleep(unit, 3.)
+                end
+            end
+
+        end
+
+
+        AITable[FourCC("n01U")].on_period = function(unit)
+
+            if IsAnyHeroInRange(GetUnitX(unit), GetUnitY(unit), 500.) then
+                if GetRandomInt(1, 6) == 1 then
+                    local hero = GetClosestHero(unit, 500.)
+                    if hero and IssuePointOrderById(unit, order_freezingbreath, GetUnitX(hero) + GetRandomReal(-140., 140.), GetUnitY(hero) + GetRandomReal(-140., 140.)) then
+                        AI_AddSleep(unit, 3.)
+                    end
+                end
+            end
+
+        end
+
+
+        AITable[FourCC("n01I")].on_period = function(unit)
+
+            if IsAnyHeroInRange(GetUnitX(unit), GetUnitY(unit), 500.) then
+                if GetRandomInt(1, 6) == 1 then
+                    local hero = GetClosestHero(unit, 500.)
+                    if hero and IssuePointOrderById(unit, order_freezingbreath, GetUnitX(hero) + GetRandomReal(-140., 140.), GetUnitY(hero) + GetRandomReal(-140., 140.)) then
+                        AI_AddSleep(unit, 3.)
+                    end
+                end
+            end
+
+        end
+
+
+        AITable[FourCC("n01N")].on_period = function(unit)
+
+            if IsAnyHeroInRange(GetUnitX(unit), GetUnitY(unit), 600.) then
+                if GetRandomInt(1, 6) == 1 then
+                    local hero = GetClosestHero(unit, 600.)
+                    if hero and IssuePointOrderById(unit, order_freezingbreath, GetUnitX(hero), GetUnitY(hero)) then
+                        AI_AddSleep(unit, 5.)
+                    end
+                end
+            end
+
+        end
+
+        AITable[FourCC("n006")].on_period = function(unit)
+
+            if IsAnyHeroInRange(GetUnitX(unit), GetUnitY(unit), 750.) then
+                if GetRandomInt(1, 6) == 1 then
+                    local hero = GetClosestHero(unit, 750.)
+                    if hero and IssuePointOrderById(unit, order_freezingbreath, GetUnitX(hero) + GetRandomReal(-140., 140.), GetUnitY(hero) + GetRandomReal(-140., 140.)) then
+                        AI_AddSleep(unit, 5.)
+                    end
+                end
+            end
+
+        end
+
+        AITable[FourCC("n01T")].on_period = function(unit)
+
+            if IsAnyHeroInRange(GetUnitX(unit), GetUnitY(unit), 500.) then
+                if GetRandomInt(1, 7) == 1 then
+                    local hero = GetClosestHero(unit, 500.)
+                    if hero and IssueTargetOrderById(unit, order_freezingbreath, hero) then
+                        AI_AddSleep(unit, 5.)
+                    end
+                end
+            end
+
+        end
+
+        PingGroup = CreateGroup()
         --local AttackTrg = CreateTrigger()
         --TriggerRegisterAnyUnitEventBJ(AttackTrg, EVENT_PLAYER_UNIT_ATTACKED)
         --TriggerAddAction(AttackTrg, AttackReaction)

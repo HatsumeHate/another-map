@@ -46,6 +46,20 @@ do
     end
 
 
+    function ShowAlternateShopTooltip(player)
+
+        if IsTooltipActive(player) then
+            local item_to_compare = GetItemToCompare(ShopFrame[player].in_focus.item, player)
+                if item_to_compare then
+                    ShowItemTooltip(item_to_compare, ShopFrame[player].alternate_tooltip, ShopFrame[player].in_focus, player, FRAMEPOINT_LEFT, GetTooltip(ShopFrame[player].alternate_tooltip), true, ShopFrame[player].in_focus.item)
+                    BlzFrameClearAllPoints(ShopFrame[player].alternate_tooltip)
+                    BlzFrameSetPoint(ShopFrame[player].alternate_tooltip, FRAMEPOINT_LEFT, ShopFrame[player].tooltip, FRAMEPOINT_RIGHT, 0., 0.)
+                end
+        end
+
+    end
+
+
     local LeaveTrigger = 0
     local EnterTrigger = 0
     local ClickTrigger = 0
@@ -55,15 +69,23 @@ do
         local h = BlzGetTriggerFrame()
 
             if ButtonList[h].item then
+                ShopFrame[player].in_focus = ButtonList[h]
                 ShowItemTooltip(ButtonList[h].item, ShopFrame[player].tooltip, ButtonList[h], player, FRAMEPOINT_RIGHT)
+                if ShopFrame[player].shift_state then
+                    RemoveSpecificTooltip(ShopFrame[player].alternate_tooltip)
+                    ShowAlternateShopTooltip(player)
+                end
             else
+                ShopFrame[player].in_focus = nil
                 RemoveTooltip(player)
             end
 
     end
 
     local function LeaveAction()
-        RemoveTooltip(GetPlayerId(GetTriggerPlayer()) + 1)
+        local player = GetPlayerId(GetTriggerPlayer()) + 1
+        ShopFrame[player].in_focus = nil
+        RemoveTooltip(player)
     end
 
 
@@ -200,8 +222,62 @@ do
         BlzFrameSetPoint(new_Frame, FRAMEPOINT_LEFT, ShopFrame[player].portrait, FRAMEPOINT_RIGHT, 0.011, 0.)
         BlzFrameSetTextAlignment(new_Frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
         BlzFrameSetScale(new_Frame, 1.35)
+
+        ShopFrame[player].shift_state = false
+        local actual_player = Player(player-1)
+        local comparison_trigger = CreateTrigger()
+        BlzTriggerRegisterPlayerKeyEvent(comparison_trigger, actual_player, OSKEY_LSHIFT, 1, true)
+        BlzTriggerRegisterPlayerKeyEvent(comparison_trigger, actual_player, OSKEY_LSHIFT, 0, false)
+        TriggerAddAction(comparison_trigger, function()
+
+            if ShopFrame[player].in_focus then
+                if BlzGetTriggerPlayerIsKeyDown() and not ShopFrame[player].shift_state then
+                    ShopFrame[player].shift_state = true
+                    AltState[player] = false
+                    ShowAlternateShopTooltip(player)
+                elseif not BlzGetTriggerPlayerIsKeyDown() and ShopFrame[player].shift_state then
+                    RemoveSpecificTooltip(ShopFrame[player].alternate_tooltip)
+                    ShopFrame[player].shift_state = false
+                end
+            else
+                RemoveSpecificTooltip(ShopFrame[player].alternate_tooltip)
+                ShopFrame[player].shift_state = false
+            end
+
+
+        end)
+
+
+        local AltStateTrigger = CreateTrigger()
+        BlzTriggerRegisterPlayerKeyEvent(AltStateTrigger, actual_player, OSKEY_LALT, 5, true)
+        --BlzTriggerRegisterPlayerKeyEvent(AltStateTrigger, actual_player, OSKEY_LALT, 0, false)
+        TriggerAddAction(AltStateTrigger, function()
+
+            if ShopFrame[player].in_focus then
+                if AltState[player] then AltState[player] = false
+                else AltState[player] = true end
+                RemoveSpecificTooltip(ShopFrame[player].alternate_tooltip)
+                ShowAlternateShopTooltip(player)
+            end
+
+        end)
+
+
+        ShopFrame[player].tip_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.02, 0.02, main_frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.016, -0.016, main_frame)
+        CreateTooltip(LOCALE_LIST[my_locale].UI_SHOP_TOOLTIP_HEADER, LOCALE_LIST[my_locale].UI_SHOP_TOOLTIP_DESCRIPTION, ShopFrame[player].tip_button, 0.14, 0.12, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPLEFT)
+        local tip_trigger = CreateTrigger()
+        BlzTriggerRegisterFrameEvent(tip_trigger, ShopFrame[player].tip_button, FRAMEEVENT_CONTROL_CLICK)
+        TriggerAddAction(tip_trigger, function()
+            ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_SHOP_1, player-1)
+            DisableTrigger(tip_trigger)
+            DelayAction(5., function()
+                EnableTrigger(tip_trigger)
+            end)
+        end)
+
         ShopFrame[player].name = new_Frame
         ShopFrame[player].tooltip = NewTooltip(ShopFrame[player].masterframe)
+        ShopFrame[player].alternate_tooltip = NewTooltip(ShopFrame[player].masterframe)
         ShopFrame[player].main_frame = main_frame
         BlzFrameSetVisible(ShopFrame[player].main_frame, false)
         ShopFrame[player].state = false
@@ -419,7 +495,7 @@ do
 
     end
 
-    local FirstTime_Data = 0
+    local FirstTime_Data
 
 
     ---@param unit_owner unit
@@ -452,7 +528,7 @@ do
 
                 for i = 1, 6 do
                     if GetLocalPlayer() == Player(i-1) then
-                        FirstTime_Data[i].effect = AddSpecialEffectTarget("Quest\\ExcMark_Green_FlightPath.mdx", unit_owner, "overhead")
+                        FirstTime_Data[i].effect = AddSpecialEffectTarget("Quest\\ExcMark_Green_FlightPath.mdx ", unit_owner, "overhead")
                     else
                         FirstTime_Data[i].effect = AddSpecialEffectTarget("", unit_owner, "overhead")
                     end
@@ -460,11 +536,11 @@ do
 
             end
 
-
+            AddSpecialEffectTarget("Marker\\VendorIcon.mdx", unit_owner, "overhead")
 
 
             local trg = CreateTrigger()
-            TriggerRegisterUnitInRangeSimple(trg, 300., unit_owner)
+            TriggerRegisterUnitInRangeSimple(trg, 250., unit_owner)
             --TriggerAddCondition(trg, Condition())
             TriggerAddAction(trg, function()
                 if not IsUnitHidden(unit_owner) then
@@ -490,7 +566,8 @@ do
 
                             local timer = CreateTimer()
                             TimerStart(timer, 0.1, true, function()
-                                if not IsUnitInRange(hero, unit_owner, 299.) or IsUnitHidden(unit_owner) then
+                                if not IsUnitInRange(hero, unit_owner, 250.) or IsUnitHidden(unit_owner) then
+                                    ShopFrame[player].in_focus = nil
                                     DestroySlider(player)
                                     DestroyContextMenu(player)
                                     ShopInFocus[player] = nil
@@ -506,7 +583,6 @@ do
 
 
                         if FirstTime_Data[player].first_time then
-                            ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_SHOP_1, id)
                             DestroyEffect(FirstTime_Data[player].effect)
                             FirstTime_Data[player].first_time = false
                         end

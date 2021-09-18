@@ -8,14 +8,16 @@ do
 
 		EnableDragSelect(false, false)
 		BlzEnableSelections(false, true)
-		--EnablePreSelect(true, false)
+		EnablePreSelect(true, false)
 		SetCameraBoundsToRect(gg_rct_super_starting_location)
+
 		ClearMapMusic()
 		StopMusic(false)
 		PlayMusic("Sound\\Music\\mp3Music\\Comradeship.mp3")
+		SetGameSpeed(MAP_SPEED_FASTEST)
+		SetMapFlag(MAP_LOCK_SPEED, true)
 
 
-		--print("Initialization.... Wait for it.")
 		local countdown = 5
 		print("Init begins in ".. countdown)
 		local timer = CreateTimer()
@@ -28,7 +30,7 @@ do
 				local init_que = {
 					UtilsInit, InitLocaleLibrary, HitnumbersInit, InitParameters, DefineSkillsData, MouseTrackingInit, DefineEffectsData, InitSetBonusTemplates, DefineItemsData, DefineItemGeneratorTemplates, DefineBuffsData, DefineMissilesData,
 					MainEngineInit, InitMovementEngine, BasicFramesInit, EnumItemsOnInit, UnitDataInit, InitGUIManager, InitMonsterData, DropListInit, ShakerInit, InitVillageData, InitPlayerCamera, InitializeSkillEngine, StartSMorcWandering,
-					InitAltars, InitQuestMaster, InitQuestsData
+					InitAltars, InitQuestMaster, InitQuestUtils, InitFileData
 				}
 
 				TimerStart(GetExpiredTimer(), 0.1, true, function()
@@ -105,7 +107,23 @@ do
 								}
 						)
 
-						--print("items")
+						CreateShop(gg_unit_n020_0075, "ReplaceableTextures\\CommandButtons\\BTNSorceress.blp",
+								{
+									open = {
+										"Units\\Human\\Sorceress\\SorceressWhat1.wav",
+										"Units\\Human\\Sorceress\\SorceressWhat2.wav",
+										"Units\\Human\\Sorceress\\SorceressWhat3.wav",
+										"Units\\Human\\Sorceress\\SorceressWhat1.wav",
+										"Units\\Human\\Sorceress\\SorceressWhat1.wav",
+									},
+									close = {
+										"Units\\Human\\Sorceress\\SorceressYes1.wav",
+										"Units\\Human\\Sorceress\\SorceressYes3.wav",
+										"Units\\Human\\Sorceress\\SorceressWhat5.wav",
+									},
+								}
+						)
+
 						local my_item = CreateCustomItem("I006",  0.,0.)
 						SetItemCharges(my_item, 20)
 						AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 32, true)
@@ -115,41 +133,33 @@ do
 						SetItemCharges(my_item, 20)
 						AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 31, true)
 						my_item = nil
-						--print("items end")
 
-						--print("blacksmith")
-
-						--print("names")
 						BlzSetUnitName(gg_unit_n000_0056, LOCALE_LIST[my_locale].VENDOR_BILL_NAME)
 						BlzSetUnitName(gg_unit_opeo_0031, LOCALE_LIST[my_locale].SMORC_NAME)
 						BlzSetUnitName(gg_unit_n01W_0111, LOCALE_LIST[my_locale].SCAVENGER_NAME)
 						BlzSetUnitName(gg_unit_n013_0011, LOCALE_LIST[my_locale].BLACKSMITH_NAME)
 						BlzSetUnitName(gg_unit_n01V_0110, LOCALE_LIST[my_locale].LIBRARIAN_NAME)
+						BlzSetUnitName(gg_unit_n020_0075, LOCALE_LIST[my_locale].LYNN_NAME)
 
 
 						CreateLibrarian(gg_unit_n01V_0110, "ReplaceableTextures\\CommandButtons\\BTNNightElfRunner.blp")
 						CreateBlacksmith(gg_unit_n013_0011, "ReplaceableTextures\\CommandButtons\\BTNElfVillager.blp")
 
-
 						--print("librarian")
 						CreateHeroSelections()
-						--print("selections")
-						--CreatePlayerUI(1)
-						--PostInitTestUI()
+						CreatePlayerUI()
 
-						--PushUnit(gg_unit_HBRB_0005, 270., 400., 1.25)
-						--MakeUnitJump(gg_unit_HBRB_0005, 0., GetUnitX(gg_unit_HBRB_0005) + 500., GetUnitY(gg_unit_HBRB_0005), 500., 0.6)
-						--EnablePreSelect(false, false)
 						local timer = CreateTimer()
 						TimerStart(timer, 5., false, function()
 							WavesInit()
-							--AddWaveTimer(20.)
 							AddWaveTimer(325.)
 							NewQuest("Credits", "Thanks for the resources and help.", "ReplaceableTextures\\WorldEditUI\\Editor-MultipleUnits.blp", false, true, "cred")
 							AddQuestItem("cred",  "cred1",  "Hive:|nGeneral Frank, Mythic, Veronnis, JetFangInferno, Daelin, PeeKay(Novart), stonneash, PrinceYaser,",  false)
-							AddQuestItem("cred",  "cred2",  "The Panda, Tasyen, Spellbound, Crazy Russian, Judash137, Kenathorn, stan0033, morbent, Solu9,",  false)
-							AddQuestItem("cred",  "cred3",  "The_Spellweaver, CloudWolf, GooS, zbc, The_Silent", false)
-							AddQuestItem("cred",  "cred4",  "XGM:|nBergiBear, NazarPunk, MF, Empyreal, Beyhut",  false)
+							AddQuestItem("cred",  "cred2",  "The Panda, Tasyen, Spellbound, Crazy Russian, Judash137, Kenathorn, stan0033, morbent, Solu9, L_Lawliet",  false)
+							AddQuestItem("cred",  "cred3",  "Infrisios, Manoo, Daenar7, -Berz-, graystuff111, Akolyt0r, Hellx-Magnus, ElfWarfare, Pyramidhe@d, San",  false)
+							AddQuestItem("cred",  "cred4",  "The_Spellweaver, CloudWolf, GooS, zbc, The_Silent, JollyD, Big Dub, AL0NE, ~Nightmare, Darkfang, RodOfNOD", false)
+							AddQuestItem("cred",  "cred5",  "Tarrasque, dab, Pyritie, Em!, Mr.Goblin, Avatars Lord, Shardeth, dickxunder, Amigurumi, Mc !, HerrDave", false)
+							AddQuestItem("cred",  "cred6",  "XGM:|nBergiBear, NazarPunk, MF, Empyreal, Beyhut, Prometheus, PrincePhoenix",  false)
 							DelayAction(145., function() EnableQuest1NPC() end)
 							DelayAction(225., function() EnableMainQuest1() end )
 						end)
@@ -158,6 +168,43 @@ do
 				end)
 
 
+				local occ_rects = { gg_rct_occlusion_rect_1, gg_rct_occlusion_rect_2, gg_rct_occlusion_rect_3, gg_rct_occlusion_rect_4, gg_rct_occlusion_rect_5, gg_rct_occlusion_rect_6, gg_rct_occlusion_rect_7, gg_rct_occlusion_rect_8, gg_rct_occlusion_rect_9, gg_rct_occlusion_rect_10,}
+				local occ_region = CreateRegion()
+
+				for i = 1, #occ_rects do
+					RegionAddRect(occ_region, occ_rects[i])
+				end
+
+
+				local occlusion_enter_trigger = CreateTrigger()
+				TriggerRegisterEnterRegion(occlusion_enter_trigger, occ_region, nil)
+				TriggerAddAction(occlusion_enter_trigger, function()
+					if IsAHero(GetTriggerUnit()) then
+						ShowDestructable(gg_dest_B000_2762, false)
+						ShowDestructable(gg_dest_B000_2763, false)
+						ShowDestructable(gg_dest_B000_2764, false)
+					end
+				end)
+
+				local occlusion_leave_trigger = CreateTrigger()
+				TriggerRegisterLeaveRegion(occlusion_leave_trigger, occ_region, nil)
+				TriggerAddAction(occlusion_leave_trigger, function()
+					local occ_state = false
+
+						for i = 1, 6 do
+							if PlayerHero[i] and IsUnitInRegion(occ_region, PlayerHero[i]) then
+								occ_state = true
+							end
+						end
+
+						if not occ_state then
+							ShowDestructable(gg_dest_B000_2762, true)
+							ShowDestructable(gg_dest_B000_2763, true)
+							ShowDestructable(gg_dest_B000_2764, true)
+						end
+
+				end)
+
 				RegisterTestCommand("qe1m", function()
 					EnableMainQuest1()
 				end)
@@ -165,6 +212,7 @@ do
 				RegisterTestCommand("qe2m", function()
 					EnableMainQuest2()
 				end)
+
 
 
 				local trg = CreateTrigger()

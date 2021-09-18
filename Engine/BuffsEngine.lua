@@ -19,23 +19,24 @@ do
                     end
                 end
 
-                if buff_data.level[buff_data.current_level].negative_state ~= nil then
+                if buff_data.level[buff_data.current_level].effects then
+                    for i = 1, #buff_data.level[buff_data.current_level].effects do
+                        UnitRemoveEffect(unit_data.Owner, buff_data.level[buff_data.current_level].effects[i])
+                    end
+                end
+
+                if buff_data.level[buff_data.current_level].negative_state then
 
                     local state = buff_data.level[buff_data.current_level].negative_state
                     buff_data.level[buff_data.current_level].negative_state = nil
 
-                    if not HasNegativeState(unit_data.Owner, buff_data.level[buff_data.current_level].negative_state) then
-                        --buff_data.level[buff_data.current_level].negative_state = state
-                        if state == STATE_FREEZE then
-                            SetUnitVertexColor(unit_data.Owner, unit_data.colours.r or 255, unit_data.colours.g or 255, unit_data.colours.b or 255, unit_data.colours.a or 255)
-                            SetUnitTimeScale(unit_data.Owner, 1.)
-                            SafePauseUnit(unit_data.Owner, false)
-                            --PauseUnit(unit_data.Owner, false)
-                            --if GetUnitAbilityLevel(unit_data.Owner, FourCC("A01M")) > 0 then BlzPauseUnitEx(unit_data.Owner, false) end
-                        elseif state == STATE_STUN then
-                            SafePauseUnit(unit_data.Owner, false)
-                            --if GetUnitAbilityLevel(unit_data.Owner, FourCC("A01M")) > 0 then BlzPauseUnitEx(unit_data.Owner, false) end
-                        end
+                    if state == STATE_FREEZE and not HasNegativeState(unit_data.Owner, STATE_FREEZE) then
+                        SetUnitVertexColor(unit_data.Owner, unit_data.colours.r or 255, unit_data.colours.g or 255, unit_data.colours.b or 255, unit_data.colours.a or 255)
+                        SetUnitTimeScale(unit_data.Owner, 1.)
+                    end
+
+                    if not HasAnyDisableState(unit_data.Owner) then
+                        SafePauseUnit(unit_data.Owner, false)
                     end
 
                 end
@@ -159,6 +160,12 @@ do
                         end
                     end
 
+                    if buff_data.level[buff_data.current_level].effects then
+                        for i = 1, #buff_data.level[buff_data.current_level].effects do
+                            UnitRemoveEffect(target, buff_data.level[buff_data.current_level].effects[i])
+                        end
+                    end
+
                     local logic = lvl >= buff_data.current_level
 
                     buff_data.current_level = lvl
@@ -202,6 +209,12 @@ do
                             --print(GetParameterName(buff_data.level[lvl].bonus[i2].PARAM))
                             --print(buff_data.level[lvl].bonus[i2].VALUE)
                             ModifyStat(target, buff_data.level[buff_data.current_level].bonus[i2].PARAM, buff_data.level[buff_data.current_level].bonus[i2].VALUE, buff_data.level[buff_data.current_level].bonus[i2].METHOD, true)
+                        end
+                    end
+
+                    if buff_data.level[buff_data.current_level].effects then
+                        for i = 1, #buff_data.level[buff_data.current_level].effects do
+                            UnitAddEffect(target, buff_data.level[buff_data.current_level].effects[i])
                         end
                     end
 
@@ -250,9 +263,10 @@ do
 
 
     ---@param target unit
-    ---@param buff_id integer
+    ---@param buff_id string
     ---@param lvl integer
     function ApplyBuff(source, target, buff_id, lvl)
+        if lvl <= 0 then return end
         local buff_data = MergeTables({}, GetBuffData(buff_id))
         local target_data = GetUnitData(target)
         local existing_buff
@@ -261,6 +275,8 @@ do
 
             buff_data.buff_source = source
             buff_data.current_level = lvl
+
+        --local effect = GetEffectData(buff_data.level[buff_data.current_level].effect)
 
         if buff_data.level_penalty then
             buff_data.current_level = buff_data.current_level - buff_data.level_penalty
@@ -275,6 +291,48 @@ do
             buff_data.expiration_time = buff_data.level[lvl].time
 
             OnBuffPrecast(source, target, buff_data)
+
+
+                if GetUnitAbilityLevel(target, FourCC(buff_id)) > 0 then
+                    for i = 1, #target_data.buff_list do
+
+                        if target_data.buff_list[i].id == buff_id then
+                            existing_buff = target_data.buff_list[i]
+                            if lvl > existing_buff.current_level then
+                                DeleteBuff(target_data, existing_buff)
+                            else
+                                existing_buff.expiration_time = existing_buff.level[existing_buff.current_level].time
+                                buff_data = nil
+                                return false
+                            end
+                            break
+                        end
+
+                    end
+                end
+
+            -- TODO test it
+                if #buff_data.buff_replacer > 0 then
+                    for b = 1, #buff_data.buff_replacer do
+                        for i = 1, #target_data.buff_list do
+                            if buff_data.buff_replacer[b] == target_data.buff_list[i].id then
+                                DeleteBuff(target_data, target_data.buff_list[i])
+                            end
+                        end
+                    end
+                end
+
+
+                if buff_data.level[lvl].buff_sfx then
+                    local new_effect
+                        if buff_data.level[lvl].buff_sfx_point and StringLength(buff_data.level[lvl].buff_sfx_point) > 0 then
+                            new_effect = AddSpecialEffectTarget(buff_data.level[lvl].buff_sfx, target, buff_data.level[lvl].buff_sfx_point)
+                        else
+                            new_effect = AddSpecialEffect(buff_data.level[lvl].buff_sfx, GetUnitX(target), GetUnitY(target))
+                        end
+                    BlzSetSpecialEffectScale(new_effect, buff_data.level[lvl].buff_sfx_scale or 1.)
+                    DestroyEffect(new_effect)
+                end
 
 
                 if buff_data.level[lvl].negative_state and buff_data.level[lvl].negative_state > 0 then
@@ -313,60 +371,30 @@ do
 
                 end
 
-
-                if GetUnitAbilityLevel(target, FourCC(buff_id)) > 0 then
-                    for i = 1, #target_data.buff_list do
-
-                        if target_data.buff_list[i].id == buff_id then
-                            existing_buff = target_data.buff_list[i]
-                            if lvl >= existing_buff.current_level then
-                                DeleteBuff(target_data, existing_buff)
-                            else
-                                existing_buff.expiration_time = existing_buff.level[existing_buff.current_level].time
-                                buff_data = nil
-                                return false
-                            end
-                            break
-                        end
-
-                    end
-                end
-
-            -- TODO test it
-                if #buff_data.buff_replacer > 0 then
-                    for b = 1, #buff_data.buff_replacer do
-                        for i = 1, #target_data.buff_list do
-                            if buff_data.buff_replacer[b] == target_data.buff_list[i].id then
-                                DeleteBuff(target_data, target_data.buff_list[i])
-                            end
-                        end
-                    end
-                end
-
-
-                if buff_data.level[lvl].buff_sfx then
-                    local new_effect
-                        if buff_data.level[lvl].buff_sfx_point and StringLength(buff_data.level[lvl].buff_sfx_point) > 0 then
-                            new_effect = AddSpecialEffectTarget(buff_data.level[lvl].buff_sfx, target, buff_data.level[lvl].buff_sfx_point)
-                        else
-                            new_effect = AddSpecialEffect(buff_data.level[lvl].buff_sfx, GetUnitX(target), GetUnitY(target))
-                        end
-                    BlzSetSpecialEffectScale(new_effect, buff_data.level[lvl].buff_sfx_scale or 1.)
-                    DestroyEffect(new_effect)
-                end
-
             UnitAddAbility(target, FourCC(buff_data.id))
             table.insert(target_data.buff_list, buff_data)
+
+            --BlzSetAbilityTooltip(FourCC(buff_data.buff_id), "this is name", 0)
+           -- BlzSetAbilityTooltip(FourCC(buff_data.buff_id), "this is name", 1)
+            --BlzSetAbilityExtendedTooltip(FourCC(buff_data.buff_id), "this is description", 0)
+            --BlzSetAbilityExtendedTooltip(FourCC(buff_data.buff_id), "this is description", 1)
+            --BlzSetAbilityT(FourCC(buff_data.buff_id), "AAAA", 0)
+            --BlzSetAbilityStringField(BlzGetUnitAbility(target, FourCC(buff_data.buff_id)), ABILITY_SF_NAME, "this is name")
+            --BlzSetAbilityStringField(BlzGetUnitAbility(target, FourCC(buff_data.buff_id)), ABILITY_SF, "this is name")
 
 
                 if buff_data.level[lvl].bonus then
                     for i = 1, #buff_data.level[lvl].bonus do
-                        --print(GetParameterName(buff_data.level[lvl].bonus[i].PARAM))
-                        --print(buff_data.level[lvl].bonus[i].VALUE)
                         ModifyStat(target, buff_data.level[lvl].bonus[i].PARAM, buff_data.level[lvl].bonus[i].VALUE, buff_data.level[lvl].bonus[i].METHOD, true)
                     end
                 end
 
+
+                if buff_data.level[lvl].effects then
+                    for i = 1, #buff_data.level[lvl].effects do
+                        UnitAddEffect(target, buff_data.level[lvl].effects[i])
+                    end
+                end
 
             local over_time_effect_delay
             if buff_data.level[lvl].effect_delay ~= nil and buff_data.level[lvl].effect_delay > 0. then

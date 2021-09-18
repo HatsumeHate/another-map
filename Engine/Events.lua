@@ -4,16 +4,36 @@ do
 
 
     function OnUnitCreated(new_unit)
+        local unit_data = GetUnitData(new_unit)
+
+        if unit_data.classification and unit_data.classification == MONSTER_RANK_BOSS  then
+            unit_data.minimap_icon = CreateMinimapIconOnUnit(new_unit, 255, 255, 255, "Marker\\MarkBoss.mdx", FOG_OF_WAR_VISIBLE)
+        end
+
         if GetOwningPlayer(new_unit) == SECOND_MONSTER_PLAYER or GetOwningPlayer(new_unit) == MONSTER_PLAYER then
             ScaleMonsterUnit(new_unit, Current_Wave)
+            GroupAddUnit(ScaleMonstersGroup, new_unit)
         end
 
         if GetUnitTypeId(new_unit) == FourCC("U000") then
             MephistoSouls(new_unit)
         end
 
+
     end
 
+    function OnUnitDeath(unit)
+
+    end
+
+
+    function OnUnitEffectApply(unit, effect_id)
+
+    end
+
+    function OnUnitEffectEnd(unit, effect_id)
+
+    end
 
 
     function OnChargeEnd(source, targets_hit, sign, negative_state)
@@ -57,7 +77,7 @@ do
 
     function OnPushExpire(source, data)
         if data.sign == 'EUPP' then
-            ApplyBuff(data.source, source, 'A012', UnitGetAbilityLevel(source, "A00B"))
+            ApplyBuff(data.source, source, 'A012', UnitGetAbilityLevel(data.source, "A00B"))
         end
     end
 
@@ -96,6 +116,9 @@ do
     end
 
 
+    ---@param missile table
+    ---@param source unit
+    ---@param target unit
     function OnMissileLaunch(source, target, missile)
         if missile.id == 'M001' then
             local timer = CreateTimer()
@@ -111,6 +134,8 @@ do
             CastShatterGround(source, missile)
         elseif missile.id == "MSCN" then
             SummonCurse(missile)
+        elseif missile.id == "MRLR" then
+            RevenantLaserMissile(source, missile)
         end
     end
 
@@ -139,10 +164,6 @@ do
                     BlzSetSpecialEffectScale(speceffect, 0.6)
                     DelayAction(0.5, function() DestroyEffect(speceffect) end)
                 end)
-            elseif UnitHasEffect(source, "FRBD") then
-                if leveled_effect.attribute and (leveled_effect.power or leveled_effect.attack_percent_bonus) and leveled_effect.attribute == FIRE_ATTRIBUTE then
-                    leveled_effect.power = leveled_effect.power * 1.35
-                end
             elseif UnitHasEffect(source, "PNEC") then
                 if effect.id == "ECSP" then
                     leveled_effect.can_crit = true
@@ -150,16 +171,18 @@ do
                 end
             elseif effect.id == "EBLZ" then
                 local unit_data = GetUnitData(source)
-
-                    effect.level[effect.current_level].area_of_effect = 200. * (1. + unit_data.blz_scale)
-
-            elseif UnitHasEffect(source, "EOTS") then
-                if effect.id == "EDSC" then
-                    leveled_effect.power = leveled_effect.power * 1.15
-                end
-            elseif effect.id == "ESQB" or effect.id == "ECSC" or effect.id == "EAPN" then
-                effect.current_level = Current_Wave
+                effect.level[effect.current_level].area_of_effect = 200. * (1. + unit_data.blz_scale)
             end
+
+        if UnitHasEffect(source, "FRBD") then
+            if leveled_effect.attribute and (leveled_effect.power or leveled_effect.attack_percent_bonus) and leveled_effect.attribute == FIRE_ATTRIBUTE then
+                leveled_effect.power = leveled_effect.power * 1.35
+            end
+        end
+
+        if UnitHasEffect(source, "EOTS") then
+            if effect.id == "EDSC" then leveled_effect.power = leveled_effect.power * 1.15 end
+        end
 
     end
 
@@ -240,12 +263,22 @@ do
     ---@param target unit
     ---@param damage table
     function OnDamage_End(source, target, damage, damage_data)
+
         if damage_data.effect and damage_data.effect.id == "EEXC" then
             local ability_level = UnitGetAbilityLevel(source, "A020")
             if ability_level >= 10 and GetUnitState(target, UNIT_STATE_LIFE) < 0.045 then
                 ApplyBuff(source, source, "ANRD", ability_level)
             end
         end
+
+        if UnitHasEffect(target, "trait_lightning") and damage_data.is_direct then
+            TraitLightningEffect(target)
+        end
+
+        if UnitHasEffect(target, "trait_toxic") then
+            TraitToxicEffect(target)
+        end
+
     end
 
     ---@param source unit
@@ -265,22 +298,29 @@ do
     ---@param target unit
     function OnMyAttack(source, target, attack_data)
         --local attacker_data = GetUnitData(source)
-
             if UnitHasEffect(source, "ECRA") then
                 if GetUnitAbilityLevel(target, FourCC("A01P")) == 0 then ApplyBuff(source, target, "A01P", 1)
                 else SetBuffLevel(target, "A01P", GetBuffLevel(target, "A01P") + 1) end
-            elseif UnitHasEffect(source, "MOFE") then
+            end
 
+            if UnitHasEffect(source, "MOFE") then
                 if attack_data.attribute == ICE_ATTRIBUTE then ApplyEffect(source, target, 0,0, "EMEI", 1)
                 elseif attack_data.attribute == FIRE_ATTRIBUTE then ApplyEffect(source, target, 0,0, "EMEF", 1)
                 elseif attack_data.attribute == LIGHTNING_ATTRIBUTE then ApplyEffect(source, target, 0,0, "EMEL", 1) end
+            end
 
-            elseif UnitHasEffect(source, "RDAG") then ApplyEffect(source, source, 0, 0, "ERIT", 1)
-            elseif UnitHasEffect(source, "EBBS") then ApplyEffect(source, target, 0.,0., "EBBS", 1)
-            elseif UnitHasEffect(target, "ECBG") then
-                if Chance(15.) then ApplyEffect(target, target, 0, 0, "ECBG", 1) end
-            elseif UnitHasEffect(source, "EHOR") then
+            if UnitHasEffect(source, "RDAG") then ApplyEffect(source, source, 0, 0, "ERIT", 1) end
+            if UnitHasEffect(source, "EBBS") then ApplyEffect(source, target, 0.,0., "EBBS", 1) end
+            if UnitHasEffect(target, "ECBG") then if Chance(15.) then ApplyEffect(target, target, 0, 0, "ECBG", 1) end end
+
+            if UnitHasEffect(source, "EHOR") then
                 if Chance(20.) then ApplyEffect(source, target, 0, 0, "EHOR", 1) end
+            end
+
+            if UnitHasEffect(source, "trait_chill") then
+                if Chance(35.) then ApplyBuff(source, target, "ATCH", 1) end
+            elseif UnitHasEffect(source, "trait_overpower") then
+                if Chance(35.) then PushUnit(source, target, AngleBetweenUnits(source,target), 250., 1.35, "trait_overpower") end
             end
 
         AI_AttackReaction(source, target)
@@ -352,6 +392,12 @@ do
         elseif id == "AMLN" then LightningNovaBoss(source)
         elseif id == "AQBC" then ChargeUnit(source, 600., 350., GetUnitFacing(source), 1, 75., "walk", "brch", { effect = "Spell\\Valiant Charge.mdx", point = "origin" } )
         elseif id == "AWRG" then ApplyBuff(source, target, "AWRB", 1)
+        elseif id == "AVDS" then CastVoidDisc(source, x, y)
+        elseif id == "AVDR" then CreateVoidRain(source, x, y, 550., 3.5)
+        elseif id == "AFRR" then CreateFireRain(source, x, y, 600., 4.5)
+        elseif id == "ANRA" then CastReanimate(source)
+        elseif id == "AAPB" then PoisonBarrage(source, x, y)
+        elseif id == "ABSS" then SummonTentacle(source, x, y)
         end
 
     end

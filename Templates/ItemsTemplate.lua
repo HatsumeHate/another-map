@@ -200,7 +200,7 @@ do
 				NAME               = '',
 				TYPE               = ITEM_TYPE_SKILLBOOK,
 				frame_texture      = nil,
-				QUALITY            = RARE_ITEM,
+				QUALITY            = COMMON_ITEM,
 			}
 			MergeTables(newdata, data)
 		else
@@ -217,6 +217,7 @@ do
 		if newdata.sell_value == nil then newdata.sell_value = 0 end
 		if newdata.cost == nil then newdata.cost = 0 end
 		if newdata.level == nil then newdata.level = 1 end
+		newdata.raw = raw
 
 		ITEM_TEMPLATE_DATA[FourCC(raw)] = newdata
 	end
@@ -501,7 +502,7 @@ do
 			TYPE = ITEM_TYPE_WEAPON,
 			SUBTYPE = GREATSWORD_WEAPON,
 			DAMAGE  = 37,
-			stat_modificator = 1.5,
+			stat_modificator = 1.7,
 			QUALITY = COMMON_ITEM,
 			--set_bonus = GetItemSet("STST"),
 			model = "Items\\Weapon_TwoHandSword_1.mdx",
@@ -521,7 +522,7 @@ do
 			TYPE = ITEM_TYPE_WEAPON,
 			SUBTYPE = STAFF_WEAPON,
 			DAMAGE  = 24,
-			stat_modificator = 1.25,
+			stat_modificator = 1.7,
 			QUALITY = COMMON_ITEM,
 			model = "Items\\Weapon_Staff.mdx",
 			frame_texture = "Weapons\\BTNIce Staff.blp",
@@ -852,7 +853,7 @@ do
 			frame_texture      = "GUI\\BTNItem_Gem_Ruby.blp",
 			point_bonus 	   = {
 				[ITEM_TYPE_WEAPON] 		= {  PARAM = FIRE_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
-				[ITEM_TYPE_ARMOR]  		= {  PARAM = HP_VALUE, VALUE = 75, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = HP_VALUE, VALUE = 55, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = FIRE_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = REFLECT_MELEE_DAMAGE, VALUE = 20, METHOD = STRAIGHT_BONUS }
 			},
@@ -866,7 +867,7 @@ do
 			frame_texture      = "GUI\\BTNItem_Gem_Sapphire.blp",
 			point_bonus 	   = {
 				[ITEM_TYPE_WEAPON] 		= {  PARAM = ICE_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
-				[ITEM_TYPE_ARMOR]  		= {  PARAM = MP_VALUE, VALUE = 55, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = MP_VALUE, VALUE = 25, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = ICE_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = REFLECT_RANGE_DAMAGE, VALUE = 20, METHOD = STRAIGHT_BONUS }
 			},
@@ -893,9 +894,9 @@ do
 			TYPE    		   = ITEM_TYPE_GEM,
 			frame_texture      = "GUI\\BTNItem_Gem_Amber.blp",
 			point_bonus 	   = {
-				[ITEM_TYPE_WEAPON] 		= {  PARAM = CRIT_MULTIPLIER, VALUE = .4, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_WEAPON] 		= {  PARAM = CRIT_MULTIPLIER, VALUE = 0.1, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = MOVING_SPEED, VALUE = 15, METHOD = STRAIGHT_BONUS },
-				[ITEM_TYPE_JEWELRY]  	= {  PARAM = HP_REGEN, VALUE = 1.13, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = HP_REGEN, VALUE = 0.3, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = PHYSICAL_ATTACK, VALUE = 22, METHOD = STRAIGHT_BONUS }
 			},
 			cost = 50,
@@ -951,8 +952,8 @@ do
 			point_bonus 	   = {
 				[ITEM_TYPE_WEAPON] 		= {  PARAM = MAGICAL_ATTACK, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_ARMOR]  		= {  PARAM = MAGICAL_SUPPRESSION, VALUE = 75, METHOD = STRAIGHT_BONUS },
-				[ITEM_TYPE_JEWELRY]  	= {  PARAM = MP_REGEN, VALUE = 1.13, METHOD = MULTIPLY_BONUS },
-				[ITEM_TYPE_OFFHAND]  	= {  PARAM = CRIT_MULTIPLIER, VALUE = 0.12, METHOD = STRAIGHT_BONUS }
+				[ITEM_TYPE_JEWELRY]  	= {  PARAM = MP_REGEN, VALUE = 1.07, METHOD = MULTIPLY_BONUS },
+				[ITEM_TYPE_OFFHAND]  	= {  PARAM = CRIT_MULTIPLIER, VALUE = 0.06, METHOD = STRAIGHT_BONUS }
 			},
 			cost = 50,
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_GEM]
@@ -1173,6 +1174,20 @@ do
 			sell_penalty = 0.5
 		})
 
+		ItemAddData('I021', {
+			NAME    		  	 	= LOCALE_LIST[my_locale].SKILLBOOK_FIRE,
+			QUALITY 		   		= RARE_ITEM,
+			TYPE    		  		= ITEM_TYPE_SKILLBOOK,
+			frame_texture    		= "Items\\Book\\BTNbook1fire .blp",
+			item_description		= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 			= SORCERESS_CLASS,
+			skill_category 			= CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_FIRE],
+			learn_effect 			= "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
+			soundpack 				= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 					= 700,
+			sell_penalty 			= 0.5
+		})
+
 		ItemAddData('I00V', {
 			NAME    		   = LOCALE_LIST[my_locale].SKILLBOOK_ICE,
 			TYPE    		   = ITEM_TYPE_SKILLBOOK,
@@ -1184,6 +1199,20 @@ do
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOK],
 			cost = 200,
 			sell_penalty = 0.5
+		})
+
+		ItemAddData('I020', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_ICE,
+			QUALITY 		   	= RARE_ITEM,
+			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
+			frame_texture      	= "Items\\Book\\BTNbook1water .blp",
+			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= SORCERESS_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_ICE],
+			learn_effect 		= "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 700,
+			sell_penalty 		= 0.5
 		})
 
 		ItemAddData('I013', {
@@ -1199,6 +1228,21 @@ do
 			sell_penalty = 0.5
 		})
 
+		ItemAddData('I01Z', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_LIGHTNING,
+			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
+			QUALITY 		   	= RARE_ITEM,
+			frame_texture      	= "Items\\Book\\BTNbook1wind .blp",
+			item_description	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= SORCERESS_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_LIGHTNING],
+			learn_effect 		= "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 700,
+			sell_penalty		 = 0.5
+		})
+
+
 		ItemAddData('I014', {
 			NAME    		   = LOCALE_LIST[my_locale].SKILLBOOK_ARCANE,
 			TYPE    		   = ITEM_TYPE_SKILLBOOK,
@@ -1212,6 +1256,21 @@ do
 			sell_penalty = 0.5
 		})
 
+		ItemAddData('I022', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_ARCANE,
+			QUALITY 		   	= RARE_ITEM,
+			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
+			frame_texture      	= "Items\\Book\\BTNBK_Red_Book.blp",
+			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= SORCERESS_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[SORCERESS_CLASS][SKILL_CATEGORY_ARCANE],
+			learn_effect 		= "Abilities\\Spells\\Items\\AIim\\AIimTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 700,
+			sell_penalty 		= 0.5
+		})
+
+
 		ItemAddData('I015', {
 			NAME    		   = LOCALE_LIST[my_locale].SKILLBOOK_FIGHTING_MASTERY,
 			TYPE    		   = ITEM_TYPE_SKILLBOOK,
@@ -1223,6 +1282,20 @@ do
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOK],
 			cost = 200,
 			sell_penalty = 0.5
+		})
+
+		ItemAddData('I023', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_FIGHTING_MASTERY,
+			QUALITY 		   	= RARE_ITEM,
+			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
+			frame_texture      	= "Items\\Book\\BTN_cr_BookNOADD.blp",
+			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= BARBARIAN_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[BARBARIAN_CLASS][SKILL_CATEGORY_FIGHTING_MASTERY],
+			learn_effect 		= "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 700,
+			sell_penalty 		= 0.5
 		})
 
 		ItemAddData('I016', {
@@ -1238,18 +1311,48 @@ do
 			sell_penalty = 0.5
 		})
 
-		ItemAddData('I017', {
-			NAME    		   = LOCALE_LIST[my_locale].SKILLBOOK_BATTLE_ADVANTAGE,
-			TYPE    		   = ITEM_TYPE_SKILLBOOK,
-			frame_texture      = "Items\\Book\\BTNSimpleBook1.BLP",
-			item_description = LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
-			restricted_to = BARBARIAN_CLASS,
-			skill_category = CLASS_SKILL_LIST[BARBARIAN_CLASS][SKILL_CATEGORY_BATTLE_ADVANTAGE],
-			learn_effect = "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
-			soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOK],
-			cost = 200,
-			sell_penalty = 0.5
+		ItemAddData('I024', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_INNER_STRENGTH,
+			QUALITY 		   	= RARE_ITEM,
+			TYPE    		  	= ITEM_TYPE_SKILLBOOK,
+			frame_texture     	= "Items\\Book\\BTNRuneBook.BLP",
+			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= BARBARIAN_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[BARBARIAN_CLASS][SKILL_CATEGORY_INNER_STRENGTH],
+			learn_effect 		= "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 700,
+			sell_penalty 		= 0.5
 		})
+
+		ItemAddData('I017', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_BATTLE_ADVANTAGE,
+			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
+			frame_texture      	= "Items\\Book\\BTNSimpleBook1.BLP",
+			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= BARBARIAN_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[BARBARIAN_CLASS][SKILL_CATEGORY_BATTLE_ADVANTAGE],
+			learn_effect 		= "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 200,
+			sell_penalty 		= 0.5
+		})
+
+		ItemAddData('I025', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_BATTLE_ADVANTAGE,
+			QUALITY 		   	= RARE_ITEM,
+			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
+			frame_texture      	= "Items\\Book\\BTNSimpleBook1.BLP",
+			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= BARBARIAN_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[BARBARIAN_CLASS][SKILL_CATEGORY_BATTLE_ADVANTAGE],
+			learn_effect		= "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 700,
+			sell_penalty 		= 0.5
+		})
+
+
 
 		ItemAddData('I00N', {
 			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_RAT_HUNTER,

@@ -9,7 +9,8 @@ do
             AddUnitAnimationProperties(unit, "channel", false)
             AddUnitAnimationProperties(unit, unit_data.animation_tag or "", true)
             PauseTimer(unit_data.action_timer)
-            BlzSetSpecialEffectScale(unit_data.whirlwind_sfx, 1.)
+            DestroyTimer(unit_data.whirlwind_effect_timer)
+            --BlzSetSpecialEffectScale(unit_data.whirlwind_sfx, 1.)
             DestroyEffect(unit_data.whirlwind_sfx)
             DestroyLoopingSound(unit_data.looping_sound, 0.2)
             SpellBackswing(unit)
@@ -36,8 +37,34 @@ do
             UnitAddAbility(unit, FourCC('Abun'))
 
             unit_data.looping_sound = AddLoopingSoundOnUnit({"Sounds\\Spell\\whirlwind_1.wav", "Sounds\\Spell\\whirlwind_2.wav", "Sounds\\Spell\\whirlwind_3.wav", "Sounds\\Spell\\whirlwind_4.wav"}, unit, 200, 200, -0.15, 110, 1700.)
-            unit_data.whirlwind_sfx = AddSpecialEffectTarget("Spell\\whirlwind.mdx", unit, "origin")
-            BlzSetSpecialEffectScale(unit_data.whirlwind_sfx, 0.75)
+            unit_data.whirlwind_effect_timer = CreateTimer()
+            TimerStart(unit_data.whirlwind_effect_timer, 0.05, true, function()
+                local whirlwind_sfx = AddSpecialEffect("Effect\\Ephemeral Slash Orange.mdx", GetUnitX(unit), GetUnitY(unit))
+                local effect_move_timer = CreateTimer()
+                local bonus_z = 120. + GetRandomReal(-15., 15.)
+                local timescale = GetRandomReal(0.8, 1.2)
+                local duration = 1. * timescale
+
+                BlzSetSpecialEffectZ(whirlwind_sfx, GetUnitZ(unit) + bonus_z)
+                BlzSetSpecialEffectYaw(whirlwind_sfx, GetRandomReal(0., 359.) * bj_DEGTORAD)
+                BlzSetSpecialEffectRoll(whirlwind_sfx, 180. * bj_DEGTORAD)
+                BlzSetSpecialEffectTimeScale(whirlwind_sfx, timescale)
+                BlzSetSpecialEffectScale(whirlwind_sfx, 0.9)
+
+                    TimerStart(effect_move_timer, 0.025, true, function()
+                        if duration <= 0. then
+                            DestroyEffect(whirlwind_sfx)
+                            DestroyTimer(effect_move_timer)
+                        else
+                            BlzSetSpecialEffectPosition(whirlwind_sfx, GetUnitX(unit), GetUnitY(unit), GetUnitZ(unit) + bonus_z)
+                            duration = duration - 0.025
+                        end
+                    end)
+
+            end)
+            --unit_data.whirlwind_sfx = AddSpecialEffectTarget("Spell\\whirlwind.mdx", unit, "origin")
+
+            --BlzSetSpecialEffectScale(unit_data.whirlwind_sfx, 0.75)
 
             TimerStart(unit_data.action_timer, 0.33, true, function()
                 local mp = GetUnitState(unit, UNIT_STATE_MANA)

@@ -6,11 +6,78 @@
 do
 
 
+    function HideAllMonsters()
+        for i = 1, #MonsterPack do
+            if BlzGroupGetSize(MonsterPack[i].group) > 0 then
+                ForGroup(MonsterPack[i].group, function() ShowUnit(GetEnumUnit(), false) end)
+            end
+        end
 
-    function VictoryScreen()
-        for i = 1, 6 do
-            CustomVictoryBJ(Player(i-1), true, true)
+        for i = 1, #BossPack do
+            ShowUnit(BossPack[i].boss, false)
+        end
+
+        ForGroup(ScaleMonstersGroup, function() ShowUnit(GetEnumUnit(), false) end)
+
+        if ActiveRift and ActiveRift.group then
+            ForGroup(ActiveRift.group, function() ShowUnit(GetEnumUnit(), false) end)
         end
     end
+
+
+    function EndgameCountdown(duration)
+        local timer = CreateTimer()
+        local text = LOCALE_LIST[my_locale].ENDGAME_TEXT
+        local af = string.sub(text, 0, string.find(text, "#") - 1)
+        local suf = string.sub(text, string.find(text, "#") + 1, #text)
+
+            HideAllMonsters()
+            TimerStart(WaveTimer, 0., false, nil)
+            MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 0, 1), "")
+
+                TimerStart(timer, 1., true, function()
+                    if duration == 0 then
+                        DestroyTimer(timer)
+                    else
+                        duration = duration - 1
+                        print(af .. duration .. suf)
+                        --print("Завершение игры через " .. duration .. " сек.")
+                    end
+                end)
+
+    end
+
+
+    function VictoryScreen()
+
+        print(LOCALE_LIST[my_locale].VICTORY_TEXT)
+        EndgameCountdown(120)
+        DelayAction(120., function()
+            for i = 1, 6 do
+                CustomVictoryBJ(Player(i-1), true, true)
+            end
+        end)
+
+    end
+
+
+    function DefeatScreen()
+
+        print(LOCALE_LIST[my_locale].DEFEAT_TEXT)
+        EndgameCountdown(120)
+        ShowUnit(gg_unit_n000_0056, false)
+        ShowUnit(gg_unit_opeo_0031, false)
+        ShowUnit(gg_unit_n01W_0111, false)
+        ShowUnit(gg_unit_n013_0011, false)
+        ShowUnit(gg_unit_n01V_0110, false)
+        ShowUnit(gg_unit_n020_0075, false)
+        DelayAction(120., function()
+            for i = 1, 6 do
+                CustomDefeatBJ(Player(i), LOCALE_LIST[my_locale].DEFEAT_TEXT_D)
+            end
+        end)
+
+    end
+
 
 end

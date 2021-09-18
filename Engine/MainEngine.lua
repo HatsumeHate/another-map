@@ -146,11 +146,12 @@ do
             --print(I2S(attacker.stats[BONUS_UNDEAD_DAMAGE].value))
             --print(I2S(attacker.stats[BONUS_HUMAN_DAMAGE].value))
             --print(I2S(attacker.stats[BONUS_DEMON_DAMAGE].value))
-            if victim.trait then
-                if victim.trait == TRAIT_BEAST then trait_modifier = 1. + (attacker.stats[BONUS_BEAST_DAMAGE].value * 0.01)
-                elseif victim.trait == TRAIT_UNDEAD then trait_modifier = 1. + (attacker.stats[BONUS_UNDEAD_DAMAGE].value * 0.01)
-                elseif victim.trait == TRAIT_HUMAN then trait_modifier = 1. + (attacker.stats[BONUS_HUMAN_DAMAGE].value * 0.01)
-                elseif victim.trait == TRAIT_DEMON then trait_modifier = 1. + (attacker.stats[BONUS_DEMON_DAMAGE].value * 0.01)
+            if victim.unit_trait then
+                for i = 1, #victim.unit_trait do
+                    if victim.unit_trait[i] == TRAIT_BEAST then trait_modifier = trait_modifier + (attacker.stats[BONUS_BEAST_DAMAGE].value * 0.01)
+                    elseif victim.unit_trait[i] == TRAIT_UNDEAD then trait_modifier = trait_modifier + (attacker.stats[BONUS_UNDEAD_DAMAGE].value * 0.01)
+                    elseif victim.unit_trait[i] == TRAIT_HUMAN then trait_modifier = trait_modifier + (attacker.stats[BONUS_HUMAN_DAMAGE].value * 0.01)
+                    elseif victim.unit_trait[i] == TRAIT_DEMON then trait_modifier = trait_modifier + (attacker.stats[BONUS_DEMON_DAMAGE].value * 0.01) end
                 end
             end
            -- print("5")
@@ -172,6 +173,7 @@ do
 
             if damage_type == DAMAGE_TYPE_PHYSICAL then
                 defence = 1. - (ParamToPercent(victim.stats[PHYSICAL_DEFENCE].value, PHYSICAL_DEFENCE) * 0.01)
+                if defence < 0.25 then defence = 0.25 end
             elseif damage_type == DAMAGE_TYPE_MAGICAL then
                 local boost = attacker.stats[MAGICAL_ATTACK].value - victim.stats[MAGICAL_SUPPRESSION].value
                 if boost < 0 then boost = 0 end
@@ -374,6 +376,30 @@ do
                 BlzUnitInterruptAttack(GetAttacker())
                 --DelayAction(0., function() IssueImmediateOrderById(GetAttacker(), order_stop) end)
             end
+        end)
+
+        RegisterTestCommand("def100", function()
+            print(ParamToPercent(100, PHYSICAL_DEFENCE))
+        end)
+
+        RegisterTestCommand("def250", function()
+            print(ParamToPercent(250, PHYSICAL_DEFENCE))
+        end)
+
+        RegisterTestCommand("def500", function()
+            print(ParamToPercent(500, PHYSICAL_DEFENCE))
+        end)
+
+        RegisterTestCommand("def750", function()
+            print(ParamToPercent(750, PHYSICAL_DEFENCE))
+        end)
+
+        RegisterTestCommand("def1000", function()
+            print(ParamToPercent(1000, PHYSICAL_DEFENCE))
+        end)
+
+        RegisterTestCommand("def1250", function()
+            print(ParamToPercent(1250, PHYSICAL_DEFENCE))
         end)
 
     end

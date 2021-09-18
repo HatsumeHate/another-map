@@ -201,6 +201,8 @@ do
 
         LibrarianFrame = {}
 
+        AddSpecialEffectTarget("Marker\\LibrarianIcon.mdx", unit_owner, "overhead")
+
         ClickTrigger = CreateTrigger()
         TriggerAddAction(ClickTrigger, function()
             local button = GetButtonData(BlzGetTriggerFrame())
@@ -225,12 +227,12 @@ do
                              SetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD, gold - EXCHANGE_COST)
                              PlayLocalSound("Sound\\altarshop_buymagicspell.wav", player-1, 115)
                              BlzFrameSetText(LibrarianFrame[player].exchange_frame, "")
-
+                             local quality = item_data.QUALITY
                              DropItemFromInventory(player, exchange_button.item)
                              RemoveCustomItem(exchange_button.item)
                              exchange_button.item = nil
                              UpdateLibrarianWindow(player)
-                             local new_book = CreateCustomItem(BOOK_CLASS_ITEM_LIST[unit_data.unit_class][GetRandomInt(1, #BOOK_CLASS_ITEM_LIST[unit_data.unit_class])], 0.,0., false)
+                             local new_book = CreateCustomItem(GetRandomBookClass(unit_data.unit_class, quality), 0.,0., false)
                              AddToInventory(player, new_book)
                          else
                              Feedback_NoGold(player)

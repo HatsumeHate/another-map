@@ -9,131 +9,9 @@ do
 
 
 
-    local Click_Ability = 0
-    local Click_Condition = 0
-
-    function ClickCondition()
-        return GetOrderTargetItem() == nil and GetUnitAbilityLevel(GetOrderTargetUnit(), Click_Ability) > 0 and GetIssuedOrderId() == order_smart and IsUnitInRange(GetOrderTargetUnit(), GetTriggerUnit(), 200.)
-    end
-
-    ---@param unit unit
-    ---@param trig trigger
-    function ClickFunctionsRemove(unit, trig)
-        UnitRemoveAbility(unit, Click_Ability)
-        DestroyTrigger(trig)
-    end
-
-    ---@param npc unit
-    ---@param actions function
-    function RegisterClickFeedbackOnNPC(npc, actions)
-        local ClickTrig = CreateTrigger()
-
-            TriggerRegisterAnyUnitEventBJ(ClickTrig, EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER)
-            TriggerAddCondition(ClickTrig, Click_Condition)
-            TriggerAddAction(ClickTrig, function()
-                if GetOrderTargetUnit() == npc then
-                    actions()
-                end
-            end)
-
-
-        return ClickTrig
-    end
-
-
-    ---@param count number
-    ---@param item number
-    ---@param where table
-    function CreateQuestItems(count, item, where, max_per_spawn)
-
-        while(count > 0) do
-            local currentspawn = GetRandomInt(1, max_per_spawn or 4)
-            local rect = where[GetRandomInt(1, #where)]
-
-            if count - currentspawn < 0 then currentspawn = currentspawn - count end
-            count = count - currentspawn
-
-            for i = 1, currentspawn do CreateItem(item, GetRandomRectX(rect), GetRandomRectY(rect)) end
-        end
-
-        where = nil
-    end
-
-
-    ---@param myfunction function
-    function PickUpItemReaction(myfunction)
-        local trg = CreateTrigger()
-        TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_PICKUP_ITEM)
-        TriggerAddAction(trg, myfunction)
-    end
-
-
-    ---@param unit unit
-    ---@param leash_range number
-    function CreateLeashForUnit(unit, leash_range)
-        local x = GetUnitX(unit); local y = GetUnitY(unit)
-        local returning = false
-
-            local timer = CreateTimer()
-            TimerStart(timer, 3.25, true, function()
-                local state = GetUnitState(unit, UNIT_STATE_LIFE) > 0.045
-
-                    if state and not returning and not IsUnitInRangeXY(unit, x, y, leash_range) then
-                        UnitAddAbility(unit, FourCC("AAIM"))
-                        UnitAddAbility(unit, FourCC("Avul"))
-                        UnitAddAbility(unit, FourCC("Abun"))
-                        returning = true
-                        IssueImmediateOrderById(unit, order_stop)
-                        DelayAction(0., function() IssuePointOrderById(unit, order_move, x, y) end)
-                    elseif IsUnitInRangeXY(unit, x, y, 35.) and state and returning then
-                        SetUnitState(unit, UNIT_STATE_LIFE, GetUnitState(unit, UNIT_STATE_MAX_LIFE))
-                        UnitRemoveAbility(unit, FourCC("AAIM"))
-                        UnitRemoveAbility(unit, FourCC("Avul"))
-                        UnitRemoveAbility(unit, FourCC("Abun"))
-                        IssueImmediateOrderById(unit, order_stop)
-                        returning = false
-                    elseif not state then
-                        DestroyTimer(GetExpiredTimer())
-                    elseif returning then
-                        IssuePointOrderById(unit, order_move, x, y)
-                    end
-
-            end)
-
-    end
-
-
-    function CreateNPC(id, position, facing)
-        return CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC(id), GetRectCenterX(position), GetRectCenterY(position), facing)
-    end
-
-
-
-    MARK_TYPE_QUESTION = 1
-    MARK_TYPE_EXCLAMATION = 2
-
-    MARK_COMMON = 1
-    MARK_SPECIAL = 2
-    MARK_DAILY = 3
-    MARK_EMERGENCY = 4
-    MARK_LOW_COMMON = 5
-    MARK_LOW_DAILY = 6
-    MARK_UNAVAILABLE = 7
-    MARK_TEAMCOLOR = 8
-    MARK_ATTENTION = 9
-
-    local MarkList = 0
-
-
-    function AddMark(unit, mark_type, mark_var)
-        return AddSpecialEffectTarget(MarkList[mark_type or 1][mark_var or 1], unit, "overhead")
-    end
-
-
-
     function EnableQuest1NPC()
-        local npc = CreateNPC("n016", gg_rct_npc_1, 240.)
-        local effect = AddMark(npc, MARK_TYPE_EXCLAMATION, MARK_COMMON) --AddSpecialEffectTarget("Quest\\ExcMark_Gold_NonrepeatableQuest.mdx", npc, "overhead")
+        local npc = CreateNPC("n016", gg_rct_npc_1, 240., LOCALE_LIST[my_locale].AIZEK_NAME)
+        local effect = AddQuestMark(npc, MARK_TYPE_EXCLAMATION, MARK_COMMON) --AddSpecialEffectTarget("Quest\\ExcMark_Gold_NonrepeatableQuest.mdx", npc, "overhead")
 
 
             RegisterClickFeedbackOnNPC(npc, function()
@@ -144,9 +22,7 @@ do
                 AddQuestItem("que1a",  "que1apool",  LOCALE_LIST[my_locale].QUEST_1_ITEM,  false)
                 AddQuestItemPool("que1a", "que1apool", 20)
 
-                BlzSetUnitName(npc, LOCALE_LIST[my_locale].AIZEK_NAME)
                 PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_SPEECH, 8.)
-
                 CreateQuestItems(20, FourCC("I01M"), { gg_rct_quest_1_itemrect, gg_rct_quest_2_itemrect, gg_rct_quest_3_itemrect, gg_rct_quest_4_itemrect, gg_rct_quest_5_itemrect })
 
 
@@ -198,7 +74,7 @@ do
 
                 CreateQuestItems(40, FourCC("I01P"), { gg_rct_quest_rect_1, gg_rct_quest_rect_2, gg_rct_quest_rect_3, gg_rct_quest_rect_4, gg_rct_quest_rect_5, gg_rct_quest_rect_6, gg_rct_quest_rect_7, gg_rct_quest_rect_8 })
 
-                PickUpItemReaction(function()
+                PickUpItemReaction("I01P", function()
                     if GetItemTypeId(GetManipulatedItem()) == FourCC("I01P") then
                         if SetQuestItemPool("que2", "item1", 1) then
                             effect = AddSpecialEffectTarget("Quest\\Completed_Quest.mdx", npc, "overhead")
@@ -222,12 +98,12 @@ do
 
 
     function EnableMainQuest2()
-        local npc = CreateNPC("n01F", gg_rct_npc_5, 235.)
-        local effect  = AddMark(npc, MARK_TYPE_EXCLAMATION, MARK_SPECIAL)
-        local npc_hunter = CreateNPC("n01D", gg_rct_npc_6, 270.)
-        local hunter_effect = AddMark(npc_hunter, MARK_TYPE_QUESTION, MARK_SPECIAL)
-        local npc_witch = CreateNPC("n01E", gg_rct_npc_7, 270.)
-        local witch_effect = AddMark(npc_witch, MARK_TYPE_QUESTION, MARK_SPECIAL)
+        local npc = CreateNPC("n01F", gg_rct_npc_5, 235., LOCALE_LIST[my_locale].DON_NAME)
+        local effect  = AddQuestMark(npc, MARK_TYPE_EXCLAMATION, MARK_SPECIAL)
+        local npc_hunter = CreateNPC("n01D", gg_rct_npc_6, 270., LOCALE_LIST[my_locale].HUNTER_NAME)
+        local hunter_effect = AddQuestMark(npc_hunter, MARK_TYPE_QUESTION, MARK_SPECIAL)
+        local npc_witch = CreateNPC("n01E", gg_rct_npc_7, 270., LOCALE_LIST[my_locale].WITCH_NAME)
+        local witch_effect = AddQuestMark(npc_witch, MARK_TYPE_QUESTION, MARK_SPECIAL)
         local guard = CreateUnit(MONSTER_PLAYER, FourCC("n01X"), GetRectCenterX(gg_rct_npc_8), GetRectCenterY(gg_rct_npc_8), RndAng())
         local proximity = CreateTrigger()
         local DeathTrg = CreateTrigger()
@@ -256,7 +132,7 @@ do
 
 
           local hunter_feedback = RegisterClickFeedbackOnNPC(npc_hunter, function()
-                UnitRemoveAbility(npc_hunter, Click_Ability)
+              ClickFunctionsRemove(npc_hunter)
 
                     if IsMyQuestItemCompleted("q2m", "q2mivar6") then
                         DestroyEffect(hunter_effect)
@@ -295,7 +171,8 @@ do
 
 
         local witch_feedback = RegisterClickFeedbackOnNPC(npc_witch, function()
-                UnitRemoveAbility(npc_witch, Click_Ability)
+                 ClickFunctionsRemove(npc_witch)
+
 
                     if not IsMyQuestItemCompleted("q2m", "q2mi2var2") then
                         DestroyEffect(witch_effect)
@@ -311,13 +188,11 @@ do
                         SetQuestItemState("q2m", "q2mi2var2", true)
                         CreateQuestItems(15, FourCC("I01T"), { gg_rct_quest_1_itemrect, gg_rct_quest_5_itemrect, gg_rct_quest_rect_4, gg_rct_quest_rect_5, gg_rct_quest_rect_6 }, 3)
 
-                        PickUpItemReaction(function()
-                            if GetItemTypeId(GetManipulatedItem()) == FourCC("I01T") then
-                                if SetQuestItemPool("q2m", "q2mi2var3", 1) then
-                                    witch_effect = AddMark(npc_witch, MARK_TYPE_QUESTION, MARK_SPECIAL)
-                                    UnitAddAbility(npc_witch, Click_Ability)
-                                    DestroyTrigger(GetTriggeringTrigger())
-                                end
+                        PickUpItemReaction("I01T", function()
+                            if SetQuestItemPool("q2m", "q2mi2var3", 1) then
+                                witch_effect = AddQuestMark(npc_witch, MARK_TYPE_QUESTION, MARK_SPECIAL)
+                                ClickFunctionsAdd(npc_witch)
+                                DestroyTrigger(GetTriggeringTrigger())
                             end
                         end)
 
@@ -361,8 +236,8 @@ do
         TriggerAddAction(DeathTrg, function()
             AddQuestItem("q2m", "q2mivar5", LOCALE_LIST[my_locale].QUEST_2_M_ITEMVAR5, true)
             SetQuestItemState("q2m", "q2mivar6", true)
-            hunter_effect = AddMark(npc_hunter, MARK_TYPE_QUESTION, MARK_SPECIAL)
-            UnitAddAbility(npc_hunter, Click_Ability)
+            hunter_effect = AddQuestMark(npc_hunter, MARK_TYPE_QUESTION, MARK_SPECIAL)
+            ClickFunctionsAdd(npc_hunter)
         end)
 
 
@@ -387,9 +262,9 @@ do
 
     function EnableMainQuest1_Guinplen_1()
         Guinplen = {
-            npc = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("n018"), GetRectCenterX(gg_rct_npc_3), GetRectCenterY(gg_rct_npc_3), 275.),
+            npc = CreateNPC("n018", gg_rct_npc_3, 275., LOCALE_LIST[my_locale].GUINPLEN_NAME),
         }
-        BlzSetUnitName(Guinplen.npc, LOCALE_LIST[my_locale].GUINPLEN_NAME)
+
 
         Guinplen.effect = AddSpecialEffectTarget("Quest\\Completed_Quest_Special.mdx", Guinplen.npc, "overhead")
 
@@ -448,10 +323,8 @@ do
 
 
     function EnableMainQuest1()
-        local npc = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("n01A"), GetRectCenterX(gg_rct_npc_2), GetRectCenterY(gg_rct_npc_2), 315.)
+        local npc = CreateNPC("n01A", gg_rct_npc_2, 315., LOCALE_LIST[my_locale].STEPHAN_NAME)
         local effect = AddSpecialEffectTarget("Quest\\ExcMark_Orange_ClassQuest.mdx", npc, "overhead")
-
-        BlzSetUnitName(npc, LOCALE_LIST[my_locale].STEPHAN_NAME)
 
         RegisterClickFeedbackOnNPC(npc, function()
             ClickFunctionsRemove(npc, GetTriggeringTrigger())
@@ -473,7 +346,7 @@ do
                 --DelayAction(0.001, function() ScaleMonsterUnit(Lilith) end)
                 CreateLeashForUnit(Lilith, 1250.)
 
-                GroupAddUnit(QuestMonsters, Lilith)
+                --GroupAddUnit(ScaleMonstersGroup, Lilith)
 
                 local lilith_proximity_trigger = CreateTrigger()
                 local lilith_death_trg = CreateTrigger()
@@ -542,32 +415,7 @@ do
 
 
     function InitQuestsData()
-        Click_Ability = FourCC("A01W")
-        Click_Condition = Condition(ClickCondition)
 
-        MarkList = {
-            [MARK_TYPE_QUESTION] = {
-                [MARK_COMMON] = "Quest\\Completed_Quest.mdx",
-                [MARK_SPECIAL] = "Quest\\Completed_Quest_Special.mdx",
-                [MARK_DAILY] = "Quest\\Completed_Quest_Daily.mdx",
-                [MARK_EMERGENCY] = "Quest\\Completed_Quest_Emergency.mdx",
-                [MARK_LOW_COMMON] = "Quest\\Completed_Quest_Low.mdx",
-                [MARK_LOW_DAILY] = "Quest\\Completed_Quest_Low_Daily.mdx",
-                [MARK_UNAVAILABLE] = "Quest\\Completed_Quest_NOT.mdx",
-                [MARK_TEAMCOLOR] = "Quest\\Completed_Quest_TEAMCOLOR.mdx"
-            },
-            [MARK_TYPE_EXCLAMATION] = {
-                [MARK_COMMON] = "Quest\\ExcMark_Gold_NonrepeatableQuest.mdx",
-                [MARK_SPECIAL] = "Quest\\ExcMark_Orange_ClassQuest.mdx",
-                [MARK_DAILY] = "Quest\\ExcMark_Blue_RepetableQuest.mdx",
-                [MARK_EMERGENCY] = "Quest\\ExcMark_Red_Emergency.mdx",
-                [MARK_LOW_COMMON] = "Quest\\ExcMark_Gold_LowNonrepeatableQuest.mdx",
-                [MARK_LOW_DAILY] = "Quest\\ExcMark_Blue_LowRepeatableQuest.mdx",
-                [MARK_UNAVAILABLE] = "Quest\\ExcMark_Grey_UnavailableQuest.mdx",
-                [MARK_TEAMCOLOR] = "Quest\\ExcMark_TeamColor.mdx",
-                [MARK_ATTENTION] = "Quest\\ExcMark_Green_FlightPath.mdx",
-            }
-        }
 
     end
     

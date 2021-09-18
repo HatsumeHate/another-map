@@ -10,6 +10,8 @@ do
     Current_Wave = 1
     WavesUntilShopsUpdate = 2
     local MusicMix = 0
+    local WaveToAquireHalfPotions = 20
+
 
 
     function GetRandomMusicMix()
@@ -115,6 +117,17 @@ do
 
             --herbalist
             ClearShop(gg_unit_n001_0055)
+
+            if WaveToAquireHalfPotions and Current_Wave >= WaveToAquireHalfPotions then
+                local my_item = CreateCustomItem(ITEM_POTION_HEALTH_HALF,  0.,0.)
+                    SetItemCharges(my_item, 20)
+                    AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 29, true)
+                    my_item = CreateCustomItem(ITEM_POTION_MANA_HALF,  0.,0.)
+                    SetItemCharges(my_item, 20)
+                    AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 30, true)
+                    WaveToAquireHalfPotions = nil
+            end
+
             item_count = GetRandomInt(2, 6)
             for i = 1, item_count do
                 local item = CreateCustomItem(GetGeneratedItemId(item_pool[GetRandomInt(1, 4)]), 0., 0.)
@@ -125,13 +138,42 @@ do
 
             item_count = GetRandomInt(0, 6)
             if item_count > 0 then
-                 AddItemToShop(gg_unit_n001_0055, CreateCustomItem(GetRandomBookItemId(), 0, 0, false), false)
+                 AddItemToShop(gg_unit_n001_0055, CreateCustomItem(GetRandomBookItemId(COMMON_ITEM), 0, 0, false), false)
             end
 
             if GetRandomInt(1, 2) == 2 then
                 local item = CreateCustomItem("I01O", 0, 0, false)
                 SetItemCharges(item, GetRandomInt(1, 2))
                 AddItemToShop(gg_unit_n001_0055, item, false)
+            end
+
+
+            item_count = GetRandomInt(1, 6)
+            ClearShop(gg_unit_n020_0075)
+
+            for i = 1, item_count do
+                local item = CreateCustomItem(GetRandomGeneratedItemId(), 0., 0., false)
+                local roll = GetRandomInt(1, 6)
+                local quality
+
+
+                    if roll == 2 then quality = RARE_ITEM
+                    else quality = COMMON_ITEM end
+
+                GenerateItemStats(item, Current_Wave + GetRandomInt(1, 2), quality)
+                AddItemToShop(gg_unit_n020_0075, item, false)
+            end
+
+            if GetRandomInt(1, 4) == 1 then
+                local item = CreateCustomItem(ITEM_POTION_MIX_WEAK, 0., 0.)
+                SetItemCharges(item, GetRandomInt(1, 10))
+                AddItemToShopWithSlot(gg_unit_n020_0075, item, 31, false)
+            end
+
+            if GetRandomInt(1, 4) == 1 then
+                local item = CreateCustomItem(ITEM_POTION_MIX_HALF, 0., 0.)
+                SetItemCharges(item, GetRandomInt(1, 7))
+                AddItemToShopWithSlot(gg_unit_n020_0075, item, 32, false)
             end
 
         end
@@ -162,6 +204,7 @@ do
             local scrolls = CreateCustomItem(ITEM_SCROLL_OF_TOWN_PORTAL, 0., 0.)
             SetItemCharges(scrolls, 5)
             AddItemToShopWithSlot(gg_unit_n001_0055, scrolls, 30, false)
+
 
         --print("shops resetted")
     end

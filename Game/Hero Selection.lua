@@ -10,6 +10,12 @@ do
     local DeathTrigger = 0
     local LvlupTrigger = 0
     local HeroDeathSoundpack = 0
+    local HeroProperNames
+    local HeroXPLevelFactor = 125.
+    local HeroXPPrevLevelFactor = 1.14
+    local HeroXPConstantFactor = 150.
+    PlayerRequiredEXP = nil
+    PlayerLastRequiredEXP = nil
 
 
 
@@ -20,10 +26,21 @@ do
 
 
      function IsAnyHeroInRange(x, y, range)
-        for i = 1, 6 do if PlayerHero[i] and IsUnitInRangeXY(PlayerHero[i], x, y, range) then return true end end
+        for i = 1, 6 do if PlayerHero[i] and IsUnitInRangeXY(PlayerHero[i], x, y, range) and GetUnitState(PlayerHero[i], UNIT_STATE_LIFE) > 0.045 then return true end end
         return false
     end
 
+
+    function GetLevelXP(level)
+        local xp = 200 -- level 1
+        local i = 1
+
+            for i = 2, level do
+                xp = ((xp*HeroXPPrevLevelFactor) + (i+1) * HeroXPLevelFactor) + HeroXPConstantFactor
+            end
+
+        return xp
+    end
 
     ---@param amount integer
     ---@param x real
@@ -126,6 +143,14 @@ do
 
                 local hero = CreateUnit(Player(player_id), id, GetRectCenterX(gg_rct_starting_location) , GetRectCenterY(gg_rct_starting_location), 270.)
                 RemoveUnit(GetTriggerUnit())
+
+                DelayAction(0., function()
+                    local unit_data = GetUnitData(hero)
+                    BlzSetHeroProperName(hero, HeroProperNames[unit_data.unit_class][GetRandomInt(1, #HeroProperNames[unit_data.unit_class])])
+                end)
+
+
+
                 --SelectUnit(hero, true)
                 --SelectUnitAddForPlayer(hero, Player(player_id))
 
@@ -139,6 +164,37 @@ do
                     TriggerRegisterDeathEvent(DeathTrigger, hero)
                     TriggerRegisterUnitEvent(LvlupTrigger, hero, EVENT_UNIT_HERO_LEVEL)
                     TriggerRegisterUnitEvent(OrderInterceptionTrigger, hero, EVENT_UNIT_ATTACKED)
+                    local damage_trigger = CreateTrigger()
+                    local hp_state_trigger = CreateTrigger()
+                    TriggerRegisterUnitEvent(damage_trigger, hero, EVENT_UNIT_DAMAGED)
+                    TriggerAddAction(damage_trigger, function()
+                        if GetEventDamage() > 0 then
+                            if (GetUnitState(hero, UNIT_STATE_LIFE) - GetEventDamage()) / BlzGetUnitMaxHP(hero) < 0.2 then
+                                Feedback_Health(player_id)
+                                SetCineFilterTexture("ReplaceableTextures\\CameraMasks\\DreamFilter_Mask.blp")
+                                SetCineFilterBlendMode(BLEND_MODE_ADDITIVE)
+                                SetCineFilterTexMapFlags(TEXMAP_FLAG_NONE)
+                                SetCineFilterStartUV(0, 0, 1, 1)
+                                SetCineFilterEndUV(0, 0, 1, 1)
+                                SetCineFilterStartColor(255, 75, 75, 0)
+                                SetCineFilterEndColor(255, 75, 75, 100)
+                                if GetLocalPlayer() == Player(player_number) then DisplayCineFilter(true) end
+                                SetCineFilterDuration(0.75)
+                                EnableTrigger(hp_state_trigger)
+                                DisableTrigger(damage_trigger)
+                            end
+                        end
+                    end)
+
+                    TriggerRegisterTimerEventPeriodic(hp_state_trigger, 0.33)
+                    TriggerAddAction(hp_state_trigger, function()
+                        if GetUnitState(hero, UNIT_STATE_LIFE) / BlzGetUnitMaxHP(hero) > 0.2 then
+                            if GetLocalPlayer() == Player(player_number) then DisplayCineFilter(false) end
+                            EnableTrigger(damage_trigger)
+                            DisableTrigger(hp_state_trigger)
+                        end
+                    end)
+
                     --TriggerRegisterUnitEvent(OrderInterceptionTrigger, hero, EVENT_UNIT_ISSUED_TARGET_ORDER)
 
 
@@ -179,6 +235,7 @@ do
                         SelectUnitForPlayerSingle(hero, Player(player_number))
                         AddPointsToPlayer(player_id, 0)
                         EnableGUIForPlayer(player_id)
+                        ShowPlayerUI(player_id)
                         PlayCinematicSpeech(player_id-1, gg_unit_h000_0054, LOCALE_LIST[my_locale].INTRODUCTION_TEXT_1, 6.)
                         DelayAction(7., function()
                             PlayCinematicSpeech(player_id-1, gg_unit_h000_0054, LOCALE_LIST[my_locale].INTRODUCTION_TEXT_2, 6.)
@@ -212,26 +269,48 @@ do
     SorceressRegion = 0
 
 
+    local function CreateClassText(rect, text)
+        local texttag = CreateTextTag()
+        SetTextTagText(texttag, text, 0.02)
+        SetTextTagColor(texttag, 255, 140, 140, 0)
+        SetTextTagPos(texttag, GetRectCenterX(rect)-32., GetRectCenterY(rect), 35.)
+    end
+
+
     function CreateHeroSelections()
+
+
+        PlayerRequiredEXP = {}
+        PlayerLastRequiredEXP = {}
+
+        for i = 1, 6 do
+            PlayerLastRequiredEXP[i] = 0
+            PlayerRequiredEXP[i] = GetLevelXP(1)
+        end
 
         DeathTrigger = CreateTrigger()
         LvlupTrigger = CreateTrigger()
         local trg = CreateTrigger()
-        BarbarianRegion = CreateRegion()
-        RegionAddRect(BarbarianRegion, gg_rct_barbarian_select)
 
+        BarbarianRegion = CreateRegion()
         SorceressRegion = CreateRegion()
         RegionAddRect(SorceressRegion, gg_rct_sorceress_select)
+        RegionAddRect(BarbarianRegion, gg_rct_barbarian_select)
+        CreateClassText(gg_rct_barbarian_select, LOCALE_LIST[my_locale].BARBARIAN_NAME)
+        CreateClassText(gg_rct_sorceress_select, LOCALE_LIST[my_locale].SORCERESS_NAME)
 
         TriggerRegisterEnterRegionSimple(trg, BarbarianRegion)
         TriggerRegisterEnterRegionSimple(trg, SorceressRegion)
-
         TriggerAddAction(trg, HeroSelect)
 
 
+
         TriggerAddAction(LvlupTrigger, function()
-            AddPointsToPlayer(GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1, 3)
-            DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Other\\Levelup\\LevelupCaster.mdx", GetTriggerUnit(), "origin"))
+            local player_id = GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1
+            AddPointsToPlayer(player_id, 3)
+            DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Other\\Levelup\\LevelupCaster.mdx", PlayerHero[player_id], "origin"))
+            PlayerLastRequiredEXP[player_id] = math.floor(GetLevelXP(GetHeroLevel(PlayerHero[player_id]) - 1) + 0.5)
+            PlayerRequiredEXP[player_id] = math.floor(GetLevelXP(GetHeroLevel(PlayerHero[player_id])) + 0.5)
         end)
 
         TriggerAddAction(DeathTrigger, function ()
@@ -243,7 +322,7 @@ do
             ResetUnitSpellCast(hero)
             SetUIState(GetPlayerId(player)+1, INV_PANEL, false)
             SetUIState(GetPlayerId(player)+1, SKILL_PANEL, false)
-            local gold_lost = R2I(GetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD) * 0.1)
+            local gold_lost = R2I(GetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD) * 0.2)
 
             if gold_lost > 1 then
                 DisplayTextToPlayer(player, 0.,0., LOCALE_LIST[my_locale].GOLD_PENALTY_TEXT_1 .. R2I(gold_lost) .. LOCALE_LIST[my_locale].GOLD_PENALTY_TEXT_2)
@@ -262,24 +341,58 @@ do
                     SetUnitState(hero, UNIT_STATE_MANA, GetUnitState(hero, UNIT_STATE_MAX_MANA) * 0.5)
                     DestroyTimer(GetExpiredTimer())
                     SelectUnitForPlayerSingle(hero, player)
+                    for i = 1, #ActiveCurses do ApplyCurse(ActiveCurses[i]) end
                 end)
 
         end)
+
+
+        local DefeatTrigger = CreateTrigger()
+        TriggerRegisterUnitEvent(DefeatTrigger, gg_unit_h001_0057, EVENT_UNIT_DEATH)
+        TriggerAddAction(DefeatTrigger, function()
+            DefeatScreen()
+        end)
+
 
 
         RegisterTestCommand("ded", function()
             KillUnit(PlayerHero[1])
         end)
 
-
-        RegisterTestCommand("handle", function()
-            print(GetHandleId(PlayerHero[1]))
+        RegisterTestCommand('vct', function()
+            Current_Wave = 51
+            EndWave()
         end)
+
+        RegisterTestCommand('dft', function()
+            KillUnit(gg_unit_h001_0057)
+        end)
+
 
         HeroDeathSoundpack = {
             [BARBARIAN_CLASS] = { "Sound\\Barbarian\\death1.wav", "Sound\\Barbarian\\death2.wav" },
             [SORCERESS_CLASS] = { "Sound\\Sorceress\\death1.wav", "Sound\\Sorceress\\death2.wav", "Sound\\Sorceress\\death3.wav" }
         }
+
+        HeroProperNames = {
+            [BARBARIAN_CLASS] = {
+                LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_1, LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_2, LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_3, LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_4,
+                LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_5, LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_6, LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_7, LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_8,
+                LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_9, LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_10, LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_11
+            },
+            [SORCERESS_CLASS] = {
+                LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_1, LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_2, LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_3, LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_4,
+                LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_5, LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_6, LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_7, LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_8,
+                LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_9
+            },
+        }
+
+
+        RegisterTestCommand("exp", function()
+            SuspendHeroXP(PlayerHero[1], false)
+            AddHeroXP(PlayerHero[1], 100, false)
+            SuspendHeroXP(PlayerHero[1], true)
+        end)
 
 
     end

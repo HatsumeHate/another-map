@@ -96,12 +96,12 @@ do
 
         NewAnimationSequence("barb_swing_1", {
             animation           = 24,
-            animation_point     = 0.542,
+            animation_point     = 0.521,
             animation_backswing = 0.33,
             tags = {
                 [ANIM_TAG_TWOHANDED] = {
                     animation           = 10,
-                    animation_point     = 0.625,
+                    animation_point     = 0.61,
                     animation_backswing = 0.33,
                 },
                 [ANIM_TAG_ONEHANDED] = {
@@ -125,7 +125,7 @@ do
             tags = {
                 [ANIM_TAG_TWOHANDED] = {
                     animation           = 8,
-                    animation_point     = 0.686,
+                    animation_point     = 0.653,
                     animation_backswing = 0.33,
                 },
                 [ANIM_TAG_ONEHANDED] = {
@@ -204,9 +204,9 @@ do
         })
 
         NewAnimationSequence("meph_spell", {
-            animation           = 8,
-            animation_point     = 0.445,
-            animation_backswing = 0.555,
+            animation           = 14,
+            animation_point     = 0.333,
+            animation_backswing = 0.333,
         })
 
         NewAnimationSequence("boar_charge", {
@@ -232,6 +232,56 @@ do
             animation_point     = 0.6,
             animation_backswing = 0.4,
         })
+
+        NewAnimationSequence("voidvalker_spell", {
+            animation           = 3,
+            animation_point     = 1.,
+            animation_backswing = 0.8,
+        })
+
+        NewAnimationSequence("necro_spell_channel", {
+            animation           = 5,
+            animation_point     = 1.,
+            animation_backswing = 0.3,
+        })
+
+        NewAnimationSequence("ghost_spell", {
+            animation           = 3,
+            animation_point     = 1.,
+            animation_backswing = 0.4,
+        })
+
+        NewAnimationSequence("andariel_spell_throw", {
+            animation           = 2,
+            animation_point     = 0.333,
+            animation_backswing = 0.46,
+        })
+
+        NewAnimationSequence("baal_spell", {
+            animation           = 4,
+            animation_point     = 0.333,
+            animation_backswing = 0.46,
+        })
+
+        NewAnimationSequence("skeleton_mage_spell", {
+            animation           = 2,
+            animation_point     = 0.533,
+            animation_backswing = 0.42,
+        })
+
+        NewAnimationSequence("sorceress_spell", {
+            animation           = 1,
+            animation_point     = 0.767,
+            animation_backswing = 0.42,
+        })
+
+        NewAnimationSequence("revenant_spell", {
+            animation           = 2,
+            animation_point     = 0.604,
+            animation_backswing = 0.4,
+        })
+
+
     end
 
 end

@@ -45,14 +45,15 @@ do
             AltarsList[altar] = {
                 rect = rect,
                 altar_type = ALTAR_TYPE_CHEST,
-                obelisk_effect = AltarEffects.chest_open
+                obelisk_effect = AltarEffects.chest_open,
+                minimap_icon = CreateMinimapIconOnUnit(altar, 255, 255, 255, "Marker\\MarkChest.mdx", FOG_OF_WAR_VISIBLE)
             }
 
         GroupAddUnit(ChestGroup, altar)
 
             for i = 1, 6 do
                 if FirstTime_Data[i].first_time then
-                    TriggerRegisterUnitInRange(FirstTime_Data[i].proximity_trigger, altar, 550., nil)
+                    TriggerRegisterUnitInRange(FirstTime_Data[i].proximity_trigger, altar, 300., nil)
                 end
             end
 
@@ -67,14 +68,15 @@ do
             AltarsList[altar] = {
                 rect = rect,
                 altar_type = well_type,
-                obelisk_effect = well_type == ALTAR_TYPE_WELL_HP and AltarEffects.well_hp or AltarEffects.well_mp
+                obelisk_effect = well_type == ALTAR_TYPE_WELL_HP and AltarEffects.well_hp or AltarEffects.well_mp,
             }
 
+        AltarsList[altar].minimap_icon = CreateMinimapIconOnUnit(altar, 255, 255, 255, AltarsList[altar].obelisk_effect.minimap_model_active, FOG_OF_WAR_VISIBLE)
         SetUnitAnimation(altar, "stand")
 
             for i = 1, 6 do
                 if FirstTime_Data[i].first_time then
-                    TriggerRegisterUnitInRange(FirstTime_Data[i].proximity_trigger, altar, 550., nil)
+                    TriggerRegisterUnitInRange(FirstTime_Data[i].proximity_trigger, altar, 300., nil)
                 end
             end
 
@@ -91,6 +93,7 @@ do
 
             AltarsList[handle] = { rect = rect, altar_type = ALTAR_TYPE_OBELISK, in_range_trigger = trg }
             GenerateAltarEffect(altar)
+            AltarsList[handle].minimap_icon = CreateMinimapIconOnUnit(altar, 255, 255, 255, AltarsList[handle].obelisk_effect.minimap_model_active, FOG_OF_WAR_VISIBLE)
 
             TriggerRegisterUnitInRange(trg, altar, 1000., nil)
             TriggerAddAction(trg, function()
@@ -117,7 +120,7 @@ do
 
             for i = 1, 6 do
                 if FirstTime_Data[i].first_time then
-                    TriggerRegisterUnitInRange(FirstTime_Data[i].proximity_trigger, altar, 550., nil)
+                    TriggerRegisterUnitInRange(FirstTime_Data[i].proximity_trigger, altar, 300., nil)
                 end
             end
 
@@ -142,6 +145,8 @@ do
                 [1] = {
                     name = "Fury Blessing",
                     recharge_time = 120.,
+                    minimap_model_active = "Marker\\MarkShrineConduitActive.mdx",
+                    minimap_model_used = "Marker\\MarkShrineConduitUsed.mdx",
                     effect = function(target)
                         ApplyBuff(target, target, "A01G", 1)
                         AddSoundVolume("Sounds\\Altar\\exploding.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
@@ -150,6 +155,8 @@ do
                 [2] = {
                     name = "Power Blessing",
                     recharge_time = 120.,
+                    minimap_model_active = "Marker\\MarkShrineDamageActive.mdx",
+                    minimap_model_used = "Marker\\MarkShrineDamageUsed.mdx",
                     effect = function(target)
                         ApplyBuff(target, target, "A01L", 1)
                         AddSoundVolume("Sounds\\Altar\\combatboost.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
@@ -158,6 +165,8 @@ do
                 [3] = {
                     name = "Elemental Blessing",
                     recharge_time = 120.,
+                    minimap_model_active = "Marker\\MarkShrineChannelingActive.mdx",
+                    minimap_model_used = "Marker\\MarkShrineChannelingUsed.mdx",
                     effect = function(target)
                         ApplyBuff(target, target, "A01K", 1)
                         AddSoundVolume("Sounds\\Altar\\shrineofenirhs.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
@@ -166,6 +175,8 @@ do
                 [4] = {
                     name = "Enduring Blessing",
                     recharge_time = 120.,
+                    minimap_model_active = "Marker\\MarkShrineProtectionActive.mdx",
+                    minimap_model_used = "Marker\\MarkShrineProtectionUsed.mdx",
                     effect = function(target)
                         ApplyBuff(target, target, "A01J", 1)
                         AddSoundVolume("Sounds\\Altar\\warping.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
@@ -174,6 +185,7 @@ do
             },
             well_hp = {
                 recharge_time = 120.,
+                minimap_model_active = "Marker\\MarkWellHealthFull.mdx",
                 effect = function(target)
                     local effect = AddSpecialEffectTarget("Abilities\\Spells\\Human\\Heal\\HealTarget.mdx", target, "origin")
                     SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_MAX_LIFE))
@@ -185,6 +197,7 @@ do
             },
             well_mp = {
                 recharge_time = 120.,
+                minimap_model_active = "Marker\\MarkWellManaFull.mdx",
                 effect = function(target)
                     DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Items\\AIma\\AImaTarget.mdx", target, "origin"))
                     SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MAX_MANA))
@@ -194,9 +207,7 @@ do
             chest_open = {
                 recharge_time = 30.,
                 effect = function(target)
-                    for i = 1, 6 do
-                        DropForPlayer(target, i-1)
-                    end
+                    for i = 1, 6 do DropForPlayer(target, i-1) end
                     AddSoundVolume("Sounds\\Altar\\chestbig.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
                 end
             },
@@ -280,7 +291,6 @@ do
                     local altar = GetAltarData(altar_unit)
 
 
-
                     UnitRemoveAbility(altar_unit, FourCC("A01H"))
                     --AltarEffects.obelisk[1](hero)
                     if altar.altar_type == ALTAR_TYPE_CHEST then
@@ -294,12 +304,17 @@ do
 
                     if altar.altar_type == ALTAR_TYPE_OBELISK then
                         DestroyTextTag(altar.texttag)
+                        DestroyMinimapIcon(altar.minimap_icon)
+                        altar.minimap_icon = CreateMinimapIconOnUnit(altar_unit, 255, 255, 255, altar.obelisk_effect.minimap_model_used, FOG_OF_WAR_VISIBLE)
                         if GetUnitTypeId(altar_unit) == FourCC("n00K") then AddUnitAnimationProperties(altar_unit, "alternate", false) end
                     elseif altar.altar_type == ALTAR_TYPE_WELL_HP or altar.altar_type == ALTAR_TYPE_WELL_MP then
+                        DestroyMinimapIcon(altar.minimap_icon)
+                        altar.minimap_icon = CreateMinimapIconOnUnit(altar_unit, 255, 255, 255, "Marker\\MarkWellEmpty.mdx", FOG_OF_WAR_VISIBLE)
                         SetUnitState(altar_unit, UNIT_STATE_MANA, 0.)
                         AddUnitAnimationProperties(altar_unit, "First", false)
                         AddUnitAnimationProperties(altar_unit, "Third", true)
                     elseif altar.altar_type == ALTAR_TYPE_CHEST then
+                        DestroyMinimapIcon(altar.minimap_icon)
                         AddUnitAnimationProperties(altar_unit, "alternate", true)
                         SetUnitAnimation(altar_unit, "birth alternate")
                         UnitAddAbility(altar_unit, FourCC("Aloc"))
@@ -314,6 +329,8 @@ do
 
                             if altar.altar_type == ALTAR_TYPE_OBELISK then
                                 GenerateAltarEffect(altar_unit)
+                                DestroyMinimapIcon(altar.minimap_icon)
+                                altar.minimap_icon = CreateMinimapIconOnUnit(altar, 255, 255, 255, altar.obelisk_effect.minimap_model_active, FOG_OF_WAR_VISIBLE)
                                 if GetUnitTypeId(altar_unit) == FourCC("n00K") then AddUnitAnimationProperties(altar_unit, "alternate", true) end
                             elseif altar.altar_type == ALTAR_TYPE_WELL_HP or altar.altar_type == ALTAR_TYPE_WELL_MP then
                                 SetUnitState(altar_unit, UNIT_STATE_MANA, GetUnitState(altar_unit, UNIT_STATE_MAX_MANA))

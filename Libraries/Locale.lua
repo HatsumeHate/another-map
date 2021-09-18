@@ -11,6 +11,12 @@ do
     LOCALE_LIST = 0
 
 
+    function GetLocalString(ru, eng)
+        if my_locale == "enUS" then return eng
+        else return ru end
+    end
+
+
     function InitLocaleLibrary()
         if GetLocalPlayer() then
             my_locale = BlzGetLocale()
@@ -22,6 +28,108 @@ do
 
         LOCALE_LIST = {
             ["ruRU"] = {
+
+
+                VICTORY_TEXT = "|c0000FF00Победа!|r Вы смогли одолеть все 50 волн и спасли замок!",
+                DEFEAT_TEXT = "|c00FF0000Поражение!|r Замок пал от натиска нечисти!",
+                DEFEAT_TEXT_D = "Может как нибудь в другой раз?",
+                ENDGAME_TEXT = "|c00F88000Завершение игры через # сек.|r",
+
+                MONSTER_PLAYER_NAME = "Нечисть",
+
+                MONSTER_NAME_FIEND = "Бес",
+                MONSTER_NAME_GHOUL = "Вурдалак",
+                MONSTER_NAME_ARMORED_SKELETON = "Бронированный Скелет",
+                MONSTER_NAME_ZOMBIE = "Зомби",
+                MONSTER_NAME_ZOMBIE_NIGHTMARE = "Зомби Кошмара",
+                MONSTER_NAME_ZOMBIE_BIG = "Мутант",
+                MONSTER_NAME_SKELETON = "Скелет",
+                MONSTER_NAME_SKELETON_NIGHTMARE = "Скелет Кошмара",
+                MONSTER_NAME_SKELETON_ARCHER = "Скелет Лучник",
+                MONSTER_NAME_SKELETON_ARCHER_NIGHTMARE = "Скелет Лучник Кошмара",
+                MONSTER_NAME_SKELETON_MAGE = "Скелет Маг",
+                MONSTER_NAME_SKELETON_IMPROVED = "Орк-скелет",
+                MONSTER_NAME_NECROMANCER = "Некромант",
+                MONSTER_NAME_NECROMANCER_NIGHTMARE = "Скелет Кошмара",
+                MONSTER_NAME_SORCERESS_NIGHTMARE = "Волшебница Кошмара",
+                MONSTER_NAME_BLOODSUCKER = "Кровосос",
+                MONSTER_NAME_VAMPIRE = "Вампир",
+                MONSTER_NAME_BANSHEE = "Банши",
+                MONSTER_NAME_BANSHEE_NIGHTMARE = "Банши Кошмара",
+                MONSTER_NAME_GHOST = "Призрак",
+                MONSTER_NAME_SUCCUBUS = "Суккуб",
+                MONSTER_NAME_SUCCUBUS_IMPROVED = "Мучительница",
+                MONSTER_NAME_BLOOD_SUCCUBUS = "Садистка",
+                MONSTER_NAME_VOID_WALKER_SMALL = "Младший демон Бездны",
+                MONSTER_NAME_VOID_WALKER_NORMAL = "Демон Бездны",
+                MONSTER_NAME_VOID_WALKER_BIG = "Древний демон Бездны",
+                MONSTER_NAME_MEAT_GOLEM = "Мясной Голем",
+                MONSTER_NAME_ABOMINATION = "Чудище",
+                MONSTER_NAME_HELL_BEAST = "Адский Зверь",
+                MONSTER_NAME_QUILLBEAST = "Кабан Кошмара",
+                MONSTER_NAME_WOLF = "Волк Кошмара",
+                MONSTER_NAME_INSECT = "Комар",
+                MONSTER_NAME_SATYR = "Сатир",
+                MONSTER_NAME_SATYR_TRICKSTER = "Сатир Ловкач",
+                MONSTER_NAME_SATYR_HELL = "Адский Сатир",
+                MONSTER_NAME_REVENANT = "Ревенант",
+                MONSTER_NAME_REVENANT_NIGHTMARE = "Ревенант Кошмара",
+                MONSTER_NAME_SKELETON_HELL_ARCHER = "Адский лучник",
+                MONSTER_NAME_SKELETON_FROST_ARCHER = "Скелет Снайпер",
+                MONSTER_NAME_HELL_WIZARD = "Нечестивый Колдун",
+                MONSTER_NAME_DEMON_ASSASSIN = "Демон Убийца",
+                MONSTER_NAME_FALLEN_ANGEL = "Падший Ангел",
+                MONSTER_NAME_HELLS_GUARDIAN = "Страж Ада",
+                MONSTER_NAME_ARACHNID = "Кристаллический арахнид",
+                MONSTER_NAME_ARACHNID_THROWER = "Шипастый арахнид",
+                MONSTER_NAME_ARACHNID_WARRIOR = "Арахнид-воин",
+                MONSTER_NAME_ARACHNID_BURROWER = "Арахнид-землекоп",
+                MONSTER_NAME_ARACHNID_BOSS = "Вожак Арахнидов",
+                MONSTER_NAME_SPIDER = "Лесной Паук",
+                MONSTER_NAME_SPIDER_BLACK = "Черный Паук",
+                MONSTER_NAME_SPIDER_BLACK_NIGHTMARE = "Черный Паук Кошмара",
+                MONSTER_NAME_SPIDER_HUNTER = "Паук-охотник",
+                MONSTER_NAME_SPIDER_GIGANTIC = "Гигантский Паук",
+                MONSTER_NAME_SPIDER_BOSS = "Мать Стаи",
+                MONSTER_NAME_BANDIT = "Бандит",
+                MONSTER_NAME_ROBBER = "Грабитель",
+                MONSTER_NAME_ROGUE = "Разбойник",
+                MONSTER_NAME_ASSASSIN = "Убийца",
+                MONSTER_NAME_BANDIT_BOSS = "Главарь Бандитов",
+                MONSTER_NAME_SKELETON_KING = "Король Скелет",
+                MONSTER_NAME_MEPHISTO = "Мефисто",
+                MONSTER_NAME_BAAL = "Баал",
+                MONSTER_NAME_UNDERWORLD_QUEEN = "Королева Подземелья",
+                MONSTER_NAME_BUTCHER = "Мясник",
+                MONSTER_NAME_ANDARIEL = "Андариэль",
+                MONSTER_NAME_REANIMATED = "Воскрешенный",
+                MONSTER_NAME_DEMON_LORD = "Лорд Демон",
+                MONSTER_NAME_DEMONESS = "Демонесса",
+                MONSTER_NAME_EGG = "Кокон",
+                MONSTER_NAME_TENTACLE = "Щупальце",
+                MONSTER_NAME_LILITH = "Лилит",
+                MONSTER_NAME_FOREST_GUARD = "Страж Леса",
+
+
+                MONSTER_TRAITS = {
+                    [MONSTER_TRAIT_ELECTRIFIED]   = { [DECL_HE] = "Электрический ",       [DECL_SHE] = "Электрическая ", [DECL_IT] = "Электрическое ", },
+                    [MONSTER_TRAIT_ENRAGED]       = { [DECL_HE] = "Буйный ",              [DECL_SHE] = "Буйная ", [DECL_IT] = "Буйное ", },
+                    [MONSTER_TRAIT_UNSTOPPABLE]   = { [DECL_HE] = "Неудержимый ",         [DECL_SHE] = "Неудержимая ", [DECL_IT] = "Неудержимое ", },
+                    [MONSTER_TRAIT_TOXIC]         = { [DECL_HE] = "Токсичный ",           [DECL_SHE] = "Токсичная ", [DECL_IT] = "Токсичное ", },
+                    [MONSTER_TRAIT_SPIKY]         = { [DECL_HE] = "Шипованный ",          [DECL_SHE] = "Шипованная ", [DECL_IT] = "Шипованное ", },
+                    [MONSTER_TRAIT_BURNING]       = { [DECL_HE] = "Горящий ",             [DECL_SHE] = "Горящая ", [DECL_IT] = "Горящее ", },
+                    [MONSTER_TRAIT_CHILLING]      = { [DECL_HE] = "Леденящий ",           [DECL_SHE] = "Леденящая", [DECL_IT] = "Леденящее ", },
+                    [MONSTER_TRAIT_BULKY]         = { [DECL_HE] = "Неуклюжий ",           [DECL_SHE] = "Неуклюжая ", [DECL_IT] = "Неуклюжее ", },
+                    [MONSTER_TRAIT_DEFIER]        = { [DECL_HE] = " Отрицания",           [DECL_SHE] = " Отрицания", [DECL_IT] = " Отрицания", },
+                    [MONSTER_TRAIT_STURDY]        = { [DECL_HE] = "Крепкий ",             [DECL_SHE] = "Крепкая ", [DECL_IT] = "Крепкое ", },
+                    [MONSTER_TRAIT_AGILE]         = { [DECL_HE] = " Адепт Проворности",   [DECL_SHE] = " Адепт Проворности", [DECL_IT] = " Адепт Проворности", },
+                    [MONSTER_TRAIT_OVERPOWERING]  = { [DECL_HE] = "Сильный ",             [DECL_SHE] = "Сильная ", [DECL_IT] = "Сильное ", },
+                    [MONSTER_TRAIT_ARCANE]        = { [DECL_HE] = "Мистический ",         [DECL_SHE] = "Мистическая ", [DECL_IT] = "Мистическое ", },
+                },
+
+
+                PLAYER_LEFT = "Игрок # покинул игру.",
+
                 BLOCK_TEXT = "Блок ",
                 WAVE_INCOMING_TEXT = "Волна:",
                 WAVE_LEVEL = "Уровень ",
@@ -89,6 +197,9 @@ do
                 BONUS_HUMAN_DAMAGE_PARAM = "Урон людям",
                 BONUS_BEAST_DAMAGE_PARAM = "Урон зверям",
 
+                GOLD_BONUS_PARAM = "Получение золота",
+                EXP_BONUS_PARAM = "Получение опыта",
+
                 ITEM_TYPE_WEAPON_NAME     = "Оружие",
                 ITEM_TYPE_ARMOR_NAME      = "Броня",
                 ITEM_TYPE_JEWELRY_NAME    = "Бижутерия",
@@ -128,6 +239,30 @@ do
                 ARCANE_ATTRIBUTE_NAME       = "Тайна",
                 DARKNESS_ATTRIBUTE_NAME     = "Тьма",
                 HOLY_ATTRIBUTE_NAME         = "Свет",
+
+
+                BARBARIAN_PROPER_NAME_1 = "Гардал Мрачный",
+                BARBARIAN_PROPER_NAME_2 = "Негалл Огненный",
+                BARBARIAN_PROPER_NAME_3 = "Кадир Темный",
+                BARBARIAN_PROPER_NAME_4 = "Магис Бесстрастный",
+                BARBARIAN_PROPER_NAME_5 = "Барн Ледяной Взгляд",
+                BARBARIAN_PROPER_NAME_6 = "Горр Древний",
+                BARBARIAN_PROPER_NAME_7 = "Кагар Белый Волк",
+                BARBARIAN_PROPER_NAME_8 = "Назгард",
+                BARBARIAN_PROPER_NAME_9 = "Морн Дикий",
+                BARBARIAN_PROPER_NAME_10 = "Казрагор",
+                BARBARIAN_PROPER_NAME_11 = "Фенрис ар-Гул",
+
+                SORCERESS_PROPER_NAME_1 = "Нейра Бесшумная",
+                SORCERESS_PROPER_NAME_2 = "Эна Деметр",
+                SORCERESS_PROPER_NAME_3 = "Квентис Коварная",
+                SORCERESS_PROPER_NAME_4 = "Кайя Безжалостная",
+                SORCERESS_PROPER_NAME_5 = "Фалька Зираэль",
+                SORCERESS_PROPER_NAME_6 = "Морин ан-Рахья",
+                SORCERESS_PROPER_NAME_7 = "Феона Дикая кошка",
+                SORCERESS_PROPER_NAME_8 = "Амара Меткий лук",
+                SORCERESS_PROPER_NAME_9 = "Айра Сладкоголосая",
+
 
 
                 FEEDBACK_GOLD = {
@@ -252,11 +387,23 @@ do
                 FEEDBACK_MSG_CANTUSE = "Невозможно это использовать",
                 FEEDBACK_MSG_NOGOLD = "Недостаточно золота",
 
+
                 SHOP_MESSAGE_NO_SPACE = "В магазине нет места",
+
+                RIFT_FORMED_MSG = "Открылся новый разлом.",
+                RIFT_CLOSED_MSG = "Разлом был закрыт.",
                 --FEEDBACK_MSG_ = "",
 
                 INVENTORY_PANEL_TOOLTIP_NAME = "Инвентарь",
                 INVENTORY_PANEL_TOOLTIP_DESCRIPTION =  "Содержит все ваши вещи и экипировку",
+
+                UI_INVENTORY_TOOLTIP_HEADER = "Подсказки",
+                UI_INVENTORY_TOOLTIP_DESCRIPTION = "Одиночный клик - контекстное меню\nДвойной - быстрое взаимодействие\nЗажатие лкм - перетаскивание\nshift - сравнение предметов\nalt - сравнение альт. предмета",
+
+                UI_SHOP_TOOLTIP_HEADER = "Подсказки",
+                UI_SHOP_TOOLTIP_DESCRIPTION = "Одиночный клик - контекстное меню\nshift - сравнение предметов\nalt - сравнение альт. предмета",
+
+                UI_TEXT_LEVEL = "Уровень ",
 
                 UI_TEXT_SELL = "Продать",
                 UI_TEXT_BUY = "Купить",
@@ -271,6 +418,8 @@ do
                 UI_TEXT_RESOCKET = "Извлечение",
                 UI_TEXT_ALT_WEAPON = "Левая рука",
                 UI_TEXT_EXCHANGE = "Обмен книги",
+                UI_TEXT_TO_STASH = "Сложить",
+                UI_TEXT_FROM_STASH = "Забрать",
 
                 UI_TEXT_OK = "ок",
                 UI_TEXT_CANCEL = "отмена",
@@ -283,11 +432,19 @@ do
 
                 HINT_INVENTORY_1 = "Используйте одиночный клик по предмету для вызова контекстного меню или двойной для быстрого взаимодействия с предметом.",
                 HINT_INVENTORY_2 = "Например, двойной клик по оружию возьмет его в основную руку, а по расходуемому предмету - вынесет его в инвентарь героя.",
-                HINT_SHOP_1 = "Каждую волну нападения ассортимент магазинов обновляется, так что не стесняйтесь продавать ненужное. Пока магазин открыт, контекстное меню на предмете в инвентаре откроет кнопку %<Продать%>",
+                HINT_SHOP_1 = "На определенных волнах нападения ассортимент магазинов обновляется, так что не стесняйтесь продавать ненужное. Пока магазин открыт, контекстное меню на предмете в инвентаре откроет кнопку %<Продать%>",
                 HINT_BLACKSMITH_1 = "У кузнеца можно перековать предметы до текущего уровня волны, а так же изъять ненужные камни. Камни утрачиваются безвозвратно.",
                 HINT_STATS_1 = "Базовые параметры очень важная часть развития героя. Наведите курсором на каждый, и узнаете немного подробнее о них. Каждый новый уровень дает 3 очка развития.",
                 HINT_ALTARS = "Взаимодействовать с алтарями и сундуками можно кликнув правой кнопкой мыши по ним находясь поблизости. Алтари дают случайный эффект, сундуки содержат предметы и золото, колодцы восстанавливают здоровье или ману.",
                 HINT_BELT = "Можно быстро использовать предметы на поясе нажимая 1-2-3-4-5-6. Нумерация предметов начинается слева сверху.",
+
+                QUEST_REVEALED_STRING = "|c00FFCE00Задание получено: |r",
+                QUEST_DONE_STRING = "|c005AFF00Задание выполнено: |r",
+                QUEST_FAILED_STRING = "|c00FF5151Задание провалено: |r",
+                QUEST_UPDATED_STRING = "|c0079C8FFЗадание обновлено: |r",
+                QUEST_REQUIREMENT_STRING = "|c00009FFFНовые подробности задания: |r",
+                QUEST_HINT_STRING = "|c004FFFE4Подсказка: |r",
+                QUEST_ALERT_STRING = "|c00FF7D63Внимание: |r",
 
 
                 DAMAGE_UI = "Урон: ",
@@ -312,15 +469,22 @@ do
 
                 STAT_PANEL_MAIN_STAT = "Основная характеристика",
                 STAT_PANEL_STR_DESC = "Влияет на силу физических атак.",
-                STAT_PANEL_INT_DESC = "Каждая еденица повышает магическое подавление на 1, влияет на магический урон а так же количество и восстановление магии если вы используете ману.",
+                STAT_PANEL_INT_DESC = "Каждая единица повышает магическое подавление на 1, влияет на магический урон а так же количество и восстановление магии если вы используете ману.",
                 STAT_PANEL_VIT_DESC = "Повышает здоровье и ее восстановление.",
-                STAT_PANEL_AGI_DESC = "Каждая еденица повышает защиту на 2.",
+                STAT_PANEL_AGI_DESC = "Каждая единица повышает защиту на 2. Каждые 3 увеличивают скорость атаки и заклинаний на 1%%.",
+
+                STAT_PANEL_MINOR_STAT = "Второстепенный",
+                STAT_PANEL_PHYSICAL_ATTACK_DESC = "Прямой урон от физических атак.",
+                STAT_PANEL_PHYSICAL_DEFENCE_DESC = "Конвертируется в %% уменьшения урона.",
+                STAT_PANEL_MAGICAL_ATTACK_DESC = "Увеличивает урон от магии в %% соотношении.",
+                STAT_PANEL_MAGICAL_SUPPRESSION_DESC = "Уменьшает магическую атаку врага с соотношением 1 к 1.",
 
                 STAT_PANEL_PHYS_ATTACK = "Физ. урон: ",
                 STAT_PANEL_PHYS_DEFENCE = "Защита: ",
                 STAT_PANEL_MAG_ATTACK = "Маг. урон: ",
                 STAT_PANEL_MAG_DEFENCE = "Подавление: ",
-                STAT_PANEL_ATTACK_SPEED = "Атак в сек.: ",
+                STAT_PANEL_ATTACK_SPEED = "Период атак: ",
+                STAT_PANEL_CAST_SPEED = "Скорость каста: ",
                 STAT_PANEL_CRIT_CHANCE = "Крит. Шанс: ",
 
                 STAT_PANEL_FIRE = "Огонь: ",
@@ -335,7 +499,6 @@ do
                 REFORGE_BUTTON_TEXT = "Перековать",
                 SOCKET_BUTTON_TEXT = "Изьять",
                 EXCHANGE_BUTTON_TEXT = "Обменять",
-
 
                 WORN_DECL_HE = "Изношенный ",
                 WORN_DECL_SHE = "Изношенная ",
@@ -743,8 +906,6 @@ do
 
 
 
-
-
                 GENERATED_TOOLTIP = "урона от атаки",
 
                 [FourCC("A007")] = {
@@ -869,11 +1030,12 @@ do
                 SORCERESS_NAME = "Волшебница",
 
                 VENDOR_BILL_NAME = "Вендор Билл",
-                HEALER_NAME = "Целительница",
+                HEALER_NAME = "Целительница Далия",
                 BLACKSMITH_NAME = "Кузнец",
                 SMORC_NAME = "Сморк",
                 LIBRARIAN_NAME = "Библиотекарь",
                 SCAVENGER_NAME = "Странствующий скупщик",
+                LYNN_NAME = "Лин",
 
 
                 AIZEK_NAME = "Подмастерье Айзек",
@@ -886,11 +1048,12 @@ do
                 WITCH_NAME = "Ведьма Леса",
                 HUNTER_NAME = "Охотник Борк",
                 DON_NAME = "Управляющий Дон",
+                MANTO_NAME = "Манто",
 
 
                 QUEST_1_TITLE = "Потерянный груз",
-                QUEST_1_DESC = "Помощник кузнеца растерял припасы. Так как в  округе очень опасно, он попросил вас помочь ему вернуть утраченное.",
-                QUEST_1_SPEECH = "Оооо, ваша помощь мне будет очень кстати. Я тут груз потерял... а нынче в округе очень опасно. Не могли бы вы помочь мне, а я вам тоже помогу?",
+                QUEST_1_DESC = "Помощник кузнеца растерял припасы. Так как в  округе очень опасно, он попросил вас помочь ему вернуть утраченное на |c00FFFF6Cторговом пути|r и |c00FFFF6Cузком ущелье|r.",
+                QUEST_1_SPEECH = "Оооо, ваша помощь мне будет очень кстати. Я тут груз потерял на |c00FFFF6Cторговом пути|r и |c00FFFF6Cузком ущелье|r... а нынче в округе очень опасно. Не могли бы вы помочь мне, а я вам тоже помогу?",
                 QUEST_1_ITEM = "Собранные припасы",
 
                 QUEST_2_TITLE = "Голодовка",
@@ -908,14 +1071,15 @@ do
                 QUEST_1_M_ITEM = "Найти Гуинплена",
                 QUEST_1_M_ITEMVAR1 = "Найти Лилит",
                 QUEST_1_M_ITEMVAR2 = "Найти Посох Надежды",
-                QUEST_1_M_ITEMVAR1END = "Убтиь Лилит",
+                QUEST_1_M_ITEMVAR1END = "Убтить Лилит",
                 QUEST_1_M_ITEMVAR2END = "Опробовать посох на Лилит",
                 QUEST_1_M_SPEECH_INTRO = "Постойте. Я вижу, вы можете помочь в нашем деле. Дело в том, что в добавок к обычной нечисти, тут завелся один очень свирепый демон.",
                 QUEST_1_M_SPEECH_INTRO_2 = "Он с особой жестокостью расправляется с солдатами, и почти каждый день мы находим новые трупы заблудившихся путников.",
                 QUEST_1_M_SPEECH_INTRO_3 = "Нам бы как то избавиться от него, и как раз тут неподалеку есть рыцарь странник, может он может вам помочь?",
                 QUEST_1_M_SPEECH_GIUN_1 = "Вы по поводу жестокого демона? Знаете... я так скажу, у меня есть сведения, которые объясняют его происхождение.",
                 QUEST_1_M_SPEECH_GIUN_2 = "На самом деле это зачарованная девушка из местной деревушки. Кто то видимо решил отомстить и использовал какой то артефакт из преисподней на ней.",
-                QUEST_1_M_SPEECH_GIUN_3 = "Я уже нашел один посох который может избавить ее от проклятия, но когда я собирался встретиться с продавцом, оказалось что его растерзали, а посох утерян где то на юге-востоке отсюда.",
+                QUEST_1_M_SPEECH_GIUN_3 = "Я уже нашел один посох который может избавить ее от проклятия, но когда я собирался встретиться с продавцом, оказалось что его растерзали, а посох утерян где то в |c00FFFF6Cзабытых землях|r и возможно |c00FFFF6Cузком ущелье|r.",
+
                 QUEST_1_M_SPEECH_GIUN_4 = "Найдете посох - и сможете избавиться от демона более цивилизованным способом.",
                 QUEST_1_M_SPEECH_END_2 = "О боже... я вернулась! Как вы смогли это сделать? Такое ощущение, что я очень крепко спала... Благодарю вас! Примите это в знак благодарности!",
                 QUEST_1_M_SPEECH_STAFF_FOUND = "Похоже это тот самый посох про который говорил Гуинплен. Теперь стоит найти демона и опробовать его на нем.",
@@ -923,7 +1087,7 @@ do
 
 
                 QUEST_2_M_TITLE = "Страж Леса",
-                QUEST_2_M_DESC = "Местные охотники выслеживают Стража Леса - то ли миф, то ли реальное существо. Стоит разузнать побольше у этих самых охотников. Последнее их пристанище было где то на юге от крепости.",
+                QUEST_2_M_DESC = "Местные охотники выслеживают Стража Леса - то ли миф, то ли реальное существо. Стоит разузнать побольше у этих самых охотников. Последнее их пристанище было где то на в |c00FFFF6забытых землях|r.",
                 QUEST_2_M_ITEM = "Найти лагерь охотников",
                 QUEST_2_M_ITEMVAR1 = "Выследить зверя",
                 QUEST_2_M_ITEMVAR2 = "Найти местную ведьму",
@@ -957,8 +1121,132 @@ do
                 QUEST_2_M_HUNTER_6 = "Ух ты, отлично! Теперь нам будет чем похвастаться! Эй, парни! Айда в город!",
                 QUEST_2_M_WITCH_5 = "Благодарю за вашу благосклонность и благоразумие. Теперь ему ничего не угрожает. Примите это в знак благодарности.",
 
+
+                QUEST_3_M_TITLE = "Незадача",
+                QUEST_3_M_DESC = "Говорящий скелет попросил о помощи, наводя на мысль что ему может помочь какой то предмет. Может быть посчастливится найти ее?",
+
+                QUEST_3_M_SPEECH_INTRO_1 = ".... Чего вылупился?... Никогда говорящих скелетов не видел?... ну ничего, все бывает в первый раз. Эх, вот так незадача.",
+                QUEST_3_M_SPEECH_INTRO_2 = "Как ты видишь, я в не очень удобном положении. И зачем только я полез стажироваться к тому магу... Вот черт, ладно, можешь помочь?",
+                QUEST_3_M_SPEECH_INTRO_3 = "Я тронул одну штуку, и как бы, оказался в таком виде. Да, да, я человек, блин! Ну почти... Знаешь, эта штука, кругленькая такая...",
+                QUEST_3_M_SPEECH_INTRO_4 = "Возможно ты найдешь подобную? Надеюсь это как то можно обратить, а то я уже где то потерял парочку костей, и боюсь в таком виде заявиться в любой город.",
+
+                QUEST_3_M_ITEM_1_DESC = "Круглая штука найдена",
+
+                QUEST_3_M_SPEECH_1 = "Такс такс, что это тут у нас... Давай посмотрим.... Оба, да это же похоже на то! Хехехе, неужели фартануло!",
+                QUEST_3_M_SPEECH_2 = "Таааак... Потрем тут... Подуем сюда... Тьфу, я же скелет, как я дуть собрался... на подуй сюда!... Такс.... хммм....",
+                QUEST_3_M_SPEECH_3 = ".... фигня какая то... не работает... Так, погодите, а что за бирка там.... Мг.... \"заряжается потусторонней энергией\"....",
+                QUEST_3_M_SPEECH_4 = "Твою ж маковку! Чуял, что все не будет так просто. Ладно... Помоги по братски, поноси эту штуку, если убьешь призрака, то она всосет его энергию.",
+
+                QUEST_3_M_ITEM_2_DESC = "Энергия душ",
+                QUEST_3_M_ITEM_3_DESC = "Вернуть эманатор",
+
+                QUEST_3_M_SPEECH_5 = "О, а теперь он светится!... таааак.. попытка номер два. И так, трем, трем... Дуй давай сюда... иииииии...",
+                QUEST_3_M_SPEECH_5 = "...вы прикалываетесь??? Да я что, вечно должен теперь быть чертовым скелетом??? Да за что мне это все!",
+                QUEST_3_M_SPEECH_6 = "Говорила мне мама, иди в крестьяне, неееееет, полез блин в алхимики! Боже ты мой...",
+                QUEST_3_M_SPEECH_7 = "Ладно... придумаю что нибудь еще... вон, посмотри под ребром у меня, золотишко. За старания... Бывай.",
+
+
             },
             ["enUS"] = {
+
+                VICTORY_TEXT = "|c0000FF00Victory!|r You managed to defeat all 50 waves and save the castle!",
+                DEFEAT_TEXT = "|c00FF0000Defeat!|r The castle has fallen to the unholy monsters!",
+                DEFEAT_TEXT_D = "Maybe next time?",
+                ENDGAME_TEXT = "|c00F88000Game ends in # secs.|r",
+
+                MONSTER_PLAYER_NAME = "Monsters",
+
+                MONSTER_NAME_FIEND = "Fiend",
+                MONSTER_NAME_GHOUL = "Ghoul",
+                MONSTER_NAME_ARMORED_SKELETON = "Armored Skeleton",
+                MONSTER_NAME_ZOMBIE = "Zombie",
+                MONSTER_NAME_ZOMBIE_NIGHTMARE = "Nightmarish Zombie",
+                MONSTER_NAME_ZOMBIE_BIG = "Mutant",
+                MONSTER_NAME_SKELETON = "Skeleton",
+                MONSTER_NAME_SKELETON_NIGHTMARE = "Nightmarish Skeleton",
+                MONSTER_NAME_SKELETON_ARCHER = "Skeleton Archer",
+                MONSTER_NAME_SKELETON_ARCHER_NIGHTMARE = "Nightmarish Skeleton Archer",
+                MONSTER_NAME_SKELETON_MAGE = "Skeleton Mage",
+                MONSTER_NAME_SKELETON_IMPROVED = "Skeletal Orc",
+                MONSTER_NAME_NECROMANCER = "Necromancer",
+                MONSTER_NAME_NECROMANCER_NIGHTMARE = "Nightmarish Necromancer",
+                MONSTER_NAME_SORCERESS_NIGHTMARE = "Undead Sorceress",
+                MONSTER_NAME_BLOODSUCKER = "Bloodsucker",
+                MONSTER_NAME_VAMPIRE = "Vampire",
+                MONSTER_NAME_BANSHEE = "Banshee",
+                MONSTER_NAME_BANSHEE_NIGHTMARE = "Nightmarish Banshee",
+                MONSTER_NAME_GHOST = "Ghost",
+                MONSTER_NAME_SUCCUBUS = "Succubus",
+                MONSTER_NAME_SUCCUBUS_IMPROVED = "Vile Tormentor",
+                MONSTER_NAME_BLOOD_SUCCUBUS = "Bloodbather",
+                MONSTER_NAME_VOID_WALKER_SMALL = "Lesser Voidwalker",
+                MONSTER_NAME_VOID_WALKER_NORMAL = "Voidwalker",
+                MONSTER_NAME_VOID_WALKER_BIG = "Greater Voidwalker",
+                MONSTER_NAME_MEAT_GOLEM = "Meat Golem",
+                MONSTER_NAME_ABOMINATION = "Abomination",
+                MONSTER_NAME_HELL_BEAST = "Hell Beast",
+                MONSTER_NAME_QUILLBEAST = "Nightmarish Quillbeast",
+                MONSTER_NAME_WOLF = "Nightmarish Wolf",
+                MONSTER_NAME_INSECT = "Beetle",
+                MONSTER_NAME_SATYR = "Satyr",
+                MONSTER_NAME_SATYR_TRICKSTER = "Satyr Trickster",
+                MONSTER_NAME_SATYR_HELL = "Hell Satyr",
+                MONSTER_NAME_REVENANT = "Revenant",
+                MONSTER_NAME_REVENANT_NIGHTMARE = "Nightmarish Revenant",
+                MONSTER_NAME_SKELETON_HELL_ARCHER = "Hell Archer",
+                MONSTER_NAME_SKELETON_FROST_ARCHER = "Skeletal Marksman",
+                MONSTER_NAME_HELL_WIZARD = "Unholy Wizard",
+                MONSTER_NAME_DEMON_ASSASSIN = "Demon Assassin",
+                MONSTER_NAME_FALLEN_ANGEL = "Fallen Angel",
+                MONSTER_NAME_HELLS_GUARDIAN = "Hells Guardian",
+                MONSTER_NAME_ARACHNID = "Crystal Arachnathid",
+                MONSTER_NAME_ARACHNID_THROWER = "Barbed Arachnathid",
+                MONSTER_NAME_ARACHNID_WARRIOR = "Warrior Arachnathid",
+                MONSTER_NAME_ARACHNID_BURROWER = "Arachnathid Earth-borer",
+                MONSTER_NAME_ARACHNID_BOSS = "Overlord Arachnathid",
+                MONSTER_NAME_SPIDER = "Forest Spider",
+                MONSTER_NAME_SPIDER_BLACK = "Black Spider",
+                MONSTER_NAME_SPIDER_BLACK_NIGHTMARE = "Nightmarish Black Spider",
+                MONSTER_NAME_SPIDER_HUNTER = "Spitting Spider",
+                MONSTER_NAME_SPIDER_GIGANTIC = "Giant Spider",
+                MONSTER_NAME_SPIDER_BOSS = "Brood Mother",
+                MONSTER_NAME_BANDIT = "Bandit",
+                MONSTER_NAME_ROBBER = "Brigand",
+                MONSTER_NAME_ROGUE = "Rogue",
+                MONSTER_NAME_ASSASSIN = "Assassin",
+                MONSTER_NAME_BANDIT_BOSS = "Bandit Lord",
+                MONSTER_NAME_SKELETON_KING = "Skeleton King",
+                MONSTER_NAME_MEPHISTO = "Mephisto",
+                MONSTER_NAME_BAAL = "Baal",
+                MONSTER_NAME_UNDERWORLD_QUEEN = "Queen of the Underworld",
+                MONSTER_NAME_BUTCHER = "Butcher",
+                MONSTER_NAME_ANDARIEL = "Andariel",
+                MONSTER_NAME_REANIMATED = "Reanimated",
+                MONSTER_NAME_DEMON_LORD = "Demon Lord",
+                MONSTER_NAME_DEMONESS = "Demoness",
+                MONSTER_NAME_EGG = "Egg",
+                MONSTER_NAME_TENTACLE = "Tentacle",
+                MONSTER_NAME_LILITH = "Lilith",
+                MONSTER_NAME_FOREST_GUARD = "Forest Guard",
+
+                MONSTER_TRAITS = {
+                    [MONSTER_TRAIT_ELECTRIFIED]   = { [DECL_HE] = "Electrified ",       [DECL_SHE] = "Electrified ",        [DECL_IT] = "Electrified ", },
+                    [MONSTER_TRAIT_ENRAGED]       = { [DECL_HE] = "Enraged ",           [DECL_SHE] = "Enraged ",            [DECL_IT] = "Enraged ", },
+                    [MONSTER_TRAIT_UNSTOPPABLE]   = { [DECL_HE] = "Unrestrainable ",    [DECL_SHE] = "Unrestrainable ",     [DECL_IT] = "Unrestrainable ", },
+                    [MONSTER_TRAIT_TOXIC]         = { [DECL_HE] = "Toxic ",             [DECL_SHE] = "Toxic ",              [DECL_IT] = "Toxic ", },
+                    [MONSTER_TRAIT_SPIKY]         = { [DECL_HE] = "Barbed ",            [DECL_SHE] = "Barbed ",             [DECL_IT] = "Barbed ", },
+                    [MONSTER_TRAIT_BURNING]       = { [DECL_HE] = "Burning ",           [DECL_SHE] = "Burning ",            [DECL_IT] = "Burning ", },
+                    [MONSTER_TRAIT_CHILLING]      = { [DECL_HE] = "Chilling ",          [DECL_SHE] = "Chilling",            [DECL_IT] = "Chilling ", },
+                    [MONSTER_TRAIT_BULKY]         = { [DECL_HE] = "Bulky ",             [DECL_SHE] = "Bulky ",              [DECL_IT] = "Bulky ", },
+                    [MONSTER_TRAIT_DEFIER]        = { [DECL_HE] = " the Defiant",       [DECL_SHE] = " the Defiant",        [DECL_IT] = " the Defiant", },
+                    [MONSTER_TRAIT_STURDY]        = { [DECL_HE] = "Tenacious ",         [DECL_SHE] = "Tenacious ",          [DECL_IT] = "Tenacious ", },
+                    [MONSTER_TRAIT_AGILE]         = { [DECL_HE] = " Adept of Agility",  [DECL_SHE] = " Adept of Agility",   [DECL_IT] = " Adept of Agility", },
+                    [MONSTER_TRAIT_OVERPOWERING]  = { [DECL_HE] = "Overpowering ",      [DECL_SHE] = "Overpowering ",       [DECL_IT] = "Overpowering ", },
+                    [MONSTER_TRAIT_ARCANE]        = { [DECL_HE] = "Mystic ",            [DECL_SHE] = "Mystic ",             [DECL_IT] = "Mystic ", },
+                },
+
+                PLAYER_LEFT = "Player # has left the game.",
+
                 WAVE_INCOMING_TEXT = "Stats:",
                 WAVE_LEVEL = "Level ",
                 WAVE_COUNTDOWN = "Attack in: ",
@@ -1026,6 +1314,9 @@ do
                 BONUS_HUMAN_DAMAGE_PARAM = "Damage to humans",
                 BONUS_BEAST_DAMAGE_PARAM = "Damage to beasts",
 
+                GOLD_BONUS_PARAM = "Bonus gold",
+                EXP_BONUS_PARAM = "Bonus exp",
+
 
                 ITEM_TYPE_WEAPON_NAME     = "Weapon",
                 ITEM_TYPE_ARMOR_NAME      = "Armor",
@@ -1066,6 +1357,29 @@ do
                 ARCANE_ATTRIBUTE_NAME       = "Arcane",
                 DARKNESS_ATTRIBUTE_NAME     = "Darkness",
                 HOLY_ATTRIBUTE_NAME         = "Holy",
+
+
+                BARBARIAN_PROPER_NAME_1 = "Gar'dal Grimsight",
+                BARBARIAN_PROPER_NAME_2 = "Negal Fireye",
+                BARBARIAN_PROPER_NAME_3 = "Kazil Darkeye",
+                BARBARIAN_PROPER_NAME_4 = "Magis Coldeye",
+                BARBARIAN_PROPER_NAME_5 = "Bale Bleakstare",
+                BARBARIAN_PROPER_NAME_6 = "Gorr Grimwolf",
+                BARBARIAN_PROPER_NAME_7 = "Kag'ar Winterfang",
+                BARBARIAN_PROPER_NAME_8 = "Nazgrel",
+                BARBARIAN_PROPER_NAME_9 = "Morg Wolfsong",
+                BARBARIAN_PROPER_NAME_10 = "Kazragore",
+                BARBARIAN_PROPER_NAME_11 = "Fenris'ar Gul",
+
+                SORCERESS_PROPER_NAME_1 = "Nara Pathstrider",
+                SORCERESS_PROPER_NAME_2 = "Anya Eversong",
+                SORCERESS_PROPER_NAME_3 = "Anthis Sunbow",
+                SORCERESS_PROPER_NAME_4 = "Clea Deathstrider",
+                SORCERESS_PROPER_NAME_5 = "Cyndia Hawkspear",
+                SORCERESS_PROPER_NAME_6 = "Mira Shadewither",
+                SORCERESS_PROPER_NAME_7 = "Amora Eagleye",
+                SORCERESS_PROPER_NAME_8 = "Siren Ghostsong",
+                SORCERESS_PROPER_NAME_9 = "Somand Wayfinder",
 
 
                 FEEDBACK_GOLD = {
@@ -1189,8 +1503,19 @@ do
 
                 SHOP_MESSAGE_NO_SPACE = "Shop doesn't have empty space",
 
+                RIFT_FORMED_MSG = "A rift has been formed.",
+                RIFT_CLOSED_MSG = "The rift has been closed.",
+
                 INVENTORY_PANEL_TOOLTIP_NAME = "Inventory",
                 INVENTORY_PANEL_TOOLTIP_DESCRIPTION =  "Contains all of your items.",
+
+                UI_INVENTORY_TOOLTIP_HEADER = "Tips",
+                UI_INVENTORY_TOOLTIP_DESCRIPTION = "Single LMB - context menu\nDouble LMB - quick action\nHolding LMB - dragndrop\nshift - comparison\nalt - alternate item comparison",
+
+                UI_SHOP_TOOLTIP_HEADER = "Tips",
+                UI_SHOP_TOOLTIP_DESCRIPTION = "Single LMB - context menu\nshift - comparison\nalt - alternate item comparison",
+
+                UI_TEXT_LEVEL = "Level ",
 
                 UI_TEXT_SELL = "Sell",
                 UI_TEXT_BUY = "Buy",
@@ -1205,6 +1530,8 @@ do
                 UI_TEXT_RESOCKET = "Resocket",
                 UI_TEXT_ALT_WEAPON = "Left hand",
                 UI_TEXT_EXCHANGE = "Exchange",
+                UI_TEXT_TO_STASH = "Store",
+                UI_TEXT_FROM_STASH = "Take back",
 
                 UI_TEXT_OK = "ok",
                 UI_TEXT_CANCEL = "cancel",
@@ -1217,12 +1544,19 @@ do
 
                 HINT_INVENTORY_1 = "You can use single click on any item in the inventory to open up a context menu or double click to do a fast interaction depending on an item type.",
                 HINT_INVENTORY_2 = "For example you can do double click on a weapon to equip it in the main hand. Doing the same on a consumable item will bind it in the basic hero inventory.",
-                HINT_SHOP_1 = "Every wave stock of each shop will get updated so feel free to sell unnecessary items. While you have any shop opened context menu in the invenrory unlocks <Sell> button.",
+                HINT_SHOP_1 = "At some waves stock of each shop will get updated so feel free to sell unnecessary items. While you have any shop opened context menu in the invenrory unlocks <Sell> button.",
                 HINT_BLACKSMITH_1 = "Blacksmith can reforge your item to the wave level, upgrading its basic parameters. Also he can remove socket stones. That action won't return the stone.",
                 HINT_STATS_1 = "Basic parameters are crucial in a hero development. You can hover over any of it to know more about each. You gain 3 parameter points with a new level.",
                 HINT_ALTARS = "You can interact with altars, chests or wells via right click while being nearby. Altars give random positive effect, chests contain loot and gold and wells recover your's hero hp or mana.",
                 HINT_BELT = "You can use items on the belt by pressing 1-2-3-4-5-6. Items numeration starts with the top-left item.",
 
+                QUEST_REVEALED_STRING = "|c00FFCE00Quest aquired: |r",
+                QUEST_DONE_STRING = "|c005AFF00Quest completed: |r",
+                QUEST_FAILED_STRING = "|c00FF5151Quest failed: |r",
+                QUEST_UPDATED_STRING = "|c0079C8FFQuest has been updated: |r",
+                QUEST_REQUIREMENT_STRING = "|c00009FFFNew quest info: |r",
+                QUEST_HINT_STRING = "|c004FFFE4Tip: |r",
+                QUEST_ALERT_STRING = "|c00FF7D63Attention: |r",
 
                 DAMAGE_UI = "Damage: ",
                 BLOCK_UI = "Block: ",
@@ -1249,14 +1583,20 @@ do
                 STAT_PANEL_STR_DESC = "Boosts physical damage.",
                 STAT_PANEL_INT_DESC = "Each point gives 1 magic suppression. Also boosts magical damage, mana and mana recovery.",
                 STAT_PANEL_VIT_DESC = "Boosts heath amount and its recovery.",
-                STAT_PANEL_AGI_DESC = "Each point gives 2 defence.",
+                STAT_PANEL_AGI_DESC = "Each point gives 2 defence. Each 3 points increase your attack and cast speed by 1%%.",
 
+                STAT_PANEL_MINOR_STAT = "Minor",
+                STAT_PANEL_PHYSICAL_ATTACK_DESC = "Direct damage from your physical attacks.",
+                STAT_PANEL_PHYSICAL_DEFENCE_DESC = "Converted in a percentage damage reduction.",
+                STAT_PANEL_MAGICAL_ATTACK_DESC = "Increases your damage from magic by percentage.",
+                STAT_PANEL_MAGICAL_SUPPRESSION_DESC = "Reduces enemy magical attack with ratio of 1 to 1.",
 
                 STAT_PANEL_PHYS_ATTACK = "Phys. attack: ",
                 STAT_PANEL_PHYS_DEFENCE = "Defence: ",
                 STAT_PANEL_MAG_ATTACK = "Mag. attack: ",
                 STAT_PANEL_MAG_DEFENCE = "Suppress: ",
-                STAT_PANEL_ATTACK_SPEED = "Attacks per sec.: ",
+                STAT_PANEL_ATTACK_SPEED = "Attack cooldown: ",
+                STAT_PANEL_CAST_SPEED = "Cast speed: ",
                 STAT_PANEL_CRIT_CHANCE = "Crit. chance: ",
 
                 STAT_PANEL_FIRE = "Fire: ",
@@ -1617,7 +1957,7 @@ do
 
 
                 ITEM_NAME_DARK_CROWN = "Dark Crown",
-                ITEM_SPEC_DESCRIPTION_DARK_CROWN = "If you want to resist the darkness, became darkness yourself.",
+                ITEM_SPEC_DESCRIPTION_DARK_CROWN = "If you want to resist the darkness, become darkness yourself.",
 
                 ITEM_NAME_RITUAL_DAGGER = "Ritual Dagger",
                 ITEM_SPEC_DESCRIPTION_RITUAL_DAGGER = "Power within this blade is revealed with every slash. And let the one who takes possession of it can bear it.",
@@ -1786,11 +2126,12 @@ do
                 SORCERESS_NAME = "Sorceress",
 
                 VENDOR_BILL_NAME = "Vendor Bill",
-                HEALER_NAME = "Healer",
-                BLACKSMITH_NAME = "Blacksith",
+                HEALER_NAME = "Healer Dalia",
+                BLACKSMITH_NAME = "Blacksmith",
                 SMORC_NAME = "SMorc",
                 LIBRARIAN_NAME = "Librarian",
                 SCAVENGER_NAME = "Wandering scavenger",
+                LYNN_NAME = "Lynn",
 
                 AIZEK_NAME = "Apprentice Aizek",
                 GUINPLEN_NAME = "Guinplen",
@@ -1802,6 +2143,7 @@ do
                 WITCH_NAME = "Witch of the Woods",
                 HUNTER_NAME = "Hunter Bork",
                 DON_NAME = "Manager Don",
+                MANTO_NAME = "Manto",
 
 
                 INTRODUCTION_TEXT_1 = "Hey, stranger! Welcome to our fortress. It's kinda unsettling here, but I see you can stand on your own.",
@@ -1849,7 +2191,7 @@ do
                 QUEST_1_M_SPEECH_INTRO_3 = "We have to deal with it somehow, there is one wandering knight nearby, maybe he can help with it?",
                 QUEST_1_M_SPEECH_GIUN_1 = "Ah, so you are about that demon... You see, I have some information that lead to its origins.",
                 QUEST_1_M_SPEECH_GIUN_2 = "It is a cursed girl from a village nearby. Looks like someone wanted revenge and casted a curse on her with unholy artefact from hell.",
-                QUEST_1_M_SPEECH_GIUN_3 = "I have found a staff that can release that curse, but when I wanted to meet with a trader I found out that he was slaughered by demons and stuff is lost somewhere south-east from here.",
+                QUEST_1_M_SPEECH_GIUN_3 = "I have found a staff that can release that curse, but when I wanted to meet with a trader I found out that he was slaughered by demons and stuff is lost somewhere in |c00FFFF6Cforgotten lands|r or maybe even |c00FFFF6Cnarrow pass|r.",
                 QUEST_1_M_SPEECH_GIUN_4 = "Find that stuff - and you can break this curse with a more civl way.",
                 QUEST_1_M_SPEECH_END_2 = "Oh! I came back! How did you do that? I feel like I was in a dream for so long... Thank you for my salvation! Take this as my gratitude.",
                 QUEST_1_M_SPEECH_STAFF_FOUND = "Looks like this is the staff that I need. Now I need to find that demon.",
@@ -1857,7 +2199,7 @@ do
 
 
                 QUEST_2_M_TITLE = "Forest Guard",
-                QUEST_2_M_DESC = "Local hunters are tracking down a legendary beast - Forest Guard. Myth or reality, you have to find the lost hunters. Their last known location was on the south of the castle.",
+                QUEST_2_M_DESC = "Local hunters are tracking down a legendary beast - Forest Guard. Myth or reality, you have to find the lost hunters. Their last known location was in |c00FFFF6forgotten lands|r.",
                 QUEST_2_M_ITEM = "Find the hunters",
                 QUEST_2_M_ITEMVAR1 = "Track down the beast",
                 QUEST_2_M_ITEMVAR2 = "Find the Witch",
@@ -1890,6 +2232,30 @@ do
 
                 QUEST_2_M_HUNTER_6 = "Yay, well done! Now we are talking! Hey, boys, time to get back!",
                 QUEST_2_M_WITCH_5 = "Thank you for your understanding and prudence. Now the beast is safe. Take this, with best regards.",
+
+                QUEST_3_M_TITLE = "Unlucky",
+                QUEST_3_M_DESC = "A talking skeleton asked for help. From his words some round thing can help him. Maybe i'll be lucky to find it?",
+
+                QUEST_3_M_SPEECH_INTRO_1 = "....What are you looking at? ...Haven't seen talking skeletons?.. well, everything happens for the first time. Ah, what a bad luck.",
+                QUEST_3_M_SPEECH_INTRO_2 = "As you can see, I'm in kinda bad spot. Why do I even internship with that mage... Ah, forget it, can you help?",
+                QUEST_3_M_SPEECH_INTRO_3 = "I've touched one thing, and, ahem, it made me look like that. Yes, YES, I'm a human goddamit! Well, almost... You know, that thing is round and glassy...",
+                QUEST_3_M_SPEECH_INTRO_4 = "Maybe you'll fine one? I just hope that it can be turned back, I've lost few bones already, and walking like that in any town will be troublesome.",
+
+                QUEST_3_M_ITEM_1_DESC = "Round Thing found",
+
+                QUEST_3_M_SPEECH_1 = "Uh oh, well, what do we have here... lets take a look... AH, looks like it! Finally, I got lucky!.",
+                QUEST_3_M_SPEECH_2 = "Hmmm... rub it here.. breather there... Ah, sake, I'm a skeleton, how I was supposed to breathe?.. here, breather here... hmmm...",
+                QUEST_3_M_SPEECH_3 = "... strange... it's not working... wait a sec, what is this?... mmmm.. \"charging with a souls\"...",
+                QUEST_3_M_SPEECH_4 = "Goddamit! I was feeling it with my gut that this won't be easy. Okay... Can you help a little again? Just kill some ghosts while you got it, and it will be charged.",
+
+                QUEST_3_M_ITEM_2_DESC = "Soul Energy",
+                QUEST_3_M_ITEM_3_DESC = "Bring Back the Emanator",
+
+                QUEST_3_M_SPEECH_5 = "Now it's glowing!.. well... second attempt. Rub, rub... Breathe here, yes... aaaaaand...",
+                QUEST_3_M_SPEECH_5 = "...are you kidding??? Am I supposed to be a freaking skeleton forevere??? Why, just whyyyyyy!",
+                QUEST_3_M_SPEECH_6 = "My mom told me, be a farmer, but noooo, I'm a great alchimician! My god...",
+                QUEST_3_M_SPEECH_7 = "Ah.. well.. I'' figure it out.. Here, take a look under my rib, gold stash! For your efforts! Cya.",
+
             }
 
         }

@@ -59,6 +59,7 @@ do
     end
 
     ---@param message string
+    ---@param player number
     function ShowQuestHintForPlayer(message, player)
         if GetLocalPlayer() == Player(player) then
             DisplayTimedTextToPlayer(Player(player), 0, 0, bj_TEXT_DELAY_ALWAYSHINT, " ")
@@ -74,6 +75,7 @@ do
     end
 
 
+    ---@param quest_id string
     function HintQuestUpdated(quest_id)
         SendQuestMessage(QUEST_UPDATED_STRING .. QuestsList[quest_id].name, bj_TEXT_DELAY_QUESTUPDATE)
         StartSound(QUEST_UPDATED_SOUND or bj_questUpdatedSound)
@@ -81,6 +83,7 @@ do
     end
 
 
+    ---@param quest_id string
     function MarkQuestAsFailed(quest_id)
         QuestsList[quest_id].failed = true
         QuestSetFailed(QuestsList[quest_id].quest, true)
@@ -89,6 +92,7 @@ do
         FlashQuestDialogButton()
     end
 
+    ---@param quest_id string
     function MarkQuestAsCompleted(quest_id)
         QuestsList[quest_id].completed = true
         QuestSetCompleted(QuestsList[quest_id].quest, true)
@@ -98,6 +102,7 @@ do
     end
 
 
+    ---@param quest_id string
     function RevealQuest(quest_id)
         QuestSetDiscovered(QuestsList[quest_id].quest, true)
         QuestsList[quest_id].discovered = true
@@ -131,6 +136,8 @@ do
 
     end
 
+    ---@param quest_id string
+    ---@param quest_item_id string
     function IsMyQuestItemCompleted(quest_id, quest_item_id)
         local quest = QuestsList[quest_id]
         local qitem_table = GetQuestItem(quest, quest_item_id)
@@ -138,8 +145,9 @@ do
         return IsQuestItemCompleted(qitem_table.qitem)
     end
 
-    ---@param quest_item questitem
+    ---@param quest_item string
     ---@param state boolean
+    ---@param quest_id string
     function SetQuestItemState(quest_id, quest_item, state)
         local quest = QuestsList[quest_id] or nil
         local completed_quest_items = 0
@@ -173,6 +181,8 @@ do
 
 
     ---@param number integer
+    ---@param quest_id string
+    ---@param id string
     function SetQuestItemPool(quest_id, id, number)
         local player_quest = QuestsList[quest_id]
         local qitem_table = GetQuestItem(player_quest, id)
@@ -194,6 +204,8 @@ do
 
 
     ---@param count integer
+    ---@param quest_id string
+    ---@param id string
     function AddQuestItemPool(quest_id, id, count)
         local player_quest = QuestsList[quest_id]
         local qitem_table = GetQuestItem(player_quest, id)
@@ -266,6 +278,7 @@ do
     ---@param icon string
     ---@param discovered boolean
     ---@param title string
+    ---@param quest_id string
     function NewQuest(title, description, icon, quest_type, discovered, quest_id)
 
             if QuestsList[quest_id] == nil then
@@ -296,13 +309,13 @@ do
         QuestsList = {}
 
 
-        QUEST_REVEALED_STRING = "|c00FFCE00Задание получено: |r"
-        QUEST_DONE_STRING = "|c005AFF00Задание выполнено: |r"
-        QUEST_FAILED_STRING = "|c00FF5151Задание провалено: |r"
-        QUEST_UPDATED_STRING = "|c0079C8FFЗадание обновлено: |r"
-        QUEST_REQUIREMENT_STRING = "|c00009FFFНовые подробности задания: |r"
-        QUEST_HINT_STRING = "|c004FFFE4Подсказка: |r"
-        QUEST_ALERT_STRING = "|c00FF7D63Внимание: |r"
+        QUEST_REVEALED_STRING = LOCALE_LIST[my_locale].QUEST_REVEALED_STRING
+        QUEST_DONE_STRING = LOCALE_LIST[my_locale].QUEST_DONE_STRING
+        QUEST_FAILED_STRING = LOCALE_LIST[my_locale].QUEST_FAILED_STRING
+        QUEST_UPDATED_STRING = LOCALE_LIST[my_locale].QUEST_UPDATED_STRING
+        QUEST_REQUIREMENT_STRING = LOCALE_LIST[my_locale].QUEST_REQUIREMENT_STRING
+        QUEST_HINT_STRING = LOCALE_LIST[my_locale].QUEST_HINT_STRING
+        QUEST_ALERT_STRING = LOCALE_LIST[my_locale].QUEST_ALERT_STRING
 
         QUEST_REVEALED_SOUND = nil
         QUEST_DONE_SOUND = nil

@@ -17,11 +17,7 @@ do
     ---@param region region
     function GetNewLocation(region)
         for i = 1, #Locations do
-            for k = 1, #Locations[i].regions do
-                if Locations[i].regions[k] == region then
-                    return i
-                end
-            end
+            if Locations[i].region == region then return i end
         end
         return 0
     end
@@ -52,47 +48,41 @@ do
 
         Locations[1] = {
             rects = { gg_rct_loc_castle_1, gg_rct_loc_castle_2, gg_rct_loc_castle_3, gg_rct_loc_castle_4, gg_rct_loc_castle_5, gg_rct_loc_castle_6, gg_rct_loc_castle_7, gg_rct_loc_castle_8, gg_rct_loc_castle_9 },
-            regions = {},
             name = LOCALE_LIST[my_locale].CASTLE_LOCATION_TEXTURE
         }
         Locations[2] = {
             rects = { gg_rct_loc_mainroad_1, gg_rct_loc_mainroad_2, gg_rct_loc_mainroad_3, gg_rct_loc_mainroad_4, gg_rct_loc_mainroad_5, },
-            regions = {},
             name = LOCALE_LIST[my_locale].MAINROAD_LOCATION_TEXTURE
         }
         Locations[3] = {
             rects = { gg_rct_loc_wild_forest_1, gg_rct_loc_wild_forest_2, gg_rct_loc_wild_forest_3 },
-            regions = {},
             name = LOCALE_LIST[my_locale].WILDFOREST_LOCATION_TEXTURE
         }
         Locations[4] = {
             rects = { gg_rct_loc_narrowpass_1, gg_rct_loc_narrowpass_2, gg_rct_loc_narrowpass_3, gg_rct_loc_narrowpass_4 },
-            regions = {},
             name = LOCALE_LIST[my_locale].NARROWPASS_LOCATION_TEXTURE
         }
         Locations[5] = {
             rects = { gg_rct_loc_outskirts_1, gg_rct_loc_outskirts_2, gg_rct_loc_outskirts_3, gg_rct_loc_outskirts_4, gg_rct_loc_outskirts_5 },
-            regions = {},
             name = LOCALE_LIST[my_locale].OUTSKIRTS_LOCATION_TEXTURE
         }
         Locations[6] = {
             rects = { gg_rct_loc_sacredgrove_1 },
-            regions = {},
             name = LOCALE_LIST[my_locale].SACREDGROVE_LOCATION_TEXTURE
         }
         Locations[7] = {
             rects = { gg_rct_loc_meadows_1, gg_rct_loc_meadows_2, gg_rct_loc_meadows_3, gg_rct_loc_meadows_4, gg_rct_loc_meadows_5 },
-            regions = {},
             name = LOCALE_LIST[my_locale].MEADOWS_LOCATION_TEXTURE
         }
 
 
         for i = 1, #Locations do
+            Locations[i].region = CreateRegion()
             for k = 1, #Locations[i].rects do
-                Locations[i].regions[k] = CreateRegion()
-                RegionAddRect(Locations[i].regions[k], Locations[i].rects[k])
-                TriggerRegisterEnterRegion(LocationChangeTrigger, Locations[i].regions[k], nil)
+                --Locations[i].regions[k] = CreateRegion()
+                RegionAddRect(Locations[i].region, Locations[i].rects[k])
             end
+            TriggerRegisterEnterRegion(LocationChangeTrigger, Locations[i].region, nil)
         end
 
 

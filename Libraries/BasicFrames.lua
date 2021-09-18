@@ -52,7 +52,7 @@ do
     end
 
 
-    function RegisterConstructor(frame, base_x, base_y)
+    function RegisterConstructor(frame, base_x, base_y, step)
         local trg
 
         local coords = { x = base_x, y = base_y }
@@ -67,28 +67,97 @@ do
         trg = CreateTrigger()
         TriggerRegisterPlayerEvent(trg, Player(0), EVENT_PLAYER_ARROW_DOWN_DOWN)
         TriggerAddAction(trg, function()
-            coords.y = coords.y - 0.01
+            coords.y = coords.y - (step or 0.01)
             update()
         end)
 
         trg = CreateTrigger()
         TriggerRegisterPlayerEvent(trg, Player(0), EVENT_PLAYER_ARROW_UP_DOWN)
         TriggerAddAction(trg, function()
-            coords.y = coords.y + 0.01
+            coords.y = coords.y + (step or 0.01)
             update()
         end)
 
         trg = CreateTrigger()
         TriggerRegisterPlayerEvent(trg, Player(0), EVENT_PLAYER_ARROW_LEFT_DOWN)
         TriggerAddAction(trg, function()
-            coords.x = coords.x - 0.01
+            coords.x = coords.x - (step or 0.01)
             update()
         end)
 
         trg = CreateTrigger()
         TriggerRegisterPlayerEvent(trg, Player(0), EVENT_PLAYER_ARROW_RIGHT_DOWN)
         TriggerAddAction(trg, function()
-            coords.x = coords.x + 0.01
+            coords.x = coords.x + (step or 0.01)
+            update()
+        end)
+
+    end
+
+    function RegisterDecorator(frame, framepoint, base_x, base_y, step)
+        local trg
+
+        local coords = { x = base_x, y = base_y }
+        --local manipulated_frame = MainInventoryFrame[1]
+
+        local update = function()
+            BlzFrameClearAllPoints(frame)
+            BlzFrameSetAbsPoint(frame, framepoint, coords.x, coords.y)
+            --BlzFrameSetSize(frame, coords.x, coords.y)
+            print(coords.x .. "/" .. coords.y)
+        end
+
+        trg = CreateTrigger()
+        BlzTriggerRegisterPlayerKeyEvent(trg, Player(0), OSKEY_K, 0, true)
+        TriggerAddAction(trg, function()
+            coords.y = coords.y - (step or 0.01)
+            update()
+        end)
+
+        trg = CreateTrigger()
+        BlzTriggerRegisterPlayerKeyEvent(trg, Player(0), OSKEY_I, 0, true)
+        TriggerAddAction(trg, function()
+            coords.y = coords.y + (step or 0.01)
+            update()
+        end)
+
+        trg = CreateTrigger()
+        BlzTriggerRegisterPlayerKeyEvent(trg, Player(0), OSKEY_J, 0, true)
+        TriggerAddAction(trg, function()
+            coords.x = coords.x - (step or 0.01)
+            update()
+        end)
+
+        trg = CreateTrigger()
+        BlzTriggerRegisterPlayerKeyEvent(trg, Player(0), OSKEY_L, 0, true)
+        TriggerAddAction(trg, function()
+            coords.x = coords.x + (step or 0.01)
+            update()
+        end)
+
+    end
+
+    function RegisterScaler(frame, base_scale, step)
+        local trg
+
+        local update = function()
+            BlzFrameSetScale(frame, base_scale)
+            print(base_scale)
+        end
+
+        trg = CreateTrigger()
+        BlzTriggerRegisterPlayerKeyEvent(trg, Player(0), OSKEY_PAGEDOWN, 0, true)
+        --TriggerRegisterPlayerEvent(trg, Player(0), EVENT_PLAYER_ARROW_DOWN_DOWN)
+        TriggerAddAction(trg, function()
+            base_scale = base_scale - (step or 0.01)
+            update()
+        end)
+
+        trg = CreateTrigger()
+        BlzTriggerRegisterPlayerKeyEvent(trg, Player(0), OSKEY_PAGEUP, 0, true)
+        --TriggerRegisterPlayerEvent(trg, Player(0), EVENT_PLAYER_ARROW_UP_DOWN)
+        TriggerAddAction(trg, function()
+            base_scale = base_scale + (step or 0.01)
             update()
         end)
 
@@ -124,7 +193,8 @@ do
         end)
 
         BlzLoadTOCFile("war3mapimported\\BoxedText.toc")
-        BlzLoadTOCFile("war3mapImported\\MyTOCfile.toc")
+        if not BlzLoadTOCFile("war3mapImported\\MyTOCfile.toc") then print("MyTOCfile.toc not loaded") end
+        --if not BlzLoadTOCFile("war3mapImported\\testtoc.toc") then print("testtoc.toc not loaded") end
 
         InitContextMenu()
         InitSlider()

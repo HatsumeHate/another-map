@@ -93,6 +93,7 @@ do
     MONSTER_ID_BANDIT_ASSASSIN = "n00W"
     MONSTER_ID_QUILLBEAST = "n01N"
     MONSTER_ID_WOLF = "n01J"
+    MONSTER_ID_INSECT = "n023"
     MONSTER_ID_SATYR = "n01K"
     MONSTER_ID_SATYR_TRICKSTER = "n01L"
     MONSTER_ID_SATYR_HELL = "n01M"
@@ -102,6 +103,7 @@ do
     MONSTER_ID_BAAL = "U001"
     MONSTER_ID_MEPHISTO = "U000"
     MONSTER_ID_DEMONESS = "U006"
+    MONSTER_ID_ANDARIEL = "n022"
     MONSTER_ID_DEMONKING = "U005"
     MONSTER_ID_UNDERWORLD_QUEEN = "U002"
     MONSTER_ID_REANIMATED = "U004"
@@ -122,7 +124,11 @@ do
 
 
 
+    function GetRandomMonsterTag()
+        return GetRandomInt(1, #MONSTER_LIST-1)
+    end
 
+    ---@param rank number
     function GetRandomMonsterPack(rank)
         local pack = GetRandomInt(1, #MONSTER_LIST-1)
 
@@ -135,6 +141,8 @@ do
     end
 
 
+    ---@param rank number
+    ---@param tag number
     function GetRandomMonsterPackTag(rank, tag)
         local pack = GetRandomInt(1, #MONSTER_LIST-1)
         local num = 10
@@ -151,12 +159,40 @@ do
     end
 
 
+    ---@param group group
+    function SortGroup(group)
+        local group_table = {}
+        local group_size = BlzGroupGetSize(group)-1
+
+            for index = group_size, 0, -1 do
+                local type_id = GetUnitTypeId(BlzGroupUnitAt(group, index))
+                local has_value = false
+
+                    for i = 1, #group_table do
+                        if group_table[i].type_id == type_id then
+                            group_table[i].count = group_table[i].count + 1
+                            GroupAddUnit(group_table[i].group, BlzGroupUnitAt(group, index))
+                            has_value = true
+                            break
+                        end
+                    end
+
+                    if not has_value then
+                        group_table[#group_table + 1] = { type_id = type_id, count = 1, group = CreateGroup() }
+                        GroupAddUnit(group_table[#group_table].group, BlzGroupUnitAt(group, index))
+                    end
+
+            end
+
+
+        return group_table
+    end
     
     ---@param pack number
     ---@param rect rect
     ---@param amount number
     ---@param group group
-    function CreateUnits_Pack(pack, rect, amount, group)
+    function CreateUnits_Pack(pack, rect, amount, group, player)
         if pack == nil then return 0 end
 
         local id
@@ -164,9 +200,16 @@ do
 
         if amount <= 0 then return end
 
+        for k = 1, #pack do
+            if GetRandomReal(0.,100.) <= pack[k].chance then
+                id = FourCC(pack[k].id)
+                amount = pack[k].max or amount
+                break
+            end
+        end
+
             for i = 1, amount do
-                for k = 1, #pack do if GetRandomReal(0.,100.) <= pack[k].chance then id = FourCC(pack[k].id); break end end
-                newunit = CreateUnit(SECOND_MONSTER_PLAYER, id, GetRandomReal(GetRectMinX(rect), GetRectMaxX(rect)), GetRandomReal(GetRectMinY(rect), GetRectMaxY(rect)), GetRandomInt(0, 359))
+                newunit = CreateUnit(player or SECOND_MONSTER_PLAYER, id, GetRandomReal(GetRectMinX(rect), GetRectMaxX(rect)), GetRandomReal(GetRectMinY(rect), GetRectMaxY(rect)), GetRandomInt(0, 359))
                 GroupAddUnit(group, newunit)
             end
 
@@ -184,28 +227,20 @@ do
         local newunit
 
         if amount <= 0 then return end
+        for k = 1, #pack do
+            if GetRandomReal(0.,100.) <= pack[k].chance then
+                id = FourCC(pack[k].id)
+                amount = pack[k].max or amount
+                break
+            end
+        end
 
             for i = 1, amount do
-                for k = 1, #pack do if GetRandomReal(0.,100.) <= pack[k].chance then id = FourCC(pack[k].id); break end end
                 newunit = CreateUnit(MONSTER_PLAYER, id, GetRandomReal(GetRectMinX(rect), GetRectMaxX(rect)), GetRandomReal(GetRectMinY(rect), GetRectMaxY(rect)), GetRandomInt(0, 359))
                 GroupAddUnit(WaveGroup, newunit)
             end
 
         return amount
-    end
-
-
-
-
-
-    local function GetProperAttackTypeSwitch(current_type, pack_attack_type)
-        local monster_attack_type = current_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
-
-        if pack_attack_type == nil then
-            monster_attack_type = monster_attack_type == MONSTER_TAG_MELEE and MONSTER_TAG_RANGE or MONSTER_TAG_MELEE
-        end
-
-        return monster_attack_type
     end
 
 
@@ -216,7 +251,60 @@ do
     ---@param max number
     ---@param bonus_elite number
     ---@param range_type_chance_delta number
-    function SpawnMonsterPack(point, monster_pack, min, max, bonus_elite, range_type_chance_delta)
+    function SpawnClearMonsterPack(point, monster_group, monster_pack, min, max, bonus_elite, range_type_chance_delta, player)
+        if point == nil or monster_pack == nil then return end
+        local total_monster_count = GetRandomInt(min, max) + math.floor(Current_Wave / 3.)
+        local first_pack_count = math.ceil(total_monster_count * COMMON_MONSTER_RATE)
+        local monster_attack_type = GetRandomReal(0., 100.) <= (MELEE_MONSTER_CHANCE + (range_type_chance_delta or 0.)) and MONSTER_TAG_MELEE or MONSTER_TAG_RANGE
+
+        monster_pack = MONSTER_LIST[monster_pack]
+        local original_pack = monster_pack
+
+        local last_attack_type = monster_attack_type
+        local rank = MONSTER_RANK_COMMON
+        local to_spawn = first_pack_count
+        local rank_switch = 0
+
+            while total_monster_count > 0 do
+                monster_pack = original_pack
+
+                if not monster_pack[rank] or not monster_pack[rank][last_attack_type] then
+                    while(true) do
+                        monster_pack = GetRandomMonsterPack(rank)
+                        if monster_pack[rank] and monster_pack[rank][last_attack_type] then
+                            break
+                        end
+                    end
+                end
+
+                total_monster_count = total_monster_count - CreateUnits_Pack(monster_pack[rank][last_attack_type] or nil, point, to_spawn, monster_group, player or nil)
+
+                rank_switch = rank_switch + 1
+
+                if last_attack_type == MONSTER_TAG_MELEE then last_attack_type = MONSTER_TAG_RANGE
+                else last_attack_type = MONSTER_TAG_MELEE end
+
+                if rank_switch == 2 then
+                    if rank == MONSTER_RANK_COMMON then rank = MONSTER_RANK_ADVANCED
+                        to_spawn = GetRandomInt(1, 3)
+                        if bonus_elite and bonus_elite > 0 then total_monster_count = total_monster_count + bonus_elite; to_spawn = GetRandomInt(1, bonus_elite); bonus_elite = 0 end
+                    else rank = MONSTER_RANK_COMMON; to_spawn = GetRandomInt(1, 5) end
+                    rank_switch = 0
+                    --print("switch the rank")
+                end
+
+            end
+
+    end
+
+
+    ---@param point rect
+    ---@param monster_pack number
+    ---@param min number
+    ---@param max number
+    ---@param bonus_elite number
+    ---@param range_type_chance_delta number
+    function SpawnMonsterPack(point, monster_pack, min, max, bonus_elite, range_type_chance_delta, player)
         if point == nil or monster_pack == nil then return end
         local total_monster_count = GetRandomInt(min, max) + math.floor(Current_Wave / 3.)
         local first_pack_count = math.ceil(total_monster_count * COMMON_MONSTER_RATE)
@@ -231,32 +319,67 @@ do
         local to_spawn = first_pack_count
         local rank_switch = 0
 
+            while total_monster_count > 0 do
+                monster_pack = original_pack
 
-        while total_monster_count > 0 do
-            monster_pack = original_pack
-            --print("begin")
-            --print("total now is " .. total_monster_count)
-            if not monster_pack[rank] or not monster_pack[rank][last_attack_type] then
-                monster_pack = GetRandomMonsterPack(rank)
-                --print("total remaining " .. total_monster_count)
+                if not monster_pack[rank] or not monster_pack[rank][last_attack_type] then
+                    while(true) do
+                        monster_pack = GetRandomMonsterPack(rank)
+                        if monster_pack[rank] and monster_pack[rank][last_attack_type] then
+                            break
+                        end
+                    end
+                end
+
+                total_monster_count = total_monster_count - CreateUnits_Pack(monster_pack[rank][last_attack_type] or nil, point, to_spawn, monster_group, player or nil)
+
+                rank_switch = rank_switch + 1
+
+                if last_attack_type == MONSTER_TAG_MELEE then last_attack_type = MONSTER_TAG_RANGE
+                else last_attack_type = MONSTER_TAG_MELEE end
+
+                if rank_switch == 2 then
+                    if rank == MONSTER_RANK_COMMON then rank = MONSTER_RANK_ADVANCED
+                        to_spawn = GetRandomInt(1, 3)
+                        if bonus_elite and bonus_elite > 0 then total_monster_count = total_monster_count + bonus_elite; to_spawn = GetRandomInt(1, bonus_elite); bonus_elite = 0 end
+                    else rank = MONSTER_RANK_COMMON; to_spawn = GetRandomInt(1, 5) end
+                    rank_switch = 0
+                    --print("switch the rank")
+                end
+
             end
 
-            total_monster_count = total_monster_count - CreateUnits_Pack(monster_pack[rank][last_attack_type] or nil, point, to_spawn, monster_group)
+            DelayAction(5., function()
+                if GetRandomInt(1, 3) == 1 then
+                    local monster_pack_table = SortGroup(monster_group)
+                    local random_values = GetRandomIntTable(1, #monster_pack_table, #monster_pack_table)
+                    local monsters_with_trait_amount = GetRandomInt(1, 4)
 
-            rank_switch = rank_switch + 1
+                        for i = 1, #random_values do
+                            local current_group = monster_pack_table[random_values[i]]
 
-            if last_attack_type == MONSTER_TAG_MELEE then last_attack_type = MONSTER_TAG_RANGE
-            else last_attack_type = MONSTER_TAG_MELEE end
+                            if current_group.count >= monsters_with_trait_amount then
+                                local random_values_index = GetRandomIntTable(0, BlzGroupGetSize(current_group.group)-1, BlzGroupGetSize(current_group.group)-1)
+                                local trait_amount = GetRandomInt(1, 2)
 
-            if rank_switch == 2 then
-                if rank == MONSTER_RANK_COMMON then rank = MONSTER_RANK_ADVANCED; to_spawn = GetRandomInt(1, 3)
-                else rank = MONSTER_RANK_COMMON; to_spawn = GetRandomInt(1, 5) end
-                rank_switch = 0
-            end
+                                    for k = 1, monsters_with_trait_amount do
+                                        for j = 1, trait_amount do
+                                            local trait = GetRandomMonsterTrait()
+                                            ApplyMonsterTrait(BlzGroupUnitAt(current_group.group, random_values_index[k]), trait)
+                                        end
+                                    end
 
+                                    break
+                            end
 
+                        end
 
-        end
+                    for i = 1, #monster_pack_table do DestroyGroup(monster_pack_table[i].group) end
+                    monster_pack_table = nil
+
+                end
+            end)
+
 
         return monster_group
     end
@@ -314,6 +437,40 @@ do
 
 
         end
+
+        local wave_group = CopyGroup(WaveGroup)
+        DelayAction(5., function()
+
+                if GetRandomInt(1, 3) == 1 then
+                    local monster_pack_table = SortGroup(wave_group)
+                    local random_values = GetRandomIntTable(1, #monster_pack_table, #monster_pack_table)
+                    local monsters_with_trait_amount = GetRandomInt(1, 3)
+
+                        for i = 1, #random_values do
+                            local current_group = monster_pack_table[random_values[i]]
+
+                            if current_group.count >= monsters_with_trait_amount then
+                                local random_values_index = GetRandomIntTable(0, BlzGroupGetSize(current_group.group)-1, BlzGroupGetSize(current_group.group)-1)
+                                local trait_amount = GetRandomInt(1, 2)
+
+                                    for k = 1, monsters_with_trait_amount do
+                                        for j = 1, trait_amount do
+                                            local trait = GetRandomMonsterTrait()
+                                            ApplyMonsterTrait(BlzGroupUnitAt(current_group.group, random_values_index[k]), trait)
+                                        end
+                                    end
+
+                                    break
+                            end
+
+                        end
+
+                    for i = 1, #monster_pack_table do DestroyGroup(monster_pack_table[i].group) end
+                    monster_pack_table = nil
+                end
+
+            DestroyGroup(wave_group)
+        end)
 
         if BossCounter == 5 then
             local boss
@@ -407,6 +564,9 @@ do
         MONSTER_PLAYER = Player(10)
         SECOND_MONSTER_PLAYER = Player(11)
 
+        SetPlayerName(MONSTER_PLAYER, LOCALE_LIST[my_locale].MONSTER_PLAYER_NAME)
+        SetPlayerName(SECOND_MONSTER_PLAYER, LOCALE_LIST[my_locale].MONSTER_PLAYER_NAME)
+
 
         MONSTER_EXP_RATES = {
             [MONSTER_RANK_COMMON] = 1.,
@@ -420,43 +580,45 @@ do
             [MONSTERPACK_SUCCUBUS] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
-                        { id = MONSTER_ID_SUCCUBUS, chance = 100. },
+                        { id = MONSTER_ID_SUCCUBUS, chance = 100., max = 3 },
                     },
                     [MONSTER_TAG_RANGE] = {
-                        { id = MONSTER_ID_SUCCUBUS_ADVANCED, chance = 100. } ,
+                        { id = MONSTER_ID_SUCCUBUS_ADVANCED, chance = 100., max = 2 } ,
                     }
                 },
                 [MONSTER_RANK_ADVANCED] = {
                     [MONSTER_TAG_MELEE] = {
-                        { id = MONSTER_ID_BLOOD_SUCCUBUS, chance = 100. }
+                        { id = MONSTER_ID_BLOOD_SUCCUBUS, chance = 100., max = 3 }
                     }
                 },
                 [MONSTERPACK_BOSS] = {
                     MONSTER_ID_DEMONESS,
-                    MONSTER_ID_UNDERWORLD_QUEEN
+                    MONSTER_ID_UNDERWORLD_QUEEN,
+                    MONSTER_ID_ANDARIEL
                 }
             },
             [MONSTERPACK_BEASTS] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
                         { id = MONSTER_ID_WOLF, chance = 35. },
-                        { id = MONSTER_ID_QUILLBEAST, chance = 100. },
+                        { id = MONSTER_ID_INSECT, chance = 35. },
+                        { id = MONSTER_ID_QUILLBEAST, chance = 100., max = 3 },
                     },
                     [MONSTER_TAG_RANGE] = {
-                        { id = MONSTER_ID_ARACHNID_THROWER, chance = 50., max = 3 } ,
-                        { id = MONSTER_ID_SPIDER_HUNTER, chance = 100., max = 3 } ,
+                        { id = MONSTER_ID_ARACHNID_THROWER, chance = 50., max = 2 } ,
+                        { id = MONSTER_ID_SPIDER_HUNTER, chance = 100., max = 1 } ,
                     }
                 }
             },
             [MONSTERPACK_SWARM] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
-                        { id = MONSTER_ID_BLOODSUCKER, chance = 100. },
+                        { id = MONSTER_ID_BLOODSUCKER, chance = 100., max = 4 },
                     }
                 },
                 [MONSTER_RANK_ADVANCED] = {
                     [MONSTER_TAG_MELEE] = {
-                        { id = MONSTER_ID_VAMPIRE, chance = 100. },
+                        { id = MONSTER_ID_VAMPIRE, chance = 100., max = 3 },
                     }
                 }
             },
@@ -471,7 +633,7 @@ do
                 },
                 [MONSTER_RANK_ADVANCED] = {
                     [MONSTER_TAG_MELEE] = {
-                        { id = MONSTER_ID_SATYR_HELL, chance = 100. },
+                        { id = MONSTER_ID_SATYR_HELL, chance = 100., max = 2 },
                     }
                 }
             },
@@ -481,7 +643,7 @@ do
                         { id = MONSTER_ID_BANDIT_BASIC, chance = 100. }
                     },
                     [MONSTER_TAG_RANGE] = {
-                        { id = MONSTER_ID_BANDIT_ROBBER, chance = 100. }
+                        { id = MONSTER_ID_BANDIT_ROBBER, chance = 100., max = 4 }
                     }
                 },
                 [MONSTER_RANK_ADVANCED] = {
@@ -489,7 +651,7 @@ do
                         { id = MONSTER_ID_BANDIT_ROGUE, chance = 100. }
                     },
                     [MONSTER_TAG_RANGE] = {
-                        { id = MONSTER_ID_BANDIT_ASSASSIN, chance = 100. },
+                        { id = MONSTER_ID_BANDIT_ASSASSIN, chance = 100., max = 2 },
                     }
                 },
                 [MONSTERPACK_BOSS] = {
@@ -502,7 +664,7 @@ do
                         { id = MONSTER_ID_ARACHNID, chance = 100. }
                     },
                     [MONSTER_TAG_RANGE] = {
-                        { id = MONSTER_ID_ARACHNID_THROWER, chance = 100. }
+                        { id = MONSTER_ID_ARACHNID_THROWER, chance = 100., max = 3 }
                     }
                 },
                 [MONSTER_RANK_ADVANCED] = {
@@ -510,7 +672,7 @@ do
                         { id = MONSTER_ID_ARACHNID_WARRIOR, chance = 100. }
                     },
                     [MONSTER_TAG_RANGE] = {
-                        { id = MONSTER_ID_ARACHNID_GROUNDER, chance = 100. },
+                        { id = MONSTER_ID_ARACHNID_GROUNDER, chance = 100., max = 2 },
                     }
                 },
                 [MONSTERPACK_BOSS] = {
@@ -530,7 +692,7 @@ do
                         { id = MONSTER_ID_GIGANTIC_SPIDER, chance = 100. }
                     },
                     [MONSTER_TAG_RANGE] = {
-                        { id = MONSTER_ID_SPIDER_HUNTER, chance = 100. },
+                        { id = MONSTER_ID_SPIDER_HUNTER, chance = 100., max = 3 },
                     }
                 },
                 [MONSTERPACK_BOSS] = {
@@ -571,16 +733,16 @@ do
                         { id = MONSTER_ID_SKELETON_N, chance = 10., max = 2 },
                         { id = MONSTER_ID_SKELETON, chance = 20., max = 3 },
                         { id = MONSTER_ID_ZOMBIE_N, chance = 35., max = 3 },
-                        { id = MONSTER_ID_ZOMBIE, chance = 100. },
+                        { id = MONSTER_ID_ZOMBIE, chance = 100., max = 2 },
                     },
                     [MONSTER_TAG_RANGE] = {
                         { id = MONSTER_ID_NECROMANCER_N, chance = 20., max = 2 },
-                        { id = MONSTER_ID_NECROMANCER, chance = 100. },
+                        { id = MONSTER_ID_NECROMANCER, chance = 100., max = 3 },
                     }
                 },
                 [MONSTER_RANK_ADVANCED] = {
                     [MONSTER_TAG_MELEE] = {
-                        { id = MONSTER_ID_ZOMBIE_MUTANT, chance = 100. },
+                        { id = MONSTER_ID_ZOMBIE_MUTANT, chance = 100., max = 2 },
                     }
                 },
                 [MONSTERPACK_BOSS] = {
@@ -623,16 +785,18 @@ do
                     MONSTER_ID_UNDERWORLD_QUEEN,
                     MONSTER_ID_BUTCHER,
                     MONSTER_ID_BAAL,
-                    MONSTER_ID_MEPHISTO
+                    MONSTER_ID_MEPHISTO,
+                    MONSTER_ID_ANDARIEL
                 }
             },
             [MONSTERPACK_GHOSTS] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
-                        { id = MONSTER_ID_REVENANT_MELEE, chance = 100. },
+                        { id = MONSTER_ID_REVENANT_MELEE, chance = 100., max = 3 },
                     },
                     [MONSTER_TAG_RANGE] = {
                         { id = MONSTER_ID_SORCERESS, chance = 25., max = 2 },
+                        { id = MONSTER_ID_BANSHEE_N, chance = 35., max = 2 },
                         { id = MONSTER_ID_BANSHEE, chance = 100. },
                     }
                 },
@@ -659,7 +823,8 @@ do
                 MONSTER_ID_SPIDER_QUEEN,
                 MONSTER_ID_ARACHNID_BOSS,
                 MONSTER_ID_BANDIT_BOSS,
-                MONSTER_ID_SKELETON_KING
+                MONSTER_ID_SKELETON_KING,
+                MONSTER_ID_ANDARIEL
             }
         }
 
@@ -667,23 +832,23 @@ do
         MONSTER_STATS_RATES = {
             { stat = PHYSICAL_ATTACK,       initial = 0,      delta = 1,     delta_level = 1, method = STRAIGHT_BONUS },
             { stat = MAGICAL_ATTACK,        initial = 0,      delta = 1,     delta_level = 1, method = STRAIGHT_BONUS },
-            { stat = PHYSICAL_DEFENCE,      initial = 0,      delta = 3,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 5 },
-            { stat = MAGICAL_SUPPRESSION,   initial = 0,      delta = 2,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 1 },
-            { stat = PHYSICAL_ATTACK,       initial = 1.,   delta = 0.007,  delta_level = 1, method = MULTIPLY_BONUS },
+            { stat = PHYSICAL_DEFENCE,      initial = 0,      delta = 5,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 5 },
+            { stat = MAGICAL_SUPPRESSION,   initial = 0,      delta = 3,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 1 },
+            { stat = PHYSICAL_ATTACK,       initial = 1.,   delta = 0.003,  delta_level = 1, method = MULTIPLY_BONUS },
             { stat = PHYSICAL_DEFENCE,      initial = 1.,   delta = 0.01,  delta_level = 1, method = MULTIPLY_BONUS },
-            { stat = MAGICAL_ATTACK,        initial = 1.,   delta = 0.007,  delta_level = 1, method = MULTIPLY_BONUS },
-            { stat = MAGICAL_SUPPRESSION,   initial = 1.,   delta = 0.005,  delta_level = 1, method = MULTIPLY_BONUS },
+            { stat = MAGICAL_ATTACK,        initial = 1.,   delta = 0.005,  delta_level = 1, method = MULTIPLY_BONUS },
+            { stat = MAGICAL_SUPPRESSION,   initial = 1.,   delta = 0.007,  delta_level = 1, method = MULTIPLY_BONUS },
             { stat = CRIT_CHANCE,           initial = 0,      delta = 1.,    delta_level = 5, method = STRAIGHT_BONUS },
-            { stat = ALL_RESIST,            initial = 0,      delta = 1,     delta_level = 5, method = STRAIGHT_BONUS },
-            { stat = PHYSICAL_BONUS,        initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-            { stat = ICE_BONUS,             initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-            { stat = LIGHTNING_BONUS,       initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-            { stat = FIRE_BONUS,            initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-            { stat = DARKNESS_BONUS,        initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-            { stat = HOLY_BONUS,            initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-            { stat = POISON_BONUS,          initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-            { stat = ARCANE_BONUS,          initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-            { stat = HP_VALUE,              initial = 0,      delta = 7,    delta_level = 1, method = STRAIGHT_BONUS, per_player = 45 },
+            { stat = ALL_RESIST,            initial = 0,      delta = 5,     delta_level = 5, method = STRAIGHT_BONUS },
+            { stat = PHYSICAL_BONUS,        initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
+            { stat = ICE_BONUS,             initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
+            { stat = LIGHTNING_BONUS,       initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
+            { stat = FIRE_BONUS,            initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
+            { stat = DARKNESS_BONUS,        initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
+            { stat = HOLY_BONUS,            initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
+            { stat = POISON_BONUS,          initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
+            { stat = ARCANE_BONUS,          initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
+            { stat = HP_VALUE,              initial = 0,      delta = 10,    delta_level = 1, method = STRAIGHT_BONUS, per_player = 45 },
             { stat = HP_VALUE,              initial = 1.,   delta = 0.04,  delta_level = 1, method = MULTIPLY_BONUS },
         }
 
@@ -809,6 +974,15 @@ do
 
         RegisterTestCommand("extreme", function()
             Current_Wave = 48
+        end)
+
+        local test_group
+        RegisterTestCommand("spw", function()
+            test_group = SpawnMonsterPack(gg_rct_Region_343, MONSTERPACK_SUCCUBUS, 3, 7, 3, 0.)
+        end)
+
+        RegisterTestCommand("spwd", function()
+            ForGroup(test_group, function() KillUnit(GetEnumUnit()) end)
         end)
 
     end

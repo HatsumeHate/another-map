@@ -2,10 +2,14 @@ do
 
     PlayerInventoryFrame = 0
     PlayerInventoryFrameState = 0
+    InventoryData = nil
     InventorySlots = 0
     InventoryOwner = 0
     InventoryTooltip = 0
+    InventoryAlternateTooltip = 0
     InventoryTriggerButton = 0
+    InventoryItemInFocus = nil
+    InventoryKeyState = nil
     INV_SLOT = 0
     local ClickTrigger = 0
 
@@ -62,6 +66,16 @@ do
 
     HeroSpeechFeedbacks = 0
 
+
+    function Feedback_Health(player)
+        --SimError(LOCALE_LIST[my_locale].FEEDBACK_MSG_NOGOLD, player-1)
+
+        if HeroSpeechFeedbacks[player].state then
+            local snd = PlayLocalSound(LOCALE_LIST[my_locale].FEEDBACK_HEAL[GetUnitClass(PlayerHero[player])][GetRandomInt(1, 5)], player-1, 110)
+            HeroSpeechFeedbacks[player].state = false
+            TimerStart(HeroSpeechFeedbacks[player].timer, 1.7, false, function() HeroSpeechFeedbacks[player].state = true end)
+        end
+    end
 
     function Feedback_NoGold(player)
         SimError(LOCALE_LIST[my_locale].FEEDBACK_MSG_NOGOLD, player-1)
@@ -289,7 +303,60 @@ do
 
 
 
+     function GetItemToCompare(item, player)
+        local unit_data = GetUnitData(PlayerHero[player])
+        local item_data = GetItemData(item)
+        local point
 
+
+            if item_data.TYPE == ITEM_TYPE_WEAPON then
+                if AltState[player] then point = OFFHAND_POINT
+                else point = WEAPON_POINT end
+            elseif item_data.TYPE == ITEM_TYPE_ARMOR then
+                if item_data.SUBTYPE == CHEST_ARMOR then point = CHEST_POINT
+                elseif item_data.SUBTYPE == HEAD_ARMOR then point = HEAD_POINT
+                elseif item_data.SUBTYPE == HANDS_ARMOR then point = HANDS_POINT
+                elseif item_data.SUBTYPE == LEGS_ARMOR then point = LEGS_POINT
+                elseif item_data.SUBTYPE == BELT_ARMOR then point = BELT_POINT end
+            elseif item_data.TYPE == ITEM_TYPE_JEWELRY then
+                if item_data.SUBTYPE == NECKLACE_JEWELRY then point = NECKLACE_POINT
+                else
+                    if AltState[player] then point = RING_2_POINT
+                    else point = RING_1_POINT end
+                end
+            elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
+                point = OFFHAND_POINT
+            end
+
+        if unit_data.equip_point[point] and unit_data.equip_point[point].item then
+            return unit_data.equip_point[point].item
+        end
+
+        return nil
+    end
+
+
+    function ShowAlternateInventoryTooltip(player)
+
+        if IsTooltipActive(player) then
+            local item_to_compare = GetItemToCompare(InventoryItemInFocus[player].item, player)
+                if item_to_compare and item_to_compare ~= InventoryItemInFocus[player].item then
+                    local proper_tooltip = InventoryTooltip[player]
+                    local proper_alternate_tooltip = InventoryAlternateTooltip[player]
+
+                    if ShopFrame[player].state then
+                        proper_tooltip = ShopFrame[player].tooltip;
+                        proper_alternate_tooltip = ShopFrame[player].alternate_tooltip
+                    end
+
+                    ShowItemTooltip(item_to_compare, proper_alternate_tooltip, InventoryItemInFocus[player], player, FRAMEPOINT_LEFT, GetTooltip(proper_alternate_tooltip), true, InventoryItemInFocus[player].item)
+                    BlzFrameClearAllPoints(proper_alternate_tooltip)
+                    BlzFrameSetPoint(proper_alternate_tooltip, FRAMEPOINT_RIGHT, proper_tooltip, FRAMEPOINT_LEFT, 0., 0.)
+                end
+        end
+
+    end
+    
 
 
     local PlayerMovingItem = 0
@@ -310,12 +377,21 @@ do
                 BlzFrameSetSize(PlayerMovingItem[player].frame, scale, scale)
             else
                 if ButtonList[frame].item then
-                    local proper_tooltip
-                    if ShopFrame[player].state then proper_tooltip = ShopFrame[player].tooltip
-                    else proper_tooltip = InventoryTooltip[player] end
+                    InventoryItemInFocus[player] = ButtonList[frame]
+                    local proper_tooltip = InventoryTooltip[player]
+
+                    if ShopFrame[player].state then proper_tooltip = ShopFrame[player].tooltip end
+
                     ShowItemTooltip(ButtonList[frame].item, proper_tooltip, ButtonList[frame], player, FRAMEPOINT_LEFT, GetTooltip(InventoryTooltip[player]))
+
+                    if InventoryKeyState[player] then
+                        RemoveSpecificTooltip(InventoryAlternateTooltip[player])
+                        RemoveSpecificTooltip(ShopFrame[player].alternate_tooltip)
+                        ShowAlternateInventoryTooltip(player)
+                    end
                     --ShowTooltip(player, h, FRAMEPOINT_LEFT, MASTER_FRAME)--ButtonList[GetHandleId(InventorySlots[32])].image)
                 else
+                    InventoryItemInFocus[player] = nil
                     RemoveTooltip(player)
                 end
             end
@@ -323,11 +399,8 @@ do
     end
 
     local function LeaveAction()
-        --local player = GetPlayerId(GetTriggerPlayer()) + 1
-        --local h = GetHandleId(BlzGetTriggerFrame())
-        --print("Leaving trigger "..GetHandleId(GetTriggeringTrigger()))
-
-            RemoveTooltip(GetPlayerId(GetTriggerPlayer()) + 1)
+        InventoryItemInFocus[GetPlayerId(GetTriggerPlayer()) + 1] = nil
+        RemoveTooltip(GetPlayerId(GetTriggerPlayer()) + 1)
     end
 
 
@@ -417,6 +490,7 @@ do
                 end
 
             BlzFrameSetAlpha(PlayerMovingItem[player].frame, 175)
+            InventoryItemInFocus[player] = nil
             RemoveTooltip(player)
 
     end
@@ -585,8 +659,16 @@ do
             DestroyEffect(AddSpecialEffectTarget(item_data.learn_effect, PlayerHero[player], "origin"))
 
             if item_data.improving_skill then
-                if not UnitAddMyAbility(PlayerHero[player], item_data.improving_skill) then UnitAddAbilityLevel(PlayerHero[player], item_data.improving_skill, 1) end
+                local points = item_data.QUALITY == RARE_ITEM and 3 or 1
+
+                    if not UnitAddMyAbility(PlayerHero[player], item_data.improving_skill) then
+                        UnitAddAbilityLevel(PlayerHero[player], item_data.improving_skill, points)
+                    else
+                        UnitAddAbilityLevel(PlayerHero[player], item_data.improving_skill, points-1)
+                    end
+
                 if SkillPanelFrame[player].state then UpdateSkillList(player) end
+
             elseif item_data.bonus_points then
                 AddPointsToPlayer(player, item_data.bonus_points)
                 --ShowQuestAlert(LOCALE_LIST[my_locale].QUEST_REWARD_POINTS_FIRST .. item_data.bonus_points .. LOCALE_LIST[my_locale].QUEST_REWARD_POINTS_SECOND)
@@ -617,8 +699,13 @@ do
         local item_data = GetItemData(ButtonList[h].item) or nil
 
 
+        RemovePrivateChestSelectionFrames(player)
+
         if TimerGetRemaining(DoubleClickTimer[player].timer) > 0. then
             if ButtonList[h].item then
+                --print("doubleclick")
+                RemoveSelectionFrames(player)
+                InventoryItemInFocus[player] = nil
                 RemoveTooltip(player)
                 DestroyContextMenu(player)
 
@@ -634,6 +721,8 @@ do
             end
         else
             TimerStart(DoubleClickTimer[player].timer, 0.25, false, function()
+                InventoryItemInFocus[player] = nil
+                RemoveSelectionFrames(player)
                 local item_data = GetItemData(ButtonList[h].item) or nil
 
                 if ButtonList[h].item and not PlayerMovingItem[player].state and ButtonList[h].button_type == INV_SLOT then
@@ -670,18 +759,40 @@ do
                         end
 
 
-                    if item_data.TYPE == ITEM_TYPE_WEAPON and not IsWeaponTypeTwohanded(item_data.SUBTYPE)  then
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_ALT_WEAPON, function() InteractWithItemInSlot(h, player, true) end)
-                    end
+
 
                     if BlacksmithFrame[player].state and (item_data.TYPE == ITEM_TYPE_OFFHAND or item_data.TYPE == ITEM_TYPE_WEAPON or item_data.TYPE == ITEM_TYPE_ARMOR or item_data.TYPE == ITEM_TYPE_JEWELRY) then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_REFORGE, function() if ButtonList[h].item then GiveItemToBlacksmith(player, ButtonList[h].item, BLACKSMITH_REFORGE) end end)
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_RESOCKET, function() if ButtonList[h].item then GiveItemToBlacksmith(player, ButtonList[h].item, BLACKSMITH_RESOCKET) end end)
-                    end
-
-                    if LibrarianFrame[player].state and item_data.restricted_to then
+                    elseif PrivateChestFrame[player].state then
+                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_TO_STASH, function()
+                            if IsPlayerHasItem(player, ButtonList[h].item) then
+                                if AddToPrivateChest(player, ButtonList[h].item) then
+                                    if IsItemInvulnerable(ButtonList[h].item) then LockItemOnBelt(player, ButtonList[h]) end
+                                    ButtonList[h].item = nil
+                                    UpdateInventoryWindow(player)
+                                end
+                            end
+                        end)
+                    elseif StashFrame[player].state and item_data.flippy then
+                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_TO_STASH, function()
+                            if IsPlayerHasItem(player, ButtonList[h].item) then
+                                if AddToStash(player, ButtonList[h].item) then
+                                    ButtonList[h].item = nil
+                                    UpdateInventoryWindow(player)
+                                    UpdateStashWindow(player)
+                                end
+                            end
+                        end)
+                    elseif LibrarianFrame[player].state and item_data.restricted_to then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_EXCHANGE, function() GiveItemToLibrarian(player, ButtonList[h].item) end)
                     end
+
+                    if item_data.TYPE == ITEM_TYPE_WEAPON and not IsWeaponTypeTwohanded(item_data.SUBTYPE)  then
+                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_ALT_WEAPON, function() InteractWithItemInSlot(h, player, true) end)
+                    end
+
+                    
 
                     if item_data.TYPE == ITEM_TYPE_GEM then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_ENCHANT, function() StartSelectionMode(player, h, SELECTION_MODE_ENCHANT) end)
@@ -760,6 +871,7 @@ do
                             ButtonList[PlayerMovingItem[player].selected_frame].item = nil
                             UpdateInventoryWindow(player)
                             RemoveSelectionFrames(player)
+                            InventoryItemInFocus[player] = ButtonList[h]
                         else
                             if moved_item_data.TYPE ~= ITEM_TYPE_GEM and moved_item_data.TYPE ~= ITEM_TYPE_CONSUMABLE and moved_item_data.TYPE ~= ITEM_TYPE_OTHER then
                                 ForceEquip(h, player)
@@ -777,6 +889,7 @@ do
                             ButtonList[h].item = item
                             UpdateInventoryWindow(player)
                             RemoveSelectionFrames(player)
+                            InventoryItemInFocus[player] = ButtonList[h]
                         else
                             if moved_item_data.TYPE ~= ITEM_TYPE_GEM and moved_item_data.TYPE ~= ITEM_TYPE_CONSUMABLE and moved_item_data.TYPE ~= ITEM_TYPE_OTHER then
                                 ForceEquip(h, player)
@@ -1115,6 +1228,24 @@ do
         BlzFrameSetSize(inv_Frame, 0.36, 0.195)
 
 
+        InventoryData[player] = {
+            tip_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.02, 0.02, slots_Frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.016, -0.016, slots_Frame)
+        }
+
+        CreateTooltip(LOCALE_LIST[my_locale].UI_INVENTORY_TOOLTIP_HEADER, LOCALE_LIST[my_locale].UI_INVENTORY_TOOLTIP_DESCRIPTION, InventoryData[player].tip_button, 0.14, 0.12, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPLEFT)
+
+        local tip_trigger = CreateTrigger()
+        BlzTriggerRegisterFrameEvent(tip_trigger, InventoryData[player].tip_button, FRAMEEVENT_CONTROL_CLICK)
+        TriggerAddAction(tip_trigger, function()
+            ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_INVENTORY_1, player-1)
+            ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_INVENTORY_2, player-1)
+            DisableTrigger(tip_trigger)
+            DelayAction(5., function()
+                EnableTrigger(tip_trigger)
+            end)
+        end)
+
+
         InventorySlots[player] = {}
         -- inventory slots
         InventorySlots[player][1] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, inv_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.02, -0.017, inv_Frame)
@@ -1154,14 +1285,14 @@ do
         --BlzFrameSetSpriteAnimate(new_Frame, 2, 0)
         --BlzFrameSetModel(new_Frame, "selecter1.mdx", 0)
 
-
+        local actual_player = Player(player-1)
         local key_trig = CreateTrigger()
-        BlzTriggerRegisterPlayerKeyEvent(key_trig, Player(player-1), OSKEY_1, 0, true)
-        BlzTriggerRegisterPlayerKeyEvent(key_trig, Player(player-1), OSKEY_2, 0, true)
-        BlzTriggerRegisterPlayerKeyEvent(key_trig, Player(player-1), OSKEY_3, 0, true)
-        BlzTriggerRegisterPlayerKeyEvent(key_trig, Player(player-1), OSKEY_4, 0, true)
-        BlzTriggerRegisterPlayerKeyEvent(key_trig, Player(player-1), OSKEY_5, 0, true)
-        BlzTriggerRegisterPlayerKeyEvent(key_trig, Player(player-1), OSKEY_6, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(key_trig, actual_player, OSKEY_1, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(key_trig, actual_player, OSKEY_2, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(key_trig, actual_player, OSKEY_3, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(key_trig, actual_player, OSKEY_4, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(key_trig, actual_player, OSKEY_5, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(key_trig, actual_player, OSKEY_6, 0, true)
 
         TriggerAddAction(key_trig, function()
             local key = BlzGetTriggerPlayerKey()
@@ -1182,19 +1313,97 @@ do
 
         end)
 
+        AltState[player] = false
+        InventoryKeyState[player] = false
+        local comparison_trigger = CreateTrigger()
+        BlzTriggerRegisterPlayerKeyEvent(comparison_trigger, actual_player, OSKEY_LSHIFT, 1, true)
+        BlzTriggerRegisterPlayerKeyEvent(comparison_trigger, actual_player, OSKEY_LSHIFT, 0, false)
+        TriggerAddAction(comparison_trigger, function()
+
+            if InventoryItemInFocus[player] then
+                if BlzGetTriggerPlayerIsKeyDown() and not InventoryKeyState[player] then
+                    InventoryKeyState[player] = true
+                    AltState[player] = false
+                    ShowAlternateInventoryTooltip(player)
+                elseif not BlzGetTriggerPlayerIsKeyDown() and InventoryKeyState[player] then
+                    RemoveSpecificTooltip(ShopFrame[player].alternate_tooltip)
+                    RemoveSpecificTooltip(InventoryAlternateTooltip[player])
+                    InventoryKeyState[player] = false
+                end
+            else
+                InventoryKeyState[player] = false
+            end
+
+
+        end)
+
+
+        local AltStateTrigger = CreateTrigger()
+        BlzTriggerRegisterPlayerKeyEvent(AltStateTrigger, actual_player, OSKEY_LALT, 5, true)
+        TriggerAddAction(AltStateTrigger, function()
+
+            if InventoryItemInFocus[player] then
+                if AltState[player] then AltState[player] = false
+                else AltState[player] = true end
+                RemoveSpecificTooltip(ShopFrame[player].alternate_tooltip)
+                RemoveSpecificTooltip(InventoryAlternateTooltip[player])
+                ShowAlternateInventoryTooltip(player)
+            end
+
+        end)
+
+        local mouse_state = false
+        local DragTimer = CreateTimer()
+        local MouseDownTrigger = CreateTrigger()
+        local MouseUpTrigger = CreateTrigger()
+        TriggerRegisterPlayerEvent(MouseDownTrigger, actual_player, EVENT_PLAYER_MOUSE_DOWN)
+        TriggerAddAction(MouseDownTrigger, function()
+
+            if PlayerInventoryFrameState[player] and BlzGetTriggerPlayerMouseButton() == MOUSE_BUTTON_TYPE_LEFT then
+                  if InventoryItemInFocus[player] and InventoryItemInFocus[player].item and InventoryItemInFocus[player].button_type == INV_SLOT then
+                        mouse_state = true
+                        local in_focus = InventoryItemInFocus[player]
+                        TimerStart(DragTimer, 0.2, false, function()
+                            if InventoryItemInFocus[player] and in_focus == InventoryItemInFocus[player] and mouse_state and InventoryItemInFocus[player].item and InventoryItemInFocus[player].button_type == INV_SLOT then
+                                --print("drag start")
+                                DestroyContextMenu(player)
+                                StartSelectionMode(player, InventoryItemInFocus[player].button, SELECTION_MODE_MOVE)
+                            end
+                        end)
+                  else
+                      mouse_state = false
+                      --print("drag stop")
+                      TimerStart(DragTimer, 0., false, nil)
+                  end
+            end
+
+        end)
+
+        TriggerRegisterPlayerEvent(MouseUpTrigger, actual_player, EVENT_PLAYER_MOUSE_UP)
+        TriggerAddAction(MouseUpTrigger, function()
+            if mouse_state and BlzGetTriggerPlayerMouseButton() == MOUSE_BUTTON_TYPE_LEFT then
+                mouse_state = false
+                --print("drag stop")
+                TimerStart(DragTimer, 0., false, nil)
+            end
+        end)
+
         CreateSelectionFrames(player)
         TriggerRegisterUnitEvent(DropTrigger, PlayerHero[player],EVENT_UNIT_DROP_ITEM)
         InventoryTooltip[player] = NewTooltip(InventorySlots[player][45])
-        local tooltip = GetTooltip(InventoryTooltip[player] )
+        InventoryAlternateTooltip[player] = NewTooltip(InventorySlots[player][45])
+
+        local tooltip = GetTooltip(InventoryTooltip[player])
         tooltip.is_sell_penalty = true
+        local tooltip = GetTooltip(InventoryAlternateTooltip[player])
+        tooltip.is_sell_penalty = true
+
         BlzFrameSetVisible(PlayerInventoryFrame[player], false)
         PlayerInventoryFrameState[player] = false
 
         UpdateInventoryWindow(player)
     end
 
-
-    local FirstTime_Data = 0
 
     function SetInventoryState(player, state)
 
@@ -1213,18 +1422,13 @@ do
         if state then
             UpdateInventoryWindow(player)
         else
+            RemoveSpecificTooltip(ShopFrame[player].alternate_tooltip)
+            RemoveSpecificTooltip(InventoryAlternateTooltip[player])
+            InventoryItemInFocus[player] = nil
             RemoveTooltip(player)
             RemoveSelectionFrames(player)
             DestroyContextMenu(player)
             DestroySlider(player)
-        end
-
-        if FirstTime_Data[player].first_time then
-            ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_INVENTORY_1, player-1)
-            FirstTime_Data[player].first_time = false
-            DelayAction(12., function()
-                ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_INVENTORY_2, player-1)
-            end)
         end
 
         return state
@@ -1238,6 +1442,11 @@ do
         InventorySlots = {}
         InventoryOwner = {}
         InventoryTooltip = {}
+        InventoryAlternateTooltip = {}
+        AltState = {}
+        InventoryItemInFocus = {}
+        InventoryKeyState = {}
+        InventoryData = {}
         PlayerMovingItem = {}
 
         UNIT_POINT_LIST = {
@@ -1298,14 +1507,6 @@ do
             end
         end)
 
-        FirstTime_Data = {
-            [1] = { first_time = true },
-            [2] = { first_time = true },
-            [3] = { first_time = true },
-            [4] = { first_time = true },
-            [5] = { first_time = true },
-            [6] = { first_time = true }
-        }
 
         FirstTime_Data_Belt = {
             [1] = { first_time = true },

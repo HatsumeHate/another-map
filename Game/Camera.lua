@@ -34,12 +34,12 @@ do
             CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_FARZ, 5000., 0.)
         end
 
-
         local timer = CreateTimer()
         TimerStart(timer, 0.025, true, function ()
 
             for i = 1, 6 do
                 if PlayerCameraState[i] and PlayerHero[i] then
+                    CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_ZOFFSET, GetZ(GetUnitX(PlayerHero[i]), GetUnitY(PlayerHero[i])) * 0.1, 0.07)
                     CameraSetupSetDestPosition(PlayerCameraSetup[i], GetUnitX(PlayerHero[i]), GetUnitY(PlayerHero[i]), 0.07)
                     if GetLocalPlayer() == Player(i-1) then
                         CameraSetupApply(PlayerCameraSetup[i], true, true)
@@ -50,8 +50,10 @@ do
 
         end)
 
+
         RegisterTestCommand("cam", function ()
             PlayerCameraState[1] = false
+            Cheat("iseedeadpeople")
         end)
 
     end

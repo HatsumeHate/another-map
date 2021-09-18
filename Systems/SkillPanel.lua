@@ -23,9 +23,7 @@ do
         for key = KEY_Q, KEY_F do
             if skip_key ~= key then
                 AddContextOption(player, KEYBIND_LIST[key].bind_name, function()
-                    local skill = button_data.skill
-                    UnregisterPlayerSkillHotkey(player, button_data.skill)
-                    RegisterPlayerSkillHotkey(player, skill, key)
+                    RegisterPlayerSkillHotkey(player, button_data.skill, key)
                 end)
             end
         end
@@ -39,15 +37,12 @@ do
 
         for i = KEY_Q, KEY_F do
             local button = GetButtonData(SkillPanelFrame[player].button_keys[i])
-                -- and not BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindAbilityId(FourCC(skill.Id), player-1)) > 0.
-                --print(R2S(BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindAbilityId(skill.Id, player-1))))
 
                 if button.skill ~= nil and skill.Id == button.skill.Id and not (BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], GetKeybindKeyAbility(FourCC(skill.Id), player)) > 0.) then
                     local unit_data = GetUnitData(PlayerHero[player])
                     if unit_data.channeled_ability and unit_data.channeled_ability == skill.Id then
                         unit_data.channeled_destructor(PlayerHero[player])
                     end
-                    --GetKeybindAbilityId(skill.Id, player-1)
                     --print("skill is found, trying to unbind")
                     UnbindAbilityKey(PlayerHero[player], skill.Id)
                     --print("skill is unbinded")
@@ -70,10 +65,12 @@ do
         local ability = GetKeybindKeyAbility(FourCC(skill.Id), player)
 
             if (ability == 0 or (ability ~= 0 and not (BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], ability) > 0.))) and not (BlzGetUnitAbilityCooldownRemaining(PlayerHero[player], KEYBIND_LIST[key].ability) > 0.) then
+                UnregisterPlayerSkillHotkey(player, skill)
                 BindAbilityKey(PlayerHero[player], skill.Id, key)
                 BlzFrameSetTexture(key_button_data.image, skill.icon, 0, true)
                 FrameChangeTexture(key_button_data.button, skill.icon)
                 key_button_data.skill = skill
+                DisableTrigger(SkillPanelFrame[player].key_trigger)
                 --print("ability " .. key_button_data.skill.name .." is binded")
                 --print("ability " .. key_button_data.skill.name .." id is " .. key_button_data.skill.Id)
             end
@@ -327,8 +324,48 @@ do
             BlzTriggerRegisterFrameEvent(SkillPanelFrame[player].slider_trigger, SkillPanelFrame[player].slider, FRAMEEVENT_MOUSE_WHEEL)
 
 
-        SkillPanelFrame[player].tooltip = NewTooltip(SkillPanelFrame[player].slider)
+        local actual_player = Player(player-1)
+        SkillPanelFrame[player].key_trigger = CreateTrigger()
+        BlzTriggerRegisterPlayerKeyEvent(SkillPanelFrame[player].key_trigger, actual_player, OSKEY_Q, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(SkillPanelFrame[player].key_trigger, actual_player, OSKEY_W, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(SkillPanelFrame[player].key_trigger, actual_player, OSKEY_E, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(SkillPanelFrame[player].key_trigger, actual_player, OSKEY_R, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(SkillPanelFrame[player].key_trigger, actual_player, OSKEY_D, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(SkillPanelFrame[player].key_trigger, actual_player, OSKEY_F, 0, true)
 
+        TriggerAddAction(SkillPanelFrame[player].key_trigger, function()
+            local key = BlzGetTriggerPlayerKey()
+
+                if key == OSKEY_Q then
+                    RegisterPlayerSkillHotkey(player, SkillPanelFrame[player].current_button.skill, KEY_Q)
+                    DestroyContextMenu(player)
+                    IssueImmediateOrderById(PlayerHero[player], order_stop)
+                elseif key == OSKEY_W then
+                    RegisterPlayerSkillHotkey(player, SkillPanelFrame[player].current_button.skill, KEY_W)
+                    DestroyContextMenu(player)
+                    IssueImmediateOrderById(PlayerHero[player], order_stop)
+                elseif key == OSKEY_E then
+                    RegisterPlayerSkillHotkey(player, SkillPanelFrame[player].current_button.skill, KEY_E)
+                    DestroyContextMenu(player)
+                    IssueImmediateOrderById(PlayerHero[player], order_stop)
+                elseif key == OSKEY_R then
+                    RegisterPlayerSkillHotkey(player, SkillPanelFrame[player].current_button.skill, KEY_R)
+                    DestroyContextMenu(player)
+                    IssueImmediateOrderById(PlayerHero[player], order_stop)
+                elseif key == OSKEY_D then
+                    RegisterPlayerSkillHotkey(player, SkillPanelFrame[player].current_button.skill, KEY_D)
+                    DestroyContextMenu(player)
+                    IssueImmediateOrderById(PlayerHero[player], order_stop)
+                elseif key == OSKEY_F then
+                    RegisterPlayerSkillHotkey(player, SkillPanelFrame[player].current_button.skill, KEY_F)
+                    DestroyContextMenu(player)
+                    IssueImmediateOrderById(PlayerHero[player], order_stop)
+                end
+
+        end)
+
+
+        SkillPanelFrame[player].tooltip = NewTooltip(SkillPanelFrame[player].slider)
 
         SkillPanelFrame[player].main_frame = main_frame
         SkillPanelFrame[player].state = false
@@ -354,6 +391,7 @@ do
         if state then
             UpdateSkillList(player)
         else
+            DisableTrigger(SkillPanelFrame[player].key_trigger)
             DestroyContextMenu(player)
             RemoveTooltip(player)
         end
@@ -400,9 +438,12 @@ do
                     SkillPanelFrame[player].current_category = button_data.button_type * -1
                     UpdateSkillList(player)
                     DestroyContextMenu(player)
+                    DisableTrigger(SkillPanelFrame[player].key_trigger)
                 elseif button_data.button_type == SKILL_BUTTON then
                     CreatePlayerContextMenu(player, button_data.button, FRAMEPOINT_RIGHT, SkillPanelFrame[player].slider)
                     CreateBindContext(player, button_data, 0)
+                    SkillPanelFrame[player].current_button = button_data
+                    EnableTrigger(SkillPanelFrame[player].key_trigger)
                 elseif button_data.button_type > 0 then
                     if button_data.skill ~= nil then
                         CreatePlayerContextMenu(player, button_data.button, FRAMEPOINT_RIGHT, SkillPanelFrame[player].slider)
@@ -411,6 +452,8 @@ do
                             --print(button_data.skill.name)
                             UnregisterPlayerSkillHotkey(player, button_data.skill)
                         end)
+                        SkillPanelFrame[player].current_button = button_data
+                        EnableTrigger(SkillPanelFrame[player].key_trigger)
                     end
                 end
 

@@ -216,6 +216,8 @@ do
 
             if data.get_level_from_skill then
                 data.current_level = UnitGetAbilityLevel(source, data.get_level_from_skill)
+            elseif data.get_level_from_wave then
+                data.current_level = Current_Wave
             end
 
 
@@ -263,7 +265,7 @@ do
 
                         DelayAction(myeffect.SFX_lifetime or 0., function() DestroyEffect(effect) end)
 
-                    effect = nil
+                    --effect = nil
                 end
                 DestroyTimer(GetExpiredTimer())
             end)
@@ -271,7 +273,16 @@ do
 
         PlaySpecialEffect(myeffect.SFX_on_caster, source, myeffect.SFX_on_caster_point, myeffect.SFX_on_caster_scale, myeffect.SFX_on_caster_duration)
         if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_caster, source) end
-        if myeffect.sound and myeffect.sound.pack then AddSoundVolumeZ(myeffect.sound.pack[GetRandomInt(1, #myeffect.sound.pack)], x, y, 35., myeffect.sound.volume, myeffect.sound.cutoff) end
+
+        if myeffect.sound then
+            for i = 1, #myeffect.sound do
+                DelayAction(myeffect.sound[i].delay or 0., function()
+                    local sound = myeffect.sound[i]
+                    AddSoundVolumeZ(sound.pack[GetRandomInt(1, #sound.pack)], x, y, 35., sound.volume, sound.cutoff)
+                end)
+            end
+        end
+
             local timer = CreateTimer()
             TimerStart(timer, (myeffect.delay or 0.) * (myeffect.timescale or 1.), false, function()
 
