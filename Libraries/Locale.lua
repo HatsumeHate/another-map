@@ -38,6 +38,7 @@ do
                 MONSTER_PLAYER_NAME = "Нечисть",
 
                 MONSTER_NAME_FIEND = "Бес",
+                MONSTER_NAME_SCAVENGER = "Падальщик",
                 MONSTER_NAME_GHOUL = "Вурдалак",
                 MONSTER_NAME_ARMORED_SKELETON = "Бронированный Скелет",
                 MONSTER_NAME_ZOMBIE = "Зомби",
@@ -50,7 +51,7 @@ do
                 MONSTER_NAME_SKELETON_MAGE = "Скелет Маг",
                 MONSTER_NAME_SKELETON_IMPROVED = "Орк-скелет",
                 MONSTER_NAME_NECROMANCER = "Некромант",
-                MONSTER_NAME_NECROMANCER_NIGHTMARE = "Скелет Кошмара",
+                MONSTER_NAME_NECROMANCER_NIGHTMARE = "Некромант Кошмара",
                 MONSTER_NAME_SORCERESS_NIGHTMARE = "Волшебница Кошмара",
                 MONSTER_NAME_BLOODSUCKER = "Кровосос",
                 MONSTER_NAME_VAMPIRE = "Вампир",
@@ -60,6 +61,7 @@ do
                 MONSTER_NAME_SUCCUBUS = "Суккуб",
                 MONSTER_NAME_SUCCUBUS_IMPROVED = "Мучительница",
                 MONSTER_NAME_BLOOD_SUCCUBUS = "Садистка",
+                MONSTER_NAME_HELL_SUCCUBUS = "Адский Сукккуб",
                 MONSTER_NAME_VOID_WALKER_SMALL = "Младший демон Бездны",
                 MONSTER_NAME_VOID_WALKER_NORMAL = "Демон Бездны",
                 MONSTER_NAME_VOID_WALKER_BIG = "Древний демон Бездны",
@@ -103,6 +105,7 @@ do
                 MONSTER_NAME_BUTCHER = "Мясник",
                 MONSTER_NAME_ANDARIEL = "Андариэль",
                 MONSTER_NAME_REANIMATED = "Воскрешенный",
+                MONSTER_NAME_BLOOD_RAVEN = "Кровавый Ворон",
                 MONSTER_NAME_DEMON_LORD = "Лорд Демон",
                 MONSTER_NAME_DEMONESS = "Демонесса",
                 MONSTER_NAME_EGG = "Кокон",
@@ -111,20 +114,27 @@ do
                 MONSTER_NAME_FOREST_GUARD = "Страж Леса",
 
 
+                NAME_SKELETON_SUMMONED = "Оживленный Воин",
+                NAME_SKELETON_MAGE_SUMMONED = "Оживленный Маг",
+                NAME_SKELETON_ARCHER_SUMMONED = "Оживленный Лучник",
+                NAME_SKELETON_LICH_SUMMONED = "Лич",
+                NAME_SKELETON_GHOST_SUMMONED = "Призрак",
+
+
                 MONSTER_TRAITS = {
-                    [MONSTER_TRAIT_ELECTRIFIED]   = { [DECL_HE] = "Электрический ",       [DECL_SHE] = "Электрическая ", [DECL_IT] = "Электрическое ", },
-                    [MONSTER_TRAIT_ENRAGED]       = { [DECL_HE] = "Буйный ",              [DECL_SHE] = "Буйная ", [DECL_IT] = "Буйное ", },
-                    [MONSTER_TRAIT_UNSTOPPABLE]   = { [DECL_HE] = "Неудержимый ",         [DECL_SHE] = "Неудержимая ", [DECL_IT] = "Неудержимое ", },
-                    [MONSTER_TRAIT_TOXIC]         = { [DECL_HE] = "Токсичный ",           [DECL_SHE] = "Токсичная ", [DECL_IT] = "Токсичное ", },
-                    [MONSTER_TRAIT_SPIKY]         = { [DECL_HE] = "Шипованный ",          [DECL_SHE] = "Шипованная ", [DECL_IT] = "Шипованное ", },
-                    [MONSTER_TRAIT_BURNING]       = { [DECL_HE] = "Горящий ",             [DECL_SHE] = "Горящая ", [DECL_IT] = "Горящее ", },
-                    [MONSTER_TRAIT_CHILLING]      = { [DECL_HE] = "Леденящий ",           [DECL_SHE] = "Леденящая", [DECL_IT] = "Леденящее ", },
-                    [MONSTER_TRAIT_BULKY]         = { [DECL_HE] = "Неуклюжий ",           [DECL_SHE] = "Неуклюжая ", [DECL_IT] = "Неуклюжее ", },
-                    [MONSTER_TRAIT_DEFIER]        = { [DECL_HE] = " Отрицания",           [DECL_SHE] = " Отрицания", [DECL_IT] = " Отрицания", },
-                    [MONSTER_TRAIT_STURDY]        = { [DECL_HE] = "Крепкий ",             [DECL_SHE] = "Крепкая ", [DECL_IT] = "Крепкое ", },
-                    [MONSTER_TRAIT_AGILE]         = { [DECL_HE] = " Адепт Проворности",   [DECL_SHE] = " Адепт Проворности", [DECL_IT] = " Адепт Проворности", },
-                    [MONSTER_TRAIT_OVERPOWERING]  = { [DECL_HE] = "Сильный ",             [DECL_SHE] = "Сильная ", [DECL_IT] = "Сильное ", },
-                    [MONSTER_TRAIT_ARCANE]        = { [DECL_HE] = "Мистический ",         [DECL_SHE] = "Мистическая ", [DECL_IT] = "Мистическое ", },
+                    [MONSTER_TRAIT_ELECTRIFIED]   = { [DECL_HE] = "Электрический ",       [DECL_SHE] = "Электрическая ",    [DECL_IT] = "Электрическое ", },
+                    [MONSTER_TRAIT_ENRAGED]       = { [DECL_HE] = "Буйный ",              [DECL_SHE] = "Буйная ",           [DECL_IT] = "Буйное ", },
+                    [MONSTER_TRAIT_UNSTOPPABLE]   = { [DECL_HE] = "Неудержимый ",         [DECL_SHE] = "Неудержимая ",      [DECL_IT] = "Неудержимое ", },
+                    [MONSTER_TRAIT_TOXIC]         = { [DECL_HE] = "Токсичный ",           [DECL_SHE] = "Токсичная ",        [DECL_IT] = "Токсичное ", },
+                    [MONSTER_TRAIT_SPIKY]         = { [DECL_HE] = "Шипованный ",          [DECL_SHE] = "Шипованная ",       [DECL_IT] = "Шипованное ", },
+                    [MONSTER_TRAIT_BURNING]       = { [DECL_HE] = "Горящий ",             [DECL_SHE] = "Горящая ",          [DECL_IT] = "Горящее ", },
+                    [MONSTER_TRAIT_CHILLING]      = { [DECL_HE] = "Леденящий ",           [DECL_SHE] = "Леденящая",         [DECL_IT] = "Леденящее ", },
+                    [MONSTER_TRAIT_BULKY]         = { [DECL_HE] = "Неуклюжий ",           [DECL_SHE] = "Неуклюжая ",        [DECL_IT] = "Неуклюжее ", },
+                    [MONSTER_TRAIT_DEFIER]        = { [DECL_HE] = " Отрицания",           [DECL_SHE] = " Отрицания",        [DECL_IT] = " Отрицания", },
+                    [MONSTER_TRAIT_STURDY]        = { [DECL_HE] = "Крепкий ",             [DECL_SHE] = "Крепкая ",          [DECL_IT] = "Крепкое ", },
+                    [MONSTER_TRAIT_AGILE]         = { [DECL_HE] = " Адепт Проворности",   [DECL_SHE] = " Адепт Проворности",[DECL_IT] = " Адепт Проворности", },
+                    [MONSTER_TRAIT_OVERPOWERING]  = { [DECL_HE] = "Сильный ",             [DECL_SHE] = "Сильная ",          [DECL_IT] = "Сильное ", },
+                    [MONSTER_TRAIT_ARCANE]        = { [DECL_HE] = "Мистический ",         [DECL_SHE] = "Мистическая ",      [DECL_IT] = "Мистическое ", },
                 },
 
 
@@ -199,6 +209,12 @@ do
 
                 GOLD_BONUS_PARAM = "Получение золота",
                 EXP_BONUS_PARAM = "Получение опыта",
+                DROP_BONUS_PARAM = "Поиск предметов",
+
+                HEALING_BONUS_PARAM = "Полученное исцеление",
+                DAMAGE_BOOST_PARAM = "Увеличение наносимого урона",
+                VULNERABILITY_PARAM = "Увеличение получаемого урона",
+                MANACOST_PARAM = "Стоимость ресурсов",
 
                 ITEM_TYPE_WEAPON_NAME     = "Оружие",
                 ITEM_TYPE_ARMOR_NAME      = "Броня",
@@ -263,6 +279,24 @@ do
                 SORCERESS_PROPER_NAME_8 = "Амара Меткий лук",
                 SORCERESS_PROPER_NAME_9 = "Айра Сладкоголосая",
 
+                NECROMANCER_PROPER_NAME_1 = "Рейдж Лютый Хлад",
+                NECROMANCER_PROPER_NAME_2 = "Араж Призыватель",
+                NECROMANCER_PROPER_NAME_3 = "Кали'наж Могильный",
+                NECROMANCER_PROPER_NAME_4 = "Ракк Ледяной Череп",
+                NECROMANCER_PROPER_NAME_5 = "Дин Призрачный Огонь",
+                NECROMANCER_PROPER_NAME_6 = "Калис Призрачный",
+                NECROMANCER_PROPER_NAME_7 = "Веним Ледяной Клинок",
+                NECROMANCER_PROPER_NAME_8 = "Рас Шепот Смерти",
+                NECROMANCER_PROPER_NAME_9 = "Мрачный Жнец",
+                NECROMANCER_PROPER_NAME_10 = "Чо'наммот",
+                NECROMANCER_PROPER_NAME_11 = "Криптик Душегуб",
+                NECROMANCER_PROPER_NAME_12 = "Аландил Лиенг",
+                NECROMANCER_PROPER_NAME_13 = "Ордин Хладомор",
+                NECROMANCER_PROPER_NAME_14 = "Рас Костяной Гребень",
+                NECROMANCER_PROPER_NAME_15 = "Морбент Падший",
+
+
+
 
 
                 FEEDBACK_GOLD = {
@@ -279,6 +313,13 @@ do
                         "Sounds\\Responses\\sorceress_gold_3_ru.wav",
                         "Sounds\\Responses\\sorceress_gold_4_ru.wav",
                         "Sounds\\Responses\\sorceress_gold_5_ru.wav",
+                    },
+                    [NECROMANCER_CLASS] = {
+                        "Sounds\\Responses\\necromancer_gold_1_ru.wav",
+                        "Sounds\\Responses\\necromancer_gold_2_ru.wav",
+                        "Sounds\\Responses\\necromancer_gold_3_ru.wav",
+                        "Sounds\\Responses\\necromancer_gold_4_ru.wav",
+                        "Sounds\\Responses\\necromancer_gold_5_ru.wav",
                     }
                 },
 
@@ -296,6 +337,16 @@ do
                         "Sounds\\Responses\\sorceress_healing_3_ru.wav",
                         "Sounds\\Responses\\sorceress_healing_4_ru.wav",
                         "Sounds\\Responses\\sorceress_healing_5_ru.wav",
+                    },
+                    [NECROMANCER_CLASS] = {
+                        "Sounds\\Responses\\necromancer_healing_1_ru.wav",
+                        "Sounds\\Responses\\necromancer_healing_2_ru.wav",
+                        "Sounds\\Responses\\necromancer_healing_3_ru.wav",
+                        "Sounds\\Responses\\necromancer_healing_4_ru.wav",
+                        "Sounds\\Responses\\necromancer_healing_5_ru.wav",
+                        "Sounds\\Responses\\necromancer_healing_6_ru.wav",
+                        "Sounds\\Responses\\necromancer_healing_7_ru.wav",
+                        "Sounds\\Responses\\necromancer_healing_8_ru.wav",
                     }
                 },
 
@@ -313,6 +364,13 @@ do
                         "Sounds\\Responses\\sorceress_bag_3_ru.wav",
                         "Sounds\\Responses\\sorceress_bag_4_ru.wav",
                         "Sounds\\Responses\\sorceress_bag_5_ru.wav",
+                    },
+                    [NECROMANCER_CLASS] = {
+                        "Sounds\\Responses\\necromancer_bag_1_ru.wav",
+                        "Sounds\\Responses\\necromancer_bag_2_ru.wav",
+                        "Sounds\\Responses\\necromancer_bag_3_ru.wav",
+                        "Sounds\\Responses\\necromancer_bag_4_ru.wav",
+                        "Sounds\\Responses\\necromancer_bag_5_ru.wav",
                     }
                 },
 
@@ -329,6 +387,30 @@ do
                         "Sounds\\Responses\\sorceress_classrestricted_2_ru.wav",
                         "Sounds\\Responses\\sorceress_classrestricted_3_ru.wav",
                         "Sounds\\Responses\\sorceress_classrestricted_4_ru.wav",
+                    },
+                    [NECROMANCER_CLASS] = {
+                        "Sounds\\Responses\\necromancer_cant_1_ru.wav",
+                        "Sounds\\Responses\\necromancer_cant_2_ru.wav",
+                        "Sounds\\Responses\\necromancer_cant_3_ru.wav",
+                        "Sounds\\Responses\\necromancer_cant_4_ru.wav",
+                    }
+                },
+
+                FEEDBACK_NORESOURCE = {
+                    [BARBARIAN_CLASS] = {
+                        "Sounds\\Responses\\barbarian_mana_1_ru.wav",
+                        "Sounds\\Responses\\barbarian_mana_3_ru.wav",
+                        "Sounds\\Responses\\barbarian_mana_2_ru.wav",
+                    },
+                    [SORCERESS_CLASS] = {
+                        "Sounds\\Responses\\sorceress_mana_1_ru.wav",
+                        "Sounds\\Responses\\sorceress_mana_2_ru.wav",
+                        "Sounds\\Responses\\sorceress_mana_3_ru.wav",
+                    },
+                    [NECROMANCER_CLASS] = {
+                        "Sounds\\Responses\\necromancer_mana_1_ru.wav",
+                        "Sounds\\Responses\\necromancer_mana_2_ru.wav",
+                        "Sounds\\Responses\\necromancer_mana_3_ru.wav",
                     }
                 },
 
@@ -353,6 +435,9 @@ do
                 SKILL_CATEGORY_FIGHTING_MASTERY_ADVANCED = "Умения боевого мастерства: ",
                 SKILL_CATEGORY_BATTLE_ADVANTAGE_ADVANCED = "Умения боевого преимущества: ",
                 SKILL_CATEGORY_INNER_STRENGTH_ADVANCED = "Умения внутренних сил: ",
+                SKILL_CATEGORY_DARK_ART_ADVANCED = "Умения темного мастерства: ",
+                SKILL_CATEGORY_CURSES_ADVANCED = "Умения проклятий: ",
+                SKILL_CATEGORY_SUMMONING_ADVANCED = "Умения призыва: ",
 
                 SKILL_PANEL_LVL_TEXT = "Уровень: ",
                 SKILL_PANEL_UNBIND = "Убрать",
@@ -386,6 +471,7 @@ do
                 FEEDBACK_MSG_NOSPACE = "В рюкзаке нет места",
                 FEEDBACK_MSG_CANTUSE = "Невозможно это использовать",
                 FEEDBACK_MSG_NOGOLD = "Недостаточно золота",
+                FEEDBACK_MSG_NORESOURCE = "Недостаточно ресурса",
 
 
                 SHOP_MESSAGE_NO_SPACE = "В магазине нет места",
@@ -420,6 +506,7 @@ do
                 UI_TEXT_EXCHANGE = "Обмен книги",
                 UI_TEXT_TO_STASH = "Сложить",
                 UI_TEXT_FROM_STASH = "Забрать",
+                UI_TEXT_USE = "Использовать",
 
                 UI_TEXT_OK = "ок",
                 UI_TEXT_CANCEL = "отмена",
@@ -436,7 +523,7 @@ do
                 HINT_BLACKSMITH_1 = "У кузнеца можно перековать предметы до текущего уровня волны, а так же изъять ненужные камни. Камни утрачиваются безвозвратно.",
                 HINT_STATS_1 = "Базовые параметры очень важная часть развития героя. Наведите курсором на каждый, и узнаете немного подробнее о них. Каждый новый уровень дает 3 очка развития.",
                 HINT_ALTARS = "Взаимодействовать с алтарями и сундуками можно кликнув правой кнопкой мыши по ним находясь поблизости. Алтари дают случайный эффект, сундуки содержат предметы и золото, колодцы восстанавливают здоровье или ману.",
-                HINT_BELT = "Можно быстро использовать предметы на поясе нажимая 1-2-3-4-5-6. Нумерация предметов начинается слева сверху.",
+                HINT_BELT = "Можно быстро использовать предметы на поясе нажимая 1-2-3-4-5-6.",
 
                 QUEST_REVEALED_STRING = "|c00FFCE00Задание получено: |r",
                 QUEST_DONE_STRING = "|c005AFF00Задание выполнено: |r",
@@ -538,6 +625,8 @@ do
                 ITEM_SUFFIX_HIGH_KNIGHT             = " Благородного рыцаря",
                 ITEM_SUFFIX_ENDLESS_FURY            = " Бесконечной ярости",
                 ITEM_SUFFIX_DEADLY_PRECISION        = " Смертельной точности",
+                ITEM_SUFFIX_ADVENTURER              = " Приключенца",
+                ITEM_SUFFIX_DECAY = " Разложения",
 
                 GENERIC_SWORD_NAME_1 = "необработанный клинок",
                 GENERIC_SWORD_NAME_2 = "короткий меч",
@@ -550,6 +639,7 @@ do
                 GENERIC_GREATSWORD_NAME_2 = "нож великанов",
                 GENERIC_GREATSWORD_NAME_3 = "клеймор",
                 GENERIC_GREATSWORD_NAME_4 = "эсток",
+                GENERIC_GREATSWORD_NAME_5 = "меч горцев",
 
                 GENERIC_AXE_NAME_1 = "широкий топор",
                 GENERIC_AXE_NAME_2 = "зазубренный топор",
@@ -558,13 +648,16 @@ do
 
                 GENERIC_GREATAXE_NAME_1 = "огромный резак",
                 GENERIC_GREATAXE_NAME_2 = "изогнутый топор",
+                GENERIC_GREATAXE_NAME_3 = "двухлезвенный топор",
+                GENERIC_GREATAXE_NAME_4 = "готический топор",
+                GENERIC_GREATAXE_NAME_5 = "боевой топор",
 
                 GENERIC_BLUNT_NAME_1 = "древняя булава",
                 GENERIC_BLUNT_NAME_2 = "дубина",
                 GENERIC_BLUNT_NAME_3 = "шипованная палица",
                 GENERIC_BLUNT_NAME_4 = "цеп",
                 GENERIC_BLUNT_NAME_5 = "скипетр наследника",
-                GENERIC_BLUNT_NAME_6 = "моргерншерн",
+                GENERIC_BLUNT_NAME_6 = "моргернштерн",
 
                 GENERIC_GREATBLUNT_NAME_1 = "большая шипованная палица",
                 GENERIC_GREATBLUNT_NAME_2 = "мифриловый молот",
@@ -715,7 +808,7 @@ do
                 --STARTING_ITEM_NAME_ = "",
 
                 SHARD_OF_HATE = "Осколок ненависти",
-                SHARD_OF_HATE_DESC = "Странный светящийся осколок, при прикосновении ощущается прилив ненависти.",
+                SHARD_OF_HATE_DESC = "Странный светящийся осколок.|nПри прикосновении ощущается прилив ненависти.",
 
                 GEM_RUBY = 'Рубин',
                 GEM_SAPPHIRE = 'Сапфир',
@@ -756,13 +849,16 @@ do
                 POTION_STRONG_MIX_DESC_TEXT = "Восстанавливает 75%% здоровья и маны",
 
                 POTION_ADRENALINE_TEXT = "Зелье Адреналина",
-                POTION_ADRENALINE_DESC_TEXT = "На непродолжительное время повышает скорость передвижения на 35%%.",
+                POTION_ADRENALINE_DESC_TEXT = "На непродолжительное время|nповышает скорость передвижения на 35%%.",
 
                 POTION_ANTIDOTE_TEXT = "Антидот",
                 POTION_ANTIDOTE_DESC_TEXT = "Повышает сопротивляемость ядам.",
 
+                POTION_OF_OBLIVION = "Зелье Забвения",
+                POTION_OF_OBLIVION_DESC_TEXT = "Позволяет забыть все выученные|nталанты и вернуть потраченные очки.",
+
                 SCROLL_OF_TOWN_PORTAL_NAME = "Свиток Городского Портала",
-                SCROLL_OF_TOWN_PORTAL_DESC = "При использовании открывает ненадолго портал в город.",
+                SCROLL_OF_TOWN_PORTAL_DESC = "При использовании открывает|nненадолго портал в город.",
 
                 SCROLL_OF_PROTECTION_NAME = "Свиток Защиты",
                 SCROLL_OF_PROTECTION_DESC = "Повышает сопротивления ко всем стихиям.",
@@ -775,6 +871,9 @@ do
                 SKILLBOOK_FIGHTING_MASTERY = "Книга бойца",
                 SKILLBOOK_INNER_STRENGTH = "Книга сил",
                 SKILLBOOK_BATTLE_ADVANTAGE = "Книга превосходства",
+                SKILLBOOK_DARK_ART = "Книга темных искусств",
+                SKILLBOOK_CURSES = "Книга проклятий",
+                SKILLBOOK_SUMMONING = "Книга призыва",
 
                 SKILLBOOK_TEXT = "Позволяет увеличить знания:",
 
@@ -806,9 +905,28 @@ do
                 SKILL_FROSTBOLT = 'Ледяная Стрела',
                 SKILL_FIREBALL = 'Огненный Шар',
                 SKILL_FROSTNOVA = 'Кольцо Льда',
+                SKILL_ICICLERAIN = "Ледяной Дождь",
                 SKILL_CHAIN_LIGHTNING = "Электрошок",
                 SKILL_MELTDOWN = "Расплавление",
                 SKILL_BLIZZARD = "Буран",
+                SKILL_RAISE_DEAD = "Оживить Скелет",
+                SKILL_LICH_RITUAL = "Ритуал Лича",
+                SKILL_RIP_BONES = "Вырвать Кости",
+                SKILL_BONE_PRISON = "Костяная Тюрьма",
+                SKILL_BONE_SPEAR = "Костяное Копье",
+                SKILL_BONE_BARRAGE = "Костяной Шквал",
+                SKILL_DEVOUR = "Поглощение",
+                SKILL_CORPSE_EXPLOSION = "Взрыв Трупов",
+                SKILL_UNDEAD_LAND = "Земля Мертвых",
+                SKILL_WEAKEN = "Ослабить",
+                SKILL_DECREPIFY = "Одряхление",
+                SKILL_HORRIFY = "Ужас",
+                SKILL_GROW_SPIKES = "Отрастить Шипы",
+                SKILL_UNHOLY_COMMAND = "Нечестивый Приказ",
+                SKILL_DARK_REIGN = "Темное Царство",
+                SKILL_HARVEST = "Жатва",
+                SKILL_POISON_BLAST = "Всплеск Яда",
+                SKILL_TOXIC_SPIT = "Токсичная Субстанция",
 
 
                 SET_NAME_ANCIENT_LEGACY = "Наследие предков",
@@ -817,16 +935,18 @@ do
                 SET_NAME_FRENDLINESS = "Приветливость",
 
 
-                ITEM_LEG_DESCRIPTION_FIREBOND = "Все огненные умения на 35%% сильнее.",
+                ITEM_LEG_DESCRIPTION_FIREBOND = "Все атакующие огненные умения на 35%% сильнее",
                 ITEM_LEG_DESCRIPTION_WITCH_MASTERY = "Каждое произнесенное заклинание увеличивает силу магии на 10%%, однако взамен пожирает 5%% здоровья",
                 ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Каждый противник неподалеку повышает скорость передвижения на 3%% до максимума в 25%%",
                 ITEM_LEG_DESCRIPTION_RITUAL_DAGGER = "При атаке вы накапливаете эффекты Хаоса. Накопив 15 эффектов, сила и скорость атаки на короткое время сильно повышаются, но на это время регенерация здоровья идет в обратную сторону.",
-                ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Разряд\" теперь идет из позиции чародейки, а их урон и количество зарядов увеличивается.",
-                ITEM_LEG_DESCRIPTION_BOOSTERS = "После приземления от использования умения \"Прыжок\" варвар наносит 215%% урона от оружия в небольшом радиусе.",
-                ITEM_LEG_DESCRIPTION_PAIN_ECHO = "Кровотечение от умения \"Рассекающий взмах\" теперь может быть критическим, так же его шанс на крит повышен на 25%%.",
+                ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Разряд\" теперь идет из позиции чародейки, а их урон и количество зарядов увеличивается",
+                ITEM_LEG_DESCRIPTION_BOOSTERS = "После приземления от использования умения \"Прыжок\" варвар наносит 215%% урона от оружия в небольшом радиусе",
+                ITEM_LEG_DESCRIPTION_PAIN_ECHO = "Кровотечение от умения \"Рассекающий взмах\" теперь может быть критическим, а его шанс на крит повышен на 25%%",
                 ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "Каждая атака по врагу накладывает на него эффект кристаллизации, снижающий скорость передвижения. После накопления 5 зарядов, противник замораживается на 3 сек.",
                 ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "Каждая атака льдом, огнем или молнией накладывает уязвимость к соответствующей стихии понижающая сопротивление ей на 5 ед. на 7 секунд, повторная атака любой стихией обновляет эффект. Суммируется до 3 раз.",
-                ITEM_LEG_DESCRIPTION_ICE_TOUCH = "При применении \"Ледяной Стрелы\" вместо одной стрелы, позади волшебницы создаются 3, которые зависают, а затем летят в указанную цель.",
+                ITEM_LEG_DESCRIPTION_ICE_TOUCH = "При применении \"Ледяной Стрелы\" вместо одной стрелы, позади волшебницы создаются 3, которые зависают, а затем летят в указанную цель",
+                ITEM_LEG_DESCRIPTION_DEATH_HERALD = "\"Бросок кинжала\" кидает сразу 3 кинжала",
+                ITEM_LEG_DESCRIPTION_PRIMAL_TOME = "\"Оживить Скелет\" с 25%% шансом призывает скелета мага",
 
 
                 ITEM_NAME_RAT_HUNTER = 'Охотник на крыс',
@@ -844,6 +964,8 @@ do
                 ITEM_NAME_RITUAL_DAGGER = "Ритуальный Кинжал",
                 ITEM_SPEC_DESCRIPTION_RITUAL_DAGGER = "Сила, заточенная в этом клинке раскрывается с каждым порезом. И пусть тот кто ею завладеет, справится с ней",
 
+                ITEM_NAME_BLOOD_DRINKER = "Кровопийца",
+                ITEM_SPEC_DESCRIPTION_BLOOD_DRINKER = "Потерянный проклятый меч из династии Колет. По слухам, самые знатные чародеи нанятые для его создания принесли в жертву немало людей. И сами чародеи тоже.",
 
                 ITEM_NAME_ACOLYTE_MANTLE = "Мантия Аколита",
                 ITEM_SPEC_DESCRIPTION_ACOLYTE_MANTLE = "Идеальное решение что бы уйти в себя",
@@ -904,7 +1026,14 @@ do
                 ITEM_NAME_ICE_TOUCH = "Касание Зимы",
                 ITEM_SPEC_DESCRIPTION_ICE_TOUCH = "Холод обволакивает руки, и пробирает до костей.",
 
+                ITEM_NAME_DEATH_HERALD = "Вестник Смерти",
+                ITEM_SPEC_DESCRIPTION_DEATH_HERALD = "Уникальнейший пояс созданный мастером Гиросом. Он и вправду делал замечательные инструменты для убийства.",
 
+                ITEM_NAME_FAMILY_RING = "Фамильный Перстень",
+                ITEM_SPEC_DESCRIPTION_FAMILY_RING = "Все еще отдающее своим былым величием, которое передавало владельцу право преемничества, кольцо испускает слабый свет. На внутренней стороне можно заметить выгравированную букву <К>.",
+
+                ITEM_NAME_PRIMAL_TOME = "Первозданный Фолиант",
+                ITEM_SPEC_DESCRIPTION_PRIMAL_TOME = "Один из первых некромантических фолиантов написанный первопроходцем в темных искусствах. Содержит в себе невообразимые методы и извращенные заклинания. На первой странице есть подпись \"Малик\".",
 
                 GENERATED_TOOLTIP = "урона от атаки",
 
@@ -969,16 +1098,19 @@ do
                     [40] = "Выстреливает 7 хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают.",
                 },
                 [FourCC("A00F")] = {
-                    [1] = "Призывает с неба метеор, падающий на землю после небольшой задержки, нанося @e!EMTR.pwr# ед. урона типа @e!EMTR.atr# в радиусе @e!EMTR.aoe# и отталкивая противников из центра падения. Имеет повышенный бонус к стихии (+@e!EMTR.ab#)",
+                    [1] = "Призывает с неба метеор падающий на землю после небольшой задержки нанося @e!EMTR.pwr# ед. урона типа @e!EMTR.atr# в радиусе @e!EMTR.aoe# и отталкивая противников из центра падения. Имеет повышенный бонус к стихии (+@e!EMTR.ab#)",
                 },
                 [FourCC("A00L")] = {
                     [1] = "Позволяет мгновенно переместиться на расстояние до @s!A00L.rng#.",
                 },
                 [FourCC("A00M")] = {
-                    [1] = "Призывает мощный разряд, поражающий в радиусе @e!ELST.aoe# нанося @e!ELST.pwr# ед. урона типа @e!ELST.atr#. Имеет повышенный бонус к стихии (+@e!ELST.ab#) и множителю критического урона (+@e!ELST.bcm#)",
+                    [1] = "Призывает мощный разряд поражающий в радиусе @e!ELST.aoe# нанося @e!ELST.pwr# ед. урона типа @e!ELST.atr#. Имеет повышенный бонус к стихии (+@e!ELST.ab#) и множителю критического урона (+@e!ELST.bcm#)",
                 },
                 [FourCC("A005")] = {
                     [1] = "Запускает вперед ледяной шар, который наносит постоянно в радиусе @e!EFOA.aoe# @e!EFOA.pwr# ед. урона типа @e!EFOA.atr# (+@e!EFOA.ab#). В конце пути взрывается, нанося @e!EFRO.pwr# ед. урона типа @e!EFRO.atr#, с повышенном шансом критического урона на (+@e!EFRO.bcc#)",
+                },
+                [FourCC("ASIR")] = {
+                    [1] = "Призывает с неба падающие льдины в радиусе @FM_PER!250.5#. Каждая наносит @e!EICR.pwr# ед. урона типа @e!EICR.atr# в небольшом радиусе. Количество льдин - @FM_DIV!3.3#.",
                 },
                 [FourCC("A00D")] = {
                     [1] = "Запускает вперед огненный шар, при столкновении наносящий @e!EGFB.pwr# ед. урона типа @e!EGFB.atr#.",
@@ -987,7 +1119,7 @@ do
                     [1] = "Ледяная волна, исходящая от волшебницы до радиуса в @e!EFRN.aoe# ед., которая наносит противникам @e!EFRN.pwr# ед. урона типа @e!EFRN.atr# и замораживающая их на @b!A00S.time# cек.",
                 },
                 [FourCC("A003")] = {
-                    [1] = "Бросает вперед ледяную стрелу, при столкновении с первым противником разлетается на осколки нанося @e!EFRB.pwr# ед. урона типа @e!EFRB.atr# в радиусе @e!EFRB.aoe#. Пораженные охлаждаются, замедляясь на @b!A004.va1#",
+                    [1] = "Бросает вперед ледяную стрелу, которая при столкновении с первым противником разлетается на осколки нанося @e!EFRB.pwr# ед. урона типа @e!EFRB.atr# в радиусе @e!EFRB.aoe#. Пораженные противники охлаждаются, замедляясь на @b!A004.va1#",
                 },
                 [FourCC("A019")] = {
                     [1] = "Поражает выбранного врага электрическим разрядом, который наносит @e!ECHL.pwr# ед. урона типа @e!ECHL.atr# и перекидывается на 2 ближайших противников.",
@@ -1005,6 +1137,579 @@ do
                 },
                 [FourCC("ABLZ")] = {
                     [1] = "Создает вокруг чародейки ледяную бурю, которая постепенно расширяется и замедляет скорость атаки, наложение заклинаний и скорость передвижения пораженных противников. Так же они периодически получают @e!EBLZ.pwr# ед. урона типа @e!EBLZ.atr#. Во время поддержания необходимо стоять на месте. Уровень умения увеличивает максимальный радиус и время поддержания.",
+                },
+                [FourCC("ANRD")] = {
+                  [1] = "Призывает из ближайшего трупа в радиусе 600 Воина Скелета. Одновременно может существовать до @FM_DIV!2.6# скелетов. С шансом @FM_PER!5.1#%% вместо Скелета Воина призовется Скелет Лучник.",
+                },
+                [FourCC("ANLR")] = {
+                  [1] = "Соединяет души 3 ближайших трупов в одного мощного лича. Лич получает более сильные характеристики за каждый уровень заклинания. Возможно призвать только одного лича единовременно.",
+                },
+                [FourCC("ANPB")] = {
+                  [1] = "Создает взрыв яда в радиусе @e!ENPB.aoe# который наносит @e!ENPB.pwr# урона типа @e!ENPB.atr#. После взрыва остается ядовитое облако, которое наносит @e!ENPP.pwr# урона от @e!ENPP.atr# раз в 3 секунды.",
+                },
+                [FourCC("ANCE")] = {
+                  [1] = "Взрывает труп в ближайшей указанной точке нанося @e!ENCE.pwr# урона типа @e!ENCE.atr# в @e!ENCE.aoe# радиусе.",
+                },
+                [FourCC("ANBP")] = {
+                    [1] = "Призыв из под земли костей, которые в радиусе @e!ENBP.aoe# от точки обездвиживают противников на @b!A0PB.time# сек.",
+                },
+                [FourCC("ANBB")] = {
+                    [1] = "Призывает кости которые расходятся вперед от некроманта. Пораженные противники получают @e!ENBB.pwr# урона типа @e!ENBB.atr# и оглушаются на @b!ABBB.time# секунд.",
+                },
+                [FourCC("ANBS")] = {
+                    [1] = "Запускает быстро летящее костяное копье которое поражает первого противника. Имеет магическую силу @e!ENBS.pwr# типа @e!ENBS.atr#.",
+                    [5] = "Запускает быстро летящее костяное копье, которое пронзает до @FM_DIV!2.5# противников. Имеет магическую силу @e!ENBS.pwr# типа @e!ENBS.atr#.",
+                },
+                [FourCC("ANDV")] = {
+                    [1] = "Поглощает труп, восстанавливая @e!ENDV.hp_perc# здоровья, так же повышает скорость атаки и заклинаний на @b!ABDV.va1# ед. и скорость бега на @b!ABDV.va3# ед. в течении @b!ABDV.time#.",
+                },
+                [FourCC("ANWK")] = {
+                    [1] = "Накладывает на противников в @e!ENWK.aoe# радиусе проклятие которое снижает @b!ABWK.pa1# и @b!ABWK.pa2# на @b!ABWK.va1# в течении @b!ABWK.time# секунд.",
+                },
+                [FourCC("ANDF")] = {
+                    [1] = "Накладывает на противников в @e!ENDC.aoe# радиусе проклятие которое снижает @b!ENDC.pa1#, @b!ENDC.pa2# и @b!ENDC.pa3# на @b!ENDC.va1# в течении @b!ENDC.time# секунд.",
+                },
+                [FourCC("ANUL")] = {
+                    [1] = "В большом радиусе проклинает землю под собой. Союзники находящиеся на ней получают увеличение @b!AULB.pa1# на @b!AULB.va1# и @b!AULB.pa2# на @b!AULB.va2#, в то время как противники получают снижение @b!AULD.pa1# на @b!AULD.va1#, @b!AULD.pa2# на @b!AULD.va2#, @b!AULD.pa3# на @b!AULD.va3# и @b!AULD.pa4# на @b!AULD.va4#. Длительность - 12 секунд.",
+                },
+                [FourCC("ANFR")] = {
+                    [1] = "Проклинает противников в радиусе @e!ENHF.aoe# накладывая на них страх длительностью в @b!ABHR.time# секунды.",
+                },
+                [FourCC("ANGS")] = {
+                    [1] = "Некромант и его призванные приспешники отращивают шипы, что увеличивает их @b!ABGS.pa1# на @b!ABGS.va1# в течение @b!ABGS.time# сек.",
+                },
+                [FourCC("ANDR")] = {
+                    [1] = "Наполняет призванных существ некроманта темной магией, которая повышает их @b!ANDR.pa1# на @b!ANDR.va1#, @b!ANDR.pa2# на @b!ANDR.va2# и @b!ANDR.pa3# на @b!ANDR.va3# в течение @b!ANDR.time# секунд.",
+                },
+                [FourCC("ANUC")] = {
+                    [1] = "Темное колдовство усиливающие существ некроманта, поднимая им @b!ANUC.pa1# на @b!ANUC.va1#, @b!ANUC.pa2# на @b!ANUC.va2# и @b!ANUC.pa3# на @b!ANUC.va3# в течение @b!ANUC.time# секунд.",
+                },
+                [FourCC("ANHV")] = {
+                    [1] = "Удар вытягивающий души. Наносит @e!ENHV.pwr# магического урона перед собой типа @e!ENHV.atr# и восстанавливает @e!ENHV.mp# ресурса за каждого пораженного противника (максимум @e!ENHV.mphitmax#).",
+                },
+                [FourCC("ANTS")] = {
+                    [1] = "Запускает шар токсичных веществ который взрывается на первом противнике и наносит @e!ENTS.pwr# типа @e!ENTS.atr# в небольшом радиусе.",
+                },
+                [FourCC("ANBR")] = {
+                    [1] = "Вырывает кости из ближайших врагов в радиусе 400, нанося им @e!ENRP.pwr# типа @e!ENRP.atr# и оглушая на @b!ABRD.time# секунд. Если задет хотя бы один противник, увеличивает @b!ANBR.pa1# некроманта на @b!ANBR.va1# и @b!ANBR.pa2# на @b!ANBR.va2# на @b!ANBR.time# секунд.",
+                },
+
+
+
+                TALENTS = {
+                    ["talent_ignite"] = {
+                        name = "Поджог",
+                        [1] = "При получении урона от огня противник может воспламениться получая 13 урона раз в секунду в течение 3 секунд.",
+                        [2] = "При получении урона от огня противник может воспламениться получая 17 урона раз в секунду в течение 3 секунд.",
+                        [3] = "При получении урона от огня противник может воспламениться получая 23 урона раз в секунду в течение 3 секунд."
+                    },
+                    ["talent_inner_warmth"] = {
+                        name = "Власть огня",
+                        [1] = "Сопротивление холоду и огню +5.",
+                        [2] = "Сопротивление холоду и огню +10.",
+                        [3] = "Сопротивление холоду и огню +15. Урон от огня +5.",
+                    },
+                    ["talent_thaw"] = {
+                        name = "Оттепель",
+                        [1] = "Восстановление маны увеличено на 3%%.",
+                        [2] = "Восстановление маны увеличено на 6%%.",
+                        [3] = "Восстановление маны увеличено на 9%%."
+                    },
+                    ["talent_burnout"] = {
+                        name = "Выгорание",
+                        [1] = "Увеличивает силу магии на 5%%, однако вы теряете 5%% здоровья.",
+                        [2] = "Увеличивает силу магии на 10%%, однако вы теряете 10%% здоровья.",
+                    },
+                    ["talent_overflow"] = {
+                        name = "Переполнение",
+                        [1] = "Пока у вас больше 60%% маны, следующее заклинание огня будет на 10%% сильнее, но потратит в полтора раза больше маны.",
+                        [2] = "Пока у вас больше 60%% маны, следующее заклинание огня будет на 20%% сильнее, но потратит в два раза больше маны.",
+                    },
+                    ["talent_heating_up"] = {
+                        name = "Разогрев",
+                        [1] = "Каждое использование огненного заклинания накапливает заряд. После накопления 5, следующее заклинание огня будет на 40%% сильнее.",
+                        [2] = "Каждое использование огненного заклинания накапливает заряд. После накопления 3, следующее заклинание огня будет на 40%% сильнее.",
+                    },
+                    ["talent_heat"] = {
+                        name = "Накал",
+                        [1] = "При поражении огненными атаками врага на 6 сек. снижает его физическую атаку на 7%%.",
+                        [2] = "При поражении огненными атаками врага на 6 сек. снижает его физическую атаку на 14%%.",
+                        [3] = "При поражении огненными атаками врага на 6 сек. снижает его физическую атаку на 21%%."
+                    },
+                    ["talent_incinerate"] = {
+                        name = "Сожжение",
+                        [1] = "Убийство противника повышает крит шанс на 4%% на 8 сек.",
+                        [2] = "Убийство противника повышает крит шанс на 6%% на 10 сек.",
+                        [3] = "Убийство противника повышает крит шанс на 8%% на 12 сек."
+                    },
+                    ["talent_napalm"] = {
+                        name = "Напалм",
+                        [1] = "Урон от огня по области с шансом критического удара поджигает свою область поражения нанося 24 урона в сек.",
+                        [2] = "Урон от огня по области с шансом критического удара поджигает свою область поражения нанося 29 урона урона в сек.",
+                        [3] = "Урон от огня по области с шансом критического удара поджигает свою область поражения нанося 35 урона урона в сек."
+                    },
+                    ["talent_hell_flames"] = {
+                        name = "Адское пламя",
+                        [1] = "При получении урона от дальнего боя, с шансом в 35%% чародейка воспламеняется уничтожая все снаряды врагов поблизости. Срабатывает раз в 7 сек.",
+                    },
+                    ["talent_flash"] = {
+                        name = "Вспышка",
+                        [1] = "Повышает скорость передвижения на 5.",
+                        [2] = "Повышает скорость передвижения на 10.",
+                        [3] = "Повышает скорость передвижения на 15."
+                    },
+                    ["talent_negative_charge"] = {
+                        name = "Отрицательный заряд",
+                        [1] = "Урон электричеством понижает подавление магии противников на 15 на 6 сек.",
+                        [2] = "Урон электричеством понижает подавление магии противников на 25 на 6 сек.",
+                        [3] = "Урон электричеством понижает подавление магии противников на 35 на 6 сек.",
+                        [4] = "Урон электричеством понижает подавление магии противников на 45 на 6 сек.",
+                    },
+                    ["talent_positive_charge"] = {
+                        name = "Положительный заряд",
+                        [1] = "Критические атаки электричеством восстанавливают 3%% маны.",
+                        [2] = "Критические атаки электричеством восстанавливают 6%% маны.",
+                        [3] = "Критические атаки электричеством восстанавливают 9%% маны."
+                    },
+                    ["talent_lightning_rod"] = {
+                        name = "Громоотвод",
+                        [1] = "При поражении электрическим уроном с некоторым шансом противник становится заряженным и между ним и чародейкой возникают разряды, поражающие всех противников между ними на 10%% от атаки.",
+                        [2] = "При поражении электрическим уроном с некоторым шансом противник становится заряженным и между ним и чародейкой возникают разряды, поражающие всех противников между ними на 20%% от атаки."
+                    },
+                    ["talent_voltage"] = {
+                        name = "Напряжение",
+                        [1] = "Критические атаки увеличивают шанс на крит на 5%% на 5 сек.",
+                        [2] = "Критические атаки увеличивают шанс на крит на 10%% на 5 сек."
+                    },
+                    ["talent_arc_discharge"] = {
+                        name = "Дуговой разряд",
+                        [1] = "Каждые полторы секунды копится заряд, который увеличивает урон от электрического заклинания на 10%%. Максимум 1 заряд. Первый заряд заряжается 2 секунды.",
+                        [2] = "Каждые полторы секунды копится заряд, который увеличивает урон от электрического заклинания на 10%%. Максимум 2 заряда. Первый заряд заряжается 2 секунды.",
+                        [3] = "Каждые полторы секунды копится заряд, который увеличивает урон от электрического заклинания на 10%%. Максимум 3 заряда. Первый заряд заряжается 2 секунды."
+                    },
+                    ["talent_feedback"] = {
+                        name = "Отдача",
+                        [1] = "Критический множитель уменьшается на 0.2, однако сила магии увеличивается на 7%%.",
+                        [2] = "Критический множитель уменьшается на 0.4, однако сила магии увеличивается на 15%%.",
+                    },
+                    ["talent_induction"] = {
+                        name = "Индукция",
+                        [1] = "Критические атаки повышают скорость заклинаний на 5%% на 5 сек. Суммируется до 2 раз.",
+                        [2] = "Критические атаки повышают скорость заклинаний на 5%% на 5 сек. Суммируется до 3 раз.",
+                        [3] = "Критические атаки повышают скорость заклинаний на 5%% на 5 сек. Суммируется до 4 раз."
+                    },
+                    ["talent_extra_charge"] = {
+                        name = "Сверхзаряд",
+                        [1] = "Нанесение урона электричеством формирует шар энергии, который повышает подавление магии на 10%%. Атака по чародейке в ближнем бою уничтожает шар но оглушает атакующего на 1.25 сек. Одновременно может быть 1 шар.",
+                        [2] = "Нанесение урона электричеством формирует шар энергии, который повышает подавление магии на 10%%. Атака по чародейке в ближнем бою уничтожает шар но оглушает атакующего на 1.25 сек. Одновременно может быть 2 шара.",
+                        [3] = "Нанесение урона электричеством формирует шар энергии, который повышает подавление магии на 10%%. Атака по чародейке в ближнем бою уничтожает шар но оглушает атакующего на 1.25 сек. Одновременно может быть 3 шара."
+                    },
+                    ["talent_shock"] = {
+                        name = "Шок",
+                        [1] = "Урон электричеством может оглушить цель на 1 секунду раз в 5 секунд.",
+                    },
+                    ["talent_disintegration"] = {
+                        name = "Дезинтеграция",
+                        [1] = "С 1/4 от критического шанса при атаке мгновенно убивает неэлитного противника.",
+                    },
+                    ["talent_remorseless"] = {
+                        name = "Беспощадность",
+                        [1] = "Нанесение ледяного урона снижает сопротивление ко льду на 5 на 3 сек.",
+                        [2] = "Нанесение ледяного урона снижает сопротивление ко льду на 10 на 4 сек.",
+                    },
+                    ["talent_crystallization"] = {
+                        name = "Кристаллизация",
+                        [1] = "Если вы убиваете замороженного врага, лед разлетается на осколки и наносит 15 урона.",
+                        [2] = "Если вы убиваете замороженного врага, лед разлетается на осколки и наносит 30 урона.",
+                        [3] = "Если вы убиваете замороженного врага, лед разлетается на осколки и наносит 45 урона.",
+                    },
+                    ["talent_ice_crust"] = {
+                        name = "Ледяная корка",
+                        [1] = "Понижает урон от атак ближнего боя по вам на 2%%.",
+                        [2] = "Понижает урон от атак ближнего боя по вам на 4%%.",
+                        [3] = "Понижает урон от атак ближнего боя по вам на 6%%."
+                    },
+                    ["talent_glaciation"] = {
+                        name = "Оледенение",
+                        [1] = "Периодически на чародейке формируется барьер из льда который увеличивает физ. защиту на 10%%, максимум 1 заряд. При получении физ. урона 1 заряд тратится.",
+                        [2] = "Периодически на чародейке формируется барьер из льда который увеличивает физ. защиту на 10%%, максимум 2 заряда. При получении физ. урона 1 заряд тратится.",
+                        [3] = "Периодически на чародейке формируется барьер из льда который увеличивает физ. защиту на 10%%, максимум 3 заряда. При получении физ. урона 1 заряд тратится.",
+                    },
+                    ["talent_breath_of_frost"] = {
+                        name = "Ледяное прикосновение",
+                        [1] = "Атака льдом может заморозить противника на 0.5 секунд раз в 6 секунд.",
+                        [2] = "Атака льдом может заморозить противника на 0.75 секунд раз в 6 секунд.",
+                    },
+                    ["talent_icy_veins"] = {
+                        name = "Стылая кровь",
+                        [1] = "Снижает восстановление здоровья на 5%%, дает 5 к урону льдом.",
+                        [2] = "Снижает восстановление здоровья на 10%%, дает 10 к урону льдом.",
+                        [3] = "Снижает восстановление здоровья на 15%%, дает 15 к урону льдом.",
+                    },
+                    ["talent_deep_freeze"] = {
+                        name = "Глубокая заморозка",
+                        [1] = "Увеличивает время действия ваших негативных эффектов от холода на 50%%.",
+                        [2] = "Увеличивает время действия ваших негативных эффектов от холода на 100%%.",
+                    },
+                    ["talent_heat_transfer"] = {
+                        name = "Вытягивание тепла",
+                        [1] = "При заморозке противника скорость заклинаний возрастает на 6%%. на 6 сек.",
+                        [2] = "При заморозке противника скорость заклинаний возрастает на 12%%. на 6 сек.",
+                        [3] = "При заморозке противника скорость заклинаний возрастает на 18%%. на 6 сек."
+                    },
+                    ["talent_fragility"] = {
+                        name = "Хрупкость",
+                        [1] = "Урон по противникам страдающим от негативных эффектов от холода увеличен на 10%%.",
+                        [2] = "Урон по противникам страдающим от негативных эффектов от холода увеличен на 20%%.",
+                    },
+                    ["talent_ice_enduring"] = {
+                        name = "Ледяная выдержка",
+                        [1] = "При получении смертельного урона замораживает врагов вокруг на 3 секунды и восстанавливает 25%% здоровья. Срабатывает раз в 2 минуты.",
+                    },
+                    ["talent_blade_dance"] = {
+                        name = "Танец клинков",
+                        [1] = "Ношение оружия увеличивает физ. защиту на 3%%. При ношении двух оружий удваивает бонус.",
+                        [2] = "Ношение оружия увеличивает физ. защиту на 5%%. При ношении двух оружий удваивает бонус.",
+                        [3] = "Ношение оружия увеличивает физ. защиту на 7%%. При ношении двух оружий удваивает бонус.",
+                    },
+                    ["talent_strong_will"] = {
+                        name = "Воля",
+                        [1] = "Увеличивает подавление магии на 16.",
+                        [2] = "Увеличивает подавление магии на 24.",
+                        [3] = "Увеличивает подавление магии на 32.",
+                    },
+                    ["talent_sweeping_strikes"] = {
+                        name = "Размашистые удары",
+                        [1] = "Обычные атаки двуручным оружием наносят всем врагам рядом с целью 33%% урона.",
+                        [2] = "Обычные атаки двуручным оружием наносят всем врагам рядом с целью 66%% урона.",
+                        [3] = "Обычные атаки двуручным оружием наносят всем врагам рядом с целью 100%% урона.",
+                    },
+                    ["talent_rage"] = {
+                        name = "Раж",
+                        [1] = "Использование атакующего умения повышает скорость атаки на 5%% на 5 сек. Суммируется до 3 раз.",
+                        [2] = "Использование атакующего умения повышает скорость атаки на 7%% на 5 сек. Суммируется до 3 раз.",
+                        [3] = "Использование атакующего умения повышает скорость атаки на 9%% на 5 сек. Суммируется до 3 раз.",
+                    },
+                    ["talent_strong_body"] = {
+                        name = "Здравие",
+                        [1] = "Увеличивает здоровье на 7%%, уменьшает количество маны на 10%%.",
+                        [2] = "Увеличивает здоровье на 14%%, уменьшает количество маны на 17%%.",
+                    },
+                    ["talent_reflexes"] = {
+                        name = "Рефлексы",
+                        [1] = "Раз в 8 секунд урон от физической атаки дальнего боя уменьшается на 50%%. Пассивно увеличивает крит шанс на 4%%.",
+                        [2] = "Раз в 8 секунд урон от физической атаки дальнего боя уменьшается на 80%%. Пассивно увеличивает крит шанс на 8%%.",
+                    },
+                    ["talent_breaking_defence"] = {
+                        name = "Пробитие обороны",
+                        [1] = "Атаки с некоторым шансом снижают физ.защиту врагов на 7%%.",
+                        [2] = "Атаки с некоторым шансом снижают физ.защиту врагов на 14%%.",
+                        [3] = "Атаки с некоторым шансом снижают физ.защиту врагов на 21%%.",
+                    },
+                    ["talent_pain_killer"] = {
+                        name = "Подавление боли",
+                        [1] = "Пока на вас действует положительный эффект от способностей, урон от ближнего и дальнего боя уменьшается на 4%%.",
+                        [2] = "Пока на вас действует положительный эффект от способностей, урон от ближнего и дальнего боя уменьшается на 6%%.",
+                        [3] = "Пока на вас действует положительный эффект от способностей, урон от ближнего и дальнего боя уменьшается на 8%%.",
+                    },
+                    ["talent_momentum"] = {
+                        name = "Инерция",
+                        [1] = "Урон при ношении двуручного оружия увеличивается на 4%%, однако скорость атаки падает на 5%%.",
+                        [2] = "Урон при ношении двуручного оружия увеличивается на 8%%, однако скорость атаки падает на 8%%.",
+                        [3] = "Урон при ношении двуручного оружия увеличивается на 12%%, однако скорость атаки падает на 11%%.",
+                    },
+                    ["talent_carnage"] = {
+                        name = "Резня",
+                        [1] = "Убийство противника увеличивает урон на 5%% на 10 сек. Суммируется до 7 раз. Атаки продлевают действие эффекта.",
+                    },
+                    ["talent_sharpened_blade"] = {
+                        name = "Заточенное оружие",
+                        [1] = "Первые 3 атаки нанесут на 4%% больше урона. Эффект восстанавливается после 15 секунд без атак.",
+                        [2] = "Первые 5 атак нанесут на 6%% больше урона. Эффект восстанавливается после 15 секунд без атак.",
+                        [3] = "Первые 7 атак нанесут на 8%% больше урона. Эффект восстанавливается после 15 секунд без атак.",
+                    },
+                    ["talent_herbs"] = {
+                        name = "Подорожник",
+                        [1] = "Не получая урона на протяжении 7 секунд восстанавливает 1%% здоровья раз в 3 секунды.",
+                        [2] = "Не получая урона на протяжении 7 секунд восстанавливает 2%% здоровья раз в 3 секунды.",
+                        [3] = "Не получая урона на протяжении 7 секунд восстанавливает 3%% здоровья раз в 3 секунды.",
+                    },
+                    ["talent_hard_training"] = {
+                        name = "Упорные тренировки",
+                        [1] = "Повышает силу и ловкость на 3.",
+                        [2] = "Повышает силу и ловкость на 6.",
+                        [3] = "Повышает силу и ловкость на 9.",
+                    },
+                    ["talent_elbow_strike"] = {
+                        name = "Локтевой прием",
+                        [1] = "Атаки могут толкнуть противника с шансом в 13%%.",
+                        [2] = "Атаки могут толкнуть противника с шансом в 17%%."
+                    },
+                    ["talent_disadvantage"] = {
+                        name = "Неравный бой",
+                        [1] = "Когда варвара окружает 3 и более противников урон от ближнего боя по нему уменьшается на 8%%.",
+                        [2] = "Когда варвара окружает 3 и более противников урон от ближнего боя по нему уменьшается на 14%%.",
+                        [3] = "Когда варвара окружает 3 и более противников урон от ближнего боя по нему уменьшается на 20%%."
+                    },
+                    ["talent_bigger_they_are"] = {
+                        name = "Чем они больше...",
+                        [1] = "Урон по боссам и элитным противникам увеличивается на 6%%.",
+                        [2] = "Урон по боссам и элитным противникам увеличивается на 10%%.",
+                    },
+                    ["talent_disorientation"] = {
+                        name = "Дезориентация",
+                        [1] = "После отталкивания или оглушения противники на 6 сек. теряют 7%% скорости заклинаний атаки и передвижения.",
+                        [2] = "После отталкивания или оглушения противники на 6 сек. теряют 15%% скорости заклинаний атаки и передвижения.",
+                        [3] = "После отталкивания или оглушения противники на 6 сек. теряют 21%% скорости заклинаний атаки и передвижения.",
+                    },
+                    ["talent_opportunity"] = {
+                        name = "Уникальная возможность",
+                        [1] = "Вероятность критического урона по оглушенным противникам выше на 10%%.",
+                        [2] = "Вероятность критического урона по оглушенным противникам выше на 15%%.",
+                        [3] = "Вероятность критического урона по оглушенным противникам выше на 20%%.",
+                    },
+                    ["talent_lining_armor"] = {
+                        name = "Подкладка",
+                        [1] = "Если варвар получит урон больше чем на 10%% здоровья, то такой урон нанесет лишь 70%% урона. Срабатывает раз в 9 сек.",
+                        [2] = "Если варвар получит урон больше чем на 10%% здоровья, то такой урон нанесет лишь 50%% урона. Срабатывает раз в 9 сек.",
+                    },
+                    ["talent_penetration"] = {
+                        name = "Пробитие",
+                        [1] = "Снаряды от умений проходят насквозь.",
+                    },
+                    ["talent_hardening"] = {
+                        name = "Закалка",
+                        [1] = "Увеличивает здоровье на 5%%.",
+                        [2] = "Увеличивает здоровье на 7%%.",
+                        [3] = "Увеличивает здоровье на 10%%.",
+                    },
+                    ["talent_well_being"] = {
+                        name = "Крепкое здоровье",
+                        [1] = "Эффекты исцеления увеличены на 5%%. Восстановление здоровья увеличено на 3%%.",
+                        [2] = "Эффекты исцеления увеличены на 10%%. Восстановление здоровья увеличено на 6%%.",
+                    },
+                    ["talent_fracture"] = {
+                        name = "Разрыв",
+                        [1] = "Атаки могут наложить эффект периодического урона наносящий 6%% от физ. атаки каждую секунду на протяжении 3 секунд.",
+                        [2] = "Атаки могут наложить эффект периодического урона наносящий 12%% от физ. атаки каждую секунду на протяжении 3 секунд.",
+                    },
+                    ["talent_anger_impulse"] = {
+                        name = "Вспышка злости",
+                        [1] = "При получении критического урона повышает физ. атаку варвара на 10%% на 3 сек.",
+                        [2] = "При получении критического урона повышает физ. атаку варвара на 15%% на 3 сек.",
+                        [3] = "При получении критического урона повышает физ. атаку варвара на 20%% на 3 сек.",
+                    },
+                    ["talent_adrenaline"] = {
+                        name = "Адреналин",
+                        [1] = "Когда здоровье опускается ниже 50%%, восстанавливает 15%% здоровья в течение 5 секунд. Срабатывает раз в 40 сек.",
+                        [2] = "Когда здоровье опускается ниже 50%%, восстанавливает 25%% здоровья в течение 5 секунд. Срабатывает раз в 40 сек.",
+                    },
+                    ["talent_inevitability"] = {
+                        name = "Неотвратимость",
+                        [1] = "Продлевает время действия негативных эффектов на 10%%.",
+                        [2] = "Продлевает время действия негативных эффектов на 15%%.",
+                    },
+                    ["talent_vulnerability"] = {
+                        name = "Уязвимость",
+                        [1] = "Нанесение критического урона снижает сопротивление физ атакам на 5 на 5 сек.",
+                        [2] = "Нанесение критического урона снижает сопротивление физ атакам на 10 на 5 сек.",
+                    },
+                    ["talent_pressure_point"] = {
+                        name = "Точка давления",
+                        [1] = "Нанесение критического урона увеличивает крит множитель на 0.1 на 5 сек. Суммируется до 2 раз.",
+                        [2] = "Нанесение критического урона увеличивает крит множитель на 0.1 на 5 сек. Суммируется до 3 раз.",
+                        [3] = "Нанесение критического урона увеличивает крит множитель на 0.1 на 5 сек. Суммируется до 4 раз.",
+                    },
+                    ["talent_intimidation"] = {
+                        name = "Устрашение",
+                        [1] = "Крики варвара могут повергнуть врагов в ужас на 2 сек.",
+                        [2] = "Крики варвара могут повергнуть врагов в ужас на 3 сек.",
+                    },
+                    ["talent_second_wind"] = {
+                        name = "Второе дыхание",
+                        [1] = "При получении смертельного урона снимает все отрицательные эффекты и конвертирует %% маны в %% здоровья, повышая скорость атаки и бега на 25%% на 15 сек. Срабатывает раз в 2 минуты.",
+                    },
+                    ["talent_leeches"] = {
+                        name = "Пиявки",
+                        [1] = "Убийство противника создает пиявку на 5 секунд.",
+                        [2] = "Убийство противника создает 2 пиявки на 5 секунд.",
+                        [3] = "Убийство противника создает 3 пиявки на 5 секунд.",
+                    },
+                    ["talent_soul_remains"] = {
+                        name = "Остатки души",
+                        [1] = "Использование трупа восстанавливает 2%% ресурса.",
+                        [2] = "Использование трупа восстанавливает 3%% ресурса.",
+                        [3] = "Использование трупа восстанавливает 4%% ресурса.",
+                    },
+                    ["talent_undead_expert"] = {
+                        name = "Знаток Нежити",
+                        [1] = "Дает +7 урона по нежити.",
+                        [2] = "Дает +15 урона по нежити.",
+                    },
+                    ["talent_pursuer"] = {
+                        name = "Преследователь",
+                        [1] = "С каждой атакой есть вероятность призвать духа который преследует случайную цель. Наносит 7%% урона тьмой от оружия в небольшом радиусе.",
+                        [2] = "С каждой атакой есть вероятность призвать духа который преследует случайную цель. Наносит 11%% урона тьмой от оружия в небольшом радиусе.",
+                        [3] = "С каждой атакой есть вероятность призвать духа который преследует случайную цель. Наносит 15%% урона тьмой от оружия в небольшом радиусе.",
+                    },
+                    ["talent_experienced_summoner"] = {
+                        name = "Опытный Призыватель",
+                        [1] = "Призванные существа получают 10%% бонус к здоровью.",
+                        [2] = "Призванные существа получают 20%% бонус к здоровью.",
+                    },
+                    ["talent_tenacity_of_undead"] = {
+                        name = "Упорство Мертвецов",
+                        [1] = "С каждой атакой призванные существа могут получить усиление физического урона на 25 и магического на 45 длительностью в 4 секунды.",
+                        [2] = "С каждой атакой призванные существа могут получить усиление физического урона на 45 и магического на 85 длительностью в 4 секунды.",
+                        [3] = "С каждой атакой призванные существа могут получить усиление физического урона на 65 и магического на 125 длительностью в 4 секунды.",
+                    },
+                    ["talent_bone_spikes"] = {
+                        name = "Костяные шипы",
+                        [1] = "Призванные существа получают 35 эффекта шипов.",
+                        [2] = "Призванные существа получают 70 эффекта шипов.",
+                        [3] = "Призванные существа получают 105 эффекта шипов.",
+                    },
+                    ["talent_spirit"] = {
+                        name = "призрак",
+                        [1] = "Каждая смерть противника вокруг некроманта дает ему 1 душу. Когда душ становится 10, он призывает призрака с длительностью жизни 24 секунды. Считается за прислужника.",
+                        [2] = "Каждая смерть противника вокруг некроманта дает ему 1 душу. Когда душ становится 10, он призывает призрака с длительностью жизни 48 секунды. Считается за прислужника.",
+                        [3] = "Каждая смерть противника вокруг некроманта дает ему 1 душу. Когда душ становится 10, он призывает призрака с длительностью жизни 72 секунды. Считается за прислужника.",
+                    },
+                    ["talent_final_favor"] = {
+                        name = "последняя услуга",
+                        [1] = "Если прислужника убивают, некромант восстанавливает 5%% здововья и ресурса.",
+                        [2] = "Если прислужника убивают, некромант восстанавливает 7%% здововья и ресурса.",
+                        [3] = "Если прислужника убивают, некромант восстанавливает 10%% здововья и ресурса.",
+                    },
+                    ["talent_necromorph"] = {
+                        name = "Некроморф",
+                        [1] = "Использование трупа призывает тварь, которая имеет высокую скорость передвижения и взрывается об врагов нанося 12%% урона тьмой от оружия в небольшом радиусе.",
+                        [2] = "Использование трупа призывает тварь, которая имеет высокую скорость передвижения и взрывается об врагов нанося 18%% урона тьмой от оружия в небольшом радиусе.",
+                        [3] = "Использование трупа призывает тварь, которая имеет высокую скорость передвижения и взрывается об врагов нанося 24%% урона тьмой от оружия в небольшом радиусе.",
+                    },
+                    ["talent_eternal_service"] = {
+                        name = "Вечное служение",
+                        [1] = "При убийстве прислужника он с 70%% шансом оставляет труп.",
+                    },
+                    ["talent_frailty"] = {
+                        name = "хрупкость",
+                        [1] = "Проклятия так же снижают сопротивление ко тьме, холоду и яду на 5.",
+                        [2] = "Проклятия так же снижают сопротивление ко тьме, холоду и яду на 7.",
+                    },
+                    ["talent_spiritual_vessel"] = {
+                        name = "духовный сосуд",
+                        [1] = "Увеличивает ресурс на 20.",
+                        [2] = "Увеличивает ресурс на 40.",
+                        [3] = "Увеличивает ресурс на 60.",
+                    },
+                    ["talent_death_march"] = {
+                        name = "Марш Смерти",
+                        [1] = "Произнесение заклинания проклятия дает 15 скорости передвижения на 5 секунд.",
+                        [2] = "Произнесение заклинания проклятия дает 25 скорости передвижения на 5 секунд.",
+                        [3] = "Произнесение заклинания проклятия дает 35 скорости передвижения на 5 секунд.",
+                    },
+                    ["talent_amplify_damage"] = {
+                        name = "усиленный урон",
+                        [1] = "Противники под вашими проклятиями получают 10%% больше урона.",
+                        [2] = "Противники под вашими проклятиями получают 15%% больше урона.",
+                        [3] = "Противники под вашими проклятиями получают 20%% больше урона.",
+                    },
+                    ["talent_face_of_death"] = {
+                        name = "лик смерти",
+                        [1] = "Наложение проклятия может повергнуть противников в страх на 2 секунды.",
+                        [2] = "Наложение проклятия может повергнуть противников в страх на 3 секунды.",
+                    },
+                    ["talent_bargain"] = {
+                        name = "Сделка",
+                        [1] = "Критический шанс увеличен на 5%%, но здоровье уменьшается на столько же.",
+                        [2] = "Критический шанс увеличен на 10%%, но здоровье уменьшается на столько же.",
+                    },
+                    ["talent_insanity"] = {
+                        name = "безумие",
+                        [1] = "Противники испуганные вами получают 20 урона от тьмы в секунду.",
+                        [2] = "Противники испуганные вами получают 40 урона от тьмы в секунду.",
+                        [3] = "Противники испуганные вами получают 60 урона от тьмы в секунду.",
+                    },
+                    ["talent_persistent_curse"] = {
+                        name = "сильная порча",
+                        [1] = "Длительность проклятий увеличивается на 1 секунду.",
+                        [2] = "Длительность проклятий увеличивается на 2 секунды.",
+                        [3] = "Длительность проклятий увеличивается на 3 секунды.",
+                    },
+                    ["talent_vile_malediction"] = {
+                        name = "Гнусные проклятия",
+                        [1] = "За каждого противника под проклятием вы получаете 4 магического урона до максимума в 125.",
+                        [2] = "За каждого противника под проклятием вы получаете 7 магического урона до максимума в 140.",
+                        [3] = "За каждого противника под проклятием вы получаете 15 магического урона до максимума в 165.",
+                    },
+                    ["talent_sudden_death"] = {
+                        name = "погибель",
+                        [1] = "Наложение проклятия на неэлитного противника у которого менее 20%% здоровья может мгновенно его убить.",
+                    },
+                    ["talent_durable_bones"] = {
+                        name = "прочные кости",
+                        [1] = "Физическая защита увеличивается на 25.",
+                        [2] = "Физическая защита увеличивается на 50.",
+                        [3] = "Физическая защита увеличивается на 75.",
+                        [4] = "Физическая защита увеличивается на 100.",
+                        [5] = "Физическая защита увеличивается на 125.",
+                    },
+                    ["talent_forbidden_knowledge"] = {
+                        name = "запретные знания",
+                        [1] = "Интеллект повышается на 2.",
+                        [2] = "Интеллект повышается на 3.",
+                        [3] = "Интеллект повышается на 4.",
+                        [4] = "Интеллект повышается на 5.",
+                        [5] = "Интеллект повышается на 6.",
+                    },
+                    ["talent_toxicity"] = {
+                        name = "токсичность",
+                        [1] = "Урон от яда +5",
+                        [2] = "Урон от яда +10.",
+                    },
+                    ["talent_life_steal"] = {
+                        name = "кража жизни",
+                        [1] = "Критические удары увеличивают восстановление здоровья на 5 в течение 1 секунды.",
+                        [2] = "Критические удары увеличивают восстановление здоровья на 10 в течение 1 секунды.",
+                        [3] = "Критические удары увеличивают восстановление здоровья на 15 в течение 1 секунды.",
+                    },
+                    ["talent_death_embrace"] = {
+                        name = "объятия смерти",
+                        [1] = "За каждые недостающие 25%% здоровья сила магии увеличена на 5%%.",
+                        [2] = "За каждые недостающие 25%% здоровья сила магии увеличена на 10%%.",
+                        [3] = "За каждые недостающие 25%% здоровья сила магии увеличена на 15%%.",
+                    },
+                    ["talent_lesion"] = {
+                        name = "Поражение",
+                        [1] = "Критические удары от яда накладывают 5%% эффект урона от оружия ядом в секунду, длительностью в 4 секунды.",
+                        [2] = "Критические удары от яда накладывают 10%% эффект урона от оружия ядом в секунду, длительностью в 4 секунды.",
+                        [3] = "Критические удары от яда накладывают 15%% эффект урона от оружия ядом в секунду, длительностью в 4 секунды.",
+                    },
+                    ["talent_ritual"] = {
+                        name = "ритуал",
+                        [1] = "Убийство противника уменьшает требования ресурса заклинаний на 25%% в течение 4 секунд.",
+                        [2] = "Убийство противника уменьшает требования ресурса заклинаний на 50%% в течение 4 секунд.",
+                    },
+                    ["talent_blood_pact"] = {
+                        name = "кровавый договор",
+                        [1] = "Атаки восстанавливают 6%% здоровья раз в 14 секунд.",
+                        [2] = "Атаки восстанавливают 12%% здоровья раз в 14 секунд.",
+                        [3] = "Атаки восстанавливают 18%% здоровья раз в 14 секунд.",
+                    },
+                    ["talent_abyss_awakens"] = {
+                        name = "пробуждение бездны",
+                        [1] = "Применение атакующего заклинания с шансом вашего критического удара на 6 секунд повысит силу магии на 50.",
+                        [2] = "Применение атакующего заклинания с шансом вашего критического удара на 6 секунд повысит силу магии на 50. Суммируется 2 раза.",
+                        [3] = "Применение атакующего заклинания с шансом вашего критического удара на 6 секунд повысит силу магии на 50. Суммируется 3 раза.",
+                    },
+                    ["talent_grave_cold"] = {
+                        name = "Могильный холод",
+                        [1] = "Применение заклинания накладывает ауру, наносящую 7 урона от холода.",
+                    },
+                    ["talent_cheat_death"] = {
+                        name = "Обман смерти",
+                        [1] = "При получении смертельного урона мгновенно восстанавливает 35%% здоровья и дает 25 восстановления здоровья в сек. на 5 секунд.",
+                    },
                 },
 
 
@@ -1028,6 +1733,7 @@ do
 
                 BARBARIAN_NAME = "Варвар",
                 SORCERESS_NAME = "Волшебница",
+                NECROMANCER_NAME = "Некромант",
 
                 VENDOR_BILL_NAME = "Вендор Билл",
                 HEALER_NAME = "Целительница Далия",
@@ -1049,6 +1755,29 @@ do
                 HUNTER_NAME = "Охотник Борк",
                 DON_NAME = "Управляющий Дон",
                 MANTO_NAME = "Манто",
+
+
+                INT_OPTION_TALK = "Поговорить",
+
+                BILL_CONV_INTRO_1 = "Слушай, тут с товаром напряжно", BILL_CONV_INTRO_2 = "Поставки у нас раз через раз,|nно ты заходи если что",
+                BILL_CONV_INTRO_3 = "И можешь мне сдавать если найдешь что", BILL_CONV_INTRO_4 = "За мной не заржавеет",
+
+                DALIA_CONV_INTRO_1 = "Я надеюсь у тебя стойкий организм", DALIA_CONV_INTRO_2 = "Потому что иногда мои зелья вызывают...|nнеобычный эффект",
+
+                BLACKSMITH_CONV_INTRO_1 = "Кую этим неблагодарным уже третий день", BLACKSMITH_CONV_INTRO_2 = "Без отдыха! Чтоб они подавились",
+                BLACKSMITH_CONV_INTRO_3 = "Надеюсь ты то хоть будешь платить?",
+
+                LIBRARIAN_CONV_INTRO_1 = "Все книги которые ты не сможешь|nпрочесть можешь приносить мне", LIBRARIAN_CONV_INTRO_2 = "Я уверена, мы сможем договориться.",
+
+                SMORC_CONV_INTRO_1 = "Чего на меня смотришь?",
+                SMORC_CONV_INTRO_2 = "Ну да. Я зеленый. А еще у меня есть кирка",
+                SMORC_CONV_INTRO_3 = "Только это не моя. Свою я где то потерял...",
+
+                LYNN_CONV_INTRO_1 = "Если тебе нужен особый товар", LYNN_CONV_INTRO_2 = "То я тебе предоставлю",
+                LYNN_CONV_INTRO_3 = "Наврятли тот мужик тебе подыщет лучше того что могу найти я",
+
+                WANDERING_CONV_INTRO_1 = "Я с удовольствием скуплю все что у тебя есть", WANDERING_CONV_INTRO_2 = "Здешние артефакты довольно... ценные",
+                WANDERING_CONV_INTRO_3 = "Так что не стесняйся, хехехе",
 
 
                 QUEST_1_TITLE = "Потерянный груз",
@@ -1157,6 +1886,7 @@ do
                 MONSTER_PLAYER_NAME = "Monsters",
 
                 MONSTER_NAME_FIEND = "Fiend",
+                MONSTER_NAME_SCAVENGER = "Scavenger",
                 MONSTER_NAME_GHOUL = "Ghoul",
                 MONSTER_NAME_ARMORED_SKELETON = "Armored Skeleton",
                 MONSTER_NAME_ZOMBIE = "Zombie",
@@ -1179,6 +1909,7 @@ do
                 MONSTER_NAME_SUCCUBUS = "Succubus",
                 MONSTER_NAME_SUCCUBUS_IMPROVED = "Vile Tormentor",
                 MONSTER_NAME_BLOOD_SUCCUBUS = "Bloodbather",
+                MONSTER_NAME_HELL_SUCCUBUS = "Hell Succubus",
                 MONSTER_NAME_VOID_WALKER_SMALL = "Lesser Voidwalker",
                 MONSTER_NAME_VOID_WALKER_NORMAL = "Voidwalker",
                 MONSTER_NAME_VOID_WALKER_BIG = "Greater Voidwalker",
@@ -1222,12 +1953,20 @@ do
                 MONSTER_NAME_BUTCHER = "Butcher",
                 MONSTER_NAME_ANDARIEL = "Andariel",
                 MONSTER_NAME_REANIMATED = "Reanimated",
+                MONSTER_NAME_BLOOD_RAVEN = "Blood Raven",
                 MONSTER_NAME_DEMON_LORD = "Demon Lord",
                 MONSTER_NAME_DEMONESS = "Demoness",
                 MONSTER_NAME_EGG = "Egg",
                 MONSTER_NAME_TENTACLE = "Tentacle",
                 MONSTER_NAME_LILITH = "Lilith",
                 MONSTER_NAME_FOREST_GUARD = "Forest Guard",
+
+                NAME_SKELETON_SUMMONED = "Reanimated Warrior",
+                NAME_SKELETON_MAGE_SUMMONED = "Reanimated Mage",
+                NAME_SKELETON_ARCHER_SUMMONED = "Reanimated Archer",
+                NAME_SKELETON_LICH_SUMMONED = "Lich",
+                NAME_SKELETON_GHOST_SUMMONED = "Ghost",
+
 
                 MONSTER_TRAITS = {
                     [MONSTER_TRAIT_ELECTRIFIED]   = { [DECL_HE] = "Electrified ",       [DECL_SHE] = "Electrified ",        [DECL_IT] = "Electrified ", },
@@ -1314,8 +2053,14 @@ do
                 BONUS_HUMAN_DAMAGE_PARAM = "Damage to humans",
                 BONUS_BEAST_DAMAGE_PARAM = "Damage to beasts",
 
-                GOLD_BONUS_PARAM = "Bonus gold",
-                EXP_BONUS_PARAM = "Bonus exp",
+                GOLD_BONUS_PARAM = "Gold find",
+                EXP_BONUS_PARAM = "Bonus xp",
+                DROP_BONUS_PARAM = "Drop chance",
+
+                HEALING_BONUS_PARAM = "Heal received",
+                DAMAGE_BOOST_PARAM = "Damage boost",
+                VULNERABILITY_PARAM = "Damage received",
+                MANACOST_PARAM = "Resource costs",
 
 
                 ITEM_TYPE_WEAPON_NAME     = "Weapon",
@@ -1381,6 +2126,22 @@ do
                 SORCERESS_PROPER_NAME_8 = "Siren Ghostsong",
                 SORCERESS_PROPER_NAME_9 = "Somand Wayfinder",
 
+                NECROMANCER_PROPER_NAME_1 = "Rage Winterchill",
+                NECROMANCER_PROPER_NAME_2 = "Araj Summoner",
+                NECROMANCER_PROPER_NAME_3 = "Kali'naj Dethkneil",
+                NECROMANCER_PROPER_NAME_4 = "Rak Coldskull",
+                NECROMANCER_PROPER_NAME_5 = "Din Ghostfire",
+                NECROMANCER_PROPER_NAME_6 = "Calis Wraithson",
+                NECROMANCER_PROPER_NAME_7 = "Vehim Iceblade",
+                NECROMANCER_PROPER_NAME_8 = "Ras Deathwhisperer",
+                NECROMANCER_PROPER_NAME_9 = "Grim Reaper",
+                NECROMANCER_PROPER_NAME_10 = "Cho'nammoth",
+                NECROMANCER_PROPER_NAME_11 = "Kryptikk Soulslayer",
+                NECROMANCER_PROPER_NAME_12 = "Alandil Lieng",
+                NECROMANCER_PROPER_NAME_13 = "Ordin Frostbane",
+                NECROMANCER_PROPER_NAME_14 = "Ras Splinterspine",
+                NECROMANCER_PROPER_NAME_15 = "Morbert Fell",
+
 
                 FEEDBACK_GOLD = {
                     [BARBARIAN_CLASS] = {
@@ -1396,6 +2157,13 @@ do
                         "Sounds\\Responses\\sorceress_gold_3_us.wav",
                         "Sounds\\Responses\\sorceress_gold_4_us.wav",
                         "Sounds\\Responses\\sorceress_gold_5_us.wav",
+                    },
+                    [NECROMANCER_CLASS] = {
+                        "Sounds\\Responses\\necromancer_gold_1_us.wav",
+                        "Sounds\\Responses\\necromancer_gold_2_us.wav",
+                        "Sounds\\Responses\\necromancer_gold_3_us.wav",
+                        "Sounds\\Responses\\necromancer_gold_4_us.wav",
+                        "Sounds\\Responses\\necromancer_gold_5_us.wav",
                     }
                 },
 
@@ -1413,6 +2181,16 @@ do
                         "Sounds\\Responses\\sorceress_healing_3_us.wav",
                         "Sounds\\Responses\\sorceress_healing_4_us.wav",
                         "Sounds\\Responses\\sorceress_healing_5_us.wav",
+                    },
+                    [NECROMANCER_CLASS] = {
+                        "Sounds\\Responses\\necromancer_healing_1_us.wav",
+                        "Sounds\\Responses\\necromancer_healing_2_us.wav",
+                        "Sounds\\Responses\\necromancer_healing_3_us.wav",
+                        "Sounds\\Responses\\necromancer_healing_4_us.wav",
+                        "Sounds\\Responses\\necromancer_healing_5_us.wav",
+                        "Sounds\\Responses\\necromancer_healing_6_us.wav",
+                        "Sounds\\Responses\\necromancer_healing_7_us.wav",
+                        "Sounds\\Responses\\necromancer_healing_8_us.wav",
                     }
                 },
 
@@ -1430,6 +2208,13 @@ do
                         "Sounds\\Responses\\sorceress_bag_3_us.wav",
                         "Sounds\\Responses\\sorceress_bag_4_us.wav",
                         "Sounds\\Responses\\sorceress_bag_5_us.wav",
+                    },
+                    [NECROMANCER_CLASS] = {
+                        "Sounds\\Responses\\necromancer_bag_1_us.wav",
+                        "Sounds\\Responses\\necromancer_bag_2_us.wav",
+                        "Sounds\\Responses\\necromancer_bag_3_us.wav",
+                        "Sounds\\Responses\\necromancer_bag_4_us.wav",
+                        "Sounds\\Responses\\necromancer_bag_5_us.wav",
                     }
                 },
 
@@ -1445,6 +2230,30 @@ do
                         "Sounds\\Responses\\sorceress_classrestricted_2_us.wav",
                         "Sounds\\Responses\\sorceress_classrestricted_3_us.wav",
                         "Sounds\\Responses\\sorceress_classrestricted_4_us.wav",
+                    },
+                    [NECROMANCER_CLASS] = {
+                        "Sounds\\Responses\\necromancer_cant_1_us.wav",
+                        "Sounds\\Responses\\necromancer_cant_2_us.wav",
+                        "Sounds\\Responses\\necromancer_cant_3_us.wav",
+                        "Sounds\\Responses\\necromancer_cant_4_us.wav",
+                    }
+                },
+
+                FEEDBACK_NORESOURCE = {
+                    [BARBARIAN_CLASS] = {
+                        "Sounds\\Responses\\barbarian_mana_1_us.wav",
+                        "Sounds\\Responses\\barbarian_mana_3_us.wav",
+                        "Sounds\\Responses\\barbarian_mana_2_us.wav",
+                    },
+                    [SORCERESS_CLASS] = {
+                        "Sounds\\Responses\\sorceress_mana_1_us.wav",
+                        "Sounds\\Responses\\sorceress_mana_2_us.wav",
+                        "Sounds\\Responses\\sorceress_mana_3_us.wav",
+                    },
+                    [NECROMANCER_CLASS] = {
+                        "Sounds\\Responses\\necromancer_mana_1_us.wav",
+                        "Sounds\\Responses\\necromancer_mana_2_us.wav",
+                        "Sounds\\Responses\\necromancer_mana_3_us.wav",
                     }
                 },
 
@@ -1468,6 +2277,9 @@ do
                 SKILL_CATEGORY_FIGHTING_MASTERY_ADVANCED = "Fighting Mastery skills: ",
                 SKILL_CATEGORY_BATTLE_ADVANTAGE_ADVANCED = "Battle Advantage skills: ",
                 SKILL_CATEGORY_INNER_STRENGTH_ADVANCED = "Inner Strength skills: ",
+                SKILL_CATEGORY_DARK_ART_ADVANCED = "Dark Art skills: ",
+                SKILL_CATEGORY_CURSES_ADVANCED = "Curses skills: ",
+                SKILL_CATEGORY_SUMMONING_ADVANCED = "Reanimation skills: ",
 
                 SKILL_PANEL_LVL_TEXT = "Level: ",
                 SKILL_PANEL_UNBIND = "Unbind",
@@ -1500,6 +2312,7 @@ do
                 FEEDBACK_MSG_NOSPACE = "Not enough space",
                 FEEDBACK_MSG_CANTUSE = "Can't use that",
                 FEEDBACK_MSG_NOGOLD = "Not enough gold",
+                FEEDBACK_MSG_NORESOURCE = "Not enough resource",
 
                 SHOP_MESSAGE_NO_SPACE = "Shop doesn't have empty space",
 
@@ -1532,6 +2345,7 @@ do
                 UI_TEXT_EXCHANGE = "Exchange",
                 UI_TEXT_TO_STASH = "Store",
                 UI_TEXT_FROM_STASH = "Take back",
+                UI_TEXT_USE = "Use",
 
                 UI_TEXT_OK = "ok",
                 UI_TEXT_CANCEL = "cancel",
@@ -1548,7 +2362,7 @@ do
                 HINT_BLACKSMITH_1 = "Blacksmith can reforge your item to the wave level, upgrading its basic parameters. Also he can remove socket stones. That action won't return the stone.",
                 HINT_STATS_1 = "Basic parameters are crucial in a hero development. You can hover over any of it to know more about each. You gain 3 parameter points with a new level.",
                 HINT_ALTARS = "You can interact with altars, chests or wells via right click while being nearby. Altars give random positive effect, chests contain loot and gold and wells recover your's hero hp or mana.",
-                HINT_BELT = "You can use items on the belt by pressing 1-2-3-4-5-6. Items numeration starts with the top-left item.",
+                HINT_BELT = "You can use items on the belt by pressing 1-2-3-4-5-6.",
 
                 QUEST_REVEALED_STRING = "|c00FFCE00Quest aquired: |r",
                 QUEST_DONE_STRING = "|c005AFF00Quest completed: |r",
@@ -1651,6 +2465,8 @@ do
                 ITEM_SUFFIX_HIGH_KNIGHT             = " of Noble Knight",
                 ITEM_SUFFIX_ENDLESS_FURY            = " of Endless Fury",
                 ITEM_SUFFIX_DEADLY_PRECISION        = " of Deadly Precision",
+                ITEM_SUFFIX_ADVENTURER = " of Adventurer",
+                ITEM_SUFFIX_DECAY = " of Decay",
 
                 GENERIC_SWORD_NAME_1 = "rough blade",
                 GENERIC_SWORD_NAME_2 = "short blade",
@@ -1663,6 +2479,7 @@ do
                 GENERIC_GREATSWORD_NAME_2 = "giants knife",
                 GENERIC_GREATSWORD_NAME_3 = "claymore",
                 GENERIC_GREATSWORD_NAME_4 = "estoc",
+                GENERIC_GREATSWORD_NAME_5 = "highlander's sword",
 
                 GENERIC_AXE_NAME_1 = "broad axe",
                 GENERIC_AXE_NAME_2 = "serrated axe",
@@ -1671,6 +2488,9 @@ do
 
                 GENERIC_GREATAXE_NAME_1 = "huge cutter",
                 GENERIC_GREATAXE_NAME_2 = "curved axe",
+                GENERIC_GREATAXE_NAME_3 = "double edge axe",
+                GENERIC_GREATAXE_NAME_4 = "gothic axe",
+                GENERIC_GREATAXE_NAME_5 = "battle axe",
 
                 GENERIC_BLUNT_NAME_1 = "ancient mace",
                 GENERIC_BLUNT_NAME_2 = "club",
@@ -1692,11 +2512,11 @@ do
                 GENERIC_DAGGER_NAME_6 = "stinger",
                 GENERIC_DAGGER_NAME_7 = "molten dagger",
 
-                GENERIC_STAFF_NAME_1 = "Parcel of Nature",
+                GENERIC_STAFF_NAME_1 = "Nature's Parcel",
                 GENERIC_STAFF_NAME_2 = "fiery scepter",
                 GENERIC_STAFF_NAME_3 = "Jade Light",
                 GENERIC_STAFF_NAME_4 = "Moonlight",
-                GENERIC_STAFF_NAME_5 = "The ways of World",
+                GENERIC_STAFF_NAME_5 = "World's Fetters",
                 GENERIC_STAFF_NAME_6 = "Prophet",
                 GENERIC_STAFF_NAME_7 = "Moonglade staff",
                 GENERIC_STAFF_NAME_8 = "Death's Gift",
@@ -1731,7 +2551,7 @@ do
                 GENERIC_ORB_NAME_4 = "scorching orb",
                 GENERIC_ORB_NAME_5 = "clot of chaos",
                 GENERIC_ORB_NAME_6 = "charged orb",
-                GENERIC_ORB_NAME_7 = "drop of darkness",
+                GENERIC_ORB_NAME_7 = "darkness drop",
 
                 GENERIC_SHIELD_NAME_1 = "wide shield",
                 GENERIC_SHIELD_NAME_2 = "knight's shield",
@@ -1812,7 +2632,7 @@ do
                 GENERIC_NECKLACE_NAME_1 = "pendant with stone",
                 GENERIC_NECKLACE_NAME_2 = "silver amulet",
                 GENERIC_NECKLACE_NAME_3 = "ancient amulet",
-                GENERIC_NECKLACE_NAME_4 = "sorcerer rosary",
+                GENERIC_NECKLACE_NAME_4 = "wizard's rosary",
                 GENERIC_NECKLACE_NAME_5 = "charmed pendant",
                 GENERIC_NECKLACE_NAME_6 = "energized amulet",
                 GENERIC_NECKLACE_NAME_7 = "emerald pendant",
@@ -1828,7 +2648,7 @@ do
                 STARTING_ITEM_NAME_STAFF = "Worn staff",
 
                 SHARD_OF_HATE = "Shard of Hate",
-                SHARD_OF_HATE_DESC = "Strange glowing shard, you feel rise of hatred upon touching it.",
+                SHARD_OF_HATE_DESC = "Strange glowing shard.|nYou feel rise of hatred upon touching it.",
 
                 GEM_RUBY = 'Ruby',
                 GEM_SAPPHIRE = 'Sapphire',
@@ -1872,22 +2692,28 @@ do
                 SCROLL_OF_TOWN_PORTAL_DESC = "Opens up a temporary portal to the town.",
 
                 POTION_ADRENALINE_TEXT = "Adrenaline Potion",
-                POTION_ADRENALINE_DESC_TEXT = "For a short period of time gives 35%% move speed.",
+                POTION_ADRENALINE_DESC_TEXT = "For a short period of time|ngives 35%% move speed.",
 
                 POTION_ANTIDOTE_TEXT = "Antidote",
                 POTION_ANTIDOTE_DESC_TEXT = "Gives moderate poison resist.",
+
+                POTION_OF_OBLIVION = "Potion of Oblivion",
+                POTION_OF_OBLIVION_DESC_TEXT = "Allows you to forget all your|ntalents and return all points spent.",
 
                 SCROLL_OF_PROTECTION_NAME = "Scroll of Protection",
                 SCROLL_OF_PROTECTION_DESC = "Grants resistance to all attributes.",
 
 
-                SKILLBOOK_FIRE = "Book of fire",
-                SKILLBOOK_LIGHTNING = "Book of lightning",
-                SKILLBOOK_ICE = "Book of ice",
-                SKILLBOOK_ARCANE = "Book of arcane",
-                SKILLBOOK_FIGHTING_MASTERY = "Book of fighter",
-                SKILLBOOK_INNER_STRENGTH = "Book of strength",
-                SKILLBOOK_BATTLE_ADVANTAGE = "Book of superiority",
+                SKILLBOOK_FIRE = "Book of Fire",
+                SKILLBOOK_LIGHTNING = "Book of Lightning",
+                SKILLBOOK_ICE = "Book of Ice",
+                SKILLBOOK_ARCANE = "Book of Arcane",
+                SKILLBOOK_FIGHTING_MASTERY = "Book of Fighter",
+                SKILLBOOK_INNER_STRENGTH = "Book of Strength",
+                SKILLBOOK_BATTLE_ADVANTAGE = "Book of Superiority",
+                SKILLBOOK_DARK_ART = "Book of Dark Art",
+                SKILLBOOK_CURSES = "Book of Curse",
+                SKILLBOOK_SUMMONING = "Book of Reanimation",
 
                 SKILLBOOK_TEXT = "Improving your knowledge:",
 
@@ -1919,30 +2745,48 @@ do
                 SKILL_FROSTBOLT = 'Frostbolt',
                 SKILL_FIREBALL = 'Fireball',
                 SKILL_FROSTNOVA = 'Frost Nova',
+                SKILL_ICICLERAIN = "Icicle Rain",
                 SKILL_CHAIN_LIGHTNING = "Electrocute",
                 SKILL_MELTDOWN = "Meltdown",
                 SKILL_BLIZZARD = "Blizzard",
-
-                --SKILL_ = 'Summon',
-
+                SKILL_RAISE_DEAD = "Raise Skeleton",
+                SKILL_LICH_RITUAL = "Lich Ritual",
+                SKILL_RIP_BONES = "Rip Out Bones",
+                SKILL_BONE_PRISON = "Bone Prison",
+                SKILL_BONE_SPEAR = "Bone Spear",
+                SKILL_BONE_BARRAGE = "Bone Barrage",
+                SKILL_DEVOUR = "Devour",
+                SKILL_CORPSE_EXPLOSION = "Corpse Explosion",
+                SKILL_UNDEAD_LAND = "Undead Land",
+                SKILL_WEAKEN = "Weaken",
+                SKILL_DECREPIFY = "Decrepify",
+                SKILL_HORRIFY = "Horrify",
+                SKILL_GROW_SPIKES = "Grow Spikes",
+                SKILL_UNHOLY_COMMAND = "Unholy Command",
+                SKILL_DARK_REIGN = "Dark Reign",
+                SKILL_HARVEST = "Harvest",
+                SKILL_POISON_BLAST = "Poison Splash",
+                SKILL_TOXIC_SPIT = "Toxic Substance",
 
 
                 SET_NAME_ANCIENT_LEGACY = "Ancient legacy",
                 SET_NAME_JESTERANDKING = "Jester and King",
-                SET_NAME_FIREBOND = "Fire bond",
+                SET_NAME_FIREBOND = "Fire Bond",
                 SET_NAME_FRENDLINESS = "Frendliness",
 
 
-                ITEM_LEG_DESCRIPTION_FIREBOND = "Fire abilities are stronger by 35%%.",
+                ITEM_LEG_DESCRIPTION_FIREBOND = "Offensive fire abilities are stronger by 35%%",
                 ITEM_LEG_DESCRIPTION_WITCH_MASTERY = "Each casted spell will increase your spell power by 10%% in exhange of 5%% life",
                 ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Each enemy near the hero is increasing his moving speed by 3%%, to a maximum of 25%%",
                 ITEM_LEG_DESCRIPTION_RITUAL_DAGGER = " With each attack you gain a stack of Chaos effect. After reaching 15 stacks, attack power and speed gain major boost for short period of time, but health regeneration is inversed.",
                 ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "With each fire, ice or lightning attack you apply a negative effect that will decrease target's resistance of that element by 5 for 7 sec. Every attack is refreshing uptime and stacking 3 times.",
-                ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Discharge\" now comes out of sorceress, also it's power is increased.",
-                ITEM_LEG_DESCRIPTION_PAIN_ECHO = "\"Cutting Slash\"'s bleeding now can be critical and gains 25%% critical chance bonus.",
-                ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "With each attack you apply crystallisation on the enemies, decreasing their moving speed. After reaching 5 stacks, enemy will freeze for 3 sec.",
+                ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Discharge\" now comes out of sorceress, also it's power is increased",
+                ITEM_LEG_DESCRIPTION_PAIN_ECHO = "\"Cutting Slash\"'s bleeding now can be critical and gains 25%% critical chance bonus",
+                ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "With each attack you apply crystallisation on the enemies, decreasing their moving speed. After reaching 5 stacks, enemy will freeze for 3 sec",
                 ITEM_LEG_DESCRIPTION_BOOSTERS = "Upon landing after using \"Jump\" deals 215%% of weapon damage in a small area.",
-                ITEM_LEG_DESCRIPTION_ICE_TOUCH = "After using \"Frostbolt\" instead of 1 missile it creates 3 behind the sorceress that after a short delay launch on a target.",
+                ITEM_LEG_DESCRIPTION_ICE_TOUCH = "After using \"Frostbolt\" instead of 1 missile it creates 3 behind the sorceress that after a short delay launch on a target",
+                ITEM_LEG_DESCRIPTION_DEATH_HERALD = "Increases \"Knife Throw\"'s missiles to 3",
+                ITEM_LEG_DESCRIPTION_PRIMAL_TOME = "With 25%% chance \"Raise Skeleton\" revives skeleton mage",
 
 
                 ITEM_NAME_RAT_HUNTER = 'Rat Hunter',
@@ -1961,6 +2805,9 @@ do
 
                 ITEM_NAME_RITUAL_DAGGER = "Ritual Dagger",
                 ITEM_SPEC_DESCRIPTION_RITUAL_DAGGER = "Power within this blade is revealed with every slash. And let the one who takes possession of it can bear it.",
+
+                ITEM_NAME_BLOOD_DRINKER = "Blood-Drinker",
+                ITEM_SPEC_DESCRIPTION_BLOOD_DRINKER = "A lost sword from the Colet dynasty. It was being told, that very well-known sorcerers were hired to create this sword, making many human sacrifices in process. And sacrificing even the sorcerers themselves.",
 
                 ITEM_NAME_ACOLYTE_MANTLE = "Acolyte's Mantle",
                 ITEM_SPEC_DESCRIPTION_ACOLYTE_MANTLE = "The ideal solution for withdrawing into yourself.",
@@ -2016,8 +2863,17 @@ do
                 ITEM_NAME_MASTER_OF_ELEMENTS = "Master of Elements",
                 ITEM_SPEC_DESCRIPTION_MASTER_OF_ELEMENTS = "Every wizard will be envy that you own such a rare and unique item.",
 
-                ITEM_NAME_ICE_TOUCH = "Ice Touch",
+                ITEM_NAME_ICE_TOUCH = "Winter's Touch",
                 ITEM_SPEC_DESCRIPTION_ICE_TOUCH = "Cold envelops hands, chilling it to the bones.",
+
+                ITEM_NAME_DEATH_HERALD = "Death Herald",
+                ITEM_SPEC_DESCRIPTION_DEATH_HERALD = "A unique belt that was crafted by master Giros. He really crafted marvellous killing tools.",
+
+                ITEM_NAME_FAMILY_RING = "Family Ring",
+                ITEM_SPEC_DESCRIPTION_FAMILY_RING = "Still reminiscent of its former grandeur, which gave the owner the right of succession, the ring emits a faint light. On the inner side you can see the engraved letter <K>.",
+
+                ITEM_NAME_PRIMAL_TOME = "Primal Tome",
+                ITEM_SPEC_DESCRIPTION_PRIMAL_TOME = "One of the first necromanctic tome written by the pioneer of this dark arts. Contains unimaginable methods and twisted conjuring. The first page is signed by \"Malic\'",
 
 
                 GENERATED_TOOLTIP = " of attack",
@@ -2094,6 +2950,9 @@ do
                 [FourCC("A005")] = {
                     [1] = "Launching forward a frost orb that constantly damages enemies in a @e!EFOA.aoe# radius inflicting @e!EFOA.pwr# as @e!EFOA.atr# damage (+@e!EFOA.ab#). At the end the orb explodes for a @e!EFRO.pwr# as @e!EFRO.atr# damage with increased bonus to a critical chance (+@e!EFRO.bcc#)",
                 },
+                [FourCC("ASIR")] = {
+                    [1] = "Summons falling blocks of ice that fall in @FM_PER!250.5# radius. Each of it deals @e!EICR.pwr# as @e!EICR.atr# damage within impact area. Amount of missiles - @FM_DIV!3.3#",
+                },
                 [FourCC("A00D")] = {
                     [1] = "Throws forward a fireball, first enemy it hits takes @e!EGFB.pwr# as @e!EGFB.atr# damage in small area around.",
                 },
@@ -2118,12 +2977,584 @@ do
                     [1] = "Sorceress emits a fire beam that hits first enemy on its path dealing @e!EMLT.pwr# as @e!EMLT.atr# damage. While casting sorceress have to stand still. The beam direction follows the mouse. Improving level of this skill increasing its channel time.",
                 },
                 [FourCC("ABLZ")] = {
-                    [1] = "Forms a sleet storm around the sorceress that is increasing in size and slows enemy attack speed, cast and moving speed. Enemies inside the storm take @e!EBLZ.pwr# as @e!EBLZ.atr#. While casting sorceress have to stand still. Improving skill level will increase maximum radius and channel time.",
+                    [1] = "Forms a sleet storm around the sorceress that is increasing in size and slows enemy attack speed, cast and moving speed. Enemies inside the storm take @e!EBLZ.pwr# damage as @e!EBLZ.atr#. While casting sorceress have to stand still. Improving skill level will increase maximum radius and channel time.",
+                },
+                [FourCC("ANRD")] = {
+                  [1] = "Summon a Skeleton Warrior from a nearby corpse within 600 range. Only @FM_DIV!2.6# skeletons can be reanimated simultaneously. With @FM_PER!5.1#%% chance instead of Skeleton Warrior, Skeleton Archer will be summoned.",
+                },
+                [FourCC("ANLR")] = {
+                  [1] = "Merges 3 souls from corpses nearby into one powerful Lich. Its parameters are increasing by every level of this spell. Can have only 1 Lich at once.",
+                },
+                [FourCC("ANPB")] = {
+                  [1] = "Makes a blast around the necromancer in @e!ENPB.aoe# radius that deals @e!ENPB.pwr# as @e!ENPB.atr# damage initially. After that, toxic cloud remains and damages all enemies inside for @e!ENPP.pwr# as @e!ENPP.atr# damage 3 times per second.",
+                },
+                [FourCC("ANCE")] = {
+                  [1] = "Blows up nearest to the point corpse that deals @e!ENCE.pwr# as @e!ENCE.atr# damage in a @e!ENCE.aoe# raduis.",
+                },
+                [FourCC("ANBP")] = {
+                    [1] = "Summons bones from the ground in a @e!ENBP.aoe# radius around a cast point that immobilize enemies for @b!A0PB.time# seconds.",
+                },
+                [FourCC("ANBB")] = {
+                    [1] = "Summons bones that diverge in front of necromancer. Enemies that are hit take @e!ENBB.pwr# as @e!ENBB.atr# damage and get stunned for @b!ABBB.time# seconds.",
+                },
+                [FourCC("ANBS")] = {
+                    [1] = "Throws a fast flying bone spear that deals damage to a first enemy. Has @e!ENBS.pwr# magic power as @e!ENBS.atr#.",
+                    [5] = "Throws a fast flying bone spear that pierces up to @FM_DIV!2.5# enemies. Has @e!ENBS.pwr# magic power as @e!ENBS.atr#.",
+                },
+                [FourCC("ANDV")] = {
+                    [1] = "Devours a corpse that heals for @e!ENDV.hp_perc# of health. Also boosts attack and cast speed by @b!ABDV.va1# and moving speed by @b!ABDV.va3# during @b!ABDV.time# seconds.",
+                },
+                [FourCC("ANWK")] = {
+                    [1] = "Cast a curse on enemies in a @e!ENWK.aoe# radius that decreases their @b!ABWK.pa1# and @b!ABWK.pa2# by @b!ABWK.va1# during @b!ABWK.time# seconds.",
+                },
+                [FourCC("ANDF")] = {
+                    [1] = "Cast a curse on enemies in a @e!ENDC.aoe# radius that decreases their @b!ABDC.pa1#, @b!ABDC.pa2# and @b!ABDC.pa3# by @b!ABDC.va1# during @b!ABDC.time# seconds.",
+                },
+                [FourCC("ANUL")] = {
+                    [1] = "Curse the ground underneath in big area. Allies that stand within cursed ground have their @b!AULB.pa1# increased by @b!AULB.va1# and @b!AULB.pa2# increased by @b!AULB.va2#, while enemies have their @b!AULD.pa1# decreased by @b!AULD.va1#, @b!AULD.pa2# by @b!AULD.va2#, @b!AULD.pa3# by @b!AULD.va3# and @b!AULD.pa4# by @b!AULD.va4#. Lasts for 12 seconds.",
+                },
+                [FourCC("ANFR")] = {
+                    [1] = "Cast a curse on enemies in a @e!ENHF.aoe# radius that is applying Fear on enemies for @b!ABHR.time# seconds.",
+                },
+                [FourCC("ANGS")] = {
+                    [1] = "Necromancer and his summoned minions grow bone spikes, which increases their @b!ABGS.pa1# by @b!ABGS.va1# for @b!ABGS.time# seconds.",
+                },
+                [FourCC("ANDR")] = {
+                    [1] = "Imbues necromancer's minions with dark magic, increasing their @b!ANDR.pa1# by @b!ANDR.va1#, @b!ANDR.pa2# by @b!ANDR.va2# and @b!ANDR.pa3# by @b!ANDR.va3# for @b!ANDR.time# seconds.",
+                },
+                [FourCC("ANUC")] = {
+                    [1] = "Dark sorcery that strengthtens necromancer's minions, boosting their @b!ANUC.pa1# by @b!ANUC.va1#, @b!ANUC.pa2# by @b!ANUC.va2# and @b!ANUC.pa3# by @b!ANUC.va3# for @b!ANUC.time# seconds.",
+                },
+                [FourCC("ANHV")] = {
+                    [1] = "Strike that extracts soul. Deals @e!ENHV.pwr# as @e!ENHV.atr# in front and restores @e!ENHV.mp# resource per enemy hit (max @e!ENHV.mphitmax#).",
+                },
+                [FourCC("ANTS")] = {
+                    [1] = "Throws a ball of toxic material that blows on a first enemy hit, dealing @e!ENTS.pwr# as @e!ENTS.atr# in a small radius.",
+                },
+                [FourCC("ANBR")] = {
+                    [1] = "Rips bones from nearby enemies in 400 radius, dealing @e!ENRP.pwr# as @e!ENRP.atr# and stunning them for @b!ABRD.time# seconds. If at least one enemy hit, necromancer's @b!ANBR.pa1# is increased by@b!ANBR.va1# and @b!ANBR.pa2# by @b!ANBR.va2# for @b!ANBR.time# seconds.",
                 },
 
 
+                TALENTS = {
+                    ["talent_ignite"] = {
+                        name = "Ignite",
+                        [1] = "Upon taking fire damage enemies can ignite, taking 13 damage every second for 3 seconds.",
+                        [2] = "Upon taking fire damage enemies can ignite, taking 17 damage every second for 3 seconds.",
+                        [3] = "Upon taking fire damage enemies can ignite, taking 23 damage every second for 3 seconds."
+                    },
+                    ["talent_inner_warmth"] = {
+                        name = "Reign of Fire",
+                        [1] = "Fire and cold resist +5.",
+                        [2] = "Fire and cold resist +10.",
+                        [3] = "Fire and cold resist +15. Fire damage +5.",
+                    },
+                    ["talent_thaw"] = {
+                        name = "Thaw",
+                        [1] = "Mana regeneration is increased by 3%%.",
+                        [2] = "Mana regeneration is increased by 6%%.",
+                        [3] = "Mana regeneration is increased by 9%%."
+                    },
+                    ["talent_burnout"] = {
+                        name = "Burnout",
+                        [1] = "Magic attack is increased by 5%%, but you lose 5%% of health.",
+                        [2] = "Magic attack is increased by 10%%, but you lose 10%% of health.",
+                    },
+                    ["talent_overflow"] = {
+                        name = "Overflow",
+                        [1] = "While above 60%% of mana next spell will be by 10%% stronger but mana cost is increased by 50%%.",
+                        [2] = "While above 60%% of mana next spell will be by 20%% stronger but mana cost is increased by 100%%.",
+                    },
+                    ["talent_heating_up"] = {
+                        name = "Heating up",
+                        [1] = "Casting a fire spell is storing a charge. After stacking 5 charges next fire spell will be stronger by 40%%.",
+                        [2] = "Casting a fire spell is storing a charge. After stacking 3 charges next fire spell will be stronger by 40%%.",
+                    },
+                    ["talent_heat"] = {
+                        name = "Heat",
+                        [1] = "Enemies that hit with fire attacks suffer loss of physical attack by 7%% for 6 secs.",
+                        [2] = "Enemies that hit with fire attacks suffer loss of physical attack by 14%% for 6 secs.",
+                        [3] = "Enemies that hit with fire attacks suffer loss of physical attack by 21%% for 6 secs."
+                    },
+                    ["talent_incinerate"] = {
+                        name = "incineration",
+                        [1] = "Killing an enemy increases critical chance by 4%% for 8 secs.",
+                        [2] = "Killing an enemy increases critical chance by 6%% for 8 secs.",
+                        [3] = "Killing an enemy increases critical chance by 8%% for 8 secs."
+                    },
+                    ["talent_napalm"] = {
+                        name = "Napalm",
+                        [1] = "Dealing area fire damage with a chance of critical strike ignites its area dealing 24 damage per second.",
+                        [2] = "Dealing area fire damage with a chance of critical strike ignites its area dealing 29 damage per second.",
+                        [3] = "Dealing area fire damage with a chance of critical strike ignites its area dealing 35 damage per second."
+                    },
+                    ["talent_hell_flames"] = {
+                        name = "Flames of Hell",
+                        [1] = "Taking range damage with 35%% chance will cause sorceress to ignite, killing all missiles nearby. Can happen once in 7 seconds.",
+                    },
+                    ["talent_flash"] = {
+                        name = "Flash",
+                        [1] = "Increases moving speed by 5.",
+                        [2] = "Increases moving speed by 10.",
+                        [3] = "Increases moving speed by 15."
+                    },
+                    ["talent_negative_charge"] = {
+                        name = "Negative charge",
+                        [1] = "Dealing lightning damage reduces enemies magic suppression by 15 for 6 seconds.",
+                        [2] = "Dealing lightning damage reduces enemies magic suppression by 25 for 6 seconds.",
+                        [3] = "Dealing lightning damage reduces enemies magic suppression by 35 for 6 seconds.",
+                        [4] = "Dealing lightning damage reduces enemies magic suppression by 45 for 6 seconds.",
+                    },
+                    ["talent_positive_charge"] = {
+                        name = "Positive charge",
+                        [1] = "Dealing critical attack restores 3%% of mana.",
+                        [2] = "Dealing critical attack restores 6%% of mana.",
+                        [3] = "Dealing critical attack restores 9%% of mana."
+                    },
+                    ["talent_lightning_rod"] = {
+                        name = "Lightning rod",
+                        [1] = "After enemy recieves lightning damage it can become charged, which causes lightning strikes between it and sorceress. They are dealing 10%% of magic attack as damage to all enemies hit.",
+                        [2] = "After enemy recieves lightning damage it can become charged, which causes lightning strikes between it and sorceress. They are dealing 20%% of magic attack as damage to all enemies hit."
+                    },
+                    ["talent_voltage"] = {
+                        name = "Voltage",
+                        [1] = "Dealing critical attack increases crit chance by 5%% for 5 secs.",
+                        [2] = "Dealing critical attack increases crit chance by 10%% for 5 secs."
+                    },
+                    ["talent_arc_discharge"] = {
+                        name = "Arc discharge",
+                        [1] = "Each 1.5 seconds you store a charge that increases your next lightrning spell power by 10%%. Can store up to 1 charge. First charge charges up in 2 seconds.",
+                        [2] = "Each 1.5 seconds you store a charge that increases your next lightrning spell power by 10%%. Can store up to 2 charges. First charge charges up in 2 seconds.",
+                        [3] = "Each 1.5 seconds you store a charge that increases your next lightrning spell power by 10%%. Can store up to 3 charges. First charge charges up in 2 seconds."
+                    },
+                    ["talent_feedback"] = {
+                        name = "Feedback",
+                        [1] = "Critical multiplier is increased by 0.2, but you lose 7%% of magical attack.",
+                        [2] = "Critical multiplier is increased by 0.4, but you lose 15%% of magical attack.",
+                    },
+                    ["talent_induction"] = {
+                        name = "Induction",
+                        [1] = "Critical attacks increase your casting speed by 5%% for 5 seconds. Can stack up to 2 times.",
+                        [2] = "Critical attacks increase your casting speed by 5%% for 5 seconds. Can stack up to 3 times.",
+                        [3] = "Critical attacks increase your casting speed by 5%% for 5 seconds. Can stack up to 4 times."
+                    },
+                    ["talent_extra_charge"] = {
+                        name = "Extra charge",
+                        [1] = "Dealing lightning damage forms a ball of energy that increases your magic suppression by 10%%. Attacking a sorceress in melee will destroy the ball and stuns the attacker for 1.25 seconds. Can exist 1 ball at once.",
+                        [2] = "Dealing lightning damage forms a ball of energy that increases your magic suppression by 10%%. Attacking a sorceress in melee will destroy the ball and stuns the attacker for 1.25 seconds. Can exist 2 balls at once",
+                        [3] = "Dealing lightning damage forms a ball of energy that increases your magic suppression by 10%%. Attacking a sorceress in melee will destroy the ball and stuns the attacker for 1.25 seconds. Can exist 3 balls at once"
+                    },
+                    ["talent_shock"] = {
+                        name = "Shock",
+                        [1] = "Lightning damage can stun an enemy for 1 second once in 5 seconds.",
+                    },
+                    ["talent_disintegration"] = {
+                        name = "Disintegration",
+                        [1] = "Instantly kills non-elite enemy with 1/4 of your critical chance.",
+                    },
+                    ["talent_remorseless"] = {
+                        name = "Remorseless",
+                        [1] = "Dealing cold damage reduces enemies cold resist by 5 for 3 seconds.",
+                        [2] = "Dealing cold damage reduces enemies cold resist by 10 for 4 seconds.",
+                    },
+                    ["talent_crystallization"] = {
+                        name = "Crystallization",
+                        [1] = "Killing a frozen enemy causes it to explode dealing 15 damage in area.",
+                        [2] = "Killing a frozen enemy causes it to explode dealing 30 damage in area.",
+                        [3] = "Killing a frozen enemy causes it to explode dealing 45 damage in area.",
+                    },
+                    ["talent_ice_crust"] = {
+                        name = "Ice crust",
+                        [1] = "Reduces melee damage taken by 2%%.",
+                        [2] = "Reduces melee damage taken by 4%%.",
+                        [3] = "Reduces melee damage taken by 6%%."
+                    },
+                    ["talent_glaciation"] = {
+                        name = "Glaciation",
+                        [1] = "Periodically forms a barrier of ice on sorceress that increases phys. defence by 10%%. Can stack up to 1 charge. Upon taking physical attack 1 stack is lost.",
+                        [2] = "Periodically forms a barrier of ice on sorceress that increases phys. defence by 10%%. Can stack up to 2 charges. Upon taking physical attack 1 stack is lost.",
+                        [3] = "Periodically forms a barrier of ice on sorceress that increases phys. defence by 10%%. Can stack up to 3 charges. Upon taking physical attack 1 stack is lost.",
+                    },
+                    ["talent_breath_of_frost"] = {
+                        name = "Breath of frost",
+                        [1] = "Cold damage can freeze an enemy for 0.5 second once in 6 seconds.",
+                        [2] = "Cold damage can freeze an enemy for 0.75 second once in 6 seconds.",
+                    },
+                    ["talent_icy_veins"] = {
+                        name = "Icy Veins",
+                        [1] = "Reduces health regeneration by 5%%, increases cold damage by 5.",
+                        [2] = "Reduces health regeneration by 10%%, increases cold damage by 10.",
+                        [3] = "Reduces health regeneration by 15%%, increases cold damage by 15.",
+                    },
+                    ["talent_deep_freeze"] = {
+                        name = "Deep freeze",
+                        [1] = "Increases time of your negative ice effects on enemies by 50%%.",
+                        [2] = "Increases time of your negative ice effects on enemies by 100%%.",
+                    },
+                    ["talent_heat_transfer"] = {
+                        name = "Heat transfer",
+                        [1] = "After freezing an enemy gain 6%% of casting speed for 6 seconds.",
+                        [2] = "After freezing an enemy gain 12%% of casting speed for 6 seconds.",
+                        [3] = "After freezing an enemy gain 18%% of casting speed for 6 seconds."
+                    },
+                    ["talent_fragility"] = {
+                        name = "Fragility",
+                        [1] = "Damage dealt to enemies that are under cold negative effects is increased by 10%%.",
+                        [2] = "Damage dealt to enemies that are under cold negative effects is increased by 20%%.",
+                    },
+                    ["talent_ice_enduring"] = {
+                        name = "Ice enduring",
+                        [1] = "Upon taking fatal damage freezes enemies around for 3 seconds and restores 25%% of health. Can happen once in 2 mins.",
+                    },
+                    ["talent_blade_dance"] = {
+                        name = "Blade dance",
+                        [1] = "Wielding a weapon increases physical defence by 3%%. Wielding weapons in both hands doubles the bonus.",
+                        [2] = "Wielding a weapon increases physical defence by 5%%. Wielding weapons in both hands doubles the bonus.",
+                        [3] = "Wielding a weapon increases physical defence by 7%%. Wielding weapons in both hands doubles the bonus.",
+                    },
+                    ["talent_strong_will"] = {
+                        name = "Strong will",
+                        [1] = "Increases magic suppression by 16.",
+                        [2] = "Increases magic suppression by 24.",
+                        [3] = "Increases magic suppression by 32.",
+                    },
+                    ["talent_sweeping_strikes"] = {
+                        name = "Sweeping strikes",
+                        [1] = "Common attacks deal damage to all enemies around a target for 33%% of damage.",
+                        [2] = "Common attacks deal damage to all enemies around a target for 66%% of damage.",
+                        [3] = "Common attacks deal damage to all enemies around a target for 100%% of damage.",
+                    },
+                    ["talent_rage"] = {
+                        name = "Rage",
+                        [1] = "Using offensive ability increases attack speed by 5%% for 5 seconds. Can stack up to 3 times.",
+                        [2] = "Using offensive ability increases attack speed by 7%% for 5 seconds. Can stack up to 3 times.",
+                        [3] = "Using offensive ability increases attack speed by 9%% for 5 seconds. Can stack up to 3 times.",
+                    },
+                    ["talent_strong_body"] = {
+                        name = "Body enhance",
+                        [1] = "Increases health by 7%%, reduces mana by 10%%.",
+                        [2] = "Increases health by 14%%, reduces mana by 17%%.",
+                    },
+                    ["talent_reflexes"] = {
+                        name = "Reflexes",
+                        [1] = "Reduces ranged physical attack damage by 50%% once in 8 seconds. Passively increases crit chance by 4%%.",
+                        [2] = "Reduces ranged physical attack damage by 80%% once in 8 seconds. Passively increases crit chance by 8%%.",
+                    },
+                    ["talent_breaking_defence"] = {
+                        name = "Breaking defence",
+                        [1] = "Attacks with some chance reduce physical defence of the enemies by 7%%.",
+                        [2] = "Attacks with some chance reduce physical defence of the enemies by 14%%.",
+                        [3] = "Attacks with some chance reduce physical defence of the enemies by 21%%.",
+                    },
+                    ["talent_pain_killer"] = {
+                        name = "Pain killer",
+                        [1] = "While you have positive buff from your abilities all melee and range damage taken is reduced by 4%%.",
+                        [2] = "While you have positive buff from your abilities all melee and range damage taken is reduced by 6%%.",
+                        [3] = "While you have positive buff from your abilities all melee and range damage taken is reduced by 8%%.",
+                    },
+                    ["talent_momentum"] = {
+                        name = "Momentum",
+                        [1] = "Wielding twohanded weapon increases your damage by 4%%, but reduces your attack speed by 5%%.",
+                        [2] = "Wielding twohanded weapon increases your damage by 8%%, but reduces your attack speed by 8%%.",
+                        [3] = "Wielding twohanded weapon increases your damage by 12%%, but reduces your attack speed by 11%%.",
+                    },
+                    ["talent_carnage"] = {
+                        name = "Carnage",
+                        [1] = "Killing an enemy increases your damage by 5%% for 10 seconds. Stacks up to 7 times. Attacks refresh the duration of the effect.",
+                    },
+                    ["talent_sharpened_blade"] = {
+                        name = "Sharpened blade",
+                        [1] = "First 3 attacks deal 4%% more damage. Effect recharges after 15 seconds without attacks.",
+                        [2] = "First 5 attacks deal 6%% more damage. Effect recharges after 15 seconds without attacks.",
+                        [3] = "First 7 attacks deal 8%% more damage. Effect recharges after 15 seconds without attacks.",
+                    },
+                    ["talent_herbs"] = {
+                        name = "Herbs",
+                        [1] = "If barbarian doesn't take any damage on the 7 second duration, he begins to restore 1%% of health every 3 seconds.",
+                        [2] = "If barbarian doesn't take any damage on the 7 second duration, he begins to restore 2%% of health every 3 seconds.",
+                        [3] = "If barbarian doesn't take any damage on the 7 second duration, he begins to restore 3%% of health every 3 seconds.",
+                    },
+                    ["talent_hard_training"] = {
+                        name = "Hard training",
+                        [1] = "Increases strength and agility by 3.",
+                        [2] = "Increases strength and agility by 6.",
+                        [3] = "Increases strength and agility by 9.",
+                    },
+                    ["talent_elbow_strike"] = {
+                        name = "Elbow strike",
+                        [1] = "Your attacks can push an enemy with 13%% chance.",
+                        [2] = "Your attacks can push an enemy with 17%% chance."
+                    },
+                    ["talent_disadvantage"] = {
+                        name = "Disadvantage",
+                        [1] = "While being surrounded by 3 or more enemies barbrian's melee damage taken is reduced by 8%%.",
+                        [2] = "While being surrounded by 3 or more enemies barbrian's melee damage taken is reduced by 14%%.",
+                        [3] = "While being surrounded by 3 or more enemies barbrian's melee damage taken is reduced by 20%%."
+                    },
+                    ["talent_bigger_they_are"] = {
+                        name = "The bigger they are...",
+                        [1] = "Bosses and elite enemies take additional 6%% damage for you.",
+                        [2] = "Bosses and elite enemies take additional 10%% damage for you.",
+                    },
+                    ["talent_disorientation"] = {
+                        name = "Disorientation",
+                        [1] = "Enemies that were stunned or pushed by you lose 7%% of attack, cast and moving speed for 6 seconds.",
+                        [2] = "Enemies that were stunned or pushed by you lose 15%% of attack, cast and moving speed for 6 seconds.",
+                        [3] = "Enemies that were stunned or pushed by you lose 21%% of attack, cast and moving speed for 6 seconds.",
+                    },
+                    ["talent_opportunity"] = {
+                        name = "Opportunity",
+                        [1] = "Attacks on stunned enemies get 10%% critical chance bonus.",
+                        [2] = "Attacks on stunned enemies get 15%% critical chance bonus.",
+                        [3] = "Attacks on stunned enemies get 20%% critical chance bonus.",
+                    },
+                    ["talent_lining_armor"] = {
+                        name = "Lining armor",
+                        [1] = "If damage taken is more than 10%% of max health then that damage is reduced to 70%%. Can happen once in 9 seconds.",
+                        [2] = "If damage taken is more than 10%% of max health then that damage is reduced to 50%%. Can happen once in 9 seconds.",
+                    },
+                    ["talent_penetration"] = {
+                        name = "Penatration",
+                        [1] = "Missiles from your abilities are now penetrating.",
+                    },
+                    ["talent_hardening"] = {
+                        name = "Hardening",
+                        [1] = "Increases health by 5%%.",
+                        [2] = "Increases health by 7%%.",
+                        [3] = "Increases health by 10%%.",
+                    },
+                    ["talent_well_being"] = {
+                        name = "Well being",
+                        [1] = "Healing effects are stronger by 5%%. Health regeneration is increased by 3%%.",
+                        [2] = "Healing effects are stronger by 10%%. Health regeneration is increased by 6%%.",
+                    },
+                    ["talent_fracture"] = {
+                        name = "Fracture",
+                        [1] = "Your attacks can cause enemies to suffer 6%% of your phys. attack as damage every second for 3 seconds.",
+                        [2] = "Your attacks can cause enemies to suffer 12%% of your phys. attack as damage every second for 3 seconds.",
+                    },
+                    ["talent_anger_impulse"] = {
+                        name = "Impulse of anger",
+                        [1] = "Taking critical hit increases your physical attack by 10%% for 3 seconds.",
+                        [2] = "Taking critical hit increases your physical attack by 15%% for 3 seconds.",
+                        [3] = "Taking critical hit increases your physical attack by 20%% for 3 seconds.",
+                    },
+                    ["talent_adrenaline"] = {
+                        name = "adrenaline",
+                        [1] = "Restoring 15%% of health in span of 5 seconds if your health drops to less than 50%%. Can happen once in 40 seconds.",
+                        [2] = "Restoring 25%% of health in span of 5 seconds if your health drops to less than 50%%. Can happen once in 40 seconds.",
+                    },
+                    ["talent_inevitability"] = {
+                        name = "Inevitability",
+                        [1] = "Increases duration of your negative effects by 10%%.",
+                        [2] = "Increases duration of your negative effects by 15%%.",
+                    },
+                    ["talent_vulnerability"] = {
+                        name = "vulnerability",
+                        [1] = "Dealing critical damage reduces enemies physical resistance by 5 for 5 seconds.",
+                        [2] = "Dealing critical damage reduces enemies physical resistance by 10 for 5 seconds.",
+                    },
+                    ["talent_pressure_point"] = {
+                        name = "Pressure Point",
+                        [1] = "Dealing critical damage increases your critical multiplier by 0.1 for 5 seconds. Stacks up to 2 times.",
+                        [2] = "Dealing critical damage increases your critical multiplier by 0.1 for 5 seconds. Stacks up to 3 times.",
+                        [3] = "Dealing critical damage increases your critical multiplier by 0.1 for 5 seconds. Stacks up to 4 times.",
+                    },
+                    ["talent_intimidation"] = {
+                        name = "Intimidation",
+                        [1] = "Barbarian screams can apply fear into enemies for 2 seconds.",
+                        [2] = "Barbarian screams can apply fear into enemies for 3 seconds.",
+                    },
+                    ["talent_second_wind"] = {
+                        name = "Second wind",
+                        [1] = "Taking fatal damage removes all negative effects and converts your mana %% into health %%. Also increases your attack and moving speed by 25%% for 15 seconds. Can happen once in 2 mins.",
+                    },
+                    ["talent_leeches"] = {
+                        name = "Leeches",
+                        [1] = "Killing an enemy spawns a leech for 5 seconds.",
+                        [2] = "Killing an enemy spawns 2 leeches for 5 seconds.",
+                        [3] = "Killing an enemy spawns 3 leeches for 5 seconds.",
+                    },
+                    ["talent_soul_remains"] = {
+                        name = "Soul remains",
+                        [1] = "Using a corpse restores 2%% mana.",
+                        [2] = "Using a corpse restores 3%% mana.",
+                        [3] = "Using a corpse restores 4%% mana.",
+                    },
+                    ["talent_undead_expert"] = {
+                        name = "Expert of the undead",
+                        [1] = "Gain +7 damage to the undead.",
+                        [2] = "Gain +15 damage to the undead.",
+                    },
+                    ["talent_pursuer"] = {
+                        name = "Pursuer",
+                        [1] = "With every attack you can summon a spirit that chases a random enemy. Deals 7%% weapon damage in a small radius as darkness.",
+                        [2] = "With every attack you can summon a spirit that chases a random enemy. Deals 11%% weapon damage in a small radius as darkness.",
+                        [3] = "With every attack you can summon a spirit that chases a random enemy. Deals 15%% weapon damage in a small radius as darkness.",
+                    },
+                    ["talent_experienced_summoner"] = {
+                        name = "Experienced summoner",
+                        [1] = "Your summoned minions gain 10%% bonus health.",
+                        [2] = "Your summoned minions gain 20%% bonus health.",
+                    },
+                    ["talent_tenacity_of_undead"] = {
+                        name = "Tenacity of the undead",
+                        [1] = "Attacks of your minions can increase their physical attack by 25 and magical attack by 45 for 4 seconds.",
+                        [2] = "Attacks of your minions can increase their physical attack by 45 and magical attack by 85 for 4 seconds.",
+                        [3] = "Attacks of your minions can increase their physical attack by 65 and magical attack by 125 for 4 seconds.",
+                    },
+                    ["talent_bone_spikes"] = {
+                        name = "bone spikes",
+                        [1] = "Your summoned minions gain 35 reflect.",
+                        [2] = "Your summoned minions gain 70 reflect.",
+                        [3] = "Your summoned minions gain 105 reflect.",
+                    },
+                    ["talent_spirit"] = {
+                        name = "ghost",
+                        [1] = "Every death of an enemy around the necromancer gives him 1 soul. Upon reaching 10 souls he summons a ghost for 24 seconds. Counts as a minion.",
+                        [2] = "Every death of an enemy around the necromancer gives him 1 soul. Upon reaching 10 souls he summons a ghost for 48 seconds. Counts as a minion.",
+                        [3] = "Every death of an enemy around the necromancer gives him 1 soul. Upon reaching 10 souls he summons a ghost for 72 seconds. Counts as a minion.",
+                    },
+                    ["talent_final_favor"] = {
+                        name = "final favour",
+                        [1] = "If your minion is killed, the necromancer restores 5%% health and resource.",
+                        [2] = "If your minion is killed, the necromancer restores 7%% health and resource.",
+                        [3] = "If your minion is killed, the necromancer restores 10%% health and resource.",
+                    },
+                    ["talent_necromorph"] = {
+                        name = "necromorph",
+                        [1] = "Using a corpse creates an abomination that moves rapidly and explodes on enemies dealing 12%% weapon damage in a small radius.",
+                        [2] = "Using a corpse creates an abomination that moves rapidly and explodes on enemies dealing 18%% weapon damage in a small radius.",
+                        [3] = "Using a corpse creates an abomination that moves rapidly and explodes on enemies dealing 24%% weapon damage in a small radius.",
+                    },
+                    ["talent_eternal_service"] = {
+                        name = "eternal servitude",
+                        [1] = "Upon killing your minion it with 70%% chance leaves a corpse.",
+                    },
+                    ["talent_frailty"] = {
+                        name = "frailty",
+                        [1] = "Curses also reduce enemies darkness, cold and poison resist by 5.",
+                        [2] = "Curses also reduce enemies darkness, cold and poison resist by 7.",
+                    },
+                    ["talent_spiritual_vessel"] = {
+                        name = "spiritual vessel",
+                        [1] = "Increses your resource by 20.",
+                        [2] = "Increses your resource by 40.",
+                        [3] = "Increses your resource by 60.",
+                    },
+                    ["talent_death_march"] = {
+                        name = "death march",
+                        [1] = "After casting a curse you gain 15 moving speed for 5 seconds.",
+                        [2] = "After casting a curse you gain 25 moving speed for 5 seconds.",
+                        [3] = "After casting a curse you gain 35 moving speed for 5 seconds.",
+                    },
+                    ["talent_amplify_damage"] = {
+                        name = "amplify damage",
+                        [1] = "Enemies under your curses take 10%% more damage.",
+                        [2] = "Enemies under your curses take 15%% more damage.",
+                        [3] = "Enemies under your curses take 20%% more damage.",
+                    },
+                    ["talent_face_of_death"] = {
+                        name = "face of death",
+                        [1] = "Applying a curse can inflict fear for 2 seconds.",
+                        [2] = "Applying a curse can inflict fear for 3 seconds.",
+                    },
+                    ["talent_bargain"] = {
+                        name = "bargain",
+                        [1] = "Critical chance is increased by 5%% but health is reduced respectively.",
+                        [2] = "Critical chance is increased by 10%% but health is reduced respectively.",
+                    },
+                    ["talent_insanity"] = {
+                        name = "insanity",
+                        [1] = "Enemies under your fear take 20 damage per second as darkness.",
+                        [2] = "Enemies under your fear take 40 damage per second as darkness.",
+                        [3] = "Enemies under your fear take 60 damage per second as darkness.",
+                    },
+                    ["talent_persistent_curse"] = {
+                        name = "persistent curse",
+                        [1] = "Curses duration is increased by 1 second.",
+                        [2] = "Curses duration is increased by 2 second.",
+                        [3] = "Curses duration is increased by 3 second.",
+                    },
+                    ["talent_vile_malediction"] = {
+                        name = "vile malediction",
+                        [1] = "For each enemy under a curse you gain 4 magic attack up to 125 max.",
+                        [2] = "For each enemy under a curse you gain 7 magic attack up to 140 max.",
+                        [3] = "For each enemy under a curse you gain 15 magic attack up to 165 max.",
+                    },
+                    ["talent_sudden_death"] = {
+                        name = "sudden death",
+                        [1] = "Applying a curse can instantly kill a non-elite enemy under 20%% health.",
+                    },
+                    ["talent_durable_bones"] = {
+                        name = "durable bones",
+                        [1] = "Physical defence is increased by 25.",
+                        [2] = "Physical defence is increased by 50.",
+                        [3] = "Physical defence is increased by 75.",
+                        [4] = "Physical defence is increased by 100.",
+                        [5] = "Physical defence is increased by 125.",
+                    },
+                    ["talent_forbidden_knowledge"] = {
+                        name = "forbidden knowledge",
+                        [1] = "Intelligence is increased by 2.",
+                        [2] = "Intelligence is increased by 3.",
+                        [3] = "Intelligence is increased by 4.",
+                        [4] = "Intelligence is increased by 5.",
+                        [5] = "Intelligence is increased by 6.",
+                    },
+                    ["talent_toxicity"] = {
+                        name = "toxicity",
+                        [1] = "Poison damage is increased by 5.",
+                        [2] = "Poison damage is increased by 10.",
+                    },
+                    ["talent_life_steal"] = {
+                        name = "life steal",
+                        [1] = "Critical strikes are increasing health regeneration by 5 for 1 second.",
+                        [2] = "Critical strikes are increasing health regeneration by 10 for 1 second.",
+                        [3] = "Critical strikes are increasing health regeneration by 15 for 1 second.",
+                    },
+                    ["talent_death_embrace"] = {
+                        name = "death's embrace",
+                        [1] = "For every 25%% missing health magic attack is increased by 5%%.",
+                        [2] = "For every 25%% missing health magic attack is increased by 10%%.",
+                        [3] = "For every 25%% missing health magic attack is increased by 15%%.",
+                    },
+                    ["talent_lesion"] = {
+                        name = "lesion",
+                        [1] = "Poison critical strikes apply a 5%% weapon damage effect per sec. for 4 seconds.",
+                        [2] = "Poison critical strikes apply a 10%% weapon damage effect per sec. for 4 seconds.",
+                        [3] = "Poison critical strikes apply a 15%% weapon damage effect per sec. for 4 seconds.",
+                    },
+                    ["talent_ritual"] = {
+                        name = "ritual",
+                        [1] = "Killing an enemy reduces resource cost of all abilities by 25% for 4 seconds.",
+                        [2] = "Killing an enemy reduces resource cost of all abilities by 50% for 4 seconds.",
+                    },
+                    ["talent_blood_pact"] = {
+                        name = "blood pact",
+                        [1] = "Attack restores 6%% health once per 14 seconds.",
+                        [2] = "Attack restores 12%% health once per 14 seconds.",
+                        [3] = "Attack restores 18%% health once per 14 seconds.",
+                    },
+                    ["talent_abyss_awakens"] = {
+                        name = "awakening of the abyss",
+                        [1] = "Casting an offensive spell with critical strike chance increases magical attack by 50 for 6 seconds.",
+                        [2] = "Casting an offensive spell with critical strike chance increases magical attack by 50 for 6 seconds. Stacks up to 2 times.",
+                        [3] = "Casting an offensive spell with critical strike chance increases magical attack by 50 for 6 seconds. Stacks up to 3 times.",
+                    },
+                    ["talent_grave_cold"] = {
+                        name = "grave cold",
+                        [1] = "Casting a spell gives aura that deals 7 magic damage as cold.",
+                    },
+                    ["talent_cheat_death"] = {
+                        name = "cheat death",
+                        [1] = "Upon taking fatal damage restores 35%% health and gain 25 health regeneration for 5 seconds. Can happen once in 3 mins.",
+                    },
+                },
+
                 BARBARIAN_NAME = "Barbarian",
                 SORCERESS_NAME = "Sorceress",
+                NECROMANCER_NAME = "Necromancer",
 
                 VENDOR_BILL_NAME = "Vendor Bill",
                 HEALER_NAME = "Healer Dalia",
@@ -2163,6 +3594,30 @@ do
                 QUEST_REWARD_GOLD_SECOND = " gold.",
                 QUEST_REWARD_POINTS_FIRST = "recieved ",
                 QUEST_REWARD_POINTS_SECOND = " stat points.",
+
+
+                INT_OPTION_TALK = "Talk",
+
+                BILL_CONV_INTRO_1 = "Hey, it's kinda tough with supplies", BILL_CONV_INTRO_2 = "We barely have any, but you may come time to time",
+                BILL_CONV_INTRO_3 = "Sell things to me if you find something", BILL_CONV_INTRO_4 = "I'll remember that",
+
+                DALIA_CONV_INTRO_1 = "I hope you have strong health", DALIA_CONV_INTRO_2 = "Cause my potions can have... unusial side effects",
+
+                BLACKSMITH_CONV_INTRO_1 = "I forge to that ungrateful men for three days", BLACKSMITH_CONV_INTRO_2 = "Without any rest! God dam em",
+                BLACKSMITH_CONV_INTRO_3 = "I hope at least you got some coins with ya.",
+
+                LIBRARIAN_CONV_INTRO_1 = "If you can't read any book just bring it to me", LIBRARIAN_CONV_INTRO_2 = "I'm sure we can come to an agreement.",
+
+                SMORC_CONV_INTRO_1 = "Wha are you looking at me?",
+                SMORC_CONV_INTRO_2 = "Yah. I'm green. And I have a pickaxe.",
+                SMORC_CONV_INTRO_3 = "But this one isn't mine. I've lost my somewhere...",
+
+                LYNN_CONV_INTRO_1 = "Looking for a special goods?", LYNN_CONV_INTRO_2 = "I can deliver it",
+                LYNN_CONV_INTRO_3 = "It's unlikely that that man can sell you what I usually have",
+
+                WANDERING_CONV_INTRO_1 = "I'll buy everything that you have. Я с удовольствием скуплю все что у тебя есть", WANDERING_CONV_INTRO_2 = "Artifacts here... is something else",
+                WANDERING_CONV_INTRO_3 = "Don't be shy, ehehehe",
+
 
                 QUEST_1_TITLE = "Lost Cargo",
                 QUEST_1_DESC = "Blacksmith assistant has lost his supplies. As there are very dangerous he is asking for your help to retrieve them.",

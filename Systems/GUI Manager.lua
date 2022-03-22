@@ -10,11 +10,13 @@ do
     GlobalFrameState = 0
 
 
+    last_OpenedWindow = nil
     CHAR_PANEL = 1
     INV_PANEL = 2
     SKILL_PANEL = 3
     SHOP_PANEL = 4
     TELEPORT_PANEL = 5
+    TALENT_PANEL = 6
 
 
     ---@param player_id integer
@@ -22,29 +24,34 @@ do
     function CreateGUILayoutForPlayer(player_id, hero)
 
         local first_timer = CreateTimer()
-        TimerStart(first_timer, 1., false, function()
+        TimerStart(first_timer, 0.5, false, function()
             DrawStatsPanelInterface(player_id)
             AddToPanel(hero, player_id)
         end)
 
         local second_timer = CreateTimer()
-        TimerStart(second_timer, 2., false, function()
+        TimerStart(second_timer, 1., false, function()
             DrawInventoryFrames(player_id, hero)
         end)
 
+        DelayAction(1.5, function()
+            --InitTalentsWindow()
+            AddTalentCategories(hero, player_id)
+        end)
+
         local third_timer = CreateTimer()
-        TimerStart(third_timer, 3., false, function()
+        TimerStart(third_timer, 2., false, function()
             DrawSkillPanel(player_id)
         end)
 
         local forth_timer = CreateTimer()
-        TimerStart(forth_timer, 4., false, function()
+        TimerStart(forth_timer, 2.5, false, function()
             RegisterUnitForTeleport(hero)
             CreateBarsForPlayer(player_id)
         end)
 
         local fifth_timer = CreateTimer()
-        TimerStart(fifth_timer, 5., false, function()
+        TimerStart(fifth_timer, 3., false, function()
             DrawShopFrames(player_id)
         end)
 
@@ -56,6 +63,7 @@ do
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_TAB, 0, true)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_C, 0, true)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_B, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_N, 0, true)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_ESCAPE, 0, true)
         GlobalFrameState[player_id] = false
 
@@ -84,6 +92,7 @@ do
             for i = 1, #PlayerUIQueue[player] do
                 if PlayerUIQueue[player][i] == ui_type then
                     table.remove(PlayerUIQueue[player], i)
+                    break
                 end
             end
         end
@@ -106,6 +115,13 @@ do
                     SetStatsPanelState(player, false)
                     RemoveUIFromQueue(player, CHAR_PANEL)
                 end
+
+                if FrameState[player][TALENT_PANEL] and FrameState[player][SKILL_PANEL] then
+                    FrameState[player][TALENT_PANEL] = false
+                    SetTalentPanelState(player, false)
+                    RemoveUIFromQueue(player, TALENT_PANEL)
+                end
+
                 if SetSkillPanelState(player, FrameState[player][SKILL_PANEL]) then
                     PlayerUIQueue[player][#PlayerUIQueue[player] + 1] = SKILL_PANEL
                 end
@@ -115,9 +131,34 @@ do
                     SetSkillPanelState(player, false)
                     RemoveUIFromQueue(player, SKILL_PANEL)
                 end
+
+                if FrameState[player][TALENT_PANEL] and FrameState[player][CHAR_PANEL] then
+                    FrameState[player][TALENT_PANEL] = false
+                    SetTalentPanelState(player, false)
+                    RemoveUIFromQueue(player, TALENT_PANEL)
+                end
+
                 if SetStatsPanelState(player, FrameState[player][CHAR_PANEL]) then
                     PlayerUIQueue[player][#PlayerUIQueue[player] + 1] = CHAR_PANEL
                 end
+            elseif ui_type == TALENT_PANEL then
+
+                if FrameState[player][SKILL_PANEL] and FrameState[player][TALENT_PANEL] then
+                    FrameState[player][SKILL_PANEL] = false
+                    SetSkillPanelState(player, false)
+                    RemoveUIFromQueue(player, SKILL_PANEL)
+                end
+
+                if FrameState[player][CHAR_PANEL] and FrameState[player][TALENT_PANEL] then
+                    FrameState[player][CHAR_PANEL] = false
+                    SetStatsPanelState(player, false)
+                    RemoveUIFromQueue(player, CHAR_PANEL)
+                end
+
+                if SetTalentPanelState(player, FrameState[player][TALENT_PANEL]) then
+                    PlayerUIQueue[player][#PlayerUIQueue[player] + 1] = TALENT_PANEL
+                end
+
             end
 
     end
@@ -160,6 +201,9 @@ do
 		SkillPanelInit()
         InitPrivateChest()
         InitUIBars()
+        InitTalentsWindow()
+
+        last_OpenedWindow = {}
 
         for i = 1, 6 do
             PlayerUIQueue[i] = {}
@@ -169,6 +213,7 @@ do
                 [SKILL_PANEL] = false,
                 [SHOP_PANEL] = false,
                 [TELEPORT_PANEL] = false,
+                [TALENT_PANEL] = false,
             }
         end
 
@@ -206,8 +251,10 @@ do
             button_data = GetButtonData(GlobalButton[i].inventory_panel_button)
             BlzFrameSetVertexColor(button_data.image, BlzConvertColor(0, 255, 128, 0))
 
-            GlobalButton[i].talents_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOMLEFT, 0.6275, 0.028, GAME_UI)
-            CreateTooltip("Not yet implemented", "Soon (tm)", GlobalButton[i].talents_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
+            GlobalButton[i].talents_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNMarksmanship.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOMLEFT, 0.6275, 0.028, GAME_UI)
+            BlzTriggerRegisterFrameEvent(ClickTrigger, GlobalButton[i].talents_panel_button, FRAMEEVENT_CONTROL_CLICK)
+            CreateTooltip(GetLocalString("Таланты", "Talents"), GetLocalString("Изучение всех доступных талантов героя.", "Learning of all hero talents."), GlobalButton[i].talents_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
+            CreateSimpleChargesText(GlobalButton[i].talents_panel_button, "N", 0.9, 0.9)
             BlzFrameSetVisible(GlobalButton[i].talents_panel_button, false)
 
             GlobalButton[i].city_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.034, 0.034, GlobalButton[i].talents_panel_button, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.003, 0., GAME_UI)
@@ -239,8 +286,12 @@ do
                     --BlzFrameClick(GlobalButton[player].skill_panel_button)
                     PlayLocalSound("Sound\\Interface\\BigButtonClick.wav", player-1)
                     SetUIState(player, SKILL_PANEL, not FrameState[player][SKILL_PANEL])
+                elseif key == OSKEY_N then
+                    PlayLocalSound("Sound\\Interface\\BigButtonClick.wav", player-1)
+                    SetUIState(player, TALENT_PANEL, not FrameState[player][TALENT_PANEL])
                 elseif key == OSKEY_ESCAPE then
                     if #PlayerUIQueue[player] > 0 then
+                        last_OpenedWindow[player] = PlayerUIQueue[player][#PlayerUIQueue[player]]
                         PlayLocalSound("Sound\\Interface\\Click.wav", player-1)
                         local ui_type = PlayerUIQueue[player][#PlayerUIQueue[player]]
                         SetUIState(player, ui_type, false)
@@ -272,6 +323,10 @@ do
                         panel_type = SKILL_PANEL
                         SetUIState(player, SKILL_PANEL, not FrameState[i][SKILL_PANEL])
                         break
+                    elseif frame == GlobalButton[i].talents_panel_button then
+                        panel_type = TALENT_PANEL
+                        SetUIState(player, TALENT_PANEL, not FrameState[i][TALENT_PANEL])
+                        break
                     end
                 end
 
@@ -279,26 +334,6 @@ do
         end)
 
         TeleporterInit()
-
-        
-
-        RegisterTestCommand("des1", function()
-            local SelfFrame = BlzCreateFrameByType('GLUEBUTTON', 'FaceButton', BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0), 'ScoreScreenTabButtonTemplate', 0)
-            local buttonIconFrame = BlzCreateFrameByType('BACKDROP', 'FaceButtonIcon', SelfFrame, '', 0)
-            BlzFrameSetAllPoints(buttonIconFrame, SelfFrame)
-            BlzFrameSetTexture(buttonIconFrame, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0, true)
-            BlzFrameSetSize(SelfFrame, 0.04, 0.04)
-            BlzFrameSetAbsPoint(SelfFrame, FRAMEPOINT_CENTER, 0.4, 0.3)
-            BlzFrameSetVisible(SelfFrame, false)
-            
-            DelayAction(5., function()
-                if GetLocalPlayer() == Player(0) then BlzFrameSetVisible(SelfFrame, true) end
-            end)
-        end)
-
-        RegisterTestCommand("des2", function()
-            
-        end)
 
     end
 

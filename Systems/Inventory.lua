@@ -109,25 +109,37 @@ do
         end
     end
 
+    function Feedback_NoResource(player)
+        --SimError(LOCALE_LIST[my_locale].FEEDBACK_MSG_NORESOURCE, player-1)
+
+        if HeroSpeechFeedbacks[player].state then
+            local snd = PlayLocalSound(LOCALE_LIST[my_locale].FEEDBACK_NORESOURCE[GetUnitClass(PlayerHero[player])][GetRandomInt(1, 3)], player-1, 128)
+            HeroSpeechFeedbacks[player].state = false
+            TimerStart(HeroSpeechFeedbacks[player].timer, 1.7, false, function() HeroSpeechFeedbacks[player].state = true end)
+        end
+    end
+
 
     function UpdateEquipPointsWindow(player)
         local unit_data = GetUnitData(InventoryOwner[player])
         local last_tag = unit_data.animation_tag
 
 
-            unit_data.animation_tag = GetWeaponAnimationTag(unit_data.equip_point[WEAPON_POINT].SUBTYPE)
+            if not unit_data.classic_model then
 
-            if unit_data.animation_tag ~= last_tag then
-                AddUnitAnimationProperties(PlayerHero[player], last_tag or "", false)
-                AddUnitAnimationProperties(PlayerHero[player], unit_data.animation_tag, true)
+                unit_data.animation_tag = GetWeaponAnimationTag(unit_data.equip_point[WEAPON_POINT].SUBTYPE)
+
+                if unit_data.animation_tag ~= last_tag then
+                    AddUnitAnimationProperties(PlayerHero[player], last_tag or "", false)
+                    AddUnitAnimationProperties(PlayerHero[player], unit_data.animation_tag, true)
+                end
+
+                if unit_data.equip_point[OFFHAND_POINT] and unit_data.equip_point[OFFHAND_POINT].TYPE == ITEM_TYPE_WEAPON then
+                    AddUnitAnimationProperties(PlayerHero[player], "Victory", true)
+                else
+                    AddUnitAnimationProperties(PlayerHero[player], "Victory", false)
+                end
             end
-
-            if unit_data.equip_point[OFFHAND_POINT] and unit_data.equip_point[OFFHAND_POINT].TYPE == ITEM_TYPE_WEAPON then
-                AddUnitAnimationProperties(PlayerHero[player], "Victory", true)
-            else
-                AddUnitAnimationProperties(PlayerHero[player], "Victory", false)
-            end
-
 
             --print("equip points start")
             for i = WEAPON_POINT, NECKLACE_POINT do
@@ -679,6 +691,19 @@ do
     end
 
 
+    local function UseItem(item, player)
+
+        OnItemUse(PlayerHero[player], item, PlayerHero[player])
+
+        if GetItemType(item) == ITEM_TYPE_CHARGED then
+            RemoveChargesFromInventoryItem(player, item, 1)
+        else
+            RemoveItemFromInventory(player, item)
+        end
+
+    end
+
+
     function SplitChargedItem(item, count, player)
             SetItemCharges(item, GetItemCharges(item) - count)
             local new_item = CreateCustomItem_Id(GetItemTypeId(item), GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]))
@@ -712,6 +737,7 @@ do
                     if item_data.TYPE == ITEM_TYPE_CONSUMABLE then LockItemOnBelt(player, ButtonList[h])
                     elseif item_data.TYPE == ITEM_TYPE_GEM then StartSelectionMode(player, h, SELECTION_MODE_ENCHANT)
                     elseif item_data.TYPE == ITEM_TYPE_SKILLBOOK then if item_data and item_data.item then LearnBook(item_data.item, player) end
+                    elseif item_data.usable and item_data.item then UseItem(item_data.item, player)
                     elseif item_data.TYPE ~= ITEM_TYPE_OTHER then InteractWithItemInSlot(h, player) end
 
                 --DoubleClickTimer[player].locked = true
@@ -800,6 +826,8 @@ do
                         AddContextOption(player, ButtonList[h].button_state and LOCALE_LIST[my_locale].UI_TEXT_BELT_OFF or LOCALE_LIST[my_locale].UI_TEXT_BELT_ON, function() LockItemOnBelt(player, ButtonList[h]) end)
                     elseif item_data.TYPE == ITEM_TYPE_SKILLBOOK then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_LEARN, function() if item_data and item_data.item then LearnBook(item_data.item, player) end end)
+                    elseif item_data.usable then
+                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_USE, function() if item_data and item_data.item then UseItem(item_data.item, player) end end)
                     elseif item_data.TYPE ~= ITEM_TYPE_OTHER then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_EQUIP, function() InteractWithItemInSlot(h, player) end)
                     end
@@ -983,8 +1011,10 @@ do
                             if item_data.flippy then
                                 if item_data.flippy and item_data.quality_effect then
                                     BlzSetSpecialEffectPosition(item_data.quality_effect, GetItemX(item), GetItemY(item), GetZ(GetItemX(item), GetItemY(item)))
+                                    BlzSetSpecialEffectPosition(item_data.quality_effect_light, GetItemX(item), GetItemY(item), GetZ(GetItemX(item), GetItemY(item)))
                                     BlzSetItemSkin(item, GetItemTypeId(item))
                                     BlzSetSpecialEffectAlpha(item_data.quality_effect, 255)
+                                    BlzPlaySpecialEffect(item_data.quality_effect_light, ANIM_TYPE_STAND)
                                 end
 
                             end
@@ -1106,8 +1136,8 @@ do
                         UpdateInventoryWindow(player)
                         if item_data.quality_effect then
                             BlzSetSpecialEffectAlpha(item_data.quality_effect, 0)
+                            BlzPlaySpecialEffect(item_data.quality_effect_light, ANIM_TYPE_DEATH)
                         end
-                        --SetItemVisible(item, true)
                         SetItemVisible(item, false)
                         return true
                     end

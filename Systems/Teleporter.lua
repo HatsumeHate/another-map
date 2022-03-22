@@ -19,9 +19,22 @@ do
 
             for i = 1, #TeleportLocation do
                 if PlayerCurrentButtonList[player].buttonlist[i].button == frame then
-                    SetUnitX(PlayerHero[player], GetRectCenterX(PlayerCurrentButtonList[player].buttonlist[i].teleport))
-                    SetUnitY(PlayerHero[player], GetRectCenterY(PlayerCurrentButtonList[player].buttonlist[i].teleport))
+                    local x, y = GetRectCenterX(PlayerCurrentButtonList[player].buttonlist[i].teleport), GetRectCenterY(PlayerCurrentButtonList[player].buttonlist[i].teleport)
+                    SetUnitX(PlayerHero[player], x)
+                    SetUnitY(PlayerHero[player], y)
                     IssueImmediateOrderById(PlayerHero[player], order_stop)
+
+                    local minions = GetAllUnitSummonUnits(PlayerHero[player])
+
+                    ForGroup(minions, function()
+                        local angle = GetRandomReal(0., 360.)
+                        local distance = GetMaxAvailableDistance(x, y, angle, GetRandomReal(150., 450.))
+                        SetUnitX(GetEnumUnit(), x + Rx(distance, angle))
+                        SetUnitY(GetEnumUnit(), y + Ry(distance, angle))
+                    end)
+
+                    DestroyGroup(minions)
+
                     break
                 end
             end

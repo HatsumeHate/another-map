@@ -55,7 +55,7 @@ do
 
         BlzHideOriginFrames(true)
         BlzFrameSetVisible(BlzGetFrameByName("UpperButtonBarFrame",0),true)
-        RegisterDecorator(BlzGetFrameByName("UpperButtonBarFrame", 0), FRAMEPOINT_CENTER, 0.88, 0.82)
+        --RegisterDecorator(BlzGetFrameByName("UpperButtonBarFrame", 0), FRAMEPOINT_CENTER, 0.88, 0.82)
         BlzFrameSetAbsPoint(BlzGetFrameByName("ConsoleUIBackdrop", 0), FRAMEPOINT_TOPRIGHT, 0, -0, 8)
         BlzFrameSetVisible(BlzFrameGetChild(BlzGetFrameByName("ConsoleUI", 0), 5), false)
 

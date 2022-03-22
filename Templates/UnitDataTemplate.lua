@@ -16,6 +16,7 @@ do
     MONSTER_RANK_ADVANCED = 2
     MONSTER_RANK_ELITE = 3
     MONSTER_RANK_BOSS = 4
+    NPC = 5
 
     TRAIT_DEMON = 1
     TRAIT_UNDEAD = 2
@@ -43,22 +44,30 @@ do
     BASE_MANA_REGEN = 0.2
 
 
+    local BASE_STATS = 0
 
 
-        -- STR_STAT, VIT_STAT, AGI_STAT, INT_STAT
-        local BASE_STATS = 0
+
+    function GetUnitPointItem(unit, point)
+        local unit_data = GetUnitData(unit)
+
+            if unit_data.equip_point[point] then
+                return unit_data.equip_point[point].item or nil
+            end
+
+        return nil
+    end
+
+    ---@param source unit function
+    function GetUnitData(source)
+        return UnitsList[source]
+    end
 
 
-        ---@param source unit
-        function GetUnitData(source)
-            return UnitsList[source]
-        end
-
-
-        ---@param unit unit
-        function GetUnitClass(unit)
-            return UnitsList[unit].unit_class or NO_CLASS
-        end
+    ---@param unit unit
+    function GetUnitClass(unit)
+        return UnitsList[unit].unit_class or NO_CLASS
+    end
 
 
 
@@ -124,7 +133,7 @@ do
             cast_skill_level = 0,
             cast_effect = nil,
 
-            scale = reference_data.scale or 1.,
+            --scale = reference_data.scale or 1.,
             classification = reference_data.classification or nil,
             unit_trait = reference_data.unit_trait or nil,
             xp = reference_data.xp or 15,
@@ -139,6 +148,7 @@ do
 
         data.default_weapon = CreateDefaultWeapon()
         data.equip_point[WEAPON_POINT] = data.default_weapon
+        --BlzSetUnitWeaponRealField(source, UNIT_WEAPON_RF_ATTACK_RANGE, 1, (data.equip_point[WEAPON_POINT].RANGE or 90.))
         data.equip_point[OFFHAND_POINT] = reference_data.offhand and MergeTables(CreateDefaultShieldOffhand(), reference_data.offhand) or nil
         data.stats = CreateParametersData()
         data.colours = { r = 255, g = 255, b = 255, a = 255 }
@@ -156,6 +166,8 @@ do
 
         if reference_data.missile_eject_range then data.missile_eject_range = reference_data.missile_eject_range end
         if reference_data.missile_eject_angle then data.missile_eject_angle = reference_data.missile_eject_angle end
+        if reference_data.height then data.height = reference_data.height or 120. end
+        if reference_data.classic_model then data.classic_model = true end
 
         if reference_data.death_sound then
             data.death_sound = MergeTables({}, reference_data.death_sound)
@@ -218,6 +230,28 @@ do
 
 
 
+    function InitUnitsDataOnMap()
+        local group = CreateGroup()
+
+            GroupEnumUnitsInRect(group, bj_mapInitialPlayableArea, nil)
+
+            ForGroup(group, function ()
+                local handle = GetUnitTypeId(GetEnumUnit())
+
+                    if UnitsData[handle] then
+                        NewUnitByTemplate(GetEnumUnit(), UnitsData[handle])
+                        if UnitsData[handle].name then BlzSetUnitName(GetEnumUnit(), UnitsData[handle].name) end
+                        OnUnitCreated(GetEnumUnit())
+                    end
+
+                    if GetUnitTypeId(GetEnumUnit()) == FourCC("n00N") then
+                        OnUnitCreated(GetEnumUnit())
+                    end
+
+            end)
+
+        DestroyGroup(group)
+    end
 
 
 
@@ -233,7 +267,7 @@ do
             [PALADIN_CLASS]     = { 8, 11, 6, 5 },
             [ASSASSIN_CLASS]    = { 6, 6, 10, 6 },
             [AMAZON_CLASS]      = { 6, 8, 7, 5 },
-            [NECROMANCER_CLASS] = { 5, 6, 5, 10 },
+            [NECROMANCER_CLASS] = { 5, 6, 7, 8 },
             [DRUID_CLASS]       = { 5, 9, 5, 9 },
             [SPECIAL_CLASS]     = { 20, 20, 20, 20 },
             [NO_CLASS]          = { 10, 10, 10, 10 }
@@ -264,6 +298,111 @@ do
             --base_stats = { health = 3000., hp_regen = 30. },
         })
 
+        NewUnitTemplate('HNCR', {
+            unit_class = NECROMANCER_CLASS,
+            have_mp = true,
+            time_before_remove = 0.,
+            missile_eject_range = 50.,
+            base_stats = { health = 175. },
+            classic_model = true,
+            --base_stats = { health = 3000., hp_regen = 30. },
+        })
+
+
+        -- leech
+        NewUnitTemplate('u00T', {
+            name = LOCALE_LIST[my_locale].NAME_SKELETON_SUMMONED,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = 0,
+            unit_trait = { TRAIT_UNDEAD },
+            time_before_remove = 10.,
+            base_stats = { health = 1000., hp_regen = 0.26, moving_speed = 300. },
+            weapon = { ATTACK_SPEED = 1.2, DAMAGE = 2, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
+            height = 120.,
+            have_mp = false,
+        })
+
+        --==========================================================--
+        -- summoned skeleton
+        NewUnitTemplate('u00Q', {
+            name = LOCALE_LIST[my_locale].NAME_SKELETON_SUMMONED,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = 0,
+            unit_trait = { TRAIT_UNDEAD },
+            time_before_remove = 10.,
+            base_stats = { health = 120., hp_regen = 0.26, moving_speed = 270. },
+            weapon = { ATTACK_SPEED = 1.9, DAMAGE = 3, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
+            offhand = { BLOCK = 15., BLOCK_RATE = 30. },
+            height = 120.,
+            have_mp = false,
+        })
+
+        --==========================================================--
+        -- summoned skeleton mage
+        NewUnitTemplate('u00R', {
+            name = LOCALE_LIST[my_locale].NAME_SKELETON_MAGE_SUMMONED,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = 0,
+            unit_trait = { TRAIT_UNDEAD },
+            time_before_remove = 10.,
+            base_stats = { health = 90., hp_regen = 0.26, moving_speed = 270. },
+            weapon = { ATTACK_SPEED = 1.86, DAMAGE = 6, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSKM" },
+            skill_list = { "ASKC" },
+            have_mp = false,
+            height = 145.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 35,
+        })
+
+        --==========================================================--
+        -- summoned skeleton archer
+        NewUnitTemplate('n027', {
+            name = LOCALE_LIST[my_locale].NAME_SKELETON_ARCHER_SUMMONED,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = 0,
+            unit_trait = { TRAIT_UNDEAD },
+            time_before_remove = 10.,
+            base_stats = { health = 105., hp_regen = 0.26, moving_speed = 270. },
+            weapon = { ATTACK_SPEED = 2., DAMAGE = 4, CRIT_CHANCE = 11., missile = "MSKA" },
+            have_mp = false,
+            height = 125.,
+        })
+
+        --==========================================================--
+        -- summoned lich
+        NewUnitTemplate('u00S', {
+            name = LOCALE_LIST[my_locale].NAME_SKELETON_LICH_SUMMONED,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = 0,
+            unit_trait = { TRAIT_UNDEAD },
+            time_before_remove = 10.,
+            base_stats = { health = 150., hp_regen = 0.26, moving_speed = 260. },
+            weapon = { ATTACK_SPEED = 1.86, DAMAGE = 11, CRIT_CHANCE = 15., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MNLH" },
+            have_mp = false,
+            height = 165.,
+            xp = 0,
+        })
+
+        --==========================================================--
+        -- summoned ghost
+        NewUnitTemplate('u00U', {
+            name = LOCALE_LIST[my_locale].NAME_SKELETON_GHOST_SUMMONED,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = 0,
+            unit_trait = { TRAIT_UNDEAD },
+            time_before_remove = 10.,
+            base_stats = { health = 250., hp_regen = 0.26, moving_speed = 275. },
+            weapon = { ATTACK_SPEED = 1.7, DAMAGE = 18, CRIT_CHANCE = 15., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 5, missile = "summoned_ghost_missile", MAX_TARGETS = 300, damage_range = 120. },
+            have_mp = false,
+            height = 165.,
+            xp = 0,
+        })
 
         -- dummy
         NewUnitTemplate('dmmy', {
@@ -314,7 +453,26 @@ do
             base_stats = { health = 125., hp_regen = 0.4, moving_speed = 275. },
             weapon = { ATTACK_SPEED = 1.4, DAMAGE = 5, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             have_mp = false,
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 35,
+        })
+
+        -- scavenger
+        NewUnitTemplate('u00P', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SCAVENGER,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            --trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
+            time_before_remove = 10.,
+            base_stats = { health = 103., hp_regen = 0.36, moving_speed = 295. },
+            weapon = { ATTACK_SPEED = 1.27, DAMAGE = 3, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
+            have_mp = false,
+            height = 115.,
+            drop_offset_min = 14., drop_offset_max = 42.,
+            xp = 27,
         })
 
         -- ghoul of nightmare
@@ -333,6 +491,8 @@ do
             },
             skill_list = { "AGHS" },
             have_mp = false,
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 37,
         })
 
@@ -354,6 +514,8 @@ do
             },
             scale = 1.2,
             have_mp = false,
+            height = 140.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 35,
         })
 
@@ -372,6 +534,8 @@ do
                 { param = MELEE_DAMAGE_REDUCTION, value = 11, method = STRAIGHT_BONUS }
             },
             scale = 1.15,
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             have_mp = false,
             xp = 20,
         })
@@ -393,6 +557,8 @@ do
             },
             colours = { r = 255, g = 150, b = 150 },
             scale = 1.15,
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             have_mp = false,
             xp = 24,
         })
@@ -410,6 +576,8 @@ do
             weapon = { ATTACK_SPEED = 1.7, DAMAGE = 5, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
             offhand = { BLOCK = 22., BLOCK_RATE = 30. },
             effect_list = { "ECBG" },
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             have_mp = false,
             xp = 25,
         })
@@ -428,6 +596,8 @@ do
             offhand = { BLOCK = 27., BLOCK_RATE = 35. },
             effect_list = { "ECBG" },
             have_mp = false,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            height = 120.,
             xp = 27,
         })
         --==========================================================--
@@ -443,6 +613,8 @@ do
             base_stats = { health = 150., hp_regen = 0.4, moving_speed = 240. },
             weapon = { ATTACK_SPEED = 1.9, DAMAGE = 4, CRIT_CHANCE = 11., missile = "MSKA" },
             have_mp = false,
+            height = 125.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 30,
         })
         --==========================================================--
@@ -458,6 +630,8 @@ do
             base_stats = { health = 157., hp_regen = 0.44, moving_speed = 240. },
             weapon = { ATTACK_SPEED = 1.9, DAMAGE = 6, CRIT_CHANCE = 16., missile = "MSKA" },
             have_mp = false,
+            height = 125.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 35,
         })
         --==========================================================--
@@ -471,12 +645,14 @@ do
             --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 140., hp_regen = 0.4, moving_speed = 240. },
-            weapon = { ATTACK_SPEED = 1.6, DAMAGE = 4, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSKM" },
+            weapon = { ATTACK_SPEED = 1.6, DAMAGE = 5, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSKM" },
             bonus_parameters = {
                 { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS }
             },
             skill_list = { "ASKC" },
             have_mp = false,
+            height = 145.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 35,
         })
         --==========================================================--
@@ -495,6 +671,8 @@ do
                 { param = PHYSICAL_DEFENCE, value = 50, method = STRAIGHT_BONUS }
             },
             scale = 1.1,
+            height = 135.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             have_mp = false,
             xp = 35,
         })
@@ -509,9 +687,11 @@ do
             --trait = TRAIT_HUMAN,
             time_before_remove = 10.,
             base_stats = { health = 215., hp_regen = 0.4, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.9, DAMAGE = 9, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MNCR" },
+            weapon = { ATTACK_SPEED = 1.9, DAMAGE = 6, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MNCR" },
             skill_list = { "ANRA" },
             have_mp = false,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            height = 125.,
             xp = 45,
         })
         --==========================================================--
@@ -524,7 +704,7 @@ do
             unit_trait = { TRAIT_HUMAN, TRAIT_UNDEAD },
             time_before_remove = 10.,
             base_stats = { health = 235., hp_regen = 0.47, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.7, DAMAGE = 10, CRIT_CHANCE = 16., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 14, missile = "MNCR" },
+            weapon = { ATTACK_SPEED = 1.7, DAMAGE = 9, CRIT_CHANCE = 16., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 14, missile = "MNCR" },
             bonus_parameters = {
                 { param = ICE_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = 5, method = STRAIGHT_BONUS },
@@ -532,6 +712,8 @@ do
             },
             skill_list = { "ANRA" },
             have_mp = false,
+            height = 125.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 45,
         })
         --==========================================================--
@@ -545,9 +727,11 @@ do
             --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 235., hp_regen = 0.43, moving_speed = 255. },
-            weapon = { ATTACK_SPEED = 1.9, DAMAGE = 10, CRIT_CHANCE = 16., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MSSM" },
+            weapon = { ATTACK_SPEED = 1.9, DAMAGE = 8, CRIT_CHANCE = 16., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MSSM" },
             skill_list = { "AFRR", "ACNF" },
             have_mp = false,
+            height = 155.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 48,
         })
         --==========================================================--
@@ -561,13 +745,15 @@ do
             --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 170., hp_regen = 0.4, moving_speed = 277. },
-            weapon = { ATTACK_SPEED = 1.53, DAMAGE = 7, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 5 },
+            weapon = { ATTACK_SPEED = 1.53, DAMAGE = 6, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 5 },
             bonus_parameters = {
                 { param = MAGICAL_SUPPRESSION, value = 16, method = STRAIGHT_BONUS },
                 { param = HP_PER_HIT, value = 5, method = STRAIGHT_BONUS }
             },
             scale = 1.2,
+            height = 130.,
             have_mp = false,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 37,
         })
         --==========================================================--
@@ -581,12 +767,14 @@ do
             --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 220., hp_regen = 0.47, moving_speed = 277. },
-            weapon = { ATTACK_SPEED = 1.37, DAMAGE = 10, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 5 },
+            weapon = { ATTACK_SPEED = 1.37, DAMAGE = 8, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 5 },
             bonus_parameters = {
                 { param = MAGICAL_SUPPRESSION, value = 32, method = STRAIGHT_BONUS },
                 { param = HP_PER_HIT, value = 7, method = STRAIGHT_BONUS }
             },
             have_mp = false,
+            height = 150.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 42,
         })
         --==========================================================--
@@ -606,7 +794,9 @@ do
                 { param = RANGE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS }
             },
             effect_list = { "EHOR" },
+            height = 140.,
             have_mp = false,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 35,
         })
         --==========================================================--
@@ -625,7 +815,9 @@ do
                 { param = MELEE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS },
                 { param = RANGE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS }
             },
+            height = 140.,
             have_mp = false,
+            drop_offset_min = 35., drop_offset_max = 55.,
             xp = 37,
         })
         --==========================================================--
@@ -639,9 +831,29 @@ do
             --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 227., hp_regen = 0.55, moving_speed = 265. },
-            weapon = { ATTACK_SPEED = 2.2, DAMAGE = 15, CRIT_CHANCE = 10., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSCB" },
+            weapon = { ATTACK_SPEED = 2.2, DAMAGE = 12, CRIT_CHANCE = 10., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSCB" },
             have_mp = false,
             scale = 1.2,
+            height = 140.,
+            drop_offset_min = 15., drop_offset_max = 55.,
+            xp = 36,
+        })
+        --==========================================================--
+        -- Hell succubus
+            NewUnitTemplate('n025', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_HELL_SUCCUBUS,
+            proper_declension = DECL_SHE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            unit_trait = { TRAIT_DEMON },
+            --trait = TRAIT_DEMON,
+            time_before_remove = 10.,
+            base_stats = { health = 205., hp_regen = 0.52, moving_speed = 285. },
+            weapon = { ATTACK_SPEED = 2.24, DAMAGE = 13, CRIT_CHANCE = 12., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 12, missile = "MSCB" },
+            have_mp = false,
+            scale = 1.18,
+            height = 130.,
+            drop_offset_min = 15., drop_offset_max = 55.,
             xp = 36,
         })
         --==========================================================--
@@ -657,6 +869,8 @@ do
             base_stats = { health = 210., hp_regen = 0.6, moving_speed = 265. },
             weapon = { ATTACK_SPEED = 1.65, DAMAGE = 5, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
             have_mp = false,
+            height = 130.,
+            drop_offset_min = 15., drop_offset_max = 50.,
             xp = 30,
         })
         --==========================================================--
@@ -673,6 +887,8 @@ do
             weapon = { ATTACK_SPEED = 1.61, DAMAGE = 7, CRIT_CHANCE = 11., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
             have_mp = false,
             scale = 1.18,
+            height = 130.,
+            drop_offset_min = 15., drop_offset_max = 55.,
             xp = 39,
         })
         --==========================================================--
@@ -686,9 +902,11 @@ do
             --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 200., hp_regen = 0.4, moving_speed = 240. },
-            weapon = { ATTACK_SPEED = 2., DAMAGE = 8, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 5, missile = "MVWS" },
+            weapon = { ATTACK_SPEED = 2., DAMAGE = 6, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 5, missile = "MVWS" },
             have_mp = false,
             scale = 0.75,
+            height = 180.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 25,
         })
         --==========================================================--
@@ -701,7 +919,7 @@ do
             unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 225., hp_regen = 0.4, moving_speed = 240. },
-            weapon = { ATTACK_SPEED = 2.1, DAMAGE = 12, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MVWM" },
+            weapon = { ATTACK_SPEED = 2.1, DAMAGE = 9, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MVWM" },
             skill_list = { "AVDS" },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
@@ -709,6 +927,8 @@ do
             },
             scale = 1.15,
             have_mp = false,
+            height = 190.,
+            drop_offset_min = 15., drop_offset_max = 50.,
             xp = 35,
         })
         --==========================================================--
@@ -722,7 +942,7 @@ do
             --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 270., hp_regen = 0.4, moving_speed = 225. },
-            weapon = { ATTACK_SPEED = 2.1, DAMAGE = 16, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MVWB" },
+            weapon = { ATTACK_SPEED = 2.1, DAMAGE = 14, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MVWB" },
             skill_list = { "AVDS", "AVDR" },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
@@ -730,6 +950,8 @@ do
             },
             scale = 1.3,
             have_mp = false,
+            height = 270.,
+            drop_offset_min = 15., drop_offset_max = 55.,
             xp = 45,
         })
         --==========================================================--
@@ -743,7 +965,7 @@ do
             --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 213., hp_regen = 0.4, moving_speed = 260. },
-            weapon = { ATTACK_SPEED = 1.74, DAMAGE = 12, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MGHO" },
+            weapon = { ATTACK_SPEED = 1.74, DAMAGE = 11, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MGHO" },
             bonus_parameters = {
                 { param = MELEE_DAMAGE_REDUCTION, value = 15, method = STRAIGHT_BONUS },
                 { param = RANGE_DAMAGE_REDUCTION, value = 15, method = STRAIGHT_BONUS },
@@ -752,6 +974,8 @@ do
             skill_list = { "AFRD" },
             scale = 1.4,
             have_mp = false,
+            height = 140.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 35,
         })
         --==========================================================--
@@ -772,6 +996,8 @@ do
             },
             scale = 1.75,
             have_mp = false,
+            drop_offset_min = 15., drop_offset_max = 55.,
+            height = 145.,
             xp = 50,
         })
         --==========================================================--
@@ -793,6 +1019,8 @@ do
                 { param = ALL_RESIST, value = 6, method = STRAIGHT_BONUS }
             },
             have_mp = false,
+            height = 240.,
+            drop_offset_min = 25., drop_offset_max = 65.,
             xp = 79,
         })
         --==========================================================--
@@ -814,6 +1042,8 @@ do
                 { param = PHYSICAL_DEFENCE, value = 224, method = STRAIGHT_BONUS },
             },
             have_mp = false,
+            drop_offset_min = 25., drop_offset_max = 65.,
+            height = 220.,
             xp = 66,
         })
         --==========================================================--
@@ -835,6 +1065,8 @@ do
             scale = 0.9,
             skill_list = { "AHBA" },
             have_mp = false,
+            height = 120.,
+            drop_offset_min = 25., drop_offset_max = 55.,
             xp = 33,
         })
         --==========================================================--
@@ -856,6 +1088,8 @@ do
             scale = 1.3,
             skill_list = { "AQBC" },
             have_mp = false,
+            height = 120.,
+            drop_offset_min = 25., drop_offset_max = 55.,
             xp = 33,
         })
         --==========================================================--
@@ -869,13 +1103,15 @@ do
             --trait = TRAIT_BEAST,
             time_before_remove = 10.,
             base_stats = { health = 143., hp_regen = 0.3, moving_speed = 267. },
-            weapon = { ATTACK_SPEED = 1.28, DAMAGE = 8, CRIT_CHANCE = 13., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
+            weapon = { ATTACK_SPEED = 1.28, DAMAGE = 7, CRIT_CHANCE = 13., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             bonus_parameters = {
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
             },
             scale = 0.75,
             skill_list = { "AWRG" },
             have_mp = false,
+            height = 120.,
+            drop_offset_min = 25., drop_offset_max = 55.,
             xp = 33,
         })
         -- insect
@@ -894,6 +1130,8 @@ do
             },
             scale = 0.6,
             have_mp = false,
+            height = 160.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 27,
         })
         --==========================================================--
@@ -914,6 +1152,8 @@ do
             },
             scale = 1.15,
             have_mp = false,
+            height = 130.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 33,
         })
         --==========================================================--
@@ -932,6 +1172,8 @@ do
                 { param = DARKNESS_RESIST, value = 14, method = STRAIGHT_BONUS },
             },
             have_mp = false,
+            height = 130.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 33,
         })
         --==========================================================--
@@ -950,6 +1192,8 @@ do
                 { param = DARKNESS_RESIST, value = 18, method = STRAIGHT_BONUS },
             },
             scale = 1.05,
+            height = 210.,
+            drop_offset_min = 20., drop_offset_max = 55.,
             have_mp = false,
             xp = 42,
         })
@@ -964,13 +1208,15 @@ do
             --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 175., hp_regen = 0.2, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.6, DAMAGE = 6, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
+            weapon = { ATTACK_SPEED = 1.6, DAMAGE = 5, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             bonus_parameters = {
                 { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS },
             },
             skill_list = { "ARLR" },
             offhand = { BLOCK = 20., BLOCK_RATE = 30. },
             have_mp = false,
+            height = 235.,
+            drop_offset_min = 20., drop_offset_max = 55.,
             xp = 33,
         })
         --==========================================================--
@@ -984,7 +1230,7 @@ do
             --trait = TRAIT_DEMON,
             time_before_remove = 10.,
             base_stats = { health = 200., hp_regen = 0.2, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.4, DAMAGE = 8, CRIT_CHANCE = 14., ranged = true, LIGHTNING = { id = "RENL", fade = 0.65, bonus_z = 135., range = 45., angle = 50. } , ATTRIBUTE = LIGHTNING_ATTRIBUTE, ATTRIBUTE_BONUS = 10 },
+            weapon = { ATTACK_SPEED = 1.4, DAMAGE = 7, CRIT_CHANCE = 14., ranged = true, LIGHTNING = { id = "RENL", fade = 0.65, bonus_z = 135., range = 45., angle = 50. } , ATTRIBUTE = LIGHTNING_ATTRIBUTE, ATTRIBUTE_BONUS = 10 },
             bonus_parameters = {
                 { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 78, method = STRAIGHT_BONUS },
@@ -992,6 +1238,8 @@ do
             skill_list = { "ARLR" },
             offhand = { BLOCK = 25., BLOCK_RATE = 35. },
             have_mp = false,
+            height = 235.,
+            drop_offset_min = 20., drop_offset_max = 55.,
             xp = 33,
         })
         --==========================================================--
@@ -1005,11 +1253,13 @@ do
             --trait = TRAIT_UNDEAD,
             time_before_remove = 10.,
             base_stats = { health = 200., hp_regen = 0.4, moving_speed = 230. },
-            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 9, CRIT_CHANCE = 11., ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MSKH" },
+            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 8, CRIT_CHANCE = 11., ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MSKH" },
             bonus_parameters = {
                 { param = FIRE_RESIST, value = 15, method = STRAIGHT_BONUS }
             },
             have_mp = false,
+            height = 155.,
+            drop_offset_min = 20., drop_offset_max = 55.,
             xp = 35,
         })
         --==========================================================--
@@ -1022,11 +1272,13 @@ do
             unit_trait = { TRAIT_UNDEAD },
             time_before_remove = 10.,
             base_stats = { health = 240., hp_regen = 0.4, moving_speed = 230. },
-            weapon = { ATTACK_SPEED = 1.95, DAMAGE = 8, CRIT_CHANCE = 11., ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MSKF" },
+            weapon = { ATTACK_SPEED = 1.95, DAMAGE = 7, CRIT_CHANCE = 11., ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MSKF" },
             bonus_parameters = {
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS }
             },
             have_mp = false,
+            height = 155.,
+            drop_offset_min = 20., drop_offset_max = 55.,
             xp = 35,
         })
         --==========================================================--
@@ -1039,12 +1291,14 @@ do
             unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 270., hp_regen = 0.7, moving_speed = 240. },
-            weapon = { ATTACK_SPEED = 1.63, DAMAGE = 11, CRIT_CHANCE = 11., ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MDWZ" },
+            weapon = { ATTACK_SPEED = 1.63, DAMAGE = 9, CRIT_CHANCE = 11., ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MDWZ" },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 8, method = STRAIGHT_BONUS }
             },
             scale = 1.55,
             have_mp = false,
+            height = 180.,
+            drop_offset_min = 20., drop_offset_max = 65.,
             xp = 37,
         })
         --==========================================================--
@@ -1057,9 +1311,11 @@ do
             unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 310., hp_regen = 1.7, moving_speed = 260. },
-            weapon = { ATTACK_SPEED = 1.5, DAMAGE = 13, CRIT_CHANCE = 14., WEAPON_SOUND = WEAPON_TYPE_METAL_LIGHT_SLICE },
+            weapon = { ATTACK_SPEED = 1.5, DAMAGE = 12, CRIT_CHANCE = 14., WEAPON_SOUND = WEAPON_TYPE_METAL_LIGHT_SLICE },
             have_mp = false,
             scale = 0.9,
+            height = 135.,
+            drop_offset_min = 20., drop_offset_max = 55.,
             xp = 40,
         })
 
@@ -1072,13 +1328,15 @@ do
             classification = MONSTER_RANK_ADVANCED,
             unit_trait = { TRAIT_DEMON },
             base_stats = { health = 375., hp_regen = 2.1, moving_speed = 280. },
-            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 11, ATTRIBUTE = HOLY_ATTRIBUTE, ATTRIBUTE_BONUS = 15, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_CHOP },
+            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 9, ATTRIBUTE = HOLY_ATTRIBUTE, ATTRIBUTE_BONUS = 15, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_CHOP },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = 15, method = STRAIGHT_BONUS },
             },
             scale = 0.9,
             have_mp = false,
+            height = 170.,
+            drop_offset_min = 20., drop_offset_max = 60.,
             xp = 40,
         })
 
@@ -1091,7 +1349,7 @@ do
             unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 270., hp_regen = 1.4, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 8, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_SLICE },
+            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 7, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_SLICE },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = PHYSICAL_DEFENCE, value = 70, method = STRAIGHT_BONUS },
@@ -1099,6 +1357,8 @@ do
             },
             scale = 1.3,
             have_mp = false,
+            height = 160.,
+            drop_offset_min = 20., drop_offset_max = 65.,
             xp = 35,
         })
 
@@ -1112,12 +1372,14 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 195., hp_regen = 0.46, moving_speed = 270. },
-            weapon = { ATTACK_SPEED = 1.35, DAMAGE = 7, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
+            weapon = { ATTACK_SPEED = 1.35, DAMAGE = 6, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
             bonus_parameters = {
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
             scale = 0.65,
             have_mp = false,
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 25,
         })
         --==========================================================--
@@ -1130,12 +1392,14 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 165., hp_regen = 0.46, moving_speed = 265. },
-            weapon = { ATTACK_SPEED = 1.77, DAMAGE = 7, CRIT_CHANCE = 11., missile = "MSAT", ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 7 },
+            weapon = { ATTACK_SPEED = 1.77, DAMAGE = 6, CRIT_CHANCE = 11., missile = "MSAT", ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 7 },
             bonus_parameters = {
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
             scale = 0.65,
             have_mp = false,
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 30,
         })
         --==========================================================--
@@ -1148,7 +1412,7 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 195., hp_regen = 0.49, moving_speed = 270. },
-            weapon = { ATTACK_SPEED = 1.35, DAMAGE = 10, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
+            weapon = { ATTACK_SPEED = 1.35, DAMAGE = 8, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
             bonus_parameters = {
                 { param = POISON_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
@@ -1156,6 +1420,8 @@ do
             },
             scale = 0.9,
             have_mp = false,
+            height = 130.,
+            drop_offset_min = 20., drop_offset_max = 55.,
             xp = 45,
         })
         --==========================================================--
@@ -1168,13 +1434,15 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 165., hp_regen = 0.49, moving_speed = 275. },
-            weapon = { ATTACK_SPEED = 1.7, DAMAGE = 15, CRIT_CHANCE = 9., missile = "MSAT", ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 12 },
+            weapon = { ATTACK_SPEED = 1.7, DAMAGE = 12, CRIT_CHANCE = 9., missile = "MSAT", ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 12 },
             bonus_parameters = {
                 { param = POISON_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS }
             },
             have_mp = false,
+            height = 130.,
+            drop_offset_min = 20., drop_offset_max = 55.,
             xp = 40,
         })
         --==========================================================--
@@ -1204,6 +1472,7 @@ do
             respawn_rect = gg_rct_arachnid_boss,
             respawn_time = 20.,
             have_mp = false,
+            drop_offset_min = 25., drop_offset_max = 65.,
             xp = 700,
         })
         --==========================================================--
@@ -1216,7 +1485,7 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 121., hp_regen = 0.46, moving_speed = 240. },
-            weapon = { ATTACK_SPEED = 1.55, DAMAGE = 10, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
+            weapon = { ATTACK_SPEED = 1.55, DAMAGE = 8, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
             bonus_parameters = {
                 { param = POISON_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
@@ -1224,6 +1493,8 @@ do
             },
             scale = 0.6,
             have_mp = false,
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 25,
         })
         --==========================================================--
@@ -1236,13 +1507,15 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 207., hp_regen = 0.46, moving_speed = 255. },
-            weapon = { ATTACK_SPEED = 1.43, DAMAGE = 17, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
+            weapon = { ATTACK_SPEED = 1.43, DAMAGE = 13, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
             bonus_parameters = {
                 { param = POISON_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS }
             },
             have_mp = false,
+            height = 125.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 45,
         })
         --==========================================================--
@@ -1255,13 +1528,15 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 265., hp_regen = 0.46, moving_speed = 255. },
-            weapon = { ATTACK_SPEED = 1.43, DAMAGE = 22, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
+            weapon = { ATTACK_SPEED = 1.43, DAMAGE = 16, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
             bonus_parameters = {
                 { param = POISON_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS }
             },
             have_mp = false,
+            height = 125.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 55,
         })
         --==========================================================--
@@ -1274,13 +1549,15 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 191., hp_regen = 0.49, moving_speed = 250. },
-            weapon = { ATTACK_SPEED = 1.75, DAMAGE = 16, CRIT_CHANCE = 9., missile = "MSSP", ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 7 },
+            weapon = { ATTACK_SPEED = 1.75, DAMAGE = 12, CRIT_CHANCE = 9., missile = "MSSP", ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 7 },
             bonus_parameters = {
                 { param = POISON_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS }
             },
             have_mp = false,
+            height = 130.,
+            drop_offset_min = 15., drop_offset_max = 55.,
             xp = 37,
         })
         --==========================================================--
@@ -1293,7 +1570,7 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 10.,
             base_stats = { health = 246., hp_regen = 0.49, moving_speed = 255. },
-            weapon = { ATTACK_SPEED = 1.5, DAMAGE = 24, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 11.5, WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
+            weapon = { ATTACK_SPEED = 1.5, DAMAGE = 16, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 11.5, WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
             bonus_parameters = {
                 { param = POISON_RESIST, value = 25, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
@@ -1301,6 +1578,8 @@ do
             },
             scale = 1.25,
             have_mp = false,
+            height = 130.,
+            drop_offset_min = 15., drop_offset_max = 55.,
             xp = 40,
         })
         --==========================================================--
@@ -1329,6 +1608,7 @@ do
             respawn_rect = gg_rct_spider_boss,
             respawn_time = 20.,
             have_mp = false,
+            drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
         })
         --==========================================================--
@@ -1341,13 +1621,15 @@ do
             unit_trait = { TRAIT_HUMAN },
             time_before_remove = 10.,
             base_stats = { health = 195., hp_regen = 0.3, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.35, DAMAGE = 10, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
+            weapon = { ATTACK_SPEED = 1.35, DAMAGE = 6, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
             offhand = { BLOCK = 25., BLOCK_RATE = 35. },
             bonus_parameters = {
                 { param = RANGE_DAMAGE_REDUCTION, value = 5, method = STRAIGHT_BONUS },
                 { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS }
             },
             have_mp = false,
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 25,
         })
         --==========================================================--
@@ -1360,7 +1642,7 @@ do
             unit_trait = { TRAIT_HUMAN },
             time_before_remove = 10.,
             base_stats = { health = 155., hp_regen = 0.3, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.6, DAMAGE = 10, CRIT_CHANCE = 12., missile = "MSBN" },
+            weapon = { ATTACK_SPEED = 1.6, DAMAGE = 8, CRIT_CHANCE = 12., missile = "MSBN" },
             offhand = { BLOCK = 25., BLOCK_RATE = 35. },
             bonus_parameters = {
                 { param = RANGE_DAMAGE_REDUCTION, value = 5, method = STRAIGHT_BONUS },
@@ -1369,6 +1651,8 @@ do
             },
             scale = 1.1,
             have_mp = false,
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 30,
         })
         --==========================================================--
@@ -1381,7 +1665,7 @@ do
             unit_trait = { TRAIT_HUMAN },
             time_before_remove = 10.,
             base_stats = { health = 225., hp_regen = 0.3, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.45, DAMAGE = 16, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
+            weapon = { ATTACK_SPEED = 1.45, DAMAGE = 13, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
             offhand = { BLOCK = 25., BLOCK_RATE = 35. },
             bonus_parameters = {
                 { param = RANGE_DAMAGE_REDUCTION, value = 10, method = STRAIGHT_BONUS },
@@ -1389,6 +1673,8 @@ do
             },
             scale = 1.3,
             have_mp = false,
+            height = 130.,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 45,
         })
         --==========================================================--
@@ -1401,7 +1687,7 @@ do
             unit_trait = { TRAIT_HUMAN },
             time_before_remove = 10.,
             base_stats = { health = 187., hp_regen = 0.3, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.45, DAMAGE = 17, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 14., missile = "MSBN" },
+            weapon = { ATTACK_SPEED = 1.45, DAMAGE = 15, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 14., missile = "MSBN" },
             offhand = { BLOCK = 25., BLOCK_RATE = 35. },
             bonus_parameters = {
                 { param = RANGE_DAMAGE_REDUCTION, value = 10, method = STRAIGHT_BONUS },
@@ -1409,7 +1695,9 @@ do
                 { param = CRIT_MULTIPLIER, value = 0.3, method = STRAIGHT_BONUS },
             },
             scale = 1.3,
+            height = 130.,
             have_mp = false,
+            drop_offset_min = 15., drop_offset_max = 45.,
             xp = 42,
         })
         --==========================================================--
@@ -1422,7 +1710,7 @@ do
             unit_trait = { TRAIT_HUMAN },
             time_before_remove = 10.,
             base_stats = { health = 1750., hp_regen = 0.4, moving_speed = 275. },
-            weapon = { ATTACK_SPEED = 1.45, DAMAGE = 32, CRIT_CHANCE = 13., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
+            weapon = { ATTACK_SPEED = 1.45, DAMAGE = 28, CRIT_CHANCE = 13., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = PHYSICAL_DEFENCE, value = 250, method = STRAIGHT_BONUS },
@@ -1436,6 +1724,7 @@ do
             respawn_time = 20.,
             scale = 1.3,
             have_mp = false,
+            drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
         })
         --==========================================================--
@@ -1466,6 +1755,7 @@ do
             --respawn_rect = gg_rct_bandit_boss,
             --respawn_time = 20.,
             have_mp = false,
+            drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
         })
         --==========================================================--
@@ -1480,6 +1770,7 @@ do
             base_stats = { health = 66., hp_regen = 0.4, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 1.66, DAMAGE = 5, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
             have_mp = false,
+            height = 120.,
             xp = 0,
         })
         --==========================================================--
@@ -1491,7 +1782,7 @@ do
             unit_trait = { TRAIT_UNDEAD },
             time_before_remove = 10.,
             base_stats = { health = 66., hp_regen = 0.4, moving_speed = 0. },
-            weapon = { ATTACK_SPEED = 1.33, DAMAGE = 7, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
+            weapon = { ATTACK_SPEED = 1.33, DAMAGE = 15, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             have_mp = false,
             xp = 0,
         })
@@ -1505,7 +1796,7 @@ do
             unit_trait = { TRAIT_DEMON },
             time_before_remove = 10.,
             base_stats = { health = 1370., hp_regen = 0.4, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.75, DAMAGE = 15, CRIT_CHANCE = 13., ranged = true, LIGHTNING = { id = "YENL", fade = 0.65 }, DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = LIGHTNING_ATTRIBUTE, ATTRIBUTE_BONUS = 15 },
+            weapon = { ATTACK_SPEED = 1.75, DAMAGE = 17, CRIT_CHANCE = 13., ranged = true, LIGHTNING = { id = "YENL", fade = 0.65 }, DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = LIGHTNING_ATTRIBUTE, ATTRIBUTE_BONUS = 15 },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = PHYSICAL_DEFENCE, value = 200, method = STRAIGHT_BONUS },
@@ -1522,6 +1813,7 @@ do
             death_sound = { pack = { "Sounds\\Monsters\\mephisto_death.wav" }, volume = 110, cutoff = 1700. },
             skill_list = { "AMLN" },
             have_mp = false,
+            drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
         })
         --==========================================================--
@@ -1550,6 +1842,7 @@ do
             },
             skill_list = { "ABSS" },
             have_mp = false,
+            drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
         })
         --==========================================================--
@@ -1577,6 +1870,7 @@ do
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
             have_mp = false,
+            drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
         })
         --==========================================================--
@@ -1604,6 +1898,7 @@ do
                 { param = HP_PER_HIT, value = 5, method = STRAIGHT_BONUS },
             },
             have_mp = false,
+            drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
         })
         --==========================================================--
@@ -1631,6 +1926,7 @@ do
             death_sound = { pack = { "Sounds\\Monsters\\andariel_death.wav" }, volume = 110, cutoff = 1700. },
             skill_list = { "AAPB" },
             have_mp = false,
+            drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
         })
         --==========================================================--
@@ -1657,6 +1953,34 @@ do
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
             have_mp = false,
+            drop_offset_min = 20., drop_offset_max = 65.,
+            xp = 700,
+        })
+        --==========================================================--
+        -- BLOOD RAVEN
+        NewUnitTemplate('n026', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_BLOOD_RAVEN,
+            proper_declension = DECL_SHE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_BOSS,
+            unit_trait = { TRAIT_UNDEAD, TRAIT_HUMAN },
+            time_before_remove = 10.,
+            base_stats = { health = 1220., hp_regen = 0.41, moving_speed = 280. },
+            weapon = { ATTACK_SPEED = 1.33, DAMAGE = 48, CRIT_CHANCE = 12., missile = "MREA" },
+            bonus_parameters = {
+                { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_DEFENCE, value = 150, method = STRAIGHT_BONUS },
+                { param = MAGICAL_SUPPRESSION, value = 350, method = STRAIGHT_BONUS },
+                { param = CONTROL_REDUCTION, value = 55, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 35, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = 45, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = DARKNESS_RESIST, value = 45, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS }
+            },
+            have_mp = false,
+            drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
         })
         --==========================================================--
@@ -1684,6 +2008,7 @@ do
                 { param = REFLECT_MELEE_DAMAGE, value = 150, method = STRAIGHT_BONUS }
             },
             have_mp = false,
+            drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
         })
         --==========================================================--
@@ -1710,6 +2035,7 @@ do
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
             have_mp = false,
+            drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
         })
         --==========================================================--
@@ -1728,6 +2054,7 @@ do
                 { param = FIRE_RESIST, value = -25, method = STRAIGHT_BONUS },
                 { param = POISON_RESIST, value = 45, method = STRAIGHT_BONUS },
             },
+            height = 120.,
             have_mp = false,
             xp = 0,
         })
@@ -1747,6 +2074,7 @@ do
                 { param = FIRE_RESIST, value = -25, method = STRAIGHT_BONUS },
                 { param = POISON_RESIST, value = 45, method = STRAIGHT_BONUS },
             },
+            height = 120.,
             have_mp = false,
             xp = 0,
         })
@@ -1763,6 +2091,7 @@ do
             bonus_parameters = {
                 { param = CONTROL_REDUCTION, value = 100, method = STRAIGHT_BONUS },
             },
+            height = 170.,
             have_mp = false,
             xp = 0,
         })
@@ -1777,7 +2106,9 @@ do
             bonus_parameters = {
                 { param = CONTROL_REDUCTION, value = 100, method = STRAIGHT_BONUS },
             },
+            height = 180.,
             have_mp = false,
+            drop_offset_min = 15., drop_offset_max = 55.,
             xp = 5,
         })
         --==========================================================--
@@ -1792,6 +2123,7 @@ do
             weapon = { ATTACK_SPEED = 1.6, DAMAGE = 17, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSCB" },
             have_mp = false,
             colours = { r = 255, g = 120, b = 190, a = 255 },
+            height = 140.,
             xp = 10,
         })
 
@@ -1806,26 +2138,10 @@ do
             weapon = { ATTACK_SPEED = 1.4, DAMAGE = 22, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 7 },
             have_mp = false,
             colours = { r = 255, g = 255, b = 255, a = 255 },
+            height = 140.,
             xp = 10,
         })
 
-
-        local group = CreateGroup()
-
-            GroupEnumUnitsInRect(group, bj_mapInitialPlayableArea, nil)
-
-            ForGroup(group, function ()
-                local handle = GetUnitTypeId(GetEnumUnit())
-
-                    if UnitsData[handle] then
-                        NewUnitByTemplate(GetEnumUnit(), UnitsData[handle])
-                        if UnitsData[handle].name then BlzSetUnitName(GetEnumUnit(), UnitsData[handle].name) end
-                        OnUnitCreated(GetEnumUnit())
-                    end
-
-            end)
-
-        DestroyGroup(group)
 
         local trg = CreateTrigger()
         TriggerRegisterEnterRectSimple(trg, bj_mapInitialPlayableArea)
@@ -1838,6 +2154,10 @@ do
                     if UnitsData[GetUnitTypeId(unit)].name then BlzSetUnitName(unit, UnitsData[GetUnitTypeId(unit)].name) end
                     OnUnitCreated(unit)
                 end
+
+            if GetUnitTypeId(unit) == FourCC("n00N") then
+                OnUnitCreated(unit)
+            end
 
         end)
 
@@ -1872,7 +2192,7 @@ do
 
                 end
 
-                OnUnitDeath(GetTriggerUnit())
+                OnUnitDeath(GetTriggerUnit(), GetKillingUnit())
 
         end)
 

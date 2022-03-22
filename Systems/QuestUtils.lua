@@ -59,6 +59,29 @@ do
     end
 
 
+    ---@param unit unit
+    ---@param duration real
+    ---@param feedback function
+    ---@param rgb table
+    function VanishUnit(unit, duration, rgb, feedback)
+        local timer = CreateTimer()
+        local alpha = 255
+        local step = 255 / duration / 40
+
+            TimerStart(timer, 0.025, true, function()
+                if alpha <= 0 then
+                    SetUnitVertexColor(unit, rgb.r, rgb.g, rgb.b, 0)
+                    DestroyTimer(timer)
+                    feedback()
+                else
+                    alpha = alpha - step
+                    SetUnitVertexColor(unit, rgb.r, rgb.g, rgb.b, alpha)
+                end
+            end)
+
+    end
+
+
     ---@param count integer
     ---@param item integer
     ---@param where table
@@ -137,15 +160,43 @@ do
     end
 
 
-    ---@param id integer
-    ---@param position rect
-    ---@param facing real
-    function CreateNPC(id, position, facing, name)
-        local npc = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC(id), GetRectCenterX(position), GetRectCenterY(position), facing)
-        BlzSetUnitName(npc, name)
-        return npc
-    end
 
+    function AddQuestArea(mark_type, mark_var, mark_scale, radius, x, y, react_func)
+        local trigger = CreateTrigger()
+        radius = radius * 0.5
+        local rect = Rect(x-radius, y-radius, x+radius, y+radius)
+        local region = CreateRegion()
+        local mark
+        local area_effect = AddSpecialEffect("Quest\\LootEFFECT.mdx", x, y)
+        local area_aura = AddSpecialEffect("Quest\\QuestMarking.mdx", x, y)
+        local scale = radius / 70.
+
+            BlzSetSpecialEffectZ(area_aura, GetZ(x,y) + 5.)
+            BlzSetSpecialEffectScale(area_aura, 1)
+            BlzSetSpecialEffectScale(area_effect, 1)
+            BlzSetSpecialEffectScale(area_aura, scale)
+            BlzSetSpecialEffectScale(area_effect, scale)
+
+            if mark_type then
+                mark = AddSpecialEffect(MarkList[mark_type or 1][mark_var or 1], x, y)
+                BlzSetSpecialEffectScale(mark, mark_scale)
+            end
+
+            RegionAddRect(region, rect)
+            TriggerRegisterEnterRegion(trigger, region, nil)
+            TriggerAddAction(trigger, function()
+                if IsAHero(GetTriggerUnit()) then
+                    RemoveRegion(region)
+                    RemoveRect(rect)
+                    DestroyTrigger(trigger)
+                    if mark then DestroyEffect(mark) end
+                    DestroyEffect(area_aura)
+                    DestroyEffect(area_effect)
+                    react_func(GetTriggerUnit())
+                end
+            end)
+
+    end
 
     ---@param unit unit
     ---@param mark_type number
@@ -185,6 +236,12 @@ do
 
         InitQuestsData()
         InitOutskirtsQuestsData()
+
+        RegisterTestCommand("quest", function()
+            AddQuestArea(MARK_TYPE_QUESTION, MARK_COMMON, 1., 600., GetRectCenterX(gg_rct_Region_395), GetRectCenterY(gg_rct_Region_395), function()
+                print("yeah")
+            end)
+        end)
 
     end
 

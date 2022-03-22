@@ -20,9 +20,9 @@ do
             effect_on_target = "",
             effect_on_loc = "",
 
-            sound_on_hit = {},
-            sound_on_launch = {},
-            sound_on_destroy = {},
+            sound_on_hit = nil,
+            sound_on_launch = nil,
+            sound_on_destroy = nil,
             sound_on_fly = nil,
 
             effect_on_impact = nil,
@@ -47,6 +47,7 @@ do
 
             revert = false,
             trackable = false,
+            can_enum = true,
 
             full_distance = false,
             only_on_target = false,
@@ -190,6 +191,20 @@ do
             end_z = 65.,
             arc = 0.15,
             ignore_terrain = false,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MNLH', {
+            name = "summoned lich",
+            model = "Abilities\\Weapons\\GargoyleMissile\\GargoyleMissile.mdx",
+            max_distance = 900.,
+            radius = 55.,
+            speed = 600.,
+            start_z = 73.,
+            end_z = 73.,
+            arc = 0.,
+            ignore_terrain = true,
             penetrate = false,
             full_distance = true
         })
@@ -557,7 +572,12 @@ do
             arc = 0.,
             scale = 0.75,
             effect_on_hit = 'EFRB',
-            sound_on_launch = { "Sounds\\Spells\\frosbolt_launch_1.wav", "Sounds\\Spells\\frosbolt_launch_2.wav" },
+            --sound_on_launch = { "Sounds\\Spells\\frosbolt_launch_1.wav", "Sounds\\Spells\\frosbolt_launch_2.wav" },
+            sound_on_launch = {
+                pack = { "Sounds\\Spells\\frosbolt_launch_1.wav", "Sounds\\Spells\\frosbolt_launch_2.wav" },
+                volume = 125,
+                cutoff = 1600.,
+            },
             ignore_terrain = true,
             full_distance = true,
             penetrate = false,
@@ -583,6 +603,29 @@ do
             full_distance = true,
             penetrate = false,
             trackable = false
+        })
+
+        NewMissileTemplate('MPRS', {
+            name = "pursuer missile",
+            model = "Effect\\Pursuer.mdx",
+            max_distance = 1000.,
+            radius = 70.,
+            speed = 270.,
+            start_z = 75.,
+            end_z = 75.,
+            arc = 0.,
+            scale = 1.,
+            effect_on_hit = 'effect_pursuer',
+            sound_on_launch = {
+                pack = { "Abilities\\Spells\\Undead\\DeathCoil\\DeathCoilMissileLaunch1.wav" },
+                volume = 124,
+                cutoff = 1700.
+            },
+            max_targets = 300,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = true,
         })
 
         --==============================================--
@@ -671,13 +714,14 @@ do
         --===============================================--
         NewMissileTemplate('MBLB', {
             name = "lightning orb missile",
-            model = "Spell\\LightningSphere_FX.mdx",
+            model = "Spell\\AZ_DD021.mdx",--"Spell\\LightningSphere_FX.mdx",
             max_distance = 800.,
             radius = 400.,
             speed = 165.,
             start_z = 70.,
             end_z = 70.,
             arc = 0.,
+            scale = 0.65,
             hit_once_in = 0.7,
             effect_on_hit = 'ELBL',
             sound_on_fly = {
@@ -727,6 +771,7 @@ do
             ignore_terrain = true,
             full_distance = true,
             penetrate = false,
+            can_enum = false,
             sound_on_fly = {
                 pack = { "Sounds\\Spells\\chain_launch_1.wav", "Sounds\\Spells\\chain_launch_2.wav", "Sounds\\Spells\\chain_launch_3.wav", "Sounds\\Spells\\chain_launch_4.wav", "Sounds\\Spells\\chain_launch_5.wav" },
                 volume = 100,
@@ -747,9 +792,115 @@ do
             arc = 0.,
             hit_once_in = 5.,
             max_targets = 300,
+            can_enum = false,
             ignore_terrain = true,
             full_distance = true,
             penetrate = true,
+        })
+        --===============================================--
+        NewMissileTemplate('MNBS', {
+            name = "bone spear missile",
+            model = "Effect\\PeeKay's BoneSpear.mdx",
+            max_distance = 1000.,
+            effect_on_hit = 'ENBS',
+            sound_on_destroy = {
+                pack = { "Sounds\\Spells\\bone_heavy_hit_1.wav", "Sounds\\Spells\\bone_heavy_hit_2.wav", "Sounds\\Spells\\bone_heavy_hit_3.wav", "Sounds\\Spells\\bone_heavy_hit_4.wav", "Sounds\\Spells\\bone_heavy_hit_5.wav" },
+                volume = 123,
+                cutoff = 1600.,
+            },
+            radius = 75.,
+            speed = 900.,
+            start_z = 70.,
+            end_z = 70.,
+            arc = 0.,
+            max_targets = 1,
+            hit_once_in = 3.,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            can_enum = true
+        })
+        --===============================================--
+        NewMissileTemplate('MNPS', {
+            name = "toxic substance missile",
+            model = "Spell\\OrbOfVenom.mdx",
+            max_distance = 1000.,
+            effect_on_hit = 'ENTS',
+            --sound_on_launch = {
+               -- pack = { "Sounds\\Spells\\poison_cast_1.wav", "Sounds\\Spells\\poison_cast_2.wav", "Sounds\\Spells\\poison_cast_3.wav" },
+                --volume = 125,
+                --cutoff = 1600.,
+            --},
+            radius = 75.,
+            speed = 700.,
+            start_z = 70.,
+            end_z = 70.,
+            arc = 0.,
+            max_targets = 1,
+            hit_once_in = 3.,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            can_enum = true
+        })
+        --===============================================--
+        NewMissileTemplate('MNDV', {
+            name = "devour missile",
+            model = "Effect\\CorpseBomb.mdx",
+            max_distance = 1000.,
+            effect_on_hit = 'ENDV',
+            sound_on_hit = {
+                pack = { "Abilities\\Spells\\Human\\Heal\\HealTarget.wav" },
+                volume = 120,
+                cutoff = 1600.,
+            },
+            sound_on_launch = {
+                pack = { "Sounds\\Spells\\devour_1.wav", "Sounds\\Spells\\devour_2.wav", "Sounds\\Spells\\devour_3.wav", "Sounds\\Spells\\devour_4.wav", "Sounds\\Spells\\devour_5.wav" },
+                volume = 125,
+                cutoff = 1600.,
+            },
+            radius = 75.,
+            speed = 600.,
+            start_z = 0.,
+            end_z = 70.,
+            arc = 0.,
+            only_on_target = true,
+            ignore_terrain = true,
+            full_distance = false,
+            penetrate = false,
+            can_enum = false,
+            trackable = true,
+        })
+        --===============================================--
+        NewMissileTemplate('MNLS', {
+            name = "lich res soul",
+            model = "Abilities\\Weapons\\ZigguratMissile\\ZigguratMissile.mdx",
+            max_distance = 1250.,
+            radius = 75.,
+            speed = 740.,
+            start_z = 10.,
+            end_z = 10.,
+            arc = 0.5,
+            ignore_terrain = true,
+            full_distance = false,
+            penetrate = true,
+            trackable = false,
+        })
+        --==============================================--
+        NewMissileTemplate('summoned_ghost_missile', {
+            name = "necro ghost missile",
+            model = "Effect\\Soulfire Missile.mdx",
+            max_distance = 1000.,
+            radius = 60.,
+            speed = 525.,
+            start_z = 75.,
+            end_z = 75.,
+            arc = 0.,
+            scale = 1.,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
         })
         --==============================================--
         NewMissileTemplate('void_rain_missile', {
@@ -762,6 +913,7 @@ do
             end_z = 0.,
             arc = 0.,
             effect_on_expire = "EVDR",
+            can_enum = false,
             ignore_terrain = true,
             --penetrate = false,
             only_on_impact = true
@@ -778,6 +930,7 @@ do
             arc = 0.,
             effect_on_expire = "fire_rain_effect",
             ignore_terrain = true,
+            can_enum = false,
             --penetrate = false,
             only_on_impact = true
         })
@@ -813,6 +966,7 @@ do
             start_z = 70.,
             end_z = 70.,
             arc = 0.,
+            can_enum = false,
             ignore_terrain = true,
             full_distance = true,
             penetrate = true,

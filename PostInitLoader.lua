@@ -16,7 +16,11 @@ do
 		PlayMusic("Sound\\Music\\mp3Music\\Comradeship.mp3")
 		SetGameSpeed(MAP_SPEED_FASTEST)
 		SetMapFlag(MAP_LOCK_SPEED, true)
+		EnableOcclusion(true)
 
+		MONSTER_PLAYER = Player(10)
+        SECOND_MONSTER_PLAYER = Player(11)
+		ScaleMonstersGroup = CreateGroup()
 
 		local countdown = 5
 		print("Init begins in ".. countdown)
@@ -30,7 +34,7 @@ do
 				local init_que = {
 					UtilsInit, InitLocaleLibrary, HitnumbersInit, InitParameters, DefineSkillsData, MouseTrackingInit, DefineEffectsData, InitSetBonusTemplates, DefineItemsData, DefineItemGeneratorTemplates, DefineBuffsData, DefineMissilesData,
 					MainEngineInit, InitMovementEngine, BasicFramesInit, EnumItemsOnInit, UnitDataInit, InitGUIManager, InitMonsterData, DropListInit, ShakerInit, InitVillageData, InitPlayerCamera, InitializeSkillEngine, StartSMorcWandering,
-					InitAltars, InitQuestMaster, InitQuestUtils, InitFileData
+					InitAltars, InitQuestMaster, InitQuestUtils, InitNPCs, InitFileData
 				}
 
 				TimerStart(GetExpiredTimer(), 0.1, true, function()
@@ -38,13 +42,15 @@ do
 
 					if init_que[func_id] then
 						init_que[func_id]()
-						print("Loading data "..func_id.." / " .. #init_que)
+						print("Loading data " .. func_id.." / " .. #init_que)
 					else
 						DestroyTimer(GetExpiredTimer())
 						InitWeather(bj_mapInitialPlayableArea)
+						InitUnitsDataOnMap()
 						print("Done")
 
-						CreateShop(gg_unit_n000_0056, "ReplaceableTextures\\CommandButtons\\BTNVillagerMan1.blp",
+
+						CreateShop(gg_unit_n000_0056, LOCALE_LIST[my_locale].VENDOR_BILL_NAME, "ReplaceableTextures\\CommandButtons\\BTNVillagerMan1.blp",
 								{
 									open = {
 										"Units\\Human\\Peasant\\PeasantWhat2.wav",
@@ -57,7 +63,7 @@ do
 								}
 						)
 						--print("shop 1")
-						CreateShop(gg_unit_opeo_0031, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp",
+						CreateShop(gg_unit_opeo_0031, LOCALE_LIST[my_locale].SMORC_NAME, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp",
 								{
 									open = {
 										"Units\\Orc\\Peon\\PeonPissed1.wav",
@@ -75,7 +81,7 @@ do
 								}
 						)
 						--print("shop 2")
-						CreateShop(gg_unit_n001_0055, "ReplaceableTextures\\CommandButtons\\BTNVillagerWoman.blp",
+						CreateShop(gg_unit_n001_0055, LOCALE_LIST[my_locale].HEALER_NAME, "ReplaceableTextures\\CommandButtons\\BTNVillagerWoman.blp",
 								{
 									open = {
 										"Units\\Human\\Sorceress\\SorceressWhat1.wav",
@@ -92,7 +98,7 @@ do
 								}
 						)
 						--print("shop 3")
-						CreateShop(gg_unit_n01W_0111, "ReplaceableTextures\\CommandButtons\\BTNAcolyte.blp",
+						CreateShop(gg_unit_n01W_0111, LOCALE_LIST[my_locale].SCAVENGER_NAME, "ReplaceableTextures\\CommandButtons\\BTNAcolyte.blp",
 								{
 									open = {
 										"Units\\Undead\\Acolyte\\AcolyteReady1.wav",
@@ -106,8 +112,8 @@ do
 									},
 								}
 						)
-
-						CreateShop(gg_unit_n020_0075, "ReplaceableTextures\\CommandButtons\\BTNSorceress.blp",
+						--print("shop 4")
+						CreateShop(gg_unit_n020_0075, LOCALE_LIST[my_locale].LYNN_NAME, "ReplaceableTextures\\CommandButtons\\BTNSorceress.blp",
 								{
 									open = {
 										"Units\\Human\\Sorceress\\SorceressWhat1.wav",
@@ -127,23 +133,31 @@ do
 						local my_item = CreateCustomItem("I006",  0.,0.)
 						SetItemCharges(my_item, 20)
 						AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 32, true)
-						BlzSetUnitName(gg_unit_n001_0055, LOCALE_LIST[my_locale].HEALER_NAME)
+						--BlzSetUnitName(gg_unit_n001_0055, LOCALE_LIST[my_locale].HEALER_NAME)
 
 						my_item = CreateCustomItem("I003",  0.,0.)
 						SetItemCharges(my_item, 20)
 						AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 31, true)
 						my_item = nil
 
-						BlzSetUnitName(gg_unit_n000_0056, LOCALE_LIST[my_locale].VENDOR_BILL_NAME)
-						BlzSetUnitName(gg_unit_opeo_0031, LOCALE_LIST[my_locale].SMORC_NAME)
-						BlzSetUnitName(gg_unit_n01W_0111, LOCALE_LIST[my_locale].SCAVENGER_NAME)
+						--BlzSetUnitName(gg_unit_n000_0056, LOCALE_LIST[my_locale].VENDOR_BILL_NAME)
+						--BlzSetUnitName(gg_unit_opeo_0031, LOCALE_LIST[my_locale].SMORC_NAME)
+						--BlzSetUnitName(gg_unit_n01W_0111, LOCALE_LIST[my_locale].SCAVENGER_NAME)
 						BlzSetUnitName(gg_unit_n013_0011, LOCALE_LIST[my_locale].BLACKSMITH_NAME)
 						BlzSetUnitName(gg_unit_n01V_0110, LOCALE_LIST[my_locale].LIBRARIAN_NAME)
-						BlzSetUnitName(gg_unit_n020_0075, LOCALE_LIST[my_locale].LYNN_NAME)
-
+						--BlzSetUnitName(gg_unit_n020_0075, LOCALE_LIST[my_locale].LYNN_NAME)
 
 						CreateLibrarian(gg_unit_n01V_0110, "ReplaceableTextures\\CommandButtons\\BTNNightElfRunner.blp")
 						CreateBlacksmith(gg_unit_n013_0011, "ReplaceableTextures\\CommandButtons\\BTNElfVillager.blp")
+
+
+						AddInteractiveOption(gg_unit_n000_0056, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, feedback = function(clicked, clicking, player) PlayConversation("bill_intro", gg_unit_n000_0056, player) end }, 1)
+						AddInteractiveOption(gg_unit_n001_0055, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, feedback = function(clicked, clicking, player) PlayConversation("dalia_intro", gg_unit_n001_0055, player) end }, 1)
+						AddInteractiveOption(gg_unit_n013_0011, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, feedback = function(clicked, clicking, player) PlayConversation("blacksmith_intro", gg_unit_n013_0011, player) end }, 1)
+						AddInteractiveOption(gg_unit_n01V_0110, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, feedback = function(clicked, clicking, player) PlayConversation("librarian_intro", gg_unit_n01V_0110, player) end }, 1)
+						AddInteractiveOption(gg_unit_opeo_0031, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, feedback = function(clicked, clicking, player) PlayConversation("smorc_intro", gg_unit_opeo_0031, player) end }, 1)
+						AddInteractiveOption(gg_unit_n020_0075, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, feedback = function(clicked, clicking, player) PlayConversation("lynn_intro", gg_unit_n020_0075, player) end }, 1)
+						AddInteractiveOption(gg_unit_n01W_0111, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, feedback = function(clicked, clicking, player) PlayConversation("wandering_intro", gg_unit_n01W_0111, player) end }, 1)
 
 						--print("librarian")
 						CreateHeroSelections()
@@ -221,12 +235,13 @@ do
 				TriggerRegisterPlayerEvent(trg, Player(2), EVENT_PLAYER_LEAVE)
 				TriggerRegisterPlayerEvent(trg, Player(3), EVENT_PLAYER_LEAVE)
 				TriggerRegisterPlayerEvent(trg, Player(4), EVENT_PLAYER_LEAVE)
+				TriggerRegisterPlayerEvent(trg, Player(5), EVENT_PLAYER_LEAVE)
 				TriggerAddAction(trg, function()
 					ActivePlayers = ActivePlayers - 1
 					PlayerLeft(GetPlayerId(GetTriggerPlayer()) + 1)
 				end)
 
-				--DoNotSaveReplay()
+				DoNotSaveReplay()
 				AirPathingUnit = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("hgry"), 0.,0., 0.)
 				ShowUnit(AirPathingUnit, false)
 				GroundPathingItem = CreateItem(FourCC("rde2"), 0.,0.)

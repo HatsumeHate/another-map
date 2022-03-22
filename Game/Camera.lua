@@ -9,6 +9,7 @@ do
 
     PlayerCameraState = 0
     PlayerCameraSetup = 0
+    PlayerCameraZoomMode = nil
 
 
 
@@ -24,6 +25,8 @@ do
 
         PlayerCameraState = {}
         PlayerCameraSetup = {}
+        PlayerCameraZoomMode = {}
+        local trigger = CreateTrigger()
 
         for i = 1, 6 do
             PlayerCameraSetup[i] = CreateCameraSetup()
@@ -32,6 +35,7 @@ do
             CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_ROTATION, 90., 0.)
             CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_FIELD_OF_VIEW, 70., 0.)
             CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_FARZ, 5000., 0.)
+            BlzTriggerRegisterPlayerKeyEvent(trigger, Player(i-1), OSKEY_Z, 0, true)
         end
 
         local timer = CreateTimer()
@@ -39,15 +43,33 @@ do
 
             for i = 1, 6 do
                 if PlayerCameraState[i] and PlayerHero[i] then
-                    CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_ZOFFSET, GetZ(GetUnitX(PlayerHero[i]), GetUnitY(PlayerHero[i])) * 0.1, 0.07)
-                    CameraSetupSetDestPosition(PlayerCameraSetup[i], GetUnitX(PlayerHero[i]), GetUnitY(PlayerHero[i]), 0.07)
-                    if GetLocalPlayer() == Player(i-1) then
-                        CameraSetupApply(PlayerCameraSetup[i], true, true)
-                        --BlzCameraSetupApplyForceDurationSmooth(PlayerCameraSetup[i], true, 0.12, 2.46, 2.46, 1.25)
+                    if PlayerCameraZoomMode[i] then
+                        CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_TARGET_DISTANCE, 500., 0.5)
+                        CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_ZOFFSET, 85., 0.5)
+                        CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_ANGLE_OF_ATTACK, 320., 0.5)
+                    else
+                        CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_TARGET_DISTANCE, 1650., 0.07)
+                        CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_ANGLE_OF_ATTACK, 304., 0.07)
+                        CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_ZOFFSET, GetZ(GetUnitX(PlayerHero[i]), GetUnitY(PlayerHero[i])) * 0.1, 0.07)
                     end
+
+                    CameraSetupSetDestPosition(PlayerCameraSetup[i], GetUnitX(PlayerHero[i]), GetUnitY(PlayerHero[i]), 0.07)
+                    if GetLocalPlayer() == Player(i-1) then CameraSetupApply(PlayerCameraSetup[i], true, true) end
+
                 end
             end
 
+        end)
+
+
+        TriggerAddAction(trigger, function()
+            local player = GetPlayerId(GetTriggerPlayer())+1
+                if PlayerCameraZoomMode[player] then
+                    PlayerCameraZoomMode[player] = false
+                else
+                    PlayerCameraZoomMode[player] = true
+                    DisplayTextToPlayer(Player(player-1), 0.,0., GetLocalString("Нажата клавиша [Z]. Режим приближения.", "[Z] key has been pressed. Zoom mode."))
+                end
         end)
 
 

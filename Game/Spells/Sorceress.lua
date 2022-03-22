@@ -12,25 +12,45 @@ do
             unit_data.spawned_hydra = CreateUnit(GetOwningPlayer(hero), FourCC('shdr'), x, y, GetRandomReal(0.,359.))
             UnitApplyTimedLife(unit_data.spawned_hydra, 0, 6.75 + (UnitGetAbilityLevel(hero, "A00I") * 0.25))
 
-            DelayAction(0.001, function()
+            local percent = 0.7
+
+
+        if unit_data.boost_overflow then
+            percent = percent + 0.1
+            unit_data.boost_overflow = nil
+        end
+
+        if unit_data.heating_up_boost then
+            percent = percent + 0.4
+        end
+
+            DelayAction(0., function()
                 local hydra = GetUnitData(unit_data.spawned_hydra)
 
-                    hydra.stats[PHYSICAL_ATTACK].value = unit_data.stats[PHYSICAL_ATTACK].value * 0.7
-                    hydra.stats[MAGICAL_ATTACK].value = unit_data.stats[MAGICAL_ATTACK].value * 0.7
-                    hydra.stats[CRIT_CHANCE].value = unit_data.stats[CRIT_CHANCE].value * 0.7
-                    hydra.equip_point[WEAPON_POINT].DAMAGE = unit_data.equip_point[WEAPON_POINT].DAMAGE * 0.7
-                    hydra.equip_point[WEAPON_POINT].ATTACK_SPEED = unit_data.stats[ATTACK_SPEED].value * 0.7
+                    hydra.stats[PHYSICAL_ATTACK].value = unit_data.stats[PHYSICAL_ATTACK].value * percent
+                    hydra.stats[MAGICAL_ATTACK].value = unit_data.stats[MAGICAL_ATTACK].value * percent
+                    hydra.stats[CRIT_CHANCE].value = unit_data.stats[CRIT_CHANCE].value * percent
+                    hydra.equip_point[WEAPON_POINT].DAMAGE = unit_data.equip_point[WEAPON_POINT].DAMAGE * percent
+                    hydra.equip_point[WEAPON_POINT].ATTACK_SPEED = unit_data.stats[ATTACK_SPEED].value * percent
                     hydra.equip_point[WEAPON_POINT].DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL
                     hydra.equip_point[WEAPON_POINT].ATTRIBUTE = FIRE_ATTRIBUTE
-                    hydra.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS = R2I((hydra.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS or 0) * 0.7)
-                    hydra.stats[INT_STAT].value = R2I(unit_data.stats[INT_STAT].value * 0.7)
-                    hydra.stats[FIRE_BONUS].value = R2I(unit_data.stats[FIRE_BONUS].value * 0.7)
+                    hydra.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS = R2I((hydra.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS or 0) * percent)
+                    hydra.stats[INT_STAT].value = R2I(unit_data.stats[INT_STAT].value * percent)
+                    hydra.stats[FIRE_BONUS].value = R2I(unit_data.stats[FIRE_BONUS].value * percent)
                     UpdateParameters(hydra)
 
             end)
     end
 
 
+    ---@param source unit
+    ---@param target unit
+    ---@param id string
+    ---@param faderate real
+    ---@param bonus_start_z real
+    ---@param bonus_end_z real
+    ---@param bonus_range real
+    ---@param bonus_angle real
     function LightningEffect_Units(source, target, id, faderate, bonus_start_z, bonus_end_z, bonus_range, bonus_angle)
         local source_x = GetUnitX(source); local source_y = GetUnitY(source); local source_z = GetUnitZ(source) + bonus_start_z
         local unit_data = GetUnitData(source)
@@ -60,6 +80,15 @@ do
                     DestroyTimer(GetExpiredTimer())
                 else
                     SetLightningColor(bolt, 1, 1, 1, faderate / fade_time)
+
+                    unit_data = GetUnitData(source)
+                    if unit_data.exploded then source_x = unit_data.death_x; source_y = unit_data.death_y; source_z = unit_data.death_z + bonus_start_z
+                    else source_x = GetUnitX(source); source_y = GetUnitY(source); source_z = GetUnitZ(source) + bonus_start_z end
+
+                    unit_data = GetUnitData(target)
+                    if unit_data.exploded then target_x = unit_data.death_x; target_y = unit_data.death_y; target_z = unit_data.death_z + bonus_end_z
+                    else target_x = GetUnitX(target); target_y = GetUnitY(target); target_z = GetUnitZ(target) + bonus_end_z end
+
                     MoveLightningEx(bolt, true, source_x, source_y, source_z, target_x, target_y, target_z)
                     faderate = faderate - 0.025
                 end
@@ -80,7 +109,7 @@ do
         end
 
         local faderate = 0.55
-        local bolt = AddLightningEx("BLNL", true, missile.current_x, missile.current_y, missile.current_z, target_x, target_y, target_z + missile.end_z)
+        local bolt = AddLightningEx("BLNL", true, missile.current_x, missile.current_y, missile.current_z + 50., target_x, target_y, target_z + missile.end_z)
         local missile_x = missile.current_x
         local missile_y = missile.current_y
         local missile_z = missile.current_z
@@ -102,7 +131,10 @@ do
                         missile_z = missile.current_z
                         missile_end_z = missile.end_z
 
-                        MoveLightningEx(bolt, true, missile.current_x, missile.current_y, missile.current_z, target_x, target_y, target_z + missile.end_z)
+                        if unit_data.exploded then target_x = unit_data.death_x; target_y = unit_data.death_y; target_z = unit_data.death_z
+                        else target_x = GetUnitX(target); target_y = GetUnitY(target); target_z = GetUnitZ(target) end
+
+                        MoveLightningEx(bolt, true, missile.current_x, missile.current_y, missile.current_z + 50., target_x, target_y, target_z + missile.end_z)
                     end
 
                     faderate = faderate - 0.025
@@ -138,9 +170,15 @@ do
 
     function ChainLightningCast(source, target)
         local from = source
+        local unit_data = GetUnitData(source)
+        local tags = {}
+
+        if unit_data.arc_discharge_boost then
+           tags[#tags+1] = "talent_arc_discharge" .. unit_data.arc_discharge_boost
+        end
 
         LightningEffect_Units(from, target, "BLNL", 0.45, 50., 50.)
-        ApplyEffect(source, target, 0., 0.,"ECHL", 1)
+        ApplyEffect(source, target, 0., 0.,"ECHL", 1, tags)
 
         local damaged_group = CreateGroup()
         GroupAddUnit(damaged_group, target)
@@ -157,7 +195,7 @@ do
                 TimerStart(timer, 0.25, true, function()
 
                     LightningEffect_Units(from, next_target, "BLNL", 0.45, 50., 50.)
-                    ApplyEffect(source, next_target, 0., 0.,"ECHL", 1)
+                    ApplyEffect(source, next_target, 0., 0.,"ECHL", 1, tags)
                     rebounds = rebounds - 1
 
 
@@ -182,10 +220,16 @@ do
         local spark_amount = 12
         local angle = 360. / spark_amount
         local current_angle = 0.01
+        local unit_data = GetUnitData(source)
+        local tags = {}
+
+        if unit_data.arc_discharge_boost then
+           tags[#tags+1] = "talent_arc_discharge" .. unit_data.arc_discharge_boost
+        end
 
 
         for i = 1, spark_amount do
-            discharge[i] = { missile = ThrowMissile(source, nil, 'MDSC', nil, GetUnitX(source), GetUnitY(source), 0, 0, current_angle), a = current_angle }
+            discharge[i] = { missile = ThrowMissile(source, nil, 'MDSC', { tags = tags }, GetUnitX(source), GetUnitY(source), 0, 0, current_angle), a = current_angle }
             BlzSetSpecialEffectScale(discharge[i].missile.missile_effect, 1.15)
             current_angle = current_angle + angle
         end
@@ -218,6 +262,12 @@ do
         local amount = 3 + math.floor(UnitGetAbilityLevel(source, "A00J") / 10)
         local angle_dispersion = 15.
         local breakpoint = math.floor(amount / 2)
+        local unit_data = GetUnitData(source)
+        local tags = {}
+
+        if unit_data.arc_discharge_boost then
+           tags[#tags+1] = "talent_arc_discharge" .. unit_data.arc_discharge_boost
+        end
 
 
             if target and target == source then
@@ -235,7 +285,7 @@ do
 
         for i = 1, amount do
             --print("launch angle is " .. angle)
-            discharge[i] = { missile = ThrowMissile(source, nil, 'MDSC', nil, GetUnitX(source), GetUnitY(source), x, y, angle, true), a = angle }
+            discharge[i] = { missile = ThrowMissile(source, nil, 'MDSC', { tags = tags }, GetUnitX(source), GetUnitY(source), x, y, angle, true), a = angle }
             angle = angle - angle_dispersion
         end
 
@@ -386,13 +436,12 @@ do
             unit_data.channeled_destructor = nil
             unit_data.channeled_ability = nil
             TimerStart(unit_data.action_timer, 0., false, nil)
-            --SetSoundVolume(unit_data.channel_sound, 0)
             StopSound(unit_data.channel_sound, true, true)
             DestroyEffect(unit_data.hand_right_sfx); DestroyEffect(unit_data.hand_left_sfx)
             UnitRemoveAbility(unit, FourCC("A002")); UnitRemoveAbility(unit, FourCC("B000"))
             DestroyTrigger(unit_data.channel_trigger)
             SetUnitTimeScale(unit, 1.)
-            --SafePauseUnit(unit, false)
+            unit_data.boost_overflow = nil
 
     end
 
@@ -442,6 +491,16 @@ do
             SetUnitTimeScale(unit, 0.05)
             SetUnitFacingTimed(unit, AngleBetweenUnitXY(unit, PlayerMousePosition[player_id].x or 0., PlayerMousePosition[player_id].y or 0.), 0.1)
 
+            local boost = { tags = {}}
+
+            if unit_data.boost_overflow then
+                boost.tags[#boost.tags+1] = "talent_overflow"
+            end
+
+            if unit_data.heating_up_boost then
+                boost.tags[#boost.tags+1] = "talent_heating_up"
+            end
+
             TimerStart(unit_data.action_timer, 0.05, true, function()
                 if duration > 0. and GetUnitState(unit, UNIT_STATE_LIFE) > 0.045 and unit_data.channeled_ability == "AMLT" then
                     --BlzEndUnitAbilityCooldown(unit, myability)
@@ -453,7 +512,7 @@ do
                     --BlzSetSpecialEffectYaw(effect, facing * bj_DEGTORAD)
                     BlzSetSpecialEffectZ(effect, GetZ(x, y) + 75.)
                     DestroyEffect(effect)
-                    ThrowMissile(unit, nil, "MMLT", nil, GetUnitX(unit), GetUnitY(unit), 0.,0., facing, true)
+                    ThrowMissile(unit, nil, "MMLT", boost, GetUnitX(unit), GetUnitY(unit), 0.,0., facing, true)
                 else
                     MeltdownDeactivate(unit)
                     --TimerStart(GetExpiredTimer(), 0., false, nil)
@@ -563,6 +622,35 @@ do
             end)
 
         end
+    end
+
+
+
+    function IcicleRainCast(caster, x, y)
+        local level = UnitGetAbilityLevel(caster, "ASIR")
+        local amount = 3 + math.floor(level / 3)
+        local halfarea = (250. + level * 5.) * 0.5
+        local timer = CreateTimer()
+
+        if halfarea > 450. then halfarea = 450. end
+        if amount > 30 then halfarea = 30 end
+
+            TimerStart(timer, 0.26, true, function()
+
+                if amount > 0 then
+                    local point_x = x + GetRandomReal(-halfarea, halfarea)
+                    local point_y = y + GetRandomReal(-halfarea, halfarea)
+
+                        DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Human\\Blizzard\\BlizzardTarget.mdx", point_x, point_y))
+                        AddSoundVolume("Sounds\\Spells\\BlizzardTarget".. GetRandomInt(1,3) .. ".wav", point_x, point_y, 100, 1700.)
+                        DelayAction(0.81, function() ApplyEffect(caster, nil, point_x, point_y, "EICR", 1) end)
+                        amount = amount - 1
+                else
+                    DestroyTimer(timer)
+                end
+
+            end)
+
     end
 
 end

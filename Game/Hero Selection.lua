@@ -14,6 +14,8 @@ do
     local HeroXPLevelFactor = 125.
     local HeroXPPrevLevelFactor = 1.14
     local HeroXPConstantFactor = 150.
+    local CemetaryX
+    local CemetaryY
     PlayerRequiredEXP = nil
     PlayerLastRequiredEXP = nil
 
@@ -65,12 +67,13 @@ do
 
 
     ---@param amount integer
+    ---@return integer
     function GiveExp(amount)
         amount = amount + (Current_Wave * 5)
         for i = 1, 6 do
             if PlayerHero[i] then
                 SuspendHeroXP(PlayerHero[i], false)
-                AddHeroXP(PlayerHero[i], amount, false)
+                AddHeroXP(PlayerHero[i], amount * (1. + GetUnitParameterValue(PlayerHero[i], EXP_BONUS) * 0.01), false)
                 SuspendHeroXP(PlayerHero[i], true)
             end
         end
@@ -78,6 +81,7 @@ do
     end
 
     ---@param amount integer
+    ---@return integer
     function GiveGold(amount)
         amount = amount + Current_Wave * 20
         for i = 1, 6 do
@@ -102,44 +106,72 @@ do
 
             ActivePlayers = ActivePlayers + 1
 
-                if region == BarbarianRegion then
-                    id = FourCC("HBRB")
-                    starting_items[1] = CreateCustomItem("I011", 0., 0.)
-                    starting_items[2] = CreateCustomItem("I00X", 0., 0.)
-                    starting_items[3] = CreateCustomItem("I010", 0., 0.)
-                    starting_items[4] = CreateCustomItem("I00Z", 0., 0.)
-                    starting_items[5] = CreateCustomItem("I00Y", 0., 0.)
-                    starting_skills[1] = 'A007'
-                    starting_skills[2] = 'A00C'
-                    starting_skills[3] = 'A00Z'
+            if region == ClassRegions[BARBARIAN_CLASS] then
+                id = FourCC("HBRB")
+                starting_items[1] = CreateCustomItem("I011", 0., 0.)
+                starting_items[2] = CreateCustomItem("I00X", 0., 0.)
+                starting_items[3] = CreateCustomItem("I010", 0., 0.)
+                starting_items[4] = CreateCustomItem("I00Z", 0., 0.)
+                starting_items[5] = CreateCustomItem("I00Y", 0., 0.)
+                starting_skills[1] = 'A007'
+                starting_skills[2] = 'A00C'
+                starting_skills[3] = 'A00Z'
 
-                    --starting_skills[4] = 'A010'
-                    --starting_skills[5] = 'A006'
-                    --starting_skills[6] = 'A00O'
-                else
-                    id = FourCC("HSRC")
-                    starting_items[1] = CreateCustomItem("I012", 0., 0.)
-                    starting_items[2] = CreateCustomItem("I00X", 0., 0.)
-                    starting_items[3] = CreateCustomItem("I010", 0., 0.)
-                    starting_items[4] = CreateCustomItem("I00Z", 0., 0.)
-                    starting_items[5] = CreateCustomItem("I00Y", 0., 0.)
-                    starting_skills[1] = 'A003'
-                    starting_skills[2] = 'A00J'
-                    starting_skills[3] = 'A00D'
-                    --starting_skills[4] = "AMLT"
-                    --[[
-                    starting_skills[4] = 'A005'
-                    starting_skills[5] = 'A00L'
-                    starting_skills[6] = 'A001'
-                    starting_skills[7] = 'A00K'
-                    starting_skills[8] = 'A00M'
-                    starting_skills[9] = 'A019'
-                    starting_skills[10] = 'A00F'
-                    starting_skills[11] = 'A00I'
-                    starting_skills[12] = 'A00N'
-                    starting_skills[13] = 'A00E'
-                    starting_skills[14] = 'A00H']]
-                end
+                --starting_skills[4] = 'A010'
+                --starting_skills[5] = 'A006'
+                --starting_skills[6] = 'A00O'
+            elseif region == ClassRegions[SORCERESS_CLASS] then
+                id = FourCC("HSRC")
+                starting_items[1] = CreateCustomItem("I012", 0., 0.)
+                starting_items[2] = CreateCustomItem("I00X", 0., 0.)
+                starting_items[3] = CreateCustomItem("I010", 0., 0.)
+                starting_items[4] = CreateCustomItem("I00Z", 0., 0.)
+                starting_items[5] = CreateCustomItem("I00Y", 0., 0.)
+                starting_skills[1] = 'A003'
+                starting_skills[2] = 'A00J'
+                starting_skills[3] = 'A00D'
+                --starting_skills[4] = "AMLT"
+                --[[
+                starting_skills[4] = 'A005'
+                starting_skills[5] = 'A00L'
+                starting_skills[6] = 'A001'
+                starting_skills[7] = 'A00K'
+                starting_skills[8] = 'A00M'
+                starting_skills[9] = 'A019'
+                starting_skills[10] = 'A00F'
+                starting_skills[11] = 'A00I'
+                starting_skills[12] = 'A00N'
+                starting_skills[13] = 'A00E'
+                starting_skills[14] = 'A00H']]
+            elseif region == ClassRegions[NECROMANCER_CLASS] then
+                id = FourCC("HNCR")
+                starting_items[1] = CreateCustomItem("I012", 0., 0.)
+                starting_items[2] = CreateCustomItem("I00X", 0., 0.)
+                starting_items[3] = CreateCustomItem("I010", 0., 0.)
+                starting_items[4] = CreateCustomItem("I00Z", 0., 0.)
+                starting_items[5] = CreateCustomItem("I00Y", 0., 0.)
+                starting_skills[1] = "ANRD"
+                starting_skills[2] = "ANBP"
+                starting_skills[3] = "ANBS"
+                starting_skills[4] = "ANGS"
+                starting_skills[5] = "ANUC"
+                starting_skills[6] = "ANDR"
+                starting_skills[7] = "ANHV"
+                starting_skills[8] = "ANWK"
+                starting_skills[9] = "ANUL"
+                starting_skills[10] = "ANCE"
+                starting_skills[11] = "ANDV"
+                starting_skills[12] = "ANDF"
+                starting_skills[13] = "ANFR"
+                starting_skills[14] = "ANBB"
+                starting_skills[15] = "ANLR"
+                starting_skills[16] = "ANPB"
+                starting_skills[17] = "ANBR"
+                starting_skills[18] = "ANTS"
+            else
+                ActivePlayers = ActivePlayers - 1
+                return
+            end
 
                 local hero = CreateUnit(Player(player_id), id, GetRectCenterX(gg_rct_starting_location) , GetRectCenterY(gg_rct_starting_location), 270.)
                 RemoveUnit(GetTriggerUnit())
@@ -147,6 +179,7 @@ do
                 DelayAction(0., function()
                     local unit_data = GetUnitData(hero)
                     BlzSetHeroProperName(hero, HeroProperNames[unit_data.unit_class][GetRandomInt(1, #HeroProperNames[unit_data.unit_class])])
+                    if region == ClassRegions[NECROMANCER_CLASS] then RegisterNecromancerCorpseSpawn(hero) end
                 end)
 
 
@@ -224,18 +257,20 @@ do
                             UnitAddMyAbility(hero, starting_skills[i])
                         end
 
-                    end)
-
-
-                    if id == FourCC("HBRB") then BlzSetUnitName(hero, LOCALE_LIST[my_locale].BARBARIAN_NAME)
-                    else BlzSetUnitName(hero, LOCALE_LIST[my_locale].SORCERESS_NAME) end
-
-
-                    DelayAction(6., function()
                         SelectUnitForPlayerSingle(hero, Player(player_number))
                         AddPointsToPlayer(player_id, 0)
                         EnableGUIForPlayer(player_id)
                         ShowPlayerUI(player_id)
+
+                    end)
+
+
+                    if id == FourCC("HBRB") then BlzSetUnitName(hero, LOCALE_LIST[my_locale].BARBARIAN_NAME)
+                    elseif id == FourCC("HSRC") then BlzSetUnitName(hero, LOCALE_LIST[my_locale].SORCERESS_NAME)
+                    else BlzSetUnitName(hero, GetLocalString("Некромант", "Necromancer")) end
+
+
+                    DelayAction(6., function()
                         PlayCinematicSpeech(player_id-1, gg_unit_h000_0054, LOCALE_LIST[my_locale].INTRODUCTION_TEXT_1, 6.)
                         DelayAction(7., function()
                             PlayCinematicSpeech(player_id-1, gg_unit_h000_0054, LOCALE_LIST[my_locale].INTRODUCTION_TEXT_2, 6.)
@@ -267,6 +302,8 @@ do
 
     BarbarianRegion = 0
     SorceressRegion = 0
+    NecromancerRegion = 0
+    ClassRegions = nil
 
 
     local function CreateClassText(rect, text)
@@ -292,17 +329,37 @@ do
         LvlupTrigger = CreateTrigger()
         local trg = CreateTrigger()
 
-        BarbarianRegion = CreateRegion()
-        SorceressRegion = CreateRegion()
-        RegionAddRect(SorceressRegion, gg_rct_sorceress_select)
-        RegionAddRect(BarbarianRegion, gg_rct_barbarian_select)
+        --BarbarianRegion = CreateRegion()
+        --SorceressRegion = CreateRegion()
+        --NecromancerRegion = CreateRegion()
+
+        local class_rects = {
+            [BARBARIAN_CLASS] = gg_rct_barbarian_select,
+            [SORCERESS_CLASS] = gg_rct_sorceress_select,
+            [NECROMANCER_CLASS] = gg_rct_necro_select
+        }
+
+        ClassRegions = { }
+
+        for i = 1, 9 do
+            if class_rects[i] then
+                ClassRegions[i] = CreateRegion()
+                RegionAddRect(ClassRegions[i], class_rects[i])
+                TriggerRegisterEnterRegionSimple(trg, ClassRegions[i])
+            end
+        end
+
+        --RegionAddRect(SorceressRegion, gg_rct_sorceress_select)
+        --RegionAddRect(BarbarianRegion, gg_rct_barbarian_select)
+        --RegionAddRect(NecromancerRegion, gg_rct_necro_select)
         CreateClassText(gg_rct_barbarian_select, LOCALE_LIST[my_locale].BARBARIAN_NAME)
         CreateClassText(gg_rct_sorceress_select, LOCALE_LIST[my_locale].SORCERESS_NAME)
+        CreateClassText(gg_rct_necro_select, LOCALE_LIST[my_locale].NECROMANCER_NAME)
 
-        TriggerRegisterEnterRegionSimple(trg, BarbarianRegion)
-        TriggerRegisterEnterRegionSimple(trg, SorceressRegion)
+        --TriggerRegisterEnterRegionSimple(trg, BarbarianRegion)
+        --TriggerRegisterEnterRegionSimple(trg, SorceressRegion)
+        --TriggerRegisterEnterRegionSimple(trg, NecromancerRegion)
         TriggerAddAction(trg, HeroSelect)
-
 
 
         TriggerAddAction(LvlupTrigger, function()
@@ -311,6 +368,7 @@ do
             DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Other\\Levelup\\LevelupCaster.mdx", PlayerHero[player_id], "origin"))
             PlayerLastRequiredEXP[player_id] = math.floor(GetLevelXP(GetHeroLevel(PlayerHero[player_id]) - 1) + 0.5)
             PlayerRequiredEXP[player_id] = math.floor(GetLevelXP(GetHeroLevel(PlayerHero[player_id])) + 0.5)
+            AddTalentPointsToPlayer(player_id, 1)
         end)
 
         TriggerAddAction(DeathTrigger, function ()
@@ -333,7 +391,7 @@ do
             AddSoundVolumeZ(HeroDeathSoundpack[unit_data.unit_class][GetRandomInt(1, #HeroDeathSoundpack[unit_data.unit_class])], GetUnitX(hero), GetUnitY(hero), 50., 115, 2200.)
                 local timer = CreateTimer()
                 TimerStart(timer, 7. + (Current_Wave / 4.), false, function()
-                    ReviveHero(hero, GetRectCenterX(gg_rct_cemetary), GetRectCenterY(gg_rct_cemetary), true)
+                    ReviveHero(hero, CemetaryX, CemetaryY, true)
                     SetUnitTimeScale(hero, 1.)
                     SetUnitAnimationByIndex(hero, 0)
                     IssueImmediateOrderById(hero, order_stop)
@@ -342,6 +400,9 @@ do
                     DestroyTimer(GetExpiredTimer())
                     SelectUnitForPlayerSingle(hero, player)
                     for i = 1, #ActiveCurses do ApplyCurse(ActiveCurses[i]) end
+                    local minions = GetAllUnitSummonUnits(hero)
+                    ForGroup(minions, function() KillUnit(GetEnumUnit()) end)
+                    DestroyGroup(minions)
                 end)
 
         end)
@@ -371,7 +432,8 @@ do
 
         HeroDeathSoundpack = {
             [BARBARIAN_CLASS] = { "Sound\\Barbarian\\death1.wav", "Sound\\Barbarian\\death2.wav" },
-            [SORCERESS_CLASS] = { "Sound\\Sorceress\\death1.wav", "Sound\\Sorceress\\death2.wav", "Sound\\Sorceress\\death3.wav" }
+            [SORCERESS_CLASS] = { "Sound\\Sorceress\\death1.wav", "Sound\\Sorceress\\death2.wav", "Sound\\Sorceress\\death3.wav" },
+            [NECROMANCER_CLASS] = { "Sound\\Necromancer\\death1.wav", "Sound\\Necromancer\\death3.wav" },
         }
 
         HeroProperNames = {
@@ -385,8 +447,15 @@ do
                 LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_5, LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_6, LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_7, LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_8,
                 LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_9
             },
+            [NECROMANCER_CLASS] = {
+                LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_1, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_2, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_3, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_4,
+                LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_5, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_6, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_7, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_8,
+                LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_9, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_10, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_11, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_12,
+                LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_13, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_14, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_15
+            },
         }
 
+        CemetaryX, CemetaryY = GetRectCenterX(gg_rct_cemetary), GetRectCenterY(gg_rct_cemetary)
 
         RegisterTestCommand("exp", function()
             SuspendHeroXP(PlayerHero[1], false)

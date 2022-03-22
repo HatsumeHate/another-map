@@ -15,6 +15,10 @@ do
     SKILL_MAGICAL = 2
     SKILL_UNIQUE = 3
 
+    SKILL_CLASS_ATTACK = 1
+    SKILL_CLASS_SUPPORT = 2
+    SKILL_CLASS_UTILITY = 3
+
 
     SKILL_CATEGORY_LIGHTNING = 1
     SKILL_CATEGORY_ICE = 2
@@ -24,6 +28,10 @@ do
     SKILL_CATEGORY_FIGHTING_MASTERY = 5
     SKILL_CATEGORY_BATTLE_ADVANTAGE = 6
     SKILL_CATEGORY_INNER_STRENGTH = 7
+
+    SKILL_CATEGORY_DARK_ART = 8
+    SKILL_CATEGORY_CURSES = 9
+    SKILL_CATEGORY_SUMMONING = 10
 
     SKILL_CATEGORY_NAME = 0
     SKILL_CATEGORY_ICON = 0
@@ -156,6 +164,7 @@ do
             name                    = "",
             icon                    = "",
             skill_type              = nil,
+            classification          = SKILL_CLASS_ATTACK,
             autotrigger             = true,
             order                   = 0,
             activation_type         = SELF_CAST,
@@ -206,6 +215,9 @@ do
             [SKILL_CATEGORY_FIGHTING_MASTERY] = "GUI\\BTN_CR_HOLDINGGROUND.blp",
             [SKILL_CATEGORY_BATTLE_ADVANTAGE] = "GUI\\BTN_cr_Warp3.blp",
             [SKILL_CATEGORY_INNER_STRENGTH] = "GUI\\BTN_cr_HOLYllllcharge.blp",
+            [SKILL_CATEGORY_DARK_ART] = "GUI\\BTNNecromancy.blp",
+            [SKILL_CATEGORY_CURSES] = "GUI\\BTNFhtagn2.blp",
+            [SKILL_CATEGORY_SUMMONING] = "GUI\\BTNNecromancy2.blp",
         }
 
         CLASS_SKILL_CATEGORY = {
@@ -219,6 +231,11 @@ do
                 SKILL_CATEGORY_LIGHTNING,
                 SKILL_CATEGORY_ICE,
                 SKILL_CATEGORY_ARCANE
+            },
+            [NECROMANCER_CLASS] = {
+                SKILL_CATEGORY_DARK_ART,
+                SKILL_CATEGORY_CURSES,
+                SKILL_CATEGORY_SUMMONING
             }
         }
 
@@ -230,6 +247,9 @@ do
             [SKILL_CATEGORY_FIGHTING_MASTERY] = LOCALE_LIST[my_locale].SKILL_CATEGORY_FIGHTING_MASTERY_ADVANCED,
             [SKILL_CATEGORY_BATTLE_ADVANTAGE] = LOCALE_LIST[my_locale].SKILL_CATEGORY_BATTLE_ADVANTAGE_ADVANCED,
             [SKILL_CATEGORY_INNER_STRENGTH] = LOCALE_LIST[my_locale].SKILL_CATEGORY_INNER_STRENGTH_ADVANCED,
+            [SKILL_CATEGORY_DARK_ART] = LOCALE_LIST[my_locale].SKILL_CATEGORY_DARK_ART_ADVANCED,
+            [SKILL_CATEGORY_CURSES] = LOCALE_LIST[my_locale].SKILL_CATEGORY_CURSES_ADVANCED,
+            [SKILL_CATEGORY_SUMMONING] = LOCALE_LIST[my_locale].SKILL_CATEGORY_SUMMONING_ADVANCED,
         }
 
         -- defined skills
@@ -365,14 +385,8 @@ do
             level = {
                 [1] = {
                     range               = 700.,
-                    --missile             = 'MGFB',
-                    --from_unit           = true,
                     resource_cost       = 20.,
                     cooldown            = 6.,
-                    --animation           = 3,
-                    --animation_point     = 2.3,
-                   -- animation_backswing = 0.433,
-                   -- timescale     = 0.25,
                 }
             }
         })
@@ -389,7 +403,6 @@ do
             },
             sfx_pack = {
                 on_caster = {
-                            --{ effect = "Spell\\Sweep_True_Ice_Medium.mdx", point = "weapon" },
                     { effect = "Spell\\Ice Low.mdx", point = 'hand right' },
                     { effect = "Spell\\Ice Low.mdx", point = 'hand left' }
                 }
@@ -399,17 +412,10 @@ do
                 [1] = {
                     resource_cost       = 18.,
                     cooldown            = 10.,
-                    --animation           = 3,
-                    --animation_point     = 2.3,
-                    --animation_backswing = 0.433,
-                    --timescale     = 0.25,
                 }
             }
         })
 
-        RegisterTestCommand("blz", function()
-            UnitSetAbilityLevel(PlayerHero[1], "ABLZ", 50)
-        end)
         --============================================--
         NewSkillData('A005', {
             name            = LOCALE_LIST[my_locale].SKILL_FROSTORB,
@@ -423,7 +429,6 @@ do
             },
             sfx_pack = {
                 on_caster = {
-                            --{ effect = "Spell\\Sweep_True_Ice_Medium.mdx", point = "weapon" },
                     { effect = "Spell\\Ice High.mdx", point = 'hand right' },
                     { effect = "Spell\\Ice High.mdx", point = 'hand left' }
                 }
@@ -508,7 +513,7 @@ do
         --============================================--
         NewSkillData('A00F', {
             name            = LOCALE_LIST[my_locale].SKILL_METEOR,
-            icon            = "Spell\\BTNInferno.BLP",
+            icon            = "Spell\\BTNRainOfFire.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_FIRE,
@@ -518,7 +523,8 @@ do
             },
             sfx_pack = {
                 on_caster = {
-                    { effect = "Spell\\Sweep_Fire_Medium.mdx", point = "weapon" },
+                    { effect = "Spell\\Sweep_Fire_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON } },
+                    { effect = "Spell\\Sweep_Fire_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON } },
                     { effect = "Spell\\Fire Uber.mdx", point = 'hand right' }
                 }
             },
@@ -730,12 +736,40 @@ do
             }
         })
         --============================================--
+        NewSkillData('ASIR', {
+            name            = LOCALE_LIST[my_locale].SKILL_ICICLERAIN,
+            icon            = "Spell\\BTNRainFall.BLP",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            category        = SKILL_CATEGORY_ICE,
+            sound = { pack = { "Sounds\\Spells\\cast_large_1.wav", "Sounds\\Spells\\cast_large_2.wav", "Sounds\\Spells\\cast_large_3.wav" }, volume = 110, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_throw_air"), timescale = 1.43,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_True_Ice_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON } },
+                    { effect = "Spell\\Sweep_True_Ice_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON } },
+                    { effect = "Spell\\Ice High.mdx", point = 'hand right' },
+                }
+            },
+
+            level = {
+                [1] = {
+                    range               = 750.,
+                    resource_cost       = 21.,
+                    cooldown            = 12.,
+                }
+            }
+        })
+        --============================================--
         NewSkillData('A00O', {
             name            = LOCALE_LIST[my_locale].SKILL_JUMP,
             icon            = "Spell\\BTN_cr_CarA2.blp",
             activation_type = POINT_CAST,
             type            = SKILL_UNIQUE,
             category = SKILL_CATEGORY_BATTLE_ADVANTAGE,
+            classification = SKILL_CLASS_UTILITY,
             range_delta = 3.,
             range_delta_level = 1,
             animation = { sequence  = GetAnimationSequence("barb_jump"), timescale = 1., },
@@ -801,6 +835,7 @@ do
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_INNER_STRENGTH,
+            classification = SKILL_CLASS_SUPPORT,
             animation = {
                 sequence = GetAnimationSequence("barb_spell_howl"), timescale = 0.8
             },
@@ -917,6 +952,7 @@ do
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_BATTLE_ADVANTAGE,
+            classification = SKILL_CLASS_UTILITY,
             animation = { sequence = GetAnimationSequence("barb_spell_throw"), timescale = 0.8 },
 
             level = {
@@ -992,6 +1028,7 @@ do
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_INNER_STRENGTH,
+            classification = SKILL_CLASS_SUPPORT,
             animation = {
                 sequence = GetAnimationSequence("barb_spell_howl"), timescale = 0.9
             },
@@ -1012,6 +1049,7 @@ do
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_INNER_STRENGTH,
+            classification = SKILL_CLASS_SUPPORT,
             animation = {
                 sequence = GetAnimationSequence("barb_spell_howl"), timescale = 0.6
             },
@@ -1024,6 +1062,533 @@ do
                 }
             }
         })
+        --============================================--
+        NewSkillData('ANRD', {
+            name            = LOCALE_LIST[my_locale].SKILL_RAISE_DEAD,
+            icon            = "Spell\\BTNDullahan1.blp",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_SUMMONING,
+            sound = { pack = { "Sounds\\Spells\\revivecast.wav" }, volume = 115, cutoff = 1500., delay = 0.35 },
+            animation = {
+                sequence  = GetAnimationSequence("necro_spell_slam"), timescale = 0.75,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
+                }
+            },
+            custom_condition = function(caster)
+                if CountNearbyCorpses(GetUnitX(caster), GetUnitY(caster), GetOwningPlayer(caster), 600.) > 0 then return true
+                else
+                    SimError(GetLocalString("Поблизости нет трупов", "No corpses nearby"), GetPlayerId(GetOwningPlayer(caster)))
+                    return false
+                end
+            end,
+            classification = SKILL_CLASS_UTILITY,
+
+            level = {
+                [1] = {
+                    resource_cost       = 14.,
+                    cooldown            = 1.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANLR', {
+            name            = LOCALE_LIST[my_locale].SKILL_LICH_RITUAL,
+            icon            = "Spell\\BTNEArthLich.blp",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_SUMMONING,
+            sound = { pack = { "Sounds\\Spells\\revivecast.wav" }, volume = 115, cutoff = 1500., delay = 0.35 },
+            animation = {
+                sequence  = GetAnimationSequence("necro_spell_slam"), timescale = 0.75,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
+                }
+            },
+            custom_condition = function(caster)
+                if CountNearbyCorpses(GetUnitX(caster), GetUnitY(caster), GetOwningPlayer(caster), 600.) > 2 then return true
+                else
+                    SimError(GetLocalString("Поблизости нет трупов", "No corpses nearby"), GetPlayerId(GetOwningPlayer(caster)))
+                    return false
+                end
+            end,
+            classification = SKILL_CLASS_UTILITY,
+
+            level = {
+                [1] = {
+                    resource_cost       = 14.,
+                    cooldown            = 6.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANBR', {
+            name            = LOCALE_LIST[my_locale].SKILL_RIP_BONES,
+            icon            = "Spell\\BTNGalvanize.blp",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_DARK_ART,
+            classification = SKILL_CLASS_UTILITY,
+            sound = { pack = { "Sounds\\Spells\\necro_cast_soft_1.wav", "Sounds\\Spells\\necro_cast_soft_2.wav", "Sounds\\Spells\\necro_cast_soft_3.wav", "Sounds\\Spells\\necro_cast_soft_4.wav", "Sounds\\Spells\\necro_cast_soft_5.wav" }, volume = 128, cutoff = 1500., delay = 0.2 },
+            animation = {
+                sequence  = GetAnimationSequence("necro_spell_slam"), timescale = 0.5,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
+                },
+                on_terrain = {
+                    { effect = "Spell\\model (467).mdx", scale = 0.6, appear_delay = 0.15, animation_time_influence = true, random_orientation_angle = true  }
+                }
+            },
+
+            level = {
+                [1] = {
+                    resource_cost       = 14.,
+                    cooldown            = 12.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANBP', {
+            name            = LOCALE_LIST[my_locale].SKILL_BONE_PRISON,
+            icon            = "Spell\\BTNImpale.blp",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_DARK_ART,
+            classification = SKILL_CLASS_ATTACK,
+            sound = { pack = { "Sounds\\Spells\\bonecast.wav" }, volume = 115, cutoff = 1500., delay = 0.35 },
+            animation = {
+                sequence  = GetAnimationSequence("necro_spell_slam"), timescale = 0.63,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
+                }
+            },
+
+            level = {
+                [1] = {
+                    effect              = 'ENBP',
+                    resource_cost       = 10.,
+                    cooldown            = 11.,
+                    range               = 600.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANBS', {
+            name            = LOCALE_LIST[my_locale].SKILL_BONE_SPEAR,
+            icon            = "Spell\\BTN_Bonespear.blp",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_DARK_ART,
+            classification = SKILL_CLASS_ATTACK,
+            sound = { pack = { "Sounds\\Spells\\bonespear1.wav", "Sounds\\Spells\\bonespear2.wav", "Sounds\\Spells\\bonespear3.wav" }, volume = 125, cutoff = 1500., delay = 0.45 },
+            animation = {
+                sequence  = GetAnimationSequence("necro_spell_throw"), timescale = 1.,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Chaos_Medium.mdx", point = 'right hand' },
+                }
+            },
+
+            level = {
+                [1] = {
+                    missile             = 'MNBS',
+                    resource_cost       = 7.,
+                    cooldown            = 1.,
+                    range               = 800.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANTS', {
+            name            = LOCALE_LIST[my_locale].SKILL_TOXIC_SPIT,
+            icon            = "Spell\\BTNPoisonTouch.blp",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            category        = SKILL_CATEGORY_DARK_ART,
+            classification  = SKILL_CLASS_ATTACK,
+            sound = { pack = { "Sounds\\Spells\\poison_cast_1.wav", "Sounds\\Spells\\poison_cast_2.wav", "Sounds\\Spells\\poison_cast_3.wav" }, volume = 125, cutoff = 1500., delay = 0.23 },
+            animation = {
+                sequence  = GetAnimationSequence("necro_spell_throw"), timescale = 0.9,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Acid_Medium.mdx", point = 'right hand' },
+                }
+            },
+
+            level = {
+                [1] = {
+                    missile             = 'MNPS',
+                    resource_cost       = 5.,
+                    cooldown            = 1.,
+                    range               = 800.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANBB', {
+            name            = LOCALE_LIST[my_locale].SKILL_BONE_BARRAGE,
+            icon            = "Spell\\BTNImpale2.blp",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_DARK_ART,
+            classification = SKILL_CLASS_ATTACK,
+            sound = { pack = { "Sounds\\Spells\\teethlaunch1.wav", "Sounds\\Spells\\teethlaunch2.wav", "Sounds\\Spells\\teethlaunch3.wav" }, volume = 121, cutoff = 1500., delay = 0.21 },
+            animation = {
+                sequence  = GetAnimationSequence("necro_spell_throw"), timescale = 1.,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Chaos_Medium.mdx", point = 'right hand' },
+                }
+            },
+
+            level = {
+                [1] = {
+                    resource_cost       = 7.,
+                    cooldown            = 9.,
+                    range               = 800.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANPB', {
+            name            = LOCALE_LIST[my_locale].SKILL_POISON_BLAST,
+            icon            = "Spell\\BTN_PlagueNova.blp",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_DARK_ART,
+            classification = SKILL_CLASS_ATTACK,
+            sound = { pack = { "Sounds\\Spells\\poisonnova.wav" }, volume = 121, cutoff = 1500. },
+            animation = {
+                sequence = GetAnimationSequence("necro_spell_throw"), timescale = 1.,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Acid_Medium.mdx", point = 'right hand' },
+                },
+                on_terrain = {
+                    { effect = "Effect\\Nether Blast IV.mdx", animation_time_influence = true, timescale = 1.11 },
+                }
+            },
+
+            level = {
+                [1] = {
+                    resource_cost       = 20.,
+                    cooldown            = 14.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANDV', {
+            name            = LOCALE_LIST[my_locale].SKILL_DEVOUR,
+            icon            = "Spell\\BTNDevour.blp",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            category        = SKILL_CATEGORY_SUMMONING,
+            classification = SKILL_CLASS_UTILITY,
+            sound = { pack = { "Sounds\\Spells\\necro_cast_soft_1.wav", "Sounds\\Spells\\necro_cast_soft_2.wav", "Sounds\\Spells\\necro_cast_soft_3.wav", "Sounds\\Spells\\necro_cast_soft_4.wav", "Sounds\\Spells\\necro_cast_soft_5.wav" }, volume = 130, cutoff = 1500., delay = 0.15 },
+            animation = {
+                sequence = GetAnimationSequence("necro_spell_slam"), timescale = 0.8,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Blood_Medium.mdx", point = 'right hand' },
+                }
+            },
+            custom_condition = function(caster)
+                if CountNearbyCorpses(GetUnitX(caster), GetUnitY(caster), GetOwningPlayer(caster), 600.) > 0 then return true
+                else
+                    SimError(GetLocalString("Поблизости нет трупов", "No corpses nearby"), GetPlayerId(GetOwningPlayer(caster)))
+                    return false
+                end
+            end,
+
+            level = {
+                [1] = {
+                    resource_cost       = 20.,
+                    cooldown            = 15.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANCE', {
+            name            = LOCALE_LIST[my_locale].SKILL_CORPSE_EXPLOSION,
+            icon            = "Spell\\BTN_BShrapnel.BLP",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_DARK_ART,
+            classification = SKILL_CLASS_ATTACK,
+            sound = { pack = { "Sounds\\Spells\\corpseexplodecast.wav" }, volume = 117, cutoff = 1500., delay = 0.45 },
+            animation = {
+                sequence  = GetAnimationSequence("necro_spell_throw"), timescale = 0.8,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
+                }
+            },
+            custom_condition = function(caster, x, y)
+                if CountNearbyCorpses(x, y, GetOwningPlayer(caster), 300.) > 0 then return true
+                else
+                    SimError(GetLocalString("Поблизости нет трупов", "No corpses nearby"), GetPlayerId(GetOwningPlayer(caster)))
+                    return false
+                end
+            end,
+
+            level = {
+                [1] = {
+                    resource_cost       = 25.,
+                    cooldown            = 10.,
+                    range               = 700.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANUL', {
+            name            = LOCALE_LIST[my_locale].SKILL_UNDEAD_LAND,
+            icon            = "Spell\\BTNNecroGrip2.blp",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_CURSES,
+            classification = SKILL_CLASS_UTILITY,
+            sound = { pack = { "Sounds\\Spells\\necro_cast_sharp_1.wav", "Sounds\\Spells\\necro_cast_sharp_2.wav", "Sounds\\Spells\\necro_cast_sharp_3.wav", "Sounds\\Spells\\necro_cast_sharp_4.wav" }, volume = 120, cutoff = 1500., delay = 0.15 },
+            animation = {
+                sequence  = GetAnimationSequence("necro_spell_slam"), timescale = 0.7,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
+                }
+            },
+
+            level = {
+                [1] = {
+                    resource_cost       = 15.,
+                    cooldown            = 25.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANWK', {
+            name            = LOCALE_LIST[my_locale].SKILL_WEAKEN,
+            icon            = "Spell\\BTNBloody Stab.blp",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            category        = SKILL_CATEGORY_CURSES,
+            classification  = SKILL_CLASS_UTILITY,
+            sound = { pack = { "Sounds\\Spells\\cursecast.wav" }, volume = 120, cutoff = 1500., delay = 0.4 },
+            animation = {
+                sequence  = GetAnimationSequence("necro_spell_slam"), timescale = 0.7,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
+                }
+            },
+
+            level = {
+                [1] = {
+                    effect              = 'ENWK',
+                    resource_cost       = 15.,
+                    cooldown            = 15.,
+                    range               = 700.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANDF', {
+            name            = LOCALE_LIST[my_locale].SKILL_DECREPIFY,
+            icon            = "Spell\\BTNBreathOfTheDying.blp",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            category        = SKILL_CATEGORY_CURSES,
+            classification  = SKILL_CLASS_UTILITY,
+            sound = { pack = { "Sounds\\Spells\\cursecast.wav" }, volume = 120, cutoff = 1500., delay = 0.4 },
+            animation = {
+                sequence  = GetAnimationSequence("necro_spell_slam"), timescale = 0.7,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
+                }
+            },
+
+            level = {
+                [1] = {
+                    effect              = 'ENDC',
+                    resource_cost       = 15.,
+                    cooldown            = 15.,
+                    range               = 700.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANFR', {
+            name            = LOCALE_LIST[my_locale].SKILL_HORRIFY,
+            icon            = "Spell\\BTNDread.blp",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            category        = SKILL_CATEGORY_CURSES,
+            classification  = SKILL_CLASS_UTILITY,
+            sound = { pack = { "Sounds\\Spells\\cursecast.wav" }, volume = 120, cutoff = 1500., delay = 0.4 },
+            animation = {
+                sequence  = GetAnimationSequence("necro_spell_slam"), timescale = 0.82,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
+                }
+            },
+
+            level = {
+                [1] = {
+                    effect              = "ENHF",
+                    resource_cost       = 25.,
+                    cooldown            = 24.,
+                    range               = 700.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANGS', {
+            name            = LOCALE_LIST[my_locale].SKILL_GROW_SPIKES,
+            icon            = "Spell\\BTNCR_Spiked_Armor.blp",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            category        = SKILL_CATEGORY_DARK_ART,
+            classification  = SKILL_CLASS_SUPPORT,
+            sound = { pack = { "Sounds\\Spells\\bonearmor2.wav" }, volume = 120, cutoff = 1500., delay = 0.2 },
+            animation = {
+                sequence  = GetAnimationSequence("necro_spell_slam"), timescale = 0.5,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
+                }
+            },
+
+            level = {
+                [1] = {
+                    resource_cost       = 15.,
+                    cooldown            = 17.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANUC', {
+            name            = LOCALE_LIST[my_locale].SKILL_UNHOLY_COMMAND,
+            icon            = "Spell\\BTNSkeletal_Hand.blp",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            category        = SKILL_CATEGORY_SUMMONING,
+            classification  = SKILL_CLASS_UTILITY,
+            sound = { pack = { "Sounds\\Spells\\necro_cast_sharp_1.wav", "Sounds\\Spells\\necro_cast_sharp_2.wav", "Sounds\\Spells\\necro_cast_sharp_3.wav", "Sounds\\Spells\\necro_cast_sharp_4.wav" }, volume = 120, cutoff = 1500., delay = 0.15 },
+            animation = {
+                sequence  = GetAnimationSequence("necro_spell_throw"), timescale = 0.7,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
+                }
+            },
+
+            level = {
+                [1] = {
+                    resource_cost       = 7.,
+                    cooldown            = 12.,
+                    range               = 700.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANDR', {
+            name            = LOCALE_LIST[my_locale].SKILL_DARK_REIGN,
+            icon            = "Spell\\BTNReanimate66.blp",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            category        = SKILL_CATEGORY_SUMMONING,
+            classification  = SKILL_CLASS_UTILITY,
+            sound = { pack = { "Sounds\\Spells\\necro_cast_soft_1.wav", "Sounds\\Spells\\necro_cast_soft_2.wav", "Sounds\\Spells\\necro_cast_soft_3.wav", "Sounds\\Spells\\necro_cast_soft_4.wav", "Sounds\\Spells\\necro_cast_soft_5.wav" }, volume = 130, cutoff = 1500., delay = 0.15 },
+            animation = {
+                sequence  = GetAnimationSequence("necro_spell_slam"), timescale = 0.65,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
+                    { effect = "Effect\\WarpDarkCaster.mdx", point = "origin", duration = 1., animation_time_influence = true }
+                }
+                --on_caster = {
+                   -- { effect = "Spell\\ShivasEnchantment.mdx", point = "origin", duration = 1.233 }, { effect = "Spell\\ColdRitual.mdx", point = "origin", permanent = true }
+                --}
+            },
+
+
+            level = {
+                [1] = {
+                    resource_cost       = 30.,
+                    cooldown            = 22.,
+                }
+            }
+        })
+
+        --============================================--
+        NewSkillData('ANHV', {
+            name            = LOCALE_LIST[my_locale].SKILL_HARVEST,
+            icon            = "Spell\\BTNCursedScythe.blp",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            category        = SKILL_CATEGORY_DARK_ART,
+            classification  = SKILL_CLASS_ATTACK,
+            sound = { pack = { "Sounds\\Spells\\reversevampire.wav" }, volume = 120, cutoff = 1500., delay = 0.1 },
+            animation = {
+                sequence  = GetAnimationSequence("necro_spell_throw"), timescale = 1.1,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
+                },
+                on_terrain = {
+                    { effect = "Spell\\SoulScythe.mdx", plane_offset = 20., height = 125., appear_delay = 0., animation_time_influence = true, appear_delay = 0.2, timescale = 1.45, scale = 1.55, permanent = true }
+                }
+            },
+
+            level = {
+                [1] = {
+                    effect = "ENHV",
+                    resource_cost       = 6.,
+                    cooldown            = 8.,
+                    range = 200.,
+                }
+            }
+        })
+
         --============================================--
         NewSkillData('ASQB', {
             name            = "spider queen bile",
@@ -1570,6 +2135,8 @@ do
                 }
             }
         })
+
+        DefineTalentsData()
     end
 
 end

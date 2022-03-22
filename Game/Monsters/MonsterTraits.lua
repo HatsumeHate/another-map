@@ -76,6 +76,8 @@ do
                 unit_data.traits = {}
             end
 
+            if UnitHasTrait(unit, trait.trait_id) then return false end
+
             unit_data.traits[#unit_data.traits+1] = trait
 
 
@@ -109,8 +111,11 @@ do
             end
 
             if trait.modified_scale then
-                unit_data.scale = unit_data.scale + trait.modified_scale
-                SetUnitScale(unit, unit_data.scale, unit_data.scale, unit_data.scale)
+                --unit_data.scale = unit_data.scale + trait.modified_scale
+                --print(BlzGetUnitRealField(unit, UNIT_RF_SCALING_VALUE))
+                local new_scale = BlzGetUnitRealField(unit, UNIT_RF_SCALING_VALUE) + trait.modified_scale
+                SetUnitScale(unit, new_scale, new_scale, new_scale)
+                unit_data.height = unit_data.height * (1. + trait.modified_scale)
             end
 
             return true

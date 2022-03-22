@@ -150,6 +150,18 @@ do
             type = ITEM_PASSIVE_EFFECT
         })
         --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_DEATH_HERALD,
+            id = "ITDH",
+            type = ITEM_PASSIVE_EFFECT
+        })
+        --=========================================================================
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_PRIMAL_TOME,
+            id = "primal_tome_leg",
+            type = ITEM_PASSIVE_EFFECT
+        })
 
     end
 

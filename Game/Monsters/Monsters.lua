@@ -46,6 +46,7 @@ do
     MONSTER_ID_ZOMBIE_N = "n01G"
     MONSTER_ID_ZOMBIE_MUTANT = "n00E"
     MONSTER_ID_FIEND = "u007"
+    MONSTER_ID_SCAVENGER = "u00P"
     MONSTER_ID_GHOUL = "u00J"
     MONSTER_ID_MEAT_GOLEM = "e000"
     MONSTER_ID_ABOMINATION = "u00M"
@@ -56,6 +57,7 @@ do
     MONSTER_ID_SUCCUBUS = "n002"
     MONSTER_ID_SUCCUBUS_ADVANCED = "n00B"
     MONSTER_ID_BLOOD_SUCCUBUS = "n01Q"
+    MONSTER_ID_HELL_SUCCUBUS = "n025"
     MONSTER_ID_HELL_BEAST = "n01T"
     MONSTER_ID_REVENANT_MELEE = "n01U"
     MONSTER_ID_REVENANT = "n01I"
@@ -107,6 +109,7 @@ do
     MONSTER_ID_DEMONKING = "U005"
     MONSTER_ID_UNDERWORLD_QUEEN = "U002"
     MONSTER_ID_REANIMATED = "U004"
+    MONSTER_ID_BLOOD_RAVEN = "n026"
     MONSTER_ID_SKELETON_KING = "n015"
     MONSTER_ID_SPIDER_QUEEN = "n012"
     MONSTER_ID_ARACHNID_BOSS = "n00S"
@@ -589,6 +592,9 @@ do
                 [MONSTER_RANK_ADVANCED] = {
                     [MONSTER_TAG_MELEE] = {
                         { id = MONSTER_ID_BLOOD_SUCCUBUS, chance = 100., max = 3 }
+                    },
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_HELL_SUCCUBUS, chance = 100., max = 2 }
                     }
                 },
                 [MONSTERPACK_BOSS] = {
@@ -724,7 +730,8 @@ do
                 },
                 [MONSTERPACK_BOSS] = {
                     MONSTER_ID_REANIMATED,
-                    MONSTER_ID_SKELETON_KING
+                    MONSTER_ID_SKELETON_KING,
+                    MONSTER_ID_BLOOD_RAVEN
                 }
             },
             [MONSTERPACK_ZOMBIES] = {
@@ -732,6 +739,7 @@ do
                     [MONSTER_TAG_MELEE] = {
                         { id = MONSTER_ID_SKELETON_N, chance = 10., max = 2 },
                         { id = MONSTER_ID_SKELETON, chance = 20., max = 3 },
+                        { id = MONSTER_ID_SCAVENGER, chance = 20., max = 6 },
                         { id = MONSTER_ID_ZOMBIE_N, chance = 35., max = 3 },
                         { id = MONSTER_ID_ZOMBIE, chance = 100., max = 2 },
                     },
@@ -746,7 +754,8 @@ do
                     }
                 },
                 [MONSTERPACK_BOSS] = {
-                    MONSTER_ID_BUTCHER
+                    MONSTER_ID_BUTCHER,
+                    MONSTER_ID_BLOOD_RAVEN
                 }
             },
             [MONSTERPACK_DEMONS] = {
@@ -756,6 +765,7 @@ do
                         { id = MONSTER_ID_SUCCUBUS, chance = 33.5, max = 3 },
                         { id = MONSTER_ID_GHOUL, chance = 33.5, max = 3 },
                         { id = MONSTER_ID_HELL_BEAST, chance = 33.5, max = 3 },
+                        { id = MONSTER_ID_SCAVENGER, chance = 50., max = 6 },
                         { id = MONSTER_ID_FIEND, chance = 100. },
                     },
                     [MONSTER_TAG_RANGE] = {
@@ -809,7 +819,8 @@ do
                     }
                 },
                 [MONSTERPACK_BOSS] = {
-                    MONSTER_ID_MEPHISTO
+                    MONSTER_ID_MEPHISTO,
+                    MONSTER_ID_BLOOD_RAVEN
                 }
             },
             [MONSTERPACK_BOSS] = {
@@ -824,7 +835,8 @@ do
                 MONSTER_ID_ARACHNID_BOSS,
                 MONSTER_ID_BANDIT_BOSS,
                 MONSTER_ID_SKELETON_KING,
-                MONSTER_ID_ANDARIEL
+                MONSTER_ID_ANDARIEL,
+                MONSTER_ID_BLOOD_RAVEN
             }
         }
 
@@ -849,7 +861,7 @@ do
             { stat = POISON_BONUS,          initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
             { stat = ARCANE_BONUS,          initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
             { stat = HP_VALUE,              initial = 0,      delta = 10,    delta_level = 1, method = STRAIGHT_BONUS, per_player = 45 },
-            { stat = HP_VALUE,              initial = 1.,   delta = 0.04,  delta_level = 1, method = MULTIPLY_BONUS },
+            { stat = HP_VALUE,              initial = 1.,   delta = 0.02,  delta_level = 1, method = MULTIPLY_BONUS },
         }
 
         BONUS_MONSTER_STAT_RATES = {
@@ -938,7 +950,7 @@ do
                             if BlzGroupGetSize(WaveGroup) <= 0 then EndWave() end
                         end
 
-                    if GetKillingUnit() ~= nil then
+                    if GetKillingUnit() then
                         local unit_Data = GetUnitData(unit)
 
                         --print("pre drop")
@@ -951,7 +963,7 @@ do
                         if unit_Data.xp and unit_Data.xp > 0 then
                             local bonus = MONSTER_EXP_RATES.const_per_level * Current_Wave
                             local mult = 1. + (MONSTER_EXP_RATES.modf_per_level * Current_Wave)
-                            GiveExpForKill((unit_Data.xp + bonus) * MONSTER_EXP_RATES[unit_Data.classification or MONSTER_RANK_COMMON] * mult, GetUnitX(unit), GetUnitY(unit))
+                            GiveExpForKill(((unit_Data.xp * (1. + GetUnitParameterValue(GetKillingUnit(), EXP_BONUS) * 0.01)) + bonus) * MONSTER_EXP_RATES[unit_Data.classification or MONSTER_RANK_COMMON] * mult, GetUnitX(unit), GetUnitY(unit))
                         end
 
                         unit = nil

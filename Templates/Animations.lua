@@ -155,6 +155,19 @@ do
         })
 
 
+        NewAnimationSequence("necro_spell_throw", {
+            animation           = 6,
+            animation_point     = 0.7,
+            animation_backswing = 0.5,
+        })
+
+        NewAnimationSequence("necro_spell_slam", {
+            animation           = 2,
+            animation_point     = 1.5,
+            animation_backswing = 0.95,
+        })
+
+
         NewAnimationSequence("spider_venom_bile", {
             animation           = 3,
             animation_point     = 0.7,
@@ -280,6 +293,8 @@ do
             animation_point     = 0.604,
             animation_backswing = 0.4,
         })
+
+
 
 
     end

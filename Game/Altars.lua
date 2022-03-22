@@ -181,6 +181,16 @@ do
                         ApplyBuff(target, target, "A01J", 1)
                         AddSoundVolume("Sounds\\Altar\\warping.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
                     end
+                },
+                [5] = {
+                    name = "Experience Blessing",
+                    recharge_time = 120.,
+                    minimap_model_active = "Marker\\MarkShrineChannelingActive.mdx",
+                    minimap_model_used = "Marker\\MarkShrineChannelingUsed.mdx",
+                    effect = function(target)
+                        ApplyBuff(target, target, "ALEX", 1)
+                        AddSoundVolume("Sounds\\Altar\\experience.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
+                    end
                 }
             },
             well_hp = {
@@ -207,7 +217,11 @@ do
             chest_open = {
                 recharge_time = 30.,
                 effect = function(target)
-                    for i = 1, 6 do DropForPlayer(target, i-1) end
+                    for i = 1, 6 do
+                        if PlayerHero[i] and IsUnitInRange(PlayerHero[i], target, 2400.) then
+                            DropForPlayer(target, i-1)
+                        end
+                    end
                     AddSoundVolume("Sounds\\Altar\\chestbig.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
                 end
             },

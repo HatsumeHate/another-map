@@ -479,7 +479,7 @@ do
             local id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
             local player = id + 1
 
-                if id <= 5 then
+                if id <= 5 and IsAHero(GetTriggerUnit()) then
                     local hero = GetTriggerUnit()
 
                         PrivateChestFrame[player].state = true
@@ -638,7 +638,7 @@ do
 
         for i = 1, 6 do
             DrawPrivateChestFrames(i)
-            BlzFrameSetTexture(PrivateChestFrame[i].portrait, "ReplaceableTextures\\CommandButtons\\BTNMoonKey.blp", 0, true)
+            BlzFrameSetTexture(PrivateChestFrame[i].portrait, "UI\\BTNTreasure Chest.blp", 0, true)
             BlzFrameSetText(PrivateChestFrame[i].name, GetUnitName(gg_unit_n01Y_0018))
         end
 

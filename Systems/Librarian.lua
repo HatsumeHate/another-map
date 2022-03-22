@@ -268,7 +268,7 @@ do
 
         end)
 
-        local trg = CreateTrigger()
+        --local trg = CreateTrigger()
         local soundpack = {
             open = {
                 "Units\\NightElf\\Runner\\RunnerWhat2.wav",
@@ -283,6 +283,7 @@ do
                 BlzFrameSetText(LibrarianFrame[i].name, GetUnitName(unit_owner))
             end
 
+            --[[
             TriggerRegisterUnitInRangeSimple(trg, 300., unit_owner)
             TriggerAddAction(trg, function()
                 local id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
@@ -317,7 +318,46 @@ do
 
 
                     end
-            end)
+            end)]]
+
+            CreateNpcData(unit_owner, GetUnitName(unit_owner))
+
+            --AddInteractiveOption(unit_owner, { name = GetLocalString("Болтать", "Talk"), feedback = function(clicked, clicking, player) PlayConversation("peon", unit_owner, player) end })
+
+            AddInteractiveOption(unit_owner, { name = GetLocalString("Книги", "Books"), feedback = function(clicked, clicking, player)
+                local id = player - 1
+                --local player = id + 1
+
+                    if id <= 5 then
+
+                        if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(LibrarianFrame[player].main_frame, true) end
+                        LibrarianFrame[player].state = true
+                        UpdateLibrarianWindow(player)
+                        if soundpack then
+                            PlayLocalSound(soundpack.open[GetRandomInt(1, #soundpack.open)], id, 125)
+                        end
+
+                            local timer = CreateTimer()
+                            TimerStart(timer, 0.1, true, function()
+                                if not IsUnitInRange(clicking, unit_owner, 299.) or IsUnitHidden(unit_owner) or GetUnitState(clicking, UNIT_STATE_LIFE) < 0.045 then
+                                    --DestroySlider(player)
+                                    RemovePlayerItems(player)
+                                    DestroyContextMenu(player)
+                                    RemoveTooltip(player)
+                                    --ShopInFocus[player] = nil
+                                    LibrarianFrame[player].state = false
+                                    if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(LibrarianFrame[player].main_frame, false) end
+                                    DestroyTimer(timer)
+                                    if soundpack then
+                                        PlayLocalSound(soundpack.close[GetRandomInt(1, #soundpack.open)], id, 125)
+                                    end
+                                end
+                            end)
+
+
+                    end
+
+            end})
 
     end
 

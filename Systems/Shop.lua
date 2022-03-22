@@ -500,7 +500,7 @@ do
 
     ---@param unit_owner unit
     ---@param texture string
-    function CreateShop(unit_owner, texture, soundpack)
+    function CreateShop(unit_owner, name, texture, soundpack)
         local handle = unit_owner
 
             ShopData[handle] = {}
@@ -514,6 +514,17 @@ do
                 ShopData[handle].item_list[i].perm = false
             end
 
+            BlzSetUnitName(handle, name)
+
+        --[[
+            UnitsList[handle] = {
+                name = name,
+                Owner = handle,
+                classification = NPC,
+                interactive_options = {},
+            }]]
+
+            CreateNpcData(handle, name)
 
             if not FirstTime_Data then
 
@@ -538,10 +549,10 @@ do
 
             AddSpecialEffectTarget("Marker\\VendorIcon.mdx", unit_owner, "overhead")
 
-
+            --[[
             local trg = CreateTrigger()
             TriggerRegisterUnitInRangeSimple(trg, 250., unit_owner)
-            --TriggerAddCondition(trg, Condition())
+            TriggerAddCondition(trg, Condition())
             TriggerAddAction(trg, function()
                 if not IsUnitHidden(unit_owner) then
                     local id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
@@ -590,7 +601,57 @@ do
                     end
                 end
 
-            end)
+            end)]]
+
+        --AddInteractiveOption(handle, { name = "Talk", feedback = function(clicked, clicking, player) PlayConversation("peon", handle, player) end })
+
+        AddInteractiveOption(handle, { name = GetLocalString("Торговать", "Trade"), feedback = function(clicked, clicking, player)
+            if not IsUnitHidden(clicked) then
+                local id = player - 1
+
+                    if player <= 6 then
+
+                        ShopInFocus[player] = clicked
+                        if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(ShopFrame[player].main_frame, true) end
+                        ShopFrame[player].state = true
+                        BlzFrameSetTexture(ShopFrame[player].portrait, texture, 0, true)
+                        BlzFrameSetText(ShopFrame[player].name, GetUnitName(clicked))
+                        UpdateShopWindow()
+
+                        SetUIState(player, SKILL_PANEL, false)
+                        SetUIState(player, CHAR_PANEL, false)
+
+                        if soundpack then
+                            PlayLocalSound(soundpack.open[GetRandomInt(1, #soundpack.open)], id, 125)
+                        end
+
+                            local timer = CreateTimer()
+                            TimerStart(timer, 0.1, true, function()
+                                if not IsUnitInRange(clicking, clicked, 250.) or IsUnitHidden(clicked) or GetUnitState(clicking, UNIT_STATE_LIFE) < 0.045 then
+                                    ShopFrame[player].in_focus = nil
+                                    DestroySlider(player)
+                                    DestroyContextMenu(player)
+                                    ShopInFocus[player] = nil
+                                    ShopFrame[player].state = false
+                                    if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(ShopFrame[player].main_frame, false) end
+                                    DestroyTimer(GetExpiredTimer())
+                                    if soundpack then
+                                        PlayLocalSound(soundpack.close[GetRandomInt(1, #soundpack.open)], id, 125)
+                                    end
+                                end
+                            end)
+
+
+
+                        if FirstTime_Data[player].first_time then
+                            DestroyEffect(FirstTime_Data[player].effect)
+                            FirstTime_Data[player].first_time = false
+                        end
+
+                    end
+                end
+        end
+        })
 
         return ShopData[handle]
     end

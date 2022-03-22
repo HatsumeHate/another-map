@@ -23,7 +23,6 @@ do
             result_mix = result_mix .. MusicMix[order_table[i]] .. ";"
         end
 
-       -- print(result_mix)
         return result_mix
     end
 

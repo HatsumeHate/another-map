@@ -83,16 +83,16 @@ do
     function ApplyRestoreEffect(source, target, data, lvl)
         local myeffect = data.level[lvl]
 
-            if myeffect.life_restored ~= nil and myeffect.life_restored > 0 then
-                SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + myeffect.life_restored)
+            if myeffect.life_restored and myeffect.life_restored > 0 then
+                SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + (myeffect.life_restored * (1. + GetUnitParameterValue(target, HEALING_BONUS) * 0.01)))
                 CreateHitnumber(R2I(myeffect.life_restored), source, target, HEAL_STATUS)
-            elseif myeffect.life_percent_restored ~= nil and myeffect.life_percent_restored > 0 then
-                local value = BlzGetUnitMaxHP(target) * myeffect.life_percent_restored
+            elseif myeffect.life_percent_restored and myeffect.life_percent_restored > 0 then
+                local value = BlzGetUnitMaxHP(target) * (myeffect.life_percent_restored * (1. + GetUnitParameterValue(target, HEALING_BONUS) * 0.01))
                 SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + value)
                 CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
             end
 
-            if myeffect.resource_restored ~= nil and myeffect.resource_restored > 0 then
+            if myeffect.resource_restored and myeffect.resource_restored > 0 then
                 SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + myeffect.resource_restored)
                 CreateHitnumber(R2I(myeffect.resource_restored), source, target, RESOURCE_STATUS)
             elseif myeffect.resource_percent_restored ~= nil and myeffect.resource_percent_restored > 0 then
@@ -100,6 +100,9 @@ do
                 SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + value)
                 CreateHitnumber(R2I(value), source, target, RESOURCE_STATUS)
             end
+
+            if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_caster_restore, source) end
+            --if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_unit, target) end
 
     end
 
@@ -111,15 +114,37 @@ do
     ---@param target_type integer
     function ApplyBuffEffect(source, target, data, lvl, target_type)
         local myeffect = data.level[lvl]
+
+        if myeffect.hit_once_in then
+            local unit_data = GetUnitData(target)
+
+                if unit_data.effectstacks then
+                    if unit_data.effectstacks[data.id] and unit_data.effectstacks[data.id] <= lvl then
+                        return
+                    else
+                        unit_data.effectstacks[data.id] = lvl
+                        DelayAction(myeffect.hit_once_in, function() unit_data.effectstacks[data.id] = nil end)
+                    end
+                else
+                    unit_data.effectstacks = {}
+                    unit_data.effectstacks[data.id] = lvl
+                    DelayAction(myeffect.hit_once_in, function() unit_data.effectstacks[data.id] = nil end)
+                end
+
+        end
+
         PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
         if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_unit, target) end
+        if myeffect.sound_on_hit then
+            AddSoundVolumeZ(myeffect.sound_on_hit.pack[GetRandomInt(1, #myeffect.sound_on_hit.pack)], GetUnitX(target), GetUnitY(target), 35., myeffect.sound_on_hit.volume, myeffect.sound_on_hit.cutoff)
+        end
         --print("add buff")
         -- delay for effect animation
             local timer = CreateTimer()
             TimerStart(timer, myeffect.hit_delay or 0., false, function()
                 ModifyBuffsEffect(source, target, data, lvl, target_type)
                 OnEffectApply(source, target, data)
-                DestroyTimer(GetExpiredTimer())
+                DestroyTimer(timer)
             end)
     end
 
@@ -129,6 +154,24 @@ do
     ---@param lvl integer
     function ApplyEffectHealing(source, target, data, lvl)
         local myeffect = data.level[lvl]
+
+        if myeffect.hit_once_in then
+            local unit_data = GetUnitData(target)
+
+                if unit_data.effectstacks then
+                    if unit_data.effectstacks[data.id] and unit_data.effectstacks[data.id] <= lvl then
+                        return
+                    else
+                        unit_data.effectstacks[data.id] = lvl
+                        DelayAction(myeffect.hit_once_in, function() unit_data.effectstacks[data.id] = nil end)
+                    end
+                else
+                    unit_data.effectstacks = {}
+                    unit_data.effectstacks[data.id] = lvl
+                    DelayAction(myeffect.hit_once_in, function() unit_data.effectstacks[data.id] = nil end)
+                end
+
+        end
 
         PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
         if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_unit, target) end
@@ -144,7 +187,7 @@ do
                     ModifyBuffsEffect(source, target, data, lvl, ON_ALLY)
                     OnEffectApply(source, target, data)
                 end
-                DestroyTimer(GetExpiredTimer())
+                DestroyTimer(timer)
             end)
 
     end
@@ -156,6 +199,23 @@ do
     function ApplyEffectDamage(source, target, data, lvl)
         local myeffect = data.level[lvl]
 
+        if myeffect.hit_once_in then
+            local unit_data = GetUnitData(target)
+
+                if unit_data.effectstacks then
+                    if unit_data.effectstacks[data.id] and unit_data.effectstacks[data.id] <= lvl then
+                        return
+                    else
+                        unit_data.effectstacks[data.id] = lvl
+                        DelayAction(myeffect.hit_once_in, function() unit_data.effectstacks[data.id] = nil end)
+                    end
+                else
+                    unit_data.effectstacks = {}
+                    unit_data.effectstacks[data.id] = lvl
+                    DelayAction(myeffect.hit_once_in, function() unit_data.effectstacks[data.id] = nil end)
+                end
+
+        end
 
             PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
             if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_unit, target) end
@@ -184,19 +244,28 @@ do
                     end
 
                     if myeffect.life_restored_from_hit or myeffect.resource_restored_from_hit then
-                        ApplyRestoreEffect(source, target, data, lvl)
+                        ApplyRestoreEffect(source, source, data, lvl)
                     end
 
 
                     OnEffectApply(source, target, data)
                 end
-                DestroyTimer(GetExpiredTimer())
+                DestroyTimer(timer)
             end)
 
     end
 
+    function HasTag(tags, tag)
 
+        if not tags then return false end
 
+        for i = 1, #tags do
+            if tags[i] == tag then
+                return true
+            end
+        end
+        return false
+    end
 
     ---@param source unit
     ---@param target unit
@@ -204,7 +273,8 @@ do
     ---@param y real
     ---@param effect_id integer
     ---@param lvl integer
-    function ApplyEffect(source, target, x, y, effect_id, lvl)
+    ---@return table
+    function ApplyEffect(source, target, x, y, effect_id, lvl, tags)
         local data = GetEffectData(effect_id)
         local player_entity = GetOwningPlayer(source)
 
@@ -223,6 +293,8 @@ do
 
         GenerateEffectLevelData(data, data.current_level)
         local current_level = data.current_level
+
+        if tags then data.tags = tags end
 
         OnEffectPrecast(source, target, x, y, data)
 
@@ -257,15 +329,23 @@ do
                 --if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_point, target or source) end
                 if myeffect.SFX_used then
                     local effect = AddSpecialEffect(myeffect.SFX_used, x, y)
+
                         BlzSetSpecialEffectScale(effect, myeffect.SFX_used_scale or 1.)
+
                         if myeffect.timescale then BlzSetSpecialEffectTimeScale(effect, 1. + (1. - myeffect.timescale)) end
-                        if myeffect.SFX_inherit_angle then BlzSetSpecialEffectOrientation(effect, GetUnitFacing(source) * bj_DEGTORAD, 0., 0.)--BlzSetSpecialEffectYaw(effect, GetUnitFacing(source) * bj_DEGTORAD)
-                        elseif myeffect.SFX_facing then BlzSetSpecialEffectOrientation(effect, myeffect.SFX_facing * bj_DEGTORAD, 0., 0.) end -- BlzSetSpecialEffectYaw(effect, myeffect.SFX_facing * bj_DEGTORAD) end
+
+                        if myeffect.SFX_inherit_angle then
+                            BlzSetSpecialEffectOrientation(effect, GetUnitFacing(source) * bj_DEGTORAD, 0., 0.)
+                        elseif myeffect.SFX_facing then
+                            BlzSetSpecialEffectOrientation(effect, myeffect.SFX_facing * bj_DEGTORAD, 0., 0.)
+                        elseif myeffect.SFX_random_angle then
+                            BlzSetSpecialEffectOrientation(effect, GetRandomReal(0., 360.) * bj_DEGTORAD, 0., 0.)
+                        end
+
                         if myeffect.SFX_bonus_z then BlzSetSpecialEffectZ(effect, BlzGetLocalSpecialEffectZ(effect) + myeffect.SFX_bonus_z) end
 
                         DelayAction(myeffect.SFX_lifetime or 0., function() DestroyEffect(effect) end)
 
-                    --effect = nil
                 end
                 DestroyTimer(GetExpiredTimer())
             end)
@@ -301,40 +381,103 @@ do
 
                 end
 
+                --print("1")
                 -- damaging
                 if (myeffect.power and myeffect.power > 0) or (myeffect.attack_percent_bonus and myeffect.attack_percent_bonus > 0.) or (myeffect.weapon_damage_percent_bonus and myeffect.weapon_damage_percent_bonus > 0.) then
                     -- multiple target damage
                     --print("power > 0")
 
+                    if myeffect.global_crit then
+                        local bonus_critical = myeffect.bonus_crit_chance and myeffect.bonus_crit_chance or 0.
+
+                            if GetRandomInt(1, 100) <= GetCriticalChance(source, bonus_critical) then myeffect.critical_strike_flag = true
+                            else myeffect.can_crit = false end
+
+                        end
+
+                    if data.single_attack then
+                        local attacker = GetUnitData(source)
+                            if not (TimerGetRemaining(attacker.attack_timer) > 0.) then
+                                data.single_attack_instance = true
+                            end
+                    end
+
+                    local targets = myeffect.max_targets or 1
+
                     if myeffect.area_of_effect and myeffect.area_of_effect > 0. then
                         --print("multiple targets")
                         local enemy_group = CreateGroup()
-                        GroupEnumUnitsInRange(enemy_group, x, y, myeffect.area_of_effect, nil)
-                        local targets = myeffect.max_targets or 1
 
-                        --print("targets - " .. I2S(BlzGroupGetSize(enemy_group)))
+                        if myeffect.wave_speed then
+                            local damaged_group = CreateGroup()
+                            local timer = CreateTimer()
+                            local radius = 5.
+                            local step = myeffect.wave_speed / ((myeffect.area_of_effect / myeffect.wave_speed) / 0.025)
 
-                            for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
-                                local picked = BlzGroupUnitAt(enemy_group, index)
+                                TimerStart(timer, 0.025, true, function()
 
-                                if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
+                                    radius = radius + step
+                                    if radius > myeffect.area_of_effect then radius = myeffect.area_of_effect end
 
-                                    if myeffect.angle_window ~= nil and myeffect.angle_window > 0. then
-                                        if IsAngleInFace(source, myeffect.angle_window, GetUnitX(picked), GetUnitY(picked), false) then
-                                            ApplyEffectDamage(source, picked, data, lvl)
+                                    GroupEnumUnitsInRange(enemy_group, x, y, radius, nil)
+
+                                        for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
+                                            local picked = BlzGroupUnitAt(enemy_group, index)
+
+                                            if IsUnitEnemy(picked, player_entity) and not IsUnitInGroup(picked, damaged_group) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
+
+                                                if myeffect.angle_window ~= nil and myeffect.angle_window > 0. then
+                                                    if IsAngleInFace(source, myeffect.angle_window, GetUnitX(picked), GetUnitY(picked), false) then
+                                                        ApplyEffectDamage(source, picked, data, lvl)
+                                                        GroupAddUnit(damaged_group, picked)
+                                                    end
+                                                else
+                                                    ApplyEffectDamage(source, picked, data, lvl)
+                                                    GroupAddUnit(damaged_group, picked)
+                                                end
+
+                                                targets = targets - 1
+                                                if targets <= 0 then break end
+                                            end
+
                                         end
-                                    else
-                                        ApplyEffectDamage(source, picked, data, lvl)
+
+                                    if radius >= myeffect.area_of_effect then
+                                        DestroyTimer(timer)
+                                        DestroyGroup(damaged_group)
+                                        DestroyGroup(enemy_group)
                                     end
 
-                                    targets = targets - 1
-                                    if targets <= 0 then break end
+                                end)
+
+
+                        else
+                            GroupEnumUnitsInRange(enemy_group, x, y, myeffect.area_of_effect, nil)
+                            --print("targets - " .. I2S(BlzGroupGetSize(enemy_group)))
+
+                                for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
+                                    local picked = BlzGroupUnitAt(enemy_group, index)
+
+                                    if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
+
+                                        if myeffect.angle_window ~= nil and myeffect.angle_window > 0. then
+                                            if IsAngleInFace(source, myeffect.angle_window, GetUnitX(picked), GetUnitY(picked), false) then
+                                                ApplyEffectDamage(source, picked, data, lvl)
+                                            end
+                                        else
+                                            ApplyEffectDamage(source, picked, data, lvl)
+                                        end
+
+                                        targets = targets - 1
+                                        if targets <= 0 then break end
+                                    end
+
                                 end
 
-                            end
+                            GroupClear(enemy_group)
+                            DestroyGroup(enemy_group)
+                        end
 
-                        GroupClear(enemy_group)
-                        DestroyGroup(enemy_group)
                     else
                         --print("single target")
                         -- single target damage
@@ -357,36 +500,79 @@ do
                         --print("have negative buffs on enemy")
                         if myeffect.area_of_effect and myeffect.area_of_effect > 0. then
                             local enemy_group = CreateGroup()
-                            local result_group = CreateGroup()
-                            GroupEnumUnitsInRange(enemy_group, x, y, myeffect.area_of_effect, nil)
                             local targets = myeffect.max_targets or 1
-                            --print("aoe " .. myeffect.area_of_effect)
-                            --print("target count is " .. targets)
-                            --print("group count is " .. BlzGroupGetSize(enemy_group))
 
-                                for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
-                                    local picked = BlzGroupUnitAt(enemy_group, index)
+                            if myeffect.wave_speed then
+                                local damaged_group = CreateGroup()
+                                local timer = CreateTimer()
+                                local radius = 5.
+                                local step = myeffect.wave_speed / ((myeffect.area_of_effect / myeffect.wave_speed) / 0.025)
 
-                                    if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
-                                        GroupRemoveUnit(enemy_group, picked)
-                                        GroupAddUnit(result_group, picked)
-                                        targets = targets - 1
-                                        if targets <= 0 then break end
+                                TimerStart(timer, 0.025, true, function()
+
+                                    radius = radius + step
+                                    if radius > myeffect.area_of_effect then radius = myeffect.area_of_effect end
+
+                                    GroupEnumUnitsInRange(enemy_group, x, y, radius, nil)
+
+                                    for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
+                                        local picked = BlzGroupUnitAt(enemy_group, index)
+
+                                        if IsUnitEnemy(picked, player_entity) and not IsUnitInGroup(picked, damaged_group) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
+
+                                            if myeffect.angle_window ~= nil and myeffect.angle_window > 0. then
+                                                if IsAngleInFace(source, myeffect.angle_window, GetUnitX(picked), GetUnitY(picked), false) then
+                                                    ApplyBuffEffect(source, picked, data, lvl, ON_ENEMY)
+                                                    GroupAddUnit(damaged_group, picked)
+                                                end
+                                            else
+                                                ApplyBuffEffect(source, picked, data, lvl, ON_ENEMY)
+                                                GroupAddUnit(damaged_group, picked)
+                                            end
+
+                                            targets = targets - 1
+                                            if targets <= 0 then break end
+                                        end
+
                                     end
 
-                                end
+                                    if radius >= myeffect.area_of_effect then
+                                        DestroyTimer(timer)
+                                        DestroyGroup(damaged_group)
+                                        DestroyGroup(enemy_group)
+                                    end
 
-                                --print(BlzGroupGetSize(result_group))
-
-                                ForGroup(result_group, function()
-                                    --print("target is ".. GetUnitName(GetEnumUnit()))
-                                    ApplyBuffEffect(source, GetEnumUnit(), data, lvl, ON_ENEMY)
                                 end)
 
-                            GroupClear(result_group)
-                            DestroyGroup(result_group)
-                            GroupClear(enemy_group)
-                            DestroyGroup(enemy_group)
+
+                            else
+                                local result_group = CreateGroup()
+
+                                    GroupEnumUnitsInRange(enemy_group, x, y, myeffect.area_of_effect, nil)
+
+                                        for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
+                                            local picked = BlzGroupUnitAt(enemy_group, index)
+
+                                            if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
+                                                GroupRemoveUnit(enemy_group, picked)
+                                                GroupAddUnit(result_group, picked)
+                                                targets = targets - 1
+                                                if targets <= 0 then break end
+                                            end
+
+                                        end
+
+                                        ForGroup(result_group, function()
+                                            ApplyBuffEffect(source, GetEnumUnit(), data, lvl, ON_ENEMY)
+                                        end)
+
+                                    GroupClear(result_group)
+                                    DestroyGroup(result_group)
+                                    GroupClear(enemy_group)
+                                    DestroyGroup(enemy_group)
+
+                            end
+
                         else
                             if IsUnitEnemy(target, player_entity) and GetUnitState(target, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(target, FourCC("Avul")) == 0 then
                                 ApplyBuffEffect(source, target, data, lvl, ON_ENEMY)
@@ -395,7 +581,7 @@ do
                     end
 
                 end
-
+                --print("2")
                 -- healing
                 if myeffect.heal_amount and myeffect.heal_amount > 0 then
                     -- multiple target healing
@@ -417,17 +603,15 @@ do
 
                         GroupClear(enemy_group)
                         DestroyGroup(enemy_group)
-
                     else
                         -- single target healing
                         if IsUnitAlly(target, player_entity) and GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
                             ApplyEffectHealing(source, target, data, lvl)
                         end
-
                     end
                 else
                     -- positive buffs
-                    if CountBuffEffects(myeffect.applied_buff, ON_ALLY) > 0 then
+                    if myeffect.applied_buff and CountBuffEffects(myeffect.applied_buff, ON_ALLY) > 0 then
                         if myeffect.area_of_effect ~= nil and myeffect.area_of_effect > 0. then
                             local targets = myeffect.max_targets or 1
                             local enemy_group = CreateGroup()
@@ -460,11 +644,11 @@ do
                             end
                         end
                     end
-
                 end
 
-                ModifyBuffsEffect(source, source, data, lvl, ON_SELF)
 
+                ModifyBuffsEffect(source, source, data, lvl, ON_SELF)
+                OnEffectTrigger(source, target, x, y, data, lvl)
                 DestroyTimer(GetExpiredTimer())
             end)
 

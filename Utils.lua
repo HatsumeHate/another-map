@@ -228,6 +228,17 @@
 		return total_distance
 	end
 
+		function GetCenterFigure(points)
+			local center = { x = 0., y = 0. }
+				for i = 1, #points do
+					center.x = center.x + points[i].x
+					center.y = center.y + points[i].y
+				end
+			center.x = center.x / #points
+			center.y = center.y / #points
+			return center.x,center.y
+		end
+
 	---@param target unit
 	---@param flag boolean
 	function SafePauseUnit(target, flag)
@@ -337,6 +348,11 @@
 			end
 
 	end
+
+		function SuperRound(num)
+			local inv = math.floor(math.abs(num) + 0.5)
+			return num < 0 and -inv or inv
+		end
 
 	---@param duration real
 	---@param callback function
@@ -720,6 +736,33 @@
 
 	end
 
+
+		---@param x real
+		---@param y real
+		---@param angle real
+		---@param length real
+		---@param radius real
+		---@return group
+		function EnumUnitsInLine(x, y, angle, length, radius)
+			local group = CreateGroup()
+			local second_group = CreateGroup()
+			local half_radius = radius / 3.
+			local range_steps = math.ceil(length / half_radius) + 1
+			local starting_angle = angle
+			local step_x = x; local step_y = y
+
+				for i = 1, range_steps do
+					GroupEnumUnitsInRange(group, step_x, step_y, radius, nil)
+                        for index = BlzGroupGetSize(group) - 1, 0, -1 do
+                            GroupAddUnit(second_group, BlzGroupUnitAt(group, index))
+                        end
+					step_x = step_x + Rx(half_radius, starting_angle)
+					step_y = step_y + Ry(half_radius, starting_angle)
+				end
+
+			DestroyGroup(group)
+			return second_group
+		end
 
 
 	function CopyGroup (g)

@@ -5,7 +5,7 @@ do
     local function ConfigureSound(sound, volume, cutoff)
         SetSoundChannel(sound, 5)
         SetSoundVolume(sound, volume or 128)
-        SetSoundPitch(sound, 1)
+        SetSoundPitch(sound, GetRandomReal(0.97, 1.03))
         SetSoundDistances(sound, 600., 10000.)
         SetSoundDistanceCutoff(sound, 99999999999999999.)
         local timer = CreateTimer()

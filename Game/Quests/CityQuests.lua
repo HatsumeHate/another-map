@@ -14,6 +14,37 @@ do
         local effect = AddQuestMark(npc, MARK_TYPE_EXCLAMATION, MARK_COMMON) --AddSpecialEffectTarget("Quest\\ExcMark_Gold_NonrepeatableQuest.mdx", npc, "overhead")
 
 
+            AddInteractiveOption(npc, { name = GetLocalString("Просьба", "Favor"), feedback = function(clicked, clicking, player)
+                RemoveInteractiveOption(npc, 1)
+                DestroyEffect(effect)
+                NewQuest(LOCALE_LIST[my_locale].QUEST_1_TITLE, LOCALE_LIST[my_locale].QUEST_1_DESC, "ReplaceableTextures\\CommandButtons\\BTNTelescope.blp", false, true, "que1a")
+
+                AddQuestItem("que1a",  "que1apool",  LOCALE_LIST[my_locale].QUEST_1_ITEM,  false)
+                AddQuestItemPool("que1a", "que1apool", 20)
+
+                PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_SPEECH, 8.)
+                CreateQuestItems(20, FourCC("I01M"), { gg_rct_quest_1_itemrect, gg_rct_quest_2_itemrect, gg_rct_quest_3_itemrect, gg_rct_quest_4_itemrect, gg_rct_quest_5_itemrect })
+
+
+                local trg = CreateTrigger()
+                TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_PICKUP_ITEM)
+                TriggerAddAction(trg, function()
+                    if GetItemTypeId(GetManipulatedItem()) == FourCC("I01M") then
+                        if SetQuestItemPool("que1a", "que1apool", 1) then
+                            GiveExp(500)
+                            local gold = GiveGold(200)
+                            ShowQuestAlert(LOCALE_LIST[my_locale].QUEST_REWARD_GOLD_FIRST .. gold .. LOCALE_LIST[my_locale].QUEST_REWARD_GOLD_SECOND)
+                            DestroyTrigger(trg)
+                            RemoveUnit(npc)
+                            DelayAction(300., function()
+                                EnableQuest2()
+                            end)
+                        end
+                    end
+                end)
+            end})
+
+            --[[
             RegisterClickFeedbackOnNPC(npc, function()
                 ClickFunctionsRemove(npc, GetTriggeringTrigger())
                 DestroyEffect(effect)
@@ -43,7 +74,7 @@ do
                     end
                 end)
 
-            end)
+            end)]]
 
             --TriggerAddAction(RegisterClickFeedbackOnNPC(),
 
@@ -268,6 +299,37 @@ do
 
         Guinplen.effect = AddSpecialEffectTarget("Quest\\Completed_Quest_Special.mdx", Guinplen.npc, "overhead")
 
+        AddInteractiveOption(Guinplen.npc, { name = GetLocalString("Гуинплен?", "Guinplen?"), feedback = function(clicked, clicking, player)
+            RemoveInteractiveOption(Guinplen.npc, 1)
+            DestroyEffect(Guinplen.effect)
+            PlayCinematicSpeechForEveryone(Guinplen.npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_GIUN_1, 8., 8.)
+            PlayCinematicSpeechForEveryone(Guinplen.npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_GIUN_2, 9., 9.)
+            PlayCinematicSpeechForEveryone(Guinplen.npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_GIUN_3, 12., 12.)
+            PlayCinematicSpeechForEveryone(Guinplen.npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_GIUN_4, 7., 7.)
+            AddQuestItem("que1m",  "que1mitemvar2", LOCALE_LIST[my_locale].QUEST_1_M_ITEMVAR2, true)
+            SetQuestItemState("que1m", "que1mitem", true)
+
+            local rects = { gg_rct_staff_of_hope_1, gg_rct_staff_of_hope_2, gg_rct_staff_of_hope_3, gg_rct_staff_of_hope_4 }
+            local rect = rects[GetRandomInt(1, #rects)]
+            Guinplen.staff = CreateItem(FourCC("I01N"), GetRandomRectX(rect), GetRandomRectY(rect))
+
+            Guinplen.staff_trg = CreateTrigger()
+            TriggerRegisterAnyUnitEventBJ(Guinplen.staff_trg, EVENT_PLAYER_UNIT_PICKUP_ITEM)
+                TriggerAddAction(Guinplen.staff_trg, function()
+                    if GetItemTypeId(GetManipulatedItem()) == FourCC("I01N") then
+                        SetQuestItemState("que1m", "que1mitemvar2", true)
+                        AddQuestItem("que1m",  "que1mitemvar2end", LOCALE_LIST[my_locale].QUEST_1_M_ITEMVAR2END,  false)
+                        PlayCinematicSpeechForEveryone(GetTriggerUnit(), LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_STAFF_FOUND, 8.)
+                        Guinplen.staff = nil
+                        DestroyTrigger(Guinplen.staff_trg)
+                        Guinplen.staff_trg = nil
+                    end
+                end)
+
+                rects = nil
+        end})
+
+        --[[
         RegisterClickFeedbackOnNPC(Guinplen.npc, function()
             ClickFunctionsRemove(Guinplen.npc, GetTriggeringTrigger())
             DestroyEffect(Guinplen.effect)
@@ -300,7 +362,7 @@ do
                 end)
 
                 rects = nil
-        end)
+        end)]]
 
     end
 
@@ -322,91 +384,108 @@ do
     end
 
 
+
+    function CreateQuestLilith()
+        local lilith_proximity_trigger = CreateTrigger()
+        local lilith_death_trg = CreateTrigger()
+        local Lilith = CreateUnit(SECOND_MONSTER_PLAYER, FourCC("n017"), GetRectCenterX(gg_rct_quest_lilit), GetRectCenterY(gg_rct_quest_lilit), 155.)
+
+            CreateLeashForUnit(Lilith, 1250.)
+
+            TriggerRegisterUnitInRange(lilith_proximity_trigger, Lilith, 650., nil)
+            TriggerAddAction(lilith_proximity_trigger, function()
+                if IsAHero(GetTriggerUnit()) then
+                    DisableTrigger(lilith_proximity_trigger)
+                    SetQuestItemState("que1m", "que1mitemvar1", true)
+
+                    if IsMyQuestItemCompleted("que1m", "que1mitemvar2") then
+                        SafePauseUnit(Lilith, true)
+                        UnitAddAbility(Lilith, FourCC("Avul"))
+                        bj_lastCreatedEffect = AddSpecialEffect("Abilities\\Spells\\NightElf\\Starfall\\StarfallCaster.mdx", GetUnitX(Lilith), GetUnitY(Lilith))
+                        DelayAction(5., function()
+                            DestroyEffect(bj_lastCreatedEffect)
+                            DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Human\\DispelMagic\\DispelMagicTarget.mdx", GetUnitX(Lilith), GetUnitY(Lilith)))
+                            DelayAction(1., function()
+                                ShowUnit(Lilith, false)
+                                local npc = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("n019"), GetUnitX(Lilith), GetUnitY(Lilith), 350.)
+                                SetQuestItemState("que1m", "que1mitemvar2end", true)
+                                MarkQuestAsCompleted("que1m")
+                                PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_END_2, 8.)
+                                EndMainQuest1(lilith_proximity_trigger, lilith_death_trg)
+                                GiveExp(500)
+                                local gold = GiveGold(250)
+                                ShowQuestAlert(LOCALE_LIST[my_locale].QUEST_REWARD_GOLD_FIRST .. gold .. LOCALE_LIST[my_locale].QUEST_REWARD_GOLD_SECOND)
+
+                                for i = 1, 6 do
+                                    local item = CreateCustomItem(GetGeneratedItemId(CHEST_ARMOR), GetUnitX(Lilith), GetUnitY(Lilith), true, i-1)
+                                    GenerateItemStats(item, Current_Wave + 5, MAGIC_ITEM)
+                                end
+
+                                KillUnit(Lilith)
+
+                                DelayAction(5., function()
+                                    VanishUnit(npc, 3., { r = 255, g = 255, b = 255 }, function()
+                                        RemoveUnit(npc)
+                                    end)
+                                end)
+
+                            end)
+                        end)
+
+                    else
+                        AddQuestItem("que1m",  "que1mitemvar1end",  LOCALE_LIST[my_locale].QUEST_1_M_ITEMVAR1END,  false)
+                    end
+                end
+            end)
+
+
+        TriggerRegisterUnitEvent(lilith_death_trg, Lilith, EVENT_UNIT_DEATH)
+        TriggerAddAction(lilith_death_trg, function()
+            SetQuestItemState("que1m", "que1mitemvar1end", true)
+            EndMainQuest1(lilith_proximity_trigger, lilith_death_trg)
+            GiveExp(250)
+            local gold = GiveGold(550)
+            ShowQuestAlert(LOCALE_LIST[my_locale].QUEST_REWARD_GOLD_FIRST .. gold .. LOCALE_LIST[my_locale].QUEST_REWARD_GOLD_SECOND)
+        end)
+    end
+
+
     function EnableMainQuest1()
         local npc = CreateNPC("n01A", gg_rct_npc_2, 315., LOCALE_LIST[my_locale].STEPHAN_NAME)
         local effect = AddSpecialEffectTarget("Quest\\ExcMark_Orange_ClassQuest.mdx", npc, "overhead")
 
+
+        AddInteractiveOption(npc, { name = GetLocalString("Просьба", "Favor"), feedback = function(clicked, clicking, player)
+            --SetInteractionMenuState(false, player)
+            RemoveInteractiveOption(npc, 1)
+            DestroyEffect(effect)
+
+            PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_INTRO, 12., 12.)
+            PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_INTRO_2, 10., 10.)
+            PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_INTRO_3, 8., 8.)
+
+            NewQuest(LOCALE_LIST[my_locale].QUEST_1_M_TITLE, LOCALE_LIST[my_locale].QUEST_1_M_DESC, "ReplaceableTextures\\CommandButtons\\BTNIceShard.blp", true, true, "que1m")
+            AddQuestItem("que1m",  "que1mitem", LOCALE_LIST[my_locale].QUEST_1_M_ITEM, false)
+            AddQuestItem("que1m",  "que1mitemvar1", LOCALE_LIST[my_locale].QUEST_1_M_ITEMVAR1 , false)
+            EnableMainQuest1_Guinplen_1()
+            CreateQuestLilith()
+        end})
+
+        --[[
         RegisterClickFeedbackOnNPC(npc, function()
             ClickFunctionsRemove(npc, GetTriggeringTrigger())
                 DestroyEffect(effect)
 
-                PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_INTRO, 12.)
-                TriggerSleepAction(12.)
-                PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_INTRO_2, 10.)
-                TriggerSleepAction(10.)
-                PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_INTRO_3, 8.)
-                TriggerSleepAction(8.)
+                PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_INTRO, 12., 12.)
+                PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_INTRO_2, 10., 10.)
+                PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_INTRO_3, 8., 8.)
 
                 NewQuest(LOCALE_LIST[my_locale].QUEST_1_M_TITLE, LOCALE_LIST[my_locale].QUEST_1_M_DESC, "ReplaceableTextures\\CommandButtons\\BTNIceShard.blp", true, true, "que1m")
                 AddQuestItem("que1m",  "que1mitem", LOCALE_LIST[my_locale].QUEST_1_M_ITEM, false)
                 AddQuestItem("que1m",  "que1mitemvar1", LOCALE_LIST[my_locale].QUEST_1_M_ITEMVAR1 , false)
                 EnableMainQuest1_Guinplen_1()
-
-                local Lilith = CreateUnit(SECOND_MONSTER_PLAYER, FourCC("n017"), GetRectCenterX(gg_rct_quest_lilit), GetRectCenterY(gg_rct_quest_lilit), 155.)
-                --DelayAction(0.001, function() ScaleMonsterUnit(Lilith) end)
-                CreateLeashForUnit(Lilith, 1250.)
-
-                --GroupAddUnit(ScaleMonstersGroup, Lilith)
-
-                local lilith_proximity_trigger = CreateTrigger()
-                local lilith_death_trg = CreateTrigger()
-
-                TriggerRegisterUnitInRange(lilith_proximity_trigger, Lilith, 650., nil)
-                TriggerAddAction(lilith_proximity_trigger, function()
-                    if IsAHero(GetTriggerUnit()) then
-                        DisableTrigger(lilith_proximity_trigger)
-                        SetQuestItemState("que1m", "que1mitemvar1", true)
-
-                        if IsMyQuestItemCompleted("que1m", "que1mitemvar2") then
-                            SafePauseUnit(Lilith, true)
-                            UnitAddAbility(Lilith, FourCC("Avul"))
-                            bj_lastCreatedEffect = AddSpecialEffect("Abilities\\Spells\\NightElf\\Starfall\\StarfallCaster.mdx", GetUnitX(Lilith), GetUnitY(Lilith))
-                            DelayAction(5., function()
-                                DestroyEffect(bj_lastCreatedEffect)
-                                DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Human\\DispelMagic\\DispelMagicTarget.mdx", GetUnitX(Lilith), GetUnitY(Lilith)))
-                                DelayAction(1., function()
-                                    ShowUnit(Lilith, false)
-                                    CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("n019"), GetUnitX(Lilith), GetUnitY(Lilith), 350.)
-                                    SetQuestItemState("que1m", "que1mitemvar2end", true)
-                                    MarkQuestAsCompleted("que1m")
-                                    PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_END_2, 8.)
-                                    RemoveUnit(npc)
-                                    EndMainQuest1(lilith_proximity_trigger, lilith_death_trg)
-                                    GiveExp(500)
-                                    local gold = GiveGold(250)
-                                    ShowQuestAlert(LOCALE_LIST[my_locale].QUEST_REWARD_GOLD_FIRST .. gold .. LOCALE_LIST[my_locale].QUEST_REWARD_GOLD_SECOND)
-
-                                    for i = 1, 6 do
-                                        local item = CreateCustomItem(GetGeneratedItemId(CHEST_ARMOR), GetUnitX(Lilith), GetUnitY(Lilith), true, i-1)
-                                        GenerateItemStats(item, Current_Wave + 5, MAGIC_ITEM)
-                                    end
-
-                                    KillUnit(Lilith)
-                                end)
-                            end)
-
-                        else
-                            AddQuestItem("que1m",  "que1mitemvar1end",  LOCALE_LIST[my_locale].QUEST_1_M_ITEMVAR1END,  false)
-                        end
-                    end
-                end)
-
-
-                TriggerRegisterUnitEvent(lilith_death_trg, Lilith, EVENT_UNIT_DEATH)
-                TriggerAddAction(lilith_death_trg, function()
-                    SetQuestItemState("que1m", "que1mitemvar1end", true)
-                    EndMainQuest1(lilith_proximity_trigger, lilith_death_trg)
-                    RemoveUnit(npc)
-                    GiveExp(250)
-                    local gold = GiveGold(550)
-                    ShowQuestAlert(LOCALE_LIST[my_locale].QUEST_REWARD_GOLD_FIRST .. gold .. LOCALE_LIST[my_locale].QUEST_REWARD_GOLD_SECOND)
-                end)
-
-
-                RegisterTestCommand("kill lil", function()
-                    KillUnit(Lilith)
-                end)
-        end)
+                CreateQuestLilith()
+        end)]]
 
 
     end

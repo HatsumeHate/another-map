@@ -132,7 +132,7 @@ do
 
         --##########################################################
         --#######################SPAWNER_DATA#######################
-        ScaleMonstersGroup = CreateGroup()
+        --ScaleMonstersGroup = CreateGroup()
         MonsterPack[1] = { initial_spawn_time = 10. }
         MonsterPack[1].spawner = gg_rct_monster_pack_1_spawner
         MonsterPack[1].wander_region = {
@@ -141,7 +141,7 @@ do
             [3] = gg_rct_monster_pack_1_3
         }
         MonsterPack[1].tags = { MONSTERPACK_SKELETONS, MONSTERPACK_ZOMBIES, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS }
-        MonsterPack[1].respawn = 345.
+        MonsterPack[1].respawn = 385.
         MonsterPack[1].respawn_type = RESPAWN_TYPE_RANDOM
         MonsterPack[1].min = 5; MonsterPack[1].max = 10; MonsterPack[1].elite = 2
         --##########################################################
@@ -154,7 +154,7 @@ do
             [3] = gg_rct_monster_pack_2_3
         }
         MonsterPack[2].tags = { MONSTERPACK_SKELETONS, MONSTERPACK_GHOSTS, MONSTERPACK_ZOMBIES, MONSTERPACK_SWARM, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_DEMONS }
-        MonsterPack[2].respawn = 365.
+        MonsterPack[2].respawn = 445.
         MonsterPack[2].min = 7; MonsterPack[2].max = 15; MonsterPack[2].elite = 1
         --##########################################################
         --#######################SPAWNER_DATA#######################
@@ -166,7 +166,7 @@ do
             [3] = gg_rct_monster_pack_3_3
         }
         MonsterPack[3].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_BEASTS, MONSTERPACK_DEMONS, MONSTERPACK_SATYRS, MONSTERPACK_BANDITS }
-        MonsterPack[3].respawn = 340.
+        MonsterPack[3].respawn = 380.
         MonsterPack[3].min = 3; MonsterPack[3].max = 5
         --##########################################################
         --#######################SPAWNER_DATA#######################
@@ -176,7 +176,7 @@ do
             [1] = gg_rct_monster_pack_4_1
         }
         MonsterPack[4].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_BEASTS }
-        MonsterPack[4].respawn = 340.
+        MonsterPack[4].respawn = 380.
         MonsterPack[4].min = 3; MonsterPack[4].max = 6
         --##########################################################
         --#######################SPAWNER_DATA#######################
@@ -186,7 +186,7 @@ do
             [1] = gg_rct_monster_pack_5_1
         }
         MonsterPack[5].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM, MONSTERPACK_SATYRS }
-        MonsterPack[5].respawn = 365.
+        MonsterPack[5].respawn = 445.
         MonsterPack[5].min = 7; MonsterPack[5].max = 15; MonsterPack[5].elite = 3
         --##########################################################
         --#######################SPAWNER_DATA#######################
@@ -197,7 +197,7 @@ do
             [2] = gg_rct_monster_pack_6_2
         }
         MonsterPack[6].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM }
-        MonsterPack[6].respawn = 340.
+        MonsterPack[6].respawn = 380.
         MonsterPack[6].min = 6; MonsterPack[6].max = 10; MonsterPack[6].elite = 3
         --##########################################################
         --#######################SPAWNER_DATA#######################
@@ -209,7 +209,7 @@ do
             [3] = gg_rct_monster_pack_7_3
         }
         MonsterPack[7].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM, MONSTERPACK_BEASTS, MONSTERPACK_BANDITS }
-        MonsterPack[7].respawn = 340.
+        MonsterPack[7].respawn = 380.
         MonsterPack[7].min = 5; MonsterPack[7].max = 8; MonsterPack[7].elite = 1
         --##########################################################
         --#######################SPAWNER_DATA#######################
@@ -220,7 +220,7 @@ do
             [2] = gg_rct_monster_pack_8_2
         }
         MonsterPack[8].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM, MONSTERPACK_BEASTS }
-        MonsterPack[8].respawn = 365.
+        MonsterPack[8].respawn = 445.
         MonsterPack[8].min = 7; MonsterPack[8].max = 15; MonsterPack[8].elite = 2
         --##########################################################
         --#######################SPAWNER_DATA#######################
@@ -232,7 +232,7 @@ do
             [3] = gg_rct_monster_pack_9_3
         }
         MonsterPack[9].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SWARM }
-        MonsterPack[9].respawn = 365.
+        MonsterPack[9].respawn = 445.
         MonsterPack[9].min = 7; MonsterPack[9].max = 15; MonsterPack[9].elite = 1
         --##########################################################
         --#######################SPAWNER_DATA#######################
@@ -243,7 +243,7 @@ do
                 gg_rct_monster_pack_10_2
             },
             tags = { MONSTERPACK_BANDITS },
-            respawn = 365., min = 3, max = 5, elite = 1, initial_spawn_time = 33.
+            respawn = 445., min = 3, max = 5, elite = 1, initial_spawn_time = 33.
         }
         --##########################################################
         --#######################SPAWNER_DATA#######################
@@ -254,7 +254,7 @@ do
                 gg_rct_monster_pack_11_2
             },
             tags = { MONSTERPACK_ARACHNIDS },
-            respawn = 365., min = 5, max = 10, elite = 2, initial_spawn_time = 13.
+            respawn = 445., min = 5, max = 10, elite = 2, initial_spawn_time = 13.
         }
         --##########################################################
         --#######################SPAWNER_DATA#######################
@@ -264,7 +264,7 @@ do
                 gg_rct_monster_pack_12_1
             },
             tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS },
-            respawn = 415., min = 7, max = 12, elite = 2, initial_spawn_time = 14.
+            respawn = 455., min = 7, max = 12, elite = 2, initial_spawn_time = 14.
         }
         --##########################################################
         --#######################SPAWNER_DATA#######################
@@ -274,7 +274,7 @@ do
                 gg_rct_monster_pack_13_1
             },
             tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS },
-            respawn = 405., min = 7, max = 12, elite = 2, initial_spawn_time = 18.
+            respawn = 445., min = 7, max = 12, elite = 2, initial_spawn_time = 18.
         }
         --##########################################################
         --#######################SPAWNER_DATA#######################
@@ -282,7 +282,7 @@ do
             spawner = gg_rct_monster_pack_14_spawner,
             wander_region = { gg_rct_monster_pack_14_1 },
             tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS },
-            respawn = 365., min = 5, max = 7, elite = 2, initial_spawn_time = 15.
+            respawn = 445., min = 5, max = 7, elite = 2, initial_spawn_time = 15.
         }
         --##########################################################
         --#######################SPAWNER_DATA#######################
@@ -290,7 +290,7 @@ do
             spawner = gg_rct_monster_pack_15_spawner,
             wander_region = { gg_rct_monster_pack_15_1 },
             tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS },
-            respawn = 400., min = 7, max = 12, elite = 2, initial_spawn_time = 16.
+            respawn = 440., min = 7, max = 12, elite = 2, initial_spawn_time = 16.
         }
         --##########################################################
         --#######################SPAWNER_DATA#######################
@@ -298,14 +298,14 @@ do
             spawner = gg_rct_monster_pack_16_spawner,
             wander_region = { gg_rct_monster_pack_16_1, gg_rct_monster_pack_16_2 },
             tags = { MONSTERPACK_SPIDERS },
-            respawn = 400., min = 1, max = 3, elite = 1, initial_spawn_time = 24.
+            respawn = 440., min = 1, max = 3, elite = 1, initial_spawn_time = 24.
         }
         --#######################SPAWNER_DATA#######################
         MonsterPack[17] = {
             spawner = gg_rct_monster_pack_17_spawner,
             wander_region = { gg_rct_monster_pack_17_1, gg_rct_monster_pack_17_2, gg_rct_monster_pack_17_3 },
             tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS },
-            respawn = 440., min = 7, max = 14, elite = 1, initial_spawn_time = 27.
+            respawn = 520., min = 7, max = 14, elite = 1, initial_spawn_time = 27.
         }
         --##########################################################
 
@@ -314,7 +314,7 @@ do
             spawner = gg_rct_arachnid_boss,
             boss_types = { MONSTER_ID_ARACHNID_BOSS },
             leash_range = 1000.,
-            respawn = 480.,
+            respawn = 560.,
             respawn_type = RESPAWN_TYPE_SAME
         }
         --##########################################################
@@ -322,7 +322,7 @@ do
             spawner = gg_rct_bandit_boss,
             boss_types = { MONSTER_ID_BANDIT_BOSS },
             leash_range = 1500.,
-            respawn = 480.,
+            respawn = 560.,
             respawn_type = RESPAWN_TYPE_SAME
         }
         --##########################################################
@@ -330,7 +330,7 @@ do
             spawner = gg_rct_spider_boss,
             boss_types = { MONSTER_ID_SPIDER_QUEEN },
             leash_range = 1000.,
-            respawn = 480.,
+            respawn = 560.,
             respawn_type = RESPAWN_TYPE_SAME
         }
         --##########################################################
@@ -338,7 +338,7 @@ do
             spawner = gg_rct_skeleton_boss,
             boss_types = { MONSTER_ID_SKELETON_KING },
             leash_range = 1700.,
-            respawn = 500.,
+            respawn = 540.,
             respawn_type = RESPAWN_TYPE_SAME
         }
 

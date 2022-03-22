@@ -10,7 +10,7 @@ do
     MAX_CURSES = 2
     CURRENT_CURSES = 0
     local CurseTimer
-    local CURSE_MIN_TIME = 400; local CURSE_MAX_TIME = 860
+    local CURSE_MIN_TIME = 500; local CURSE_MAX_TIME = 1060
 
 
     ---@return rect
@@ -147,10 +147,12 @@ do
 
                                             DelayAction(GetRandomReal(3., 5.), function()
                                                 if GetUnitState(curse_totem, UNIT_STATE_LIFE) > 0.045 then
-                                                    TriggerRegisterUnitEvent(death_trigger, spawned,EVENT_UNIT_DEATH)
+                                                    CreateBarOnUnit(spawned)
+                                                    TriggerRegisterUnitEvent(death_trigger, spawned, EVENT_UNIT_DEATH)
                                                     local unit_data = GetUnitData(spawned)
                                                     unit_data.xp = math.floor(unit_data.xp / 4.)
                                                     unit_data.classification = 0
+                                                    unit_data.droplist = nil
                                                     SafePauseUnit(spawned, false)
                                                     UnitRemoveAbility(spawned, FourCC("Avul"))
                                                     ShowUnit(spawned, true)

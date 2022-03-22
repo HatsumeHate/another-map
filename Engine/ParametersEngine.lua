@@ -65,6 +65,12 @@ do
 
 	GOLD_BONUS = 49
 	EXP_BONUS = 50
+	DROP_BONUS = 51
+
+	HEALING_BONUS = 52
+	DAMAGE_BOOST = 53
+	VULNERABILITY = 55
+	MANACOST = 54
 
 
 
@@ -132,31 +138,6 @@ do
 		return 0
 	end
 
-	--защита в процент
-	---@param x integer
-	function DefenceToPercent(x)
-		if x <= FIRST_DEF_LIMIT then
-			return x / VALUE_BY_PERCENT_1
-		elseif x > FIRST_DEF_LIMIT and x <= SECOND_DEF_LIMIT then
-			return FIRST_DEF_LIMIT / VALUE_BY_PERCENT_1 + (x - FIRST_DEF_LIMIT) / VALUE_BY_PERCENT_2
-		elseif x > SECOND_DEF_LIMIT then
-			return FIRST_DEF_LIMIT / VALUE_BY_PERCENT_1 + (SECOND_DEF_LIMIT - FIRST_DEF_LIMIT) / VALUE_BY_PERCENT_2 + (x - SECOND_DEF_LIMIT) / VALUE_BY_PERCENT_3
-		end
-		return 0
-	end
-	
-	--маг атака в процент
-	---@param x integer
-	function MagicAttackToPercent(x)
-		if x <= MA_FIRST_LIMIT then
-			return x / MA_VALUE_BY_PERCENT_1
-		elseif x > MA_FIRST_LIMIT and x <= MA_SECOND_LIMIT then
-			return MA_FIRST_LIMIT / MA_VALUE_BY_PERCENT_1 + (x - MA_FIRST_LIMIT) / MA_VALUE_BY_PERCENT_2
-		elseif x > MA_SECOND_LIMIT then
-			return MA_FIRST_LIMIT / MA_VALUE_BY_PERCENT_1 + (MA_SECOND_LIMIT - MA_FIRST_LIMIT) / MA_VALUE_BY_PERCENT_2 + (x - MA_SECOND_LIMIT) / MA_VALUE_BY_PERCENT_3
-		end
-		return 0
-	end
 	
 	---@param value real
 	function GetBonus_STR(value) return 0.9 + (value * 0.02) end
@@ -184,7 +165,8 @@ do
             local vector = "+"
 
 				if parameter == ATTACK_SPEED or parameter == CAST_SPEED or parameter == CRIT_CHANCE or parameter == BLOCK_CHANCE
-						or parameter == MELEE_DAMAGE_REDUCTION or parameter == RANGE_DAMAGE_REDUCTION or parameter == CONTROL_REDUCTION then
+						or parameter == MELEE_DAMAGE_REDUCTION or parameter == RANGE_DAMAGE_REDUCTION or parameter == CONTROL_REDUCTION
+						or parameter == EXP_BONUS or parameter == GOLD_BONUS or parameter == DROP_BONUS or parameter == HEALING_BONUS or parameter == DAMAGE_BOOST then
 					special = "%%"
 				end
 
@@ -223,6 +205,15 @@ do
 
 		}
 
+	end
+
+
+	---@param unit unit
+	---@param param integer
+	---@return number
+	function GetUnitParameterValue(unit, param)
+		local unit_data = GetUnitData(unit)
+		return unit_data.stats[param].value or 0.
 	end
 
 
@@ -300,6 +291,14 @@ do
 
 
 	function InitParameters()
+
+		RegisterTestCommand("mc-", function()
+			ModifyStat(PlayerHero[1], MANACOST, -10, STRAIGHT_BONUS, true)
+		end)
+
+		RegisterTestCommand("mc+", function()
+			ModifyStat(PlayerHero[1], MANACOST, 10, STRAIGHT_BONUS, true)
+		end)
 
 		ParameterLimits = {
 			[PHYSICAL_DEFENCE] = {
@@ -399,6 +398,8 @@ do
 			---@param data table
 			[HP_REGEN]               = function(data)
 				data.stats[HP_REGEN].value = (data.base_stats.hp_regen + data.stats[HP_REGEN].bonus) * GetBonus_VIT(data.stats[VIT_STAT].value) * data.stats[HP_REGEN].multiplier
+
+				--print(data.base_stats.hp_regen .. " + " .. data.stats[HP_REGEN].bonus .. " * " ..  GetBonus_VIT(data.stats[VIT_STAT].value) .. " * " .. data.stats[HP_REGEN].multiplier)
 				BlzSetUnitRealField(data.Owner, UNIT_RF_HIT_POINTS_REGENERATION_RATE, data.hp_vector and data.stats[HP_REGEN].value or -data.stats[HP_REGEN].value)
 			end,
 
@@ -648,6 +649,32 @@ do
 				data.stats[EXP_BONUS].value = data.stats[EXP_BONUS].bonus
 			end,
 
+			---@param data table
+			[DROP_BONUS] = function(data)
+				data.stats[DROP_BONUS].value = data.stats[DROP_BONUS].bonus
+			end,
+
+			---@param data table
+			[HEALING_BONUS] = function(data)
+				data.stats[HEALING_BONUS].value = data.stats[HEALING_BONUS].bonus
+			end,
+
+			---@param data table
+			[DAMAGE_BOOST] = function(data)
+				data.stats[DAMAGE_BOOST].value = data.stats[DAMAGE_BOOST].bonus
+			end,
+
+			---@param data table
+			[VULNERABILITY] = function(data)
+				data.stats[VULNERABILITY].value = data.stats[VULNERABILITY].bonus
+			end,
+
+			---@param data table
+			[MANACOST] = function(data)
+				if IsAHero(data.Owner) then
+					UpdateBindedSkillsManacosts(data.Owner)
+				end
+			end,
 		}
 
 
@@ -716,6 +743,13 @@ do
 
 			[GOLD_BONUS]   = LOCALE_LIST[my_locale].GOLD_BONUS_PARAM,
 			[EXP_BONUS]   = LOCALE_LIST[my_locale].EXP_BONUS_PARAM,
+			[DROP_BONUS]   = LOCALE_LIST[my_locale].DROP_BONUS_PARAM,
+
+			[HEALING_BONUS]   = LOCALE_LIST[my_locale].HEALING_BONUS_PARAM,
+			[DAMAGE_BOOST]   = LOCALE_LIST[my_locale].DAMAGE_BOOST_PARAM,
+			[VULNERABILITY]   = LOCALE_LIST[my_locale].VULNERABILITY_PARAM,
+			[MANACOST]   = LOCALE_LIST[my_locale].MANACOST_PARAM,
+
 		}
 	end
 

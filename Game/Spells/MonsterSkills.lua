@@ -14,10 +14,10 @@ do
         local radius = 50.
         local half_radius = radius / 3.
         local range_steps = math.ceil(300. / half_radius) + 1
+        local starting_angle = missile.heading_angle + 90.
 
             TimerStart(timer, 0.025, true, function()
                 if missile.time > 0. then
-                    local starting_angle = missile.heading_angle + 90.
                     local step_x = missile.current_x - Rx(150., starting_angle); local step_y = missile.current_y - Ry(150., starting_angle)
 
                     for i = 1, range_steps do
@@ -31,7 +31,7 @@ do
 
                     for index = BlzGroupGetSize(second_group) - 1, 0, -1 do
                         local picked = BlzGroupUnitAt(second_group, index)
-                        if IsUnitEnemy(picked, GetOwningPlayer(caster)) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 and not IsUnitInGroup(picked, hit_group) then
+                        if IsUnitEnemy(picked, MONSTER_PLAYER) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 and not IsUnitInGroup(picked, hit_group) then
                             ApplyEffect(caster, picked, 0.,0., "revenant_lightning_effect", Current_Wave)
                             GroupAddUnit(hit_group, picked)
                             DelayAction(0.2, function() if hit_group then GroupRemoveUnit(hit_group, picked) end end)
@@ -48,14 +48,13 @@ do
                 end
             end)
 
-
     end
 
 
 
     function CastReanimate(caster)
         local angle = GetRandomReal(0., 359.)
-        local max_range = GetMaxAvailableDistance(GetUnitX(caster), GetUnitY(caster), angle, 500.)
+        local max_range = GetMaxAvailableDistance(GetUnitX(caster), GetUnitY(caster), angle, GetRandomReal(200., 500.))
         local point_x = GetUnitX(caster) + Rx(max_range, angle)
         local point_y = GetUnitY(caster) + Ry(max_range, angle)
 

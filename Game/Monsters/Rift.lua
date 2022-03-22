@@ -69,8 +69,8 @@ do
                 end
 
             DelayAction(0., function()
-                local boss_data = GetUnitData(rift.boss)
-                boss_data.event_boss = true
+                local pos = RemoveDropList(rift.boss, "shard")
+                AddDropList(rift.boss, "shard_event", 100., pos)
             end)
 
             CreateLeashForUnit(rift.boss, 1250.)

@@ -11,9 +11,11 @@ do
     local BUTTON_REFORGE = 2
     local BUTTON_RESOCKET = 3
     local BUTTON_SOCKET = 4
+    local BUTTON_CREATE_SOCKET = 5
     BLACKSMITH_REFORGE = 1
     BLACKSMITH_RESOCKET = 2
     local REFORGE_COST_PER_LEVEL = 75
+    local CreateSocketTextBase
 
 
 
@@ -152,13 +154,31 @@ do
                         cost = REFORGE_COST_PER_LEVEL
                     end
 
+                    
+                    local create_socket_button = GetButtonData(BlacksmithFrame[player].create_socket_button)
+
+                        if item_data.MAX_SLOTS >= 3 or (item_data.QUALITY == SET_ITEM or item_data.QUALITY == UNIQUE_ITEM) then
+                            BlzFrameSetTexture(create_socket_button.image, "GUI\\DISBTNmetalurgi.blp", 0, true)
+                            FrameChangeTexture(create_socket_button.button, "GUI\\DISBTNmetalurgi.blp")
+                            BlzFrameSetText(BlacksmithFrame[player].create_socket_tooltip.description, GetLocalString("Нет подходящего предмета.", "No fitting item."))
+                        else
+                            BlzFrameSetTexture(create_socket_button.image, "GUI\\BTNmetalurgi.blp", 0, true)
+                            FrameChangeTexture(create_socket_button.button, "GUI\\BTNmetalurgi.blp")
+                            local cost = 500 + (200 * item_data.MAX_SLOTS)
+                            if item_data.QUALITY == RARE_ITEM then cost = cost + 200
+                            elseif item_data.QUALITY == MAGIC_ITEM then cost = cost + 600 end
+                            BlzFrameSetText(BlacksmithFrame[player].create_socket_tooltip.description, CreateSocketTextBase .. math.ceil(cost) .. ".")
+                        end
 
                     if cost > 0 then BlzFrameSetText(BlacksmithFrame[player].reforge_cost_frame, "|c00FFFF00" ..I2S(cost) .. "|r") end
                     BlacksmithFrame[player].reforge_cost = cost
                 else
+                    local create_socket_button = GetButtonData(BlacksmithFrame[player].create_socket_button)
                     BlacksmithFrame[player].reforge_cost = 0
                     BlzFrameSetTexture(button.image, "GUI\\inventory_slot.blp", 0, true)
                     BlzFrameSetText(BlacksmithFrame[player].reforge_cost_frame, "")
+                    BlzFrameSetTexture(create_socket_button.image, "GUI\\DISBTNmetalurgi.blp", 0, true)
+                    FrameChangeTexture(create_socket_button.button, "GUI\\DISBTNmetalurgi.blp")
                 end
 
                 button = GetButtonData(BlacksmithFrame[player].socket_item_slot)
@@ -255,10 +275,15 @@ do
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPRIGHT, BlacksmithFrame[player].socket_item_slot, FRAMEPOINT_TOPRIGHT, 0.015, 0.015)
 
 
-            BlacksmithFrame[player].reforge_button = NewSpecialButton(LOCALE_LIST[my_locale].REFORGE_BUTTON_TEXT, 0.06, 0.04, BlacksmithFrame[player].reforge_item_slot, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.025, 0., BlacksmithFrame[player].inner_reforge_border)
-            new_Frame = CreateTextBox(player, 0.085, 0.03, 1., BlacksmithFrame[player].reforge_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0015, 0., main_frame)
+            BlacksmithFrame[player].reforge_button = NewSpecialButton(LOCALE_LIST[my_locale].REFORGE_BUTTON_TEXT, 0.06, 0.04, BlacksmithFrame[player].reforge_item_slot, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.012, 0., BlacksmithFrame[player].inner_reforge_border)
+            new_Frame = CreateTextBox(player, 0.072, 0.03, 1., BlacksmithFrame[player].reforge_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0015, 0., main_frame)
             CreateTooltip(LOCALE_LIST[my_locale].UI_TOOLTIP_REFORGE_TITLE, LOCALE_LIST[my_locale].UI_TOOLTIP_REFORGE_DESC, BlacksmithFrame[player].reforge_button, 0.125, 0.06)
             BlacksmithFrame[player].masterframe = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
+
+            BlacksmithFrame[player].create_socket_button = NewButton(BUTTON_CREATE_SOCKET, "GUI\\BTNmetalurgi.blp", 0.04, 0.04, new_Frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.005, 0., BlacksmithFrame[player].inner_reforge_border)
+            BlacksmithFrame[player].create_socket_tooltip = CreateTooltip("NAME", "DESC", BlacksmithFrame[player].create_socket_button, 0.125, 0.06)
+            BlzFrameSetText(BlacksmithFrame[player].create_socket_tooltip.title, GetLocalString("Выковать сокет", "Forge socket"))
+            BlzFrameSetText(BlacksmithFrame[player].create_socket_tooltip.description, GetLocalString("Нет подходящего предмета.", "No fitting item."))
 
 
             BlacksmithFrame[player].socket_buttons = {}
@@ -298,6 +323,8 @@ do
 
         BlacksmithFrame = {}
 
+        CreateSocketTextBase = GetLocalString("Создает новый сокет. Это будет стоить ", "Creates new socket. It will cost ")
+
         ClickTrigger = CreateTrigger()
         TriggerAddAction(ClickTrigger, function()
             local button = GetButtonData(BlzGetTriggerFrame())
@@ -316,12 +343,60 @@ do
                             BlzFrameSetVisible(BlacksmithFrame[player].socket_buttons[4], false)
                         elseif button.button_type == BUTTON_FREE then
                             BlzFrameSetText(BlacksmithFrame[player].reforge_cost_frame, "")
+                            local create_socket_button = GetButtonData(BlacksmithFrame[player].create_socket_button)
+                            BlzFrameSetTexture(create_socket_button.image, "GUI\\DISBTNmetalurgi.blp", 0, true)
+                            FrameChangeTexture(create_socket_button.button, "GUI\\DISBTNmetalurgi.blp")
                         end
 
+                elseif button.button_type == BUTTON_CREATE_SOCKET then
+                    local reforge_button = GetButtonData(BlacksmithFrame[player].reforge_item_slot)
+
+                        if reforge_button.item then
+                            local item_data = GetItemData(reforge_button.item)
+                            local cost = 500 + (200 * item_data.MAX_SLOTS)
+                            if item_data.QUALITY == RARE_ITEM then cost = cost + 200
+                            elseif item_data.QUALITY == MAGIC_ITEM then cost = cost + 600 end
+                            BlzFrameSetText(BlacksmithFrame[player].create_socket_tooltip.description, CreateSocketTextBase .. math.ceil(cost) .. ".")
+
+                                if item_data.MAX_SLOTS < 3 and item_data.QUALITY ~= SET_ITEM and item_data.QUALITY ~= UNIQUE_ITEM then
+                                    local gold = GetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD)
+
+                                    if gold >= cost then
+                                        SetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD, gold - cost)
+                                        PlayLocalSound("Buildings\\Human\\Blacksmith\\BlacksmithWhat1.wav", player-1, 115)
+                                        local soundpack = {
+                                            "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes3.wav",
+                                            "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes4.wav",
+                                            "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes5.wav",
+                                        }
+
+                                        PlayLocalSound(soundpack[GetRandomInt(1, #soundpack)], player-1, 125)
+
+                                        item_data.MAX_SLOTS = item_data.MAX_SLOTS + 1
+
+                                        if item_data.MAX_SLOTS >= 3 then
+                                            BlzFrameSetText(BlacksmithFrame[player].create_socket_tooltip.description, GetLocalString("Нет подходящего предмета.", "No fitting item."))
+                                        else
+                                            cost = 500 + (200 * item_data.MAX_SLOTS)
+                                            if item_data.QUALITY == RARE_ITEM then cost = cost + 200
+                                            elseif item_data.QUALITY == MAGIC_ITEM then cost = cost + 600 end
+                                            BlzFrameSetText(BlacksmithFrame[player].create_socket_tooltip.description, CreateSocketTextBase .. math.ceil(cost) .. ".")
+                                        end
+
+                                    else
+                                        Feedback_NoGold(player)
+                                    end
+                                else
+                                    BlzFrameSetText(BlacksmithFrame[player].create_socket_tooltip.description, GetLocalString("Нет подходящего предмета.", "No fitting item."))
+                                    Feedback_CantUse(player)
+                                end
+                        else
+                            Feedback_CantUse(player)
+                        end
+                    
                 elseif button.button_type == BUTTON_REFORGE and BlacksmithFrame[player].reforge_cost > 0 then
                     local reforge_button = GetButtonData(BlacksmithFrame[player].reforge_item_slot)
                     local gold = GetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD)
-                    --local cost = BlacksmithFrame[player].reforge_cost
 
                         if reforge_button.item then
                             if gold >= BlacksmithFrame[player].reforge_cost then
@@ -347,11 +422,11 @@ do
                                 end
 
                             else
-                                Feedback_NoGold(player - 1)
+                                Feedback_NoGold(player)
                             end
 
                         else
-                            Feedback_CantUse(player - 1)
+                            Feedback_CantUse(player)
                         end
 
                 elseif button.button_type == BUTTON_SOCKET then
@@ -370,7 +445,6 @@ do
                                             }
 
                                             PlayLocalSound(soundpack[GetRandomInt(1, #soundpack)], player-1, 125)
-
                                             PlayLocalSound("Sound\\UI\\reforge_".. GetRandomInt(1,3) ..".wav", player-1, 115)
 
                                             local equipped = IsItemEquipped(PlayerHero[player], resocket_button.item)
@@ -430,7 +504,7 @@ do
 
         end)
 
-        local trg = CreateTrigger()
+        --local trg = CreateTrigger()
         local soundpack = {
             open = {
                 "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerWhat1.wav",
@@ -464,13 +538,12 @@ do
                 BlzFrameSetText(BlacksmithFrame[i].name, GetUnitName(unit_owner))
             end
 
-            TriggerRegisterUnitInRangeSimple(trg, 300., unit_owner)
-            TriggerAddAction(trg, function()
-                local id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
-                local player = id + 1
+
+            CreateNpcData(unit_owner, GetUnitName(unit_owner))
+            AddInteractiveOption(unit_owner, { name = GetLocalString("Перековка", "Reforging"), feedback = function(clicked, clicking, player)
+                local id = player - 1
 
                     if id <= 5 then
-                        local hero = GetTriggerUnit()
 
                         if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(BlacksmithFrame[player].main_frame, true) end
                         BlacksmithFrame[player].state = true
@@ -481,12 +554,10 @@ do
 
                             local timer = CreateTimer()
                             TimerStart(timer, 0.1, true, function()
-                                if not IsUnitInRange(hero, unit_owner, 299.) or IsUnitHidden(unit_owner) then
-                                    --DestroySlider(player)
+                                if not IsUnitInRange(clicking, unit_owner, 299.) or IsUnitHidden(unit_owner) or GetUnitState(clicking, UNIT_STATE_LIFE) < 0.045 then
                                     RemovePlayerItems(player)
                                     DestroyContextMenu(player)
                                     RemoveTooltip(player)
-                                    --ShopInFocus[player] = nil
                                     BlacksmithFrame[player].state = false
                                     if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(BlacksmithFrame[player].main_frame, false) end
                                     DestroyTimer(GetExpiredTimer())
@@ -504,7 +575,9 @@ do
                         end
 
                     end
-            end)
+
+            end})
+
 
     end
 

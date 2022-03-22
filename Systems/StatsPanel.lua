@@ -47,7 +47,9 @@ do
             if unit_data.unit_class == BARBARIAN_CLASS then
                 portrait = "ReplaceableTextures\\CommandButtons\\BTNBandit.blp"
             elseif unit_data.unit_class == SORCERESS_CLASS then
-                portrait = "ReplaceableTextures\\CommandButtons\\BTNJaina.blp"
+                portrait = "war3mapImported\\BTNSorceress.blp"
+            elseif unit_data.unit_class == NECROMANCER_CLASS then
+                portrait = "ReplaceableTextures\\CommandButtons\\BTNLichVersion2.blp"
             end
 
         BlzFrameSetTexture(MainStatButtons[player].portrait, portrait, 0, true)
@@ -150,7 +152,7 @@ do
                 BlzFrameSetVisible(MainStatButtons[player].points_frame, true)
             end
 
-            BlzFrameSetText(MainStatButtons[player].hero_level, "Level ".. GetHeroLevel(PlayerHero[player]))
+            BlzFrameSetText(MainStatButtons[player].hero_level, GetLocalString("Уровень ", "Level ") .. GetHeroLevel(PlayerHero[player]))
             BlzFrameSetText(MainStatButtons[player].points_text_frame, MainStatButtons[player].points)
         end
 
@@ -185,6 +187,11 @@ do
             BlzFrameSetPoint(new_frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.035, -0.035)
             BlzFrameSetSize(new_frame, 0.05, 0.05)
             MainStatButtons[player].portrait = new_frame
+
+            new_frame = BlzCreateFrameByType('BACKDROP', "PORTRAIT BORDER", MainStatButtons[player].portrait_border, "",0)
+            BlzFrameSetTexture(new_frame, "DiabolicUI_Button_50x50_BorderHighlight.tga", 0, true)
+            BlzFrameSetPoint(new_frame, FRAMEPOINT_TOPRIGHT, MainStatButtons[player].portrait, FRAMEPOINT_TOPRIGHT, 0.009, 0.009)
+            BlzFrameSetPoint(new_frame, FRAMEPOINT_BOTTOMLEFT, MainStatButtons[player].portrait, FRAMEPOINT_BOTTOMLEFT, -0.009, -0.009)
 
             new_frame = BlzCreateFrameByType("TEXT", "hero name", MainStatButtons[player].portrait_border, "MyTextTemplate", 0)
             BlzFrameSetTextAlignment(new_frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER)

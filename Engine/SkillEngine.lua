@@ -52,7 +52,10 @@ do
                     elseif value_str == "hp_perc" then return "|c0000FF00" .. string.format('%%.1f', (effect.level[lvl].life_percent_restored or 0.) * 100.) .. "%%|r"
                     elseif value_str == "mp_perc" then return "|c000066FF" .. string.format('%%.1f', (effect.level[lvl].resource_percent_restored or 0.) * 100.) .. "%%|r"
                     elseif value_str == "hp" then return "|c0000FF00" .. (effect.level[lvl].life_restored or 0.) .. "|r"
-                    elseif value_str == "mp" then return "|c000066FF" .. (effect.level[lvl].resource_restored or 0.) .. "|r" end
+                    elseif value_str == "mp" then return "|c000066FF" .. (effect.level[lvl].resource_restored or 0.) .. "|r"
+                    elseif value_str == "hphitmax" then return "|c0000FF00" .. (effect.level[lvl].life_restored_from_hit_max or 0.) .. "|r"
+                    elseif value_str == "mphitmax" then return "|c000066FF" .. (effect.level[lvl].resource_restored_from_hit_max or 0.) .. "|r" end
+
 
             elseif tag == "s" then
                 local skill = GetSkillData(FourCC(id))
@@ -86,6 +89,15 @@ do
 
                     if value_str == "rad" then return "|c0000DBA4" .. (R2I(missile.radius or 0)) .. "|r"
                     elseif value_str == "maxd" then return R2I(missile.max_distance) or 0 end
+
+            else
+                tag = string.sub(str, 2, string.find(str, "!", 1, true)-1)
+
+                    if tag == "FM_DIV" then
+                       return math.floor(id + math.floor(lvl / value_str))
+                    elseif tag == "FM_PER" then
+                      return math.floor(id + lvl * value_str)
+                    end
 
             end
 
@@ -179,7 +191,26 @@ do
     end
 
 
+    function UpdateBindedSkillsManacosts(unit)
+        local unit_data = GetUnitData(unit)
+        local player = GetPlayerId(GetOwningPlayer(unit)) + 1
+
+            for key = KEY_Q, KEY_F do
+                if KEYBIND_LIST[key].player_skill_bind[player] and KEYBIND_LIST[key].player_skill_bind[player] ~= 0 then
+                    local skill = GetSkillData(KEYBIND_LIST[key].player_skill_bind[player])
+                    local level = UnitGetAbilityLevel(PlayerHero[player], skill.Id)
+                    local manacost = ((skill.level[level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
+
+                        if manacost < 0. then manacost = 0 end
+
+                        BlzSetUnitAbilityManaCost(PlayerHero[player], KEYBIND_LIST[key].ability, 0, math.floor(manacost + 0.5))
+                end
+            end
+    end
+
+
     function UpdateBindedSkillsData(player)
+        local unit_data = GetUnitData(PlayerHero[player])
 
             for key = KEY_Q, KEY_F do
                 if KEYBIND_LIST[key].player_skill_bind[player] and KEYBIND_LIST[key].player_skill_bind[player] ~= 0 then
@@ -190,7 +221,11 @@ do
                         BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[level].range or 0.)
                         BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[level].radius or 0.)
                         BlzSetAbilityIntegerLevelField(ability, ABILITY_ILF_TARGET_TYPE, 0, skill.activation_type)
-                        BlzSetUnitAbilityManaCost(PlayerHero[player], KEYBIND_LIST[key].ability, 0, R2I(skill.level[level].resource_cost or 0.))
+
+                        local manacost = ((skill.level[level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
+                        if manacost < 0. then manacost = 0 end
+
+                        BlzSetUnitAbilityManaCost(PlayerHero[player], KEYBIND_LIST[key].ability, 0, math.floor(manacost + 0.5))
                         SetAbilityExtendedTooltip(PlayerHero[player], skill.Id, player)
                 end
             end
@@ -201,30 +236,34 @@ do
     ---@param id integer
     ---@param player number
     function UpdateBindedSkillData(id, player)
+        local unit_data = GetUnitData(PlayerHero[player])
 
-        if IsAbilityKeybinded(FourCC(id), player) then
-            --print("UpdateBindedSkillData - ability keybinded!")
-            --print("UpdateBindedSkillData - id " .. FourCC(id))
-            local skill = GetUnitSkillData(PlayerHero[player], id)
-            --print("UpdateBindedSkillData - skill id " .. skill.Id)
-            local ability_id = GetKeybindKeyAbility(FourCC(id), player)
-            --print("UpdateBindedSkillData - ability id " .. ability_id)
-            local ability = BlzGetUnitAbility(PlayerHero[player], ability_id)
-            --print("UpdateBindedSkillData - ability handle " .. GetHandleId(ability))
-            local level = UnitGetAbilityLevel(PlayerHero[player], id)
-            --print("UpdateBindedSkillData - ability level " .. level)
+            if IsAbilityKeybinded(FourCC(id), player) then
+                --print("UpdateBindedSkillData - ability keybinded!")
+                --print("UpdateBindedSkillData - id " .. FourCC(id))
+                local skill = GetUnitSkillData(PlayerHero[player], id)
+                --print("UpdateBindedSkillData - skill id " .. skill.Id)
+                local ability_id = GetKeybindKeyAbility(FourCC(id), player)
+                --print("UpdateBindedSkillData - ability id " .. ability_id)
+                local ability = BlzGetUnitAbility(PlayerHero[player], ability_id)
+                --print("UpdateBindedSkillData - ability handle " .. GetHandleId(ability))
+                local level = UnitGetAbilityLevel(PlayerHero[player], id)
+                --print("UpdateBindedSkillData - ability level " .. level)
 
-                BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[level].range or 0.)
-                --print("UpdateBindedSkillData - cast range done " .. skill.level[level].range)
-                BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[level].radius or 0.)
-                --print("UpdateBindedSkillData - radius done " .. skill.level[level].radius)
-                BlzSetAbilityIntegerLevelField(ability, ABILITY_ILF_TARGET_TYPE, 0, skill.activation_type)
-                --print("UpdateBindedSkillData - activation type done " .. skill.activation_type)
-                BlzSetUnitAbilityManaCost(PlayerHero[player], ability_id, 0, R2I(skill.level[level].resource_cost or 0.))
-                --print("UpdateBindedSkillData - mana cost done " .. R2I(skill.level[level].resource_cost))
-                SetAbilityExtendedTooltip(PlayerHero[player], id, player)
-                --print("UpdateBindedSkillData - SetAbilityExtendedTooltip done")
-        end
+                    BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[level].range or 0.)
+                    --print("UpdateBindedSkillData - cast range done " .. skill.level[level].range)
+                    BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[level].radius or 0.)
+                    --print("UpdateBindedSkillData - radius done " .. skill.level[level].radius)
+                    BlzSetAbilityIntegerLevelField(ability, ABILITY_ILF_TARGET_TYPE, 0, skill.activation_type)
+                    --print("UpdateBindedSkillData - activation type done " .. skill.activation_type)
+                    local manacost = ((skill.level[level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
+                    if manacost < 0. then manacost = 0 end
+
+                    BlzSetUnitAbilityManaCost(PlayerHero[player], ability_id, 0, math.floor(manacost + 0.5))
+                    --print("UpdateBindedSkillData - mana cost done " .. R2I(skill.level[level].resource_cost))
+                    SetAbilityExtendedTooltip(PlayerHero[player], id, player)
+                    --print("UpdateBindedSkillData - SetAbilityExtendedTooltip done")
+            end
 
     end
 
@@ -235,6 +274,7 @@ do
         local skill = GetAbilityFromUnit(unit, id)--GetSkillData(FourCC(id))
         local ability_id = KEYBIND_LIST[key].ability
         local ability
+        local unit_data = GetUnitData(unit)
 
 
             if GetUnitAbilityLevel(unit, ability_id) == 0 then
@@ -248,7 +288,10 @@ do
             BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[level].range or 0.)
             BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[level].radius or 0.)
             BlzSetAbilityIntegerLevelField(ability, ABILITY_ILF_TARGET_TYPE, 0, skill.activation_type)
-            BlzSetUnitAbilityManaCost(unit, ability_id, 0, R2I(skill.level[level].resource_cost or 0.))
+
+            local manacost = ((skill.level[level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
+            if manacost < 0. then manacost = 0 end
+            BlzSetUnitAbilityManaCost(unit, ability_id, 0, math.floor(manacost + 0.5))
 
             --print("BindAbilityKey - start")
             --print("BindAbilityKey - id ".. ability_id)
@@ -447,7 +490,7 @@ do
         return false
     end
 
-    local function PlayCastSfx(unit_data, pack, animation_timescale)
+    local function PlayCastSfx(unit_data, pack, animation_timescale, target, x, y)
 
         if pack then
 
@@ -461,6 +504,12 @@ do
                         if not effect.conditional_weapon or HasConditionalWeapon(effect, unit_data.equip_point[WEAPON_POINT].SUBTYPE) then
                             local casteffect = AddSpecialEffectTarget(effect.effect, unit_data.Owner, effect.point or "chest")
                             BlzSetSpecialEffectScale(casteffect, effect.scale or 1.)
+
+                            if effect.animation_time_influence then
+                                BlzSetSpecialEffectTimeScale(casteffect, (effect.timescale or 1.) * animation_timescale)
+                            else
+                                BlzSetSpecialEffectTimeScale(casteffect, effect.timescale or 1.)
+                            end
 
                                 if effect.duration and effect.duration > 0. then
                                     local timer = CreateTimer()
@@ -487,9 +536,18 @@ do
 
                         DelayAction(effect.appear_delay and (effect.appear_delay * animation_timescale) or 0., function()
                             local casteffect = AddSpecialEffect(effect.effect, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner))
+                            local orientation = target and AngleBetweenUnits(unit_data.Owner, target) or AngleBetweenUnitXY(unit_data.Owner, x, y)
+
+                            if target == unit_data.Owner then
+                                orientation = GetUnitFacing(unit_data.Owner)
+                            end
+
+                            if effect.random_orientation_angle then
+                                orientation = GetRandomReal(0., 360.)
+                            end
 
                                 BlzSetSpecialEffectScale(casteffect, effect.scale or 1.)
-                                BlzSetSpecialEffectOrientation(casteffect, (effect.yaw or GetUnitFacing(unit_data.Owner) * bj_DEGTORAD), 0., (effect.roll or 0.) * bj_DEGTORAD)
+                                BlzSetSpecialEffectOrientation(casteffect, (effect.yaw or orientation * bj_DEGTORAD), 0., (effect.roll or 0.) * bj_DEGTORAD)
 
 
                                     if effect.animation_time_influence then
@@ -501,8 +559,8 @@ do
 
                                     if effect.plane_offset then
                                         BlzSetSpecialEffectPosition(casteffect,
-                                                GetUnitX(unit_data.Owner) + Rx(effect.plane_offset, effect.plane_offset_angle and effect.plane_offset_angle or GetUnitFacing(unit_data.Owner)),
-                                                GetUnitY(unit_data.Owner) + Ry(effect.plane_offset, effect.plane_offset_angle and effect.plane_offset_angle or GetUnitFacing(unit_data.Owner)),
+                                                GetUnitX(unit_data.Owner) + Rx(effect.plane_offset, effect.plane_offset_angle and effect.plane_offset_angle or orientation),
+                                                GetUnitY(unit_data.Owner) + Ry(effect.plane_offset, effect.plane_offset_angle and effect.plane_offset_angle or orientation),
                                                 GetUnitZ(unit_data.Owner) + (effect.height or 0.))
                                     elseif effect.height then
                                         BlzSetSpecialEffectZ(casteffect, GetUnitZ(unit_data.Owner) + (effect.height or 0.))
@@ -573,7 +631,8 @@ do
 
                 if unit_data.cast_skill > 0 then
                     BlzEndUnitAbilityCooldown(unit, unit_data.cast_skill)
-                    SetUnitState(unit, UNIT_STATE_MANA, GetUnitState(unit, UNIT_STATE_MANA) + BlzGetUnitAbilityManaCost(unit, GetKeybindAbility(unit_data.cast_skill, GetPlayerId(GetOwningPlayer(unit)) + 1), 0))
+                    SetUnitState(unit, UNIT_STATE_MANA, GetUnitState(unit, UNIT_STATE_MANA) + unit_data.cast_skill_mana)
+                    unit_data.cast_skill_mana = 0
                 end
 
             unit_data.cast_skill = 0
@@ -660,6 +719,31 @@ do
                 end
             end
 
+
+            for key = KEY_Q, KEY_F do
+                KEYBIND_LIST[key].trigger = CreateTrigger()
+                TriggerAddAction(KEYBIND_LIST[key].trigger, function()
+                    local player = GetPlayerId(GetTriggerPlayer()) + 1
+
+                        if KEYBIND_LIST[key].player_skill_bind[player] ~= 0 then
+                            if BlzGetUnitAbilityManaCost(PlayerHero[player], KEYBIND_LIST[key].ability, 0) > GetUnitState(PlayerHero[player], UNIT_STATE_MANA) then
+                                Feedback_NoResource(player)
+                            end
+                        end
+
+                end)
+            end
+
+            for player = 0, 5 do
+                BlzTriggerRegisterPlayerKeyEvent(KEYBIND_LIST[KEY_Q].trigger, Player(player), OSKEY_Q, 0, true)
+                BlzTriggerRegisterPlayerKeyEvent(KEYBIND_LIST[KEY_W].trigger, Player(player), OSKEY_W, 0, true)
+                BlzTriggerRegisterPlayerKeyEvent(KEYBIND_LIST[KEY_E].trigger, Player(player), OSKEY_E, 0, true)
+                BlzTriggerRegisterPlayerKeyEvent(KEYBIND_LIST[KEY_R].trigger, Player(player), OSKEY_R, 0, true)
+                BlzTriggerRegisterPlayerKeyEvent(KEYBIND_LIST[KEY_D].trigger, Player(player), OSKEY_D, 0, true)
+                BlzTriggerRegisterPlayerKeyEvent(KEYBIND_LIST[KEY_F].trigger, Player(player), OSKEY_F, 0, true)
+            end
+
+
             local SkillCastTrigger = CreateTrigger()
             TriggerRegisterAnyUnitEventBJ(SkillCastTrigger, EVENT_PLAYER_UNIT_SPELL_EFFECT)
             TriggerAddAction(SkillCastTrigger, function()
@@ -680,6 +764,7 @@ do
 
                     local ability_level = UnitGetAbilityLevel(unit_data.Owner, skill.Id)
                     GenerateSkillLevelData(skill, ability_level)
+                    local manacost = ((skill.level[ability_level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
 
 
                     if skill.level[ability_level].required_weapon then
@@ -687,11 +772,31 @@ do
                             local unit = GetTriggerUnit()
                             local player = GetPlayerId(GetOwningPlayer(unit))
                             IssueImmediateOrderById(unit, order_stop)
-                            SetUnitState(unit, UNIT_STATE_MANA, GetUnitState(unit, UNIT_STATE_MANA) + skill.level[ability_level].resource_cost)
+                            DelayAction(0.0, function() SetUnitState(unit, UNIT_STATE_MANA, GetUnitState(unit, UNIT_STATE_MANA) + manacost) end)
                             SimError(LOCALE_LIST[my_locale].INVALID_WEAPON_FEEDBACK, player)
                             Feedback_CantUse(player + 1)
                             return
                         end
+                    end
+
+
+                    local target = GetSpellTargetUnit()
+                    local spell_x = GetSpellTargetX()
+                    local spell_y = GetSpellTargetY()
+
+                    if skill.custom_condition then
+                        local x, y
+
+                        if target == nil then x, y = spell_x, spell_y
+                        else x, y = GetUnitX(target), GetUnitY(target) end
+
+                            if not skill.custom_condition(unit_data.Owner, x, y) then
+                                IssueImmediateOrderById(unit_data.Owner, order_stop)
+                                DelayAction(0.0, function() SetUnitState(unit_data.Owner, UNIT_STATE_MANA, GetUnitState(unit_data.Owner, UNIT_STATE_MANA) + manacost) end)
+                                Feedback_CantUse(GetPlayerId(GetOwningPlayer(unit_data.Owner)) + 1)
+                                return
+                            end
+
                     end
 
 
@@ -735,21 +840,32 @@ do
                     if scale <= 0.01 then scale = 0.01 end
                     SetUnitTimeScale(unit_data.Owner, scale)
 
-                    --print("result cast time is " .. (skill.level[ability_level].animation_point or 0.) * time_reduction)
+                    --print("result cast time is " .. ((sequence.animation_point or 0.) * time_reduction))
                     --print("skill cooldown is " .. R2S(skill.level[ability_level].cooldown))
-                   -- print("ability level is " .. I2S(ability_level))
+                    --print("ability level is " .. I2S(ability_level))
                     -- 0.4 * 2. -> 0.8 /// 0.4 * 0.5 -> 0.2
-                    BlzSetUnitAbilityCooldown(unit_data.Owner, id, 0, (skill.level[ability_level].cooldown or 0.1) + ((sequence.animation_point or 0.) * time_reduction))
-                    BlzSetUnitAbilityManaCost(unit_data.Owner, id, 0, skill.level[ability_level].resource_cost or 0)
 
 
-                    local target = GetSpellTargetUnit()
-                    local spell_x = GetSpellTargetX()
-                    local spell_y = GetSpellTargetY()
+
+                    local skill_additional_data = {
+                        time_reduction = time_reduction,
+                        ability_level = ability_level,
+                        cooldown = (skill.level[ability_level].cooldown or 0.1) + ((sequence.animation_point or 0.) * time_reduction),
+                        manacost = manacost,
+                        tags = {}
+                    }
+
+                    --local manacost = ((skill.level[ability_level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
+                    if skill_additional_data.manacost < 0. then skill_additional_data.manacost = 0 end
+
+                    OnSkillPrecast(unit_data.Owner, target, skill, ability_level, skill_additional_data)
+                    BlzSetUnitAbilityCooldown(unit_data.Owner, id, 0, skill_additional_data.cooldown)
+                    BlzSetUnitAbilityManaCost(unit_data.Owner, id, 0, skill_additional_data.manacost)
 
 
                     unit_data.cast_skill = id
                     unit_data.cast_skill_level = ability_level
+                    unit_data.cast_skill_mana = skill_additional_data.manacost
 
                     SafePauseUnit(unit_data.Owner, true)
                     --BlzPauseUnitEx(unit_data.Owner, true)
@@ -757,7 +873,7 @@ do
 
                     --local cast_effect_pack
 
-                    PlayCastSfx(unit_data, skill.sfx_pack, time_reduction)
+                    PlayCastSfx(unit_data, skill.sfx_pack, time_reduction, target, spell_x, spell_y)
 
                         if skill.level[ability_level].effect_on_caster then
                             unit_data.cast_effect = AddSpecialEffectTarget(skill.level[ability_level].effect_on_caster, unit_data.Owner, skill.level[ability_level].effect_on_caster_point)
@@ -806,38 +922,48 @@ do
                                     if skill.level[ability_level].missile then
                                         if target then
                                             if target == unit_data.Owner then
-                                                ThrowMissile(unit_data.Owner, target, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level },
+                                                --print("throw missile")
+                                                ThrowMissile(unit_data.Owner, target, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level, tags = skill_additional_data.tags },
                                                     GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), GetUnitX(target), GetUnitY(target), GetUnitFacing(unit_data.Owner), skill.level[ability_level].from_unit)
+                                                --print("throw missile end")
                                             else
+                                                --print("throw missile")
                                                 local angle = AngleBetweenUnits(unit_data.Owner, target)
                                                 SetUnitFacing(unit_data.Owner, angle)
-                                                ThrowMissile(unit_data.Owner, target, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level },
+                                                ThrowMissile(unit_data.Owner, target, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level, tags = skill_additional_data.tags },
                                                     GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), GetUnitX(target), GetUnitY(target), angle, skill.level[ability_level].from_unit)
+                                                --print("throw missile end")
                                             end
                                         else
-                                            ThrowMissile(unit_data.Owner, nil, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level },
+                                            --print("throw missile")
+                                            ThrowMissile(unit_data.Owner, nil, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level, tags = skill_additional_data.tags },
                                                     GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), spell_x, spell_y, AngleBetweenUnitXY(unit_data.Owner, spell_x, spell_y), skill.level[ability_level].from_unit)
+                                            --print("throw missile end")
                                         end
 
                                     elseif skill.level[ability_level].effect then
+
                                         if target and target ~= unit_data.Owner then
                                             SetUnitFacing(unit_data.Owner, AngleBetweenUnits(unit_data.Owner, target))
-                                            ApplyEffect(unit_data.Owner, target, 0.,0., skill.level[ability_level].effect, ability_level)
+                                            ApplyEffect(unit_data.Owner, target, 0.,0., skill.level[ability_level].effect, ability_level, skill_additional_data.tags)
                                         elseif target and target == unit_data.Owner then
-                                            ApplyEffect(unit_data.Owner, nil, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), skill.level[ability_level].effect, ability_level)
+                                            ApplyEffect(unit_data.Owner, nil, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), skill.level[ability_level].effect, ability_level, skill_additional_data.tags)
                                         else
-                                            ApplyEffect(unit_data.Owner, nil, spell_x, spell_y, skill.level[ability_level].effect, ability_level)
+                                            ApplyEffect(unit_data.Owner, nil, spell_x, spell_y, skill.level[ability_level].effect, ability_level, skill_additional_data.tags)
                                         end
+
                                     end
                                 end
 
                             TimerStart(unit_data.action_timer, (sequence.animation_backswing or 0.) * time_reduction, false, function ()
+                                --print("backswing")
                                 SpellBackswing(unit_data.Owner)
+                                --print("backswing end")
                             end)
 
                             OnSkillCastEnd(unit_data.Owner, target, spell_x, spell_y, skill, ability_level)
 
-                            --print("cast")
+                            --print("cast done")
                         end)
 
                 end

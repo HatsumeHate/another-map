@@ -501,7 +501,7 @@ do
         for i = 1, 6 do
             CachedItems[i] = {}
             DrawStashFrames(i)
-            BlzFrameSetTexture(StashFrame[i].portrait, "ReplaceableTextures\\CommandButtons\\BTNBloodKey.blp", 0, true)
+            BlzFrameSetTexture(StashFrame[i].portrait, "UI\\BTNTreasureChest2.blp", 0, true)
             BlzFrameSetText(StashFrame[i].name, GetUnitName(gg_unit_n01Z_0030))
             StashFrame[i].itemdata = {}
         end

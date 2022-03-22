@@ -242,6 +242,8 @@ do
             RemoveTooltip(player)
             ContextFrame[player].originframe = originframe
             ContextFrame[player].state = true
+
+        return ContextFrame[player].backdrop
     end
 
 
@@ -306,7 +308,7 @@ do
     end
 
     ---@param parent framehandle
-    function NewTooltip(parent)
+    function NewTooltip(parent, inheritance)
         local backdrop = BlzCreateFrame("BoxedTextEx", parent, 15, 0)
         local handle = backdrop
 
@@ -315,7 +317,7 @@ do
             TooltipList[handle].imageframe = {}
 
                 for i = 1, 15 do
-                    TooltipList[handle].textframe[i] = BlzCreateFrameByType("TEXT", "text", backdrop, "", 0)
+                    TooltipList[handle].textframe[i] = BlzCreateFrameByType("TEXT", "text", backdrop, (inheritance or ""), 0)
                     TooltipList[handle].imageframe[i] = BlzCreateFrameByType("BACKDROP", "image", backdrop, "", 0)
                     --BlzFrameSetFont(TooltipList[handle].textframe[i], "D3font.ttf", 0.005, 0) --MyTextTemplate
                     --BlzFrameSetTextColor(TooltipList[handle].textframe[i], BlzConvertColor(0, 255, 255, 255))
@@ -379,7 +381,7 @@ do
         BlzFrameSetText(tooltip.textframe[index], value)
         BlzFrameSetPoint(tooltip.textframe[index], point_from, tooltip.imageframe[index], point_to, offset, 0.)
         BlzFrameSetTextAlignment(tooltip.textframe[index], text_orientation, TEXT_JUSTIFY_MIDDLE)
-        BlzFrameSetScale(tooltip.textframe[index], 1.)
+        BlzFrameSetScale(tooltip.textframe[index], 0.88)
     end
 
 
@@ -421,8 +423,90 @@ do
         BlzFrameSetScale(tooltip.imageframe[index], scale)
         return tooltip.imageframe[index]
     end
-    
-    
+
+
+    function Declension(number, dec1, dec4, dec5)
+        local i
+
+            number = ModuloInteger(IAbsBJ(number), 100)
+
+                if (number >= 11 and number <= 19) then
+                    return dec5
+                else
+                    i = ModuloInteger(number, 10)
+                    if (i == 1) then return dec1
+                    elseif (i >= 2 and i <= 4) then return dec4 end
+                    return dec5
+                end
+
+            return dec1
+    end
+
+    ---@param talent table
+    ---@param level integer
+    ---@param tooltip framehandle
+    ---@param button table
+    ---@param player integer
+    function ShowTalentTooltip(talent, level, tooltip, button, player, alternate_tooltip)
+        local category = GetButtonData(TalentPanel[player].last_category_button)
+
+        if ContextFrame[player].state or SliderFrame[player].state then return end
+        --RemoveTooltip(player)
+
+        local my_tooltip = TooltipList[tooltip]
+
+        if alternate_tooltip then
+            AlternatePlayerTooltip[player] = my_tooltip.backdrop
+        else
+            RemoveTooltip(player)
+            PlayerTooltip[player] = my_tooltip.backdrop
+        end
+
+        if level > talent.max_level then
+            return
+        end
+
+        --PlayerTooltip[player] = my_tooltip.backdrop
+        if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(my_tooltip.backdrop, true) end
+        for i = 1, 6 do BlzFrameSetVisible(my_tooltip.header_glow[i], false) end
+        BlzFrameSetVisible(my_tooltip.header, false)
+
+        local height = 0.009
+
+        BlzFrameClearAllPoints(my_tooltip.backdrop)
+        if alternate_tooltip then BlzFrameSetPoint(my_tooltip.backdrop, FRAMEPOINT_TOPLEFT, PlayerTooltip[player], FRAMEPOINT_TOPRIGHT, 0.001, 0.)
+        else BlzFrameSetPoint(my_tooltip.backdrop, FRAMEPOINT_TOPLEFT, button.image, FRAMEPOINT_RIGHT, 0.005, -0.005) end
+
+        BlzFrameSetSize(my_tooltip.backdrop, 0.1, 0.1)
+
+        SetTooltipText(1, my_tooltip, LOCALE_LIST[my_locale].TALENTS[talent.talent_id].name, TEXT_JUSTIFY_LEFT, my_tooltip.backdrop, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.01, -0.01, player)
+        BlzFrameSetScale(my_tooltip.textframe[1], 1.02)
+        height = height + BlzFrameGetHeight(my_tooltip.textframe[1]) + 0.01
+
+        if level == 0 then level = 1 end
+
+        local description = LOCALE_LIST[my_locale].TALENTS[talent.talent_id][level]
+        if category.points_spent < talent.points_required then
+            description = description .. "|n|n" .. "|c00FF0000" .. GetLocalString("Требует ", "Requires ") .. talent.points_required .. GetLocalString(Declension(talent.points_required, " очко", " очка", " очков").." в этой категории талантов.", " points in this talent category.").. "|r"
+        end
+
+        SetTooltipText(2, my_tooltip, description, TEXT_JUSTIFY_LEFT, my_tooltip.textframe[1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0., -0.03, player)
+        BlzFrameSetScale(my_tooltip.textframe[2], 0.88)
+        LockWidth(my_tooltip.textframe[2], BlzFrameGetWidth(my_tooltip.textframe[2]), 0.06, 0.14)
+        height = height + BlzFrameGetHeight(my_tooltip.textframe[2]) + 0.03
+
+        LockWidth(my_tooltip.textframe[1], BlzFrameGetWidth(my_tooltip.textframe[2]), 0.06, 0.14)
+
+        SetTooltipText(3, my_tooltip, GetLocalString("Уровень ", "Level ") .. level .. "/".. talent.max_level, TEXT_JUSTIFY_MIDDLE, my_tooltip.backdrop, FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_BOTTOMRIGHT, -0.008, 0.008, player)
+        BlzFrameSetScale(my_tooltip.textframe[3], 0.68)
+        --BlzFrameSetFont(my_tooltip.textframe[3], "ExocetBlizzardMedium.ttf", 0.09, 0)
+
+
+        BlzFrameSetSize(my_tooltip.backdrop, BlzFrameGetWidth(my_tooltip.textframe[2]) + 0.018, height)
+    end
+
+
+
     function ShowSkillTooltip(skill, tooltip, button, player)
 
         if ContextFrame[player].state or SliderFrame[player].state then return end
@@ -431,7 +515,7 @@ do
         local my_tooltip = TooltipList[tooltip]
         PlayerTooltip[player] = my_tooltip.backdrop
         if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(my_tooltip.backdrop, true) end
-        for i = 1, 5 do BlzFrameSetVisible(my_tooltip.header_glow[i], false) end
+        for i = 1, 6 do BlzFrameSetVisible(my_tooltip.header_glow[i], false) end
         BlzFrameSetVisible(my_tooltip.header, false)
 
         local ability_level = UnitGetAbilityLevel(PlayerHero[player], skill.Id) or 1
@@ -462,6 +546,7 @@ do
 
             SetTooltipText(1, my_tooltip, main_description, TEXT_JUSTIFY_MIDDLE,  my_tooltip.backdrop, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.01, player)
             LockWidth(my_tooltip.textframe[1], BlzFrameGetWidth(my_tooltip.textframe[1]), 0.06, 0.15)
+            BlzFrameSetScale(my_tooltip.textframe[1], 0.88)
 
             height = height + BlzFrameGetHeight(my_tooltip.textframe[1]) + 0.01
 
@@ -469,9 +554,10 @@ do
             local master_index = 1
 
             master_index = master_index + 1
-            AddExtendedSkillValue(master_index, my_tooltip, "ReplaceableTextures\\CommandButtons\\BTNSlow.blp", (skill.level[ability_level].cooldown or 0.1) .. LOCALE_LIST[my_locale].SKILL_PANEL_COOLDOWN_TEXT,
+            AddExtendedSkillValue(master_index, my_tooltip, "UI\\BTNtime.blp", (skill.level[ability_level].cooldown or 0.1) .. LOCALE_LIST[my_locale].SKILL_PANEL_COOLDOWN_TEXT,
                     my_tooltip.textframe[1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMLEFT, 0., -0.004, TEXT_JUSTIFY_LEFT, player)
             height = height + BlzFrameGetHeight(my_tooltip.imageframe[master_index]) + 0.005
+            --BlzFrameSetScale(my_tooltip.textframe[master_index], 0.88)
 
 
             if skill.level[ability_level].resource_cost ~= nil then
