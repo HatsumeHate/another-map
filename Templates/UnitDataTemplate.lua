@@ -1220,6 +1220,27 @@ do
             xp = 33,
         })
         --==========================================================--
+        -- cold revenant
+        NewUnitTemplate('n028', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_FROST_REVENANT,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_DEMON },
+            time_before_remove = 10.,
+            base_stats = { health = 187., hp_regen = 0.2, moving_speed = 245. },
+            weapon = { ATTACK_SPEED = 1.66, DAMAGE = 6, CRIT_CHANCE = 10., ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
+            bonus_parameters = {
+                { param = PHYSICAL_DEFENCE, value = 150, method = STRAIGHT_BONUS },
+                { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS },
+            },
+            offhand = { BLOCK = 30., BLOCK_RATE = 30. },
+            have_mp = false,
+            height = 238.,
+            drop_offset_min = 20., drop_offset_max = 55.,
+            xp = 33,
+        })
+        --==========================================================--
         -- revenant horror
         NewUnitTemplate('n01I', {
             name = LOCALE_LIST[my_locale].MONSTER_NAME_REVENANT_NIGHTMARE,
@@ -2206,7 +2227,7 @@ do
 
 
             DelayAction(0.01, function()
-                ApplyMonsterTrait(d3, MONSTER_TRAIT_BURNING)
+                --ApplyMonsterTrait(d3, MONSTER_TRAIT_BURNING)
                 ModifyStat(d2, PHYSICAL_DEFENCE, 250, STRAIGHT_BONUS, true)
                 ModifyStat(d3, PHYSICAL_DEFENCE, 500, STRAIGHT_BONUS, true)
             end)

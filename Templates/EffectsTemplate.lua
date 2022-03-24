@@ -1604,6 +1604,22 @@ do
 
         })
         --==========================================--
+        NewEffectTemplate('effect_grave_cold', {
+            name = "grave cold effect",
+            level = {
+                [1] = {
+                    power = 7,
+                    global_crit = true,
+                    can_crit = false,
+                    is_direct = false,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = ICE_ATTRIBUTE,
+                },
+            }
+
+        })
+        --==========================================--
         NewEffectTemplate('EWTM', {
             name = "witch effect",
 
@@ -2640,6 +2656,8 @@ do
         })
         --==========================================--
 
+
+        InitAuras()
     end
 
 end

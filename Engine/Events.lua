@@ -1024,6 +1024,10 @@ do
             skill.level[ability_level].missile = nil
         end
 
+        if GetUnitTalentLevel(source, "talent_grave_cold") > 0 and (skill.classification == SKILL_CLASS_SUPPORT or skill.classification == SKILL_CLASS_ATTACK) then
+            ToggleAuraOnUnit(source, "grave_cold_aura", 1, true)
+        end
+
     end
 
 

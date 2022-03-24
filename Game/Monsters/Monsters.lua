@@ -60,6 +60,7 @@ do
     MONSTER_ID_HELL_SUCCUBUS = "n025"
     MONSTER_ID_HELL_BEAST = "n01T"
     MONSTER_ID_REVENANT_MELEE = "n01U"
+    MONSTER_ID_REVENANT_FROST = "n028"
     MONSTER_ID_REVENANT = "n01I"
     MONSTER_ID_BANSHEE = "u00C"
     MONSTER_ID_BANSHEE_N = "u00K"
@@ -802,6 +803,7 @@ do
             [MONSTERPACK_GHOSTS] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_REVENANT_FROST, chance = 36.5, max = 2 },
                         { id = MONSTER_ID_REVENANT_MELEE, chance = 100., max = 3 },
                     },
                     [MONSTER_TAG_RANGE] = {
@@ -846,10 +848,10 @@ do
             { stat = MAGICAL_ATTACK,        initial = 0,      delta = 1,     delta_level = 1, method = STRAIGHT_BONUS },
             { stat = PHYSICAL_DEFENCE,      initial = 0,      delta = 5,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 5 },
             { stat = MAGICAL_SUPPRESSION,   initial = 0,      delta = 3,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 1 },
-            { stat = PHYSICAL_ATTACK,       initial = 1.,   delta = 0.003,  delta_level = 1, method = MULTIPLY_BONUS },
-            { stat = PHYSICAL_DEFENCE,      initial = 1.,   delta = 0.01,  delta_level = 1, method = MULTIPLY_BONUS },
-            { stat = MAGICAL_ATTACK,        initial = 1.,   delta = 0.005,  delta_level = 1, method = MULTIPLY_BONUS },
-            { stat = MAGICAL_SUPPRESSION,   initial = 1.,   delta = 0.007,  delta_level = 1, method = MULTIPLY_BONUS },
+            { stat = PHYSICAL_ATTACK,       initial = 1.,     delta = 0.003,  delta_level = 1, method = MULTIPLY_BONUS },
+            { stat = PHYSICAL_DEFENCE,      initial = 1.,     delta = 0.01,  delta_level = 1, method = MULTIPLY_BONUS },
+            { stat = MAGICAL_ATTACK,        initial = 1.,     delta = 0.005,  delta_level = 1, method = MULTIPLY_BONUS },
+            { stat = MAGICAL_SUPPRESSION,   initial = 1.,     delta = 0.007,  delta_level = 1, method = MULTIPLY_BONUS },
             { stat = CRIT_CHANCE,           initial = 0,      delta = 1.,    delta_level = 5, method = STRAIGHT_BONUS },
             { stat = ALL_RESIST,            initial = 0,      delta = 5,     delta_level = 5, method = STRAIGHT_BONUS },
             { stat = PHYSICAL_BONUS,        initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
@@ -861,7 +863,9 @@ do
             { stat = POISON_BONUS,          initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
             { stat = ARCANE_BONUS,          initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
             { stat = HP_VALUE,              initial = 0,      delta = 10,    delta_level = 1, method = STRAIGHT_BONUS, per_player = 45 },
-            { stat = HP_VALUE,              initial = 1.,   delta = 0.02,  delta_level = 1, method = MULTIPLY_BONUS },
+            { stat = HP_VALUE,              initial = 1.,     delta = 0.02,  delta_level = 1, method = MULTIPLY_BONUS },
+            { stat = MOVING_SPEED,          initial = 0,      delta = 3,     delta_level = 5, method = STRAIGHT_BONUS },
+            { stat = CONTROL_REDUCTION,     initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
         }
 
         BONUS_MONSTER_STAT_RATES = {
