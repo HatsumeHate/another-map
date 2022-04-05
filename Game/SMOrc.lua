@@ -48,6 +48,10 @@ do
 
             end)
 
+        RegisterTestCommand("orc", function()
+            SetUnitPosition(PlayerHero[1], GetUnitX(SMOrc), GetUnitY(SMOrc))
+            ShowUnit(SMOrc, true)
+        end)
     end
 
 end

@@ -162,7 +162,7 @@ do
 
         else
 
-           -- print("4")
+            --print("4")
             --print(I2S(attacker.stats[BONUS_BEAST_DAMAGE].value))
             --print(I2S(attacker.stats[BONUS_UNDEAD_DAMAGE].value))
             --print(I2S(attacker.stats[BONUS_HUMAN_DAMAGE].value))
@@ -175,7 +175,7 @@ do
                     elseif victim.unit_trait[i] == TRAIT_DEMON then trait_modifier = trait_modifier + (attacker.stats[BONUS_DEMON_DAMAGE].value * 0.01) end
                 end
             end
-           -- print("5")
+            --print("5")
 
             if direct and (damage_type  and damage_type == DAMAGE_TYPE_PHYSICAL) and (victim.equip_point[OFFHAND_POINT] and victim.equip_point[OFFHAND_POINT].SUBTYPE == SHIELD_OFFHAND) then
                 local block_chance = victim.stats[BLOCK_CHANCE].value
@@ -190,7 +190,7 @@ do
                     end
 
             end
-           -- print("6")
+            --print("6")
 
             if damage_type == DAMAGE_TYPE_PHYSICAL then
                 defence = 1. - (ParamToPercent(victim.stats[PHYSICAL_DEFENCE].value, PHYSICAL_DEFENCE) * 0.01)
@@ -282,7 +282,7 @@ do
                 myeffect = damage_table.myeffect
                 --print("attack done " .. GetUnitName(source))
             elseif myeffect and myeffect.eff and myeffect.eff.single_attack_instance then
-               -- print("aaaa")
+                --print("aaaa")
                 damage_table = OnMyAttack(source, target, damage_table)
                 damage = damage_table.damage
                 attribute = damage_table.attribute
@@ -341,6 +341,12 @@ do
                     victim.death_y = GetUnitY(target)
                     victim.death_z = GetUnitZ(target)
                     victim.exploded = true
+                    if attribute == ICE_ATTRIBUTE then
+                        local effect = AddSpecialEffect("Effect\\Ice Cracks.mdx", victim.death_x, victim.death_y)
+                        BlzSetSpecialEffectScale(effect, 0.9 * BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE))
+                        BlzSetSpecialEffectYaw(effect, GetRandomReal(0., 360.) * bj_DEGTORAD)
+                        DestroyEffect(effect)
+                    end
                 end
                 --print("15")
 
@@ -477,6 +483,8 @@ do
         RegisterTestCommand("def1250", function()
             print(ParamToPercent(1250, PHYSICAL_DEFENCE))
         end)
+
+        RegisterTestCommand("hurt", function() DamageUnit(PlayerHero[1], PlayerHero[1], 5, PHYSICAL_ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, false, true, true, nil) end)
 
     end
 

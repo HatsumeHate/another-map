@@ -190,6 +190,138 @@ do
     end
 
 
+    function ReloadBarFrames()
+        for player = 1, 6 do
+            if PlayerHero[player] then
+
+                BarFrames[player].elite = CreateBar(BAR_TYPE_ELITE, player)
+                BarFrames[player].common = CreateBar(BAR_TYPE_COMMON, player)
+                BarFrames[player].common_adv = CreateBar(BAR_TYPE_COMMON_ADVANCED, player)
+                BarFrames[player].boss = CreateBar(BAR_TYPE_BOSS, player)
+
+                BarFrames[player].boss_bar_state = false
+
+                BlzFrameSetVertexColor(BarFrames[player].boss.bar, BlzConvertColor(255, 225, 200, 200))
+                BlzFrameSetScale(BarFrames[player].common.text, 2.58)
+                BlzFrameSetScale(BarFrames[player].common_adv.text, 2.5)
+                BlzFrameSetScale(BarFrames[player].elite.text, 2.73)
+                BlzFrameSetScale(BarFrames[player].boss.text, 2.95)
+
+                DestroyTimer(BarFrames[player].hpbar_value_timer)
+                DestroyTrigger(BarFrames[player].trigger)
+                DestroyTimer(BarFrames[player].boss_timer)
+                DestroyGroup(BarFrames[player].boss_group)
+
+                BarFrames[player].hpbar_value_timer = CreateTimer()
+
+                local proper_bar = BarFrames[player].common
+                local last_focus_unit
+                local actual_player = Player(player - 1)
+                BarFrames[player].trigger = CreateTrigger()
+                TriggerRegisterPlayerEvent(BarFrames[player].trigger, actual_player, EVENT_PLAYER_MOUSE_MOVE)
+                TriggerAddAction(BarFrames[player].trigger, function()
+                    local mouse_focus = BlzGetMouseFocusUnit()
+
+                        if mouse_focus ~= nil and GetUnitState(mouse_focus, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(mouse_focus, FourCC("Avul")) == 0 and not IsAHero(mouse_focus) then
+                            local unit_data = GetUnitData(mouse_focus)
+
+                            if last_focus_unit ~= mouse_focus and unit_data and unit_data.classification ~= MONSTER_RANK_BOSS then
+                                last_focus_unit = mouse_focus
+
+                                BlzFrameSetVisible(BarFrames[player].elite.bar, false)
+                                BlzFrameSetVisible(BarFrames[player].common.bar, false)
+                                BlzFrameSetVisible(BarFrames[player].common_adv.bar, false)
+
+                                if unit_data.classification == MONSTER_RANK_ADVANCED then proper_bar = BarFrames[player].elite
+                                elseif unit_data.traits then proper_bar = BarFrames[player].common_adv
+                                else proper_bar = BarFrames[player].common end
+
+                                if GetLocalPlayer() == actual_player then BlzFrameSetVisible(proper_bar.bar, true) end
+                                BlzFrameSetValue(proper_bar.bar, math.floor((GetUnitState(mouse_focus, UNIT_STATE_LIFE) / BlzGetUnitMaxHP(mouse_focus) * 100.)) + 0.5)
+                                BlzFrameSetText(proper_bar.text, GetUnitName(mouse_focus))
+
+                            end
+
+                        else
+                            last_focus_unit = nil
+                            BlzFrameSetVisible(BarFrames[player].elite.bar, false)
+                            BlzFrameSetVisible(BarFrames[player].common.bar, false)
+                            BlzFrameSetVisible(BarFrames[player].common_adv.bar, false)
+                        end
+
+                end)
+
+                TimerStart(BarFrames[player].hpbar_value_timer, 0.1, true, function()
+                    if last_focus_unit then
+                        BlzFrameSetValue(proper_bar.bar, math.floor((GetUnitState(last_focus_unit, UNIT_STATE_LIFE) / BlzGetUnitMaxHP(last_focus_unit) * 100.)) + 0.5)
+                    end
+                end)
+
+
+                BarFrames[player].boss_timer = CreateTimer()
+                BarFrames[player].boss_group = CreateGroup()
+                TimerStart(BarFrames[player].boss_timer, 1., true, function()
+                    GroupClear(BarFrames[player].boss_group)
+                    GroupEnumUnitsInRange(BarFrames[player].boss_group, GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]), 1500., nil)
+
+                    if BlzGroupGetSize(BarFrames[player].boss_group) > 0 then
+                        for index = BlzGroupGetSize(BarFrames[player].boss_group) - 1, 0, -1 do
+
+                            if not BarFrames[player].boss_bar_state then
+
+                                local boss = BlzGroupUnitAt(BarFrames[player].boss_group, index)
+                                local unit_data = GetUnitData(boss)
+
+                                    if GetUnitState(boss, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(boss, FourCC("Avul")) == 0 and unit_data and unit_data.classification == MONSTER_RANK_BOSS then
+                                        BarFrames[player].boss_bar_state = true
+
+                                        if GetLocalPlayer() == actual_player then
+                                            BlzFrameSetVisible(BarFrames[player].boss.bar, true)
+                                        end
+
+                                        BlzFrameSetValue(BarFrames[player].boss.bar, math.floor((GetUnitState(boss, UNIT_STATE_LIFE) / BlzGetUnitMaxHP(boss) * 100.) + 0.5))
+                                        BlzFrameSetText(BarFrames[player].boss.text, GetUnitName(boss))
+                                        AttachToBossBar(player)
+
+                                        local track_timer = CreateTimer()
+                                        TimerStart(track_timer, 0.1, true, function()
+                                            local health = GetUnitState(boss, UNIT_STATE_LIFE)
+
+                                                if health < 0.045 then
+                                                    BarFrames[player].boss_bar_state = false
+                                                    BlzFrameSetValue(BarFrames[player].boss.bar, 0)
+                                                    TimerStart(track_timer, 5., false, function()
+                                                        BlzFrameSetVisible(BarFrames[player].boss.bar, false)
+                                                        ResetPoints(player)
+                                                        DestroyTimer(track_timer)
+                                                        --ResumeTimer(timer)
+                                                    end)
+                                                elseif not IsUnitVisible(boss, actual_player) or not IsUnitInRange(boss, PlayerHero[player], 1500.) then
+                                                    BarFrames[player].boss_bar_state = false
+                                                    BlzFrameSetValue(BarFrames[player].boss.bar, 0)
+                                                    BlzFrameSetVisible(BarFrames[player].boss.bar, false)
+                                                    ResetPoints(player)
+                                                    DestroyTimer(track_timer)
+                                                    --ResumeTimer(timer)
+                                                else
+                                                    BlzFrameSetValue(BarFrames[player].boss.bar, R2I(math.floor((health / BlzGetUnitMaxHP(boss) * 100.) + 0.5)))
+                                                end
+
+                                        end)
+
+                                        break
+                                    end
+                            end
+                        end
+                    end
+
+
+                end)
+            end
+        end
+    end
+
+
     function CreateBarsForPlayer(player)
         BarFrames[player] = {}
 
@@ -209,11 +341,11 @@ do
         BarFrames[player].hpbar_value_timer = CreateTimer()
 
         local proper_bar = BarFrames[player].common
-        local last_focus_unit = nil
+        local last_focus_unit
         local actual_player = Player(player - 1)
-        local trigger = CreateTrigger()
-        TriggerRegisterPlayerEvent(trigger, actual_player, EVENT_PLAYER_MOUSE_MOVE)
-        TriggerAddAction(trigger, function()
+        BarFrames[player].trigger = CreateTrigger()
+        TriggerRegisterPlayerEvent(BarFrames[player].trigger, actual_player, EVENT_PLAYER_MOUSE_MOVE)
+        TriggerAddAction(BarFrames[player].trigger, function()
             local mouse_focus = BlzGetMouseFocusUnit()
 
                 if mouse_focus ~= nil and GetUnitState(mouse_focus, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(mouse_focus, FourCC("Avul")) == 0 and not IsAHero(mouse_focus) then
@@ -252,18 +384,18 @@ do
         end)
 
 
-        local timer = CreateTimer()
-        local group = CreateGroup()
-        TimerStart(timer, 1., true, function()
-            GroupClear(group)
-            GroupEnumUnitsInRange(group, GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]), 1500., nil)
+        BarFrames[player].boss_timer = CreateTimer()
+        BarFrames[player].boss_group = CreateGroup()
+        TimerStart(BarFrames[player].boss_timer, 1., true, function()
+            GroupClear(BarFrames[player].boss_group)
+            GroupEnumUnitsInRange(BarFrames[player].boss_group, GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]), 1500., nil)
 
-            if BlzGroupGetSize(group) > 0 then
-                for index = BlzGroupGetSize(group) - 1, 0, -1 do
-                    --IsUnitEnemy(BlzGroupUnitAt(group, index), actual_player) and
+            if BlzGroupGetSize(BarFrames[player].boss_group) > 0 then
+                for index = BlzGroupGetSize(BarFrames[player].boss_group) - 1, 0, -1 do
+
                     if not BarFrames[player].boss_bar_state then
 
-                        local boss = BlzGroupUnitAt(group, index)
+                        local boss = BlzGroupUnitAt(BarFrames[player].boss_group, index)
                         local unit_data = GetUnitData(boss)
 
                             if GetUnitState(boss, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(boss, FourCC("Avul")) == 0 and unit_data and unit_data.classification == MONSTER_RANK_BOSS then
@@ -277,8 +409,6 @@ do
                                 BlzFrameSetText(BarFrames[player].boss.text, GetUnitName(boss))
                                 AttachToBossBar(player)
 
-
-                                --PauseTimer(timer)
                                 local track_timer = CreateTimer()
                                 TimerStart(track_timer, 0.1, true, function()
                                     local health = GetUnitState(boss, UNIT_STATE_LIFE)

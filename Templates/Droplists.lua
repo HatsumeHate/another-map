@@ -128,21 +128,20 @@ do
     end
 
 
-    ---@param dying_unit unit
-    ---@param player integer
-    function DropForPlayer(dying_unit, player)
-        --local dying_unit = PlayerHero[1]
-        local x = GetUnitX(dying_unit)
-        local y = GetUnitY(dying_unit)
-        local unit_data = GetUnitData(dying_unit)
-        local droplist = unit_data.droplist
+    ---@param player number
+    ---@param x real
+    ---@param y real
+    ---@param min_offset real
+    ---@param max_offset real
+    ---@param droplist table
+    function DropDroplistForPlayer(player, x, y, min_offset, max_offset, droplist)
         local item_drop = {}
         local min = droplist.min or 1
         local max = droplist.max or 1
         local current = 0
         local initial_time_offset = 0.45
         local time_offset = 0.
-        local bonus_drop_chance = 1. + GetUnitParameterValue(PlayerHero[player+1], DROP_BONUS) * 0.01
+        local bonus_drop_chance = 1. + GetUnitParameterValue(PlayerHero[player], DROP_BONUS) * 0.01
 
             for i = 1, #droplist.list do
                 if Chance(droplist.list[i].chance * bonus_drop_chance) then
@@ -159,15 +158,15 @@ do
 
                     DelayAction(initial_time_offset + time_offset, function()
                         local angle = GetRandomReal(0., 359.)
-                        local drop_offset = GetMaxAvailableDistance(x, y, angle, GetRandomReal(unit_data.drop_offset_min or 45., unit_data.drop_offset_max or 65.))
+                        local drop_offset = GetMaxAvailableDistance(x, y, angle, GetRandomReal(min_offset or 45., max_offset or 65.))
                         local new_x = x + Rx(drop_offset, angle)
                         local new_y = y + Ry(drop_offset, angle)
 
 
                             if item_drop[i].id == "gold" then
-                                CreateGoldStack(math.floor(GetRandomInt(item_drop[i].min, item_drop[i].max) * (1. + GetUnitParameterValue(PlayerHero[player+1], GOLD_BONUS) * 0.01)), new_x, new_y, player)
+                                CreateGoldStack(math.floor(GetRandomInt(item_drop[i].min, item_drop[i].max) * (1. + GetUnitParameterValue(PlayerHero[player], GOLD_BONUS) * 0.01)), new_x, new_y, player-1)
                             else
-                                local item = CreateCustomItem(item_drop[i].id, new_x, new_y, true, player)
+                                local item = CreateCustomItem(item_drop[i].id, new_x, new_y, true, player-1)
 
                                     if item_drop[i].generate then
                                         local item_data = GetItemData(item)
@@ -187,7 +186,7 @@ do
                                             GenerateItemStats(item, Current_Wave + GetRandomInt(0, 2), quality)
                                         end
 
-                                    elseif GetItemTypeId(item) == ITEM_TYPE_CHARGED then
+                                    elseif GetItemType(item) == ITEM_TYPE_CHARGED then
                                         SetItemCharges(item, GetRandomInt(item_drop[i].min or 1, item_drop[i].max or 1))
                                     end
 
@@ -209,6 +208,18 @@ do
 
             end
             --print("done")
+    end
+
+
+    ---@param dying_unit unit
+    ---@param player integer
+    function DropForPlayer(dying_unit, player)
+        local x = GetUnitX(dying_unit)
+        local y = GetUnitY(dying_unit)
+        local unit_data = GetUnitData(dying_unit)
+
+            DropDroplistForPlayer(player+1, x, y, unit_data.drop_offset_min or nil, unit_data.drop_offset_max or nil, unit_data.droplist)
+
 
     end
 
@@ -248,13 +259,17 @@ do
 
         NewDropList("set_items", {
             list = {
-                { id = "I01B", generate = true },
-                { id = "I01A", generate = true },
-                { id = "I01E", generate = true },
-                { id = "I01F", generate = true },
-                { id = "I01G", generate = true },
-                { id = "I01H", generate = true },
-                { id = "I01I", generate = true },
+                { id = "I01B", generate = true }, --queen
+                { id = "I01A", generate = true }, --princess
+                { id = "I01E", generate = true }, --bootpain
+                { id = "I01F", generate = true }, --chestpain
+                { id = "I01G", generate = true }, --headpain
+                { id = "I01H", generate = true }, --king
+                { id = "I01I", generate = true }, --jester
+                { id = "I02J", generate = true }, --crimson
+                { id = "I02K", generate = true }, --crimson
+                { id = "I02L", generate = true }, --crimson
+                { id = "I02I", generate = true }, --crimson
             }
         })
 
@@ -277,12 +292,19 @@ do
                 { id = "I01G", generate = true }, --headpain
                 { id = "I01H", generate = true }, --king
                 { id = "I01I", generate = true }, --jester
+                { id = "I02J", generate = true }, --crimson
+                { id = "I02K", generate = true }, --crimson
+                { id = "I02L", generate = true }, --crimson
+                { id = "I02I", generate = true }, --crimson
                 { id = "I01J", generate = true }, --master
                 { id = "I01W", generate = true }, --ice touch
                 { id = "I02E", generate = true }, --blood drinker
                 { id = "I02G", generate = true }, --primal tome
             }
         })
+
+
+        --NewDropList("unique_items_supply", MergeTables({}, GetDropList("unique_items"))
 
         NewDropList("gems", {
             max = 2,
@@ -302,6 +324,24 @@ do
             }
         })
 
+        NewDropList("gems_supply", {
+            max = 4,
+            rolls = 5,
+            list = {
+                { id = ITEM_STONE_DIAMOND, chance = 30., max = 5 },
+                { id = ITEM_STONE_AMETHYST, chance = 30., max = 5 },
+                { id = ITEM_STONE_TURQUOISE, chance = 30., max = 5 },
+                { id = ITEM_STONE_EMERALD, chance = 30., max = 5 },
+                { id = ITEM_STONE_MALACHITE, chance = 30., max = 5 },
+                { id = ITEM_STONE_JADE, chance = 30., max = 5 },
+                { id = ITEM_STONE_OPAL, chance = 30., max = 5 },
+                { id = ITEM_STONE_RUBY, chance = 30., max = 5 },
+                { id = ITEM_STONE_SAPPHIRE, chance = 30., max = 5 },
+                { id = ITEM_STONE_TOPAZ, chance = 30., max = 5 },
+                { id = ITEM_STONE_AMBER, chance = 30., max = 5 },
+            }
+        })
+
         NewDropList("consumables", {
             max = 2,
             rolls = 3,
@@ -314,6 +354,20 @@ do
                 { id = ITEM_POTION_ADRENALINE, chance = 6.5 },
                 { id = ITEM_SCROLL_OF_TOWN_PORTAL, chance = 8.3 },
                 { id = ITEM_SCROLL_OF_PROTECTION, chance = 7.4 },
+            }
+        })
+
+        NewDropList("consumables_supply", {
+            max = 3,
+            rolls = 5,
+            list = {
+                { id = ITEM_POTION_HEALTH_WEAK, chance = 30., max = 5 },
+                { id = ITEM_POTION_MANA_WEAK, chance = 30., max = 5 },
+                { id = ITEM_POTION_HEALTH_HALF, chance = 30., max = 5 },
+                { id = ITEM_POTION_MANA_HALF, chance = 30., max = 5 },
+                { id = ITEM_POTION_ANTIDOTE, chance = 15., max = 5 },
+                { id = ITEM_POTION_ADRENALINE, chance = 15., max = 5 },
+                { id = ITEM_SCROLL_OF_PROTECTION, chance = 10., max = 5 },
             }
         })
 
@@ -354,6 +408,12 @@ do
             }
         })
 
+        NewDropList("gold_supply", {
+            list = {
+                { id = "gold", min = 75, max = 215, ignore_max = true },
+            }
+        })
+
         NewDropList("gold_boss", {
             list = {
                 { id = "gold", min = 250, max = 1250, ignore_max = true },
@@ -368,7 +428,10 @@ do
                 { id = "I014" },
                 { id = "I013" },
                 { id = "I00V" },
-                { id = "I00U" }
+                { id = "I00U" },
+                { id = "I028" },
+                { id = "I029" },
+                { id = "I02A" }
             }
         })
 
@@ -380,7 +443,10 @@ do
                 { id = "I021" },
                 { id = "I020" },
                 { id = "I01Z" },
-                { id = "I022" }
+                { id = "I022" },
+                { id = "I02B" },
+                { id = "I02C" },
+                { id = "I02D" }
             }
         })
 
@@ -513,6 +579,18 @@ do
                 { id = "consumables", chance = 11. },
                 { id = "special_items", chance = 7. },
                 { id = "gold_chest", chance = 90.}
+            }
+        })
+
+        NewDropList("supply_crate", {
+            template = true,
+            max = 5,
+            list = {
+                { id = "chest_item", chance = 65.5 },
+                { id = "unique_items", chance = 1. },
+                { id = "gems_supply", chance = 20.3 },
+                { id = "consumables_supply", chance = 20. },
+                { id = "gold_supply", chance = 100.}
             }
         })
 

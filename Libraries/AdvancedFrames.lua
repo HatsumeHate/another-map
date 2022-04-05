@@ -7,6 +7,7 @@ do
     local AlternatePlayerTooltip = 0
 
 
+    ---@param button framehandle
     function GetButtonData(button)
         return ButtonList[button]
     end
@@ -30,6 +31,15 @@ do
     end
 
 
+    ---@param model string
+    ---@param scale real
+    ---@param relative_to_frame framehandle
+    ---@param relative_point_from framepointtype
+    ---@param relative_point_to framepointtype
+    ---@param offset_x real
+    ---@param offset_y real
+    ---@param parent framehandle
+    ---@return framehandle
     function CreateSprite(model, scale, relative_to_frame, relative_point_from, relative_point_to, offset_x, offset_y, parent)
         local new_Frame = BlzCreateFrameByType("SPRITE", "justAName", parent, "WarCraftIIILogo", 0)
             BlzFrameSetPoint(new_Frame, relative_point_from, relative_to_frame, relative_point_to, offset_x, offset_y)
@@ -40,7 +50,16 @@ do
     end
 
 
-
+    ---@param size_x real
+    ---@param size_y real
+    ---@param frame_point_from framepointtype
+    ---@param frame_point_to framepointtype
+    ---@return framehandle
+    ---@param texture string
+    ---@param relative_frame framehandle
+    ---@param offset_x real
+    ---@param offset_y real
+    ---@param parent_frame framehandle
     function CreateSimpleButton(texture, size_x, size_y, relative_frame, frame_point_from, frame_point_to, offset_x, offset_y, parent_frame)
         local new_Frame = BlzCreateFrame('ScriptDialogButtonEx', parent_frame, 0, 0)
         local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
@@ -58,6 +77,14 @@ do
     end
 
 
+    ---@param header string
+    ---@param context string
+    ---@param frame framehandle
+    ---@param size_x real
+    ---@param size_y real
+    ---@param frame_point_from framepointtype
+    ---@param frame_point_to framepointtype
+    ---@return table
     function CreateTooltip(header, context, frame, size_x, size_y, frame_point_from, frame_point_to)
         local tooltip = BlzCreateFrame("BoxedText", frame, 0, 1)
             BlzFrameSetPoint(tooltip, frame_point_from or FRAMEPOINT_TOPLEFT, frame, frame_point_to or FRAMEPOINT_RIGHT, 0, 0)
@@ -69,6 +96,91 @@ do
     end
 
 
+
+    function ReloadAdvancedFrames()
+        for player = 1, 6 do
+
+            ContextFrame[player].backdrop = BlzCreateFrame('ScoreScreenButtonBackdropTemplate', GAME_UI, 0, 0)
+
+                for button = 1, 8 do
+                    ContextFrame[player].frames[button] = { button = BlzCreateFrame('ScriptDialogButton', ContextFrame[player].backdrop, 0, 0) }
+                    ContextFrame[player].frames[button].text = BlzGetFrameByName("ScriptDialogButtonText", 0)
+                    BlzFrameSetScale(ContextFrame[player].frames[button].text, 0.8)
+                    BlzFrameSetSize(ContextFrame[player].frames[button].button, 0.074, 0.025)
+                    BlzFrameSetTextAlignment(ContextFrame[player].frames[button].text, TEXT_JUSTIFY_CENTER , TEXT_JUSTIFY_MIDDLE)
+                    FrameRegisterNoFocus(ContextFrame[player].frames[button].button)
+                    BlzFrameSetVisible(ContextFrame[player].frames[button].button, false)
+                    ContextFrame[player].frames[button].react = nil
+
+                    local trg = CreateTrigger()
+                    BlzTriggerRegisterFrameEvent(trg, ContextFrame[player].frames[button].button, FRAMEEVENT_CONTROL_CLICK)
+                    TriggerAddAction(trg, function()
+                        ContextFrame[player].frames[button].react()
+                        DestroyContextMenu(player)
+                    end)
+
+                end
+
+            BlzFrameSetVisible(ContextFrame[player].backdrop, false)
+
+            SliderFrame[player].backdrop = BlzCreateFrame("ScoreScreenButtonBackdropTemplate", GAME_UI, 0, 0)
+            SliderFrame[player].slider = BlzCreateFrame("EscMenuSliderTemplate", SliderFrame[player].backdrop, 0, 0)
+            SliderFrame[player].text_frame = BlzCreateFrameByType("BACKDROP", "text backdrop", SliderFrame[player].slider, "", 0)
+            SliderFrame[player].text = BlzCreateFrame("EscMenuLabelTextTemplate",  SliderFrame[player].slider, 0, 0)
+
+            BlzFrameSetPoint(SliderFrame[player].text_frame, FRAMEPOINT_BOTTOM, SliderFrame[player].slider, FRAMEPOINT_TOP, 0., 0.)
+            BlzFrameSetSize(SliderFrame[player].text_frame, 0.012, 0.012)
+            BlzFrameSetSize(SliderFrame[player].backdrop, 0.115, 0.035)
+            BlzFrameSetPoint(SliderFrame[player].slider, FRAMEPOINT_CENTER, SliderFrame[player].backdrop, FRAMEPOINT_CENTER, 0., 0.)
+            BlzFrameSetSize(SliderFrame[player].slider, 0.1, 0.015)
+            BlzFrameSetPoint(SliderFrame[player].text, FRAMEPOINT_CENTER, SliderFrame[player].text_frame, FRAMEPOINT_CENTER, 0., 0.)
+            BlzFrameSetMinMaxValue(SliderFrame[player].slider, 1, 1)
+            BlzFrameSetTexture(SliderFrame[player].text_frame, "GUI\\ChargesTexture.blp", 0, true)
+            BlzFrameSetStepSize(SliderFrame[player].slider, 1)
+            BlzFrameSetScale(SliderFrame[player].text_frame, 1.15)
+
+            SliderFrame[player].button_ok = BlzCreateFrame("ScriptDialogButton", SliderFrame[player].slider, 0, 0)
+            SliderFrame[player].button_cancel = BlzCreateFrame("ScriptDialogButton", SliderFrame[player].slider, 0, 1)
+
+            BlzFrameSetPoint(SliderFrame[player].button_ok, FRAMEPOINT_TOPLEFT, SliderFrame[player].slider, FRAMEPOINT_BOTTOM, 0., 0.)
+            BlzFrameSetPoint(SliderFrame[player].button_cancel, FRAMEPOINT_TOPRIGHT, SliderFrame[player].slider, FRAMEPOINT_BOTTOM, 0., 0.)
+
+
+            BlzFrameSetSize(SliderFrame[player].button_ok, 0.05, 0.025)
+            BlzFrameSetSize(SliderFrame[player].button_cancel, 0.05, 0.025)
+            BlzFrameSetText(SliderFrame[player].button_ok, LOCALE_LIST[my_locale].UI_TEXT_OK)
+            BlzFrameSetText(SliderFrame[player].button_cancel, LOCALE_LIST[my_locale].UI_TEXT_CANCEL)
+            BlzFrameSetTextAlignment(SliderFrame[player].button_ok, TEXT_JUSTIFY_TOP, TEXT_JUSTIFY_MIDDLE)
+            BlzFrameSetTextAlignment(SliderFrame[player].button_cancel, TEXT_JUSTIFY_TOP, TEXT_JUSTIFY_MIDDLE)
+
+            BlzFrameSetLevel(SliderFrame[player].slider, 3)
+
+
+            local trg = CreateTrigger()
+                BlzTriggerRegisterFrameEvent(trg, SliderFrame[player].button_ok, FRAMEEVENT_CONTROL_CLICK)
+                BlzTriggerRegisterFrameEvent(trg, SliderFrame[player].button_cancel, FRAMEEVENT_CONTROL_CLICK)
+                TriggerAddAction(trg, function()
+                    if BlzGetTriggerFrame() == SliderFrame[player].button_ok then
+                        if SliderFrame[player].okreact then SliderFrame[player].okreact() end
+                    else
+                        if SliderFrame[player].cancelreact then SliderFrame[player].cancelreact() end
+                    end
+                    DestroySlider(player)
+                end)
+
+            BlzTriggerRegisterFrameEvent(SliderFrame[player].trigger2, SliderFrame[player].slider, FRAMEEVENT_SLIDER_VALUE_CHANGED)
+            TriggerAddAction(SliderFrame[player].trigger2, function()
+                SliderFrame[player].value = BlzGetTriggerFrameValue() or 1
+                if SliderFrame[player].value < 0 then SliderFrame[player].value = 1 end
+                BlzFrameSetText(SliderFrame[player].text, R2I(SliderFrame[player].value))
+            end)
+
+            SliderFrame[player].state = false
+            BlzFrameSetVisible(SliderFrame[player].backdrop, false)
+        end
+    end
+
+
     --======================================================================
     -- SLIDER MODE =========================================================
 
@@ -76,6 +188,7 @@ do
 
 
 
+    ---@param player integer
     function DestroySlider(player)
         if SliderFrame[player].state then
             BlzFrameSetVisible(SliderFrame[player].backdrop, false)
@@ -84,11 +197,14 @@ do
     end
 
 
+    ---@param player integer
+    ---@param origin_button table
+    ---@param parent framehandle
+    ---@param ok_func function
+    ---@param cancel_func function
     function CreateSlider(player, origin_button, parent, ok_func, cancel_func)
 
         parent = GetMasterParentFrame(player) or parent
-
-        --DestroySlider(player)
 
         BlzFrameClearAllPoints(SliderFrame[player].backdrop)
         BlzFrameSetParent(SliderFrame[player].backdrop, parent)
@@ -177,6 +293,7 @@ do
     --======================================================================
     -- CONTEXT MENU   ======================================================
 
+    ---@param player integer
     function DestroyContextMenu(player)
         for i = 8, 1, -1 do
             BlzFrameSetVisible(ContextFrame[player].frames[i].button, false)
@@ -188,6 +305,9 @@ do
     end
 
 
+    ---@param player integer
+    ---@param text string
+    ---@param result function
     function AddContextOption(player, text, result)
         ContextFrame[player].options = ContextFrame[player].options + 1
         local position = ContextFrame[player].options
@@ -219,6 +339,11 @@ do
     end
 
 
+    ---@param player integer
+    ---@param originframe framehandle
+    ---@param direction framepointtype
+    ---@param parent framehandle
+    ---@return framehandle
     function CreatePlayerContextMenu(player, originframe, direction, parent)
         local from
 
@@ -303,11 +428,14 @@ do
 
 
     ---@param frame framehandle
+    ---@return table
     function GetTooltip(frame)
         return TooltipList[frame]
     end
 
     ---@param parent framehandle
+    ---@param inheritance string
+    ---@return framehandle
     function NewTooltip(parent, inheritance)
         local backdrop = BlzCreateFrame("BoxedTextEx", parent, 15, 0)
         local handle = backdrop
@@ -351,6 +479,7 @@ do
     ---@param offset_x real
     ---@param offset_y real
     ---@param text_orientation textaligntype
+    ---@param player integer
     function AddExtendedSkillValue(index, tooltip, icon, value, relative_frame, from, to, offset_x, offset_y, text_orientation, player)
         if GetLocalPlayer() == Player(player-1) then
             BlzFrameSetVisible(tooltip.imageframe[index], true)
@@ -393,6 +522,7 @@ do
     ---@param offset_x real
     ---@param offset_y real
     ---@param align textaligntype
+    ---@param player integer
     function SetTooltipText(index, tooltip, text, align, relative, from, to, offset_x, offset_y, player)
         BlzFrameClearAllPoints(tooltip.textframe[index])
         if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(tooltip.textframe[index], true) end
@@ -414,6 +544,7 @@ do
     ---@param to framepointtype
     ---@param offset_x real
     ---@param offset_y real
+    ---@param player integer
     function SetTooltipIcon(index, tooltip, icon, size_x, size_y, scale, relative, from, to, offset_x, offset_y, player)
         BlzFrameClearAllPoints(tooltip.imageframe[index])
         if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(tooltip.imageframe[index], true) end
@@ -425,6 +556,11 @@ do
     end
 
 
+    ---@param number integer
+    ---@param dec1 string
+    ---@param dec4 string
+    ---@param dec5 string
+    ---@return string
     function Declension(number, dec1, dec4, dec5)
         local i
 
@@ -447,6 +583,7 @@ do
     ---@param tooltip framehandle
     ---@param button table
     ---@param player integer
+    ---@param alternate_tooltip boolean
     function ShowTalentTooltip(talent, level, tooltip, button, player, alternate_tooltip)
         local category = GetButtonData(TalentPanel[player].last_category_button)
 
@@ -507,6 +644,10 @@ do
 
 
 
+    ---@param skill table
+    ---@param tooltip framehandle
+    ---@param button table
+    ---@param player integer
     function ShowSkillTooltip(skill, tooltip, button, player)
 
         if ContextFrame[player].state or SliderFrame[player].state then return end
@@ -584,6 +725,11 @@ do
     end
 
 
+    ---@param item item
+    ---@param parameter integer
+    ---@param value real
+    ---@param method integer
+    ---@return string
     function CompareParameter(item, parameter, value, method)
         local item_data = GetItemData(item)
 
@@ -610,6 +756,8 @@ do
     ---@param direction framepointtype
     ---@param fallback_tooltip table
     ---@param free_tooltip boolean
+    ---@param alternate_tooltip boolean
+    ---@param compare_item item
     function ShowItemTooltip(item, tooltip, button, player, direction, fallback_tooltip, alternate_tooltip, compare_item)
 
         --if true then return end
@@ -921,6 +1069,7 @@ do
     end
 
 
+    ---@param player integer
     function RemoveTooltip(player)
 
         if PlayerTooltip[player] then
@@ -934,6 +1083,7 @@ do
     end
 
 
+    ---@param tooltip framehandle
     function RemoveSpecificTooltip(tooltip)
 
         tooltip = GetTooltip(tooltip)
@@ -951,6 +1101,7 @@ do
 
     end
 
+    ---@param player integer
     function IsTooltipActive(player)
         return PlayerTooltip[player]
     end

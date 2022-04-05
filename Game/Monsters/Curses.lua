@@ -138,6 +138,8 @@ do
                                         local new_x = x + Rx(spawn_range, spawn_angle); local new_y = y + Ry(spawn_range, spawn_angle)
                                         local sfx = AddSpecialEffect("Effect\\Void Teleport Red To.mdx", new_x, new_y)
 
+                                        BlzSetSpecialEffectScale(sfx, 0.7)
+
                                             SetUnitX(spawned, new_x)
                                             SetUnitY(spawned, new_y)
 
@@ -159,6 +161,7 @@ do
                                                     GroupAddUnit(guard_group, spawned)
                                                     last_pack_count = BlzGroupGetSize(guard_group)
                                                     local teleport_sfx = AddSpecialEffect("Effect\\Void Teleport Red Caster.mdx", new_x, new_y)
+                                                    BlzSetSpecialEffectScale(teleport_sfx, 0.7)
                                                     DestroyEffect(teleport_sfx)
                                                 else
                                                     KillUnit(spawned)

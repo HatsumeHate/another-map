@@ -4355,10 +4355,7 @@ do
                                     SKILL_CATEGORY_ARCANE
                                 },
                             },
-                            min_level = 1,
-                            max_level = 2,
-                        },
-                        [NECROMANCER_CLASS] = {
+                            [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
                                 min_level_skill = 1,
@@ -4371,6 +4368,9 @@ do
                                     SKILL_CATEGORY_SUMMONING
                                 },
                             },
+                            min_level = 1,
+                            max_level = 2,
+                        },
                         effect_bonus = {
 
                         }

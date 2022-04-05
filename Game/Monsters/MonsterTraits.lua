@@ -90,7 +90,10 @@ do
 
             if trait.modified_parameters then
                 for i = 1, #trait.modified_parameters do
-                    ModifyStat(unit, trait.modified_parameters[i].param, trait.modified_parameters[i].value, trait.modified_parameters[i].method, true)
+                    local random_bonus
+                    if trait.modified_parameters[i].method == STRAIGHT_BONUS then random_bonus = GetRandomInt(trait.modified_parameters[i].min or 0, trait.modified_parameters[i].max or 0)
+                    else random_bonus = GetRandomReal(trait.modified_parameters[i].min or 0, trait.modified_parameters[i].max or 0) end
+                    ModifyStat(unit, trait.modified_parameters[i].param, trait.modified_parameters[i].value + random_bonus, trait.modified_parameters[i].method, true)
                 end
             end
 
@@ -132,8 +135,8 @@ do
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_ELECTRIFIED],
                 excludes = { MONSTER_TRAIT_CHILLING, MONSTER_TRAIT_BURNING, MONSTER_TRAIT_TOXIC },
                 modified_parameters = {
-                    { param = LIGHTNING_RESIST, value = 25, method = STRAIGHT_BONUS },
-                    { param = LIGHTNING_BONUS, value = 20, method = STRAIGHT_BONUS },
+                    { param = LIGHTNING_RESIST, value = 25, method = STRAIGHT_BONUS, min = 0, max = 20 },
+                    { param = LIGHTNING_BONUS, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
                     { param = HP_VALUE, value = 1.25, method = MULTIPLY_BONUS },
                 },
                 color = { r = 125, g = 125, b = 255 },
@@ -148,8 +151,8 @@ do
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_TOXIC],
                 excludes = { MONSTER_TRAIT_CHILLING, MONSTER_TRAIT_BURNING, MONSTER_TRAIT_ELECTRIFIED, MONSTER_TRAIT_ARCANE },
                 modified_parameters = {
-                    { param = POISON_RESIST, value = 20, method = STRAIGHT_BONUS },
-                    { param = POISON_BONUS, value = 20, method = STRAIGHT_BONUS },
+                    { param = POISON_RESIST, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
+                    { param = POISON_BONUS, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
                     { param = HP_VALUE, value = 1.25, method = MULTIPLY_BONUS },
                 },
                 applied_effects = { "trait_toxic" },
@@ -164,8 +167,8 @@ do
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_ARCANE],
                 excludes = { MONSTER_TRAIT_CHILLING, MONSTER_TRAIT_BURNING, MONSTER_TRAIT_ELECTRIFIED, MONSTER_TRAIT_TOXIC },
                 modified_parameters = {
-                    { param = ARCANE_RESIST, value = 20, method = STRAIGHT_BONUS },
-                    { param = ARCANE_BONUS, value = 20, method = STRAIGHT_BONUS },
+                    { param = ARCANE_RESIST, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
+                    { param = ARCANE_BONUS, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
                     { param = HP_VALUE, value = 1.25, method = MULTIPLY_BONUS },
                 },
                 applied_effects = { "trait_arcane" },
@@ -204,7 +207,7 @@ do
             [MONSTER_TRAIT_SPIKY] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_SPIKY],
                 modified_parameters = {
-                    { param = REFLECT_DAMAGE, value = 200, method = STRAIGHT_BONUS },
+                    { param = REFLECT_DAMAGE, value = 200, method = STRAIGHT_BONUS, min = -25, max = 200 },
                     { param = HP_VALUE, value = 1.25, method = MULTIPLY_BONUS }
                 },
                 apply_func = function(unit)
@@ -215,8 +218,8 @@ do
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_BURNING],
                 excludes = { MONSTER_TRAIT_CHILLING, MONSTER_TRAIT_ELECTRIFIED, MONSTER_TRAIT_TOXIC, MONSTER_TRAIT_ARCANE },
                 modified_parameters = {
-                    { param = FIRE_RESIST, value = 20, method = STRAIGHT_BONUS },
-                    { param = FIRE_BONUS, value = 20, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
+                    { param = FIRE_BONUS, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
                     { param = HP_VALUE, value = 1.25, method = MULTIPLY_BONUS }
                 },
                 color = { r = 255, g = 125, b = 125 },
@@ -232,8 +235,8 @@ do
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_CHILLING],
                 excludes = { MONSTER_TRAIT_BURNING, MONSTER_TRAIT_ELECTRIFIED, MONSTER_TRAIT_TOXIC, MONSTER_TRAIT_ARCANE, MONSTER_TRAIT_OVERPOWERING },
                 modified_parameters = {
-                    { param = ICE_RESIST, value = 20, method = STRAIGHT_BONUS },
-                    { param = ICE_BONUS, value = 20, method = STRAIGHT_BONUS },
+                    { param = ICE_RESIST, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
+                    { param = ICE_BONUS, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
                     { param = HP_VALUE, value = 1.25, method = MULTIPLY_BONUS }
                 },
                 color = { r = 200, g = 200, b = 220 },

@@ -317,7 +317,53 @@ do
         return false
     end
 
+    function ReloadStashFrames()
+        for player = 1, 6 do
+            if PlayerHero[player] then
+                local new_Frame
+                local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
 
+                    BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0.11, -0.1)
+                    BlzFrameSetSize(main_frame, 0.27, 0.15)
+
+
+                    new_Frame = BlzCreateFrameByType('BACKDROP', "PORTRAIT", main_frame, "",0)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.02, -0.02)
+                    BlzFrameSetSize(new_Frame, 0.0435, 0.0435)
+                    StashFrame[player].portrait = new_Frame
+
+                    new_Frame = BlzCreateFrameByType("TEXT", "shop name", StashFrame[player].portrait, "", 0)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_LEFT, StashFrame[player].portrait, FRAMEPOINT_RIGHT, 0.011, 0.)
+                    BlzFrameSetTextAlignment(new_Frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
+                    BlzFrameSetScale(new_Frame, 1.35)
+                    StashFrame[player].name = new_Frame
+
+
+                    new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
+                    --BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, PrivateChestFrame[player].portrait, FRAMEPOINT_ЕЩЗLEFT, 0.015, 0.015)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.015, 0.015)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMRIGHT, main_frame, FRAMEPOINT_BOTTOMRIGHT, -0.015, 0.015)
+                    BlzFrameSetSize(new_Frame, 0.15, 0.07)
+                    -- РЯДЫ - 0.035 5 КОЛОННЫ - 0.045 8
+                    StashFrame[player].border = new_Frame
+
+                    StashFrame[player].slots = { [1] = NewButton("GUI\\inventory_slot.blp", 0.04, 0.04, new_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.02, -0.017, new_Frame) }
+
+                    for i = 2, 5 do
+                        StashFrame[player].slots[i] = NewButton("GUI\\inventory_slot.blp", 0.04, 0.04, StashFrame[player].slots[i - 1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPRIGHT, 0., 0., new_Frame)
+                    end
+
+
+                    StashFrame[player].itemdata = {}
+                    StashFrame[player].tooltip = NewTooltip(StashFrame[player].slots[5])
+                    local tooltip = GetTooltip(StashFrame[player].tooltip)
+                    tooltip.is_sell_penalty = true
+                    StashFrame[player].main_frame = main_frame
+                    BlzFrameSetVisible(StashFrame[player].main_frame, false)
+
+            end
+        end
+    end
 
 
     ---@param player integer

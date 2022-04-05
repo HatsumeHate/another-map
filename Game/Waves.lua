@@ -33,7 +33,7 @@ do
             VictoryScreen()
         else
             Current_Wave = Current_Wave + 1
-            AddWaveTimer(295.)
+            AddWaveTimer(315.)
             --print("reset shops")
             ResetShops()
             --print("toggle citizens")
@@ -51,15 +51,19 @@ do
 
 
     function ResetShops()
-
+        --print("shops reset start")
         WavesUntilShopsUpdate = WavesUntilShopsUpdate + 1
+        --print("clear wanderer")
         ClearShop(gg_unit_n01W_0111)
+        --print("clear ok")
 
         if WavesUntilShopsUpdate == 3 then
             local item_count = GetRandomInt(7, 12)
             WavesUntilShopsUpdate = 0
 
+            --print("clear peon")
             ClearShop(gg_unit_opeo_0031)
+            --print("clear ok")
             for i = 1, item_count do
                 local item = CreateCustomItem(GetRandomGeneratedItemId(), 0., 0.)
                 local roll = GetRandomInt(1, 5)
@@ -72,7 +76,7 @@ do
                 GenerateItemStats(item, Current_Wave + GetRandomInt(1, 2), quality)
                 AddItemToShop(gg_unit_opeo_0031, item, false)
             end
-
+            --print("peon done")
 
             local item_pool = {
                 SWORD_WEAPON,
@@ -91,14 +95,16 @@ do
                 SHIELD_OFFHAND
             }
 
+            --print("clear smith")
             --smith
             ClearShop(gg_unit_n000_0056)
+            --print("clear ok")
             for i = 1, #item_pool do
                 local item = CreateCustomItem(GetGeneratedItemId(item_pool[i]), 0., 0.)
                 GenerateItemStats(item, Current_Wave, GetRandomInt(1, 5) == 1 and RARE_ITEM or COMMON_ITEM)
                 AddItemToShop(gg_unit_n000_0056, item, false)
             end
-
+            --print("smith A")
 
             item_count = GetRandomInt(2, 7)
             for i = 1, item_count do
@@ -106,6 +112,8 @@ do
                 GenerateItemStats(item, Current_Wave, GetRandomInt(1, 5) == 1 and RARE_ITEM or COMMON_ITEM)
                 AddItemToShop(gg_unit_n000_0056, item, false)
             end
+            --print("smith B")
+            --print("smith done")
 
             item_pool = {
                 RING_JEWELRY,
@@ -115,7 +123,9 @@ do
             }
 
             --herbalist
+            --print("clear herb")
             ClearShop(gg_unit_n001_0055)
+           -- print("clear ok")
 
             if WaveToAquireHalfPotions and Current_Wave >= WaveToAquireHalfPotions then
                 local my_item = CreateCustomItem(ITEM_POTION_HEALTH_HALF,  0.,0.)
@@ -126,6 +136,7 @@ do
                     AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 30, true)
                     WaveToAquireHalfPotions = nil
             end
+            --print("half pots done")
 
             item_count = GetRandomInt(2, 6)
             for i = 1, item_count do
@@ -133,22 +144,26 @@ do
                 GenerateItemStats(item, Current_Wave, GetRandomInt(1, 5) == 1 and RARE_ITEM or COMMON_ITEM)
                 AddItemToShop(gg_unit_n001_0055, item, false)
             end
+            --print("herb A")
 
 
             item_count = GetRandomInt(0, 6)
             if item_count > 0 then
                  AddItemToShop(gg_unit_n001_0055, CreateCustomItem(GetRandomBookItemId(COMMON_ITEM), 0, 0, false), false)
             end
+            --print("herb B")
 
             if GetRandomInt(1, 2) == 2 then
                 local item = CreateCustomItem("I01O", 0, 0, false)
                 SetItemCharges(item, GetRandomInt(1, 2))
                 AddItemToShop(gg_unit_n001_0055, item, false)
             end
-
+            --print("herb done")
 
             item_count = GetRandomInt(1, 6)
+            --print("clear lynn")
             ClearShop(gg_unit_n020_0075)
+            --print("clear ok")
 
             for i = 1, item_count do
                 local item = CreateCustomItem(GetRandomGeneratedItemId(), 0., 0., false)
@@ -162,44 +177,48 @@ do
                 GenerateItemStats(item, Current_Wave + GetRandomInt(1, 2), quality)
                 AddItemToShop(gg_unit_n020_0075, item, false)
             end
+            --print("lynn A")
 
             if GetRandomInt(1, 4) == 1 then
                 local item = CreateCustomItem(ITEM_POTION_MIX_WEAK, 0., 0.)
                 SetItemCharges(item, GetRandomInt(1, 10))
                 AddItemToShopWithSlot(gg_unit_n020_0075, item, 31, false)
             end
+            --print("lynn B")
 
             if GetRandomInt(1, 4) == 1 then
                 local item = CreateCustomItem(ITEM_POTION_MIX_HALF, 0., 0.)
                 SetItemCharges(item, GetRandomInt(1, 7))
                 AddItemToShopWithSlot(gg_unit_n020_0075, item, 32, false)
             end
+            --print("lynn C")
 
         end
 
 
+        --print("end shop A")
         local item_count = GetRandomInt(0, 2)
         local item
             if item_count > 0 then
                 item = CreateCustomItem(ITEM_POTION_ADRENALINE, 0, 0, false)
                 SetItemCharges(item, item_count)
-                 AddItemToShop(gg_unit_n001_0055, item, false)
+                AddItemToShop(gg_unit_n001_0055, item, false)
             end
-
+        --print("end shop B")
             item_count = GetRandomInt(0, 2)
             if item_count > 0 then
                 item = CreateCustomItem(ITEM_POTION_ANTIDOTE, 0, 0, false)
                 SetItemCharges(item, item_count)
-                 AddItemToShop(gg_unit_n001_0055, item, false)
+                AddItemToShop(gg_unit_n001_0055, item, false)
             end
-
+        --print("end shop C")
             item_count = GetRandomInt(0, 2)
             if item_count > 0 then
                 item = CreateCustomItem(ITEM_SCROLL_OF_PROTECTION, 0, 0, false)
                 SetItemCharges(item, item_count)
-                 AddItemToShop(gg_unit_n001_0055, item, false)
+                AddItemToShop(gg_unit_n001_0055, item, false)
             end
-
+        --print("end shop D")
             local scrolls = CreateCustomItem(ITEM_SCROLL_OF_TOWN_PORTAL, 0., 0.)
             SetItemCharges(scrolls, 5)
             AddItemToShopWithSlot(gg_unit_n001_0055, scrolls, 30, false)

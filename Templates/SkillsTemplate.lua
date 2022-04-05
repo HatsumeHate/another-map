@@ -150,6 +150,11 @@ do
                 --print("GenerateSkillLevelData - range_delta done")
             end
 
+            if skill.charges_delta then
+                skill.level[lvl].charges = (skill.level[1].charges or 0) + math.floor(lvl / (skill.charges_delta_level or 1.)) * skill.charges_delta
+                if skill.level[lvl].charges < 0 then skill.level[lvl].charges = 0 end
+            end
+
             skill.level[lvl].generated = true
             --print("GenerateSkillLevelData - gen done")
         end
@@ -297,6 +302,8 @@ do
                     { effect = "Spell\\Ice Low.mdx", point = 'hand right' }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -326,6 +333,8 @@ do
                     { effect = "Spell\\Ice Low.mdx", point = 'hand left' }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -352,6 +361,8 @@ do
                     { effect = "Spell\\Fire Low.mdx", point = 'hand right' }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -381,6 +392,8 @@ do
                     { effect = "Spell\\Fire Low.mdx", point = 'hand left' }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -407,6 +420,8 @@ do
                     { effect = "Spell\\Ice Low.mdx", point = 'hand left' }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -433,6 +448,8 @@ do
                     { effect = "Spell\\Ice High.mdx", point = 'hand left' }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -465,6 +482,8 @@ do
                     { effect = "Spell\\Storm Cast.mdx", point = 'hand left' }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -491,6 +510,8 @@ do
             },
             range_delta = 5.,
             range_delta_level = 1,
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
 
             level = {
@@ -528,6 +549,8 @@ do
                     { effect = "Spell\\Fire Uber.mdx", point = 'hand right' }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -558,6 +581,8 @@ do
                     { effect = "Spell\\Sweep_Lightning_Small.mdx", point = "weapon" }, { effect = "Spell\\Storm Cast.mdx", point = 'hand right' }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -590,6 +615,8 @@ do
                     { effect = "Spell\\Storm Cast.mdx", point = 'hand right' }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -619,6 +646,8 @@ do
                     { effect = "Spell\\Sweep_Lightning_Medium.mdx", point = "weapon" }, { effect = "Spell\\Storm Cast.mdx", point = 'hand right' }, { effect = "Spell\\Storm Cast.mdx", point = 'hand left' }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -650,6 +679,8 @@ do
                     { effect = "Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdx", point = "origin", scale = 0.4, permanent = true }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -679,6 +710,8 @@ do
                     { effect = "Spell\\ShivasEnchantment.mdx", point = "origin", duration = 1.233 }, { effect = "Spell\\ColdRitual.mdx", point = "origin", permanent = true }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -701,6 +734,8 @@ do
                     { effect = "Abilities\\Spells\\Orc\\AncestralSpirit\\AncestralSpiritCaster.mdx", point = "origin", duration = 1.233 }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -721,6 +756,8 @@ do
             animation = {
                 sequence  = GetAnimationSequence("sorc_spell_throw_air"), timescale = 1.45,
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -753,6 +790,8 @@ do
                     { effect = "Spell\\Ice High.mdx", point = 'hand right' },
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -773,6 +812,8 @@ do
             range_delta = 3.,
             range_delta_level = 1,
             animation = { sequence  = GetAnimationSequence("barb_jump"), timescale = 1., },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
 
             level = {
@@ -791,6 +832,8 @@ do
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_BATTLE_ADVANTAGE,
             animation = { sequence = GetAnimationSequence("barb_spell_throw"), timescale = 1.1 },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
 
             level = {
@@ -800,6 +843,7 @@ do
                     from_unit           = true,
                     resource_cost       = 5.,
                     cooldown            = 12.,
+                    charges = 2,
                 }
             }
         })
@@ -814,6 +858,8 @@ do
             animation = {
                 sequence = GetAnimationSequence("barb_spell_punch"), timescale = 1.1
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
 
             level = {
@@ -839,6 +885,8 @@ do
             animation = {
                 sequence = GetAnimationSequence("barb_spell_howl"), timescale = 0.8
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -896,6 +944,8 @@ do
                     }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -934,6 +984,8 @@ do
                     }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -954,6 +1006,8 @@ do
             category = SKILL_CATEGORY_BATTLE_ADVANTAGE,
             classification = SKILL_CLASS_UTILITY,
             animation = { sequence = GetAnimationSequence("barb_spell_throw"), timescale = 0.8 },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -962,10 +1016,6 @@ do
                     from_unit           = true,
                     resource_cost       = 6,
                     cooldown            = 2.3,
-                    animation           = 3,
-                    animation_point     = 1.4,
-                    animation_backswing = 0.2666,
-                    timescale     = 0.4
                 }
             }
         })
@@ -984,6 +1034,8 @@ do
                     { effect = "Spell\\Sweep_Blood_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON } },
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1010,6 +1062,8 @@ do
                     { effect = "Spell\\Sweep_Fire_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON } },
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1032,6 +1086,8 @@ do
             animation = {
                 sequence = GetAnimationSequence("barb_spell_howl"), timescale = 0.9
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
 
             level = {
@@ -1053,6 +1109,8 @@ do
             animation = {
                 sequence = GetAnimationSequence("barb_spell_howl"), timescale = 0.6
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1086,6 +1144,8 @@ do
                 end
             end,
             classification = SKILL_CLASS_UTILITY,
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1119,6 +1179,8 @@ do
                 end
             end,
             classification = SKILL_CLASS_UTILITY,
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1148,6 +1210,8 @@ do
                     { effect = "Spell\\model (467).mdx", scale = 0.6, appear_delay = 0.15, animation_time_influence = true, random_orientation_angle = true  }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1174,6 +1238,8 @@ do
                     { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1202,12 +1268,14 @@ do
                     { effect = "Spell\\Sweep_Chaos_Medium.mdx", point = 'right hand' },
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
                     missile             = 'MNBS',
                     resource_cost       = 7.,
-                    cooldown            = 1.,
+                    cooldown            = 0.3,
                     range               = 800.,
                 }
             }
@@ -1230,12 +1298,14 @@ do
                     { effect = "Spell\\Sweep_Acid_Medium.mdx", point = 'right hand' },
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
                     missile             = 'MNPS',
                     resource_cost       = 5.,
-                    cooldown            = 1.,
+                    cooldown            = 0.3,
                     range               = 800.,
                 }
             }
@@ -1258,6 +1328,8 @@ do
                     { effect = "Spell\\Sweep_Chaos_Medium.mdx", point = 'right hand' },
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1288,6 +1360,8 @@ do
                     { effect = "Effect\\Nether Blast IV.mdx", animation_time_influence = true, timescale = 1.11 },
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1321,6 +1395,8 @@ do
                     return false
                 end
             end,
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1354,6 +1430,8 @@ do
                     return false
                 end
             end,
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1381,6 +1459,8 @@ do
                     { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1407,6 +1487,8 @@ do
                     { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1435,6 +1517,8 @@ do
                     { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1463,6 +1547,8 @@ do
                     { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1491,6 +1577,8 @@ do
                     { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1517,6 +1605,8 @@ do
                     { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1544,11 +1634,9 @@ do
                     { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = 'right hand' },
                     { effect = "Effect\\WarpDarkCaster.mdx", point = "origin", duration = 1., animation_time_influence = true }
                 }
-                --on_caster = {
-                   -- { effect = "Spell\\ShivasEnchantment.mdx", point = "origin", duration = 1.233 }, { effect = "Spell\\ColdRitual.mdx", point = "origin", permanent = true }
-                --}
             },
-
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {
@@ -1578,6 +1666,8 @@ do
                     { effect = "Spell\\SoulScythe.mdx", plane_offset = 20., height = 125., appear_delay = 0., animation_time_influence = true, appear_delay = 0.2, timescale = 1.45, scale = 1.55, permanent = true }
                 }
             },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
 
             level = {
                 [1] = {

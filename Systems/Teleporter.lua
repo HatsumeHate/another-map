@@ -63,13 +63,31 @@ do
                 end
             end
 
-        --BlzFrameSetPoint(TeleportFrame[player].mainframe, FRAMEPOINT_BOTTOM, TeleportFrame[player].slots[slot].button, FRAMEPOINT_BOTTOM, 0., -0.04)
         BlzFrameSetSize(TeleportFrame[player].mainframe, BlzFrameGetWidth(TeleportFrame[player].mainframe), (BlzFrameGetHeight(TeleportFrame[player].slots[slot].button) * (slot - 1)) + 0.02)
     end
 
 
-    --RegisterTestCommand("show", function() ShowTeleportList(nil, 1) end)
-    --RegisterTestCommand("tp", function() CreateTeleportFrame() end)
+
+    function ReloadTeleportFrames()
+        for i = 1, 6 do
+            TeleportFrame[i].mainframe =  BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
+
+            BlzFrameSetPoint(TeleportFrame[i].mainframe, FRAMEPOINT_CENTER, GAME_UI, FRAMEPOINT_CENTER, 0., 0.)
+            BlzFrameSetSize(TeleportFrame[i].mainframe, 0.12, 0.2)
+
+                for k = 1, 6 do
+                    TeleportFrame[i].slots[k].button = BlzCreateFrame('ScriptDialogButton', TeleportFrame[i].mainframe, 0, 0)
+                    TeleportFrame[i].slots[k].text = BlzGetFrameByName("ScriptDialogButtonText", 0)
+                    BlzFrameSetSize(TeleportFrame[i].slots[k].button, BlzFrameGetWidth(TeleportFrame[i].mainframe) * 0.8, 0.025)
+                    BlzFrameSetTextAlignment(TeleportFrame[i].slots[k].text, TEXT_JUSTIFY_CENTER , TEXT_JUSTIFY_MIDDLE)
+                    BlzFrameSetVisible(TeleportFrame[i].slots[k].button, false)
+                    BlzTriggerRegisterFrameEvent(trg, TeleportFrame[i].slots[k].button, FRAMEEVENT_CONTROL_CLICK)
+
+                end
+
+            BlzFrameSetVisible(TeleportFrame[i].mainframe, false)
+        end
+    end
 
 
     local function CreateTeleportFrame()

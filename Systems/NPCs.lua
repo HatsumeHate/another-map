@@ -12,12 +12,19 @@ do
 
 
     ---@param npc unit
+    ---@param option_number integer
+    function RemoveInteractiveOption(npc, option_number)
+        local npc_data = GetUnitData(npc)
+        table.remove(npc_data.interactive_options, option_number)
+    end
+
+    ---@param npc unit
     ---@param option_id integer
-    function RemoveInteractiveOptionById(npc, id)
+    function RemoveInteractiveOptionId(npc, option_id)
         local npc_data = GetUnitData(npc)
 
             for i = 1, #npc_data.interactive_options do
-                if npc_data.interactive_options[i].id == id then
+                if npc_data.interactive_options[i].id == option_id then
                     table.remove(npc_data.interactive_options, i)
                     break
                 end
@@ -26,12 +33,7 @@ do
     end
 
     ---@param npc unit
-    ---@param option_id integer
-    function RemoveInteractiveOption(npc, option_id)
-        local npc_data = GetUnitData(npc)
-        table.remove(npc_data.interactive_options, option_id)
-    end
-
+    ---@param feedback function
     function InteractionFeedbackExists(npc, feedback)
         local npc_data = GetUnitData(npc)
 
@@ -44,9 +46,77 @@ do
         return false
     end
 
+
+    ---@param npc unit
+    ---@param option_id string
+    ---@param player integer
+    function UnlockInteractiveOptionIdPlayer(npc, option_id, player)
+        local npc_data = GetUnitData(npc)
+
+            for i = 1, #npc_data.interactive_options do
+                if npc_data.interactive_options[i].id and npc_data.interactive_options[i].id == option_id then
+                    npc_data.interactive_options[i].locked_for[player] = false
+                    break
+                end
+            end
+
+    end
+
+    ---@param npc unit
+    ---@param option_id string
+    function UnlockInteractiveOptionId(npc, option_id)
+        local npc_data = GetUnitData(npc)
+
+            for i = 1, #npc_data.interactive_options do
+                if npc_data.interactive_options[i].id and npc_data.interactive_options[i].id == option_id then
+                    for player = 1, 6 do
+                        npc_data.interactive_options[i].locked_for[player] = false
+                    end
+                    break
+                end
+            end
+
+    end
+
+    ---@param npc unit
+    ---@param option_id string
+    ---@param player integer
+    function LockInteractiveOptionIdPlayer(npc, option_id, player)
+        local npc_data = GetUnitData(npc)
+
+        for i = 1, #npc_data.interactive_options do
+            if npc_data.interactive_options[i].id and npc_data.interactive_options[i].id == option_id then
+                if npc_data.interactive_options[i].locked_for then
+                    npc_data.interactive_options[i].locked_for[player] = true
+                else
+                    npc_data.interactive_options[i].locked_for = { }
+                    for k = 1, 6 do npc_data.interactive_options[i].locked_for[k] = false end
+                    npc_data.interactive_options[i].locked_for[player] = true
+                end
+                break
+            end
+        end
+
+    end
+
+    ---@param npc unit
+    ---@param option_id string
+    function LockInteractiveOptionId(npc, option_id)
+        local npc_data = GetUnitData(npc)
+
+        for i = 1, #npc_data.interactive_options do
+            if npc_data.interactive_options[i].id and npc_data.interactive_options[i].id == option_id then
+                npc_data.interactive_options[i].locked_for = { true, true, true, true, true, true }
+                break
+            end
+        end
+        
+    end
+
     ---@param npc unit
     ---@param option table
     ---@return integer
+    ---@param position integer
     function AddInteractiveOption(npc, option, position)
         local npc_data = GetUnitData(npc)
             if not position then position = #npc_data.interactive_options + 1 end
@@ -64,6 +134,7 @@ do
             interactive_options = {},
             interaction_blocked = {}
         }
+        BlzSetUnitName(npc, name)
     end
 
     ---@param id integer
@@ -77,6 +148,27 @@ do
         return npc
     end
 
+    function ReloadInteractionFrames()
+        for player = 1, 6 do
+            if PlayerHero[player] then
+                InteractionFrame[player].mainframe =  BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
+
+                BlzFrameSetPoint(InteractionFrame[player].mainframe, FRAMEPOINT_CENTER, GAME_UI, FRAMEPOINT_CENTER, 0., 0.)
+                BlzFrameSetSize(InteractionFrame[player].mainframe, 0.12, 0.2)
+
+                    for k = 1, 6 do
+                        InteractionFrame[player].slots[k].button = BlzCreateFrame('ScriptDialogButton', InteractionFrame[player].mainframe, 0, 0)
+                        InteractionFrame[player].slots[k].text = BlzGetFrameByName("ScriptDialogButtonText", 0)
+                        BlzFrameSetSize(InteractionFrame[player].slots[k].button, BlzFrameGetWidth(InteractionFrame[player].mainframe) * 0.8, 0.025)
+                        BlzFrameSetTextAlignment(InteractionFrame[player].slots[k].text, TEXT_JUSTIFY_CENTER , TEXT_JUSTIFY_MIDDLE)
+                        BlzFrameSetVisible(InteractionFrame[player].slots[k].button, false)
+                        BlzTriggerRegisterFrameEvent(ButtonPressedTrigger, InteractionFrame[player].slots[k].button, FRAMEEVENT_CONTROL_CLICK)
+                    end
+
+                BlzFrameSetVisible(InteractionFrame[player].mainframe, false)
+            end
+        end
+    end
 
 
     local function CreateInteractionFrame()
@@ -185,11 +277,13 @@ do
                         SetInteractionMenuState(true, player)
 
                                 for i = 1, #unit_data.interactive_options do
-                                    AddInteractiveOptionFrame(player, unit_data.interactive_options[i].name or "?",  function()
-                                        if unit_data.interactive_options[i] and unit_data.interactive_options[i].feedback then
-                                            unit_data.interactive_options[i].feedback(unit_data.Owner, order_unit, player)
-                                        end
-                                    end)
+                                    if not unit_data.interactive_options[i].locked_for or not unit_data.interactive_options[i].locked_for[player] then
+                                        AddInteractiveOptionFrame(player, unit_data.interactive_options[i].name or "?",  function()
+                                            if unit_data.interactive_options[i] and unit_data.interactive_options[i].feedback then
+                                                unit_data.interactive_options[i].feedback(unit_data.Owner, order_unit, player)
+                                            end
+                                        end)
+                                    end
                                 end
 
                             AddInteractiveOptionFrame(player, GetLocalString("Закрыть", "Close"), function() SetInteractionMenuState(false, player) end)
@@ -209,6 +303,8 @@ do
 
         end)
 
+
+        InitAnarNPC()
         InitRavens()
 
     end

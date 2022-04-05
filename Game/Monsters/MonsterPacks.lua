@@ -409,6 +409,7 @@ do
         RegisterTestCommand("und", function()
             TimerStart(CreateTimer(), 0.3, true, function()
                 SetUnitState(PlayerHero[1], UNIT_STATE_LIFE, 3000000.)
+                SetUnitState(PlayerHero[1], UNIT_STATE_MANA, 3000000.)
             end)
         end)
 

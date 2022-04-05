@@ -8,6 +8,7 @@ do
     GlobalButton = 0
     FrameState = 0
     GlobalFrameState = 0
+    GlobalButtonClickTrigger = nil
 
 
     last_OpenedWindow = nil
@@ -17,6 +18,91 @@ do
     SHOP_PANEL = 4
     TELEPORT_PANEL = 5
     TALENT_PANEL = 6
+    JOURNAL_PANEL = 7
+
+
+
+
+    function ReloadUI()
+
+        DelayAction(0., function()
+            BlzLoadTOCFile("war3mapimported\\BoxedText.toc")
+            if not BlzLoadTOCFile("war3mapImported\\MyTOCfile.toc") then print("MyTOCfile.toc not loaded") end
+
+            for i = 1, 6 do
+                GlobalButton[i].char_panel_button = CreateSimpleButton("UI\\StatPanelIcon.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOMLEFT, 0.1725, 0.028, GAME_UI)
+                CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].char_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
+                BlzFrameSetVisible(GlobalButton[i].char_panel_button, true)
+                BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].char_panel_button, FRAMEEVENT_CONTROL_CLICK)
+                CreateSimpleChargesText(GlobalButton[i].char_panel_button, "C", 0.9, 0.9)
+
+                GlobalButton[i].skill_panel_button = CreateSimpleButton("UI\\SkillPanelIcon.blp", 0.034, 0.034, GlobalButton[i].char_panel_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.003, 0., GAME_UI)
+                CreateTooltip(LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].skill_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
+                BlzFrameSetVisible(GlobalButton[i].skill_panel_button, true)
+                BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].skill_panel_button, FRAMEEVENT_CONTROL_CLICK)
+                CreateSimpleChargesText(GlobalButton[i].skill_panel_button, "B", 0.9, 0.9)
+
+                GlobalButton[i].inventory_panel_button = CreateSimpleButton("UI\\IventoryIcon.blp", 0.034, 0.034, GlobalButton[i].skill_panel_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.003, 0., GAME_UI)
+                CreateTooltip(LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].inventory_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
+                BlzFrameSetVisible(GlobalButton[i].inventory_panel_button, true)
+                BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].inventory_panel_button, FRAMEEVENT_CONTROL_CLICK)
+                CreateSimpleChargesText(GlobalButton[i].inventory_panel_button, "TAB", 0.9, 0.7, 0.008)
+
+                GlobalButton[i].talents_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNMarksmanship.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOMLEFT, 0.6275, 0.028, GAME_UI)
+                BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].talents_panel_button, FRAMEEVENT_CONTROL_CLICK)
+                CreateTooltip(GetLocalString("Таланты", "Talents"), GetLocalString("Изучение всех доступных талантов героя.", "Learning of all hero talents."), GlobalButton[i].talents_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
+                CreateSimpleChargesText(GlobalButton[i].talents_panel_button, "N", 0.9, 0.9)
+                BlzFrameSetVisible(GlobalButton[i].talents_panel_button, true)
+
+                GlobalButton[i].journal_panel_button = CreateSimpleButton("UI\\BTNScribeScroll.blp", 0.034, 0.034, GlobalButton[i].talents_panel_button, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.003, 0., GAME_UI)
+                BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].journal_panel_button, FRAMEEVENT_CONTROL_CLICK)
+                CreateTooltip(GetLocalString("Журнал", "Journal"), GetLocalString("Все заметки и задания.", "All notes and quests tracking."), GlobalButton[i].journal_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
+                CreateSimpleChargesText(GlobalButton[i].journal_panel_button, "J", 0.9, 0.9)
+                BlzFrameSetVisible(GlobalButton[i].journal_panel_button, true)
+            end
+
+
+            ReloadAdvancedFrames()
+            print("A")
+            ReloadPlayerUIFrames()
+            print("B")
+            ReloadTeleportFrames()
+            print("C")
+            ReloadShopFrames()
+            print("D")
+            ReloadPrivateChestFrames()
+            print("E")
+            ReloadStashFrames()
+            print("F")
+            ReloadBarFrames()
+            print("G")
+            ReloadLibrarianFrames()
+            print("H")
+            ReloadBlacksmithFrames()
+            print("I")
+            ReloadLocationFrames()
+            print("J")
+            ReloadInteractionFrames()
+            print("K")
+            ReloadStatsFrames()
+            print("L")
+            ReloadInventoryFrames()
+            print("M")
+            ReloadTalentFrames()
+            print("N")
+            ReloadJournalFrames()
+            print("O")
+            ReloadSkillPanelFrames()
+            print("UI is loaded")
+        end)
+
+
+    end
+
+
+
+
+
 
 
     ---@param player_id integer
@@ -35,8 +121,8 @@ do
         end)
 
         DelayAction(1.5, function()
-            --InitTalentsWindow()
             AddTalentCategories(hero, player_id)
+            CreateJournal(player_id)
         end)
 
         local third_timer = CreateTimer()
@@ -55,15 +141,11 @@ do
             DrawShopFrames(player_id)
         end)
 
-        --DrawInventoryFrames(player_id, hero)
-        --DrawSkillPanel(player_id)
-        --DrawShopFrames(player_id)
-        --DrawQuartermeisterFrames(player_id)
-        --RegisterUnitForTeleport(hero)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_TAB, 0, true)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_C, 0, true)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_B, 0, true)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_N, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_J, 0, true)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_ESCAPE, 0, true)
         GlobalFrameState[player_id] = false
 
@@ -75,13 +157,13 @@ do
         BlzFrameSetVisible(GlobalButton[player_id].inventory_panel_button, true)
         BlzFrameSetVisible(GlobalButton[player_id].skill_panel_button, true)
         BlzFrameSetVisible(GlobalButton[player_id].talents_panel_button, true)
-        BlzFrameSetVisible(GlobalButton[player_id].city_panel_button, true)
+        BlzFrameSetVisible(GlobalButton[player_id].journal_panel_button, true)
         if GetLocalPlayer() ~= Player(player_id - 1) then
             BlzFrameSetVisible(GlobalButton[player_id].char_panel_button, false)
             BlzFrameSetVisible(GlobalButton[player_id].inventory_panel_button, false)
             BlzFrameSetVisible(GlobalButton[player_id].skill_panel_button, false)
             BlzFrameSetVisible(GlobalButton[player_id].talents_panel_button, false)
-            BlzFrameSetVisible(GlobalButton[player_id].city_panel_button, false)
+            BlzFrameSetVisible(GlobalButton[player_id].journal_panel_button, false)
         end
     end
 
@@ -122,6 +204,12 @@ do
                     RemoveUIFromQueue(player, TALENT_PANEL)
                 end
 
+                if FrameState[player][JOURNAL_PANEL] and FrameState[player][SKILL_PANEL] then
+                    FrameState[player][JOURNAL_PANEL] = false
+                    SetJournalPanelState(player, false)
+                    RemoveUIFromQueue(player, JOURNAL_PANEL)
+                end
+
                 if SetSkillPanelState(player, FrameState[player][SKILL_PANEL]) then
                     PlayerUIQueue[player][#PlayerUIQueue[player] + 1] = SKILL_PANEL
                 end
@@ -136,6 +224,12 @@ do
                     FrameState[player][TALENT_PANEL] = false
                     SetTalentPanelState(player, false)
                     RemoveUIFromQueue(player, TALENT_PANEL)
+                end
+
+                if FrameState[player][JOURNAL_PANEL] and FrameState[player][CHAR_PANEL] then
+                    FrameState[player][JOURNAL_PANEL] = false
+                    SetJournalPanelState(player, false)
+                    RemoveUIFromQueue(player, JOURNAL_PANEL)
                 end
 
                 if SetStatsPanelState(player, FrameState[player][CHAR_PANEL]) then
@@ -155,10 +249,40 @@ do
                     RemoveUIFromQueue(player, CHAR_PANEL)
                 end
 
+                if FrameState[player][JOURNAL_PANEL] and FrameState[player][TALENT_PANEL] then
+                    FrameState[player][JOURNAL_PANEL] = false
+                    SetJournalPanelState(player, false)
+                    RemoveUIFromQueue(player, JOURNAL_PANEL)
+                end
+
                 if SetTalentPanelState(player, FrameState[player][TALENT_PANEL]) then
                     PlayerUIQueue[player][#PlayerUIQueue[player] + 1] = TALENT_PANEL
                 end
 
+            elseif ui_type == JOURNAL_PANEL then
+
+
+                if FrameState[player][SKILL_PANEL] and FrameState[player][JOURNAL_PANEL] then
+                    FrameState[player][SKILL_PANEL] = false
+                    SetSkillPanelState(player, false)
+                    RemoveUIFromQueue(player, SKILL_PANEL)
+                end
+
+                if FrameState[player][CHAR_PANEL] and FrameState[player][JOURNAL_PANEL] then
+                    FrameState[player][CHAR_PANEL] = false
+                    SetStatsPanelState(player, false)
+                    RemoveUIFromQueue(player, CHAR_PANEL)
+                end
+
+                if FrameState[player][TALENT_PANEL] and FrameState[player][JOURNAL_PANEL] then
+                    FrameState[player][TALENT_PANEL] = false
+                    SetTalentPanelState(player, false)
+                    RemoveUIFromQueue(player, TALENT_PANEL)
+                end
+
+                if SetJournalPanelState(player, FrameState[player][JOURNAL_PANEL]) then
+                    PlayerUIQueue[player][#PlayerUIQueue[player] + 1] = JOURNAL_PANEL
+                end
             end
 
     end
@@ -170,19 +294,18 @@ do
             BlzFrameSetSize(new_FrameCharges, 0.012 + (bonus_size_x or 0.), 0.012 + (bonus_size_y or 0.))
             BlzFrameSetTexture(new_FrameCharges, "GUI\\ChargesTexture.blp", 0, true)
         local new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
-            --BlzFrameSetPoint(new_FrameChargesText, FRAMEPOINT_CENTER, new_FrameCharges, FRAMEPOINT_CENTER, 0.,0.)
-            --BlzFrameSetVisible(new_FrameCharges, true)
             BlzFrameSetAllPoints(new_FrameChargesText, new_FrameCharges)
             BlzFrameSetTextAlignment(new_FrameChargesText, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_CENTER)
             BlzFrameSetText(new_FrameChargesText, text)
-            --BlzFrameSetSize(new_FrameChargesText, text_size, text_size)
             BlzFrameSetScale(new_FrameCharges, scale)
             BlzFrameSetScale(new_FrameChargesText, text_scale)
         return new_FrameCharges
     end
 
 
+
     GUIManagerHotkeyTrigger = 0
+
 
     function InitGUIManager()
 
@@ -195,13 +318,13 @@ do
 
 
         StatsPanelInit()
-		--InventoryInit()
         InventoryInit()
         InitShopData()
 		SkillPanelInit()
         InitPrivateChest()
         InitUIBars()
         InitTalentsWindow()
+        InitJournal()
 
         last_OpenedWindow = {}
 
@@ -214,11 +337,12 @@ do
                 [SHOP_PANEL] = false,
                 [TELEPORT_PANEL] = false,
                 [TALENT_PANEL] = false,
+                [JOURNAL_PANEL] = false,
             }
         end
 
-        local ClickTrigger = CreateTrigger()
-        local trg = CreateTrigger()
+        GlobalButtonClickTrigger = CreateTrigger()
+
 
         for i = 1, 6 do
             GlobalButton[i] = {}
@@ -227,44 +351,36 @@ do
             --"ReplaceableTextures\\CommandButtons\\BTNSpellBookBLS.blp"
             --ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp
             GlobalButton[i].char_panel_button = CreateSimpleButton("UI\\StatPanelIcon.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOMLEFT, 0.1725, 0.028, GAME_UI)
-            --RegisterDecorator(GlobalButton[i].char_panel_button, FRAMEPOINT_CENTER, 0., -0.12, 0.001)
             CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].char_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
             BlzFrameSetVisible(GlobalButton[i].char_panel_button, false)
-            BlzTriggerRegisterFrameEvent(ClickTrigger, GlobalButton[i].char_panel_button, FRAMEEVENT_CONTROL_CLICK)
+            BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].char_panel_button, FRAMEEVENT_CONTROL_CLICK)
             CreateSimpleChargesText(GlobalButton[i].char_panel_button, "C", 0.9, 0.9)
-            local button_data = GetButtonData(GlobalButton[i].char_panel_button)
-            BlzFrameSetVertexColor(button_data.image, BlzConvertColor(255, 255, 255, 0))
 
             GlobalButton[i].skill_panel_button = CreateSimpleButton("UI\\SkillPanelIcon.blp", 0.034, 0.034, GlobalButton[i].char_panel_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.003, 0., GAME_UI)
             CreateTooltip(LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].skill_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
             BlzFrameSetVisible(GlobalButton[i].skill_panel_button, false)
-            BlzTriggerRegisterFrameEvent(ClickTrigger, GlobalButton[i].skill_panel_button, FRAMEEVENT_CONTROL_CLICK)
+            BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].skill_panel_button, FRAMEEVENT_CONTROL_CLICK)
             CreateSimpleChargesText(GlobalButton[i].skill_panel_button, "B", 0.9, 0.9)
-            button_data = GetButtonData(GlobalButton[i].skill_panel_button)
-            BlzFrameSetVertexColor(button_data.image, BlzConvertColor(0, 255, 100, 100))
 
             GlobalButton[i].inventory_panel_button = CreateSimpleButton("UI\\IventoryIcon.blp", 0.034, 0.034, GlobalButton[i].skill_panel_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.003, 0., GAME_UI)
             CreateTooltip(LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].inventory_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
             BlzFrameSetVisible(GlobalButton[i].inventory_panel_button, false)
-            BlzTriggerRegisterFrameEvent(ClickTrigger, GlobalButton[i].inventory_panel_button, FRAMEEVENT_CONTROL_CLICK)
+            BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].inventory_panel_button, FRAMEEVENT_CONTROL_CLICK)
             CreateSimpleChargesText(GlobalButton[i].inventory_panel_button, "TAB", 0.9, 0.7, 0.008)
-            button_data = GetButtonData(GlobalButton[i].inventory_panel_button)
-            BlzFrameSetVertexColor(button_data.image, BlzConvertColor(0, 255, 128, 0))
 
             GlobalButton[i].talents_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNMarksmanship.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOMLEFT, 0.6275, 0.028, GAME_UI)
-            BlzTriggerRegisterFrameEvent(ClickTrigger, GlobalButton[i].talents_panel_button, FRAMEEVENT_CONTROL_CLICK)
+            BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].talents_panel_button, FRAMEEVENT_CONTROL_CLICK)
             CreateTooltip(GetLocalString("Таланты", "Talents"), GetLocalString("Изучение всех доступных талантов героя.", "Learning of all hero talents."), GlobalButton[i].talents_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
             CreateSimpleChargesText(GlobalButton[i].talents_panel_button, "N", 0.9, 0.9)
             BlzFrameSetVisible(GlobalButton[i].talents_panel_button, false)
 
-            GlobalButton[i].city_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.034, 0.034, GlobalButton[i].talents_panel_button, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.003, 0., GAME_UI)
-            CreateTooltip("Not yet implemented", "Soon (tm)", GlobalButton[i].city_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
-            BlzFrameSetVisible(GlobalButton[i].city_panel_button, false)
+            GlobalButton[i].journal_panel_button = CreateSimpleButton("UI\\BTNScribeScroll.blp", 0.034, 0.034, GlobalButton[i].talents_panel_button, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.003, 0., GAME_UI)
+            BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].journal_panel_button, FRAMEEVENT_CONTROL_CLICK)
+            CreateTooltip(GetLocalString("Журнал", "Journal"), GetLocalString("Все заметки и задания.", "All notes and quests tracking."), GlobalButton[i].journal_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
+            CreateSimpleChargesText(GlobalButton[i].journal_panel_button, "J", 0.9, 0.9)
+            BlzFrameSetVisible(GlobalButton[i].journal_panel_button, false)
 
         end
-        --BlzFrameClearAllPoints(GlobalButton[1].char_panel_button)
-        --RegisterDecorator(GlobalButton[1].char_panel_button, FRAMEPOINT_CENTER, 0., 0.12, 0.001)
-
 
         TriggerAddAction(GUIManagerHotkeyTrigger, function()
             local player = GetPlayerId(GetTriggerPlayer()) + 1
@@ -275,20 +391,20 @@ do
                 end
 
                 if key == OSKEY_TAB then
-                    --BlzFrameClick(GlobalButton[player].inventory_panel_button)
                     PlayLocalSound("Sound\\Interface\\BigButtonClick.wav", player-1)
                     SetUIState(player, INV_PANEL, not FrameState[player][INV_PANEL])
                 elseif key == OSKEY_C then
-                    --BlzFrameClick(GlobalButton[player].char_panel_button)
                     PlayLocalSound("Sound\\Interface\\BigButtonClick.wav", player-1)
                     SetUIState(player, CHAR_PANEL, not FrameState[player][CHAR_PANEL])
                 elseif key == OSKEY_B then
-                    --BlzFrameClick(GlobalButton[player].skill_panel_button)
                     PlayLocalSound("Sound\\Interface\\BigButtonClick.wav", player-1)
                     SetUIState(player, SKILL_PANEL, not FrameState[player][SKILL_PANEL])
                 elseif key == OSKEY_N then
                     PlayLocalSound("Sound\\Interface\\BigButtonClick.wav", player-1)
                     SetUIState(player, TALENT_PANEL, not FrameState[player][TALENT_PANEL])
+                elseif key == OSKEY_J then
+                    PlayLocalSound("Sound\\Interface\\BigButtonClick.wav", player-1)
+                    SetUIState(player, JOURNAL_PANEL, not FrameState[player][JOURNAL_PANEL])
                 elseif key == OSKEY_ESCAPE then
                     if #PlayerUIQueue[player] > 0 then
                         last_OpenedWindow[player] = PlayerUIQueue[player][#PlayerUIQueue[player]]
@@ -302,9 +418,7 @@ do
         end)
 
 
-
-
-        TriggerAddAction(ClickTrigger, function()
+        TriggerAddAction(GlobalButtonClickTrigger, function()
             local frame = BlzGetTriggerFrame()
             local player = GetPlayerId(GetTriggerPlayer()) + 1
             local panel_type
@@ -326,6 +440,9 @@ do
                     elseif frame == GlobalButton[i].talents_panel_button then
                         panel_type = TALENT_PANEL
                         SetUIState(player, TALENT_PANEL, not FrameState[i][TALENT_PANEL])
+                    elseif frame == GlobalButton[i].journal_panel_button then
+                        panel_type = JOURNAL_PANEL
+                        SetUIState(player, JOURNAL_PANEL, not FrameState[i][JOURNAL_PANEL])
                         break
                     end
                 end
@@ -334,6 +451,10 @@ do
         end)
 
         TeleporterInit()
+
+        local LoadTrigger = CreateTrigger()
+        TriggerRegisterGameEvent(LoadTrigger, EVENT_GAME_LOADED)
+        TriggerAddAction(LoadTrigger, ReloadUI)
 
     end
 

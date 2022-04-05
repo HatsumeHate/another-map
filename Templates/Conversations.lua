@@ -6,19 +6,65 @@
 do
 
     local Conversations
-    local CONSTANT_TEXT_SIZE =  (9. * 0.023) / 10
+    CONSTANT_TEXT_SIZE =  (9. * 0.023) / 10
 
 
-
+    ---@param id string
+    ---@return table
     function GetConversation(id)
         return Conversations[id]
     end
 
-
+    ---@param id string
+    ---@param pack table
     function NewConversation(id, pack)
         Conversations[id] = pack
     end
 
+    ---@param unit unit
+    ---@return string
+    function GetUnitNameTextColorized(unit)
+        return "|c009FC8FF" .. GetUnitName(unit) .. "|r: "
+    end
+
+
+    ---@param id string
+    ---@param unit unit
+    ---@return string
+    ---@param player integer
+    function GetConversationText(id, unit, player)
+        local conv = GetConversation(id)
+        local text = ""
+
+            for i = 1, #conv do
+                if conv[i].responce_phrase then
+                    if conv[i].responce_phrase.class_related then
+                        text = text .. "|c009FC8FF" .. GetUnitName(PlayerHero[player]) .. "|r: " .. conv[i].responce_phrase[GetUnitClass(PlayerHero[player])].phrase .. "|n"
+                    else
+                        text = text .. "|c009FC8FF" .. GetUnitName(PlayerHero[player]) .. "|r: " .. conv[i].responce_phrase.phrase .. "|n"
+                    end
+                else
+                    text = text .. "|c009FC8FF" .. GetUnitName(unit) .. "|r: " .. conv[i].phrase .. "|n"
+                end
+                --text = text .. "|c009FC8FF" .. GetUnitName(unit) .. "|r: " .. conv[i].phrase .. "|n"
+            end
+
+        return text
+    end
+
+    ---@param unit unit
+    ---@return boolean
+    function IsBlockedByConversation(unit)
+        local unit_data = GetUnitData(unit)
+
+            for i = 1, 6 do
+                if unit_data.interaction_blocked[i] then
+                    return true
+                end
+            end
+
+        return false
+    end
 
     ---@param id string
     ---@param npc unit
@@ -42,9 +88,14 @@ do
             Conversations[player].texttag = texttag
             Conversations[player].npc = npc
 
-            SetTextTagText(texttag, "[1/" .. #conv .. "] " .. conv[1].phrase, CONSTANT_TEXT_SIZE)
+            SetTextTagText(texttag, "[1/" .. #conv .. "] " .. ParseStringHeroGender(PlayerHero[player], conv[1].phrase), CONSTANT_TEXT_SIZE)
             SetTextTagPos(texttag, GetUnitX(npc), GetUnitY(npc), 45. + GetUnitFlyHeight(npc))
             SetTextTagColor(texttag, 255, 255, 255, a)
+            local x, y, z = GetUnitX(npc), GetUnitY(npc), (45. + GetUnitFlyHeight(npc))
+
+            if conv[1].responce_phrase then
+                x, y, z = GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]), (45. + GetUnitFlyHeight(PlayerHero[player]))
+            end
 
 
             TimerStart(Conversations[player].timer, 0.05, true, function()
@@ -56,17 +107,47 @@ do
                             DestroyTextTag(texttag)
                             unit_data.interaction_blocked[player] = nil
                             Conversations[player].texttag = nil
-                            if conv[index].feedback then
-                                conv[index].feedback(id, npc, player)
-                            end
+                            if conv.feedback then conv.feedback(id, npc, player) end
+                            TimerStart(Conversations[player].timer, 0., false, nil)
                         else
-                            duration = conv[index].duration
-                            SetTextTagText(texttag, "[".. index .. "/" .. #conv .. "] " .. conv[index].phrase, CONSTANT_TEXT_SIZE)
+                            local phrase = ""
+
+
+                                if conv[index].responce_phrase then
+                                    if conv[index].responce_phrase.class_related then
+                                        local class = GetUnitClass(PlayerHero[player])
+                                        phrase = conv[index].responce_phrase[class].phrase
+                                        duration = conv[index].responce_phrase[class].duration
+                                    else
+                                        phrase = conv[index].responce_phrase.phrase
+                                        duration = conv[index].responce_phrase.duration
+                                    end
+                                    x, y, z = GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]), (45. + GetUnitFlyHeight(PlayerHero[player]))
+                                else
+                                    duration = conv[index].duration
+                                    phrase = conv[index].phrase
+                                    x, y, z = GetUnitX(npc), GetUnitY(npc), (45. + GetUnitFlyHeight(npc))
+                                end
+
+                            SetTextTagPos(texttag, x, y, z)
+                            SetTextTagText(texttag, "[".. index .. "/" .. #conv .. "] " .. ParseStringHeroGender(PlayerHero[player], phrase), CONSTANT_TEXT_SIZE)
+
+                            --if conv[index].feedback then conv[index].feedback(id, npc, player) end
                         end
 
                 else
                     if not IsUnitInRange(PlayerHero[player], npc, 500.) then duration = 0.
-                    else duration  = duration - 0.05 end
+                    else
+                        duration  = duration - 0.05
+
+                        if conv[index].responce_phrase then
+                            x, y, z = GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]), (45. + GetUnitFlyHeight(PlayerHero[player]))
+                        else
+                            x, y, z = GetUnitX(npc), GetUnitY(npc), (45. + GetUnitFlyHeight(npc))
+                        end
+
+                        SetTextTagPos(texttag, x, y, z)
+                    end
                 end
 
             end)
@@ -134,6 +215,10 @@ do
             { phrase = LOCALE_LIST[my_locale].WANDERING_CONV_INTRO_2, duration = 3.85 },
             { phrase = LOCALE_LIST[my_locale].WANDERING_CONV_INTRO_3, duration = 2.75 },
         })
+
+
+
+
 
     end
 

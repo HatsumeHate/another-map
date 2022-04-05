@@ -161,7 +161,10 @@ do
 				sell_value 			= 0,
                 level               = 1,
 
-				sound 			   = {}
+				sound 			   = {},
+
+				droppable = true,
+				sellable = true
             }
     end
 
@@ -176,12 +179,14 @@ do
 			MergeTables(newdata, data)
 		elseif data.TYPE == ITEM_TYPE_CONSUMABLE then
 			newdata = {
-				item               = nil,
-				NAME               = '',
-				TYPE               = ITEM_TYPE_CONSUMABLE,
-				frame_texture      = nil,
+				item              	= nil,
+				NAME               	= '',
+				TYPE               	= ITEM_TYPE_CONSUMABLE,
+				frame_texture      	= nil,
 				special_description = "",
-				QUALITY            = COMMON_ITEM,
+				QUALITY            	= COMMON_ITEM,
+				droppable 			= true,
+				sellable 			= true
 			}
 			MergeTables(newdata, data)
 		elseif data.TYPE == ITEM_TYPE_GEM then
@@ -192,6 +197,8 @@ do
 				frame_texture      = nil,
 				point_bonus 	   = { },
 				QUALITY            = COMMON_ITEM,
+				droppable 			= true,
+				sellable 			= true
 			}
 			MergeTables(newdata, data)
 		elseif data.TYPE == ITEM_TYPE_SKILLBOOK then
@@ -201,6 +208,8 @@ do
 				TYPE               = ITEM_TYPE_SKILLBOOK,
 				frame_texture      = nil,
 				QUALITY            = COMMON_ITEM,
+				droppable 			= true,
+				sellable 			= true
 			}
 			MergeTables(newdata, data)
 		else
@@ -210,6 +219,8 @@ do
 				TYPE               = ITEM_TYPE_OTHER,
 				frame_texture      = nil,
 				QUALITY            = COMMON_ITEM,
+				droppable 			= true,
+				sellable 			= true
 			}
 			MergeTables(newdata, data)
 		end
@@ -1348,6 +1359,20 @@ do
 			sell_penalty 		= 0.5
 		})
 
+		ItemAddData('I025', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_BATTLE_ADVANTAGE,
+			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
+			QUALITY 		   	= RARE_ITEM,
+			frame_texture      	= "Items\\Book\\BTNSimpleBook1.BLP",
+			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= BARBARIAN_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[BARBARIAN_CLASS][SKILL_CATEGORY_BATTLE_ADVANTAGE],
+			learn_effect 		= "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 700,
+			sell_penalty 		= 0.5
+		})
+
 		ItemAddData('I028', {
 			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_DARK_ART,
 			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
@@ -1960,6 +1985,108 @@ do
 			legendary_effect = GetLegendaryEffect("ITDH"),
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_DEATH_HERALD .."\"",
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT],
+		})
+
+		ItemAddData('I02I', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_CRIMSON_BREASTPLATE,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = CHEST_ARMOR,
+			QUALITY = SET_ITEM,
+			stat_modificator = 1.3,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = HP_VALUE, VALUE = 30, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 2,
+			frame_texture = "Armor\\BTNFire Plate Armor.blp",
+			set_bonus = GetItemSet("crimson_legion_set"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_CRIMSON_BREASTPLATE .."\"",
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR]
+		})
+
+		ItemAddData('I02J', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_CRIMSON_HELMET,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = HEAD_ARMOR,
+			QUALITY = SET_ITEM,
+			stat_modificator = 1.2,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = MP_VALUE, VALUE = 30, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 2,
+			frame_texture = "Armor\\BTNFire Horned Helmet.blp",
+			set_bonus = GetItemSet("crimson_legion_set"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_CRIMSON_HELMET .."\"",
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_HEAVY_ARMOR]
+		})
+
+
+		ItemAddData('I02K', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_CRIMSON_BOOTS,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = LEGS_ARMOR,
+			QUALITY = SET_ITEM,
+			stat_modificator = 1.2,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = STR_STAT, VALUE = 2, METHOD = STRAIGHT_BONUS },
+				{ PARAM = MOVING_SPEED, VALUE = 25, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 2,
+			frame_texture = "Armor\\BTNFire Boot.blp",
+			set_bonus = GetItemSet("crimson_legion_set"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_CRIMSON_BOOTS .."\"",
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_HEAVY_ARMOR]
+		})
+
+		ItemAddData('I02L', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_CRIMSON_GAUNTLETS,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = HANDS_ARMOR,
+			QUALITY = SET_ITEM,
+			stat_modificator = 1.2,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = CRIT_CHANCE, VALUE = 7, METHOD = STRAIGHT_BONUS },
+				{ PARAM = ATTACK_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CAST_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 1,
+			frame_texture = "Armor\\BTNFire Gauntlet.blp",
+			set_bonus = GetItemSet("crimson_legion_set"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_CRIMSON_GAUNTLETS .."\"",
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_HEAVY_ARMOR]
+		})
+
+
+		ItemAddData('I02H', {
+			NAME    		   = LOCALE_LIST[my_locale].LOOTBOX_NAME,
+			TYPE    		   = ITEM_TYPE_OTHER,
+			QUALITY 		   = RARE_ITEM,
+			frame_texture      = "ReplaceableTextures\\CommandButtons\\BTNMagicVault.blp",
+			item_description   = LOCALE_LIST[my_locale].LOOTBOX_DESC,
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_GEM],
+			cost = 1000,
+			usable = true
+		})
+
+		ItemAddData('I02M', {
+			NAME    		   = GetLocalString("Карта", "The map"),
+			TYPE    		   = ITEM_TYPE_OTHER,
+			QUALITY 		   = RARE_ITEM,
+			frame_texture      = "ReplaceableTextures\\CommandButtons\\BTNSpy.blp",
+			item_description   = GetLocalString("На нее нанесены несколько отметок.", "You can see several markers on it."),
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_SCROLL],
+			cost = 1000,
+			usable = true,
+			droppable = false,
+			sellable = false,
+			permanent = true
 		})
 
     end

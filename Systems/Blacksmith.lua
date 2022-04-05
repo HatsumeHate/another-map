@@ -228,6 +228,95 @@ do
     end
 
 
+    function ReloadBlacksmithFrames()
+        for player = 1, 6 do
+            if PlayerHero[player] then
+                local new_Frame
+                local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
+
+                    BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0.01, -0.05)
+                    BlzFrameSetSize(main_frame, 0.3, 0.23)
+
+
+                    new_Frame = BlzCreateFrameByType('BACKDROP', "PORTRAIT", main_frame, "",0)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.02, -0.02)
+                    BlzFrameSetSize(new_Frame, 0.0435, 0.0435)
+                    BlacksmithFrame[player].portrait = new_Frame
+
+                    new_Frame = BlzCreateFrameByType("TEXT", "shop name", BlacksmithFrame[player].portrait, "", 0)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_LEFT, BlacksmithFrame[player].portrait, FRAMEPOINT_RIGHT, 0.011, 0.)
+                    BlzFrameSetTextAlignment(new_Frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
+                    BlzFrameSetScale(new_Frame, 1.35)
+                    BlacksmithFrame[player].name = new_Frame
+
+
+                    new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.015, 0.015)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMRIGHT, main_frame, FRAMEPOINT_BOTTOMRIGHT, -0.015, 0.015)
+                    BlzFrameSetSize(new_Frame, 0.1, 0.07)
+                    BlacksmithFrame[player].inner_socket_border = new_Frame
+
+
+                    new_Frame = BlzCreateFrame('EscMenuBackdrop', BlacksmithFrame[player].inner_socket_border, 0, 0)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, BlacksmithFrame[player].inner_socket_border, FRAMEPOINT_TOPLEFT, 0., 0.0025)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMRIGHT, BlacksmithFrame[player].inner_socket_border, FRAMEPOINT_TOPRIGHT, 0., 0.0025)
+                    BlzFrameSetSize(new_Frame, 0.1, 0.07)
+                    BlacksmithFrame[player].inner_reforge_border = new_Frame
+
+
+                    new_Frame = BlzCreateFrame('EscMenuBackdrop', BlacksmithFrame[player].inner_reforge_border, 0, 0)
+                    BlacksmithFrame[player].reforge_item_slot = NewButton(BUTTON_FREE, "GUI\\inventory_slot.blp", 0.04, 0.04, BlacksmithFrame[player].inner_reforge_border, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.015, -0.015, BlacksmithFrame[player].inner_reforge_border)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, BlacksmithFrame[player].reforge_item_slot, FRAMEPOINT_BOTTOMLEFT, -0.015, -0.015)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPRIGHT, BlacksmithFrame[player].reforge_item_slot, FRAMEPOINT_TOPRIGHT, 0.015, 0.015)
+
+                    new_Frame = BlzCreateFrame('EscMenuBackdrop', BlacksmithFrame[player].inner_socket_border, 0, 0)
+                    BlacksmithFrame[player].socket_item_slot = NewButton(BUTTON_RESOCKET, "GUI\\inventory_slot.blp", 0.04, 0.04, BlacksmithFrame[player].inner_socket_border, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.015, -0.015, BlacksmithFrame[player].inner_socket_border)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, BlacksmithFrame[player].socket_item_slot, FRAMEPOINT_BOTTOMLEFT, -0.015, -0.015)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPRIGHT, BlacksmithFrame[player].socket_item_slot, FRAMEPOINT_TOPRIGHT, 0.015, 0.015)
+
+
+                    BlacksmithFrame[player].reforge_button = NewSpecialButton(LOCALE_LIST[my_locale].REFORGE_BUTTON_TEXT, 0.06, 0.04, BlacksmithFrame[player].reforge_item_slot, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.012, 0., BlacksmithFrame[player].inner_reforge_border)
+                    new_Frame = CreateTextBox(player, 0.072, 0.03, 1., BlacksmithFrame[player].reforge_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0015, 0., main_frame)
+                    CreateTooltip(LOCALE_LIST[my_locale].UI_TOOLTIP_REFORGE_TITLE, LOCALE_LIST[my_locale].UI_TOOLTIP_REFORGE_DESC, BlacksmithFrame[player].reforge_button, 0.125, 0.06)
+                    BlacksmithFrame[player].masterframe = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
+
+                    BlacksmithFrame[player].create_socket_button = NewButton(BUTTON_CREATE_SOCKET, "GUI\\BTNmetalurgi.blp", 0.04, 0.04, new_Frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.005, 0., BlacksmithFrame[player].inner_reforge_border)
+                    BlacksmithFrame[player].create_socket_tooltip = CreateTooltip("NAME", "DESC", BlacksmithFrame[player].create_socket_button, 0.125, 0.06)
+                    BlzFrameSetText(BlacksmithFrame[player].create_socket_tooltip.title, GetLocalString("Выковать сокет", "Forge socket"))
+                    BlzFrameSetText(BlacksmithFrame[player].create_socket_tooltip.description, GetLocalString("Нет подходящего предмета.", "No fitting item."))
+
+
+                    BlacksmithFrame[player].socket_buttons[1] = NewButton(BUTTON_SOCKET, "GUI\\inventory_slot.blp", 0.04, 0.04, BlacksmithFrame[player].socket_item_slot, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0125, 0., BlacksmithFrame[player].socket_item_slot)
+                    BlacksmithFrame[player].socket_buttons[2] = NewButton(BUTTON_SOCKET, "GUI\\inventory_slot.blp", 0.04, 0.04, BlacksmithFrame[player].socket_buttons[1], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0075, 0., BlacksmithFrame[player].socket_item_slot)
+                    BlacksmithFrame[player].socket_buttons[3] = NewButton(BUTTON_SOCKET, "GUI\\inventory_slot.blp", 0.04, 0.04, BlacksmithFrame[player].socket_buttons[2], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0075, 0., BlacksmithFrame[player].socket_item_slot)
+                    BlacksmithFrame[player].socket_buttons[4] = NewButton(BUTTON_SOCKET, "GUI\\inventory_slot.blp", 0.04, 0.04, BlacksmithFrame[player].socket_buttons[3], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0075, 0., BlacksmithFrame[player].socket_item_slot)
+
+
+                    BlacksmithFrame[player].socket_button_tooltips = {
+                        CreateTooltip("NAME", "DESC", BlacksmithFrame[player].socket_buttons[1], 0.125, 0.06),
+                        CreateTooltip("NAME", "DESC", BlacksmithFrame[player].socket_buttons[2], 0.125, 0.06),
+                        CreateTooltip("NAME", "DESC", BlacksmithFrame[player].socket_buttons[3], 0.125, 0.06),
+                        CreateTooltip("NAME", "DESC", BlacksmithFrame[player].socket_buttons[4], 0.125, 0.06)
+                    }
+
+                    BlzFrameSetVisible(BlacksmithFrame[player].socket_buttons[1], false)
+                    BlzFrameSetVisible(BlacksmithFrame[player].socket_buttons[2], false)
+                    BlzFrameSetVisible(BlacksmithFrame[player].socket_buttons[3], false)
+                    BlzFrameSetVisible(BlacksmithFrame[player].socket_buttons[4], false)
+
+
+                    BlacksmithFrame[player].tooltip = NewTooltip(BlacksmithFrame[player].masterframe)
+
+                    BlacksmithFrame[player].main_frame = main_frame
+                    BlzFrameSetVisible(BlacksmithFrame[player].main_frame, false)
+                    BlacksmithFrame[player].state = false
+                    BlzFrameSetTexture(BlacksmithFrame[player].portrait, "ReplaceableTextures\\CommandButtons\\BTNElfVillager.blp", 0, true)
+                    BlzFrameSetText(BlacksmithFrame[player].name, GetUnitName(gg_unit_n013_0011))
+            end
+        end
+    end
+
+
     ---@param player number
     function DrawBlacksmithFrames(player)
         local new_Frame
@@ -540,7 +629,7 @@ do
 
 
             CreateNpcData(unit_owner, GetUnitName(unit_owner))
-            AddInteractiveOption(unit_owner, { name = GetLocalString("Перековка", "Reforging"), feedback = function(clicked, clicking, player)
+            AddInteractiveOption(unit_owner, { name = GetLocalString("Перековка", "Reforging"), id = "black_reforge_conv", feedback = function(clicked, clicking, player)
                 local id = player - 1
 
                     if id <= 5 then
@@ -572,6 +661,8 @@ do
                             DestroyEffect(FirstTime_Data[player].effect)
                             AddSpecialEffectTarget("Marker\\BlacksmithIcon.mdx", unit_owner, "overhead")
                             FirstTime_Data[player].first_time = false
+                            AddJournalEntry(player, "hints", "UI\\BTNLeatherbound_TomeI.blp", GetLocalString("Подсказки", "Hints and Tips"), 1000)
+                            AddJournalEntryText(player, "hints",  QUEST_HINT_STRING .. LOCALE_LIST[my_locale].HINT_BLACKSMITH_1, true)
                         end
 
                     end

@@ -62,16 +62,13 @@ do
                     end)
 
             end)
-            --unit_data.whirlwind_sfx = AddSpecialEffectTarget("Spell\\whirlwind.mdx", unit, "origin")
-
-            --BlzSetSpecialEffectScale(unit_data.whirlwind_sfx, 0.75)
 
             TimerStart(unit_data.action_timer, 0.33, true, function()
                 local mp = GetUnitState(unit, UNIT_STATE_MANA)
 
                 if mp >= 3. then
                     ApplyEffect(unit, nil, GetUnitX(unit), GetUnitY(unit), 'EWHW', 1)
-                    SetUnitState(unit, UNIT_STATE_MANA, mp - 3.)
+                    SetUnitState(unit, UNIT_STATE_MANA, mp - (3. + math.ceil(UnitGetAbilityLevel(unit, "A010") / 5)))
                 else
                     WhirlwindDeactivate(unit)
                 end

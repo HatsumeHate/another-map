@@ -145,6 +145,59 @@ do
 
     end
 
+
+    function ReloadLibrarianFrames()
+        for player = 1, 6 do
+            if PlayerHero[player] then
+                local new_Frame
+                local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
+
+                    BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0.01, -0.05)
+                    BlzFrameSetSize(main_frame, 0.3, 0.15)
+
+
+                    new_Frame = BlzCreateFrameByType('BACKDROP', "PORTRAIT", main_frame, "",0)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.02, -0.02)
+                    BlzFrameSetSize(new_Frame, 0.0435, 0.0435)
+                    LibrarianFrame[player].portrait = new_Frame
+
+                    new_Frame = BlzCreateFrameByType("TEXT", "shop name", LibrarianFrame[player].portrait, "", 0)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_LEFT, LibrarianFrame[player].portrait, FRAMEPOINT_RIGHT, 0.011, 0.)
+                    BlzFrameSetTextAlignment(new_Frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
+                    BlzFrameSetScale(new_Frame, 1.35)
+                    LibrarianFrame[player].name = new_Frame
+
+
+                    new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.015, 0.015)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMRIGHT, main_frame, FRAMEPOINT_BOTTOMRIGHT, -0.015, 0.015)
+                    BlzFrameSetSize(new_Frame, 0.1, 0.07)
+                    LibrarianFrame[player].inner_exchange_border = new_Frame
+
+                    new_Frame = BlzCreateFrame('EscMenuBackdrop', LibrarianFrame[player].inner_exchange_border, 0, 0)
+                    LibrarianFrame[player].exchange_item_slot = NewButton(0, "GUI\\inventory_slot.blp", 0.04, 0.04, LibrarianFrame[player].inner_exchange_border, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.015, -0.015, LibrarianFrame[player].inner_exchange_border)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, LibrarianFrame[player].exchange_item_slot, FRAMEPOINT_BOTTOMLEFT, -0.015, -0.015)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPRIGHT, LibrarianFrame[player].exchange_item_slot, FRAMEPOINT_TOPRIGHT, 0.015, 0.015)
+
+                    LibrarianFrame[player].exchange_button = NewSpecialButton(LOCALE_LIST[my_locale].EXCHANGE_BUTTON_TEXT, 0.06, 0.04, LibrarianFrame[player].exchange_item_slot, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.025, 0., LibrarianFrame[player].inner_exchange_border)
+                    new_Frame = CreateTextBox(player, 0.085, 0.03, 1., LibrarianFrame[player].exchange_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0015, 0., main_frame)
+                    CreateTooltip(LOCALE_LIST[my_locale].UI_TOOLTIP_EXCHANGE_TITLE, LOCALE_LIST[my_locale].UI_TOOLTIP_EXCHANGE_DESC, LibrarianFrame[player].exchange_button, 0.125, 0.06)
+                    LibrarianFrame[player].masterframe = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
+
+
+                    LibrarianFrame[player].tooltip = NewTooltip(LibrarianFrame[player].masterframe)
+
+                    LibrarianFrame[player].main_frame = main_frame
+                    BlzFrameSetVisible(LibrarianFrame[player].main_frame, false)
+                    LibrarianFrame[player].state = false
+
+                    BlzFrameSetTexture(LibrarianFrame[player].portrait, "ReplaceableTextures\\CommandButtons\\BTNNightElfRunner.blp", 0, true)
+                    BlzFrameSetText(LibrarianFrame[player].name, GetUnitName(gg_unit_n01V_0110))
+            end
+        end
+    end
+
+
     ---@param player number
     function DrawLibrarianFrames(player)
         local new_Frame
@@ -268,7 +321,6 @@ do
 
         end)
 
-        --local trg = CreateTrigger()
         local soundpack = {
             open = {
                 "Units\\NightElf\\Runner\\RunnerWhat2.wav",
@@ -276,55 +328,15 @@ do
             }
         }
 
-
             for i = 1, 6 do
                 DrawLibrarianFrames(i)
                 BlzFrameSetTexture(LibrarianFrame[i].portrait, texture, 0, true)
                 BlzFrameSetText(LibrarianFrame[i].name, GetUnitName(unit_owner))
             end
 
-            --[[
-            TriggerRegisterUnitInRangeSimple(trg, 300., unit_owner)
-            TriggerAddAction(trg, function()
-                local id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
-                local player = id + 1
-
-                    if id <= 5 then
-                        local hero = GetTriggerUnit()
-
-                        if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(LibrarianFrame[player].main_frame, true) end
-                        LibrarianFrame[player].state = true
-                        UpdateLibrarianWindow(player)
-                        if soundpack then
-                            PlayLocalSound(soundpack.open[GetRandomInt(1, #soundpack.open)], id, 125)
-                        end
-
-                            local timer = CreateTimer()
-                            TimerStart(timer, 0.1, true, function()
-                                if not IsUnitInRange(hero, unit_owner, 299.) or IsUnitHidden(unit_owner) then
-                                    --DestroySlider(player)
-                                    RemovePlayerItems(player)
-                                    DestroyContextMenu(player)
-                                    RemoveTooltip(player)
-                                    --ShopInFocus[player] = nil
-                                    LibrarianFrame[player].state = false
-                                    if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(LibrarianFrame[player].main_frame, false) end
-                                    DestroyTimer(GetExpiredTimer())
-                                    if soundpack then
-                                        PlayLocalSound(soundpack.close[GetRandomInt(1, #soundpack.open)], id, 125)
-                                    end
-                                end
-                            end)
-
-
-                    end
-            end)]]
 
             CreateNpcData(unit_owner, GetUnitName(unit_owner))
-
-            --AddInteractiveOption(unit_owner, { name = GetLocalString("Болтать", "Talk"), feedback = function(clicked, clicking, player) PlayConversation("peon", unit_owner, player) end })
-
-            AddInteractiveOption(unit_owner, { name = GetLocalString("Книги", "Books"), feedback = function(clicked, clicking, player)
+            AddInteractiveOption(unit_owner, { name = GetLocalString("Книги", "Books"), id = "librarian_exchange_conv", feedback = function(clicked, clicking, player)
                 local id = player - 1
                 --local player = id + 1
 

@@ -16,23 +16,42 @@ do
     local HeroXPConstantFactor = 150.
     local CemetaryX
     local CemetaryY
+    local PlayerLabels
     PlayerRequiredEXP = nil
     PlayerLastRequiredEXP = nil
 
 
 
+    ---@param player integer
+    ---@param label string
+    function HasPlayerLabel(player, label)
+        return PlayerLabels[player][label]
+    end
+
+    ---@param player integer
+    ---@param label string
+    ---@param flag boolean
+    function SetPlayerLabel(player, label, flag)
+        PlayerLabels[player][label] = flag
+    end
+
+    ---@param unit unit
     function IsAHero(unit)
         for i = 1, 6 do if PlayerHero[i] and PlayerHero[i] == unit then return true end end
         return false
     end
 
 
+     ---@param range real
+     ---@param x real
+     ---@param y real
      function IsAnyHeroInRange(x, y, range)
         for i = 1, 6 do if PlayerHero[i] and IsUnitInRangeXY(PlayerHero[i], x, y, range) and GetUnitState(PlayerHero[i], UNIT_STATE_LIFE) > 0.045 then return true end end
         return false
     end
 
 
+    ---@param level integer
     function GetLevelXP(level)
         local xp = 200 -- level 1
         local i = 1
@@ -66,6 +85,22 @@ do
     end
 
 
+
+    ---@param amount integer
+    ---@return integer
+    ---@param player integer
+    function GiveExpForPlayer(amount, player)
+        amount = amount + (Current_Wave * 5)
+
+            if PlayerHero[player] then
+                SuspendHeroXP(PlayerHero[player], false)
+                AddHeroXP(PlayerHero[player], amount * (1. + GetUnitParameterValue(PlayerHero[player], EXP_BONUS) * 0.01), false)
+                SuspendHeroXP(PlayerHero[player], true)
+            end
+
+        return amount
+    end
+
     ---@param amount integer
     ---@return integer
     function GiveExp(amount)
@@ -80,6 +115,20 @@ do
         return amount
     end
 
+
+
+    ---@param amount integer
+    ---@param player integer
+    ---@return integer
+    function GiveGoldForPlayer(amount, player)
+        amount = amount + Current_Wave * 20
+            if PlayerHero[player] then
+                SetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD) + amount)
+                PlayLocalSound("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", player-1, 120)
+            end
+        return amount
+    end
+
     ---@param amount integer
     ---@return integer
     function GiveGold(amount)
@@ -88,12 +137,52 @@ do
             if PlayerHero[i] then
                 SetPlayerState(Player(i-1), PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(Player(i-1), PLAYER_STATE_RESOURCE_GOLD) + amount)
                 PlayLocalSound("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", i-1, 120)
-                --AddHeroXP(PlayerHero[i], amount + (Current_Wave * 3), false)
             end
         end
         return amount
     end
 
+
+
+    ---@param hero unit
+    ---@param message string
+    function ParseStringHeroGender(hero, message)
+        local data = GetUnitData(hero)
+        local result_string = ""
+        local last_sector = 0
+        local new_block = 0
+        local gender = false
+
+        if data.unit_class == BARBARIAN_CLASS or data.unit_class == NECROMANCER_CLASS or data.unit_class == DRUID_CLASS or data.unit_class == PALADIN_CLASS then
+            gender = true
+        end
+
+            while(true) do
+                local new_parse_block = string.find(message, "@", last_sector)
+                if new_parse_block then
+                    local parse_block_ending = string.find(message, "#", last_sector)
+                    local declension = ""
+
+                    if gender then
+                        local block = string.find(message, "@M", new_parse_block)
+                        declension = string.sub(message, string.find(message, "@M", new_parse_block)+2, string.find(message, "!", block)-1)
+                    else
+                        local block = string.find(message, "!F", new_parse_block)
+                        declension = string.sub(message, string.find(message, "!F", new_parse_block)+2, string.find(message, "#", block)-1)
+                    end
+
+                    result_string = result_string .. string.sub(message, new_block, new_parse_block-1) .. declension
+                    last_sector = parse_block_ending + 1
+                    new_block = last_sector
+                else
+                    result_string = result_string .. string.sub(message, last_sector, #message)
+                    break
+                end
+
+            end
+
+        return result_string
+    end
 
 
 
@@ -182,13 +271,7 @@ do
                     if region == ClassRegions[NECROMANCER_CLASS] then RegisterNecromancerCorpseSpawn(hero) end
                 end)
 
-
-
-                --SelectUnit(hero, true)
-                --SelectUnitAddForPlayer(hero, Player(player_id))
-
                 SetCameraBoundsToRectForPlayerBJ(Player(player_id), bj_mapInitialCameraBounds)
-
 
                 local player_number = player_id
                 player_id = player_id + 1
@@ -228,8 +311,6 @@ do
                         end
                     end)
 
-                    --TriggerRegisterUnitEvent(OrderInterceptionTrigger, hero, EVENT_UNIT_ISSUED_TARGET_ORDER)
-
 
                     CreateGUILayoutForPlayer(player_id, hero)
                     LockCameraForPlayer(player_id)
@@ -240,7 +321,6 @@ do
                         local pid = player_id
 
                             for i = 1, #starting_items do
-                                --AddToInventory(pid, starting_items[i])
                                 EquipItem(hero, starting_items[i], true)
                                 SetItemVisible(starting_items[i], false)
                             end
@@ -269,7 +349,7 @@ do
                     elseif id == FourCC("HSRC") then BlzSetUnitName(hero, LOCALE_LIST[my_locale].SORCERESS_NAME)
                     else BlzSetUnitName(hero, GetLocalString("Некромант", "Necromancer")) end
 
-
+                    --[[
                     DelayAction(6., function()
                         PlayCinematicSpeech(player_id-1, gg_unit_h000_0054, LOCALE_LIST[my_locale].INTRODUCTION_TEXT_1, 6.)
                         DelayAction(7., function()
@@ -285,16 +365,14 @@ do
                                 end)
                             end)
                         end)
-                    end)
+                    end)]]
 
-                    --GetHandleId()
                     if GetLocalPlayer() == Player(player_id - 1) then
                         PanCameraToTimed(GetUnitX(hero), GetUnitY(hero), 0.)
                     end
 
         SuspendHeroXP(hero, true)
         SetPlayerHandicapXP(Player(player_id-1), 0.)
-        --DestroyTimer(GetExpiredTimer())
 
     end
 
@@ -317,21 +395,20 @@ do
     function CreateHeroSelections()
 
 
+        PlayerLabels = {}
         PlayerRequiredEXP = {}
         PlayerLastRequiredEXP = {}
 
         for i = 1, 6 do
             PlayerLastRequiredEXP[i] = 0
             PlayerRequiredEXP[i] = GetLevelXP(1)
+            PlayerLabels = { }
         end
 
         DeathTrigger = CreateTrigger()
         LvlupTrigger = CreateTrigger()
         local trg = CreateTrigger()
 
-        --BarbarianRegion = CreateRegion()
-        --SorceressRegion = CreateRegion()
-        --NecromancerRegion = CreateRegion()
 
         local class_rects = {
             [BARBARIAN_CLASS] = gg_rct_barbarian_select,
@@ -349,19 +426,13 @@ do
             end
         end
 
-        --RegionAddRect(SorceressRegion, gg_rct_sorceress_select)
-        --RegionAddRect(BarbarianRegion, gg_rct_barbarian_select)
-        --RegionAddRect(NecromancerRegion, gg_rct_necro_select)
+
         CreateClassText(gg_rct_barbarian_select, LOCALE_LIST[my_locale].BARBARIAN_NAME)
         CreateClassText(gg_rct_sorceress_select, LOCALE_LIST[my_locale].SORCERESS_NAME)
         CreateClassText(gg_rct_necro_select, LOCALE_LIST[my_locale].NECROMANCER_NAME)
 
-        --TriggerRegisterEnterRegionSimple(trg, BarbarianRegion)
-        --TriggerRegisterEnterRegionSimple(trg, SorceressRegion)
-        --TriggerRegisterEnterRegionSimple(trg, NecromancerRegion)
+
         TriggerAddAction(trg, HeroSelect)
-
-
         TriggerAddAction(LvlupTrigger, function()
             local player_id = GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1
             AddPointsToPlayer(player_id, 3)
@@ -462,6 +533,12 @@ do
             AddHeroXP(PlayerHero[1], 100, false)
             SuspendHeroXP(PlayerHero[1], true)
         end)
+
+
+        RegisterTestCommand("pidor", function()
+            print(ParseStringHeroGender(PlayerHero[1], "Я @Mпидорас!Fпидораска#."))
+        end)
+
 
 
     end

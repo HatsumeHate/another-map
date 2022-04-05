@@ -7,12 +7,14 @@ do
 
 
     PlayerMousePosition = 0
+    PlayerMouseFocus = 0
     local mouse_track_trigger = 0
 
 
     function MouseTrackingInit()
 
         PlayerMousePosition = {}
+        PlayerMouseFocus = {}
         mouse_track_trigger = CreateTrigger()
 
         for i = 0, 5 do
@@ -23,10 +25,22 @@ do
         TriggerAddAction(mouse_track_trigger, function()
             if BlzGetTriggerPlayerMouseX() ~= 0. then
                 local player = GetPlayerId(GetTriggerPlayer()) + 1
-                PlayerMousePosition[player].x = BlzGetTriggerPlayerMouseX()
-                PlayerMousePosition[player].y = BlzGetTriggerPlayerMouseY()
+                local mouse_focus = BlzGetMouseFocusUnit()
+
+                    PlayerMousePosition[player].x = BlzGetTriggerPlayerMouseX()
+                    PlayerMousePosition[player].y = BlzGetTriggerPlayerMouseY()
+
+
+                    if mouse_focus ~= nil and GetUnitState(mouse_focus, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(mouse_focus, FourCC("Avul")) == 0 then
+                        PlayerMouseFocus[player] = mouse_focus
+                    else
+                        PlayerMouseFocus[player] = nil
+                    end
+
             end
         end)
+
+
     end
 
 

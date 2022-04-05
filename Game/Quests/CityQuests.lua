@@ -5,13 +5,130 @@
 ---
 do
 
+    local player_maps
 
+
+    function CompleteQuartermeisterScoutQuest(player)
+        DropItemFromInventory(player, player_maps[player], true)
+        RemoveCustomItem(player_maps[player])
+        GiveGoldForPlayer(250, player)
+        GiveExpForPlayer(500, player)
+        TaskCompletedMessage("quest_anar_scout", player)
+    end
+
+
+    function QuartermeisterScoutQuest_IsDone(player)
+
+        if GetJournalEntryObjectiveState(player, "quest_anar_scout", "scout_target_1") == JOURNAL_OBJECTIVE_STATE_DONE
+                and GetJournalEntryObjectiveState(player, "quest_anar_scout", "scout_target_2") == JOURNAL_OBJECTIVE_STATE_DONE
+                and GetJournalEntryObjectiveState(player, "quest_anar_scout", "scout_target_3") == JOURNAL_OBJECTIVE_STATE_DONE
+                and GetJournalEntryObjectiveState(player, "quest_anar_scout", "scout_target_4") == JOURNAL_OBJECTIVE_STATE_DONE
+                and GetJournalEntryObjectiveState(player, "quest_anar_scout", "scout_target_5") == JOURNAL_OBJECTIVE_STATE_DONE
+        then
+            UnlockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_scoutquest_done", player)
+            AddJournalEntryText(player, "quest_anar_scout", GetLocalString("Теперь необходимо вернуться к Анару.", "Now I need to get back to Anar."), false)
+            local unit_data = GetUnitData(gg_unit_n029_0022)
+            if GetLocalPlayer() == Player(player - 1) then BlzPlaySpecialEffect(unit_data.questmarker_done, ANIM_TYPE_STAND) end
+        end
+
+    end
+
+
+    function QuartermeisterScoutQuest_MapActivated(player)
+
+        if GetJournalEntryObjectiveState(player, "quest_anar_scout", "scout_target_1") ~= JOURNAL_OBJECTIVE_STATE_DONE then
+            if GetLocalPlayer() == Player(player-1) then
+                PingMinimap(GetRectCenterX(gg_rct_scout_region_1), GetRectCenterY(gg_rct_scout_region_1), 3.)
+            end
+        end
+
+        if GetJournalEntryObjectiveState(player, "quest_anar_scout", "scout_target_2") ~= JOURNAL_OBJECTIVE_STATE_DONE then
+            if GetLocalPlayer() == Player(player-1) then
+                PingMinimap(GetRectCenterX(gg_rct_scout_region_2), GetRectCenterY(gg_rct_scout_region_2), 3.)
+            end
+        end
+
+        if GetJournalEntryObjectiveState(player, "quest_anar_scout", "scout_target_3") ~= JOURNAL_OBJECTIVE_STATE_DONE then
+            if GetLocalPlayer() == Player(player-1) then
+                PingMinimap(GetRectCenterX(gg_rct_scout_region_3), GetRectCenterY(gg_rct_scout_region_3), 3.)
+            end
+        end
+
+        if GetJournalEntryObjectiveState(player, "quest_anar_scout", "scout_target_4") ~= JOURNAL_OBJECTIVE_STATE_DONE then
+            if GetLocalPlayer() == Player(player-1) then
+                PingMinimap(GetRectCenterX(gg_rct_scout_region_4), GetRectCenterY(gg_rct_scout_region_4), 3.)
+            end
+        end
+
+        if GetJournalEntryObjectiveState(player, "quest_anar_scout", "scout_target_5") ~= JOURNAL_OBJECTIVE_STATE_DONE then
+            if GetLocalPlayer() == Player(player-1) then
+                PingMinimap(GetRectCenterX(gg_rct_scout_region_5), GetRectCenterY(gg_rct_scout_region_5), 3.)
+            end
+        end
+
+    end
+
+
+    function EnableQuartermeisterScoutQuest(player)
+
+        if not player_maps then
+            player_maps = {}
+        end
+
+        AddJournalEntry(player, "quest_anar_scout", "ReplaceableTextures\\CommandButtons\\BTNSpy.blp", "Scouting Task", 75, true)
+
+        AddJournalEntryObjective(player, "quest_anar_scout", "scout_target_1", GetLocalString("Восточная точка разведана", "East point scouted"))
+        AddQuestAreaForPlayer(player, MARK_TYPE_QUESTION, MARK_COMMON, 1., 300., GetRectCenterX(gg_rct_scout_region_1), GetRectCenterY(gg_rct_scout_region_1), function()
+            SetJournalEntryObjectiveState(player, "quest_anar_scout", "scout_target_1", JOURNAL_OBJECTIVE_STATE_DONE, true)
+            QuartermeisterScoutQuest_IsDone(player)
+        end)
+
+        AddJournalEntryObjective(player, "quest_anar_scout", "scout_target_2", GetLocalString("Северовосточная точка разведана", "North-East point scouted"))
+        AddQuestAreaForPlayer(player, MARK_TYPE_QUESTION, MARK_COMMON, 1., 300., GetRectCenterX(gg_rct_scout_region_2), GetRectCenterY(gg_rct_scout_region_2), function()
+            SetJournalEntryObjectiveState(player, "quest_anar_scout", "scout_target_2", JOURNAL_OBJECTIVE_STATE_DONE, true)
+            QuartermeisterScoutQuest_IsDone(player)
+        end)
+
+        AddJournalEntryObjective(player, "quest_anar_scout", "scout_target_3", GetLocalString("Северная точка разведана", "North point scouted"))
+        AddQuestAreaForPlayer(player, MARK_TYPE_QUESTION, MARK_COMMON, 1., 300., GetRectCenterX(gg_rct_scout_region_3), GetRectCenterY(gg_rct_scout_region_3), function()
+            SetJournalEntryObjectiveState(player, "quest_anar_scout", "scout_target_3", JOURNAL_OBJECTIVE_STATE_DONE, true)
+            QuartermeisterScoutQuest_IsDone(player)
+        end)
+
+        AddJournalEntryObjective(player, "quest_anar_scout", "scout_target_4", GetLocalString("Ближняя южная точка разведана", "Close South point scouted"))
+        AddQuestAreaForPlayer(player, MARK_TYPE_QUESTION, MARK_COMMON, 1., 300., GetRectCenterX(gg_rct_scout_region_4), GetRectCenterY(gg_rct_scout_region_4), function()
+            SetJournalEntryObjectiveState(player, "quest_anar_scout", "scout_target_4", JOURNAL_OBJECTIVE_STATE_DONE, true)
+            QuartermeisterScoutQuest_IsDone(player)
+        end)
+
+        AddJournalEntryObjective(player, "quest_anar_scout", "scout_target_5", GetLocalString("Дальняя южная точка разведана", "Far South point scouted"))
+        AddQuestAreaForPlayer(player, MARK_TYPE_QUESTION, MARK_COMMON, 1., 300., GetRectCenterX(gg_rct_scout_region_5), GetRectCenterY(gg_rct_scout_region_5), function()
+            SetJournalEntryObjectiveState(player, "quest_anar_scout", "scout_target_5", JOURNAL_OBJECTIVE_STATE_DONE, true)
+            QuartermeisterScoutQuest_IsDone(player)
+        end)
+
+
+        AddJournalEntryText(player, "quest_anar_scout", GetConversationText("quartermaster_scoutquest_conv", gg_unit_n029_0022, player))
+
+        local item = CreateCustomItem("I02M", 0.,0., false, player-1)
+        player_maps[player] = item
+        DelayAction(0., function()
+            if not AddToInventory(player, item) then
+                SetItemPosition(item, GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]))
+            end
+        end)
+    end
+
+
+    --==============================================================================================--
+    --==============================================================================================--
+    --==============================================================================================--
 
 
 
     function EnableQuest1NPC()
         local npc = CreateNPC("n016", gg_rct_npc_1, 240., LOCALE_LIST[my_locale].AIZEK_NAME)
-        local effect = AddQuestMark(npc, MARK_TYPE_EXCLAMATION, MARK_COMMON) --AddSpecialEffectTarget("Quest\\ExcMark_Gold_NonrepeatableQuest.mdx", npc, "overhead")
+        local effect = AddQuestMark(npc, MARK_TYPE_EXCLAMATION, MARK_COMMON)
 
 
             AddInteractiveOption(npc, { name = GetLocalString("Просьба", "Favor"), feedback = function(clicked, clicking, player)
@@ -24,6 +141,16 @@ do
 
                 PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_SPEECH, 8.)
                 CreateQuestItems(20, FourCC("I01M"), { gg_rct_quest_1_itemrect, gg_rct_quest_2_itemrect, gg_rct_quest_3_itemrect, gg_rct_quest_4_itemrect, gg_rct_quest_5_itemrect })
+
+
+
+                for i = 1, 6 do
+                    if PlayerHero[i] then
+                        AddJournalEntry(i, "quest_1_journal", "ReplaceableTextures\\CommandButtons\\BTNTelescope.blp", LOCALE_LIST[my_locale].QUEST_1_TITLE, 50, true)
+                        AddJournalEntryText(i, "quest_1_journal", GetUnitNameTextColorized(npc) .. LOCALE_LIST[my_locale].QUEST_1_SPEECH, false)
+                        AddJournalEntryText(i, "quest_1_journal", LOCALE_LIST[my_locale].QUEST_1_DESC, false)
+                    end
+                end
 
 
                 local trg = CreateTrigger()
@@ -44,39 +171,6 @@ do
                 end)
             end})
 
-            --[[
-            RegisterClickFeedbackOnNPC(npc, function()
-                ClickFunctionsRemove(npc, GetTriggeringTrigger())
-                DestroyEffect(effect)
-                NewQuest(LOCALE_LIST[my_locale].QUEST_1_TITLE, LOCALE_LIST[my_locale].QUEST_1_DESC, "ReplaceableTextures\\CommandButtons\\BTNTelescope.blp", false, true, "que1a")
-
-                AddQuestItem("que1a",  "que1apool",  LOCALE_LIST[my_locale].QUEST_1_ITEM,  false)
-                AddQuestItemPool("que1a", "que1apool", 20)
-
-                PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_SPEECH, 8.)
-                CreateQuestItems(20, FourCC("I01M"), { gg_rct_quest_1_itemrect, gg_rct_quest_2_itemrect, gg_rct_quest_3_itemrect, gg_rct_quest_4_itemrect, gg_rct_quest_5_itemrect })
-
-
-                local trg = CreateTrigger()
-                TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_PICKUP_ITEM)
-                TriggerAddAction(trg, function()
-                    if GetItemTypeId(GetManipulatedItem()) == FourCC("I01M") then
-                        if SetQuestItemPool("que1a", "que1apool", 1) then
-                            GiveExp(500)
-                            local gold = GiveGold(200)
-                            ShowQuestAlert(LOCALE_LIST[my_locale].QUEST_REWARD_GOLD_FIRST .. gold .. LOCALE_LIST[my_locale].QUEST_REWARD_GOLD_SECOND)
-                            DestroyTrigger(trg)
-                            RemoveUnit(npc)
-                            DelayAction(300., function()
-                                EnableQuest2()
-                            end)
-                        end
-                    end
-                end)
-
-            end)]]
-
-            --TriggerAddAction(RegisterClickFeedbackOnNPC(),
 
     end
 
@@ -329,40 +423,6 @@ do
                 rects = nil
         end})
 
-        --[[
-        RegisterClickFeedbackOnNPC(Guinplen.npc, function()
-            ClickFunctionsRemove(Guinplen.npc, GetTriggeringTrigger())
-            DestroyEffect(Guinplen.effect)
-            PlayCinematicSpeechForEveryone(Guinplen.npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_GIUN_1, 8.)
-            TriggerSleepAction(8.)
-            PlayCinematicSpeechForEveryone(Guinplen.npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_GIUN_2, 9.)
-            TriggerSleepAction(9.)
-            PlayCinematicSpeechForEveryone(Guinplen.npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_GIUN_3, 12.)
-            TriggerSleepAction(12.)
-            PlayCinematicSpeechForEveryone(Guinplen.npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_GIUN_4, 7.)
-            TriggerSleepAction(7.)
-            AddQuestItem("que1m",  "que1mitemvar2", LOCALE_LIST[my_locale].QUEST_1_M_ITEMVAR2,  true)
-            SetQuestItemState("que1m", "que1mitem", true)
-
-            local rects = { gg_rct_staff_of_hope_1, gg_rct_staff_of_hope_2, gg_rct_staff_of_hope_3, gg_rct_staff_of_hope_4 }
-            local rect = rects[GetRandomInt(1, #rects)]
-            Guinplen.staff = CreateItem(FourCC("I01N"), GetRandomRectX(rect), GetRandomRectY(rect))
-
-            Guinplen.staff_trg = CreateTrigger()
-            TriggerRegisterAnyUnitEventBJ(Guinplen.staff_trg, EVENT_PLAYER_UNIT_PICKUP_ITEM)
-                TriggerAddAction(Guinplen.staff_trg, function()
-                    if GetItemTypeId(GetManipulatedItem()) == FourCC("I01N") then
-                        SetQuestItemState("que1m", "que1mitemvar2", true)
-                        AddQuestItem("que1m",  "que1mitemvar2end", LOCALE_LIST[my_locale].QUEST_1_M_ITEMVAR2END,  false)
-                        PlayCinematicSpeechForEveryone(GetTriggerUnit(), LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_STAFF_FOUND, 8.)
-                        Guinplen.staff = nil
-                        DestroyTrigger(Guinplen.staff_trg)
-                        Guinplen.staff_trg = nil
-                    end
-                end)
-
-                rects = nil
-        end)]]
 
     end
 
@@ -456,7 +516,6 @@ do
 
 
         AddInteractiveOption(npc, { name = GetLocalString("Просьба", "Favor"), feedback = function(clicked, clicking, player)
-            --SetInteractionMenuState(false, player)
             RemoveInteractiveOption(npc, 1)
             DestroyEffect(effect)
 
@@ -471,21 +530,6 @@ do
             CreateQuestLilith()
         end})
 
-        --[[
-        RegisterClickFeedbackOnNPC(npc, function()
-            ClickFunctionsRemove(npc, GetTriggeringTrigger())
-                DestroyEffect(effect)
-
-                PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_INTRO, 12., 12.)
-                PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_INTRO_2, 10., 10.)
-                PlayCinematicSpeechForEveryone(npc, LOCALE_LIST[my_locale].QUEST_1_M_SPEECH_INTRO_3, 8., 8.)
-
-                NewQuest(LOCALE_LIST[my_locale].QUEST_1_M_TITLE, LOCALE_LIST[my_locale].QUEST_1_M_DESC, "ReplaceableTextures\\CommandButtons\\BTNIceShard.blp", true, true, "que1m")
-                AddQuestItem("que1m",  "que1mitem", LOCALE_LIST[my_locale].QUEST_1_M_ITEM, false)
-                AddQuestItem("que1m",  "que1mitemvar1", LOCALE_LIST[my_locale].QUEST_1_M_ITEMVAR1 , false)
-                EnableMainQuest1_Guinplen_1()
-                CreateQuestLilith()
-        end)]]
 
 
     end

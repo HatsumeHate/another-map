@@ -308,6 +308,68 @@ do
     end
 
 
+    function ReloadPrivateChestFrames()
+        for player = 1, 6 do
+            if PlayerHero[player] then
+                local new_Frame
+                local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
+
+                    BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0.11, -0.025)
+                    BlzFrameSetSize(main_frame, 0.27, 0.43)
+
+                    new_Frame = BlzCreateFrameByType('BACKDROP', "PORTRAIT", main_frame, "",0)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.02, -0.02)
+                    BlzFrameSetSize(new_Frame, 0.0435, 0.0435)
+                    PrivateChestFrame[player].portrait = new_Frame
+
+                    new_Frame = BlzCreateFrameByType("TEXT", "shop name", PrivateChestFrame[player].portrait, "", 0)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_LEFT, PrivateChestFrame[player].portrait, FRAMEPOINT_RIGHT, 0.011, 0.)
+                    BlzFrameSetTextAlignment(new_Frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
+                    BlzFrameSetScale(new_Frame, 1.35)
+                    PrivateChestFrame[player].name = new_Frame
+
+
+                    new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.015, 0.015)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMRIGHT, main_frame, FRAMEPOINT_BOTTOMRIGHT, -0.015, 0.015)
+                    BlzFrameSetSize(new_Frame, 0.28, 0.355)
+                    PrivateChestFrame[player].border = new_Frame
+
+
+                    PrivateChestFrame[player].slots[1] = NewButton("GUI\\inventory_slot.blp", 0.04, 0.04, new_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.02, -0.017, new_Frame)
+
+                    for i = 2, 5 do
+                        PrivateChestFrame[player].slots[i] = NewButton("GUI\\inventory_slot.blp", 0.04, 0.04, PrivateChestFrame[player].slots[i - 1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPRIGHT, 0., 0., new_Frame)
+                    end
+
+                    for row = 2, 8 do
+                        for i = 1, 5 do
+                            local slot = i + ((row - 1) * 5)
+                            PrivateChestFrame[player].slots[slot] = NewButton("GUI\\inventory_slot.blp", 0.04, 0.04, PrivateChestFrame[player].slots[slot - 5], FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., new_Frame)
+                        end
+                    end
+
+
+                PrivateChestFrame[player].shift_state = false
+
+                CreateSelectionFrames(player)
+                PrivateChestFrame[player].tooltip = NewTooltip(PrivateChestFrame[player].slots[40])
+                local tooltip = GetTooltip(PrivateChestFrame[player].tooltip)
+                tooltip.is_sell_penalty = true
+
+                PrivateChestFrame[player].alternate_tooltip = NewTooltip(PrivateChestFrame[player].slots[40])
+                local tooltip = GetTooltip(PrivateChestFrame[player].alternate_tooltip)
+                tooltip.is_sell_penalty = true
+
+                PrivateChestFrame[player].main_frame = main_frame
+                BlzFrameSetVisible(PrivateChestFrame[player].main_frame, false)
+                BlzFrameSetTexture(PrivateChestFrame[player].portrait, "UI\\BTNTreasure Chest.blp", 0, true)
+                BlzFrameSetText(PrivateChestFrame[player].name, GetUnitName(gg_unit_n01Y_0018))
+            end
+        end
+    end
+
+
     ---@param player integer
     function DrawPrivateChestFrames(player)
         local new_Frame

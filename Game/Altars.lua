@@ -41,6 +41,10 @@ do
 
     function CreateChest(rect)
         local altar = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("n00N"), GetRectCenterX(rect), GetRectCenterY(rect), GetRandomReal(230., 310.))
+        local var = GetRandomInt(1, 7)
+        local skins = { "n00N", "n02A", "n02B", "n02C", "n02D", "n02E", "n02N" }
+
+            BlzSetUnitSkin(altar, FourCC(skins[var]))
 
             AltarsList[altar] = {
                 rect = rect,
@@ -130,8 +134,31 @@ do
     function CreateShrineOfHatred(rect)
         local altar = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("n01B"), GetRectCenterX(rect), GetRectCenterY(rect), 270.)
         local handle = altar
+        local trigger = CreateTrigger()
 
             AltarsList[handle] = { rect = rect, altar_type = ALTAR_TYPE_HATRED, obelisk_effect = AltarEffects.shrine_of_hatred }
+
+            TriggerRegisterUnitInRange(trigger, altar, 700., nil)
+            TriggerAddAction(trigger, function()
+                local player = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))+1
+                if IsAHero(GetTriggerUnit()) and not HasJournalEntryLabel(player, "shrine_journal", "shrine_journal_met") then
+                    AddJournalEntry(player, "shrine_journal", "Journal\\BTNBTNEldritchCovenant.blp", GetLocalString("Загадочный Алтарь", "The Mystic Altar"), 200, false)
+                    AddJournalEntryText(player, "shrine_journal",
+                            GetLocalString(
+                                    ParseStringHeroGender(PlayerHero[player], "Я @Mнашел!Fнашла# странный алтарь, коих еще не @Mвстречал!Fвстречала#. Возможно в замке кто нибудь знает о нем? Стоит разузнать о нем побольше."),
+                                    "I have found a strange altar that didn't see before. Maybe someone back at the castle knows about it? I should find out about it more."), true)
+
+                    AddJournalEntryLabel(player, "shrine_journal", "shrine_journal_met")
+
+                    if HasJournalEntryLabel(player, "shrine_journal", "shrine_journal_stone_aquired_first") then
+                        LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_altar_conv_stone_before", player)
+                        UnlockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_altar_conv_4", player)
+                    else
+                        UnlockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_altar_conv", player)
+                    end
+
+                end
+            end)
 
     end
 
@@ -275,6 +302,8 @@ do
                 DestroyTrigger(GetTriggeringTrigger())
                 ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_ALTARS, player)
                 FirstTime_Data[player+1].first_time = false
+                AddJournalEntry(player+1, "hints", "UI\\BTNLeatherbound_TomeI.blp", GetLocalString("Подсказки", "Hints and Tips"), 1000, false)
+                AddJournalEntryText(player+1, "hints", QUEST_HINT_STRING ..  LOCALE_LIST[my_locale].HINT_ALTARS, true)
             end
         end
 
@@ -329,9 +358,15 @@ do
                         AddUnitAnimationProperties(altar_unit, "Third", true)
                     elseif altar.altar_type == ALTAR_TYPE_CHEST then
                         DestroyMinimapIcon(altar.minimap_icon)
-                        AddUnitAnimationProperties(altar_unit, "alternate", true)
-                        SetUnitAnimation(altar_unit, "birth alternate")
-                        UnitAddAbility(altar_unit, FourCC("Aloc"))
+
+                            if BlzGetUnitSkin(altar_unit) == FourCC("n00N") then
+                                AddUnitAnimationProperties(altar_unit, "alternate", true)
+                                SetUnitAnimation(altar_unit, "birth alternate")
+                                UnitAddAbility(altar_unit, FourCC("Aloc"))
+                            else
+                                KillUnit(altar_unit)
+                            end
+
                     end
 
 
@@ -441,7 +476,8 @@ do
             [63]	 = gg_rct_chest_63,
             [64]	 = gg_rct_chest_64,
             [65]	 = gg_rct_chest_65,
-            [66]	 = gg_rct_chest_66
+            [66]	 = gg_rct_chest_66,
+            [66]	 = gg_rct_chest_67
         }
 
         AltarRects = {

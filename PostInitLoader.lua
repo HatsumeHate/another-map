@@ -140,24 +140,20 @@ do
 						AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 31, true)
 						my_item = nil
 
-						--BlzSetUnitName(gg_unit_n000_0056, LOCALE_LIST[my_locale].VENDOR_BILL_NAME)
-						--BlzSetUnitName(gg_unit_opeo_0031, LOCALE_LIST[my_locale].SMORC_NAME)
-						--BlzSetUnitName(gg_unit_n01W_0111, LOCALE_LIST[my_locale].SCAVENGER_NAME)
 						BlzSetUnitName(gg_unit_n013_0011, LOCALE_LIST[my_locale].BLACKSMITH_NAME)
 						BlzSetUnitName(gg_unit_n01V_0110, LOCALE_LIST[my_locale].LIBRARIAN_NAME)
-						--BlzSetUnitName(gg_unit_n020_0075, LOCALE_LIST[my_locale].LYNN_NAME)
 
 						CreateLibrarian(gg_unit_n01V_0110, "ReplaceableTextures\\CommandButtons\\BTNNightElfRunner.blp")
 						CreateBlacksmith(gg_unit_n013_0011, "ReplaceableTextures\\CommandButtons\\BTNElfVillager.blp")
 
 
-						AddInteractiveOption(gg_unit_n000_0056, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, feedback = function(clicked, clicking, player) PlayConversation("bill_intro", gg_unit_n000_0056, player) end }, 1)
-						AddInteractiveOption(gg_unit_n001_0055, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, feedback = function(clicked, clicking, player) PlayConversation("dalia_intro", gg_unit_n001_0055, player) end }, 1)
-						AddInteractiveOption(gg_unit_n013_0011, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, feedback = function(clicked, clicking, player) PlayConversation("blacksmith_intro", gg_unit_n013_0011, player) end }, 1)
-						AddInteractiveOption(gg_unit_n01V_0110, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, feedback = function(clicked, clicking, player) PlayConversation("librarian_intro", gg_unit_n01V_0110, player) end }, 1)
-						AddInteractiveOption(gg_unit_opeo_0031, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, feedback = function(clicked, clicking, player) PlayConversation("smorc_intro", gg_unit_opeo_0031, player) end }, 1)
-						AddInteractiveOption(gg_unit_n020_0075, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, feedback = function(clicked, clicking, player) PlayConversation("lynn_intro", gg_unit_n020_0075, player) end }, 1)
-						AddInteractiveOption(gg_unit_n01W_0111, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, feedback = function(clicked, clicking, player) PlayConversation("wandering_intro", gg_unit_n01W_0111, player) end }, 1)
+						AddInteractiveOption(gg_unit_n000_0056, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, id = "bill_intro_conv", feedback = function(clicked, clicking, player) PlayConversation("bill_intro", gg_unit_n000_0056, player) end }, 1)
+						AddInteractiveOption(gg_unit_n001_0055, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, id = "dalia_intro_conv",feedback = function(clicked, clicking, player) PlayConversation("dalia_intro", gg_unit_n001_0055, player) end }, 1)
+						AddInteractiveOption(gg_unit_n013_0011, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, id = "blacksmith_intro_conv",feedback = function(clicked, clicking, player) PlayConversation("blacksmith_intro", gg_unit_n013_0011, player) end }, 1)
+						AddInteractiveOption(gg_unit_n01V_0110, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, id = "librarian_intro_conv",feedback = function(clicked, clicking, player) PlayConversation("librarian_intro", gg_unit_n01V_0110, player) end }, 1)
+						AddInteractiveOption(gg_unit_opeo_0031, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, id = "smorc_intro_conv",feedback = function(clicked, clicking, player) PlayConversation("smorc_intro", gg_unit_opeo_0031, player) end }, 1)
+						AddInteractiveOption(gg_unit_n020_0075, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, id = "lynn_intro_conv",feedback = function(clicked, clicking, player) PlayConversation("lynn_intro", gg_unit_n020_0075, player) end }, 1)
+						AddInteractiveOption(gg_unit_n01W_0111, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, id = "wandering_intro_conv",feedback = function(clicked, clicking, player) PlayConversation("wandering_intro", gg_unit_n01W_0111, player) end }, 1)
 
 						--print("librarian")
 						CreateHeroSelections()
@@ -166,7 +162,7 @@ do
 						local timer = CreateTimer()
 						TimerStart(timer, 5., false, function()
 							WavesInit()
-							AddWaveTimer(325.)
+							AddWaveTimer(340.)
 							NewQuest("Credits", "Thanks for the resources and help.", "ReplaceableTextures\\WorldEditUI\\Editor-MultipleUnits.blp", false, true, "cred")
 							AddQuestItem("cred",  "cred1",  "Hive:|nGeneral Frank, Mythic, Veronnis, JetFangInferno, Daelin, PeeKay(Novart), stonneash, PrinceYaser,",  false)
 							AddQuestItem("cred",  "cred2",  "The Panda, Tasyen, Spellbound, Crazy Russian, Judash137, Kenathorn, stan0033, morbent, Solu9, L_Lawliet",  false)
@@ -218,16 +214,6 @@ do
 						end
 
 				end)
-
-				RegisterTestCommand("qe1m", function()
-					EnableMainQuest1()
-				end)
-
-				RegisterTestCommand("qe2m", function()
-					EnableMainQuest2()
-				end)
-
-
 
 				local trg = CreateTrigger()
 				TriggerRegisterPlayerEvent(trg, Player(0), EVENT_PLAYER_LEAVE)

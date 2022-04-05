@@ -27,6 +27,20 @@ do
         return IsAHero(GetTriggerUnit())
     end
 
+
+    function ReloadLocationFrames()
+        for player = 1, 6 do
+            if PlayerHero[player] then
+                PlayerLocation[player].frame = BlzCreateFrameByType("BACKDROP", "loc name", GAME_UI, "", 0)
+                BlzFrameSetVisible(PlayerLocation[player].frame, false)
+                BlzFrameSetAbsPoint(PlayerLocation[player].frame, FRAMEPOINT_CENTER, 0.4, 0.48)
+                BlzFrameSetSize(PlayerLocation[player].frame, 0.8, 0.44)
+                BlzFrameSetScale(PlayerLocation[player].frame, 0.57)
+            end
+        end
+    end
+
+
     function InitLocations()
 
         Locations = {}
@@ -41,7 +55,7 @@ do
                 frame = BlzCreateFrameByType("BACKDROP", "loc name", GAME_UI, "", 0)
             }
             BlzFrameSetVisible(PlayerLocation[i].frame, false)
-            BlzFrameSetAbsPoint(PlayerLocation[i].frame, FRAMEPOINT_CENTER, 0.4, 0.5)
+            BlzFrameSetAbsPoint(PlayerLocation[i].frame, FRAMEPOINT_CENTER, 0.4, 0.48)
             BlzFrameSetSize(PlayerLocation[i].frame, 0.8, 0.44)
             BlzFrameSetScale(PlayerLocation[i].frame, 0.57)
         end

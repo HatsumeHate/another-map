@@ -81,6 +81,7 @@ do
                 FrameChangeTexture(key_button_data.button, skill.icon)
                 key_button_data.skill = skill
                 DisableTrigger(SkillPanelFrame[player].key_trigger)
+                for i = 1, 6 do EnableTrigger(KEYBIND_LIST[i].trigger) end
                 --print("ability " .. key_button_data.skill.name .." is binded")
                 --print("ability " .. key_button_data.skill.name .." id is " .. key_button_data.skill.Id)
             end
@@ -229,6 +230,116 @@ do
     end
 
 
+    function ReloadSkillPanelFrames()
+        for player = 1, 6 do
+            if PlayerHero[player] then
+                local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
+                local new_Frame
+                local unit_data = GetUnitData(PlayerHero[player])
+
+                    BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0., -0.08)
+                    BlzFrameSetSize(main_frame, 0.28, 0.31)
+
+
+                    local category_border_panel = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
+                    BlzFrameSetPoint(category_border_panel, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.015, -0.015)
+                    BlzFrameSetSize(category_border_panel, BlzFrameGetWidth(main_frame) - (BlzFrameGetWidth(main_frame) * 0.75), BlzFrameGetHeight(main_frame) * 0.64)
+
+
+                    for i = 1, #CLASS_SKILL_CATEGORY[unit_data.unit_class] do
+                        local local_category = CLASS_SKILL_CATEGORY[unit_data.unit_class][i]
+                        local icon_path = SKILL_CATEGORY_ICON[local_category]
+
+
+                            if i == 1 then
+                                SkillPanelFrame[player].category[i].button = NewButton(-1, icon_path, 0.035, 0.035, category_border_panel, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.02, main_frame)
+                                local button_data = GetButtonData(SkillPanelFrame[player].category[i].button)
+                                button_data.sprite = CreateSprite("selecter2.mdx", 0.9, SkillPanelFrame[player].category[i].button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, button_data.image)
+                                BlzFrameSetVisible(button_data.sprite, false)
+                            else
+                                SkillPanelFrame[player].category[i].button = NewButton(i * -1, icon_path, 0.035, 0.035, SkillPanelFrame[player].category[i-1].button, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., -0.0055, SkillPanelFrame[player].category[i-1].button)
+                                local button_data = GetButtonData(SkillPanelFrame[player].category[i].button)
+                                button_data.sprite = CreateSprite("selecter2.mdx", 0.9, SkillPanelFrame[player].category[i].button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, button_data.image)
+                                BlzFrameSetVisible(button_data.sprite, false)
+                            end
+
+                        SkillPanelFrame[player].category_tooltip[i] = CreateTooltip(GetSkillCategoryName(local_category), "", SkillPanelFrame[player].category[i].button, 0.13, 0.03, FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMRIGHT)
+
+                    end
+
+
+                    local skill_bind_panel = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
+                    BlzFrameSetPoint(skill_bind_panel, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.015, 0.015)
+                    BlzFrameSetPoint(skill_bind_panel, FRAMEPOINT_BOTTOMRIGHT, main_frame, FRAMEPOINT_BOTTOMRIGHT, -0.015, 0.015)
+                    BlzFrameSetSize(skill_bind_panel, 0.1, 0.07)
+
+
+                    SkillPanelFrame[player].button_keys[KEY_Q] = NewButton(KEY_Q, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.035, 0.035, skill_bind_panel, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.017, 0., main_frame)
+
+                        for key = 2, KEY_F do
+                            SkillPanelFrame[player].button_keys[key] = NewButton(key, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.035, 0.035, SkillPanelFrame[player].button_keys[key-1], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0012, 0., SkillPanelFrame[player].button_keys[key-1])
+                        end
+
+
+                    local last_frame
+                    for i = 1, 4 do
+                        new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
+                            if i == 1 then
+                                BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, category_border_panel, FRAMEPOINT_TOPRIGHT, -0.006, 0.)
+                            else
+                                BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOP, last_frame, FRAMEPOINT_BOTTOM, 0., 0.01)
+                            end
+                        BlzFrameSetSize(new_Frame, 0.18, 0.06)
+                        SkillPanelFrame[player].displayed_skill_button[i] = NewButton(SKILL_BUTTON, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.03, 0.03, new_Frame, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.015, 0., new_Frame)
+                        BlzFrameSetVisible(SkillPanelFrame[player].displayed_skill_button[i], false)
+                        last_frame = new_Frame
+                    end
+
+
+                    new_Frame = BlzCreateFrameByType("SLIDER", "ASD", main_frame, "QuestMainListScrollBar", 0)
+                    BlzFrameClearAllPoints(new_Frame)
+                    BlzFrameSetMinMaxValue(new_Frame, 1, 1)
+                    BlzFrameSetValue(new_Frame, 1)
+                    BlzFrameSetStepSize(new_Frame, 1)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_RIGHT, main_frame, FRAMEPOINT_RIGHT, -0.015, 0.035)
+                    BlzFrameSetSize(new_Frame, 0.015, 0.2)
+
+                    SkillPanelFrame[player].slider = new_Frame
+                    BlzTriggerRegisterFrameEvent(SkillPanelFrame[player].slider_trigger, SkillPanelFrame[player].slider, FRAMEEVENT_SLIDER_VALUE_CHANGED)
+                    TriggerAddAction(SkillPanelFrame[player].slider_trigger, function ()
+
+                            if BlzGetTriggerFrameEvent() == FRAMEEVENT_MOUSE_WHEEL then
+                                if BlzGetTriggerFrameValue() > 0 then
+                                    SkillPanelFrame[player].slider_value = SkillPanelFrame[player].slider_value + 1
+                                    if SkillPanelFrame[player].slider_value > #SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].skill_list then
+                                        SkillPanelFrame[player].slider_value = #SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].skill_list
+                                    end
+                                    BlzFrameSetValue(SkillPanelFrame[player].slider, SkillPanelFrame[player].slider_value)
+                                else
+                                    SkillPanelFrame[player].slider_value = SkillPanelFrame[player].slider_value - 1
+                                    if SkillPanelFrame[player].slider_value < 1 then SkillPanelFrame[player].slider_value = 1 end
+                                    BlzFrameSetValue(SkillPanelFrame[player].slider, SkillPanelFrame[player].slider_value)
+                                end
+                            else
+                                SkillPanelFrame[player].slider_value = BlzGetTriggerFrameValue()
+                            end
+
+                            UpdateSkillWindow(player)
+                        end)
+
+                    BlzTriggerRegisterFrameEvent(SkillPanelFrame[player].slider_trigger, SkillPanelFrame[player].slider, FRAMEEVENT_MOUSE_WHEEL)
+
+
+                SkillPanelFrame[player].tooltip = NewTooltip(SkillPanelFrame[player].slider, "MyTextTemplateMedium")
+
+                SkillPanelFrame[player].main_frame = main_frame
+                SkillPanelFrame[player].state = false
+                BlzFrameSetVisible(SkillPanelFrame[player].main_frame, false)
+            end
+        end
+    end
+
+
     ---@param player integer
     function DrawSkillPanel(player)
         local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
@@ -248,10 +359,12 @@ do
 
 
             SkillPanelFrame[player].category = {}
+            SkillPanelFrame[player].category_tooltip = {}
             SkillPanelFrame[player].current_category = 1
 
             for i = 1, #CLASS_SKILL_CATEGORY[unit_data.unit_class] do
-                local icon_path = SKILL_CATEGORY_ICON[CLASS_SKILL_CATEGORY[unit_data.unit_class][i]]
+                local local_category = CLASS_SKILL_CATEGORY[unit_data.unit_class][i]
+                local icon_path = SKILL_CATEGORY_ICON[local_category]
 
                 SkillPanelFrame[player].category[i] = {}
                 SkillPanelFrame[player].category[i].skill_list = {}
@@ -268,6 +381,7 @@ do
                         BlzFrameSetVisible(button_data.sprite, false)
                     end
 
+                SkillPanelFrame[player].category_tooltip[i] = CreateTooltip(GetSkillCategoryName(local_category), "", SkillPanelFrame[player].category[i].button, 0.13, 0.03, FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMRIGHT)
 
             end
 
@@ -324,9 +438,13 @@ do
                     if BlzGetTriggerFrameEvent() == FRAMEEVENT_MOUSE_WHEEL then
                         if BlzGetTriggerFrameValue() > 0 then
                             SkillPanelFrame[player].slider_value = SkillPanelFrame[player].slider_value + 1
+                            if SkillPanelFrame[player].slider_value > #SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].skill_list then
+                                SkillPanelFrame[player].slider_value = #SkillPanelFrame[player].category[SkillPanelFrame[player].current_category].skill_list
+                            end
                             BlzFrameSetValue(SkillPanelFrame[player].slider, SkillPanelFrame[player].slider_value)
                         else
                             SkillPanelFrame[player].slider_value = SkillPanelFrame[player].slider_value - 1
+                            if SkillPanelFrame[player].slider_value < 1 then SkillPanelFrame[player].slider_value = 1 end
                             BlzFrameSetValue(SkillPanelFrame[player].slider, SkillPanelFrame[player].slider_value)
                         end
                     else
@@ -413,6 +531,7 @@ do
         if state then
             UpdateSkillList(player)
         else
+            for i = 1, 6 do EnableTrigger(KEYBIND_LIST[i].trigger) end
             DisableTrigger(SkillPanelFrame[player].key_trigger)
             DestroyContextMenu(player)
             RemoveTooltip(player)
@@ -466,6 +585,7 @@ do
                     CreateBindContext(player, button_data, 0)
                     SkillPanelFrame[player].current_button = button_data
                     EnableTrigger(SkillPanelFrame[player].key_trigger)
+                    for i = 1, 6 do DisableTrigger(KEYBIND_LIST[i].trigger) end
                 elseif button_data.button_type > 0 then
                     if button_data.skill ~= nil then
                         CreatePlayerContextMenu(player, button_data.button, FRAMEPOINT_RIGHT, SkillPanelFrame[player].slider)
@@ -476,6 +596,7 @@ do
                         end)
                         SkillPanelFrame[player].current_button = button_data
                         EnableTrigger(SkillPanelFrame[player].key_trigger)
+                        for i = 1, 6 do DisableTrigger(KEYBIND_LIST[i].trigger) end
                     end
                 end
 

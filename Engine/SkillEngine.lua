@@ -12,6 +12,36 @@ do
     KEYBIND_LIST = 0
 
 
+    ---@param unit unit
+    ---@param abilityid integer
+    function StartAbilityCharge(unit, abilityid)
+        local unit_data = GetUnitData(unit)
+        local timer = CreateTimer()
+        local skill = GetUnitSkillData(unit, abilityid)
+        local player = GetPlayerId(GetOwningPlayer(unit))
+
+            skill.charges_timers[#skill.charges_timers+1] = timer
+            TimerStart(timer, skill.cooldown, false, function()
+                for i = 1, #skill.charges_timers do
+                    if skill.charges_timers[i] == timer then
+                        DestroyTimer(skill.charges_timers[i])
+                        table.remove(skill.charges_timers, i)
+                        break
+                    end
+                end
+
+                skill.current_charges = skill.current_charges + 1
+                if skill.current_charges > skill.current_max_charges then skill.current_charges = skill.current_max_charges end
+                if IsAbilityKeybinded(FourCC(skill.Id), player) then
+                    BlzFrameSetText(KEYBIND_LIST[GetKeybindKey(FourCC(skill.Id), player)].player_charges_frame[player].text, skill.current_charges)
+                    if BlzGetUnitAbilityCooldownRemaining(unit_data.Owner, GetKeybindKeyAbility(FourCC(skill.Id), player)) > 0. then
+                        BlzEndUnitAbilityCooldown(unit_data.Owner, GetKeybindKeyAbility(FourCC(skill.Id), player))
+                    end
+                end
+            end)
+    end
+
+
     function UnbindAbilityKey(unit, id)
         local player = GetPlayerId(GetOwningPlayer(unit)) + 1
 
@@ -19,6 +49,7 @@ do
                 if KEYBIND_LIST[i].player_skill_bind[player] == FourCC(id) then
                     UnitRemoveAbility(unit, KEYBIND_LIST[i].ability)
                     KEYBIND_LIST[i].player_skill_bind[player] = 0
+                    BlzFrameSetVisible(KEYBIND_LIST[i].player_charges_frame[player].border, false)
                     break
                 end
             end
@@ -111,33 +142,20 @@ do
         local result_string = ""
 
 
-        while(true) do
-            local new_parse_block = string.find(str, "@", last_sector)
+            while(true) do
+                local new_parse_block = string.find(str, "@", last_sector)
 
-            if new_parse_block then
-                local parse_block_ending = string.find(str, "#", last_sector)
-                result_string = result_string .. string.sub(str, new_block, new_parse_block-1) .. ParseString(string.sub(str, new_parse_block, parse_block_ending), level)
-                last_sector = parse_block_ending + 1
-                new_block = last_sector
-            else
-                result_string = result_string .. string.sub(str, last_sector, #str)
-                break
-            end
-
-        end
-            --[[
-            for i = 0, #str do
-                if SubString(str, i, i+1) == "@" then
-                    ending_number = GetStringEnding(str, i)
-                    local value_string = SubString(str, i, ending_number)
-                    my_string_table[#my_string_table+1] = SubString(str, last_sector, i) .. ParseString(value_string, SubString(str, i+1, i+2), level)
-                    i = ending_number
-                    last_sector = i
+                if new_parse_block then
+                    local parse_block_ending = string.find(str, "#", last_sector)
+                    result_string = result_string .. string.sub(str, new_block, new_parse_block-1) .. ParseString(string.sub(str, new_parse_block, parse_block_ending), level)
+                    last_sector = parse_block_ending + 1
+                    new_block = last_sector
+                else
+                    result_string = result_string .. string.sub(str, last_sector, #str)
+                    break
                 end
-            end]]
 
-        --my_string_table[#my_string_table+1] = SubString(str, last_sector, #str)
-        --for i = 1, #my_string_table do result_string = result_string .. my_string_table[i] end
+            end
 
         return result_string
     end
@@ -225,6 +243,10 @@ do
                         local manacost = ((skill.level[level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
                         if manacost < 0. then manacost = 0 end
 
+                        if skill.level[level].charges then
+                            BlzFrameSetVisible(KEYBIND_LIST[key].player_charges_frame[player].border, true)
+                        end
+
                         BlzSetUnitAbilityManaCost(PlayerHero[player], KEYBIND_LIST[key].ability, 0, math.floor(manacost + 0.5))
                         SetAbilityExtendedTooltip(PlayerHero[player], skill.Id, player)
                 end
@@ -239,30 +261,24 @@ do
         local unit_data = GetUnitData(PlayerHero[player])
 
             if IsAbilityKeybinded(FourCC(id), player) then
-                --print("UpdateBindedSkillData - ability keybinded!")
-                --print("UpdateBindedSkillData - id " .. FourCC(id))
                 local skill = GetUnitSkillData(PlayerHero[player], id)
-                --print("UpdateBindedSkillData - skill id " .. skill.Id)
                 local ability_id = GetKeybindKeyAbility(FourCC(id), player)
-                --print("UpdateBindedSkillData - ability id " .. ability_id)
                 local ability = BlzGetUnitAbility(PlayerHero[player], ability_id)
-                --print("UpdateBindedSkillData - ability handle " .. GetHandleId(ability))
                 local level = UnitGetAbilityLevel(PlayerHero[player], id)
-                --print("UpdateBindedSkillData - ability level " .. level)
 
                     BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[level].range or 0.)
-                    --print("UpdateBindedSkillData - cast range done " .. skill.level[level].range)
                     BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[level].radius or 0.)
-                    --print("UpdateBindedSkillData - radius done " .. skill.level[level].radius)
                     BlzSetAbilityIntegerLevelField(ability, ABILITY_ILF_TARGET_TYPE, 0, skill.activation_type)
-                    --print("UpdateBindedSkillData - activation type done " .. skill.activation_type)
                     local manacost = ((skill.level[level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
                     if manacost < 0. then manacost = 0 end
 
+                    if skill.level[level].charges and (skill.current_max_charges or 1) > skill.level[level].charges then
+                        local difference = skill.current_max_charges - skill.level[level].charges
+                        for i = 1, difference do StartAbilityCharge(PlayerHero[player], id) end
+                    end
+
                     BlzSetUnitAbilityManaCost(PlayerHero[player], ability_id, 0, math.floor(manacost + 0.5))
-                    --print("UpdateBindedSkillData - mana cost done " .. R2I(skill.level[level].resource_cost))
                     SetAbilityExtendedTooltip(PlayerHero[player], id, player)
-                    --print("UpdateBindedSkillData - SetAbilityExtendedTooltip done")
             end
 
     end
@@ -293,11 +309,12 @@ do
             if manacost < 0. then manacost = 0 end
             BlzSetUnitAbilityManaCost(unit, ability_id, 0, math.floor(manacost + 0.5))
 
-            --print("BindAbilityKey - start")
-            --print("BindAbilityKey - id ".. ability_id)
-            --print("BindAbilityKey - name ".. skill.name)
-            --print("BindAbilityKey - bind name ".. KEYBIND_LIST[key].name_string)
-            --print("BindAbilityKey - icon ".. skill.icon)
+            if skill.level[level].charges then
+                BlzFrameSetVisible(KEYBIND_LIST[key].player_charges_frame[GetPlayerId(GetOwningPlayer(unit))+1].border, true)
+                BlzFrameSetText(KEYBIND_LIST[key].player_charges_frame[GetPlayerId(GetOwningPlayer(unit))+1].text, skill.current_charges or skill.level[level].charges)
+                if not skill.current_charges then skill.current_charges = skill.level[level].charges end
+                skill.current_max_charges = skill.level[level].charges
+            end
 
                 if GetLocalPlayer() == GetOwningPlayer(unit) then
                     BlzSetAbilityTooltip(ability_id, skill.name, 0)
@@ -326,6 +343,19 @@ do
 
     ---@param id integer
     ---@param player integer
+    ---@return integer
+    function GetKeybindKey(id, player)
+        for key = KEY_Q, KEY_F do
+            if KEYBIND_LIST[key].player_skill_bind[player] == id then
+                return key
+            end
+        end
+        return KEY_Q
+    end
+
+    ---@param id integer
+    ---@param player integer
+    ---@return integer
     function GetKeybindKeyAbility(id, player)
 
         for key = KEY_Q, KEY_F do
@@ -339,6 +369,7 @@ do
 
     ---@param id integer
     ---@param player integer
+    ---@return integer
     function GetKeybindAbility(id, player)
 
         for key = KEY_Q, KEY_F do
@@ -354,6 +385,7 @@ do
     ---@param unit unit
     ---@param id string
     ---@param amount integer
+    ---@return boolean
     function UnitAddAbilityLevel(unit, id, amount)
         local unit_data = GetUnitData(unit)
 
@@ -376,6 +408,7 @@ do
     ---@param unit unit
     ---@param id string
     ---@param lvl integer
+    ---@return boolean
     function UnitSetAbilityLevel(unit, id, lvl)
         local unit_data = GetUnitData(unit)
 
@@ -393,6 +426,7 @@ do
 
     ---@param unit unit
     ---@param id string
+    ---@return integer
     function UnitGetAbilityLevel(unit, id)
         local unit_data = GetUnitData(unit)
         local ability_level = 0
@@ -679,37 +713,43 @@ do
                     ability = FourCC('A016'),
                     name_string = " (|cffffcc00Q|r)",
                     bind_name = "[Q]",
-                    player_skill_bind = {}
+                    player_skill_bind = {},
+                    order = order_web
                 },
                 [KEY_W] =  {
                     ability = FourCC('A01A'),
                     name_string = " (|cffffcc00W|r)",
                     bind_name = "[W]",
-                    player_skill_bind = {}
+                    player_skill_bind = {},
+                    order = order_unholyfrenzy
                 },
                 [KEY_E] =  {
                     ability = FourCC('A01E'),
                     name_string = " (|cffffcc00E|r)",
                     bind_name = "[E]",
-                    player_skill_bind = {}
+                    player_skill_bind = {},
+                    order = order_volcano
                 },
                 [KEY_R] =  {
                     ability = FourCC('A01I'),
                     name_string = " (|cffffcc00R|r)",
                     bind_name = "[R]",
-                    player_skill_bind = {}
+                    player_skill_bind = {},
+                    order = order_voodoo
                 },
                 [KEY_D] =  {
                     ability = FourCC('A017'),
                     name_string = " (|cffffcc00D|r)",
                     bind_name = "[D]",
-                    player_skill_bind = {}
+                    player_skill_bind = {},
+                    order = order_ward
                 },
                 [KEY_F] =  {
                     ability = FourCC('A018'),
                     name_string = " (|cffffcc00F|r)",
                     bind_name = "[F]",
-                    player_skill_bind = {}
+                    player_skill_bind = {},
+                    order = order_undefend
                 }
             }
 
@@ -721,17 +761,66 @@ do
 
 
             for key = KEY_Q, KEY_F do
+                KEYBIND_LIST[key].player_charges_frame = {}
                 KEYBIND_LIST[key].trigger = CreateTrigger()
+                for i = 1, 6 do KEYBIND_LIST[key].player_charges_frame[i] = {} end
                 TriggerAddAction(KEYBIND_LIST[key].trigger, function()
                     local player = GetPlayerId(GetTriggerPlayer()) + 1
 
                         if KEYBIND_LIST[key].player_skill_bind[player] ~= 0 then
                             if BlzGetUnitAbilityManaCost(PlayerHero[player], KEYBIND_LIST[key].ability, 0) > GetUnitState(PlayerHero[player], UNIT_STATE_MANA) then
                                 Feedback_NoResource(player)
+                            else
+                                local skill = GetSkillData(GetKeybindAbility(KEYBIND_LIST[key].ability, player))
+                                if skill.activation_type ~= SELF_CAST then
+                                    if (skill.activation_type == POINT_AND_TARGET_CAST or skill.activation_type == TARGET_CAST) and PlayerMouseFocus[player] then
+                                        IssueTargetOrderById(PlayerHero[player], KEYBIND_LIST[key].order, PlayerMouseFocus[player])
+                                    elseif skill.activation_type == POINT_AND_TARGET_CAST or skill.activation_type == POINT_CAST then
+                                        IssuePointOrderById(PlayerHero[player], KEYBIND_LIST[key].order, PlayerMousePosition[player].x, PlayerMousePosition[player].y)
+                                    elseif skill.activation_type == TARGET_CAST and not PlayerMouseFocus[player] then
+
+                                    end
+                                    if GetLocalPlayer() == Player(player-1) then ForceUICancel() end
+                                end
                             end
                         end
-
                 end)
+            end
+
+            local attack_trigger_quickcast = CreateTrigger()
+            for i = 0, 5 do BlzTriggerRegisterPlayerKeyEvent(attack_trigger_quickcast, Player(i), OSKEY_A, 0, true) end
+
+            TriggerAddAction(attack_trigger_quickcast, function()
+                local player = GetPlayerId(GetTriggerPlayer()) + 1
+
+                    if PlayerMouseFocus[player] then
+                        IssueTargetOrderById(PlayerHero[player], order_attack, PlayerMouseFocus[player])
+                    else
+                        IssuePointOrderById(PlayerHero[player], order_attack, PlayerMousePosition[player].x, PlayerMousePosition[player].y)
+                    end
+
+                    if GetLocalPlayer() == Player(player-1) then ForceUICancel() end
+
+            end)
+
+
+
+            for i = 1, 6 do
+                PlayerUI.skill_button_charges[i] = {}
+                PlayerUI.skill_button_charges[i].button = {}
+                for key = 1, 6 do
+                    PlayerUI.skill_button_charges[i].button[key] = CreateUIChargesBorder(PlayerUI.skill_button_borders[key])
+                end
+            end
+
+
+            for i = 1, 6 do
+                KEYBIND_LIST[KEY_Q].player_charges_frame[i] = PlayerUI.skill_button_charges[i].button[3]
+                KEYBIND_LIST[KEY_W].player_charges_frame[i] = PlayerUI.skill_button_charges[i].button[2]
+                KEYBIND_LIST[KEY_E].player_charges_frame[i] = PlayerUI.skill_button_charges[i].button[1]
+                KEYBIND_LIST[KEY_R].player_charges_frame[i] = PlayerUI.skill_button_charges[i].button[4]
+                KEYBIND_LIST[KEY_D].player_charges_frame[i] = PlayerUI.skill_button_charges[i].button[5]
+                KEYBIND_LIST[KEY_F].player_charges_frame[i] = PlayerUI.skill_button_charges[i].button[6]
             end
 
             for player = 0, 5 do
@@ -859,7 +948,57 @@ do
                     if skill_additional_data.manacost < 0. then skill_additional_data.manacost = 0 end
 
                     OnSkillPrecast(unit_data.Owner, target, skill, ability_level, skill_additional_data)
-                    BlzSetUnitAbilityCooldown(unit_data.Owner, id, 0, skill_additional_data.cooldown)
+
+                    if skill.current_charges then
+                        local player = GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1
+                        skill.current_charges = skill.current_charges - 1
+
+                        if not skill.charges_timers then skill.charges_timers = {} end
+
+                            if skill.current_charges > 0 then
+                                BlzSetUnitAbilityCooldown(unit_data.Owner, id, 0, 0.)
+                            else
+                                local lowest = skill_additional_data.cooldown
+
+                                    if #skill.charges_timers > 0 then
+                                        for i = 1, #skill.charges_timers do
+                                            if TimerGetRemaining(skill.charges_timers[i]) > 0. and TimerGetRemaining(skill.charges_timers[i]) < lowest then
+                                                lowest = TimerGetRemaining(skill.charges_timers[i])
+                                            end
+                                        end
+                                    end
+
+                                BlzSetUnitAbilityCooldown(unit_data.Owner, id, 0, lowest)
+                            end
+
+
+                        local timer = CreateTimer()
+                        skill.charges_timers[#skill.charges_timers+1] = timer
+                        TimerStart(timer, skill_additional_data.cooldown, false, function()
+                            for i = 1, #skill.charges_timers do
+                                if skill.charges_timers[i] == timer then
+                                    DestroyTimer(skill.charges_timers[i])
+                                    table.remove(skill.charges_timers, i)
+                                    break
+                                end
+                            end
+
+                            skill.current_charges = skill.current_charges + 1
+                            if skill.current_charges > skill.current_max_charges then skill.current_charges = skill.current_max_charges end
+                            if IsAbilityKeybinded(FourCC(skill.Id), player) then
+                                BlzFrameSetText(KEYBIND_LIST[GetKeybindKey(FourCC(skill.Id), player)].player_charges_frame[player].text, skill.current_charges)
+                                if BlzGetUnitAbilityCooldownRemaining(unit_data.Owner, GetKeybindKeyAbility(FourCC(skill.Id), player)) > 0. then
+                                    BlzEndUnitAbilityCooldown(unit_data.Owner, GetKeybindKeyAbility(FourCC(skill.Id), player))
+                                end
+                            end
+                        end)
+
+                        BlzFrameSetText(KEYBIND_LIST[GetKeybindKey(FourCC(skill.Id), player)].player_charges_frame[player].text, skill.current_charges)
+
+                    else
+                        BlzSetUnitAbilityCooldown(unit_data.Owner, id, 0, skill_additional_data.cooldown)
+                    end
+
                     BlzSetUnitAbilityManaCost(unit_data.Owner, id, 0, skill_additional_data.manacost)
 
 

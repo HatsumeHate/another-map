@@ -3,7 +3,7 @@ do
 
 
     local QUALITY_COLOR = 0
-    local QUALITY_LIGHT_COLOR
+    QUALITY_LIGHT_COLOR = nil
     local EFFECT_QUALITY_COLOR = 0
 
     ITEMSUBTYPES_EFFECT_SCALE = 0
@@ -193,6 +193,7 @@ do
 
             x = GetItemX(item)
             y = GetItemY(item)
+            local z = GetZ(x, y)
 
             if owner then BlzSetItemSkin(item, FourCC("I01X")) end
 
@@ -202,9 +203,6 @@ do
                 BlzSetSpecialEffectColor(data.quality_effect, color_table.r, color_table.g, color_table.b)
                 BlzSetSpecialEffectScale(data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[data.SUBTYPE])
                 BlzSetSpecialEffectAlpha(data.quality_effect, 0)
-                data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], x, y)
-                BlzPlaySpecialEffect(data.quality_effect_light, ANIM_TYPE_DEATH)
-                --BlzSetSpecialEffectAlpha(data.quality_effect_light, 0)
             end
 
 
@@ -235,20 +233,24 @@ do
                         TimerStart(timer, 0.48, false, function()
 
                             if data.owner then
-                                if GetLocalPlayer() == Player(data.owner) then
-                                    if data.quality_effect then
-                                        BlzSetSpecialEffectAlpha(data.quality_effect, 255)
-                                        BlzPlaySpecialEffect(data.quality_effect_light, ANIM_TYPE_STAND)
+                                local s = ""
+
+                                    if GetLocalPlayer() == Player(data.owner) then
+                                        if data.quality_effect then
+                                            BlzSetSpecialEffectAlpha(data.quality_effect, 255)
+                                            s = QUALITY_LIGHT_COLOR[data.QUALITY]
+                                            BlzSetSpecialEffectPosition(data.quality_effect, x, y, z)
+                                        end
+                                        BlzSetItemSkin(item, GetItemTypeId(item))
                                     end
-                                    BlzSetSpecialEffectPosition(data.quality_effect, GetItemX(item), GetItemY(item), GetZ(GetItemX(item), GetItemY(item)))
-                                    BlzSetItemSkin(item, GetItemTypeId(item))
-                                end
+
+                                --if data.quality_effect then data.quality_effect_light = AddSpecialEffect(s, x, y); print("added") end
                                 if data.soundpack then AddSoundForPlayerVolumeZ(data.soundpack.drop, x, y, 35., 128, 2100., data.owner) end
                             else
                                 if not data.picked_up then
                                     if data.quality_effect then
                                         BlzSetSpecialEffectAlpha(data.quality_effect, 255)
-                                        BlzPlaySpecialEffect(data.quality_effect_light, ANIM_TYPE_STAND)
+                                        --data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], x, y); print("added")
                                     end
                                     BlzSetItemSkin(item, GetItemTypeId(item))
                                     if data.soundpack then AddSoundVolume(data.soundpack.drop, x, y, 128, 2100.) end
@@ -277,21 +279,21 @@ do
                 if data.owner then
 
                     if data.quality_effect then
-                        BlzSetSpecialEffectPosition(data.quality_effect, GetItemX(item), GetItemY(item), GetZ(GetItemX(item), GetItemY(item)))
-                        BlzSetSpecialEffectPosition(data.quality_effect_light, GetItemX(item), GetItemY(item), GetZ(GetItemX(item), GetItemY(item)))
+                        local s = QUALITY_LIGHT_COLOR[data.QUALITY]
+                        BlzSetSpecialEffectPosition(data.quality_effect, x, y, z)
 
-                        if GetLocalPlayer() == Player(data.owner) then
-                            BlzSetSpecialEffectAlpha(data.quality_effect, 255)
-                            BlzPlaySpecialEffect(data.quality_effect_light, ANIM_TYPE_STAND)
-                            BlzSetItemSkin(item, GetItemTypeId(item))
-                        else
-                            BlzSetSpecialEffectAlpha(data.quality_effect, 0)
-                            BlzPlaySpecialEffect(data.quality_effect_light, ANIM_TYPE_DEATH)
-                        end
-                    else
-                        if GetLocalPlayer() == Player(data.owner) then
-                            BlzSetItemSkin(item, GetItemTypeId(item))
-                        end
+                            if GetLocalPlayer() == Player(data.owner) then
+                                BlzSetSpecialEffectAlpha(data.quality_effect, 255)
+                            else
+                                BlzSetSpecialEffectAlpha(data.quality_effect, 0)
+                                s = ""
+                            end
+
+                        --data.quality_effect_light = AddSpecialEffect(s, x, y); print("added")
+                    end
+
+                    if GetLocalPlayer() == Player(data.owner) then
+                        BlzSetItemSkin(item, GetItemTypeId(item))
                     end
 
                 else
@@ -299,11 +301,7 @@ do
 
                         if data.quality_effect then
                             BlzSetSpecialEffectAlpha(data.quality_effect, 255)
-                            BlzPlaySpecialEffect(data.quality_effect_light, ANIM_TYPE_STAND)
-                            DelayAction(0., function()
-                                BlzSetSpecialEffectPosition(data.quality_effect, GetItemX(item), GetItemY(item), GetZ(GetItemX(item), GetItemY(item)))
-                                BlzSetSpecialEffectPosition(data.quality_effect_light, GetItemX(item), GetItemY(item), GetZ(GetItemX(item), GetItemY(item)))
-                            end)
+                            --data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], x, y); print("added")
                         end
 
                         BlzSetItemSkin(item, GetItemTypeId(item))
@@ -341,7 +339,7 @@ do
                 data.quality_effect = AddSpecialEffect("QualityGlow.mdx", x, y)
                 BlzSetSpecialEffectColor(data.quality_effect, color_table.r, color_table.g, color_table.b)
                 BlzSetSpecialEffectScale(data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[data.SUBTYPE])
-                data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], x, y)
+                --data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], x, y)
             end
 
             if data.TYPE == ITEM_TYPE_SKILLBOOK then GenerateItemBookSkill(item)
@@ -387,7 +385,6 @@ do
 
         local suffix = ITEM_QUALITY_SUFFIX_LIST[quality][item_data.SUBTYPE][GetRandomInt(1, #ITEM_QUALITY_SUFFIX_LIST[quality][item_data.SUBTYPE])]
         --print("suffix number " .. (suffix or "invalid"))
-        --local affix = GetRandomInt(ITEM_SUFFIX_LIST[suffix].min_affix, ITEM_SUFFIX_LIST[suffix].max_affix)
         local affix = ITEM_AFFIX_WORN
 
         for i = 1, #AffixTable[quality] do
@@ -407,7 +404,7 @@ do
 
         local parameters_list = GetRandomIntTable(1, #preset.parameter_bonus, bonus_parameters_count)
 
-        --print("rolled suffix id " .. )
+
         --print("ok")
         --print("affix " .. ITEM_AFFIX_NAME_LIST[affix][QUALITY_ITEM_LIST[quality][item_data.SUBTYPE][variation].decl] .. " + " .. item_data.NAME .." + suffix " .. ITEM_SUFFIX_LIST[suffix].name)
 
@@ -777,6 +774,7 @@ do
             if unit_data.equip_point[point] and unit_data.equip_point[point].TYPE == ITEM_TYPE_WEAPON then
                 BlzUnitInterruptAttack(unit)
                 BlzSetUnitRealField(unit, UNIT_RF_ACQUISITION_RANGE, (unit_data.equip_point[point].RANGE or 90.))
+                BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 1, 0.)
                 BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 1, (unit_data.equip_point[point].RANGE or 90.))
                 --BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_BA
             end
@@ -1112,6 +1110,18 @@ do
 
         RegisterTestCommand("db", function()
             local item = CreateCustomItem(GetRandomBookItemId(), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), true)
+        end)
+
+        RegisterTestCommand("gen", function()
+            local item = CreateCustomItem(GetGeneratedItemId(DAGGER_WEAPON), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]))
+            local roll = GetRandomInt(1, 5)
+                local quality
+
+                    if roll == 1 then quality = MAGIC_ITEM
+                    elseif roll == 2 then quality = RARE_ITEM
+                    else quality = COMMON_ITEM end
+
+                GenerateItemStats(item, Current_Wave + GetRandomInt(1, 2), quality)
         end)
 
     end

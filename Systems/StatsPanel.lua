@@ -126,7 +126,6 @@ do
                         MainStatButtons[id].points = 0
                         for i = STR_STAT, VIT_STAT do
                             BlzFrameSetVisible(MainStatButtons[id].frames[i], false)
-                            --BlzFrameSetEnable(MainStatButtons[id].frames[i], false)
                             BlzFrameSetVisible(MainStatButtons[id].points_frame, false)
                         end
                     end
@@ -159,6 +158,150 @@ do
     end
 
 
+    function ReloadStatsFrames()
+        for player = 1, 6 do
+            if PlayerHero[player] then
+
+                local new_frame
+                local new_subframe
+                local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
+
+                    BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0., -0.05)
+                    BlzFrameSetSize(main_frame, 0.29, 0.33)
+
+
+                    MainStatButtons[player].description_border = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
+                    MainStatButtons[player].portrait_border = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
+
+
+                    new_frame = BlzCreateFrameByType('BACKDROP', "PORTRAIT", MainStatButtons[player].portrait_border, "",0)
+                    BlzFrameSetPoint(new_frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.035, -0.035)
+                    BlzFrameSetSize(new_frame, 0.05, 0.05)
+                    MainStatButtons[player].portrait = new_frame
+
+                    new_frame = BlzCreateFrameByType('BACKDROP', "PORTRAIT BORDER", MainStatButtons[player].portrait_border, "",0)
+                    BlzFrameSetTexture(new_frame, "DiabolicUI_Button_50x50_BorderHighlight.tga", 0, true)
+                    BlzFrameSetPoint(new_frame, FRAMEPOINT_TOPRIGHT, MainStatButtons[player].portrait, FRAMEPOINT_TOPRIGHT, 0.009, 0.009)
+                    BlzFrameSetPoint(new_frame, FRAMEPOINT_BOTTOMLEFT, MainStatButtons[player].portrait, FRAMEPOINT_BOTTOMLEFT, -0.009, -0.009)
+
+                    new_frame = BlzCreateFrameByType("TEXT", "hero name", MainStatButtons[player].portrait_border, "MyTextTemplate", 0)
+                    BlzFrameSetTextAlignment(new_frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER)
+                    MainStatButtons[player].hero_name = new_frame
+
+                    new_frame = BlzCreateFrameByType("TEXT", "hero class", MainStatButtons[player].portrait_border, "MyTextTemplate", 0)
+                    BlzFrameSetTextAlignment(new_frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER)
+                    MainStatButtons[player].hero_class = new_frame
+
+                    new_frame = BlzCreateFrameByType("TEXT", "hero level", MainStatButtons[player].description_border, "MyTextTemplate", 0)
+                    BlzFrameSetTextAlignment(new_frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER)
+                    MainStatButtons[player].hero_level = new_frame
+
+                    BlzFrameSetPoint(MainStatButtons[player].portrait_border , FRAMEPOINT_TOPLEFT, MainStatButtons[player].portrait, FRAMEPOINT_TOPLEFT, -0.02, 0.02)
+                    BlzFrameSetPoint(MainStatButtons[player].portrait_border , FRAMEPOINT_BOTTOMRIGHT, MainStatButtons[player].portrait, FRAMEPOINT_BOTTOMRIGHT, 0.02, -0.02)
+
+                    BlzFrameSetPoint(MainStatButtons[player].description_border , FRAMEPOINT_TOPLEFT, MainStatButtons[player].portrait_border, FRAMEPOINT_TOPLEFT, 0., 0.)
+                    BlzFrameSetPoint(MainStatButtons[player].description_border , FRAMEPOINT_BOTTOMLEFT, MainStatButtons[player].portrait_border, FRAMEPOINT_BOTTOMRIGHT, .0, 0.)
+
+                    BlzFrameSetPoint(MainStatButtons[player].description_border , FRAMEPOINT_RIGHT, main_frame, FRAMEPOINT_RIGHT, -0.015, 0.)
+
+
+                    BlzFrameSetPoint(MainStatButtons[player].hero_name, FRAMEPOINT_TOPLEFT, MainStatButtons[player].portrait_border, FRAMEPOINT_TOPRIGHT, 0.005, -0.02)
+                    BlzFrameSetPoint(MainStatButtons[player].hero_name, FRAMEPOINT_TOPRIGHT, MainStatButtons[player].description_border, FRAMEPOINT_TOPRIGHT, -0.02, -0.02)
+                    BlzFrameSetPoint(MainStatButtons[player].hero_class, FRAMEPOINT_BOTTOMLEFT, MainStatButtons[player].portrait_border, FRAMEPOINT_BOTTOMRIGHT, 0.005, 0.02)
+                    BlzFrameSetPoint(MainStatButtons[player].hero_level, FRAMEPOINT_BOTTOMRIGHT, MainStatButtons[player].description_border, FRAMEPOINT_BOTTOMRIGHT, -0.02, 0.02)
+                    BlzFrameSetScale(MainStatButtons[player].hero_name, 1.15)
+
+
+
+                    MainStatButtons[player].glow_frame = CreateSprite("UI\\Buttons\\HeroLevel\\HeroLevel.mdx", 0.88, GlobalButton[player].char_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.,0., GlobalButton[player].char_panel_button)
+                    BlzFrameSetVisible(MainStatButtons[player].glow_frame, false)
+
+                    local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", GlobalButton[player].char_panel_button, "", 0)
+                    BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMLEFT, GlobalButton[player].char_panel_button, FRAMEPOINT_BOTTOMLEFT, 0.002, 0.002)
+                    BlzFrameSetSize(new_FrameCharges, 0.012, 0.012)
+                    BlzFrameSetTexture(new_FrameCharges, "GUI\\ChargesTexture.blp", 0, true)
+                    MainStatButtons[player].points_frame = new_FrameCharges
+
+
+                    local new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
+                    BlzFrameSetAllPoints(new_FrameChargesText, new_FrameCharges)
+                    BlzFrameSetTextAlignment(new_FrameChargesText, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_CENTER)
+                    BlzFrameSetText(new_FrameChargesText, "")
+                    BlzFrameSetScale(new_FrameCharges, 0.9)
+                    BlzFrameSetScale(new_FrameChargesText, 0.9)
+                    MainStatButtons[player].points_text_frame = new_FrameChargesText
+                    BlzFrameSetVisible(new_FrameCharges, false)
+
+
+                    new_frame = CreateTextBox("Интеллект:", INT_STAT, 0.085, 0.03, 0.97, main_frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, main_frame, player)
+                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_INT_DESC, StatsList[player][INT_STAT], 0.14, 0.11)
+                    local button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
+                    MainStatButtons[player].frames[button] = button
+                    BlzTriggerRegisterFrameEvent(MainStatButtons[player].stat_button_trigger, button, FRAMEEVENT_CONTROL_CLICK)
+
+
+                    new_frame = CreateTextBox("Стойкость:", VIT_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., -0.002, main_frame, player)
+                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_VIT_DESC, StatsList[player][VIT_STAT], 0.14, 0.06)
+                    button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
+                    MainStatButtons[player].frames[button] = button
+                    BlzTriggerRegisterFrameEvent(MainStatButtons[player].stat_button_trigger, button, FRAMEEVENT_CONTROL_CLICK)
+
+
+                    new_frame = CreateTextBox("Ловкость:", AGI_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., -0.002, main_frame, player)
+                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_AGI_DESC, StatsList[player][AGI_STAT], 0.14, 0.1)
+                    button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
+                    MainStatButtons[player].frames[button] = button
+                    BlzTriggerRegisterFrameEvent(MainStatButtons[player].stat_button_trigger, button, FRAMEEVENT_CONTROL_CLICK)
+
+
+                    new_frame = CreateTextBox("Сила:", STR_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., -0.002, main_frame, player)
+                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_STR_DESC, StatsList[player][STR_STAT], 0.1, 0.06)
+                    button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
+                    MainStatButtons[player].frames[button] = button
+                    BlzTriggerRegisterFrameEvent(MainStatButtons[player].stat_button_trigger, button, FRAMEEVENT_CONTROL_CLICK)
+
+
+
+                    new_frame = CreateTextBox("Физ. урон: 1234", PHYSICAL_ATTACK, 0.1, 0.03, 1., MainStatButtons[player].description_border, FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMLEFT, 0.002, 0.0024, main_frame, player)
+                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MINOR_STAT, LOCALE_LIST[my_locale].STAT_PANEL_PHYSICAL_ATTACK_DESC, StatsList[player][PHYSICAL_ATTACK], 0.14, 0.08)
+
+                    new_subframe = CreateTextBox("Защита: 1234", PHYSICAL_DEFENCE, 0.1, 0.03, 1., MainStatButtons[player].description_border, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_BOTTOMRIGHT, -0.002, 0.0024, main_frame, player)
+                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MINOR_STAT, LOCALE_LIST[my_locale].STAT_PANEL_PHYSICAL_DEFENCE_DESC, StatsList[player][PHYSICAL_DEFENCE], 0.14, 0.08)
+
+                    new_frame = CreateTextBox("Маг. урон: 1234", MAGICAL_ATTACK, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
+                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MINOR_STAT, LOCALE_LIST[my_locale].STAT_PANEL_MAGICAL_ATTACK_DESC, StatsList[player][MAGICAL_ATTACK], 0.14, 0.08)
+                    new_subframe = CreateTextBox("Подавление: 1234", MAGICAL_SUPPRESSION, 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
+                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MINOR_STAT, LOCALE_LIST[my_locale].STAT_PANEL_MAGICAL_SUPPRESSION_DESC, StatsList[player][MAGICAL_SUPPRESSION], 0.14, 0.08)
+
+                    new_frame = CreateTextBox("Крит. шанс: 100%%", CRIT_CHANCE, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
+                    new_subframe = CreateTextBox("Атак в сек.: 1234", ATTACK_SPEED, 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
+
+                    new_frame = CreateTextBox("Атак в сек.: 1234", CAST_SPEED, 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
+
+
+
+                    new_frame = CreateTextBox("Тьма: 100", DARKNESS_RESIST, 0.07, 0.02, 1., main_frame, FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_BOTTOMRIGHT, -0.02, 0.02, main_frame, player)
+                    new_subframe = CreateTextBox("Свет: 100", HOLY_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., main_frame, player)
+
+                    new_frame = CreateTextBox("Яд: 100", POISON_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame, player)
+                    new_subframe = CreateTextBox("Тайное: 100", ARCANE_RESIST, 0.07, 0.02, 0.99, new_frame, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., main_frame, player)
+
+                    new_frame = CreateTextBox("Лед: 100", ICE_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame, player)
+                    new_subframe = CreateTextBox("Молния: 100", LIGHTNING_RESIST, 0.07, 0.02, 0.96, new_frame, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., main_frame, player)
+
+                    new_frame = CreateTextBox("Физ: 100", PHYSICAL_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame, player)
+                    new_subframe = CreateTextBox("Огонь: 100", FIRE_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., main_frame, player)
+
+
+
+                PlayerStatsFrame[player] = main_frame
+                BlzFrameSetVisible(PlayerStatsFrame[player], false)
+
+            end
+        end
+    end
+
+
     function DrawStatsPanelInterface(player)
         local new_frame
         local new_subframe
@@ -168,20 +311,18 @@ do
             BlzFrameSetSize(main_frame, 0.29, 0.33)
 
 
-            local trg = CreateTrigger()
-            TriggerAddAction(trg, StatButtonClick)
-
-
             MainStatButtons[player] = {
                 frames = {stat = 0, allocated = 0},
                 points = 4
             }
 
+            MainStatButtons[player].stat_button_trigger = CreateTrigger()
+            TriggerAddAction(MainStatButtons[player].stat_button_trigger, StatButtonClick)
+
             MainStatButtons[player].description_border = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
             MainStatButtons[player].portrait_border = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
 
 
-            --BlzFrameSetSize(new_frame, 0.0435, 0.0435)
 
             new_frame = BlzCreateFrameByType('BACKDROP', "PORTRAIT", MainStatButtons[player].portrait_border, "",0)
             BlzFrameSetPoint(new_frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.035, -0.035)
@@ -222,12 +363,7 @@ do
 
 
 
-            --local new_FrameGlow = BlzCreateFrameByType("BACKDROP", "ButtonCharges", GlobalButton[player].char_panel_button, "", 0)
-            --BlzFrameSetPoint(new_FrameGlow, FRAMEPOINT_BOTTOMLEFT, GlobalButton[player].char_panel_button, FRAMEPOINT_BOTTOMLEFT, 0.002, 0.002)
-            --BlzFrameSetSize(new_FrameGlow, 0.012, 0.012)
-            --BlzFrameSetTexture(new_FrameGlow, "GUI\\ChargesTexture.blp", 0, true)
             MainStatButtons[player].glow_frame = CreateSprite("UI\\Buttons\\HeroLevel\\HeroLevel.mdx", 0.88, GlobalButton[player].char_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.,0., GlobalButton[player].char_panel_button)
-            --BlzFrameSetPoint(MainStatButtons[player].glow_frame, FRAMEPOINT_TOPRIGHT, GlobalButton[player].char_panel_button, FRAMEPOINT_TOPRIGHT, 0., 0.)
             BlzFrameSetVisible(MainStatButtons[player].glow_frame, false)
 
             local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", GlobalButton[player].char_panel_button, "", 0)
@@ -241,7 +377,6 @@ do
             BlzFrameSetAllPoints(new_FrameChargesText, new_FrameCharges)
             BlzFrameSetTextAlignment(new_FrameChargesText, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_CENTER)
             BlzFrameSetText(new_FrameChargesText, "")
-            --BlzFrameSetSize(new_FrameChargesText, text_size, text_size)
             BlzFrameSetScale(new_FrameCharges, 0.9)
             BlzFrameSetScale(new_FrameChargesText, 0.9)
             MainStatButtons[player].points_text_frame = new_FrameChargesText
@@ -252,25 +387,25 @@ do
             new_frame = CreateTextBox("Интеллект:", INT_STAT, 0.085, 0.03, 0.97, main_frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, main_frame, player)
             CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_INT_DESC, StatsList[player][INT_STAT], 0.14, 0.11)
             local button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
-            NewStatData(player, INT_STAT, trg, button)
+            NewStatData(player, INT_STAT, MainStatButtons[player].stat_button_trigger, button)
 
 
             new_frame = CreateTextBox("Стойкость:", VIT_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., -0.002, main_frame, player)
             CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_VIT_DESC, StatsList[player][VIT_STAT], 0.14, 0.06)
             button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
-            NewStatData(player, VIT_STAT, trg, button)
+            NewStatData(player, VIT_STAT, MainStatButtons[player].stat_button_trigger, button)
 
 
             new_frame = CreateTextBox("Ловкость:", AGI_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., -0.002, main_frame, player)
             CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_AGI_DESC, StatsList[player][AGI_STAT], 0.14, 0.1)
             button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
-            NewStatData(player, AGI_STAT, trg, button)
+            NewStatData(player, AGI_STAT, MainStatButtons[player].stat_button_trigger, button)
 
 
             new_frame = CreateTextBox("Сила:", STR_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., -0.002, main_frame, player)
             CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_STR_DESC, StatsList[player][STR_STAT], 0.1, 0.06)
             button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
-            NewStatData(player, STR_STAT, trg, button)
+            NewStatData(player, STR_STAT, MainStatButtons[player].stat_button_trigger, button)
 
 
 
@@ -308,7 +443,6 @@ do
 
 
 
-        --RegisterConstructor(main_frame, 0.29, 0.33)
         PlayerStatsFrame[player] = main_frame
         BlzFrameSetVisible(PlayerStatsFrame[player], false)
     end
@@ -322,12 +456,12 @@ do
         BlzFrameSetVisible(PlayerStatsFrame[player], state)
         if GetLocalPlayer() ~= Player(player-1) then BlzFrameSetVisible(PlayerStatsFrame[player], false) end
 
-        --BlzFrameSetVisible(PlayerStatsFrame[player], state)
-        --BlzFrameSetVisible(SkillPanelFrame[player].main_frame, state)
         if state then
             if FirstTime_Data[GetPlayerId(GetTriggerPlayer()) + 1].first_time then
                 ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_STATS_1, player-1)
                 FirstTime_Data[GetPlayerId(GetTriggerPlayer()) + 1].first_time = false
+                AddJournalEntry(player, "hints", "UI\\BTNLeatherbound_TomeI.blp", GetLocalString("Подсказки", "Hints and Tips"), 1000)
+                AddJournalEntryText(player, "hints", QUEST_HINT_STRING .. LOCALE_LIST[my_locale].HINT_STATS_1, true)
             end
         end
 
@@ -343,7 +477,6 @@ do
         MainStatButtons = {}
 
 
-
         FirstTime_Data = {
             [1] = { first_time = true },
             [2] = { first_time = true },
@@ -356,11 +489,6 @@ do
         local timer = CreateTimer()
         TimerStart(timer, STAT_PANEL_UPDATE, true, StatPanelUpdate)
 
-
-        RegisterTestCommand("stat", function()
-            AddPointsToPlayer(1, 5)
-            AddPointsToPlayer(2, 5)
-        end)
 
     end
 

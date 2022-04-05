@@ -207,7 +207,7 @@ do
         for k = 1, #pack do
             if GetRandomReal(0.,100.) <= pack[k].chance then
                 id = FourCC(pack[k].id)
-                amount = pack[k].max or amount
+                if amount > pack[k].max then amount = pack[k].max end
                 break
             end
         end
@@ -234,7 +234,8 @@ do
         for k = 1, #pack do
             if GetRandomReal(0.,100.) <= pack[k].chance then
                 id = FourCC(pack[k].id)
-                amount = pack[k].max or amount
+                if amount > pack[k].max then amount = pack[k].max end
+                --amount = pack[k].max or amount
                 break
             end
         end

@@ -864,6 +864,9 @@ do
                 SCROLL_OF_PROTECTION_NAME = "Свиток Защиты",
                 SCROLL_OF_PROTECTION_DESC = "Повышает сопротивления ко всем стихиям.",
 
+                LOOTBOX_NAME = "Припасы",
+                LOOTBOX_DESC = "Содержит в себе различную ценную награду.",
+
 
                 SKILLBOOK_FIRE = "Книга пламени",
                 SKILLBOOK_LIGHTNING = "Книга молний",
@@ -934,6 +937,7 @@ do
                 SET_NAME_JESTERANDKING = "Король и Шут",
                 SET_NAME_FIREBOND = "Огненная связь",
                 SET_NAME_FRENDLINESS = "Приветливость",
+                SET_NAME_CRIMSON_LEGION = "Алая Воля",
 
 
                 ITEM_LEG_DESCRIPTION_FIREBOND = "Все атакующие огненные умения на 35%% сильнее",
@@ -944,7 +948,7 @@ do
                 ITEM_LEG_DESCRIPTION_BOOSTERS = "После приземления от использования умения \"Прыжок\" варвар наносит 215%% урона от оружия в небольшом радиусе",
                 ITEM_LEG_DESCRIPTION_PAIN_ECHO = "Кровотечение от умения \"Рассекающий взмах\" теперь может быть критическим, а его шанс на крит повышен на 25%%",
                 ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "Каждая атака по врагу накладывает на него эффект кристаллизации, снижающий скорость передвижения. После накопления 5 зарядов, противник замораживается на 3 сек.",
-                ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "Каждая атака льдом, огнем или молнией накладывает уязвимость к соответствующей стихии понижающая сопротивление ей на 5 ед. на 7 секунд, повторная атака любой стихией обновляет эффект. Суммируется до 3 раз.",
+                ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "Каждая атака льдом, огнем или молнией накладывает уязвимость к льду, огню и молнии понижающая сопротивление им на 5 ед. на 7 секунд, повторная атака любой их этих стихий обновляет эффект. Суммируется до 3 раз.",
                 ITEM_LEG_DESCRIPTION_ICE_TOUCH = "При применении \"Ледяной Стрелы\" вместо одной стрелы, позади волшебницы создаются 3, которые зависают, а затем летят в указанную цель",
                 ITEM_LEG_DESCRIPTION_DEATH_HERALD = "\"Бросок кинжала\" кидает сразу 3 кинжала",
                 ITEM_LEG_DESCRIPTION_PRIMAL_TOME = "\"Оживить Скелет\" с 25%% шансом призывает скелета мага",
@@ -1009,6 +1013,19 @@ do
                 ITEM_NAME_HEADOFPAIN = "Шлем Боли",
                 --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
                 ITEM_SPEC_DESCRIPTION_HEADOFPAIN = "Больно ли тебе находиться в сознании?",
+
+
+                ITEM_NAME_CRIMSON_BREASTPLATE = "Алый Нагрудник",
+                ITEM_SPEC_DESCRIPTION_CRIMSON_BREASTPLATE = "Что бы принимать все удары судьбы",
+
+                ITEM_NAME_CRIMSON_HELMET = "Алый Рогатый Шлем",
+                ITEM_SPEC_DESCRIPTION_CRIMSON_HELMET = "Устрашение - тоже тактика",
+
+                ITEM_NAME_CRIMSON_GAUNTLETS = "Алые Укрепленные Рукавицы",
+                ITEM_SPEC_DESCRIPTION_CRIMSON_GAUNTLETS = "Крепкая хватка своего оружия спасет в любой неприятной ситуации",
+
+                ITEM_NAME_CRIMSON_BOOTS = "Алые Тяжелые Сапоги",
+                ITEM_SPEC_DESCRIPTION_CRIMSON_BOOTS = "Бесконечный упорный поход Легиона продолжается",
 
 
                 ITEM_NAME_THE_KING = "Король",
@@ -1168,7 +1185,7 @@ do
                     [1] = "Накладывает на противников в @e!ENWK.aoe# радиусе проклятие которое снижает @b!ABWK.pa1# и @b!ABWK.pa2# на @b!ABWK.va1# в течении @b!ABWK.time# секунд.",
                 },
                 [FourCC("ANDF")] = {
-                    [1] = "Накладывает на противников в @e!ENDC.aoe# радиусе проклятие которое снижает @b!ENDC.pa1#, @b!ENDC.pa2# и @b!ENDC.pa3# на @b!ENDC.va1# в течении @b!ENDC.time# секунд.",
+                    [1] = "Накладывает на противников в @e!ENDC.aoe# радиусе проклятие которое снижает @b!ABDC.pa1#, @b!ABDC.pa2# и @b!ABDC.pa3# на @b!ABDC.va1# в течении @b!ABDC.time# секунд.",
                 },
                 [FourCC("ANUL")] = {
                     [1] = "В большом радиусе проклинает землю под собой. Союзники находящиеся на ней получают увеличение @b!AULB.pa1# на @b!AULB.va1# и @b!AULB.pa2# на @b!AULB.va2#, в то время как противники получают снижение @b!AULD.pa1# на @b!AULD.va1#, @b!AULD.pa2# на @b!AULD.va2#, @b!AULD.pa3# на @b!AULD.va3# и @b!AULD.pa4# на @b!AULD.va4#. Длительность - 12 секунд.",
@@ -1605,9 +1622,9 @@ do
                     },
                     ["talent_death_march"] = {
                         name = "Марш Смерти",
-                        [1] = "Произнесение заклинания проклятия дает 15 скорости передвижения на 5 секунд.",
-                        [2] = "Произнесение заклинания проклятия дает 25 скорости передвижения на 5 секунд.",
-                        [3] = "Произнесение заклинания проклятия дает 35 скорости передвижения на 5 секунд.",
+                        [1] = "Произнесение проклятия дает 15 скорости передвижения на 5 секунд.",
+                        [2] = "Произнесение проклятия дает 25 скорости передвижения на 5 секунд.",
+                        [3] = "Произнесение проклятия дает 35 скорости передвижения на 5 секунд.",
                     },
                     ["talent_amplify_damage"] = {
                         name = "усиленный урон",
@@ -1665,8 +1682,8 @@ do
                     },
                     ["talent_toxicity"] = {
                         name = "токсичность",
-                        [1] = "Урон от яда +5",
-                        [2] = "Урон от яда +10.",
+                        [1] = "Увеличивает урон от яда на 5",
+                        [2] = "Увеличивает урон от яда на 10.",
                     },
                     ["talent_life_steal"] = {
                         name = "кража жизни",
@@ -1759,6 +1776,7 @@ do
 
 
                 INT_OPTION_TALK = "Поговорить",
+                INT_OPTION_TASK = "Поручение",
 
                 BILL_CONV_INTRO_1 = "Слушай, тут с товаром напряжно", BILL_CONV_INTRO_2 = "Поставки у нас раз через раз,|nно ты заходи если что",
                 BILL_CONV_INTRO_3 = "И можешь мне сдавать если найдешь что", BILL_CONV_INTRO_4 = "За мной не заржавеет",
@@ -2429,6 +2447,7 @@ do
                 EXCHANGE_BUTTON_TEXT = "Exchange",
 
 
+
                 WORN_DECL_HE = "Worn ",
                 WORN_DECL_SHE = "Worn ",
                 WORN_DECL_THEY = "Worn ",
@@ -2705,6 +2724,9 @@ do
                 SCROLL_OF_PROTECTION_NAME = "Scroll of Protection",
                 SCROLL_OF_PROTECTION_DESC = "Grants resistance to all attributes.",
 
+                LOOTBOX_NAME = "Supplies",
+                LOOTBOX_DESC = "Contains of various valuable rewards.",
+
 
                 SKILLBOOK_FIRE = "Book of Fire",
                 SKILLBOOK_LIGHTNING = "Book of Lightning",
@@ -2775,13 +2797,14 @@ do
                 SET_NAME_JESTERANDKING = "Jester and King",
                 SET_NAME_FIREBOND = "Fire Bond",
                 SET_NAME_FRENDLINESS = "Frendliness",
+                SET_NAME_CRIMSON_LEGION = "Crimson Will",
 
 
                 ITEM_LEG_DESCRIPTION_FIREBOND = "Offensive fire abilities are stronger by 35%%",
                 ITEM_LEG_DESCRIPTION_WITCH_MASTERY = "Each casted spell will increase your spell power by 10%% in exhange of 5%% life",
                 ITEM_LEG_DESCRIPTION_BOOT_OF_COWARD = "Each enemy near the hero is increasing his moving speed by 3%%, to a maximum of 25%%",
                 ITEM_LEG_DESCRIPTION_RITUAL_DAGGER = " With each attack you gain a stack of Chaos effect. After reaching 15 stacks, attack power and speed gain major boost for short period of time, but health regeneration is inversed.",
-                ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "With each fire, ice or lightning attack you apply a negative effect that will decrease target's resistance of that element by 5 for 7 sec. Every attack is refreshing uptime and stacking 3 times.",
+                ITEM_LEG_DESCRIPTION_MASTER_OF_ELEMENTS = "With each fire, ice or lightning attack you apply a negative effect that decreases target's ice, fire and lightning resistance by 5 for 7 sec. Any attack with this elements is refreshing uptime and stacking up to 3 times.",
                 ITEM_LEG_DESCRIPTION_EYE_OF_THE_STORM = "\"Discharge\" now comes out of sorceress, also it's power is increased",
                 ITEM_LEG_DESCRIPTION_PAIN_ECHO = "\"Cutting Slash\"'s bleeding now can be critical and gains 25%% critical chance bonus",
                 ITEM_LEG_DESCRIPTION_CRYSTAL_AXE = "With each attack you apply crystallisation on the enemies, decreasing their moving speed. After reaching 5 stacks, enemy will freeze for 3 sec",
@@ -2853,8 +2876,20 @@ do
                 ITEM_SPEC_DESCRIPTION_HEADOFPAIN = "Is your mind in pain?",
 
 
+                ITEM_NAME_CRIMSON_BREASTPLATE = "Crimson Breastplate",
+                ITEM_SPEC_DESCRIPTION_CRIMSON_BREASTPLATE = "For withstanding every blow from the destiny",
+
+                ITEM_NAME_CRIMSON_HELMET = "Crimson Horned Helmet",
+                ITEM_SPEC_DESCRIPTION_CRIMSON_HELMET = "Intimidation is a tactic too",
+
+                ITEM_NAME_CRIMSON_GAUNTLETS = "Crimson Strengthened Gauntlets",
+                ITEM_SPEC_DESCRIPTION_CRIMSON_GAUNTLETS = "The strong grip on weapon will save one in any dire situation",
+
+                ITEM_NAME_CRIMSON_BOOTS = "Crimson Heavy Boots",
+                ITEM_SPEC_DESCRIPTION_CRIMSON_BOOTS = "The infinite crusade goes on",
+
+
                 ITEM_NAME_THE_KING = "King",
-                --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
                 ITEM_SPEC_DESCRIPTION_THE_KING = "The Ruler",
 
                 ITEM_NAME_THE_JESTER = "Jester",
@@ -3579,12 +3614,14 @@ do
                 MANTO_NAME = "Manto",
 
 
-                INTRODUCTION_TEXT_1 = "Hey, stranger! Welcome to our fortress. It's kinda unsettling here, but I see you can stand on your own.",
-                INTRODUCTION_TEXT_2 = "Maybe you could help us then? There is one problem - that damn artifact. He became active all of a sudden.",
-                INTRODUCTION_TEXT_3 = "At first we thought \"who cares?\" but then we got attacked by all kind of things! I hope to stay in one piece one more night. So, whaddaya say?",
+                INTRODUCTION_TEXT_1 = "Hello stranger. Welcome to our castle. It's kinda unsettling here, but I see you can stand on your own.",
+                INTRODUCTION_TEXT_2 = "Maybe you could help us then? There is one problem - an artifact at the center of our castle. He became active all of a sudden.",
+                INTRODUCTION_TEXT_3 = "At first we thought \"who cares?\" but then we got attacked by all kind of things! I hope that we can withstand until backup arrives. So, are you going to help?",
+                INTRODUCTION_TEXT_4 = "Good. If you need something, you can find me in the indoors of the castle, just go into that entrance here.",
 
                 INTRODUCTION_BARBARIAN_RESPONCE = "It's looks like this is the work for the wit... ahem, sorry, barbarian.",
                 INTRODUCTION_SORCERESS_RESPONCE = "My spells will crush any creature here.",
+                INTRODUCTION_NECROMANCER_RESPONCE = "This will be interesting.",
 
 
                 RESSURECT_TEXT_1 = "Your hero will be revived after |c008EFFFF",
@@ -3599,6 +3636,7 @@ do
 
 
                 INT_OPTION_TALK = "Talk",
+                INT_OPTION_TASK = "Task",
 
                 BILL_CONV_INTRO_1 = "Hey, it's kinda tough with supplies", BILL_CONV_INTRO_2 = "We barely have any, but you may come time to time",
                 BILL_CONV_INTRO_3 = "Sell things to me if you find something", BILL_CONV_INTRO_4 = "I'll remember that",

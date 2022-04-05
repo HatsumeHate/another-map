@@ -160,7 +160,68 @@ do
     end
 
 
+    ---@param player integer
+    ---@param mark_type integer
+    ---@param mark_var integer
+    ---@param mark_scale real
+    ---@param radius real
+    ---@param x real
+    ---@param y real
+    ---@param react_func function
+    function AddQuestAreaForPlayer(player, mark_type, mark_var, mark_scale, radius, x, y, react_func)
+        local trigger = CreateTrigger()
+        radius = radius * 0.5
+        local rect = Rect(x-radius, y-radius, x+radius, y+radius)
+        local region = CreateRegion()
+        local mark
+        local area_effect = ""
+        local area_aura = ""
+        local scale = radius / 70.
 
+            if GetLocalPlayer() == Player(player-1) then
+                area_effect = "Quest\\LootEFFECT.mdx"
+                area_aura = "Quest\\QuestMarking.mdx"
+            end
+
+            area_effect = AddSpecialEffect(area_effect, x, y)
+            area_aura = AddSpecialEffect(area_aura, x, y)
+
+            BlzSetSpecialEffectZ(area_aura, GetZ(x,y) + 10.)
+            BlzSetSpecialEffectScale(area_aura, 1)
+            BlzSetSpecialEffectScale(area_effect, 1)
+            BlzSetSpecialEffectScale(area_aura, scale)
+            BlzSetSpecialEffectScale(area_effect, scale)
+            BlzSetSpecialEffectAlpha(area_aura, 155)
+
+            if mark_type then
+                mark = AddSpecialEffect(MarkList[mark_type or 1][mark_var or 1], x, y)
+                BlzSetSpecialEffectScale(mark, mark_scale)
+            end
+
+            RegionAddRect(region, rect)
+            TriggerRegisterEnterRegion(trigger, region, nil)
+            TriggerAddAction(trigger, function()
+                if GetTriggerUnit() == PlayerHero[player] then
+                    RemoveRegion(region)
+                    RemoveRect(rect)
+                    DestroyTrigger(trigger)
+                    if mark then DestroyEffect(mark) end
+                    DestroyEffect(area_aura)
+                    DestroyEffect(area_effect)
+                    react_func(GetTriggerUnit())
+                end
+            end)
+
+    end
+
+
+    ---@param mark_type integer
+    ---@param mark_var integer
+    ---@param mark_scale real
+    ---@param radius real
+    ---@param x real
+    ---@param y real
+    ---@param react_func function
     function AddQuestArea(mark_type, mark_var, mark_scale, radius, x, y, react_func)
         local trigger = CreateTrigger()
         radius = radius * 0.5
@@ -176,6 +237,7 @@ do
             BlzSetSpecialEffectScale(area_effect, 1)
             BlzSetSpecialEffectScale(area_aura, scale)
             BlzSetSpecialEffectScale(area_effect, scale)
+            BlzSetSpecialEffectAlpha(area_aura, 155)
 
             if mark_type then
                 mark = AddSpecialEffect(MarkList[mark_type or 1][mark_var or 1], x, y)
@@ -201,6 +263,7 @@ do
     ---@param unit unit
     ---@param mark_type number
     ---@param mark_var number
+    ---@return effect
     function AddQuestMark(unit, mark_type, mark_var)
         return AddSpecialEffectTarget(MarkList[mark_type or 1][mark_var or 1], unit, "overhead")
     end

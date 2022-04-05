@@ -388,7 +388,9 @@ do
                     time = 10.,
 
                     bonus = {
+                        { PARAM = ICE_RESIST, VALUE = -5, METHOD = STRAIGHT_BONUS },
                         { PARAM = FIRE_RESIST, VALUE = -5, METHOD = STRAIGHT_BONUS },
+                        { PARAM = LIGHTNING_RESIST, VALUE = -5, METHOD = STRAIGHT_BONUS },
                     }
 
                 },
@@ -397,7 +399,9 @@ do
                     time = 10.,
 
                     bonus = {
+                        { PARAM = ICE_RESIST, VALUE = -10, METHOD = STRAIGHT_BONUS },
                         { PARAM = FIRE_RESIST, VALUE = -10, METHOD = STRAIGHT_BONUS },
+                        { PARAM = LIGHTNING_RESIST, VALUE = -10, METHOD = STRAIGHT_BONUS },
                     }
 
                 },
@@ -406,7 +410,9 @@ do
                     time = 10.,
 
                     bonus = {
+                        { PARAM = ICE_RESIST, VALUE = -15, METHOD = STRAIGHT_BONUS },
                         { PARAM = FIRE_RESIST, VALUE = -15, METHOD = STRAIGHT_BONUS },
+                        { PARAM = LIGHTNING_RESIST, VALUE = -15, METHOD = STRAIGHT_BONUS },
                     }
 
                 }
@@ -428,6 +434,8 @@ do
 
                     bonus = {
                         { PARAM = ICE_RESIST, VALUE = -5, METHOD = STRAIGHT_BONUS },
+                        { PARAM = FIRE_RESIST, VALUE = -5, METHOD = STRAIGHT_BONUS },
+                        { PARAM = LIGHTNING_RESIST, VALUE = -5, METHOD = STRAIGHT_BONUS },
                     }
 
                 },
@@ -437,6 +445,8 @@ do
 
                     bonus = {
                         { PARAM = ICE_RESIST, VALUE = -10, METHOD = STRAIGHT_BONUS },
+                        { PARAM = FIRE_RESIST, VALUE = -10, METHOD = STRAIGHT_BONUS },
+                        { PARAM = LIGHTNING_RESIST, VALUE = -10, METHOD = STRAIGHT_BONUS },
                     }
 
                 },
@@ -446,6 +456,8 @@ do
 
                     bonus = {
                         { PARAM = ICE_RESIST, VALUE = -15, METHOD = STRAIGHT_BONUS },
+                        { PARAM = FIRE_RESIST, VALUE = -15, METHOD = STRAIGHT_BONUS },
+                        { PARAM = LIGHTNING_RESIST, VALUE = -15, METHOD = STRAIGHT_BONUS },
                     }
 
                 }
@@ -467,6 +479,8 @@ do
                     current_level = 1,
 
                     bonus = {
+                        { PARAM = ICE_RESIST, VALUE = -5, METHOD = STRAIGHT_BONUS },
+                        { PARAM = FIRE_RESIST, VALUE = -5, METHOD = STRAIGHT_BONUS },
                         { PARAM = LIGHTNING_RESIST, VALUE = -5, METHOD = STRAIGHT_BONUS },
                     }
 
@@ -477,6 +491,8 @@ do
                     current_level = 1,
 
                     bonus = {
+                        { PARAM = ICE_RESIST, VALUE = -10, METHOD = STRAIGHT_BONUS },
+                        { PARAM = FIRE_RESIST, VALUE = -10, METHOD = STRAIGHT_BONUS },
                         { PARAM = LIGHTNING_RESIST, VALUE = -10, METHOD = STRAIGHT_BONUS },
                     }
 
@@ -487,6 +503,8 @@ do
                     current_level = 1,
 
                     bonus = {
+                        { PARAM = ICE_RESIST, VALUE = -15, METHOD = STRAIGHT_BONUS },
+                        { PARAM = FIRE_RESIST, VALUE = -15, METHOD = STRAIGHT_BONUS },
                         { PARAM = LIGHTNING_RESIST, VALUE = -15, METHOD = STRAIGHT_BONUS },
                     }
 
@@ -1961,7 +1979,7 @@ do
             level = {
                 [1] = {
                     rank = 15,
-                    time = 7.5,
+                    time = 11.,
                     bonus = {
                         { PARAM = MOVING_SPEED, VALUE = 1.35, METHOD = MULTIPLY_BONUS },
                     }

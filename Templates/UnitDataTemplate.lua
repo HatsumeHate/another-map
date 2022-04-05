@@ -273,10 +273,54 @@ do
             [NO_CLASS]          = { 10, 10, 10, 10 }
         }
 
-
+        --captain
         NewUnitTemplate('h000', {
+            name = GetLocalString("Капитан", "Captain"),
             unit_class = SPECIAL_CLASS,
             base_stats = { health = 3000., hp_regen = 5. },
+            bonus_parameters = {
+                { param = PHYSICAL_DEFENCE, value = 250, method = STRAIGHT_BONUS },
+                { param = MAGICAL_SUPPRESSION, value = 250, method = STRAIGHT_BONUS },
+                { param = ALL_RESIST, value = 25, method = STRAIGHT_BONUS }
+            },
+            weapon = { DAMAGE = 25, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_BASH }
+        })
+        --footman
+        NewUnitTemplate('h005', {
+            name = GetLocalString("Пехотинец", "Footman"),
+            unit_class = SPECIAL_CLASS,
+            base_stats = { health = 500., hp_regen = 3. },
+            bonus_parameters = {
+                { param = PHYSICAL_DEFENCE, value = 150, method = STRAIGHT_BONUS },
+                { param = MAGICAL_SUPPRESSION, value = 150, method = STRAIGHT_BONUS },
+                { param = ALL_RESIST, value = 15, method = STRAIGHT_BONUS }
+            },
+            weapon = { DAMAGE = 18, CRIT_CHANCE = 11., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE }
+        })
+        --spearman
+        NewUnitTemplate('h006', {
+            name = GetLocalString("Копейщик", "Spearman"),
+            unit_class = SPECIAL_CLASS,
+            base_stats = { health = 450., hp_regen = 3. },
+            bonus_parameters = {
+                { param = PHYSICAL_DEFENCE, value = 150, method = STRAIGHT_BONUS },
+                { param = MAGICAL_SUPPRESSION, value = 70, method = STRAIGHT_BONUS },
+                { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS }
+            },
+            weapon = { DAMAGE = 12, CRIT_CHANCE = 23., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_STAB }
+        })
+        --hunter
+        NewUnitTemplate('h007', {
+            name = GetLocalString("Лучник", "Archer"),
+            unit_class = SPECIAL_CLASS,
+            base_stats = { health = 240., hp_regen = 3. },
+            weapon = { DAMAGE = 25, CRIT_CHANCE = 12., RANGE = 700., missile = "MSKA" }
+        })
+        --chaplain
+        NewUnitTemplate('h008', {
+            name = GetLocalString("Священник", "Chaplain"),
+            unit_class = SPECIAL_CLASS,
+            base_stats = { health = 200., hp_regen = 3. },
             weapon = { DAMAGE = 25, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE }
         })
 

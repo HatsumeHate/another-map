@@ -155,6 +155,7 @@ do
 
 
     function AddTalentCategories(unit, player)
+        DrawTalentWindow(player)
         local unit_data = GetUnitData(unit)
 
         --TalentPanel[player].points_spent = { [1] = 0, [2] = 0, [3] = 0 }
@@ -169,6 +170,84 @@ do
         TalentPanel[player].tooltip = NewTooltip(TalentPanel[player].points_border_frame, "MyTextTemplateMedium")
         TalentPanel[player].alt_tooltip = NewTooltip(TalentPanel[player].points_border_frame, "MyTextTemplateMedium")
         TalentPanel[player].class = unit_data.unit_class
+    end
+
+
+    function ReloadTalentFrames()
+        for player = 1, 6 do
+            if PlayerHero[player] then
+                local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
+
+                BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0., -0.05)
+                BlzFrameSetSize(main_frame, 0.34, 0.43)
+
+                local new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
+
+                BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
+                BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPRIGHT, main_frame, FRAMEPOINT_TOPRIGHT, -0.02, -0.075)
+
+                TalentPanel[player].current_row_amount = 0
+                TalentPanel[player].current_col_amount = 0
+                TalentPanel[player].button_index = 0
+                TalentPanel[player].connector_index = 0
+                TalentPanel[player].background = new_Frame
+
+
+                new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
+
+
+                TalentPanel[player].categories_border = new_Frame
+
+                TalentPanel[player].category_button = {
+                    [2] = NewButtonSimple("ReplaceableTextures\\CommandButtons\\BTNPeon.blp", BUTTON_SIZE, BUTTON_SIZE, main_frame, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.03, main_frame)
+                }
+
+                TalentPanel[player].category_button[1] = NewButtonSimple("ReplaceableTextures\\CommandButtons\\BTNPeon.blp", BUTTON_SIZE, BUTTON_SIZE, TalentPanel[player].category_button[2], FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.016, 0., main_frame)
+                TalentPanel[player].category_button[3] = NewButtonSimple("ReplaceableTextures\\CommandButtons\\BTNPeon.blp", BUTTON_SIZE, BUTTON_SIZE, TalentPanel[player].category_button[2], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.016, 0., main_frame)
+
+                TalentPanel[player].last_category_button = TalentPanel[player].category_button[1]
+
+                BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPRIGHT, TalentPanel[player].category_button[3], FRAMEPOINT_TOPRIGHT, 0.016, 0.016)
+                BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, TalentPanel[player].category_button[1], FRAMEPOINT_BOTTOMLEFT, -0.016, -0.016)
+
+                for i = 1, ROWS do
+                    TalentPanel[player].row[i] = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
+                    BlzFrameClearAllPoints(TalentPanel[player].row[i])
+                    BlzFrameSetPoint(TalentPanel[player].row[i], FRAMEPOINT_CENTER, new_Frame, FRAMEPOINT_CENTER, 0., 0.)
+                    BlzFrameSetSize(TalentPanel[player].row[i], 0.1, 0.1)
+                    BlzFrameSetAlpha(TalentPanel[player].row[i], 0)
+                end
+
+                TalentPanel[player].connectors = {}
+                for i = 1, MAX_BUTTONS * 2 do
+                    TalentPanel[player].connectors[i] = CreateSprite("", 0.0003, TalentPanel[player].background, FRAMEPOINT_CENTER, FRAMEPOINT_CENTER, 0., 0., TalentPanel[player].background)
+                    BlzFrameSetVisible(TalentPanel[player].connectors[i], false)
+                end
+
+                for i = 1, MAX_BUTTONS do
+                    TalentPanel[player].talent_buttons[i] = NewButton("ReplaceableTextures\\CommandButtons\\BTNPeon.blp", BUTTON_SIZE, BUTTON_SIZE, new_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.036, -0.036, new_Frame)
+                    BlzFrameSetVisible(TalentPanel[player].talent_buttons[i], false)
+                end
+
+                new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
+                BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPRIGHT, main_frame, FRAMEPOINT_TOPRIGHT, -0.02, -0.02)
+                BlzFrameSetSize(new_Frame, 0.07, 0.06)
+                TalentPanel[player].points_border_frame = new_Frame
+
+                new_Frame = BlzCreateFrameByType("TEXT", "text", main_frame, "MyTextTemplate", 0)
+                BlzFrameSetPoint(new_Frame, FRAMEPOINT_CENTER, TalentPanel[player].points_border_frame, FRAMEPOINT_CENTER, 0., 0.)
+                BlzFrameSetText(new_Frame, "1")
+                BlzFrameSetTextAlignment(new_Frame, TEXT_JUSTIFY_MIDDLE , TEXT_JUSTIFY_CENTER )
+                BlzFrameSetScale(new_Frame, 1.1)
+
+
+                TalentPanel[player].points_text_frame = new_Frame
+
+                TalentPanel[player].main_frame = main_frame
+                BlzFrameSetVisible(main_frame, false)
+                TalentPanel[player].state = false
+            end
+        end
     end
 
 
@@ -531,9 +610,9 @@ do
         EnterTrigger = CreateTrigger()
         LeaveTrigger = CreateTrigger()
 
-        for i = 1, 6 do
-            DrawTalentWindow(i)
-        end
+        --for i = 1, 6 do
+            --DrawTalentWindow(i)
+        --end
 
 
         TriggerAddAction(EnterTrigger, function()
@@ -622,20 +701,6 @@ do
             AddTalentPointsToPlayer(1, 10)
         end)
 
-        RegisterTestCommand("conn", function()
-            local sprite = CreateSprite("", 0.0003, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_CENTER, 0., 0., GAME_UI)
-            BlzFrameSetModel(sprite, "UI\\talent_connector_112.mdx", 0)
-            BlzFrameSetVisible(sprite, true)
-        end)
-
-
-        RegisterTestCommand("gg", function()
-            BlzFrameSetPoint(TalentPanel[1].connectors[1], FRAMEPOINT_CENTER, GAME_UI, FRAMEPOINT_CENTER, 0.,0.)
-            --for i = 1, TalentPanel[1].connector_index do
-                --BlzFrameSetParent(TalentPanel[1].connectors[i], TalentPanel[1].points_border_frame)
-            --end
-            print("done")
-        end)
 
     end
 

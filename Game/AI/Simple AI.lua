@@ -12,6 +12,7 @@ do
     local CombatTimeout = 10.
     local AI_Tick = 0.75
     local PingGroup
+    local AttackGroup
 
 
 
@@ -121,7 +122,11 @@ do
             --UpdateInCombatState(attacker)
             PingAllNearbyAI(attacker)
         elseif GetOwningPlayer(attacked) == MONSTER_PLAYER or GetOwningPlayer(attacked) == SECOND_MONSTER_PLAYER then
-            if GetUnitAbilityLevel(attacked, FourCC("AAIM")) == 0 then IssuePointOrderById(attacked, order_attack, GetUnitX(attacker), GetUnitY(attacker)) end
+            if GetUnitAbilityLevel(attacked, FourCC("AAIM")) == 0 and not IsUnitInGroup(attacked, AttackGroup) then
+                IssuePointOrderById(attacked, order_attack, GetUnitX(attacker), GetUnitY(attacker))
+                GroupAddUnit(AttackGroup, attacked)
+                DelayAction(4., function() GroupRemoveUnit(AttackGroup, attacked) end)
+            end
             --UpdateInCombatState(attacked)
             PingAllNearbyAI(attacked)
         end
@@ -388,6 +393,7 @@ do
         end
 
         PingGroup = CreateGroup()
+        AttackGroup = CreateGroup()
         --local AttackTrg = CreateTrigger()
         --TriggerRegisterAnyUnitEventBJ(AttackTrg, EVENT_PLAYER_UNIT_ATTACKED)
         --TriggerAddAction(AttackTrg, AttackReaction)

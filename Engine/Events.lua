@@ -1105,8 +1105,18 @@ do
                     TriggerAddAction(trg, function()
                         if IsAHero(GetTriggerUnit()) then
                             AddSoundVolume("Sound\\portalenter.wav",GetUnitX(GetTriggerUnit()), GetUnitY(GetTriggerUnit()), 125, 1500.)
-                            --PlayLocalSound("Sound\\portalenter.wav", GetPlayerId(GetOwningPlayer(GetTriggerUnit())), 125)
                             SetUnitPosition(GetTriggerUnit(), GetRectCenterX(gg_rct_portal_location), GetRectCenterY(gg_rct_portal_location))
+                            local minions = GetAllUnitSummonUnits(PlayerHero[player])
+
+                            x = GetRectCenterX(gg_rct_portal_location); y = GetRectCenterY(gg_rct_portal_location)
+                            ForGroup(minions, function()
+                                local angle = GetRandomReal(0., 360.)
+                                local distance = GetMaxAvailableDistance(x, y, angle, GetRandomReal(150., 450.))
+                                SetUnitX(GetEnumUnit(), x + Rx(distance, angle))
+                                SetUnitY(GetEnumUnit(), y + Ry(distance, angle))
+                            end)
+
+                            DestroyGroup(minions)
                         end
                     end)
 
@@ -1120,6 +1130,14 @@ do
                 DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Invisibility\\InvisibilityTarget.mdx", source, "chest"))
                 AddSoundVolume("Sound\\speed_potion.wav",GetUnitX(source),GetUnitY(source), 120, 1500.)
                 ResetPlayerTalents(GetPlayerId(GetOwningPlayer(source))+1)
+            elseif id == FourCC("I02H") then
+                local x, y = GetUnitX(source) + GetRandomReal(-75., 75.), GetUnitY(source) + GetRandomReal(-75., 75.)
+                local box = AddSpecialEffect("Item\\Lootbox_Vault.mdx", x, y)
+                BlzSetSpecialEffectScale(box, 0.8)
+                DestroyEffect(box)
+                DelayAction(1.91, function() DropDroplistForPlayer(GetPlayerId(GetOwningPlayer(source))+1, x, y, 75., 150., GetDropList("supply_crate"))  end)
+            elseif id == FourCC("I02M") then
+                QuartermeisterScoutQuest_MapActivated(GetPlayerId(GetOwningPlayer(source))+1)
             end
 
     end
@@ -1134,6 +1152,39 @@ do
 
         if item and GetUnitTalentLevel(unit, "talent_momentum") > 0 and IsItemType(item, ITEM_TYPE_WEAPON) then
             MomentumTalentEffect(unit)
+        end
+        
+    end
+
+
+    function OnItemDrop(unit, item)
+
+    end
+
+    function OnItemPickUp(unit, item)
+
+        if GetItemTypeId(item) == FourCC("I01O") then
+            if not HasJournalEntryLabel(GetPlayerId(GetOwningPlayer(unit))+1, "shrine_journal", "shrine_journal_stone_aquired") and not HasJournalEntryLabel(GetPlayerId(GetOwningPlayer(unit))+1, "shrine_journal", "shrine_journal_stone_aquired_first") then
+                local player = GetPlayerId(GetOwningPlayer(unit))+1
+
+                    if HasJournalEntryLabel(player, "shrine_journal", "shrine_journal_stone_seek") then
+                        AddJournalEntryText(player, "shrine_journal",
+                                GetLocalString(ParseStringHeroGender(unit, "Я @Mнашел!Fнашла# что-то похожее на то о чем говорил Анар. Нужно показать ему этот самоцвет."),
+                                        "Looks like I have got something what Anar is spoken about. I shall show it to him."), true)
+                        AddJournalEntryLabel(player, "shrine_journal", "shrine_journal_stone_aquired")
+                        LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_altar_conv_2", player)
+                        UnlockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_altar_conv_3", player)
+                    else
+                        AddJournalEntry(player, "shrine_journal", "GUI\\BTNRuby.blp", GetLocalString("Камень Ненависти", "The Shard of Hate"), 200, false)
+                        AddJournalEntryText(player, "shrine_journal",
+                            GetLocalString(ParseStringHeroGender(unit, "Я @Mнашел!Fнашла# необычный самоцвет. Нужно порасспрашивать о нем, может кто-то знает что это."),
+                                    "I have found an unusual gem. I shall ask people about it, may be someone knows something."), true)
+                        --SetPlayerLabel(player, "shrine_label", "shrine_stone_aquired_first")
+                        AddJournalEntryLabel(player, "shrine_journal", "shrine_journal_stone_aquired_first")
+                        UnlockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_altar_conv_stone_before", player)
+                    end
+
+            end
         end
         
     end

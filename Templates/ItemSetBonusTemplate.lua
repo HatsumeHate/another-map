@@ -170,6 +170,32 @@ do
             }
         })
 
+        NewItemSet({
+            id = "crimson_legion_set",
+            name = LOCALE_LIST[my_locale].SET_NAME_CRIMSON_LEGION, --"Алый Легион",
+            bonuses = {
+                {
+                    pieces = 2, params = {
+                        { param = BONUS_UNDEAD_DAMAGE, value = 15, method = STRAIGHT_BONUS },
+                        { param = BONUS_DEMON_DAMAGE, value = 15, method = STRAIGHT_BONUS },
+                        { param = BONUS_BEAST_DAMAGE, value = 15, method = STRAIGHT_BONUS },
+                    }
+                },
+                {
+                    pieces = 3, params = {
+                        { param = PHYSICAL_DEFENCE, value = 275, method = STRAIGHT_BONUS },
+                        { param = MAGICAL_SUPPRESSION, value = 250, method = STRAIGHT_BONUS }
+                    }
+                },
+                {
+                    pieces = 4, params = {
+                        { param = CONTROL_REDUCTION, value = 25, method = STRAIGHT_BONUS },
+                        { param = ALL_RESIST, value = 25, method = STRAIGHT_BONUS }
+                    }
+                }
+            }
+        })
+
 
 
     end

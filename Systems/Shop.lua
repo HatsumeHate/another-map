@@ -175,7 +175,73 @@ do
     end
 
 
+    function ReloadShopFrames()
+        for player = 1, 6 do
+            if PlayerHero[player] then
+                local new_Frame
+                local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
 
+                    BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0.01, -0.05)
+                    BlzFrameSetSize(main_frame, 0.4, 0.28)
+
+
+                    new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMRIGHT, main_frame, FRAMEPOINT_BOTTOMRIGHT, -0.02, 0.02)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPRIGHT, main_frame, FRAMEPOINT_TOPRIGHT, -0.02, -0.07)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.02, -0.07)
+                    ShopFrame[player].inventory_border = new_Frame
+                    ShopFrame[player].slot[1] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, new_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.02, -0.017, new_Frame)
+
+                            for i = 2, 8 do
+                                ShopFrame[player].slot[i] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, ShopFrame[player].slot[i - 1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPRIGHT, 0., 0., new_Frame)
+                            end
+
+                            for row = 2, 4 do
+                                for i = 1, 8 do
+                                    local slot = i + ((row - 1) * 8)
+                                    ShopFrame[player].slot[slot] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, ShopFrame[player].slot[slot - 8], FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., new_Frame)
+                                end
+                            end
+
+                ShopFrame[player].masterframe = BlzCreateFrameByType("BACKDROP", "ButtonIcon", ShopFrame[player].slot[32], "", 0)
+
+                new_Frame = BlzCreateFrameByType('BACKDROP', "PORTRAIT", main_frame, "",0)
+                BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.02, -0.02)
+                BlzFrameSetSize(new_Frame, 0.0435, 0.0435)
+                ShopFrame[player].portrait = new_Frame
+
+
+                new_Frame = BlzCreateFrameByType("TEXT", "shop name", ShopFrame[player].portrait, "", 0)
+                BlzFrameSetPoint(new_Frame, FRAMEPOINT_LEFT, ShopFrame[player].portrait, FRAMEPOINT_RIGHT, 0.011, 0.)
+                BlzFrameSetTextAlignment(new_Frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
+                BlzFrameSetScale(new_Frame, 1.35)
+
+                ShopFrame[player].shift_state = false
+
+                ShopFrame[player].tip_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.02, 0.02, main_frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.016, -0.016, main_frame)
+                CreateTooltip(LOCALE_LIST[my_locale].UI_SHOP_TOOLTIP_HEADER, LOCALE_LIST[my_locale].UI_SHOP_TOOLTIP_DESCRIPTION, ShopFrame[player].tip_button, 0.14, 0.12, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPLEFT)
+
+                DestroyTrigger(ShopFrame[player].tip_trigger)
+                ShopFrame[player].tip_trigger = CreateTrigger()
+                BlzTriggerRegisterFrameEvent(ShopFrame[player].tip_trigger , ShopFrame[player].tip_button, FRAMEEVENT_CONTROL_CLICK)
+                TriggerAddAction(ShopFrame[player].tip_trigger , function()
+                    ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_SHOP_1, player-1)
+                    DisableTrigger(ShopFrame[player].tip_trigger )
+                    DelayAction(5., function()
+                        EnableTrigger(ShopFrame[player].tip_trigger )
+                    end)
+                end)
+
+                ShopFrame[player].name = new_Frame
+                ShopFrame[player].tooltip = NewTooltip(ShopFrame[player].masterframe)
+                ShopFrame[player].alternate_tooltip = NewTooltip(ShopFrame[player].masterframe)
+                ShopFrame[player].main_frame = main_frame
+                BlzFrameSetVisible(ShopFrame[player].main_frame, false)
+                ShopFrame[player].state = false
+            end
+        end
+    end
 
 
     ---@param player integer
@@ -265,13 +331,13 @@ do
 
         ShopFrame[player].tip_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.02, 0.02, main_frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.016, -0.016, main_frame)
         CreateTooltip(LOCALE_LIST[my_locale].UI_SHOP_TOOLTIP_HEADER, LOCALE_LIST[my_locale].UI_SHOP_TOOLTIP_DESCRIPTION, ShopFrame[player].tip_button, 0.14, 0.12, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPLEFT)
-        local tip_trigger = CreateTrigger()
-        BlzTriggerRegisterFrameEvent(tip_trigger, ShopFrame[player].tip_button, FRAMEEVENT_CONTROL_CLICK)
-        TriggerAddAction(tip_trigger, function()
+        ShopFrame[player].tip_trigger  = CreateTrigger()
+        BlzTriggerRegisterFrameEvent(ShopFrame[player].tip_trigger , ShopFrame[player].tip_button, FRAMEEVENT_CONTROL_CLICK)
+        TriggerAddAction(ShopFrame[player].tip_trigger , function()
             ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_SHOP_1, player-1)
-            DisableTrigger(tip_trigger)
+            DisableTrigger(ShopFrame[player].tip_trigger )
             DelayAction(5., function()
-                EnableTrigger(tip_trigger)
+                EnableTrigger(ShopFrame[player].tip_trigger )
             end)
         end)
 
@@ -605,7 +671,7 @@ do
 
         --AddInteractiveOption(handle, { name = "Talk", feedback = function(clicked, clicking, player) PlayConversation("peon", handle, player) end })
 
-        AddInteractiveOption(handle, { name = GetLocalString("Торговать", "Trade"), feedback = function(clicked, clicking, player)
+        AddInteractiveOption(handle, { name = GetLocalString("Торговать", "Trade"), id = "trade_conv", feedback = function(clicked, clicking, player)
             if not IsUnitHidden(clicked) then
                 local id = player - 1
 
