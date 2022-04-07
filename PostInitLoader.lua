@@ -2,6 +2,7 @@ do
 
 	local InitGlobalsOrigin = InitGlobals
 
+
 	function InitGlobals()
 		InitGlobalsOrigin()
 
@@ -133,7 +134,6 @@ do
 						local my_item = CreateCustomItem("I006",  0.,0.)
 						SetItemCharges(my_item, 20)
 						AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 32, true)
-						--BlzSetUnitName(gg_unit_n001_0055, LOCALE_LIST[my_locale].HEALER_NAME)
 
 						my_item = CreateCustomItem("I003",  0.,0.)
 						SetItemCharges(my_item, 20)
@@ -145,7 +145,6 @@ do
 
 						CreateLibrarian(gg_unit_n01V_0110, "ReplaceableTextures\\CommandButtons\\BTNNightElfRunner.blp")
 						CreateBlacksmith(gg_unit_n013_0011, "ReplaceableTextures\\CommandButtons\\BTNElfVillager.blp")
-
 
 						AddInteractiveOption(gg_unit_n000_0056, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, id = "bill_intro_conv", feedback = function(clicked, clicking, player) PlayConversation("bill_intro", gg_unit_n000_0056, player) end }, 1)
 						AddInteractiveOption(gg_unit_n001_0055, { name = LOCALE_LIST[my_locale].INT_OPTION_TALK, id = "dalia_intro_conv",feedback = function(clicked, clicking, player) PlayConversation("dalia_intro", gg_unit_n001_0055, player) end }, 1)

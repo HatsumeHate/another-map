@@ -55,6 +55,11 @@ do
         return string.sub(name, 0, ending)
     end
 
+    function ReloadMultiboard()
+        local multiboard = BlzGetFrameByName("Multiboard", 0)
+            BlzFrameClearAllPoints(multiboard)
+            BlzFrameSetPoint(multiboard, FRAMEPOINT_TOPLEFT, PlayerUI.minimap_border, FRAMEPOINT_TOPRIGHT, 0.,0.)
+    end
 
     function InitMultiboard()
 

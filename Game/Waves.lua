@@ -238,6 +238,7 @@ do
         TimerStart(WaveTimer, 0., false, nil)
 
         TimerStart(WaveTimer, 1., true, function()
+            item = MultiboardGetItem(MAIN_MULTIBOARD, 0, 1)
             total_time = total_time - 1.
             MultiboardSetItemValue(item, TimeToText(total_time))
 

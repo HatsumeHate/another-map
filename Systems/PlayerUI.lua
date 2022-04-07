@@ -6,6 +6,8 @@
 do
 
     PlayerUI = nil
+    local PlayerGlobeHpValue
+    local PlayerGlobeMpValue
     local hp_globe_textures
     local mp_globe_textures
 
@@ -157,6 +159,7 @@ do
                 BlzFrameSetText(PlayerUI.xp_bar_text, "")
                 BlzFrameSetValue(PlayerUI.xp_bar, 0)
 
+
                 PlayerUI.action_bar = CreateUIElement("DiabolicUI_ActionBarArt1BarXP.tga", 0.4, -0.006, FRAMEPOINT_BOTTOM, 0.78, 1., 0.25, PlayerUI.xp_bar)
 
                 PlayerUI.hp_globe_backdrop = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Backdrop.tga", 0.083, 0.07, FRAMEPOINT_CENTER, 0.206, 1., 1., PlayerUI.action_bar)
@@ -189,8 +192,6 @@ do
                 BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, PlayerUI.action_bar, FRAMEPOINT_BOTTOM, -0.003, 0.0345)
                 PlayerUI.skill_button_hotkey[1] = CreateSimpleChargesText(button, "E", 0.9, 0.9, 0., 0., GAME_UI)
                 PlayerUI.skill_button_borders[1] = CreateUIBorder(button, 0.0035)
-                --PlayerUI.skill_button_charges[i] = {}
-
 
                 button = BlzGetFrameByName("CommandButton_9", 0)
                 BlzFrameClearAllPoints(button)
@@ -204,7 +205,6 @@ do
                 BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, BlzGetFrameByName("CommandButton_9", 0), FRAMEPOINT_LEFT, -0.006, 0.)
                 PlayerUI.skill_button_hotkey[3] = CreateSimpleChargesText(button, "Q", 0.9, 0.9, 0., 0., GAME_UI)
                 PlayerUI.skill_button_borders[3] = CreateUIBorder(button, 0.0035)
-
 
 
                 button = BlzGetFrameByName("CommandButton_11", 0)
@@ -247,7 +247,7 @@ do
                     BlzFrameSetVisible(BlzGetFrameByName("InventoryButton_" .. i, 0), true)
                 end
 
-                PlayerUI.inventory_borders = {}
+
                 local last_element = CreateUIElement("DiabolicUI_Button_64x64_BackdropBag.tga", 0.33, 0.097, FRAMEPOINT_CENTER, 1., 0.032, 0.032, PlayerUI.action_bar)
                 BlzFrameSetLevel(last_element, 0)
                 BlzFrameClearAllPoints(inventory_button_0)
@@ -271,9 +271,11 @@ do
                     last_element = element
                 end
 
+
                 for i = 1, 6 do
                     BlzFrameSetVisible(PlayerUI.inventory_borders[i], false)
                 end
+
 
                 PlayerUI.skull_decorator = BlzCreateFrameByType("BACKDROP", "aaa", GAME_UI, "", 0)
                 BlzFrameSetTexture(PlayerUI.skull_decorator, "DiabolicUI_Artwork_Skull.tga", 0, true)
@@ -282,7 +284,6 @@ do
                 BlzFrameSetAbsPoint(PlayerUI.skull_decorator, FRAMEPOINT_CENTER, 0.4, 0.093)
                 BlzFrameSetSize(PlayerUI.skull_decorator, 1., 0.25)
                 BlzFrameSetVisible(PlayerUI.skull_decorator, false)
-
 
                 local buff_bar = BlzGetOriginFrame(ORIGIN_FRAME_UNIT_PANEL_BUFF_BAR, 0)
                 BlzFrameSetParent(buff_bar, PlayerUI.xp_bar)
@@ -321,6 +322,7 @@ do
                 BlzFrameSetVisible(minimap_border, false)
                 PlayerUI.minimap_border = minimap_border
 
+
                 for i = 0, 4 do BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_MINIMAP_BUTTON, i), true) end
 
                 PlayerUI.gold_backdrop = CreateUIElement("DiabolicUI_UIButton_61x55_Normal", 0.581, 0.091, FRAMEPOINT_CENTER, 1., 0.095, 0.04, PlayerUI.action_bar)
@@ -330,7 +332,98 @@ do
                 BlzFrameSetAbsPoint(gold_text, FRAMEPOINT_CENTER, 0.57, 0.09)
                 BlzFrameSetTextColor(gold_text, BlzConvertColor(255, 255, 255, 0))
 
-                ShowPlayerUI(player)
+                PlayerUI.level_bar = BlzGetFrameByName("SimpleHeroLevelBar", 0)
+
+                PauseTimer(PlayerUI.update_timer)
+                DestroyTimer(PlayerUI.update_timer)
+                PlayerUI.update_timer = CreateTimer()
+                local update_step = 38 / (1. / 0.025)
+                local time_delta = 0.3 / 0.025
+
+                PlayerUI.level_bar = BlzGetFrameByName("SimpleHeroLevelBar", 0)
+                TimerStart(PlayerUI.update_timer, 0.025, true, function()
+
+                    for i = 1, 6 do
+                        if PlayerHero[i] then
+                            local current_hp = GetUnitState(PlayerHero[i], UNIT_STATE_LIFE)
+                            local max_hp = BlzGetUnitMaxHP(PlayerHero[i])
+
+                            local current_mana = GetUnitState(PlayerHero[i], UNIT_STATE_MANA)
+                            local max_mana = BlzGetUnitMaxMana(PlayerHero[i])
+
+                            local current_hp_ratio = math.floor(((current_hp / max_hp) * 100.) + 0.5)
+                            local current_mp_ratio = math.floor(((current_mana / max_mana) * 100.) + 0.5)
+                            local globe_hp_value = math.floor(PlayerGlobeHpValue[i] + 0.5)
+                            local globe_mp_value = math.floor(PlayerGlobeMpValue[i] + 0.5)
+
+                            if globe_hp_value > 100 then globe_hp_value = 100 end
+                            if globe_mp_value > 100 then globe_mp_value = 100 end
+
+
+                                if current_hp_ratio ~= globe_hp_value then
+                                    update_step = ((current_hp_ratio - globe_hp_value) / time_delta) * 1.25
+
+                                    PlayerGlobeHpValue[i] = PlayerGlobeHpValue[i] + update_step
+                                    globe_hp_value = math.floor(PlayerGlobeHpValue[i] + 0.5)
+
+                                    if GetLocalPlayer() == Player(i - 1) then BlzFrameSetTexture(PlayerUI.hp_globe, hp_globe_textures[globe_hp_value], 0, true) end
+                                elseif globe_hp_value == 0 then
+                                    PlayerGlobeHpValue[i] = 0
+                                    if GetLocalPlayer() == Player(i - 1) then BlzFrameSetTexture(PlayerUI.hp_globe, "UI\\globe_empty.blp", 0, true) end
+                                elseif globe_hp_value == 100 then
+                                    PlayerGlobeHpValue[i] = 100
+                                    if GetLocalPlayer() == Player(i - 1) then BlzFrameSetTexture(PlayerUI.hp_globe, hp_globe_textures[100], 0, true) end
+                                end
+
+
+                                if current_mp_ratio ~= globe_mp_value then
+                                    update_step = ((current_mp_ratio - globe_mp_value) / time_delta) * 1.25
+
+                                    PlayerGlobeMpValue[i] = PlayerGlobeMpValue[i] + update_step
+                                    globe_mp_value = math.floor(PlayerGlobeMpValue[i] + 0.5)
+
+                                    if GetLocalPlayer() == Player(i - 1) then BlzFrameSetTexture(PlayerUI.mp_globe, mp_globe_textures[globe_mp_value], 0, true) end
+                                elseif globe_mp_value == 0 then
+                                    PlayerGlobeMpValue[i] = 0
+                                    if GetLocalPlayer() == Player(i - 1) then BlzFrameSetTexture(PlayerUI.mp_globe, "UI\\globe_empty.blp", 0, true) end
+                                elseif globe_mp_value == 100 then
+                                    PlayerGlobeMpValue[i] = 100
+                                    if GetLocalPlayer() == Player(i - 1) then BlzFrameSetTexture(PlayerUI.mp_globe, mp_globe_textures[100], 0, true) end
+                                end
+
+
+                                if GetLocalPlayer() == Player(i - 1) then
+                                    BlzFrameSetText(PlayerUI.hp_text_frame, math.floor(current_hp + 0.5) .. "/" .. max_hp)
+                                    BlzFrameSetText(PlayerUI.mp_text_frame, math.floor(current_mana + 0.5) .. "/" .. max_mana)
+                                    if BlzFrameGetValue(PlayerUI.level_bar) < 1. then BlzFrameSetValue(PlayerUI.xp_bar, BlzFrameGetValue(PlayerUI.level_bar) * 100.) end
+                                    BlzFrameSetText(PlayerUI.xp_bar_text, "|c00FF5A00" .. (GetHeroXP(PlayerHero[i]) - PlayerLastRequiredEXP[i]) .. "/".. (PlayerRequiredEXP[i] - PlayerLastRequiredEXP[i]) .. "|r")
+                                end
+
+                        end
+                    end
+
+                end)
+
+                SelectUnitForPlayerSingle(PlayerHero[player], Player(player-1))
+                local current_player = player
+                DelayAction(0.3, function()
+
+                    for key = 1, 6 do
+                        PlayerUI.skill_button_charges[current_player].button[key] = CreateUIChargesBorder(PlayerUI.skill_button_borders[key])
+                        BlzFrameSetVisible(PlayerUI.skill_button_charges[current_player].button[key].border, false)
+                    end
+
+                    KEYBIND_LIST[KEY_Q].player_charges_frame[current_player] = PlayerUI.skill_button_charges[current_player].button[3]
+                    KEYBIND_LIST[KEY_W].player_charges_frame[current_player] = PlayerUI.skill_button_charges[current_player].button[2]
+                    KEYBIND_LIST[KEY_E].player_charges_frame[current_player] = PlayerUI.skill_button_charges[current_player].button[1]
+                    KEYBIND_LIST[KEY_R].player_charges_frame[current_player] = PlayerUI.skill_button_charges[current_player].button[4]
+                    KEYBIND_LIST[KEY_D].player_charges_frame[current_player] = PlayerUI.skill_button_charges[current_player].button[5]
+                    KEYBIND_LIST[KEY_F].player_charges_frame[current_player] = PlayerUI.skill_button_charges[current_player].button[6]
+
+                    ShowPlayerUI(current_player)
+                    UpdateBindedSkillsData(current_player)
+
+                end)
                 EnableGUIForPlayer(player)
             end
         end
@@ -392,7 +485,6 @@ do
             BlzFrameSetVertexColor(PlayerUI.hp_globe_shade, BlzConvertColor(145, 255, 255, 255))
             BlzFrameSetVertexColor(PlayerUI.mp_globe_shade, BlzConvertColor(145, 255, 255, 255))
 
-            --PlayerUI.mp_globe = CreateUIElement("DiabolicUI_HealthGlobe512x512_Shade.tga", 0.717, 0.07, FRAMEPOINT_CENTER, 0.119, 1., 1., PlayerUI.mp_globe_backdrop)
 
             PlayerUI.hp_globe_border = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Border.tga", 0.083, 0.07, FRAMEPOINT_CENTER, 0.206, 1., 1., PlayerUI.hp_globe_shade)
             PlayerUI.mp_globe_border = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Border.tga", 0.717, 0.07, FRAMEPOINT_CENTER, 0.206, 1., 1., PlayerUI.mp_globe_shade)
@@ -400,8 +492,6 @@ do
             PlayerUI.angel_border = CreateUIElement("DiabolicUI_Artwork_Angel.tga", 0.81, 0.093, FRAMEPOINT_CENTER, 0.2, 1., 1., PlayerUI.mp_globe_border)
 
             BlzEnableUIAutoPosition(false)
-            --local button = BlzGetFrameByName("CommandButton_0", 0)
-            --BlzFrameClearAllPoints(frame)
             for i = 0, 11 do
                 BlzFrameClearAllPoints(BlzGetFrameByName("CommandButton_".. i, 0))
                 BlzFrameSetPoint(BlzGetFrameByName("CommandButton_".. i, 0), FRAMEPOINT_TOPRIGHT, WORLD_FRAME, FRAMEPOINT_TOPRIGHT, 0.064, 0.064)
@@ -414,16 +504,12 @@ do
 
 
             local button = BlzGetFrameByName("CommandButton_10", 0)
-            --BlzFrameSetVisible(button, true)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, PlayerUI.action_bar, FRAMEPOINT_BOTTOM, -0.003, 0.0345)
             PlayerUI.skill_button_hotkey[1] = CreateSimpleChargesText(button, "E", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[1] = CreateUIBorder(button, 0.0035)
-            --PlayerUI.skill_button_charges[i] = {}
-
 
             button = BlzGetFrameByName("CommandButton_9", 0)
-            --BlzFrameSetVisible(button, true)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, BlzGetFrameByName("CommandButton_10", 0), FRAMEPOINT_LEFT, -0.006, 0.)
             PlayerUI.skill_button_hotkey[2] = CreateSimpleChargesText(button, "W", 0.9, 0.9, 0., 0., GAME_UI)
@@ -431,7 +517,6 @@ do
 
 
             button = BlzGetFrameByName("CommandButton_8", 0)
-            --BlzFrameSetVisible(button, true)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, BlzGetFrameByName("CommandButton_9", 0), FRAMEPOINT_LEFT, -0.006, 0.)
             PlayerUI.skill_button_hotkey[3] = CreateSimpleChargesText(button, "Q", 0.9, 0.9, 0., 0., GAME_UI)
@@ -440,21 +525,18 @@ do
 
 
             button = BlzGetFrameByName("CommandButton_11", 0)
-            --BlzFrameSetVisible(button, true)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_LEFT, PlayerUI.action_bar, FRAMEPOINT_BOTTOM, 0.003, 0.0345)
             PlayerUI.skill_button_hotkey[4] = CreateSimpleChargesText(button, "R", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[4] = CreateUIBorder(button, 0.0035)
 
             button = BlzGetFrameByName("CommandButton_6", 0)
-            --BlzFrameSetVisible(button, true)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_LEFT, BlzGetFrameByName("CommandButton_11", 0), FRAMEPOINT_RIGHT, 0.006, 0.)
             PlayerUI.skill_button_hotkey[5] = CreateSimpleChargesText(button, "D", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[5] = CreateUIBorder(button, 0.0035)
 
             button = BlzGetFrameByName("CommandButton_7", 0)
-            --BlzFrameSetVisible(button, true)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_LEFT, BlzGetFrameByName("CommandButton_6", 0), FRAMEPOINT_RIGHT, 0.006, 0.)
             PlayerUI.skill_button_hotkey[6] = CreateSimpleChargesText(button, "F", 0.9, 0.9, 0., 0., GAME_UI)
@@ -470,7 +552,6 @@ do
             local inventory_button_0 = BlzGetFrameByName("InventoryButton_0", 0)
 
             local inv_panel = BlzFrameGetParent(BlzGetFrameByName("SimpleInfoPanelUnitDetail",0))
-            --BlzFrameSetVisible(inv_panel, true)
             BlzFrameSetAbsPoint(inv_panel, FRAMEPOINT_TOP, 0.4, -0.1)
             BlzFrameSetAbsPoint(BlzGetFrameByName("SimpleInfoPanelUnitDetail",0), FRAMEPOINT_TOP, 0.4, -0.1)
             BlzFrameSetAbsPoint(BlzGetFrameByName("InventoryCoverTexture",0), FRAMEPOINT_TOP, 0.4, -0.1)
@@ -481,7 +562,6 @@ do
             for i = 0, 5 do
                 BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_ITEM_BUTTON, i), true)
                 BlzFrameSetVisible(BlzGetFrameByName("InventoryButton_" .. i, 0), true)
-                --BlzFrameSetParent(BlzGetOriginFrame(ORIGIN_FRAME_ITEM_BUTTON, i), PlayerUI.action_bar)
             end
 
             PlayerUI.inventory_borders = {}
@@ -530,8 +610,6 @@ do
             BlzFrameSetText(BlzGetOriginFrame(ORIGIN_FRAME_UNIT_PANEL_BUFF_BAR_LABEL, 0), "")
 
 
-            --StandardLabelTextTemplate
-        --StandardButtonTextTemplate
             local text_frame = BlzCreateFrameByType("TEXT", "aaa", GAME_UI, "StandardLabelTextTemplate", 0)
             BlzFrameClearAllPoints(text_frame)
             BlzFrameSetPoint(text_frame, FRAMEPOINT_BOTTOM, PlayerUI.hp_globe_border, FRAMEPOINT_CENTER, 0.0, 0.068)
@@ -576,8 +654,8 @@ do
             --RegisterScaler(PlayerUI.hp_globe, 0.119, 0.001)
 
 
-        local PlayerGlobeHpValue = {}
-        local PlayerGlobeMpValue = {}
+        PlayerGlobeHpValue = {}
+        PlayerGlobeMpValue = {}
 
         for i = 1, 6 do
             PlayerGlobeHpValue[i] = 100
@@ -585,25 +663,20 @@ do
         end
 
 
-            local update_timer = CreateTimer()
+            PlayerUI.update_timer = CreateTimer()
             local update_step = 38 / (1. / 0.025)
             local time_delta = 0.3 / 0.025
-            BlzFrameSetTexture(PlayerUI.mp_globe, "war3mapImported\\globe_hp_100.blp", 0, true)
-            --BlzFrameSetTexture(PlayerUI.mp_globe, "UI\\globe_empty.blp", 0, true)
 
-
-            local level_bar = BlzGetFrameByName("SimpleHeroLevelBar", 0)
-            TimerStart(update_timer, 0.025, true, function()
-                --local hpbar = BlzGetFrameByName("HealthBarsLabel", 0)
-               -- BlzFrameSetVisible(hpbar, false)
+            PlayerUI.level_bar = BlzGetFrameByName("SimpleHeroLevelBar", 0)
+            TimerStart(PlayerUI.update_timer, 0.025, true, function()
 
                 for i = 1, 6 do
                     if PlayerHero[i] then
                         local current_hp = GetUnitState(PlayerHero[i], UNIT_STATE_LIFE)
-                        local max_hp = math.ceil(BlzGetUnitMaxHP(PlayerHero[i]))
+                        local max_hp = BlzGetUnitMaxHP(PlayerHero[i])
 
                         local current_mana = GetUnitState(PlayerHero[i], UNIT_STATE_MANA)
-                        local max_mana = math.ceil(BlzGetUnitMaxMana(PlayerHero[i]))
+                        local max_mana = BlzGetUnitMaxMana(PlayerHero[i])
 
                         local current_hp_ratio = math.floor(((current_hp / max_hp) * 100.) + 0.5)
                         local current_mp_ratio = math.floor(((current_mana / max_mana) * 100.) + 0.5)
@@ -649,7 +722,7 @@ do
                             if GetLocalPlayer() == Player(i - 1) then
                                 BlzFrameSetText(PlayerUI.hp_text_frame, math.floor(current_hp + 0.5) .. "/" .. max_hp)
                                 BlzFrameSetText(PlayerUI.mp_text_frame, math.floor(current_mana + 0.5) .. "/" .. max_mana)
-                                if BlzFrameGetValue(level_bar) < 1. then BlzFrameSetValue(PlayerUI.xp_bar, BlzFrameGetValue(level_bar) * 100.) end
+                                if BlzFrameGetValue(PlayerUI.level_bar) < 1. then BlzFrameSetValue(PlayerUI.xp_bar, BlzFrameGetValue(PlayerUI.level_bar) * 100.) end
                                 BlzFrameSetText(PlayerUI.xp_bar_text, "|c00FF5A00" .. (GetHeroXP(PlayerHero[i]) - PlayerLastRequiredEXP[i]) .. "/".. (PlayerRequiredEXP[i] - PlayerLastRequiredEXP[i]) .. "|r")
                             end
 

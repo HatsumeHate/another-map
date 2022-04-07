@@ -8,6 +8,7 @@ do
     TeleportFrame = 0
     TeleportLocation = 0
     local PlayerCurrentButtonList = 0
+    local TeleportTrigger
 
 
     local function TeleportButtonPressed()
@@ -81,19 +82,17 @@ do
                     BlzFrameSetSize(TeleportFrame[i].slots[k].button, BlzFrameGetWidth(TeleportFrame[i].mainframe) * 0.8, 0.025)
                     BlzFrameSetTextAlignment(TeleportFrame[i].slots[k].text, TEXT_JUSTIFY_CENTER , TEXT_JUSTIFY_MIDDLE)
                     BlzFrameSetVisible(TeleportFrame[i].slots[k].button, false)
-                    BlzTriggerRegisterFrameEvent(trg, TeleportFrame[i].slots[k].button, FRAMEEVENT_CONTROL_CLICK)
+                    BlzTriggerRegisterFrameEvent(TeleportTrigger, TeleportFrame[i].slots[k].button, FRAMEEVENT_CONTROL_CLICK)
 
                 end
 
             BlzFrameSetVisible(TeleportFrame[i].mainframe, false)
         end
+        BlzSetSpecialEffectZ(TeleportLocation[2].sfx, GetZ(GetRectCenterX(TeleportLocation[2].rect), GetRectCenterY(TeleportLocation[2].rect)) - 55.)
     end
 
 
     local function CreateTeleportFrame()
-
-        local trg = CreateTrigger()
-        TriggerAddAction(trg, TeleportButtonPressed)
 
         for i = 1, 6 do
             TeleportFrame[i] = {}
@@ -111,7 +110,7 @@ do
                     BlzFrameSetSize(TeleportFrame[i].slots[k].button, BlzFrameGetWidth(TeleportFrame[i].mainframe) * 0.8, 0.025)
                     BlzFrameSetTextAlignment(TeleportFrame[i].slots[k].text, TEXT_JUSTIFY_CENTER , TEXT_JUSTIFY_MIDDLE)
                     BlzFrameSetVisible(TeleportFrame[i].slots[k].button, false)
-                    BlzTriggerRegisterFrameEvent(trg, TeleportFrame[i].slots[k].button, FRAMEEVENT_CONTROL_CLICK)
+                    BlzTriggerRegisterFrameEvent(TeleportTrigger, TeleportFrame[i].slots[k].button, FRAMEEVENT_CONTROL_CLICK)
 
                 end
 
@@ -142,7 +141,9 @@ do
 
         for i = 1, 6 do PlayerCurrentButtonList[i] = {} end
 
+        TeleportTrigger = CreateTrigger()
         HitTrigger = CreateTrigger()
+        TriggerAddAction(TeleportTrigger, TeleportButtonPressed)
 
         TeleportLocation[1] = {
             name = LOCALE_LIST[my_locale].CASTLE_LOCATION,
@@ -176,9 +177,10 @@ do
             SetUnitPathing(TeleportLocation[i].trackable, false)
             SetUnitX(TeleportLocation[i].trackable, GetRectCenterX(TeleportLocation[i].rect))
             SetUnitY(TeleportLocation[i].trackable, GetRectCenterY(TeleportLocation[i].rect))
-            local additional_sfx = AddSpecialEffect("Other\\MagicPlatform.mdx", GetRectCenterX(TeleportLocation[i].rect), GetRectCenterY(TeleportLocation[i].rect))
+            TeleportLocation[i].sfx = AddSpecialEffect("Other\\MagicPlatform.mdx", GetRectCenterX(TeleportLocation[i].rect), GetRectCenterY(TeleportLocation[i].rect))
+            --local additional_sfx = AddSpecialEffect("Other\\MagicPlatform.mdx", GetRectCenterX(TeleportLocation[i].rect), GetRectCenterY(TeleportLocation[i].rect))
             if i == 2 then
-                BlzSetSpecialEffectZ(additional_sfx, GetZ(GetRectCenterX(TeleportLocation[i].rect), GetRectCenterY(TeleportLocation[i].rect)) - 55.)
+                BlzSetSpecialEffectZ(TeleportLocation[i].sfx, GetZ(GetRectCenterX(TeleportLocation[i].rect), GetRectCenterY(TeleportLocation[i].rect)) - 55.)
             end
         end
 
@@ -202,8 +204,6 @@ do
                 end)
 
         end)
-
-
 
 
             for i = 1, 6 do

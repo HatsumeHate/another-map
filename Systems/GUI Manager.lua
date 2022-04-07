@@ -25,26 +25,47 @@ do
 
     function ReloadUI()
 
+        for player = 1, 6 do
+            if UnitBarTrackingTrigger[player] then
+                DisableTrigger(UnitBarTrackingTrigger[player])
+            end
+        end
+
         DelayAction(0., function()
+
+            EnableDragSelect(false, false)
+            BlzEnableSelections(false, true)
+            EnablePreSelect(true, false)
+
+            --ClearMapMusic()
+            --StopMusic(false)
+            --PlayMusic("Sound\\Music\\mp3Music\\Comradeship.mp3")
+            SetGameSpeed(MAP_SPEED_FASTEST)
+            SetMapFlag(MAP_LOCK_SPEED, true)
+            EnableOcclusion(true)
+
+            GAME_UI     = BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0)
+            WORLD_FRAME = BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0)
             BlzLoadTOCFile("war3mapimported\\BoxedText.toc")
             if not BlzLoadTOCFile("war3mapImported\\MyTOCfile.toc") then print("MyTOCfile.toc not loaded") end
+
 
             for i = 1, 6 do
                 GlobalButton[i].char_panel_button = CreateSimpleButton("UI\\StatPanelIcon.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOMLEFT, 0.1725, 0.028, GAME_UI)
                 CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].char_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
-                BlzFrameSetVisible(GlobalButton[i].char_panel_button, true)
+                BlzFrameSetVisible(GlobalButton[i].char_panel_button, false)
                 BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].char_panel_button, FRAMEEVENT_CONTROL_CLICK)
                 CreateSimpleChargesText(GlobalButton[i].char_panel_button, "C", 0.9, 0.9)
 
                 GlobalButton[i].skill_panel_button = CreateSimpleButton("UI\\SkillPanelIcon.blp", 0.034, 0.034, GlobalButton[i].char_panel_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.003, 0., GAME_UI)
                 CreateTooltip(LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].skill_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
-                BlzFrameSetVisible(GlobalButton[i].skill_panel_button, true)
+                BlzFrameSetVisible(GlobalButton[i].skill_panel_button, false)
                 BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].skill_panel_button, FRAMEEVENT_CONTROL_CLICK)
                 CreateSimpleChargesText(GlobalButton[i].skill_panel_button, "B", 0.9, 0.9)
 
                 GlobalButton[i].inventory_panel_button = CreateSimpleButton("UI\\IventoryIcon.blp", 0.034, 0.034, GlobalButton[i].skill_panel_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.003, 0., GAME_UI)
                 CreateTooltip(LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].inventory_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
-                BlzFrameSetVisible(GlobalButton[i].inventory_panel_button, true)
+                BlzFrameSetVisible(GlobalButton[i].inventory_panel_button, false)
                 BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].inventory_panel_button, FRAMEEVENT_CONTROL_CLICK)
                 CreateSimpleChargesText(GlobalButton[i].inventory_panel_button, "TAB", 0.9, 0.7, 0.008)
 
@@ -52,48 +73,32 @@ do
                 BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].talents_panel_button, FRAMEEVENT_CONTROL_CLICK)
                 CreateTooltip(GetLocalString("Таланты", "Talents"), GetLocalString("Изучение всех доступных талантов героя.", "Learning of all hero talents."), GlobalButton[i].talents_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
                 CreateSimpleChargesText(GlobalButton[i].talents_panel_button, "N", 0.9, 0.9)
-                BlzFrameSetVisible(GlobalButton[i].talents_panel_button, true)
+                BlzFrameSetVisible(GlobalButton[i].talents_panel_button, false)
 
                 GlobalButton[i].journal_panel_button = CreateSimpleButton("UI\\BTNScribeScroll.blp", 0.034, 0.034, GlobalButton[i].talents_panel_button, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.003, 0., GAME_UI)
                 BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].journal_panel_button, FRAMEEVENT_CONTROL_CLICK)
                 CreateTooltip(GetLocalString("Журнал", "Journal"), GetLocalString("Все заметки и задания.", "All notes and quests tracking."), GlobalButton[i].journal_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
                 CreateSimpleChargesText(GlobalButton[i].journal_panel_button, "J", 0.9, 0.9)
-                BlzFrameSetVisible(GlobalButton[i].journal_panel_button, true)
+                BlzFrameSetVisible(GlobalButton[i].journal_panel_button, false)
             end
 
-
             ReloadAdvancedFrames()
-            print("A")
             ReloadPlayerUIFrames()
-            print("B")
+            ReloadMultiboard()
             ReloadTeleportFrames()
-            print("C")
             ReloadShopFrames()
-            print("D")
             ReloadPrivateChestFrames()
-            print("E")
             ReloadStashFrames()
-            print("F")
             ReloadBarFrames()
-            print("G")
             ReloadLibrarianFrames()
-            print("H")
             ReloadBlacksmithFrames()
-            print("I")
             ReloadLocationFrames()
-            print("J")
             ReloadInteractionFrames()
-            print("K")
             ReloadStatsFrames()
-            print("L")
             ReloadInventoryFrames()
-            print("M")
             ReloadTalentFrames()
-            print("N")
             ReloadJournalFrames()
-            print("O")
             ReloadSkillPanelFrames()
-            print("UI is loaded")
         end)
 
 

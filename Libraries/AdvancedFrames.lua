@@ -177,6 +177,11 @@ do
 
             SliderFrame[player].state = false
             BlzFrameSetVisible(SliderFrame[player].backdrop, false)
+
+            
+            PlayerTooltip[player] = nil
+            AlternatePlayerTooltip[player] = nil
+
         end
     end
 

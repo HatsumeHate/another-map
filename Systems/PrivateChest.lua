@@ -10,6 +10,7 @@ do
     local ClickTrigger; local EnterTrigger; local LeaveTrigger
     local DoubleClickTimer
     local PlayerMovingItem
+    local BackupButtonData
 
 
 
@@ -335,19 +336,29 @@ do
                     BlzFrameSetSize(new_Frame, 0.28, 0.355)
                     PrivateChestFrame[player].border = new_Frame
 
-
                     PrivateChestFrame[player].slots[1] = NewButton("GUI\\inventory_slot.blp", 0.04, 0.04, new_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.02, -0.017, new_Frame)
+                    local new_button_data = GetButtonData(PrivateChestFrame[player].slots[1])
+                    new_button_data.item = BackupButtonData[player][1].item or nil
+                    BackupButtonData[player][1] = new_button_data
 
                     for i = 2, 5 do
                         PrivateChestFrame[player].slots[i] = NewButton("GUI\\inventory_slot.blp", 0.04, 0.04, PrivateChestFrame[player].slots[i - 1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPRIGHT, 0., 0., new_Frame)
+                        new_button_data = GetButtonData(PrivateChestFrame[player].slots[i])
+                        new_button_data.item = BackupButtonData[player][i].item or nil
+                        BackupButtonData[player][i] = new_button_data
                     end
 
                     for row = 2, 8 do
                         for i = 1, 5 do
                             local slot = i + ((row - 1) * 5)
                             PrivateChestFrame[player].slots[slot] = NewButton("GUI\\inventory_slot.blp", 0.04, 0.04, PrivateChestFrame[player].slots[slot - 5], FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., new_Frame)
+                            new_button_data = GetButtonData(PrivateChestFrame[player].slots[slot])
+                            new_button_data.item = BackupButtonData[player][slot].item or nil
+                            BackupButtonData[player][slot] = new_button_data
                         end
                     end
+
+                UpdatePrivateChestWindow(player)
 
 
                 PrivateChestFrame[player].shift_state = false
@@ -401,17 +412,22 @@ do
 
 
             PrivateChestFrame[player].slots = {}
+            BackupButtonData[player] = {}
 
             PrivateChestFrame[player].slots[1] = NewButton("GUI\\inventory_slot.blp", 0.04, 0.04, new_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.02, -0.017, new_Frame)
+            BackupButtonData[player][1] = GetButtonData(PrivateChestFrame[player].slots[1])
+
 
             for i = 2, 5 do
                 PrivateChestFrame[player].slots[i] = NewButton("GUI\\inventory_slot.blp", 0.04, 0.04, PrivateChestFrame[player].slots[i - 1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPRIGHT, 0., 0., new_Frame)
+                BackupButtonData[player][i] = GetButtonData(PrivateChestFrame[player].slots[i])
             end
 
             for row = 2, 8 do
                 for i = 1, 5 do
                     local slot = i + ((row - 1) * 5)
                     PrivateChestFrame[player].slots[slot] = NewButton("GUI\\inventory_slot.blp", 0.04, 0.04, PrivateChestFrame[player].slots[slot - 5], FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., new_Frame)
+                    BackupButtonData[player][slot] = GetButtonData(PrivateChestFrame[player].slots[slot])
                 end
             end
 
@@ -534,6 +550,7 @@ do
     function InitPrivateChest()
 
         PrivateChestFrame = {}
+        BackupButtonData = {}
 
         local trg = CreateTrigger()
         TriggerRegisterUnitInRangeSimple(trg, 175., gg_unit_n01Y_0018)

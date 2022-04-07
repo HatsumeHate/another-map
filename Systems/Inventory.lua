@@ -12,6 +12,7 @@ do
     InventoryKeyState = nil
     INV_SLOT = 0
     local ClickTrigger = 0
+    local BackupButtonData
 
 
 
@@ -1257,30 +1258,28 @@ do
                 InventoryData[player].tip_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.02, 0.02, slots_Frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.016, -0.016, slots_Frame)
 
                 CreateTooltip(LOCALE_LIST[my_locale].UI_INVENTORY_TOOLTIP_HEADER, LOCALE_LIST[my_locale].UI_INVENTORY_TOOLTIP_DESCRIPTION, InventoryData[player].tip_button, 0.14, 0.12, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPLEFT)
-
-
                 BlzTriggerRegisterFrameEvent(InventoryData[player].tip_trigger, InventoryData[player].tip_button, FRAMEEVENT_CONTROL_CLICK)
-                TriggerAddAction(InventoryData[player].tip_trigger, function()
-                    ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_INVENTORY_1, player-1)
-                    ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_INVENTORY_2, player-1)
-                    DisableTrigger(InventoryData[player].tip_trigger)
-                    DelayAction(5., function()
-                        EnableTrigger(InventoryData[player].tip_trigger)
-                    end)
-                end)
-
-
+                
                 -- inventory slots
                 InventorySlots[player][1] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, inv_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.02, -0.017, inv_Frame)
+                local new_button_data = GetButtonData(InventorySlots[player][1])
+                new_button_data.item = BackupButtonData[player][1].item or nil
+                BackupButtonData[player][1] = new_button_data
 
                 for i = 2, 8 do
                     InventorySlots[player][i] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[player][i - 1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPRIGHT, 0., 0., inv_Frame)
+                    new_button_data = GetButtonData(InventorySlots[player][i])
+                    new_button_data.item = BackupButtonData[player][i].item or nil
+                    BackupButtonData[player][i] = new_button_data
                 end
 
                 for row = 2, 4 do
                     for i = 1, 8 do
                         local slot = i + ((row - 1) * 8)
                         InventorySlots[player][slot] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[player][slot - 8], FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., inv_Frame)
+                        new_button_data = GetButtonData(InventorySlots[player][slot])
+                        new_button_data.item = BackupButtonData[player][slot].item or nil
+                        BackupButtonData[player][slot] = new_button_data
                     end
                 end
 
@@ -1301,6 +1300,14 @@ do
                 InventorySlots[player][39] = NewButton(NECKLACE_POINT, "GUI\\BTNNecklace_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0445, 0.0085, slots_Frame)
                 InventorySlots[player][40] = NewButton(RING_1_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_TOPRIGHT, 0.003, -0.008, slots_Frame)
                 InventorySlots[player][41] = NewButton(RING_2_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMRIGHT, 0.003, 0.032, slots_Frame)
+
+                for i = 33, 41 do
+                    new_button_data = GetButtonData(InventorySlots[player][i])
+                    new_button_data.item = BackupButtonData[player][i].item or nil
+                    BackupButtonData[player][i] = new_button_data
+                end
+
+                UpdateEquipPointsWindow(player)
 
 
                 CreateSelectionFrames(player)
@@ -1361,19 +1368,22 @@ do
             end)
         end)
 
-
+        BackupButtonData[player] = {}
         InventorySlots[player] = {}
         -- inventory slots
         InventorySlots[player][1] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, inv_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.02, -0.017, inv_Frame)
+        BackupButtonData[player][1] = GetButtonData(InventorySlots[player][1])
 
         for i = 2, 8 do
             InventorySlots[player][i] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[player][i - 1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPRIGHT, 0., 0., inv_Frame)
+            BackupButtonData[player][i] = GetButtonData(InventorySlots[player][i])
         end
 
         for row = 2, 4 do
             for i = 1, 8 do
                 local slot = i + ((row - 1) * 8)
                 InventorySlots[player][slot] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[player][slot - 8], FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., inv_Frame)
+                BackupButtonData[player][slot] = GetButtonData(InventorySlots[player][slot])
             end
         end
 
@@ -1394,6 +1404,10 @@ do
         InventorySlots[player][39] = NewButton(NECKLACE_POINT, "GUI\\BTNNecklace_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0445, 0.0085, slots_Frame)
         InventorySlots[player][40] = NewButton(RING_1_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_TOPRIGHT, 0.003, -0.008, slots_Frame)
         InventorySlots[player][41] = NewButton(RING_2_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMRIGHT, 0.003, 0.032, slots_Frame)
+
+        for i = 33, 41 do
+            BackupButtonData[player][i] = GetButtonData(InventorySlots[player][i])
+        end
 
 
         local actual_player = Player(player-1)
@@ -1559,6 +1573,7 @@ do
         InventoryKeyState = {}
         InventoryData = {}
         PlayerMovingItem = {}
+        BackupButtonData = {}
 
         UNIT_POINT_LIST = {
             [WEAPON_POINT]    = 33,

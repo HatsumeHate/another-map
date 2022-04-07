@@ -222,16 +222,8 @@ do
                 ShopFrame[player].tip_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.02, 0.02, main_frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.016, -0.016, main_frame)
                 CreateTooltip(LOCALE_LIST[my_locale].UI_SHOP_TOOLTIP_HEADER, LOCALE_LIST[my_locale].UI_SHOP_TOOLTIP_DESCRIPTION, ShopFrame[player].tip_button, 0.14, 0.12, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPLEFT)
 
-                DestroyTrigger(ShopFrame[player].tip_trigger)
-                ShopFrame[player].tip_trigger = CreateTrigger()
                 BlzTriggerRegisterFrameEvent(ShopFrame[player].tip_trigger , ShopFrame[player].tip_button, FRAMEEVENT_CONTROL_CLICK)
-                TriggerAddAction(ShopFrame[player].tip_trigger , function()
-                    ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_SHOP_1, player-1)
-                    DisableTrigger(ShopFrame[player].tip_trigger )
-                    DelayAction(5., function()
-                        EnableTrigger(ShopFrame[player].tip_trigger )
-                    end)
-                end)
+
 
                 ShopFrame[player].name = new_Frame
                 ShopFrame[player].tooltip = NewTooltip(ShopFrame[player].masterframe)
@@ -615,61 +607,6 @@ do
 
             AddSpecialEffectTarget("Marker\\VendorIcon.mdx", unit_owner, "overhead")
 
-            --[[
-            local trg = CreateTrigger()
-            TriggerRegisterUnitInRangeSimple(trg, 250., unit_owner)
-            TriggerAddCondition(trg, Condition())
-            TriggerAddAction(trg, function()
-                if not IsUnitHidden(unit_owner) then
-                    local id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
-                    local player = id + 1
-
-                    if id <= 5 then
-                        local hero = GetTriggerUnit()
-
-                        ShopInFocus[player] = unit_owner
-                        if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(ShopFrame[player].main_frame, true) end
-                        ShopFrame[player].state = true
-                        BlzFrameSetTexture(ShopFrame[player].portrait, texture, 0, true)
-                        BlzFrameSetText(ShopFrame[player].name, GetUnitName(unit_owner))
-                        UpdateShopWindow()
-
-                        SetUIState(player, SKILL_PANEL, false)
-                        SetUIState(player, CHAR_PANEL, false)
-
-                        if soundpack then
-                            PlayLocalSound(soundpack.open[GetRandomInt(1, #soundpack.open)], id, 125)
-                        end
-
-                            local timer = CreateTimer()
-                            TimerStart(timer, 0.1, true, function()
-                                if not IsUnitInRange(hero, unit_owner, 250.) or IsUnitHidden(unit_owner) then
-                                    ShopFrame[player].in_focus = nil
-                                    DestroySlider(player)
-                                    DestroyContextMenu(player)
-                                    ShopInFocus[player] = nil
-                                    ShopFrame[player].state = false
-                                    if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(ShopFrame[player].main_frame, false) end
-                                    DestroyTimer(GetExpiredTimer())
-                                    if soundpack then
-                                        PlayLocalSound(soundpack.close[GetRandomInt(1, #soundpack.open)], id, 125)
-                                    end
-                                end
-                            end)
-
-
-
-                        if FirstTime_Data[player].first_time then
-                            DestroyEffect(FirstTime_Data[player].effect)
-                            FirstTime_Data[player].first_time = false
-                        end
-
-                    end
-                end
-
-            end)]]
-
-        --AddInteractiveOption(handle, { name = "Talk", feedback = function(clicked, clicking, player) PlayConversation("peon", handle, player) end })
 
         AddInteractiveOption(handle, { name = GetLocalString("Торговать", "Trade"), id = "trade_conv", feedback = function(clicked, clicking, player)
             if not IsUnitHidden(clicked) then

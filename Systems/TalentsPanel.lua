@@ -158,7 +158,6 @@ do
         DrawTalentWindow(player)
         local unit_data = GetUnitData(unit)
 
-        --TalentPanel[player].points_spent = { [1] = 0, [2] = 0, [3] = 0 }
         for i = 1, 3 do
             local button_data = GetButtonData(TalentPanel[player].category_button[i])
             button_data.category = CLASS_SKILL_CATEGORY[unit_data.unit_class][i]
@@ -218,7 +217,6 @@ do
                     BlzFrameSetAlpha(TalentPanel[player].row[i], 0)
                 end
 
-                TalentPanel[player].connectors = {}
                 for i = 1, MAX_BUTTONS * 2 do
                     TalentPanel[player].connectors[i] = CreateSprite("", 0.0003, TalentPanel[player].background, FRAMEPOINT_CENTER, FRAMEPOINT_CENTER, 0., 0., TalentPanel[player].background)
                     BlzFrameSetVisible(TalentPanel[player].connectors[i], false)
@@ -242,10 +240,25 @@ do
 
 
                 TalentPanel[player].points_text_frame = new_Frame
+                BlzFrameSetText(TalentPanel[player].points_text_frame, TalentPanel[player].points)
 
                 TalentPanel[player].main_frame = main_frame
                 BlzFrameSetVisible(main_frame, false)
                 TalentPanel[player].state = false
+
+                local unit_data = GetUnitData(PlayerHero[player])
+
+                for i = 1, 3 do
+                    local button_data = GetButtonData(TalentPanel[player].category_button[i])
+                    button_data.category = CLASS_SKILL_CATEGORY[unit_data.unit_class][i]
+                    BlzFrameSetTexture(button_data.image, SKILL_CATEGORY_ICON[button_data.category], 0, true)
+                    FrameChangeTexture(button_data.frame, SKILL_CATEGORY_ICON[button_data.category])
+                end
+
+                TalentPanel[player].current_category = CLASS_SKILL_CATEGORY[unit_data.unit_class][1]
+                TalentPanel[player].tooltip = NewTooltip(TalentPanel[player].points_border_frame, "MyTextTemplateMedium")
+                TalentPanel[player].alt_tooltip = NewTooltip(TalentPanel[player].points_border_frame, "MyTextTemplateMedium")
+                TalentPanel[player].class = unit_data.unit_class
             end
         end
     end
@@ -609,10 +622,6 @@ do
         ClickTrigger = CreateTrigger()
         EnterTrigger = CreateTrigger()
         LeaveTrigger = CreateTrigger()
-
-        --for i = 1, 6 do
-            --DrawTalentWindow(i)
-        --end
 
 
         TriggerAddAction(EnterTrigger, function()

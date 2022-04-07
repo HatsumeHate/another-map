@@ -337,35 +337,16 @@ do
                             UnitAddMyAbility(hero, starting_skills[i])
                         end
 
-                        SelectUnitForPlayerSingle(hero, Player(player_number))
                         AddPointsToPlayer(player_id, 0)
-                        EnableGUIForPlayer(player_id)
                         ShowPlayerUI(player_id)
-
+                        SelectUnitForPlayerSingle(hero, Player(player_number))
+                        EnableGUIForPlayer(player_id)
                     end)
 
 
                     if id == FourCC("HBRB") then BlzSetUnitName(hero, LOCALE_LIST[my_locale].BARBARIAN_NAME)
                     elseif id == FourCC("HSRC") then BlzSetUnitName(hero, LOCALE_LIST[my_locale].SORCERESS_NAME)
                     else BlzSetUnitName(hero, GetLocalString("Некромант", "Necromancer")) end
-
-                    --[[
-                    DelayAction(6., function()
-                        PlayCinematicSpeech(player_id-1, gg_unit_h000_0054, LOCALE_LIST[my_locale].INTRODUCTION_TEXT_1, 6.)
-                        DelayAction(7., function()
-                            PlayCinematicSpeech(player_id-1, gg_unit_h000_0054, LOCALE_LIST[my_locale].INTRODUCTION_TEXT_2, 6.)
-                            DelayAction(7., function()
-                                PlayCinematicSpeech(player_id-1, gg_unit_h000_0054, LOCALE_LIST[my_locale].INTRODUCTION_TEXT_3, 6.)
-                                DelayAction(7., function()
-                                    if id == FourCC("HBRB") then
-                                        PlayCinematicSpeech(player_id-1, PlayerHero[player_id], LOCALE_LIST[my_locale].INTRODUCTION_BARBARIAN_RESPONCE, 6.)
-                                    else
-                                        PlayCinematicSpeech(player_id-1, PlayerHero[player_id], LOCALE_LIST[my_locale].INTRODUCTION_SORCERESS_RESPONCE, 6.)
-                                    end
-                                end)
-                            end)
-                        end)
-                    end)]]
 
                     if GetLocalPlayer() == Player(player_id - 1) then
                         PanCameraToTimed(GetUnitX(hero), GetUnitY(hero), 0.)
@@ -394,7 +375,7 @@ do
 
     function CreateHeroSelections()
 
-
+        PlayerHero = {}
         PlayerLabels = {}
         PlayerRequiredEXP = {}
         PlayerLastRequiredEXP = {}

@@ -7,6 +7,7 @@ do
 
     SkillPanelFrame = 0
     SkillPanelButton = 0
+    local BackupButtonData
 
     local ClickTrigger = 0
     local EnterTrigger = 0
@@ -275,9 +276,24 @@ do
 
 
                     SkillPanelFrame[player].button_keys[KEY_Q] = NewButton(KEY_Q, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.035, 0.035, skill_bind_panel, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.017, 0., main_frame)
+                    local button_data = GetButtonData(SkillPanelFrame[player].button_keys[KEY_Q])
+                    button_data.skill = BackupButtonData[player][KEY_Q].skill or nil
+                    BackupButtonData[player][KEY_Q] = button_data
+
+                    if BackupButtonData[player][KEY_Q].skill then
+                        BlzFrameSetTexture(button_data.image, BackupButtonData[player][KEY_Q].skill.icon, 0, true)
+                        FrameChangeTexture(button_data.button, BackupButtonData[player][KEY_Q].skill.icon)
+                    end
 
                         for key = 2, KEY_F do
                             SkillPanelFrame[player].button_keys[key] = NewButton(key, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.035, 0.035, SkillPanelFrame[player].button_keys[key-1], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0012, 0., SkillPanelFrame[player].button_keys[key-1])
+                            local button_data = GetButtonData(SkillPanelFrame[player].button_keys[key])
+                            button_data.skill = BackupButtonData[player][key].skill or nil
+                            BackupButtonData[player][key] = button_data
+                            if BackupButtonData[player][key].skill then
+                                BlzFrameSetTexture(button_data.image, BackupButtonData[player][key].skill.icon, 0, true)
+                                FrameChangeTexture(button_data.button, BackupButtonData[player][key].skill.icon)
+                            end
                         end
 
 
@@ -357,7 +373,7 @@ do
             BlzFrameSetSize(category_border_panel, BlzFrameGetWidth(main_frame) - (BlzFrameGetWidth(main_frame) * 0.75), BlzFrameGetHeight(main_frame) * 0.64)
 
 
-
+            BackupButtonData[player] = {}
             SkillPanelFrame[player].category = {}
             SkillPanelFrame[player].category_tooltip = {}
             SkillPanelFrame[player].current_category = 1
@@ -394,9 +410,11 @@ do
 
             SkillPanelFrame[player].button_keys = {}
             SkillPanelFrame[player].button_keys[KEY_Q] = NewButton(KEY_Q, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.035, 0.035, skill_bind_panel, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.017, 0., main_frame)
+            BackupButtonData[player][KEY_Q] = GetButtonData(SkillPanelFrame[player].button_keys[KEY_Q])
 
                 for key = 2, KEY_F do
                     SkillPanelFrame[player].button_keys[key] = NewButton(key, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.035, 0.035, SkillPanelFrame[player].button_keys[key-1], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0012, 0., SkillPanelFrame[player].button_keys[key-1])
+                    BackupButtonData[player][key] = GetButtonData(SkillPanelFrame[player].button_keys[key])
                 end
 
 
@@ -544,6 +562,7 @@ do
     function SkillPanelInit()
 
         SkillPanelFrame = {}
+        BackupButtonData = {}
 
         ClickTrigger = CreateTrigger()
         EnterTrigger = CreateTrigger()
