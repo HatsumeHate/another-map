@@ -391,7 +391,7 @@ do
 					"A003", "A001", "A005", "A00E", "ABLZ", "ASIR"
 				},
 				[SKILL_CATEGORY_FIRE] = {
-					"A00D", "A00F", "A00I", "AMLT"
+					"A00D", "A00F", "A00I", "AMLT", "AFRW"
 				},
 				[SKILL_CATEGORY_ARCANE] = {
 					"A00L", "A00N", "A00H"
@@ -619,6 +619,66 @@ do
 			MAX_SLOTS = 0,
 			sell_value = 50,
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_MID_ARMOR]
+		})
+
+
+		ItemAddData('I02O', {
+			NAME    = LOCALE_LIST[my_locale].STARTING_ITEM_NAME_MACE,
+			TYPE = ITEM_TYPE_WEAPON,
+			SUBTYPE = BLUNT_WEAPON,
+			DAMAGE  = 37,
+			stat_modificator = 1.,
+			QUALITY = COMMON_ITEM,
+			model = "Items\\Mace.mdx",
+			frame_texture = "Weapons\\BTNAntiqueMace.blp",
+			flippy = true,
+			BONUS   = {
+				{ PARAM = PHYSICAL_ATTACK, VALUE = 10, METHOD = STRAIGHT_BONUS },
+				{ PARAM = MAGICAL_ATTACK, VALUE = 15, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 0,
+			sell_value = 60,
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT]
+		})
+
+		ItemAddData('I02N', {
+			NAME    = LOCALE_LIST[my_locale].STARTING_ITEM_NAME_SHIELD,
+			TYPE = ITEM_TYPE_OFFHAND,
+			SUBTYPE = SHIELD_OFFHAND,
+			DEFENCE  = 15,
+			BLOCK = 20.,
+			BLOCK_RATE = 0.3,
+			stat_modificator = 0.9,
+			QUALITY = COMMON_ITEM,
+			flippy = true,
+			frame_texture = "Offhand\\BTNFancy Shield.blp",
+			model = "Items\\Rustier Wooden Buckler Condensed.mdx",
+			BONUS   = {
+				{ PARAM = HP_VALUE, VALUE = 25, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 0,
+			sell_value = 50,
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_SHIELD_WOOD]
+		})
+
+
+		ItemAddData('I02P', {
+			NAME    = LOCALE_LIST[my_locale].STARTING_ITEM_NAME_DAGGER,
+			TYPE = ITEM_TYPE_WEAPON,
+			SUBTYPE = DAGGER_WEAPON,
+			DAMAGE  = 25,
+			stat_modificator = 1.,
+			QUALITY = COMMON_ITEM,
+			model = "Items\\Mithril Dagger.mdx",
+			frame_texture = "Weapons\\BTNNastyShiv.blp",
+			flippy = true,
+			BONUS   = {
+				{ PARAM = ATTACK_SPEED, VALUE = 3, METHOD = STRAIGHT_BONUS },
+				{ PARAM = MOVING_SPEED, VALUE = 7, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 0,
+			sell_value = 45,
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER]
 		})
 
 
@@ -1471,7 +1531,7 @@ do
 			BONUS   = {
 				{ PARAM = PHYSICAL_ATTACK, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				{ PARAM = CRIT_MULTIPLIER, VALUE = 1.25, METHOD = STRAIGHT_BONUS },
-				{ PARAM = AGI_STAT, VALUE = 3, METHOD = STRAIGHT_BONUS },
+				{ PARAM = AGI_STAT, VALUE = 3, METHOD = STRAIGHT_BONUS, base = 3, delta = 1, delta_level = 10, delta_level_max = 5 },
 			},
 			MAX_SLOTS = 3,
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
@@ -1488,7 +1548,7 @@ do
 			BONUS   = {
 				{ PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				{ PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 20, METHOD = STRAIGHT_BONUS },
-				{ PARAM = AGI_STAT, VALUE = 4, METHOD = STRAIGHT_BONUS },
+				{ PARAM = AGI_STAT, VALUE = 4, METHOD = STRAIGHT_BONUS, base = 4, delta = 1, delta_level = 10, delta_level_max = 5 },
 			},
 			MAX_SLOTS = 2,
 			frame_texture = "Armor\\BTNbt.blp",
@@ -1511,7 +1571,7 @@ do
 			BONUS   = {
 				{ PARAM = CAST_SPEED, VALUE = 5, METHOD = STRAIGHT_BONUS },
 				{ PARAM = CRIT_MULTIPLIER, VALUE = 0.3, METHOD = STRAIGHT_BONUS },
-				{ PARAM = INT_STAT, VALUE = 5, METHOD = STRAIGHT_BONUS },
+				{ PARAM = INT_STAT, VALUE = 5, METHOD = STRAIGHT_BONUS, base = 5, delta = 1, delta_level = 10, delta_level_max = 5 },
 			},
 			MAX_SLOTS = 3,
 			frame_texture = "Weapons\\BTN_CW_Red_Scepter.blp",
@@ -1532,8 +1592,8 @@ do
 			flippy = true,
 			level = 10,
 			BONUS   = {
-				{ PARAM = DARKNESS_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS },
-				{ PARAM = DARKNESS_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				{ PARAM = DARKNESS_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS, base = 10, delta = 1, delta_level = 10, delta_level_max = 5 },
+				{ PARAM = DARKNESS_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS, base = 20, delta = 1, delta_level = 10, delta_level_max = 5 },
 				{ PARAM = CONTROL_REDUCTION, VALUE = 10, METHOD = STRAIGHT_BONUS },
 			},
 			MAX_SLOTS = 2,
@@ -1575,7 +1635,7 @@ do
 			BONUS   = {
 				{ PARAM = CRIT_CHANCE, VALUE = 5, METHOD = STRAIGHT_BONUS },
 				{ PARAM = HP_REGEN, VALUE = 1.15, METHOD = MULTIPLY_BONUS },
-				{ PARAM = AGI_STAT, VALUE = 2, METHOD = STRAIGHT_BONUS },
+				{ PARAM = AGI_STAT, VALUE = 2, METHOD = STRAIGHT_BONUS, base = 2, delta = 1, delta_level = 10, delta_level_max = 5 },
 			},
 			MAX_SLOTS = 3,
 			frame_texture = "Weapons\\BTNBlack Navaja.blp",
@@ -1597,8 +1657,8 @@ do
 			level = 10,
 			BONUS   = {
 				{ PARAM = CRIT_CHANCE, VALUE = 7, METHOD = STRAIGHT_BONUS },
-				{ PARAM = STR_STAT, VALUE = 4, METHOD = STRAIGHT_BONUS },
-				{ PARAM = HP_PER_HIT, VALUE = 15, METHOD = STRAIGHT_BONUS },
+				{ PARAM = STR_STAT, VALUE = 4, METHOD = STRAIGHT_BONUS, base = 4, delta = 1, delta_level = 10, delta_level_max = 5 },
+				{ PARAM = HP_PER_HIT, VALUE = 15, METHOD = STRAIGHT_BONUS, base = 15, delta = 1, delta_level = 5, delta_level_max = 8 },
 			},
 			MAX_SLOTS = 3,
 			frame_texture = "Weapons\\BTNtier4 sword.blp",
@@ -1620,7 +1680,7 @@ do
 			BONUS   = {
 				{ PARAM = EXP_BONUS, VALUE = 15, METHOD = STRAIGHT_BONUS },
 				{ PARAM = HEALING_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS },
-				{ PARAM = BONUS_UNDEAD_DAMAGE, VALUE = 7, METHOD = STRAIGHT_BONUS },
+				{ PARAM = BONUS_UNDEAD_DAMAGE, VALUE = 7, METHOD = STRAIGHT_BONUS, base = 7, delta = 1, delta_level = 10, delta_level_max = 5 },
 			},
 			MAX_SLOTS = 3,
 			frame_texture = "Jewelry\\BTNGold Mystic Ring.blp",
@@ -1639,9 +1699,9 @@ do
 			flippy = true,
 			level = 10,
 			BONUS   = {
-				{ PARAM = MP_VALUE, VALUE = 50, METHOD = STRAIGHT_BONUS },
-				{ PARAM = INT_STAT, VALUE = 7, METHOD = STRAIGHT_BONUS },
-				{ PARAM = DARKNESS_BONUS, VALUE = 4, METHOD = STRAIGHT_BONUS },
+				{ PARAM = MP_VALUE, VALUE = 50, METHOD = STRAIGHT_BONUS, base = 50, delta = 3, delta_level = 5, delta_level_max = 10 },
+				{ PARAM = INT_STAT, VALUE = 7, METHOD = STRAIGHT_BONUS, base = 7, delta = 1, delta_level = 15, delta_level_max = 5 },
+				{ PARAM = DARKNESS_BONUS, VALUE = 4, METHOD = STRAIGHT_BONUS, base = 4, delta = 1, delta_level = 10, delta_level_max = 5 },
 			},
 			MAX_SLOTS = 2,
 			frame_texture = "Offhand\\BTNUmbralTome2.blp",
@@ -1663,7 +1723,7 @@ do
 			BONUS   = {
 				{ PARAM = PHYSICAL_DEFENCE, VALUE = 1.3, METHOD = MULTIPLY_BONUS },
 				{ PARAM = MAGICAL_SUPPRESSION, VALUE = 1.3, METHOD = MULTIPLY_BONUS },
-				{ PARAM = ALL_RESIST, VALUE = 10, METHOD = STRAIGHT_BONUS },
+				{ PARAM = ALL_RESIST, VALUE = 10, METHOD = STRAIGHT_BONUS, base = 10, delta = 1, delta_level = 10, delta_level_max = 5 },
 			},
 			MAX_SLOTS = 3,
 			frame_texture = "Armor\\BTNCloak of shadows.blp",
@@ -1685,7 +1745,7 @@ do
 			level = 10,
 			BONUS   = {
 				{ PARAM = CRIT_MULTIPLIER, VALUE = 1., METHOD = STRAIGHT_BONUS },
-				{ PARAM = STR_STAT, VALUE = 5, METHOD = STRAIGHT_BONUS },
+				{ PARAM = STR_STAT, VALUE = 5, METHOD = STRAIGHT_BONUS, base = 5, delta = 1, delta_level = 10, delta_level_max = 5 },
 			},
 			MAX_SLOTS = 4,
 			frame_texture = "ReplaceableTextures\\CommandButtons\\BTNGatherGold.blp",
@@ -1722,8 +1782,8 @@ do
 			flippy = true,
 			level = 10,
 			BONUS   = {
-				{ PARAM = LIGHTNING_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS },
-				{ PARAM = INT_STAT, VALUE = 5, METHOD = STRAIGHT_BONUS },
+				{ PARAM = LIGHTNING_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS, base = 10, delta = 1, delta_level = 5, delta_level_max = 25 },
+				{ PARAM = INT_STAT, VALUE = 5, METHOD = STRAIGHT_BONUS, base = 5, delta = 1, delta_level = 10, delta_level_max = 5 },
 				{ PARAM = CAST_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS },
 			},
 			MAX_SLOTS = 2,
@@ -1742,8 +1802,8 @@ do
 			flippy = true,
 			level = 10,
 			BONUS   = {
-				{ PARAM = FIRE_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS },
-				{ PARAM = MAGICAL_ATTACK, VALUE = 35, METHOD = STRAIGHT_BONUS },
+				{ PARAM = FIRE_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS, base = 10, delta = 1, delta_level = 5, delta_level_max = 25 },
+				{ PARAM = MAGICAL_ATTACK, VALUE = 35, METHOD = STRAIGHT_BONUS, base = 35, delta = 2, delta_level = 1, delta_level_max = 35 },
 				{ PARAM = CRIT_CHANCE, VALUE = 7, METHOD = STRAIGHT_BONUS },
 			},
 			MAX_SLOTS = 1,
@@ -1762,8 +1822,8 @@ do
 			flippy = true,
 			level = 10,
 			BONUS   = {
-				{ PARAM = MP_VALUE, VALUE = 25, METHOD = STRAIGHT_BONUS },
-				{ PARAM = FIRE_RESIST, VALUE = 10, METHOD = STRAIGHT_BONUS },
+				{ PARAM = MP_VALUE, VALUE = 25, METHOD = STRAIGHT_BONUS, base = 25, delta = 1, delta_level = 1, delta_level_max = 35 },
+				{ PARAM = FIRE_RESIST, VALUE = 10, METHOD = STRAIGHT_BONUS, base = 10, delta = 2, delta_level = 5, delta_level_max = 10 },
 				{ PARAM = CAST_SPEED, VALUE = 15, METHOD = STRAIGHT_BONUS },
 			},
 			MAX_SLOTS = 1,
@@ -1782,9 +1842,9 @@ do
 			flippy = true,
 			level = 10,
 			BONUS   = {
-				{ PARAM = REFLECT_DAMAGE, VALUE = 55, METHOD = STRAIGHT_BONUS },
+				{ PARAM = REFLECT_DAMAGE, VALUE = 55, METHOD = STRAIGHT_BONUS, base = 55, delta = 3, delta_level = 1, delta_level_max = 25 },
 				{ PARAM = ATTACK_SPEED, VALUE = 12, METHOD = STRAIGHT_BONUS },
-				{ PARAM = PHYSICAL_ATTACK, VALUE = 27, METHOD = STRAIGHT_BONUS },
+				{ PARAM = PHYSICAL_ATTACK, VALUE = 27, METHOD = STRAIGHT_BONUS, base = 27, delta = 1, delta_level = 1, delta_level_max = 45 },
 			},
 			MAX_SLOTS = 1,
 			frame_texture = "Jewelry\\BTNDarknessRing.blp",
@@ -1804,9 +1864,9 @@ do
 			flippy = true,
 			level = 10,
 			BONUS   = {
-				{ PARAM = STR_STAT, VALUE = 2, METHOD = STRAIGHT_BONUS },
-				{ PARAM = ICE_RESIST, VALUE = 4, METHOD = STRAIGHT_BONUS },
-				{ PARAM = PHYSICAL_ATTACK, VALUE = 27, METHOD = STRAIGHT_BONUS },
+				{ PARAM = STR_STAT, VALUE = 2, METHOD = STRAIGHT_BONUS, base = 2, delta = 1, delta_level = 15, delta_level_max = 3 },
+				{ PARAM = ICE_RESIST, VALUE = 4, METHOD = STRAIGHT_BONUS, base = 4, delta = 1, delta_level = 10, delta_level_max = 10 },
+				{ PARAM = PHYSICAL_ATTACK, VALUE = 27, METHOD = STRAIGHT_BONUS, base = 27, delta = 1, delta_level = 1, delta_level_max = 45 },
 			},
 			MAX_SLOTS = 1,
 			frame_texture = "Weapons\\BTNFrostAxe.blp",
@@ -1826,8 +1886,8 @@ do
 			flippy = true,
 			level = 10,
 			BONUS   = {
-				{ PARAM = PHYSICAL_ATTACK, VALUE = 37, METHOD = STRAIGHT_BONUS },
-				{ PARAM = MAGICAL_ATTACK, VALUE = 55, METHOD = STRAIGHT_BONUS },
+				{ PARAM = PHYSICAL_ATTACK, VALUE = 37, METHOD = STRAIGHT_BONUS, base = 37, delta = 1, delta_level = 1, delta_level_max = 45 },
+				{ PARAM = MAGICAL_ATTACK, VALUE = 55, METHOD = STRAIGHT_BONUS, base = 55, delta = 2, delta_level = 1, delta_level_max = 45 },
 				{ PARAM = MOVING_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS },
 			},
 			MAX_SLOTS = 2,
@@ -1891,9 +1951,9 @@ do
 			flippy = true,
 			level = 10,
 			BONUS   = {
-				{ PARAM = STR_STAT, VALUE = 1, METHOD = STRAIGHT_BONUS },
-				{ PARAM = HP_VALUE, VALUE = 44, METHOD = STRAIGHT_BONUS },
-				{ PARAM = HOLY_RESIST, VALUE = 5, METHOD = STRAIGHT_BONUS },
+				{ PARAM = STR_STAT, VALUE = 1, METHOD = STRAIGHT_BONUS, base = 1, delta = 1, delta_level = 10, delta_level_max = 5 },
+				{ PARAM = HP_VALUE, VALUE = 44, METHOD = STRAIGHT_BONUS, base = 44, delta = 5, delta_level = 3, delta_level_max = 45 },
+				{ PARAM = HOLY_RESIST, VALUE = 5, METHOD = STRAIGHT_BONUS, base = 5, delta = 2, delta_level = 10, delta_level_max = 5 },
 			},
 			MAX_SLOTS = 1,
 			frame_texture = "Weapons\\BTNInfernal Mace.blp",
@@ -1914,9 +1974,9 @@ do
 			flippy = true,
 			level = 10,
 			BONUS   = {
-				{ PARAM = AGI_STAT, VALUE = 1, METHOD = STRAIGHT_BONUS },
-				{ PARAM = MP_VALUE, VALUE = 20, METHOD = STRAIGHT_BONUS },
-				{ PARAM = DARKNESS_RESIST, VALUE = 5, METHOD = STRAIGHT_BONUS },
+				{ PARAM = AGI_STAT, VALUE = 1, METHOD = STRAIGHT_BONUS, base = 1, delta = 1, delta_level = 10, delta_level_max = 5 },
+				{ PARAM = MP_VALUE, VALUE = 20, METHOD = STRAIGHT_BONUS, base = 20, delta = 3, delta_level = 2, delta_level_max = 25 },
+				{ PARAM = DARKNESS_RESIST, VALUE = 5, METHOD = STRAIGHT_BONUS, base = 5, delta = 2, delta_level = 10, delta_level_max = 5 },
 			},
 			MAX_SLOTS = 1,
 			frame_texture = "Weapons\\BTNBlood Stinger.blp",
@@ -1937,7 +1997,7 @@ do
 			level = 10,
 			BONUS   = {
 				{ PARAM = MP_REGEN, VALUE = 1.05, METHOD = MULTIPLY_BONUS },
-				{ PARAM = INT_STAT, VALUE = 4, METHOD = STRAIGHT_BONUS },
+				{ PARAM = INT_STAT, VALUE = 4, METHOD = STRAIGHT_BONUS, base = 4, delta = 1, delta_level = 10, delta_level_max = 5 },
 			},
 			MAX_SLOTS = 3,
 			frame_texture = "Offhand\\BTNMageOrb.blp",
@@ -1956,7 +2016,7 @@ do
 			flippy = true,
 			level = 10,
 			BONUS   = {
-				{ PARAM = ICE_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS },
+				{ PARAM = ICE_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS, base = 10, delta = 1, delta_level = 10, delta_level_max = 5 },
 				{ PARAM = CRIT_MULTIPLIER, VALUE = 0.1, METHOD = STRAIGHT_BONUS },
 				{ PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 5, METHOD = STRAIGHT_BONUS },
 			},
@@ -1978,7 +2038,7 @@ do
 			BONUS   = {
 				{ PARAM = ATTACK_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS },
 				{ PARAM = MOVING_SPEED, VALUE = 1.1, METHOD = MULTIPLY_BONUS },
-				{ PARAM = PHYSICAL_ATTACK, VALUE = 35, METHOD = STRAIGHT_BONUS },
+				{ PARAM = PHYSICAL_ATTACK, VALUE = 35, METHOD = STRAIGHT_BONUS, base = 35, delta = 1, delta_level = 2, delta_level_max = 15 },
 			},
 			MAX_SLOTS = 3,
 			frame_texture = "Armor\\BTNUnholyStrength.blp",
@@ -1996,7 +2056,7 @@ do
 			flippy = true,
 			level = 10,
 			BONUS   = {
-				{ PARAM = HP_VALUE, VALUE = 30, METHOD = STRAIGHT_BONUS },
+				{ PARAM = HP_VALUE, VALUE = 30, METHOD = STRAIGHT_BONUS, base = 30, delta = 10, delta_level = 3, delta_level_max = 25 },
 			},
 			MAX_SLOTS = 2,
 			frame_texture = "Armor\\BTNFire Plate Armor.blp",
@@ -2014,7 +2074,7 @@ do
 			flippy = true,
 			level = 10,
 			BONUS   = {
-				{ PARAM = MP_VALUE, VALUE = 30, METHOD = STRAIGHT_BONUS },
+				{ PARAM = MP_VALUE, VALUE = 30, METHOD = STRAIGHT_BONUS, base = 30, delta = 10, delta_level = 3, delta_level_max = 25 },
 			},
 			MAX_SLOTS = 2,
 			frame_texture = "Armor\\BTNFire Horned Helmet.blp",
@@ -2033,7 +2093,7 @@ do
 			flippy = true,
 			level = 10,
 			BONUS   = {
-				{ PARAM = STR_STAT, VALUE = 2, METHOD = STRAIGHT_BONUS },
+				{ PARAM = STR_STAT, VALUE = 2, METHOD = STRAIGHT_BONUS, base = 2, delta = 1, delta_level = 10, delta_level_max = 5 },
 				{ PARAM = MOVING_SPEED, VALUE = 25, METHOD = STRAIGHT_BONUS },
 			},
 			MAX_SLOTS = 2,

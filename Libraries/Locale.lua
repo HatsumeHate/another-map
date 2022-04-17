@@ -98,6 +98,12 @@ do
                 MONSTER_NAME_ROBBER = "Грабитель",
                 MONSTER_NAME_ROGUE = "Разбойник",
                 MONSTER_NAME_ASSASSIN = "Убийца",
+                MONSTER_NAME_GNOLL = "Гнолл",
+                MONSTER_NAME_GNOLL_BRUTE = "Громила",
+                MONSTER_NAME_GNOLL_OVERSEER = "Надзиратель",
+                MONSTER_NAME_GNOLL_POACHER = "Браконьер",
+                MONSTER_NAME_GNOLL_ASSASSIN = "Гнолл-Убийца",
+                MONSTER_NAME_GNOLL_WARDEN = "Тюремщик",
                 MONSTER_NAME_BANDIT_BOSS = "Главарь Бандитов",
                 MONSTER_NAME_SKELETON_KING = "Король Скелет",
                 MONSTER_NAME_MEPHISTO = "Мефисто",
@@ -113,6 +119,7 @@ do
                 MONSTER_NAME_TENTACLE = "Щупальце",
                 MONSTER_NAME_LILITH = "Лилит",
                 MONSTER_NAME_FOREST_GUARD = "Страж Леса",
+
 
 
                 NAME_SKELETON_SUMMONED = "Оживленный Воин",
@@ -142,6 +149,8 @@ do
                 PLAYER_LEFT = "Игрок # покинул игру.",
 
                 BLOCK_TEXT = "Блок ",
+                MISS_TEXT = "Промах",
+
                 WAVE_INCOMING_TEXT = "Волна:",
                 WAVE_LEVEL = "Уровень ",
                 WAVE_COUNTDOWN = "До атаки: ",
@@ -297,6 +306,10 @@ do
                 NECROMANCER_PROPER_NAME_15 = "Морбент Падший",
 
 
+                PALADIN_PROPER_NAME_1 = "Granis Darkhammer",
+                PALADIN_PROPER_NAME_2 = "Jorn the Redeemer",
+                PALADIN_PROPER_NAME_3 = "Sage Truthbearer",
+                --BlzGetUnitStringField(unit, UNIT_SF_)
 
 
 
@@ -571,7 +584,8 @@ do
                 STAT_PANEL_PHYS_DEFENCE = "Защита: ",
                 STAT_PANEL_MAG_ATTACK = "Маг. урон: ",
                 STAT_PANEL_MAG_DEFENCE = "Подавление: ",
-                STAT_PANEL_ATTACK_SPEED = "Период атак: ",
+                STAT_PANEL_ATTACK_SPEED = "Скорость атаки: ",
+                STAT_PANEL_ATTACK_SPEED_PERIOD = "Период атак: ",
                 STAT_PANEL_CAST_SPEED = "Скорость каста: ",
                 STAT_PANEL_CRIT_CHANCE = "Крит. Шанс: ",
 
@@ -806,6 +820,9 @@ do
                 STARTING_ITEM_NAME_HANDS = "Стеганные рукавицы",
                 STARTING_ITEM_NAME_LEGS = "Клепанные сапоги",
                 STARTING_ITEM_NAME_STAFF = "Потертый посох",
+                STARTING_ITEM_NAME_MACE = "Добротная Булава",
+                STARTING_ITEM_NAME_SHIELD = "Старый Щит",
+                STARTING_ITEM_NAME_DAGGER = "Затупленный Кинжал",
                 --STARTING_ITEM_NAME_ = "",
 
                 SHARD_OF_HATE = "Осколок ненависти",
@@ -903,6 +920,7 @@ do
                 SKILL_LIGHTNINGBALL = 'Шаровая Молния',
                 SKILL_DISCHARGE = 'Разряд',
                 SKILL_METEOR = 'Метеор',
+                SKILL_FIRE_WAVE = "Огненная Волна",
                 SKILL_TELEPORT = 'Телепорт',
                 SKILL_LIGHTNINGSTRIKE = 'Удар Молнии',
                 SKILL_FROSTORB = 'Ледяной Шар',
@@ -1114,6 +1132,9 @@ do
                     [20] = "Выстреливает 5 хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают.",
                     [30] = "Выстреливает 6 хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают.",
                     [40] = "Выстреливает 7 хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают.",
+                },
+                [FourCC("AFRW")] = {
+                    [1] = "Чародейка пускает волну огня наносящую @e!fire_wall_effect.pwr# ед. урона типа @e!fire_wall_effect.atr#."
                 },
                 [FourCC("A00F")] = {
                     [1] = "Призывает с неба метеор падающий на землю после небольшой задержки нанося @e!EMTR.pwr# ед. урона типа @e!EMTR.atr# в радиусе @e!EMTR.aoe# и отталкивая противников из центра падения. Имеет повышенный бонус к стихии (+@e!EMTR.ab#)",
@@ -1752,6 +1773,10 @@ do
                 BARBARIAN_NAME = "Варвар",
                 SORCERESS_NAME = "Волшебница",
                 NECROMANCER_NAME = "Некромант",
+                PALADIN_NAME = "Паладин",
+                ASSASSIN_NAME = "Убийца",
+                DRUID_NAME = "Друид",
+                AMAZON_NAME = "Амазонка",
 
                 VENDOR_BILL_NAME = "Вендор Билл",
                 HEALER_NAME = "Целительница Далия",
@@ -1965,6 +1990,12 @@ do
                 MONSTER_NAME_ROBBER = "Brigand",
                 MONSTER_NAME_ROGUE = "Rogue",
                 MONSTER_NAME_ASSASSIN = "Assassin",
+                MONSTER_NAME_GNOLL = "Gnoll",
+                MONSTER_NAME_GNOLL_BRUTE = "Brute",
+                MONSTER_NAME_GNOLL_OVERSEER = "Overseer",
+                MONSTER_NAME_GNOLL_POACHER = "Poacher",
+                MONSTER_NAME_GNOLL_ASSASSIN = "Gnoll-Assassin",
+                MONSTER_NAME_GNOLL_WARDEN = "Warden",
                 MONSTER_NAME_BANDIT_BOSS = "Bandit Lord",
                 MONSTER_NAME_SKELETON_KING = "Skeleton King",
                 MONSTER_NAME_MEPHISTO = "Mephisto",
@@ -2011,6 +2042,7 @@ do
                 WAVE_COUNTDOWN = "Attack in: ",
 
                 BLOCK_TEXT = "Block ",
+                MISS_TEXT = "Miss",
 
                 PHYSICAL_ATTACK_PARAM = "Physical attack",
                 PHYSICAL_DEFENCE_PARAM = 'Physical defence',
@@ -2429,8 +2461,9 @@ do
                 STAT_PANEL_PHYS_DEFENCE = "Defence: ",
                 STAT_PANEL_MAG_ATTACK = "Mag. attack: ",
                 STAT_PANEL_MAG_DEFENCE = "Suppress: ",
-                STAT_PANEL_ATTACK_SPEED = "Attack cooldown: ",
-                STAT_PANEL_CAST_SPEED = "Cast speed: ",
+                STAT_PANEL_ATTACK_SPEED = "Attack Speed: ",
+                STAT_PANEL_ATTACK_SPEED_PERIOD = "Attack cooldown: ",
+                STAT_PANEL_CAST_SPEED = "Cast Speed: ",
                 STAT_PANEL_CRIT_CHANCE = "Crit. chance: ",
 
                 STAT_PANEL_FIRE = "Fire: ",
@@ -2667,6 +2700,9 @@ do
                 STARTING_ITEM_NAME_HANDS = "Quilted Gauntlets",
                 STARTING_ITEM_NAME_LEGS = "Riveted boots",
                 STARTING_ITEM_NAME_STAFF = "Worn staff",
+                STARTING_ITEM_NAME_MACE = "Solid Mace",
+                STARTING_ITEM_NAME_SHIELD = "Old Shield",
+                STARTING_ITEM_NAME_DAGGER = "Blunt Dagger",
 
                 SHARD_OF_HATE = "Shard of Hate",
                 SHARD_OF_HATE_DESC = "Strange glowing shard.|nYou feel rise of hatred upon touching it.",
@@ -2763,6 +2799,7 @@ do
                 SKILL_LIGHTNINGBALL = 'Lightning Ball',
                 SKILL_DISCHARGE = 'Discharge',
                 SKILL_METEOR = 'Meteor',
+                SKILL_FIRE_WAVE = "Flame Wave",
                 SKILL_TELEPORT = 'Teleport',
                 SKILL_LIGHTNINGSTRIKE = 'Lightning Strike',
                 SKILL_FROSTORB = 'Frost Orb',
@@ -2975,6 +3012,9 @@ do
                     [30] = "Shots 6 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
                     [40] = "Shots 7 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
                 },
+                [FourCC("AFRW")] = {
+                    [1] = "Sorceress creates a moving flame wave that deals @e!fire_wall_effect.pwr# magic damage as @e!fire_wall_effect.atr#."
+                },
                 [FourCC("A00F")] = {
                     [1] = "Calls for a meteor from the sky that falling after a short delay, dealing enemies @e!EMTR.pwr# as @e!EMTR.atr# damage in a @e!EMTR.aoe# radius, pushing them from an explosion center. Has bonus to an attribute (+@e!EMTR.ab#)",
                 },
@@ -3069,7 +3109,7 @@ do
                     [1] = "Throws a ball of toxic material that blows on a first enemy hit, dealing @e!ENTS.pwr# as @e!ENTS.atr# in a small radius.",
                 },
                 [FourCC("ANBR")] = {
-                    [1] = "Rips bones from nearby enemies in 400 radius, dealing @e!ENRP.pwr# as @e!ENRP.atr# and stunning them for @b!ABRD.time# seconds. If at least one enemy hit, necromancer's @b!ANBR.pa1# is increased by@b!ANBR.va1# and @b!ANBR.pa2# by @b!ANBR.va2# for @b!ANBR.time# seconds.",
+                    [1] = "Rips bones from nearby enemies in 400 radius, dealing @e!ENRP.pwr# as @e!ENRP.atr# and stunning them for @b!ABRD.time# seconds. If at least one enemy is hit, necromancer's @b!ANBR.pa1# is increased by@b!ANBR.va1# and @b!ANBR.pa2# by @b!ANBR.va2# for @b!ANBR.time# seconds.",
                 },
 
 
@@ -3109,9 +3149,9 @@ do
                     },
                     ["talent_heat"] = {
                         name = "Heat",
-                        [1] = "Enemies that hit with fire attacks suffer loss of physical attack by 7%% for 6 secs.",
-                        [2] = "Enemies that hit with fire attacks suffer loss of physical attack by 14%% for 6 secs.",
-                        [3] = "Enemies that hit with fire attacks suffer loss of physical attack by 21%% for 6 secs."
+                        [1] = "Enemies that were hit with fire attacks suffer loss of physical attack by 7%% for 6 secs.",
+                        [2] = "Enemies that were hit with fire attacks suffer loss of physical attack by 14%% for 6 secs.",
+                        [3] = "Enemies that were hit with fire attacks suffer loss of physical attack by 21%% for 6 secs."
                     },
                     ["talent_incinerate"] = {
                         name = "incineration",
@@ -3592,6 +3632,10 @@ do
                 BARBARIAN_NAME = "Barbarian",
                 SORCERESS_NAME = "Sorceress",
                 NECROMANCER_NAME = "Necromancer",
+                PALADIN_NAME = "Paladin",
+                ASSASSIN_NAME = "Assassin",
+                DRUID_NAME = "Druid",
+                AMAZON_NAME = "Amazon",
 
                 VENDOR_BILL_NAME = "Vendor Bill",
                 HEALER_NAME = "Healer Dalia",

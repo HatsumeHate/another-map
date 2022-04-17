@@ -3,7 +3,7 @@ do
     MissileList = 0
 
     function GetMissileData(id)
-        return MissileList[FourCC(id)] or nil
+        return MissileList[id] or nil
     end
 
 
@@ -90,7 +90,7 @@ do
             new_missile.max_targets = 1
         end
 
-        MissileList[FourCC(id)] = new_missile
+        MissileList[id] = new_missile
     end
 
 
@@ -155,7 +155,7 @@ do
             model = "Spell\\GreatElderHydraMoltenBreath.mdx",
             max_distance = 750.,
             radius = 52.,
-            speed = 870.,
+            speed = 970.,
             start_z = 50.,
             end_z = 50.,
             arc = 0.05,
@@ -194,13 +194,28 @@ do
             penetrate = false,
             full_distance = true
         })
+
+        --==============================================--
+        NewMissileTemplate('MGNL', {
+            name = "gnoll warden",
+            model = "Abilities\\Weapons\\FarseerMissile\\FarseerMissile.mdx",
+            max_distance = 700.,
+            radius = 50.,
+            speed = 650.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.1,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
         --==============================================--
         NewMissileTemplate('MNLH', {
             name = "summoned lich",
             model = "Abilities\\Weapons\\GargoyleMissile\\GargoyleMissile.mdx",
             max_distance = 900.,
             radius = 55.,
-            speed = 600.,
+            speed = 700.,
             start_z = 73.,
             end_z = 73.,
             arc = 0.,
@@ -566,7 +581,7 @@ do
             model = "Spell\\Blizzard II Missile.mdx",
             max_distance = 1000.,
             radius = 70.,
-            speed = 800.,
+            speed = 900.,
             start_z = 75.,
             end_z = 75.,
             arc = 0.,
@@ -588,7 +603,7 @@ do
             model = "Spell\\Fireball Medium.mdx",
             max_distance = 1000.,
             radius = 100.,
-            speed = 625.,
+            speed = 825.,
             start_z = 75.,
             end_z = 75.,
             arc = 0.,
@@ -696,7 +711,7 @@ do
             model = "Spell\\LightningSpark.mdx",
             max_distance = 800.,
             radius = 65.,
-            speed = 375.,
+            speed = 400.,
             start_z = 15.,
             end_z = 15.,
             arc = 0.,
@@ -736,12 +751,28 @@ do
             penetrate = true
         })
         --===============================================--
+        NewMissileTemplate('fire_wall_missile', {
+            name = "fire wall missile",
+            model = "Effect\\fire3.mdx",
+            max_distance = 700.,
+            radius = 100.,
+            speed = 600.,
+            start_z = 0.,
+            end_z = 0.,
+            scale = 1.15,
+            effect_on_hit = 'fire_wall_effect',
+            max_targets = 500,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+        })
+        --===============================================--
         NewMissileTemplate('MTHK', {
             name = "knife missile",
             model = "Spell\\SpinningKnife.mdx",
             max_distance = 700.,
             radius = 75.,
-            speed = 740.,
+            speed = 900.,
             start_z = 70.,
             end_z = 70.,
             arc = 0.1,
@@ -826,11 +857,6 @@ do
             model = "Spell\\OrbOfVenom.mdx",
             max_distance = 1000.,
             effect_on_hit = 'ENTS',
-            --sound_on_launch = {
-               -- pack = { "Sounds\\Spells\\poison_cast_1.wav", "Sounds\\Spells\\poison_cast_2.wav", "Sounds\\Spells\\poison_cast_3.wav" },
-                --volume = 125,
-                --cutoff = 1600.,
-            --},
             radius = 75.,
             speed = 700.,
             start_z = 70.,
@@ -971,6 +997,22 @@ do
             full_distance = true,
             penetrate = true,
             only_on_impact = true
+        })
+        --===============================================--
+        NewMissileTemplate('ensnare_missile', {
+            name = "snare missile",
+            model = "Abilities\\Spells\\Orc\\Ensnare\\EnsnareMissile.mdx",
+            max_distance = 600.,
+            radius = 75.,
+            speed = 900.,
+            start_z = 60.,
+            end_z = 60.,
+            arc = 0.1,
+            effect_on_hit = 'gnoll_snare_effect',
+            max_targets = 1,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
         })
     end
 

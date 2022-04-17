@@ -52,6 +52,7 @@ do
     local BOOK_ITEM_LIST = 0
     local BOOK_CLASS_ITEM_LIST = 0
     local GENERATED_ITEM_LIST = 0
+    GeneratedScaling = nil
 
 
     function GetRandomGeneratedItemId()
@@ -3386,14 +3387,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 5, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 5, value_max = 5, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -3462,14 +3463,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 5, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 5, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -3540,14 +3541,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 24, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 24, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 15, value_max = 21, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 15, value_max = 21, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min= 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -3616,14 +3617,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 24, value_max = 30, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 24, value_max = 30, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 21, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 21, value_max = 35, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min= 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -3691,14 +3692,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 13, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 13, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 13, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 13, value_max = 17, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -3761,14 +3762,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 18, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 18, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -3831,14 +3832,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 18, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 60. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 18, value_max = 20, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 60. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 60. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 21, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 60. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 21, value_max = 35, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 60. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 60. }
                                 }
                             },
@@ -3901,14 +3902,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 27, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 27, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 70. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.075, METHOD = MULTIPLY_BONUS, probability = 70. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 21, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 21, value_max = 35, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 70. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.06, value_max = 1.075, METHOD = MULTIPLY_BONUS, probability = 70. }
                                 }
                             },
@@ -3976,14 +3977,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 26, value_max = 30, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 26, value_max = 30, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 26, value_max = 34, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 26, value_max = 34, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -4046,14 +4047,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 30, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 30, value_max = 36, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.08, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 34, value_max = 40, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 34, value_max = 40, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.08, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -4116,14 +4117,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 36, value_max = 41, METHOD = STRAIGHT_BONUS, probability = 60. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 36, value_max = 41, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 60. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 60. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 42, value_max = 55, METHOD = STRAIGHT_BONUS, probability = 60. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 42, value_max = 55, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 60. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 60. }
                                 }
                             },
@@ -4186,14 +4187,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 55, value_max = 64, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 55, value_max = 64, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 70. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.12, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 70. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 55, value_max = 66, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 55, value_max = 66, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 70. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.12, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 70. }
                                 }
                             },
@@ -4264,14 +4265,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 11, value_max = 13, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 11, value_max = 13, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 10, value_max = 11, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 10, value_max = 11, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 70. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 70. }
                                 }
                             },
@@ -4325,14 +4326,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 13, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 13, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 11, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 75. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 11, value_max = 14, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 70. }
                                 }
                             },
@@ -4386,14 +4387,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 14, value_max = 18, METHOD = STRAIGHT_BONUS, probability = 75. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 14, value_max = 18, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 70. }
                                 }
                             },
@@ -4447,14 +4448,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 19, value_max = 23, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 19, value_max = 23, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 18, value_max = 22, METHOD = STRAIGHT_BONUS, probability = 75. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 18, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.06, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 70. }
                                 }
                             },
@@ -4515,14 +4516,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 22, value_max = 26, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 22, value_max = 26, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.14, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 20, value_max = 22, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 20, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 70. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.14, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 70. }
                                 }
                             },
@@ -4576,14 +4577,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 26, value_max = 30, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 26, value_max = 30, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.14, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 75. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.08, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 70. }
                                 }
                             },
@@ -4637,14 +4638,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 30, value_max = 34, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 30, value_max = 34, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 75. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 36, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 70. }
                                 }
                             },
@@ -4698,14 +4699,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 38, value_max = 46, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 38, value_max = 46, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.12, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 36, value_max = 44, METHOD = STRAIGHT_BONUS, probability = 75. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 36, value_max = 44, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.12, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 70. }
                                 }
                             },
@@ -4778,9 +4779,9 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 12, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 12, value_max = 16, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.03, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 11, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 11, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.03, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -4859,9 +4860,9 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 22, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 15, value_max = 18, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 15, value_max = 18, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -4940,9 +4941,9 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 22, value_max = 26, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 22, value_max = 26, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.035, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 18, value_max = 22, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 18, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.035, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5021,9 +5022,9 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 26, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 26, value_max = 33, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.045, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.045, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5109,9 +5110,9 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 24, value_max = 31, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 24, value_max = 31, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 30, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 30, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.06, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5190,9 +5191,9 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 31, value_max = 44, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 31, value_max = 44, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 30, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 30, value_max = 36, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5271,9 +5272,9 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 44, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 44, value_max = 52, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.07, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 36, value_max = 44, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 36, value_max = 44, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.07, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5352,9 +5353,9 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 52, value_max = 66, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 52, value_max = 66, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.09, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 44, value_max = 56, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 44, value_max = 56, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.09, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5434,7 +5435,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5480,7 +5481,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5526,7 +5527,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 35, value_max = 41, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 35, value_max = 41, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5572,7 +5573,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 41, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 41, value_max = 52, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5625,7 +5626,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5671,7 +5672,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5717,7 +5718,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 35, value_max = 41, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 35, value_max = 41, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5763,7 +5764,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 41, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 41, value_max = 52, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5816,7 +5817,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5862,7 +5863,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5908,7 +5909,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 35, value_max = 41, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 35, value_max = 41, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -5954,7 +5955,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 41, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 41, value_max = 52, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. }
                                 }
                             },
@@ -6017,14 +6018,14 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6111,14 +6112,14 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.07, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.07, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6205,14 +6206,14 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 33, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 33, value_max = 39, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.09, value_max = 1.11, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 33, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 33, value_max = 39, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.09, value_max = 1.11, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6299,14 +6300,14 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 39, value_max = 42, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 39, value_max = 42, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.11, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 39, value_max = 47, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 39, value_max = 47, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.11, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6400,14 +6401,14 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 44, value_max = 56, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 44, value_max = 56, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.1, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 44, value_max = 56, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 44, value_max = 56, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.1, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6494,14 +6495,14 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 56, value_max = 66, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 56, value_max = 66, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.14, value_max = 1.18, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 56, value_max = 66, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 56, value_max = 66, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.14, value_max = 1.18, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6588,14 +6589,14 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 66, value_max = 78, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 66, value_max = 78, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.18, value_max = 1.22, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 66, value_max = 78, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 66, value_max = 78, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.18, value_max = 1.22, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6682,14 +6683,14 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 78, value_max = 84, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 78, value_max = 84, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.22, value_max = 1.3, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 78, value_max = 85, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 78, value_max = 85, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.22, value_max = 1.3, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6786,7 +6787,7 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6878,7 +6879,7 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6970,7 +6971,7 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -7062,7 +7063,7 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -7171,16 +7172,16 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -7284,16 +7285,16 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 25, value_max = 31, METHOD = STRAIGHT_BONUS, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 26, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 26, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -7397,16 +7398,16 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 31, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -7510,16 +7511,16 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 36, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 23, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 23, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -7629,16 +7630,16 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 40, value_max = 50, METHOD = STRAIGHT_BONUS, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.04, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 40, value_max = 50, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 40, value_max = 50, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.04, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 30, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 30, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -7742,16 +7743,16 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 50, value_max = 62, METHOD = STRAIGHT_BONUS, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.06, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 52, value_max = 56, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 52, value_max = 56, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.06, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.06, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 30, value_max = 32, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 30, value_max = 32, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -7855,16 +7856,16 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 62, value_max = 72, METHOD = STRAIGHT_BONUS, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.12, value_max = 1.18, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 56, value_max = 66, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 56, value_max = 66, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.12, value_max = 1.18, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.12, value_max = 1.18, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 34, value_max = 40, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 34, value_max = 40, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.12, value_max = 1.18, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -7968,16 +7969,16 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 36, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.12, value_max = 1.2, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 66, value_max = 74, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 66, value_max = 74, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.12, value_max = 1.2, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.12, value_max = 1.2, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 40, value_max = 46, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 40, value_max = 46, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.12, value_max = 1.2, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -8087,16 +8088,16 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -8221,16 +8222,16 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 25, value_max = 31, METHOD = STRAIGHT_BONUS, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 26, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 26, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -8348,16 +8349,16 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 31, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -8475,16 +8476,16 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 36, value_max = 39, METHOD = STRAIGHT_BONUS, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 23, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 23, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -8575,7 +8576,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
@@ -8589,9 +8590,9 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
@@ -8655,7 +8656,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
@@ -8669,9 +8670,9 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 26, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 26, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
@@ -8749,16 +8750,16 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
@@ -8836,14 +8837,14 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 35. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 35. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 23, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 23, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 35. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 35. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 35. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 35. },
@@ -8936,7 +8937,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
@@ -9038,7 +9039,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 44, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 44, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.035, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
@@ -9140,7 +9141,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 44, value_max = 58, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 44, value_max = 58, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.05, value_max = 1.075, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
@@ -9242,7 +9243,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 58, value_max = 69, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 58, value_max = 69, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.075, value_max = 1.095, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
@@ -9558,6 +9559,17 @@ do
                     },
                 }
             }
+        }
+
+
+
+        GeneratedScaling = {
+            [PHYSICAL_ATTACK] = { delta = 1, delta_level = 2, delta_level_max = 50 },
+            [MAGICAL_ATTACK] = { delta = 1, delta_level = 1, delta_level_max = 50 },
+            [PHYSICAL_DEFENCE] = { delta = 1, delta_level = 1, delta_level_max = 50 },
+            [MAGICAL_SUPPRESSION] = { delta = 1, delta_level = 2, delta_level_max = 50 },
+            [HP_VALUE] = { delta = 5, delta_level = 2, delta_level_max = 50 },
+            [MP_VALUE] = { delta = 3, delta_level = 2, delta_level_max = 50 }
         }
 
     end

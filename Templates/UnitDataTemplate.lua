@@ -128,7 +128,6 @@ do
             time_before_remove = reference_data.time_before_remove or 10.,
             proper_declension = reference_data.proper_declension or DECL_HE,
 
-
             cast_skill = 0,
             cast_skill_level = 0,
             cast_effect = nil,
@@ -351,6 +350,48 @@ do
             classic_model = true,
             --base_stats = { health = 3000., hp_regen = 30. },
         })
+
+        NewUnitTemplate('HPAL', {
+            unit_class = PALADIN_CLASS,
+            have_mp = true,
+            time_before_remove = 0.,
+            missile_eject_range = 50.,
+            base_stats = { health = 175. },
+            classic_model = true,
+            --base_stats = { health = 3000., hp_regen = 30. },
+        })
+
+        NewUnitTemplate('HASS', {
+            unit_class = ASSASSIN_CLASS,
+            have_mp = true,
+            time_before_remove = 0.,
+            missile_eject_range = 50.,
+            base_stats = { health = 175. },
+            classic_model = true,
+            --base_stats = { health = 3000., hp_regen = 30. },
+        })
+
+        NewUnitTemplate('HAMA', {
+            unit_class = AMAZON_CLASS,
+            have_mp = true,
+            time_before_remove = 0.,
+            missile_eject_range = 50.,
+            base_stats = { health = 175. },
+            classic_model = true,
+            --base_stats = { health = 3000., hp_regen = 30. },
+        })
+
+        NewUnitTemplate('HDRU', {
+            unit_class = DRUID_CLASS,
+            have_mp = true,
+            time_before_remove = 0.,
+            missile_eject_range = 50.,
+            base_stats = { health = 175. },
+            classic_model = true,
+            --base_stats = { health = 3000., hp_regen = 30. },
+        })
+
+
 
 
         -- leech
@@ -1425,6 +1466,112 @@ do
             height = 160.,
             drop_offset_min = 20., drop_offset_max = 65.,
             xp = 35,
+        })
+
+        --==========================================================--
+        -- gnoll
+        NewUnitTemplate('n02F', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GNOLL,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 10.,
+            base_stats = { health = 114., hp_regen = 0.4, moving_speed = 275. },
+            weapon = { ATTACK_SPEED = 1.35, DAMAGE = 6, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_BASH },
+            have_mp = false,
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 35,
+        })
+
+        --==========================================================--
+        -- brute
+        NewUnitTemplate('n02G', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GNOLL_BRUTE,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 10.,
+            base_stats = { health = 146., hp_regen = 0.47, moving_speed = 270. },
+            colours = { r = 255, g = 140, b = 140 },
+            weapon = { ATTACK_SPEED = 1.55, DAMAGE = 14, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_BASH },
+            have_mp = false,
+            height = 135.,
+            drop_offset_min = 20., drop_offset_max = 45.,
+            xp = 42,
+        })
+
+        --==========================================================--
+        -- overseer
+        NewUnitTemplate('n02I', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GNOLL_OVERSEER,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 10.,
+            base_stats = { health = 256., hp_regen = 0.54, moving_speed = 255. },
+            weapon = { ATTACK_SPEED = 1.75, DAMAGE = 20, CRIT_CHANCE = 12., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_BASH },
+            have_mp = false,
+            height = 155.,
+            drop_offset_min = 35., drop_offset_max = 65.,
+            xp = 57,
+        })
+
+        --==========================================================--
+        -- poacher
+        NewUnitTemplate('n02J', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GNOLL_POACHER,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 10.,
+            base_stats = { health = 100., hp_regen = 0.37, moving_speed = 275. },
+            weapon = { ATTACK_SPEED = 1.55, DAMAGE = 6, CRIT_CHANCE = 7., missile = "MSKA" },
+            skill_list = { "A003" },
+            have_mp = false,
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 35,
+        })
+
+        --==========================================================--
+        -- gnoll assassin
+        NewUnitTemplate('n02K', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GNOLL_ASSASSIN,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 10.,
+            base_stats = { health = 120., hp_regen = 0.39, moving_speed = 275. },
+            colours = { r = 100, g = 100, b = 255 },
+            weapon = { ATTACK_SPEED = 1.57, DAMAGE = 12, CRIT_CHANCE = 7., missile = "MSKA" },
+            skill_list = { "A003" },
+            have_mp = false,
+            height = 135.,
+            drop_offset_min = 20., drop_offset_max = 45.,
+            xp = 42,
+        })
+
+        --==========================================================--
+        -- warden
+        NewUnitTemplate('n02H', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GNOLL_WARDEN,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 10.,
+            base_stats = { health = 120., hp_regen = 0.39, moving_speed = 275. },
+            weapon = { ATTACK_SPEED = 1.6, DAMAGE = 10, CRIT_CHANCE = 7., missile = "MGNL", DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = LIGHTNING_ATTRIBUTE, ATTRIBUTE_BONUS = 15 },
+            have_mp = false,
+            height = 145.,
+            drop_offset_min = 25., drop_offset_max = 55.,
+            xp = 49,
         })
 
         --==========================================================--

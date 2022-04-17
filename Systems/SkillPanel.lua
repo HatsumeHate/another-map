@@ -58,6 +58,7 @@ do
                     --print("skill is unbinded")
                     BlzFrameSetTexture(button.image, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0, true)
                     FrameChangeTexture(button.button, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp")
+                    BlzFrameSetVisible(button.sprite, false)
                     button.skill = nil
                     break
                 end
@@ -83,6 +84,7 @@ do
                 key_button_data.skill = skill
                 DisableTrigger(SkillPanelFrame[player].key_trigger)
                 for i = 1, 6 do EnableTrigger(KEYBIND_LIST[i].trigger) end
+                BlzFrameSetVisible(key_button_data.sprite, true)
                 --print("ability " .. key_button_data.skill.name .." is binded")
                 --print("ability " .. key_button_data.skill.name .." id is " .. key_button_data.skill.Id)
             end
@@ -203,6 +205,11 @@ do
                     BlzFrameSetPoint(new_FrameBorder, FRAMEPOINT_BOTTOMLEFT, new_Frame, FRAMEPOINT_BOTTOMLEFT, -0.0074, -0.0074)
             elseif button_type > 0 then
                 local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", new_FrameImage, "", 0)
+                local sprite = CreateSpriteNoCollision("UI\\aganim_sprite.mdx", 0.65, new_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, -0.0048, -0.0048, new_Frame)
+
+                ButtonList[handle].sprite = sprite
+                BlzFrameSetVisible(sprite, false)
+
                 local new_FrameText = BlzCreateFrameByType("TEXT", "hotkey", new_FrameCharges, "", 0)
 
                     BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMRIGHT, new_FrameImage, FRAMEPOINT_BOTTOMRIGHT, -0.002, 0.002)
@@ -212,6 +219,7 @@ do
                     BlzFrameSetTextAlignment(new_FrameText, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_MIDDLE)
                     BlzFrameSetPoint(new_FrameText, FRAMEPOINT_CENTER, new_FrameCharges, FRAMEPOINT_CENTER, 0., 0.)
                     BlzFrameSetScale(new_FrameText, 0.98)
+
 
                     if button_type == KEY_Q then BlzFrameSetText(new_FrameText, "Q")
                     elseif button_type == KEY_W then BlzFrameSetText(new_FrameText, "W")

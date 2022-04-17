@@ -21,7 +21,8 @@ do
                 BlzFrameSetText(StatsList[i][PHYSICAL_DEFENCE], LOCALE_LIST[my_locale].STAT_PANEL_PHYS_DEFENCE.. R2I(data.stats[PHYSICAL_DEFENCE].value))
                 BlzFrameSetText(StatsList[i][MAGICAL_ATTACK], LOCALE_LIST[my_locale].STAT_PANEL_MAG_ATTACK.. R2I(data.stats[MAGICAL_ATTACK].value))
                 BlzFrameSetText(StatsList[i][MAGICAL_SUPPRESSION], LOCALE_LIST[my_locale].STAT_PANEL_MAG_DEFENCE.. R2I(data.stats[MAGICAL_SUPPRESSION].value))
-                BlzFrameSetText(StatsList[i][ATTACK_SPEED], LOCALE_LIST[my_locale].STAT_PANEL_ATTACK_SPEED.. string.format('%%.2f', data.stats[ATTACK_SPEED].value))
+                BlzFrameSetText(StatsList[i][ATTACK_SPEED], LOCALE_LIST[my_locale].STAT_PANEL_ATTACK_SPEED.. math.floor(data.stats[ATTACK_SPEED].actual_bonus + 0.5) .. "%%")
+                BlzFrameSetText(StatsList[i]["ATTACK_SPEED_spec"], LOCALE_LIST[my_locale].STAT_PANEL_ATTACK_SPEED_PERIOD.. string.format('%%.2f', data.stats[ATTACK_SPEED].value))
                 BlzFrameSetText(StatsList[i][CAST_SPEED], LOCALE_LIST[my_locale].STAT_PANEL_CAST_SPEED.. math.floor(data.stats[CAST_SPEED].value + 0.5) .. "%%")
                 BlzFrameSetText(StatsList[i][CRIT_CHANCE], LOCALE_LIST[my_locale].STAT_PANEL_CRIT_CHANCE..  math.floor(ParamToPercent(data.stats[CRIT_CHANCE].value, CRIT_CHANCE) + 0.5) .. "%%")
 
@@ -173,7 +174,7 @@ do
                 local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
 
                     BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0., -0.05)
-                    BlzFrameSetSize(main_frame, 0.29, 0.33)
+                    BlzFrameSetSize(main_frame, 0.29, 0.36)
 
 
                     MainStatButtons[player].description_border = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
@@ -286,8 +287,8 @@ do
                     CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MINOR_STAT, LOCALE_LIST[my_locale].STAT_PANEL_MAGICAL_SUPPRESSION_DESC, StatsList[player][MAGICAL_SUPPRESSION], 0.14, 0.08)
 
                     new_frame = CreateTextBox("Крит. шанс: 100%%", CRIT_CHANCE, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
-                    new_subframe = CreateTextBox("Атак в сек.: 1234", ATTACK_SPEED, 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
-
+                    new_frame = CreateTextBox("", ATTACK_SPEED, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
+                    new_subframe = CreateTextBox("Атак в сек.: 1234", "ATTACK_SPEED_spec", 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
                     new_frame = CreateTextBox("Атак в сек.: 1234", CAST_SPEED, 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
 
 
@@ -328,7 +329,7 @@ do
         local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
 
             BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0., -0.05)
-            BlzFrameSetSize(main_frame, 0.29, 0.33)
+            BlzFrameSetSize(main_frame, 0.29, 0.36)
 
 
             MainStatButtons[player] = {
@@ -450,8 +451,8 @@ do
             CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MINOR_STAT, LOCALE_LIST[my_locale].STAT_PANEL_MAGICAL_SUPPRESSION_DESC, StatsList[player][MAGICAL_SUPPRESSION], 0.14, 0.08)
 
             new_frame = CreateTextBox("Крит. шанс: 100%%", CRIT_CHANCE, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
-            new_subframe = CreateTextBox("Атак в сек.: 1234", ATTACK_SPEED, 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
-
+            new_frame = CreateTextBox("", ATTACK_SPEED, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
+            new_subframe = CreateTextBox("Атак в сек.: 1234", "ATTACK_SPEED_spec", 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
             new_frame = CreateTextBox("Атак в сек.: 1234", CAST_SPEED, 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
 
 

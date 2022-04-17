@@ -653,6 +653,56 @@ do
 
     end
 
+
+    function FireWallCast(caster, x, y)
+        local missiles = {}
+        local amount = 6
+        local arc = 30. / amount
+        local angle = AngleBetweenUnitXY(caster, x, y)
+        local unit_data = GetUnitData(caster)
+        local boost = { tags = {}}
+
+        amount = math.floor(amount * 0.5)
+
+            if unit_data.boost_overflow then
+                boost.tags[#boost.tags+1] = "talent_overflow"
+            end
+            if unit_data.heating_up_boost then
+                boost.tags[#boost.tags+1] = "talent_heating_up"
+            end
+
+        local bonus_angle = arc
+            for i = 1, amount do
+                missiles[#missiles+1] = ThrowMissile(caster, nil, "fire_wall_missile", boost, GetUnitX(caster), GetUnitY(caster), 0., 0., angle + bonus_angle, true)
+                missiles[#missiles+1] = ThrowMissile(caster, nil, "fire_wall_missile", boost, GetUnitX(caster), GetUnitY(caster), 0., 0., angle - bonus_angle, true)
+                bonus_angle = bonus_angle + arc
+            end
+
+        missiles[#missiles+1] = ThrowMissile(caster, nil, "fire_wall_missile", boost, GetUnitX(caster), GetUnitY(caster), 0., 0., angle, true)
+
+        local volume = 100
+        local flame_sound = CreateNew3DSound("Sounds\\Spells\\flame_wave_loop.wav", x, y, 10., volume, 1700., true)
+        StartSound(flame_sound)
+
+        local timer = CreateTimer()
+        TimerStart(timer, 0.025, true, function()
+            if missiles[1] and missiles[1].time <= 0. then
+                local delta = volume / 40
+                TimerStart(timer, 0.025, true, function()
+                    volume = math.floor(volume - delta)
+                    SetSoundVolume(flame_sound, volume)
+                    if volume <= 0 then
+                        StopSound(flame_sound, true, false)
+                        DestroyTimer(timer)
+                    end
+                end)
+            else
+                SetSoundPosition(flame_sound, missiles[1].current_x, missiles[1].current_y, 10.)
+            end
+        end)
+
+    end
+
 end
 
 

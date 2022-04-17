@@ -50,6 +50,25 @@ do
     end
 
 
+    ---@param model string
+    ---@param scale real
+    ---@param relative_to_frame framehandle
+    ---@param relative_point_from framepointtype
+    ---@param relative_point_to framepointtype
+    ---@param offset_x real
+    ---@param offset_y real
+    ---@param parent framehandle
+    ---@return framehandle
+    function CreateSpriteNoCollision(model, scale, relative_to_frame, relative_point_from, relative_point_to, offset_x, offset_y, parent)
+        local new_Frame = BlzCreateFrameByType("SPRITE", "justAName", parent, "WarCraftIIILogo", 0)
+            BlzFrameSetPoint(new_Frame, relative_point_from, relative_to_frame, relative_point_to, offset_x, offset_y)
+            BlzFrameSetSize(new_Frame, 0.00001, 0.00001)
+            BlzFrameSetScale(new_Frame, scale)
+            BlzFrameSetModel(new_Frame, model, 0)
+        return new_Frame
+    end
+
+
     ---@param size_x real
     ---@param size_y real
     ---@param frame_point_from framepointtype

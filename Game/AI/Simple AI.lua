@@ -61,8 +61,8 @@ do
                     local closest_hero =  GetClosestHero(unit, 400.)
 
                         if closest_hero then
-                            local hero_data = GetUnitData(closest_hero)
-                            if hero_data.unit_class == BARBARIAN_CLASS then
+                            --local hero_data = GetUnitData(closest_hero)
+                            --if hero_data.unit_class == BARBARIAN_CLASS then
                                 if GetRandomInt(1, 5) == 1 then
                                     local angle = AngleBetweenUnits(closest_hero, unit)
                                     local runaway_angle = angle + GetRandomReal(-35., 35.)
@@ -79,7 +79,7 @@ do
 
                                     IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(max_runaway_distance, runaway_angle), GetUnitY(unit) + Ry(max_runaway_distance, runaway_angle))
                                 end
-                            end
+                            --end
                         end
 
                 end
@@ -122,7 +122,7 @@ do
             --UpdateInCombatState(attacker)
             PingAllNearbyAI(attacker)
         elseif GetOwningPlayer(attacked) == MONSTER_PLAYER or GetOwningPlayer(attacked) == SECOND_MONSTER_PLAYER then
-            if GetUnitAbilityLevel(attacked, FourCC("AAIM")) == 0 and not IsUnitInGroup(attacked, AttackGroup) then
+            if GetUnitAbilityLevel(attacked, FourCC("AAIM")) == 0 and GetUnitCurrentOrder(attacked) == 0 and not IsUnitInGroup(attacked, AttackGroup) then
                 IssuePointOrderById(attacked, order_attack, GetUnitX(attacker), GetUnitY(attacker))
                 GroupAddUnit(AttackGroup, attacked)
                 DelayAction(4., function() GroupRemoveUnit(AttackGroup, attacked) end)
@@ -204,30 +204,30 @@ do
 
         InCombat = {}
         AITable = {
-            [FourCC("U000")] = {
+            [FourCC(MONSTER_ID_MEPHISTO)] = {
                 ability_list = {
                     { order = order_forceboard, activation = SELF_CAST, on_attack_chance = 15., on_hit_chance = 15. }
                 }
             },
-            [FourCC("n00S")] = {
+            [FourCC(MONSTER_ID_ARACHNID_BOSS)] = {
                 ability_list = {
                     { order = order_forkedlightning, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 12. },
                     { order = order_forceofnature, activation = TARGET_CAST, on_attack_chance = 15., on_hit_chance = 0. },
                     { order = order_cripple, activation = TARGET_CAST, on_attack_chance = 3., on_hit_chance = 10. }
                 }
             },
-            [FourCC("n00X")] = {
+            [FourCC(MONSTER_ID_BANDIT_BOSS)] = {
                 ability_list = {
                     { order = order_forceofnature, activation = TARGET_CAST, on_attack_chance = 0., on_hit_chance = 14. },
                 }
             },
-            [FourCC("n015")] = {
+            [FourCC(MONSTER_ID_SKELETON_KING)] = {
                 ability_list = {
                     { order = order_forceofnature, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 12. },
                     { order = order_slow, activation = TARGET_CAST, on_attack_chance = 7., on_hit_chance = 7. },
                 }
             },
-            [FourCC("n012")] = {
+            [FourCC(MONSTER_ID_SPIDER_QUEEN)] = {
                 ability_list = {
                     { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 10. },
                     { order = order_forceofnature, activation = TARGET_CAST, on_attack_chance = 14., on_hit_chance = 0. },
@@ -235,86 +235,96 @@ do
                     { order = order_hex, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 7. },
                 }
             },
-            [FourCC("n01N")] = {
+            [FourCC(MONSTER_ID_QUILLBEAST)] = {
                 ability_list = {
                     { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 0., on_hit_chance = 22. }
                 }
             },
-            [FourCC("n01J")] = {
+            [FourCC(MONSTER_ID_WOLF)] = {
                 ability_list = {
                     { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 15., on_hit_chance = 4. }
                 }
             },
-            [FourCC("u00J")] = {
+            [FourCC(MONSTER_ID_GHOUL)] = {
                 ability_list = {
                     { order = order_cripple, activation = TARGET_CAST, on_attack_chance = 15., on_hit_chance = 0. }
                 }
             },
-            [FourCC("n01T")] = {
+            [FourCC(MONSTER_ID_HELL_BEAST)] = {
                 ability_list = {
                     { order = order_cripple, activation = TARGET_CAST, on_attack_chance = 12., on_hit_chance = 10. }
                 }
             },
-            [FourCC("n008")] = {
+            [FourCC(MONSTER_ID_VOIDWALKER)] = {
                 ability_list = {
                     { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 15., on_hit_chance = 9., point_max_offset = 275. }
                 }
             },
-            [FourCC("n009")] = {
+            [FourCC(MONSTER_ID_ANCIENT_VOIDWALKER)] = {
                 ability_list = {
                     { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 16., on_hit_chance = 10., point_max_offset = 150. },
                     { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 20., on_hit_chance = 10., point_max_offset = 270. }
                 }
             },
-            [FourCC("u00F")] = {
+            [FourCC(MONSTER_ID_NECROMANCER)] = {
                 ability_list = {
                     { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 15., on_hit_chance = 10.},
                 }
             },
-            [FourCC("u00L")] = {
+            [FourCC(MONSTER_ID_NECROMANCER_N)] = {
                 ability_list = {
                     { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 20., on_hit_chance = 10.},
                 }
             },
-            [FourCC("n006")] = {
+            [FourCC(MONSTER_ID_GHOST)] = {
                 ability_list = {
                     { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 20., on_hit_chance = 10., point_max_offset = 150. },
                 }
             },
-            [FourCC("n022")] = {
+            [FourCC(MONSTER_ID_ANDARIEL)] = {
                 ability_list = {
                     { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 17., on_hit_chance = 15., point_max_offset = 150. },
                 }
             },
-            [FourCC("U001")] = {
+            [FourCC(MONSTER_ID_BAAL)] = {
                 ability_list = {
                     { order = order_frenzy, activation = POINT_CAST, on_attack_chance = 13., on_hit_chance = 12. },
                 }
             },
-            [FourCC("u00E")] = {
+            [FourCC(MONSTER_ID_SKELETON_MAGE)] = {
                 ability_list = {
                     { order = order_cripple, activation = TARGET_CAST, on_attack_chance = 17., on_hit_chance = 3. },
                 }
             },
-            [FourCC("h002")] = {
+            [FourCC(MONSTER_ID_SORCERESS)] = {
                 ability_list = {
                     { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 19., on_hit_chance = 7., point_max_offset = 150. },
                 }
             },
-            [FourCC("n01U")] = {
+            [FourCC(MONSTER_ID_REVENANT_MELEE)] = {
                 ability_list = {
                     { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 19., on_hit_chance = 7., point_max_offset = 150. },
                 }
             },
-            [FourCC("n01I")] = {
+            [FourCC(MONSTER_ID_REVENANT)] = {
                 ability_list = {
                     { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 19., on_hit_chance = 7., point_max_offset = 150. },
+                }
+            },
+            [FourCC(MONSTER_ID_GNOLL_ASSASSIN)] = {
+                ability_list = {
+                    { order = order_forceofnature, activation = POINT_CAST, on_attack_chance = 19., on_hit_chance = 7., point_max_offset = 125. },
+                }
+            },
+            [FourCC(MONSTER_ID_GNOLL_POACHER)] = {
+                ability_list = {
+                    { order = order_forceofnature, activation = POINT_CAST, on_attack_chance = 19., on_hit_chance = 7., point_max_offset = 125. },
                 }
             }
         }
 
 
-        AITable[FourCC("h002")].on_period = function(unit)
+        AITable[FourCC(MONSTER_ID_SORCERESS)].on_period = function(unit)
 
             if IsAnyHeroInRange(GetUnitX(unit), GetUnitY(unit), 270.) then
                 if GetRandomInt(1, 3) == 1 and IssueImmediateOrderById(unit, order_freezingbreath) then
@@ -325,7 +335,7 @@ do
         end
 
 
-        AITable[FourCC("n01U")].on_period = function(unit)
+        AITable[FourCC(MONSTER_ID_REVENANT_MELEE)].on_period = function(unit)
 
             if IsAnyHeroInRange(GetUnitX(unit), GetUnitY(unit), 500.) then
                 if GetRandomInt(1, 6) == 1 then
@@ -339,7 +349,7 @@ do
         end
 
 
-        AITable[FourCC("n01I")].on_period = function(unit)
+        AITable[FourCC(MONSTER_ID_REVENANT)].on_period = function(unit)
 
             if IsAnyHeroInRange(GetUnitX(unit), GetUnitY(unit), 500.) then
                 if GetRandomInt(1, 6) == 1 then
@@ -353,7 +363,7 @@ do
         end
 
 
-        AITable[FourCC("n01N")].on_period = function(unit)
+        AITable[FourCC(MONSTER_ID_QUILLBEAST)].on_period = function(unit)
 
             if IsAnyHeroInRange(GetUnitX(unit), GetUnitY(unit), 600.) then
                 if GetRandomInt(1, 6) == 1 then
@@ -366,7 +376,7 @@ do
 
         end
 
-        AITable[FourCC("n006")].on_period = function(unit)
+        AITable[FourCC(MONSTER_ID_GHOST)].on_period = function(unit)
 
             if IsAnyHeroInRange(GetUnitX(unit), GetUnitY(unit), 750.) then
                 if GetRandomInt(1, 6) == 1 then
@@ -379,7 +389,7 @@ do
 
         end
 
-        AITable[FourCC("n01T")].on_period = function(unit)
+        AITable[FourCC(MONSTER_ID_HELL_BEAST)].on_period = function(unit)
 
             if IsAnyHeroInRange(GetUnitX(unit), GetUnitY(unit), 500.) then
                 if GetRandomInt(1, 7) == 1 then
@@ -394,9 +404,7 @@ do
 
         PingGroup = CreateGroup()
         AttackGroup = CreateGroup()
-        --local AttackTrg = CreateTrigger()
-        --TriggerRegisterAnyUnitEventBJ(AttackTrg, EVENT_PLAYER_UNIT_ATTACKED)
-        --TriggerAddAction(AttackTrg, AttackReaction)
+
 
     end
 

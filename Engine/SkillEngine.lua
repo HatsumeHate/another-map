@@ -911,7 +911,7 @@ do
                     local time_reduction = (animation.timescale or 1.) + (sequence.bonus_timescale or 0.)
 
                         if skill.type == SKILL_PHYSICAL then
-                            time_reduction = time_reduction * (1. - unit_data.stats[ATTACK_SPEED].bonus * 0.01)
+                            time_reduction = time_reduction * (1. - unit_data.stats[ATTACK_SPEED].actual_bonus * 0.01)
                         elseif skill.type == SKILL_MAGICAL then
                             time_reduction = time_reduction * (1. - unit_data.stats[CAST_SPEED].value * 0.01)
                         end

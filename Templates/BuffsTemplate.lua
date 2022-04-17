@@ -13,6 +13,7 @@ do
     STATE_STUN = 1
     STATE_FREEZE = 2
     STATE_FEAR = 3
+    STATE_BLIND = 4
 
 
     ---@param buff_id string
@@ -2130,6 +2131,26 @@ do
         })
         --================================================--
         NewBuffTemplate({
+            name = "gnoll snare debuff",
+            id = 'A005',
+            buff_id = 'B02V',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.75, METHOD = MULTIPLY_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
             name = "chill freeze debuff",
             id = 'ATCH',
             buff_id = 'B017',
@@ -2174,7 +2195,7 @@ do
             buff_id = 'B019',
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
-            max_level = 1,
+            max_level = 50,
 
             level = {
                 [1] = {

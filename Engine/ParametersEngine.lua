@@ -94,28 +94,7 @@ do
 	-- calculate methods
 	STRAIGHT_BONUS         = 1
 	MULTIPLY_BONUS         = 2
-	
-	-- защита
-	VALUE_BY_PERCENT_1     = 11
-	FIRST_DEF_LIMIT        = 350
-	VALUE_BY_PERCENT_2     = 15
-	SECOND_DEF_LIMIT       = 650
-	VALUE_BY_PERCENT_3     = 19
-	
-	-- маг атака
-	MA_VALUE_BY_PERCENT_1  = 1
-	MA_FIRST_LIMIT         = 275
-	MA_VALUE_BY_PERCENT_2  = 3
-	MA_SECOND_LIMIT        = 340
-	MA_VALUE_BY_PERCENT_3  = 6
 
-
-	-- отражение урона
-	REFLECT_VALUE_BY_PERCENT_1  = 5
-	REFLECT_FIRST_LIMIT         = 275
-	REFLECT_VALUE_BY_PERCENT_2  = 7
-	REFLECT_SECOND_LIMIT        = 340
-	REFLECT_VALUE_BY_PERCENT_3  = 12
 
 
 	local PARAMETER_NAME = 0
@@ -309,11 +288,11 @@ do
 				value_by_percent_3 = 19
 			},
 			[MAGICAL_ATTACK] = {
-				value_by_percent_1 = 3,
-				first_limit = 275,
-				value_by_percent_2 = 5,
-				second_limit = 340,
-				value_by_percent_3 = 7
+				value_by_percent_1 = 2,
+				first_limit = 300,
+				value_by_percent_2 = 4,
+				second_limit = 540,
+				value_by_percent_3 = 6
 			},
 			[REFLECT_DAMAGE] = {
 				value_by_percent_1 = 7,
@@ -328,8 +307,23 @@ do
 				value_by_percent_2 = 2,
 				second_limit = 45,
 				value_by_percent_3 = 4
+			},
+			[ATTACK_SPEED] = {
+				value_by_percent_1 = 1,
+				first_limit = 50,
+				value_by_percent_2 = 2,
+				second_limit = 75,
+				value_by_percent_3 = 4
+			},
+			[CAST_SPEED] = {
+				value_by_percent_1 = 1,
+				first_limit = 50,
+				value_by_percent_2 = 2,
+				second_limit = 75,
+				value_by_percent_3 = 4
 			}
 		}
+
 
 		PARAMETER_UPDATE_FUNC = {
 			---@param data table
@@ -546,10 +540,11 @@ do
 
 			---@param data table
 			[ATTACK_SPEED] = function(data)
-				local agility_bonus = math.floor((data.stats[AGI_STAT].value / 3) + 0.5)
+				--local agility_bonus = math.floor((data.stats[AGI_STAT].value / 3) + 0.5)
 
+				data.stats[ATTACK_SPEED].actual_bonus = ParamToPercent(data.stats[ATTACK_SPEED].bonus + math.floor((data.stats[AGI_STAT].value / 3) + 0.5), ATTACK_SPEED)
 
-				data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].ATTACK_SPEED * (1. - (data.stats[ATTACK_SPEED].bonus + agility_bonus) * 0.01)
+				data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].ATTACK_SPEED * (1. - (data.stats[ATTACK_SPEED].actual_bonus) * 0.01)
 				if data.stats[ATTACK_SPEED].value > 0.1 then
 					BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 0)
 					BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 1)
@@ -561,8 +556,8 @@ do
 
 			---@param data table
 			[CAST_SPEED] = function(data)
-				local agility_bonus = math.floor((data.stats[AGI_STAT].value / 3) + 0.5)
-				data.stats[CAST_SPEED].value = data.stats[CAST_SPEED].bonus + agility_bonus
+				--local agility_bonus = math.floor((data.stats[AGI_STAT].value / 3) + 0.5)
+				data.stats[CAST_SPEED].value = ParamToPercent(data.stats[CAST_SPEED].bonus + math.floor((data.stats[AGI_STAT].value / 3) + 0.5), CAST_SPEED)
 			end,
 
 			---@param data table
@@ -671,7 +666,7 @@ do
 
 			---@param data table
 			[MANACOST] = function(data)
-				if IsAHero(data.Owner) then
+				if IsUnitType(data.Owner, UNIT_TYPE_HERO) and IsAHero(data.Owner) then
 					UpdateBindedSkillsManacosts(data.Owner)
 				end
 			end,
@@ -751,6 +746,7 @@ do
 			[MANACOST]   = LOCALE_LIST[my_locale].MANACOST_PARAM,
 
 		}
+
 	end
 
 end

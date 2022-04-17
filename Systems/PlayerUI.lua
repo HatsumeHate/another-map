@@ -10,6 +10,7 @@ do
     local PlayerGlobeMpValue
     local hp_globe_textures
     local mp_globe_textures
+    LevelUpFrameTrigger = nil
 
 
 
@@ -334,6 +335,15 @@ do
 
                 PlayerUI.level_bar = BlzGetFrameByName("SimpleHeroLevelBar", 0)
 
+                for i = 1, 6 do
+                    PlayerUI.level_up_frame[i] = BlzCreateFrameByType("BACKDROP", "level up name", GAME_UI, "", 0)
+                    BlzFrameSetVisible(PlayerUI.level_up_frame[i], false)
+                    BlzFrameSetAbsPoint(PlayerUI.level_up_frame[i], FRAMEPOINT_CENTER, 0.4, 0.4)
+                    BlzFrameSetSize(PlayerUI.level_up_frame[i], 0.8, 0.44)
+                    BlzFrameSetScale(PlayerUI.level_up_frame[i], start_levelup_scale)
+                    BlzFrameSetTexture(PlayerUI.level_up_frame[i], "UI\\".. GetLocalString("new_level_ru.blp", "new_level_en.blp"), 0, true)
+                end
+
                 PauseTimer(PlayerUI.update_timer)
                 DestroyTimer(PlayerUI.update_timer)
                 PlayerUI.update_timer = CreateTimer()
@@ -653,15 +663,79 @@ do
 
             --RegisterScaler(PlayerUI.hp_globe, 0.119, 0.001)
 
+            PlayerUI.level_up_frame = {}
+
+
+
 
         PlayerGlobeHpValue = {}
         PlayerGlobeMpValue = {}
+        local level_up_timers = {}
+
+
+        local start_levelup_scale = 0.8
+        local end_levelup_scale = 0.55
+        local scale_diff = start_levelup_scale - end_levelup_scale
 
         for i = 1, 6 do
             PlayerGlobeHpValue[i] = 100
             PlayerGlobeMpValue[i] = 100
+
+            PlayerUI.level_up_frame[i] = BlzCreateFrameByType("BACKDROP", "level up name", GAME_UI, "", 0)
+                BlzFrameSetVisible(PlayerUI.level_up_frame[i], false)
+                BlzFrameSetAbsPoint(PlayerUI.level_up_frame[i], FRAMEPOINT_CENTER, 0.4, 0.4)
+                BlzFrameSetSize(PlayerUI.level_up_frame[i], 0.8, 0.44)
+                BlzFrameSetScale(PlayerUI.level_up_frame[i], start_levelup_scale)
+                BlzFrameSetTexture(PlayerUI.level_up_frame[i], "UI\\".. GetLocalString("new_level_ru.blp", "new_level_en.blp"), 0, true)
+                level_up_timers[i] = CreateTimer()
         end
 
+
+        local rate = (2 / 0.05)
+        LevelUpFrameTrigger = CreateTrigger()
+        TriggerAddAction(LevelUpFrameTrigger, function()
+            local player = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))+1
+
+                if GetLocalPlayer() == Player(player-1) then
+                    BlzFrameSetVisible(PlayerUI.level_up_frame[player], true)
+                end
+
+                BlzFrameSetScale(PlayerUI.level_up_frame[player], 0.7)
+                BlzFrameSetAlpha(PlayerUI.level_up_frame[player], 0)
+
+                local alpha = 0
+                local scale = 0.7
+                local alpha_delta = math.floor(255 / rate)
+                local scale_delta = scale_diff / rate
+
+                TimerStart(level_up_timers[player], 0.05, true, function()
+
+                    alpha = alpha + alpha_delta
+                    scale = scale - scale_delta
+                    BlzFrameSetAlpha(PlayerUI.level_up_frame[player], alpha)
+
+                    if scale <= end_levelup_scale then BlzFrameSetScale(PlayerUI.level_up_frame[player], end_levelup_scale)
+                    else BlzFrameSetScale(PlayerUI.level_up_frame[player], scale) end
+
+                        if alpha >= 255 then
+                            alpha = 255
+                            BlzFrameSetAlpha(PlayerUI.level_up_frame[player], alpha)
+                            TimerStart(level_up_timers[player], 1., false, function()
+                                alpha_delta = math.floor(255 / (1 / 0.05))
+                                TimerStart(level_up_timers[player], 0.05, true, function()
+                                    alpha = alpha - alpha_delta
+                                    BlzFrameSetAlpha(PlayerUI.level_up_frame[player], alpha)
+                                    if alpha <= 0 then
+                                        TimerStart(level_up_timers[player], 0., false, nil)
+                                        BlzFrameSetVisible(PlayerUI.level_up_frame[player], false)
+                                    end
+                                end)
+                            end)
+                        end
+
+                end)
+
+        end)
 
             PlayerUI.update_timer = CreateTimer()
             local update_step = 38 / (1. / 0.025)

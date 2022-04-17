@@ -368,8 +368,6 @@ do
                     max_targets = 300,
 
                     sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx", point = "chest", duration = 1. }, } },
-                    --SFX_on_unit = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx",
-                    --SFX_on_unit_point = "chest",
                 }
             }
 
@@ -383,20 +381,35 @@ do
             stack_hitnumbers = true,
             level = {
                 [1] = {
-                    power = 3,
-                    --attack_percent_bonus = 1.,
+                    power = 7,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = FIRE_ATTRIBUTE,
-
                     sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Items\\AIfb\\AIfbSpecialArt.mdx", point = "chest" }, } },
-                    --SFX_on_unit = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx",
-                    --SFX_on_unit_point = "chest",
                 }
             }
+        })
 
+        NewEffectTemplate('fire_wall_effect', {
+            name = "fire wall effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "AFRW",
+            level = {
+                [1] = {
+                    power = 42,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = FIRE_ATTRIBUTE,
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx", point = "chest", duration = 1.  }, } },
+                    max_targets = 1,
+                    hit_once_in = 0.5
+                }
+            }
         })
 
         NewEffectTemplate('EBLZ', {
@@ -545,7 +558,6 @@ do
                     timescale = 1.34,
 
                     power = 94,
-                    --attack_percent_bonus = 1.,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
@@ -558,7 +570,7 @@ do
                     shake_duration = 0.7,
 
                     SFX_used = "Spell\\Meteor2.mdx",
-                    SFX_used_scale = 1.25,
+                    SFX_used_scale = 1.15,
                     SFX_delay = 0.7,
 
                     sound = { { pack = { "Sounds\\Spells\\meteorimpact.wav" }, volume = 128, cutoff = 1800. } },
@@ -2065,6 +2077,19 @@ do
                     applied_buff = {
                         [1] = { modificator = INCREASE_BUFF_LEVEL, buff_id = 'AHRF', target_type = ON_ENEMY },
                         [2] = { modificator = SET_BUFF_TIME, buff_id = 'AHRF', target_type = ON_ENEMY, value = -1 }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('gnoll_snare_effect', {
+            name = "gnoll snare effect",
+
+            level = {
+                [1] = {
+                    max_targets = 1,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A005', target_type = ON_ENEMY },
                     },
                 }
             }

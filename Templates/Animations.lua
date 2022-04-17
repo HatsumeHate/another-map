@@ -294,6 +294,12 @@ do
             animation_backswing = 0.4,
         })
 
+        NewAnimationSequence("gnoll_archer_spell", {
+            animation           = 5,
+            animation_point     = 0.428,
+            animation_backswing = 0.5,
+        })
+
 
 
 

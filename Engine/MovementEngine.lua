@@ -628,7 +628,7 @@ do
 
     ---@param from unit
     ---@param target unit
-    ---@param missile integer
+    ---@param missile string
     ---@param effects table
     ---@param start_x real
     ---@param start_y real
@@ -636,6 +636,7 @@ do
     ---@param end_y real
     ---@param angle real
     ---@param from_unit boolean
+    ---@return table
     function ThrowMissile(from, target, missile, effects, start_x, start_y, end_x, end_y, angle, from_unit)
         local unit_data = GetUnitData(from)
         local m

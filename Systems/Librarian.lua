@@ -70,6 +70,10 @@ do
         BlzTriggerRegisterFrameEvent(EnterTrigger, new_Frame, FRAMEEVENT_MOUSE_ENTER)
         BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
 
+        if button_type == 0 then
+            local sprite = CreateSpriteNoCollision("UI\\vampirism_sprite.mdx", 0.74, new_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, -0.0048, -0.0048, new_Frame)
+        end
+
         BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
         BlzFrameSetSize(new_Frame, size_x, size_y)
         BlzFrameSetTexture(new_FrameImage, texture, 0, true)
@@ -231,6 +235,7 @@ do
             LibrarianFrame[player].exchange_item_slot = NewButton(0, "GUI\\inventory_slot.blp", 0.04, 0.04, LibrarianFrame[player].inner_exchange_border, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.015, -0.015, LibrarianFrame[player].inner_exchange_border)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, LibrarianFrame[player].exchange_item_slot, FRAMEPOINT_BOTTOMLEFT, -0.015, -0.015)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPRIGHT, LibrarianFrame[player].exchange_item_slot, FRAMEPOINT_TOPRIGHT, 0.015, 0.015)
+
 
             LibrarianFrame[player].exchange_button = NewSpecialButton(LOCALE_LIST[my_locale].EXCHANGE_BUTTON_TEXT, 0.06, 0.04, LibrarianFrame[player].exchange_item_slot, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.025, 0., LibrarianFrame[player].inner_exchange_border)
             new_Frame = CreateTextBox(player, 0.085, 0.03, 1., LibrarianFrame[player].exchange_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0015, 0., main_frame)

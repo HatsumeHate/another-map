@@ -1,6 +1,10 @@
 do
 
     local BUFF_UPDATE = 0.1
+    local StunGroup
+    local FearGroup
+    local BlindGroup
+    local FreezeGroup
 
 
 
@@ -33,13 +37,18 @@ do
                         if state == STATE_FREEZE and not HasNegativeState(unit_data.Owner, STATE_FREEZE) then
                             SetUnitVertexColor(unit_data.Owner, unit_data.colours.r or 255, unit_data.colours.g or 255, unit_data.colours.b or 255, unit_data.colours.a or 255)
                             SetUnitTimeScale(unit_data.Owner, 1.)
-                        end
-
-                        if state == STATE_FEAR then
+                            GroupRemoveUnit(FreezeGroup, unit_data.Owner)
+                        elseif state == STATE_FEAR and not HasNegativeState(unit_data.Owner, STATE_FEAR) then
                             for key = 1, 6 do BlzUnitDisableAbility(unit_data.Owner, KEYBIND_LIST[key].ability, false, false) end
                             UnitRemoveAbility(unit_data.Owner, FourCC("ARal"))
                             ModifyStat(unit_data.Owner, MOVING_SPEED, 0.5, MULTIPLY_BONUS, false)
+                            GroupRemoveUnit(FearGroup, unit_data.Owner)
+                        elseif state == STATE_STUN and not HasNegativeState(unit_data.Owner, STATE_STUN) then
+                            GroupRemoveUnit(StunGroup, unit_data.Owner)
+                        elseif state == STATE_BLIND and not HasNegativeState(unit_data.Owner, STATE_BLIND) then
+                            GroupRemoveUnit(BlindGroup, unit_data.Owner)
                         end
+
 
                         if not HasAnyDisableState(unit_data.Owner) then
                             SafePauseUnit(unit_data.Owner, false)
@@ -193,7 +202,7 @@ do
                     local buff_data = unit_data.buff_list[i]
 
 
-                    if lvl >= buff_data.max_level and buff_data.current_level < buff_data.max_level then
+                    if lvl >= buff_data.max_level then
                         lvl = buff_data.max_level
                     elseif lvl <= 0 then
                         RemoveBuff(target, buff_id)
@@ -227,15 +236,20 @@ do
                                 ResetUnitSpellCast(target)
                                 SafePauseUnit(target, true)
                                 SetUnitTimeScale(target, 0.)
+                                GroupAddUnit(FreezeGroup, target)
                             elseif buff_data.level[lvl].negative_state == STATE_STUN then
                                 if unit_data.channeled_destructor then unit_data.channeled_destructor(target) end
                                 ResetUnitSpellCast(target)
                                 SafePauseUnit(target, true)
+                                GroupAddUnit(StunGroup, target)
                             elseif buff_data.level[lvl].negative_state == STATE_FEAR then
                                 if unit_data.channeled_destructor then unit_data.channeled_destructor(target) end
                                 for key = 1, 6 do BlzUnitDisableAbility(target, KEYBIND_LIST[key].ability, true, false) end
                                 UnitAddAbility(target, FourCC("ARal"))
                                 ModifyStat(target, MOVING_SPEED, 0.5, MULTIPLY_BONUS, true)
+                                GroupAddUnit(FearGroup, target)
+                            elseif buff_data.level[lvl].negative_state == STATE_BLIND then
+                                GroupAddUnit(BlindGroup, target)
                             end
 
                             buff_data.expiration_time = buff_data.expiration_time * ((100. - unit_data.stats[CONTROL_REDUCTION].value) * 0.01)
@@ -281,7 +295,34 @@ do
     end
 
 
+    ---@param unit unit
+    ---@return boolean
+    function IsUnitStunned(unit)
+        return IsUnitInGroup(unit, StunGroup)
+    end
 
+    ---@param unit unit
+    ---@return boolean
+    function IsUnitFeared(unit)
+        return IsUnitInGroup(unit, FearGroup)
+    end
+
+    ---@param unit unit
+    ---@return boolean
+    function IsUnitFrozen(unit)
+        return IsUnitInGroup(unit, FreezeGroup)
+    end
+
+    ---@param unit unit
+    ---@return boolean
+    function IsUnitBlinded(unit)
+        return IsUnitInGroup(unit, BlindGroup)
+    end
+
+
+    ---@param unit unit
+    ---@param state integer
+    ---@return boolean
     function HasNegativeState(unit, state)
         local data = GetUnitData(unit)
 
@@ -297,7 +338,8 @@ do
         return false
     end
 
-
+    ---@param unit unit
+    ---@return boolean
     function HasAnyDisableState(unit)
         local data = GetUnitData(unit)
 
@@ -396,17 +438,22 @@ do
                         ResetUnitSpellCast(target)
                         SafePauseUnit(target, true)
                         SetUnitTimeScale(target, 0.)
+                        GroupAddUnit(FreezeGroup, target)
 
                     elseif buff_data.level[lvl].negative_state == STATE_STUN then
                         if target_data.channeled_destructor then target_data.channeled_destructor(target) end
                         ResetUnitSpellCast(target)
                         SafePauseUnit(target, true)
+                        GroupAddUnit(StunGroup, target)
                         
                     elseif buff_data.level[lvl].negative_state == STATE_FEAR then
                         if target_data.channeled_destructor then target_data.channeled_destructor(target) end
                         for key = 1, 6 do BlzUnitDisableAbility(target, KEYBIND_LIST[key].ability, true, false) end
                         UnitAddAbility(target, FourCC("ARal"))
                         ModifyStat(target, MOVING_SPEED, 0.5, MULTIPLY_BONUS, true)
+                        GroupAddUnit(FearGroup, target)
+                    elseif buff_data.level[lvl].negative_state == STATE_BLIND then
+                        GroupAddUnit(BlindGroup, target)
                     end
 
 
@@ -496,6 +543,33 @@ do
             end)
 
         return true
+    end
+
+
+    function BuffsInit()
+        StunGroup = CreateGroup()
+        FreezeGroup = CreateGroup()
+        FearGroup = CreateGroup()
+        BlindGroup = CreateGroup()
+
+        RegisterTestCommand("cc1", function()
+
+           ApplyEffect(BossPack[1].boss, PlayerHero[1], 0, 0,"EHOR", 1)
+            KillUnit(BossPack[1].boss)
+            print("???")
+        end)
+
+        RegisterTestCommand("cc2", function()
+
+           ApplyEffect(BossPack[2].boss, PlayerHero[1], 0, 0,"EHOR", 1)
+            print("???")
+        end)
+
+        RegisterTestCommand("debugbuff", function()
+            local buff = GetBuffDataFromUnit(PlayerHero[1], "AHRF")
+            print(buff)
+            print(buff.expiration_time)
+        end)
     end
 
 end

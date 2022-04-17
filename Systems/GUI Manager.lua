@@ -20,7 +20,28 @@ do
     TALENT_PANEL = 6
     JOURNAL_PANEL = 7
 
-
+--[[
+    NewFrame("war3mapImported\\aganim_sprite.mdx", 0.12, 0.4, -0.0052, -0.0048, 0.8)
+    NewFrame("war3mapImported\\blizzard_sprite.mdx", 0.18, 0.4, 0., 0., 0.68)
+    NewFrame("war3mapImported\\violet_border_sprite.mdx", 0.24, 0.4, -0.0052, -0.0048, 0.8)
+    NewFrame("war3mapImported\\blue_energy_sprite.mdx", 0.30, 0.4, -0.0052, -0.0048, 0.8)
+    NewFrame("war3mapImported\\crystallid_sprite.mdx", 0.36, 0.4, -0.0052, -0.0048, 0.8)
+    NewFrame("war3mapImported\\cyber_call_sprite.mdx", 0.42, 0.4, -0.0052, -0.0048, 0.8)
+    NewFrame("war3mapImported\\damned_sprite.mdx", 0.48, 0.4, -0.0052, -0.0048, 0.8)
+    NewFrame("war3mapImported\\exploder_sprite.mdx", 0.54, 0.4, -0.0052, -0.0048, 0.8)
+    NewFrame("war3mapImported\\flame_border_sprite.mdx", 0.60, 0.4, -0.0044, -0.001, 0.8)
+    NewFrame("war3mapImported\\frozen_sprite.mdx", 0.66, 0.4, -0.0052, -0.0048, 0.8)
+    NewFrame("war3mapImported\\gold_sprite.mdx", 0.72, 0.4, 0., 0., 0.68)
+    NewFrame("war3mapImported\\hearts_sprite.mdx", 0.12, 0.3, 0., 0., 0.68)
+    NewFrame("war3mapImported\\holylight_sprite.mdx", 0.18, 0.3, -0.0052, -0.0048, 0.8)
+    NewFrame("war3mapImported\\inner_fire_and_smoke_sprite.mdx", 0.242, 0.3, 0., 0., 0.68)
+    NewFrame("war3mapImported\\inner_flame_border_sprite.mdx", 0.30, 0.3, 0., 0., 0.68)
+    NewFrame("war3mapImported\\necrotic_circle_sprite.mdx", 0.36, 0.3, -0.004, -0.004, 0.8)
+    NewFrame("war3mapImported\\neon_sprite.mdx", 0.42, 0.3, -0.0052, -0.0048, 0.8)
+    NewFrame("war3mapImported\\smoke_sprite.mdx", 0.48, 0.3, 0., 0., 0.68)
+    NewFrame("war3mapImported\\undead_circle_sprite.mdx", 0.54, 0.3, -0.004, -0.004, 0.8)
+    NewFrame("war3mapImported\\vampirism_sprite.mdx", 0.60, 0.3, -0.0052, -0.0052, 0.8)
+]]
 
 
     function ReloadUI()
@@ -113,6 +134,8 @@ do
     ---@param player_id integer
     ---@param hero unit
     function CreateGUILayoutForPlayer(player_id, hero)
+
+        TriggerRegisterUnitEvent(LevelUpFrameTrigger, hero, EVENT_UNIT_HERO_LEVEL)
 
         local first_timer = CreateTimer()
         TimerStart(first_timer, 0.5, false, function()

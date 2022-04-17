@@ -895,6 +895,7 @@ do
         elseif id == "AMLT" then CastMeltdown(source)
         elseif id == "ABLZ" then CastBlizzard(source)
         elseif id == "ASIR" then IcicleRainCast(source, x, y)
+        elseif id == "AFRW" then FireWallCast(source, x, y)
         elseif id == 'A00J' then
             if UnitHasEffect(source,"EOTS") then SparkCast_Legendary(source)
             else SparkCast(source, target, x, y) end

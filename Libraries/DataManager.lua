@@ -80,7 +80,7 @@ do
             print("start loading")
             Preloader(path)
             PreloadGenClear()
-            local result = dec(BlzGetAbilityTooltip(abilcode, 0))
+            local result = BlzGetAbilityTooltip(abilcode, 0)
             local slot = GetFileSlot(path)
 
             for i = 0, 5 do
@@ -199,7 +199,7 @@ do
         end
 
         TriggerAddAction(trigger, function()
-            local sync_string = BlzGetTriggerSyncData()
+            local sync_string = dec(BlzGetTriggerSyncData())
             local slot = GetFileSlot(sync_string)
 
             if slot > 0 then

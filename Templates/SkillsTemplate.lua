@@ -328,7 +328,6 @@ do
             },
             sfx_pack = {
                 on_caster = {
-                            --{ effect = "war3mapImported\\FrostNova.MDX", point = "origin" },
                     { effect = "Spell\\Ice Low.mdx", point = 'hand right' },
                     { effect = "Spell\\Ice Low.mdx", point = 'hand left' }
                 }
@@ -458,10 +457,6 @@ do
                     from_unit           = true,
                     resource_cost       = 14.,
                     cooldown            = 0.3,
-                    --animation           = 3,
-                    --animation_point     = 2.1,
-                    --animation_backswing = 0.633,
-                    --timescale     = 0.35,
                 }
             }
         })
@@ -505,6 +500,7 @@ do
             activation_type = POINT_CAST,
             type            = SKILL_UNIQUE,
             category = SKILL_CATEGORY_ARCANE,
+            sound = { pack = { "Sounds\\Spells\\teleport.wav" }, volume = 112, cutoff = 1500.},
             animation = {
                 sequence  = GetAnimationSequence("sorc_blink"), timescale = 0.33,
             },
@@ -523,11 +519,36 @@ do
 
                     resource_cost       = 5.,
                     cooldown            = 5.,
-                    --animation           = 3,
-                    --animation_point     = 0.1,
-                    --animation_backswing = 0.1,
-                    --timescale     = 0.3,
 
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('AFRW', {
+            name            = LOCALE_LIST[my_locale].SKILL_FIRE_WAVE,
+            icon            = "Spell\\BTNFirewall.blp",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_FIRE,
+            sound = { pack = { "Sounds\\Spells\\fire_launch_1.wav", "Sounds\\Spells\\fire_launch_2.wav", "Sounds\\Spells\\fire_launch_3.wav" }, volume = 117, cutoff = 1500.},
+            animation = {
+                sequence  = GetAnimationSequence("sorc_spell_throw_small"), timescale = 1.4,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Fire_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON } },
+                    { effect = "Spell\\Sweep_Fire_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON } },
+                    { effect = "Spell\\Fire Low.mdx", point = 'hand right' }
+                }
+            },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
+
+            level = {
+                [1] = {
+                    range               = 700.,
+                    resource_cost       = 14.,
+                    cooldown            = 5.,
                 }
             }
         })
@@ -558,10 +579,6 @@ do
                     effect              = 'EMTR',
                     resource_cost       = 20.,
                     cooldown            = 7.,
-                    --animation           = 2,
-                    --animation_point     = 1.3,
-                    --animation_backswing = 0.3,
-                    --timescale     = 0.4,
                 }
             }
         })
@@ -2222,6 +2239,24 @@ do
                     animation_point     = 0.01,
                     animation_backswing = 0.01,
                     timescale     = 1.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('AGEN', {
+            name            = "gnoll ensnare",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+            animation = { sequence  = GetAnimationSequence("gnoll_archer_spell"), timescale = 1.45, },
+            sfx_pack = {
+                on_caster = { { effect = "Spell\\Sweep_Chaos_Small.mdx", point = "hand right", permanent = true } }
+            },
+
+            level = {
+                [1] = {
+                    cooldown            = 15.,
+                    missile             = "ensnare_missile",
+                    resource_cost       = 0.,
                 }
             }
         })

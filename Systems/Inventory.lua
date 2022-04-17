@@ -205,15 +205,13 @@ do
 
                                 BlzFrameSetTexture(button.image, button.original_texture, 0, true)
                                 FrameChangeTexture(button.button, button.original_texture)
+                                BlzFrameSetVisible(button.new_item, false)
                                 if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.charges_frame, false) end
                                 button.charges_frame_state = false
 
                                     if button.button_state then
                                         if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.sprite, false) end
-                                        --BlzFrameSetEnable(button.sprite, false)
                                         button.button_state = false
-                                        --BlzDestroyFrame(button.sprite)
-                                        --button.sprite = nil
                                     end
 
                                 RemoveCustomItem(button.item)
@@ -246,6 +244,7 @@ do
                 else
                     BlzFrameSetTexture(button.image, button.original_texture, 0, true)
                     FrameChangeTexture(button.button, button.original_texture)
+                    BlzFrameSetVisible(button.new_item, false)
 
                     if button.charges_frame_state then
                         button.charges_frame_state = false
@@ -396,6 +395,12 @@ do
                     local proper_tooltip = InventoryTooltip[player]
 
                     if ShopFrame[player].state then proper_tooltip = ShopFrame[player].tooltip end
+
+                    if ButtonList[frame].new_item then
+                        BlzFrameSetVisible(ButtonList[frame].new_sprite, false)
+                        --BlzFrameSetModel(ButtonList[frame].new_sprite, "", 0)
+                        ButtonList[frame].new_item = nil
+                    end
 
                     ShowItemTooltip(ButtonList[frame].item, proper_tooltip, ButtonList[frame], player, FRAMEPOINT_LEFT, GetTooltip(InventoryTooltip[player]))
 
@@ -1098,15 +1103,16 @@ do
         end
 
 
+        local is_new_item = false
         if item_data.owner then
             BlzSetItemSkin(item, GetItemTypeId(item))
             item_data.owner = nil
+            is_new_item = true
         end
 
 
             item_data.picked_up = true
             OnItemPickUp(PlayerHero[player], item)
-
 
             if GetItemType(item) == ITEM_TYPE_CHARGED then
                 local inv_item = GetSameItemSlotItem(player, GetItemTypeId(item))
@@ -1122,17 +1128,26 @@ do
                             if free_slot ~= nil then
                                 free_slot.item = item
                                 SetItemVisible(item, false)
+                                if is_new_item then
+                                    BlzFrameSetVisible(free_slot.new_sprite, true)
+                                    free_slot.new_item = true
+                                end
                                 UpdateInventoryWindow(player)
                                 return true
                             end
 
                     end
-
             else
                 local free_slot = GetFirstFreeSlotButton(player)
 
                     if free_slot ~= nil then
                         free_slot.item = item
+
+                        if is_new_item then
+                            BlzFrameSetVisible(free_slot.new_sprite, true)
+                            free_slot.new_item = true
+                        end
+
                         UpdateInventoryWindow(player)
                         if item_data.quality_effect then
                             BlzSetSpecialEffectAlpha(item_data.quality_effect, 0)
@@ -1186,6 +1201,7 @@ do
         local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
         local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", new_Frame, "", 0)
         local new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
+        local new_ItemSprite = BlzCreateFrameByType("SPRITE", "justAName", new_Frame, "WarCraftIIILogo", 0)
         local new_Sprite = BlzCreateFrameByType("SPRITE", "justAName", new_FrameImage, "WarCraftIIILogo", 0)
 
         
@@ -1199,6 +1215,7 @@ do
                 charges_text_frame = new_FrameChargesText,
                 charges_frame_state = false,
                 sprite = new_Sprite,
+                new_sprite = new_ItemSprite,
                 button_state = false
             }
 
@@ -1223,6 +1240,15 @@ do
             BlzFrameSetSize(new_Frame, size_x, size_y)
             BlzFrameSetTexture(new_FrameImage, texture, 0, true)
             BlzFrameSetAllPoints(new_FrameImage, new_Frame)
+
+
+            BlzFrameSetPoint(new_ItemSprite, FRAMEPOINT_BOTTOMLEFT, new_FrameImage, FRAMEPOINT_BOTTOMLEFT, -0.0052, -0.0052)
+            BlzFrameSetSize(new_ItemSprite, 0.00001, 0.00001)
+            BlzFrameSetScale(new_ItemSprite, 0.74)
+            BlzFrameSetModel(new_ItemSprite, "UI\\holylight_sprite.mdx", 0)
+            BlzFrameSetVisible(new_ItemSprite, false)
+            BlzFrameSetEnable(new_ItemSprite, false)
+            BlzFrameSetLevel(new_ItemSprite, 10)
 
             BlzFrameSetPoint(new_Sprite, FRAMEPOINT_BOTTOMLEFT, new_FrameImage, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
             BlzFrameSetSize(new_Sprite, 1., 1.)
@@ -1387,9 +1413,6 @@ do
             end
         end
 
-        InventorySlots[player][45] = BlzCreateFrameByType("BACKDROP", "ButtonIcon", InventorySlots[player][32], "", 0)
-        BlzFrameSetAllPoints(InventorySlots[player][45], InventorySlots[player][32])
-        BlzFrameSetAlpha(InventorySlots[player][45], 0)
 
         -- equip slots
         InventorySlots[player][33] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.044, 0.044, slots_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.03, 0.03, slots_Frame)
@@ -1409,6 +1432,10 @@ do
             BackupButtonData[player][i] = GetButtonData(InventorySlots[player][i])
         end
 
+
+        InventorySlots[player][45] = BlzCreateFrameByType("BACKDROP", "ButtonIcon", InventorySlots[player][32], "", 0)
+        BlzFrameSetAllPoints(InventorySlots[player][45], InventorySlots[player][32])
+        BlzFrameSetAlpha(InventorySlots[player][45], 0)
 
         local actual_player = Player(player-1)
         local key_trig = CreateTrigger()

@@ -330,7 +330,8 @@ do
                 if myeffect.SFX_used then
                     local effect = AddSpecialEffect(myeffect.SFX_used, x, y)
 
-                        BlzSetSpecialEffectScale(effect, myeffect.SFX_used_scale or 1.)
+                    BlzSetSpecialEffectScale(effect, 1.)
+                    BlzSetSpecialEffectScale(effect, myeffect.SFX_used_scale or 1.)
 
                         if myeffect.timescale then BlzSetSpecialEffectTimeScale(effect, 1. + (1. - myeffect.timescale)) end
 
@@ -342,8 +343,7 @@ do
                             BlzSetSpecialEffectOrientation(effect, GetRandomReal(0., 360.) * bj_DEGTORAD, 0., 0.)
                         end
 
-                        if myeffect.SFX_bonus_z then BlzSetSpecialEffectZ(effect, BlzGetLocalSpecialEffectZ(effect) + myeffect.SFX_bonus_z) end
-
+                        if myeffect.SFX_bonus_z then BlzSetSpecialEffectZ(effect, GetZ(x, y) + myeffect.SFX_bonus_z) end
                         DelayAction(myeffect.SFX_lifetime or 0., function() DestroyEffect(effect) end)
 
                 end

@@ -354,7 +354,6 @@ do
                     end
 
 
-                    StashFrame[player].itemdata = {}
                     StashFrame[player].tooltip = NewTooltip(StashFrame[player].slots[5])
                     local tooltip = GetTooltip(StashFrame[player].tooltip)
                     tooltip.is_sell_penalty = true
@@ -554,7 +553,7 @@ do
 
 
 
-        --[[
+--[[
         DelayAction(10., function()
             FileLoad("testsave\\slot1.txt")
             FileLoad("testsave\\slot2.txt")

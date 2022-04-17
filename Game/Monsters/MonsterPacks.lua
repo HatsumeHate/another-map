@@ -140,7 +140,7 @@ do
             [2] = gg_rct_monster_pack_1_2,
             [3] = gg_rct_monster_pack_1_3
         }
-        MonsterPack[1].tags = { MONSTERPACK_SKELETONS, MONSTERPACK_ZOMBIES, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS }
+        MonsterPack[1].tags = { MONSTERPACK_SKELETONS, MONSTERPACK_ZOMBIES, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS, MONSTERPACK_GNOLLS }
         MonsterPack[1].respawn = 385.
         MonsterPack[1].respawn_type = RESPAWN_TYPE_RANDOM
         MonsterPack[1].min = 5; MonsterPack[1].max = 10; MonsterPack[1].elite = 2
@@ -153,7 +153,7 @@ do
             [2] = gg_rct_monster_pack_2_2,
             [3] = gg_rct_monster_pack_2_3
         }
-        MonsterPack[2].tags = { MONSTERPACK_SKELETONS, MONSTERPACK_GHOSTS, MONSTERPACK_ZOMBIES, MONSTERPACK_SWARM, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_DEMONS }
+        MonsterPack[2].tags = { MONSTERPACK_SKELETONS, MONSTERPACK_GHOSTS, MONSTERPACK_ZOMBIES, MONSTERPACK_SWARM, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_DEMONS, MONSTERPACK_GNOLLS }
         MonsterPack[2].respawn = 445.
         MonsterPack[2].min = 7; MonsterPack[2].max = 15; MonsterPack[2].elite = 1
         --##########################################################
@@ -165,7 +165,7 @@ do
             [2] = gg_rct_monster_pack_3_2,
             [3] = gg_rct_monster_pack_3_3
         }
-        MonsterPack[3].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_BEASTS, MONSTERPACK_DEMONS, MONSTERPACK_SATYRS, MONSTERPACK_BANDITS }
+        MonsterPack[3].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_BEASTS, MONSTERPACK_DEMONS, MONSTERPACK_SATYRS, MONSTERPACK_BANDITS, MONSTERPACK_GNOLLS }
         MonsterPack[3].respawn = 380.
         MonsterPack[3].min = 3; MonsterPack[3].max = 5
         --##########################################################
@@ -175,7 +175,7 @@ do
         MonsterPack[4].wander_region = {
             [1] = gg_rct_monster_pack_4_1
         }
-        MonsterPack[4].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_BEASTS }
+        MonsterPack[4].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_BEASTS, MONSTERPACK_GNOLLS }
         MonsterPack[4].respawn = 380.
         MonsterPack[4].min = 3; MonsterPack[4].max = 6
         --##########################################################
@@ -185,7 +185,7 @@ do
         MonsterPack[5].wander_region = {
             [1] = gg_rct_monster_pack_5_1
         }
-        MonsterPack[5].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM, MONSTERPACK_SATYRS }
+        MonsterPack[5].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM, MONSTERPACK_SATYRS, MONSTERPACK_GNOLLS }
         MonsterPack[5].respawn = 445.
         MonsterPack[5].min = 7; MonsterPack[5].max = 15; MonsterPack[5].elite = 3
         --##########################################################
@@ -196,7 +196,7 @@ do
             [1] = gg_rct_monster_pack_6_1,
             [2] = gg_rct_monster_pack_6_2
         }
-        MonsterPack[6].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM }
+        MonsterPack[6].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM, MONSTERPACK_GNOLLS }
         MonsterPack[6].respawn = 380.
         MonsterPack[6].min = 6; MonsterPack[6].max = 10; MonsterPack[6].elite = 3
         --##########################################################
@@ -208,7 +208,7 @@ do
             [2] = gg_rct_monster_pack_7_2,
             [3] = gg_rct_monster_pack_7_3
         }
-        MonsterPack[7].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM, MONSTERPACK_BEASTS, MONSTERPACK_BANDITS }
+        MonsterPack[7].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM, MONSTERPACK_BEASTS, MONSTERPACK_BANDITS, MONSTERPACK_GNOLLS }
         MonsterPack[7].respawn = 380.
         MonsterPack[7].min = 5; MonsterPack[7].max = 8; MonsterPack[7].elite = 1
         --##########################################################
@@ -219,7 +219,7 @@ do
             [1] = gg_rct_monster_pack_8_1,
             [2] = gg_rct_monster_pack_8_2
         }
-        MonsterPack[8].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM, MONSTERPACK_BEASTS }
+        MonsterPack[8].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM, MONSTERPACK_BEASTS, MONSTERPACK_GNOLLS }
         MonsterPack[8].respawn = 445.
         MonsterPack[8].min = 7; MonsterPack[8].max = 15; MonsterPack[8].elite = 2
         --##########################################################
@@ -263,7 +263,7 @@ do
             wander_region = {
                 gg_rct_monster_pack_12_1
             },
-            tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS },
+            tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_GNOLLS },
             respawn = 455., min = 7, max = 12, elite = 2, initial_spawn_time = 14.
         }
         --##########################################################
@@ -273,7 +273,7 @@ do
             wander_region = {
                 gg_rct_monster_pack_13_1
             },
-            tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS },
+            tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_GNOLLS },
             respawn = 445., min = 7, max = 12, elite = 2, initial_spawn_time = 18.
         }
         --##########################################################
@@ -281,7 +281,7 @@ do
         MonsterPack[14] = {
             spawner = gg_rct_monster_pack_14_spawner,
             wander_region = { gg_rct_monster_pack_14_1 },
-            tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS },
+            tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GNOLLS },
             respawn = 445., min = 5, max = 7, elite = 2, initial_spawn_time = 15.
         }
         --##########################################################
@@ -289,7 +289,7 @@ do
         MonsterPack[15] = {
             spawner = gg_rct_monster_pack_15_spawner,
             wander_region = { gg_rct_monster_pack_15_1 },
-            tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS },
+            tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS, MONSTERPACK_GNOLLS },
             respawn = 440., min = 7, max = 12, elite = 2, initial_spawn_time = 16.
         }
         --##########################################################
@@ -304,8 +304,15 @@ do
         MonsterPack[17] = {
             spawner = gg_rct_monster_pack_17_spawner,
             wander_region = { gg_rct_monster_pack_17_1, gg_rct_monster_pack_17_2, gg_rct_monster_pack_17_3 },
-            tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS },
+            tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS, MONSTERPACK_GNOLLS },
             respawn = 520., min = 7, max = 14, elite = 1, initial_spawn_time = 27.
+        }
+        --#######################SPAWNER_DATA#######################
+        MonsterPack[18] = {
+            spawner = gg_rct_monster_pack_18_spawner,
+            wander_region = { gg_rct_monster_pack_18_1, gg_rct_monster_pack_18_2, gg_rct_monster_pack_18_3, gg_rct_monster_pack_18_4 },
+            tags = { MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS, MONSTERPACK_GNOLLS, MONSTERPACK_BANDITS, MONSTERPACK_SUCCUBUS },
+            respawn = 440., min = 4, max = 6, elite = 2, initial_spawn_time = 30.
         }
         --##########################################################
 

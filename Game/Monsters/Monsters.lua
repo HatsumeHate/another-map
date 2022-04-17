@@ -38,7 +38,8 @@ do
     MONSTERPACK_BEASTS = 9
     MONSTERPACK_SWARM = 10
     MONSTERPACK_SATYRS = 11
-    MONSTERPACK_BOSS = 12
+    MONSTERPACK_GNOLLS = 12
+    MONSTERPACK_BOSS = 13
 
 
 
@@ -100,6 +101,12 @@ do
     MONSTER_ID_SATYR = "n01K"
     MONSTER_ID_SATYR_TRICKSTER = "n01L"
     MONSTER_ID_SATYR_HELL = "n01M"
+    MONSTER_ID_GNOLL = "n02F"
+    MONSTER_ID_GNOLL_BRUTE = "n02G"
+    MONSTER_ID_GNOLL_OVERSEER = "n02I"
+    MONSTER_ID_GNOLL_POACHER = "n02J"
+    MONSTER_ID_GNOLL_ASSASSIN = "n02K"
+    MONSTER_ID_GNOLL_WARDEN = "n02H"
 
 
     MONSTER_ID_BUTCHER = "U003"
@@ -207,15 +214,20 @@ do
         for k = 1, #pack do
             if GetRandomReal(0.,100.) <= pack[k].chance then
                 id = FourCC(pack[k].id)
-                if amount > pack[k].max then amount = pack[k].max end
+                if pack[k].max and amount > pack[k].max then amount = pack[k].max end
                 break
             end
         end
 
+        if id then
             for i = 1, amount do
                 newunit = CreateUnit(player or SECOND_MONSTER_PLAYER, id, GetRandomReal(GetRectMinX(rect), GetRectMaxX(rect)), GetRandomReal(GetRectMinY(rect), GetRectMaxY(rect)), GetRandomInt(0, 359))
                 GroupAddUnit(group, newunit)
             end
+        else
+            return 0
+        end
+
 
         return amount
     end
@@ -234,7 +246,7 @@ do
         for k = 1, #pack do
             if GetRandomReal(0.,100.) <= pack[k].chance then
                 id = FourCC(pack[k].id)
-                if amount > pack[k].max then amount = pack[k].max end
+                if pack[k].max and amount > pack[k].max then amount = pack[k].max end
                 --amount = pack[k].max or amount
                 break
             end
@@ -311,6 +323,7 @@ do
     ---@param range_type_chance_delta number
     function SpawnMonsterPack(point, monster_pack, min, max, bonus_elite, range_type_chance_delta, player)
         if point == nil or monster_pack == nil then return end
+
         local total_monster_count = GetRandomInt(min, max) + math.floor(Current_Wave / 3.)
         local first_pack_count = math.ceil(total_monster_count * COMMON_MONSTER_RATE)
         local monster_attack_type = GetRandomReal(0., 100.) <= (MELEE_MONSTER_CHANCE + (range_type_chance_delta or 0.)) and MONSTER_TAG_MELEE or MONSTER_TAG_RANGE
@@ -710,24 +723,24 @@ do
             [MONSTERPACK_SKELETONS] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
-                        { id = MONSTER_ID_SKELETON_ARMORED, chance = 22.5 },
+                        { id = MONSTER_ID_SKELETON_ARMORED, chance = 22.5, max = 2 },
                         { id = MONSTER_ID_SKELETON_N, chance = 20., max = 4 },
-                        { id = MONSTER_ID_SKELETON_IMPROVED, chance = 32.5 },
-                        { id = MONSTER_ID_SKELETON, chance = 100. },
+                        { id = MONSTER_ID_SKELETON_IMPROVED, chance = 32.5, max = 2 },
+                        { id = MONSTER_ID_SKELETON, chance = 100., max = 5 },
                     },
                     [MONSTER_TAG_RANGE] = {
-                        { id = MONSTER_ID_SKELETON_ARCHER, chance = 40. },
+                        { id = MONSTER_ID_SKELETON_ARCHER, chance = 40., max = 3 },
                         { id = MONSTER_ID_SKELETON_ARCHER_N, chance = 20., max = 2 },
-                        { id = MONSTER_ID_SKELETON_MAGE, chance = 40. },
+                        { id = MONSTER_ID_SKELETON_MAGE, chance = 40., max = 2 },
                         { id = MONSTER_ID_SORCERESS, chance = 40., max = 2 },
                         { id = MONSTER_ID_NECROMANCER_N, chance = 20., max = 2 },
-                        { id = MONSTER_ID_NECROMANCER, chance = 100. },
+                        { id = MONSTER_ID_NECROMANCER, chance = 100., max = 2 },
                     }
                 },
                 [MONSTER_RANK_ADVANCED] = {
                     [MONSTER_TAG_RANGE] = {
-                        { id = MONSTER_ID_SKELETON_HELL_ARCHER, chance = 50. },
-                        { id = MONSTER_ID_SKELETON_SNIPER, chance = 100. },
+                        { id = MONSTER_ID_SKELETON_HELL_ARCHER, chance = 50., max = 2 },
+                        { id = MONSTER_ID_SKELETON_SNIPER, chance = 100., max = 2 },
                     }
                 },
                 [MONSTERPACK_BOSS] = {
@@ -824,6 +837,26 @@ do
                 [MONSTERPACK_BOSS] = {
                     MONSTER_ID_MEPHISTO,
                     MONSTER_ID_BLOOD_RAVEN
+                }
+            },
+            [MONSTERPACK_GNOLLS] = {
+                [MONSTER_RANK_COMMON] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_GNOLL, chance = 100., max = 5 },
+                    },
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_GNOLL_POACHER, chance = 100., max = 3 },
+                    }
+                },
+                [MONSTER_RANK_ADVANCED] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_GNOLL_OVERSEER, chance = 45., max = 1 },
+                        { id = MONSTER_ID_GNOLL_BRUTE, chance = 100., max = 3 }
+                    },
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_GNOLL_WARDEN, chance = 35., max = 2 },
+                        { id = MONSTER_ID_GNOLL_ASSASSIN, chance = 100., max = 2 }
+                    }
                 }
             },
             [MONSTERPACK_BOSS] = {
@@ -995,7 +1028,7 @@ do
 
         local test_group
         RegisterTestCommand("spw", function()
-            test_group = SpawnMonsterPack(gg_rct_Region_343, MONSTERPACK_SUCCUBUS, 3, 7, 3, 0.)
+            test_group = SpawnMonsterPack(gg_rct_Region_343, MONSTERPACK_GNOLLS, 3, 7, 3, 0.)
         end)
 
         RegisterTestCommand("spwd", function()

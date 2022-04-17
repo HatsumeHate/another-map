@@ -18,6 +18,7 @@ do
     HEAL_STATUS = 3
     RESOURCE_STATUS = 4
     REFLECT_STATUS = 8
+    ATTACK_STATUS_MISS = 9
 
     OrderInterceptionTrigger = 0
 
@@ -98,7 +99,11 @@ do
             return
         end
 
-        local crit_overwrite
+        if damage_type == DAMAGE_TYPE_PHYSICAL and direct and IsUnitBlinded(source) then
+            CreateHitnumber(0, source, target, ATTACK_STATUS_MISS)
+            AddSoundVolume("Sound\\Evade".. GetRandomInt(1,3) ..".wav", GetUnitX(target), GetUnitY(target), 120, 1400.)
+        else
+            local crit_overwrite
         --print("1")
         if myeffect then
             local effect_data = myeffect.eff.level[myeffect.l]
@@ -163,10 +168,6 @@ do
         else
 
             --print("4")
-            --print(I2S(attacker.stats[BONUS_BEAST_DAMAGE].value))
-            --print(I2S(attacker.stats[BONUS_UNDEAD_DAMAGE].value))
-            --print(I2S(attacker.stats[BONUS_HUMAN_DAMAGE].value))
-            --print(I2S(attacker.stats[BONUS_DEMON_DAMAGE].value))
             if victim.unit_trait then
                 for i = 1, #victim.unit_trait do
                     if victim.unit_trait[i] == TRAIT_BEAST then trait_modifier = trait_modifier + (attacker.stats[BONUS_BEAST_DAMAGE].value * 0.01)
@@ -197,7 +198,15 @@ do
                 if defence < 0.25 then defence = 0.25 end
             elseif damage_type == DAMAGE_TYPE_MAGICAL then
                 local boost = attacker.stats[MAGICAL_ATTACK].value - victim.stats[MAGICAL_SUPPRESSION].value
-                if boost < 0 then boost = 0 end
+
+                if boost > 0 then
+                    boost = ParamToPercent(boost, MAGICAL_ATTACK)
+                else
+                    boost = boost / 5.
+                    if boost < -70. then boost = -70. end
+                end
+
+                --if boost < 0 then boost = 0 end
 
                 damage = damage * (1. + (ParamToPercent(boost, MAGICAL_ATTACK) * 0.01))
             end
@@ -295,7 +304,7 @@ do
         end
 
 
-        if HasAnyDisableState(source) or HasNegativeState(source, STATE_FEAR) then
+        if HasAnyDisableState(source) or IsUnitFeared(source) then
             return 0
         end
 
@@ -353,6 +362,13 @@ do
                 damage_table.damage = damage
                 OnDamage_PreHit(source, target, damage, damage_table)
                 damage = damage_table.damage
+
+                if IsUnitType(target, UNIT_TYPE_HERO) and IsAHero(target) and direct and damage > 0 and not victim.groan_cd then
+                    if Chance(12.) then
+                        PlayGroanSound(victim, (damage / BlzGetUnitMaxHP(target) > 0.15))
+                    end
+                end
+
                 UnitDamageTarget(source, target, damage, true, false, ATTACK_TYPE_NORMAL, nil, is_sound and attacker.equip_point[WEAPON_POINT].WEAPON_SOUND or nil)
                 OnDamage_End(source, target, damage, damage_table)
 
@@ -367,6 +383,9 @@ do
             end
 
             --print("18")
+        end
+
+
 
         return damage
     end
@@ -460,28 +479,30 @@ do
             end
         end)
 
-        RegisterTestCommand("def100", function()
-            print(ParamToPercent(100, PHYSICAL_DEFENCE))
+        BuffsInit()
+
+        RegisterTestCommand("m100", function()
+            print(ParamToPercent(100, MAGICAL_ATTACK))
         end)
 
-        RegisterTestCommand("def250", function()
-            print(ParamToPercent(250, PHYSICAL_DEFENCE))
+        RegisterTestCommand("m250", function()
+            print(ParamToPercent(250, MAGICAL_ATTACK))
         end)
 
-        RegisterTestCommand("def500", function()
-            print(ParamToPercent(500, PHYSICAL_DEFENCE))
+        RegisterTestCommand("m500", function()
+            print(ParamToPercent(500, MAGICAL_ATTACK))
         end)
 
-        RegisterTestCommand("def750", function()
-            print(ParamToPercent(750, PHYSICAL_DEFENCE))
+        RegisterTestCommand("m750", function()
+            print(ParamToPercent(750, MAGICAL_ATTACK))
         end)
 
-        RegisterTestCommand("def1000", function()
-            print(ParamToPercent(1000, PHYSICAL_DEFENCE))
+        RegisterTestCommand("m1000", function()
+            print(ParamToPercent(1000, MAGICAL_ATTACK))
         end)
 
-        RegisterTestCommand("def1250", function()
-            print(ParamToPercent(1250, PHYSICAL_DEFENCE))
+        RegisterTestCommand("m1250", function()
+            print(ParamToPercent(1250, MAGICAL_ATTACK))
         end)
 
         RegisterTestCommand("hurt", function() DamageUnit(PlayerHero[1], PlayerHero[1], 5, PHYSICAL_ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, false, true, true, nil) end)

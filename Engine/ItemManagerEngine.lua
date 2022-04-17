@@ -417,19 +417,42 @@ do
 
                             --print("found " .. GetParameterName(parameter.PARAM) .. " method " .. parameter.METHOD)
 
-                            item_data.BONUS[#item_data.BONUS + 1] = {
+                            local index = #item_data.BONUS + 1
+
+                            item_data.BONUS[index] = {
                                 PARAM = parameter.PARAM,
-                                METHOD = parameter.METHOD
+                                METHOD = parameter.METHOD,
+                                delta = parameter.delta or nil,
+                                delta_level = parameter.delta_level or nil,
+                                delta_level_max = parameter.delta_level_max or nil
                             }
 
-                            if item_data.BONUS[#item_data.BONUS].METHOD == STRAIGHT_BONUS and not (item_data.BONUS[#item_data.BONUS].PARAM == CRIT_MULTIPLIER or item_data.BONUS[#item_data.BONUS].PARAM == HP_REGEN or item_data.BONUS[#item_data.BONUS].PARAM == MP_REGEN) then
+                            if item_data.BONUS[index].METHOD == STRAIGHT_BONUS and not (item_data.BONUS[index].PARAM == CRIT_MULTIPLIER or item_data.BONUS[index].PARAM == HP_REGEN or item_data.BONUS[index].PARAM == MP_REGEN) then
                                 --print("straight start")
-                                item_data.BONUS[#item_data.BONUS].VALUE = GetRandomInt(parameter.value_min, parameter.value_max)
+                                item_data.BONUS[index].VALUE = GetRandomInt(parameter.value_min, parameter.value_max)
                                 --print("straight end .. " .. item_data.BONUS[#item_data.BONUS].VALUE)
                             else
                                 --print("mult start")
-                                item_data.BONUS[#item_data.BONUS].VALUE = I2R(GetRandomInt(R2I(parameter.value_min * 100.), R2I(parameter.value_max * 100.))) / 100.
+                                item_data.BONUS[index].VALUE = I2R(GetRandomInt(R2I(parameter.value_min * 100.), R2I(parameter.value_max * 100.))) * 0.01
                                 --print("mult end " .. item_data.BONUS[#item_data.BONUS].VALUE)
+                            end
+
+                            item_data.BONUS[index].base = item_data.BONUS[index].VALUE
+
+                            if item_data.BONUS[index].METHOD == STRAIGHT_BONUS and not item_data.BONUS[index].delta and GeneratedScaling[item_data.BONUS[index].PARAM] then
+                                item_data.BONUS[index].delta = GeneratedScaling[item_data.BONUS[index].PARAM].delta
+                                item_data.BONUS[index].delta_level = GeneratedScaling[item_data.BONUS[index].PARAM].delta_level
+                                item_data.BONUS[index].delta_level_max = GeneratedScaling[item_data.BONUS[index].PARAM].delta_level_max
+                            end
+
+                            if item_data.BONUS[index].delta then
+                                local delta_level_bonus = math.floor(Current_Wave / item_data.BONUS[index].delta_level)
+
+                                if item_data.BONUS[index].delta_level_max and delta_level_bonus > item_data.BONUS[index].delta_level_max then
+                                    delta_level_bonus = item_data.BONUS[index].delta_level_max
+                                end
+
+                                item_data.BONUS[index].VALUE = (item_data.BONUS[index].base or 1) + item_data.BONUS[index].delta * delta_level_bonus
                             end
 
                             bonus_parameters_count = bonus_parameters_count - 1
@@ -577,6 +600,20 @@ do
                         item_data.DEFENCE = R2I(15 * GetRandomReal(0.75, 1.25)) + 1 * level
                     end
                 end
+
+        if item_data.BONUS then
+            for i = 1, #item_data.BONUS do
+                if item_data.BONUS[i].delta then
+                    local delta_level_bonus = math.floor(Current_Wave / item_data.BONUS[i].delta_level)
+
+                    if item_data.BONUS[i].delta_level_max and delta_level_bonus > item_data.BONUS[i].delta_level_max then
+                        delta_level_bonus = item_data.BONUS[i].delta_level_max
+                    end
+
+                    item_data.BONUS[i].VALUE = (item_data.BONUS[i].base or 1) + item_data.BONUS[i].delta * delta_level_bonus
+                end
+            end
+        end
 
             GenerateItemCost(item, level)
             if item_data.stat_modificator then GenerateItemStatPreset(item, item_data.stat_modificator) end
