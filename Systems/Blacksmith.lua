@@ -492,6 +492,7 @@ do
                                         }
 
                                         PlayLocalSound(soundpack[GetRandomInt(1, #soundpack)], player-1, 125)
+                                        GenerateItemCost(reforge_button.item, item_data.level)
 
                                         item_data.MAX_SLOTS = item_data.MAX_SLOTS + 1
 

@@ -49,6 +49,7 @@ do
                 if KEYBIND_LIST[i].player_skill_bind[player] == FourCC(id) then
                     UnitRemoveAbility(unit, KEYBIND_LIST[i].ability)
                     KEYBIND_LIST[i].player_skill_bind[player] = 0
+                    KEYBIND_LIST[i].player_skill_bind_string_id[player] = nil
                     BlzFrameSetVisible(KEYBIND_LIST[i].player_charges_frame[player].border, false)
                     break
                 end
@@ -210,18 +211,24 @@ do
 
 
     function UpdateBindedSkillsManacosts(unit)
+        if TraceBug then print("UpdateBindedSkillsManacosts") end
         local unit_data = GetUnitData(unit)
         local player = GetPlayerId(GetOwningPlayer(unit)) + 1
-
+            if TraceBug then print("UpdateBindedSkillsManacosts B") end
             for key = KEY_Q, KEY_F do
-                if KEYBIND_LIST[key].player_skill_bind[player] and KEYBIND_LIST[key].player_skill_bind[player] ~= 0 then
-                    local skill = GetSkillData(KEYBIND_LIST[key].player_skill_bind[player])
+                if TraceBug then print("UpdateBindedSkillsManacosts C - key " .. key) end
+                if KEYBIND_LIST[key].player_skill_bind[player] and KEYBIND_LIST[key].player_skill_bind[player] > 0 then
+                    if TraceBug then print("UpdateBindedSkillsManacosts skill binded") end
+                    local skill = GetUnitSkillData(PlayerHero[player], KEYBIND_LIST[key].player_skill_bind_string_id[player])
+                    if TraceBug then print("UpdateBindedSkillsManacosts skill") end
                     local level = UnitGetAbilityLevel(PlayerHero[player], skill.Id)
+                    if TraceBug then print("UpdateBindedSkillsManacosts level") end
                     local manacost = ((skill.level[level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
-
+                    if TraceBug then print("UpdateBindedSkillsManacosts manacost calculate") end
                         if manacost < 0. then manacost = 0 end
 
                         BlzSetUnitAbilityManaCost(PlayerHero[player], KEYBIND_LIST[key].ability, 0, math.floor(manacost + 0.5))
+                    if TraceBug then print("UpdateBindedSkillsManacosts manacost set") end
                 end
             end
     end
@@ -229,12 +236,15 @@ do
 
     function UpdateBindedSkillsData(player)
         local unit_data = GetUnitData(PlayerHero[player])
+        if TraceBug then print("UpdateBindedSkillsData") end
 
             for key = KEY_Q, KEY_F do
-                if KEYBIND_LIST[key].player_skill_bind[player] and KEYBIND_LIST[key].player_skill_bind[player] ~= 0 then
-                    local skill = GetSkillData(KEYBIND_LIST[key].player_skill_bind[player])
+                if KEYBIND_LIST[key].player_skill_bind[player] and KEYBIND_LIST[key].player_skill_bind[player] > 0 then
+                    local skill = GetUnitSkillData(PlayerHero[player], KEYBIND_LIST[key].player_skill_bind_string_id[player])
+                    if TraceBug then print(skill.name) end
                     local ability = BlzGetUnitAbility(PlayerHero[player], KEYBIND_LIST[key].ability)
                     local level = UnitGetAbilityLevel(PlayerHero[player], skill.Id)
+                    if TraceBug then print(level) end
 
                         BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[level].range or 0.)
                         BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[level].radius or 0.)
@@ -287,7 +297,7 @@ do
     ---@param id string
     ---@param key integer
     function BindAbilityKey(unit, id, key)
-        local skill = GetAbilityFromUnit(unit, id)--GetSkillData(FourCC(id))
+        local skill = GetUnitSkillData(unit, id)--GetSkillData(FourCC(id))
         local ability_id = KEYBIND_LIST[key].ability
         local ability
         local unit_data = GetUnitData(unit)
@@ -323,6 +333,7 @@ do
 
 
         KEYBIND_LIST[key].player_skill_bind[GetPlayerId(GetOwningPlayer(unit)) + 1] = FourCC(id)
+        KEYBIND_LIST[key].player_skill_bind_string_id[GetPlayerId(GetOwningPlayer(unit)) + 1] = id
         --print("keybind done")
         SetAbilityExtendedTooltip(unit, id, GetPlayerId(GetOwningPlayer(unit)) + 1)
     end
@@ -429,9 +440,9 @@ do
     ---@return integer
     function UnitGetAbilityLevel(unit, id)
         local unit_data = GetUnitData(unit)
-        local ability_level = 0
-        local skill
-
+        local skill = GetUnitSkillData(unit, id)
+        local ability_level = skill and skill.current_level or 1
+            --[[
             for i = 1, #unit_data.skill_list do
                 if unit_data.skill_list[i].Id == id then
                     ability_level = unit_data.skill_list[i].current_level
@@ -439,21 +450,23 @@ do
                     break
                 end
             end
+            ]]
+        --TODO fix fuken bug
 
             for i = WEAPON_POINT, NECKLACE_POINT do
-                if unit_data.equip_point[i] and unit_data.equip_point[i].SKILL_BONUS then
+                if unit_data.equip_point[i] and unit_data.equip_point[i].SKILL_BONUS and #unit_data.equip_point[i].SKILL_BONUS > 0 then
                     for skill_bonus = 1, #unit_data.equip_point[i].SKILL_BONUS do
                         if (unit_data.equip_point[i].SKILL_BONUS[skill_bonus].id and unit_data.equip_point[i].SKILL_BONUS[skill_bonus].id == id) or
                                 (unit_data.equip_point[i].SKILL_BONUS[skill_bonus].category and skill.category == unit_data.equip_point[i].SKILL_BONUS[skill_bonus].category) then
-                            ability_level = ability_level + unit_data.equip_point[i].SKILL_BONUS[skill_bonus].bonus_levels
+                            ability_level = ability_level + (unit_data.equip_point[i].SKILL_BONUS[skill_bonus].bonus_levels or 1)
                         end
                     end
                 end
             end
 
-        if skill[ability_level] == nil then
-            GenerateSkillLevelData(skill, ability_level)
-        end
+        --if skill[ability_level] == nil then
+           GenerateSkillLevelData(skill, ability_level)
+       -- end
 
         --UpdateBindedSkillData(id, GetPlayerId(GetOwningPlayer(unit)) + 1)
 
@@ -527,6 +540,18 @@ do
     local function PlayCastSfx(unit_data, pack, animation_timescale, target, x, y)
 
         if pack then
+
+            if unit_data.cast_effect_pack then
+                for i = 1, #unit_data.cast_effect_pack do
+                    DestroyEffect(unit_data.cast_effect_pack[i])
+                end
+            end
+
+            if unit_data.cast_effect_permanent_pack then
+                for i = 1, #unit_data.cast_effect_permanent_pack do
+                    DestroyEffect(unit_data.cast_effect_permanent_pack[i])
+                end
+            end
 
             unit_data.cast_effect_pack = {}
             unit_data.cast_effect_permanent_pack = {}
@@ -714,6 +739,7 @@ do
                     name_string = " (|cffffcc00Q|r)",
                     bind_name = "[Q]",
                     player_skill_bind = {},
+                    player_skill_bind_string_id = {},
                     order = order_web
                 },
                 [KEY_W] =  {
@@ -721,6 +747,7 @@ do
                     name_string = " (|cffffcc00W|r)",
                     bind_name = "[W]",
                     player_skill_bind = {},
+                    player_skill_bind_string_id = {},
                     order = order_unholyfrenzy
                 },
                 [KEY_E] =  {
@@ -728,6 +755,7 @@ do
                     name_string = " (|cffffcc00E|r)",
                     bind_name = "[E]",
                     player_skill_bind = {},
+                    player_skill_bind_string_id = {},
                     order = order_volcano
                 },
                 [KEY_R] =  {
@@ -735,6 +763,7 @@ do
                     name_string = " (|cffffcc00R|r)",
                     bind_name = "[R]",
                     player_skill_bind = {},
+                    player_skill_bind_string_id = {},
                     order = order_voodoo
                 },
                 [KEY_D] =  {
@@ -742,6 +771,7 @@ do
                     name_string = " (|cffffcc00D|r)",
                     bind_name = "[D]",
                     player_skill_bind = {},
+                    player_skill_bind_string_id = {},
                     order = order_ward
                 },
                 [KEY_F] =  {
@@ -749,6 +779,7 @@ do
                     name_string = " (|cffffcc00F|r)",
                     bind_name = "[F]",
                     player_skill_bind = {},
+                    player_skill_bind_string_id = {},
                     order = order_undefend
                 }
             }

@@ -332,7 +332,7 @@ do
 
 				if data.equip_point[OFFHAND_POINT] then
 					if data.equip_point[OFFHAND_POINT].TYPE == ITEM_TYPE_WEAPON then
-						total_damage = total_damage + (data.equip_point[OFFHAND_POINT].DAMAGE * 0.35)
+						total_damage = total_damage + ((data.equip_point[OFFHAND_POINT].DAMAGE or 0) * 0.35)
 					end
 				end
 
@@ -344,7 +344,7 @@ do
 				local defence = data.stats[AGI_STAT].value * 2
 
 				for i = OFFHAND_POINT, HANDS_POINT do
-					if data.equip_point[i] ~= nil then
+					if data.equip_point[i] then
 						defence = defence + (data.equip_point[i].DEFENCE or 0)
 					end
 				end
@@ -359,7 +359,7 @@ do
 
 				if data.equip_point[OFFHAND_POINT] then
 					if data.equip_point[OFFHAND_POINT].TYPE == ITEM_TYPE_WEAPON then
-						total_damage = total_damage + (data.equip_point[OFFHAND_POINT].DAMAGE * 0.35)
+						total_damage = total_damage + ((data.equip_point[OFFHAND_POINT].DAMAGE or 0) * 0.35)
 					end
 				end
 
@@ -371,9 +371,13 @@ do
 				local defence = data.stats[INT_STAT].value
 
 				for i = RING_1_POINT, NECKLACE_POINT do
-					if data.equip_point[i] ~= nil then
+					if data.equip_point[i] then
 						defence = defence + (data.equip_point[i].SUPPRESSION or 0)
 					end
+				end
+
+				if data.equip_point[BELT_POINT] and data.equip_point[BELT_POINT].item then
+					defence = defence + (data.equip_point[BELT_POINT].SUPPRESSION or 0)
 				end
 
 				data.stats[MAGICAL_SUPPRESSION].value = (defence + data.stats[MAGICAL_SUPPRESSION].bonus) * data.stats[MAGICAL_SUPPRESSION].multiplier
@@ -416,7 +420,7 @@ do
 			---@param data table
 			[MP_VALUE]               = function(data)
 				data.stats[MP_VALUE].value = (data.base_stats.mana + data.stats[MP_VALUE].bonus) * GetBonus_INT(data.stats[INT_STAT].value) * data.stats[MP_VALUE].multiplier
-					if data.have_mp then
+					if data.has_mp then
 						local ratio = GetUnitState(data.Owner, UNIT_STATE_MANA) / BlzGetUnitMaxMana(data.Owner)
 						BlzSetUnitMaxMana(data.Owner, R2I(data.stats[MP_VALUE].value))
 						SetUnitState(data.Owner, UNIT_STATE_MANA, R2I(data.stats[MP_VALUE].value) * ratio)
@@ -525,6 +529,7 @@ do
 
 			---@param data table
 			[MELEE_DAMAGE_REDUCTION] = function(data)
+				if TraceBug then print("update melee damage reduction A") end
 				data.stats[MELEE_DAMAGE_REDUCTION].value = data.stats[MELEE_DAMAGE_REDUCTION].bonus
 			end,
 
@@ -540,8 +545,6 @@ do
 
 			---@param data table
 			[ATTACK_SPEED] = function(data)
-				--local agility_bonus = math.floor((data.stats[AGI_STAT].value / 3) + 0.5)
-
 				data.stats[ATTACK_SPEED].actual_bonus = ParamToPercent(data.stats[ATTACK_SPEED].bonus + math.floor((data.stats[AGI_STAT].value / 3) + 0.5), ATTACK_SPEED)
 
 				data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].ATTACK_SPEED * (1. - (data.stats[ATTACK_SPEED].actual_bonus) * 0.01)
@@ -552,6 +555,7 @@ do
 					BlzSetUnitAttackCooldown(data.Owner, 0.1, 0)
 					BlzSetUnitAttackCooldown(data.Owner, 0.1, 1)
 				end
+				if TraceBug then print("update attack speed C") end
 			end,
 
 			---@param data table
@@ -666,9 +670,11 @@ do
 
 			---@param data table
 			[MANACOST] = function(data)
+				if TraceBug then print("update manacost A") end
 				if IsUnitType(data.Owner, UNIT_TYPE_HERO) and IsAHero(data.Owner) then
 					UpdateBindedSkillsManacosts(data.Owner)
 				end
+				if TraceBug then print("update manacost B") end
 			end,
 		}
 

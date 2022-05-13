@@ -438,6 +438,23 @@ do
             full_distance = true
         })
         --==============================================--
+        NewMissileTemplate('meph_frost_blast_missile', {
+            name = "BAAL missile",
+            model = "Abilities\\Weapons\\FrostWyrmMissile\\FrostWyrmMissile.mdx",
+            max_distance = 1000.,
+            radius = 57.,
+            speed = 425.,
+            start_z = 120.,
+            end_z = 120.,
+            arc = 0.,
+            scale = 1.,
+            effect_on_hit = "meph_frost_blast_effect",
+            ignore_terrain = true,
+            penetrate = true,
+            full_distance = true,
+            max_targets = 300,
+        })
+        --==============================================--
         NewMissileTemplate('MREA', {
             name = "reanimated boss",
             model = "Abilities\\Weapons\\SearingArrow\\SearingArrowMissile.mdx",
@@ -445,12 +462,42 @@ do
             radius = 53.,
             speed = 900.,
             start_z = 60.,
-            end_z = 60.,
-            arc = 0.2,
+            end_z = 30.,
+            arc = 0.07,
             scale = 1.1,
             ignore_terrain = false,
             penetrate = false,
             full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('demoness_evolt_missile', {
+            name = "evolt missile",
+            model = "Effect\\Evolt-8.mdx",
+            max_distance = 1000.,
+            radius = 120.,
+            speed = 305.,
+            start_z = 100.,
+            end_z = 100.,
+            arc = 0.,
+            geo_arc = 45.,
+            geo_arc_length = 175.,
+            geo_arc_randomize_angle = true,
+            sound_on_fly = {
+                pack = { "Sounds\\Spells\\evolt_loop.wav" },
+                volume = 100,
+                cutoff = 1600.
+            },
+            sound_on_launch = {
+                pack = { "Sounds\\Spells\\evolt_launch_1.wav", "Sounds\\Spells\\evolt_launch_2.wav" },
+                volume = 140,
+                cutoff = 1700.,
+            },
+            scale = 0.5,
+            effect_on_hit = "demoness_evolt_missile_effect",
+            ignore_terrain = true,
+            penetrate = true,
+            full_distance = true,
+            max_targets = 300,
         })
         --==============================================--
         NewMissileTemplate('MSAT', {
@@ -607,6 +654,9 @@ do
             start_z = 75.,
             end_z = 75.,
             arc = 0.,
+            --geo_arc = 45.,
+            --geo_arc_length = 200.,
+            --geo_arc_randomize_angle = true,
             scale = 0.8,
             effect_on_hit = 'EGFB',
             sound_on_fly = {

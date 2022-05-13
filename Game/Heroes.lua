@@ -212,7 +212,6 @@ do
         local starting_skills = {}
 
             ActivePlayers = ActivePlayers + 1
-
             if region == ClassRegions[BARBARIAN_CLASS] then
                 id = FourCC("HBRB")
                 starting_items[1] = CreateCustomItem("I011", 0., 0.)
@@ -310,11 +309,13 @@ do
                 return
             end
 
+            SetPlayerState(Player(player_id), PLAYER_STATE_RESOURCE_GOLD, 1000)
+
                 local hero = CreateUnit(Player(player_id), id, GetRectCenterX(gg_rct_starting_location) , GetRectCenterY(gg_rct_starting_location), 270.)
                 RemoveUnit(GetTriggerUnit())
-
                 DelayAction(0., function()
                     local unit_data = GetUnitData(hero)
+                    SetTexture(hero, TEXTURE_ID_EMPTY)
 
                     if type(HeroProperNames[unit_data.unit_class]) == "table" then
                         BlzSetHeroProperName(hero, HeroProperNames[unit_data.unit_class][GetRandomInt(1, #HeroProperNames[unit_data.unit_class])])
@@ -325,6 +326,10 @@ do
                     end
 
                     if region == ClassRegions[NECROMANCER_CLASS] then RegisterNecromancerCorpseSpawn(hero) end
+
+                    if unit_data.unit_class == BARBARIAN_CLASS then
+                        ModifyStat(hero, VULNERABILITY, -30, STRAIGHT_BONUS, true)
+                    end
                 end)
 
                 SetCameraBoundsToRectForPlayerBJ(Player(player_id), bj_mapInitialCameraBounds)
@@ -461,21 +466,29 @@ do
             [AMAZON_CLASS] = gg_rct_amazon_select,
         }
 
+        local hero_state = {
+            [BARBARIAN_CLASS] = true,
+            [SORCERESS_CLASS] = true,
+            [NECROMANCER_CLASS] = true,
+            [PALADIN_CLASS] = false,
+            [ASSASSIN_CLASS] = false,
+            [DRUID_CLASS] = false,
+            [AMAZON_CLASS] = false,
+        }
+
         ClassRegions = { }
 
-        for i = 1, 3 do
+        for i = 1, 7 do
             if class_rects[i] then
                 ClassRegions[i] = CreateRegion()
                 RegionAddRect(ClassRegions[i], class_rects[i])
-                TriggerRegisterEnterRegionSimple(trg, ClassRegions[i])
+                if hero_state[i] then TriggerRegisterEnterRegionSimple(trg, ClassRegions[i]) end
             end
         end
 
         RegisterTestCommand("unlock", function()
-            for i = 4, 7 do
-                if class_rects[i] then
-                    ClassRegions[i] = CreateRegion()
-                    RegionAddRect(ClassRegions[i], class_rects[i])
+            for i = 1, 7 do
+                if class_rects[i] and not hero_state[i] then
                     TriggerRegisterEnterRegionSimple(trg, ClassRegions[i])
                 end
             end
@@ -558,7 +571,6 @@ do
         RegisterTestCommand('dft', function()
             KillUnit(gg_unit_h001_0057)
         end)
-
 
         HeroDeathSoundpack = {
             [BARBARIAN_CLASS] = { "Sound\\Barbarian\\death1.wav", "Sound\\Barbarian\\death2.wav" },

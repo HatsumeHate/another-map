@@ -111,15 +111,15 @@ do
 
                         if BlzGroupGetSize(skill.summoned_group) >= max then
 
-                            ForGroup(skill.summoned_group, function()
-                                if GetUnitState(GetEnumUnit(), UNIT_STATE_LIFE) < 0.045 then
-                                    GroupRemoveUnit(skill.summoned_group, GetEnumUnit())
-                                end
-                            end)
+                            --ForGroup(skill.summoned_group, function()
+                                --if GetUnitState(GetEnumUnit(), UNIT_STATE_LIFE) < 0.045 then
+                                    --GroupRemoveUnit(skill.summoned_group, GetEnumUnit())
+                               -- end
+                            --end)
 
                             if BlzGroupGetSize(skill.summoned_group) >= max then
                                 KillUnit(BlzGroupUnitAt(skill.summoned_group, 0))
-                                GroupRemoveUnit(skill.summoned_group, BlzGroupUnitAt(skill.summoned_group, 0))
+                                --GroupRemoveUnit(skill.summoned_group, BlzGroupUnitAt(skill.summoned_group, 0))
                             end
 
                         end
@@ -131,7 +131,12 @@ do
                         elseif Chance(archer_chance) then summoned = CreateUnit(player, FourCC("n027"), x, y, RndAng())
                         else summoned = CreateUnit(player, FourCC("u00Q"), x, y, RndAng()) end
 
-
+                        local death_trigger = CreateTrigger()
+                        TriggerRegisterUnitEvent(death_trigger, summoned, EVENT_UNIT_DEATH)
+                        TriggerAddAction(death_trigger, function()
+                            GroupRemoveUnit(skill.summoned_group, summoned)
+                            DestroyTrigger(death_trigger)
+                        end)
 
                         local sfx = AddSpecialEffect("Effect\\BonediggerHalo.mdx", GetUnitX(summoned), GetUnitY(summoned))
 

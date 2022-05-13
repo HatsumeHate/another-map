@@ -179,16 +179,16 @@ do
             end
             --print("lynn A")
 
-            if GetRandomInt(1, 4) == 1 then
+            if GetRandomInt(1, 2) == 1 then
                 local item = CreateCustomItem(ITEM_POTION_MIX_WEAK, 0., 0.)
-                SetItemCharges(item, GetRandomInt(1, 10))
+                SetItemCharges(item, GetRandomInt(15, 20) * ActivePlayers)
                 AddItemToShopWithSlot(gg_unit_n020_0075, item, 31, false)
             end
             --print("lynn B")
 
-            if GetRandomInt(1, 4) == 1 then
+            if GetRandomInt(1, 2) == 1 then
                 local item = CreateCustomItem(ITEM_POTION_MIX_HALF, 0., 0.)
-                SetItemCharges(item, GetRandomInt(1, 7))
+                SetItemCharges(item, GetRandomInt(15, 20) * ActivePlayers)
                 AddItemToShopWithSlot(gg_unit_n020_0075, item, 32, false)
             end
             --print("lynn C")
@@ -197,30 +197,30 @@ do
 
 
         --print("end shop A")
-        local item_count = GetRandomInt(0, 2)
+        local item_count = GetRandomInt(0, 7)
         local item
             if item_count > 0 then
                 item = CreateCustomItem(ITEM_POTION_ADRENALINE, 0, 0, false)
-                SetItemCharges(item, item_count)
+                SetItemCharges(item, item_count * ActivePlayers)
                 AddItemToShop(gg_unit_n001_0055, item, false)
             end
         --print("end shop B")
-            item_count = GetRandomInt(0, 2)
+            item_count = GetRandomInt(0, 5)
             if item_count > 0 then
                 item = CreateCustomItem(ITEM_POTION_ANTIDOTE, 0, 0, false)
-                SetItemCharges(item, item_count)
+                SetItemCharges(item, item_count * ActivePlayers)
                 AddItemToShop(gg_unit_n001_0055, item, false)
             end
         --print("end shop C")
-            item_count = GetRandomInt(0, 2)
+            item_count = GetRandomInt(0, 7)
             if item_count > 0 then
                 item = CreateCustomItem(ITEM_SCROLL_OF_PROTECTION, 0, 0, false)
-                SetItemCharges(item, item_count)
+                SetItemCharges(item, item_count * ActivePlayers)
                 AddItemToShop(gg_unit_n001_0055, item, false)
             end
         --print("end shop D")
             local scrolls = CreateCustomItem(ITEM_SCROLL_OF_TOWN_PORTAL, 0., 0.)
-            SetItemCharges(scrolls, 5)
+            SetItemCharges(scrolls, 5 * ActivePlayers)
             AddItemToShopWithSlot(gg_unit_n001_0055, scrolls, 30, false)
 
 

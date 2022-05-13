@@ -611,38 +611,51 @@ do
                     end
                 else
                     -- positive buffs
-                    if myeffect.applied_buff and CountBuffEffects(myeffect.applied_buff, ON_ALLY) > 0 then
-                        if myeffect.area_of_effect ~= nil and myeffect.area_of_effect > 0. then
-                            local targets = myeffect.max_targets or 1
-                            local enemy_group = CreateGroup()
-                            local result_group = CreateGroup()
-                            GroupEnumUnitsInRange(enemy_group, x, y, myeffect.area_of_effect, nil)
+                    if myeffect.applied_buff then
 
-                                for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
-                                    local picked = BlzGroupUnitAt(enemy_group, index)
+                        if CountBuffEffects(myeffect.applied_buff, ON_ALLY) > 0 then
 
-                                    if not (IsUnitAlly(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0) then
-                                        GroupRemoveUnit(enemy_group, picked)
-                                        GroupAddUnit(result_group, picked)
-                                        targets = targets - 1
-                                        if targets <= 0 then break end
+                           if myeffect.area_of_effect and myeffect.area_of_effect > 0. then
+                                local targets = myeffect.max_targets or 1
+                                local enemy_group = CreateGroup()
+                                local result_group = CreateGroup()
+
+                                GroupEnumUnitsInRange(enemy_group, x, y, myeffect.area_of_effect, nil)
+
+                                    for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
+                                        local picked = BlzGroupUnitAt(enemy_group, index)
+
+                                        if not (IsUnitAlly(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0) then
+                                            GroupRemoveUnit(enemy_group, picked)
+                                            GroupAddUnit(result_group, picked)
+                                            targets = targets - 1
+                                            if targets <= 0 then break end
+                                        end
+
                                     end
 
+                                ForGroup(result_group, function()
+                                    ApplyBuffEffect(source, GetEnumUnit(), data, lvl, ON_ALLY)
+                                end)
+
+                                GroupClear(result_group)
+                                DestroyGroup(result_group)
+                                GroupClear(enemy_group)
+                                DestroyGroup(enemy_group)
+                           else
+                                if IsUnitAlly(target, player_entity) and GetUnitState(target, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(target, FourCC("Avul")) == 0 then
+                                    ApplyBuffEffect(source, target, data, lvl, ON_ALLY)
                                 end
+                           end
 
-                            ForGroup(result_group, function()
-                                ApplyBuffEffect(source, GetEnumUnit(), data, lvl, ON_ALLY)
-                            end)
-
-                            GroupClear(result_group)
-                            DestroyGroup(result_group)
-                            GroupClear(enemy_group)
-                            DestroyGroup(enemy_group)
-                        else
-                            if IsUnitAlly(target, player_entity) and GetUnitState(target, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(target, FourCC("Avul")) == 0 then
-                                ApplyBuffEffect(source, target, data, lvl, ON_ALLY)
+                        elseif CountBuffEffects(myeffect.applied_buff, ON_HEROES) > 0 then
+                            for i = 1, 6 do
+                                if PlayerHero[i] and GetUnitState(PlayerHero[i], UNIT_STATE_LIFE) > 0.045 and IsUnitInRange(source, PlayerHero[i], myeffect.area_of_effect or 10.) then
+                                    ApplyBuffEffect(source, PlayerHero[i], data, lvl, ON_HEROES)
+                                end
                             end
                         end
+
                     end
                 end
 

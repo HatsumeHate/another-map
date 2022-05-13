@@ -6,6 +6,7 @@
 do
 
     local MonsterTraitsData
+    ---@integer this is index 1
     MONSTER_TRAIT_ELECTRIFIED = 1
     MONSTER_TRAIT_ENRAGED = 2
     MONSTER_TRAIT_UNSTOPPABLE = 3
@@ -18,12 +19,20 @@ do
     MONSTER_TRAIT_STURDY = 10
     MONSTER_TRAIT_AGILE = 11
     MONSTER_TRAIT_OVERPOWERING = 12
+    ---@integer this is index 13
     MONSTER_TRAIT_ARCANE = 13
+    MONSTER_TRAIT_ELITE_RED = 14
+    MONSTER_TRAIT_ELITE_BLUE = 15
+    MONSTER_TRAIT_ELITE_YELLOW = 16
+    MONSTER_TRAIT_ELITE_GREEN = 17
 
 
+    function GetRandomMonsterEliteTrait()
+        return GetRandomInt(MONSTER_TRAIT_ELITE_RED, MONSTER_TRAIT_ELITE_GREEN)
+    end
 
     function GetRandomMonsterTrait()
-        return GetRandomInt(1, #MonsterTraitsData)
+        return GetRandomInt(MONSTER_TRAIT_ELECTRIFIED, MONSTER_TRAIT_ARCANE)
     end
 
     ---@param unit unit
@@ -85,6 +94,19 @@ do
                 BlzSetUnitName(unit, trait.affix[unit_data.proper_declension] .. GetUnitName(unit))
             elseif trait.suffix then
                 BlzSetUnitName(unit, GetUnitName(unit) .. trait.suffix[unit_data.proper_declension])
+            else
+                local prefix = LOCALE_LIST[my_locale].ELITE_NAME_LIST.PREFIX[GetRandomInt(1, #LOCALE_LIST[my_locale].ELITE_NAME_LIST.PREFIX)]
+                local suffix = LOCALE_LIST[my_locale].ELITE_NAME_LIST.SUFFIX[GetRandomInt(1, #LOCALE_LIST[my_locale].ELITE_NAME_LIST.SUFFIX)]
+                local appelation = ""
+
+                    if GetRandomInt(1, 5) == 5 then
+                        appelation = " " .. LOCALE_LIST[my_locale].ELITE_NAME_LIST.APPELATION[GetRandomInt(1, #LOCALE_LIST[my_locale].ELITE_NAME_LIST.APPELATION)]
+                    end
+
+                    BlzSetUnitName(unit, prefix .. " " .. suffix .. appelation)
+                    unit_data.classification = MONSTER_RANK_ADVANCED
+                    SetDropList(unit, "adv_enemy")
+                    AddDropList(unit, "magic_drop", 100.)
             end
 
 
@@ -104,7 +126,6 @@ do
             end
 
             if trait.color then
-
                 unit_data.colours.r = trait.color.r or 255; unit_data.colours.g = trait.color.g or 255; unit_data.colours.b = trait.color.b or 255; unit_data.colours.a = trait.color.a or 255;
                 SetUnitVertexColor(unit, trait.color.r or 255, trait.color.g or 255, trait.color.b or 255, trait.color.a or 255)
             end
@@ -114,11 +135,13 @@ do
             end
 
             if trait.modified_scale then
-                --unit_data.scale = unit_data.scale + trait.modified_scale
-                --print(BlzGetUnitRealField(unit, UNIT_RF_SCALING_VALUE))
                 local new_scale = BlzGetUnitRealField(unit, UNIT_RF_SCALING_VALUE) + trait.modified_scale
                 SetUnitScale(unit, new_scale, new_scale, new_scale)
                 unit_data.height = unit_data.height * (1. + trait.modified_scale)
+            end
+
+            if trait.bonus_exp then
+                unit_data.xp = unit_data.xp * trait.bonus_exp
             end
 
             return true
@@ -145,7 +168,8 @@ do
                     local unit_data = GetUnitData(unit)
                     unit_data.equip_point[WEAPON_POINT].ATTRIBUTE = LIGHTNING_ATTRIBUTE
                     AddSpecialEffectTargetEx("Abilities\\Spells\\Orc\\LightningShield\\LightningShieldTarget.mdx", unit, "origin")
-                end
+                end,
+                bonus_exp = 1.1
             },
             [MONSTER_TRAIT_TOXIC] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_TOXIC],
@@ -161,7 +185,8 @@ do
                     local unit_data = GetUnitData(unit)
                     unit_data.equip_point[WEAPON_POINT].ATTRIBUTE = POISON_ATTRIBUTE
                     AddSpecialEffectTargetEx("Abilities\\Weapons\\PoisonSting\\PoisonStingTarget.mdx", unit, "chest")
-                end
+                end,
+                bonus_exp = 1.1
             },
             [MONSTER_TRAIT_ARCANE] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_ARCANE],
@@ -178,7 +203,8 @@ do
                     unit_data.equip_point[WEAPON_POINT].ATTRIBUTE = ARCANE_ATTRIBUTE
                     AddSpecialEffectTargetEx("Abilities\\Spells\\Undead\\VampiricAura\\VampiricAura.mdx", unit, "origin")
                     TraitArcaneEffect(unit)
-                end
+                end,
+                bonus_exp = 1.1
             },
             [MONSTER_TRAIT_ENRAGED] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_ENRAGED],
@@ -191,7 +217,8 @@ do
                 apply_func = function(unit)
                     AddSpecialEffectTargetEx("Abilities\\Spells\\Orc\\Bloodlust\\BloodlustTarget.mdx", unit, "hand right")
                     AddSpecialEffectTargetEx("Abilities\\Spells\\Orc\\Bloodlust\\BloodlustTarget.mdx", unit, "hand left")
-                end
+                end,
+                bonus_exp = 1.1
             },
             [MONSTER_TRAIT_UNSTOPPABLE] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_UNSTOPPABLE],
@@ -202,7 +229,8 @@ do
                 modified_scale = 0.2,
                 apply_func = function(unit)
                     AddSpecialEffectTargetEx("Abilities\\Spells\\Items\\AIda\\AIdaTarget.mdx", unit, "overhead")
-                end
+                end,
+                bonus_exp = 1.1
             },
             [MONSTER_TRAIT_SPIKY] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_SPIKY],
@@ -212,7 +240,8 @@ do
                 },
                 apply_func = function(unit)
                     AddSpecialEffectTargetEx("Abilities\\Spells\\NightElf\\ThornsAura\\ThornsAura.mdx", unit, "origin")
-                end
+                end,
+                bonus_exp = 1.1
             },
             [MONSTER_TRAIT_BURNING] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_BURNING],
@@ -229,7 +258,8 @@ do
                     unit_data.equip_point[WEAPON_POINT].ATTRIBUTE = FIRE_ATTRIBUTE
                     AddSpecialEffectTargetEx("Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedTarget.mdx", unit, "chest")
                     TraitBurningEffect(unit)
-                end
+                end,
+                bonus_exp = 1.1
             },
             [MONSTER_TRAIT_CHILLING] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_CHILLING],
@@ -244,7 +274,8 @@ do
                 apply_func = function(unit)
                     local unit_data = GetUnitData(unit)
                     unit_data.equip_point[WEAPON_POINT].ATTRIBUTE = ICE_ATTRIBUTE
-                end
+                end,
+                bonus_exp = 1.14
             },
             [MONSTER_TRAIT_BULKY] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_BULKY],
@@ -256,7 +287,8 @@ do
                 apply_func = function(unit)
                     AddSpecialEffectTargetEx("Abilities\\Spells\\Items\\VampiricPotion\\VampPotionCaster.mdx", unit, "origin")
                 end,
-                modified_scale = 0.4
+                modified_scale = 0.4,
+                bonus_exp = 1.2
             },
             [MONSTER_TRAIT_DEFIER] = {
                 suffix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_DEFIER],
@@ -265,7 +297,8 @@ do
                 },
                 apply_func = function(unit)
                     AddSpecialEffectTargetEx("Abilities\\Spells\\Undead\\AntiMagicShell\\AntiMagicShell.mdx", unit, "overhead")
-                end
+                end,
+                bonus_exp = 1.1
             },
             [MONSTER_TRAIT_STURDY] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_STURDY],
@@ -274,7 +307,8 @@ do
                 },
                 apply_func = function(unit)
                     AddSpecialEffectTargetEx("Abilities\\Spells\\Human\\DevotionAura\\DevotionAura.mdx", unit, "origin")
-                end
+                end,
+                bonus_exp = 1.2
             },
             [MONSTER_TRAIT_AGILE] = {
                 suffix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_AGILE],
@@ -286,7 +320,8 @@ do
                 },
                 apply_func = function(unit)
                     AddSpecialEffectTargetEx("Abilities\\Spells\\Orc\\CommandAura\\CommandAura.mdx", unit, "origin")
-                end
+                end,
+                bonus_exp = 1.1
             },
             [MONSTER_TRAIT_OVERPOWERING] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_OVERPOWERING],
@@ -294,7 +329,52 @@ do
                 applied_effects = {  "trait_overpower" },
                 apply_func = function(unit)
                     AddSpecialEffectTargetEx("Abilities\\Spells\\Undead\\Cripple\\CrippleTarget.mdx", unit, "origin")
-                end
+                end,
+                bonus_exp = 1.14
+            },
+            [MONSTER_TRAIT_ELITE_RED] = {
+                modified_parameters = {
+                    { param = PHYSICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
+                    { param = MAGICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
+                    { param = HP_VALUE, value = 1.55, method = MULTIPLY_BONUS },
+                    { param = CONTROL_REDUCTION, value = 40, method = STRAIGHT_BONUS }
+                },
+                color = { r = 255, g = 100, b = 100 },
+                modified_scale = 0.2,
+                bonus_exp = 1.5
+            },
+            [MONSTER_TRAIT_ELITE_BLUE] = {
+                modified_parameters = {
+                    { param = PHYSICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
+                    { param = MAGICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
+                    { param = HP_VALUE, value = 1.55, method = MULTIPLY_BONUS },
+                    { param = CONTROL_REDUCTION, value = 40, method = STRAIGHT_BONUS }
+                },
+                color = { r = 100, g = 100, b = 255 },
+                modified_scale = 0.2,
+                bonus_exp = 1.5
+            },
+            [MONSTER_TRAIT_ELITE_YELLOW] = {
+                modified_parameters = {
+                    { param = PHYSICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
+                    { param = MAGICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
+                    { param = HP_VALUE, value = 1.55, method = MULTIPLY_BONUS },
+                    { param = CONTROL_REDUCTION, value = 40, method = STRAIGHT_BONUS }
+                },
+                color = { r = 255, g = 190, b = 126 },
+                modified_scale = 0.2,
+                bonus_exp = 1.5
+            },
+            [MONSTER_TRAIT_ELITE_GREEN] = {
+                modified_parameters = {
+                    { param = PHYSICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
+                    { param = MAGICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
+                    { param = HP_VALUE, value = 1.55, method = MULTIPLY_BONUS },
+                    { param = CONTROL_REDUCTION, value = 40, method = STRAIGHT_BONUS }
+                },
+                color = { r = 100, g = 255, b = 100 },
+                modified_scale = 0.2,
+                bonus_exp = 1.5
             },
         }
 

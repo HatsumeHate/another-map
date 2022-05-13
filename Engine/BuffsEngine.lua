@@ -5,6 +5,7 @@ do
     local FearGroup
     local BlindGroup
     local FreezeGroup
+    local RootGroup
 
 
 
@@ -34,25 +35,27 @@ do
                         local state = buff_data.level[buff_data.current_level].negative_state
                         buff_data.level[buff_data.current_level].negative_state = nil
 
-                        if state == STATE_FREEZE and not HasNegativeState(unit_data.Owner, STATE_FREEZE) then
-                            SetUnitVertexColor(unit_data.Owner, unit_data.colours.r or 255, unit_data.colours.g or 255, unit_data.colours.b or 255, unit_data.colours.a or 255)
-                            SetUnitTimeScale(unit_data.Owner, 1.)
-                            GroupRemoveUnit(FreezeGroup, unit_data.Owner)
-                        elseif state == STATE_FEAR and not HasNegativeState(unit_data.Owner, STATE_FEAR) then
-                            for key = 1, 6 do BlzUnitDisableAbility(unit_data.Owner, KEYBIND_LIST[key].ability, false, false) end
-                            UnitRemoveAbility(unit_data.Owner, FourCC("ARal"))
-                            ModifyStat(unit_data.Owner, MOVING_SPEED, 0.5, MULTIPLY_BONUS, false)
-                            GroupRemoveUnit(FearGroup, unit_data.Owner)
-                        elseif state == STATE_STUN and not HasNegativeState(unit_data.Owner, STATE_STUN) then
-                            GroupRemoveUnit(StunGroup, unit_data.Owner)
-                        elseif state == STATE_BLIND and not HasNegativeState(unit_data.Owner, STATE_BLIND) then
-                            GroupRemoveUnit(BlindGroup, unit_data.Owner)
-                        end
-
-
-                        if not HasAnyDisableState(unit_data.Owner) then
+                        if state == STATE_STUN or state == STATE_FREEZE then
                             SafePauseUnit(unit_data.Owner, false)
                         end
+
+                            if state == STATE_FREEZE and not HasNegativeState(unit_data.Owner, STATE_FREEZE) then
+                                SetUnitVertexColor(unit_data.Owner, unit_data.colours.r or 255, unit_data.colours.g or 255, unit_data.colours.b or 255, unit_data.colours.a or 255)
+                                SetUnitTimeScale(unit_data.Owner, 1.)
+                                GroupRemoveUnit(FreezeGroup, unit_data.Owner)
+                            elseif state == STATE_FEAR and not HasNegativeState(unit_data.Owner, STATE_FEAR) then
+                                for key = 1, 6 do BlzUnitDisableAbility(unit_data.Owner, KEYBIND_LIST[key].ability, false, false) end
+                                UnitRemoveAbility(unit_data.Owner, FourCC("ARal"))
+                                ModifyStat(unit_data.Owner, MOVING_SPEED, 0.5, MULTIPLY_BONUS, false)
+                                GroupRemoveUnit(FearGroup, unit_data.Owner)
+                            elseif state == STATE_STUN and not HasNegativeState(unit_data.Owner, STATE_STUN) then
+                                GroupRemoveUnit(StunGroup, unit_data.Owner)
+                            elseif state == STATE_BLIND and not HasNegativeState(unit_data.Owner, STATE_BLIND) then
+                                GroupRemoveUnit(BlindGroup, unit_data.Owner)
+                            elseif state == STATE_ROOT and not HasNegativeState(unit_data.Owner, STATE_ROOT) then
+                                GroupRemoveUnit(RootGroup, unit_data.Owner)
+                            end
+
 
                     end
 
@@ -250,6 +253,8 @@ do
                                 GroupAddUnit(FearGroup, target)
                             elseif buff_data.level[lvl].negative_state == STATE_BLIND then
                                 GroupAddUnit(BlindGroup, target)
+                            elseif buff_data.level[lvl].negative_state == STATE_ROOT then
+                                GroupAddUnit(RootGroup, target)
                             end
 
                             buff_data.expiration_time = buff_data.expiration_time * ((100. - unit_data.stats[CONTROL_REDUCTION].value) * 0.01)
@@ -319,6 +324,12 @@ do
         return IsUnitInGroup(unit, BlindGroup)
     end
 
+    ---@param unit unit
+    ---@return boolean
+    function IsUnitRooted(unit)
+        return IsUnitInGroup(unit, RootGroup)
+    end
+
 
     ---@param unit unit
     ---@param state integer
@@ -348,7 +359,7 @@ do
                 local state = data.buff_list[i].level[data.buff_list[i].current_level].negative_state or nil
 
                     if state then
-                        if state == STATE_STUN or state == STATE_FREEZE then
+                        if state == STATE_STUN or state == STATE_FREEZE or state == STATE_FEAR then
                             return true
                         end
                     end
@@ -454,6 +465,8 @@ do
                         GroupAddUnit(FearGroup, target)
                     elseif buff_data.level[lvl].negative_state == STATE_BLIND then
                         GroupAddUnit(BlindGroup, target)
+                    elseif buff_data.level[lvl].negative_state == STATE_ROOT then
+                        GroupAddUnit(RootGroup, target)
                     end
 
 
@@ -551,6 +564,7 @@ do
         FreezeGroup = CreateGroup()
         FearGroup = CreateGroup()
         BlindGroup = CreateGroup()
+        RootGroup = CreateGroup()
 
         RegisterTestCommand("cc1", function()
 

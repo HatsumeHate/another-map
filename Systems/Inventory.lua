@@ -554,7 +554,6 @@ do
                 else
                     local free_slot = GetFirstFreeSlotButton(player)
                     free_slot.item = unit_Data.equip_point[OFFHAND_POINT].item
-                    --print(GetItemName(unit_Data.equip_point[OFFHAND_POINT].item))
                     EquipItem(InventoryOwner[player], unit_Data.equip_point[OFFHAND_POINT].item, false, true)
                 end
             end
@@ -567,15 +566,16 @@ do
         local item_data = GetItemData(ButtonList[h].item)
 
             if item_data.TYPE >= ITEM_TYPE_WEAPON and item_data.TYPE <= ITEM_TYPE_OFFHAND then
-
                 if ButtonList[h].button_type == INV_SLOT then
 
                         if not OffhandPointCheck(ButtonList[h].item, id, offhand) then return end
 
-                        local unequipped_item = EquipItem(InventoryOwner[id], ButtonList[h].item, true, offhand)
+                        local unequipped_item
+                        xpcall(function()
+                            unequipped_item = EquipItem(InventoryOwner[id], ButtonList[h].item, true, offhand)
+                        end, print)
 
                         if item_data.soundpack and item_data.soundpack.equip then PlayLocalSound(item_data.soundpack.equip, id - 1) end
-                       -- print("interact")
 
                         ButtonList[h].item = unequipped_item
                         UpdateEquipPointsWindow(id)
@@ -584,9 +584,11 @@ do
                     if CountFreeBagSlots(id) == 0 then
                         Feedback_InventoryNoSpace(id)
                     else
-                        EquipItem(InventoryOwner[id], ButtonList[h].item, false, (ButtonList[h].button_type == OFFHAND_POINT and item_data.TYPE == ITEM_TYPE_WEAPON))
-                        if item_data.soundpack ~= nil and item_data.soundpack.uneqip ~= nil then PlayLocalSound(item_data.soundpack.uneqip, id - 1) end
-                        --print("interact2")
+
+                        xpcall(function()
+                            EquipItem(InventoryOwner[id], ButtonList[h].item, false, (ButtonList[h].button_type == OFFHAND_POINT and item_data.TYPE == ITEM_TYPE_WEAPON))
+                        end, print)
+                        if item_data.soundpack and item_data.soundpack.uneqip then PlayLocalSound(item_data.soundpack.uneqip, id - 1) end
 
                         local free_slot = GetFirstFreeSlotButton(id)
                         free_slot.item = ButtonList[h].item

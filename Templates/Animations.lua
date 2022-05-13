@@ -40,104 +40,102 @@ do
         })
 
         NewAnimationSequence("sorc_spell_throw_twohanded", {
-            animation           = 5,
+            animation           = 7,--5,
             animation_point     = 0.5,
             animation_backswing = 0.5,
         })
 
         NewAnimationSequence("sorc_spell_throw_small", {
-            animation           = 31,
+            animation           = 33,--31,
             animation_point     = 0.541,
             animation_backswing = 0.65,
         })
 
         NewAnimationSequence("sorc_blink", {
-            animation           = 6,
+            animation           = 8,--6,
             animation_point     = 0.5,
             animation_backswing = 0.5,
         })
 
         NewAnimationSequence("sorc_spell_throw_air", {
-            animation           = 30,
+            animation           = 32,--30,
             animation_point     = 0.417,
             animation_backswing = 0.4,
         })
 
         NewAnimationSequence("sorc_spell_empower", {
-            animation           = 14,
+            animation           = 16,--14,
             animation_point     = 0.623,
             animation_backswing = 0.42,
         })
 
         NewAnimationSequence("sorc_spell_throw_big", {
-            animation           = 7,
+            animation           = 9,--7,
             animation_point     = 1.5,
             animation_backswing = 0.6,
         })
 
 
         NewAnimationSequence("barb_spell_throw", {
-            animation           = 1,
+            animation           = 41,--1,
             animation_point     = 0.458,
             animation_backswing = 0.4,
         })
 
         NewAnimationSequence("barb_spell_howl", {
-            animation           = 22,
+            animation           = 43,
             animation_point     = 0.792,
             animation_backswing = 0.5,
         })
 
         NewAnimationSequence("barb_spell_punch", {
-            animation           = 26,
-            animation_point     = 0.750,
-            animation_backswing = 0.4,
+            animation           = 34,--26,
+            animation_point     = 0.417,
+            animation_backswing = 0.35,
         })
 
         NewAnimationSequence("barb_swing_1", {
-            animation           = 24,
+            animation           = 39,--24,
             animation_point     = 0.521,
             animation_backswing = 0.33,
             tags = {
                 [ANIM_TAG_TWOHANDED] = {
-                    animation           = 10,
+                    animation           = 39,--10,
                     animation_point     = 0.61,
                     animation_backswing = 0.33,
                 },
                 [ANIM_TAG_ONEHANDED] = {
-                    animation           = 3,
+                    animation           = 0,
                     animation_point     = 0.583,
                     animation_backswing = 0.33,
                 },
                 [ANIM_TAG_STAFF] = {
-                    animation           = 20,
-                    animation_point     = 0.500,
+                    animation           = 39,--10,
+                    animation_point     = 0.61,
                     animation_backswing = 0.33,
-                    bonus_timescale = 0.25
                 }
             }
         })
 
         NewAnimationSequence("barb_swing_2", {
-            animation           = 18,
+            animation           = 40,--18,
             animation_point     = 0.583,
             animation_backswing = 0.33,
             tags = {
                 [ANIM_TAG_TWOHANDED] = {
-                    animation           = 8,
+                    animation           = 40,--8,
                     animation_point     = 0.653,
                     animation_backswing = 0.33,
                 },
                 [ANIM_TAG_ONEHANDED] = {
-                    animation           = 5,
+                    animation           = 2,
                     animation_point     = 0.584,
                     animation_backswing = 0.33,
                 },
                 [ANIM_TAG_STAFF] = {
-                    animation           = 20,
-                    animation_point     = 0.500,
+                    animation           = 40,--8,
+                    animation_point     = 0.653,
                     animation_backswing = 0.33,
-                    bonus_timescale = 0.25
                 }
             }
         })
@@ -149,22 +147,46 @@ do
         })
 
         NewAnimationSequence("barb_jump", {
-            animation           = 2,
-            animation_point     = 0.3,
+            animation           = 42,
+            animation_point     = 0.0,
             animation_backswing = 0.,
         })
 
 
-        NewAnimationSequence("necro_spell_throw", {
-            animation           = 6,
-            animation_point     = 0.7,
-            animation_backswing = 0.5,
+        NewAnimationSequence("necro_spell_rise", {
+            animation           = 9,
+            animation_point     = 0.667,
+            animation_backswing = 0.37,
         })
 
         NewAnimationSequence("necro_spell_slam", {
-            animation           = 2,
+            animation           = 18,
+            animation_point     = 0.667,
+            animation_backswing = 0.37,
+        })
+
+        NewAnimationSequence("necro_spell_throw_big", {
+            animation           = 11,
             animation_point     = 1.5,
-            animation_backswing = 0.95,
+            animation_backswing = 0.6,
+        })
+
+        NewAnimationSequence("necro_spell_throw_small", {
+            animation           = 35,
+            animation_point     = 0.541,
+            animation_backswing = 0.65,
+        })
+
+        NewAnimationSequence("necro_spell_throw_medium", {
+            animation           = 10,
+            animation_point     = 0.417,
+            animation_backswing = 0.5,
+        })
+
+        NewAnimationSequence("necro_spell_throw_air", {
+            animation           = 34,
+            animation_point     = 0.45,
+            animation_backswing = 0.4,
         })
 
 
@@ -221,6 +243,25 @@ do
             animation_point     = 0.333,
             animation_backswing = 0.333,
         })
+
+        NewAnimationSequence("meph_spell_throw", {
+            animation           = 16,
+            animation_point     = 0.2,
+            animation_backswing = 0.333,
+        })
+
+        NewAnimationSequence("demoness_spell_throw", {
+            animation           = 10,
+            animation_point     = 2.314,
+            animation_backswing = 0.333,
+        })
+
+        NewAnimationSequence("butcher_spell", {
+            animation           = 7,
+            animation_point     = 0.650,
+            animation_backswing = 0.3,
+        })
+
 
         NewAnimationSequence("boar_charge", {
             animation           = 3,
@@ -300,6 +341,24 @@ do
             animation_backswing = 0.5,
         })
 
+        NewAnimationSequence("satyr_spell", {
+            animation           = 12,
+            animation_point     = 0.567,
+            animation_backswing = 0.47,
+        })
+
+
+        NewAnimationSequence("succubus_spell", {
+            animation           = 10,
+            animation_point     = 0.6,
+            animation_backswing = 0.4,
+        })
+
+        NewAnimationSequence("bloodraven_spell", {
+            animation           = 11,
+            animation_point     = 0.3,
+            animation_backswing = 0.3,
+        })
 
 
 

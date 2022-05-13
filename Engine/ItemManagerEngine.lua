@@ -433,8 +433,11 @@ do
                                 --print("straight end .. " .. item_data.BONUS[#item_data.BONUS].VALUE)
                             else
                                 --print("mult start")
-                                item_data.BONUS[index].VALUE = I2R(GetRandomInt(R2I(parameter.value_min * 100.), R2I(parameter.value_max * 100.))) * 0.01
-                                --print("mult end " .. item_data.BONUS[#item_data.BONUS].VALUE)
+                                item_data.BONUS[index].VALUE = GetRandomInt(math.floor((parameter.value_min * 100.) + 0.5), math.floor((parameter.value_max * 100.) + 0.5)) / 100.
+
+                                if item_data.BONUS[index].VALUE < parameter.value_min then item_data.BONUS[index].VALUE = parameter.value_min
+                                elseif item_data.BONUS[index].VALUE > parameter.value_max then item_data.BONUS[index].VALUE = parameter.value_max end
+
                             end
 
                             item_data.BONUS[index].base = item_data.BONUS[index].VALUE
@@ -468,7 +471,7 @@ do
 
         item_data.SKILL_BONUS = {}
 
-            if bonus_parameters_count > 0 and preset.skill_bonus ~= nil and #preset.skill_bonus.can_generate_for > 0 then
+            if bonus_parameters_count > 0 and preset.skill_bonus and #preset.skill_bonus.can_generate_for > 0 then
                 local gen = preset.skill_bonus.can_generate_for[GetRandomInt(1, #preset.skill_bonus.can_generate_for)]
                 local class = preset.skill_bonus[gen]
                 local category = class.available_category[GetRandomInt(1, #class.available_category)]
@@ -481,20 +484,23 @@ do
                             }
 
 
-                            if bonus_parameters_count > 1 then
-                                category = class.available_category[GetRandomInt(1, #class.available_category)]
-                                local skill_id = CLASS_SKILL_LIST[gen][category][GetRandomInt(1, #CLASS_SKILL_LIST[gen][category])]
+                        if bonus_parameters_count > 1 then
+                            category = class.available_category[GetRandomInt(1, #class.available_category)]
+                            local skill_id = CLASS_SKILL_LIST[gen][category][GetRandomInt(1, #CLASS_SKILL_LIST[gen][category])]
 
-                                if skill_id == item_data.SKILL_BONUS[#item_data.SKILL_BONUS].id then
-                                    item_data.SKILL_BONUS[#item_data.SKILL_BONUS].bonus_levels = item_data.SKILL_BONUS[#item_data.SKILL_BONUS].bonus_levels + 1
-                                else
-                                    item_data.SKILL_BONUS[#item_data.SKILL_BONUS + 1] = {
-                                        bonus_levels = GetRandomInt(class.min_level_skill, class.max_level_skill),
-                                        id = skill_id
-                                    }
-                                end
-
+                            if skill_id == item_data.SKILL_BONUS[#item_data.SKILL_BONUS].id then
+                                item_data.SKILL_BONUS[#item_data.SKILL_BONUS].bonus_levels = item_data.SKILL_BONUS[#item_data.SKILL_BONUS].bonus_levels + 1
+                            else
+                                item_data.SKILL_BONUS[#item_data.SKILL_BONUS + 1] = {
+                                    bonus_levels = GetRandomInt(class.min_level_skill, class.max_level_skill),
+                                    id = skill_id
+                                }
                             end
+
+                            bonus_parameters_count = bonus_parameters_count - 2
+                        else
+                            bonus_parameters_count = bonus_parameters_count - 1
+                        end
 
                     elseif GetRandomInt(0, 100) <= class.category_bonus_probability then
 
@@ -503,8 +509,24 @@ do
                             category = category
                         }
 
+                        bonus_parameters_count = bonus_parameters_count - 1
+
                     end
 
+            end
+
+            if bonus_parameters_count > 0 and preset.effect_bonus and preset.effect_bonus[item_data.TYPE] then
+                local effect_list = preset.effect_bonus[item_data.TYPE]
+                local list_vars = #effect_list
+                local random_list = GetRandomIntTable(1, list_vars, list_vars)
+
+                    for i = 1, list_vars do
+                        if Chance(effect_list[random_list[i]].chance) then
+                            if not item_data.effect_bonus then item_data.effect_bonus = {} end
+                            item_data.effect_bonus[#item_data.effect_bonus+1] = effect_list[random_list[i]].id
+                            break
+                        end
+                    end
             end
             --print("generator skills done")
 
@@ -541,14 +563,31 @@ do
         local item_data = GetItemData(item)
         local stats_bonus = 0
         local stone_bonus = 0
+        local skill_bonus = 0
+        local effect_bonus = 0
+        local quality_modificator = 1.
 
             if item_data.BONUS then stats_bonus = #item_data.BONUS * 75 end
             if item_data.MAX_SLOTS then stone_bonus = 50 * item_data.MAX_SLOTS end
+            if item_data.SKILL_BONUS and #item_data.SKILL_BONUS > 0 then
+                for i = 1, #item_data.SKILL_BONUS do
+                    if item_data.SKILL_BONUS[i].category then skill_bonus = skill_bonus + 100
+                    else skill_bonus = skill_bonus + (40 * item_data.SKILL_BONUS[i].bonus_levels) end
+                end
+            end
+            if item_data.effect_bonus and #item_data.effect_bonus > 0 then
+                for i = 1, #item_data.effect_bonus do
+                    effect_bonus = effect_bonus + 100
+                end
+            end
+
+            if item_data.QUALITY == RARE_ITEM then quality_modificator = 1.1
+            elseif item_data.QUALITY == MAGIC_ITEM then quality_modificator = 1.2 end
 
             item_data.level = level
 
             if stats_bonus > 0 or stone_bonus > 0 then
-                item_data.cost = R2I((level * 30 + stats_bonus + stone_bonus) * item_data.stat_modificator)
+                item_data.cost = R2I((level * 30 + stats_bonus + stone_bonus + skill_bonus + effect_bonus) * item_data.stat_modificator * quality_modificator)
             end
 
             if item_data.legendary_effect then item_data.cost = item_data.cost * 2 end
@@ -632,6 +671,7 @@ do
             item_data.soundpack = item_preset.soundpack
             item_data.stat_modificator = item_preset.modificator
             item_data.model = item_preset.model or nil
+            item_data.texture = item_preset.texture or nil
             item_data.item_variation = item_variation
             --print("1")
             ApplyQualityGlowColour(item)
@@ -694,19 +734,11 @@ do
         return TWOHANDED_LIST[itemtype] or false
     end
 
-    
+
+
+    ---@param unit unit
     ---@param item item
-    function GetItemPoint(item)
-        local item_data = GetItemData(item)
-
-        if item_data.TYPE == ITEM_TYPE_WEAPON then
-
-        end
-
-    end
-
-
-
+    ---@return boolean
     function IsItemEquipped(unit, item)
         local unit_data = GetUnitData(unit)
 
@@ -718,6 +750,10 @@ do
 
         return false
     end
+
+
+    TraceBug = false
+
 
     ---@param unit unit
     ---@param item item
@@ -733,10 +769,8 @@ do
 
             if item_data.TYPE == ITEM_TYPE_OFFHAND or (offhand and item_data.TYPE == ITEM_TYPE_WEAPON) then
                 point = OFFHAND_POINT
-                --print("offhand point")
             elseif item_data.TYPE == ITEM_TYPE_WEAPON then
                 point = WEAPON_POINT
-                --print("weapon point")
             elseif item_data.TYPE == ITEM_TYPE_ARMOR and item_data.SUBTYPE ~= BELT_ARMOR then
 
                 if item_data.SUBTYPE == CHEST_ARMOR then point = CHEST_POINT
@@ -749,8 +783,8 @@ do
                 if item_data.SUBTYPE == RING_JEWELRY then
 
                     if flag then
-                        if unit_data.equip_point[RING_1_POINT] then point = RING_2_POINT
-                        else point = RING_1_POINT end
+                        if unit_data.equip_point[RING_1_POINT] then point = RING_2_POINT; if TraceBug then print("ring 2 point") end
+                        else point = RING_1_POINT; if TraceBug then print("ring 1 point") end end
                     else
                         if unit_data.equip_point[RING_1_POINT] and unit_data.equip_point[RING_1_POINT].item == item then point = RING_1_POINT
                         elseif unit_data.equip_point[RING_2_POINT] and unit_data.equip_point[RING_2_POINT].item == item then point = RING_2_POINT end
@@ -761,9 +795,12 @@ do
                 else point = NECKLACE_POINT end
 
             elseif item_data.TYPE == ITEM_TYPE_OFFHAND then point = OFFHAND_POINT
-            else point = BELT_POINT
-            end
+            else point = BELT_POINT end
 
+            if not point then
+                print("Warning: no equip point")
+                return nil
+            end
 
             if not flag and (unit_data.equip_point[point] and unit_data.equip_point[point].item ~= item) then
                 print("Warning: trying to disarm an item that wasn't equipped in first place")
@@ -777,8 +814,6 @@ do
             end
 
 
-
-
             if item_data.set_bonus then
                 ApplySetBonus(unit, item_data.set_bonus, flag)
             end
@@ -788,38 +823,40 @@ do
                 else unit_data.equip_point[point] = point == WEAPON_POINT and unit_data.default_weapon or nil end
 
 
-
-            if item_data.model and not unit_data.classic_model then
+            if (item_data.model or item_data.texture) and not unit_data.classic_model then
                 if flag then
-                    local ref_point = "chest"
 
-                    if point == OFFHAND_POINT then ref_point = "hand left"
-                    elseif point == WEAPON_POINT then ref_point = "hand right" end
+                    if point == CHEST_POINT then
+                        SetTexture(unit, item_data.texture or TEXTURE_ID_EMPTY)
+                    else
+                        local ref_point = "chest"
 
-                    item_data.model_effect = AddSpecialEffectTarget(item_data.model, unit, ref_point)
+                        if point == OFFHAND_POINT then ref_point = "hand left"
+                        elseif point == WEAPON_POINT then ref_point = "hand right" end
 
-                    if unit_data.unit_class == BARBARIAN_CLASS and point == CHEST_POINT then
-                        BlzSetSpecialEffectScale(item_data.model_effect, 1.1)
+                        item_data.model_effect = AddSpecialEffectTarget(item_data.model, unit, ref_point)
+                        BlzSetSpecialEffectScale(item_data.model_effect, 0.88)
                     end
 
                 else
+                    if item_data.texture then
+                        SetTexture(unit, TEXTURE_ID_EMPTY)
+                    end
                     if item_data.model_effect then BlzSetSpecialEffectScale(item_data.model_effect, 1.); DestroyEffect(item_data.model_effect) end
                 end
             end
-
 
             if unit_data.equip_point[point] and unit_data.equip_point[point].TYPE == ITEM_TYPE_WEAPON then
                 BlzUnitInterruptAttack(unit)
                 BlzSetUnitRealField(unit, UNIT_RF_ACQUISITION_RANGE, (unit_data.equip_point[point].RANGE or 90.))
                 BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 1, 0.)
                 BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 1, (unit_data.equip_point[point].RANGE or 90.))
-                --BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_BA
+
             end
 
             if item_data.legendary_effect then
                 ApplyLegendaryEffect(unit, item_data.legendary_effect, flag)
             end
-
 
             for i = 1, #item_data.STONE_SLOTS do
                 ModifyStat(unit, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].PARAM, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].VALUE, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].METHOD, flag)
@@ -828,17 +865,23 @@ do
             for i = 1, #item_data.BONUS do
                 ModifyStat(unit, item_data.BONUS[i].PARAM, item_data.BONUS[i].VALUE, item_data.BONUS[i].METHOD, flag)
             end
-
+if TraceBug then print("A") end
 
             if item_data.SKILL_BONUS and #item_data.SKILL_BONUS > 0 then
                 UpdateBindedSkillsData(GetPlayerId(GetOwningPlayer(unit)) + 1)
             end
-
-
+if TraceBug then print("B") end
+            if item_data.effect_bonus and #item_data.effect_bonus > 0 then
+                for i = 1, #item_data.effect_bonus do
+                    if flag then UnitAddEffect(unit, item_data.effect_bonus[i])
+                    else UnitRemoveEffect(unit, item_data.effect_bonus[i]) end
+                end
+            end
+if TraceBug then print("C") end
             UpdateParameters(unit_data)
-
+if TraceBug then print("D") end
             OnItemEquip(unit, item, disarmed_item, flag)
-
+if TraceBug then print("E") end
         return disarmed_item
     end
 
@@ -849,16 +892,6 @@ do
         AddToInventory(GetPlayerId(GetOwningPlayer(unit))+1, item)
     end
 
-    function GetItemSlot(unit, item)
-
-        for i = 0, 5 do
-            if UnitItemInSlot(unit, i) == item then
-                return i
-            end
-        end
-
-        return 0
-    end
 
 
     function RegisterItemPickUp(unit)
@@ -1159,6 +1192,10 @@ do
                     else quality = COMMON_ITEM end
 
                 GenerateItemStats(item, Current_Wave + GetRandomInt(1, 2), quality)
+        end)
+
+        RegisterTestCommand("trace", function()
+            TraceBug = true
         end)
 
     end

@@ -132,4 +132,84 @@ do
 
     end
 
+
+    function SatyrBlinkCast(unit)
+        local angle = GetRandomReal(0., 359.)
+        local distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), angle, 700.)
+        local sfx = AddSpecialEffect("Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdx", GetUnitX(unit), GetUnitY(unit))
+        local x = GetUnitX(unit) + Rx(distance, angle)
+        local y = GetUnitY(unit) + Ry(distance, angle)
+
+        DestroyEffect(sfx)
+
+            DelayAction(0.2, function()
+                if GetUnitState(unit, UNIT_STATE_LIFE) > 0.045 then
+                    SetUnitX(unit, x)
+                    SetUnitY(unit, y)
+                    local point_sfx = AddSpecialEffect("Abilities\\Spells\\NightElf\\Blink\\BlinkTarget.mdx", x, y)
+                    DestroyEffect(point_sfx)
+                end
+            end)
+
+
+    end
+
+
+    function IceBlastCast(unit, point_x, point_y)
+        local circle = AddSpecialEffect("Effect\\Spell Marker Blue.mdx", point_x, point_y)
+
+            BlzSetSpecialEffectTimeScale(circle, 1.3)
+            BlzSetSpecialEffectScale(circle, 1.14)
+
+            DelayAction(0.65, function()
+                DestroyEffect(circle)
+                local effects = {}
+                local effect_amount = GetRandomInt(15, 18)
+
+                for i = 1, effect_amount do
+                    local index = i
+                    DelayAction(GetRandomReal(0.01, 0.12), function()
+                        effects[index] = AddSpecialEffect("Effect\\Ice Shard.mdx", point_x + GetRandomReal(-112.5, 112.5), point_y + GetRandomReal(-112.5, 112.5))
+                        BlzSetSpecialEffectYaw(effects[index], math.rad(GetRandomReal(0., 360.)))
+                        BlzSetSpecialEffectPitch(effects[index], math.rad(GetRandomReal(0., 30.)))
+                        BlzSetSpecialEffectTimeScale(effects[index], 1.7)
+                        BlzSetSpecialEffectScale(effects[index], 0.7 + GetRandomReal(-0.12, 0.12))
+                    end)
+                end
+
+                DelayAction(0.3, function()
+
+                    ApplyEffect(unit, nil, point_x, point_y, "ice_blast_effect", 1)
+                    DelayAction(0.2, function() for i = 1, effect_amount do DestroyEffect(effects[i]) end end)
+
+                end)
+
+            end)
+
+
+    end
+
+
+    ---@param model string
+    ---@param point_x real
+    ---@param point_y real
+    ---@param scale real
+    ---@param timescale real
+    ---@param duration real
+    ---@param feedback function
+    function CreateSpellCircle(model, point_x, point_y, scale, timescale, duration, feedback)
+        local circle = AddSpecialEffect(model, point_x, point_y)
+
+            BlzSetSpecialEffectTimeScale(circle, timescale)
+            BlzSetSpecialEffectScale(circle, scale)
+
+            DelayAction(duration, function()
+                DestroyEffect(circle)
+                if feedback then feedback() end
+            end)
+    end
+
+
+
+
 end

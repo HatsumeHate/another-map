@@ -129,11 +129,11 @@
 		end
 
 		function Rx(x, a)
-			return x * Cos(a * bj_DEGTORAD)
+			return x * math.cos(a * bj_DEGTORAD)
 		end
 
 		function Ry(x, a)
-			return x * Sin(a * bj_DEGTORAD)
+			return x * math.sin(a * bj_DEGTORAD)
 		end
 
 		function RndAng()
@@ -205,15 +205,16 @@
 	end
 
 
-	---@param x real
-	---@param y real
-	---@param angle real
-	---@param distance real
+		---@param x real
+		---@param y real
+		---@param angle real
+		---@param distance real
+		---@return real
 	function GetMaxAvailableDistance(x, y, angle, distance)
 		local step = math.ceil(distance / 32.)
 		local total_distance = 0.
-		local cos = Cos(angle * bj_DEGTORAD)
-		local sin = Sin(angle * bj_DEGTORAD)
+		local cos = math.cos(angle * bj_DEGTORAD)
+		local sin = math.sin(angle * bj_DEGTORAD)
 
 			for i = 1, step do
 
@@ -228,6 +229,9 @@
 		return total_distance
 	end
 
+
+		---@param points table
+		---@return real
 		function GetCenterFigure(points)
 			local center = { x = 0., y = 0. }
 				for i = 1, #points do
@@ -800,13 +804,19 @@
 		return ((min_h_A >= min_h_B and min_h_A <= max_h_B) or (max_h_A <= max_h_B and max_h_A >= min_h_B))
 	end
 
+
+	---@param texture_id string
+	---@param u unit
 	function SetTexture(u, texture_id)
-		bj_lastCreatedDestructable = CreateDestructable(texture_id, Gx(u) + Rx(10., GetUnitFacing(u)), Gy(u) + Ry(10., GetUnitFacing(u)), 0., 1., 0)
-		UnitAddAbility(u, 'Agra')
+		bj_lastCreatedDestructable = CreateDestructable(FourCC(texture_id), GetUnitX(u) + Rx(10., GetUnitFacing(u)), GetUnitY(u) + Ry(10., GetUnitFacing(u)), 0., 1., 0)
+		UnitAddAbility(u, FourCC('Agra'))
+
 		IssueTargetOrderById(u, order_grabtree, bj_lastCreatedDestructable)
-		UnitRemoveAbility(u, 'Agra')
-		RemoveDestructable(bj_lastCreatedDestructable)
-		SetUnitAnimation(u, "stand")
+		--DelayAction(0., function()
+			UnitRemoveAbility(u, FourCC('Agra'))
+			RemoveDestructable(bj_lastCreatedDestructable)
+			SetUnitAnimation(u, "stand")
+		--end)
 	end
 
 

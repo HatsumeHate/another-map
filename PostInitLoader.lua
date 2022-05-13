@@ -12,6 +12,10 @@ do
 		EnablePreSelect(true, false)
 		SetCameraBoundsToRect(gg_rct_super_starting_location)
 
+		SetTexture(gg_unit_HSRC_0043, TEXTURE_ID_EMPTY)
+		SetTexture(gg_unit_HNCR_0019, TEXTURE_ID_EMPTY)
+		SetTexture(gg_unit_HBRB_0041, TEXTURE_ID_EMPTY)
+
 		ClearMapMusic()
 		StopMusic(false)
 		PlayMusic("Sound\\Music\\mp3Music\\Comradeship.mp3")

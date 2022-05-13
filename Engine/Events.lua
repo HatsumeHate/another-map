@@ -130,10 +130,7 @@ do
 
     function OnPullRelease(source, target, sign)
         if sign == 'EBCH' then
-            local abil_level = UnitGetAbilityLevel(target, "A00A")
-            if abil_level >= 10 then
-                --ApplyBuff(source, target, "", abil_level)
-            end
+            ApplyBuff(target, source, "ACHA", UnitGetAbilityLevel(target, "A00A"))
             RemoveBuff(source, "A013")
         end
     end
@@ -736,6 +733,18 @@ do
             if UnitHasEffect(source, "EBBS") then ApplyEffect(source, target, 0.,0., "EBBS", 1) end
             if UnitHasEffect(target, "ECBG") then if Chance(15.) then ApplyEffect(target, target, 0, 0, "ECBG", 1) end end
 
+            if UnitHasEffect(source, "weap_poison_phys") and Chance(7.) then ApplyBuff(source, target, "AWPP", 1) end
+            if UnitHasEffect(source, "weap_poison_mag") and Chance(7.) then ApplyBuff(source, target, "AWPM", 1) end
+            if UnitHasEffect(source, "weap_fire_mag") and Chance(7.) then ApplyBuff(source, target, "AWFM", 1) end
+            if UnitHasEffect(source, "weap_bleed") and Chance(7.) then ApplyBuff(source, target, "AWBP", 1) end
+
+            if UnitHasEffect(target, "item_fortify") and Chance(10.) then ApplyBuff(target, target, "AIFT", 1) end
+
+            if UnitHasEffect(target, "item_enrage") and Chance(5.) then ApplyBuff(target, target, "AIEN", 1) end
+            if UnitHasEffect(target, "item_conduction") and Chance(5.) then ApplyBuff(target, target, "AICN", 1) end
+            if UnitHasEffect(source, "item_enrage") and Chance(5.) then ApplyBuff(source, source, "AIEN", 1) end
+            if UnitHasEffect(source, "item_conduction") and Chance(5.) then ApplyBuff(source, source, "AICN", 1) end
+
             if UnitHasEffect(source, "EHOR") then
                 if Chance(20.) then ApplyEffect(source, target, 0, 0, "EHOR", 1) end
             end
@@ -831,6 +840,7 @@ do
             end
 
             if GetUnitTalentLevel(source, "talent_lesion") > 0 and attack_data.attribute == POISON_ATTRIBUTE and (attack_data.attack_status == ATTACK_STATUS_CRITICAL or attack_data.attack_status == ATTACK_STATUS_CRITICAL_BLOCKED) then
+                AddSoundVolume("Sounds\\Spells\\poison".. GetRandomInt(1,4) ..".wav")
                 ApplyBuff(source, target, "ATLS", GetUnitTalentLevel(source, "talent_lesion"))
             end
 
@@ -954,6 +964,10 @@ do
         elseif id == "ANRA" then CastReanimate(source)
         elseif id == "AAPB" then PoisonBarrage(source, x, y)
         elseif id == "ABSS" then SummonTentacle(source, x, y)
+        elseif id == "ASBL" then SatyrBlinkCast(source)
+        elseif id == "AFBB" then IceBlastCast(source, x, y)
+        elseif id == "AARB" then AstralBarrageCast(source)
+        elseif id == "ABRR" then BloodRavenReviveCast(source)
         end
 
 

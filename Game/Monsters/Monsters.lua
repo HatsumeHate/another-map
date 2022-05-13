@@ -107,16 +107,17 @@ do
     MONSTER_ID_GNOLL_POACHER = "n02J"
     MONSTER_ID_GNOLL_ASSASSIN = "n02K"
     MONSTER_ID_GNOLL_WARDEN = "n02H"
+    MONSTER_ID_FACELESS = "n02L"
 
 
-    MONSTER_ID_BUTCHER = "U003"
-    MONSTER_ID_BAAL = "U001"
-    MONSTER_ID_MEPHISTO = "U000"
-    MONSTER_ID_DEMONESS = "U006"
+    MONSTER_ID_BUTCHER = "u012"
+    MONSTER_ID_BAAL = "u00X"
+    MONSTER_ID_MEPHISTO = "u00W"
+    MONSTER_ID_DEMONESS = "u00Y"
     MONSTER_ID_ANDARIEL = "n022"
-    MONSTER_ID_DEMONKING = "U005"
-    MONSTER_ID_UNDERWORLD_QUEEN = "U002"
-    MONSTER_ID_REANIMATED = "U004"
+    MONSTER_ID_DEMONKING = "u00Z"
+    MONSTER_ID_UNDERWORLD_QUEEN = "u010"
+    MONSTER_ID_REANIMATED = "u011"
     MONSTER_ID_BLOOD_RAVEN = "n026"
     MONSTER_ID_SKELETON_KING = "n015"
     MONSTER_ID_SPIDER_QUEEN = "n012"
@@ -373,6 +374,12 @@ do
                     local random_values = GetRandomIntTable(1, #monster_pack_table, #monster_pack_table)
                     local monsters_with_trait_amount = GetRandomInt(1, 4)
 
+                    local spawn_elite = false
+
+                    if GetRandomInt(1, 4) == 1 then
+                        spawn_elite = true
+                    end
+
                         for i = 1, #random_values do
                             local current_group = monster_pack_table[random_values[i]]
 
@@ -381,10 +388,20 @@ do
                                 local trait_amount = GetRandomInt(1, 2)
 
                                     for k = 1, monsters_with_trait_amount do
-                                        for j = 1, trait_amount do
-                                            local trait = GetRandomMonsterTrait()
-                                            ApplyMonsterTrait(BlzGroupUnitAt(current_group.group, random_values_index[k]), trait)
+                                        local monster = BlzGroupUnitAt(current_group.group, random_values_index[k])
+                                        local applied = false
+
+                                            for j = 1, trait_amount do
+                                                local trait = GetRandomMonsterTrait()
+                                                local trait_applied = ApplyMonsterTrait(monster, trait)
+                                                if trait_applied then applied = true end
+                                            end
+
+                                        if applied and spawn_elite then
+                                            spawn_elite = false
+                                            ApplyMonsterTrait(monster, GetRandomMonsterEliteTrait())
                                         end
+
                                     end
 
                                     break
@@ -723,6 +740,7 @@ do
             [MONSTERPACK_SKELETONS] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_FACELESS, chance = 15., max = 1 },
                         { id = MONSTER_ID_SKELETON_ARMORED, chance = 22.5, max = 2 },
                         { id = MONSTER_ID_SKELETON_N, chance = 20., max = 4 },
                         { id = MONSTER_ID_SKELETON_IMPROVED, chance = 32.5, max = 2 },
@@ -754,9 +772,10 @@ do
                     [MONSTER_TAG_MELEE] = {
                         { id = MONSTER_ID_SKELETON_N, chance = 10., max = 2 },
                         { id = MONSTER_ID_SKELETON, chance = 20., max = 3 },
+                        { id = MONSTER_ID_FACELESS, chance = 15., max = 2 },
                         { id = MONSTER_ID_SCAVENGER, chance = 20., max = 6 },
-                        { id = MONSTER_ID_ZOMBIE_N, chance = 35., max = 3 },
-                        { id = MONSTER_ID_ZOMBIE, chance = 100., max = 2 },
+                        { id = MONSTER_ID_ZOMBIE_N, chance = 35., max = 2 },
+                        { id = MONSTER_ID_ZOMBIE, chance = 100., max = 3 },
                     },
                     [MONSTER_TAG_RANGE] = {
                         { id = MONSTER_ID_NECROMANCER_N, chance = 20., max = 2 },
@@ -776,6 +795,7 @@ do
             [MONSTERPACK_DEMONS] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_FACELESS, chance = 15., max = 2 },
                         { id = MONSTER_ID_SKELETON_ARMORED, chance = 21.5, max = 2 },
                         { id = MONSTER_ID_SUCCUBUS, chance = 33.5, max = 3 },
                         { id = MONSTER_ID_GHOUL, chance = 33.5, max = 3 },
@@ -879,8 +899,8 @@ do
 
         MONSTER_STATS_RATES = {
             { stat = PHYSICAL_ATTACK,       initial = 0,      delta = 1,     delta_level = 1, method = STRAIGHT_BONUS },
-            { stat = MAGICAL_ATTACK,        initial = 0,      delta = 1,     delta_level = 1, method = STRAIGHT_BONUS },
-            { stat = PHYSICAL_DEFENCE,      initial = 0,      delta = 5,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 5 },
+            { stat = MAGICAL_ATTACK,        initial = 0,      delta = 2,     delta_level = 1, method = STRAIGHT_BONUS },
+            { stat = PHYSICAL_DEFENCE,      initial = 0,      delta = 6,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 5 },
             { stat = MAGICAL_SUPPRESSION,   initial = 0,      delta = 3,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 1 },
             { stat = PHYSICAL_ATTACK,       initial = 1.,     delta = 0.003,  delta_level = 1, method = MULTIPLY_BONUS },
             { stat = PHYSICAL_DEFENCE,      initial = 1.,     delta = 0.01,  delta_level = 1, method = MULTIPLY_BONUS },
@@ -896,7 +916,7 @@ do
             { stat = HOLY_BONUS,            initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
             { stat = POISON_BONUS,          initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
             { stat = ARCANE_BONUS,          initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
-            { stat = HP_VALUE,              initial = 0,      delta = 10,    delta_level = 1, method = STRAIGHT_BONUS, per_player = 45 },
+            { stat = HP_VALUE,              initial = 0,      delta = 12,    delta_level = 1, method = STRAIGHT_BONUS, per_player = 45 },
             { stat = HP_VALUE,              initial = 1.,     delta = 0.02,  delta_level = 1, method = MULTIPLY_BONUS },
             { stat = MOVING_SPEED,          initial = 0,      delta = 3,     delta_level = 5, method = STRAIGHT_BONUS },
             { stat = CONTROL_REDUCTION,     initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },

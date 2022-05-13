@@ -242,6 +242,57 @@ do
     end
 
 
+    function CreateAstralBarragePoint(unit)
+        local angle = GetRandomReal(0., 359.)
+        local distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), angle, GetRandomReal(0., 500.))
+        local point_x, point_y = GetUnitX(unit) + Rx(distance, angle), GetUnitY(unit) + Ry(distance, angle)
+
+            CreateSpellCircle("Effect\\Spell Marker Blue.mdx", point_x, point_y, 1.4, 1.2, 0.8, function() ApplyEffect(unit, nil, point_x, point_y, "astral_barrage_effect", 1) end)
+
+    end
+
+    function AstralBarrageCast(unit)
+        local duration = 4.
+
+            CreateAstralBarragePoint(unit)
+
+            TimerStart(CreateTimer(), 0.66, true, function()
+                duration = duration - 0.66
+
+                    if duration < 0. then
+                        DestroyTimer(GetExpiredTimer())
+                    else
+                        CreateAstralBarragePoint(unit)
+                    end
+
+            end)
+
+    end
+
+
+    function BloodRavenReviveCast(unit)
+
+        for i = 1, 2 do
+            local angle = GetRandomReal(0., 359.)
+            local distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), angle, GetRandomReal(150., 500.))
+            local point_x = GetUnitX(unit) + Rx(distance, angle)
+            local point_y = GetUnitY(unit) + Ry(distance, angle)
+            local summoned = CreateUnit(MONSTER_PLAYER, FourCC("n02M"), point_x, point_y, angle)
+            DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdx", point_x, point_y))
+            SetUnitAnimation(summoned, "birth")
+            UnitAddAbility(summoned, FourCC("Avul"))
+            SafePauseUnit(summoned, true)
+            DelayAction(2.333, function()
+                UnitApplyTimedLife(summoned, 0, 40.)
+                SafePauseUnit(summoned, false)
+                SetUnitAnimation(summoned, "stand")
+                UnitRemoveAbility(summoned, FourCC("Avul"))
+            end)
+        end
+
+    end
+
+
     function InitSpiderQueenData()
         BroodRegions = {
             gg_rct_sq_brood_1,

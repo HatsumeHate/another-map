@@ -885,6 +885,17 @@ do
             end
 
 
+            if item_data.effect_bonus and #item_data.effect_bonus > 0 then
+                local effects_text = ""
+
+                    for i = 1, #item_data.effect_bonus do
+                        effects_text = effects_text .. ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale].ITEM_EFFECTS[item_data.effect_bonus[i]], 1) .. "|n"
+                    end
+
+                bonus_text = bonus_text .. effects_text .. "|n"
+            end
+
+
             if item_data.TYPE == ITEM_TYPE_GEM then
                 bonus_text = LOCALE_LIST[my_locale].AUGMENTS_UI
                 for i = 1, #item_data.point_bonus do

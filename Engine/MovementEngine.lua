@@ -77,6 +77,23 @@ do
 
 
 
+    function BezierCurvePow2_xyz_xyz_xyz(x, y, z, x1, y1, z1, x2, y2, z2, time)
+        local a1 = x
+        local b1 = 2 * (x1 - x)
+        local c1 = x - 2 * x1 + x2
+        local a2 = y
+        local b2 = 2 * (y1 - y)
+        local c2 = y - 2 * y1 + y2
+        local a3 = z
+        local b3 = 2 * (z1 - z)
+        local c3 = z - 2 * z1 + z2
+        local x = a1 + (b1 + c1 * time) * time
+        local y = a2 + (b2 + c2 * time) * time
+        local z = a3 + (b3 + c3 * time) * time
+        return x, y, z
+    end
+
+
     ---@param missile table
     ---@param angle real
     function RedirectMissile_Deg(missile, angle)
@@ -93,8 +110,8 @@ do
         --AddSpecialEffect("Abilities\\Spells\\Other\\Aneu\\AneuCaster.mdl", x, y)
 
 
-            missile.end_point_x = x + (distance * Cos(angle * bj_DEGTORAD))
-            missile.end_point_y = y + (distance * Sin(angle * bj_DEGTORAD))
+            missile.end_point_x = x + (distance * math.cos(angle * bj_DEGTORAD))
+            missile.end_point_y = y + (distance * math.sin(angle * bj_DEGTORAD))
             missile.end_point_z = GetZ(missile.end_point_x, missile.end_point_y) + missile.end_z
 
             if missile.lightning_id then
@@ -295,8 +312,8 @@ do
         local unit_z = GetZ(unit_x, unit_y)
         local endpoint_z = GetZ(x, y)
         local distance = DistanceBetweenXY(unit_x, unit_y, x, y)
-        local endpoint_x = unit_x + (distance * Cos(angle * bj_DEGTORAD))
-        local endpoint_y = unit_y + (distance * Sin(angle * bj_DEGTORAD))
+        local endpoint_x = unit_x + (distance * math.cos(angle * bj_DEGTORAD))
+        local endpoint_y = unit_y + (distance * math.sin(angle * bj_DEGTORAD))
 
         local start_x = GetUnitX(target)
         local start_y = GetUnitY(target)
@@ -403,8 +420,8 @@ do
         push_data.source = source
         push_data.sign = sign
         push_data.power = power
-        local endpoint_x = push_data.x + (power * Cos(angle * bj_DEGTORAD))
-        local endpoint_y = push_data.y + (power * Sin(angle * bj_DEGTORAD))
+        local endpoint_x = push_data.x + (power * math.cos(angle * bj_DEGTORAD))
+        local endpoint_y = push_data.y + (power * math.sin(angle * bj_DEGTORAD))
         local speed = power / time
         push_data.time = time
 
@@ -649,9 +666,9 @@ do
         if angle == 0. then angle = AngleBetweenXY_DEG(start_x, start_y, end_x, end_y)
         elseif target then angle = AngleBetweenUnits(from, target) end
 
-        if from_unit and unit_data.missile_eject_range then
-            start_x = start_x + Rx(unit_data.missile_eject_range, GetUnitFacing(from) - (unit_data.missile_eject_angle or 0.))
-            start_y = start_y + Ry(unit_data.missile_eject_range, GetUnitFacing(from) - (unit_data.missile_eject_angle or 0.))
+        if from_unit then
+            start_x = start_x + Rx(unit_data.missile_eject_range or 0., GetUnitFacing(from) - (unit_data.missile_eject_angle or 0.))
+            start_y = start_y + Ry(unit_data.missile_eject_range or 0., GetUnitFacing(from) - (unit_data.missile_eject_angle or 0.))
             start_z = GetUnitFlyHeight(from) + (unit_data.missile_eject_z or 0.)
         end
 
@@ -769,6 +786,41 @@ do
         end
 
 
+        local current_time = 0.
+        local point_start
+        local point_mid
+        local point_end
+
+        if m.geo_arc then
+            distance2d = DistanceBetweenXY(start_x, start_y, end_x, end_y)
+            local distance_bezie = 0.
+
+            if m.geo_arc_length then
+                distance_bezie = m.geo_arc_length / 2.
+                m.total_length = distance2d / m.geo_arc_length
+                m.bezie_step = 1. / (m.geo_arc_length / (m.speed * (m.speed_mod or 1.) / FPS))
+            else
+                distance_bezie = distance2d / 2.
+                m.total_length = 1.
+                m.bezie_step = 1. / (distance2d / (m.speed * (m.speed_mod or 1.) / FPS))
+            end
+
+            local start_angle = m.geo_arc
+
+            if m.geo_arc_randomize_angle then
+                if GetRandomInt(1, 2) == 1 then
+                    start_angle = m.geo_arc * -1.
+                end
+            end
+
+                point_start = { x = start_x, y = start_y }
+                point_mid = { x = start_x + Rx(distance_bezie, angle - start_angle), y = start_y + Ry(distance_bezie, angle -  start_angle) }
+                point_end = { x = start_x + Rx(m.geo_arc_length, angle), y = start_y + Ry(m.geo_arc_length, angle) }
+                m.current_length = 0.
+                m.current_bezie_angle = start_angle
+
+        end
+
         m.current_x = start_x
         m.current_y = start_y
         m.current_z = start_z
@@ -802,6 +854,7 @@ do
                         ApplyEffect(from, nil, m.current_x, m.current_y, m.effect_on_expire, 1, tag)
                     end
 
+                    --print(DistanceBetweenXY(m.current_x, m.current_y, start_x, start_y))
 
                     OnMissileExpire(from, m.target, m)
                     DestroyEffect(missile_effect)
@@ -856,8 +909,43 @@ do
                         --print("collision")
                     else
 
-                        m.current_x = m.current_x + m.vx
-                        m.current_y = m.current_y + m.vy
+                        if m.geo_arc then
+                            local last_x = m.current_x
+                            local last_y = m.current_y
+                            local bx, by, bz = BezierCurvePow2_xyz_xyz_xyz(point_start.x, point_start.y, 0., point_mid.x, point_mid.y, 0., point_end.x, point_end.y, 0., current_time)
+                            m.current_x = bx
+                            m.current_y = by
+
+                            if m.geo_arc_change_angle then
+                                BlzSetSpecialEffectYaw(m.my_missile, AngleBetweenXY(last_x, last_y, m.current_x, m.current_y))
+                            end
+
+                            current_time = current_time + m.bezie_step
+                            if current_time > 1. then current_time = 1.; m.change_arc = true end
+
+                            if m.total_length > 0. then
+                                m.time = m.time + PERIOD
+                                m.total_length = m.total_length - m.bezie_step
+                            else
+                                m.time = 0.
+                            end
+
+                            if m.change_arc then
+                                m.change_arc = nil
+                                current_time = 0.
+                                local distance_bezie = m.geo_arc_length / 2.
+                                m.current_bezie_angle = m.current_bezie_angle * -1.
+                                point_start = { x = bx, y = by }
+                                point_mid = { x = bx + Rx(distance_bezie, m.heading_angle - m.current_bezie_angle), y = by + Ry(distance_bezie, m.heading_angle -  m.current_bezie_angle) }
+                                point_end = { x = bx + Rx(m.geo_arc_length, m.heading_angle), y = by + Ry(m.geo_arc_length, m.heading_angle) }
+                            end
+
+                        else
+                            m.current_x = m.current_x + m.vx
+                            m.current_y = m.current_y + m.vy
+                        end
+
+
 
                         if m.arc > 0. then
                             local old_z = m.current_z

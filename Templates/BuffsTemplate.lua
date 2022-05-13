@@ -14,6 +14,7 @@ do
     STATE_FREEZE = 2
     STATE_FEAR = 3
     STATE_BLIND = 4
+    STATE_ROOT = 5
 
 
     ---@param buff_id string
@@ -555,6 +556,33 @@ do
         })
         --================================================--
         NewBuffTemplate({
+            name = "chain after debuff",
+            id = 'ACHA',
+            buff_id = 'B033',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 75,
+            time_delta = 0.1,
+            time_delta_level = 5,
+            time_delta_level_max = 10,
+
+            level = {
+                [1] = {
+                    rank = 7,
+                    time = 3.,
+                    current_level = 1,
+                    max_level = 1,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = -50, METHOD = STRAIGHT_BONUS, value_delta = -5, value_delta_level = 1, value_delta_level_max = 50 },
+                        { PARAM = MOVING_SPEED, VALUE = -25, METHOD = STRAIGHT_BONUS, value_delta = -5, value_delta_level = 1, value_delta_level_max = 50 },
+                        { PARAM = ATTACK_SPEED, VALUE = -10, METHOD = STRAIGHT_BONUS, value_delta = -3, value_delta_level = 5, value_delta_level_max = 10 },
+                        { PARAM = CAST_SPEED, VALUE = -10, METHOD = STRAIGHT_BONUS, value_delta = -3, value_delta_level = 5, value_delta_level_max = 10 },
+                    }
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
             name = "uppercut debuff",
             id = 'A012',
             buff_id = 'B006',
@@ -820,6 +848,7 @@ do
                 [1] = {
                     rank = 10,
                     time = 3.,
+                    negative_state = STATE_ROOT
                 }
             }
         })
@@ -1802,7 +1831,7 @@ do
                 }
             }
         })
-         --================================================--
+        --================================================--
         NewBuffTemplate({
             name = "spider queen bile debuff",
             id = 'A01U',
@@ -2144,7 +2173,8 @@ do
                     time = 5.,
                     bonus = {
                         { PARAM = PHYSICAL_DEFENCE, VALUE = 0.75, METHOD = MULTIPLY_BONUS },
-                    }
+                    },
+                    negative_state = STATE_ROOT
                 }
             }
 
@@ -3197,7 +3227,219 @@ do
 
         })
         --================================================--
+        NewBuffTemplate({
+            name = "weapon poison physical debuff",
+            id = 'AWPP',
+            buff_id = 'B02W',
+            buff_type = NEGATIVE_BUFF,
+            attribute = POISON_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
 
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 6.,
+
+                    effect = 'poison_physical_weapon_effect',
+                    effect_delay = 2.,
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "weapon poison magical debuff",
+            id = 'AWPM',
+            buff_id = 'B02X',
+            buff_type = NEGATIVE_BUFF,
+            attribute = POISON_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 6.,
+
+                    effect = 'poison_magical_weapon_effect',
+                    effect_delay = 2.,
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "weapon fire magical debuff",
+            id = 'AWFM',
+            buff_id = 'B02Y',
+            buff_type = NEGATIVE_BUFF,
+            attribute = FIRE_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 6.,
+
+                    effect = 'fire_magical_weapon_effect',
+                    effect_delay = 2.,
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "weapon bleed physical debuff",
+            id = 'AWBP',
+            buff_id = 'B02Z',
+            buff_type = NEGATIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 6.,
+
+                    effect = 'bleed_physical_weapon_effect',
+                    effect_delay = 2.,
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "item fortify buff",
+            id = 'AIFT',
+            buff_id = 'B030',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 3.,
+
+                    bonus = {
+                        { PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 10, METHOD = STRAIGHT_BONUS },
+                        { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 10, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "item enrage buff",
+            id = 'AIEN',
+            buff_id = 'B031',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 4.,
+
+                    bonus = {
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 1.15, METHOD = MULTIPLY_BONUS },
+                    }
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "item conduction buff",
+            id = 'AICN',
+            buff_id = 'B032',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 4.,
+
+                    bonus = {
+                        { PARAM = MAGICAL_ATTACK, VALUE = 1.15, METHOD = MULTIPLY_BONUS },
+                    }
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "satyr rally buff",
+            id = 'ABSR',
+            buff_id = 'B034',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 7.,
+
+                    bonus = {
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 1.3, METHOD = MULTIPLY_BONUS },
+                        { PARAM = MAGICAL_ATTACK, VALUE = 1.3, METHOD = MULTIPLY_BONUS },
+                        { PARAM = MOVING_SPEED, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
+                        { PARAM = ALL_RESIST, VALUE = 15, METHOD = STRAIGHT_BONUS }
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "ice blast debuff",
+            id = 'AIBL',
+            buff_id = 'B035',
+            buff_type = NEGATIVE_BUFF,
+            attribute = ICE_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 4.,
+
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = 0.5, METHOD = MULTIPLY_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "butcher cripple debuff",
+            id = 'ABCR',
+            buff_id = 'B036',
+            buff_type = NEGATIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 5.,
+
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = 0.5, METHOD = MULTIPLY_BONUS },
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.75, METHOD = MULTIPLY_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
 
         RegisterTestCommand("buffme", function()
             ApplyBuff(PlayerHero[1], PlayerHero[1], "A01K", 1)

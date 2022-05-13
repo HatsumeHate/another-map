@@ -6,6 +6,7 @@ do
     ON_ENEMY = 1
     ON_ALLY = 2
     ON_SELF = 3
+    ON_HEROES = 4
 
     ADD_BUFF = 1
     REMOVE_BUFF = 2
@@ -109,7 +110,7 @@ do
             end
 
             if effect.attack_percent_bonus_delta then
-                effect.level[lvl].attack_percent = (effect.level[1].attack_percent or 0.) + math.floor(lvl / (effect.attack_percent_bonus_delta_level or 1.)) * effect.attack_percent_bonus_delta
+                effect.level[lvl].attack_percent_bonus = (effect.level[1].attack_percent_bonus or 0.) + math.floor(lvl / (effect.attack_percent_bonus_delta_level or 1.)) * effect.attack_percent_bonus_delta
             end
 
             if effect.attribute_bonus_delta then
@@ -405,6 +406,7 @@ do
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = FIRE_ATTRIBUTE,
+                    sound = { { pack = { "Sounds\\Spells\\singe1.wav", "Sounds\\Spells\\singe2.wav", "Sounds\\Spells\\singe3.wav" }, volume = 115 } },
                     sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx", point = "chest", duration = 1.  }, } },
                     max_targets = 1,
                     hit_once_in = 0.5
@@ -605,7 +607,7 @@ do
                     area_of_effect = 100.,
                     max_targets = 1,
 
-                    sound = { { pack = { "Sounds\\Spells\\lightning_hit_1.wav", "Sounds\\Spells\\lightning_hit_2.wav", "Sounds\\Spells\\lightning_hit_3.wav" }, volume = 110, cutoff = 1500. } },
+                    sound = { { pack = { "Sounds\\Spells\\lightning_zap1.wav", "Sounds\\Spells\\lightning_zap2.wav", "Sounds\\Spells\\lightning_zap3.wav", "Sounds\\Spells\\lightning_zap4.wav" }, volume = 114, cutoff = 1500. } },
                 }
             }
         })
@@ -632,7 +634,7 @@ do
                     SFX_on_unit = "Abilities\\Spells\\Items\\AIlb\\AIlbSpecialArt.mdx",
                     SFX_on_unit_point = "chest",
 
-                    sound = { { pack = { "Sounds\\Spells\\lightning_hit_1.wav", "Sounds\\Spells\\lightning_hit_2.wav", "Sounds\\Spells\\lightning_hit_3.wav" }, volume = 115, cutoff = 1500. } },
+                    sound = { { pack = { "Sounds\\Spells\\static1.wav", "Sounds\\Spells\\static2.wav", "Sounds\\Spells\\static3.wav", "Sounds\\Spells\\static4.wav" }, volume = 115, cutoff = 1500. } },
                 }
             }
         })
@@ -756,7 +758,7 @@ do
             single_attack_instance = true,
             level = {
                 [1] = {
-                    power = 7,
+                    power = 24,
                     attack_percent_bonus = 1.,
                     global_crit = true,
                     can_crit = true,
@@ -827,8 +829,8 @@ do
             single_attack_instance = true,
             level = {
                 [1] = {
-                    power = 6,
-                    attack_percent_bonus = 0.15,
+                    power = 7,
+                    attack_percent_bonus = 0.3,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
@@ -851,7 +853,7 @@ do
             level = {
                 [1] = {
                     power = 25,
-                    attack_percent_bonus = 0.9,
+                    attack_percent_bonus = 1.25,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
@@ -877,14 +879,6 @@ do
             get_level_from_skill = "ABFA",
             level = {
                 [1] = {
-                    --SFX_used = 'Spell\\TaurenAvatar.mdx',
-                    --SFX_used_scale = 2.3,
-                    --SFX_facing = 270.,
-                    --SFX_inherit_angle = true,
-                    --SFX_on_caster            = 'Spell\\TaurenAvatar.mdx',
-                    --SFX_on_caster_point      = 'origin',
-                    --SFX_on_caster_scale      = 4.,
-
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A01N', target_type = ON_SELF }
                     },
@@ -958,7 +952,7 @@ do
             level = {
                 [1] = {
                     power = 13,
-                    attack_percent_bonus = 1.,
+                    attack_percent_bonus = 0.8,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
@@ -1877,6 +1871,10 @@ do
             --get_level_from_skill = "A006",
             level = {
                 [1] = {
+                    sound = {
+                        { pack = { "Sounds\\Spells\\poison1.wav", "Sounds\\Spells\\poison2.wav", "Sounds\\Spells\\poison3.wav", "Sounds\\Spells\\poison4.wav" },
+                          volume = 117, cutoff = 1600. }
+                    },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A01U', target_type = ON_ENEMY }
                     },
@@ -2051,6 +2049,82 @@ do
                     attack_type = RANGE_ATTACK,
                     attribute = LIGHTNING_ATTRIBUTE,
                     max_targets = 1,
+                    hit_once_in = 0.25,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('meph_frost_blast_effect', {
+            name = "frost BLAST effect",
+            power_delta = 3,
+            power_delta_level = 1,
+            attribute_bonus_delta = 2,
+            attribute_bonus_delta_level = 5,
+            get_level_from_wave = true,
+            level = {
+                [1] = {
+                    power = 25,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = ICE_ATTRIBUTE,
+                    SFX_on_unit = "Abilities\\Spells\\Items\\AIob\\AIobSpecialArt.mdx",
+                    SFX_on_unit_point = "chest",
+                    hit_once_in = 0.25,
+                }
+            }
+
+        })
+        --==========================================--
+        NewEffectTemplate('demoness_evolt_missile_effect', {
+            name = "evolt missile effect",
+            power_delta = 7,
+            power_delta_level = 1,
+            attribute_bonus_delta = 2,
+            attribute_bonus_delta_level = 5,
+            get_level_from_wave = true,
+            level = {
+                [1] = {
+                    power = 44,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = ARCANE_ATTRIBUTE,
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest" } } },
+                    hit_once_in = 0.43,
+                }
+            }
+
+        })
+        --==========================================--
+        NewEffectTemplate('butcher_cripple_effect', {
+            name = "butcher cripple effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_wave = true,
+            single_attack_instance = true,
+            level = {
+                [1] = {
+                    power = 12,
+                    attack_percent_bonus = 0.8,
+                    global_crit = true,
+                    can_crit = true,
+                    is_direct = true,
+                    area_of_effect = 275.,
+                    angle_window  = 45,
+                    force_from_caster_position = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    max_targets = 300,
+                    SFX_on_unit = "Effect\\Ephemeral Cut Red.mdx",
+                    SFX_on_unit_point = "chest",
+                    SFX_on_unit_scale = 1.25,
+                    sound_on_hit = {
+                        pack = { "Sound\\Impact\\sword1.wav", "Sound\\Impact\\sword2.wav", "Sound\\Impact\\sword3.wav", "Sound\\Impact\\sword4.wav" },
+                        volume = 120, cutoff = 1600.
+                    },
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'ABCR', target_type = ON_ENEMY }
+                    },
                 }
             }
         })
@@ -2136,6 +2210,66 @@ do
             }
         })
         --==========================================--
+        NewEffectTemplate('satyr_rally_effect', {
+            name = "satyr rally effect",
+            level = {
+                [1] = {
+                    area_of_effect = 550.,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'ASKD', target_type = ON_ALLY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('ice_blast_effect', {
+            name = "revenant ice blast effect",
+            get_level_from_wave = true,
+            power_delta = 3,
+            power_delta_level = 1,
+            level = {
+                [1] = {
+                    power = 20,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = ICE_ATTRIBUTE,
+                    max_targets = 300,
+                    area_of_effect = 225.,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'AIBL', target_type = ON_ENEMY }
+                    },
+                    sound = { { pack = { "Sounds\\Spells\\ice_crack_1.wav", "Sounds\\Spells\\ice_crack_2.wav", "Sounds\\Spells\\ice_crack_3.wav" }, volume = 122, cutoff = 1800. } },
+                    SFX_on_unit = "Abilities\\Spells\\Items\\AIob\\AIobSpecialArt.mdx",
+                    SFX_on_unit_point = "chest",
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('astral_barrage_effect', {
+            name = "boss astral barrage effect",
+            get_level_from_wave = true,
+            power_delta = 2,
+            power_delta_level = 1,
+            level = {
+                [1] = {
+                    power = 33,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = ARCANE_ATTRIBUTE,
+                    attribute_bonus = 25,
+                    max_targets = 300,
+                    area_of_effect = 250.,
+                    SFX_used = "Effect\\Gravity Storm.mdx",
+                    SFX_used_scale = 0.8,
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest" } } },
+                }
+            }
+        })
+        --==========================================--
         NewEffectTemplate('ELtrait', {
             name = "discharge trait effect",
             get_level_from_wave = true,
@@ -2156,7 +2290,7 @@ do
                     area_of_effect = 100.,
                     max_targets = 1,
 
-                    sound = { { pack = { "Sounds\\Spells\\lightning_hit_1.wav", "Sounds\\Spells\\lightning_hit_2.wav", "Sounds\\Spells\\lightning_hit_3.wav" }, volume = 110, cutoff = 1500. } },
+                    sound = { { pack = { "Sounds\\Spells\\lightning_zap1.wav", "Sounds\\Spells\\lightning_zap2.wav", "Sounds\\Spells\\lightning_zap3.wav", "Sounds\\Spells\\lightning_zap4.wav" }, volume = 112, cutoff = 1500. } },
                 }
             }
         })
@@ -2692,6 +2826,61 @@ do
             }
         })
         --==========================================--
+        NewEffectTemplate('poison_physical_weapon_effect', {
+            name = "poison weapon effect",
+            level = {
+                [1] = {
+                    attack_percent_bonus = 0.05,
+                    can_crit = false,
+                    is_direct = false,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = nil,
+                    attribute = POISON_ATTRIBUTE,
+                },
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('poison_magical_weapon_effect', {
+            name = "poison weapon effect",
+            level = {
+                [1] = {
+                    attack_percent_bonus = 0.05,
+                    can_crit = false,
+                    is_direct = false,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = nil,
+                    attribute = POISON_ATTRIBUTE,
+                },
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('fire_magical_weapon_effect', {
+            name = "fire weapon effect",
+            level = {
+                [1] = {
+                    attack_percent_bonus = 0.05,
+                    can_crit = false,
+                    is_direct = false,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = nil,
+                    attribute = FIRE_ATTRIBUTE,
+                },
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('bleed_physical_weapon_effect', {
+            name = "bleed weapon effect",
+            level = {
+                [1] = {
+                    attack_percent_bonus = 0.05,
+                    can_crit = false,
+                    is_direct = false,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = nil,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                },
+            }
+        })
 
 
         InitAuras()

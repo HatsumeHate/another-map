@@ -10,7 +10,8 @@ do
     MAX_CURSES = 2
     CURRENT_CURSES = 0
     local CurseTimer
-    local CURSE_MIN_TIME = 500; local CURSE_MAX_TIME = 1060
+    local CURSE_MIN_TIME = 1000; local CURSE_MAX_TIME = 1560
+    local curse_totems
 
 
     ---@return rect
@@ -84,6 +85,7 @@ do
             ApplyCurse(curse.curse_id)
             ActiveCurses[#ActiveCurses+1] = curse.curse_id
             local curse_totem = CreateUnit(MONSTER_PLAYER, CurseData.totems[1], x, y, 270.)
+            curse_totems[#curse_totems+1] = curse_totem
             BlzSetUnitSkin(curse_totem, CurseData.totems[GetRandomInt(1, #CurseData.totems)])
             local guard_group = CreateGroup()
             local timer = CreateTimer()
@@ -212,6 +214,7 @@ do
 
 
     function InitCurses()
+        curse_totems = {}
         ActiveCurses = {}
         CurseData = {
             locations = {
@@ -233,6 +236,11 @@ do
 
         RegisterTestCommand("frcr", function()
             TimerStart(CurseTimer, 1., true, SpawnCurse)
+        end)
+
+        RegisterTestCommand("remcr", function()
+            KillUnit(curse_totems[1])
+            table.remove(curse_totems, 1)
         end)
 
     end

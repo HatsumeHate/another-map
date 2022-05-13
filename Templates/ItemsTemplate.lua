@@ -559,6 +559,7 @@ do
 			flippy = true,
 			frame_texture = "Armor\\BTNSteelArmor2.blp",
 			model = "Items\\Armor_09.mdx",
+			texture = TEXTURE_ID_MEDIUM_ARMOR,
 			BONUS   = {
 				{ PARAM = HP_VALUE, VALUE = 15, METHOD = STRAIGHT_BONUS },
 			},
@@ -913,7 +914,7 @@ do
 			QUALITY 		   = MAGIC_ITEM,
 			frame_texture      = "GUI\\BTNRuby.blp",
 			item_description = LOCALE_LIST[my_locale].SHARD_OF_HATE_DESC,
-			cost = 5000,
+			cost = 1000,
 			sell_penalty = 0.04,
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_GEM]
 		})
@@ -1007,8 +1008,8 @@ do
 			TYPE    		   = ITEM_TYPE_GEM,
 			frame_texture      = "GUI\\BTNItem_Gem_Amethyst.blp",
 			point_bonus 	   = {
-				[ITEM_TYPE_WEAPON] 		= {  PARAM = ARCANE_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
-				[ITEM_TYPE_ARMOR]  		= {  PARAM = MP_PER_HIT, VALUE = 1, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_WEAPON] 		= {  PARAM = PHYSICAL_ATTACK, VALUE = 15, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = MP_PER_HIT, VALUE = 2, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = ARCANE_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = PHYSICAL_DEFENCE, VALUE = 70, METHOD = STRAIGHT_BONUS }
 			},
@@ -1915,6 +1916,7 @@ do
 			frame_texture = "Armor\\BTNSpikedArmor.blp",
 			set_bonus = GetItemSet("FRDL"),
 			model = "Items\\Armor_06.mdx",
+			texture = TEXTURE_ID_HEAVY_ARMOR,
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_CHESTOFPAIN .."\"",
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
 		})
@@ -2061,6 +2063,7 @@ do
 			MAX_SLOTS = 2,
 			frame_texture = "Armor\\BTNFire Plate Armor.blp",
 			set_bonus = GetItemSet("crimson_legion_set"),
+			texture = TEXTURE_ID_MEDIUM_ARMOR,
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_CRIMSON_BREASTPLATE .."\"",
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR]
 		})

@@ -206,7 +206,8 @@ do
         AITable = {
             [FourCC(MONSTER_ID_MEPHISTO)] = {
                 ability_list = {
-                    { order = order_forceboard, activation = SELF_CAST, on_attack_chance = 15., on_hit_chance = 15. }
+                    { order = order_forceboard, activation = SELF_CAST, on_attack_chance = 15., on_hit_chance = 15. },
+                    { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 15., on_hit_chance = 15., point_max_offset = 150. }
                 }
             },
             [FourCC(MONSTER_ID_ARACHNID_BOSS)] = {
@@ -286,6 +287,16 @@ do
                     { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 17., on_hit_chance = 15., point_max_offset = 150. },
                 }
             },
+            [FourCC(MONSTER_ID_DEMONESS)] = {
+                ability_list = {
+                    { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 14., on_hit_chance = 10., point_max_offset = 120. },
+                }
+            },
+            [FourCC(MONSTER_ID_BUTCHER)] = {
+                ability_list = {
+                    { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 19., on_hit_chance = 0. },
+                }
+            },
             [FourCC(MONSTER_ID_BAAL)] = {
                 ability_list = {
                     { order = order_frenzy, activation = POINT_CAST, on_attack_chance = 13., on_hit_chance = 12. },
@@ -319,6 +330,31 @@ do
             [FourCC(MONSTER_ID_GNOLL_POACHER)] = {
                 ability_list = {
                     { order = order_forceofnature, activation = POINT_CAST, on_attack_chance = 19., on_hit_chance = 7., point_max_offset = 125. },
+                }
+            },
+            [FourCC(MONSTER_ID_SATYR_HELL)] = {
+                ability_list = {
+                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 1., on_hit_chance = 5. },
+                }
+            },
+            [FourCC(MONSTER_ID_SATYR_TRICKSTER)] = {
+                ability_list = {
+                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 24., on_hit_chance = 3. },
+                }
+            },
+            [FourCC(MONSTER_ID_REVENANT_FROST)] = {
+                ability_list = {
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 17., on_hit_chance = 3. },
+                }
+            },
+            [FourCC(MONSTER_ID_UNDERWORLD_QUEEN)] = {
+                ability_list = {
+                    { order = order_forceboard, activation = POINT_CAST, on_attack_chance = 15., on_hit_chance = 20. },
+                }
+            },
+            [FourCC(MONSTER_ID_BLOOD_RAVEN)] = {
+                ability_list = {
+                    { order = order_forceofnature, activation = SELF_CAST, on_attack_chance = 12., on_hit_chance = 12. },
                 }
             }
         }
@@ -397,6 +433,16 @@ do
                     if hero and IssueTargetOrderById(unit, order_freezingbreath, hero) then
                         AI_AddSleep(unit, 5.)
                     end
+                end
+            end
+
+        end
+
+        AITable[FourCC(MONSTER_ID_SATYR_HELL)].on_period = function(unit)
+
+            if IsAnyHeroInRange(GetUnitX(unit), GetUnitY(unit), 700.) then
+                if GetRandomInt(1, 7) == 1 then
+                    IssueImmediateOrderById(unit, order_acidbomb)
                 end
             end
 

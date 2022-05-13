@@ -41,8 +41,8 @@ do
 
     function CreateChest(rect)
         local altar = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("n00N"), GetRectCenterX(rect), GetRectCenterY(rect), GetRandomReal(230., 310.))
-        local var = GetRandomInt(1, 7)
-        local skins = { "n00N", "n02A", "n02B", "n02C", "n02D", "n02E", "n02N" }
+        local var = GetRandomInt(1, 6)
+        local skins = { "n00N", "n02A", "n02B", "n02C", "n02D", "n02E" }
 
             BlzSetUnitSkin(altar, FourCC(skins[var]))
 
@@ -547,6 +547,7 @@ do
         local rects = { gg_rct_shrineofhate1, gg_rct_shrineofhate2, gg_rct_shrineofhate3, gg_rct_shrineofhate4, gg_rct_shrineofhate5, gg_rct_shrineofhate6, gg_rct_shrineofhate7 }
         CreateShrineOfHatred(rects[GetRandomInt(1, #rects)])
         rects = nil
+
 
     end
 

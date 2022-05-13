@@ -54,6 +54,11 @@ do
     local GENERATED_ITEM_LIST = 0
     GeneratedScaling = nil
 
+    TEXTURE_ID_EMPTY = "B00X"
+    TEXTURE_ID_ROBE = "B00Y"
+    TEXTURE_ID_MEDIUM_ARMOR = "B010"
+    TEXTURE_ID_HEAVY_ARMOR = "B00Z"
+
 
     function GetRandomGeneratedItemId()
         return GENERATED_ITEM_LIST[GetRandomInt(1, #GENERATED_ITEM_LIST)].id
@@ -384,6 +389,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_06.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
@@ -392,6 +398,7 @@ do
                         modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_08.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
@@ -400,6 +407,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
@@ -408,6 +416,7 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_10.mdx",
+                        texture = TEXTURE_ID_HEAVY_ARMOR
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
@@ -416,6 +425,7 @@ do
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
@@ -424,6 +434,7 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
+                        texture = TEXTURE_ID_HEAVY_ARMOR
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
@@ -432,6 +443,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
@@ -440,6 +452,7 @@ do
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
+                        texture = TEXTURE_ID_ROBE
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -940,7 +953,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "Items\\OrbDragonX.mdx",
+                        model = "Items\\WindOrb.mdx",
                     },
                     {
                         icon = "Offhand\\BTNWaterOrb.blp",
@@ -948,7 +961,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "Items\\OrbWaterX.mdx",
+                        model = "Items\\WaterOrb.mdx",
                     },
                     {
                         icon = "Offhand\\BTNSandOrb.blp",
@@ -956,7 +969,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "Items\\OrbLightX.mdx",
+                        model = "Items\\SandOrb.mdx",
                     },
                     {
                         icon = "Offhand\\BTNOrbOfTheSun.blp",
@@ -1094,6 +1107,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_06.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
@@ -1102,6 +1116,7 @@ do
                         modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_08.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
@@ -1110,6 +1125,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
@@ -1118,6 +1134,7 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
+                        texture = TEXTURE_ID_HEAVY_ARMOR
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
@@ -1126,6 +1143,7 @@ do
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
@@ -1134,6 +1152,7 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
+                        texture = TEXTURE_ID_HEAVY_ARMOR
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
@@ -1142,6 +1161,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
@@ -1150,6 +1170,7 @@ do
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
+                        texture = TEXTURE_ID_ROBE
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -1664,7 +1685,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "Items\\OrbDragonX.mdx",
+                        model = "Items\\WindOrb.mdx",
                     },
                     {
                         icon = "Offhand\\BTNWaterOrb.blp",
@@ -1672,7 +1693,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "Items\\OrbWaterX.mdx",
+                        model = "Items\\WaterOrb.mdx",
                     },
                     {
                         icon = "Offhand\\BTNSandOrb.blp",
@@ -1680,7 +1701,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "Items\\OrbLightX.mdx",
+                        model = "Items\\SandOrb.mdx",
                     },
                     {
                         icon = "Offhand\\BTNOrbOfTheSun.blp",
@@ -1890,6 +1911,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_06.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
@@ -1898,6 +1920,7 @@ do
                         modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_8.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
@@ -1906,6 +1929,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
@@ -1914,6 +1938,7 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
+                        texture = TEXTURE_ID_HEAVY_ARMOR
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
@@ -1922,6 +1947,7 @@ do
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
@@ -1930,6 +1956,7 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
+                        texture = TEXTURE_ID_HEAVY_ARMOR
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
@@ -1938,6 +1965,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
@@ -1946,6 +1974,7 @@ do
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
+                        texture = TEXTURE_ID_ROBE
                     },
                     {
                         icon = "Armor\\BTNArbalestersArmor.blp",
@@ -1954,6 +1983,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_09.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNDivineArmor.blp",
@@ -1962,6 +1992,7 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_07.mdx",
+                        texture = TEXTURE_ID_HEAVY_ARMOR
                     },
                     {
                         icon = "Armor\\BTNHalfArmor.blp",
@@ -1970,6 +2001,7 @@ do
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                     {
                         icon = "Armor\\BTNHalfArmor.blp",
@@ -1978,6 +2010,7 @@ do
                         modificator = 1.1,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_10.mdx",
+                        texture = TEXTURE_ID_HEAVY_ARMOR
                     },
                     {
                         icon = "Armor\\BTNMoongladeArmor.blp",
@@ -1986,6 +2019,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
+                        texture = TEXTURE_ID_MEDIUM_ARMOR
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -2624,7 +2658,7 @@ do
                         model = "Items\\Weapon_Bow_1.mdx",
                     },
                     {
-                        icon = "Weapons\\TNRunestoneLongbow.blp",
+                        icon = "Weapons\\BTNRunestoneLongbow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_11,
                         decl = DECL_HE,
                         modificator = 1.45,
@@ -2711,7 +2745,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "Items\\OrbDragonX.mdx",
+                        model = "Items\\WindOrb.mdx",
                     },
                     {
                         icon = "Offhand\\BTNWaterOrb.blp",
@@ -2719,7 +2753,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "Items\\OrbWaterX.mdx",
+                        model = "Items\\WaterOrb.mdx",
                     },
                     {
                         icon = "Offhand\\BTNSandOrb.blp",
@@ -2727,7 +2761,7 @@ do
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
-                        model = "Items\\OrbLightX.mdx",
+                        model = "Items\\SandOrb.mdx",
                     },
                     {
                         icon = "Offhand\\BTNOrbOfTheSun.blp",
@@ -3387,7 +3421,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
@@ -3444,7 +3478,29 @@ do
                             max_level = 1,
                         },
                         effect_bonus = {
-
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 10. },
+                                { id = "weap_poison_mag", chance = 10. },
+                                { id = "weap_fire_mag", chance = 10. },
+                                { id = "weap_bleed", chance = 10. },
+                                { id = "item_enrage", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_enrage", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_enrage", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_enrage", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
                         }
                     },
                     [ITEM_AFFIX_FINE] = {
@@ -3463,7 +3519,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 5, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
@@ -3522,7 +3578,29 @@ do
                             max_level = 1,
                         },
                         effect_bonus = {
-
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 15. },
+                                { id = "weap_poison_mag", chance = 15. },
+                                { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_bleed", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
                         }
                     },
                     [ITEM_AFFIX_EXCELLENT] = {
@@ -3541,7 +3619,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 24, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 8, value_max = 14, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
@@ -3598,7 +3676,29 @@ do
                             max_level = 1,
                         },
                         effect_bonus = {
-
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 15. },
+                                { id = "weap_poison_mag", chance = 15. },
+                                { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_bleed", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
                         }
                     },
                     [ITEM_AFFIX_IDEAL] = {
@@ -3617,7 +3717,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 24, value_max = 30, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 14, value_max = 20, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
@@ -3674,7 +3774,29 @@ do
                             max_level = 2,
                         },
                         effect_bonus = {
-
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 20. },
+                                { id = "weap_poison_mag", chance = 20. },
+                                { id = "weap_fire_mag", chance = 20 },
+                                { id = "weap_bleed", chance = 20. },
+                                { id = "item_enrage", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_enrage", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_enrage", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_enrage", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
                         }
                     }
                 }
@@ -3692,7 +3814,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 13, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
@@ -3749,7 +3871,29 @@ do
                             max_level = 1,
                         },
                         effect_bonus = {
-
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 10. },
+                                { id = "weap_poison_mag", chance = 10. },
+                                { id = "weap_fire_mag", chance = 10 },
+                                { id = "weap_bleed", chance = 10. },
+                                { id = "item_enrage", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_enrage", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_enrage", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_enrage", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
                         }
                     },
                     [ITEM_AFFIX_FINE] = {
@@ -3762,7 +3906,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 18, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 7, value_max = 12, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
@@ -3819,7 +3963,29 @@ do
                             max_level = 1,
                         },
                         effect_bonus = {
-
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 15. },
+                                { id = "weap_poison_mag", chance = 15. },
+                                { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_bleed", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
                         }
                     },
                     [ITEM_AFFIX_EXCELLENT] = {
@@ -3832,7 +3998,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 18, value_max = 20, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 60. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 12, value_max = 16, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 60. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 60. },
                                 }
                             },
@@ -3889,7 +4055,29 @@ do
                             max_level = 2,
                         },
                         effect_bonus = {
-
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 15. },
+                                { id = "weap_poison_mag", chance = 15. },
+                                { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_bleed", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
                         }
                     },
                     [ITEM_AFFIX_IDEAL] = {
@@ -3902,7 +4090,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 27, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 16, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 70. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.075, METHOD = MULTIPLY_BONUS, probability = 70. },
                                 }
                             },
@@ -3959,7 +4147,29 @@ do
                             max_level = 2,
                         },
                         effect_bonus = {
-
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 20. },
+                                { id = "weap_poison_mag", chance = 20. },
+                                { id = "weap_bleed", chance = 20. },
+                                { id = "weap_fire_mag", chance = 20. },
+                                { id = "item_enrage", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_enrage", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_enrage", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_enrage", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
                         }
                     }
                 }
@@ -3977,7 +4187,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 26, value_max = 30, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
@@ -4034,7 +4244,29 @@ do
                             max_level = 1,
                         },
                         effect_bonus = {
-
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 10. },
+                                { id = "weap_poison_mag", chance = 10. },
+                                { id = "weap_bleed", chance = 10. },
+                                { id = "weap_fire_mag", chance = 10. },
+                                { id = "item_enrage", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_enrage", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_enrage", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_enrage", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
                         }
                     },
                     [ITEM_AFFIX_FINE] = {
@@ -4047,7 +4279,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 30, value_max = 36, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.08, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
@@ -4104,7 +4336,29 @@ do
                             max_level = 1,
                         },
                         effect_bonus = {
-
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 15. },
+                                { id = "weap_poison_mag", chance = 15. },
+                                { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_bleed", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
                         }
                     },
                     [ITEM_AFFIX_EXCELLENT] = {
@@ -4117,7 +4371,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 36, value_max = 41, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 60. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 22, value_max = 26, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 60. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 60. },
                                 }
                             },
@@ -4174,7 +4428,29 @@ do
                             max_level = 2,
                         },
                         effect_bonus = {
-
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 15. },
+                                { id = "weap_poison_mag", chance = 15. },
+                                { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_bleed", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
                         }
                     },
                     [ITEM_AFFIX_IDEAL] = {
@@ -4187,7 +4463,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 55, value_max = 64, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 26, value_max = 38, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 70. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.12, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 70. },
                                 }
                             },
@@ -4244,7 +4520,29 @@ do
                             max_level = 2,
                         },
                         effect_bonus = {
-
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 20. },
+                                { id = "weap_poison_mag", chance = 20. },
+                                { id = "weap_fire_mag", chance = 20 },
+                                { id = "weap_bleed", chance = 20. },
+                                { id = "item_enrage", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_enrage", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_enrage", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_enrage", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
                         }
                     }
                 }
@@ -4265,7 +4563,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 11, value_max = 13, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
@@ -4326,7 +4624,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 13, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 7, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
@@ -4448,7 +4746,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 19, value_max = 23, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 23, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
@@ -4516,7 +4814,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 22, value_max = 26, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 7, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.14, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
@@ -4577,7 +4875,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 26, value_max = 30, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 19, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.14, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
@@ -4638,7 +4936,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 30, value_max = 34, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 19, value_max = 24, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
@@ -4699,7 +4997,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 38, value_max = 46, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 24, value_max = 30, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.12, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
@@ -4779,7 +5077,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 12, value_max = 16, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.03, METHOD = MULTIPLY_BONUS, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 11, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.03, METHOD = MULTIPLY_BONUS, probability = 50. }
@@ -4860,7 +5158,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 8, value_max = 14, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 15, value_max = 18, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. }
@@ -4941,7 +5239,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 22, value_max = 26, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 14, value_max = 19, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.035, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 18, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.035, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. }
@@ -5022,7 +5320,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 26, value_max = 33, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 19, value_max = 24, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.045, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.045, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
@@ -5110,7 +5408,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 24, value_max = 31, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 14, value_max = 19, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 30, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.06, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
@@ -5191,7 +5489,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 31, value_max = 44, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 19, value_max = 24, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 30, value_max = 36, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50. }
@@ -5272,7 +5570,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 44, value_max = 52, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 24, value_max = 29, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.07, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 36, value_max = 44, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.07, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. }
@@ -5353,7 +5651,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 52, value_max = 66, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 29, value_max = 35, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.09, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 44, value_max = 56, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.09, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 50. }
@@ -5463,6 +5761,25 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_fire_mag", chance = 10 },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "weap_fire_mag", chance = 10 },
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
@@ -5509,6 +5826,25 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_fire_mag", chance = 15 },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "weap_fire_mag", chance = 15 },
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
@@ -5555,6 +5891,25 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_fire_mag", chance = 15 },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "weap_fire_mag", chance = 15 },
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
@@ -5601,6 +5956,25 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_fire_mag", chance = 20 },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "weap_fire_mag", chance = 20 },
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                        }
                     },
                 }
             },
@@ -5654,6 +6028,25 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_fire_mag", chance = 10 },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "weap_fire_mag", chance = 10 },
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
@@ -5700,6 +6093,25 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_fire_mag", chance = 15 },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "weap_fire_mag", chance = 15 },
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
@@ -5746,6 +6158,25 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_fire_mag", chance = 15 },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "weap_fire_mag", chance = 15 },
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
@@ -5792,6 +6223,25 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_fire_mag", chance = 20 },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "weap_fire_mag", chance = 20 },
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                        }
                     },
                 }
             },
@@ -5845,6 +6295,25 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_fire_mag", chance = 10 },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "weap_fire_mag", chance = 10 },
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
@@ -5891,6 +6360,25 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_fire_mag", chance = 15 },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "weap_fire_mag", chance = 15 },
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
@@ -5937,6 +6425,25 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_fire_mag", chance = 15 },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "weap_fire_mag", chance = 15 },
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
@@ -5983,6 +6490,25 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_fire_mag", chance = 20 },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "weap_fire_mag", chance = 20 },
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                        }
                     },
                 }
             },
@@ -6025,7 +6551,7 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6084,6 +6610,16 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 10. },
+                                { id = "weap_poison_mag", chance = 10. },
+                                { id = "weap_fire_mag", chance = 10. },
+                                { id = "weap_bleed", chance = 10. },
+                                { id = "item_enrage", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
@@ -6119,7 +6655,7 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 8, value_max = 16, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.07, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6178,6 +6714,16 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 15. },
+                                { id = "weap_poison_mag", chance = 15. },
+                                { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_bleed", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
@@ -6213,7 +6759,7 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 33, value_max = 39, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 16, value_max = 24, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.09, value_max = 1.11, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6272,6 +6818,16 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 15. },
+                                { id = "weap_poison_mag", chance = 15. },
+                                { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_bleed", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
@@ -6307,7 +6863,7 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 39, value_max = 47, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 24, value_max = 32, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.11, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6366,6 +6922,16 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 20. },
+                                { id = "weap_poison_mag", chance = 20. },
+                                { id = "weap_fire_mag", chance = 20. },
+                                { id = "weap_bleed", chance = 20. },
+                                { id = "item_enrage", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                        }
                     },
                 }
             },
@@ -6408,7 +6974,7 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 44, value_max = 56, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 11, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.1, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6467,6 +7033,16 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 10. },
+                                { id = "weap_poison_mag", chance = 10. },
+                                { id = "weap_fire_mag", chance = 10. },
+                                { id = "weap_bleed", chance = 10. },
+                                { id = "item_enrage", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = -2,
@@ -6502,7 +7078,7 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 56, value_max = 66, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 26, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.14, value_max = 1.18, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6561,6 +7137,16 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 15. },
+                                { id = "weap_poison_mag", chance = 15. },
+                                { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_bleed", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = -2,
@@ -6596,7 +7182,7 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 66, value_max = 78, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 26, value_max = 38, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.18, value_max = 1.22, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6655,6 +7241,16 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 15. },
+                                { id = "weap_poison_mag", chance = 15. },
+                                { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_bleed", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = -2,
@@ -6690,7 +7286,7 @@ do
                                     {
                                         type = MULTIPLE_PARAMETER,
                                         parameters = {
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 78, value_max = 85, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 38, value_max = 50, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.22, value_max = 1.3, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -6749,6 +7345,16 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 20. },
+                                { id = "weap_poison_mag", chance = 20. },
+                                { id = "weap_fire_mag", chance = 20. },
+                                { id = "weap_bleed", chance = 20. },
+                                { id = "item_enrage", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                        }
                     },
                 }
             },
@@ -6848,6 +7454,17 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 10. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 10. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 10. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
@@ -6940,6 +7557,17 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
@@ -7032,6 +7660,17 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
@@ -7124,6 +7763,17 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 20. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 20. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 20. },
+                            },
+                        }
                     },
                 }
             },
@@ -7181,7 +7831,7 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -7243,6 +7893,17 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 10. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 10. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 10. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
@@ -7294,7 +7955,7 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 8, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -7356,6 +8017,17 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
@@ -7407,7 +8079,7 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 19, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -7469,6 +8141,17 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
@@ -7520,7 +8203,7 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 23, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 19, value_max = 23, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -7582,6 +8265,17 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 20. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 20. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 20. },
+                            },
+                        }
                     },
                 }
             },
@@ -7639,7 +8333,7 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.04, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 30, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 19, value_max = 24, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -7701,6 +8395,17 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = -2,
@@ -7752,7 +8457,7 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.06, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 30, value_max = 32, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 24, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.09, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -7814,6 +8519,17 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = -2,
@@ -7865,7 +8581,7 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.12, value_max = 1.18, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 34, value_max = 40, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.12, value_max = 1.18, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -7927,6 +8643,17 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = -2,
@@ -7978,7 +8705,7 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 46, value_max = 52, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.12, value_max = 1.2, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 40, value_max = 46, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.12, value_max = 1.2, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -8040,6 +8767,17 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 20. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 20. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 20. },
+                            },
+                        }
                     },
                 }
             },
@@ -8097,7 +8835,7 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 8, value_max = 12, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -8231,7 +8969,7 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 12, value_max = 16, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -8358,7 +9096,7 @@ do
                                         parameters = {
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 43, value_max = 46, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_DEFENCE, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 16, value_max = 20, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                             { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
                                         },
                                     },
@@ -8590,7 +9328,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 5, value_max = 9, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.02, value_max = 1.035, METHOD = MULTIPLY_BONUS, probability = 30. },
@@ -8672,7 +9410,7 @@ do
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 26, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 9, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 30. },
                                 }
                             },
@@ -8752,7 +9490,7 @@ do
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 19, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
                                 }
                             },
@@ -8844,7 +9582,7 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 20, value_max = 23, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 19, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 35. },
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 35. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 33, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 35. },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.05, value_max = 1.065, METHOD = MULTIPLY_BONUS, probability = 35. },
@@ -9388,6 +10126,25 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_mag", chance = 10 },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "weap_poison_mag", chance = 10 },
+                                { id = "item_fortify", chance = 10. },
+                                { id = "item_conduction", chance = 10. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
@@ -9444,6 +10201,25 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_mag", chance = 15 },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "weap_poison_mag", chance = 15 },
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
@@ -9500,6 +10276,25 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_mag", chance = 15 },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "weap_poison_mag", chance = 15 },
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                        }
                     },
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
@@ -9556,6 +10351,25 @@ do
                                 },
                             },
                         },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_mag", chance = 20 },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "weap_poison_mag", chance = 20 },
+                                { id = "item_fortify", chance = 20. },
+                                { id = "item_conduction", chance = 20. },
+                            },
+                        }
                     },
                 }
             }

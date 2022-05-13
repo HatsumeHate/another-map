@@ -63,7 +63,9 @@ do
 
             end)
 
-            TimerStart(unit_data.action_timer, 0.33, true, function()
+            local attack_speed_bonus = (1. - unit_data.stats[ATTACK_SPEED].actual_bonus * 0.01)
+
+            TimerStart(unit_data.action_timer, 0.33 * attack_speed_bonus, true, function()
                 local mp = GetUnitState(unit, UNIT_STATE_MANA)
 
                 if mp >= 3. then
