@@ -114,6 +114,9 @@ do
             PushUnit(source, target, AngleBetweenUnits(source,target), 150., 0.7, "aach")
         elseif sign == "brch" then
             ApplyBuff(source, target, "ABRS", 1)
+        elseif sign == "diach" then
+            ApplyEffect(source, target, 0., 0., "diablo_charge_effect", Current_Wave)
+            PushUnit(source, target, AngleBetweenUnits(source, target), 250., 0.7, "diach")
         end
         return false
     end
@@ -156,8 +159,11 @@ do
             local reanimated = CreateUnit(MONSTER_PLAYER, FourCC("u00G"), missile.current_x, missile.current_y, GetRandomReal(0., 359.))
             SetUnitAnimation(reanimated, "birth")
             SafePauseUnit(reanimated, true)
+            UnitAddAbility(reanimated, FourCC("Avul"))
             DelayAction(2.33, function()
                 SafePauseUnit(reanimated, false)
+                UnitRemoveAbility(reanimated, FourCC("Avul"))
+                SetUnitAnimation(reanimated, "stand")
             end)
         end
     end
@@ -750,9 +756,19 @@ do
             end
 
             if UnitHasEffect(source, "trait_chill") then
-                if Chance(35.) then ApplyBuff(source, target, "ATCH", 1) end
+                local unit_data = GetUnitData(source)
+                if not unit_data.trait_chill_cooldown and Chance(35.) then
+                    ApplyBuff(source, target, "ATCH", 1)
+                    unit_data.trait_chill_cooldown = true
+                    DelayAction(6., function() unit_data.trait_chill_cooldown = nil end)
+                end
             elseif UnitHasEffect(source, "trait_overpower") then
-                if Chance(35.) then PushUnit(source, target, AngleBetweenUnits(source,target), 250., 1.35, "trait_overpower") end
+                local unit_data = GetUnitData(source)
+                if not unit_data.trait_overpower_cooldown and Chance(35.) then
+                    PushUnit(source, target, AngleBetweenUnits(source,target), 250., 1.35, "trait_overpower")
+                    unit_data.trait_overpower_cooldown = true
+                    DelayAction(6., function() unit_data.trait_overpower_cooldown = nil end)
+                end
             end
 
             if GetUnitTalentLevel(source, "talent_heat") > 0 then
@@ -968,6 +984,11 @@ do
         elseif id == "AFBB" then IceBlastCast(source, x, y)
         elseif id == "AARB" then AstralBarrageCast(source)
         elseif id == "ABRR" then BloodRavenReviveCast(source)
+        elseif id == "ARNA" then ReanimatedArrowBarrage(source, x, y)
+        elseif id == "ADLB" then DiabloLightningBreath(source, x, y)
+        elseif id == "ADFS" then DiabloFireStomp(source, x, y)
+        elseif id == "ADCH" then ChargeUnit(source, 750., 800., GetUnitFacing(source), 1, 100., "walk channel", "diach", { effect = "Spell\\Valiant Charge.mdx", point = "origin" })
+        elseif id == "ADAP" then DiabloApoc(source)
         end
 
 

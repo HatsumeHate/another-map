@@ -1481,6 +1481,7 @@ do
                 { param = CONTROL_REDUCTION, value = 15, method = STRAIGHT_BONUS },
                 { param = CRIT_MULTIPLIER, value = 0.2, method = STRAIGHT_BONUS },
             },
+            skill_list = { "AFSM" },
             scale = 1.4,
             colours = { r = 180, g = 180, b = 180 },
             has_mp = false,
@@ -2153,10 +2154,10 @@ do
                 { param = PHYSICAL_DEFENCE, value = 650, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 150, method = STRAIGHT_BONUS },
                 { param = CONTROL_REDUCTION, value = 55, method = STRAIGHT_BONUS },
-                { param = FIRE_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = -35, method = STRAIGHT_BONUS },
                 { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = POISON_RESIST, value = 35, method = STRAIGHT_BONUS },
-                { param = ICE_RESIST, value = -15, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
             },
             death_sound = { pack = { "Sounds\\Monsters\\andariel_death.wav" }, volume = 110, cutoff = 1700. },
@@ -2188,6 +2189,7 @@ do
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
+            skill_list = { "ARNA" },
             has_mp = false,
             drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
@@ -2299,6 +2301,34 @@ do
             skill_list = { "ADME" },
             has_mp = false,
             drop_offset_min = 20., drop_offset_max = 65.,
+            xp = 700,
+        })
+        --==========================================================--
+        -- DIABLO
+        NewUnitTemplate("uDBL", {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_DIABLO,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_BOSS,
+            unit_trait = { TRAIT_DEMON },
+            time_before_remove = 10.,
+            base_stats = { health = 3570., hp_regen = 0.44, moving_speed = 270. },
+            weapon = { ATTACK_SPEED = 2.1, DAMAGE = 48, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_WOOD_HEAVY_BASH, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 10 },
+            bonus_parameters = {
+                { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_DEFENCE, value = 750, method = STRAIGHT_BONUS },
+                { param = MAGICAL_SUPPRESSION, value = 450, method = STRAIGHT_BONUS },
+                { param = CONTROL_REDUCTION, value = 55, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 35, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 35, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = 25, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = HOLY_RESIST, value = 5, method = STRAIGHT_BONUS },
+            },
+            death_sound = { pack = { "Sounds\\Monsters\\Diablo_Death.wav" }, volume = 115, cutoff = 1700. },
+            skill_list = { "ADLB", "ADFS", "ADCH", "ADAP" },
+            has_mp = false,
+            drop_offset_min = 40., drop_offset_max = 85.,
             xp = 700,
         })
         --==========================================================--

@@ -507,7 +507,9 @@ do
             DestroyGroup(wave_group)
         end)
 
-        if BossCounter == 5 then
+        if Current_Wave >= 50 then
+            GroupAddUnit(WaveGroup, CreateUnit(MONSTER_PLAYER, FourCC("uDBL"), GetRectCenterX(point), GetRectCenterY(point), 270.))
+        elseif BossCounter == 5 then
             local boss
 
             if monster_pack[MONSTER_RANK_BOSS] then

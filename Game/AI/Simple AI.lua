@@ -16,17 +16,57 @@ do
 
 
 
+    ---@param x real
+    ---@param y real
+    ---@param within_range real
+    ---@return unit
+    function GetClosestHeroPoint(x, y, within_range)
+        local closest_hero
 
+            for i = 1, 6 do
+                if PlayerHero[i] then
+                    local distance = DistanceBetweenUnitXY(PlayerHero[i], x, y)
+                    if distance < within_range and GetUnitState(PlayerHero[i], UNIT_STATE_LIFE) > 0.045 then
+                        closest_hero = PlayerHero[i]
+                        within_range = distance
+                    end
+                end
+            end
 
+        return closest_hero
+    end
+
+    ---@param unit unit
+    ---@param within_range real
+    ---@return unit
+    function GetClosestHeroEx(unit, within_range)
+        local closest_hero
+
+            for i = 1, 6 do
+                if PlayerHero[i] then
+                    local distance = DistanceBetweenUnits(unit, PlayerHero[i])
+                    if distance < within_range and GetUnitState(PlayerHero[i], UNIT_STATE_LIFE) > 0.045 then
+                        closest_hero = PlayerHero[i]
+                        within_range = distance
+                    end
+                end
+            end
+
+        return closest_hero
+    end
+
+    ---@param unit unit
+    ---@param within_range real
+    ---@return unit
     function GetClosestHero(unit, within_range)
         local closest_hero
 
             for i = 1, 6 do
                 if PlayerHero[i] then
                     local distance = DistanceBetweenUnits(unit, PlayerHero[i])
-                    if distance < within_range and IsUnitVisible(PlayerHero[i], MONSTER_PLAYER) then
+                    if distance < within_range and IsUnitVisible(PlayerHero[i], MONSTER_PLAYER) and GetUnitState(PlayerHero[i], UNIT_STATE_LIFE) > 0.045 then
                         closest_hero = PlayerHero[i]
-                        within_range = DistanceBetweenUnits(unit, PlayerHero[i])
+                        within_range = distance
                     end
                 end
             end
@@ -212,28 +252,38 @@ do
             },
             [FourCC(MONSTER_ID_ARACHNID_BOSS)] = {
                 ability_list = {
-                    { order = order_forkedlightning, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 12. },
-                    { order = order_forceofnature, activation = TARGET_CAST, on_attack_chance = 15., on_hit_chance = 0. },
-                    { order = order_cripple, activation = TARGET_CAST, on_attack_chance = 3., on_hit_chance = 10. }
+                    { order = order_forkedlightning, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 15. },
+                    { order = order_forceofnature, activation = TARGET_CAST, on_attack_chance = 17., on_hit_chance = 0. },
+                    { order = order_cripple, activation = TARGET_CAST, on_attack_chance = 5., on_hit_chance = 12. }
                 }
             },
             [FourCC(MONSTER_ID_BANDIT_BOSS)] = {
                 ability_list = {
-                    { order = order_forceofnature, activation = TARGET_CAST, on_attack_chance = 0., on_hit_chance = 14. },
+                    { order = order_forceofnature, activation = TARGET_CAST, on_attack_chance = 0., on_hit_chance = 18. },
                 }
             },
             [FourCC(MONSTER_ID_SKELETON_KING)] = {
                 ability_list = {
-                    { order = order_forceofnature, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 12. },
-                    { order = order_slow, activation = TARGET_CAST, on_attack_chance = 7., on_hit_chance = 7. },
+                    { order = order_forceofnature, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 15. },
+                    { order = order_slow, activation = TARGET_CAST, on_attack_chance = 10., on_hit_chance = 10. },
+                }
+            },
+            [FourCC(MONSTER_ID_REANIMATED)] = {
+                ability_list = {
+                    { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 14., on_hit_chance = 14., point_max_offset = 75. },
                 }
             },
             [FourCC(MONSTER_ID_SPIDER_QUEEN)] = {
                 ability_list = {
-                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 10. },
-                    { order = order_forceofnature, activation = TARGET_CAST, on_attack_chance = 14., on_hit_chance = 0. },
-                    { order = order_forkedlightning, activation = TARGET_CAST, on_attack_chance = 7., on_hit_chance = 7. },
-                    { order = order_hex, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 7. },
+                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 10., on_hit_chance = 20. },
+                    { order = order_forceofnature, activation = TARGET_CAST, on_attack_chance = 17., on_hit_chance = 0. },
+                    { order = order_forkedlightning, activation = TARGET_CAST, on_attack_chance = 10., on_hit_chance = 10. },
+                    { order = order_hex, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 22. },
+                }
+            },
+            [FourCC(MONSTER_ID_FACELESS)] = {
+                ability_list = {
+                    { order = order_flamestrike, activation = TARGET_CAST, on_attack_chance = 18., on_hit_chance = 0. },
                 }
             },
             [FourCC(MONSTER_ID_QUILLBEAST)] = {
@@ -349,12 +399,20 @@ do
             },
             [FourCC(MONSTER_ID_UNDERWORLD_QUEEN)] = {
                 ability_list = {
-                    { order = order_forceboard, activation = POINT_CAST, on_attack_chance = 15., on_hit_chance = 20. },
+                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 15., on_hit_chance = 20. },
                 }
             },
             [FourCC(MONSTER_ID_BLOOD_RAVEN)] = {
                 ability_list = {
                     { order = order_forceofnature, activation = SELF_CAST, on_attack_chance = 12., on_hit_chance = 12. },
+                }
+            },
+            [FourCC("uDBL")] = {
+                ability_list = {
+                    { order = order_frenzy, activation = POINT_CAST, on_attack_chance = 6., on_hit_chance = 16. },
+                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 5., on_hit_chance = 12. },
+                    { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 16., on_hit_chance = 10. },
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 6., on_hit_chance = 12. },
                 }
             }
         }

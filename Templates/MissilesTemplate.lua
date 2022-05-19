@@ -470,6 +470,20 @@ do
             full_distance = true
         })
         --==============================================--
+        NewMissileTemplate('reanimated_arrow_barrage_missile', {
+            name = "reanimated arrow barrage",
+            model = "Missile\\BonefireArrow1.mdx",
+            max_distance = 900.,
+            radius = 20.,
+            speed = 1000.,
+            start_z = 1000.,
+            end_z = 0.,
+            scale = 1.,
+            only_on_impact = true,
+            effect_on_impact = "reanimated_arrow_barrage_effect",
+            ignore_terrain = false,
+        })
+        --==============================================--
         NewMissileTemplate('demoness_evolt_missile', {
             name = "evolt missile",
             model = "Effect\\Evolt-8.mdx",
@@ -1063,6 +1077,21 @@ do
             ignore_terrain = true,
             full_distance = true,
             penetrate = false,
+        })
+        --===============================================--
+        NewMissileTemplate('lightning_breath_missile', {
+            name = "lightning_breath_missile",
+            model = "",
+            max_distance = 800.,
+            radius = 100.,
+            speed = 900.,
+            start_z = 0.,
+            end_z = 0.,
+            effect_on_hit = 'lightning_breath_effect',
+            max_targets = 500,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
         })
     end
 

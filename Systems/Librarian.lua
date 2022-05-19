@@ -6,8 +6,9 @@
 do
 
     LibrarianFrame = 0
-    local EXCHANGE_COST = 500
-
+    local EXCHANGE_COST = 300
+    local QUALITY_PENALTY_COST = 200
+    local CATEGORY_PENALTY_COST = 200
 
 
     local function RemovePlayerItems(player)
@@ -72,6 +73,16 @@ do
 
         if button_type == 0 then
             local sprite = CreateSpriteNoCollision("UI\\vampirism_sprite.mdx", 0.74, new_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, -0.0048, -0.0048, new_Frame)
+        elseif button_type == 2 then
+            local new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", new_FrameImage, "", 0)
+
+                BlzFrameSetTexture(new_FrameBorder, "DiabolicUI_Button_50x50_BorderHighlight.tga", 0, true)
+                BlzFrameSetPoint(new_FrameBorder, FRAMEPOINT_TOPRIGHT, new_Frame, FRAMEPOINT_TOPRIGHT, 0.0074, 0.0074)
+                BlzFrameSetPoint(new_FrameBorder, FRAMEPOINT_BOTTOMLEFT, new_Frame, FRAMEPOINT_BOTTOMLEFT, -0.0074, -0.0074)
+
+            local sprite = CreateSpriteNoCollision("selecter5.MDX", 1., new_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, new_Frame)
+            ButtonList[new_Frame].sprite = sprite
+            BlzFrameSetVisible(sprite, false)
         end
 
         BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
@@ -123,12 +134,30 @@ do
             local button = GetButtonData(LibrarianFrame[player].exchange_item_slot)
 
                 if button.item then
-                    BlzFrameSetText(LibrarianFrame[player].exchange_frame, "|c00FFFF00" .. I2S(EXCHANGE_COST) .. "|r")
+                    local total_cost = EXCHANGE_COST
+                    local item_data = GetItemData(button.item)
+
+                    if item_data.QUALITY == RARE_ITEM then
+                        total_cost = total_cost + QUALITY_PENALTY_COST
+                    end
+
+                    local category_button = GetButtonData(LibrarianFrame[player].categories[LibrarianFrame[player].last_category])
+
+                    if category_button.category then
+                        total_cost = total_cost + CATEGORY_PENALTY_COST
+                    end
+
+                    LibrarianFrame[player].exchange_cost = total_cost
+
+                    BlzFrameSetText(LibrarianFrame[player].exchange_frame, "|c00FFFF00" .. total_cost .. "|r")
                 else
                     BlzFrameSetTexture(button.image, "GUI\\inventory_slot.blp", 0, true)
                     BlzFrameSetText(LibrarianFrame[player].exchange_frame, "")
+                    LibrarianFrame[player].exchange_cost = 0
                 end
 
+            button = GetButtonData(LibrarianFrame[player].categories[LibrarianFrame[player].last_category])
+            BlzFrameSetVisible(button.sprite, true)
         end
 
     end
@@ -157,7 +186,7 @@ do
                 local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
 
                     BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0.01, -0.05)
-                    BlzFrameSetSize(main_frame, 0.3, 0.15)
+                    BlzFrameSetSize(main_frame, 0.3, 0.22)
 
 
                     new_Frame = BlzCreateFrameByType('BACKDROP', "PORTRAIT", main_frame, "",0)
@@ -171,12 +200,30 @@ do
                     BlzFrameSetScale(new_Frame, 1.35)
                     LibrarianFrame[player].name = new_Frame
 
+                    -- from
+                    LibrarianFrame[player].categories_border = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
+                    BlzFrameSetPoint(LibrarianFrame[player].categories_border, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.015, 0.015)
+                    BlzFrameSetPoint(LibrarianFrame[player].categories_border, FRAMEPOINT_BOTTOMRIGHT, main_frame, FRAMEPOINT_BOTTOMRIGHT, -0.015, -0.015)
+                    BlzFrameSetSize(LibrarianFrame[player].categories_border, 0.1, 0.07)
+
+
+                    LibrarianFrame[player].categories[1] = NewButton(2, "GUI\\inventory_slot.blp", 0.04, 0.04, LibrarianFrame[player].categories_border, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.015, 0.015, LibrarianFrame[player].categories_border)
+                    for i = 2, 5 do
+                        LibrarianFrame[player].categories[i] = NewButton(2, "GUI\\inventory_slot.blp", 0.04, 0.04, LibrarianFrame[player].categories[i-1], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.01, 0., LibrarianFrame[player].categories_border)
+                    end
+
+                    --LibrarianFrame[player].last_category = 1
+
+                    local button_data = GetButtonData(LibrarianFrame[player].categories[1])
+                    BlzFrameSetTexture(button_data.image, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0, true)
+                    FrameChangeTexture(button_data.button, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp")
 
                     new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
-                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.015, 0.015)
-                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMRIGHT, main_frame, FRAMEPOINT_BOTTOMRIGHT, -0.015, 0.015)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, LibrarianFrame[player].categories_border, FRAMEPOINT_TOPLEFT, 0., 0.)
+                    BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMRIGHT, LibrarianFrame[player].categories_border, FRAMEPOINT_TOPRIGHT, 0., 0.)
                     BlzFrameSetSize(new_Frame, 0.1, 0.07)
                     LibrarianFrame[player].inner_exchange_border = new_Frame
+                    -- to
 
                     new_Frame = BlzCreateFrame('EscMenuBackdrop', LibrarianFrame[player].inner_exchange_border, 0, 0)
                     LibrarianFrame[player].exchange_item_slot = NewButton(0, "GUI\\inventory_slot.blp", 0.04, 0.04, LibrarianFrame[player].inner_exchange_border, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.015, -0.015, LibrarianFrame[player].inner_exchange_border)
@@ -195,6 +242,7 @@ do
                     BlzFrameSetVisible(LibrarianFrame[player].main_frame, false)
                     LibrarianFrame[player].state = false
 
+
                     BlzFrameSetTexture(LibrarianFrame[player].portrait, "ReplaceableTextures\\CommandButtons\\BTNNightElfRunner.blp", 0, true)
                     BlzFrameSetText(LibrarianFrame[player].name, GetUnitName(gg_unit_n01V_0110))
             end
@@ -210,8 +258,7 @@ do
 
             LibrarianFrame[player] = {}
             BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0.01, -0.05)
-            BlzFrameSetSize(main_frame, 0.3, 0.15)
-
+            BlzFrameSetSize(main_frame, 0.3, 0.22)
 
             new_Frame = BlzCreateFrameByType('BACKDROP', "PORTRAIT", main_frame, "",0)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.02, -0.02)
@@ -224,10 +271,27 @@ do
             BlzFrameSetScale(new_Frame, 1.35)
             LibrarianFrame[player].name = new_Frame
 
+            LibrarianFrame[player].categories_border = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
+            BlzFrameSetPoint(LibrarianFrame[player].categories_border, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.015, 0.015)
+            BlzFrameSetPoint(LibrarianFrame[player].categories_border, FRAMEPOINT_BOTTOMRIGHT, main_frame, FRAMEPOINT_BOTTOMRIGHT, -0.015, -0.015)
+            BlzFrameSetSize(LibrarianFrame[player].categories_border, 0.1, 0.07)
+
+            LibrarianFrame[player].categories = {}
+
+            LibrarianFrame[player].categories[1] = NewButton(2, "GUI\\inventory_slot.blp", 0.04, 0.04, LibrarianFrame[player].categories_border, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.015, 0.015, LibrarianFrame[player].categories_border)
+            for i = 2, 5 do
+                LibrarianFrame[player].categories[i] = NewButton(2, "GUI\\inventory_slot.blp", 0.04, 0.04, LibrarianFrame[player].categories[i-1], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.01, 0., LibrarianFrame[player].categories_border)
+            end
+
+            LibrarianFrame[player].last_category = 1
+
+            local button_data = GetButtonData(LibrarianFrame[player].categories[1])
+            BlzFrameSetTexture(button_data.image, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0, true)
+            FrameChangeTexture(button_data.button, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp")
 
             new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
-            BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.015, 0.015)
-            BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMRIGHT, main_frame, FRAMEPOINT_BOTTOMRIGHT, -0.015, 0.015)
+            BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, LibrarianFrame[player].categories_border, FRAMEPOINT_TOPLEFT, 0., 0.)
+            BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMRIGHT, LibrarianFrame[player].categories_border, FRAMEPOINT_TOPRIGHT, 0., 0.)
             BlzFrameSetSize(new_Frame, 0.1, 0.07)
             LibrarianFrame[player].inner_exchange_border = new_Frame
 
@@ -235,7 +299,6 @@ do
             LibrarianFrame[player].exchange_item_slot = NewButton(0, "GUI\\inventory_slot.blp", 0.04, 0.04, LibrarianFrame[player].inner_exchange_border, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.015, -0.015, LibrarianFrame[player].inner_exchange_border)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, LibrarianFrame[player].exchange_item_slot, FRAMEPOINT_BOTTOMLEFT, -0.015, -0.015)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPRIGHT, LibrarianFrame[player].exchange_item_slot, FRAMEPOINT_TOPRIGHT, 0.015, 0.015)
-
 
             LibrarianFrame[player].exchange_button = NewSpecialButton(LOCALE_LIST[my_locale].EXCHANGE_BUTTON_TEXT, 0.06, 0.04, LibrarianFrame[player].exchange_item_slot, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.025, 0., LibrarianFrame[player].inner_exchange_border)
             new_Frame = CreateTextBox(player, 0.085, 0.03, 1., LibrarianFrame[player].exchange_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0015, 0., main_frame)
@@ -271,6 +334,7 @@ do
                  button.item = nil
                  BlzFrameSetTexture(button.image, "GUI\\inventory_slot.blp", 0, true)
                  BlzFrameSetText(LibrarianFrame[player].exchange_frame, "")
+                 LibrarianFrame[player].exchange_cost = 0
                  RemoveTooltip(player)
              elseif button.button_type == 1 and exchange_button.item then
                  local unit_data = GetUnitData(PlayerHero[player])
@@ -281,23 +345,45 @@ do
                      if item_data.restricted_to == unit_data.unit_class then
                          Feedback_CantUse(player)
                      else
-                         if gold >= EXCHANGE_COST then
-                             SetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD, gold - EXCHANGE_COST)
+                         if gold >= LibrarianFrame[player].exchange_cost then
+                             SetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD, gold - LibrarianFrame[player].exchange_cost)
                              PlayLocalSound("Sound\\altarshop_buymagicspell.wav", player-1, 115)
                              BlzFrameSetText(LibrarianFrame[player].exchange_frame, "")
+                             LibrarianFrame[player].exchange_cost = 0
                              local quality = item_data.QUALITY
                              DropItemFromInventory(player, exchange_button.item)
                              RemoveCustomItem(exchange_button.item)
                              exchange_button.item = nil
                              UpdateLibrarianWindow(player)
-                             local new_book = CreateCustomItem(GetRandomBookClass(unit_data.unit_class, quality), 0.,0., false)
+
+                             local category_button = GetButtonData(LibrarianFrame[player].categories[LibrarianFrame[player].last_category])
+                             local new_book
+
+                             if category_button.category then
+                                 new_book = CreateCustomItem(GetBookClassCategory(unit_data.unit_class, quality, category_button.category), 0.,0., false)
+                             else
+                                 new_book = CreateCustomItem(GetRandomBookClass(unit_data.unit_class, quality), 0.,0., false)
+                             end
+
+
                              AddToInventory(player, new_book)
                          else
                              Feedback_NoGold(player)
                          end
                      end
                  end
-
+             elseif button.button_type == 2 then
+                 for i = 1, 5 do
+                     local cat_data = GetButtonData(LibrarianFrame[player].categories[i])
+                     if cat_data.button == button.button then
+                         local last_cat_data = GetButtonData(LibrarianFrame[player].categories[LibrarianFrame[player].last_category])
+                         BlzFrameSetVisible(last_cat_data.sprite, false)
+                         LibrarianFrame[player].last_category = i
+                         UpdateLibrarianWindow(player)
+                         PlayLocalSound("Sound\\Interface\\AutoCastButtonClick1.wav", player-1)
+                         break
+                     end
+                 end
              end
 
         end)
@@ -352,6 +438,20 @@ do
                         UpdateLibrarianWindow(player)
                         if soundpack then
                             PlayLocalSound(soundpack.open[GetRandomInt(1, #soundpack.open)], id, 125)
+                        end
+
+                        local unit_class = GetUnitClass(PlayerHero[player])
+
+                        for i = 2, 5 do
+                            local button_data = GetButtonData(LibrarianFrame[player].categories[i])
+
+                            if CLASS_SKILL_CATEGORY[unit_class][i-1] then
+                                BlzFrameSetTexture(button_data.image, SKILL_CATEGORY_ICON[CLASS_SKILL_CATEGORY[unit_class][i-1]], 0, true)
+                                FrameChangeTexture(button_data.button, SKILL_CATEGORY_ICON[CLASS_SKILL_CATEGORY[unit_class][i-1]])
+                                button_data.category = CLASS_SKILL_CATEGORY[unit_class][i-1]
+                            else
+                                BlzFrameSetVisible(button_data.button, false)
+                            end
                         end
 
                             local timer = CreateTimer()

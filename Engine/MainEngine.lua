@@ -100,7 +100,7 @@ do
         end
 
         if damage_type == DAMAGE_TYPE_PHYSICAL and direct and IsUnitBlinded(source) then
-            CreateHitnumber(0, source, target, ATTACK_STATUS_MISS)
+            CreateHitnumber("", source, target, ATTACK_STATUS_MISS)
             AddSoundVolume("Sound\\Evade".. GetRandomInt(1,3) ..".wav", GetUnitX(target), GetUnitY(target), 120, 1400.)
         else
             local crit_overwrite
@@ -338,13 +338,13 @@ do
             --print("14")
 
 
-            if damage < 0 then damage = 0 end
+            if damage < 1 then damage = 1 end
 
 
             --print("16")
             if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
                 --SetUnitState(unit, UNIT_STATE_LIFE, BlzGetUnitMaxHP(unit))
-                if damage >= BlzGetUnitMaxHP(target) * 0.16 and damage >= GetUnitState(target, UNIT_STATE_LIFE) then
+                if damage >= BlzGetUnitMaxHP(target) * 0.16 and damage >= GetUnitState(target, UNIT_STATE_LIFE) and not IsAHero(target) then
                     SetUnitExploded(target, true)
                     victim.death_x = GetUnitX(target)
                     victim.death_y = GetUnitY(target)
@@ -356,6 +356,18 @@ do
                         BlzSetSpecialEffectYaw(effect, GetRandomReal(0., 360.) * bj_DEGTORAD)
                         DestroyEffect(effect)
                         AddSoundVolume("Sound\\shatter".. GetRandomInt(1,3) .. ".wav", victim.death_x, victim.death_y, 120, 1500.)
+                    elseif attribute == LIGHTNING_ATTRIBUTE then
+                        local effect = AddSpecialEffect("Effect\\shandian-wave-xiao.mdx", victim.death_x, victim.death_y)
+                        BlzSetSpecialEffectScale(effect, 0.9 * BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE))
+                        BlzSetSpecialEffectYaw(effect, GetRandomReal(0., 360.) * bj_DEGTORAD)
+                        BlzSetSpecialEffectZ(effect, GetZ(victim.death_x, victim.death_y) + 55. + GetUnitFlyHeight(target))
+                        DestroyEffect(effect)
+                    elseif attribute == FIRE_ATTRIBUTE then
+                        local effect = AddSpecialEffect("Effect\\by_wood_effect_yuzhiboyou_fire_fengxianhuo_2.mdx", victim.death_x, victim.death_y)
+                        BlzSetSpecialEffectScale(effect, 0.9 * BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE))
+                        BlzSetSpecialEffectYaw(effect, GetRandomReal(0., 360.) * bj_DEGTORAD)
+                        BlzSetSpecialEffectZ(effect, GetZ(victim.death_x, victim.death_y) + 60. + GetUnitFlyHeight(target))
+                        DestroyEffect(effect)
                     end
                 end
                 --print("15")

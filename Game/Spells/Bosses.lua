@@ -6,7 +6,6 @@
 do
 
 
-    SpiderQueenTrapCount = 0
     local BroodRegions = 0
     local WebRegions = 0
 
@@ -52,7 +51,7 @@ do
     function SpiderQueen_SpawnBrood(boss)
         --local rect = BroodRegions[GetRandomInt(1, #BroodRegions)]
         local x = GetUnitX(boss); local y = GetUnitY(boss)
-        local total_egg_count = GetRandomInt(1, 3)
+        local total_egg_count = GetRandomInt(3, 5)
         --local distance = GetRandomInt(200, 400)
 
 
@@ -61,9 +60,9 @@ do
             for i = 1, total_egg_count do
                 local angle = GetRandomReal(0., 359.)
                 local max_range = GetMaxAvailableDistance(x, y, angle, GetRandomInt(250, 500))
-                local egg = CreateUnit(SECOND_MONSTER_PLAYER, GetRandomInt(1,2) == 1 and FourCC("speg") or FourCC("speb"), x + Rx(max_range, angle), x + Ry(max_range, angle), GetRandomReal(0., 359.))
+                local egg = CreateUnit(SECOND_MONSTER_PLAYER, GetRandomInt(1,2) == 1 and FourCC("speg") or FourCC("speb"), x + Rx(max_range, angle), y + Ry(max_range, angle), GetRandomReal(0., 359.))
 
-                    DelayAction(17., function()
+                    DelayAction(10., function()
                         if GetUnitState(egg, UNIT_STATE_LIFE) > 0.045 then
                             KillUnit(egg)
                             local spider = CreateUnit(SECOND_MONSTER_PLAYER, FourCC("n00Y"), GetUnitX(egg), GetUnitY(egg), RndAng())
@@ -86,7 +85,6 @@ do
         local angle = GetRandomReal(0., 359.)
         local max_range = GetMaxAvailableDistance(GetUnitX(boss), GetUnitY(boss), angle, GetRandomInt(200, 400))
 
-            SpiderQueenTrapCount = SpiderQueenTrapCount + 1
 
             local x = GetUnitX(boss) + Rx(max_range, angle)
             local y = GetUnitY(boss) + Ry(max_range, angle)
@@ -107,7 +105,6 @@ do
                     RemoveRect(rect)
                     DestroyTrigger(trg)
                     DestroyEffect(web_effect)
-                    SpiderQueenTrapCount = SpiderQueenTrapCount - 1
                     trg = nil
                 end
             end)
@@ -118,7 +115,6 @@ do
                 RemoveRect(rect)
                 DestroyTrigger(trg)
                 DestroyEffect(web_effect)
-                SpiderQueenTrapCount = SpiderQueenTrapCount - 1
             end
         end)
 
@@ -152,7 +148,6 @@ do
             end)
             delay = delay + 0.14
         end
-
 
     end
 
@@ -293,16 +288,180 @@ do
     end
 
 
+    function ReanimatedArrowBarrage(unit, point_x, point_y)
+
+        for i = 1, 4 do
+            DelayAction(0.2 * i, function()
+                local angle = GetRandomReal(0., 359.)
+                local distance = GetMaxAvailableDistance(point_x, point_y, angle, GetRandomReal(0., 300.))
+                local circle_x, circle_y = point_x + Rx(distance, angle), point_y + Ry(distance, angle)
+
+                    CreateSpellCircle("Effect\\Spell Marker Gray.mdx", circle_x, circle_y, 1.2, 1., 0.8, function()
+                        for i = 1, 8 do
+                            DelayAction(GetRandomReal(0., 0.16), function()
+                                local x, y = circle_x + GetRandomReal(-100., 100.), circle_y + GetRandomReal(-100., 100.)
+                                local arrow = ThrowMissile(unit, nil, "reanimated_arrow_barrage_missile", nil, x, y, x, y, 1., false)
+                                BlzSetSpecialEffectPitch(arrow.my_missile, math.rad(90.))
+                                --arrow.time = 9999.
+                            end)
+                        end
+                        --ApplyEffect(unit, nil, circle_x, circle_y, "reanimated_arrow_barrage_effect", 1)
+                    end)
+            end)
+        end
+
+    end
+
+
+    function DiabloLightningBreath(unit, x, y)
+        local unit_data = GetUnitData(unit)
+        local angle = GetUnitFacing(unit)
+        local sfx = AddSpecialEffect("Effect\\lightning_breath.mdx", GetUnitX(unit) + Rx(85., angle), GetUnitY(unit) + Ry(85., angle))
+
+            BlzSetSpecialEffectZ(sfx, GetZ(GetUnitX(unit), GetUnitY(unit)) + 140.)
+            BlzSetSpecialEffectYaw(sfx, math.rad(angle))
+            TimerStart(unit_data.action_timer, 0., false, nil)
+            SetUnitAnimationByIndex(unit, 15)
+            SafePauseUnit(unit, true)
+            ModifyStat(unit, CONTROL_REDUCTION, 1000, STRAIGHT_BONUS, true)
+
+            local target = GetClosestHeroEx(unit, 1000.)
+
+            local tracking_timer = CreateTimer()
+            local update_timer = CreateTimer()
+            local anim_cycle_timer = CreateTimer()
+            local timer_endcast = CreateTimer()
+
+            TimerStart(tracking_timer, 0.1, true, function()
+
+                if not target or not IsUnitInRange(unit, target, 800.) or GetUnitState(target, UNIT_STATE_LIFE) < 0.045 then
+                    target = GetClosestHeroEx(unit, 800.)
+                else
+                    target = nil
+                end
+
+                if target then
+                    SetUnitFacingTimed(unit, AngleBetweenUnits(unit, target) + GetRandomReal(-7., 7.), 1.6)
+                end
+
+                ThrowMissile(unit, nil, "lightning_breath_missile", nil, GetUnitX(unit), GetUnitY(unit), 0., 0., GetUnitFacing(unit), false)
+            end)
+
+
+            TimerStart(update_timer, 0.025, true, function()
+
+                if GetUnitState(unit, UNIT_STATE_LIFE) < 0.045 then
+                    DestroyEffect(sfx)
+                    DestroyTimer(anim_cycle_timer)
+                    DestroyTimer(update_timer)
+                    DestroyTimer(tracking_timer)
+                    DestroyTimer(timer_endcast)
+                else
+                    angle = GetUnitFacing(unit)
+                    BlzSetSpecialEffectX(sfx, GetUnitX(unit) + Rx(85., angle))
+                    BlzSetSpecialEffectY(sfx, GetUnitY(unit) + Ry(85., angle))
+                    BlzSetSpecialEffectZ(sfx, GetZ(GetUnitX(unit), GetUnitY(unit)) + 140.)
+                    BlzSetSpecialEffectYaw(sfx, math.rad(angle))
+                end
+
+            end)
+
+
+            TimerStart(anim_cycle_timer, 2., true, function()
+                SetUnitAnimationByIndex(unit, 15)
+            end)
+
+
+            TimerStart(timer_endcast, 7., false, function()
+                SafePauseUnit(unit, false)
+                ResetUnitSpellCast(unit)
+                DestroyEffect(sfx)
+                DestroyTimer(anim_cycle_timer)
+                DestroyTimer(update_timer)
+                DestroyTimer(tracking_timer)
+                DestroyTimer(timer_endcast)
+                SetUnitAnimation(unit, "stand")
+                ModifyStat(unit, CONTROL_REDUCTION, 1000, STRAIGHT_BONUS, false)
+            end)
+
+
+    end
+
+
+    function DiabloFireStomp(unit, x, y)
+        local start_x, start_y = GetUnitX(unit), GetUnitY(unit)
+        local steps = 1
+        local waves = 5
+        local range = 135.
+        local angle = AngleBetweenUnitXY(unit, x, y)
+        local single_angle = 60. / waves
+        local fire_waves = {}
+
+            for i = 1, waves do
+                fire_waves[i] = angle - (single_angle / 2.) + (60. / 2.) - (single_angle * (i-1))
+            end
+
+            ShakeByCoords(GetUnitX(unit), GetUnitY(unit), 4., 0.65, 1600.)
+            AddSoundVolume("Sounds\\Spell\\Diablo_Firestomp_Start_0"..GetRandomInt(1,3)..".wav", start_x, start_y, 145, 1600.)
+
+            for i = 1, waves do
+                ApplyEffect(unit, nil, start_x + Rx(range * steps, fire_waves[i]), start_y + Ry(range * steps, fire_waves[i]), "fire_stomp_effect", 1, nil)
+            end
+
+            steps = steps + 1
+
+            TimerStart(CreateTimer(), 0.22, true, function()
+                if steps < 8 then
+                    for i = 1, waves do
+                        ApplyEffect(unit, nil, start_x + Rx(range * steps, fire_waves[i]), start_y + Ry(range * steps, fire_waves[i]), "fire_stomp_effect", 1, nil)
+                    end
+                    steps = steps + 1
+                else
+                    DestroyTimer(GetExpiredTimer())
+                end
+            end)
+
+
+    end
+
+
+    function DiabloApoc(unit)
+
+        for i = 1, 6 do
+            if PlayerHero[i] then
+                local x, y = GetUnitX(PlayerHero[i]), GetUnitY(PlayerHero[i])
+                local sfx = AddSpecialEffect("Effect\\AnnihilationTarget.mdx", x, y)
+
+                    AddSoundVolume("Sounds\\Spell\\Diablo_Apocalypse_Start0"..GetRandomInt(1,4)..".wav", x, y, 120, 1600)
+                    BlzSetSpecialEffectScale(sfx, 0.6)
+                    DelayAction(3., function()
+                        ApplyEffect(unit, nil, x, y, "diablo_apoc_effect", 1, nil)
+                        DestroyEffect(sfx)
+                    end)
+
+            end
+        end
+
+    end
+
+
+
+
     function InitSpiderQueenData()
-        BroodRegions = {
-            gg_rct_sq_brood_1,
-            gg_rct_sq_brood_2,
-            gg_rct_sq_brood_3,
-        }
-
-
 
         InitMyAI()
+
+        RegisterTestCommand("dl", function()
+            IssuePointOrderById(gg_unit_uDBL_0024, order_frostnova, GetUnitX(gg_unit_uDBL_0024) + Rx(50., GetUnitFacing(gg_unit_uDBL_0024)), GetUnitY(gg_unit_uDBL_0024) + Ry(50., GetUnitFacing(gg_unit_uDBL_0024)))
+        end)
+
+        RegisterTestCommand("dch", function()
+            IssuePointOrderById(gg_unit_uDBL_0024, order_frenzy, GetUnitX(gg_unit_uDBL_0024) + Rx(50., GetUnitFacing(gg_unit_uDBL_0024)), GetUnitY(gg_unit_uDBL_0024) + Ry(50., GetUnitFacing(gg_unit_uDBL_0024)))
+        end)
+
+        RegisterTestCommand("dap", function()
+            IssueImmediateOrderById(gg_unit_uDBL_0024, order_acidbomb)
+        end)
 
     end
 

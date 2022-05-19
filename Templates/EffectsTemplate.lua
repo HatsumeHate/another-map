@@ -382,7 +382,7 @@ do
             stack_hitnumbers = true,
             level = {
                 [1] = {
-                    power = 7,
+                    power = 11,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -646,7 +646,7 @@ do
             get_level_from_skill = "A00K",
             level = {
                 [1] = {
-                    power = 27,
+                    power = 14,
                     --attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = false,
@@ -830,7 +830,7 @@ do
             level = {
                 [1] = {
                     power = 7,
-                    attack_percent_bonus = 0.3,
+                    attack_percent_bonus = 0.26,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
@@ -1052,7 +1052,7 @@ do
             single_attack_instance = true,
             level = {
                 [1] = {
-                    power = 54,
+                    power = 56,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
@@ -1289,8 +1289,8 @@ do
                     attack_type = MELEE_ATTACK,
                     attribute = DARKNESS_ATTRIBUTE,
                     attribute_bonus = 10,
-                    area_of_effect = 255.,
-                    angle_window  = 65.,
+                    area_of_effect = 275.,
+                    angle_window  = 75.,
                     force_from_caster_position = true,
                     max_targets = 300,
                     resource_restored = 5,
@@ -2010,6 +2010,7 @@ do
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = POISON_ATTRIBUTE,
+                    attribute_bonus = 20,
                     max_targets = 1,
                 }
             }
@@ -2109,7 +2110,7 @@ do
                     can_crit = true,
                     is_direct = true,
                     area_of_effect = 275.,
-                    angle_window  = 45,
+                    angle_window  = 55,
                     force_from_caster_position = true,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = MELEE_ATTACK,
@@ -2124,6 +2125,37 @@ do
                     },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'ABCR', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('faceless_attack_effect', {
+            name = "faceless attack effect",
+            power_delta = 3,
+            power_delta_level = 1,
+            get_level_from_wave = true,
+            single_attack_instance = true,
+            level = {
+                [1] = {
+                    power = 20,
+                    attack_percent_bonus = 0.8,
+                    global_crit = true,
+                    is_sound = true,
+                    can_crit = true,
+                    is_direct = true,
+                    area_of_effect = 250.,
+                    angle_window  = 55,
+                    force_from_caster_position = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    max_targets = 300,
+                    SFX_on_unit = "Effect\\Ephemeral Cut Red.mdx",
+                    SFX_on_unit_point = "chest",
+                    SFX_on_unit_scale = 1.1,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'AFCS', target_type = ON_ENEMY }
                     },
                 }
             }
@@ -2215,8 +2247,9 @@ do
             level = {
                 [1] = {
                     area_of_effect = 550.,
+                    max_targets = 300,
                     applied_buff = {
-                        [1] = { modificator = ADD_BUFF, buff_id = 'ASKD', target_type = ON_ALLY }
+                        [1] = { modificator = ADD_BUFF, buff_id = 'ABSR', target_type = ON_ALLY }
                     },
                 }
             }
@@ -2266,6 +2299,29 @@ do
                     SFX_used = "Effect\\Gravity Storm.mdx",
                     SFX_used_scale = 0.8,
                     sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest" } } },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('reanimated_arrow_barrage_effect', {
+            name = "boss arrow barrage effect",
+            get_level_from_wave = true,
+            power_delta = 2,
+            power_delta_level = 1,
+            level = {
+                [1] = {
+                    power = 12,
+                    can_crit = true,
+                    is_direct = false,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    attribute_bonus = 10,
+                    max_targets = 300,
+                    area_of_effect = 75.,
+                    --SFX_used = "Effect\\Gravity Storm.mdx",
+                    --SFX_used_scale = 0.8,
+                    --sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest" } } },
                 }
             }
         })
@@ -2463,14 +2519,14 @@ do
             attribute_bonus_delta_level = 1,
             level = {
                 [1] = {
-                    power = 10,
+                    power = 20,
                     can_crit = true,
                     is_direct = true,
                     is_sound = false,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = POISON_ATTRIBUTE,
-                    attribute_bonus = 10
+                    attribute_bonus = 35
                 }
             }
         })
@@ -2881,6 +2937,109 @@ do
                 },
             }
         })
+        --==========================================--
+        NewEffectTemplate('lightning_breath_effect', {
+            name = "lightning breath effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_wave = true,
+            level = {
+                [1] = {
+                    power = 44,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = LIGHTNING_ATTRIBUTE,
+                    attribute_bonus = 25,
+                    sound = { { pack = { "Sounds\\Spells\\singe1.wav", "Sounds\\Spells\\singe2.wav", "Sounds\\Spells\\singe3.wav" }, volume = 100 } },
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx", point = "chest", duration = 1.  }, } },
+                    max_targets = 1,
+                    hit_once_in = 0.36
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('fire_stomp_effect', {
+            name = "fire stomp effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_wave = true,
+            level = {
+                [1] = {
+                    power = 60,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = FIRE_ATTRIBUTE,
+                    attribute_bonus = 15,
+                    sound = { { pack = {
+                                      "Sounds\\Spell\\Diablo_FireStomp_Impact01.wav", "Sounds\\Spell\\Diablo_FireStomp_Impact02.wav", "Sounds\\Spell\\Diablo_FireStomp_Impact03.wav",
+                                      "Sounds\\Spell\\Diablo_FireStomp_Impact04.wav", "Sounds\\Spell\\Diablo_FireStomp_Impact05.wav", "Sounds\\Spell\\Diablo_FireStomp_Impact06.wav",
+                                      "Sounds\\Spell\\Diablo_FireStomp_Impact07.wav"
+                                  },
+                                volume = 100 } },
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx", point = "chest", duration = 1.  }, } },
+                    max_targets = 500,
+                    area_of_effect = 150.,
+                    SFX_used = "Effect\\Pillar of Flame Orange.mdx",
+                    SFX_used_scale = 0.5,
+                    hit_once_in = 0.1
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('diablo_charge_effect', {
+            name = "dia charge effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_wave = true,
+            level = {
+                [1] = {
+                    power = 100,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    attribute_bonus = 15,
+                    sound = { { pack = { "Sounds\\Spell\\Diablo_Demonic_Charge_Impact01.wav", "Sounds\\Spell\\Diablo_Demonic_Charge_Impact02.wav", "Sounds\\Spell\\Diablo_Demonic_Charge_Impact03.wav" }, volume = 110 } },
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'ADIC', target_type = ON_ENEMY }
+                    },
+                    max_targets = 1,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('diablo_apoc_effect', {
+            name = "dia apoc effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_wave = true,
+            level = {
+                [1] = {
+                    power = 150,
+                    can_crit = true,
+                    is_direct = false,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = DARKNESS_ATTRIBUTE,
+                    attribute_bonus = 15,
+                    sound = { { pack = { "Sounds\\Spell\\Diablo_Apocalypse_End01.wav", "Sounds\\Spell\\Diablo_Apocalypse_End02.wav" }, volume = 125 } },
+                    max_targets = 300,
+                    area_of_effect = 400.,
+                    shake_distance = 1600.,
+                    shake_duration = 0.55,
+                    shake_magnitude = 2,
+                    SFX_used = "Effect\\AnnihilationBlast.mdx",
+                    SFX_used_scale = 0.6,
+                    wave_speed = 500.,
+                }
+            }
+        })
+
 
 
         InitAuras()

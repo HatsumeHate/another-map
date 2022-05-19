@@ -967,7 +967,7 @@ do
 			frame_texture      = "GUI\\BTNItem_Gem_Amber.blp",
 			point_bonus 	   = {
 				[ITEM_TYPE_WEAPON] 		= {  PARAM = CRIT_MULTIPLIER, VALUE = 0.1, METHOD = STRAIGHT_BONUS },
-				[ITEM_TYPE_ARMOR]  		= {  PARAM = MOVING_SPEED, VALUE = 15, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = MOVING_SPEED, VALUE = 25, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = HP_REGEN, VALUE = 0.3, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = PHYSICAL_ATTACK, VALUE = 22, METHOD = STRAIGHT_BONUS }
 			},
@@ -1463,7 +1463,7 @@ do
 		ItemAddData('I02A', {
 			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_SUMMONING,
 			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
-			frame_texture      	= "Items\\Book\\BTNTomePowerDarkness.BLP",
+			frame_texture      	= "Items\\Book\\BTNDemonicBook.blp",
 			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
 			restricted_to 		= NECROMANCER_CLASS,
 			skill_category 		= CLASS_SKILL_LIST[NECROMANCER_CLASS][SKILL_CATEGORY_SUMMONING],
@@ -1505,7 +1505,7 @@ do
 			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_SUMMONING,
 			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
 			QUALITY 		   	= RARE_ITEM,
-			frame_texture      	= "Items\\Book\\BTNTomePowerDarkness.BLP",
+			frame_texture      	= "Items\\Book\\BTNDemonicBook.blp",
 			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
 			restricted_to 		= NECROMANCER_CLASS,
 			skill_category 		= CLASS_SKILL_LIST[NECROMANCER_CLASS][SKILL_CATEGORY_SUMMONING],

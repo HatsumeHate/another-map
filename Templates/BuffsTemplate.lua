@@ -291,9 +291,9 @@ do
                     max_level = 1,
 
                     bonus = {
-                        { PARAM = ALL_RESIST, VALUE = 25, METHOD = STRAIGHT_BONUS },
-                        { PARAM = PHYSICAL_DEFENCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
-                        { PARAM = MAGICAL_SUPPRESSION, VALUE = 1.25, METHOD = MULTIPLY_BONUS }
+                        { PARAM = ALL_RESIST, VALUE = 25, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 15 },
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS, value_delta = 0.02, value_delta_level = 2, value_delta_level_max = 25 },
+                        { PARAM = MAGICAL_SUPPRESSION, VALUE = 1.25, METHOD = MULTIPLY_BONUS, value_delta = 0.02, value_delta_level = 2, value_delta_level_max = 25 }
                     }
                 }
             }
@@ -318,8 +318,8 @@ do
 
                     bonus = {
                         { PARAM = FIRE_RESIST, VALUE = 7, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
-                        { PARAM = PHYSICAL_DEFENCE, VALUE = 1.15, METHOD = MULTIPLY_BONUS, value_delta = 0.05, value_delta_level = 5, value_delta_level_max = 10 },
-                        { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 10., METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 1.15, METHOD = MULTIPLY_BONUS, value_delta = 0.05, value_delta_level = 2, value_delta_level_max = 25 },
+                        { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 10., METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 15 },
                         { PARAM = REFLECT_MELEE_DAMAGE, VALUE = 25, METHOD = STRAIGHT_BONUS, value_delta = 5, value_delta_level = 1, value_delta_level_max = 40 }
                     }
                 }
@@ -3435,6 +3435,42 @@ do
                         { PARAM = MOVING_SPEED, VALUE = 0.5, METHOD = MULTIPLY_BONUS },
                         { PARAM = PHYSICAL_DEFENCE, VALUE = 0.75, METHOD = MULTIPLY_BONUS },
                     }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "faceless stun debuff",
+            id = 'AFCS',
+            buff_id = 'B037',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 2.35,
+                    negative_state = STATE_STUN,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "diablo stun debuff",
+            id = 'ADIC',
+            buff_id = 'B038',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 3.45,
+                    negative_state = STATE_STUN,
                 }
             }
 

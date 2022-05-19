@@ -829,6 +829,7 @@ do
                     if item_data.TYPE == ITEM_TYPE_GEM then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_ENCHANT, function() StartSelectionMode(player, h, SELECTION_MODE_ENCHANT) end)
                     elseif item_data.TYPE == ITEM_TYPE_CONSUMABLE then
+                        --AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_USE, function() if item_data and item_data.item then UseItem(item_data.item, player) end end)
                         AddContextOption(player, ButtonList[h].button_state and LOCALE_LIST[my_locale].UI_TEXT_BELT_OFF or LOCALE_LIST[my_locale].UI_TEXT_BELT_ON, function() LockItemOnBelt(player, ButtonList[h]) end)
                     elseif item_data.TYPE == ITEM_TYPE_SKILLBOOK then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_LEARN, function() if item_data and item_data.item then LearnBook(item_data.item, player) end end)

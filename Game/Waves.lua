@@ -10,7 +10,7 @@ do
     Current_Wave = 1
     WavesUntilShopsUpdate = 2
     local MusicMix = 0
-    local WaveToAquireHalfPotions = 20
+    local WaveToAquireHalfPotions = 12
 
 
 

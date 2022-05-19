@@ -335,6 +335,10 @@ do
 
                 PlayerUI.level_bar = BlzGetFrameByName("SimpleHeroLevelBar", 0)
 
+                local start_levelup_scale = 0.8
+                local end_levelup_scale = 0.55
+                local scale_diff = start_levelup_scale - end_levelup_scale
+
                 for i = 1, 6 do
                     PlayerUI.level_up_frame[i] = BlzCreateFrameByType("BACKDROP", "level up name", GAME_UI, "", 0)
                     BlzFrameSetVisible(PlayerUI.level_up_frame[i], false)
@@ -445,6 +449,8 @@ do
             CreateUIBorder(GlobalButton[4].talents_panel_button, 0.),
             CreateUIBorder(GlobalButton[5].journal_panel_button, 0.)
         }
+
+
     end
 
 

@@ -144,9 +144,8 @@ do
 
             DelayAction(0.2, function()
                 if GetUnitState(unit, UNIT_STATE_LIFE) > 0.045 then
-                    SetUnitX(unit, x)
-                    SetUnitY(unit, y)
-                    local point_sfx = AddSpecialEffect("Abilities\\Spells\\NightElf\\Blink\\BlinkTarget.mdx", x, y)
+                    SetUnitPosition(unit, x, y)
+                    local point_sfx = AddSpecialEffect("Abilities\\Spells\\NightElf\\Blink\\BlinkTarget.mdx", GetUnitX(unit), GetUnitY(unit))
                     DestroyEffect(point_sfx)
                 end
             end)

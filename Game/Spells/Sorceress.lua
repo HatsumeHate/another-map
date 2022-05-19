@@ -680,7 +680,7 @@ do
 
         missiles[#missiles+1] = ThrowMissile(caster, nil, "fire_wall_missile", boost, GetUnitX(caster), GetUnitY(caster), 0., 0., angle, true)
 
-        local volume = 100
+        local volume = 90
         local flame_sound = CreateNew3DSound("Sounds\\Spells\\flame_wave_loop.wav", x, y, 10., volume, 1700., true)
         StartSound(flame_sound)
 

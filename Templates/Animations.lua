@@ -360,6 +360,43 @@ do
             animation_backswing = 0.3,
         })
 
+        NewAnimationSequence("reanimated_spell_slam", {
+            animation           = 7,
+            animation_point     = 1.2,
+            animation_backswing = 0.2,
+        })
+
+        NewAnimationSequence("faceless_spell_attack", {
+            animation           = 2,
+            animation_point     = 0.434,
+            animation_backswing = 0.3,
+        })
+
+        NewAnimationSequence("diablo_breath", {
+            animation           = 16,
+            animation_point     = 1.0,
+            animation_backswing = 0.1,
+        })
+
+        NewAnimationSequence("diablo_stomp", {
+            animation           = 10,
+            animation_point     = 0.434,
+            animation_backswing = 0.3,
+        })
+
+
+        NewAnimationSequence("diablo_charge", {
+            animation           = 11,
+            animation_point     = 0.1,
+            animation_backswing = 0.1,
+        })
+
+        NewAnimationSequence("diablo_apoc", {
+            animation           = 6,
+            animation_point     = 0.3,
+            animation_backswing = 0.3,
+        })
+
 
 
     end

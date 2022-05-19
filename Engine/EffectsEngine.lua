@@ -79,6 +79,30 @@ do
     end
 
 
+    ---@param myeffect table
+    ---@param target unit
+    ---@param source unit
+    ---@param data table
+    ---@param lvl integer
+    ---@return boolean
+    ---If target has same effect triggered from the source return true
+    local function EffectHitOnceTrigger(myeffect, data, lvl, target, source)
+        local unit_data = GetUnitData(target)
+
+            if not unit_data.effectstacks then unit_data.effectstacks = {} end
+            if not source then source = "no_source" end
+
+            if not unit_data.effectstacks[source] or not unit_data.effectstacks[source][data.id] then
+                if not unit_data.effectstacks[source] then unit_data.effectstacks[source] = {} end
+                unit_data.effectstacks[source][data.id] = true
+                DelayAction(myeffect.hit_once_in, function() unit_data.effectstacks[source][data.id] = nil end)
+                return false
+            else
+                return true
+            end
+
+    end
+
 
     function ApplyRestoreEffect(source, target, data, lvl)
         local myeffect = data.level[lvl]
@@ -115,22 +139,8 @@ do
     function ApplyBuffEffect(source, target, data, lvl, target_type)
         local myeffect = data.level[lvl]
 
-        if myeffect.hit_once_in then
-            local unit_data = GetUnitData(target)
-
-                if unit_data.effectstacks then
-                    if unit_data.effectstacks[data.id] and unit_data.effectstacks[data.id] <= lvl then
-                        return
-                    else
-                        unit_data.effectstacks[data.id] = lvl
-                        DelayAction(myeffect.hit_once_in, function() unit_data.effectstacks[data.id] = nil end)
-                    end
-                else
-                    unit_data.effectstacks = {}
-                    unit_data.effectstacks[data.id] = lvl
-                    DelayAction(myeffect.hit_once_in, function() unit_data.effectstacks[data.id] = nil end)
-                end
-
+        if myeffect.hit_once_in and EffectHitOnceTrigger(myeffect, data, lvl, target, source) then
+            return
         end
 
         PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
@@ -155,22 +165,8 @@ do
     function ApplyEffectHealing(source, target, data, lvl)
         local myeffect = data.level[lvl]
 
-        if myeffect.hit_once_in then
-            local unit_data = GetUnitData(target)
-
-                if unit_data.effectstacks then
-                    if unit_data.effectstacks[data.id] and unit_data.effectstacks[data.id] <= lvl then
-                        return
-                    else
-                        unit_data.effectstacks[data.id] = lvl
-                        DelayAction(myeffect.hit_once_in, function() unit_data.effectstacks[data.id] = nil end)
-                    end
-                else
-                    unit_data.effectstacks = {}
-                    unit_data.effectstacks[data.id] = lvl
-                    DelayAction(myeffect.hit_once_in, function() unit_data.effectstacks[data.id] = nil end)
-                end
-
+        if myeffect.hit_once_in and EffectHitOnceTrigger(myeffect, data, lvl, target, source) then
+            return
         end
 
         PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
@@ -199,7 +195,9 @@ do
     function ApplyEffectDamage(source, target, data, lvl)
         local myeffect = data.level[lvl]
 
-        if myeffect.hit_once_in then
+        if myeffect.hit_once_in and EffectHitOnceTrigger(myeffect, data, lvl, target, source) then
+            return
+            --[[
             local unit_data = GetUnitData(target)
 
                 if unit_data.effectstacks then
@@ -214,7 +212,7 @@ do
                     unit_data.effectstacks[data.id] = lvl
                     DelayAction(myeffect.hit_once_in, function() unit_data.effectstacks[data.id] = nil end)
                 end
-
+]]
         end
 
             PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)

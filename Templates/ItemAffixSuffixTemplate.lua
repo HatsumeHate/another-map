@@ -51,6 +51,7 @@ do
 
     local BOOK_ITEM_LIST = 0
     local BOOK_CLASS_ITEM_LIST = 0
+    local BOOK_CLASS_CATEGORY_ITEM_LIST = 0
     local GENERATED_ITEM_LIST = 0
     GeneratedScaling = nil
 
@@ -72,6 +73,12 @@ do
             end
         end
         return GENERATED_ITEM_LIST[1].id
+    end
+
+
+    function GetBookClassCategory(class, quality, category)
+        quality = quality or COMMON_ITEM
+        return BOOK_CLASS_CATEGORY_ITEM_LIST[class][quality][category]
     end
 
 
@@ -143,6 +150,47 @@ do
             [NECROMANCER_CLASS] = {
                 [COMMON_ITEM]   = { "I028", "I029", "I02A" },
                 [RARE_ITEM]     = { "I02B", "I02C", "I02D" },
+            }
+        }
+
+        BOOK_CLASS_CATEGORY_ITEM_LIST = {
+            [BARBARIAN_CLASS] = {
+                [COMMON_ITEM]   = {
+                    [SKILL_CATEGORY_FIGHTING_MASTERY] = "I015",
+                    [SKILL_CATEGORY_BATTLE_ADVANTAGE] = "I017",
+                    [SKILL_CATEGORY_INNER_STRENGTH] = "I016"
+                },
+                [RARE_ITEM]     = {
+                    [SKILL_CATEGORY_FIGHTING_MASTERY] = "I023",
+                    [SKILL_CATEGORY_BATTLE_ADVANTAGE] = "I025",
+                    [SKILL_CATEGORY_INNER_STRENGTH] = "I024"
+                }
+            },
+            [SORCERESS_CLASS] = {
+                [COMMON_ITEM]   = {
+                    [SKILL_CATEGORY_FIRE] = "I00U",
+                    [SKILL_CATEGORY_LIGHTNING] = "I013",
+                    [SKILL_CATEGORY_ICE] = "I00V",
+                    [SKILL_CATEGORY_ARCANE] = "I014"
+                },
+                [RARE_ITEM]     = {
+                    [SKILL_CATEGORY_FIRE] = "I021",
+                    [SKILL_CATEGORY_LIGHTNING] = "I01Z",
+                    [SKILL_CATEGORY_ICE] = "I020",
+                    [SKILL_CATEGORY_ARCANE] = "I022"
+                }
+            },
+            [NECROMANCER_CLASS] = {
+                [COMMON_ITEM]   = {
+                    [SKILL_CATEGORY_DARK_ART] = "I028",
+                    [SKILL_CATEGORY_CURSES] = "I029",
+                    [SKILL_CATEGORY_SUMMONING] = "I02A"
+                },
+                [RARE_ITEM]     = {
+                    [SKILL_CATEGORY_DARK_ART] = "I02B",
+                    [SKILL_CATEGORY_CURSES] = "I02C",
+                    [SKILL_CATEGORY_SUMMONING] = "I02D"
+                }
             }
         }
 

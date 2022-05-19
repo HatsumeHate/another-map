@@ -153,7 +153,7 @@ do
             [2] = gg_rct_monster_pack_2_2,
             [3] = gg_rct_monster_pack_2_3
         }
-        MonsterPack[2].tags = { MONSTERPACK_SKELETONS, MONSTERPACK_GHOSTS, MONSTERPACK_ZOMBIES, MONSTERPACK_SWARM, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_DEMONS, MONSTERPACK_GNOLLS }
+        MonsterPack[2].tags = { MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS, MONSTERPACK_ZOMBIES, MONSTERPACK_SWARM, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_DEMONS, MONSTERPACK_GNOLLS }
         MonsterPack[2].respawn = 445.
         MonsterPack[2].min = 7; MonsterPack[2].max = 15; MonsterPack[2].elite = 1
         --##########################################################

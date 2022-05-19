@@ -467,7 +467,7 @@ do
                     missile             = 'MFRO',
                     from_unit           = true,
                     resource_cost       = 14.,
-                    cooldown            = 0.3,
+                    cooldown            = 2.,
                 }
             }
         })
@@ -496,7 +496,7 @@ do
                     range               = 800.,
                     effect              = 'ELST',
                     resource_cost       = 24.,
-                    cooldown            = 0.3,
+                    cooldown            = 2.,
                 }
             }
         })
@@ -562,7 +562,7 @@ do
                 [1] = {
                     range               = 700.,
                     resource_cost       = 14.,
-                    cooldown            = 5.,
+                    cooldown            = 4.,
                 }
             }
         })
@@ -811,7 +811,7 @@ do
                 [1] = {
                     range               = 750.,
                     resource_cost       = 21.,
-                    cooldown            = 12.,
+                    cooldown            = 8.,
                 }
             }
         })
@@ -2457,6 +2457,7 @@ do
             name            = "satyr rally",
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
+            sound = { pack = { "Units\\Creeps\\Satyr\\SatyreYesAttack1.wav", "Units\\Creeps\\Satyr\\SatyreYesAttack2.wav", "Units\\Creeps\\Satyr\\SatyreYesAttack3.wav" }, volume = 125, cutoff = 1500.},
             animation = { sequence  = GetAnimationSequence("satyr_spell"), timescale = 1.15, },
             sfx_pack = {
                 on_caster = {
@@ -2507,6 +2508,7 @@ do
                 [1] = {
                     cooldown            = 7.,
                     resource_cost       = 0.,
+                    range = 500.,
                 }
             }
         })
@@ -2547,6 +2549,119 @@ do
             level = {
                 [1] = {
                     cooldown            = 17.,
+                    resource_cost       = 0.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ARNA', {
+            name            = "reanimated arrows",
+            activation_type = POINT_CAST,
+            type            = SKILL_PHYSICAL,
+            animation = { sequence  = GetAnimationSequence("reanimated_spell_slam"), timescale = 1.1, },
+
+            level = {
+                [1] = {
+                    cooldown            = 12.,
+                    resource_cost       = 0.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('AFSM', {
+            name            = "faceless stun attack",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+            sound = { pack = { "Units\\Creeps\\FacelessOne\\FacelessOneYes1.wav", "Units\\Creeps\\FacelessOne\\FacelessOneYes2.wav" }, volume = 123, cutoff = 1500.},
+            animation = { sequence  = GetAnimationSequence("faceless_spell_attack"), timescale = 1.42, },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Chaos_Medium.mdx", point = "hand left", permanent = true },
+                }
+            },
+
+            level = {
+                [1] = {
+                    cooldown            = 12.,
+                    range = 175.,
+                    effect              = "faceless_attack_effect",
+                    resource_cost       = 0.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ADLB', {
+            name            = "diablo lightning breath",
+            activation_type = POINT_CAST,
+            type            = SKILL_MAGICAL,
+            sound = { pack = { "Sounds\\Spell\\Diablo_LightningBreath_Hellstorm_Launch01.wav", "Sounds\\Spell\\Diablo_LightningBreath_Hellstorm_Launch02.wav" }, volume = 125, cutoff = 1600.},
+            animation = { sequence  = GetAnimationSequence("diablo_breath"), timescale = 0.9, },
+
+            level = {
+                [1] = {
+                    cooldown            = 15.,
+                    resource_cost       = 0.,
+                    range = 800.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ADFS', {
+            name            = "diablo fire stomp",
+            activation_type = POINT_CAST,
+            type            = SKILL_MAGICAL,
+            --sound = { pack = { "Sounds\\Spell\\Diablo_LightningBreath_Hellstorm_Launch01.wav", "Sounds\\Spell\\Diablo_LightningBreath_Hellstorm_Launch02.wav" }, volume = 125, cutoff = 1600.},
+            animation = { sequence  = GetAnimationSequence("diablo_stomp"), timescale = 2.15, },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Fire_Small.mdx", point = "foot left" },
+                    { effect = "Spell\\Fire Low.mdx", point = "foot left" },
+
+                }
+            },
+
+            level = {
+                [1] = {
+                    cooldown            = 7.,
+                    resource_cost       = 0.,
+                    range = 800.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ADCH', {
+            name            = "diablo charge",
+            activation_type = POINT_CAST,
+            type            = SKILL_PHYSICAL,
+            sound = { pack = { "Sounds\\Spell\\Diablo_Demonic_Charge_Launch01.wav", "Sounds\\Spell\\Diablo_Demonic_Charge_Launch02.wav", "Sounds\\Spell\\Diablo_Demonic_Charge_Launch03.wav" }, volume = 130, cutoff = 1600.},
+            animation = { sequence  = GetAnimationSequence("diablo_charge"), timescale = 1., },
+
+            level = {
+                [1] = {
+                    cooldown            = 9.,
+                    resource_cost       = 0.,
+                    range = 800.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ADAP', {
+            name            = "diablo apoc",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            sound = { pack = { "Sounds\\Spell\\Diablo_Apocalypse_Roar.wav"}, volume = 125, cutoff = 1600.},
+            animation = { sequence  = GetAnimationSequence("diablo_apoc"), timescale = 1.65, },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Chaos_Small.mdx", point = "hand right" },
+                    { effect = "Spell\\Sweep_Chaos_Small.mdx", point = "hand left" },
+
+                }
+            },
+
+            level = {
+                [1] = {
+                    cooldown            = 9.,
                     resource_cost       = 0.,
                 }
             }

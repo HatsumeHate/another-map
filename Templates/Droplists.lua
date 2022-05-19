@@ -321,6 +321,7 @@ do
                 { id = ITEM_STONE_SAPPHIRE, chance = 30. },
                 { id = ITEM_STONE_TOPAZ, chance = 30. },
                 { id = ITEM_STONE_AMBER, chance = 30. },
+                { id = ITEM_STONE_AQUAMARINE, chance = 30. },
             }
         })
 
@@ -339,6 +340,7 @@ do
                 { id = ITEM_STONE_SAPPHIRE, chance = 30., max = 5 },
                 { id = ITEM_STONE_TOPAZ, chance = 30., max = 5 },
                 { id = ITEM_STONE_AMBER, chance = 30., max = 5 },
+                { id = ITEM_STONE_AQUAMARINE, chance = 30., max = 5 },
             }
         })
 

@@ -451,7 +451,6 @@ do
                 end
             end
             ]]
-        --TODO fix fuken bug
 
             for i = WEAPON_POINT, NECKLACE_POINT do
                 if unit_data.equip_point[i] and unit_data.equip_point[i].SKILL_BONUS and #unit_data.equip_point[i].SKILL_BONUS > 0 then

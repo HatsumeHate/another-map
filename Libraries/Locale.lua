@@ -116,6 +116,7 @@ do
                 MONSTER_NAME_BLOOD_RAVEN = "Кровавый Ворон",
                 MONSTER_NAME_DEMON_LORD = "Лорд Демон",
                 MONSTER_NAME_DEMONESS = "Демонесса",
+                MONSTER_NAME_DIABLO = "Диабло",
                 MONSTER_NAME_EGG = "Кокон",
                 MONSTER_NAME_TENTACLE = "Щупальце",
                 MONSTER_NAME_LILITH = "Лилит",
@@ -2181,6 +2182,7 @@ do
                 MONSTER_NAME_BLOOD_RAVEN = "Blood Raven",
                 MONSTER_NAME_DEMON_LORD = "Demon Lord",
                 MONSTER_NAME_DEMONESS = "Demoness",
+                MONSTER_NAME_DIABLO = "Diablo",
                 MONSTER_NAME_EGG = "Egg",
                 MONSTER_NAME_TENTACLE = "Tentacle",
                 MONSTER_NAME_LILITH = "Lilith",
@@ -3950,8 +3952,8 @@ do
                     },
                     ["talent_ritual"] = {
                         name = "ritual",
-                        [1] = "Killing an enemy reduces resource cost of all abilities by 25% for 4 seconds.",
-                        [2] = "Killing an enemy reduces resource cost of all abilities by 50% for 4 seconds.",
+                        [1] = "Killing an enemy reduces resource cost of all abilities by 25%% for 4 seconds.",
+                        [2] = "Killing an enemy reduces resource cost of all abilities by 50%% for 4 seconds.",
                     },
                     ["talent_blood_pact"] = {
                         name = "blood pact",

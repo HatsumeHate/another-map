@@ -9,15 +9,15 @@ do
     function GetUnitAuraData(target, id)
 
         if AuraList[target] and AuraList[target][id] then
-            print("everything exists")
+            --print("everything exists")
             return AuraList[target][id]
         else
             if AuraList[target] and not AuraList[target][id] then
-                print("aura doesnt exist, create new")
+                --print("aura doesnt exist, create new")
                 --AuraList[target][id] = MergeTables({}, GetAuraData(id))
                 return nil
             else
-                print("nothing exists")
+                --print("nothing exists")
                 AuraList[target] = {}
                 --AuraList[target][id] = MergeTables({}, GetAuraData(id))
                 return nil

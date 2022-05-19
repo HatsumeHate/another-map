@@ -785,6 +785,10 @@ do
             m.time = m.time * 1.25
         end
 
+        if m.only_on_impact then
+            m.time = 999999999999999.
+        end
+
 
         local current_time = 0.
         local point_start
