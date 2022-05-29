@@ -112,6 +112,8 @@ do
 
             DestroyTimer(GetExpiredTimer())
         end)
+
+        InitAmbient()
     end
 
 end

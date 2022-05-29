@@ -160,7 +160,7 @@ do
 
             current_level = 1,
             max_level = 1,
-            expiration_time = 0.,
+            expiration_time = 0,
             update_timer = nil,
 
             level = {}
@@ -371,6 +371,26 @@ do
                         { PARAM = LIGHTNING_BONUS, VALUE = 15, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
                         { PARAM = ARCANE_BONUS, VALUE = 15, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
                         { PARAM = CRIT_CHANCE, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
+                    }
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "hydra buff aura",
+            id = 'HDAU',
+            buff_id = 'B039',
+            buff_type = POSITIVE_BUFF,
+            max_level = 75,
+            inherit_level = true,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 1.,
+
+                    bonus = {
+                        { PARAM = FIRE_BONUS, VALUE = 5, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 75 },
                     }
                 }
             }
@@ -734,6 +754,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
             max_level = 1,
+            infinite = true,
 
             level = {
                 [1] = {
@@ -1287,11 +1308,12 @@ do
             buff_type = NEGATIVE_BUFF,
             max_level = 2,
             inherit_level = true,
+            infinite = true,
 
             level = {
                 [1] = {
                     rank = 5,
-                    time = 999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = ICE_RESIST, VALUE = -5, METHOD = STRAIGHT_BONUS },
                         { PARAM = POISON_RESIST, VALUE = -5, METHOD = STRAIGHT_BONUS },
@@ -1300,7 +1322,7 @@ do
                 },
                 [2] = {
                     rank = 5,
-                    time = 999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = ICE_RESIST, VALUE = -7, METHOD = STRAIGHT_BONUS },
                         { PARAM = POISON_RESIST, VALUE = -7, METHOD = STRAIGHT_BONUS },
@@ -1350,25 +1372,26 @@ do
             buff_type = NEGATIVE_BUFF,
             max_level = 3,
             inherit_level = true,
+            infinite = true,
 
             level = {
                 [1] = {
                     rank = 5,
-                    time = 99999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = VULNERABILITY, VALUE = 10, METHOD = STRAIGHT_BONUS },
                     }
                 },
                 [2] = {
                     rank = 5,
-                    time = 99999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = VULNERABILITY, VALUE = 15, METHOD = STRAIGHT_BONUS },
                     }
                 },
                 [3] = {
                     rank = 5,
-                    time = 99999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = VULNERABILITY, VALUE = 20, METHOD = STRAIGHT_BONUS },
                     }
@@ -1405,23 +1428,24 @@ do
             buff_type = NEGATIVE_BUFF,
             max_level = 2,
             inherit_level = true,
+            infinite = true,
 
             level = {
                 [1] = {
                     rank = 5,
-                    time = 999999.,
+                    time = 1.,
                     effect = "effect_insanity",
                     effect_delay = 0.5
                 },
                 [2] = {
                     rank = 5,
-                    time = 999999.,
+                    time = 1.,
                     effect = "effect_insanity",
                     effect_delay = 0.5
                 },
                 [3] = {
                     rank = 5,
-                    time = 999999.,
+                    time = 1.,
                     effect = "effect_insanity",
                     effect_delay = 0.5
                 }
@@ -2248,11 +2272,12 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
             max_level = 1,
+            infinite = true,
 
             level = {
                 [1] = {
                     rank = 15,
-                    time = 999999999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = PHYSICAL_ATTACK, VALUE = 0.8, METHOD = MULTIPLY_BONUS },
                         { PARAM = MAGICAL_ATTACK, VALUE = 0.8, METHOD = MULTIPLY_BONUS },
@@ -2269,11 +2294,12 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
             max_level = 1,
+            infinite = true,
 
             level = {
                 [1] = {
                     rank = 15,
-                    time = 999999999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = CRIT_CHANCE, VALUE = -20, METHOD = STRAIGHT_BONUS },
                         { PARAM = CRIT_MULTIPLIER, VALUE = -0.3, METHOD = STRAIGHT_BONUS },
@@ -2290,11 +2316,12 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
             max_level = 1,
+            infinite = true,
 
             level = {
                 [1] = {
                     rank = 15,
-                    time = 999999999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = ALL_RESIST, VALUE = -20, METHOD = STRAIGHT_BONUS },
                     }
@@ -2310,11 +2337,12 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
             max_level = 1,
+            infinite = true,
 
             level = {
                 [1] = {
                     rank = 15,
-                    time = 999999999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = HP_REGEN, VALUE = 0.7, METHOD = MULTIPLY_BONUS },
                         { PARAM = MP_REGEN, VALUE = 0.7, METHOD = MULTIPLY_BONUS },
@@ -2547,25 +2575,26 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 3,
+            infinite = true,
 
             level = {
                 [1] = {
                     rank = 15,
-                    time = 9999999999999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = MAGICAL_SUPPRESSION, VALUE = 1.1, METHOD = MULTIPLY_BONUS }
                     }
                 },
                 [2] = {
                     rank = 15,
-                    time = 9999999999999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = MAGICAL_SUPPRESSION, VALUE = 1.2, METHOD = MULTIPLY_BONUS }
                     }
                 },
                 [3] = {
                     rank = 15,
-                    time = 9999999999999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = MAGICAL_SUPPRESSION, VALUE = 1.3, METHOD = MULTIPLY_BONUS }
                     }
@@ -2627,25 +2656,26 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 3,
+            infinite = true,
 
             level = {
                 [1] = {
                     rank = 15,
-                    time = 9999999999999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = PHYSICAL_DEFENCE, VALUE = 1.1, METHOD = MULTIPLY_BONUS }
                     }
                 },
                 [2] = {
                     rank = 15,
-                    time = 9999999999999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = PHYSICAL_DEFENCE, VALUE = 1.2, METHOD = MULTIPLY_BONUS }
                     }
                 },
                 [3] = {
                     rank = 15,
-                    time = 9999999999999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = PHYSICAL_DEFENCE, VALUE = 1.3, METHOD = MULTIPLY_BONUS }
                     }
@@ -2848,11 +2878,12 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 3,
+            infinite = true,
 
             level = {
                 [1] = {
                     rank = 15,
-                    time = 9999999999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 4, METHOD = STRAIGHT_BONUS },
                         { PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 4, METHOD = STRAIGHT_BONUS },
@@ -2860,7 +2891,7 @@ do
                 },
                 [2] = {
                     rank = 15,
-                    time = 9999999999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 6, METHOD = STRAIGHT_BONUS },
                         { PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 6, METHOD = STRAIGHT_BONUS },
@@ -2868,7 +2899,7 @@ do
                 },
                 [3] = {
                     rank = 15,
-                    time = 9999999999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 8, METHOD = STRAIGHT_BONUS },
                         { PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 8, METHOD = STRAIGHT_BONUS },
@@ -2947,11 +2978,12 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 1,
+            infinite = true,
 
             level = {
                 [1] = {
                     rank = 15,
-                    time = 9999999999999.,
+                    time = 1.,
                 },
             }
 
@@ -2964,25 +2996,26 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 3,
+            infinite = true,
 
             level = {
                 [1] = {
                     rank = 15,
-                    time = 9999999999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 8, METHOD = STRAIGHT_BONUS },
                     }
                 },
                 [2] = {
                     rank = 15,
-                    time = 9999999999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 14, METHOD = STRAIGHT_BONUS },
                     }
                 },
                 [3] = {
                     rank = 15,
-                    time = 9999999999999.,
+                    time = 1.,
                     bonus = {
                         { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 20, METHOD = STRAIGHT_BONUS },
                     }

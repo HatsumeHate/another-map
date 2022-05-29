@@ -52,7 +52,6 @@ do
         return SKILL_CATEGORY_NAME[category] or "unnamed category"
     end
 
-
     function GetUnitSkillData(unit, id)
         local unit_data = GetUnitData(unit)
 
@@ -300,7 +299,7 @@ do
         --============================================--
         NewSkillData('A003', {
             name            = LOCALE_LIST[my_locale].SKILL_FROSTBOLT,
-            icon            = "Spell\\BTNice-sky-1.blp",
+            icon            = "Spell\\BTNFrostBolt3.blp",--"Spell\\BTNice-sky-1.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_ICE,
@@ -331,7 +330,7 @@ do
         --============================================--
         NewSkillData('A001', {
             name            = LOCALE_LIST[my_locale].SKILL_FROSTNOVA,
-            icon            = "Spell\\BTNCRFrostShock.blp",
+            icon            = "Spell\\BTNfrost_nova.blp",--"Spell\\BTNCRFrostShock.blp",
             activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_ICE,
@@ -605,7 +604,7 @@ do
             category = SKILL_CATEGORY_LIGHTNING,
             sound = { pack = { "Sounds\\Spells\\cast_lightning_1.wav", "Sounds\\Spells\\cast_lightning_2.wav", "Sounds\\Spells\\cast_lightning_3.wav" }, volume = 120, cutoff = 1500.},
             animation = {
-                sequence  = GetAnimationSequence("sorc_spell_throw_air"), timescale = 1.68,
+                sequence  = GetAnimationSequence("sorc_spell_throw_air"), timescale = 0.92,
             },
             sfx_pack = {
                 on_caster = {
@@ -711,7 +710,7 @@ do
         --============================================--
         NewSkillData('A00E', {
             name            = LOCALE_LIST[my_locale].SKILL_FROSTARMOR,
-            icon            = "Spell\\BTNCloakOfFrost.blp",
+            icon            = "Spell\\BTN_AuraCloak_Ice.blp",--"Spell\\BTNCloakOfFrost.blp",
             activation_type = SELF_CAST,
             type            = SKILL_UNIQUE,
             category = SKILL_CATEGORY_ICE,
@@ -810,7 +809,7 @@ do
             level = {
                 [1] = {
                     range               = 750.,
-                    resource_cost       = 21.,
+                    resource_cost       = 12.,
                     cooldown            = 8.,
                 }
             }
@@ -918,7 +917,7 @@ do
         --============================================--
         NewSkillData('A010', {
             name            = LOCALE_LIST[my_locale].SKILL_WHIRLWIND,
-            icon            = "Spell\\BTNHot Wirlwind.blp",
+            icon            = "Spell\\BTNwhirl.blp",--"Spell\\BTNicons_13168_btn.blp","Spell\\BTNHot Wirlwind.blp",
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_FIGHTING_MASTERY,
@@ -1069,7 +1068,7 @@ do
         --============================================--
         NewSkillData('ASHG', {
             name            = LOCALE_LIST[my_locale].SKILL_SHATTERGROUND,
-            icon            = "Spell\\BTN_cr_VeeR9.blp",
+            icon            = "Spell\\BTNshatter.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_BATTLE_ADVANTAGE,
@@ -1249,7 +1248,7 @@ do
         --============================================--
         NewSkillData('ANBP', {
             name            = LOCALE_LIST[my_locale].SKILL_BONE_PRISON,
-            icon            = "Spell\\BTNImpale.blp",
+            icon            = "Spell\\BTNBonePrison.blp",--"Spell\\BTNImpale.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_DARK_ART,
@@ -1345,7 +1344,7 @@ do
         --============================================--
         NewSkillData('ANBB', {
             name            = LOCALE_LIST[my_locale].SKILL_BONE_BARRAGE,
-            icon            = "Spell\\BTNImpale2.blp",
+            icon            = "Spell\\BTNImpale.blp",--"Spell\\BTNImpale2.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_DARK_ART,
@@ -1702,7 +1701,7 @@ do
         --============================================--
         NewSkillData('ANHV', {
             name            = LOCALE_LIST[my_locale].SKILL_HARVEST,
-            icon            = "Spell\\BTNCursedScythe.blp",
+            icon            = "Spell\\BTNicons_harvest.blp",--"Spell\\BTNCursedScythe.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category        = SKILL_CATEGORY_DARK_ART,

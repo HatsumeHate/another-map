@@ -73,7 +73,7 @@ do
                 AddDropList(rift.boss, "shard_event", 100., pos)
             end)
 
-            CreateLeashForUnit(rift.boss, 1250.)
+            CreateLeashForUnit(rift.boss, 1450.)
             GroupAddUnit(rift.group, rift.boss)
 
             rift.minimap_icon = CreateMinimapIcon(GetRectCenterX(rift.spawner), GetRectCenterY(rift.spawner), 255, 255, 255, "Marker\\MarkDemonGate.mdx", FOG_OF_WAR_MASKED)

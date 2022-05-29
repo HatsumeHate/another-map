@@ -15,7 +15,7 @@ do
 
             if unit_data.heating_up_stacks >= max_stacks then
                 unit_data.heating_up_boost = true
-                unit_data.heating_up_effect = AddSpecialEffectTarget("Effect\\RunicAura.mdx", source,"origin")
+                unit_data.heating_up_effect = AddSpecialEffectTarget("Effect\\heating_up.mdx", source, "origin")
             end
         elseif unit_data.heating_up_boost then
             unit_data.heating_up_boost = nil
@@ -43,6 +43,8 @@ do
         for i = 1, ((7 + circle_amount) * circle_amount) do
             flame_sfx[i] = AddSpecialEffect("Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeDamageTarget.mdx", x, y)
         end
+
+        AddSoundVolume("Sounds\\Spells\\sizzle"..GetRandomInt(1,3)..".wav", x, y, 120, 1600.)
 
         local fire_move_delta = (area / (delay + (circle_amount * delay))) / 40
         local current_range = 0.

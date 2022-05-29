@@ -105,7 +105,7 @@ do
         local min = droplist.min or 1
         local max = droplist.max or 1
         local rolls = droplist.rolls or 1
-        local random = GetRandomIntTable(min, #list, #list)
+        local random = GetRandomIntTable(1, #list, #list)
         local current_item_count = 0
 
             for i = 1, #list do
@@ -300,6 +300,9 @@ do
                 { id = "I01W", generate = true }, --ice touch
                 { id = "I02E", generate = true }, --blood drinker
                 { id = "I02G", generate = true }, --primal tome
+                { id = "I02Q", generate = true }, --mask of shadows
+                { id = "I02R", generate = true }, --splitter
+                { id = "I02S", generate = true }, --executioner
             }
         })
 
@@ -501,25 +504,25 @@ do
                 { quality = MAGIC_ITEM, chance = 100. },
             },
             list = {
-                { id = GetGeneratedItemId(SWORD_WEAPON), chance = 30., generate = true  },
-                { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 30., generate = true },
-                { id = GetGeneratedItemId(AXE_WEAPON), chance = 30., generate = true },
-                { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 30., generate = true },
-                { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 30., generate = true },
-                { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 30., generate = true },
-                { id = GetGeneratedItemId(STAFF_WEAPON), chance = 30., generate = true },
-                { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 30., generate = true },
-                { id = GetGeneratedItemId(BOW_WEAPON), chance = 30., generate = true },
-                { id = GetGeneratedItemId(CHEST_ARMOR), chance = 30., generate = true },
-                { id = GetGeneratedItemId(HEAD_ARMOR), chance = 30., generate = true },
-                { id = GetGeneratedItemId(HANDS_ARMOR), chance = 30., generate = true },
-                { id = GetGeneratedItemId(LEGS_ARMOR), chance = 30., generate = true },
-                { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 30., generate = true },
-                { id = GetGeneratedItemId(RING_JEWELRY), chance = 30., generate = true },
-                { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 30., generate = true },
-                { id = GetGeneratedItemId(ORB_OFFHAND), chance = 30., generate = true },
-                { id = GetGeneratedItemId(BELT_ARMOR), chance = 30., generate = true },
-                { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 30., generate = true },
+                { id = GetGeneratedItemId(SWORD_WEAPON), chance = 100., generate = true, ignore_max = true  },
+                { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(AXE_WEAPON), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(STAFF_WEAPON), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(BOW_WEAPON), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(CHEST_ARMOR), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(HEAD_ARMOR), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(HANDS_ARMOR), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(LEGS_ARMOR), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(RING_JEWELRY), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(ORB_OFFHAND), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(BELT_ARMOR), chance = 100., generate = true, ignore_max = true },
+                { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 100., generate = true, ignore_max = true },
             }
         })
 

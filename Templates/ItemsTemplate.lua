@@ -276,7 +276,7 @@ do
 				ATTACK_SPEED    = 1.8,
 				CRIT_CHANCE     = 0,
 				CRIT_MULTIPLIER = 1.5,
-				RANGE           = 90,
+				RANGE           = 100,
 				DISPERSION      = { 0.9, 1.1 },
 				WEAPON_SOUND    = WEAPON_TYPE_WOOD_LIGHT_BASH
 			},
@@ -284,7 +284,7 @@ do
 				ATTACK_SPEED    = 1.6,
 				CRIT_CHANCE     = 4,
 				CRIT_MULTIPLIER = 2.1,
-				RANGE           = 110,
+				RANGE           = 130,
 				DISPERSION      = { 0.9, 1.1 },
 				WEAPON_SOUND    = WEAPON_TYPE_METAL_MEDIUM_SLICE
 			},
@@ -292,7 +292,7 @@ do
 				ATTACK_SPEED    = 2.3,
 				CRIT_CHANCE     = 5,
 				CRIT_MULTIPLIER = 1.6,
-				RANGE           = 140,
+				RANGE           = 190,
 				ANGLE           = 35, --math.pi / 5,  36 градусов
 				DISPERSION      = { 0.9, 1.1 },
 				WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_SLICE
@@ -301,7 +301,7 @@ do
 				ATTACK_SPEED    = 1.5,
 				CRIT_CHANCE     = 6,
 				CRIT_MULTIPLIER = 1.7,
-				RANGE           = 100,
+				RANGE           = 120,
 				DISPERSION      = { 0.85, 1.15 },
 				WEAPON_SOUND    = WEAPON_TYPE_METAL_MEDIUM_CHOP
 			},
@@ -309,7 +309,7 @@ do
 				ATTACK_SPEED    = 2.2,
 				CRIT_CHANCE     = 6,
 				CRIT_MULTIPLIER = 1.7,
-				RANGE           = 140,
+				RANGE           = 190,
 				DISPERSION      = { 0.85, 1.15 },
 				WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_CHOP
 			},
@@ -317,7 +317,7 @@ do
 				ATTACK_SPEED    = 1.4,
 				CRIT_CHANCE     = 9,
 				CRIT_MULTIPLIER = 2.3,
-				RANGE           = 95,
+				RANGE           = 110,
 				ANGLE           = 25, --math.pi / 7.2, -- 25 градусов
 				DISPERSION      = { 0.9, 1.1 },
 				WEAPON_SOUND    = WEAPON_TYPE_METAL_LIGHT_SLICE
@@ -326,7 +326,7 @@ do
 				ATTACK_SPEED    = 2.4,
 				CRIT_CHANCE     = 9,
 				CRIT_MULTIPLIER = 2.3,
-				RANGE           = 145,
+				RANGE           = 195,
 				DISPERSION      = { 0.85, 1.15 },
 				WEAPON_SOUND    = WEAPON_TYPE_WOOD_MEDIUM_BASH
 			},
@@ -334,7 +334,7 @@ do
 				ATTACK_SPEED    = 2.3,
 				CRIT_CHANCE     = 5,
 				CRIT_MULTIPLIER = 1.7,
-				RANGE           = 150,
+				RANGE           = 200,
 				DISPERSION      = { 0.85, 1.15 },
 				WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_BASH
 			},
@@ -342,7 +342,7 @@ do
 				ATTACK_SPEED    = 1.7,
 				CRIT_CHANCE     = 5,
 				CRIT_MULTIPLIER = 1.6,
-				RANGE           = 105,
+				RANGE           = 115,
 				DISPERSION      = { 0.8, 1.2 },
 				WEAPON_SOUND    = WEAPON_TYPE_METAL_MEDIUM_BASH
 			},
@@ -350,7 +350,7 @@ do
 				ATTACK_SPEED    = 2.4,
 				CRIT_CHANCE     = 5,
 				CRIT_MULTIPLIER = 1.7,
-				RANGE           = 140,
+				RANGE           = 180,
 				DISPERSION      = { 0.8, 1.2 },
 				WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_BASH
 			},
@@ -358,7 +358,7 @@ do
 				ATTACK_SPEED    = 2.6,
 				CRIT_CHANCE     = 7,
 				CRIT_MULTIPLIER = 2.2,
-				RANGE           = 800.,
+				RANGE           = 850.,
 				ranged          = true,
 				DISPERSION      = { 0.75, 1.25 },
 				missile  		= "MSTA",
@@ -1051,7 +1051,7 @@ do
 			frame_texture      = "GUI\\BTNItem_Gem_Malachite.blp",
 			point_bonus 	   = {
 				[ITEM_TYPE_WEAPON] 		= {  PARAM = DARKNESS_BONUS, VALUE = 20, METHOD = STRAIGHT_BONUS },
-				[ITEM_TYPE_ARMOR]  		= {  PARAM = PHYSICAL_DEFENCE, VALUE = 25, METHOD = STRAIGHT_BONUS },
+				[ITEM_TYPE_ARMOR]  		= {  PARAM = PHYSICAL_DEFENCE, VALUE = 50, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_JEWELRY]  	= {  PARAM = DARKNESS_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
 				[ITEM_TYPE_OFFHAND]  	= {  PARAM = MP_VALUE, VALUE = 1.1, METHOD = MULTIPLY_BONUS }
 			},
@@ -2126,6 +2126,74 @@ do
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_HEAVY_ARMOR]
 		})
 
+		ItemAddData('I02Q', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_MASK_OF_SHADOWS,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = HEAD_ARMOR,
+			QUALITY = UNIQUE_ITEM,
+			DEFENCE = 20,
+			stat_modificator = 0.9,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = MAGICAL_SUPPRESSION, VALUE = 40, METHOD = STRAIGHT_BONUS, base = 40, delta = 2, delta_level = 1, delta_level_max = 50 },
+				{ PARAM = MP_PER_HIT, VALUE = 5, METHOD = STRAIGHT_BONUS, base = 5, delta = 1, delta_level = 5, delta_level_max = 5 },
+				{ PARAM = CRIT_CHANCE, VALUE = 7, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 3,
+			legendary_effect = GetLegendaryEffect("illusion_legendary"),
+			frame_texture = "Armor\\BTNShadowHelmet.BLP",
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_MASK_OF_SHADOWS .."\"",
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_MID_ARMOR],
+		})
+
+		ItemAddData('I02R', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_SPLITTER,
+			TYPE    = ITEM_TYPE_WEAPON,
+			SUBTYPE = STAFF_WEAPON,
+			ATTRIBUTE = DARKNESS_ATTRIBUTE,
+			QUALITY = UNIQUE_ITEM,
+			DAMAGE  = 50,
+			stat_modificator = 1.2,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = CAST_SPEED, VALUE = 12, METHOD = STRAIGHT_BONUS },
+				{ PARAM = DARKNESS_BONUS, VALUE = 14, METHOD = STRAIGHT_BONUS, base = 14, delta = 1, delta_level = 5, delta_level_max = 5 },
+				{ PARAM = MAGICAL_ATTACK, VALUE = 35, METHOD = STRAIGHT_BONUS, base = 35, delta = 2, delta_level = 1, delta_level_max = 15 },
+				{ PARAM = BONUS_HUMAN_DAMAGE, VALUE = 14, METHOD = STRAIGHT_BONUS, base = 14, delta = 1, delta_level = 10, delta_level_max = 5 },
+				{ PARAM = BONUS_BEAST_DAMAGE, VALUE = 14, METHOD = STRAIGHT_BONUS, base = 14, delta = 1, delta_level = 10, delta_level_max = 5 },
+			},
+			MAX_SLOTS = 2,
+			frame_texture = "Weapons\\BTNHollowScythe.blp",
+			model = "Items\\Scythe2.mdx",
+			legendary_effect = GetLegendaryEffect("splitter_legendary"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_SPLITTER .."\"",
+			soundpack = { equip = "Sound\\staff_manadrinker_equip.wav", uneqip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
+		})
+
+		ItemAddData('I02S', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_EXECUTIONER,
+			TYPE    = ITEM_TYPE_WEAPON,
+			SUBTYPE = GREATSWORD_WEAPON,
+			ATTRIBUTE = PHYSICAL_ATTRIBUTE,
+			QUALITY = UNIQUE_ITEM,
+			DAMAGE  = 50,
+			stat_modificator = 1.7,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = CRIT_CHANCE, VALUE = 6, METHOD = STRAIGHT_BONUS },
+				{ PARAM = HP_VALUE, VALUE = 1.3, METHOD = MULTIPLY_BONUS },
+				{ PARAM = MP_PER_HIT, VALUE = 5, METHOD = STRAIGHT_BONUS, base = 5, delta = 1, delta_level = 5, delta_level_max = 10 },
+			},
+			MAX_SLOTS = 3,
+			frame_texture = "Weapons\\BTNDeathbringer.blp",
+			model = "Items\\Blade_Blood_King.mdx",
+			legendary_effect = GetLegendaryEffect("executioner_Legendary"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_EXECUTIONER .."\"",
+			soundpack = { equip = "Sound\\sword_souldrinker_equip.wav", uneqip = "Sound\\sword_unequip.wav", drop = "Sound\\sword.wav" }
+		})
 
 		ItemAddData('I02H', {
 			NAME    		   = LOCALE_LIST[my_locale].LOOTBOX_NAME,
@@ -2175,6 +2243,14 @@ do
 
 	хочу легендарный меч проворства
 	легенда увеличивает шанс крита на 20%, а проворства +25 ловкости
+
+
+	сапоги на некра
+	тяжесть
+	пока действует броня + к резисту контроля
+
+	расщепление
+	костяное копье при столкновении расщепляется на несколько мелких
 
 	]]
 	

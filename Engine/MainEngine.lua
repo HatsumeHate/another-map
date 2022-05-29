@@ -288,7 +288,7 @@ do
                 damage_type = damage_table.damage_type
                 attack_type = damage_table.attack_type
                 direct = damage_table.is_direct
-                myeffect = damage_table.myeffect
+                myeffect = damage_table.effect
                 --print("attack done " .. GetUnitName(source))
             elseif myeffect and myeffect.eff and myeffect.eff.single_attack_instance then
                 --print("aaaa")
@@ -299,7 +299,7 @@ do
                 damage_type = damage_table.damage_type
                 attack_type = damage_table.attack_type
                 direct = damage_table.is_direct
-                myeffect = damage_table.myeffect
+                myeffect = damage_table.effect
             end
         end
 
@@ -360,13 +360,13 @@ do
                         local effect = AddSpecialEffect("Effect\\shandian-wave-xiao.mdx", victim.death_x, victim.death_y)
                         BlzSetSpecialEffectScale(effect, 0.9 * BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE))
                         BlzSetSpecialEffectYaw(effect, GetRandomReal(0., 360.) * bj_DEGTORAD)
-                        BlzSetSpecialEffectZ(effect, GetZ(victim.death_x, victim.death_y) + 55. + GetUnitFlyHeight(target))
+                        BlzSetSpecialEffectZ(effect, GetZ(victim.death_x, victim.death_y) + 65. + GetUnitFlyHeight(target))
                         DestroyEffect(effect)
                     elseif attribute == FIRE_ATTRIBUTE then
                         local effect = AddSpecialEffect("Effect\\by_wood_effect_yuzhiboyou_fire_fengxianhuo_2.mdx", victim.death_x, victim.death_y)
                         BlzSetSpecialEffectScale(effect, 0.9 * BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE))
                         BlzSetSpecialEffectYaw(effect, GetRandomReal(0., 360.) * bj_DEGTORAD)
-                        BlzSetSpecialEffectZ(effect, GetZ(victim.death_x, victim.death_y) + 60. + GetUnitFlyHeight(target))
+                        BlzSetSpecialEffectZ(effect, GetZ(victim.death_x, victim.death_y) + 75. + GetUnitFlyHeight(target))
                         DestroyEffect(effect)
                     end
                 end

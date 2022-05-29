@@ -620,6 +620,13 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_HEAVY_ARMOR]
                     },
+                    {
+                        icon = "Armor\\BTNWizardsHat.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_12,
+                        decl = DECL_SHE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
+                    },
                 },
                 [BELT_ARMOR] = {
                     {
@@ -1337,6 +1344,13 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_HEAVY_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNWizardsHat.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_12,
+                        decl = DECL_SHE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
                     },
                 },
                 [BELT_ARMOR] = {
@@ -2235,6 +2249,13 @@ do
                         decl = DECL_HE,
                         modificator = 1.1,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_HEAVY_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNWizardsHat.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_12,
+                        decl = DECL_SHE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
                     },
                 },
                 [BELT_ARMOR] = {

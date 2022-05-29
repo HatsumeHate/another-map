@@ -309,12 +309,12 @@ do
             max_level = 2,
             instant_effects = {
                 [1] = function(unit, flag)
-                    ModifyStat(unit, CRIT_MULTIPLIER, -0.2, STRAIGHT_BONUS, flag)
-                    ModifyStat(unit, MAGICAL_ATTACK, 1.07, MULTIPLY_BONUS, flag)
+                    ModifyStat(unit, CRIT_MULTIPLIER, 0.2, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, MAGICAL_ATTACK, 0.93, MULTIPLY_BONUS, flag)
                 end,
                 [2] = function(unit, flag)
-                    ModifyStat(unit, CRIT_MULTIPLIER, -0.4, STRAIGHT_BONUS, flag)
-                    ModifyStat(unit, MAGICAL_ATTACK, 1.15, MULTIPLY_BONUS, flag)
+                    ModifyStat(unit, CRIT_MULTIPLIER, 0.4, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, MAGICAL_ATTACK, 0.75, MULTIPLY_BONUS, flag)
                 end,
                 cancel_last_level = true,
             },
@@ -1189,7 +1189,7 @@ do
         })
 
         NewTalentTemplate("talent_undead_expert", {
-            icon = "Talents\\BTNAdept 01.blp",
+            icon = "Talents\\BTNUndeadExpert.blp",--"Talents\\BTNAdept 01.blp",
             instant_effects = {
                 [1] = function(unit, flag)
                     ModifyStat(unit, BONUS_UNDEAD_DAMAGE, 7, STRAIGHT_BONUS, flag)

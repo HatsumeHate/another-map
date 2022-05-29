@@ -176,14 +176,15 @@ do
             end
         end
 
+            ResetUnitSpellCast(target)
             PullList[h] = pull_data
             pull_data.target = target
             pull_data.power = power
             pull_data.speed = speed
             pull_data.release_range = release_range
             local velocity = (speed * PERIOD) / DistanceBetweenUnits(source, target)
-            pull_data.vx = (GetUnitX(target) - GetUnitX(source)) * velocity
-            pull_data.vy = (GetUnitY(target) - GetUnitY(source)) * velocity
+            pull_data.vx = (RealGetUnitX(target) - RealGetUnitX(source)) * velocity
+            pull_data.vy = (RealGetUnitY(target) - RealGetUnitY(source)) * velocity
 
             local timer = CreateTimer()
             TimerStart(timer, PERIOD, true, function()
@@ -193,11 +194,11 @@ do
                     PullList[h] = nil
                     DestroyTimer(GetExpiredTimer())
                 else
-                    SetUnitX(source, GetUnitX(source) + pull_data.vx)
-                    SetUnitY(source, GetUnitY(source) + pull_data.vy)
+                    SetUnitX(source, RealGetUnitX(source) + pull_data.vx)
+                    SetUnitY(source, RealGetUnitY(source) + pull_data.vy)
                     velocity = (pull_data.speed * PERIOD) / DistanceBetweenUnits(source, pull_data.target)
-                    pull_data.vx = (GetUnitX(pull_data.target) - GetUnitX(source)) * velocity
-                    pull_data.vy = (GetUnitY(pull_data.target) - GetUnitY(source)) * velocity
+                    pull_data.vx = (RealGetUnitX(pull_data.target) - RealGetUnitX(source)) * velocity
+                    pull_data.vy = (RealGetUnitY(pull_data.target) - RealGetUnitY(source)) * velocity
                 end
             end)
 
@@ -241,7 +242,11 @@ do
             local targets_hit = 0
             local enemy_group = CreateGroup()
             local player_entity = GetOwningPlayer(source)
+
+            local unit_data = GetUnitData(source)
+            if unit_data.channeled_destructor then unit_data.channeled_destructor(unit_data.Owner); unit_data.channeled_destructor = nil end
             SafePauseUnit(source, true)
+
 
             if sfx then
                 charge_data.effect = AddSpecialEffectTarget(sfx.effect, source, sfx.point or "chest")
@@ -258,7 +263,7 @@ do
                 if IsUnitInRangeXY(source, charge_data.point_x, charge_data.point_y, 10.) or GetUnitState(source, UNIT_STATE_LIFE) < 0.045 or state or not IsPathable_Ground(GetUnitX(source) + charge_data.vx, GetUnitY(source) + charge_data.vy) then
                     --print("end")
                     SetUnitAnimation(source, "stand")
-                    SafePauseUnit(source, false)
+                    if not (IsUnitStunned(source) or IsUnitFrozen(source)) then SafePauseUnit(source, false) end
                     OnChargeEnd(source, targets_hit, sign, state)
                     DestroyEffect(charge_data.effect)
                     charge_data = nil
@@ -276,7 +281,7 @@ do
                                     targets_hit = targets_hit + 1
                                     max_targets = max_targets - 1
                                     if max_targets <= 0 or endcharge then
-                                        SafePauseUnit(source, false)
+                                        if not (IsUnitStunned(source) or IsUnitFrozen(source)) then SafePauseUnit(source, false) end
                                         OnChargeEnd(source, targets_hit, sign, state)
                                         DestroyEffect(charge_data.effect)
                                         charge_data = nil
@@ -290,19 +295,20 @@ do
                         end
 
                     SetUnitAnimation(source, animation)
-                    SetUnitX(source, GetUnitX(source) + charge_data.vx)
-                    SetUnitY(source, GetUnitY(source) + charge_data.vy)
+                    SetUnitX(source, RealGetUnitX(source) + charge_data.vx)
+                    SetUnitY(source, RealGetUnitY(source) + charge_data.vy)
                     --charge_data.current_distance  = charge_data.current_distance + velocity
 
                 else
                     SetUnitAnimation(source, animation)
-                    SetUnitX(source, GetUnitX(source) + charge_data.vx)
-                    SetUnitY(source, GetUnitY(source) + charge_data.vy)
+                    SetUnitX(source, RealGetUnitX(source) + charge_data.vx)
+                    SetUnitY(source, RealGetUnitY(source) + charge_data.vy)
                     --harge_data.current_distance  = charge_data.current_distance + velocity
                 end
             end)
 
     end
+
 
 
 
@@ -336,6 +342,8 @@ do
         UnitAddAbility(target, FourCC('Arav'))
         UnitRemoveAbility(target, FourCC('Arav'))
 
+        local unit_data = GetUnitData(target)
+        if unit_data.channeled_destructor then unit_data.channeled_destructor(unit_data.Owner); unit_data.channeled_destructor = nil end
         SafePauseUnit(target, true)
 
         local effect
@@ -352,7 +360,7 @@ do
             if IsMapBounds(unit_x, unit_y) or time <= 0. then
                 --print("total jump distance was "..DistanceBetweenUnitXY(target, start_x, start_y))
                 OnJumpExpire(target, sign)
-                SafePauseUnit(target, false)
+                if not (IsUnitStunned(target) or IsUnitFrozen(target)) then SafePauseUnit(target, false) end
                 --if GetUnitAbilityLevel(target, FourCC("A01M")) > 0 then BlzPauseUnitEx(target, false) end
                 --BlzPauseUnitEx(target, false)
                 SetUnitFlyHeight(target, 0., 0.)
@@ -395,7 +403,7 @@ do
     function PushUnit(source, target, angle, power, time, sign)
         local handle = target
         local unit_data = GetUnitData(target)
-        local push_data = { x = GetUnitX(target), y = GetUnitY(target), vx = 0., vy = 0. }
+        local push_data = { x = RealGetUnitX(target), y = RealGetUnitY(target), vx = 0., vy = 0. }
 
 
         power = power * math.floor(((100. - unit_data.stats[CONTROL_REDUCTION].value) * 0.01) + 0.5)
@@ -444,7 +452,7 @@ do
             TimerStart(push_data.timer, PERIOD, true, function()
                 if IsMapBounds(push_data.x, push_data.y) or push_data.time < 0. then
                     DestroyTimer(push_data.timer)
-                    SafePauseUnit(target, false)
+                    if not (IsUnitStunned(unit_data.Owner) or IsUnitFrozen(unit_data.Owner)) then SafePauseUnit(target, false) end
                     OnPushExpire(target, push_data)
                     PushList[handle] = nil
                     --if GetUnitAbilityLevel(target, FourCC("A01M")) > 0 then BlzPauseUnitEx(target, false) end
@@ -467,8 +475,8 @@ do
                     push_data.power = push_data.power * faderate
                     push_data.vx = push_data.vx * faderate
                     push_data.vy = push_data.vy * faderate
-                    push_data.x = GetUnitX(target)
-                    push_data.y = GetUnitY(target)
+                    push_data.x = RealGetUnitX(target)
+                    push_data.y = RealGetUnitY(target)
 
                     push_data.time = push_data.time - PERIOD
                 end
@@ -780,6 +788,8 @@ do
         local impact = false
         local hit_group = CreateGroup()
         local my_timer = CreateTimer()
+
+        m.hit_group = hit_group
 
         if m.trackable then
             m.time = m.time * 1.25

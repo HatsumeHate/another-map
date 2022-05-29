@@ -329,6 +329,8 @@ do
 
                     if unit_data.unit_class == BARBARIAN_CLASS then
                         ModifyStat(hero, VULNERABILITY, -30, STRAIGHT_BONUS, true)
+                    elseif unit_data.unit_class == SORCERESS_CLASS then
+                        AddSpecialEffectTarget("Model\\Sorceress_Hair.mdx", hero, "head")
                     end
                 end)
 
@@ -402,6 +404,14 @@ do
                         ShowPlayerUI(player_id)
                         SelectUnitForPlayerSingle(hero, Player(player_number))
                         EnableGUIForPlayer(player_id)
+                        DelayAction(3., function()
+                            SkillPanelTutorialData[player_id] = true
+                            if GetLocalPlayer() == Player(player_number) then
+                                StartSound(bj_questHintSound)
+                                BlzFrameSetVisible(PlayerUI.arrow, true)
+                                BlzFrameSetVisible(PlayerUI.arrow_ability_text, true)
+                            end
+                        end)
                     end)
 
 
@@ -542,6 +552,13 @@ do
                     SetUnitState(hero, UNIT_STATE_MANA, GetUnitState(hero, UNIT_STATE_MAX_MANA) * 0.5)
                     DestroyTimer(GetExpiredTimer())
                     SelectUnitForPlayerSingle(hero, player)
+
+                        for i = 1, unit_data.buff_list do
+                            if GetBuffExpirationTime(hero, unit_data.buff_list[i].id) <= 0 then
+                                xpcall(function() RemoveBuff(hero, unit_data.buff_list[i].id) end, print)
+                            end
+                        end
+
                     for i = 1, #ActiveCurses do ApplyCurse(ActiveCurses[i]) end
                     local minions = GetAllUnitSummonUnits(hero)
                     ForGroup(minions, function() KillUnit(GetEnumUnit()) end)
@@ -635,6 +652,7 @@ do
             SuspendHeroXP(PlayerHero[1], true)
         end)
 
+        InitUnitTracking()
 
     end
 

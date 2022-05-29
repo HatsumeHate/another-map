@@ -152,14 +152,14 @@ do
         --==============================================--
         NewMissileTemplate('SRHD', {
             name = "hydra missile",
-            model = "Spell\\GreatElderHydraMoltenBreath.mdx",
+            model = "Abilities\\Weapons\\FireBallMissile\\FireBallMissile.mdx",
             max_distance = 750.,
-            radius = 52.,
+            radius = 60.,
             speed = 970.,
             start_z = 50.,
             end_z = 50.,
             arc = 0.05,
-            scale = 0.55,
+            scale = 1.,
             ignore_terrain = true,
             penetrate = false,
             full_distance = true
@@ -731,9 +731,9 @@ do
             model = "Spell\\FrozenOrb.mdx",
             max_distance = 600.,
             radius = 125.,
-            speed = 625.,
-            start_z = 65.,
-            end_z = 65.,
+            speed = 525.,
+            start_z = 75.,
+            end_z = 75.,
             arc = 0.,
             scale = 1.45,
             max_targets = 300,
@@ -916,6 +916,23 @@ do
             can_enum = true
         })
         --===============================================--
+        NewMissileTemplate('splitter_missile', {
+            name = "bone spear missile",
+            model = "Abilities\\Weapons\\BristleBackMissile\\BristleBackMissile.mdl",
+            max_distance = 275.,
+            effect_on_hit = 'splitter_effect',
+            radius = 55.,
+            speed = 1200.,
+            start_z = 70.,
+            end_z = 70.,
+            max_targets = 300,
+            hit_once_in = 3.,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            can_enum = true
+        })
+        --===============================================--
         NewMissileTemplate('MNPS', {
             name = "toxic substance missile",
             model = "Spell\\OrbOfVenom.mdx",
@@ -1056,11 +1073,12 @@ do
             start_z = 70.,
             end_z = 70.,
             arc = 0.,
+            max_targets = 399,
             can_enum = false,
             ignore_terrain = true,
             full_distance = true,
             penetrate = true,
-            only_on_impact = true
+            only_on_impact = false
         })
         --===============================================--
         NewMissileTemplate('ensnare_missile', {

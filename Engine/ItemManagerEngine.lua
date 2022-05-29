@@ -848,9 +848,13 @@ do
 
             if unit_data.equip_point[point] and unit_data.equip_point[point].TYPE == ITEM_TYPE_WEAPON then
                 BlzUnitInterruptAttack(unit)
-                BlzSetUnitRealField(unit, UNIT_RF_ACQUISITION_RANGE, (unit_data.equip_point[point].RANGE or 90.))
+                BlzSetUnitRealField(unit, UNIT_RF_ACQUISITION_RANGE, (unit_data.equip_point[point].RANGE or 100.))
+
+                BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 0, 0.)
+                BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 0, (unit_data.equip_point[point].RANGE or 100.))
+
                 BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 1, 0.)
-                BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 1, (unit_data.equip_point[point].RANGE or 90.))
+                BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 1, (unit_data.equip_point[point].RANGE or 100.))
 
             end
 

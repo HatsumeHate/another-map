@@ -570,10 +570,7 @@ do
 
                         if not OffhandPointCheck(ButtonList[h].item, id, offhand) then return end
 
-                        local unequipped_item
-                        xpcall(function()
-                            unequipped_item = EquipItem(InventoryOwner[id], ButtonList[h].item, true, offhand)
-                        end, print)
+                        local unequipped_item = EquipItem(InventoryOwner[id], ButtonList[h].item, true, offhand)
 
                         if item_data.soundpack and item_data.soundpack.equip then PlayLocalSound(item_data.soundpack.equip, id - 1) end
 
@@ -585,9 +582,8 @@ do
                         Feedback_InventoryNoSpace(id)
                     else
 
-                        xpcall(function()
-                            EquipItem(InventoryOwner[id], ButtonList[h].item, false, (ButtonList[h].button_type == OFFHAND_POINT and item_data.TYPE == ITEM_TYPE_WEAPON))
-                        end, print)
+                        EquipItem(InventoryOwner[id], ButtonList[h].item, false, (ButtonList[h].button_type == OFFHAND_POINT and item_data.TYPE == ITEM_TYPE_WEAPON))
+
                         if item_data.soundpack and item_data.soundpack.uneqip then PlayLocalSound(item_data.soundpack.uneqip, id - 1) end
 
                         local free_slot = GetFirstFreeSlotButton(id)

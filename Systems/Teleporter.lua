@@ -136,7 +136,7 @@ do
         InitLocations()
 
         TeleportFrame = {}
-        TeleportLocation = {}
+        --TeleportLocation = {}
         PlayerCurrentButtonList = {}
 
         for i = 1, 6 do PlayerCurrentButtonList[i] = {} end
@@ -145,48 +145,43 @@ do
         HitTrigger = CreateTrigger()
         TriggerAddAction(TeleportTrigger, TeleportButtonPressed)
 
-        TeleportLocation[1] = {
-            name = LOCALE_LIST[my_locale].CASTLE_LOCATION,
-            rect = gg_rct_castle_loc,
-            trackable = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("ntel"), GetRectCenterX(gg_rct_castle_loc), GetRectCenterY(gg_rct_castle_loc), 270.),
-            effect = AddSpecialEffect("war3mapImported\\Glow.mdx", GetRectCenterX(gg_rct_castle_loc), GetRectCenterY(gg_rct_castle_loc))
+        TeleportLocation = {
+            [1] = {
+                name = LOCALE_LIST[my_locale].CASTLE_LOCATION,
+                rect = gg_rct_castle_loc,
+            },
+            [2] = {
+                name = LOCALE_LIST[my_locale].SHORE_LOCATION,
+                rect = gg_rct_shore_loc,
+            },
+            [3] = {
+                name = LOCALE_LIST[my_locale].WOODS_LOCATION,
+                rect = gg_rct_woods_loc,
+            },
+            [4] = {
+                name = LOCALE_LIST[my_locale].RUINS_LOCATION,
+                rect = gg_rct_ruins_loc,
+            },
+            [5] = {
+                name = GetLocalString("Задворки", "Outskirts"),
+                rect = gg_rct_outskirts_loc,
+            },
         }
-        TeleportLocation[2] = {
-            name = LOCALE_LIST[my_locale].SHORE_LOCATION,
-            rect = gg_rct_shore_loc,
-            trackable = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("ntel"), GetRectCenterX(gg_rct_shore_loc), GetRectCenterY(gg_rct_shore_loc), 270.),
-            effect = AddSpecialEffect("war3mapImported\\Glow.mdx", GetRectCenterX(gg_rct_shore_loc), GetRectCenterY(gg_rct_shore_loc))
-        }
-        TeleportLocation[3] = {
-            name = LOCALE_LIST[my_locale].WOODS_LOCATION,
-            rect = gg_rct_woods_loc,
-            trackable = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("ntel"), GetRectCenterX(gg_rct_woods_loc), GetRectCenterY(gg_rct_woods_loc), 270.),
-            effect = AddSpecialEffect("war3mapImported\\Glow.mdx", GetRectCenterX(gg_rct_woods_loc), GetRectCenterY(gg_rct_woods_loc))
-        }
-        TeleportLocation[4] = {
-            name = LOCALE_LIST[my_locale].RUINS_LOCATION,
-            rect = gg_rct_ruins_loc,
-            trackable = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("ntel"), GetRectCenterX(gg_rct_ruins_loc), GetRectCenterY(gg_rct_ruins_loc), 270.),
-            effect = AddSpecialEffect("war3mapImported\\Glow.mdx", GetRectCenterX(gg_rct_ruins_loc), GetRectCenterY(gg_rct_ruins_loc))
-        }
-
-
 
         for i = 1, #TeleportLocation do
+            local x, y = GetRectCenterX(TeleportLocation[i].rect), GetRectCenterY(TeleportLocation[i].rect)
+            TeleportLocation[i].trackable = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("ntel"), x, y, 270.)
+            TeleportLocation[i].effect = AddSpecialEffect("war3mapImported\\Glow.mdx", x, y)
             BlzSetSpecialEffectScale(TeleportLocation[i].effect, 3.)
             SetUnitPathing(TeleportLocation[i].trackable, false)
-            SetUnitX(TeleportLocation[i].trackable, GetRectCenterX(TeleportLocation[i].rect))
-            SetUnitY(TeleportLocation[i].trackable, GetRectCenterY(TeleportLocation[i].rect))
-            TeleportLocation[i].sfx = AddSpecialEffect("Other\\MagicPlatform.mdx", GetRectCenterX(TeleportLocation[i].rect), GetRectCenterY(TeleportLocation[i].rect))
-            --local additional_sfx = AddSpecialEffect("Other\\MagicPlatform.mdx", GetRectCenterX(TeleportLocation[i].rect), GetRectCenterY(TeleportLocation[i].rect))
-            if i == 2 then
-                BlzSetSpecialEffectZ(TeleportLocation[i].sfx, GetZ(GetRectCenterX(TeleportLocation[i].rect), GetRectCenterY(TeleportLocation[i].rect)) - 55.)
-            end
+            SetUnitX(TeleportLocation[i].trackable, x)
+            SetUnitY(TeleportLocation[i].trackable, y)
+            TeleportLocation[i].sfx = AddSpecialEffect("Other\\MagicPlatform.mdx", x, y)
+            if i == 2 then BlzSetSpecialEffectZ(TeleportLocation[i].sfx, GetZ(x, y) - 55.) end
         end
 
 
         TriggerAddCondition(HitTrigger, Condition(HitCond))
-
         TriggerAddAction(HitTrigger, function()
             local trackable = GetOrderTargetUnit()
             local player = GetPlayerId(GetTriggerPlayer()) + 1

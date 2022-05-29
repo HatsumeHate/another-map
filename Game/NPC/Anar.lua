@@ -399,7 +399,7 @@ do
                 if not IsBlockedByConversation(gg_unit_n029_0022) then
                     IssuePointOrderById(gg_unit_n029_0022, order_move, GetRectCenterX(gg_rct_anar_position), GetRectCenterY(gg_rct_anar_position))
                     TimerStart(timer, 0.5, true, function()
-                        if IsUnitInRangeXY(gg_unit_n029_0022, GetRectCenterX(gg_rct_anar_position), GetRectCenterY(gg_rct_anar_position), 10.) then
+                        if IsUnitInRangeXY(gg_unit_n029_0022, GetRectCenterX(gg_rct_anar_position), GetRectCenterY(gg_rct_anar_position), 20.) then
                             DestroyTimer(timer)
                             SetUnitFacing(gg_unit_n029_0022, 250.)
                         else
@@ -434,7 +434,7 @@ do
 
 
         AddInteractiveOption(gg_unit_n029_0022, {
-            name = GetLocalString("Scouting", "Scouting"),
+            name = GetLocalString("Разведка", "Scouting"),
             id = "anar_scoutquest_intro",
             feedback = function(clicked, clicking, player)
                 PlayConversation("quartermaster_scoutquest_conv", gg_unit_n029_0022, player)
@@ -444,7 +444,7 @@ do
         LockInteractiveOptionId(gg_unit_n029_0022, "anar_scoutquest_intro")
 
         AddInteractiveOption(gg_unit_n029_0022, {
-            name = GetLocalString("Scouting", "Scouting"),
+            name = GetLocalString("Разведка", "Scouting"),
             id = "anar_scoutquest_done",
             feedback = function(clicked, clicking, player)
                 PlayConversation("quartermaster_scoutquest_done_conv", gg_unit_n029_0022, player)
@@ -615,7 +615,7 @@ do
             id = "anar_task_arachno",
             feedback = function(clicked, clicking, player)
                 PlayConversation("quartermaster_task_arachno_give", gg_unit_n029_0022, player)
-                EnableTask_Arachno(player)
+                Task_Arachno_Aquired(player)
             end }, 3)
         LockInteractiveOptionId(gg_unit_n029_0022, "anar_task_arachno")
 
@@ -651,9 +651,7 @@ do
 
 
         RegisterTestCommand("dai", function()
-            InitTasksData()
-            PlayerTask[1] = 1
-            EnableTask_SoldiersRescue(1)
+            EnableAnarTasks()
         end)
 
         RegisterTestCommand("ddd", function()

@@ -10,7 +10,7 @@ do
     MAX_CURSES = 2
     CURRENT_CURSES = 0
     local CurseTimer
-    local CURSE_MIN_TIME = 1000; local CURSE_MAX_TIME = 1560
+    local CURSE_MIN_TIME = 1500; local CURSE_MAX_TIME = 2360
     local curse_totems
 
 

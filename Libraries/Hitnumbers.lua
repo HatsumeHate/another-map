@@ -9,6 +9,9 @@ do
     local FADEPOINT = 0.65  --out
     local CONSTANT_TEXT_SIZE =  (9. * 0.023) / 10
 
+    local UNFADE_MOD = UNFADE / UPDATE
+    local STEP_MOD = DURATION / UPDATE
+
 
     local ATTACK_STATUS_COLOR = 0
     local STATUS_OFFSET = 0
@@ -49,9 +52,9 @@ do
         local x = GetUnitX(victim) + GetRandomReal(STATUS_OFFSET[status].x.min, STATUS_OFFSET[status].x.max)
         local y = GetUnitY(victim) + GetRandomReal(STATUS_OFFSET[status].y.min, STATUS_OFFSET[status].y.max)
         local end_y = y
-        local step = 10.5 / (DURATION / UPDATE)
+        local step = 10.5 / STEP_MOD
         local alpha = 0.
-        local alpha_transition = 255 / (UNFADE / UPDATE)
+        local alpha_transition = 255 / UNFADE_MOD
 
 
 
@@ -91,10 +94,10 @@ do
         local size = 6.4
         local size_parabola = 1.1
         local alpha = 0.
-        local alpha_transition = 255 / (UNFADE / UPDATE)
+        local alpha_transition = 255 / UNFADE_MOD
         local x = GetUnitX(victim) + GetRandomReal(STATUS_OFFSET[status].x.min, STATUS_OFFSET[status].x.max)
         local y = GetUnitY(victim) + GetRandomReal(STATUS_OFFSET[status].y.min, STATUS_OFFSET[status].y.max)
-        local step = 10.5 / (DURATION / UPDATE)
+        local step = 10.5 / STEP_MOD
         local end_y = y
 
         if not HitnumbersPool[source] then HitnumbersPool[source] = { } end
@@ -192,9 +195,9 @@ do
         local x = GetUnitX(victim) + GetRandomReal(STATUS_OFFSET[status].x.min, STATUS_OFFSET[status].x.max)
         local y = GetUnitY(victim) + GetRandomReal(STATUS_OFFSET[status].y.min, STATUS_OFFSET[status].y.max)
         local end_y = y
-        local step = 10.5 / (DURATION / UPDATE)
+        local step = 10.5 / STEP_MOD
         local alpha = 0.
-        local alpha_transition = 255 / (UNFADE / UPDATE)
+        local alpha_transition = 255 / UNFADE_MOD
 
 
         text = ATTACK_STATUS_COLOR[status] .. text .. '|r'
@@ -259,15 +262,15 @@ do
         }
 
          STATUS_OFFSET = {
-            [ATTACK_STATUS_USUAL]               = { x = { min = 35., max = 45. },   y = { min = 35., max = 45. }, },
-            [ATTACK_STATUS_CRITICAL]            = { x = { min = 55., max = 65. },   y = { min = 55., max = 65. }, },
-            [ATTACK_STATUS_CRITICAL_BLOCKED]    = { x = { min = 35., max = 45. },   y = { min = 35., max = 45. }, },
-            [ATTACK_STATUS_BLOCKED]             = { x = { min = 55., max = 65. },   y = { min = 55., max = 65. }, },
-            [ATTACK_STATUS_EVADE]               = { x = { min = 55., max = 65. },   y = { min = 55., max = 65. }, },
-            [ATTACK_STATUS_MISS]               = { x = { min = 55., max = 65. },   y = { min = 55., max = 65. }, },
-            [HEAL_STATUS]                       = { x = { min = -10., max = 10. },  y = { min = 0., max = -30. }, },
-            [RESOURCE_STATUS]                   = { x = { min = -10., max = 10. },  y = { min = 20., max = -60. }, },
-            [REFLECT_STATUS]                    = { x = { min = -50., max = -20. },  y = { min = 20., max = -60. }, },
+            [ATTACK_STATUS_USUAL]               = { x = { min = 35., max = 55. },   y = { min = 35., max = 55. }, },
+            [ATTACK_STATUS_CRITICAL]            = { x = { min = 55., max = 75. },   y = { min = 55., max = 75. }, },
+            [ATTACK_STATUS_CRITICAL_BLOCKED]    = { x = { min = 35., max = 55. },   y = { min = 35., max = 55. }, },
+            [ATTACK_STATUS_BLOCKED]             = { x = { min = 55., max = 75. },   y = { min = 55., max = 75. }, },
+            [ATTACK_STATUS_EVADE]               = { x = { min = 55., max = 75. },   y = { min = 55., max = 75. }, },
+            [ATTACK_STATUS_MISS]               = { x = { min = 55., max = 75. },   y = { min = 55., max = 75. }, },
+            [HEAL_STATUS]                       = { x = { min = -10., max = 20. },  y = { min = 0., max = -40. }, },
+            [RESOURCE_STATUS]                   = { x = { min = -10., max = 20. },  y = { min = 20., max = -70. }, },
+            [REFLECT_STATUS]                    = { x = { min = -50., max = -30. },  y = { min = 20., max = -70. }, },
         }
 
     end

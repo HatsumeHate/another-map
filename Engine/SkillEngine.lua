@@ -211,24 +211,17 @@ do
 
 
     function UpdateBindedSkillsManacosts(unit)
-        if TraceBug then print("UpdateBindedSkillsManacosts") end
         local unit_data = GetUnitData(unit)
         local player = GetPlayerId(GetOwningPlayer(unit)) + 1
-            if TraceBug then print("UpdateBindedSkillsManacosts B") end
             for key = KEY_Q, KEY_F do
-                if TraceBug then print("UpdateBindedSkillsManacosts C - key " .. key) end
                 if KEYBIND_LIST[key].player_skill_bind[player] and KEYBIND_LIST[key].player_skill_bind[player] > 0 then
-                    if TraceBug then print("UpdateBindedSkillsManacosts skill binded") end
                     local skill = GetUnitSkillData(PlayerHero[player], KEYBIND_LIST[key].player_skill_bind_string_id[player])
-                    if TraceBug then print("UpdateBindedSkillsManacosts skill") end
                     local level = UnitGetAbilityLevel(PlayerHero[player], skill.Id)
-                    if TraceBug then print("UpdateBindedSkillsManacosts level") end
                     local manacost = ((skill.level[level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
-                    if TraceBug then print("UpdateBindedSkillsManacosts manacost calculate") end
+
                         if manacost < 0. then manacost = 0 end
 
                         BlzSetUnitAbilityManaCost(PlayerHero[player], KEYBIND_LIST[key].ability, 0, math.floor(manacost + 0.5))
-                    if TraceBug then print("UpdateBindedSkillsManacosts manacost set") end
                 end
             end
     end
@@ -236,15 +229,12 @@ do
 
     function UpdateBindedSkillsData(player)
         local unit_data = GetUnitData(PlayerHero[player])
-        if TraceBug then print("UpdateBindedSkillsData") end
 
             for key = KEY_Q, KEY_F do
                 if KEYBIND_LIST[key].player_skill_bind[player] and KEYBIND_LIST[key].player_skill_bind[player] > 0 then
                     local skill = GetUnitSkillData(PlayerHero[player], KEYBIND_LIST[key].player_skill_bind_string_id[player])
-                    if TraceBug then print(skill.name) end
                     local ability = BlzGetUnitAbility(PlayerHero[player], KEYBIND_LIST[key].ability)
                     local level = UnitGetAbilityLevel(PlayerHero[player], skill.Id)
-                    if TraceBug then print(level) end
 
                         BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[level].range or 0.)
                         BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[level].radius or 0.)
@@ -309,7 +299,6 @@ do
 
             ability = BlzGetUnitAbility(unit, ability_id)
             local level = UnitGetAbilityLevel(unit, id)
-
 
             BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[level].range or 0.)
             BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[level].radius or 0.)
@@ -548,6 +537,7 @@ do
 
             if unit_data.cast_effect_permanent_pack then
                 for i = 1, #unit_data.cast_effect_permanent_pack do
+                    BlzSetSpecialEffectScale(unit_data.cast_effect_permanent_pack[i], 1.)
                     DestroyEffect(unit_data.cast_effect_permanent_pack[i])
                 end
             end
@@ -655,6 +645,7 @@ do
 
             if unit_data.channeled_destructor then
                 unit_data.channeled_destructor(unit)
+                unit_data.channeled_destructor = nil
             end
 
             BlzUnitInterruptAttack(unit)
@@ -674,6 +665,7 @@ do
 
             if unit_data.cast_effect_permanent_pack then
                 for i = 1, #unit_data.cast_effect_permanent_pack do
+                    BlzSetSpecialEffectScale(unit_data.cast_effect_permanent_pack[i], 1.)
                     DestroyEffect(unit_data.cast_effect_permanent_pack[i])
                 end
                 unit_data.cast_effect_permanent_pack = nil
@@ -709,6 +701,7 @@ do
 
             if unit_data.cast_effect_permanent_pack then
                 for i = 1, #unit_data.cast_effect_permanent_pack do
+                    BlzSetSpecialEffectScale(unit_data.cast_effect_permanent_pack[i], 1.)
                     DestroyEffect(unit_data.cast_effect_permanent_pack[i])
                 end
                 unit_data.cast_effect_permanent_pack = nil
@@ -863,29 +856,44 @@ do
             end
 
 
+            local track_skill_bug = false
+
+            RegisterTestCommand("trackskill", function()
+                track_skill_bug = true
+            end)
+
             local SkillCastTrigger = CreateTrigger()
             TriggerRegisterAnyUnitEventBJ(SkillCastTrigger, EVENT_PLAYER_UNIT_SPELL_EFFECT)
             TriggerAddAction(SkillCastTrigger, function()
+
+                if track_skill_bug then print("start spell effect") end
+
                 local id = GetSpellAbilityId()
                 local skill = GetKeybindAbility(id, GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1)
 
+                if track_skill_bug then print("keybind") end
+                if track_skill_bug then print("skill " .. skill) end
 
                 if skill == 0 then skill = GetSkillData(id)
                 else skill = GetSkillData(skill) end
 
+
+                if track_skill_bug then print("skill name " .. skill.name) end
 
                 if skill then
 
                     local unit_data = GetUnitData(GetTriggerUnit())
                     skill = GetUnitSkillData(unit_data.Owner, skill.Id)
 
+
                     if skill == nil then return end
 
+                    if track_skill_bug then print("skill exists") end
+
                     local ability_level = UnitGetAbilityLevel(unit_data.Owner, skill.Id)
-                    GenerateSkillLevelData(skill, ability_level)
                     local manacost = ((skill.level[ability_level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
 
-
+                    if track_skill_bug then print("skill manacosts") end
                     if skill.level[ability_level].required_weapon then
                         if not CanCastSkillWithWeapon(skill, ability_level, unit_data.equip_point[WEAPON_POINT].SUBTYPE) then
                             local unit = GetTriggerUnit()
@@ -898,7 +906,7 @@ do
                         end
                     end
 
-
+if track_skill_bug then print("skill requirements") end
                     local target = GetSpellTargetUnit()
                     local spell_x = GetSpellTargetX()
                     local spell_y = GetSpellTargetY()
@@ -917,14 +925,15 @@ do
                             end
 
                     end
-
+if track_skill_bug then print("skill custom cond") end
 
                     if not skill.channel then
                         if unit_data.channeled_destructor then
                             unit_data.channeled_destructor(unit_data.Owner)
+                            unit_data.channeled_destructor = nil
                         end
                     end
-
+if track_skill_bug then print("skill channel break") end
 
                     local animation = nil
                     local sequence = nil
@@ -964,8 +973,6 @@ do
                     --print("ability level is " .. I2S(ability_level))
                     -- 0.4 * 2. -> 0.8 /// 0.4 * 0.5 -> 0.2
 
-
-
                     local skill_additional_data = {
                         time_reduction = time_reduction,
                         ability_level = ability_level,
@@ -978,6 +985,7 @@ do
                     if skill_additional_data.manacost < 0. then skill_additional_data.manacost = 0 end
 
                     OnSkillPrecast(unit_data.Owner, target, skill, ability_level, skill_additional_data)
+
 
                     if skill.current_charges then
                         local player = GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1
@@ -1028,6 +1036,7 @@ do
                     else
                         BlzSetUnitAbilityCooldown(unit_data.Owner, id, 0, skill_additional_data.cooldown)
                     end
+
 
                     BlzSetUnitAbilityManaCost(unit_data.Owner, id, 0, skill_additional_data.manacost)
 
@@ -1081,7 +1090,7 @@ do
                                 unit_data.cast_effect_pack = nil
                             end
 
-                            if skill.level[ability_level].end_effect_on_cast_point ~= nil then
+                            if skill.level[ability_level].end_effect_on_cast_point then
                                 bj_lastCreatedEffect = AddSpecialEffect(skill.level[ability_level].end_effect_on_cast_point, spell_x, spell_y)
                                 BlzSetSpecialEffectScale(bj_lastCreatedEffect, skill.level[ability_level].end_effect_on_cast_point_scale or 1.)
                                 DestroyEffect(bj_lastCreatedEffect)
@@ -1092,8 +1101,8 @@ do
                                         if target then
                                             if target == unit_data.Owner then
                                                 --print("throw missile")
-                                                ThrowMissile(unit_data.Owner, target, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level, tags = skill_additional_data.tags },
-                                                    GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), GetUnitX(target), GetUnitY(target), GetUnitFacing(unit_data.Owner), skill.level[ability_level].from_unit)
+                                                ThrowMissile(unit_data.Owner, nil, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level, tags = skill_additional_data.tags },
+                                                    GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), 0., 0., GetUnitFacing(unit_data.Owner), skill.level[ability_level].from_unit)
                                                 --print("throw missile end")
                                             else
                                                 --print("throw missile")
@@ -1111,12 +1120,11 @@ do
                                         end
 
                                     elseif skill.level[ability_level].effect then
-
                                         if target and target ~= unit_data.Owner then
                                             SetUnitFacing(unit_data.Owner, AngleBetweenUnits(unit_data.Owner, target))
                                             ApplyEffect(unit_data.Owner, target, 0.,0., skill.level[ability_level].effect, ability_level, skill_additional_data.tags)
                                         elseif target and target == unit_data.Owner then
-                                            ApplyEffect(unit_data.Owner, nil, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), skill.level[ability_level].effect, ability_level, skill_additional_data.tags)
+                                            ApplyEffect(unit_data.Owner, target, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), skill.level[ability_level].effect, ability_level, skill_additional_data.tags)
                                         else
                                             ApplyEffect(unit_data.Owner, nil, spell_x, spell_y, skill.level[ability_level].effect, ability_level, skill_additional_data.tags)
                                         end
@@ -1125,14 +1133,11 @@ do
                                 end
 
                             TimerStart(unit_data.action_timer, (sequence.animation_backswing or 0.) * time_reduction, false, function ()
-                                --print("backswing")
                                 SpellBackswing(unit_data.Owner)
-                                --print("backswing end")
                             end)
 
                             OnSkillCastEnd(unit_data.Owner, target, spell_x, spell_y, skill, ability_level)
 
-                            --print("cast done")
                         end)
 
                 end

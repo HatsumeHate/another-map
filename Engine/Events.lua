@@ -183,6 +183,8 @@ do
             LightningBall_VisualEffect(target, missile)
         elseif missile.id == 'MSCN' then
             ApplyBuff(source, target, "ASCB", 1)
+        elseif missile.id == 'MNBS' and UnitHasEffect(source, "splitter_legendary") then
+            SplitterLegendaryEffect(source, target)
         end
     end
 
@@ -230,9 +232,9 @@ do
 
 
             if effect.id == "EEXC" then
-                if GetUnitState(target, UNIT_STATE_LIFE) / GetUnitState(target, UNIT_STATE_MAX_LIFE) <= 0.2  then
+                if GetUnitState(target, UNIT_STATE_LIFE) / GetUnitState(target, UNIT_STATE_MAX_LIFE) <= 0.33  then
                     leveled_effect.power = R2I(leveled_effect.power * 3)
-                    leveled_effect.bonus_crit_chance = 20.
+                    leveled_effect.bonus_crit_chance = 15.
                 end
             elseif effect.id == "ELST" then
                 DelayAction(0.25, function()
@@ -245,14 +247,14 @@ do
                     BlzSetSpecialEffectScale(speceffect, 0.6)
                     DelayAction(0.5, function() DestroyEffect(speceffect) end)
                 end)
-            elseif UnitHasEffect(source, "PNEC") then
-                if effect.id == "ECSP" then
+            elseif effect.id == "ECSP" then
+                if UnitHasEffect(source, "PNEC") then
                     leveled_effect.can_crit = true
                     leveled_effect.bonus_crit_chance = 25.
                 end
             elseif effect.id == "EBLZ" then
                 local unit_data = GetUnitData(source)
-                effect.level[effect.current_level].area_of_effect = 200. * (1. + unit_data.blz_scale)
+                effect.level[effect.current_level].area_of_effect = effect.level[effect.current_level].area_of_effect * unit_data.blz_scale
             end
 
         if UnitHasEffect(source, "FRBD") then
@@ -274,7 +276,7 @@ do
             leveled_effect.power = leveled_effect.power * 1.4
         end
 
-        if HasTag(effect.tags, "talent_arc_discharge1") or HasTag(effect.tags, "talent_arc_discharge2") or HasTag(effect.tags, "talent_arc_discharge3") then
+        if (leveled_effect.attribute and leveled_effect.attribute == LIGHTNING_ATTRIBUTE) and (HasTag(effect.tags, "talent_arc_discharge1") or HasTag(effect.tags, "talent_arc_discharge2") or HasTag(effect.tags, "talent_arc_discharge3")) then
             local unit_data = GetUnitData(source)
             local boost_level = 1
 
@@ -282,7 +284,14 @@ do
             if HasTag(effect.tags, "talent_arc_discharge2") then boost_level = 2
             elseif HasTag(effect.tags, "talent_arc_discharge3") then boost_level = 3 end
 
-            leveled_effect.power = leveled_effect.power * (1. + (0.1 * boost_level))
+            if leveled_effect.power and leveled_effect.power > 0 then
+                leveled_effect.power = leveled_effect.power * (1. + (0.1 * boost_level))
+            elseif leveled_effect.attack_percent_bonus then
+                leveled_effect.attack_percent_bonus = leveled_effect.attack_percent_bonus * (1. + (0.1 * boost_level))
+            elseif leveled_effect.weapon_damage_percent_bonus then
+                leveled_effect.weapon_damage_percent_bonus = leveled_effect.weapon_damage_percent_bonus * (1. + (0.1 * boost_level))
+            end
+
         end
 
         if GetUnitTalentLevel(source, "talent_sharpened_blade") > 0 and HasTag(effect.tags, "talent_sharpened_blade") and leveled_effect.is_direct then
@@ -384,18 +393,20 @@ do
             DelayAction(0., function()
                 local duration = GetMaxDurationCurse(source, target)
 
-                if duration > 0. then
+                if duration > 0 then
 
                     if GetUnitTalentLevel(source, "talent_frailty") > 0 then
                         ApplyBuff(source, target, "AFRL", GetUnitTalentLevel(source, "talent_frailty"))
-                        local newbuff = GetBuffDataFromUnit(target, "AAMD")
-                        newbuff.expiration_time = duration
+                        --local newbuff = GetBuffDataFromUnit(target, "AAMD")
+                        --newbuff.expiration_time = duration
+                        SetBuffExpirationTime(target, "AFRL", duration)
                     end
 
                     if GetUnitTalentLevel(source, "talent_amplify_damage") > 0 then
                         ApplyBuff(source, target, "AAMD", GetUnitTalentLevel(source, "talent_amplify_damage"))
-                        local newbuff = GetBuffDataFromUnit(target, "AAMD")
-                    newbuff.expiration_time = duration
+                        SetBuffExpirationTime(target, "AAMD", duration)
+                        --local newbuff = GetBuffDataFromUnit(target, "AAMD")
+                        --newbuff.expiration_time = duration
                     end
 
                 end
@@ -474,33 +485,38 @@ do
                     end
             end
 
+            if GetUnitTalentLevel(source, "talent_persistent_curse") > 0 then
+                SetBuffExpirationTime(target, buff.id, GetBuffExpirationTime(target, buff.id) + (GetUnitTalentLevel(source, "talent_persistent_curse") * 1))
+                --buff.expiration_time = buff.expiration_time + (GetUnitTalentLevel(source, "talent_persistent_curse") * 1)
+            end
 
             if GetUnitTalentLevel(source, "talent_frailty") > 0 then
                 ApplyBuff(source, target, "AFRL", GetUnitTalentLevel(source, "talent_frailty"))
-                local newbuff = GetBuffDataFromUnit(target, "AFRL")
-                newbuff.expiration_time = buff.expiration_time
+                SetBuffExpirationTime(target, "AFRL", GetBuffExpirationTime(target, buff.id))
+                --local newbuff = GetBuffDataFromUnit(target, "AFRL")
+                --newbuff.expiration_time = buff.expiration_time
             end
 
             if GetUnitTalentLevel(source, "talent_amplify_damage") > 0 then
                 ApplyBuff(source, target, "AAMD", GetUnitTalentLevel(source, "talent_amplify_damage"))
-                local newbuff = GetBuffDataFromUnit(target, "AAMD")
-                newbuff.expiration_time = buff.expiration_time
+                SetBuffExpirationTime(target, "AAMD", GetBuffExpirationTime(target, buff.id))
+                --local newbuff = GetBuffDataFromUnit(target, "AAMD")
+                --newbuff.expiration_time = buff.expiration_time
             end
 
             if GetUnitTalentLevel(source, "talent_face_of_death") > 0 then
                 ApplyBuff(source, target, "AFOD", GetUnitTalentLevel(source, "talent_face_of_death"))
             end
 
-            if GetUnitTalentLevel(source, "talent_persistent_curse") > 0 then
-               buff.expiration_time = buff.expiration_time + (GetUnitTalentLevel(source, "talent_persistent_curse") * 1)
-            end
+
         end
 
         if GetUnitTalentLevel(source, "talent_insanity") > 0 then
             if buff.level[buff.current_level].negative_state == STATE_FEAR then
                 ApplyBuff(source, target, "AINS", GetUnitTalentLevel(source, "talent_insanity"))
-                local newbuff = GetBuffDataFromUnit(target, "AINS")
-                newbuff.expiration_time = buff.expiration_time
+                SetBuffExpirationTime(target, "AINS", GetBuffExpirationTime(target, buff.id))
+                --local newbuff = GetBuffDataFromUnit(target, "AINS")
+                --newbuff.expiration_time = buff.expiration_time
             end
         end
 
@@ -521,11 +537,20 @@ do
     ---@param damage real
     function OnDamage_End(source, target, damage, damage_data)
 
-        if damage_data.effect and damage_data.effect.id == "EEXC" then
+        if damage_data.effect and damage_data.effect.eff.id == "EEXC" then
             local ability_level = UnitGetAbilityLevel(source, "A020")
-            if ability_level >= 10 and GetUnitState(target, UNIT_STATE_LIFE) < 0.045 then
-                ApplyBuff(source, source, "ANRD", ability_level)
-            end
+
+                if GetUnitState(target, UNIT_STATE_LIFE) < 0.045 then
+
+                    if ability_level >= 10 then
+                        ApplyBuff(source, source, "ANRD", ability_level)
+                    end
+
+                    if UnitHasEffect(source, "executioner_Legendary") then
+                        ApplyEffect(source, source, 0,0, "executioner_heal", 1)
+                        DelayAction(0.1, function() BlzEndUnitAbilityCooldown(source, GetKeybindKeyAbility(FourCC("A020"), GetPlayerId(GetOwningPlayer(source))+1)) end)
+                    end
+                end
         end
 
         if UnitHasEffect(target, "trait_lightning") and damage_data.is_direct then
@@ -843,7 +868,7 @@ do
                 ApplyBuff(source, target, "ATVL", GetUnitTalentLevel(source, "talent_vulnerability"))
             end
 
-            if GetUnitTalentLevel(source, "talent_pursuer") > 0 and attack_data.myeffect and attack_data.myeffect.id ~= "effect_pursuer" then
+            if GetUnitTalentLevel(source, "talent_pursuer") > 0 and attack_data.effect and attack_data.effect.eff.id ~= "effect_pursuer" then
                 if Chance(17.) then LaunchPursuer(source) end
             end
 
@@ -1093,7 +1118,7 @@ do
                 skill_data.tags[#skill_data.tags+1] = "talent_heating_up"
             end
 
-        if unit_data.arc_discharge_boost then
+        if skill.category == SKILL_CATEGORY_LIGHTNING and unit_data.arc_discharge_boost then
             skill_data.tags[#skill_data.tags+1] = "talent_arc_discharge" .. unit_data.arc_discharge_boost
         end
 

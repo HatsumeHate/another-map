@@ -314,21 +314,6 @@ do
     end
 
 
-    ---@param player integer
-    ---@param id string
-    function RemoveJournalEntry(player, id)
-        for i = 1, #JournalFrame[player].entries_list do
-            if JournalFrame[player].entries_list[i].id == id then
-                if JournalFrame[player].entry_in_focus == JournalFrame[player].entries_list[i] then JournalFrame[player].entry_in_focus = nil end
-                JournalFrame[player].entries_list[i] = nil
-                table.remove(JournalFrame[player].entries_list, i)
-                UpdateJournalWindow(player)
-                break
-            end
-        end
-    end
-
-
     local function SortEntries(player)
         local entry_list = JournalFrame[player].entries_list
         local max = #entry_list
@@ -353,6 +338,21 @@ do
 
         end
 
+    end
+
+    ---@param player integer
+    ---@param id string
+    function RemoveJournalEntry(player, id)
+        for i = 1, #JournalFrame[player].entries_list do
+            if JournalFrame[player].entries_list[i] and JournalFrame[player].entries_list[i].id == id then
+                if JournalFrame[player].entry_in_focus == JournalFrame[player].entries_list[i] then JournalFrame[player].entry_in_focus = nil end
+                --JournalFrame[player].entries_list[i] = nil
+                table.remove(JournalFrame[player].entries_list, i)
+                SortEntries(player)
+                UpdateJournalWindow(player)
+                break
+            end
+        end
     end
 
 
@@ -625,27 +625,6 @@ do
 
         TriggerAddAction(ClickTrigger, ClickActions)
 
-        RegisterTestCommand("jr", function()
-            CreateJournal(1)
-            BlzFrameSetVisible(JournalFrame[1].mainframe, true)
-        end)
-
-        RegisterTestCommand("jru", function()
-            UpdateJournalWindow(1)
-        end)
-
-        RegisterTestCommand("jrpeo", function()
-            AddJournalEntry(1, "peonetti", "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", "Peon things", 1000)
-            AddJournalEntryText(1, "peonetti", "this is a plain text.")
-        end)
-
-        RegisterTestCommand("en1", function()
-            AddJournalEntryText(1, "peonetti", "this is a plain text. second. yes")
-        end)
-
-        RegisterTestCommand("en2", function()
-            AddJournalEntryText(1, "peonetti", "again? huh")
-        end)
     end
 
 end

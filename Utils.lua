@@ -686,19 +686,19 @@
 	---@param x real
 	---@param y real
 	function SetUnitPositionSmooth(source, x, y)
-		local last_x = GetUnitX(source)
-		local last_y = GetUnitY(source)
+		local last_x = RealGetUnitX(source)
+		local last_y = RealGetUnitY(source)
 		local bx
 		local by
 
 		SetUnitPosition(source, x, y)
 
-		if (RAbsBJ(GetUnitX(source) - x) > 0.5) or (RAbsBJ(GetUnitY(source) - y) > 0.5) then
+		if (RAbsBJ(RealGetUnitX(source) - x) > 0.5) or (RAbsBJ(RealGetUnitY(source) - y) > 0.5) then
 
 			SetUnitPosition(source, x, last_y)
-			bx = RAbsBJ(GetUnitX(source) - x) <= 0.5
+			bx = RAbsBJ(RealGetUnitX(source) - x) <= 0.5
 			SetUnitPosition(source, last_x, y)
-			by = RAbsBJ(GetUnitY(source) - y) <= 0.5
+			by = RAbsBJ(RealGetUnitY(source) - y) <= 0.5
 
 			if bx then
 				SetUnitPosition(source, x, last_y)
@@ -805,18 +805,40 @@
 	end
 
 
+		RealGetUnitX = GetUnitX
+    	RealGetUnitY = GetUnitY
+
+
+    function GetUnitRealX(unit)
+        local collision = math.floor(BlzGetUnitCollisionSize(unit) + 0.5)
+
+		if not IsUnitType(unit, UNIT_TYPE_STRUCTURE) then
+			if (collision < 32 and collision > 15) or collision > 47 then return RealGetUnitX(unit) - 16. end
+		end
+
+        return RealGetUnitX(unit)
+    end
+
+    function GetUnitRealY(unit)
+        local collision = math.floor(BlzGetUnitCollisionSize(unit) + 0.5)
+
+		if not IsUnitType(unit, UNIT_TYPE_STRUCTURE) then
+        	if (collision < 32 and collision > 15) or collision > 47 then return RealGetUnitY(unit) - 16. end
+		end
+
+        return RealGetUnitY(unit)
+    end
+
 	---@param texture_id string
 	---@param u unit
 	function SetTexture(u, texture_id)
-		bj_lastCreatedDestructable = CreateDestructable(FourCC(texture_id), GetUnitX(u) + Rx(10., GetUnitFacing(u)), GetUnitY(u) + Ry(10., GetUnitFacing(u)), 0., 1., 0)
-		UnitAddAbility(u, FourCC('Agra'))
-
-		IssueTargetOrderById(u, order_grabtree, bj_lastCreatedDestructable)
-		--DelayAction(0., function()
+		local facing = GetUnitFacing(u)
+			bj_lastCreatedDestructable = CreateDestructable(FourCC(texture_id), RealGetUnitX(u) + Rx(32., facing), RealGetUnitY(u) + Ry(32., facing), 0., 3., 0)
+			UnitAddAbility(u, FourCC('Agra'))
+			IssueTargetOrderById(u, order_grabtree, bj_lastCreatedDestructable)
 			UnitRemoveAbility(u, FourCC('Agra'))
 			RemoveDestructable(bj_lastCreatedDestructable)
 			SetUnitAnimation(u, "stand")
-		--end)
 	end
 
 

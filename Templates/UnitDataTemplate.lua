@@ -73,11 +73,14 @@ do
 
     ---@param effect string
     ---@param unit unit
+    ---@return boolean
     function UnitHasEffect(unit, effect)
         local unit_data = GetUnitData(unit)
         return unit_data.effects[effect]
     end
 
+    ---@param effect string
+    ---@param unit unit
     function UnitAddEffect(unit, effect)
         local unit_data = GetUnitData(unit)
 
@@ -88,6 +91,8 @@ do
 
     end
 
+    ---@param effect string
+    ---@param unit unit
     function UnitRemoveEffect(unit, effect)
         local unit_data = GetUnitData(unit)
 
@@ -102,6 +107,7 @@ do
     end
 
 
+
     ---@param source unit
     ---@param reference_data table
     function NewUnitByTemplate(source, reference_data)
@@ -114,7 +120,9 @@ do
                 strength = class_base_stats[1], vitality = class_base_stats[2], agility = class_base_stats[3], intellect = class_base_stats[4],
                 health = reference_data.base_stats.health or BASE_HEALTH, mana = reference_data.base_stats.mana or BASE_MANA,
                 hp_regen = reference_data.base_stats.hp_regen or BASE_HEALTH_REGEN, mp_regen = reference_data.base_stats.mp_regen or BASE_MANA_REGEN,
-                moving_speed = reference_data.base_stats.moving_speed or BASE_MOVING_SPEED
+                moving_speed = reference_data.base_stats.moving_speed or BASE_MOVING_SPEED,
+                damage_point = BlzGetUnitWeaponRealField(source, UNIT_WEAPON_RF_ATTACK_DAMAGE_POINT, 0),
+                backswing_point = BlzGetUnitWeaponRealField(source, UNIT_WEAPON_RF_ATTACK_BACKSWING_POINT, 0)
             },
 
             action_timer = CreateTimer(),
@@ -255,11 +263,14 @@ do
 
 
 
+
+
+
+
     function UnitDataInit()
 
         UnitsData       = { }
         UnitsList       = { }
-
 
         BASE_STATS = {
             [BARBARIAN_CLASS]   = { 10, 9, 6, 5 },
@@ -328,8 +339,9 @@ do
             unit_class = BARBARIAN_CLASS,
             has_mp = true,
             time_before_remove = 0.,
-            base_stats = { health = 175., moving_speed = 300 },
+            base_stats = { health = 225., moving_speed = 325 },
             missile_eject_range = 50.,
+            collision = 28
         })
 
         NewUnitTemplate('HSRC', {
@@ -337,7 +349,8 @@ do
             has_mp = true,
             time_before_remove = 0.,
             missile_eject_range = 50.,
-            base_stats = { health = 175., moving_speed = 300 },
+            base_stats = { health = 225., moving_speed = 325 },
+            collision = 28
         })
 
         NewUnitTemplate('HNCR', {
@@ -345,7 +358,7 @@ do
             has_mp = true,
             time_before_remove = 0.,
             missile_eject_range = 50.,
-            base_stats = { health = 175., moving_speed = 300 },
+            base_stats = { health = 225., moving_speed = 325 },
         })
 
         NewUnitTemplate('HPAL', {
@@ -353,7 +366,7 @@ do
             has_mp = true,
             time_before_remove = 0.,
             missile_eject_range = 50.,
-            base_stats = { health = 175., moving_speed = 300 },
+            base_stats = { health = 225., moving_speed = 325 },
             classic_model = true,
         })
 
@@ -362,7 +375,7 @@ do
             has_mp = true,
             time_before_remove = 0.,
             missile_eject_range = 50.,
-            base_stats = { health = 175., moving_speed = 300 },
+            base_stats = { health = 225., moving_speed = 325 },
             classic_model = true,
         })
 
@@ -371,7 +384,7 @@ do
             has_mp = true,
             time_before_remove = 0.,
             missile_eject_range = 50.,
-            base_stats = { health = 175., moving_speed = 300 },
+            base_stats = { health = 225., moving_speed = 325 },
             classic_model = true,
         })
 
@@ -380,11 +393,19 @@ do
             has_mp = true,
             time_before_remove = 0.,
             missile_eject_range = 50.,
-            base_stats = { health = 175., moving_speed = 300 },
+            base_stats = { health = 225., moving_speed = 325 },
             classic_model = true,
         })
 
-
+        -- illusion
+        NewUnitTemplate('srci', {
+            unit_class = SORCERESS_CLASS,
+            has_mp = true,
+            time_before_remove = 10.,
+            missile_eject_range = 50.,
+            colours = { r = 100, g = 100, b = 255 },
+            base_stats = { health = 225., moving_speed = 335 },
+        })
 
 
         -- leech

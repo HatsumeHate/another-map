@@ -18,7 +18,7 @@ do
             GiveGoldForPlayer(1000, player)
             GiveExpForPlayer(450, player)
             RemoveJournalEntry(player, "task_arachno")
-            LockInteractiveOptionId(gg_unit_n029_0022, "anar_task_arachno_done")
+            LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_task_arachno_done", player)
             PlayerTask[player] = false
 
     end
@@ -71,7 +71,7 @@ do
             GiveGoldForPlayer(1000, player)
             GiveExpForPlayer(450, player)
             RemoveJournalEntry(player, "task_banditlord")
-            LockInteractiveOptionId(gg_unit_n029_0022, "anar_task_banditlord_done")
+            LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_task_banditlord_done", player)
             PlayerTask[player] = false
 
     end
@@ -123,7 +123,7 @@ do
             GiveGoldForPlayer(1000, player)
             GiveExpForPlayer(450, player)
             RemoveJournalEntry(player, "task_restlessundead")
-            LockInteractiveOptionId(gg_unit_n029_0022, "anar_task_restlessundead_done")
+            LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_task_restlessundead_done", player)
             PlayerTask[player] = false
 
     end
@@ -176,7 +176,7 @@ do
             GiveGoldForPlayer(1000, player)
             GiveExpForPlayer(450, player)
             RemoveJournalEntry(player, "task_spiderqueen")
-            LockInteractiveOptionId(gg_unit_n029_0022, "anar_task_spiderqueen_done")
+            LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_task_spiderqueen_done", player)
             PlayerTask[player] = false
 
     end
@@ -260,7 +260,7 @@ do
 
 
     local function SpawnMonsters_AttackPoint(rects, monsterpack, monsters,  point_x, point_y, death_trigger)
-
+                --TODO
             for i = 1, #rects do
                 SpawnClearMonsterPack(rects[i], monsters, monsterpack, 1, 3, 1, 15., MONSTER_PLAYER)
             end
@@ -284,7 +284,7 @@ do
         GiveGoldForPlayer(1000, player)
         GiveExpForPlayer(450, player)
         RemoveJournalEntry(player, "task_soldiersrescue")
-        LockInteractiveOptionId(gg_unit_n029_0022, "anar_task_soldiersrescue_done")
+        LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_task_soldiersrescue_done", player)
     end
 
 
@@ -522,6 +522,20 @@ do
                     end
                 end
             end
+        end)
+
+        RegisterTestCommand("jr+", function()
+            print("????????")
+            AddJournalEntry(1, "task_soldiersrescue", "UI\\BTNOrderFootmanIcon.blp", GetLocalString("Спасательная Операция", "Rescue Mission"), 150, true)
+            print("????????")
+            AddJournalEntryText(1, "task_soldiersrescue", GetConversationText(SoldierRescueTaskData[1].conversation, gg_unit_n029_0022, 1))
+            print("????????")
+            AddJournalEntryObjective(1, "task_soldiersrescue", "task_soldiersrescue_obj", GetLocalString("Солдаты спасены", "Soldiers Rescued"))
+            print("????????")
+        end)
+
+        RegisterTestCommand("jr-", function()
+            RemoveJournalEntry(1, "task_soldiersrescue")
         end)
 
     end

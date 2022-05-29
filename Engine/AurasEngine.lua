@@ -55,6 +55,10 @@ do
     end
 
 
+    ---@param target unit
+    ---@param id string
+    ---@param level integer
+    ---@param flag boolean
     function ToggleAuraOnUnit(target, id, level, flag)
         local aura = GetUnitAuraData(target, id)
 
@@ -65,6 +69,7 @@ do
                     aura.current_level = level
                     if aura.level[aura.current_level].duration then aura.time = aura.level[aura.current_level].duration end
                 else
+
                     local player = GetOwningPlayer(target)
                     aura = MergeTables({}, GetAuraData(id))
                     AuraList[target][id] = aura
@@ -72,11 +77,10 @@ do
                     aura.group = CreateGroup()
                     aura.current_level = level
                     aura.time = aura.level[aura.current_level].duration or nil
-
                     aura.sfx = AddSpecialEffectTarget(aura.sfx_path, target, aura.sfx_point)
                     BlzSetSpecialEffectScale(aura.sfx, aura.level[aura.current_level].sfx_scale or 1.)
-
                     TimerStart(aura.timer, aura.tickrate, true, function()
+
                         if GetUnitState(target, UNIT_STATE_LIFE) < 0.045 or (aura.time and aura.time <= 0.) then
                             DestroyGroup(aura.group)
                             DestroyTimer(aura.timer)
@@ -89,6 +93,7 @@ do
                                     local picked = BlzGroupUnitAt(aura.group, index)
 
                                         if GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
+
                                             if aura.level[aura.current_level][ON_ENEMY] and IsUnitEnemy(picked, player) then
 
                                                 if aura.level[aura.current_level][ON_ENEMY].applied_effect then
@@ -97,12 +102,12 @@ do
                                                     ApplyBuff(target, picked, aura.level[aura.current_level][ON_ENEMY].applied_buff, aura.current_level)
                                                 end
 
-                                            elseif aura.level[aura.current_level][ON_ALLY] and not IsUnitEnemy(picked, player) then
+                                            elseif aura.level[aura.current_level][ON_ALLY] and not IsUnitEnemy(picked, player) and picked ~= target then
 
                                                 if aura.level[aura.current_level][ON_ALLY].applied_effect then
-                                                    ApplyEffect(target, picked, 0.,0., aura.level[aura.current_level][ON_ENEMY].applied_effect, aura.current_level)
+                                                    ApplyEffect(target, picked, 0.,0., aura.level[aura.current_level][ON_ALLY].applied_effect, aura.current_level)
                                                 elseif aura.level[aura.current_level][ON_ALLY].applied_buff then
-                                                    ApplyBuff(target, picked, aura.level[aura.current_level][ON_ENEMY].applied_buff, aura.current_level)
+                                                    ApplyBuff(target, picked, aura.level[aura.current_level][ON_ALLY].applied_buff, aura.current_level)
                                                 end
 
                                             end
@@ -110,6 +115,14 @@ do
 
                                     GroupRemoveUnit(aura.group, picked)
                                 end
+
+                            if aura.level[aura.current_level][ON_SELF] then
+                                if aura.level[aura.current_level][ON_SELF].applied_effect then
+                                    ApplyEffect(target, target, 0.,0., aura.level[aura.current_level][ON_SELF].applied_effect, aura.current_level)
+                                elseif aura.level[aura.current_level][ON_SELF].applied_buff then
+                                    ApplyBuff(target, target, aura.level[aura.current_level][ON_SELF].applied_buff, aura.current_level)
+                                end
+                            end
 
                             if aura.time then aura.time = aura.time - aura.tickrate end
                         end

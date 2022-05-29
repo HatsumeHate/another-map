@@ -19,7 +19,9 @@ do
 
         if aura.max_level > 1 then
             for i = 2, aura.max_level do
-                aura.level[i] = MergeTables({}, aura.level[1])
+                if not aura.level[i] then
+                    aura.level[i] = MergeTables({}, aura.level[1])
+                end
             end
         end
 
@@ -51,6 +53,24 @@ do
             }
         })
 
+        NewAuraTemplate({
+            id = "hydra_aura",
+            name = "hydra fire aura",
+            max_level = 75,
+            sfx_path = "",
+            sfx_point = "origin",
+            tickrate = 0.5,
+            level = {
+                [1] = {
+                    sfx_scale = 1.,
+                    radius = 650.,
+                    [ON_ALLY] = {
+                        applied_buff = "HDAU"
+                    }
+                }
+            }
+        })
+
 
         RegisterTestCommand("aon", function()
             ToggleAuraOnUnit(PlayerHero[1], "grave_cold_aura", 1, true)
@@ -59,6 +79,7 @@ do
         RegisterTestCommand("aoff", function()
             ToggleAuraOnUnit(PlayerHero[1], "grave_cold_aura", 1, false)
         end)
+
 
     end
 

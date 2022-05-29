@@ -122,7 +122,7 @@ do
                 BlzFrameSetVisible(PlayerUI.skill_button_hotkey[i], true)
             end
 
-            for i = 1, 5 do BlzFrameSetVisible(PlayerUI.button_borders[i], true) end
+            for i = 1, 6 do BlzFrameSetVisible(PlayerUI.button_borders[i], true) end
 
             BlzFrameSetVisible(PlayerUI.hp_text_frame, true)
             BlzFrameSetVisible(PlayerUI.mp_text_frame, true)
@@ -438,17 +438,33 @@ do
                     UpdateBindedSkillsData(current_player)
 
                 end)
+
                 EnableGUIForPlayer(player)
+                PlayerUI.button_borders = {
+                    CreateUIBorder(GlobalButton[player].char_panel_button, 0.),
+                    CreateUIBorder(GlobalButton[player].skill_panel_button, 0.),
+                    CreateUIBorder(GlobalButton[player].inventory_panel_button, 0.),
+                    CreateUIBorder(GlobalButton[player].talents_panel_button, 0.),
+                    CreateUIBorder(GlobalButton[player].journal_panel_button, 0.),
+                    CreateUIBorder(GlobalButton[player].settings_panel_button, 0.)
+                }
+
+                PlayerUI.arrow = CreateSprite("UI\\arrow.mdx", 0.001, GlobalButton[player].skill_panel_button, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.01, GlobalButton[player].skill_panel_button)
+                PlayerUI.arrow_ability_text = BlzCreateFrameByType("TEXT", "helper", PlayerUI.arrow, "StandardLabelTextTemplate", 0)
+                BlzFrameSetFont(PlayerUI.arrow_ability_text, "D3font.ttf", 0.013, 0)
+                BlzFrameSetText(PlayerUI.arrow_ability_text, GetLocalString("Выберите способности для использования", "Pick and bind abilities for use"))
+                BlzFrameClearAllPoints(PlayerUI.arrow_ability_text)
+                BlzFrameSetScale(PlayerUI.arrow_ability_text, 1.)
+                BlzFrameSetPoint(PlayerUI.arrow_ability_text, FRAMEPOINT_TOPLEFT, PlayerUI.arrow, FRAMEPOINT_TOPRIGHT, 0.04, 0.1)
+                BlzFrameSetTextAlignment(PlayerUI.arrow_ability_text, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_MIDDLE)
+
+                if SkillPanelTutorialData[player] then
+                    BlzFrameSetVisible(PlayerUI.arrow, true)
+                    BlzFrameSetVisible(PlayerUI.arrow_ability_text, true)
+                end
+
             end
         end
-
-        PlayerUI.button_borders = {
-            CreateUIBorder(GlobalButton[1].char_panel_button, 0.),
-            CreateUIBorder(GlobalButton[2].skill_panel_button, 0.),
-            CreateUIBorder(GlobalButton[3].inventory_panel_button, 0.),
-            CreateUIBorder(GlobalButton[4].talents_panel_button, 0.),
-            CreateUIBorder(GlobalButton[5].journal_panel_button, 0.)
-        }
 
 
     end
@@ -814,14 +830,28 @@ do
 
             PlayerUI.button_borders = {
                 CreateUIBorder(GlobalButton[1].char_panel_button, 0.),
-                CreateUIBorder(GlobalButton[2].skill_panel_button, 0.),
-                CreateUIBorder(GlobalButton[3].inventory_panel_button, 0.),
-                CreateUIBorder(GlobalButton[4].talents_panel_button, 0.),
-                CreateUIBorder(GlobalButton[5].journal_panel_button, 0.)
+                CreateUIBorder(GlobalButton[1].skill_panel_button, 0.),
+                CreateUIBorder(GlobalButton[1].inventory_panel_button, 0.),
+                CreateUIBorder(GlobalButton[1].talents_panel_button, 0.),
+                CreateUIBorder(GlobalButton[1].journal_panel_button, 0.),
+                CreateUIBorder(GlobalButton[1].settings_panel_button, 0.)
             }
 
-            for i = 1, 5 do BlzFrameSetVisible(PlayerUI.button_borders[i], false) end
+            for i = 1, 6 do BlzFrameSetVisible(PlayerUI.button_borders[i], false) end
             BlzFrameSetVisible(PlayerUI.xp_bar, false)
+
+
+            PlayerUI.arrow = CreateSprite("UI\\arrow.mdx", 0.001, GlobalButton[1].skill_panel_button, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.01, GlobalButton[1].skill_panel_button)
+            PlayerUI.arrow_ability_text = BlzCreateFrameByType("TEXT", "helper", PlayerUI.arrow, "StandardLabelTextTemplate", 0)
+            BlzFrameSetFont(PlayerUI.arrow_ability_text, "D3font.ttf", 0.013, 0)
+            BlzFrameSetText(PlayerUI.arrow_ability_text, GetLocalString("Выберите способности для использования", "Pick and bind abilities for use"))
+            BlzFrameClearAllPoints(PlayerUI.arrow_ability_text)
+            BlzFrameSetScale(PlayerUI.arrow_ability_text, 1.)
+            BlzFrameSetPoint(PlayerUI.arrow_ability_text, FRAMEPOINT_TOPLEFT, PlayerUI.arrow, FRAMEPOINT_TOPRIGHT, 0.04, 0.1)
+            BlzFrameSetTextAlignment(PlayerUI.arrow_ability_text, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_MIDDLE)
+
+            BlzFrameSetVisible(PlayerUI.arrow, false)
+            BlzFrameSetVisible(PlayerUI.arrow_ability_text, false)
 
     end
 

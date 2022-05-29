@@ -75,7 +75,7 @@ do
             player_maps = {}
         end
 
-        AddJournalEntry(player, "quest_anar_scout", "ReplaceableTextures\\CommandButtons\\BTNSpy.blp", "Scouting Task", 75, true)
+        AddJournalEntry(player, "quest_anar_scout", "ReplaceableTextures\\CommandButtons\\BTNSpy.blp", GetLocalString("Поручение разведки", "Scouting Task"), 75, true)
 
         AddJournalEntryObjective(player, "quest_anar_scout", "scout_target_1", GetLocalString("Восточная точка разведана", "East point scouted"))
         AddQuestAreaForPlayer(player, MARK_TYPE_QUESTION, MARK_COMMON, 1., 300., GetRectCenterX(gg_rct_scout_region_1), GetRectCenterY(gg_rct_scout_region_1), function()
@@ -461,9 +461,9 @@ do
                     if IsMyQuestItemCompleted("que1m", "que1mitemvar2") then
                         SafePauseUnit(Lilith, true)
                         UnitAddAbility(Lilith, FourCC("Avul"))
-                        bj_lastCreatedEffect = AddSpecialEffect("Abilities\\Spells\\NightElf\\Starfall\\StarfallCaster.mdx", GetUnitX(Lilith), GetUnitY(Lilith))
+                        local starfall = AddSpecialEffect("Abilities\\Spells\\NightElf\\Starfall\\StarfallCaster.mdx", GetUnitX(Lilith), GetUnitY(Lilith))
                         DelayAction(5., function()
-                            DestroyEffect(bj_lastCreatedEffect)
+                            DestroyEffect(starfall)
                             DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Human\\DispelMagic\\DispelMagicTarget.mdx", GetUnitX(Lilith), GetUnitY(Lilith)))
                             DelayAction(1., function()
                                 ShowUnit(Lilith, false)

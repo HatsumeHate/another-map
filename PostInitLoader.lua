@@ -1,11 +1,13 @@
 do
 
 	local InitGlobalsOrigin = InitGlobals
-
+	
 
 	function InitGlobals()
 		InitGlobalsOrigin()
 
+		GetUnitX = GetUnitRealX
+        GetUnitY = GetUnitRealY
 
 		EnableDragSelect(false, false)
 		BlzEnableSelections(false, true)

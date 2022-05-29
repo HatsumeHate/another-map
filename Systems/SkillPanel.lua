@@ -8,6 +8,7 @@ do
     SkillPanelFrame = 0
     SkillPanelButton = 0
     local BackupButtonData
+    SkillPanelTutorialData = 0
 
     local ClickTrigger = 0
     local EnterTrigger = 0
@@ -555,6 +556,15 @@ do
         SkillPanelFrame[player].state = state
 
         if state then
+
+            if SkillPanelTutorialData[player] then
+                SkillPanelTutorialData[player] = nil
+                if GetLocalPlayer() == Player(player-1) then
+                    BlzFrameSetVisible(PlayerUI.arrow, false)
+                    BlzFrameSetVisible(PlayerUI.arrow_ability_text, false)
+                end
+            end
+
             UpdateSkillList(player)
         else
             for i = 1, 6 do EnableTrigger(KEYBIND_LIST[i].trigger) end
@@ -571,10 +581,13 @@ do
 
         SkillPanelFrame = {}
         BackupButtonData = {}
+        SkillPanelTutorialData = {}
 
         ClickTrigger = CreateTrigger()
         EnterTrigger = CreateTrigger()
         LeaveTrigger = CreateTrigger()
+
+
 
 
         TriggerAddAction(LeaveTrigger, function()

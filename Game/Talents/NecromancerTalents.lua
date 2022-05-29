@@ -229,7 +229,7 @@ do
 
     function GetMaxDurationFear(source, target)
         local unit_data = GetUnitData(target)
-        local duration = 0.
+        local duration = 0
 
             for i = 1, #unit_data.buff_list do
                 if unit_data.buff_list[i].buff_source == source and unit_data.buff_list[i].level[unit_data.buff_list[i].current_level].negative_state == STATE_FEAR then
@@ -239,12 +239,12 @@ do
                 end
             end
 
-        return duration
+        return math.floor(duration / 1000)
     end
 
     function GetMaxDurationCurse(source, target)
         local unit_data = GetUnitData(target)
-        local duration = 0.
+        local duration = 0
 
             for i = 1, #unit_data.buff_list do
                 if unit_data.buff_list[i].buff_source == source and (unit_data.buff_list[i].id == "ABWK" or unit_data.buff_list[i].id == "ABDC") then
@@ -254,7 +254,7 @@ do
                 end
             end
 
-        return duration
+        return math.floor(duration / 1000)
     end
 
 

@@ -63,23 +63,86 @@ do
 
             end)
 
-            local attack_speed_bonus = (1. - unit_data.stats[ATTACK_SPEED].actual_bonus * 0.01)
+            --local attack_speed_bonus = (1. - unit_data.stats[ATTACK_SPEED].actual_bonus * 0.01)
 
-            TimerStart(unit_data.action_timer, 0.33 * attack_speed_bonus, true, function()
+            --print((1. - unit_data.stats[ATTACK_SPEED].actual_bonus * 0.01))
+            local function WhirlwindEffect()
                 local mp = GetUnitState(unit, UNIT_STATE_MANA)
+                local manacost = (9. + math.ceil(UnitGetAbilityLevel(unit, "A010") / 5)) / 3.
 
-                if mp >= 3. then
-                    ApplyEffect(unit, nil, GetUnitX(unit), GetUnitY(unit), 'EWHW', 1)
-                    SetUnitState(unit, UNIT_STATE_MANA, mp - (3. + math.ceil(UnitGetAbilityLevel(unit, "A010") / 5)))
-                else
-                    WhirlwindDeactivate(unit)
-                end
+                    if mp >= manacost then
+                        ApplyEffect(unit, nil, GetUnitX(unit), GetUnitY(unit), 'EWHW', 1)
+                        SetUnitState(unit, UNIT_STATE_MANA, mp - manacost)
+                        TimerStart(unit_data.action_timer, 0.33 * (1. - unit_data.stats[ATTACK_SPEED].actual_bonus * 0.01), false, function() WhirlwindEffect() end)
+                    else
+                        WhirlwindDeactivate(unit)
+                        Feedback_NoResource(GetPlayerId(GetOwningPlayer(unit))+1)
+                    end
+            end
 
+            TimerStart(unit_data.action_timer, 0.33 * (1. - unit_data.stats[ATTACK_SPEED].actual_bonus * 0.01), false, function()
+                WhirlwindEffect()
+                --TimerStart(unit_data.action_timer, 0.33 * attack_speed_bonus, false, WhirlwindEffect)
             end)
         end
     end
 
 
+
+    ---@param unit_from unit
+    ---@param unit_to unit
+    ---@param distance real
+    ---@return table
+    function BuildVisualChain(unit_from, bonus_start_z, unit_to, bonus_end_z, distance)
+        local chain = {}
+        local offset = 35.
+        local elements = distance / offset
+        local x, y = GetUnitX(unit_from), GetUnitY(unit_from)
+        local z = GetZ(x, y) + bonus_start_z
+        local end_z = GetZ(GetUnitX(unit_to), GetUnitY(unit_to)) + bonus_end_z
+
+            for i = 1, elements do
+                chain[i] = { element = AddSpecialEffect("Spell\\ChainElement.mdx", x, y) }
+            end
+
+
+            chain.update_timer = CreateTimer()
+
+            TimerStart(chain.update_timer, 0.025, true, function()
+                x, y = GetUnitX(unit_from), GetUnitY(unit_from)
+                z = GetZ(x, y) + bonus_start_z
+                end_z = GetZ(GetUnitX(unit_to), GetUnitY(unit_to)) + bonus_end_z
+                local dist = DistanceBetweenUnits(unit_from, unit_to)
+                local current_distance = dist / elements
+                local angle = math.rad(AngleBetweenUnits(unit_from, unit_to))
+                local height_angle = AngleBetweenXY_DEG(z, 0., end_z, dist) - 90.
+                --print(height_angle)
+
+                for i = 1, elements do
+                    local effect_x = x + (current_distance * i) * math.cos(angle)
+                    local effect_y = y + (current_distance * i) * math.sin(angle)
+                    local effect_z = GetZ(effect_x, effect_y) + bonus_start_z + ((end_z - z) *  (i / elements))
+                    --local z_offset = (end_z - z) * (1. + (i / elements))
+                    --print(i .. " " .. effect_z)
+
+                        BlzSetSpecialEffectX(chain[i].element, effect_x)
+                        BlzSetSpecialEffectY(chain[i].element, effect_y)
+                        BlzSetSpecialEffectZ(chain[i].element, effect_z)
+                        --BlzSetSpecialEffectYaw(unit_data.chain.element[i], angle)
+                        BlzSetSpecialEffectOrientation(chain[i].element, angle, math.rad(height_angle), 0.)
+                end
+            end)
+
+        return chain
+    end
+
+
+    --[[RegisterTestCommand("chain", function()
+        local unit = CreateUnit(Player(0), FourCC("hgyr"), GetUnitX(PlayerHero[1]) - 500., GetUnitY(PlayerHero[1]), 270.)
+
+            BuildVisualChain(PlayerHero[1], 65., unit, GetUnitFlyHeight(unit), DistanceBetweenUnits(PlayerHero[1], unit))
+
+    end)]]
 
 
     function BuildChain(caster, missile)

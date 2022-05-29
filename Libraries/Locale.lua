@@ -943,6 +943,7 @@ do
                 GENERIC_HEAD_NAME_9 = "укрепленный шлем",
                 GENERIC_HEAD_NAME_10 = "каска юстициария",
                 GENERIC_HEAD_NAME_11 = "королевский шлем",
+                GENERIC_HEAD_NAME_12 = "шляпа",
 
                 GENERIC_BELT_NAME_1 = "ремень",
                 GENERIC_BELT_NAME_2 = "укрепленный ремень",
@@ -1132,6 +1133,9 @@ do
                 ITEM_LEG_DESCRIPTION_ICE_TOUCH = "При применении \"Ледяной Стрелы\" вместо одной стрелы, позади волшебницы создаются 3, которые зависают, а затем летят в указанную цель",
                 ITEM_LEG_DESCRIPTION_DEATH_HERALD = "\"Бросок кинжала\" кидает сразу 3 кинжала",
                 ITEM_LEG_DESCRIPTION_PRIMAL_TOME = "\"Оживить Скелет\" с 25%% шансом призывает скелета мага",
+                ITEM_LEG_DESCRIPTION_ILLUSION_MASK = "\"Телепорт\" оставляет после себя иллюзию чародейки, а сама она становится невидимой на 5 секунд",
+                ITEM_LEG_DESCRIPTION_SPLITTER = "При нанесении урона \"Костяное Копье\" расщепляется на маленькие кусочки которые наносят 15%% от атаки от тьмы и пронзают противников",
+                ITEM_LEG_DESCRIPTION_EXECUTIONER = "Если \"Казнь\" убивает, то время ее восстановления мгновенно завершается, а варвар восстанавливает 15%% здоровья",
 
 
                 ITEM_NAME_RAT_HUNTER = 'Охотник на крыс',
@@ -1233,6 +1237,14 @@ do
                 ITEM_NAME_PRIMAL_TOME = "Первозданный Фолиант",
                 ITEM_SPEC_DESCRIPTION_PRIMAL_TOME = "Один из первых некромантических фолиантов написанный первопроходцем в темных искусствах. Содержит в себе невообразимые методы и извращенные заклинания. На первой странице есть подпись \"Малик\".",
 
+                ITEM_NAME_MASK_OF_SHADOWS = "Маска Теней",
+                ITEM_SPEC_DESCRIPTION_MASK_OF_SHADOWS = "Надев ее, невольно перестаешь различать реальность и вымысел",
+
+                ITEM_NAME_SPLITTER = "Расщепитель",
+                ITEM_SPEC_DESCRIPTION_SPLITTER = "Изначально созданное что бы свежевать мясо, это орудие нашло новое применение после его преображения встреченным некромантом",
+
+                ITEM_NAME_EXECUTIONER = "Палач",
+                ITEM_SPEC_DESCRIPTION_EXECUTIONER = "Еще недавно это был инструмент правосудия. Или нет?",
 
                 ITEM_EFFECTS = {
                     ["weap_poison_phys"] = "7%% шанс при атаке наложить эффект наносящий @e!poison_physical_weapon_effect.ap#%% урона от атаки типа физический @e!poison_physical_weapon_effect.atr# в течение 6 сек",
@@ -1278,15 +1290,15 @@ do
                     [1] = "Прыжок, позволяющий переместиться на расстояние до @s!A00O.rng#.",
                 },
                 [FourCC("A020")] = {
-                    [1] = "Добивающий удар. Наносит @e!EEXC.dmg# типа @e!EEXC.atr#, при применении на противников у которых осталось менее 20%% здоровья сила умения увеличивается втрое, а критический шанс возрастает на 20%%.",
-                    [10] = "Добивающий удар. Наносит @e!EEXC.dmg# типа @e!EEXC.atr#, при применении на противников у которых осталось менее 20%% здоровья сила умения увеличивается втрое, а критический шанс возрастает на 20%%. Если противник умирает от удара, дает эффект \"Близость Смерти\", который увеличивает @b!ANRD.pa1# на @b!ANRD.va1# и @b!ANRD.pa2# на @b!ANRD.va2#. ",
+                    [1] = "Добивающий удар. Наносит @e!EEXC.dmg# типа @e!EEXC.atr#, при применении на противников у которых осталось менее 33%% здоровья сила умения увеличивается втрое, а критический шанс возрастает на 15%%.",
+                    [10] = "Добивающий удар. Наносит @e!EEXC.dmg# типа @e!EEXC.atr#, при применении на противников у которых осталось менее 33%% здоровья сила умения увеличивается втрое, а критический шанс возрастает на 15%%. Если противник умирает от удара, дает эффект \"Близость Смерти\", который увеличивает @b!ANRD.pa1# на @b!ANRD.va1# и @b!ANRD.pa2# на @b!ANRD.va2#. ",
                 },
                 [FourCC("ABFA")] = {
                     [1] = "Лечит на @e!EFAA.hp_perc# каждую секунду в течении @b!A01N.time# секунд.",
                     [10] = "Лечит на @e!EFAA.hp_perc# каждую секунду в течении @b!A01N.time# секунд. Так же дает @b!A01N.va1# @b!A01N.pa1#.",
                 },
                 [FourCC("A00I")] = {
-                    [1] = "Призывает неуязвимую огненную гидру, которая атакует врагов. Она наследует 70%% значений характеристик. С повышением уровня заклинания увеличивается ее время существования.",
+                    [1] = "Призывает неуязвимую огненную гидру, которая атакует врагов. Она наследует 70%% значений характеристик и распространяет ауру повышающую @b!HDAU.pa1# на @b!HDAU.va1#. С повышением уровня заклинания увеличивается ее время существования.",
                 },
                 [FourCC("A00H")] = {
                     [1] = "Вошлебница подчиняет себе мощь стихий, весь урон от стихий [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# и @b!A00U.pa4#] увеличивается на @b!A00U.va1#, @b!A00U.pa5# на @b!A00U.va5#. Время эффекта - @b!A00U.time# сек. ",
@@ -1371,7 +1383,7 @@ do
                 },
                 [FourCC("ANBS")] = {
                     [1] = "Запускает быстро летящее костяное копье которое поражает первого противника. Имеет магическую силу @e!ENBS.pwr# типа @e!ENBS.atr#.",
-                    [5] = "Запускает быстро летящее костяное копье, которое пронзает до @FM_DIV!2.5# противников. Имеет магическую силу @e!ENBS.pwr# типа @e!ENBS.atr#.",
+                    [5] = "Запускает быстро летящее костяное копье, которое пронзает до @FM_DIV!1.5# противников. Имеет магическую силу @e!ENBS.pwr# типа @e!ENBS.atr#.",
                 },
                 [FourCC("ANDV")] = {
                     [1] = "Поглощает труп, восстанавливая @e!ENDV.hp_perc# здоровья, так же повышает скорость атаки и заклинаний на @b!ABDV.va1# ед. и скорость бега на @b!ABDV.va3# ед. в течении @b!ABDV.time#.",
@@ -1502,8 +1514,8 @@ do
                     },
                     ["talent_feedback"] = {
                         name = "Отдача",
-                        [1] = "Критический множитель уменьшается на 0.2, однако сила магии увеличивается на 7%%.",
-                        [2] = "Критический множитель уменьшается на 0.4, однако сила магии увеличивается на 15%%.",
+                        [1] = "Критический множитель увеличивается на 0.2, однако сила магии уменьшается на 7%%.",
+                        [2] = "Критический множитель увеличивается на 0.4, однако сила магии уменьшается на 15%%.",
                     },
                     ["talent_induction"] = {
                         name = "Индукция",
@@ -2995,6 +3007,7 @@ do
                 GENERIC_HEAD_NAME_9 = "enforced helmet",
                 GENERIC_HEAD_NAME_10 = "justicars helmet",
                 GENERIC_HEAD_NAME_11 = "royal helmet",
+                GENERIC_HEAD_NAME_12 = "hat",
 
                 GENERIC_BELT_NAME_1 = "belt",
                 GENERIC_BELT_NAME_2 = "armored belt",
@@ -3166,8 +3179,8 @@ do
                 SKILL_TOXIC_SPIT = "Toxic Substance",
 
 
-                SET_NAME_ANCIENT_LEGACY = "Ancient legacy",
-                SET_NAME_JESTERANDKING = "Jester and King",
+                SET_NAME_ANCIENT_LEGACY = "Ancient Legacy",
+                SET_NAME_JESTERANDKING = "Jester And King",
                 SET_NAME_FIREBOND = "Fire Bond",
                 SET_NAME_FRENDLINESS = "Frendliness",
                 SET_NAME_CRIMSON_LEGION = "Crimson Will",
@@ -3185,12 +3198,15 @@ do
                 ITEM_LEG_DESCRIPTION_ICE_TOUCH = "After using \"Frostbolt\" instead of 1 missile it creates 3 behind the sorceress that after a short delay launch on a target",
                 ITEM_LEG_DESCRIPTION_DEATH_HERALD = "Increases \"Knife Throw\"'s missiles to 3",
                 ITEM_LEG_DESCRIPTION_PRIMAL_TOME = "With 25%% chance \"Raise Skeleton\" revives skeleton mage",
+                ITEM_LEG_DESCRIPTION_ILLUSION_MASK = "Casting \"Teleport\" lefts an illusion of sorceress, while she gains invisibility for 5 seconds",
+                ITEM_LEG_DESCRIPTION_SPLITTER = "When \"Bone Spear\" deals damage, it splits small bits of it from the enemy, that deal 15%% of attack as darkness and penetrate targets",
+                ITEM_LEG_DESCRIPTION_EXECUTIONER = "If \"Execute\" kills its cooldown instantly ends and barbarian restores 15%% hp",
 
 
                 ITEM_NAME_RAT_HUNTER = 'Rat Hunter',
                 ITEM_SPEC_DESCRIPTION_RAT_HUNTER = "Even the rat-hunters had a legendary bows, which all rat hunters are desired.",
 
-                ITEM_NAME_BOOT_OF_COWARD = 'Boot of Coward',
+                ITEM_NAME_BOOT_OF_COWARD = 'Boot Of Coward',
                 ITEM_SPEC_DESCRIPTION_BOOT_OF_COWARD = "The owner of this boot used a secret tactic of his noble family, that was inherited over 300 years. But that wasn't for long...",
 
 
@@ -3216,7 +3232,7 @@ do
                 ITEM_NAME_BOOSTERS = "Boosters",
                 ITEM_SPEC_DESCRIPTION_BOOSTERS = "Invention of an unknown author has found its unique use.",
 
-                ITEM_NAME_EYE_OF_THE_STORM = "Eye of the Storm",
+                ITEM_NAME_EYE_OF_THE_STORM = "Eye Of The Storm",
                 ITEM_SPEC_DESCRIPTION_EYE_OF_THE_STORM = "Unknown sorcerer acquired a magnificent artifact, and shortly after that he became an ash.",
 
                 ITEM_NAME_FIREPRINCESS = "Fiery Princess",
@@ -3236,15 +3252,15 @@ do
                 ITEM_SPEC_DESCRIPTION_CRYSTAL_AXE = "That axe freezing everything it's touching, mind yourself keeping its blade away.",
 
 
-                ITEM_NAME_BOOTSOFPAIN = "Boots of Pain",
+                ITEM_NAME_BOOTSOFPAIN = "Boots Of Pain",
                 --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
                 ITEM_SPEC_DESCRIPTION_BOOTSOFPAIN = "Is walking so painful for you?",
 
-                ITEM_NAME_CHESTOFPAIN = "Chest of Pain",
+                ITEM_NAME_CHESTOFPAIN = "Chest Of Pain",
                 --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
                 ITEM_SPEC_DESCRIPTION_CHESTOFPAIN = "How painful it is for you to breath?",
 
-                ITEM_NAME_HEADOFPAIN = "Helmet of Pain",
+                ITEM_NAME_HEADOFPAIN = "Helmet Of Pain",
                 --ITEM_LEG_DESCRIPTION_FIREPRINCESS = "\"Огненный шар\" пролетает насквозь всех противников и воспламеняет их, нанося при этом 30% урона от оружия. В конце пути он взрывается и наносит свой урон.",
                 ITEM_SPEC_DESCRIPTION_HEADOFPAIN = "Is your mind in pain?",
 
@@ -3270,7 +3286,7 @@ do
                 ITEM_SPEC_DESCRIPTION_THE_JESTER = "The Fool",
 
 
-                ITEM_NAME_MASTER_OF_ELEMENTS = "Master of Elements",
+                ITEM_NAME_MASTER_OF_ELEMENTS = "Master Of Elements",
                 ITEM_SPEC_DESCRIPTION_MASTER_OF_ELEMENTS = "Every wizard will be envy that you own such a rare and unique item.",
 
                 ITEM_NAME_ICE_TOUCH = "Winter's Touch",
@@ -3283,9 +3299,16 @@ do
                 ITEM_SPEC_DESCRIPTION_FAMILY_RING = "Still reminiscent of its former grandeur, which gave the owner the right of succession, the ring emits a faint light. On the inner side you can see the engraved letter <K>.",
 
                 ITEM_NAME_PRIMAL_TOME = "Primal Tome",
-                ITEM_SPEC_DESCRIPTION_PRIMAL_TOME = "One of the first necromanctic tome written by the pioneer of this dark arts. Contains unimaginable methods and twisted conjuring. The first page is signed by \"Malic\'",
+                ITEM_SPEC_DESCRIPTION_PRIMAL_TOME = "One of the first necromantic tomes written by the pioneer of this dark arts. Contains unimaginable methods and twisted conjuring. The first page is signed by \"Malic\'",
 
+                ITEM_NAME_MASK_OF_SHADOWS = "Mask Of Shadows",
+                ITEM_SPEC_DESCRIPTION_MASK_OF_SHADOWS = "Wearing it, you really start to losing the grasp where is the reality and where is the fiction",
 
+                ITEM_NAME_SPLITTER = "Splitter",
+                ITEM_SPEC_DESCRIPTION_SPLITTER = "Originally it was created to skin meat, but this tool found a new purpose in the hands of a necromancer after its transformation",
+
+                ITEM_NAME_EXECUTIONER = "Executioner",
+                ITEM_SPEC_DESCRIPTION_EXECUTIONER = "Not long ago this weapon was a tool of justice. Or not?",
 
                 ITEM_EFFECTS = {
                     ["weap_poison_phys"] = "7%% chance to inflict @e!poison_physical_weapon_effect.ap#%% of attack as physical @e!poison_physical_weapon_effect.atr# damage on attack over 6 seconds",
@@ -3331,15 +3354,15 @@ do
                     [1] = "Allows you to jump up to @s!A00O.rng# range.",
                 },
                 [FourCC("A020")] = {
-                    [1] = "Finishing strike. Deals @e!EEXC.dmg# as @e!EEXC.atr#, if it is used on enemies that have less than 20%% of health its power is increased by 3 times and chances to crit by 20%%.",
-                    [10] = "Finishing strike. Deals @e!EEXC.dmg# as @e!EEXC.atr#, if it is used on enemies that have less than 20%% of health its power is increased by 3 times and chances to crit by 20%%. If enemy is killed by it, you gain @b!ANRD.pa1# на @b!ANRD.va1# and @b!ANRD.pa2# на @b!ANRD.va2#.",
+                    [1] = "Finishing strike. Deals @e!EEXC.dmg# as @e!EEXC.atr#, if it is used on enemies that have less than 33%% of health its power is increased by 3 times and chances to crit by 15%%.",
+                    [10] = "Finishing strike. Deals @e!EEXC.dmg# as @e!EEXC.atr#, if it is used on enemies that have less than 33%% of health its power is increased by 3 times and chances to crit by 15%%. If enemy is killed by it, you gain @b!ANRD.pa1# на @b!ANRD.va1# and @b!ANRD.pa2# на @b!ANRD.va2#.",
                 },
                 [FourCC("ABFA")] = {
                     [1] = "Heals you for @e!EFAA.hp_perc# every second during @b!A01N.time# seconds.",
                     [10] = "Heals you for @e!EFAA.hp_perc# every second during @b!A01N.time# seconds. Also gives @b!A01N.va1# @b!A01N.pa1#.",
                 },
                 [FourCC("A00I")] = {
-                    [1] = "Summons an immortal flame hydra that attacks enemies. Hydra inherits 70%% of Sorceress stats. Increasing level of this skill enhances hydra's life duration.",
+                    [1] = "Summons an immortal flame hydra that attacks enemies. Hydra inherits 70%% of Sorceress stats and emits aura that increases @b!HDAU.pa1# by @b!HDAU.va1#. Increasing level of this skill enhances hydra's life duration.",
                 },
                 [FourCC("A00H")] = {
                     [1] = "Sorceress binds elemental forces to her will, which boosting her powers: [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# и @b!A00U.pa4#] inscreasing for @b!A00U.va1#, @b!A00U.pa5# на @b!A00U.va5#. Duration - @b!A00U.time# sec.",
@@ -3424,7 +3447,7 @@ do
                 },
                 [FourCC("ANBS")] = {
                     [1] = "Throws a fast flying bone spear that deals damage to a first enemy. Has @e!ENBS.pwr# magic power as @e!ENBS.atr#.",
-                    [5] = "Throws a fast flying bone spear that pierces up to @FM_DIV!2.5# enemies. Has @e!ENBS.pwr# magic power as @e!ENBS.atr#.",
+                    [5] = "Throws a fast flying bone spear that pierces up to @FM_DIV!1.5# enemies. Has @e!ENBS.pwr# magic power as @e!ENBS.atr#.",
                 },
                 [FourCC("ANDV")] = {
                     [1] = "Devours a corpse that heals for @e!ENDV.hp_perc# of health. Also boosts attack and cast speed by @b!ABDV.va1# and moving speed by @b!ABDV.va3# during @b!ABDV.time# seconds.",
@@ -3898,8 +3921,8 @@ do
                     ["talent_persistent_curse"] = {
                         name = "persistent curse",
                         [1] = "Curses duration is increased by 1 second.",
-                        [2] = "Curses duration is increased by 2 second.",
-                        [3] = "Curses duration is increased by 3 second.",
+                        [2] = "Curses duration is increased by 2 seconds.",
+                        [3] = "Curses duration is increased by 3 seconds.",
                     },
                     ["talent_vile_malediction"] = {
                         name = "vile malediction",

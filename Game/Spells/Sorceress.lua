@@ -4,13 +4,14 @@ do
 
     function SummonHydra(hero, x, y)
         local unit_data = GetUnitData(hero)
+        local ability_level = UnitGetAbilityLevel(hero, "A00I")
 
                 if unit_data.spawned_hydra then
                     KillUnit(unit_data.spawned_hydra)
                 end
 
             unit_data.spawned_hydra = CreateUnit(GetOwningPlayer(hero), FourCC('shdr'), x, y, GetRandomReal(0.,359.))
-            UnitApplyTimedLife(unit_data.spawned_hydra, 0, 6.75 + (UnitGetAbilityLevel(hero, "A00I") * 0.25))
+            UnitApplyTimedLife(unit_data.spawned_hydra, 0, 6.75 + (ability_level * 0.25))
 
             local percent = 0.7
 
@@ -38,7 +39,7 @@ do
                     hydra.stats[INT_STAT].value = R2I(unit_data.stats[INT_STAT].value * percent)
                     hydra.stats[FIRE_BONUS].value = R2I(unit_data.stats[FIRE_BONUS].value * percent)
                     UpdateParameters(hydra)
-
+                    ToggleAuraOnUnit(unit_data.spawned_hydra, "hydra_aura", ability_level, true)
             end)
     end
 
@@ -320,13 +321,58 @@ do
         local caster_x = GetUnitX(caster)
         local caster_y = GetUnitY(caster)
         local angle = AngleBetweenUnitXY(caster, x, y)
-        local distance = GetMaxAvailableDistance(caster_x, caster_y, angle, skill.level[UnitGetAbilityLevel(caster, "A00L")].range or 0.)
+        local distance = GetMaxAvailableDistance(caster_x, caster_y, angle, DistanceBetweenUnitXY(caster, x, y))
 
             x = caster_x + Rx(distance, angle)
             y = caster_y + Ry(distance, angle)
             AddSoundVolumeZ("Sounds\\Spells\\blink_launch_".. GetRandomInt(1, 3) ..".wav", caster_x, caster_y, 35., 120, 1700.)
             SetUnitPosition(caster, x, y)
-            DestroyEffect(AddSpecialEffect("Spell\\Blink Blue Target.mdx", x, y))
+            DestroyEffect(AddSpecialEffect("Spell\\Blink Blue Target.mdx", GetUnitX(caster), GetUnitY(caster)))
+
+        -- effect
+            if UnitHasEffect(caster, "illusion_legendary") then
+                local illusion = CreateUnit(GetOwningPlayer(caster), FourCC("srci"), caster_x, caster_y, angle)
+                UnitApplyTimedLife(illusion, 0, 5.)
+                local hair_sfx = AddSpecialEffectTarget("Model\\Sorceress_Hair.mdx", illusion, "head")
+                local weapon_sfx
+                local offhand_sfx
+
+                DelayAction(0., function()
+                    local unit_data = GetUnitData(caster)
+                    local illusion_data = GetUnitData(illusion)
+
+                        for i = 1, #illusion_data.stats do illusion_data.stats[i].value = unit_data.stats[i].value end
+                        UpdateParameters(illusion_data)
+                        SetTexture(illusion, unit_data.equip_point[CHEST_POINT] and unit_data.equip_point[CHEST_POINT].texture or TEXTURE_ID_EMPTY)
+                        weapon_sfx = AddSpecialEffectTarget(unit_data.equip_point[WEAPON_POINT].model or "", illusion, "hand right")
+                        offhand_sfx = AddSpecialEffectTarget(unit_data.equip_point[OFFHAND_POINT] and unit_data.equip_point[OFFHAND_POINT].model or "", illusion, "hand left")
+                end)
+
+                local timer = CreateTimer()
+                local trg = CreateTrigger()
+                TriggerRegisterUnitEvent(trg, illusion, EVENT_UNIT_DEATH)
+                TriggerAddAction(trg, function()
+                    AddSpecialEffect("Abilities\\Spells\\Orc\\FeralSpirit\\feralspirittarget.mdx", GetUnitX(illusion), GetUnitY(illusion))
+                    ShowUnit(illusion, false)
+                    DestroyEffect(weapon_sfx)
+                    DestroyEffect(hair_sfx)
+                    DestroyEffect(offhand_sfx)
+                    DestroyTrigger(trg)
+                    DestroyTimer(timer)
+                end)
+
+                UnitAddAbility(illusion, FourCC("Abun"))
+                local dummy = CreateUnit(GetOwningPlayer(caster), FourCC("dmcs"), GetUnitX(caster), GetUnitY(caster), angle)
+                UnitAddAbility(dummy, FourCC("AINV"))
+                IssueTargetOrderById(dummy, order_invisibility, caster)
+                DelayAction(0.5, function() RemoveUnit(dummy) end)
+                IssuePointOrderById(illusion, order_move, GetUnitX(illusion) + GetRandomReal(-300., 300.), GetUnitY(illusion) + GetRandomReal(-300., 300.))
+
+                TimerStart(timer, 0.75, true, function()
+                    IssuePointOrderById(illusion, order_move, GetUnitX(illusion) + GetRandomReal(-300., 300.), GetUnitY(illusion) + GetRandomReal(-300., 300.))
+                end)
+            end
+
 
     end
 
@@ -385,40 +431,6 @@ do
             end
 
         end)
-
-        --[[
-        TimerStart(CreateTimer(), 0.02, true, function()
-
-            if timeout <= 0. then
-                for i = 1, 3 do
-                    if target and target == caster then angle = GetUnitFacing(caster)
-                    elseif target then angle = AngleBetweenXY_DEG(frostbolts[i].current_x, frostbolts[i].current_y, GetUnitX(target), GetUnitY(target))
-                    else angle = AngleBetweenXY_DEG(frostbolts[i].current_x, frostbolts[i].current_y, x, y) end
-                    RedirectMissile_Deg(frostbolts[i], angle)
-                    frostbolts[i].pause = nil
-                end
-                DestroyTimer(GetExpiredTimer())
-            else
-                --facing = GetUnitFacing(caster)
-
-                RepositionMissile(frostbolts[1], GetUnitX(caster) - Rx(55., facing), GetUnitY(caster) - Ry(55., facing), 40.)
-                RepositionMissile(frostbolts[2], GetUnitX(caster) - Rx(110., facing + 30.), GetUnitY(caster) - Ry(110., facing + 30.), 0)
-                RepositionMissile(frostbolts[3], GetUnitX(caster) - Rx(110., facing - 30.), GetUnitY(caster) - Ry(110., facing - 30.), 0)
-
-                for i = 1, 3 do
-                    if target and target == caster then angle = GetUnitFacing(caster) * bj_DEGTORAD
-                    elseif target then angle = AngleBetweenXY_DEG(frostbolts[i].current_x, frostbolts[i].current_y, GetUnitX(target), GetUnitY(target)) * bj_DEGTORAD
-                    else angle = AngleBetweenXY_DEG(frostbolts[i].current_x, frostbolts[i].current_y, x, y) * bj_DEGTORAD end
-                    BlzSetSpecialEffectYaw(frostbolts[i].my_missile, angle)
-                end
-
-                --BlzSetSpecialEffectYaw(frostbolts[1].my_missile, angle); BlzSetSpecialEffectYaw(frostbolts[2].my_missile, angle); BlzSetSpecialEffectYaw(frostbolts[3].my_missile, angle)
-                timeout = timeout - 0.02
-                first_timeout = first_timeout - 0.02
-                second_timeout = second_timeout - 0.02
-            end
-
-        end)]]
 
 
     end
@@ -585,9 +597,10 @@ do
             local duration = 2. + level * 0.1
             local breakpoint = duration - 0.25
             local scale = start_scale
-            local max_scale = RMinBJ(2., 1. + level * 0.02)
+            local max_scale = RMinBJ(2., 1.3 + level * 0.02)
             BlzSetSpecialEffectScale(unit_data.channel_sfx, scale)
-            unit_data.blz_scale = (scale - start_scale) / (max_scale - start_scale)
+            unit_data.blz_scale = scale
+
 
             TriggerAddAction(unit_data.channel_trigger, function()
                 if not IsItemOrder(GetIssuedOrderId()) and duration <= breakpoint then BlizzardDeactivate(unit) end
@@ -602,14 +615,14 @@ do
                     time_point = time_point - 0.025
 
                     if time_point <= 0. then
-                        ApplyEffect(unit, nil, GetUnitX(unit), GetUnitY(unit), "EBLZ", 1)
+                        local effect = ApplyEffect(unit, nil, GetUnitX(unit), GetUnitY(unit), "EBLZ", 1)
                         time_point = 0.3
                     end
 
                     if scale < max_scale then
                         scale = scale + 0.005
                         BlzSetSpecialEffectScale(unit_data.channel_sfx, scale)
-                        unit_data.blz_scale = (scale - start_scale) / (max_scale - start_scale)
+                        unit_data.blz_scale = scale
                     end
 
                     SetUnitFacingTimed(unit, AngleBetweenUnitXY(unit, PlayerMousePosition[player_id].x or 0., PlayerMousePosition[player_id].y or 0.), 0.1)

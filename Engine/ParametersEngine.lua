@@ -546,16 +546,21 @@ do
 			---@param data table
 			[ATTACK_SPEED] = function(data)
 				data.stats[ATTACK_SPEED].actual_bonus = ParamToPercent(data.stats[ATTACK_SPEED].bonus + math.floor((data.stats[AGI_STAT].value / 3) + 0.5), ATTACK_SPEED)
+				local modificator = (1. - (data.stats[ATTACK_SPEED].actual_bonus) / 100.)
 
-				data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].ATTACK_SPEED * (1. - (data.stats[ATTACK_SPEED].actual_bonus) * 0.01)
+				data.stats[ATTACK_SPEED].value = data.equip_point[WEAPON_POINT].ATTACK_SPEED * modificator
+
 				if data.stats[ATTACK_SPEED].value > 0.1 then
 					BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 0)
 					BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 1)
+					--BlzSetUnitWeaponRealField(data.Owner, UNIT_WEAPON_RF_ATTACK_DAMAGE_POINT, 0, data.base_stats.damage_point * modificator)
+					--BlzSetUnitWeaponRealField(data.Owner, UNIT_WEAPON_RF_ATTACK_BACKSWING_POINT, 0, data.base_stats.backswing_point * modificator)
 				else
 					BlzSetUnitAttackCooldown(data.Owner, 0.1, 0)
 					BlzSetUnitAttackCooldown(data.Owner, 0.1, 1)
+					--BlzSetUnitWeaponRealField(data.Owner, UNIT_WEAPON_RF_ATTACK_DAMAGE_POINT, 0, data.base_stats.damage_point * 0.1)
+					--BlzSetUnitWeaponRealField(data.Owner, UNIT_WEAPON_RF_ATTACK_BACKSWING_POINT, 0, data.base_stats.backswing_point * 0.1)
 				end
-				if TraceBug then print("update attack speed C") end
 			end,
 
 			---@param data table
@@ -752,6 +757,17 @@ do
 			[MANACOST]   = LOCALE_LIST[my_locale].MANACOST_PARAM,
 
 		}
+
+
+		RegisterTestCommand("as+", function()
+			--print(BlzGetUnitWeaponRealField(PlayerHero[1], UNIT_WEAPON_RF_ATTACK_DAMAGE_POINT, 0))
+			ModifyStat(PlayerHero[1], ATTACK_SPEED, 100, STRAIGHT_BONUS, true)
+			--print(BlzGetUnitWeaponRealField(PlayerHero[1], UNIT_WEAPON_RF_ATTACK_DAMAGE_POINT, 0))
+		end)
+
+		RegisterTestCommand("as-", function()
+			ModifyStat(PlayerHero[1], ATTACK_SPEED, 100, STRAIGHT_BONUS, false)
+		end)
 
 	end
 
