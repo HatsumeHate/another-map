@@ -71,6 +71,24 @@ do
             }
         })
 
+        NewAuraTemplate({
+            id = "lich_aura",
+            name = "lich aura",
+            max_level = 75,
+            sfx_path = "Abilities\\Spells\\Human\\Brilliance\\Brilliance.mdx",
+            sfx_point = "origin",
+            tickrate = 0.5,
+            level = {
+                [1] = {
+                    sfx_scale = 1.,
+                    radius = 750.,
+                    [ON_ALLY] = {
+                        applied_buff = "NRLA"
+                    }
+                }
+            }
+        })
+
 
         RegisterTestCommand("aon", function()
             ToggleAuraOnUnit(PlayerHero[1], "grave_cold_aura", 1, true)

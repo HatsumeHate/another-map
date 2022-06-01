@@ -127,7 +127,7 @@ do
     ---@param npc unit
     ---@param name string
     function CreateNpcData(npc, name)
-        UnitsList[npc] = {
+        UnitsList[GetHandleId(npc)] = {
             name = name,
             Owner = npc,
             classification = NPC,
@@ -247,10 +247,10 @@ do
         InteractionFrame[player].state = state
 
             if state then
-                BlzFrameSetVisible(InteractionFrame[player].mainframe, true)
+                if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(InteractionFrame[player].mainframe, true) end
                 InteractionFrame[player].options = 0
             else
-                BlzFrameSetVisible(InteractionFrame[player].mainframe, false)
+                if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(InteractionFrame[player].mainframe, false) end
                 for i = 1, #InteractionFrame[player].slots do
                     BlzFrameSetVisible(InteractionFrame[player].slots[i].button, false)
                 end

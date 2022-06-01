@@ -449,7 +449,7 @@ do
                     CreateUIBorder(GlobalButton[player].settings_panel_button, 0.)
                 }
 
-                PlayerUI.arrow = CreateSprite("UI\\arrow.mdx", 0.001, GlobalButton[player].skill_panel_button, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.01, GlobalButton[player].skill_panel_button)
+                PlayerUI.arrow = CreateSprite("UI\\arrow.mdx", 0.001, GlobalButton[player].skill_panel_button, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.01, PlayerUI.button_borders[2])
                 PlayerUI.arrow_ability_text = BlzCreateFrameByType("TEXT", "helper", PlayerUI.arrow, "StandardLabelTextTemplate", 0)
                 BlzFrameSetFont(PlayerUI.arrow_ability_text, "D3font.ttf", 0.013, 0)
                 BlzFrameSetText(PlayerUI.arrow_ability_text, GetLocalString("Выберите способности для использования", "Pick and bind abilities for use"))
@@ -461,6 +461,9 @@ do
                 if SkillPanelTutorialData[player] then
                     BlzFrameSetVisible(PlayerUI.arrow, true)
                     BlzFrameSetVisible(PlayerUI.arrow_ability_text, true)
+                else
+                    BlzFrameSetVisible(PlayerUI.arrow, false)
+                    BlzFrameSetVisible(PlayerUI.arrow_ability_text, false)
                 end
 
             end
@@ -841,7 +844,7 @@ do
             BlzFrameSetVisible(PlayerUI.xp_bar, false)
 
 
-            PlayerUI.arrow = CreateSprite("UI\\arrow.mdx", 0.001, GlobalButton[1].skill_panel_button, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.01, GlobalButton[1].skill_panel_button)
+            PlayerUI.arrow = CreateSprite("UI\\arrow.mdx", 0.001, GlobalButton[1].skill_panel_button, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.01, PlayerUI.button_borders[2])
             PlayerUI.arrow_ability_text = BlzCreateFrameByType("TEXT", "helper", PlayerUI.arrow, "StandardLabelTextTemplate", 0)
             BlzFrameSetFont(PlayerUI.arrow_ability_text, "D3font.ttf", 0.013, 0)
             BlzFrameSetText(PlayerUI.arrow_ability_text, GetLocalString("Выберите способности для использования", "Pick and bind abilities for use"))

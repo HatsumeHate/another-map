@@ -399,10 +399,10 @@ do
 			},
 			[NECROMANCER_CLASS] = {
 				[SKILL_CATEGORY_DARK_ART] = {
-					"ANBR", "ANBP", "ANBS", "ANTS", "ANBB", "ANPB", "ANCE", "ANGS", "ANHV"
+					"ANBR", "ANBS", "ANTS", "ANBB", "ANCE", "ANGS", "ANWS", "ANPB"
 				},
 				[SKILL_CATEGORY_CURSES] = {
-					"ANUL", "ANWK", "ANDF", "ANFR"
+					"ANUL", "ANWK", "ANDF", "ANFR", "ANHV", "ANBP"
 				},
 				[SKILL_CATEGORY_SUMMONING] = {
 					"ANRD", "ANLR", "ANDV", "ANUC", "ANDR"

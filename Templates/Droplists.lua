@@ -42,8 +42,8 @@ do
         local unit_data = GetUnitData(unit)
 
         if not unit_data then
-            UnitsList[unit] = {}
-            unit_data = UnitsList[unit]
+            UnitsList[GetHandleId(unit)] = {}
+            unit_data = UnitsList[GetHandleId(unit)]
         end
 
         unit_data.droplist = MergeTables({}, GetDropList(droplist))

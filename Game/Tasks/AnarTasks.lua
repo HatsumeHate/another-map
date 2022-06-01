@@ -260,14 +260,15 @@ do
 
 
     local function SpawnMonsters_AttackPoint(rects, monsterpack, monsters,  point_x, point_y, death_trigger)
-                --TODO
-            for i = 1, #rects do
-                SpawnClearMonsterPack(rects[i], monsters, monsterpack, 1, 3, 1, 15., MONSTER_PLAYER)
-            end
+
+        SpawnClearMonsterPack(rects[1], monsters, monsterpack, 2, 4, 1, 15., MONSTER_PLAYER)
 
             ForGroup(monsters, function()
-                TriggerRegisterUnitEvent(death_trigger, GetEnumUnit(), EVENT_UNIT_DEATH)
-                MonsterSpawner(GetEnumUnit(), point_x, point_y)
+                local monster = GetEnumUnit()
+                local spawnrect = rects[GetRandomInt(1, #rects)]
+                SetUnitPosition(monster, GetRandomRectX(spawnrect), GetRandomRectY(spawnrect))
+                TriggerRegisterUnitEvent(death_trigger, monster, EVENT_UNIT_DEATH)
+                MonsterSpawner(monster, point_x, point_y)
             end)
 
 

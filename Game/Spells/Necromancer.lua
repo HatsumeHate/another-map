@@ -158,7 +158,7 @@ do
                                 SetUnitAnimation(summoned, "Stand")
                                 SafePauseUnit(summoned, false)
                                 CreateLeashForSummonedUnit(summoned, caster, 700.)
-                                ModifyStat(summoned, HP_VALUE, 35 * level, STRAIGHT_BONUS, true)
+                                ModifyStat(summoned, HP_VALUE, 50 * level, STRAIGHT_BONUS, true)
                                 ModifyStat(summoned, HP_REGEN, 1. + (0.01 * level), MULTIPLY_BONUS, true)
                                 ModifyStat(summoned, PHYSICAL_ATTACK, 2 * level, STRAIGHT_BONUS, true)
                                 ModifyStat(summoned, MAGICAL_ATTACK, 3 * level, STRAIGHT_BONUS, true)
@@ -264,7 +264,7 @@ do
                             local unit_data = GetUnitData(summoned)
                             unit_data.minion_owner = caster
                             CreateLeashForSummonedUnit(summoned, caster, 600.)
-                            ModifyStat(summoned, HP_VALUE, 35 * level, STRAIGHT_BONUS, true)
+                            ModifyStat(summoned, HP_VALUE, 50 * level, STRAIGHT_BONUS, true)
                             ModifyStat(summoned, HP_REGEN, 1. + (0.01 * level), MULTIPLY_BONUS, true)
                             ModifyStat(summoned, PHYSICAL_ATTACK, 2 * level, STRAIGHT_BONUS, true)
                             ModifyStat(summoned, MAGICAL_ATTACK, 3 * level, STRAIGHT_BONUS, true)
@@ -280,6 +280,8 @@ do
                             if GetUnitTalentLevel(caster, "talent_bone_spikes") > 0 then
                                 ModifyStat(summoned, REFLECT_DAMAGE, 35 * GetUnitTalentLevel(caster, "talent_bone_spikes"), STRAIGHT_BONUS, true)
                             end
+
+                            ToggleAuraOnUnit(summoned, "lich_aura", level, true)
                         end)
                     end
                 end)
@@ -318,7 +320,7 @@ do
                     if (player == MONSTER_PLAYER or player == SECOND_MONSTER_PLAYER) and IsUnitInRange(hero, unit, 1200.) and GetUnitState(hero, UNIT_STATE_LIFE) > 0.045 then
                         local unit_data = GetUnitData(unit)
 
-                            if unit_data and unit_data.classification > 0 then
+                            if unit_data then
                                 CreateNecromancerCorpse(GetOwningPlayer(hero), GetUnitX(unit), GetUnitY(unit))
 
                                 if IsUnitInRange(hero, unit, 800.) then
@@ -729,6 +731,29 @@ do
 
     end
 
+
+    function WanderingSpiritCast(caster, missile)
+        local timer = CreateTimer()
+        local sfx = AddSpecialEffect("Effect\\Soulfire Missile.mdx", missile.current_x, missile.current_y)
+        --BlzSetSpecialEffectScale(sfx, 2.)
+
+
+            BlzSetSpecialEffectZ(sfx, missile.current_z)
+
+            TimerStart(timer, 0.025, true, function()
+                if missile.time > 0. then
+                    BlzSetSpecialEffectX(sfx, missile.current_x)
+                    BlzSetSpecialEffectY(sfx, missile.current_y)
+                    BlzSetSpecialEffectZ(sfx, missile.current_z)
+                else
+                    DestroyEffect(sfx)
+                    DestroyTimer(timer)
+                end
+            end)
+
+
+
+    end
 
 
 end

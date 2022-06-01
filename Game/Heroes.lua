@@ -552,13 +552,6 @@ do
                     SetUnitState(hero, UNIT_STATE_MANA, GetUnitState(hero, UNIT_STATE_MAX_MANA) * 0.5)
                     DestroyTimer(GetExpiredTimer())
                     SelectUnitForPlayerSingle(hero, player)
-
-                        for i = 1, unit_data.buff_list do
-                            if GetBuffExpirationTime(hero, unit_data.buff_list[i].id) <= 0 then
-                                xpcall(function() RemoveBuff(hero, unit_data.buff_list[i].id) end, print)
-                            end
-                        end
-
                     for i = 1, #ActiveCurses do ApplyCurse(ActiveCurses[i]) end
                     local minions = GetAllUnitSummonUnits(hero)
                     ForGroup(minions, function() KillUnit(GetEnumUnit()) end)

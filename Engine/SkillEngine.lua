@@ -12,6 +12,44 @@ do
     KEYBIND_LIST = 0
 
 
+    function GetClosestUnitToCursor(player)
+        local group = CreateGroup()
+        local distance = 64.
+        local cx, cy = PlayerMousePosition[player].x, PlayerMousePosition[player].y-32
+        local target = nil
+
+            GroupEnumUnitsInRange(group, cx, cy, 64., nil)
+
+            for index = BlzGroupGetSize(group) - 1, 0, -1 do
+                local picked = BlzGroupUnitAt(group, index)
+
+                if GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
+                    local d = DistanceBetweenUnitXY(picked, cx, cy)
+
+                        if d < distance then
+                            target = picked
+                            distance = d
+                        end
+
+                end
+
+                GroupRemoveUnit(group, picked)
+
+            end
+
+        DestroyGroup(group)
+
+        return target
+    end
+
+
+    function ToggleQuickcast(player, flag)
+        for key = KEY_Q, KEY_F do
+            if flag then EnableTrigger(KEYBIND_LIST[key].trigger)
+            else DisableTrigger(KEYBIND_LIST[key].trigger) end
+        end
+    end
+
     ---@param unit unit
     ---@param abilityid integer
     function StartAbilityCharge(unit, abilityid)
@@ -621,7 +659,7 @@ do
                                             DestroyTimer(timer)
                                         end)
                                     elseif effect.permanent then
-                                       unit_data.cast_effect_permanent_pack[#unit_data.cast_effect_permanent_pack+1] = casteffect
+                                        unit_data.cast_effect_permanent_pack[#unit_data.cast_effect_permanent_pack+1] = casteffect
                                     else
                                         unit_data.cast_effect_pack[#unit_data.cast_effect_pack+1] = casteffect
                                     end
@@ -795,16 +833,20 @@ do
                                 Feedback_NoResource(player)
                             else
                                 local skill = GetSkillData(GetKeybindAbility(KEYBIND_LIST[key].ability, player))
-                                if skill.activation_type ~= SELF_CAST then
-                                    if (skill.activation_type == POINT_AND_TARGET_CAST or skill.activation_type == TARGET_CAST) and PlayerMouseFocus[player] then
-                                        IssueTargetOrderById(PlayerHero[player], KEYBIND_LIST[key].order, PlayerMouseFocus[player])
-                                    elseif skill.activation_type == POINT_AND_TARGET_CAST or skill.activation_type == POINT_CAST then
-                                        IssuePointOrderById(PlayerHero[player], KEYBIND_LIST[key].order, PlayerMousePosition[player].x, PlayerMousePosition[player].y)
-                                    elseif skill.activation_type == TARGET_CAST and not PlayerMouseFocus[player] then
+
+                                    if skill.activation_type == SELF_CAST then
+                                        IssueImmediateOrderById(PlayerHero[player], KEYBIND_LIST[key].order)
+                                    else
+                                        local target = GetClosestUnitToCursor(player)
+
+                                        if (skill.activation_type == POINT_AND_TARGET_CAST or skill.activation_type == TARGET_CAST) and target then
+                                            IssueTargetOrderById(PlayerHero[player], KEYBIND_LIST[key].order, target)
+                                        elseif skill.activation_type == POINT_AND_TARGET_CAST or skill.activation_type == POINT_CAST then
+                                            IssuePointOrderById(PlayerHero[player], KEYBIND_LIST[key].order, PlayerMousePosition[player].x, PlayerMousePosition[player].y)
+                                        end
 
                                     end
-                                    if GetLocalPlayer() == Player(player-1) then ForceUICancel() end
-                                end
+
                             end
                         end
                 end)
@@ -815,9 +857,10 @@ do
 
             TriggerAddAction(attack_trigger_quickcast, function()
                 local player = GetPlayerId(GetTriggerPlayer()) + 1
+                local target = GetClosestUnitToCursor(player)
 
-                    if PlayerMouseFocus[player] then
-                        IssueTargetOrderById(PlayerHero[player], order_attack, PlayerMouseFocus[player])
+                    if target then
+                        IssueTargetOrderById(PlayerHero[player], order_attack, target)
                     else
                         IssuePointOrderById(PlayerHero[player], order_attack, PlayerMousePosition[player].x, PlayerMousePosition[player].y)
                     end

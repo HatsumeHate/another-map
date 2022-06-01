@@ -67,6 +67,7 @@ do
                 UnitApplyTimedLife(reanimated, 0, 16.)
                 SafePauseUnit(reanimated, false)
                 UnitRemoveAbility(reanimated, FourCC("Avul"))
+                CreateBarOnUnit(reanimated)
             end)
 
     end

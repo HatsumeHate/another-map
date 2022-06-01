@@ -312,6 +312,14 @@ do
 
 
 
+    ---@param target unit
+    ---@param angle real
+    ---@param x real
+    ---@param y real
+    ---@param speed real
+    ---@param arc real
+    ---@param sign string
+    ---@param sfx table
     function MakeUnitJump(target, angle, x, y, speed, arc, sign, sfx)
         local unit_x = GetUnitX(target)
         local unit_y = GetUnitY(target)
@@ -400,13 +408,18 @@ do
     end
 
 
+    ---@param source unit
+    ---@param target unit
+    ---@param angle real
+    ---@param power real
+    ---@param time real
+    ---@param sign string
     function PushUnit(source, target, angle, power, time, sign)
         local handle = target
         local unit_data = GetUnitData(target)
         local push_data = { x = RealGetUnitX(target), y = RealGetUnitY(target), vx = 0., vy = 0. }
 
-
-        power = power * math.floor(((100. - unit_data.stats[CONTROL_REDUCTION].value) * 0.01) + 0.5)
+        power = power * ((100. - unit_data.stats[CONTROL_REDUCTION].value) / 100.)
 
         if power <= 5. then
             push_data = nil
@@ -447,6 +460,7 @@ do
         push_data.timer = CreateTimer()
 
         ResetUnitSpellCast(target)
+        SetUnitAnimation(target, "stand ready")
         SafePauseUnit(target, true)
 
             TimerStart(push_data.timer, PERIOD, true, function()

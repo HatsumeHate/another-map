@@ -952,8 +952,8 @@ do
                     rank = 5,
                     time = 7.,
                     bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = -15, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 25 },
-                        { PARAM = CAST_SPEED, VALUE = -15, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 25 },
+                        { PARAM = ATTACK_SPEED, VALUE = -15, METHOD = STRAIGHT_BONUS, value_delta = -1, value_delta_level = 1, value_delta_level_max = 25 },
+                        { PARAM = CAST_SPEED, VALUE = -15, METHOD = STRAIGHT_BONUS, value_delta = -1, value_delta_level = 1, value_delta_level_max = 25 },
                         { PARAM = MOVING_SPEED, VALUE = -15, METHOD = STRAIGHT_BONUS, value_delta = -1, value_delta_level = 1, value_delta_level_max = 25 },
                     }
                 }
@@ -1117,6 +1117,26 @@ do
                         { PARAM = ATTACK_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 60 },
                         { PARAM = CRIT_CHANCE, VALUE = 5, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 3, value_delta_level_max = 70 },
                         { PARAM = MOVING_SPEED, VALUE = 15, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 70 },
+                    }
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "lich buff aura",
+            id = 'NRLA',
+            buff_id = 'B03A',
+            buff_type = POSITIVE_BUFF,
+            max_level = 75,
+            inherit_level = true,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 1.,
+
+                    bonus = {
+                        { PARAM = MP_REGEN, VALUE = 1., METHOD = STRAIGHT_BONUS, value_delta = 0.25, value_delta_level = 5, value_delta_level_max = 14 },
                     }
                 }
             }
@@ -1308,7 +1328,6 @@ do
             buff_type = NEGATIVE_BUFF,
             max_level = 2,
             inherit_level = true,
-            infinite = true,
 
             level = {
                 [1] = {
@@ -1372,7 +1391,6 @@ do
             buff_type = NEGATIVE_BUFF,
             max_level = 3,
             inherit_level = true,
-            infinite = true,
 
             level = {
                 [1] = {
@@ -1428,7 +1446,6 @@ do
             buff_type = NEGATIVE_BUFF,
             max_level = 2,
             inherit_level = true,
-            infinite = true,
 
             level = {
                 [1] = {

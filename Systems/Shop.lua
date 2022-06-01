@@ -574,13 +574,6 @@ do
 
             BlzSetUnitName(handle, name)
 
-        --[[
-            UnitsList[handle] = {
-                name = name,
-                Owner = handle,
-                classification = NPC,
-                interactive_options = {},
-            }]]
 
             CreateNpcData(handle, name)
 

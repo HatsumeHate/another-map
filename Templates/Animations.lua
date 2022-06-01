@@ -335,6 +335,13 @@ do
             animation_backswing = 0.4,
         })
 
+        NewAnimationSequence("revenant_spell_2", {
+            animation           = 4,
+            animation_point     = 1.167,
+            animation_backswing = 0.33,
+        })
+
+
         NewAnimationSequence("gnoll_archer_spell", {
             animation           = 5,
             animation_point     = 0.428,

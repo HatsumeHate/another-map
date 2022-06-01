@@ -606,6 +606,8 @@ do
                     attribute = LIGHTNING_ATTRIBUTE,
                     attribute_bonus = 5,
 
+                    attack_cooldown = 0.33,
+
                     SFX_on_unit = "Abilities\\Spells\\Orc\\LightningShield\\LightningShieldBuff.mdx",
                     SFX_on_unit_point = "origin",
 
@@ -1077,7 +1079,7 @@ do
             single_attack_instance = true,
             level = {
                 [1] = {
-                    power = 17,
+                    power = 27,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
@@ -1350,12 +1352,38 @@ do
 
         })
         --==========================================--
+        NewEffectTemplate('ENWS', {
+            name = "wandering spirit effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "ANWS",
+            single_attack_instance = true,
+            level = {
+                [1] = {
+                    power = 47,
+                    global_crit = true,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = ICE_ATTRIBUTE,
+                    attribute_bonus = 10,
+
+                    area_of_effect = 150.,
+                    max_targets = 300,
+
+                    --sfx_pack = { on_unit = { { effect = "Abilities\\Weapons\\PoisonSting\\PoisonStingTarget.mdx", point = "chest", duration = 0.766 }, } },
+                }
+            }
+
+        })
+        --==========================================--
         NewEffectTemplate('effect_pursuer', {
             name = "pursuer effect",
             single_attack_instance = true,
             level = {
                 [1] = {
-                    weapon_damage_percent_bonus = 0.07,
+                    weapon_damage_percent_bonus = 0.15,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
@@ -1375,7 +1403,7 @@ do
                     sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest", duration = 1. }, } },
                 },
                 [2] = {
-                    weapon_damage_percent_bonus = 0.11,
+                    weapon_damage_percent_bonus = 0.3,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
@@ -1395,7 +1423,7 @@ do
                     sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest", duration = 1. }, } },
                 },
                 [3] = {
-                    weapon_damage_percent_bonus = 0.15,
+                    weapon_damage_percent_bonus = 0.45,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
@@ -1456,7 +1484,7 @@ do
             single_attack_instance = true,
             level = {
                 [1] = {
-                    weapon_damage_percent_bonus = 0.12,
+                    weapon_damage_percent_bonus = 0.22,
                     global_crit = true,
                     can_crit = true,
                     is_direct = false,
@@ -1476,7 +1504,7 @@ do
                     SFX_random_angle = true,
                 },
                 [2] = {
-                    weapon_damage_percent_bonus = 0.18,
+                    weapon_damage_percent_bonus = 0.28,
                     global_crit = true,
                     can_crit = true,
                     is_direct = false,
@@ -1496,7 +1524,7 @@ do
                     SFX_random_angle = true,
                 },
                 [3] = {
-                    weapon_damage_percent_bonus = 0.24,
+                    weapon_damage_percent_bonus = 0.34,
                     global_crit = true,
                     can_crit = true,
                     is_direct = false,

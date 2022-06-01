@@ -91,7 +91,7 @@ do
                             local summon_data = GetUnitData(summoned)
                                 summon_data.minion_owner = caster
                                 CreateLeashForSummonedUnit(summoned, caster, 700.)
-                                ModifyStat(summoned, HP_VALUE, 35 * Current_Wave, STRAIGHT_BONUS, true)
+                                ModifyStat(summoned, HP_VALUE, 50 * Current_Wave, STRAIGHT_BONUS, true)
                                 ModifyStat(summoned, HP_REGEN, 1. + (0.01 * Current_Wave), MULTIPLY_BONUS, true)
                                 ModifyStat(summoned, PHYSICAL_ATTACK, 2 * Current_Wave, STRAIGHT_BONUS, true)
                                 ModifyStat(summoned, MAGICAL_ATTACK, 3 * Current_Wave, STRAIGHT_BONUS, true)
@@ -247,7 +247,7 @@ do
         local duration = 0
 
             for i = 1, #unit_data.buff_list do
-                if unit_data.buff_list[i].buff_source == source and (unit_data.buff_list[i].id == "ABWK" or unit_data.buff_list[i].id == "ABDC") then
+                if unit_data.buff_list[i].buff_source == source and (unit_data.buff_list[i].id == "ABWK" or unit_data.buff_list[i].id == "ABDC"  or unit_data.buff_list[i].id == "A0PB") then
                     if unit_data.buff_list[i].expiration_time > duration then
                         duration = unit_data.buff_list[i].expiration_time
                     end

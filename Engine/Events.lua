@@ -40,32 +40,43 @@ do
 
         if killer then
 
-            if GetUnitTalentLevel(killer, "talent_incinerate") > 0 then
-                ApplyBuff(killer, killer, "ATIN", GetUnitTalentLevel(killer, "talent_incinerate"))
-            end
 
-            if GetUnitTalentLevel(killer, "talent_crystallization") > 0 and HasNegativeState(unit, STATE_FREEZE) then
+            if GetUnitTalentLevel(killer, "talent_crystallization") > 0 and IsUnitFrozen(unit) then
                 ApplyEffect(killer, nil, GetUnitX(unit), GetUnitY(unit), "crystallization_effect", GetUnitTalentLevel(killer, "talent_crystallization"))
             end
 
-            if GetUnitTalentLevel(killer, "talent_carnage") > 0 then
-                ApplyBuff(killer, killer, "ATCR", GetBuffLevel(killer, "ATCR") + 1)
-            end
 
-            if GetUnitTalentLevel(killer, "talent_leeches") > 0 then
-                for i = 1, GetUnitTalentLevel(killer, "talent_leeches") do
-                    local leech = CreateUnit(GetOwningPlayer(killer), FourCC("u00T"), GetUnitX(unit) + GetRandomReal(-50., 50.), GetUnitY(unit) + GetRandomReal(-50., 50.), GetRandomReal(0.,360.))
-                    UnitApplyTimedLife(leech, 0, 5.)
-                    DelayAction(0., function()
-                        local unit_data = GetUnitData(leech)
-                        ModifyStat(leech, PHYSICAL_ATTACK, Current_Wave, STRAIGHT_BONUS, true)
-                    end)
+            if IsUnitType(killer, UNIT_TYPE_HERO) then
+                for i = 1, 6 do
+                    if PlayerHero[i] and IsUnitInRange(PlayerHero[i], unit, 1000.) then
+
+                        if GetUnitTalentLevel(killer, "talent_incinerate") > 0 then
+                            ApplyBuff(killer, killer, "ATIN", GetUnitTalentLevel(killer, "talent_incinerate"))
+                        end
+
+                        if GetUnitTalentLevel(killer, "talent_carnage") > 0 then
+                            ApplyBuff(killer, killer, "ATCR", GetBuffLevel(killer, "ATCR") + 1)
+                        end
+
+                        if GetUnitTalentLevel(killer, "talent_leeches") > 0 then
+                            for i = 1, GetUnitTalentLevel(killer, "talent_leeches") do
+                                local leech = CreateUnit(GetOwningPlayer(killer), FourCC("u00T"), GetUnitX(unit) + GetRandomReal(-50., 50.), GetUnitY(unit) + GetRandomReal(-50., 50.), GetRandomReal(0.,360.))
+                                UnitApplyTimedLife(leech, 0, 5.)
+                                DelayAction(0., function()
+                                    local unit_data = GetUnitData(leech)
+                                    ModifyStat(leech, PHYSICAL_ATTACK, Current_Wave, STRAIGHT_BONUS, true)
+                                end)
+                            end
+                        end
+
+                        if GetUnitTalentLevel(killer, "talent_ritual") > 0 then
+                            ApplyBuff(killer, killer, "ARTL", GetUnitTalentLevel(killer, "talent_ritual"))
+                        end
+
+                    end
                 end
             end
 
-            if GetUnitTalentLevel(killer, "talent_ritual") > 0 then
-                ApplyBuff(killer, killer, "ARTL", GetUnitTalentLevel(killer, "talent_ritual"))
-            end
 
 
             local unit_data = GetUnitData(killer)
@@ -202,16 +213,12 @@ do
                     DestroyTimer(GetExpiredTimer())
                 end
             end)
-        elseif missile.id == "MBCH" then
-            BuildChain(source, missile)
-        elseif missile.id == "MSHG" then
-            CastShatterGround(source, missile)
-        elseif missile.id == "MSCN" then
-            SummonCurse(missile)
-        elseif missile.id == "MRLR" then
-            RevenantLaserMissile(source, missile)
-        elseif missile.id == "MNBS" then
-            BoneSpearCast(source, missile)
+        elseif missile.id == "MBCH" then BuildChain(source, missile)
+        elseif missile.id == "MSHG" then CastShatterGround(source, missile)
+        elseif missile.id == "MSCN" then SummonCurse(missile)
+        elseif missile.id == "MRLR" then RevenantLaserMissile(source, missile)
+        elseif missile.id == "MNBS" then BoneSpearCast(source, missile)
+        elseif missile.id == "MNWS" then WanderingSpiritCast(source, missile)
         end
 
         if GetUnitTalentLevel(source, "talent_penetration") > 0 and missile.can_enum then
@@ -269,7 +276,7 @@ do
 
 
         if HasTag(effect.tags, "talent_overflow") and leveled_effect.attribute and leveled_effect.attribute == FIRE_ATTRIBUTE then
-            leveled_effect.power = leveled_effect.power * (1 + 0.1 * GetUnitTalentLevel(source, "talent_overflow"))
+            leveled_effect.power = leveled_effect.power * (1 + 0.3 * GetUnitTalentLevel(source, "talent_overflow"))
         end
 
         if HasTag(effect.tags, "talent_heating_up") and leveled_effect.attribute and leveled_effect.attribute == FIRE_ATTRIBUTE then
@@ -353,6 +360,20 @@ do
 
 
     ---@param source unit
+    ---@param new_source unit
+    ---@param target unit
+    ---@param buff table
+    function OnBuffSourceChange(source, new_source, target, buff)
+
+        if (buff.id == "ABWK" or buff.id == "ABDC" or buff.id == "A0PB") and source ~= new_source then
+            if GetUnitTalentLevel(source, "talent_vile_malediction") > 0 then
+                VileMaledictionStack(source, target, false)
+            end
+        end
+
+    end
+
+    ---@param source unit
     ---@param target unit
     ---@param buff table
     function OnBuffExpire(source, target, buff)
@@ -384,7 +405,7 @@ do
             end)
         end
 
-        if buff.id == "ABWK" or buff.id == "ABDC" then
+        if buff.id == "ABWK" or buff.id == "ABDC" or buff.id == "A0PB" then
 
             if GetUnitTalentLevel(source, "talent_vile_malediction") > 0 then
                 VileMaledictionStack(source, target, false)
@@ -470,7 +491,7 @@ do
             end
         end
 
-        if buff.id == "ABWK" or buff.id == "ABDC" then
+        if buff.id == "ABWK" or buff.id == "ABDC" or buff.id == "A0PB" then
 
             if GetUnitTalentLevel(source, "talent_vile_malediction") > 0 then
                 VileMaledictionStack(source, target, true)
@@ -504,7 +525,7 @@ do
                 --newbuff.expiration_time = buff.expiration_time
             end
 
-            if GetUnitTalentLevel(source, "talent_face_of_death") > 0 then
+            if GetUnitTalentLevel(source, "talent_face_of_death") > 0 and Chance(25.) then
                 ApplyBuff(source, target, "AFOD", GetUnitTalentLevel(source, "talent_face_of_death"))
             end
 
@@ -951,7 +972,7 @@ do
             if UnitHasEffect(source,"EOTS") then SparkCast_Legendary(source)
             else SparkCast(source, target, x, y) end
         elseif id == "A019" then ChainLightningCast(source, target)
-        elseif id == 'A00O' then MakeUnitJump(source, AngleBetweenUnitXY(source, x, y), x, y, 920., 0.6, 'A00O', { effect = "Spell\\Valiant Charge.mdx", point = "origin" })
+        elseif id == 'A00O' then MakeUnitJump(source, AngleBetweenUnitXY(source, x, y), x, y, 920., 0.6, 'A00O')
         elseif id == 'A010' then WhirlwindActivate(source)
         elseif id == 'A00B' then
             local effect = AddSpecialEffect("Spell\\DetroitSmash_Effect.mdx", GetUnitX(source) + Rx(50., GetUnitFacing(source)), GetUnitY(source) + Ry(50., GetUnitFacing(source)))
@@ -1167,7 +1188,7 @@ do
                         if IsAHero(GetTriggerUnit()) then
                             AddSoundVolume("Sound\\portalenter.wav",GetUnitX(GetTriggerUnit()), GetUnitY(GetTriggerUnit()), 125, 1500.)
                             SetUnitPosition(GetTriggerUnit(), GetRectCenterX(gg_rct_portal_location), GetRectCenterY(gg_rct_portal_location))
-                            local minions = GetAllUnitSummonUnits(PlayerHero[player])
+                            local minions = GetAllUnitSummonUnits(PlayerHero[GetPlayerId(GetOwningPlayer(source))+1])
 
                             x = GetRectCenterX(gg_rct_portal_location); y = GetRectCenterY(gg_rct_portal_location)
                             ForGroup(minions, function()

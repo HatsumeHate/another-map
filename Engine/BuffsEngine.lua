@@ -113,7 +113,7 @@ do
                 buff = target_data.buff_list[i]
                 if buff.buff_type == buff_type then
                     if (not rank or rank >= buff.rank) and (not attribute or buff.attribute == attribute) then
-                        OnBuffExpire(buff.buff_source, unit, buff)
+                        OnBuffExpire(buff.buff_source or nil, unit, buff)
                         DeleteBuff(target_data, buff)
                     end
                 end
@@ -133,7 +133,7 @@ do
                 buff = target_data.buff_list[i]
                 if buff.attribute == attribute then
                     if not rank or (rank and rank >= buff.rank) then
-                        OnBuffExpire(buff.buff_source, unit, buff)
+                        OnBuffExpire(buff.buff_source or nil, unit, buff)
                         DeleteBuff(target_data, buff)
                     end
                 end
@@ -154,7 +154,7 @@ do
                     end
                 end
 
-                OnBuffExpire(buff_data.buff_source, target, buff_data)
+                OnBuffExpire(buff_data.buff_source or nil, target, buff_data)
                 DeleteBuff(target_data, buff_data)
                 return true
             end
@@ -252,17 +252,18 @@ do
                         if buff_data.level[lvl].negative_state and buff_data.level[lvl].negative_state > 0 then
 
                             if buff_data.level[lvl].negative_state == STATE_FREEZE then
-                                if unit_data.channeled_destructor then unit_data.channeled_destructor(target); unit_data.channeled_destructor = nil end
+                                --if unit_data.channeled_destructor then unit_data.channeled_destructor(target); unit_data.channeled_destructor = nil end
                                 SetUnitVertexColor(target, 57, 57, 255, 255)
                                 ResetUnitSpellCast(target)
                                 SafePauseUnit(target, true)
                                 SetUnitTimeScale(target, 0.)
                                 GroupAddUnit(FreezeGroup, target)
                             elseif buff_data.level[lvl].negative_state == STATE_STUN then
-                                if unit_data.channeled_destructor then unit_data.channeled_destructor(target); unit_data.channeled_destructor = nil end
+                                --if unit_data.channeled_destructor then unit_data.channeled_destructor(target); unit_data.channeled_destructor = nil end
                                 ResetUnitSpellCast(target)
                                 SafePauseUnit(target, true)
                                 GroupAddUnit(StunGroup, target)
+                                SetUnitAnimation(target, "stand ready")
                             elseif buff_data.level[lvl].negative_state == STATE_FEAR then
                                 if unit_data.channeled_destructor then unit_data.channeled_destructor(target); unit_data.channeled_destructor = nil end
                                 for key = 1, 6 do BlzUnitDisableAbility(target, KEYBIND_LIST[key].ability, true, false) end
@@ -278,7 +279,7 @@ do
                             buff_data.expiration_time = math.floor((buff_data.expiration_time * ((100. - unit_data.stats[CONTROL_REDUCTION].value) / 100.)) + 0.5)
 
                             if buff_data.expiration_time <= 0 then
-                                OnBuffExpire(buff_data.buff_source, target, buff_data)
+                                OnBuffExpire(buff_data.buff_source or nil, target, buff_data)
                                 DeleteBuff(unit_data, buff_data)
                             end
 
@@ -309,7 +310,7 @@ do
                         end
                     end
 
-                    OnBuffLevelChange(buff_data.buff_source, target, buff_data, logic)
+                    OnBuffLevelChange(buff_data.buff_source or nil, target, buff_data, logic)
 
                     break
                 end
@@ -411,7 +412,6 @@ do
             if buff_data.inherit_level == nil or not buff_data.inherit_level then buff_data.current_level = 1
             elseif buff_data.current_level > buff_data.max_level then buff_data.current_level = buff_data.max_level end
 
-
             GenerateBuffLevelData(buff_data, buff_data.current_level)
             buff_data.expiration_time = math.floor((buff_data.level[lvl].time * 1000) + 0.5)
 
@@ -427,6 +427,8 @@ do
                                 DeleteBuff(target_data, existing_buff)
                             else
                                 existing_buff.expiration_time = math.floor((existing_buff.level[existing_buff.current_level].time * 1000) + 0.5)
+                                OnBuffSourceChange(existing_buff.buff_source or nil, source, target, existing_buff)
+                                existing_buff.buff_source = source
                                 buff_data = nil
                                 return false
                             end
@@ -469,17 +471,18 @@ do
                     end
 
                     if buff_data.level[lvl].negative_state == STATE_FREEZE then
-                        if target_data.channeled_destructor then target_data.channeled_destructor(target); target_data.channeled_destructor = nil end
+                        --if target_data.channeled_destructor then target_data.channeled_destructor(target); target_data.channeled_destructor = nil end
                         SetUnitVertexColor(target, 57, 57, 255, 255)
                         ResetUnitSpellCast(target)
                         SafePauseUnit(target, true)
                         SetUnitTimeScale(target, 0.)
                         GroupAddUnit(FreezeGroup, target)
                     elseif buff_data.level[lvl].negative_state == STATE_STUN then
-                        if target_data.channeled_destructor then target_data.channeled_destructor(target); target_data.channeled_destructor = nil end
+                        --if target_data.channeled_destructor then target_data.channeled_destructor(target); target_data.channeled_destructor = nil end
                         ResetUnitSpellCast(target)
                         SafePauseUnit(target, true)
                         GroupAddUnit(StunGroup, target)
+                        SetUnitAnimation(target, "stand ready")
                     elseif buff_data.level[lvl].negative_state == STATE_FEAR then
                         if target_data.channeled_destructor then target_data.channeled_destructor(target); target_data.channeled_destructor = nil end
                         for key = 1, 6 do BlzUnitDisableAbility(target, KEYBIND_LIST[key].ability, true, false) end
@@ -522,23 +525,22 @@ do
             end
 
 
-            OnBuffApply(source, target, buff_data)
+            OnBuffApply(buff_data.buff_source or nil, target, buff_data)
 
             buff_data.update_timer = CreateTimer()
             TimerStart(buff_data.update_timer, BUFF_UPDATE, true, function()
-                --print("expiration time - " .. R2S(buff_data.expiration_time))
                 if buff_data.expiration_time <= 0 or GetUnitState(target, UNIT_STATE_LIFE) < 0.045 then
-                    OnBuffExpire(source, target, buff_data)
+                    OnBuffExpire(buff_data.buff_source or nil, target, buff_data)
                     DeleteBuff(target_data, buff_data)
                 else
 
                     if over_time_effect_delay then
                         if over_time_effect_delay <= 0 then
 
-                            OnBuffOverTimeTrigger(source, target, buff_data)
+                            OnBuffOverTimeTrigger(buff_data.buff_source or nil, target, buff_data)
 
                                 if buff_data.level[buff_data.current_level].effect then
-                                    ApplyEffect(source, target, 0.,0., buff_data.level[buff_data.current_level].effect, buff_data.current_level)
+                                    ApplyEffect(buff_data.buff_source or nil, target, 0.,0., buff_data.level[buff_data.current_level].effect, buff_data.current_level)
                                 end
 
                             over_time_effect_delay = math.floor((buff_data.level[buff_data.current_level].effect_delay * 1000.) + 0.5)
@@ -558,8 +560,8 @@ do
                             local angle
                             local new_x, new_y = GetUnitX(target), GetUnitY(target)
 
-                            if not source or source == target then angle = GetRandomReal(0., 359.)
-                            else angle = AngleBetweenUnits(source, target) end
+                            if not buff_data.buff_source or buff_data.buff_source == target then angle = GetRandomReal(0., 359.)
+                            else angle = AngleBetweenUnits(buff_data.buff_source or nil, target) end
                             
                             new_x = new_x + Rx(150., angle)
                             new_y = new_y + Ry(150., angle)
@@ -580,26 +582,6 @@ do
         FearGroup = CreateGroup()
         BlindGroup = CreateGroup()
         RootGroup = CreateGroup()
-
-        RegisterTestCommand("cc1", function()
-
-           ApplyEffect(BossPack[1].boss, PlayerHero[1], 0, 0,"EHOR", 1)
-            KillUnit(BossPack[1].boss)
-            print("???")
-        end)
-
-        RegisterTestCommand("cc2", function()
-
-           ApplyEffect(BossPack[2].boss, PlayerHero[1], 0, 0,"EHOR", 1)
-            print("???")
-        end)
-
-
-        RegisterTestCommand("debugbuff", function()
-            local buff = GetBuffDataFromUnit(PlayerHero[1], "AHRF")
-            print(buff)
-            print(buff.expiration_time)
-        end)
     end
 
 end

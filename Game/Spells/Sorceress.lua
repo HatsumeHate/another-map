@@ -17,7 +17,7 @@ do
 
 
         if unit_data.boost_overflow then
-            percent = percent + 0.1
+            percent = percent + 0.3 * GetUnitTalentLevel(hero, "talent_overflow")
             unit_data.boost_overflow = nil
         end
 

@@ -623,7 +623,7 @@ do
                                     for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
                                         local picked = BlzGroupUnitAt(enemy_group, index)
 
-                                        if not (IsUnitAlly(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0) then
+                                        if (IsUnitAlly(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0) then
                                             GroupRemoveUnit(enemy_group, picked)
                                             GroupAddUnit(result_group, picked)
                                             targets = targets - 1

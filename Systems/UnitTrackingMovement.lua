@@ -18,6 +18,7 @@ do
             TriggerRegisterPlayerEvent(trigger_down, Player(i), EVENT_PLAYER_MOUSE_DOWN)
             TriggerRegisterPlayerEvent(trigger_up, Player(i), EVENT_PLAYER_MOUSE_UP)
             PlayerDelayTable[i+1] = CreateTimer()
+
         end
 
         TriggerAddAction(trigger_down, function()

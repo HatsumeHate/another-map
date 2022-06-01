@@ -384,7 +384,7 @@ do
             },
             [FourCC(MONSTER_ID_SATYR_HELL)] = {
                 ability_list = {
-                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 1., on_hit_chance = 5. },
+                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 11., on_hit_chance = 15. },
                 }
             },
             [FourCC(MONSTER_ID_SATYR_TRICKSTER)] = {

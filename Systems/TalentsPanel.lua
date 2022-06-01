@@ -15,6 +15,7 @@ do
     local ClickTrigger
     local EnterTrigger
     local LeaveTrigger
+    local TalentData
 
 
     local function NewButtonSimple(texture, size_x, size_y, relative_frame, frame_point_from, frame_point_to, offset_x, offset_y, parent_frame)
@@ -253,12 +254,14 @@ do
                     button_data.category = CLASS_SKILL_CATEGORY[unit_data.unit_class][i]
                     BlzFrameSetTexture(button_data.image, SKILL_CATEGORY_ICON[button_data.category], 0, true)
                     FrameChangeTexture(button_data.frame, SKILL_CATEGORY_ICON[button_data.category])
+                    button_data.points_spent = TalentPanel[player].points_spent[i]
                 end
 
                 TalentPanel[player].current_category = CLASS_SKILL_CATEGORY[unit_data.unit_class][1]
                 TalentPanel[player].tooltip = NewTooltip(TalentPanel[player].points_border_frame, "MyTextTemplateMedium")
                 TalentPanel[player].alt_tooltip = NewTooltip(TalentPanel[player].points_border_frame, "MyTextTemplateMedium")
                 TalentPanel[player].class = unit_data.unit_class
+
             end
         end
     end
@@ -346,6 +349,8 @@ do
             BlzFrameSetVisible(main_frame, false)
             TalentPanel[player].state = false
             TalentPanel[player].points = 1
+            TalentPanel[player].points_spent = {0,0,0}
+
 
     end
 
@@ -584,7 +589,9 @@ do
             category = GetButtonData(TalentPanel[player].category_button[i])
             total_points = total_points + category.points_spent
             category.points_spent = 0
+            TalentPanel[player].points_spent[i] = 0
         end
+
 
         for i = 1, #unit_data.talent_list do
             local talent = GetTalentData(unit_data.talent_list[i])
@@ -672,6 +679,13 @@ do
 
                             local category = GetButtonData(TalentPanel[player].last_category_button)
                             category.points_spent = category.points_spent + 1
+                            for i = 1, 3 do
+                                local btn = GetButtonData(TalentPanel[player].category_button[i])
+                                if btn == category then
+                                    TalentPanel[player].points_spent[i] = TalentPanel[player].points_spent[i] + 1
+                                    break
+                                end
+                            end
 
                             UpdateTalentsRequirements(player)
                             --RefreshTalentConnectors(player, talent.talent_id)

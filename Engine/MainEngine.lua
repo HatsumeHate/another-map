@@ -276,7 +276,7 @@ do
                 local attack_cooldown = BlzGetUnitAttackCooldown(source, 0) - 0.01
 
                 if myeffect and myeffect.eff.level[myeffect.l].attack_cooldown then
-                    attack_cooldown = (myeffect.eff.level[myeffect.l].attack_cooldown * (1. - attacker.stats[ATTACK_SPEED].value * 0.01)) - 0.01
+                    attack_cooldown = (myeffect.eff.level[myeffect.l].attack_cooldown * (1. - attacker.stats[ATTACK_SPEED].value / 100.)) - 0.01
                     --print("was effect cd")
                 end
 

@@ -73,9 +73,14 @@ do
         local texttag = CreateTextTag()
         local conv = GetConversation(id)
         local duration = conv[1].duration
-        local a = GetLocalPlayer() == Player(player-1) and 255 or 0
+        local a = 255
         local index = 1
         local unit_data = GetUnitData(npc)
+
+        if GetLocalPlayer() ~= Player(player-1) then
+            a = 0
+            SetTextTagVisibility(texttag, false)
+        end
 
             unit_data.interaction_blocked[player] = true
 

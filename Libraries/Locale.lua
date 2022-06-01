@@ -1112,6 +1112,7 @@ do
                 SKILL_HARVEST = "Жатва",
                 SKILL_POISON_BLAST = "Всплеск Яда",
                 SKILL_TOXIC_SPIT = "Токсичная Субстанция",
+                SKILL_WANDERING_SPIRIT = "Блуждающий Дух",
 
 
                 SET_NAME_ANCIENT_LEGACY = "Наследие предков",
@@ -1367,7 +1368,7 @@ do
                   [1] = "Призывает из ближайшего трупа в радиусе 600 Воина Скелета. Одновременно может существовать до @FM_DIV!2.6# скелетов. С шансом @FM_PER!5.1#%% вместо Скелета Воина призовется Скелет Лучник.",
                 },
                 [FourCC("ANLR")] = {
-                  [1] = "Соединяет души 3 ближайших трупов в одного мощного лича. Лич получает более сильные характеристики за каждый уровень заклинания. Возможно призвать только одного лича единовременно.",
+                  [1] = "Соединяет души 3 ближайших трупов в одного мощного лича, который распространяет ауру увеличивающую @b!NRLA.pa1# на @b!NRLA.va1#. Лич получает более сильные характеристики за каждый уровень заклинания. Возможно призвать только одного лича единовременно.",
                 },
                 [FourCC("ANPB")] = {
                   [1] = "Создает взрыв яда в радиусе @e!ENPB.aoe# который наносит @e!ENPB.pwr# урона типа @e!ENPB.atr#. После взрыва остается ядовитое облако, которое наносит @e!ENPP.pwr# урона от @e!ENPP.atr# раз в 3 секунды.",
@@ -1376,7 +1377,7 @@ do
                   [1] = "Взрывает труп в ближайшей указанной точке нанося @e!ENCE.pwr# урона типа @e!ENCE.atr# в @e!ENCE.aoe# радиусе.",
                 },
                 [FourCC("ANBP")] = {
-                    [1] = "Призыв из под земли костей, которые в радиусе @e!ENBP.aoe# от точки обездвиживают противников на @b!A0PB.time# сек.",
+                    [1] = "Призыв из под земли костей, которые в радиусе @e!ENBP.aoe# от точки обездвиживают противников на @b!A0PB.time# сек. Считается проклятием.",
                 },
                 [FourCC("ANBB")] = {
                     [1] = "Призывает кости которые расходятся вперед от некроманта. Пораженные противники получают @e!ENBB.pwr# урона типа @e!ENBB.atr# и оглушаются на @b!ABBB.time# секунд.",
@@ -1418,6 +1419,9 @@ do
                 [FourCC("ANBR")] = {
                     [1] = "Вырывает кости из ближайших врагов в радиусе 400, нанося им @e!ENRP.pwr# типа @e!ENRP.atr# и оглушая на @b!ABRD.time# секунд. Если задет хотя бы один противник, увеличивает @b!ANBR.pa1# некроманта на @b!ANBR.va1# и @b!ANBR.pa2# на @b!ANBR.va2# на @b!ANBR.time# секунд.",
                 },
+                [FourCC("ANWS")] = {
+                    [1] = "Выпускает перед собой духа, который медленно двигается вперед и столкнувшись с противником наносит @e!ENWS.pwr# магического урона типа @e!ENWS.atr# в небольшом радиусе.",
+                },
 
 
 
@@ -1447,8 +1451,8 @@ do
                     },
                     ["talent_overflow"] = {
                         name = "Переполнение",
-                        [1] = "Пока у вас больше 60%% маны, следующее заклинание огня будет на 10%% сильнее, но потратит в полтора раза больше маны.",
-                        [2] = "Пока у вас больше 60%% маны, следующее заклинание огня будет на 20%% сильнее, но потратит в два раза больше маны.",
+                        [1] = "Пока у вас больше 60%% маны, следующее заклинание огня будет на 30%% сильнее, но потратит в полтора раза больше маны.",
+                        [2] = "Пока у вас больше 60%% маны, следующее заклинание огня будет на 60%% сильнее, но потратит в два раза больше маны.",
                     },
                     ["talent_heating_up"] = {
                         name = "Разогрев",
@@ -1773,9 +1777,9 @@ do
                     },
                     ["talent_pursuer"] = {
                         name = "Преследователь",
-                        [1] = "С каждой атакой есть вероятность призвать духа который преследует случайную цель. Наносит 7%% урона тьмой от оружия в небольшом радиусе.",
-                        [2] = "С каждой атакой есть вероятность призвать духа который преследует случайную цель. Наносит 11%% урона тьмой от оружия в небольшом радиусе.",
-                        [3] = "С каждой атакой есть вероятность призвать духа который преследует случайную цель. Наносит 15%% урона тьмой от оружия в небольшом радиусе.",
+                        [1] = "С каждой атакой есть вероятность призвать духа который преследует случайную цель. Наносит 15%% урона тьмой от оружия в небольшом радиусе.",
+                        [2] = "С каждой атакой есть вероятность призвать духа который преследует случайную цель. Наносит 30%% урона тьмой от оружия в небольшом радиусе.",
+                        [3] = "С каждой атакой есть вероятность призвать духа который преследует случайную цель. Наносит 45%% урона тьмой от оружия в небольшом радиусе.",
                     },
                     ["talent_experienced_summoner"] = {
                         name = "Опытный Призыватель",
@@ -1808,16 +1812,16 @@ do
                     },
                     ["talent_necromorph"] = {
                         name = "Некроморф",
-                        [1] = "Использование трупа призывает тварь, которая имеет высокую скорость передвижения и взрывается об врагов нанося 12%% урона тьмой от оружия в небольшом радиусе.",
-                        [2] = "Использование трупа призывает тварь, которая имеет высокую скорость передвижения и взрывается об врагов нанося 18%% урона тьмой от оружия в небольшом радиусе.",
-                        [3] = "Использование трупа призывает тварь, которая имеет высокую скорость передвижения и взрывается об врагов нанося 24%% урона тьмой от оружия в небольшом радиусе.",
+                        [1] = "Использование трупа призывает тварь, которая имеет высокую скорость передвижения и взрывается об врагов нанося 22%% урона тьмой от оружия в небольшом радиусе.",
+                        [2] = "Использование трупа призывает тварь, которая имеет высокую скорость передвижения и взрывается об врагов нанося 28%% урона тьмой от оружия в небольшом радиусе.",
+                        [3] = "Использование трупа призывает тварь, которая имеет высокую скорость передвижения и взрывается об врагов нанося 34%% урона тьмой от оружия в небольшом радиусе.",
                     },
                     ["talent_eternal_service"] = {
                         name = "Вечное служение",
                         [1] = "При убийстве прислужника он с 70%% шансом оставляет труп.",
                     },
                     ["talent_frailty"] = {
-                        name = "хрупкость",
+                        name = "слабость",
                         [1] = "Проклятия так же снижают сопротивление ко тьме, холоду и яду на 5.",
                         [2] = "Проклятия так же снижают сопротивление ко тьме, холоду и яду на 7.",
                     },
@@ -1951,9 +1955,11 @@ do
                 INTRODUCTION_TEXT_1 = "О, путник. Добро пожаловать в нашу крепость. Здесь конечно неспокойно, но по твоему виду можно сказать что ты не лыком шит.",
                 INTRODUCTION_TEXT_2 = "Возможно ты сможешь помочь нам? Дело в том, что тут стоит чертов артефакт, который возьми да активируйся.",
                 INTRODUCTION_TEXT_3 = "Сначала подумали, ну ладно, а потом на нас всякая нечисть поперла! Нам бы день продержаться да ночь простоять, поможешь?",
+                INTRODUCTION_TEXT_4 = "Хорошо. Если тебе что нибудь понадобится, ты можешь найти меня если зайдешь внутрь замка. Просто пройди вон туда выше.",
 
                 INTRODUCTION_BARBARIAN_RESPONCE = "Похоже это дело для вед... кхм, простите, варвара.",
                 INTRODUCTION_SORCERESS_RESPONCE = "Мои чары сокрушат любое существо.",
+                INTRODUCTION_NECROMANCER_RESPONCE = "Это будет интересно",
 
 
                 BARBARIAN_NAME = "Варвар",
@@ -3177,6 +3183,7 @@ do
                 SKILL_HARVEST = "Harvest",
                 SKILL_POISON_BLAST = "Poison Splash",
                 SKILL_TOXIC_SPIT = "Toxic Substance",
+                SKILL_WANDERING_SPIRIT = "Wandering Spirit",
 
 
                 SET_NAME_ANCIENT_LEGACY = "Ancient Legacy",
@@ -3431,7 +3438,7 @@ do
                   [1] = "Summon a Skeleton Warrior from a nearby corpse within 600 range. Only @FM_DIV!2.6# skeletons can be reanimated simultaneously. With @FM_PER!5.1#%% chance instead of Skeleton Warrior, Skeleton Archer will be summoned.",
                 },
                 [FourCC("ANLR")] = {
-                  [1] = "Merges 3 souls from corpses nearby into one powerful Lich. Its parameters are increasing by every level of this spell. Can have only 1 Lich at once.",
+                  [1] = "Merges 3 souls from corpses nearby into one powerful Lich which provides aura that inscreases @b!NRLA.pa1# by @b!NRLA.va1#. Its parameters are increasing by every level of this spell. Can have only 1 Lich at once.",
                 },
                 [FourCC("ANPB")] = {
                   [1] = "Makes a blast around the necromancer in @e!ENPB.aoe# radius that deals @e!ENPB.pwr# as @e!ENPB.atr# damage initially. After that, toxic cloud remains and damages all enemies inside for @e!ENPP.pwr# as @e!ENPP.atr# damage 3 times per second.",
@@ -3440,7 +3447,7 @@ do
                   [1] = "Blows up nearest to the point corpse that deals @e!ENCE.pwr# as @e!ENCE.atr# damage in a @e!ENCE.aoe# raduis.",
                 },
                 [FourCC("ANBP")] = {
-                    [1] = "Summons bones from the ground in a @e!ENBP.aoe# radius around a cast point that immobilize enemies for @b!A0PB.time# seconds.",
+                    [1] = "Summons bones from the ground in a @e!ENBP.aoe# radius around a cast point that immobilize enemies for @b!A0PB.time# seconds. Counts as a curse.",
                 },
                 [FourCC("ANBB")] = {
                     [1] = "Summons bones that diverge in front of necromancer. Enemies that are hit take @e!ENBB.pwr# as @e!ENBB.atr# damage and get stunned for @b!ABBB.time# seconds.",
@@ -3482,6 +3489,9 @@ do
                 [FourCC("ANBR")] = {
                     [1] = "Rips bones from nearby enemies in 400 radius, dealing @e!ENRP.pwr# as @e!ENRP.atr# and stunning them for @b!ABRD.time# seconds. If at least one enemy is hit, necromancer's @b!ANBR.pa1# is increased by@b!ANBR.va1# and @b!ANBR.pa2# by @b!ANBR.va2# for @b!ANBR.time# seconds.",
                 },
+                [FourCC("ANWS")] = {
+                    [1] = "Launches a spirit that is slowly moving forward. Upon impact it damages everything in small radius dealing @e!ENWS.pwr# magical damage as @e!ENWS.atr#.",
+                },
 
 
                 TALENTS = {
@@ -3510,8 +3520,8 @@ do
                     },
                     ["talent_overflow"] = {
                         name = "Overflow",
-                        [1] = "While above 60%% of mana next spell will be by 10%% stronger but mana cost is increased by 50%%.",
-                        [2] = "While above 60%% of mana next spell will be by 20%% stronger but mana cost is increased by 100%%.",
+                        [1] = "While above 60%% of mana next spell will be by 30%% stronger but mana cost is increased by 50%%.",
+                        [2] = "While above 60%% of mana next spell will be by 60%% stronger but mana cost is increased by 100%%.",
                     },
                     ["talent_heating_up"] = {
                         name = "Heating up",
@@ -3836,9 +3846,9 @@ do
                     },
                     ["talent_pursuer"] = {
                         name = "Pursuer",
-                        [1] = "With every attack you can summon a spirit that chases a random enemy. Deals 7%% weapon damage in a small radius as darkness.",
-                        [2] = "With every attack you can summon a spirit that chases a random enemy. Deals 11%% weapon damage in a small radius as darkness.",
-                        [3] = "With every attack you can summon a spirit that chases a random enemy. Deals 15%% weapon damage in a small radius as darkness.",
+                        [1] = "With every attack you can summon a spirit that chases a random enemy. Deals 15%% weapon damage in a small radius as darkness.",
+                        [2] = "With every attack you can summon a spirit that chases a random enemy. Deals 30%% weapon damage in a small radius as darkness.",
+                        [3] = "With every attack you can summon a spirit that chases a random enemy. Deals 45%% weapon damage in a small radius as darkness.",
                     },
                     ["talent_experienced_summoner"] = {
                         name = "Experienced summoner",
@@ -3871,9 +3881,9 @@ do
                     },
                     ["talent_necromorph"] = {
                         name = "necromorph",
-                        [1] = "Using a corpse creates an abomination that moves rapidly and explodes on enemies dealing 12%% weapon damage in a small radius.",
-                        [2] = "Using a corpse creates an abomination that moves rapidly and explodes on enemies dealing 18%% weapon damage in a small radius.",
-                        [3] = "Using a corpse creates an abomination that moves rapidly and explodes on enemies dealing 24%% weapon damage in a small radius.",
+                        [1] = "Using a corpse creates an abomination that moves rapidly and explodes on enemies dealing 22%% weapon damage in a small radius.",
+                        [2] = "Using a corpse creates an abomination that moves rapidly and explodes on enemies dealing 28%% weapon damage in a small radius.",
+                        [3] = "Using a corpse creates an abomination that moves rapidly and explodes on enemies dealing 34%% weapon damage in a small radius.",
                     },
                     ["talent_eternal_service"] = {
                         name = "eternal servitude",

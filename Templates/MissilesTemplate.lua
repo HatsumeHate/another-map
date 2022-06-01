@@ -905,8 +905,8 @@ do
             },
             radius = 75.,
             speed = 900.,
-            start_z = 70.,
-            end_z = 70.,
+            start_z = 80.,
+            end_z = 80.,
             arc = 0.,
             max_targets = 1,
             hit_once_in = 3.,
@@ -940,8 +940,8 @@ do
             effect_on_hit = 'ENTS',
             radius = 75.,
             speed = 700.,
-            start_z = 70.,
-            end_z = 70.,
+            start_z = 80.,
+            end_z = 80.,
             arc = 0.,
             max_targets = 1,
             hit_once_in = 3.,
@@ -1008,6 +1008,30 @@ do
             full_distance = true,
             penetrate = false,
             trackable = false
+        })
+        --===============================================--
+        NewMissileTemplate('MNWS', {
+            name = "wandering missile",
+            model = "Effect\\PeeKay's Bonespirit.mdx",
+            max_distance = 1000.,
+            effect_on_hit = 'ENWS',
+            sound_on_destroy = {
+                pack = { "Abilities\\Undead\\Possession\\PossessionMissileLaunch1.flac" },
+                volume = 124,
+                cutoff = 1600.,
+            },
+            radius = 75.,
+            speed = 550.,
+            start_z = 80.,
+            end_z = 80.,
+            arc = 0.,
+            geo_arc = 50,
+            geo_arc_length = 225.,
+            geo_arc_randomize_angle = true,
+            max_targets = 1,
+            ignore_terrain = true,
+            full_distance = true,
+            can_enum = true
         })
         --==============================================--
         NewMissileTemplate('void_rain_missile', {
