@@ -179,7 +179,7 @@ do
     ---@param y real
     ---@param drop_animation boolean
 	function CreateCustomItem(raw, x, y, drop_animation, owner)
-        if raw == 0 then return end
+        if raw == 0 or not ITEM_TEMPLATE_DATA[FourCC(raw)] then return nil end
 		local id     = FourCC(raw)
 		local item   = CreateItem(id, x, y)
 		local data   = MergeTables({}, ITEM_TEMPLATE_DATA[id])
@@ -464,7 +464,8 @@ do
             end
 
 
-
+            item_data.affix = affix
+            item_data.suffix = suffix
             item_data.NAME = ITEM_AFFIX_NAME_LIST[affix][QUALITY_ITEM_LIST[quality][item_data.SUBTYPE][variation].decl] .. item_data.NAME .. ITEM_SUFFIX_LIST[suffix].name
 
         --print("generator parameters done")

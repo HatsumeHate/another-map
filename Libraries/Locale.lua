@@ -700,6 +700,7 @@ do
                 HINT_STATS_1 = "Базовые параметры очень важная часть развития героя. Наведите курсором на каждый, и узнаете немного подробнее о них. Каждый новый уровень дает 3 очка развития.",
                 HINT_ALTARS = "Взаимодействовать с алтарями и сундуками можно кликнув правой кнопкой мыши по ним находясь поблизости. Алтари дают случайный эффект, сундуки содержат предметы и золото, колодцы восстанавливают здоровье или ману.",
                 HINT_BELT = "Можно быстро использовать предметы на поясе нажимая 1-2-3-4-5-6.",
+                HINT_STASH = "В заначке можно сохранить вещи для следующих игр",
 
                 QUEST_REVEALED_STRING = "|c00FFCE00Задание получено: |r",
                 QUEST_DONE_STRING = "|c005AFF00Задание выполнено: |r",
@@ -2769,6 +2770,7 @@ do
                 HINT_STATS_1 = "Basic parameters are crucial in a hero development. You can hover over any of it to know more about each. You gain 3 parameter points with a new level.",
                 HINT_ALTARS = "You can interact with altars, chests or wells via right click while being nearby. Altars give random positive effect, chests contain loot and gold and wells recover your's hero hp or mana.",
                 HINT_BELT = "You can use items on the belt by pressing 1-2-3-4-5-6.",
+                HINT_STASH = "The stash will save your items for next games",
 
                 QUEST_REVEALED_STRING = "|c00FFCE00Quest aquired: |r",
                 QUEST_DONE_STRING = "|c005AFF00Quest completed: |r",

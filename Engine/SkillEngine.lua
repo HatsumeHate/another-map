@@ -282,7 +282,9 @@ do
                         if manacost < 0. then manacost = 0 end
 
                         if skill.level[level].charges then
-                            BlzFrameSetVisible(KEYBIND_LIST[key].player_charges_frame[player].border, true)
+                            if GetLocalPlayer() == GetOwningPlayer(PlayerHero[player]) then
+                                BlzFrameSetVisible(KEYBIND_LIST[key].player_charges_frame[player].border, true)
+                            end
                         end
 
                         BlzSetUnitAbilityManaCost(PlayerHero[player], KEYBIND_LIST[key].ability, 0, math.floor(manacost + 0.5))
@@ -347,7 +349,9 @@ do
             BlzSetUnitAbilityManaCost(unit, ability_id, 0, math.floor(manacost + 0.5))
 
             if skill.level[level].charges then
-                BlzFrameSetVisible(KEYBIND_LIST[key].player_charges_frame[GetPlayerId(GetOwningPlayer(unit))+1].border, true)
+                if GetLocalPlayer() == GetOwningPlayer(unit) then
+                    BlzFrameSetVisible(KEYBIND_LIST[key].player_charges_frame[GetPlayerId(GetOwningPlayer(unit))+1].border, true)
+                end
                 BlzFrameSetText(KEYBIND_LIST[key].player_charges_frame[GetPlayerId(GetOwningPlayer(unit))+1].text, skill.current_charges or skill.level[level].charges)
                 if not skill.current_charges then skill.current_charges = skill.level[level].charges end
                 skill.current_max_charges = skill.level[level].charges
@@ -469,15 +473,6 @@ do
         local unit_data = GetUnitData(unit)
         local skill = GetUnitSkillData(unit, id)
         local ability_level = skill and skill.current_level or 1
-            --[[
-            for i = 1, #unit_data.skill_list do
-                if unit_data.skill_list[i].Id == id then
-                    ability_level = unit_data.skill_list[i].current_level
-                    skill = unit_data.skill_list[i]
-                    break
-                end
-            end
-            ]]
 
             for i = WEAPON_POINT, NECKLACE_POINT do
                 if unit_data.equip_point[i] and unit_data.equip_point[i].SKILL_BONUS and #unit_data.equip_point[i].SKILL_BONUS > 0 then
@@ -490,11 +485,7 @@ do
                 end
             end
 
-        --if skill[ability_level] == nil then
            GenerateSkillLevelData(skill, ability_level)
-       -- end
-
-        --UpdateBindedSkillData(id, GetPlayerId(GetOwningPlayer(unit)) + 1)
 
         return ability_level
     end

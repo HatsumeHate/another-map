@@ -445,11 +445,12 @@ do
                                 attack_effect = { eff = GetEffectData("critical_strike_effect"), l = 1 }
                             end
 
-                            GroupEnumUnitsInRange(enemy_group, GetUnitX(target), GetUnitY(target), weapon.RANGE + 15., nil)
+                            GroupEnumUnitsInRange(enemy_group, GetUnitX(target), GetUnitY(target), weapon.RANGE * 2., nil)
 
                             if weapon.LIGHTNING then
                                 LightningEffect_Units(data.Owner, target, weapon.LIGHTNING.id, weapon.LIGHTNING.fade, 60., 60.)
                             end
+
                             DamageUnit(data.Owner, target, attack_data.damage, attack_data.attribute, attack_data.damage_type, MELEE_ATTACK, attack_effect and true or false, true, true, attack_effect)
 
                                 for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do

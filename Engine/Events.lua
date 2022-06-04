@@ -734,7 +734,7 @@ do
             if GetUnitTalentLevel(source, "talent_sweeping_strikes") < 3 then
                 local unit_data = GetUnitData(source)
                 if unit_data.sweeping_strikes_main_target and unit_data.sweeping_strikes_main_target ~= target then
-                    damage_data.damage = damage_data.damage * (math.floor(33. * GetUnitTalentLevel(source, "talent_sweeping_strikes") + 0.5) * 0.01)
+                    damage_data.damage = damage_data.damage * (math.floor(33. * GetUnitTalentLevel(source, "talent_sweeping_strikes") + 0.5) / 100)
                 end
             end
         end

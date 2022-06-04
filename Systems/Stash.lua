@@ -6,6 +6,7 @@
 do
 
 
+    local EffectTable
     StashFrame = nil
     local ClickTrigger; local EnterTrigger; local LeaveTrigger
     local DoubleClickTimer; local CachedItems
@@ -50,6 +51,8 @@ do
 
 
 
+
+
     ---@param item item
     function ParseItem(item)
         local result = ""
@@ -57,7 +60,6 @@ do
 
             result = result .. "-a" .. item_data.raw .. "-d" .. item_data.QUALITY .. "-g" .. R2I(item_data.stat_modificator * 100.)
 
-            --
             if item_data.TYPE == ITEM_TYPE_WEAPON then
                 result = result .. "-u" .. item_data.ATTRIBUTE .. "-b" .. item_data.ATTRIBUTE_BONUS .. "-f" .. item_data.DAMAGE_TYPE
             end
@@ -68,10 +70,10 @@ do
                 local value = item_data.BONUS[i].VALUE
 
                 --print("value before " .. value)
-                if item_data.BONUS[i].METHOD == MULTIPLY_BONUS or (item_data.BONUS[i].PARAM == CRIT_MULTIPLIER or item_data.BONUS[i].PARAM == HP_REGEN or item_data.BONUS[i].PARAM == MP_REGEN) then value = R2I(math.ceil(value * 100.)) end
+                if item_data.BONUS[i].METHOD == MULTIPLY_BONUS or (item_data.BONUS[i].PARAM == CRIT_MULTIPLIER or item_data.BONUS[i].PARAM == HP_REGEN or item_data.BONUS[i].PARAM == MP_REGEN) then value = R2I(math.floor((value * 100.)+0.5)) end
                 --print("value after " .. value)
 
-                result = result .. "-q" .. i .. R2I(item_data.BONUS[i].PARAM) .. "-w" .. i .. value .. "-e" .. i .. R2I(item_data.BONUS[i].METHOD)
+                result = result .. "-q" .. i .. R2I(item_data.BONUS[i].PARAM) .. "-w" .. i .. value .. "-e" .. i .. R2I(item_data.BONUS[i].METHOD) .. "-k" .. i .. (item_data.BONUS[i].base or value) .. "-y" .. i .. (item_data.BONUS[i].delta or 0) .. "-c" .. i .. (item_data.BONUS[i].delta_level or 0) .. "-z" .. i .. (item_data.BONUS[i].delta_level_max or 0)
             end
 
 
@@ -80,12 +82,22 @@ do
             result = result .. "-s" .. #item_data.SKILL_BONUS
 
             for i = 1, #item_data.SKILL_BONUS do
-                if item_data.SKILL_BONUS[i].id then result = result .. "-i" .. i .. item_data.SKILL_BONUS[i].bonus_levels .. "-o" .. i .. item_data.SKILL_BONUS[i].id
+                if item_data.SKILL_BONUS[i].id and GetSkillData(FourCC(item_data.SKILL_BONUS[i].id)) then result = result .. "-i" .. i .. item_data.SKILL_BONUS[i].bonus_levels .. "-o" .. i .. item_data.SKILL_BONUS[i].id
                 else result = result .. "-i" .. i .. item_data.SKILL_BONUS[i].bonus_levels .. "-p" .. i .. item_data.SKILL_BONUS[i].category end
             end
 
         else
             result = result .. "-s" .. 0
+        end
+
+        if item_data.effect_bonus and #item_data.effect_bonus > 0 then
+            result = result .. "-m" .. #item_data.effect_bonus
+
+            for i = 1, #item_data.effect_bonus do
+                result = result .. "-l" .. i .. GetEffectNumber(item_data.effect_bonus[i])
+            end
+        else
+            result = result .. "-m0"
         end
 
         if item_data.STONE_SLOTS then
@@ -103,10 +115,13 @@ do
         result = result .. "-r" .. item_data.MAX_SLOTS
 
         if item_data.item_variation then
-            result = result .. "-t" .. item_data.item_variation
+            result = result .. "-t" .. item_data.item_variation .. "-af" .. item_data.affix .. "-sf" .. item_data.suffix
+        else
+            result = result .. "-t0"
         end
 
-        result = result .. "-n" .. item_data.NAME .. "-enditem"
+        --print("parse result "..result)
+        --result = result .. "-n" .. item_data.NAME .. "-enditem"
 
 
         return result
@@ -114,21 +129,23 @@ do
 
 
     function ParseData(data, tag)
-        local first_index = string.find(data, "-"..tag, 0) + #tag + 1
+        local first_index = (string.find(data, "-"..tag, 0) or 0) + #tag + 1
         if not first_index then return "0" end
-        local second_index = string.find(data, "-", first_index, 0)-1
+        local second_index = (string.find(data, "-", first_index) or 0) -1
         if not second_index then return "0" end
         --print(tag .. " = "..string.sub(data, first_index, second_index))
-        return string.sub(data, first_index, second_index)
+        return string.sub(data, first_index or 0, second_index or 0) or "0"
     end
 
 
-    function LoadItem(code, player)
-        local item = CreateCustomItem(ParseData(code, "a"), 0.,0., false, player)
+    function LoadItem(code, player, slot)
+        local id = ParseData(code, "a")
+
+        local item = CreateCustomItem(id, 0.,0., false, player)
+        if item == nil then return end
 
         DelayAction(0., function()
             local item_data = GetItemData(item)
-
 
             if item_data.TYPE == ITEM_TYPE_WEAPON then
                 --item_data.DAMAGE = S2I(ParseData(code, "c"))
@@ -138,7 +155,11 @@ do
             end
 
             item_data.QUALITY = S2I(ParseData(code, "d"))
-            item_data.stat_modificator = S2R(ParseData(code, "g")) * 0.01
+            local color_table = GetQualityEffectColor(item_data.QUALITY)
+            BlzSetSpecialEffectColor(item_data.quality_effect, color_table.r, color_table.g, color_table.b)
+            BlzSetSpecialEffectScale(item_data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[item_data.SUBTYPE])
+            BlzSetSpecialEffectAlpha(item_data.quality_effect, 0)
+            item_data.stat_modificator = S2R(ParseData(code, "g")) / 100.
             item_data.MAX_SLOTS =  S2I(ParseData(code, "r"))
 
             local bonuses = S2I(ParseData(code, "h"))
@@ -154,19 +175,28 @@ do
 
                      if item_data.BONUS[i].METHOD == MULTIPLY_BONUS or (item_data.BONUS[i].PARAM == CRIT_MULTIPLIER or item_data.BONUS[i].PARAM == HP_REGEN or item_data.BONUS[i].PARAM == MP_REGEN) then item_data.BONUS[i].VALUE = item_data.BONUS[i].VALUE / 100.
                      else item_data.BONUS[i].VALUE = R2I(item_data.BONUS[i].VALUE) end
+
+                     item_data.BONUS[i].base = S2I(ParseData(code, "k"..i))
+
+                     local delta = S2I(ParseData(code, "y"..i))
+
+                     if delta > 0 then
+                         item_data.BONUS[i].delta = delta
+                         item_data.BONUS[i].delta_level = S2I(ParseData(code, "c"..i))
+                         item_data.BONUS[i].delta_level_max = S2I(ParseData(code, "z"..i))
+                     end
                      --print("loaded value " .. item_data.BONUS[i].VALUE)
 
                 end
             end
-
 
             bonuses = S2I(ParseData(code, "s"))
 
             if bonuses > 0 then
                 for i = 1, bonuses do
                     item_data.SKILL_BONUS[i] = { bonus_levels = S2I(ParseData(code, "i"..i)) }
-                    local str = ParseData(code, "o"..i)
-                    if #str > 0 then item_data.SKILL_BONUS[i].id = str
+                    local str = ParseData(code, "o"..i) or "0"
+                    if GetSkillData(FourCC(str)) then item_data.SKILL_BONUS[i].id = str
                     else item_data.SKILL_BONUS[i].category = S2I(ParseData(code, "p"..i)) end
                 end
             end
@@ -175,30 +205,41 @@ do
             if bonuses > 0 then
                 for i = 1, bonuses do
                     local stone = CreateCustomItem(ParseData(code, "v"..i), 0.,0.)
-                    DelayAction(0., function() item_data.STONE_SLOTS[i] = GetItemData(stone) end)
-                    --item_data.STONE_SLOTS[i] =
+                    DelayAction(0., function() item_data.STONE_SLOTS[i] = GetItemData(stone); RemoveCustomItem(stone) end)
+                    SetItemVisible(stone, false)
+                end
+            end
+
+            bonuses = S2I(ParseData(code, "m"))
+            if bonuses > 0 then
+                item_data.effect_bonus = {}
+                for i = 1, bonuses do
+                    item_data.effect_bonus[i] = GetEffectStr(S2I(ParseData(code, "l"..i)))
                 end
             end
 
             --print("vars")
-            local var = ParseData(code, "t")
-            if #var > 0 then
+            local var = ParseData(code, "t") or 0
+
+            if S2I(var) > 0 then
                 local item_preset = QUALITY_ITEM_LIST[item_data.QUALITY][item_data.SUBTYPE][S2I(var)]
+                item_data.NAME = ITEM_AFFIX_NAME_LIST[S2I(ParseData(code, "af"))][item_preset.decl] .. item_preset.name .. ITEM_SUFFIX_LIST[S2I(ParseData(code, "sf"))].name
                 item_data.item_variation = var
                 item_data.frame_texture = item_preset.icon
                 item_data.soundpack = item_preset.soundpack
                 item_data.stat_modificator = item_preset.modificator
                 item_data.model = item_preset.model or nil
+                item_data.texture = item_preset.texture or nil
             end
 
 
-            item_data.NAME = ParseData(code, "n")
+            --item_data.NAME = ParseData(code, "n")
             item_data.actual_name = GetQualityColor(item_data.QUALITY) .. item_data.NAME .. '|r'
             GenerateItemLevel(item, 1)
             GenerateItemCost(item, 1)
 
             SetItemVisible(item, false)
-            AddToStash(player, item, true)
+            AddToStash(player, item, true, slot)
         end)
     end
 
@@ -248,7 +289,7 @@ do
                         DelayAction(0., function()
                             CachedItems[player][i].parse_data = ParseItem(button.item)
                             AddToBuffer(CachedItems[player][i].parse_data)
-                            FileWrite(player - 1, "testsave\\slot".. i ..".txt")
+                            FileWrite(player - 1, "CastleRevival\\slot".. i ..".txt")
                         end)
                     end
 
@@ -257,7 +298,7 @@ do
                     FrameChangeTexture(button.button, button.original_texture)
                     BlzFrameSetText(button.charges_text_frame, "")
                     StashFrame[player].itemdata[i] = nil
-                    if CachedItems[player][i] then FileOverwrite(player-1, "testsave\\slot".. i ..".txt", "0") end
+                    if CachedItems[player][i] then FileOverwrite(player-1, "CastleRevival\\slot".. i ..".txt", "0") end
                     CachedItems[player][i] = nil
                 end
 
@@ -293,7 +334,10 @@ do
 
     ---@param item item
     ---@param player integer
-    function AddToStash(player, item, silent)
+    ---@param silent boolean
+    ---@param slot number
+    ---@return boolean
+    function AddToStash(player, item, silent, slot)
 
         if GetItemData(item) == nil then return false end
 
@@ -305,7 +349,8 @@ do
         end
 
 
-        local free_slot = GetFirstFreeStashButton(player)
+        local free_slot = ButtonList[StashFrame[player].slots[slot]] or GetFirstFreeStashButton(player)
+
         if free_slot ~= nil then
             free_slot.item = item
             if not silent and item_data.soundpack and item_data.soundpack.drop then PlayLocalSound(item_data.soundpack.drop, player - 1) end
@@ -359,6 +404,8 @@ do
                     tooltip.is_sell_penalty = true
                     StashFrame[player].main_frame = main_frame
                     BlzFrameSetVisible(StashFrame[player].main_frame, false)
+                    BlzFrameSetTexture(StashFrame[player].portrait, "UI\\BTNTreasureChest2.blp", 0, true)
+                    BlzFrameSetText(StashFrame[player].name, GetUnitName(gg_unit_n01Z_0030))
 
             end
         end
@@ -414,14 +461,41 @@ do
     end
 
 
+    function GetEffectStr(num)
+        return EffectTable[num]
+    end
+
+    function GetEffectNumber(eff)
+        for i = 1, #EffectTable do
+            if eff == EffectTable[i] then
+                return i
+            end
+        end
+        return 0
+    end
+
+
+
+    local FirstTime_Data
+
     function InitPrivateStash()
 
         StashFrame = {}
 
 
-        ShowUnit(gg_unit_n01Z_0030, false)
+        EffectTable = {
+            [1] = "weap_poison_mag",
+            [2] = "item_enrage",
+            [3] = "weap_bleed",
+            [4] = "weap_fire_mag",
+            [5] = "item_conduction",
+            [6] = "item_fortify",
+            [7] = "weap_poison_phys",
+        }
+
+        --ShowUnit(gg_unit_n01Z_0030, false)
         local trg = CreateTrigger()
-        --TriggerRegisterUnitInRangeSimple(trg, 250., gg_unit_n01Z_0030)
+        TriggerRegisterUnitInRangeSimple(trg, 250., gg_unit_n01Z_0030)
         TriggerAddAction(trg, function()
             local id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
             local player = id + 1
@@ -431,12 +505,19 @@ do
 
                         StashFrame[player].state = true
 
+                        if FirstTime_Data[player].first_time then
+                            ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_STASH, id)
+                            FirstTime_Data[player].first_time = false
+                            AddJournalEntry(player, "hints", "UI\\BTNLeatherbound_TomeI.blp", GetLocalString("Подсказки", "Hints and Tips"), 1000)
+                            AddJournalEntryText(player, "hints", QUEST_HINT_STRING .. LOCALE_LIST[my_locale].HINT_STASH, true)
+                        end
+
                         if GetLocalPlayer() == Player(id) then
                             BlzFrameSetVisible(StashFrame[player].main_frame, true)
                             SetUnitAnimation(gg_unit_n01Z_0030, "Morph")
                         end
 
-                       -- UpdateStashWindow(player)
+                        --UpdateStashWindow(player)
 
                         local timer = CreateTimer()
                             TimerStart(timer, 0.1, true, function()
@@ -542,6 +623,8 @@ do
 
         end)
 
+
+        BlzSetUnitName(gg_unit_n01Z_0030, GetLocalString("Заначка", "Stash"))
         CachedItems = {}
         for i = 1, 6 do
             CachedItems[i] = {}
@@ -552,41 +635,23 @@ do
         end
 
 
+        FirstTime_Data = {
+            [1] = { first_time = true },
+            [2] = { first_time = true },
+            [3] = { first_time = true },
+            [4] = { first_time = true },
+            [5] = { first_time = true },
+            [6] = { first_time = true }
+        }
 
---[[
         DelayAction(10., function()
-            FileLoad("testsave\\slot1.txt")
-            FileLoad("testsave\\slot2.txt")
-            FileLoad("testsave\\slot3.txt")
-            FileLoad("testsave\\slot4.txt")
-            FileLoad("testsave\\slot5.txt")
-        end)]]
-
-        local loads = 0
-        local timer = CreateTimer()
-        TimerStart(timer, 2.5, true, function()
-
-            for i = 1, 6 do
-                local name = GetPlayerName(Player(i - 1))
-
-                    if GetPlayerSlotState(Player(i-1)) == PLAYER_SLOT_STATE_PLAYING and PlayerSyncData[name] then
-                        local result = ""
-
-                        DelayAction(5., function()
-
-                            for k = 1, 5 do if PlayerSyncData[name][k] then result = result .. PlayerSyncData[name][k] end end
-                            loads = loads + 1
-                            LoadStash(result, i)
-                            PlayerSyncData[name] = nil
-                            if loads >= ActivePlayers then DestroyTimer(timer) end
-
-                        end)
-
-                    end
-
-            end
-
+            FileLoad("CastleRevival\\slot1.txt")
+            FileLoad("CastleRevival\\slot2.txt")
+            FileLoad("CastleRevival\\slot3.txt")
+            FileLoad("CastleRevival\\slot4.txt")
+            FileLoad("CastleRevival\\slot5.txt")
         end)
+
 
     end
 

@@ -351,7 +351,7 @@ do
                              BlzFrameSetText(LibrarianFrame[player].exchange_frame, "")
                              LibrarianFrame[player].exchange_cost = 0
                              local quality = item_data.QUALITY
-                             DropItemFromInventory(player, exchange_button.item)
+                             DropItemFromInventory(player, exchange_button.item, true)
                              RemoveCustomItem(exchange_button.item)
                              exchange_button.item = nil
                              UpdateLibrarianWindow(player)

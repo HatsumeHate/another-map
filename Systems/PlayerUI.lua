@@ -436,6 +436,29 @@ do
 
                     ShowPlayerUI(current_player)
                     UpdateBindedSkillsData(current_player)
+                    local unit_data = GetUnitData(PlayerHero[current_player])
+
+                        if unit_data.equip_point[CHEST_POINT] then
+                            local item = unit_data.equip_point[CHEST_POINT].item
+
+                                if item then
+                                    EquipItem(PlayerHero[current_player], item, false)
+                                    EquipItem(PlayerHero[current_player], item, true)
+                                else
+                                    SetTexture(PlayerHero[current_player], TEXTURE_ID_EMPTY)
+                                end
+
+                        else
+                            SetTexture(PlayerHero[current_player], TEXTURE_ID_EMPTY)
+                        end
+
+                    PlayerSyncData[current_player] = { [1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false }
+                    FileLoad("CastleRevival\\slot1.txt")
+                    FileLoad("CastleRevival\\slot2.txt")
+                    FileLoad("CastleRevival\\slot3.txt")
+                    FileLoad("CastleRevival\\slot4.txt")
+                    FileLoad("CastleRevival\\slot5.txt")
+                    --UpdateStashWindow(current_player)
 
                 end)
 

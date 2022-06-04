@@ -714,7 +714,7 @@ do
 
 
         PlayerMovingItem = {}
-
+        BlzSetUnitName(gg_unit_n01Y_0018, GetLocalString("Личный Сундук", "Private Chest"))
         for i = 1, 6 do
             DrawPrivateChestFrames(i)
             BlzFrameSetTexture(PrivateChestFrame[i].portrait, "UI\\BTNTreasure Chest.blp", 0, true)

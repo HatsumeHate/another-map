@@ -176,11 +176,14 @@ do
         local mark
         local area_effect = ""
         local area_aura = ""
+        local mark_effect = ""
+
         local scale = radius / 70.
 
             if GetLocalPlayer() == Player(player-1) then
                 area_effect = "Quest\\LootEFFECT.mdx"
                 area_aura = "Quest\\QuestMarking.mdx"
+                mark_effect = MarkList[mark_type or 1][mark_var or 1]
             end
 
             area_effect = AddSpecialEffect(area_effect, x, y)
@@ -194,7 +197,7 @@ do
             BlzSetSpecialEffectAlpha(area_aura, 155)
 
             if mark_type then
-                mark = AddSpecialEffect(MarkList[mark_type or 1][mark_var or 1], x, y)
+                mark = AddSpecialEffect(mark_effect, x, y)
                 BlzSetSpecialEffectScale(mark, mark_scale)
             end
 

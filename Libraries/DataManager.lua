@@ -2,11 +2,61 @@ do
 
 
     local Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    local CyrillicAlphabet = "йцукенгшщзхъфывапролджэюбьтимсчяёЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЮБЬТИМСЧЯ"
+    local ConvAlphabet     = "abcdefghijklmnopqrstuvwxyz12345678"
     local LoadBuffer
+    local CA = 0
+    local CAUP = 0
+    local RA = 0
     PlayerSyncData = nil
     PlayerPackages = nil
 
 
+    function IsCyrillic(str)
+        for i = 1, #str do
+            for k = 1, #CyrillicAlphabet do
+                if string.match(string.lower(string.sub(str, i, i+1)), string.sub(CyrillicAlphabet,k, k+1)) ~= nil then
+                    return true
+                end
+            end
+        end
+        return false
+    end
+
+
+    function ConvertToCyrillic(str)
+        local new_str = ""
+
+        for i = 1, #str do
+            local char = SubString(str, i-1, i)
+            --print("char " .. char)
+
+                for k = 1, #RA do
+                    if RA[k] == char then
+                        new_str = new_str .. CA[k]
+                    end
+                end
+
+        end
+        return new_str
+    end
+
+
+    function ConvertFromCyrillic(str)
+
+        for i = 1, #str do
+            local char = SubString(str, i-1, i+1)
+
+                for k = 1, #CA do
+                    if CA[k] == char or CAUP[k] == char then
+                        str = string.gsub(str, char, RA[k])
+                    end
+                end
+
+        end
+
+        return str
+    end
 
     function lsh(value,shift)
         return (value*(2^shift)) %% 256
@@ -75,18 +125,20 @@ do
     end
 
     function FileLoad(path)
-        local abilcode = FourCC("Agyv")
 
-            print("start loading")
             Preloader(path)
             PreloadGenClear()
-            local result = BlzGetAbilityTooltip(abilcode, 0)
-            local slot = GetFileSlot(path)
+
+        local part_1 = BlzGetAbilityTooltip(FourCC("Agyv"), 0)
+        local part_2 = BlzGetAbilityTooltip(FourCC("Aroc"), 0)
+        local result = part_1..part_2
+        local slot = GetFileSlot(path)
+
 
             for i = 0, 5 do
                 if GetLocalPlayer() == Player(i) then
                     BlzSendSyncData("dataload" .. slot, result)
-                    print("send data ".. result .." in slot " .. slot)
+                   -- print("send data ".. result .." in slot " .. slot)
                 end
             end
 
@@ -94,25 +146,11 @@ do
 
 
     function ParsePlayerNameOut(name)
-
-        for i = 1, #name do
-            if SubString(name, i-1, i) == "_" then
-                return SubString(name, 0, i-1) .. "#" .. SubString(name, i, #name)
-            end
-        end
-
-        return name
+        return string.gsub(name, "_", "#", 1)
     end
 
     function ParsePlayerNameIn(name)
-
-        for i = 1, #name do
-            if SubString(name, i-1, i) == "#" then
-                return SubString(name, 0, i-1) .. "_" .. SubString(name, i, #name)
-            end
-        end
-
-        return name
+        return string.gsub(name, "#", "_", 1)
     end
 
     function FileOverwrite(player, path, data)
@@ -120,12 +158,17 @@ do
 
         if GetLocalPlayer() == Player(player) then
             Preload("\")\ncall BlzSetAbilityTooltip ('Agyv',\"".. data .. "\",0)" .. "\n//")
+            Preload("\")\ncall BlzSetAbilityTooltip ('Aroc',\"".. data .. "\",0)" .. "\n//")
             PreloadGenEnd(path)
         end
     end
 
     function FileWrite(player, path)
-        local result = ParsePlayerNameIn(GetPlayerName(Player(player))) .. "_"
+        local name = GetPlayerName(Player(player))
+
+        if IsCyrillic(name) then name = ConvertFromCyrillic(name) end
+
+        local result = ParsePlayerNameIn(name) .. "_"
 
         if not LoadBuffer then return end
 
@@ -133,47 +176,23 @@ do
             result = result .. LoadBuffer[i]
         end
 
+       --print("string to encode: " .. "slot"..GetFileSlot(path)..result)
         result = enc("slot"..GetFileSlot(path)..result)
+       --print("decoded string: " .. result)
 
         PreloadGenClear()
+        local half = math.floor(#result / 2)
+        local part_1 = string.sub(result, 1, half)
+        local part_2 = string.sub(result, half+1, #result)
 
         if GetLocalPlayer() == Player(player) then
-            Preload("\")\ncall BlzSetAbilityTooltip ('Agyv',\"".. result .. "\",0)" .. "\n//")
+            Preload("\")\ncall BlzSetAbilityTooltip ('Agyv',\"".. part_1 .. "\",0)" .. "\n//")
+            Preload("\")\ncall BlzSetAbilityTooltip ('Aroc',\"".. part_2 .. "\",0)" .. "\n//")
             PreloadGenEnd(path)
+            --print("saved!")
         end
 
         LoadBuffer = nil
-    end
-
-
-    function GetPlayerNameCode(string)
-            local length = #string
-
-                for i = 1, length do
-                    if SubString(string, i-1, i) == "_" then
-                        for k = i-1, length do
-                            if SubString(string, k-1, k) == "_" then
-                                return SubString(string, i, k-1)
-                            end
-                        end
-                    end
-                end
-
-
-        return ""
-    end
-
-
-    function GetPlayerNameDeclens(string)
-            local length = #string
-
-                for i = 1, length do
-                    if SubString(string, i-1, i) == "_" then
-                        return i
-                    end
-                end
-
-        return 0
     end
 
 
@@ -185,7 +204,6 @@ do
 
         PlayerSyncData = {}
         PlayerPackages = {}
-        --PlayerPackageValue = {}
 
         local trigger = CreateTrigger()
 
@@ -195,35 +213,60 @@ do
                 BlzTriggerRegisterPlayerSyncEvent(trigger, Player(i), "dataload" .. k, false);
             end
 
-            PlayerSyncData[i+1] = {}
+            PlayerSyncData[i+1] = {
+                [1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false
+            }
         end
 
         TriggerAddAction(trigger, function()
             local sync_string = dec(BlzGetTriggerSyncData())
             local slot = GetFileSlot(sync_string)
 
-            if slot > 0 then
-                local delc = GetPlayerNameDeclens(sync_string)
-                local sync_prefix = SubString(BlzGetTriggerSyncPrefix(), 8, 9)
-                local player = ParsePlayerNameOut(SubString(sync_string, 5, delc-1))
+                if slot > 0 then
+                    --print("its a slot with data " .. sync_string)
+                    local begin = string.find(sync_string, "slot", 1, true)+5
+                    local delc = string.find(sync_string, "_-a", begin, true)
+                    local player = ParsePlayerNameOut(string.sub(sync_string, begin, delc-1))--SubString(sync_string, 5, delc-3))
 
-                print("got data from player " .. player .. " in slot ".. slot)
-                print("prefix is " .. sync_prefix)
+                    --print("got data to sync from player " .. player .. " in slot ".. slot)
+                    --print("slot is " .. (slot or "NOT SUPPOSED TO HAPPEN"))
 
-                    if StringLength(sync_string) > 1 then
-                        sync_string = SubString(sync_string, delc, #sync_string)
-                    else
-                        sync_string = ""
-                    end
+                        if StringLength(sync_string) > 1 then
+                            sync_string = string.sub(sync_string, delc, #sync_string)
+                        else
+                            sync_string = ""
+                        end
 
-                    if not PlayerSyncData[player] then PlayerSyncData[player] = { } end
+                       -- print("data is " .. (sync_string or "NOT SUPPOSED TO HAPPEN"))
 
-                    PlayerSyncData[player][S2I(sync_prefix)] = sync_string
-            end
+                        for i = 0, 5 do
+                            local name = GetPlayerName(Player(i))
+                            if #name > 0 then
+
+                                if IsCyrillic(name) then name = ConvertFromCyrillic(name) end
+
+                                if name == player and not PlayerSyncData[i+1][slot] and #sync_string > 1 then
+                                    LoadItem(sync_string, i+1, slot)
+                                    PlayerSyncData[i+1][slot] = true
+                                    break
+                                end
+                            end
+                            --print("name")
+
+                        end
+
+                end
 
         end)
 
         BlzSetAbilityTooltip(FourCC("Agyv"),"", 0)
+        BlzSetAbilityTooltip(FourCC("Aroc"),"", 0)
+
+
+        CA      = { "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", "ё", }
+        CAUP    = { "Й", "Ц", "У", "К", "Е", "Н", "Г", "Ш", "Щ", "З", "Х", "Ъ", "Ф", "Ы", "В", "А", "П", "Р", "О", "Л", "Д", "Ж", "Э", "Я", "Ч", "С", "М", "И", "М", "Ь", "Б", "Ю", "Ё", }
+        RA      = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "1", "2", "3", "4", "5", "6", "7", }
+
     end
 
 

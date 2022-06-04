@@ -1697,7 +1697,6 @@ do
                 }
             }
         })
-
         --============================================--
         NewSkillData('ANHV', {
             name            = LOCALE_LIST[my_locale].SKILL_HARVEST,
