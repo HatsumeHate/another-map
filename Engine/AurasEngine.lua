@@ -8,18 +8,11 @@ do
 
     function GetUnitAuraData(target, id)
 
-        if AuraList[target] and AuraList[target][id] then
-            --print("everything exists")
-            return AuraList[target][id]
+        if AuraList[target] and AuraList[target][id] then return AuraList[target][id]
         else
-            if AuraList[target] and not AuraList[target][id] then
-                --print("aura doesnt exist, create new")
-                --AuraList[target][id] = MergeTables({}, GetAuraData(id))
-                return nil
+            if AuraList[target] and not AuraList[target][id] then return nil
             else
-                --print("nothing exists")
                 AuraList[target] = {}
-                --AuraList[target][id] = MergeTables({}, GetAuraData(id))
                 return nil
             end
         end
@@ -55,11 +48,81 @@ do
     end
 
 
+
+    ---@param from unit
+    ---@param x real
+    ---@param y real
+    ---@param id string
+    ---@param level integer
+    ---@return table
+    function CreateAuraOnPoint(from, x, y, id, level, ability_instance)
+        local player = GetOwningPlayer(from)
+        local aura = MergeTables({}, GetAuraData(id))
+
+            aura.timer = CreateTimer()
+            aura.group = CreateGroup()
+            aura.current_level = level
+            aura.time = aura.level[aura.current_level].duration or nil
+            aura.sfx = AddSpecialEffect(aura.sfx_path, x, y)
+            BlzSetSpecialEffectScale(aura.sfx, aura.level[aura.current_level].sfx_scale or 1.)
+
+            TimerStart(aura.timer, aura.tickrate, true, function()
+
+                if aura.time and aura.time <= 0. then
+                    DestroyGroup(aura.group)
+                    DestroyTimer(aura.timer)
+                    DestroyEffect(aura.sfx)
+                else
+                    GroupEnumUnitsInRange(aura.group, x, y, aura.level[aura.current_level].radius, nil)
+
+                        for index = BlzGroupGetSize(aura.group) - 1, 0, -1 do
+                            local picked = BlzGroupUnitAt(aura.group, index)
+
+                            if GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
+
+                                if aura.level[aura.current_level][ON_ENEMY] and IsUnitEnemy(picked, player) then
+
+                                    if aura.level[aura.current_level][ON_ENEMY].applied_effect then
+                                        ApplyEffect(from, picked, 0.,0., aura.level[aura.current_level][ON_ENEMY].applied_effect, aura.current_level, ability_instance)
+                                    elseif aura.level[aura.current_level][ON_ENEMY].applied_buff then
+                                        ApplyBuff(from, picked, aura.level[aura.current_level][ON_ENEMY].applied_buff, aura.current_level, ability_instance)
+                                    end
+
+                                elseif aura.level[aura.current_level][ON_ALLY] and not IsUnitEnemy(picked, player) then
+
+                                    if aura.level[aura.current_level][ON_ALLY].applied_effect then
+                                        ApplyEffect(from, picked, 0.,0., aura.level[aura.current_level][ON_ALLY].applied_effect, aura.current_level, ability_instance)
+                                    elseif aura.level[aura.current_level][ON_ALLY].applied_buff then
+                                        ApplyBuff(from, picked, aura.level[aura.current_level][ON_ALLY].applied_buff, aura.current_level, ability_instance)
+                                    end
+
+                                end
+                            end
+
+                            GroupRemoveUnit(aura.group, picked)
+                        end
+
+                    if aura.level[aura.current_level][ON_SELF] then
+                        if aura.level[aura.current_level][ON_SELF].applied_effect then
+                            ApplyEffect(from, from, 0.,0., aura.level[aura.current_level][ON_SELF].applied_effect, aura.current_level, ability_instance)
+                        elseif aura.level[aura.current_level][ON_SELF].applied_buff then
+                            ApplyBuff(from, from, aura.level[aura.current_level][ON_SELF].applied_buff, aura.current_level, ability_instance)
+                        end
+                    end
+
+                    if aura.time then aura.time = aura.time - aura.tickrate end
+                end
+            end)
+
+        return aura
+    end
+
+
     ---@param target unit
     ---@param id string
     ---@param level integer
     ---@param flag boolean
-    function ToggleAuraOnUnit(target, id, level, flag)
+    function ToggleAuraOnUnit(target, id, level, flag, ability_instance)
         local aura = GetUnitAuraData(target, id)
 
 
@@ -70,15 +133,19 @@ do
                     if aura.level[aura.current_level].duration then aura.time = aura.level[aura.current_level].duration end
                 else
 
+                    --print("1")
                     local player = GetOwningPlayer(target)
                     aura = MergeTables({}, GetAuraData(id))
+                    --print("2")
                     AuraList[target][id] = aura
                     aura.timer = CreateTimer()
                     aura.group = CreateGroup()
                     aura.current_level = level
+                    --print("3")
                     aura.time = aura.level[aura.current_level].duration or nil
-                    aura.sfx = AddSpecialEffectTarget(aura.sfx_path, target, aura.sfx_point)
+                    aura.sfx = AddSpecialEffectTarget(aura.sfx_path or "", target, aura.sfx_point or "origin")
                     BlzSetSpecialEffectScale(aura.sfx, aura.level[aura.current_level].sfx_scale or 1.)
+                    --print("3")
                     TimerStart(aura.timer, aura.tickrate, true, function()
 
                         if GetUnitState(target, UNIT_STATE_LIFE) < 0.045 or (aura.time and aura.time <= 0.) then
@@ -97,17 +164,17 @@ do
                                             if aura.level[aura.current_level][ON_ENEMY] and IsUnitEnemy(picked, player) then
 
                                                 if aura.level[aura.current_level][ON_ENEMY].applied_effect then
-                                                    ApplyEffect(target, picked, 0.,0., aura.level[aura.current_level][ON_ENEMY].applied_effect, aura.current_level)
+                                                    ApplyEffect(target, picked, 0.,0., aura.level[aura.current_level][ON_ENEMY].applied_effect, aura.current_level, ability_instance)
                                                 elseif aura.level[aura.current_level][ON_ENEMY].applied_buff then
-                                                    ApplyBuff(target, picked, aura.level[aura.current_level][ON_ENEMY].applied_buff, aura.current_level)
+                                                    ApplyBuff(target, picked, aura.level[aura.current_level][ON_ENEMY].applied_buff, aura.current_level, ability_instance)
                                                 end
 
                                             elseif aura.level[aura.current_level][ON_ALLY] and not IsUnitEnemy(picked, player) and picked ~= target then
 
                                                 if aura.level[aura.current_level][ON_ALLY].applied_effect then
-                                                    ApplyEffect(target, picked, 0.,0., aura.level[aura.current_level][ON_ALLY].applied_effect, aura.current_level)
+                                                    ApplyEffect(target, picked, 0.,0., aura.level[aura.current_level][ON_ALLY].applied_effect, aura.current_level, ability_instance)
                                                 elseif aura.level[aura.current_level][ON_ALLY].applied_buff then
-                                                    ApplyBuff(target, picked, aura.level[aura.current_level][ON_ALLY].applied_buff, aura.current_level)
+                                                    ApplyBuff(target, picked, aura.level[aura.current_level][ON_ALLY].applied_buff, aura.current_level, ability_instance)
                                                 end
 
                                             end
@@ -118,9 +185,9 @@ do
 
                             if aura.level[aura.current_level][ON_SELF] then
                                 if aura.level[aura.current_level][ON_SELF].applied_effect then
-                                    ApplyEffect(target, target, 0.,0., aura.level[aura.current_level][ON_SELF].applied_effect, aura.current_level)
+                                    ApplyEffect(target, target, 0.,0., aura.level[aura.current_level][ON_SELF].applied_effect, aura.current_level, ability_instance)
                                 elseif aura.level[aura.current_level][ON_SELF].applied_buff then
-                                    ApplyBuff(target, target, aura.level[aura.current_level][ON_SELF].applied_buff, aura.current_level)
+                                    ApplyBuff(target, target, aura.level[aura.current_level][ON_SELF].applied_buff, aura.current_level, ability_instance)
                                 end
                             end
 

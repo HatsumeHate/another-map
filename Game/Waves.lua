@@ -45,21 +45,16 @@ do
             ClearMapMusic()
             PlayMusic(GetRandomMusicMix())
             ResumeMusic()
+            for i = 1, 6 do
+                SavePlayerProgression(i)
+                --FileOverwrite(i, SaveDataPath .. "player_progression.txt", )
+            end
         end
 
     end
 
-
-    function ResetShops()
-        --print("shops reset start")
-        WavesUntilShopsUpdate = WavesUntilShopsUpdate + 1
-        --print("clear wanderer")
-        ClearShop(gg_unit_n01W_0111)
-        --print("clear ok")
-
-        if WavesUntilShopsUpdate == 3 then
-            local item_count = GetRandomInt(7, 12)
-            WavesUntilShopsUpdate = 0
+    function ResetPeonShop()
+         local item_count = GetRandomInt(7, 12)
 
             --print("clear peon")
             ClearShop(gg_unit_opeo_0031)
@@ -76,24 +71,14 @@ do
                 GenerateItemStats(item, Current_Wave + GetRandomInt(1, 2), quality)
                 AddItemToShop(gg_unit_opeo_0031, item, false)
             end
-            --print("peon done")
+    end
 
-            local item_pool = {
-                SWORD_WEAPON,
-                GREATSWORD_WEAPON,
-                AXE_WEAPON,
-                GREATAXE_WEAPON,
-                BLUNT_WEAPON,
-                GREATBLUNT_WEAPON,
-                STAFF_WEAPON,
-                --BOW_WEAPON,
-                DAGGER_WEAPON,
-                CHEST_ARMOR,
-                HANDS_ARMOR,
-                HEAD_ARMOR,
-                LEGS_ARMOR,
-                SHIELD_OFFHAND
-            }
+
+    function ResetBlackShop()
+        local item_pool = {
+            SWORD_WEAPON, GREATSWORD_WEAPON, AXE_WEAPON, GREATAXE_WEAPON, BLUNT_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON, --BOW_WEAPON,
+            DAGGER_WEAPON, CHEST_ARMOR, HANDS_ARMOR, HEAD_ARMOR, LEGS_ARMOR, SHIELD_OFFHAND
+        }
 
             --print("clear smith")
             --smith
@@ -106,7 +91,7 @@ do
             end
             --print("smith A")
 
-            item_count = GetRandomInt(2, 7)
+            local item_count = GetRandomInt(2, 5)
             for i = 1, item_count do
                 local item = CreateCustomItem(GetRandomGeneratedItemId(), 0., 0.)
                 GenerateItemStats(item, Current_Wave, GetRandomInt(1, 5) == 1 and RARE_ITEM or COMMON_ITEM)
@@ -114,13 +99,11 @@ do
             end
             --print("smith B")
             --print("smith done")
+    end
 
-            item_pool = {
-                RING_JEWELRY,
-                NECKLACE_JEWELRY,
-                ORB_OFFHAND,
-                BELT_ARMOR,
-            }
+
+    function ResetHerbalistShop()
+        local item_pool = { RING_JEWELRY, NECKLACE_JEWELRY, ORB_OFFHAND, BELT_ARMOR }
 
             --herbalist
             --print("clear herb")
@@ -138,7 +121,7 @@ do
             end
             --print("half pots done")
 
-            item_count = GetRandomInt(2, 6)
+            local item_count = GetRandomInt(2, 6)
             for i = 1, item_count do
                 local item = CreateCustomItem(GetGeneratedItemId(item_pool[GetRandomInt(1, 4)]), 0., 0.)
                 GenerateItemStats(item, Current_Wave, GetRandomInt(1, 5) == 1 and RARE_ITEM or COMMON_ITEM)
@@ -159,8 +142,11 @@ do
                 AddItemToShop(gg_unit_n001_0055, item, false)
             end
             --print("herb done")
+    end
 
-            item_count = GetRandomInt(1, 6)
+    function ResetLynnShop()
+        local item_count = GetRandomInt(1, 6)
+
             --print("clear lynn")
             ClearShop(gg_unit_n020_0075)
             --print("clear ok")
@@ -192,7 +178,21 @@ do
                 AddItemToShopWithSlot(gg_unit_n020_0075, item, 32, false)
             end
             --print("lynn C")
+    end
 
+    function ResetShops()
+        --print("shops reset start")
+        WavesUntilShopsUpdate = WavesUntilShopsUpdate + 1
+        --print("clear wanderer")
+        ClearShop(gg_unit_n01W_0111)
+        --print("clear ok")
+
+        if WavesUntilShopsUpdate == 3 then
+            WavesUntilShopsUpdate = 0
+            ResetPeonShop()
+            ResetBlackShop()
+            ResetHerbalistShop()
+            ResetLynnShop()
         end
 
 
@@ -221,7 +221,7 @@ do
         --print("end shop D")
             local scrolls = CreateCustomItem(ITEM_SCROLL_OF_TOWN_PORTAL, 0., 0.)
             SetItemCharges(scrolls, 5 * ActivePlayers)
-            AddItemToShopWithSlot(gg_unit_n001_0055, scrolls, 30, false)
+            AddItemToShopWithSlot(gg_unit_n001_0055, scrolls, 28, false)
 
 
         --print("shops resetted")

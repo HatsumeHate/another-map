@@ -10,6 +10,8 @@ do
     StashFrame = nil
     local ClickTrigger; local EnterTrigger; local LeaveTrigger
     local DoubleClickTimer; local CachedItems
+    local last_EnteredFrame
+    local last_EnteredFrameTimer
 
 
 
@@ -39,7 +41,7 @@ do
 
             BlzTriggerRegisterFrameEvent(ClickTrigger, new_Frame, FRAMEEVENT_CONTROL_CLICK)
             BlzTriggerRegisterFrameEvent(EnterTrigger, new_Frame, FRAMEEVENT_MOUSE_ENTER)
-            BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
+            --BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
 
             BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
             BlzFrameSetSize(new_Frame, size_x, size_y)
@@ -210,6 +212,14 @@ do
                 end
             end
 
+            if item_data.MAX_SLOTS > 2 then
+                local runeword = GetRunewordId(item_data.STONE_SLOTS)
+                local runeword_data = GetRunewordData(runeword)
+                if runeword and runeword_data[item_data.TYPE] then
+                    item_data.runeword = runeword
+                end
+            end
+
             bonuses = S2I(ParseData(code, "m"))
             if bonuses > 0 then
                 item_data.effect_bonus = {}
@@ -289,7 +299,7 @@ do
                         DelayAction(0., function()
                             CachedItems[player][i].parse_data = ParseItem(button.item)
                             AddToBuffer(CachedItems[player][i].parse_data)
-                            FileWrite(player - 1, "CastleRevival\\slot".. i ..".txt")
+                            FileWrite(player - 1, "CastleRevival\\slot".. i ..".txt", "slot")
                         end)
                     end
 
@@ -482,6 +492,13 @@ do
 
         StashFrame = {}
 
+        last_EnteredFrame = {}
+        last_EnteredFrameTimer = {}
+
+        for i = 1, 6 do
+            last_EnteredFrameTimer[i] = CreateTimer()
+        end
+
 
         EffectTable = {
             [1] = "weap_poison_mag",
@@ -525,6 +542,7 @@ do
                                     DestroyContextMenu(player)
                                     RemoveTooltip(player)
                                     StashFrame[player].state = false
+                                    TimerStart(last_EnteredFrameTimer[player], 0., false, nil)
 
                                         if GetLocalPlayer() == Player(id) then
                                             BlzFrameSetVisible(StashFrame[player].main_frame, false)
@@ -556,6 +574,24 @@ do
         TriggerAddAction(EnterTrigger, function()
             local button = GetButtonData(BlzGetTriggerFrame())
             local player = GetPlayerId(GetTriggerPlayer()) + 1
+
+
+                TimerStart(last_EnteredFrameTimer[player], GLOBAL_TOOLTIP_FADE_TIME, false, function()
+                    RemoveTooltip(player)
+                    last_EnteredFrame[player] = nil
+                    --print("remove timed")
+                end)
+
+
+                if last_EnteredFrame[player] == BlzGetTriggerFrame() then
+                    --print("same frame")
+                    return
+                else
+                    RemoveTooltip(player)
+                    --print("remove")
+                end
+
+            last_EnteredFrame[player] = BlzGetTriggerFrame()
 
                 if button.item then
                     local proper_tooltip = StashFrame[player].tooltip

@@ -16,6 +16,9 @@ do
     BLACKSMITH_RESOCKET = 2
     local REFORGE_COST_PER_LEVEL = 75
     local CreateSocketTextBase
+    local last_EnteredFrame
+    local last_EnteredFrameTimer
+
 
 
 
@@ -66,7 +69,7 @@ do
 
         BlzTriggerRegisterFrameEvent(ClickTrigger, new_Frame, FRAMEEVENT_CONTROL_CLICK)
         BlzTriggerRegisterFrameEvent(EnterTrigger, new_Frame, FRAMEEVENT_MOUSE_ENTER)
-        BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
+        --BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
 
         BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
         BlzFrameSetSize(new_Frame, size_x, size_y)
@@ -164,14 +167,16 @@ do
                     local create_socket_button = GetButtonData(BlacksmithFrame[player].create_socket_button)
 
                         if item_data.MAX_SLOTS >= 3 or (item_data.QUALITY == SET_ITEM or item_data.QUALITY == UNIQUE_ITEM) then
-                            BlzFrameSetTexture(create_socket_button.image, "GUI\\DISBTNmetalurgi.blp", 0, true)
-                            FrameChangeTexture(create_socket_button.button, "GUI\\DISBTNmetalurgi.blp")
+                            BlzFrameSetTexture(create_socket_button.image, "ReplaceableTextures\\CommandButtonsDisabled\\DISBTNmetalurgi.blp", 0, true)
+                            FrameChangeTexture(create_socket_button.button, "ReplaceableTextures\\CommandButtonsDisabled\\DISBTNmetalurgi.blp")
+                            BlzFrameSetEnable(create_socket_button.button, false)
                             --BlzFrameSetModel(BlacksmithFrame[player].create_socket_sprite, "", 0)
                             BlzFrameSetVisible(BlacksmithFrame[player].create_socket_sprite, false)
                             BlzFrameSetText(BlacksmithFrame[player].create_socket_tooltip.description, GetLocalString("Нет подходящего предмета.", "No fitting item."))
                         else
                             BlzFrameSetTexture(create_socket_button.image, "GUI\\BTNmetalurgi.blp", 0, true)
                             FrameChangeTexture(create_socket_button.button, "GUI\\BTNmetalurgi.blp")
+                            BlzFrameSetEnable(create_socket_button.button, true)
                             --BlzFrameSetModel(BlacksmithFrame[player].create_socket_sprite, "UI\\inner_fire_and_smoke_sprite.mdx", 0)
                             BlzFrameSetVisible(BlacksmithFrame[player].create_socket_sprite, true)
                             local cost = 500 + (200 * item_data.MAX_SLOTS)
@@ -187,8 +192,9 @@ do
                     BlacksmithFrame[player].reforge_cost = 0
                     BlzFrameSetTexture(button.image, "GUI\\inventory_slot.blp", 0, true)
                     BlzFrameSetText(BlacksmithFrame[player].reforge_cost_frame, "")
-                    BlzFrameSetTexture(create_socket_button.image, "GUI\\DISBTNmetalurgi.blp", 0, true)
-                    FrameChangeTexture(create_socket_button.button, "GUI\\DISBTNmetalurgi.blp")
+                    BlzFrameSetTexture(create_socket_button.image, "ReplaceableTextures\\CommandButtonsDisabled\\DISBTNmetalurgi.blp", 0, true)
+                    FrameChangeTexture(create_socket_button.button, "ReplaceableTextures\\CommandButtonsDisabled\\DISBTNmetalurgi.blp")
+                    BlzFrameSetEnable(create_socket_button.button, false)
                     --BlzFrameSetModel(BlacksmithFrame[player].create_socket_sprite, "", 0)
                     BlzFrameSetVisible(BlacksmithFrame[player].create_socket_sprite, false)
                 end
@@ -256,6 +262,11 @@ do
                     BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.02, -0.02)
                     BlzFrameSetSize(new_Frame, 0.0435, 0.0435)
                     BlacksmithFrame[player].portrait = new_Frame
+
+                    local border = BlzCreateFrameByType("BACKDROP", "aaa", new_Frame, "", 0)
+                    BlzFrameSetSize(border, 1., 1.)
+                    BlzFrameSetTexture(border, "UI\\inventory_frame.blp", 0, true)
+                    BlzFrameSetAllPoints(border, new_Frame)
 
                     new_Frame = BlzCreateFrameByType("TEXT", "shop name", BlacksmithFrame[player].portrait, "", 0)
                     BlzFrameSetPoint(new_Frame, FRAMEPOINT_LEFT, BlacksmithFrame[player].portrait, FRAMEPOINT_RIGHT, 0.011, 0.)
@@ -352,6 +363,11 @@ do
             BlzFrameSetSize(new_Frame, 0.0435, 0.0435)
             BlacksmithFrame[player].portrait = new_Frame
 
+            local border = BlzCreateFrameByType("BACKDROP", "aaa", new_Frame, "", 0)
+            BlzFrameSetSize(border, 1., 1.)
+            BlzFrameSetTexture(border, "UI\\inventory_frame.blp", 0, true)
+            BlzFrameSetAllPoints(border, new_Frame)
+
             new_Frame = BlzCreateFrameByType("TEXT", "shop name", BlacksmithFrame[player].portrait, "", 0)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_LEFT, BlacksmithFrame[player].portrait, FRAMEPOINT_RIGHT, 0.011, 0.)
             BlzFrameSetTextAlignment(new_Frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
@@ -440,6 +456,12 @@ do
     function CreateBlacksmith(unit_owner, texture)
 
         BlacksmithFrame = {}
+        last_EnteredFrame = {}
+        last_EnteredFrameTimer = {}
+
+        for i = 1, 6 do
+            last_EnteredFrameTimer[i] = CreateTimer()
+        end
 
         CreateSocketTextBase = GetLocalString("Создает новый сокет. Это будет стоить ", "Creates new socket. It will cost ")
 
@@ -462,8 +484,9 @@ do
                         elseif button.button_type == BUTTON_FREE then
                             BlzFrameSetText(BlacksmithFrame[player].reforge_cost_frame, "")
                             local create_socket_button = GetButtonData(BlacksmithFrame[player].create_socket_button)
-                            BlzFrameSetTexture(create_socket_button.image, "GUI\\DISBTNmetalurgi.blp", 0, true)
-                            FrameChangeTexture(create_socket_button.button, "GUI\\DISBTNmetalurgi.blp")
+                            BlzFrameSetTexture(create_socket_button.image, "ReplaceableTextures\\CommandButtonsDisabled\\DISBTNmetalurgi.blp", 0, true)
+                            FrameChangeTexture(create_socket_button.button, "ReplaceableTextures\\CommandButtonsDisabled\\DISBTNmetalurgi.blp")
+                            BlzFrameSetEnable(create_socket_button.button, false)
                             BlzFrameSetVisible(BlacksmithFrame[player].create_socket_sprite, false)
                             --BlzFrameSetModel(BlacksmithFrame[player].create_socket_sprite, "", 0)
                             RemoveTooltip(player)
@@ -597,6 +620,11 @@ do
                                                     end
                                                 end
 
+                                            if item_data.runeword then
+                                                local runeword = GetRunewordId(item_data.STONE_SLOTS)
+                                                if not runeword then item_data.runeword = nil end
+                                            end
+
                                             if equipped then EquipItem(PlayerHero[player], resocket_button.item, true) end
                                             UpdateBlacksmithWindow(player)
                                             break
@@ -624,6 +652,24 @@ do
         TriggerAddAction(EnterTrigger, function()
             local button = GetButtonData(BlzGetTriggerFrame())
             local player = GetPlayerId(GetTriggerPlayer()) + 1
+
+
+            TimerStart(last_EnteredFrameTimer[player], GLOBAL_TOOLTIP_FADE_TIME, false, function()
+                RemoveTooltip(player)
+                last_EnteredFrame[player] = nil
+                --print("remove timed")
+            end)
+
+
+            if last_EnteredFrame[player] == BlzGetTriggerFrame() then
+                --print("same frame")
+                return
+            else
+                RemoveTooltip(player)
+                --print("remove")
+            end
+
+            last_EnteredFrame[player] = BlzGetTriggerFrame()
 
             if button.item then
                 ShowItemTooltip(button.item, BlacksmithFrame[player].tooltip, button, player, FRAMEPOINT_RIGHT)
@@ -688,6 +734,7 @@ do
                                     DestroyContextMenu(player)
                                     RemoveTooltip(player)
                                     BlacksmithFrame[player].state = false
+                                    TimerStart(last_EnteredFrameTimer[player], 0., false, nil)
                                     if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(BlacksmithFrame[player].main_frame, false) end
                                     DestroyTimer(GetExpiredTimer())
                                     if soundpack then

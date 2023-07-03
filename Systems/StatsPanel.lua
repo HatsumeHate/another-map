@@ -45,12 +45,10 @@ do
 
         PlayerHero[player] = u
 
-            if unit_data.unit_class == BARBARIAN_CLASS then
-                portrait = "ReplaceableTextures\\CommandButtons\\BTNBandit.blp"
-            elseif unit_data.unit_class == SORCERESS_CLASS then
-                portrait = "war3mapImported\\BTNSorceress.blp"
-            elseif unit_data.unit_class == NECROMANCER_CLASS then
-                portrait = "ReplaceableTextures\\CommandButtons\\BTNLichVersion2.blp"
+            if unit_data.unit_class == BARBARIAN_CLASS then portrait = "ReplaceableTextures\\CommandButtons\\BTNBandit.blp"
+            elseif unit_data.unit_class == SORCERESS_CLASS then portrait = "war3mapImported\\BTNSorceress.blp"
+            elseif unit_data.unit_class == NECROMANCER_CLASS then portrait = "ReplaceableTextures\\CommandButtons\\BTNLichVersion2.blp"
+            elseif unit_data.unit_class == ASSASSIN_CLASS then portrait = "ReplaceableTextures\\CommandButtons\\BTNAssassin.blp"
             end
 
         BlzFrameSetTexture(MainStatButtons[player].portrait, portrait, 0, true)
@@ -243,7 +241,7 @@ do
 
 
                     new_frame = CreateTextBox("Интеллект:", INT_STAT, 0.085, 0.03, 0.97, main_frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, main_frame, player)
-                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_INT_DESC, StatsList[player][INT_STAT], 0.14, 0.11)
+                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_INT_DESC, StatsList[player][INT_STAT], 0.14, 0.12)
                     local button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
                     NewStatData(player, INT_STAT, button)
                     --MainStatButtons[player].frames[button] = button
@@ -251,7 +249,7 @@ do
 
 
                     new_frame = CreateTextBox("Стойкость:", VIT_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., -0.002, main_frame, player)
-                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_VIT_DESC, StatsList[player][VIT_STAT], 0.14, 0.06)
+                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_VIT_DESC, StatsList[player][VIT_STAT], 0.14, 0.07)
                     button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
                     NewStatData(player, VIT_STAT, button)
                     --MainStatButtons[player].frames[button] = button
@@ -259,7 +257,7 @@ do
 
 
                     new_frame = CreateTextBox("Ловкость:", AGI_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., -0.002, main_frame, player)
-                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_AGI_DESC, StatsList[player][AGI_STAT], 0.14, 0.1)
+                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_AGI_DESC, StatsList[player][AGI_STAT], 0.14, 0.12)
                     button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
                     NewStatData(player, AGI_STAT, button)
                     --MainStatButtons[player].frames[button] = button
@@ -267,7 +265,7 @@ do
 
 
                     new_frame = CreateTextBox("Сила:", STR_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., -0.002, main_frame, player)
-                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_STR_DESC, StatsList[player][STR_STAT], 0.1, 0.06)
+                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_STR_DESC, StatsList[player][STR_STAT], 0.12, 0.1)
                     button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
                     NewStatData(player, STR_STAT, button)
                     --MainStatButtons[player].frames[button] = button
@@ -284,7 +282,7 @@ do
                     new_frame = CreateTextBox("Маг. урон: 1234", MAGICAL_ATTACK, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
                     CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MINOR_STAT, LOCALE_LIST[my_locale].STAT_PANEL_MAGICAL_ATTACK_DESC, StatsList[player][MAGICAL_ATTACK], 0.14, 0.08)
                     new_subframe = CreateTextBox("Подавление: 1234", MAGICAL_SUPPRESSION, 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
-                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MINOR_STAT, LOCALE_LIST[my_locale].STAT_PANEL_MAGICAL_SUPPRESSION_DESC, StatsList[player][MAGICAL_SUPPRESSION], 0.14, 0.08)
+                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MINOR_STAT, LOCALE_LIST[my_locale].STAT_PANEL_MAGICAL_SUPPRESSION_DESC, StatsList[player][MAGICAL_SUPPRESSION], 0.14, 0.09)
 
                     new_frame = CreateTextBox("Крит. шанс: 100%%", CRIT_CHANCE, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
                     new_frame = CreateTextBox("", ATTACK_SPEED, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
@@ -413,25 +411,25 @@ do
             StatsList[player] = {}
 
             new_frame = CreateTextBox("Интеллект:", INT_STAT, 0.085, 0.03, 0.97, main_frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, main_frame, player)
-            CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_INT_DESC, StatsList[player][INT_STAT], 0.14, 0.11)
+            CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_INT_DESC, StatsList[player][INT_STAT], 0.14, 0.12)
             local button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
             NewStatData(player, INT_STAT, button)
 
 
             new_frame = CreateTextBox("Стойкость:", VIT_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., -0.002, main_frame, player)
-            CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_VIT_DESC, StatsList[player][VIT_STAT], 0.14, 0.06)
+            CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_VIT_DESC, StatsList[player][VIT_STAT], 0.14, 0.07)
             button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
             NewStatData(player, VIT_STAT, button)
 
 
             new_frame = CreateTextBox("Ловкость:", AGI_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., -0.002, main_frame, player)
-            CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_AGI_DESC, StatsList[player][AGI_STAT], 0.14, 0.1)
+            CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_AGI_DESC, StatsList[player][AGI_STAT], 0.14, 0.12)
             button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
             NewStatData(player, AGI_STAT, button)
 
 
             new_frame = CreateTextBox("Сила:", STR_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., -0.002, main_frame, player)
-            CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_STR_DESC, StatsList[player][STR_STAT], 0.1, 0.06)
+            CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_STR_DESC, StatsList[player][STR_STAT], 0.12, 0.1)
             button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
             NewStatData(player, STR_STAT, button)
 
@@ -448,7 +446,7 @@ do
             new_frame = CreateTextBox("Маг. урон: 1234", MAGICAL_ATTACK, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
             CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MINOR_STAT, LOCALE_LIST[my_locale].STAT_PANEL_MAGICAL_ATTACK_DESC, StatsList[player][MAGICAL_ATTACK], 0.14, 0.08)
             new_subframe = CreateTextBox("Подавление: 1234", MAGICAL_SUPPRESSION, 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
-            CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MINOR_STAT, LOCALE_LIST[my_locale].STAT_PANEL_MAGICAL_SUPPRESSION_DESC, StatsList[player][MAGICAL_SUPPRESSION], 0.14, 0.08)
+            CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MINOR_STAT, LOCALE_LIST[my_locale].STAT_PANEL_MAGICAL_SUPPRESSION_DESC, StatsList[player][MAGICAL_SUPPRESSION], 0.14, 0.09)
 
             new_frame = CreateTextBox("Крит. шанс: 100%%", CRIT_CHANCE, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
             new_frame = CreateTextBox("", ATTACK_SPEED, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)

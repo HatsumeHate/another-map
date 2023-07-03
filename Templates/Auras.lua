@@ -46,9 +46,7 @@ do
                     sfx_scale = 1.,
                     radius = 340.,
                     duration = 5.,
-                    [ON_ENEMY] = {
-                        applied_effect = "effect_grave_cold"
-                    }
+                    [ON_ENEMY] = { applied_effect = "effect_grave_cold" }
                 }
             }
         })
@@ -64,9 +62,7 @@ do
                 [1] = {
                     sfx_scale = 1.,
                     radius = 650.,
-                    [ON_ALLY] = {
-                        applied_buff = "HDAU"
-                    }
+                    [ON_ALLY] = { applied_buff = "HDAU" }
                 }
             }
         })
@@ -82,16 +78,48 @@ do
                 [1] = {
                     sfx_scale = 1.,
                     radius = 750.,
-                    [ON_ALLY] = {
-                        applied_buff = "NRLA"
-                    }
+                    [ON_ALLY] = { applied_buff = "NRLA" }
+                }
+            }
+        })
+
+        NewAuraTemplate({
+            id = "caltrops_aura",
+            name = "caltrops aura",
+            max_level = 1,
+            sfx_path = "Abilities\\Spells\\Undead\\UnholyAura\\UnholyAura.mdx",
+            tickrate = 0.2,
+            level = {
+                [1] = {
+                    sfx_scale = 1.5,
+                    radius = 350.,
+                    duration = 5.,
+                    [ON_ENEMY] = { applied_effect = "caltrops_effect" }
+                }
+            }
+        })
+
+        NewAuraTemplate({
+            id = "twilight_aura",
+            name = "twilight aura",
+            max_level = 75,
+            sfx_path = "Effect\\Black Mist.mdx",
+            sfx_point = "origin",
+            tickrate = 0.5,
+            level = {
+                [1] = {
+                    sfx_scale = 1.5,
+                    radius = 450.,
+                    duration = 6.,
+                    [ON_ENEMY] = { applied_effect = "twilight_effect" },
+                    [ON_SELF] = { applied_buff = "ABTH" }
                 }
             }
         })
 
 
         RegisterTestCommand("aon", function()
-            ToggleAuraOnUnit(PlayerHero[1], "grave_cold_aura", 1, true)
+            ToggleAuraOnUnit(PlayerHero[1], "twilight_aura", 1, true)
         end)
 
         RegisterTestCommand("aoff", function()

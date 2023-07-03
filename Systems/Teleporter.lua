@@ -35,6 +35,7 @@ do
                     end)
 
                     DestroyGroup(minions)
+                    OnTeleportPadUsed(player)
 
                     break
                 end

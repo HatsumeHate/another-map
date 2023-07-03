@@ -11,6 +11,8 @@ do
     local DoubleClickTimer
     local PlayerMovingItem
     local BackupButtonData
+    local last_EnteredFrame
+    local last_EnteredFrameTimer
 
 
 
@@ -44,7 +46,7 @@ do
 
             BlzTriggerRegisterFrameEvent(ClickTrigger, new_Frame, FRAMEEVENT_CONTROL_CLICK)
             BlzTriggerRegisterFrameEvent(EnterTrigger, new_Frame, FRAMEEVENT_MOUSE_ENTER)
-            BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
+            --BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
 
             BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMRIGHT, new_FrameImage, FRAMEPOINT_BOTTOMRIGHT, -0.002, 0.002)
             BlzFrameSetSize(new_FrameCharges, 0.012, 0.012)
@@ -552,6 +554,13 @@ do
         PrivateChestFrame = {}
         BackupButtonData = {}
 
+        last_EnteredFrame = {}
+        last_EnteredFrameTimer = {}
+
+        for i = 1, 6 do
+            last_EnteredFrameTimer[i] = CreateTimer()
+        end
+
         local trg = CreateTrigger()
         TriggerRegisterUnitInRangeSimple(trg, 175., gg_unit_n01Y_0018)
         TriggerAddAction(trg, function()
@@ -575,6 +584,7 @@ do
                                     RemoveTooltip(player)
                                     RemovePrivateChestSelectionFrames(player)
                                     PrivateChestFrame[player].state = false
+                                    TimerStart(last_EnteredFrameTimer[player], 0., false, nil)
 
                                         if GetLocalPlayer() == Player(id) then
                                             BlzFrameSetVisible(PrivateChestFrame[player].main_frame, false)
@@ -592,6 +602,7 @@ do
 
         LeaveTrigger = CreateTrigger()
         TriggerAddAction(LeaveTrigger, function()
+            --print("leave")
             local button = GetButtonData(BlzGetTriggerFrame())
             local player = GetPlayerId(GetTriggerPlayer()) + 1
 
@@ -604,9 +615,31 @@ do
 
         EnterTrigger = CreateTrigger()
         TriggerAddAction(EnterTrigger, function()
+            --print("enter")
             local frame = BlzGetTriggerFrame()
             local button = GetButtonData(frame)
             local player = GetPlayerId(GetTriggerPlayer()) + 1
+
+                TimerStart(last_EnteredFrameTimer[player], GLOBAL_TOOLTIP_FADE_TIME, false, function()
+                    PrivateChestFrame[player].in_focus = nil
+                    RemoveTooltip(player)
+                    RemoveSpecificTooltip(PrivateChestFrame[player].alternate_tooltip)
+                    last_EnteredFrame[player] = nil
+                    --print("remove timed")
+                end)
+
+
+                if last_EnteredFrame[player] == frame then
+                    --print("same frame")
+                    return
+                else
+                    PrivateChestFrame[player].in_focus = nil
+                    RemoveTooltip(player)
+                    RemoveSpecificTooltip(PrivateChestFrame[player].alternate_tooltip)
+                    --print("remove")
+                end
+
+            last_EnteredFrame[player] = frame
 
                 if PlayerMovingItem[player].state then
                     BlzFrameSetAllPoints(PlayerMovingItem[player].frame, button.image)

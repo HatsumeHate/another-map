@@ -6,6 +6,36 @@
 do
 
 
+    ---@param unit unit
+    function CreateShieldBarOnUnit(unit)
+        local timer = CreateTimer()
+        local unit_data = GetUnitData(unit)
+        local bar = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("n024"), GetUnitX(unit), GetUnitY(unit), 270.)
+
+            SetUnitAnimationByIndex(bar, 100)
+            SetUnitFlyHeight(bar, GetUnitFlyHeight(unit) + 120., 0.)
+            SetUnitColor(bar, PLAYER_COLOR_ORANGE)
+
+
+                TimerStart(timer, 0.03, true, function()
+                    if GetUnitState(unit, UNIT_STATE_LIFE) < 0.045 or unit_data.endurance_current <= 0 then
+                        DestroyTimer(timer)
+                        RemoveUnit(bar)
+                    elseif GetUnitAbilityLevel(unit, FourCC("Avul")) > 0 or not IsUnitVisible(unit, Player(8)) then
+                        ShowUnit(bar, false)
+                    else
+                        ShowUnit(bar, true)
+                        SetUnitAnimationByIndex(bar, math.floor((unit_data.endurance_current / unit_data.endurance_max) * 100. + 0.5))
+                        SetUnitX(bar, GetUnitX(unit))
+                        SetUnitY(bar, GetUnitY(unit))
+                        SetUnitFlyHeight(bar, GetUnitFlyHeight(unit) + (unit_data.height or 120.) + 35., 0.)
+                    end
+                end)
+
+        return bar
+    end
+
+
 
     function CreateBarOnUnit(unit)
         local timer = CreateTimer()

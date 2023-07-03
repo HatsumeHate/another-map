@@ -16,6 +16,8 @@ do
     local EnterTrigger
     local LeaveTrigger
     local TalentData
+    local last_EnteredFrame
+    local last_EnteredFrameTimer
 
 
     local function NewButtonSimple(texture, size_x, size_y, relative_frame, frame_point_from, frame_point_to, offset_x, offset_y, parent_frame)
@@ -572,6 +574,7 @@ do
             local button_data = GetButtonData(TalentPanel[player].last_category_button)
             BlzFrameSetVisible(button_data.sprite, true)
         else
+            TimerStart(last_EnteredFrameTimer[player], 0., false, nil)
             RemoveTooltip(player)
         end
 
@@ -625,6 +628,12 @@ do
 
     function InitTalentsWindow()
         TalentPanel = {}
+        last_EnteredFrame = {}
+        last_EnteredFrameTimer = {}
+
+        for i = 1, 6 do
+            last_EnteredFrameTimer[i] = CreateTimer()
+        end
 
         ClickTrigger = CreateTrigger()
         EnterTrigger = CreateTrigger()
@@ -632,28 +641,59 @@ do
 
 
         TriggerAddAction(EnterTrigger, function()
-            local button = GetButtonData(BlzGetTriggerFrame())
-            local talent = button.talent
+            --print("enter")
+            --DisableTrigger(LeaveTrigger)
             local player = GetPlayerId(GetTriggerPlayer()) + 1
 
-            if talent then
-                local level = GetUnitTalentLevel(PlayerHero[player], talent.talent_id)
-                ShowTalentTooltip(talent, level, TalentPanel[player].tooltip, button, player)
-                if level < talent.max_level then
-                    if level == 0 then
-                        ShowTalentTooltip(talent, 2, TalentPanel[player].alt_tooltip, button, player, true)
-                    else
-                        ShowTalentTooltip(talent, level + 1, TalentPanel[player].alt_tooltip, button, player, true)
-                    end
-                end
+            --last_EnteredFrame[player] = true
+            --DelayAction(0., function() last_EnteredFrame[player] = false end)
+
+            TimerStart(last_EnteredFrameTimer[player], GLOBAL_TOOLTIP_FADE_TIME, false, function()
+                RemoveTooltip(player)
+                RemoveSpecificTooltip(TalentPanel[player].alt_tooltip)
+                last_EnteredFrame[player] = nil
+                --print("remove timed")
+            end)
+
+            if last_EnteredFrame[player] == BlzGetTriggerFrame() then
+                --print("same frame")
+                return
+            else
+                RemoveTooltip(player)
+                RemoveSpecificTooltip(TalentPanel[player].alt_tooltip)
+                --print("remove")
             end
 
+            last_EnteredFrame[player] = BlzGetTriggerFrame()
+
+            local button = GetButtonData(BlzGetTriggerFrame())
+            local talent = button.talent
+
+
+                if talent then
+                    --print("show")
+                    local level = GetUnitTalentLevel(PlayerHero[player], talent.talent_id)
+                    ShowTalentTooltip(talent, level, TalentPanel[player].tooltip, button, player)
+                    if level < talent.max_level then
+                        if level == 0 then
+                            ShowTalentTooltip(talent, 2, TalentPanel[player].alt_tooltip, button, player, true)
+                        else
+                            ShowTalentTooltip(talent, level + 1, TalentPanel[player].alt_tooltip, button, player, true)
+                        end
+                    end
+                end
+
+                --BlzFrameSetEnable(BlzGetTriggerFrame(), false)
         end)
 
         TriggerAddAction(LeaveTrigger, function()
-            local player = GetPlayerId(GetTriggerPlayer()) + 1
-            RemoveTooltip(player)
-            RemoveSpecificTooltip(TalentPanel[player].alt_tooltip)
+            --print("leave")
+            --local player = GetPlayerId(GetTriggerPlayer()) + 1
+            --if last_EnteredFrame[player] then
+            --    return
+           -- end
+            --RemoveTooltip(player)
+            --RemoveSpecificTooltip(TalentPanel[player].alt_tooltip)
         end)
 
 

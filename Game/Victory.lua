@@ -54,6 +54,7 @@ do
         EndgameCountdown(120)
         DelayAction(120., function()
             for i = 1, 6 do
+                SavePlayerProgression(i)
                 CustomVictoryBJ(Player(i-1), true, true)
             end
         end)

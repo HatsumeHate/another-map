@@ -200,7 +200,7 @@ do
                 CreateQuestItems(40, FourCC("I01P"), { gg_rct_quest_rect_1, gg_rct_quest_rect_2, gg_rct_quest_rect_3, gg_rct_quest_rect_4, gg_rct_quest_rect_5, gg_rct_quest_rect_6, gg_rct_quest_rect_7, gg_rct_quest_rect_8 })
 
                 PickUpItemReaction("I01P", function()
-                    if GetItemTypeId(GetManipulatedItem()) == FourCC("I01P") then
+                    --if GetItemTypeId(GetManipulatedItem()) == FourCC("I01P") then
                         if SetQuestItemPool("que2", "item1", 1) then
                             effect = AddSpecialEffectTarget("Quest\\Completed_Quest.mdx", npc, "overhead")
                             RegisterClickFeedbackOnNPC(npc, function()
@@ -214,7 +214,7 @@ do
                                 DestroyTrigger(GetTriggeringTrigger())
                             end)
                         end
-                    end
+                    --end
                 end)
             end)
 

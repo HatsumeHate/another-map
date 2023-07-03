@@ -303,6 +303,9 @@ do
                 { id = "I02Q", generate = true }, --mask of shadows
                 { id = "I02R", generate = true }, --splitter
                 { id = "I02S", generate = true }, --executioner
+                { id = "I02X", generate = true }, --fullmoon
+                { id = "I037", generate = true }, --pain conductor
+                { id = "I03A", generate = true }, --catalyst
             }
         })
 
@@ -311,7 +314,7 @@ do
 
         NewDropList("gems", {
             max = 2,
-            rolls = 3,
+            rolls = 4,
             list = {
                 { id = ITEM_STONE_DIAMOND, chance = 30. },
                 { id = ITEM_STONE_AMETHYST, chance = 30. },
@@ -325,6 +328,22 @@ do
                 { id = ITEM_STONE_TOPAZ, chance = 30. },
                 { id = ITEM_STONE_AMBER, chance = 30. },
                 { id = ITEM_STONE_AQUAMARINE, chance = 30. },
+            }
+        })
+
+        NewDropList("runes", {
+            max = 2,
+            rolls = 3,
+            list = {
+                { id = ITEM_RUNE_FEH, chance = 7. },
+                { id = ITEM_RUNE_GEBO, chance = 7. },
+                { id = ITEM_RUNE_RAIDO, chance = 7. },
+                { id = ITEM_RUNE_DAG, chance = 7. },
+                { id = ITEM_RUNE_SOL, chance = 7. },
+                { id = ITEM_RUNE_ISA, chance = 7. },
+                { id = ITEM_RUNE_EHW, chance = 7. },
+                { id = ITEM_RUNE_BER, chance = 7. },
+                { id = ITEM_RUNE_KANO, chance = 7. },
             }
         })
 
@@ -347,6 +366,22 @@ do
             }
         })
 
+        NewDropList("runes_supply", {
+            max = 2,
+            rolls = 4,
+            list = {
+                { id = ITEM_RUNE_FEH, chance = 30., max = 2 },
+                { id = ITEM_RUNE_GEBO, chance = 30., max = 2 },
+                { id = ITEM_RUNE_RAIDO, chance = 30., max = 2 },
+                { id = ITEM_RUNE_DAG, chance = 30., max = 2 },
+                { id = ITEM_RUNE_SOL, chance = 30., max = 2 },
+                { id = ITEM_RUNE_ISA, chance = 30., max = 2 },
+                { id = ITEM_RUNE_EHW, chance = 30., max = 2 },
+                { id = ITEM_RUNE_BER, chance = 30., max = 2 },
+                { id = ITEM_RUNE_KANO, chance = 30., max = 2 },
+            }
+        })
+
         NewDropList("consumables", {
             max = 2,
             rolls = 3,
@@ -359,6 +394,7 @@ do
                 { id = ITEM_POTION_ADRENALINE, chance = 6.5 },
                 { id = ITEM_SCROLL_OF_TOWN_PORTAL, chance = 8.3 },
                 { id = ITEM_SCROLL_OF_PROTECTION, chance = 7.4 },
+                { id = ITEM_SCROLL_OF_PETRI, chance = 7.4 },
             }
         })
 
@@ -373,6 +409,7 @@ do
                 { id = ITEM_POTION_ANTIDOTE, chance = 15., max = 5 },
                 { id = ITEM_POTION_ADRENALINE, chance = 15., max = 5 },
                 { id = ITEM_SCROLL_OF_PROTECTION, chance = 10., max = 5 },
+                { id = ITEM_SCROLL_OF_PETRI, chance = 10., max = 5 },
             }
         })
 
@@ -436,7 +473,10 @@ do
                 { id = "I00U" },
                 { id = "I028" },
                 { id = "I029" },
-                { id = "I02A" }
+                { id = "I02A" },
+                { id = "I03E" },
+                { id = "I03F" },
+                { id = "I03G" }
             }
         })
 
@@ -451,7 +491,10 @@ do
                 { id = "I022" },
                 { id = "I02B" },
                 { id = "I02C" },
-                { id = "I02D" }
+                { id = "I02D" },
+                { id = "I03H" },
+                { id = "I03I" },
+                { id = "I03J" }
             }
         })
 
@@ -487,6 +530,7 @@ do
             list = {
                 { id = "adv_item", chance = 14.7 },
                 { id = "gems", chance = 17.7 },
+                { id = "runes", chance = 5.9 },
                 { id = "consumables", chance = 11. },
                 { id = "books", chance = 37. },
                 { id = "special_items", chance = 5. },
@@ -565,6 +609,7 @@ do
                 { id = "boss_item", chance = 38.5 },
                 { id = "unique_items", chance = 7. },
                 { id = "gems", chance = 11.3 },
+                { id = "runes", chance = 15.3 },
                 { id = "consumables", chance = 11. },
                 { id = "books", chance = 37. },
                 { id = "shard", chance = 10. },
@@ -612,6 +657,7 @@ do
                 { id = "chest_item", chance = 47.5 },
                 { id = "set_items", chance = 5. },
                 { id = "gems", chance = 11.3 },
+                { id = "runes", chance = 9.5 },
                 { id = "consumables", chance = 11. },
                 { id = "special_items", chance = 7. },
                 { id = "gold_chest", chance = 90.}
@@ -624,7 +670,8 @@ do
             list = {
                 { id = "chest_item", chance = 65.5 },
                 { id = "unique_items", chance = 1. },
-                { id = "gems_supply", chance = 20.3 },
+                { id = "gems_supply", chance = 23.7 },
+                { id = "runes_supply", chance = 20. },
                 { id = "consumables_supply", chance = 20. },
                 { id = "gold_supply", chance = 100.}
             }

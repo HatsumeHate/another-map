@@ -54,7 +54,7 @@ do
         local npc_data = GetUnitData(npc)
 
             for i = 1, #npc_data.interactive_options do
-                if npc_data.interactive_options[i].id and npc_data.interactive_options[i].id == option_id then
+                if npc_data.interactive_options[i].id and npc_data.interactive_options[i].id == option_id and npc_data.interactive_options[i].locked_for then
                     npc_data.interactive_options[i].locked_for[player] = false
                     break
                 end

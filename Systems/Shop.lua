@@ -10,6 +10,8 @@ do
     ShopInFocus = 0
     ShopData = 0
     local MAXIMUM_ITEMS = 32
+    local last_EnteredFrame
+    local last_EnteredFrameTimer
 
 
     function UpdateShopWindow()
@@ -67,6 +69,26 @@ do
     local function EnterAction()
         local player = GetPlayerId(GetTriggerPlayer()) + 1
         local h = BlzGetTriggerFrame()
+
+
+        TimerStart(last_EnteredFrameTimer[player], GLOBAL_TOOLTIP_FADE_TIME, false, function()
+            ShopFrame[player].in_focus = nil
+            RemoveTooltip(player)
+            last_EnteredFrame[player] = nil
+            --print("remove timed")
+        end)
+
+
+        if last_EnteredFrame[player] == h then
+            --print("same frame")
+            return
+        else
+            ShopFrame[player].in_focus = nil
+            RemoveTooltip(player)
+            --print("remove")
+        end
+
+        last_EnteredFrame[player] = h
 
             if ButtonList[h].item then
                 ShopFrame[player].in_focus = ButtonList[h]
@@ -139,6 +161,7 @@ do
         local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
         local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", new_Frame, "", 0)
         local new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
+        local new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", new_FrameImage, "", 0)
 
 
         ButtonList[new_Frame] = {
@@ -165,6 +188,10 @@ do
         BlzFrameSetPoint(new_FrameChargesText, FRAMEPOINT_CENTER, new_FrameCharges, FRAMEPOINT_CENTER, 0.,0.)
         BlzFrameSetText(new_FrameChargesText, "")
         BlzFrameSetVisible(new_FrameCharges, false)
+
+        BlzFrameSetSize(new_FrameBorder, size_x, size_y)
+        BlzFrameSetTexture(new_FrameBorder, "UI\\inventory_frame.blp", 0, true)
+        BlzFrameSetAllPoints(new_FrameBorder, new_FrameImage)
 
         BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
         BlzFrameSetSize(new_Frame, size_x, size_y)
@@ -211,6 +238,10 @@ do
                 BlzFrameSetSize(new_Frame, 0.0435, 0.0435)
                 ShopFrame[player].portrait = new_Frame
 
+                local border = BlzCreateFrameByType("BACKDROP", "aaa", new_Frame, "", 0)
+                BlzFrameSetSize(border, 1., 1.)
+                BlzFrameSetTexture(border, "UI\\inventory_frame.blp", 0, true)
+                BlzFrameSetAllPoints(border, new_Frame)
 
                 new_Frame = BlzCreateFrameByType("TEXT", "shop name", ShopFrame[player].portrait, "", 0)
                 BlzFrameSetPoint(new_Frame, FRAMEPOINT_LEFT, ShopFrame[player].portrait, FRAMEPOINT_RIGHT, 0.011, 0.)
@@ -219,11 +250,14 @@ do
 
                 ShopFrame[player].shift_state = false
 
-                ShopFrame[player].tip_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.02, 0.02, main_frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.016, -0.016, main_frame)
+                ShopFrame[player].tip_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.02, 0.02, main_frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.017, -0.017, main_frame)
                 CreateTooltip(LOCALE_LIST[my_locale].UI_SHOP_TOOLTIP_HEADER, LOCALE_LIST[my_locale].UI_SHOP_TOOLTIP_DESCRIPTION, ShopFrame[player].tip_button, 0.14, 0.12, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPLEFT)
-
                 BlzTriggerRegisterFrameEvent(ShopFrame[player].tip_trigger , ShopFrame[player].tip_button, FRAMEEVENT_CONTROL_CLICK)
 
+                local border = BlzCreateFrameByType("BACKDROP", "aaa", ShopFrame[player].tip_button, "", 0)
+                BlzFrameSetSize(border, 1., 1.)
+                BlzFrameSetTexture(border, "UI\\inventory_frame.blp", 0, true)
+                BlzFrameSetAllPoints(border, ShopFrame[player].tip_button)
 
                 ShopFrame[player].name = new_Frame
                 ShopFrame[player].tooltip = NewTooltip(ShopFrame[player].masterframe)
@@ -275,11 +309,17 @@ do
         BlzFrameSetSize(new_Frame, 0.0435, 0.0435)
         ShopFrame[player].portrait = new_Frame
 
+        local border = BlzCreateFrameByType("BACKDROP", "aaa", ShopFrame[player].portrait, "", 0)
+        BlzFrameSetSize(border, 1., 1.)
+        BlzFrameSetTexture(border, "UI\\inventory_frame.blp", 0, true)
+        BlzFrameSetAllPoints(border, ShopFrame[player].portrait)
 
         new_Frame = BlzCreateFrameByType("TEXT", "shop name", ShopFrame[player].portrait, "", 0)
         BlzFrameSetPoint(new_Frame, FRAMEPOINT_LEFT, ShopFrame[player].portrait, FRAMEPOINT_RIGHT, 0.011, 0.)
         BlzFrameSetTextAlignment(new_Frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
         BlzFrameSetScale(new_Frame, 1.35)
+
+
 
         ShopFrame[player].shift_state = false
         local actual_player = Player(player-1)
@@ -321,7 +361,7 @@ do
         end)
 
 
-        ShopFrame[player].tip_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.02, 0.02, main_frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.016, -0.016, main_frame)
+        ShopFrame[player].tip_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.02, 0.02, main_frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.017, -0.017, main_frame)
         CreateTooltip(LOCALE_LIST[my_locale].UI_SHOP_TOOLTIP_HEADER, LOCALE_LIST[my_locale].UI_SHOP_TOOLTIP_DESCRIPTION, ShopFrame[player].tip_button, 0.14, 0.12, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPLEFT)
         ShopFrame[player].tip_trigger  = CreateTrigger()
         BlzTriggerRegisterFrameEvent(ShopFrame[player].tip_trigger , ShopFrame[player].tip_button, FRAMEEVENT_CONTROL_CLICK)
@@ -332,6 +372,11 @@ do
                 EnableTrigger(ShopFrame[player].tip_trigger )
             end)
         end)
+
+        local border = BlzCreateFrameByType("BACKDROP", "aaa", ShopFrame[player].tip_button, "", 0)
+        BlzFrameSetSize(border, 1., 1.)
+        BlzFrameSetTexture(border, "UI\\inventory_frame.blp", 0, true)
+        BlzFrameSetAllPoints(border, ShopFrame[player].tip_button)
 
         ShopFrame[player].name = new_Frame
         ShopFrame[player].tooltip = NewTooltip(ShopFrame[player].masterframe)
@@ -512,6 +557,7 @@ do
 
                     local item_data = GetItemData(item)
                     if item_data.quality_effect then BlzSetSpecialEffectAlpha(item_data.quality_effect, 0) end
+                    if item_data.quality_effect_light then DestroyEffect(item_data.quality_effect_light, 0) end
 
                     UpdateShopWindow()
                     break
@@ -629,6 +675,7 @@ do
                                     DestroyContextMenu(player)
                                     ShopInFocus[player] = nil
                                     ShopFrame[player].state = false
+                                    TimerStart(last_EnteredFrameTimer[player], 0., false, nil)
                                     if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(ShopFrame[player].main_frame, false) end
                                     DestroyTimer(GetExpiredTimer())
                                     if soundpack then
@@ -659,11 +706,18 @@ do
         ShopInFocus = {}
         ShopData = {}
 
+        last_EnteredFrame = {}
+        last_EnteredFrameTimer = {}
+
+        for i = 1, 6 do
+            last_EnteredFrameTimer[i] = CreateTimer()
+        end
+
         LeaveTrigger = CreateTrigger()
         EnterTrigger = CreateTrigger()
         ClickTrigger = CreateTrigger()
 
-        TriggerAddAction(LeaveTrigger, LeaveAction)
+        --TriggerAddAction(LeaveTrigger, LeaveAction)
         TriggerAddAction(EnterTrigger, EnterAction)
         TriggerAddAction(ClickTrigger, ShopSlot_Clicked)
     end

@@ -19,12 +19,12 @@ do
 
             if ShopFrame[player].state then
                 btn = GetButtonData(ShopFrame[player].slot[32])
-                frame = (StringLength(BlzFrameGetText(btn.charges_text_frame)) > 0) and btn.charges_text_frame or btn.image
+                frame = (StringLength(BlzFrameGetText(btn.charges_text_frame or nil)) > 0) and btn.charges_text_frame or btn.image
             elseif SkillPanelFrame[player].state then
                 frame = SkillPanelFrame[player].slider
             elseif PlayerInventoryFrameState[player] then
-                btn = GetButtonData(InventorySlots[player][32])
-                frame = StringLength(BlzFrameGetText(btn.charges_text_frame)) > 0 and btn.charges_text_frame or btn.image
+                --btn = GetButtonData(InventorySlots[player][32])
+                frame = InventoryFallbackFrame[player]--StringLength(BlzFrameGetText(btn.charges_text_frame or nil)) > 0 and btn.charges_text_frame or btn.image
             end
 
         return frame
@@ -91,6 +91,38 @@ do
             BlzFrameSetTexture(new_FrameImage, texture, 0, true)
             FrameRegisterClick(new_Frame, texture)
             BlzFrameSetAllPoints(new_FrameImage, new_Frame)
+
+        return new_Frame
+    end
+
+    ---@param size_x real
+    ---@param size_y real
+    ---@param frame_point_from framepointtype
+    ---@param frame_point_to framepointtype
+    ---@return framehandle
+    ---@param texture string
+    ---@param relative_frame framehandle
+    ---@param offset_x real
+    ---@param offset_y real
+    ---@param parent_frame framehandle
+    function CreateSimpleButtonWithBorder(texture, size_x, size_y, relative_frame, frame_point_from, frame_point_to, offset_x, offset_y, parent_frame)
+        local new_Frame = BlzCreateFrame('ScriptDialogButtonEx', parent_frame, 0, 0)
+        local border = BlzCreateFrameByType("BACKDROP", "aaa", GAME_UI, "", 0)
+        local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
+
+            ButtonList[new_Frame] = { button = new_Frame, image = new_FrameImage }
+
+            FrameRegisterNoFocus(new_Frame)
+            BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
+            BlzFrameSetSize(new_Frame, size_x, size_y)
+            BlzFrameSetTexture(border, "DiabolicUI_Button_64x64_Border.tga", 0, true)
+            BlzFrameSetScale(border, 1.)
+            BlzFrameSetPoint(border, FRAMEPOINT_TOPRIGHT, new_Frame, FRAMEPOINT_TOPRIGHT, 0., 0.)
+            BlzFrameSetPoint(border, FRAMEPOINT_BOTTOMLEFT, new_Frame, FRAMEPOINT_BOTTOMLEFT, 0., 0.)
+            BlzFrameSetTexture(new_FrameImage, texture, 0, true)
+            FrameRegisterClick(new_Frame, texture)
+            BlzFrameSetAllPoints(new_FrameImage, new_Frame)
+
 
         return new_Frame
     end
@@ -641,8 +673,8 @@ do
         BlzFrameSetSize(my_tooltip.backdrop, 0.1, 0.1)
 
         SetTooltipText(1, my_tooltip, LOCALE_LIST[my_locale].TALENTS[talent.talent_id].name, TEXT_JUSTIFY_LEFT, my_tooltip.backdrop, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.01, -0.01, player)
-        BlzFrameSetScale(my_tooltip.textframe[1], 1.02)
-        height = height + BlzFrameGetHeight(my_tooltip.textframe[1]) + 0.01
+        BlzFrameSetScale(my_tooltip.textframe[1], 1.025)
+        height = height + BlzFrameGetHeight(my_tooltip.textframe[1]) + 0.01 --0.01
 
         if level == 0 then level = 1 end
 
@@ -651,12 +683,12 @@ do
             description = description .. "|n|n" .. "|c00FF0000" .. GetLocalString("Требует ", "Requires ") .. talent.points_required .. GetLocalString(Declension(talent.points_required, " очко", " очка", " очков").." в этой категории талантов.", " points in this talent category.").. "|r"
         end
 
-        SetTooltipText(2, my_tooltip, description, TEXT_JUSTIFY_LEFT, my_tooltip.textframe[1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0., -0.03, player)
+        SetTooltipText(2, my_tooltip, description, TEXT_JUSTIFY_LEFT, my_tooltip.textframe[1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0., -0.03, player) --0.03
         BlzFrameSetScale(my_tooltip.textframe[2], 0.88)
-        LockWidth(my_tooltip.textframe[2], BlzFrameGetWidth(my_tooltip.textframe[2]), 0.06, 0.14)
+        LockWidth(my_tooltip.textframe[2], BlzFrameGetWidth(my_tooltip.textframe[2]), 0.06, 0.15)
         height = height + BlzFrameGetHeight(my_tooltip.textframe[2]) + 0.03
 
-        LockWidth(my_tooltip.textframe[1], BlzFrameGetWidth(my_tooltip.textframe[2]), 0.06, 0.14)
+        LockWidth(my_tooltip.textframe[1], BlzFrameGetWidth(my_tooltip.textframe[2]), 0.06, 0.15)
 
         SetTooltipText(3, my_tooltip, GetLocalString("Уровень ", "Level ") .. level .. "/".. talent.max_level, TEXT_JUSTIFY_MIDDLE, my_tooltip.backdrop, FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_BOTTOMRIGHT, -0.008, 0.008, player)
         BlzFrameSetScale(my_tooltip.textframe[3], 0.68)
@@ -857,7 +889,7 @@ do
 
             local bonus_text
 
-            if item_data.BONUS ~= nil and #item_data.BONUS > 0 then
+            if item_data.BONUS and #item_data.BONUS > 0 then
                 bonus_text = LOCALE_LIST[my_locale].ADDITIONAL_INFO_UI
                 for i = 1, #item_data.BONUS do
                     if compare_item then
@@ -867,11 +899,9 @@ do
                     end
                 end
             end
-        
-            
 
 
-            if item_data.SKILL_BONUS ~= nil and #item_data.SKILL_BONUS > 0 then
+            if item_data.SKILL_BONUS and #item_data.SKILL_BONUS > 0 then
                 local skill_bonus_text = ""
 
                 for i = 1, #item_data.SKILL_BONUS do
@@ -879,7 +909,7 @@ do
                     elseif item_data.SKILL_BONUS[i].category then skill_bonus_text = skill_bonus_text .. "|c00FFC2FF" ..  GetSkillCategoryName(item_data.SKILL_BONUS[i].category) .. "|r" .. " +" .. item_data.SKILL_BONUS[i].bonus_levels .. "|n" end
                 end
 
-                if bonus_text ~= nil then bonus_text = bonus_text..skill_bonus_text
+                if bonus_text then bonus_text = bonus_text..skill_bonus_text
                 else bonus_text = LOCALE_LIST[my_locale].ADDITIONAL_INFO_UI .. skill_bonus_text end
 
             end
@@ -898,11 +928,13 @@ do
 
             if item_data.TYPE == ITEM_TYPE_GEM then
                 bonus_text = LOCALE_LIST[my_locale].AUGMENTS_UI
+
                 for i = 1, #item_data.point_bonus do
-                    if item_data.point_bonus[i] ~= nil then
+                    if item_data.point_bonus[i] then
                         bonus_text = bonus_text .. GetItemTypeName(i) .. " - " .. GetParameterName(item_data.point_bonus[i].PARAM) .. ": " .. GetCorrectParamText(item_data.point_bonus[i].PARAM, item_data.point_bonus[i].VALUE, item_data.point_bonus[i].METHOD).. "|n"
                     end
                 end
+
             end
 
 
@@ -982,13 +1014,44 @@ do
                 local free_stone_slots = item_data.MAX_SLOTS - #item_data.STONE_SLOTS
                 local stones_text = LOCALE_LIST[my_locale].SLOTS_UI
 
-                    for i = 1, #item_data.STONE_SLOTS do
-                        if item_data.STONE_SLOTS[i] ~= nil then
-                            local stone_bonus = item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE]
-                            stones_text = stones_text .. GetParameterName(stone_bonus.PARAM) .. ": " .. GetCorrectParamText(stone_bonus.PARAM, stone_bonus.VALUE, stone_bonus.METHOD) .. "|n"
-                        else
-                            stones_text = stones_text .. "|n"
+                    if item_data.runeword then
+                        local runeword_name = ""
+                        local runeword_data = GetRunewordData(item_data.runeword)
+
+                            for i = 1, #item_data.STONE_SLOTS do
+                                if item_data.STONE_SLOTS[i] then
+                                    if not IsPartOfRuneword(item_data.runeword, item_data.STONE_SLOTS[i].raw) then
+                                        local stone_bonus = item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE]
+                                        stones_text = stones_text .. GetParameterName(stone_bonus.PARAM) .. ": " .. GetCorrectParamText(stone_bonus.PARAM, stone_bonus.VALUE, stone_bonus.METHOD) .. "|n"
+                                    else
+                                        runeword_name = runeword_name .. item_data.STONE_SLOTS[i].NAME .. "-"
+                                    end
+                                end
+                            end
+
+                        runeword_name = string.sub(runeword_name, 1, #runeword_name-1)
+                        stones_text = stones_text .. "|c00389DFF" .. runeword_data.name .. "|r:|n" .. runeword_name .. "|n"
+
+
+                        if runeword_data[item_data.TYPE] and runeword_data[item_data.TYPE].BONUS then
+                            for i = 1, #runeword_data[item_data.TYPE].BONUS do
+                                local rune_bonus = runeword_data[item_data.TYPE].BONUS[i]
+                                stones_text = stones_text .. GetParameterName(rune_bonus.PARAM) .. ": " .. GetCorrectParamText(rune_bonus.PARAM, rune_bonus.VALUE, rune_bonus.METHOD) .. "|n"
+                            end
                         end
+
+
+                    else
+
+                        for i = 1, #item_data.STONE_SLOTS do
+                            if item_data.STONE_SLOTS[i] then
+                                local stone_bonus = item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE]
+                                stones_text = stones_text .. GetParameterName(stone_bonus.PARAM) .. ": " .. GetCorrectParamText(stone_bonus.PARAM, stone_bonus.VALUE, stone_bonus.METHOD) .. "|n"
+                            else
+                                stones_text = stones_text .. "|n"
+                            end
+                        end
+
                     end
 
 
@@ -1068,8 +1131,15 @@ do
                     myframe = SetTooltipIcon(6, tooltip, "UI\\Widgets\\ToolTips\\Human\\ToolTipGoldIcon.blp", 0.0085, 0.0085, 1.05, tooltip.backdrop, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.0055, 0.0055, player)
                     height = height + BlzFrameGetHeight(myframe) * 2.55
                     SetTooltipText(master_index, tooltip, R2I(total_cost) .. single_item_cost, TEXT_JUSTIFY_LEFT, myframe, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.002, 0., player)
+                    master_index = master_index + 1
                 end
 
+            end
+
+
+            if item_data.level and item_data.stat_modificator then
+                local text = SetTooltipText(master_index, tooltip, LOCALE_LIST[my_locale].ITEM_LEVEL_UI .. " " .. item_data.level, TEXT_JUSTIFY_RIGHT, tooltip.backdrop, FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_BOTTOMRIGHT, -0.01, 0.01, player)
+                BlzFrameSetScale(text, 0.7)
             end
 
 
@@ -1082,23 +1152,12 @@ do
         end
 
 
-        --print("most is " .. width)
-        --print("before ------" .. BlzFrameGetWidth(tooltip.backdrop) .. " / " ..BlzFrameGetHeight(tooltip.backdrop) )
         BlzFrameSetSize(tooltip.backdrop, width, height * 1.2)
         BlzFrameSetPoint(tooltip.header, FRAMEPOINT_TOPRIGHT, tooltip.backdrop, FRAMEPOINT_TOPRIGHT, -0.004, -0.004)
         BlzFrameSetPoint(tooltip.header, FRAMEPOINT_TOPLEFT, tooltip.backdrop, FRAMEPOINT_TOPLEFT, 0.004, -0.004)
         BlzFrameSetPoint(tooltip.header, FRAMEPOINT_BOTTOM, tooltip.textframe[1], FRAMEPOINT_BOTTOM, 0., -0.007)
         for i = 1, 5 do BlzFrameSetVisible(tooltip.header_glow[i], false) end
         BlzFrameSetVisible(tooltip.header_glow[item_data.QUALITY or COMMON_ITEM], true)
-
-        --BlzFrameSetPoint(tooltip.header_glow, FRAMEPOINT_TOPRIGHT, tooltip.backdrop, FRAMEPOINT_TOPRIGHT, -0.004, -0.004)
-        --BlzFrameSetPoint(tooltip.header_glow, FRAMEPOINT_TOPLEFT, tooltip.backdrop, FRAMEPOINT_TOPLEFT, 0.004, -0.004)
-        --BlzFrameSetPoint(tooltip.header_glow, FRAMEPOINT_BOTTOM, tooltip.textframe[1], FRAMEPOINT_BOTTOM, 0., -0.007)
-        --BlzFrameSetSize(tooltip.header, BlzFrameGetWidth(tooltip.header), BlzFrameGetHeight(tooltip.textframe[1]))
-        --print("after ------" .. BlzFrameGetWidth(tooltip.backdrop) .. " / " ..BlzFrameGetHeight(tooltip.backdrop) )
-        --local offset = BlzFrameGetWidth(width / 1.98)
-        --if direction == FRAMEPOINT_LEFT then offset = -offset end
-        --BlzFrameSetPoint(tooltip.backdrop, FRAMEPOINT_CENTER, button.image, FRAMEPOINT_CENTER, offset, -0.01)
 
         --print("done")
     end

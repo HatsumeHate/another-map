@@ -54,11 +54,23 @@ do
         return false
     end
 
-    function AddSpecialEffectTargetEx(effect, unit, point)
+
+    ---@param effect string
+    ---@param unit unit
+    ---@param point string
+    ---@param delay real
+    function AddSpecialEffectTargetEx(effect, unit, point, delay)
         local effect = AddSpecialEffectTarget(effect, unit, point or "origin")
         local trigger = CreateTrigger()
-        TriggerRegisterDeathEvent(trigger, unit)
-        TriggerAddAction(trigger, function() DestroyEffect(effect); DestroyTrigger(trigger) end)
+
+            TriggerRegisterDeathEvent(trigger, unit)
+            TriggerAddAction(trigger, function()
+                DelayAction(delay or 0., function()
+                    DestroyEffect(effect)
+                    DestroyTrigger(trigger)
+                end)
+            end)
+
     end
 
     ---@param unit unit

@@ -8,6 +8,7 @@ do
 
     PlayerMousePosition = 0
     PlayerMouseFocus = 0
+    PlayerMouseVectorAngle = nil
     local mouse_track_trigger = 0
 
 
@@ -15,6 +16,7 @@ do
 
         PlayerMousePosition = {}
         PlayerMouseFocus = {}
+        PlayerMouseVectorAngle = {}
         mouse_track_trigger = CreateTrigger()
 
         for i = 0, 5 do
@@ -29,7 +31,7 @@ do
 
                     PlayerMousePosition[player].x = BlzGetTriggerPlayerMouseX()
                     PlayerMousePosition[player].y = BlzGetTriggerPlayerMouseY()
-
+                    PlayerMouseVectorAngle[player] = math.deg(AngleBetweenXY(GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]), PlayerMousePosition[player].x, PlayerMousePosition[player].y))
 
                     if mouse_focus ~= nil and GetUnitState(mouse_focus, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(mouse_focus, FourCC("Avul")) == 0 then
                         PlayerMouseFocus[player] = mouse_focus

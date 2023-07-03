@@ -247,16 +247,15 @@
 	---@param flag boolean
 	function SafePauseUnit(target, flag)
 
-			if flag then PauseDataTable[target] = (PauseDataTable[target] or 0) + 1
-			else PauseDataTable[target] = (PauseDataTable[target] or -10) - 1 end
-
-		if PauseDataTable[target] == -11 then
+		if flag then
+			if not PauseDataTable[target] then
+				PauseDataTable[target] = true
+				BlzPauseUnitEx(target, true)
+			end
+		elseif not flag and PauseDataTable[target] then
 			PauseDataTable[target] = nil
-			return
+			BlzPauseUnitEx(target, false)
 		end
-
-			if PauseDataTable[target] == 1 and flag then BlzPauseUnitEx(target, true)
-			elseif PauseDataTable[target] <= 0 and not flag then BlzPauseUnitEx(target, false); PauseDataTable[target] = nil end
 
 	end
 
@@ -352,6 +351,7 @@
 			end
 
 	end
+
 
 		function SuperRound(num)
 			local inv = math.floor(math.abs(num) + 0.5)

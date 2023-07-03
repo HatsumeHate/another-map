@@ -9,6 +9,17 @@ do
 
 
 
+    ---@param target unit
+    local function AddCCDiminishing(target)
+        if GetUnitAbilityLevel(target, FourCC("ACCR")) > 0 then
+            SetBuffLevel(target, "ACCR", GetBuffLevel(target, "ACCR") + 1)
+            SetBuffExpirationTime(target, "ACCR", -1)
+        else
+            ApplyBuff(target, target, "ACCR", 1)
+        end
+    end
+
+
     ---@param unit_data table
     ---@param buff_data table
     local function DeleteBuff(unit_data, buff_data)
@@ -30,6 +41,11 @@ do
                         end
                     end
 
+                    if buff_data.level[buff_data.current_level].endurance or buff_data.level[buff_data.current_level].endurance_hp then
+                        RemoveEndurance(unit_data.Owner, buff_data.id, false)
+                    end
+
+
                     if buff_data.level[buff_data.current_level].negative_state and buff_data.level[buff_data.current_level].negative_state > 0 then
 
                         local state = buff_data.level[buff_data.current_level].negative_state
@@ -44,6 +60,7 @@ do
                                 UnitRemoveAbility(unit_data.Owner, FourCC("ARal"))
                                 ModifyStat(unit_data.Owner, MOVING_SPEED, 0.5, MULTIPLY_BONUS, false)
                                 GroupRemoveUnit(FearGroup, unit_data.Owner)
+                                if IsAHero(unit_data.Owner) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(unit_data.Owner))+1] = true end
                             elseif state == STATE_STUN and not HasNegativeState(unit_data.Owner, STATE_STUN) then
                                 GroupRemoveUnit(StunGroup, unit_data.Owner)
                             elseif state == STATE_BLIND and not HasNegativeState(unit_data.Owner, STATE_BLIND) then
@@ -52,11 +69,14 @@ do
                                 GroupRemoveUnit(RootGroup, unit_data.Owner)
                             end
 
-                        if (state == STATE_STUN or state == STATE_FREEZE) and not (IsUnitStunned(unit_data.Owner) or IsUnitFrozen(unit_data.Owner)) then
+                        if (state == STATE_STUN or state == STATE_FREEZE) and not IsUnitStunned(unit_data.Owner) and not IsUnitFrozen(unit_data.Owner) then
                             SafePauseUnit(unit_data.Owner, false)
+                            if IsAHero(unit_data.Owner) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(unit_data.Owner))+1] = true end
                         end
 
                     end
+
+                    if buff_data.static_effect then DestroyEffect(buff_data.static_effect) end
 
                     DestroyTimer(buff_data.update_timer)
                     table.remove(unit_data.buff_list, i)
@@ -99,6 +119,50 @@ do
         return 0
     end
 
+
+
+
+
+    ---@param buff_id string
+    ---@param tag string
+    ---@return boolean
+    function BuffHasTag(buff_id, tag)
+        local buff_property = BUFF_DATA[FourCC(buff_id)]
+
+            if buff_property.tags then
+
+                for i = 1, #buff_property.tags do
+                    if buff_property.tags[i] == tag then
+                        return true
+                    end
+                end
+
+            end
+
+        return false
+    end
+
+
+    ---@param unit unit
+    ---@param tag string
+    ---@return table
+    function GetBuffsWithTag(unit, tag)
+        local list = {}
+        local unit_data = GetUnitData(unit)
+
+            for i = 1, #unit_data.buff_list do
+                if unit_data.buff_list[i].tags then
+                    for k = 1, #unit_data.buff_list[i].tags do
+                        if unit_data.buff_list[i].tags[k] == tag then
+                            list[#list+1] = unit_data.buff_list[i]
+                            break
+                        end
+                    end
+                end
+            end
+
+        return #list > 0 and list or nil
+    end
 
 
     ---@param unit unit
@@ -245,6 +309,7 @@ do
                         end
                     end
 
+
                     local logic = lvl >= buff_data.current_level
 
                     buff_data.current_level = lvl
@@ -281,6 +346,8 @@ do
                             if buff_data.expiration_time <= 0 then
                                 OnBuffExpire(buff_data.buff_source or nil, target, buff_data)
                                 DeleteBuff(unit_data, buff_data)
+                            else
+                                AddCCDiminishing(target)
                             end
 
                         end
@@ -308,6 +375,14 @@ do
                         for i = 1, #buff_data.level[buff_data.current_level].effects do
                             UnitAddEffect(target, buff_data.level[buff_data.current_level].effects[i])
                         end
+                    end
+
+                    if buff_data.level[buff_data.current_level].endurance then
+                        SetMaxEndurance(target, buff_data.level[buff_data.current_level].endurance, buff_id)
+                    end
+
+                    if buff_data.level[buff_data.current_level].endurance_hp then
+                        SetMaxEndurance(target, BlzGetUnitMaxHP(target) * buff_data.level[buff_data.current_level].endurance_hp, buff_id)
                     end
 
                     OnBuffLevelChange(buff_data.buff_source or nil, target, buff_data, logic)
@@ -389,12 +464,21 @@ do
     end
 
 
-    --TODO infinite bug
+    ---@param unit unit
+    ---@return boolean
+    ---stunned, frozen or in fear
+    function IsUnitDisabled(unit)
+        return IsUnitStunned(unit) or IsUnitFrozen(unit) or IsUnitFeared(unit)
+    end
+
+
+
     ---@param target unit
     ---@param buff_id string
     ---@param lvl integer
+    ---@param ability_instance table
     ---@return table
-    function ApplyBuff(source, target, buff_id, lvl)
+    function ApplyBuff(source, target, buff_id, lvl, ability_instance)
         if lvl <= 0 then return end
         local buff_data = MergeTables({}, GetBuffData(buff_id))
         local target_data = GetUnitData(target)
@@ -477,30 +561,41 @@ do
                         SafePauseUnit(target, true)
                         SetUnitTimeScale(target, 0.)
                         GroupAddUnit(FreezeGroup, target)
+                        if IsAHero(target) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(target))+1] = false end
                     elseif buff_data.level[lvl].negative_state == STATE_STUN then
                         --if target_data.channeled_destructor then target_data.channeled_destructor(target); target_data.channeled_destructor = nil end
                         ResetUnitSpellCast(target)
                         SafePauseUnit(target, true)
                         GroupAddUnit(StunGroup, target)
                         SetUnitAnimation(target, "stand ready")
+                        if IsAHero(target) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(target))+1] = false end
                     elseif buff_data.level[lvl].negative_state == STATE_FEAR then
                         if target_data.channeled_destructor then target_data.channeled_destructor(target); target_data.channeled_destructor = nil end
                         for key = 1, 6 do BlzUnitDisableAbility(target, KEYBIND_LIST[key].ability, true, false) end
                         UnitAddAbility(target, FourCC("ARal"))
                         ModifyStat(target, MOVING_SPEED, 0.5, MULTIPLY_BONUS, true)
                         GroupAddUnit(FearGroup, target)
+                        if IsAHero(target) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(target))+1] = false end
                     elseif buff_data.level[lvl].negative_state == STATE_BLIND then
                         GroupAddUnit(BlindGroup, target)
                     elseif buff_data.level[lvl].negative_state == STATE_ROOT then
                         GroupAddUnit(RootGroup, target)
                     end
 
+                    AddCCDiminishing(target)
 
                 end
 
             UnitAddAbility(target, FourCC(buff_data.id))
             table.insert(target_data.buff_list, buff_data)
+            buff_data.ability_instance = ability_instance
 
+
+                if buff_data.static_sfx then
+                    buff_data.static_effect = AddSpecialEffect(buff_data.static_sfx.path, GetUnitX(target), GetUnitY(target))
+                    if buff_data.static_sfx.autoscaling then BlzSetSpecialEffectScale(buff_data.static_effect, BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE)) end
+                    if buff_data.static_sfx.random_angle then BlzSetSpecialEffectYaw(buff_data.static_effect, GetRandomReal(0., 360.) * bj_DEGTORAD) end
+                end
 
                 if buff_data.level[lvl].bonus then
                     for i = 1, #buff_data.level[lvl].bonus do
@@ -513,6 +608,14 @@ do
                     for i = 1, #buff_data.level[lvl].effects do
                         UnitAddEffect(target, buff_data.level[lvl].effects[i])
                     end
+                end
+
+                if buff_data.level[lvl].endurance then
+                    AddMaxEnduranceUnit(target, buff_data.level[lvl].endurance, buff_data.id, false)
+                end
+
+                if buff_data.level[lvl].endurance_hp then
+                    AddMaxEnduranceUnit(target, BlzGetUnitMaxHP(target) * buff_data.level[lvl].endurance_hp, buff_data.id, false)
                 end
 
             local over_time_effect_delay
@@ -540,7 +643,7 @@ do
                             OnBuffOverTimeTrigger(buff_data.buff_source or nil, target, buff_data)
 
                                 if buff_data.level[buff_data.current_level].effect then
-                                    ApplyEffect(buff_data.buff_source or nil, target, 0.,0., buff_data.level[buff_data.current_level].effect, buff_data.current_level)
+                                    ApplyEffect(buff_data.buff_source or nil, target, 0.,0., buff_data.level[buff_data.current_level].effect, buff_data.current_level, ability_instance)
                                 end
 
                             over_time_effect_delay = math.floor((buff_data.level[buff_data.current_level].effect_delay * 1000.) + 0.5)

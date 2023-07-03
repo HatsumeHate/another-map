@@ -82,6 +82,18 @@ do
             animation_backswing = 0.4,
         })
 
+        NewAnimationSequence("barb_spell_swing", {
+            animation           = 34,--1,
+            animation_point     = 0.56,
+            animation_backswing = 0.4,
+        })
+
+        NewAnimationSequence("barb_spell_swing_vertical", {
+            animation           = 11,
+            animation_point     = 0.55,
+            animation_backswing = 0.3,
+        })
+
         NewAnimationSequence("barb_spell_howl", {
             animation           = 43,
             animation_point     = 0.792,
@@ -140,6 +152,53 @@ do
             }
         })
 
+        NewAnimationSequence("barb_swing_3", {
+            animation           = 11,--24,
+            animation_point     = 0.521,
+            animation_backswing = 0.33,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 11,
+                    animation_point     = 0.55,
+                    animation_backswing = 0.3,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 0,
+                    animation_point     = 0.583,
+                    animation_backswing = 0.33,
+                    animation_bonus_timescale = 1.1
+                },
+                [ANIM_TAG_STAFF] = {
+                    animation           = 11,
+                    animation_point     = 0.55,
+                    animation_backswing = 0.3,
+                }
+            }
+        })
+
+        NewAnimationSequence("barb_swing_4", {
+            animation           = 11,--24,
+            animation_point     = 0.521,
+            animation_backswing = 0.33,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 39,--10,
+                    animation_point     = 0.61,
+                    animation_backswing = 0.33,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 2,
+                    animation_point     = 0.584,
+                    animation_backswing = 0.33,
+                },
+                [ANIM_TAG_STAFF] = {
+                    animation           = 39,--10,
+                    animation_point     = 0.61,
+                    animation_backswing = 0.33,
+                }
+            }
+        })
+
         NewAnimationSequence("barb_whirlwind", {
             animation           = 28,
             animation_point     = 0.,
@@ -148,8 +207,8 @@ do
 
         NewAnimationSequence("barb_jump", {
             animation           = 42,
-            animation_point     = 0.0,
-            animation_backswing = 0.,
+            animation_point     = 0.,
+            animation_backswing = 200.,
         })
 
 
@@ -189,6 +248,132 @@ do
             animation_backswing = 0.4,
         })
 
+
+        NewAnimationSequence("assassin_swing_1", {
+            animation           = 12,--24,
+            animation_point     = 0.35,
+            animation_backswing = 0.33,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 12,
+                    animation_point     = 0.35,
+                    animation_backswing = 0.33,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 12,
+                    animation_point     = 0.35,
+                    animation_backswing = 0.33,
+                    animation_bonus_timescale = 1.1
+                },
+                [ANIM_TAG_STAFF] = {
+                    animation           = 12,
+                    animation_point     = 0.35,
+                    animation_backswing = 0.33,
+                }
+            }
+        })
+
+        NewAnimationSequence("assassin_swing_2", {
+            animation           = 5,--24,
+            animation_point     = 0.35,
+            animation_backswing = 0.33,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 5,
+                    animation_point     = 0.35,
+                    animation_backswing = 0.33,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 5,
+                    animation_point     = 0.35,
+                    animation_backswing = 0.33,
+                    animation_bonus_timescale = 1.1
+                },
+                [ANIM_TAG_STAFF] = {
+                    animation           = 5,
+                    animation_point     = 0.35,
+                    animation_backswing = 0.33,
+                }
+            }
+        })
+
+        NewAnimationSequence("assassin_swing_3", {
+            animation           = 10,--24,
+            animation_point     = 0.35,
+            animation_backswing = 0.33,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 10,
+                    animation_point     = 0.35,
+                    animation_backswing = 0.33,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 10,
+                    animation_point     = 0.35,
+                    animation_backswing = 0.33,
+                    animation_bonus_timescale = 1.1
+                },
+                [ANIM_TAG_STAFF] = {
+                    animation           = 10,
+                    animation_point     = 0.35,
+                    animation_backswing = 0.33,
+                }
+            }
+        })
+
+        NewAnimationSequence("assassin_swing_4_quick", {
+            animation           = 11,--24,
+            animation_point     = 0.35,
+            animation_backswing = 0.33,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 11,
+                    animation_point     = 0.35,
+                    animation_backswing = 0.33,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 11,
+                    animation_point     = 0.35,
+                    animation_backswing = 0.33,
+                    animation_bonus_timescale = 1.1
+                },
+                [ANIM_TAG_STAFF] = {
+                    animation           = 11,
+                    animation_point     = 0.35,
+                    animation_backswing = 0.33,
+                }
+            }
+        })
+
+        NewAnimationSequence("assassin_swing_5_circle", {
+            animation           = 6,--24,
+            animation_point     = 0.35,
+            animation_backswing = 0.33,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 6,
+                    animation_point     = 0.35,
+                    animation_backswing = 0.33,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 6,
+                    animation_point     = 0.35,
+                    animation_backswing = 0.33,
+                    animation_bonus_timescale = 1.1
+                },
+                [ANIM_TAG_STAFF] = {
+                    animation           = 6,
+                    animation_point     = 0.35,
+                    animation_backswing = 0.33,
+                }
+            }
+        })
+
+        NewAnimationSequence("assassin_spell", {
+            animation           = 7,--24,
+            animation_point     = 0.5,
+            animation_backswing = 0.33,
+        })
 
         NewAnimationSequence("spider_venom_bile", {
             animation           = 3,

@@ -172,6 +172,12 @@ do
             id = "executioner_Legendary",
             type = ITEM_PASSIVE_EFFECT
         })
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_CATALYST,
+            id = "catalyst_Legendary",
+            type = ITEM_PASSIVE_EFFECT
+        })
     end
 
 

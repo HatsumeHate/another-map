@@ -8,6 +8,7 @@ do
 
     local Click_Ability = 0
     local Click_Condition = 0
+    local TrackingData = 0
     MARK_TYPE_QUESTION = 1
     MARK_TYPE_EXCLAMATION = 2
 
@@ -107,7 +108,7 @@ do
         local trg = CreateTrigger()
         TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_PICKUP_ITEM)
         TriggerAddAction(trg, function()
-            if GetItemTypeId(GetManipulatedItem()) == item_id then
+            if GetItemTypeId(GetManipulatedItem()) == FourCC(item_id) then
                 myfunction()
             end
         end)
@@ -157,6 +158,151 @@ do
 
             end)
 
+    end
+
+
+
+    ---@param unit unit
+    ---@return unit
+    function GetCurrentUnitQuestTracking(unit)
+        if TrackingData[unit] then
+            return TrackingData[unit].target or nil
+        end
+    end
+
+
+    ---@param unit unit
+    ---@return string
+    function GetCurrentUnitQuestTrackingId(unit)
+        if TrackingData[unit] then
+            return TrackingData[unit].id or ""
+        end
+    end
+
+
+    ---@param unit unit
+    function DisableQuestTracking(unit)
+        if TrackingData[unit] then
+            DestroyTimer(TrackingData[unit].timer)
+            DestroyEffect(TrackingData[unit].arrow)
+        end
+    end
+
+
+    local function CreateTrackingData(unit, id)
+        local effect_path = ""
+
+        if GetLocalPlayer() == GetOwningPlayer(unit) then effect_path = "Quest\\Target.mdx" end
+        TrackingData[unit] = { timer = CreateTimer(), arrow = AddSpecialEffect(effect_path, GetUnitX(unit), GetUnitY(unit)), id = id }
+
+        return TrackingData[unit]
+    end
+
+
+    ---@param unit unit
+    ---@param target unit
+    ---@param id string
+    ---@param bonus_z real
+    function EnableUnitPointQuestTracking(unit, point_x, point_y, id, bonus_z)
+        local tracking
+
+            DisableQuestTracking(unit)
+            tracking = CreateTrackingData(unit, id)
+
+            BlzSetSpecialEffectYaw(tracking.arrow, AngleBetweenUnitXY(unit, point_x, point_y) * bj_DEGTORAD)
+            BlzSetSpecialEffectZ(tracking.arrow, GetUnitZ(unit) + (bonus_z or 0.))
+
+            TimerStart(tracking.timer, 0.025, true, function()
+                BlzSetSpecialEffectX(tracking.arrow, GetUnitX(unit))
+                BlzSetSpecialEffectY(tracking.arrow, GetUnitY(unit))
+                BlzSetSpecialEffectZ(tracking.arrow, GetUnitZ(unit) + (bonus_z or 0.))
+                BlzSetSpecialEffectYaw(tracking.arrow, AngleBetweenUnitXY(unit, point_x, point_y) * bj_DEGTORAD)
+            end)
+
+    end
+
+    ---@param unit unit
+    ---@param target unit
+    ---@param id string
+    ---@param bonus_z real
+    function EnableUnitTargetQuestTracking(unit, target, id, bonus_z)
+        local tracking
+
+            DisableQuestTracking(unit)
+            tracking = CreateTrackingData(unit, id)
+
+            BlzSetSpecialEffectYaw(tracking.arrow, AngleBetweenUnits(unit, target) * bj_DEGTORAD)
+            BlzSetSpecialEffectZ(tracking.arrow, GetUnitZ(unit) + (bonus_z or 0.))
+
+            TimerStart(tracking.timer, 0.025, true, function()
+                BlzSetSpecialEffectX(tracking.arrow, GetUnitX(unit))
+                BlzSetSpecialEffectY(tracking.arrow, GetUnitY(unit))
+                BlzSetSpecialEffectZ(tracking.arrow, GetUnitZ(unit) + (bonus_z or 0.))
+                BlzSetSpecialEffectYaw(tracking.arrow, AngleBetweenUnits(unit, target) * bj_DEGTORAD)
+            end)
+
+    end
+
+
+    local QuestAreas
+
+    ---@param unit unit
+    ---@param quest_area table
+    ---@return boolean
+    function IsUnitInQuestArea(unit, quest_area)
+        return IsUnitInRegion(quest_area.region, unit)
+    end
+
+    ---@param pack table
+    function RemoveStaticQuestAreaForPlayer(pack)
+        RemoveRect(pack.rect)
+        RemoveRegion(pack.region)
+    end
+
+
+    ---@param player integer
+    ---@param mark_type integer
+    ---@param mark_var integer
+    ---@param mark_scale real
+    ---@param radius real
+    ---@param x real
+    ---@param y real
+    ---@return table
+    function AddStaticQuestAreaForPlayer(player, mark_type, mark_var, mark_scale, radius, x, y)
+        radius = radius * 0.5
+        local rect = Rect(x-radius, y-radius, x+radius, y+radius)
+        local region = CreateRegion()
+        local mark
+        local area_effect = ""
+        local area_aura = ""
+        local mark_effect = ""
+        local scale = radius / 70.
+
+            if GetLocalPlayer() == Player(player-1) then
+                area_effect = "Quest\\LootEFFECT.mdx"
+                area_aura = "Quest\\QuestMarking.mdx"
+                mark_effect = MarkList[mark_type or 1][mark_var or 1]
+            end
+
+            area_effect = AddSpecialEffect(area_effect, x, y)
+            area_aura = AddSpecialEffect(area_aura, x, y)
+
+            BlzSetSpecialEffectZ(area_aura, GetZ(x,y) + 10.)
+            BlzSetSpecialEffectScale(area_aura, 1)
+            BlzSetSpecialEffectScale(area_effect, 1)
+            BlzSetSpecialEffectScale(area_aura, scale)
+            BlzSetSpecialEffectScale(area_effect, scale)
+            BlzSetSpecialEffectAlpha(area_aura, 155)
+
+            if mark_type then
+                mark = AddSpecialEffect(mark_effect, x, y)
+                BlzSetSpecialEffectScale(mark, mark_scale)
+            end
+
+            RegionAddRect(region, rect)
+            QuestAreas[region] = { region = region, rect = rect }
+
+        return QuestAreas[region]
     end
 
 
@@ -275,6 +421,8 @@ do
     function InitQuestUtils()
         Click_Ability = FourCC("A01W")
         Click_Condition = Condition(ClickCondition)
+        TrackingData = {}
+        QuestAreas = {}
 
         MarkList = {
             [MARK_TYPE_QUESTION] = {
@@ -303,11 +451,6 @@ do
         InitQuestsData()
         InitOutskirtsQuestsData()
 
-        RegisterTestCommand("quest", function()
-            AddQuestArea(MARK_TYPE_QUESTION, MARK_COMMON, 1., 600., GetRectCenterX(gg_rct_Region_395), GetRectCenterY(gg_rct_Region_395), function()
-                print("yeah")
-            end)
-        end)
 
     end
 

@@ -72,6 +72,16 @@ do
 	VULNERABILITY = 55
 	MANACOST = 54
 
+	BONUS_MELEE_DAMAGE = 55
+	BONUS_RANGE_DAMAGE = 56
+
+	DAMAGE_TO_CLOSE_ENEMIES = 57
+	DAMAGE_TO_DISTANT_ENEMIES = 58
+
+	DAMAGE_TO_CC_ENEMIES = 59
+	DODGE_CHANCE = 60
+
+	COOLDOWN_REDUCTION = 61
 
 
 	
@@ -145,7 +155,9 @@ do
 
 				if parameter == ATTACK_SPEED or parameter == CAST_SPEED or parameter == CRIT_CHANCE or parameter == BLOCK_CHANCE
 						or parameter == MELEE_DAMAGE_REDUCTION or parameter == RANGE_DAMAGE_REDUCTION or parameter == CONTROL_REDUCTION
-						or parameter == EXP_BONUS or parameter == GOLD_BONUS or parameter == DROP_BONUS or parameter == HEALING_BONUS or parameter == DAMAGE_BOOST then
+						or parameter == EXP_BONUS or parameter == GOLD_BONUS or parameter == DROP_BONUS or parameter == HEALING_BONUS or parameter == DAMAGE_BOOST or parameter == VULNERABILITY
+						or parameter == BONUS_MELEE_DAMAGE or parameter == BONUS_RANGE_DAMAGE or parameter == DAMAGE_TO_CLOSE_ENEMIES or parameter == DAMAGE_TO_DISTANT_ENEMIES
+						or parameter == DAMAGE_TO_CC_ENEMIES or parameter == COOLDOWN_REDUCTION then
 					special = "%%"
 				end
 
@@ -229,6 +241,7 @@ do
 
 				if param == STR_STAT then
 					PARAMETER_UPDATE_FUNC[PHYSICAL_ATTACK](unit_data)
+					PARAMETER_UPDATE_FUNC[CRIT_CHANCE](unit_data)
 				elseif param == VIT_STAT then
 					PARAMETER_UPDATE_FUNC[HP_VALUE](unit_data)
 					PARAMETER_UPDATE_FUNC[HP_REGEN](unit_data)
@@ -385,7 +398,7 @@ do
 
 			---@param data table
 			[CRIT_CHANCE]            = function(data)
-				data.stats[CRIT_CHANCE].value = ((data.equip_point[WEAPON_POINT].CRIT_CHANCE or 0.) + data.stats[CRIT_CHANCE].bonus) * data.stats[CRIT_CHANCE].multiplier
+				data.stats[CRIT_CHANCE].value = ((data.equip_point[WEAPON_POINT].CRIT_CHANCE or 0.) + data.stats[CRIT_CHANCE].bonus + math.floor((data.stats[STR_STAT].value / 3) + 0.5)) * data.stats[CRIT_CHANCE].multiplier
 			end,
 
 			---@param data table
@@ -675,13 +688,49 @@ do
 
 			---@param data table
 			[MANACOST] = function(data)
-				if TraceBug then print("update manacost A") end
 				if IsUnitType(data.Owner, UNIT_TYPE_HERO) and IsAHero(data.Owner) then
 					UpdateBindedSkillsManacosts(data.Owner)
 				end
-				if TraceBug then print("update manacost B") end
+			end,
+
+			---@param data table
+			[BONUS_MELEE_DAMAGE] = function(data)
+				data.stats[BONUS_MELEE_DAMAGE].value = data.stats[BONUS_MELEE_DAMAGE].bonus
+			end,
+
+			---@param data table
+			[BONUS_RANGE_DAMAGE] = function(data)
+				data.stats[BONUS_RANGE_DAMAGE].value = data.stats[BONUS_RANGE_DAMAGE].bonus
+			end,
+
+			---@param data table
+			[DAMAGE_TO_CLOSE_ENEMIES] = function(data)
+				data.stats[DAMAGE_TO_CLOSE_ENEMIES].value = data.stats[DAMAGE_TO_CLOSE_ENEMIES].bonus
+			end,
+
+			---@param data table
+			[DAMAGE_TO_DISTANT_ENEMIES] = function(data)
+				data.stats[DAMAGE_TO_DISTANT_ENEMIES].value = data.stats[DAMAGE_TO_DISTANT_ENEMIES].bonus
+			end,
+
+
+			---@param data table
+			[DAMAGE_TO_CC_ENEMIES] = function(data)
+				data.stats[DAMAGE_TO_CC_ENEMIES].value = data.stats[DAMAGE_TO_CC_ENEMIES].bonus
+			end,
+
+			---@param data table
+			[DODGE_CHANCE] = function(data)
+				data.stats[DODGE_CHANCE].value = data.stats[DODGE_CHANCE].bonus
+			end,
+
+			---@param data table
+			[COOLDOWN_REDUCTION] = function(data)
+				local value = 1. - (data.stats[COOLDOWN_REDUCTION].bonus / 100.)
+				data.stats[COOLDOWN_REDUCTION].value = math.max(value, 0.)
 			end,
 		}
+
 
 
 		PARAMETER_NAME = {
@@ -756,6 +805,15 @@ do
 			[VULNERABILITY]   = LOCALE_LIST[my_locale].VULNERABILITY_PARAM,
 			[MANACOST]   = LOCALE_LIST[my_locale].MANACOST_PARAM,
 
+			[BONUS_MELEE_DAMAGE]   = LOCALE_LIST[my_locale].BONUS_MELEE_DAMAGE,
+			[BONUS_RANGE_DAMAGE]   = LOCALE_LIST[my_locale].BONUS_RANGE_DAMAGE,
+			[DAMAGE_TO_CLOSE_ENEMIES]   = LOCALE_LIST[my_locale].DAMAGE_TO_CLOSE_ENEMIES,
+			[DAMAGE_TO_DISTANT_ENEMIES]   = LOCALE_LIST[my_locale].DAMAGE_TO_DISTANT_ENEMIES,
+
+			[DAMAGE_TO_CC_ENEMIES]   = LOCALE_LIST[my_locale].DAMAGE_TO_CC_ENEMIES,
+			[DODGE_CHANCE] = LOCALE_LIST[my_locale].DODGE_CHANCE,
+
+			[COOLDOWN_REDUCTION] = LOCALE_LIST[my_locale].COOLDOWN_REDUCTION
 		}
 
 

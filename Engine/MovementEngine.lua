@@ -39,33 +39,33 @@ do
     local function GetDamageValues(weapon, effects, missile)
         local damage_table = { range = 0., damage = 0, attribute = nil, damagetype = nil, targets = 1 }
 
-        if weapon then
-            damage_table.targets = weapon.MAX_TARGETS or 1
-            damage_table.damage = weapon.DAMAGE or 0
-            damage_table.attribute = weapon.ATTRIBUTE or PHYSICAL_ATTRIBUTE
-            damage_table.damagetype = weapon.DAMAGE_TYPE or nil
+            if weapon then
+                damage_table.targets = weapon.MAX_TARGETS or 1
+                damage_table.damage = weapon.DAMAGE or 0
+                damage_table.attribute = weapon.ATTRIBUTE or PHYSICAL_ATTRIBUTE
+                damage_table.damagetype = weapon.DAMAGE_TYPE or nil
 
-            if damage_table.damagetype == DAMAGE_TYPE_PHYSICAL then damage_table.damage = weapon.bonus_phys_attack end
-            --elseif damage_table.damagetype == DAMAGE_TYPE_MAGICAL then damage_table.damage = damage_table.damage + unit_data.stats[MAGICAL_ATTACK].value end
+                if damage_table.damagetype == DAMAGE_TYPE_PHYSICAL then damage_table.damage = weapon.bonus_phys_attack end
+                --elseif damage_table.damagetype == DAMAGE_TYPE_MAGICAL then damage_table.damage = damage_table.damage + unit_data.stats[MAGICAL_ATTACK].value end
 
-            damage_table.range = weapon.damage_range or 90.
-        elseif effects then
-            damage_table.targets = effects.max_targets or 1
-            damage_table.damage = effects.power or 0
-            damage_table.damagetype = effects.damage_type or nil
+                damage_table.range = weapon.damage_range or 90.
+            elseif effects then
+                damage_table.targets = effects.max_targets or 1
+                damage_table.damage = effects.power or 0
+                damage_table.damagetype = effects.damage_type or nil
 
-            if effects.get_attack_bonus then
-                if damage_table.damagetype == DAMAGE_TYPE_PHYSICAL then damage_table.damage = damage_table.damage + weapon.bonus_phys_attack
-                elseif damage_table.damagetype == DAMAGE_TYPE_MAGICAL then damage_table.damage = damage_table.damage + weapon.bonus_mag_attack end
+                if effects.get_attack_bonus then
+                    if damage_table.damagetype == DAMAGE_TYPE_PHYSICAL then damage_table.damage = damage_table.damage + weapon.bonus_phys_attack
+                    elseif damage_table.damagetype == DAMAGE_TYPE_MAGICAL then damage_table.damage = damage_table.damage + weapon.bonus_mag_attack end
+                end
+
+                if effects.attack_percent_bonus and effects.attack_percent_bonus > 0. then
+                    damage_table.damage = damage_table.damage + (weapon.DAMAGE * effects.attack_percent_bonus)
+                end
+
+                damage_table.attribute = effects.attribute or PHYSICAL_ATTRIBUTE
+                damage_table.range = effects.area_of_effect and effects.area_of_effect or missile.radius
             end
-
-            if effects.attack_percent_bonus and effects.attack_percent_bonus > 0. then
-                damage_table.damage = damage_table.damage + (weapon.DAMAGE * effects.attack_percent_bonus)
-            end
-
-            damage_table.attribute = effects.attribute or PHYSICAL_ATTRIBUTE
-            damage_table.range = effects.area_of_effect and effects.area_of_effect or missile.radius
-        end
 
         return damage_table
     end
@@ -258,13 +258,14 @@ do
             local timer = CreateTimer()
             TimerStart(timer, PERIOD, true, function()
                --print("tick")
-                local state = HasAnyDisableState(source)
+                local state = HasAnyDisableState(source) or IsUnitRooted(source)
 
                 if IsUnitInRangeXY(source, charge_data.point_x, charge_data.point_y, 10.) or GetUnitState(source, UNIT_STATE_LIFE) < 0.045 or state or not IsPathable_Ground(GetUnitX(source) + charge_data.vx, GetUnitY(source) + charge_data.vy) then
                     --print("end")
                     SetUnitAnimation(source, "stand")
-                    if not (IsUnitStunned(source) or IsUnitFrozen(source)) then SafePauseUnit(source, false) end
+                    if not IsUnitStunned(source) and not IsUnitFrozen(source) then SafePauseUnit(source, false) end
                     OnChargeEnd(source, targets_hit, sign, state)
+                    BlzSetSpecialEffectScale(charge_data.effect, 1.)
                     DestroyEffect(charge_data.effect)
                     charge_data = nil
                     ChargeList[h] = nil
@@ -281,8 +282,9 @@ do
                                     targets_hit = targets_hit + 1
                                     max_targets = max_targets - 1
                                     if max_targets <= 0 or endcharge then
-                                        if not (IsUnitStunned(source) or IsUnitFrozen(source)) then SafePauseUnit(source, false) end
+                                        if not IsUnitStunned(source) and not IsUnitFrozen(source) then SafePauseUnit(source, false) end
                                         OnChargeEnd(source, targets_hit, sign, state)
+                                        BlzSetSpecialEffectScale(charge_data.effect, 1.)
                                         DestroyEffect(charge_data.effect)
                                         charge_data = nil
                                         ChargeList[h] = nil
@@ -294,13 +296,13 @@ do
 
                         end
 
-                    SetUnitAnimation(source, animation)
+                    if animation then SetUnitAnimation(source, animation) end
                     SetUnitX(source, RealGetUnitX(source) + charge_data.vx)
                     SetUnitY(source, RealGetUnitY(source) + charge_data.vy)
                     --charge_data.current_distance  = charge_data.current_distance + velocity
 
                 else
-                    SetUnitAnimation(source, animation)
+                    if animation then SetUnitAnimation(source, animation) end
                     SetUnitX(source, RealGetUnitX(source) + charge_data.vx)
                     SetUnitY(source, RealGetUnitY(source) + charge_data.vy)
                     --harge_data.current_distance  = charge_data.current_distance + velocity
@@ -368,7 +370,7 @@ do
             if IsMapBounds(unit_x, unit_y) or time <= 0. then
                 --print("total jump distance was "..DistanceBetweenUnitXY(target, start_x, start_y))
                 OnJumpExpire(target, sign)
-                if not (IsUnitStunned(target) or IsUnitFrozen(target)) then SafePauseUnit(target, false) end
+                if not IsUnitStunned(target) and not IsUnitFrozen(target) then SafePauseUnit(target, false) end
                 --if GetUnitAbilityLevel(target, FourCC("A01M")) > 0 then BlzPauseUnitEx(target, false) end
                 --BlzPauseUnitEx(target, false)
                 SetUnitFlyHeight(target, 0., 0.)
@@ -466,7 +468,7 @@ do
             TimerStart(push_data.timer, PERIOD, true, function()
                 if IsMapBounds(push_data.x, push_data.y) or push_data.time < 0. then
                     DestroyTimer(push_data.timer)
-                    if not (IsUnitStunned(unit_data.Owner) or IsUnitFrozen(unit_data.Owner)) then SafePauseUnit(target, false) end
+                    if not IsUnitStunned(unit_data.Owner) and not IsUnitFrozen(unit_data.Owner) then SafePauseUnit(target, false) end
                     OnPushExpire(target, push_data)
                     PushList[handle] = nil
                     --if GetUnitAbilityLevel(target, FourCC("A01M")) > 0 then BlzPauseUnitEx(target, false) end
@@ -500,7 +502,68 @@ do
     end
 
 
+    ---@param source unit
+    ---@param angle real
+    ---@param power real
+    ---@param time real
+    function NudgeUnit(source, angle, power, time)
+        local handle = source
+        local unit_data = GetUnitData(source)
+        local push_data = { x = RealGetUnitX(source), y = RealGetUnitY(source), vx = 0., vy = 0. }
 
+            if power <= 5. then
+                push_data = nil
+                return
+            end
+
+            power = power * 2.
+
+            push_data.source = source
+            push_data.power = power
+            local endpoint_x = push_data.x + (power * math.cos(angle * bj_DEGTORAD))
+            local endpoint_y = push_data.y + (power * math.sin(angle * bj_DEGTORAD))
+            local speed = power / time
+            push_data.time = time
+
+
+            local total_time = time
+            local penalty = 0.0007
+            local multiplicator = 1.03
+
+            local velocity = (speed * PERIOD) / power
+            push_data.vx = (endpoint_x - push_data.x) * velocity
+            push_data.vy = (endpoint_y - push_data.y) * velocity
+
+
+                TimerStart(unit_data.nudge_timer, PERIOD, true, function()
+                    if IsMapBounds(push_data.x, push_data.y) or push_data.time < 0. then
+                        DestroyTimer(unit_data.nudge_timer)
+                        unit_data.nudge_timer = nil
+                    else
+                        SetUnitPositionSmooth(source, push_data.x + push_data.vx, push_data.y + push_data.vy)
+                        local faderate = 0.1 + (push_data.time / total_time) - penalty
+
+                        penalty = penalty * multiplicator
+                        multiplicator = multiplicator + 0.01
+
+                        if faderate < 0.01 then
+                            faderate = 0.01
+                            push_data.time = 0.
+                        end
+
+                        if penalty < 0. then penalty = 0. end
+
+                        push_data.power = push_data.power * faderate
+                        push_data.vx = push_data.vx * faderate
+                        push_data.vy = push_data.vy * faderate
+                        push_data.x = RealGetUnitX(source)
+                        push_data.y = RealGetUnitY(source)
+
+                        push_data.time = push_data.time - PERIOD
+                    end
+                end)
+
+    end
 
 
 
@@ -835,6 +898,10 @@ do
 
             local start_angle = m.geo_arc
 
+            if effects and effects.geo_arc_side then
+                start_angle = m.geo_arc * effects.geo_arc_side
+            end
+
             if m.geo_arc_randomize_angle then
                 if GetRandomInt(1, 2) == 1 then
                     start_angle = m.geo_arc * -1.
@@ -860,10 +927,7 @@ do
         local targets = m.max_targets or 1
         --print("aaaaaaa")
 
-
-        local tag
-
-        if effects and effects.tags then tag = effects.tags end
+        local ability_instance = effects and effects.ability_instance or nil
 
         MissileList[#MissileList+1] = m
 
@@ -879,7 +943,7 @@ do
                     end
                     --if effects and effects.effect then ApplyEffect(from, nil, m.current_x, m.current_y, effects.effect, effects.level) end
                     if m.effect_on_expire then
-                        ApplyEffect(from, nil, m.current_x, m.current_y, m.effect_on_expire, 1, tag)
+                        ApplyEffect(from, nil, m.current_x, m.current_y, m.effect_on_expire, 1, ability_instance)
                     end
 
                     --print(DistanceBetweenXY(m.current_x, m.current_y, start_x, start_y))
@@ -1024,7 +1088,9 @@ do
                                 local group = CreateGroup()
                                 local player_entity = GetOwningPlayer(from)
                                 local damage_list = GetDamageValues(weapon, effects, m)
+                                local attack_effect = GetRandomInt(1, 100) <= GetCriticalChance(from, 0.) and { critical_strike_flag = true } or nil
                                 GroupEnumUnitsInRange(group, m.current_x, m.current_y, damage_list.range, nil)
+
 
                                     for index = BlzGroupGetSize(group) - 1, 0, -1 do
                                         local picked = BlzGroupUnitAt(group, index)
@@ -1034,7 +1100,7 @@ do
                                             if (m.angle_window and IsPointInAngleWindow(angle, m.angle_window, m.current_x, m.current_y, GetUnitX(picked), GetUnitY(picked))) or not m.angle_window then
 
                                                 ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
-                                                DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
+                                                DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, attack_effect)
                                                 OnMissileHit(from, picked, m)
 
                                                 damage_list.targets = damage_list.targets - 1
@@ -1050,8 +1116,8 @@ do
                                 damage_list = nil
                             else
 
-                                if m.effect_on_impact then ApplyEffect(from, nil, m.current_x, m.current_y, m.effect_on_impact, 1, tag) end
-                                if effects and effects.effect then ApplyEffect(from, nil, m.current_x, m.current_y, effects.effect, effects.level, tag) end
+                                if m.effect_on_impact then ApplyEffect(from, nil, m.current_x, m.current_y, m.effect_on_impact, 1, ability_instance) end
+                                if effects and effects.effect then ApplyEffect(from, nil, m.current_x, m.current_y, effects.effect, effects.level, ability_instance) end
 
                             end
 
@@ -1071,8 +1137,9 @@ do
 
                             if weapon then
 
+                                local attack_effect = GetRandomInt(1, 100) <= GetCriticalChance(from, 0.) and { critical_strike_flag = true } or nil
                                 local damage_list = GetDamageValues(weapon, effects, m)
-                                DamageUnit(from, m.target, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
+                                DamageUnit(from, m.target, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, attack_effect)
                                 OnMissileHit(from, m.target, m)
 
                                     if damage_list.targets > 1 or damage_list.range > 0 then
@@ -1088,7 +1155,7 @@ do
 
                                                     if (m.angle_window and IsPointInAngleWindow(angle, m.angle_window, m.current_x, m.current_y, GetUnitX(picked), GetUnitY(picked))) or not m.angle_window then
                                                         ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
-                                                        DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
+                                                        DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, attack_effect)
                                                         OnMissileHit(from, picked, m)
 
                                                         damage_list.targets = damage_list.targets - 1
@@ -1106,8 +1173,8 @@ do
                                 damage_list = nil
                             else
 
-                                if m.effect_on_hit then ApplyEffect(from, m.target, m.current_x, m.current_y, m.effect_on_hit, 1, tag) end
-                                if effects and effects.effect then ApplyEffect(from, m.target, m.current_x, m.current_y, effects.effect, effects.level, tag) end
+                                if m.effect_on_hit then ApplyEffect(from, m.target, m.current_x, m.current_y, m.effect_on_hit, 1, ability_instance) end
+                                if effects and effects.effect then ApplyEffect(from, m.target, m.current_x, m.current_y, effects.effect, effects.level, ability_instance) end
 
                                 OnMissileHit(from, m.target, m)
                             end
@@ -1131,6 +1198,9 @@ do
                                 local do_sound = true
 
                                 --print("MISSILE HIT")
+                                local damage_list
+                                if weapon then damage_list = GetDamageValues(weapon, effects, m) end
+                                local attack_effect = GetRandomInt(1, 100) <= GetCriticalChance(from, 0.) and { critical_strike_flag = true } or nil
 
                                 for index = BlzGroupGetSize(group) - 1, 0, -1 do
                                     local picked = BlzGroupUnitAt(group, index)
@@ -1147,9 +1217,9 @@ do
                                         ApplySpecialEffectTarget(m.effect_on_target, picked, m.effect_on_target_point, m.effect_on_target_scale)
 
                                         if weapon then
-                                            local damage_list = GetDamageValues(weapon, effects, m)
+                                            --local damage_list = GetDamageValues(weapon, effects, m)
                                             --print("do damage from a weapon "  .. GetUnitName(from))
-                                            DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, nil)
+                                            DamageUnit(from, picked, damage_list.damage, damage_list.attribute, damage_list.damagetype, RANGE_ATTACK, true, true, false, attack_effect)
                                             --print("do damage from a  - ok")
                                             damage_list.targets = damage_list.targets - 1
 
@@ -1161,8 +1231,8 @@ do
                                         end
 
 
-                                        if effects and effects.effect then ApplyEffect(from, picked, m.current_x, m.current_y, effects.effect, effects.level, tag) end
-                                        if m.effect_on_hit then ApplyEffect(from, picked, m.current_x, m.current_y, m.effect_on_hit, 1, tag) end
+                                        if effects and effects.effect then ApplyEffect(from, picked, m.current_x, m.current_y, effects.effect, effects.level, ability_instance) end
+                                        if m.effect_on_hit then ApplyEffect(from, picked, m.current_x, m.current_y, m.effect_on_hit, 1, ability_instance) end
 
                                         OnMissileHit(from, picked, m)
 

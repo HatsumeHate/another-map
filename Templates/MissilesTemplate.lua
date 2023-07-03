@@ -133,7 +133,7 @@ do
             model = "Spell\\LightningSpark.mdx",
             max_distance = 800.,
             radius = 65.,
-            speed = 275.,
+            speed = 325.,
             start_z = 15.,
             end_z = 15.,
             arc = 0.,
@@ -155,10 +155,14 @@ do
             model = "Abilities\\Weapons\\FireBallMissile\\FireBallMissile.mdx",
             max_distance = 750.,
             radius = 60.,
-            speed = 970.,
-            start_z = 50.,
-            end_z = 50.,
-            arc = 0.05,
+            speed = 1050.,
+            start_z = 90.,
+            sound_on_launch = {
+                pack = { "Sounds\\Missiles\\Hydra_Shoot_1.wav", "Sounds\\Missiles\\Hydra_Shoot_2.wav", "Sounds\\Missiles\\Hydra_Shoot_3.wav" },
+                volume = 128,
+                cutoff = 1700.,
+            },
+            end_z = 90.,
             scale = 1.,
             ignore_terrain = true,
             penetrate = false,
@@ -600,7 +604,8 @@ do
             arc = 0.35,
             scale = 1.,
             only_on_impact = true,
-            ignore_terrain = false
+            ignore_terrain = false,
+            can_enum = false
         })
         --==============================================--
         NewMissileTemplate('MSCN', {
@@ -642,13 +647,17 @@ do
             model = "Spell\\Blizzard II Missile.mdx",
             max_distance = 1000.,
             radius = 70.,
-            speed = 900.,
-            start_z = 75.,
-            end_z = 75.,
+            speed = 1200.,
+            start_z = 95.,
+            end_z = 95.,
             arc = 0.,
             scale = 0.75,
             effect_on_hit = 'EFRB',
-            --sound_on_launch = { "Sounds\\Spells\\frosbolt_launch_1.wav", "Sounds\\Spells\\frosbolt_launch_2.wav" },
+            sound_on_fly = {
+                pack = { "Sounds\\Spells\\FrostBolt_Loop_1.wav", "Sounds\\Spells\\FrostBolt_Loop_2.wav" },
+                volume = 120,
+                cutoff = 1700.
+            },
             sound_on_launch = {
                 pack = { "Sounds\\Spells\\frosbolt_launch_1.wav", "Sounds\\Spells\\frosbolt_launch_2.wav" },
                 volume = 125,
@@ -661,21 +670,21 @@ do
         })
         NewMissileTemplate('MGFB', {
             name = "firebolt missile",
-            model = "Spell\\Fireball Medium.mdx",
+            model = "Spell\\Firebolt Classic.mdx",
             max_distance = 1000.,
             radius = 100.,
-            speed = 825.,
-            start_z = 75.,
-            end_z = 75.,
+            speed = 1300.,
+            start_z = 95.,
+            end_z = 95.,
             arc = 0.,
             --geo_arc = 45.,
             --geo_arc_length = 200.,
             --geo_arc_randomize_angle = true,
-            scale = 0.8,
+            scale = 1.1,
             effect_on_hit = 'EGFB',
             sound_on_fly = {
-                pack = { "Sounds\\Spells\\fire_launch_1.wav", "Sounds\\Spells\\fire_launch_2.wav", "Sounds\\Spells\\fire_launch_3.wav" },
-                volume = 100,
+                pack = { "Sounds\\Spells\\Fireball_Loop_1.wav", "Sounds\\Spells\\Fireball_Loop_2.wav" },
+                volume = 128,
                 cutoff = 1700.
             },
             ignore_terrain = true,
@@ -775,7 +784,7 @@ do
             model = "Spell\\LightningSpark.mdx",
             max_distance = 800.,
             radius = 65.,
-            speed = 400.,
+            speed = 500.,
             start_z = 15.,
             end_z = 15.,
             arc = 0.,
@@ -793,7 +802,7 @@ do
         --===============================================--
         NewMissileTemplate('MBLB', {
             name = "lightning orb missile",
-            model = "Spell\\AZ_DD021.mdx",--"Spell\\LightningSphere_FX.mdx",
+            model = "Spell\\AZ_DD021.mdx",
             max_distance = 800.,
             radius = 400.,
             speed = 165.,
@@ -803,6 +812,11 @@ do
             scale = 0.65,
             hit_once_in = 0.7,
             effect_on_hit = 'ELBL',
+            sound_on_hit = {
+                pack = { "Sounds\\Spells\\CracklingEnergy_Cast_Arc_1.wav", "Sounds\\Spells\\CracklingEnergy_Cast_Arc_2.wav", "Sounds\\Spells\\CracklingEnergy_Cast_Arc_3.wav", "Sounds\\Spells\\CracklingEnergy_Cast_Arc_4.wav" },
+                volume = 135,
+                cutoff = 1600.,
+            },
             sound_on_fly = {
                 pack = { "Sounds\\Spells\\lightning_loop_1.wav", "Sounds\\Spells\\lightning_loop_3.wav", "Sounds\\Spells\\lightning_loop_4.wav"},
                 volume = 100,
@@ -903,10 +917,15 @@ do
                 volume = 123,
                 cutoff = 1600.,
             },
+            sound_on_fly = {
+                pack = { "Sounds\\Spells\\Bone_Spear_Travel_1.wav", "Sounds\\Spells\\Bone_Spear_Travel_2.wav", "Sounds\\Spells\\Bone_Spear_Travel_3.wav", },
+                volume = 150,
+                cutoff = 1600.
+            },
             radius = 75.,
-            speed = 900.,
-            start_z = 80.,
-            end_z = 80.,
+            speed = 1000.,
+            start_z = 95.,
+            end_z = 95.,
             arc = 0.,
             max_targets = 1,
             hit_once_in = 3.,
@@ -939,9 +958,9 @@ do
             max_distance = 1000.,
             effect_on_hit = 'ENTS',
             radius = 75.,
-            speed = 700.,
-            start_z = 80.,
-            end_z = 80.,
+            speed = 800.,
+            start_z = 85.,
+            end_z = 85.,
             arc = 0.,
             max_targets = 1,
             hit_once_in = 3.,
@@ -963,7 +982,7 @@ do
             },
             sound_on_launch = {
                 pack = { "Sounds\\Spells\\devour_1.wav", "Sounds\\Spells\\devour_2.wav", "Sounds\\Spells\\devour_3.wav", "Sounds\\Spells\\devour_4.wav", "Sounds\\Spells\\devour_5.wav" },
-                volume = 125,
+                volume = 135,
                 cutoff = 1600.,
             },
             radius = 75.,
@@ -1016,14 +1035,19 @@ do
             max_distance = 1000.,
             effect_on_hit = 'ENWS',
             sound_on_destroy = {
-                pack = { "Abilities\\Undead\\Possession\\PossessionMissileLaunch1.flac" },
-                volume = 124,
+                pack = { "Sounds\\Spells\\Bone_Spirit_Imp_1.wav", "Sounds\\Spells\\Bone_Spirit_Imp_2.wav", "Sounds\\Spells\\Bone_Spirit_Imp_3.wav" },
+                volume = 95,
                 cutoff = 1600.,
             },
             radius = 75.,
-            speed = 550.,
+            speed = 500.,
             start_z = 80.,
             end_z = 80.,
+            sound_on_fly = {
+                pack = { "Sounds\\Spells\\Bone_Spirit_Travel_Loop_1.wav", "Sounds\\Spells\\Bone_Spirit_Travel_Loop_2.wav" },
+                volume = 145,
+                cutoff = 1600.
+            },
             arc = 0.,
             geo_arc = 50,
             geo_arc_length = 225.,
@@ -1033,6 +1057,105 @@ do
             full_distance = true,
             can_enum = true
         })
+
+        NewMissileTemplate('shuriken_missile', {
+            name = "shuriken missile",
+            model = "Effect\\Shuriken.mdx",
+            max_distance = 1000.,
+            radius = 70.,
+            speed = 1000.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.,
+            scale = 0.6,
+            effect_on_hit = 'effect_shuriken',
+            max_targets = 1,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+
+        NewMissileTemplate('dancingblade_missile', {
+            name = "dancing blade missile",
+            model = "Abilities\\Weapons\\SentinelMissile\\SentinelMissile.mdx",
+            max_distance = 1000.,
+            radius = 80.,
+            speed = 500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.,
+            scale = 1.,
+            geo_arc = 45,
+            geo_arc_length = 275.,
+            geo_arc_randomize_angle = false,
+            effect_on_hit = 'effect_dancing_blade',
+            max_targets = 3000,
+            hit_once_in = 3.,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            trackable = false
+        })
+
+        NewMissileTemplate('incendiary_grenade_missile', {
+            name = "incendiary grenade missile",
+            model = "Missile\\Molotov Coctail(ByPrinceOFFame).mdx",
+            max_distance = 500.,
+            radius = 80.,
+            speed = 900.,
+            start_z = 60.,
+            end_z = 0.,
+            arc = 0.5,
+            scale = 1.,
+            --effect_on_target = 'incendiary_grenade_effect',
+            effect_on_expire = 'incendiary_grenade_effect',
+            max_targets = 1,
+            ignore_terrain = false,
+            full_distance = false,
+            penetrate = false,
+            trackable = false
+        })
+
+        NewMissileTemplate('smoke_bomb_missile', {
+            name = "smoke bomb missile",
+            model = "Abilities\\Spells\\Other\\StrongDrink\\BrewmasterMissile.mdx",
+            max_distance = 800.,
+            radius = 80.,
+            speed = 900.,
+            start_z = 60.,
+            end_z = 0.,
+            arc = 0.5,
+            scale = 1.,
+            --effect_on_target = 'incendiary_grenade_effect',
+            effect_on_expire = 'smoke_bomb_effect',
+            max_targets = 1,
+            ignore_terrain = false,
+            full_distance = false,
+            penetrate = false,
+            trackable = false
+        })
+
+        NewMissileTemplate('rocket_missile', {
+            name = "rocket missile",
+            model = "Missile\\Rocket.mdx",
+            max_distance = 1000.,
+            radius = 80.,
+            speed = 1200.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.,
+            scale = 1.,
+            --effect_on_hit = 'effect_rocket',
+            effect_on_expire = 'effect_rocket',
+            max_targets = 1,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --
+
         --==============================================--
         NewMissileTemplate('void_rain_missile', {
             name = "void rain",
@@ -1045,7 +1168,7 @@ do
             arc = 0.,
             effect_on_expire = "EVDR",
             can_enum = false,
-            ignore_terrain = true,
+            ignore_terrain = false,
             --penetrate = false,
             only_on_impact = true
         })
@@ -1134,6 +1257,32 @@ do
             ignore_terrain = true,
             full_distance = true,
             penetrate = true,
+        })
+        --==============================================--
+        NewMissileTemplate('flying_rune', {
+            name = "rune missile",
+            model = "Objects\\InventoryItems\\runicobject\\runicobject.mdx",
+            speed = 725.,
+            start_z = 85.,
+            end_z = 0.,
+            arc = 0.4,
+            scale = 1.,
+            only_on_impact = true,
+            ignore_terrain = false,
+            can_enum = false
+        })
+        --==============================================--
+        NewMissileTemplate('flying_rune_mp', {
+            name = "rune missile",
+            model = "Objects\\InventoryItems\\runicobject\\runicobject.mdx",
+            speed = 725.,
+            start_z = 85.,
+            end_z = 0.,
+            arc = 0.4,
+            scale = 1.,
+            only_on_impact = true,
+            ignore_terrain = false,
+            can_enum = false
         })
     end
 

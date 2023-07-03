@@ -19,29 +19,8 @@ do
     TELEPORT_PANEL = 5
     TALENT_PANEL = 6
     JOURNAL_PANEL = 7
+    GLOBAL_TOOLTIP_FADE_TIME = 0.33
 
---[[
-    NewFrame("war3mapImported\\aganim_sprite.mdx", 0.12, 0.4, -0.0052, -0.0048, 0.8)
-    NewFrame("war3mapImported\\blizzard_sprite.mdx", 0.18, 0.4, 0., 0., 0.68)
-    NewFrame("war3mapImported\\violet_border_sprite.mdx", 0.24, 0.4, -0.0052, -0.0048, 0.8)
-    NewFrame("war3mapImported\\blue_energy_sprite.mdx", 0.30, 0.4, -0.0052, -0.0048, 0.8)
-    NewFrame("war3mapImported\\crystallid_sprite.mdx", 0.36, 0.4, -0.0052, -0.0048, 0.8)
-    NewFrame("war3mapImported\\cyber_call_sprite.mdx", 0.42, 0.4, -0.0052, -0.0048, 0.8)
-    NewFrame("war3mapImported\\damned_sprite.mdx", 0.48, 0.4, -0.0052, -0.0048, 0.8)
-    NewFrame("war3mapImported\\exploder_sprite.mdx", 0.54, 0.4, -0.0052, -0.0048, 0.8)
-    NewFrame("war3mapImported\\flame_border_sprite.mdx", 0.60, 0.4, -0.0044, -0.001, 0.8)
-    NewFrame("war3mapImported\\frozen_sprite.mdx", 0.66, 0.4, -0.0052, -0.0048, 0.8)
-    NewFrame("war3mapImported\\gold_sprite.mdx", 0.72, 0.4, 0., 0., 0.68)
-    NewFrame("war3mapImported\\hearts_sprite.mdx", 0.12, 0.3, 0., 0., 0.68)
-    NewFrame("war3mapImported\\holylight_sprite.mdx", 0.18, 0.3, -0.0052, -0.0048, 0.8)
-    NewFrame("war3mapImported\\inner_fire_and_smoke_sprite.mdx", 0.242, 0.3, 0., 0., 0.68)
-    NewFrame("war3mapImported\\inner_flame_border_sprite.mdx", 0.30, 0.3, 0., 0., 0.68)
-    NewFrame("war3mapImported\\necrotic_circle_sprite.mdx", 0.36, 0.3, -0.004, -0.004, 0.8)
-    NewFrame("war3mapImported\\neon_sprite.mdx", 0.42, 0.3, -0.0052, -0.0048, 0.8)
-    NewFrame("war3mapImported\\smoke_sprite.mdx", 0.48, 0.3, 0., 0., 0.68)
-    NewFrame("war3mapImported\\undead_circle_sprite.mdx", 0.54, 0.3, -0.004, -0.004, 0.8)
-    NewFrame("war3mapImported\\vampirism_sprite.mdx", 0.60, 0.3, -0.0052, -0.0052, 0.8)
-]]
 
 
     function ReloadUI()
@@ -107,6 +86,34 @@ do
                 CreateTooltip(GetLocalString("Настройки", "Settings"), GetLocalString("Пока что отключено.", "Not yet implemented."), GlobalButton[i].settings_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
                 CreateSimpleChargesText(GlobalButton[i].settings_panel_button, "P", 0.9, 0.9)
                 BlzFrameSetVisible(GlobalButton[i].settings_panel_button, false)
+
+                GlobalButton[i].dash_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNEvasion.blp", 0.026, 0.026, GlobalButton[i].talents_panel_button, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.05, GAME_UI)
+                BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].dash_button, FRAMEEVENT_CONTROL_CLICK)
+                CreateTooltip(GetLocalString("Рывок", "Dash"), GetLocalString("Нажмите [SPACE] что бы сделать рывок. Кликните что бы сменить режим: на курсор/по направлению взгляда героя",
+                    "Press [SPACEBAR] to dash. Click to change mode: to the cursor/to the hero facing"), GlobalButton[i].dash_button, 0.14, 0.08, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
+                local new_FrameText = BlzCreateFrameByType("TEXT", "hotkeytext", GlobalButton[i].dash_button, "", 0)
+                BlzFrameSetPoint(new_FrameText, FRAMEPOINT_BOTTOM, GlobalButton[i].dash_button, FRAMEPOINT_BOTTOM, 0., 0.005)
+                BlzFrameSetTextAlignment(new_FrameText, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_CENTER)
+                BlzFrameSetText(new_FrameText, "space")
+                BlzFrameSetScale(new_FrameText, 0.65)
+                BlzFrameSetVisible(GlobalButton[i].dash_button, false)
+
+                GlobalButton[i].dash_button_cooldown = BlzCreateFrameByType("STATUSBAR", "dash_button_cooldown", GlobalButton[i].dash_button, "", 0)
+                BlzFrameSetSize(GlobalButton[i].dash_button_cooldown, 0.000001, 0.000001)
+                BlzFrameSetScale(GlobalButton[i].dash_button_cooldown, 0.65)
+                BlzFrameSetPoint(GlobalButton[i].dash_button_cooldown, FRAMEPOINT_BOTTOMLEFT, GlobalButton[i].dash_button, FRAMEPOINT_BOTTOMLEFT, 0., 0.)
+                BlzFrameSetModel(GlobalButton[i].dash_button_cooldown, "ui\\feedback\\cooldown\\ui-cooldown-indicator.mdx", 0)
+                BlzFrameSetValue(GlobalButton[i].dash_button_cooldown, 0)
+                BlzFrameSetVisible(GlobalButton[i].dash_button_cooldown, false)
+
+                --[[
+                GlobalButton[i].switch_button = CreateSimpleButton("UI\\BTN_CR_WeaponSwitch.blp", 0.026, 0.026, GlobalButton[i].settings_panel_button, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, -0.02, 0.03, GAME_UI)
+                BlzFrameSetEnable(GlobalButton[i].switch_button, false)
+                --BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].dash_button, FRAMEEVENT_CONTROL_CLICK)
+                CreateTooltip(GetLocalString("Смена оружия", "Weapon Switch"), GetLocalString("Быстро меняет оружие", "Quickly switches weapons"), GlobalButton[i].switch_button, 0.14, 0.08, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
+                CreateSimpleChargesText(GlobalButton[i].switch_button, "V", 0.7, 0.7)
+                BlzFrameSetVisible(GlobalButton[i].switch_button, false)
+                ]]
             end
 
             --print("0")
@@ -159,34 +166,34 @@ do
         TriggerRegisterUnitEvent(LevelUpFrameTrigger, hero, EVENT_UNIT_HERO_LEVEL)
 
         local first_timer = CreateTimer()
-        TimerStart(first_timer, 0.5, false, function()
+        TimerStart(first_timer, 0.1, false, function()
             DrawStatsPanelInterface(player_id)
             AddToPanel(hero, player_id)
         end)
 
         local second_timer = CreateTimer()
-        TimerStart(second_timer, 1., false, function()
+        TimerStart(second_timer, 0.5, false, function()
             DrawInventoryFrames(player_id, hero)
         end)
 
-        DelayAction(1.5, function()
+        DelayAction(0.75, function()
             AddTalentCategories(hero, player_id)
             CreateJournal(player_id)
         end)
 
         local third_timer = CreateTimer()
-        TimerStart(third_timer, 2., false, function()
+        TimerStart(third_timer, 1., false, function()
             DrawSkillPanel(player_id)
         end)
 
         local forth_timer = CreateTimer()
-        TimerStart(forth_timer, 2.5, false, function()
+        TimerStart(forth_timer, 1.25, false, function()
             RegisterUnitForTeleport(hero)
             CreateBarsForPlayer(player_id)
         end)
 
         local fifth_timer = CreateTimer()
-        TimerStart(fifth_timer, 3., false, function()
+        TimerStart(fifth_timer, 1.5, false, function()
             DrawShopFrames(player_id)
         end)
 
@@ -196,6 +203,7 @@ do
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_N, 0, true)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_J, 0, true)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_ESCAPE, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_SPACE, 0, true)
         GlobalFrameState[player_id] = false
 
     end
@@ -208,6 +216,8 @@ do
         BlzFrameSetVisible(GlobalButton[player_id].talents_panel_button, true)
         BlzFrameSetVisible(GlobalButton[player_id].journal_panel_button, true)
         BlzFrameSetVisible(GlobalButton[player_id].settings_panel_button, true)
+        BlzFrameSetVisible(GlobalButton[player_id].dash_button, true)
+        --BlzFrameSetVisible(GlobalButton[player_id].switch_button, true)
         if GetLocalPlayer() ~= Player(player_id - 1) then
             BlzFrameSetVisible(GlobalButton[player_id].char_panel_button, false)
             BlzFrameSetVisible(GlobalButton[player_id].inventory_panel_button, false)
@@ -215,6 +225,8 @@ do
             BlzFrameSetVisible(GlobalButton[player_id].talents_panel_button, false)
             BlzFrameSetVisible(GlobalButton[player_id].journal_panel_button, false)
             BlzFrameSetVisible(GlobalButton[player_id].settings_panel_button, false)
+            BlzFrameSetVisible(GlobalButton[player_id].dash_button, false)
+            --BlzFrameSetVisible(GlobalButton[player_id].switch_button, false)
         end
     end
 
@@ -437,6 +449,37 @@ do
             CreateSimpleChargesText(GlobalButton[i].settings_panel_button, "P", 0.9, 0.9)
             BlzFrameSetVisible(GlobalButton[i].settings_panel_button, false)
 
+            GlobalButton[i].dash_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNEvasion.blp", 0.026, 0.026, GlobalButton[i].talents_panel_button, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.05, GAME_UI)
+            BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].dash_button, FRAMEEVENT_CONTROL_CLICK)
+            CreateTooltip(GetLocalString("Рывок", "Dash"), GetLocalString("Нажмите [SPACE] что бы сделать рывок. Кликните что бы сменить режим: на курсор/по направлению взгляда героя",
+                    "Press [SPACEBAR] to dash. Click to change mode: to the cursor/to the hero facing"), GlobalButton[i].dash_button, 0.14, 0.08, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
+            --CreateSimpleChargesText(GlobalButton[i].dash_button, "space", 0.9, 0.9)
+            local new_FrameText = BlzCreateFrameByType("TEXT", "hotkeytext", GlobalButton[i].dash_button, "", 0)
+            --BlzFrameSetAllPoints(new_FrameText, GlobalButton[i].dash_button)
+            BlzFrameSetPoint(new_FrameText, FRAMEPOINT_BOTTOM, GlobalButton[i].dash_button, FRAMEPOINT_BOTTOM, 0., 0.005)
+            --BlzFrameSetSize(new_FrameText, 0.00001, 0.00001)
+            BlzFrameSetTextAlignment(new_FrameText, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_CENTER)
+            BlzFrameSetText(new_FrameText, "space")
+            BlzFrameSetScale(new_FrameText, 0.65)
+            BlzFrameSetVisible(GlobalButton[i].dash_button, false)
+
+            GlobalButton[i].dash_button_cooldown = BlzCreateFrameByType("STATUSBAR", "dash_button_cooldown", GlobalButton[i].dash_button, "", 0)
+            BlzFrameSetSize(GlobalButton[i].dash_button_cooldown, 0.000001, 0.000001)
+            BlzFrameSetScale(GlobalButton[i].dash_button_cooldown, 0.65)
+            BlzFrameSetPoint(GlobalButton[i].dash_button_cooldown, FRAMEPOINT_BOTTOMLEFT, GlobalButton[i].dash_button, FRAMEPOINT_BOTTOMLEFT, 0., 0.)
+            BlzFrameSetModel(GlobalButton[i].dash_button_cooldown, "ui\\feedback\\cooldown\\ui-cooldown-indicator.mdx", 0)
+            BlzFrameSetValue(GlobalButton[i].dash_button_cooldown, 0)
+            BlzFrameSetVisible(GlobalButton[i].dash_button_cooldown, false)
+
+            --[[
+            GlobalButton[i].switch_button = CreateSimpleButton("UI\\BTN_CR_WeaponSwitch.blp", 0.026, 0.026, GlobalButton[i].settings_panel_button, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, -0.02, 0.03, GAME_UI)
+            BlzFrameSetEnable(GlobalButton[i].switch_button, false)
+            --BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].dash_button, FRAMEEVENT_CONTROL_CLICK)
+            CreateTooltip(GetLocalString("Смена оружия", "Weapon Switch"), GetLocalString("Быстро меняет оружие", "Quickly switches weapons"), GlobalButton[i].switch_button, 0.14, 0.08, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
+            CreateSimpleChargesText(GlobalButton[i].switch_button, "V", 0.7, 0.7)
+            BlzFrameSetVisible(GlobalButton[i].switch_button, false)
+]]
+
         end
 
         TriggerAddAction(GUIManagerHotkeyTrigger, function()
@@ -470,6 +513,10 @@ do
                         SetUIState(player, ui_type, false)
                         RemoveUIFromQueue(player, ui_type)
                     end
+                elseif key == OSKEY_SPACE then
+                    DashPlayerHero(player)
+                --elseif key == OSKEY_V then
+                    --SwitchHeroWeapon(player)
                 end
 
         end)
@@ -501,6 +548,9 @@ do
                         panel_type = JOURNAL_PANEL
                         SetUIState(player, JOURNAL_PANEL, not FrameState[i][JOURNAL_PANEL])
                         break
+                    elseif frame == GlobalButton[i].dash_button then
+                        SwitchPlayerDashMode(player)
+                        break
                     end
                 end
 
@@ -513,6 +563,16 @@ do
         TriggerRegisterGameEvent(LoadTrigger, EVENT_GAME_LOADED)
         TriggerAddAction(LoadTrigger, ReloadUI)
 
+        local SaveTrigger = CreateTrigger()
+        TriggerRegisterGameEvent(SaveTrigger, EVENT_GAME_SAVE)
+        TriggerAddAction(SaveTrigger, function()
+            for player = 1, 6 do
+                if PlayerProjection[player] then
+                    DestroyVisual(PlayerProjection[player])
+                    PlayerProjection[player] = nil
+                end
+            end
+        end)
     end
 
 end

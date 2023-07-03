@@ -1,33 +1,72 @@
 do
 
 
-
     function SummonHydra(hero, x, y)
         local unit_data = GetUnitData(hero)
         local ability_level = UnitGetAbilityLevel(hero, "A00I")
+        local level = 1 + math.floor(ability_level / 15)
 
-                if unit_data.spawned_hydra then
-                    KillUnit(unit_data.spawned_hydra)
-                end
 
+            if unit_data.spawned_hydra then KillUnit(unit_data.spawned_hydra) end
             unit_data.spawned_hydra = CreateUnit(GetOwningPlayer(hero), FourCC('shdr'), x, y, GetRandomReal(0.,359.))
+
+
+            if level > 1 then
+                AddUnitAnimationProperties(unit_data.spawned_hydra, "upgrade", true)
+                AddSpecialEffectTargetEx("Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeDamageTarget.mdx", unit_data.spawned_hydra, "overhead rear", 1.)
+            end
+
+            if level == 2 then
+                AddUnitAnimationProperties(unit_data.spawned_hydra, "first", true)
+                AddSpecialEffectTargetEx("Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeDamageTarget.mdx", unit_data.spawned_hydra, "overhead right", 1.)
+            elseif level >= 3 then
+                AddUnitAnimationProperties(unit_data.spawned_hydra, "second", true)
+                AddSpecialEffectTargetEx("Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeDamageTarget.mdx", unit_data.spawned_hydra, "overhead right", 1.)
+                AddSpecialEffectTargetEx("Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeDamageTarget.mdx", unit_data.spawned_hydra, "overhead left", 1.)
+            end
+
             UnitApplyTimedLife(unit_data.spawned_hydra, 0, 6.75 + (ability_level * 0.25))
+
+
+            local center_fire_sfx = AddSpecialEffect("Doodads\\Cinematic\\FireTrapUp\\FireTrapUp.mdx", x, y)
+            BlzPlaySpecialEffectWithTimeScale(center_fire_sfx, ANIM_TYPE_STAND, 1.5)
+            DelayAction(0.5, function() DestroyEffect(center_fire_sfx) end)
+
+            local circle_sfx = {}
+            local parts = 6
+            local shift = 360. / parts
+            local starting_angle = GetRandomReal(0., 359.)
+
+            DelayAction(0.15, function()
+                for i = 1, parts do
+                    starting_angle = starting_angle + shift
+                    circle_sfx[#circle_sfx+1] = AddSpecialEffect("Doodads\\Cinematic\\FireTrapUp\\FireTrapUp.mdx", x + Rx(65., starting_angle), y + Ry(65., starting_angle))
+                    BlzPlaySpecialEffectWithTimeScale(circle_sfx[#circle_sfx], ANIM_TYPE_STAND, 1.5)
+                end
+                DelayAction(0.5, function()
+                    for i = 1, parts do DestroyEffect(circle_sfx[i]) end
+                    circle_sfx = nil
+                end)
+            end)
+
+
 
             local percent = 0.7
 
+                if unit_data.boost_overflow then
+                    percent = percent + 0.3 * GetUnitTalentLevel(hero, "talent_overflow")
+                    unit_data.boost_overflow = nil
+                end
 
-        if unit_data.boost_overflow then
-            percent = percent + 0.3 * GetUnitTalentLevel(hero, "talent_overflow")
-            unit_data.boost_overflow = nil
-        end
+                if unit_data.heating_up_boost then percent = percent + 0.4 end
 
-        if unit_data.heating_up_boost then
-            percent = percent + 0.4
-        end
+            AddSoundVolume("Sounds\\Spells\\Hydra_Roar_" .. GetRandomInt(1,3).. ".wav", x, y, 300, 1600.)
+
 
             DelayAction(0., function()
                 local hydra = GetUnitData(unit_data.spawned_hydra)
 
+                    hydra.powerlevel = level
                     hydra.stats[PHYSICAL_ATTACK].value = unit_data.stats[PHYSICAL_ATTACK].value * percent
                     hydra.stats[MAGICAL_ATTACK].value = unit_data.stats[MAGICAL_ATTACK].value * percent
                     hydra.stats[CRIT_CHANCE].value = unit_data.stats[CRIT_CHANCE].value * percent
@@ -169,17 +208,15 @@ do
         return victim
     end
 
-    function ChainLightningCast(source, target)
+    function ChainLightningCast(source, target, ability_instance)
         local from = source
         local unit_data = GetUnitData(source)
-        local tags = {}
+        local rebounds = 2 + math.floor(UnitGetAbilityLevel(source, "A019") / 10)
 
-        if unit_data.arc_discharge_boost then
-           tags[#tags+1] = "talent_arc_discharge" .. unit_data.arc_discharge_boost
-        end
 
+        AddSoundVolume("Sounds\\Spells\\lightning_launch_" .. GetRandomInt(1, 3) .. ".wav", GetUnitX(from), GetUnitY(from), 120., 1600.)
         LightningEffect_Units(from, target, "BLNL", 0.45, 50., 50.)
-        ApplyEffect(source, target, 0., 0.,"ECHL", 1, tags)
+        ApplyEffect(source, target, 0., 0.,"ECHL", 1, ability_instance)
 
         local damaged_group = CreateGroup()
         GroupAddUnit(damaged_group, target)
@@ -187,50 +224,67 @@ do
         from = target
         local next_target = GetChainLightningVictim(source, target, 500., damaged_group)
 
-
-            if next_target then
-                local rebounds = 2 + math.floor(UnitGetAbilityLevel(source, "A019") / 10)
-                GroupAddUnit(damaged_group, next_target)
-
+            if next_target or IsUnitInRange(source, target, 800.) then
                 local timer = CreateTimer()
-                TimerStart(timer, 0.25, true, function()
 
-                    LightningEffect_Units(from, next_target, "BLNL", 0.45, 50., 50.)
-                    ApplyEffect(source, next_target, 0., 0.,"ECHL", 1, tags)
-                    rebounds = rebounds - 1
+                    TimerStart(timer, 0.25, true, function()
 
-
-                    from = next_target
-                    next_target = GetChainLightningVictim(source, next_target, 500., damaged_group)
-
-                        if rebounds <= 0 or not next_target then
-                            DestroyTimer(GetExpiredTimer())
-                            DestroyGroup(damaged_group)
-                        else
+                        if next_target then
+                            -- there is a next target
                             GroupAddUnit(damaged_group, next_target)
+                            --print("next target exists")
+                        elseif from ~= source and IsUnitInRange(source, from, 800.) and GetUnitState(source, UNIT_STATE_LIFE) > 0.045 then
+                            -- no next target, caster within range
+                            next_target = source
+                            GroupRemoveUnit(damaged_group, from)
+                            --print("jump to caster")
+                        elseif from == source then
+                            -- next target isnt a caster, but caster is within range
+                            --print("from caster to next target")
+                            next_target = GetChainLightningVictim(source, from, 800., damaged_group)
                         end
 
-                end)
+                        if not next_target then
+                            DestroyTimer(GetExpiredTimer())
+                            DestroyGroup(damaged_group)
+                            --print("no next target")
+                        end
+
+                        --print("a")
+
+
+                        AddSoundVolume("Sounds\\Spells\\lightning_launch_" .. GetRandomInt(1, 3) .. ".wav", GetUnitX(from), GetUnitY(from), 120., 1600.)
+                        LightningEffect_Units(from, next_target, "BLNL", 0.45, 50., 50.)
+                           -- print("b")
+                        if next_target ~= source then
+                            ApplyEffect(source, next_target, 0., 0.,"ECHL", 1, ability_instance)
+                            rebounds = rebounds - 1
+                        end
+                        --print("c")
+                        from = next_target
+                        next_target = GetChainLightningVictim(source, next_target, 500., damaged_group)
+                        --print("d")
+                        if rebounds <= 0 then
+                            DestroyTimer(GetExpiredTimer())
+                            DestroyGroup(damaged_group)
+                        end
+
+                    end)
 
             end
+
     end
 
 
-    function SparkCast_Legendary(source)
+    function SparkCast_Legendary(source, ability_instance)
         local discharge = {}
         local spark_amount = 12
         local angle = 360. / spark_amount
         local current_angle = 0.01
         local unit_data = GetUnitData(source)
-        local tags = {}
-
-        if unit_data.arc_discharge_boost then
-           tags[#tags+1] = "talent_arc_discharge" .. unit_data.arc_discharge_boost
-        end
-
 
         for i = 1, spark_amount do
-            discharge[i] = { missile = ThrowMissile(source, nil, 'MDSC', { tags = tags }, GetUnitX(source), GetUnitY(source), 0, 0, current_angle), a = current_angle }
+            discharge[i] = { missile = ThrowMissile(source, nil, 'MDSC', { ability_instance = ability_instance }, GetUnitX(source), GetUnitY(source), 0, 0, current_angle), a = current_angle }
             BlzSetSpecialEffectScale(discharge[i].missile.missile_effect, 1.15)
             current_angle = current_angle + angle
         end
@@ -257,42 +311,26 @@ do
     end
 
 
-    function SparkCast(source, target, x, y)
+    function SparkCast(source, target, x, y, ability_instance)
         local angle
         local discharge = {}
         local amount = 3 + math.floor(UnitGetAbilityLevel(source, "A00J") / 10)
         local angle_dispersion = 15.
         local breakpoint = math.floor(amount / 2)
         local unit_data = GetUnitData(source)
-        local tags = {}
 
-        if unit_data.arc_discharge_boost then
-           tags[#tags+1] = "talent_arc_discharge" .. unit_data.arc_discharge_boost
-        end
+            if target and target == source then angle = GetUnitFacing(source)
+            elseif target then angle = AngleBetweenUnitXY(source, GetUnitX(target), GetUnitY(target))
+            else angle = AngleBetweenUnitXY(source, x, y) end
+
+            if amount % 2 == 0 then angle = angle + (((amount - 1) * angle_dispersion) / 2)
+            else angle = angle + (breakpoint * angle_dispersion) end
 
 
-            if target and target == source then
-                angle = GetUnitFacing(source)
-            elseif target then
-                angle = AngleBetweenUnitXY(source, GetUnitX(target), GetUnitY(target))
-            else
-                angle = AngleBetweenUnitXY(source, x, y)
+            for i = 1, amount do
+                discharge[i] = { missile = ThrowMissile(source, nil, 'MDSC', { ability_instance = ability_instance }, GetUnitX(source), GetUnitY(source), x, y, angle, true), a = angle }
+                angle = angle - angle_dispersion
             end
-        --print("unit angle " .. angle)
-
-        if amount % 2 == 0 then angle = angle + (((amount - 1) * angle_dispersion) / 2)
-        else angle = angle + (breakpoint * angle_dispersion) end
-
-
-        for i = 1, amount do
-            --print("launch angle is " .. angle)
-            discharge[i] = { missile = ThrowMissile(source, nil, 'MDSC', { tags = tags }, GetUnitX(source), GetUnitY(source), x, y, angle, true), a = angle }
-            angle = angle - angle_dispersion
-        end
-
-        --discharge[1] = { missile = ThrowMissile(source, nil, 'MDSC', nil, GetUnitX(source), GetUnitY(source), x, y, 0.), a = angle }
-        --discharge[2] = { missile = ThrowMissile(source, nil, 'MDSC', nil, GetUnitX(source), GetUnitY(source), x, y, angle + 15.), a = angle + 15. }
-        --discharge[3] = { missile = ThrowMissile(source, nil, 'MDSC', nil, GetUnitX(source), GetUnitY(source), x, y, angle - 15.), a = angle - 15. }
 
 
             for i = 1, amount do
@@ -377,7 +415,7 @@ do
     end
 
 
-    function CastFrostbolt_Legendary(caster, target, x, y)
+    function CastFrostbolt_Legendary(caster, target, x, y, ability_instance)
         local frostbolts = {}
         local angle
         local facing
@@ -394,14 +432,14 @@ do
             [3] = { x = Rx(110., facing - 30.), y = Ry(110., facing - 30.) },
         }
 
-        frostbolts[1] = ThrowMissile(caster, nil, 'MFRB', nil, GetUnitX(caster) - offsets[1].x, GetUnitY(caster) - offsets[1].y, x, y, 0.)
-        frostbolts[2] = ThrowMissile(caster, nil, 'MFRB', nil, GetUnitX(caster) - offsets[2].x, GetUnitY(caster) - offsets[2].y, x, y, angle + 15.)
-        frostbolts[3] = ThrowMissile(caster, nil, 'MFRB', nil, GetUnitX(caster) - offsets[3].x, GetUnitY(caster) - offsets[3].y, x, y, angle - 15.)
+        frostbolts[1] = ThrowMissile(caster, nil, 'MFRB', { ability_instance = ability_instance }, GetUnitX(caster) - offsets[1].x, GetUnitY(caster) - offsets[1].y, x, y, 0.)
+        frostbolts[2] = ThrowMissile(caster, nil, 'MFRB', { ability_instance = ability_instance }, GetUnitX(caster) - offsets[2].x, GetUnitY(caster) - offsets[2].y, x, y, angle + 15.)
+        frostbolts[3] = ThrowMissile(caster, nil, 'MFRB', { ability_instance = ability_instance }, GetUnitX(caster) - offsets[3].x, GetUnitY(caster) - offsets[3].y, x, y, angle - 15.)
 
         frostbolts[1].pause = true; frostbolts[2].pause = true; frostbolts[3].pause = true
 
 
-        local timeouts = { 1., 0.7, 0.85 }
+        local timeouts = { 0.5, 0.2, 0.35 }
 
         local timer = CreateTimer()
         TimerStart(timer, 0.02, true, function()
@@ -458,35 +496,26 @@ do
     end
 
 
-    function CastMeltdown(unit)
+    function CastMeltdown(unit, ability_instance)
         local unit_data = GetUnitData(unit)
 
-        if unit_data.channeled_destructor then
-            unit_data.channeled_destructor(unit)
-        else
+            if unit_data.channeled_destructor then unit_data.channeled_destructor(unit) else
 
             ResetUnitSpellCast(unit)
-
             unit_data.channeled_destructor = MeltdownDeactivate
             unit_data.channeled_ability = "AMLT"
 
             UnitAddAbility(unit, FourCC('Abun'))
             local player_id = GetPlayerId(GetOwningPlayer(unit)) + 1
-            --local myability = GetKeybindKeyAbility(FourCC("AMLT"), player_id)
-
-            --BlzEndUnitAbilityCooldown(unit, myability)
-            --DelayAction(0., function() BlzSetUnitAbilityCooldown(unit, myability, 0, 30.) end)
 
 
             AddSoundVolumeZ("Sounds\\Spells\\disintegration_launch_"..GetRandomInt(1,2)..".wav", GetUnitX(unit), GetUnitY(unit), 65., 120, 1500.)
             unit_data.channel_sound = CreateNew3DSound("Sounds\\Spells\\disintegration_loop_1.wav", GetUnitX(unit), GetUnitY(unit), 65., 120, 1500., true)
             StartSound(unit_data.channel_sound)
             UnitAddAbility(unit, FourCC("A002"))
-            --unit_data.weapon_sfx = AddSpecialEffectTarget("Spell\\Sweep_Fire_Medium.mdx", unit, "weapon")
             unit_data.hand_right_sfx = AddSpecialEffectTarget("Spell\\Fire Uber.mdx", unit, "hand right")
             unit_data.hand_left_sfx = AddSpecialEffectTarget("Spell\\Fire Uber.mdx", unit, "hand left")
 
-            --SafePauseUnit(unit, true)
 
             unit_data.channel_trigger = CreateTrigger()
             TriggerRegisterUnitEvent(unit_data.channel_trigger, unit, EVENT_UNIT_ISSUED_POINT_ORDER)
@@ -503,15 +532,10 @@ do
             SetUnitTimeScale(unit, 0.05)
             SetUnitFacingTimed(unit, AngleBetweenUnitXY(unit, PlayerMousePosition[player_id].x or 0., PlayerMousePosition[player_id].y or 0.), 0.1)
 
-            local boost = { tags = {}}
+            --local boost = { tags = {}}
 
-            if unit_data.boost_overflow then
-                boost.tags[#boost.tags+1] = "talent_overflow"
-            end
-
-            if unit_data.heating_up_boost then
-                boost.tags[#boost.tags+1] = "talent_heating_up"
-            end
+            --if unit_data.boost_overflow then boost.tags[#boost.tags+1] = "talent_overflow" end
+            --if unit_data.heating_up_boost then boost.tags[#boost.tags+1] = "talent_heating_up" end
 
             TimerStart(unit_data.action_timer, 0.05, true, function()
                 if duration > 0. and GetUnitState(unit, UNIT_STATE_LIFE) > 0.045 and unit_data.channeled_ability == "AMLT" then
@@ -524,7 +548,7 @@ do
                     --BlzSetSpecialEffectYaw(effect, facing * bj_DEGTORAD)
                     BlzSetSpecialEffectZ(effect, GetZ(x, y) + 75.)
                     DestroyEffect(effect)
-                    ThrowMissile(unit, nil, "MMLT", boost, GetUnitX(unit), GetUnitY(unit), 0.,0., facing, true)
+                    ThrowMissile(unit, nil, "MMLT", { ability_instance = ability_instance }, GetUnitX(unit), GetUnitY(unit), 0.,0., facing, true)
                 else
                     MeltdownDeactivate(unit)
                     --TimerStart(GetExpiredTimer(), 0., false, nil)
@@ -561,12 +585,10 @@ do
         return order_id == order_itemuse00 or order_id == order_itemuse01 or order_id == order_itemuse02 or order_id == order_itemuse03 or order_id == order_itemuse04 or order_id == order_itemuse05
     end
 
-    function CastBlizzard(unit)
+    function CastBlizzard(unit, ability_instance)
         local unit_data = GetUnitData(unit)
 
-        if unit_data.channeled_destructor then
-            unit_data.channeled_destructor(unit)
-        else
+            if unit_data.channeled_destructor then unit_data.channeled_destructor(unit) else
 
             ResetUnitSpellCast(unit)
 
@@ -581,12 +603,11 @@ do
 
             unit_data.channel_sound = AddLoopingSoundOnUnit({ "Sounds\\Spells\\blizzard_loop_1.wav", "Sounds\\Spells\\blizzard_loop_2.wav", "Sounds\\Spells\\blizzard_loop_3.wav", }, unit, 150, 150, -0.15, 100, 1500.) --CreateNew3DSound("Sounds\\Spells\\disintegration_loop_1.wav", GetUnitX(unit), GetUnitY(unit), 65., 120, 1500., true)
             UnitAddAbility(unit, FourCC("A002"))
-            --unit_data.weapon_sfx = AddSpecialEffectTarget("Spell\\Sweep_True_Ice_Medium.mdx", unit, "weapon")
+
             unit_data.hand_right_sfx = AddSpecialEffectTarget("Spell\\Ice High.mdx", unit, "hand right")
             unit_data.hand_left_sfx = AddSpecialEffectTarget("Spell\\Ice High.mdx", unit, "hand left")
             unit_data.channel_sfx = AddSpecialEffect("Spell\\Sleet Storm.mdx", GetUnitX(unit), GetUnitY(unit))
             BlzSetSpecialEffectZ(unit_data.channel_sfx, GetUnitZ(unit) + 100.)
-            --BlzSetSpecialEffectHeight(unit_data.channel_sfx, 0.)
 
 
             unit_data.channel_trigger = CreateTrigger()
@@ -615,7 +636,8 @@ do
                     time_point = time_point - 0.025
 
                     if time_point <= 0. then
-                        local effect = ApplyEffect(unit, nil, GetUnitX(unit), GetUnitY(unit), "EBLZ", 1)
+                        local effect = ApplyEffect(unit, nil, GetUnitX(unit), GetUnitY(unit), "EBLZ", 1, ability_instance)
+                        ability_instance.is_attack = false
                         time_point = 0.3
                     end
 
@@ -639,7 +661,7 @@ do
 
 
 
-    function IcicleRainCast(caster, x, y)
+    function IcicleRainCast(caster, x, y, ability_instance)
         local level = UnitGetAbilityLevel(caster, "ASIR")
         local amount = 3 + math.floor(level / 3)
         local halfarea = (250. + level * 5.) * 0.5
@@ -656,7 +678,7 @@ do
 
                         DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Human\\Blizzard\\BlizzardTarget.mdx", point_x, point_y))
                         AddSoundVolume("Sounds\\Spells\\BlizzardTarget".. GetRandomInt(1,3) .. ".wav", point_x, point_y, 100, 1700.)
-                        DelayAction(0.81, function() ApplyEffect(caster, nil, point_x, point_y, "EICR", 1) end)
+                        DelayAction(0.81, function() ApplyEffect(caster, nil, point_x, point_y, "EICR", 1, ability_instance) end)
                         amount = amount - 1
                 else
                     DestroyTimer(timer)
@@ -667,7 +689,7 @@ do
     end
 
 
-    function FireWallCast(caster, x, y)
+    function FireWallCast(caster, x, y, ability_instance)
         local missiles = {}
         local amount = 6
         local arc = 30. / amount
@@ -675,44 +697,37 @@ do
         local unit_data = GetUnitData(caster)
         local boost = { tags = {}}
 
-        amount = math.floor(amount * 0.5)
+            amount = math.floor(amount * 0.5)
 
-            if unit_data.boost_overflow then
-                boost.tags[#boost.tags+1] = "talent_overflow"
-            end
-            if unit_data.heating_up_boost then
-                boost.tags[#boost.tags+1] = "talent_heating_up"
-            end
+            local bonus_angle = arc
+                for i = 1, amount do
+                    missiles[#missiles+1] = ThrowMissile(caster, nil, "fire_wall_missile", { ability_instance = ability_instance }, GetUnitX(caster), GetUnitY(caster), 0., 0., angle + bonus_angle, true)
+                    missiles[#missiles+1] = ThrowMissile(caster, nil, "fire_wall_missile", { ability_instance = ability_instance }, GetUnitX(caster), GetUnitY(caster), 0., 0., angle - bonus_angle, true)
+                    bonus_angle = bonus_angle + arc
+                end
 
-        local bonus_angle = arc
-            for i = 1, amount do
-                missiles[#missiles+1] = ThrowMissile(caster, nil, "fire_wall_missile", boost, GetUnitX(caster), GetUnitY(caster), 0., 0., angle + bonus_angle, true)
-                missiles[#missiles+1] = ThrowMissile(caster, nil, "fire_wall_missile", boost, GetUnitX(caster), GetUnitY(caster), 0., 0., angle - bonus_angle, true)
-                bonus_angle = bonus_angle + arc
-            end
+            missiles[#missiles+1] = ThrowMissile(caster, nil, "fire_wall_missile", { ability_instance = ability_instance }, GetUnitX(caster), GetUnitY(caster), 0., 0., angle, true)
 
-        missiles[#missiles+1] = ThrowMissile(caster, nil, "fire_wall_missile", boost, GetUnitX(caster), GetUnitY(caster), 0., 0., angle, true)
+            local volume = 90
+            local flame_sound = CreateNew3DSound("Sounds\\Spells\\flame_wave_loop.wav", x, y, 10., volume, 1700., true)
+            StartSound(flame_sound)
 
-        local volume = 90
-        local flame_sound = CreateNew3DSound("Sounds\\Spells\\flame_wave_loop.wav", x, y, 10., volume, 1700., true)
-        StartSound(flame_sound)
-
-        local timer = CreateTimer()
-        TimerStart(timer, 0.025, true, function()
-            if missiles[1] and missiles[1].time <= 0. then
-                local delta = volume / 40
-                TimerStart(timer, 0.025, true, function()
-                    volume = math.floor(volume - delta)
-                    SetSoundVolume(flame_sound, volume)
-                    if volume <= 0 then
-                        StopSound(flame_sound, true, false)
-                        DestroyTimer(timer)
-                    end
-                end)
-            else
-                SetSoundPosition(flame_sound, missiles[1].current_x, missiles[1].current_y, 10.)
-            end
-        end)
+            local timer = CreateTimer()
+            TimerStart(timer, 0.025, true, function()
+                if missiles[1] and missiles[1].time <= 0. then
+                    local delta = volume / 40
+                    TimerStart(timer, 0.025, true, function()
+                        volume = math.floor(volume - delta)
+                        SetSoundVolume(flame_sound, volume)
+                        if volume <= 0 then
+                            StopSound(flame_sound, true, false)
+                            DestroyTimer(timer)
+                        end
+                    end)
+                else
+                    SetSoundPosition(flame_sound, missiles[1].current_x, missiles[1].current_y, 10.)
+                end
+            end)
 
     end
 

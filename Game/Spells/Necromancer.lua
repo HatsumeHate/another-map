@@ -755,5 +755,64 @@ do
 
     end
 
+    function BoneSpikesCast(caster, x, y, target, ability_instance)
+
+        if target then
+            x,y = GetUnitX(target), GetUnitY(target)
+        end
+
+
+            local center_sfx = AddSpecialEffect("Effect\\Bone Spikes.mdx", x, y)
+            BlzSetSpecialEffectYaw(center_sfx, GetRandomReal(0., 360.) * bj_DEGTORAD)
+            DelayAction(0.475, function() DestroyEffect(center_sfx) end)
+            DelayAction(0.25, function() ApplyEffect(caster, nil, x, y, "ENBK", 1, ability_instance) end)
+
+            local offset = 115.
+            local circle_sfx = {}
+            local parts = 6
+            local shift = 360. / parts
+            local starting_angle = GetRandomReal(0., 359.)
+
+
+            DelayAction(0.15, function()
+                for i = 1, parts do
+                    starting_angle = starting_angle + shift
+                    local eff_x, eff_y = x + Rx(offset, starting_angle), y + Ry(offset, starting_angle)
+
+                    circle_sfx[#circle_sfx+1] = AddSpecialEffect("Effect\\Bone Spikes.mdx", eff_x, eff_y)
+                    BlzSetSpecialEffectYaw(circle_sfx[i], GetRandomReal(0., 360.) * bj_DEGTORAD)
+                    DelayAction(0.25, function() ApplyEffect(caster, nil, eff_x, eff_y, "ENBK", 1, ability_instance) end)
+                end
+
+                DelayAction(0.5, function()
+                    for i = 1, parts do DestroyEffect(circle_sfx[i]) end
+                end)
+            end)
+
+
+            local spikes = #circle_sfx
+
+            DelayAction(0.3, function()
+                parts = 12
+                shift = 360. / parts
+                starting_angle = GetRandomReal(0., 359.)
+                offset = offset * 2.
+                for i = 1, parts do
+                    starting_angle = starting_angle + shift
+                    local eff_x, eff_y = x + Rx(offset, starting_angle), y + Ry(offset, starting_angle)
+
+                    circle_sfx[#circle_sfx+1] = AddSpecialEffect("Effect\\Bone Spikes.mdx", eff_x, eff_y)
+                    BlzSetSpecialEffectYaw(circle_sfx[i], GetRandomReal(0., 360.) * bj_DEGTORAD)
+                    DelayAction(0.25, function() ApplyEffect(caster, nil, eff_x, eff_y, "ENBK", 1, ability_instance) end)
+                end
+
+                DelayAction(0.5, function()
+                    for i = spikes, #circle_sfx do DestroyEffect(circle_sfx[i]) end
+                    circle_sfx = nil
+                end)
+            end)
+
+    end
+
 
 end

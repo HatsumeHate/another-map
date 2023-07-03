@@ -73,6 +73,23 @@ do
 
     ---@param effect string
     ---@param unit unit
+    ---@return bool
+    function UnitHasEffectProc(unit, effect)
+        local unit_data = GetUnitData(unit)
+        return unit_data.proc_list[effect]
+    end
+
+
+    ---@param effect string
+    ---@param unit unit
+    function UnitAddEffectProc(unit, effect)
+        local unit_data = GetUnitData(unit)
+        if not unit_data.proc_list then unit_data.proc_list = {} end
+        unit_data.proc_list[effect] = true
+    end
+
+    ---@param effect string
+    ---@param unit unit
     ---@return boolean
     function UnitHasEffect(unit, effect)
         local unit_data = GetUnitData(unit)
@@ -140,7 +157,6 @@ do
             cast_skill_level = 0,
             cast_effect = nil,
 
-            --scale = reference_data.scale or 1.,
             classification = reference_data.classification or nil,
             unit_trait = reference_data.unit_trait or nil,
             xp = reference_data.xp or 15,
@@ -150,7 +166,9 @@ do
             stats = {},
             buff_list = {},
             skill_list = {},
-            effects = {}
+            effects = {},
+            endurance_stack = {},
+            attack_instances = {}
         }
 
         data.default_weapon = CreateDefaultWeapon()
@@ -164,12 +182,9 @@ do
 
         TimerStart(data.attack_timer, 0., false, nil)
 
-        --if reference_data.base_stats ~= nil then MergeTables(data.base_stats, reference_data.base_stats) end
-
         if reference_data.weapon then MergeTables(data.default_weapon, reference_data.weapon) end
         if reference_data.chest then data.equip_point[CHEST_POINT] = MergeTables({}, reference_data.chest) end
         if reference_data.necklace then data.equip_point[NECKLACE_POINT] = MergeTables({}, reference_data.necklace) end
-        --if reference_data.offhand then data.equip_point[OFFHAND_POINT] = MergeTables(data.equip_point[OFFHAND_POINT], reference_data.offhand) end
 
         if reference_data.missile_eject_range then data.missile_eject_range = reference_data.missile_eject_range end
         if reference_data.missile_eject_z then data.missile_eject_z = reference_data.missile_eject_z end
@@ -202,6 +217,8 @@ do
                 ModifyStat(source, reference_data.bonus_parameters[i].param, reference_data.bonus_parameters[i].value, reference_data.bonus_parameters[i].method, true)
             end
         end
+
+
 
         return data
     end
@@ -339,7 +356,7 @@ do
             unit_class = BARBARIAN_CLASS,
             has_mp = true,
             time_before_remove = 0.,
-            base_stats = { health = 225., moving_speed = 335 },
+            base_stats = { health = 250., moving_speed = 335 },
             missile_eject_range = 50.,
             collision = 28
         })
@@ -349,7 +366,7 @@ do
             has_mp = true,
             time_before_remove = 0.,
             missile_eject_range = 50.,
-            base_stats = { health = 225., moving_speed = 335 },
+            base_stats = { health = 250., moving_speed = 335 },
             collision = 28
         })
 
@@ -358,7 +375,7 @@ do
             has_mp = true,
             time_before_remove = 0.,
             missile_eject_range = 50.,
-            base_stats = { health = 225., moving_speed = 335 },
+            base_stats = { health = 250., moving_speed = 335 },
         })
 
         NewUnitTemplate('HPAL', {
@@ -366,7 +383,7 @@ do
             has_mp = true,
             time_before_remove = 0.,
             missile_eject_range = 50.,
-            base_stats = { health = 225., moving_speed = 335 },
+            base_stats = { health = 250., moving_speed = 335 },
             classic_model = true,
         })
 
@@ -375,7 +392,7 @@ do
             has_mp = true,
             time_before_remove = 0.,
             missile_eject_range = 50.,
-            base_stats = { health = 225., moving_speed = 335 },
+            base_stats = { health = 250., moving_speed = 335 },
             classic_model = true,
         })
 
@@ -384,7 +401,7 @@ do
             has_mp = true,
             time_before_remove = 0.,
             missile_eject_range = 50.,
-            base_stats = { health = 225., moving_speed = 335 },
+            base_stats = { health = 250., moving_speed = 335 },
             classic_model = true,
         })
 
@@ -393,7 +410,7 @@ do
             has_mp = true,
             time_before_remove = 0.,
             missile_eject_range = 50.,
-            base_stats = { health = 225., moving_speed = 335 },
+            base_stats = { health = 250., moving_speed = 335 },
             classic_model = true,
         })
 
@@ -404,7 +421,7 @@ do
             time_before_remove = 25.,
             missile_eject_range = 50.,
             colours = { r = 100, g = 100, b = 255 },
-            base_stats = { health = 225., moving_speed = 335 },
+            base_stats = { health = 250., moving_speed = 335 },
         })
 
 
@@ -508,6 +525,21 @@ do
             hide_body = true,
         })
 
+        --==========================================================--
+        -- summoned barb hero
+        NewUnitTemplate('bran', {
+            name = LOCALE_LIST[my_locale].NAME_BARBARIAN_SUMMONED,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = 0,
+            time_before_remove = 25.,
+            base_stats = { health = 120., hp_regen = 0.26, moving_speed = 315. },
+            weapon = { ATTACK_SPEED = 1.7, DAMAGE = 7, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_CHOP },
+            height = 120.,
+            has_mp = false,
+            hide_body = true
+        })
+
         -- dummy
         NewUnitTemplate('dmmy', {
             unit_class = NO_CLASS,
@@ -541,7 +573,9 @@ do
             time_before_remove = 25.,
             base_stats = { health = 125., hp_regen = 0.4, moving_speed = 0. },
             weapon = { ATTACK_SPEED = 1., DAMAGE = 1, CRIT_CHANCE = 1., missile = "SRHD" },
+            death_sound = { pack = { "Sounds\\Spells\\Hydra_Despawn_1.wav", "Sounds\\Spells\\Hydra_Despawn_2.wav", "Sounds\\Spells\\Hydra_Despawn_3.wav" }, volume = 127, cutoff = 1500. },
             has_mp = false,
+            missile_eject_range = 75.
         })
 
 
@@ -719,7 +753,7 @@ do
             --trait = TRAIT_UNDEAD,
             time_before_remove = 25.,
             base_stats = { health = 150., hp_regen = 0.4, moving_speed = 240. },
-            weapon = { ATTACK_SPEED = 1.9, DAMAGE = 4, CRIT_CHANCE = 11., missile = "MSKA" },
+            weapon = { ATTACK_SPEED = 2.3, DAMAGE = 4, CRIT_CHANCE = 11., missile = "MSKA" },
             has_mp = false,
             height = 125.,
             drop_offset_min = 15., drop_offset_max = 45.,
@@ -737,7 +771,7 @@ do
             --trait = TRAIT_UNDEAD,
             time_before_remove = 25.,
             base_stats = { health = 157., hp_regen = 0.44, moving_speed = 240. },
-            weapon = { ATTACK_SPEED = 1.9, DAMAGE = 6, CRIT_CHANCE = 16., missile = "MSKA" },
+            weapon = { ATTACK_SPEED = 2.3, DAMAGE = 6, CRIT_CHANCE = 16., missile = "MSKA" },
             has_mp = false,
             height = 125.,
             drop_offset_min = 15., drop_offset_max = 45.,
@@ -755,7 +789,7 @@ do
             --trait = TRAIT_UNDEAD,
             time_before_remove = 25.,
             base_stats = { health = 140., hp_regen = 0.4, moving_speed = 240. },
-            weapon = { ATTACK_SPEED = 1.6, DAMAGE = 5, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSKM" },
+            weapon = { ATTACK_SPEED = 1.95, DAMAGE = 5, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSKM" },
             bonus_parameters = {
                 { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS }
             },
@@ -799,7 +833,7 @@ do
             --trait = TRAIT_HUMAN,
             time_before_remove = 25.,
             base_stats = { health = 215., hp_regen = 0.4, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.9, DAMAGE = 6, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MNCR" },
+            weapon = { ATTACK_SPEED = 2.2, DAMAGE = 6, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MNCR" },
             skill_list = { "ANRA" },
             has_mp = false,
             drop_offset_min = 15., drop_offset_max = 45.,
@@ -816,7 +850,7 @@ do
             unit_trait = { TRAIT_HUMAN, TRAIT_UNDEAD },
             time_before_remove = 25.,
             base_stats = { health = 235., hp_regen = 0.47, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.7, DAMAGE = 9, CRIT_CHANCE = 16., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 14, missile = "MNCR" },
+            weapon = { ATTACK_SPEED = 2.1, DAMAGE = 9, CRIT_CHANCE = 16., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 14, missile = "MNCR" },
             bonus_parameters = {
                 { param = ICE_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = 5, method = STRAIGHT_BONUS },
@@ -839,7 +873,7 @@ do
             --trait = TRAIT_UNDEAD,
             time_before_remove = 25.,
             base_stats = { health = 235., hp_regen = 0.43, moving_speed = 255. },
-            weapon = { ATTACK_SPEED = 1.9, DAMAGE = 8, CRIT_CHANCE = 16., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MSSM" },
+            weapon = { ATTACK_SPEED = 2.15, DAMAGE = 8, CRIT_CHANCE = 16., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MSSM" },
             skill_list = { "AFRR", "ACNF" },
             has_mp = false,
             height = 155.,
@@ -902,7 +936,7 @@ do
             --trait = TRAIT_UNDEAD,
             time_before_remove = 25.,
             base_stats = { health = 190., hp_regen = 0.4, moving_speed = 270. },
-            weapon = { ATTACK_SPEED = 1.6, DAMAGE = 7, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MBNS" },
+            weapon = { ATTACK_SPEED = 1.97, DAMAGE = 7, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MBNS" },
             bonus_parameters = {
                 { param = MELEE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS },
                 { param = RANGE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS }
@@ -925,7 +959,7 @@ do
             --trait = TRAIT_UNDEAD,
             time_before_remove = 25.,
             base_stats = { health = 210., hp_regen = 0.4, moving_speed = 276. },
-            weapon = { ATTACK_SPEED = 1.66, DAMAGE = 9, CRIT_CHANCE = 22., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 11, missile = "MBON" },
+            weapon = { ATTACK_SPEED = 1.93, DAMAGE = 9, CRIT_CHANCE = 22., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 11, missile = "MBON" },
             bonus_parameters = {
                 { param = MELEE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS },
                 { param = RANGE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS }
@@ -947,7 +981,7 @@ do
             --trait = TRAIT_DEMON,
             time_before_remove = 25.,
             base_stats = { health = 227., hp_regen = 0.55, moving_speed = 265. },
-            weapon = { ATTACK_SPEED = 2.2, DAMAGE = 12, CRIT_CHANCE = 10., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSCB" },
+            weapon = { ATTACK_SPEED = 2.33, DAMAGE = 12, CRIT_CHANCE = 10., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSCB" },
             has_mp = false,
             scale = 1.2,
             height = 140.,
@@ -965,7 +999,7 @@ do
             --trait = TRAIT_DEMON,
             time_before_remove = 25.,
             base_stats = { health = 205., hp_regen = 0.52, moving_speed = 285. },
-            weapon = { ATTACK_SPEED = 2.24, DAMAGE = 13, CRIT_CHANCE = 12., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 12, missile = "MSCB" },
+            weapon = { ATTACK_SPEED = 2.44, DAMAGE = 13, CRIT_CHANCE = 12., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 12, missile = "MSCB" },
             has_mp = false,
             scale = 1.18,
             height = 130.,
@@ -1018,7 +1052,7 @@ do
             --trait = TRAIT_DEMON,
             time_before_remove = 25.,
             base_stats = { health = 200., hp_regen = 0.4, moving_speed = 240. },
-            weapon = { ATTACK_SPEED = 2., DAMAGE = 6, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 5, missile = "MVWS" },
+            weapon = { ATTACK_SPEED = 2.25, DAMAGE = 6, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 5, missile = "MVWS" },
             has_mp = false,
             scale = 0.75,
             height = 180.,
@@ -1036,7 +1070,7 @@ do
             unit_trait = { TRAIT_DEMON },
             time_before_remove = 25.,
             base_stats = { health = 225., hp_regen = 0.4, moving_speed = 240. },
-            weapon = { ATTACK_SPEED = 2.1, DAMAGE = 9, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MVWM" },
+            weapon = { ATTACK_SPEED = 2.3, DAMAGE = 9, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MVWM" },
             skill_list = { "AVDS" },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
@@ -1060,7 +1094,7 @@ do
             --trait = TRAIT_DEMON,
             time_before_remove = 25.,
             base_stats = { health = 270., hp_regen = 0.4, moving_speed = 225. },
-            weapon = { ATTACK_SPEED = 2.1, DAMAGE = 14, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MVWB" },
+            weapon = { ATTACK_SPEED = 2.4, DAMAGE = 14, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MVWB" },
             skill_list = { "AVDS", "AVDR" },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
@@ -1084,7 +1118,7 @@ do
             --trait = TRAIT_UNDEAD,
             time_before_remove = 25.,
             base_stats = { health = 213., hp_regen = 0.4, moving_speed = 260. },
-            weapon = { ATTACK_SPEED = 1.74, DAMAGE = 11, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MGHO" },
+            weapon = { ATTACK_SPEED = 2., DAMAGE = 11, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MGHO" },
             bonus_parameters = {
                 { param = MELEE_DAMAGE_REDUCTION, value = 15, method = STRAIGHT_BONUS },
                 { param = RANGE_DAMAGE_REDUCTION, value = 15, method = STRAIGHT_BONUS },
@@ -1286,7 +1320,7 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 25.,
             base_stats = { health = 153., hp_regen = 0.3, moving_speed = 252. },
-            weapon = { ATTACK_SPEED = 1.48, DAMAGE = 8, CRIT_CHANCE = 14., missile = "MSTR", ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10 },
+            weapon = { ATTACK_SPEED = 1.78, DAMAGE = 8, CRIT_CHANCE = 14., missile = "MSTR", ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10 },
             bonus_parameters = {
                 { param = LIGHTNING_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 14, method = STRAIGHT_BONUS },
@@ -1351,7 +1385,7 @@ do
             unit_trait = { TRAIT_DEMON },
             time_before_remove = 25.,
             base_stats = { health = 187., hp_regen = 0.2, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.66, DAMAGE = 6, CRIT_CHANCE = 10., ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
+            weapon = { ATTACK_SPEED = 1.76, DAMAGE = 6, CRIT_CHANCE = 10., ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
             bonus_parameters = {
                 { param = PHYSICAL_DEFENCE, value = 150, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS },
@@ -1375,7 +1409,7 @@ do
             --trait = TRAIT_DEMON,
             time_before_remove = 25.,
             base_stats = { health = 200., hp_regen = 0.2, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.4, DAMAGE = 7, CRIT_CHANCE = 14., ranged = true, LIGHTNING = { id = "RENL", fade = 0.65, bonus_z = 135., range = 45., angle = 50. } , ATTRIBUTE = LIGHTNING_ATTRIBUTE, ATTRIBUTE_BONUS = 10 },
+            weapon = { ATTACK_SPEED = 1.55, DAMAGE = 7, CRIT_CHANCE = 14., ranged = true, LIGHTNING = { id = "RENL", fade = 0.65, bonus_z = 135., range = 45., angle = 50. } , ATTRIBUTE = LIGHTNING_ATTRIBUTE, ATTRIBUTE_BONUS = 10 },
             bonus_parameters = {
                 { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 78, method = STRAIGHT_BONUS },
@@ -1398,7 +1432,7 @@ do
             --trait = TRAIT_UNDEAD,
             time_before_remove = 25.,
             base_stats = { health = 200., hp_regen = 0.4, moving_speed = 230. },
-            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 8, CRIT_CHANCE = 11., ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MSKH" },
+            weapon = { ATTACK_SPEED = 2.11, DAMAGE = 8, CRIT_CHANCE = 11., ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MSKH" },
             bonus_parameters = {
                 { param = FIRE_RESIST, value = 15, method = STRAIGHT_BONUS }
             },
@@ -1418,7 +1452,7 @@ do
             unit_trait = { TRAIT_UNDEAD },
             time_before_remove = 25.,
             base_stats = { health = 240., hp_regen = 0.4, moving_speed = 230. },
-            weapon = { ATTACK_SPEED = 1.95, DAMAGE = 7, CRIT_CHANCE = 11., ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MSKF" },
+            weapon = { ATTACK_SPEED = 2.16, DAMAGE = 7, CRIT_CHANCE = 11., ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MSKF" },
             bonus_parameters = {
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS }
             },
@@ -1438,7 +1472,7 @@ do
             unit_trait = { TRAIT_DEMON },
             time_before_remove = 25.,
             base_stats = { health = 270., hp_regen = 0.7, moving_speed = 240. },
-            weapon = { ATTACK_SPEED = 1.63, DAMAGE = 9, CRIT_CHANCE = 11., ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MDWZ" },
+            weapon = { ATTACK_SPEED = 1.95, DAMAGE = 9, CRIT_CHANCE = 11., ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MDWZ" },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 8, method = STRAIGHT_BONUS }
             },
@@ -1598,7 +1632,7 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 25.,
             base_stats = { health = 100., hp_regen = 0.37, moving_speed = 275. },
-            weapon = { ATTACK_SPEED = 1.55, DAMAGE = 6, CRIT_CHANCE = 7., missile = "MSKA" },
+            weapon = { ATTACK_SPEED = 1.75, DAMAGE = 6, CRIT_CHANCE = 7., missile = "MSKA" },
             skill_list = { "AGEN" },
             has_mp = false,
             height = 120.,
@@ -1617,7 +1651,7 @@ do
             time_before_remove = 25.,
             base_stats = { health = 120., hp_regen = 0.39, moving_speed = 275. },
             colours = { r = 100, g = 100, b = 255 },
-            weapon = { ATTACK_SPEED = 1.57, DAMAGE = 12, CRIT_CHANCE = 7., missile = "MSKA" },
+            weapon = { ATTACK_SPEED = 1.87, DAMAGE = 12, CRIT_CHANCE = 7., missile = "MSKA" },
             skill_list = { "AGEN" },
             has_mp = false,
             height = 135.,
@@ -1635,7 +1669,7 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 25.,
             base_stats = { health = 120., hp_regen = 0.39, moving_speed = 275. },
-            weapon = { ATTACK_SPEED = 1.6, DAMAGE = 10, CRIT_CHANCE = 7., missile = "MGNL", DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = LIGHTNING_ATTRIBUTE, ATTRIBUTE_BONUS = 15 },
+            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 10, CRIT_CHANCE = 7., missile = "MGNL", DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = LIGHTNING_ATTRIBUTE, ATTRIBUTE_BONUS = 15 },
             has_mp = false,
             height = 145.,
             drop_offset_min = 25., drop_offset_max = 55.,
@@ -1672,7 +1706,7 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 25.,
             base_stats = { health = 165., hp_regen = 0.46, moving_speed = 265. },
-            weapon = { ATTACK_SPEED = 1.77, DAMAGE = 6, CRIT_CHANCE = 11., missile = "MSAT", ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 7 },
+            weapon = { ATTACK_SPEED = 2., DAMAGE = 6, CRIT_CHANCE = 11., missile = "MSAT", ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 7 },
             bonus_parameters = {
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
@@ -1714,7 +1748,7 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 25.,
             base_stats = { health = 165., hp_regen = 0.49, moving_speed = 275. },
-            weapon = { ATTACK_SPEED = 1.7, DAMAGE = 12, CRIT_CHANCE = 9., missile = "MSAT", ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 12 },
+            weapon = { ATTACK_SPEED = 2.1, DAMAGE = 12, CRIT_CHANCE = 9., missile = "MSAT", ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 12 },
             bonus_parameters = {
                 { param = POISON_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
@@ -1735,7 +1769,7 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 25.,
             base_stats = { health = 1500., hp_regen = 0.74, moving_speed = 280. },
-            weapon = { ATTACK_SPEED = 1.35, DAMAGE = 22, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
+            weapon = { ATTACK_SPEED = 1.38, DAMAGE = 22, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = PHYSICAL_DEFENCE, value = 150, method = STRAIGHT_BONUS },
@@ -1829,7 +1863,7 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 25.,
             base_stats = { health = 191., hp_regen = 0.49, moving_speed = 250. },
-            weapon = { ATTACK_SPEED = 1.75, DAMAGE = 12, CRIT_CHANCE = 9., missile = "MSSP", ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 7 },
+            weapon = { ATTACK_SPEED = 1.95, DAMAGE = 12, CRIT_CHANCE = 9., missile = "MSSP", ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 7 },
             bonus_parameters = {
                 { param = POISON_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
@@ -1922,7 +1956,7 @@ do
             unit_trait = { TRAIT_HUMAN },
             time_before_remove = 25.,
             base_stats = { health = 155., hp_regen = 0.3, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.6, DAMAGE = 8, CRIT_CHANCE = 12., missile = "MSBN" },
+            weapon = { ATTACK_SPEED = 1.94, DAMAGE = 8, CRIT_CHANCE = 12., missile = "MSBN" },
             offhand = { BLOCK = 25., BLOCK_RATE = 35. },
             bonus_parameters = {
                 { param = RANGE_DAMAGE_REDUCTION, value = 5, method = STRAIGHT_BONUS },
@@ -1967,7 +2001,7 @@ do
             unit_trait = { TRAIT_HUMAN },
             time_before_remove = 25.,
             base_stats = { health = 187., hp_regen = 0.3, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.45, DAMAGE = 15, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 14., missile = "MSBN" },
+            weapon = { ATTACK_SPEED = 2.05, DAMAGE = 15, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 14., missile = "MSBN" },
             offhand = { BLOCK = 25., BLOCK_RATE = 35. },
             bonus_parameters = {
                 { param = RANGE_DAMAGE_REDUCTION, value = 10, method = STRAIGHT_BONUS },
@@ -1990,7 +2024,7 @@ do
             unit_trait = { TRAIT_HUMAN },
             time_before_remove = 25.,
             base_stats = { health = 1750., hp_regen = 0.4, moving_speed = 275. },
-            weapon = { ATTACK_SPEED = 1.45, DAMAGE = 25, CRIT_CHANCE = 13., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
+            weapon = { ATTACK_SPEED = 1.5, DAMAGE = 25, CRIT_CHANCE = 13., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = PHYSICAL_DEFENCE, value = 250, method = STRAIGHT_BONUS },
@@ -2507,7 +2541,10 @@ do
                 if unit_data then
                     ResetUnitSpellCast(unit_data.Owner)
                     TimerStart(unit_data.action_timer, 0., false, nil)
-                    TimerStart(unit_data.attack_timer, 0., false, nil)
+                    TimerStart(unit_data.attack_timer, 0., false, function()
+                        unit_data.proc_list = nil
+                        unit_data.proc_list = { }
+                    end)
 
                     if unit_data.death_sound then
                         AddSoundVolume(unit_data.death_sound.pack[GetRandomInt(1, #unit_data.death_sound.pack)], GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), unit_data.death_sound.volume, unit_data.death_sound.cutoff)
@@ -2554,6 +2591,11 @@ do
             end)
 
 
+        end)
+
+        RegisterTestCommand("range?", function()
+            print(BlzGetUnitWeaponRealField(PlayerHero[1], UNIT_WEAPON_RF_ATTACK_RANGE, 0))
+            print(BlzGetUnitWeaponRealField(PlayerHero[1], UNIT_WEAPON_RF_ATTACK_RANGE, 1))
         end)
 
         RegisterTestCommand("ic", function()

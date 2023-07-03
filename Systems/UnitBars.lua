@@ -242,7 +242,7 @@ do
         TriggerAddAction(BarFrames[player].trigger, function()
             local mouse_focus = BlzGetMouseFocusUnit()
 
-                if mouse_focus ~= nil and GetUnitState(mouse_focus, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(mouse_focus, FourCC("Avul")) == 0 and not IsAHero(mouse_focus) then
+                if mouse_focus ~= nil and GetUnitState(mouse_focus, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(mouse_focus, FourCC("Avul")) == 0 and mouse_focus ~= PlayerHero[player] then
                     local unit_data = GetUnitData(mouse_focus)
 
                     if last_focus_unit ~= mouse_focus and unit_data and unit_data.classification ~= MONSTER_RANK_BOSS then
@@ -258,7 +258,12 @@ do
 
                         if GetLocalPlayer() == actual_player then BlzFrameSetVisible(proper_bar.bar, true) end
                         BlzFrameSetValue(proper_bar.bar, math.floor((GetUnitState(mouse_focus, UNIT_STATE_LIFE) / BlzGetUnitMaxHP(mouse_focus) * 100.)) + 0.5)
-                        BlzFrameSetText(proper_bar.text, GetUnitName(mouse_focus))
+
+                        if IsAHero(mouse_focus) then
+                            BlzFrameSetText(proper_bar.text, ParsePlayerName(GetPlayerName(GetOwningPlayer(mouse_focus))))
+                        else
+                            BlzFrameSetText(proper_bar.text, GetUnitName(mouse_focus))
+                        end
 
                     end
 

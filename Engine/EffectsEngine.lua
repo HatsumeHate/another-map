@@ -42,13 +42,13 @@ do
 
                     if myeffect.target_type == target_type then
                         if myeffect.modificator == ADD_BUFF then
-                            ApplyBuff(source, target, myeffect.buff_id, lvl)
+                            ApplyBuff(source, target, myeffect.buff_id, lvl, effect_data.ability_instance)
                         elseif myeffect.modificator == REMOVE_BUFF then
                             RemoveBuff(target, myeffect.buff_id)
                         elseif myeffect.modificator == INCREASE_BUFF_LEVEL then
                             local l = GetBuffLevel(target, myeffect.buff_id)
                             if l == 0 then
-                                ApplyBuff(source, target, myeffect.buff_id, lvl)
+                                ApplyBuff(source, target, myeffect.buff_id, lvl, effect_data.ability_instance)
                             else
                                 SetBuffLevel(target, myeffect.buff_id, l + 1)
                             end
@@ -195,25 +195,7 @@ do
     function ApplyEffectDamage(source, target, data, lvl)
         local myeffect = data.level[lvl]
 
-        if myeffect.hit_once_in and EffectHitOnceTrigger(myeffect, data, lvl, target, source) then
-            return
-            --[[
-            local unit_data = GetUnitData(target)
-
-                if unit_data.effectstacks then
-                    if unit_data.effectstacks[data.id] and unit_data.effectstacks[data.id] <= lvl then
-                        return
-                    else
-                        unit_data.effectstacks[data.id] = lvl
-                        DelayAction(myeffect.hit_once_in, function() unit_data.effectstacks[data.id] = nil end)
-                    end
-                else
-                    unit_data.effectstacks = {}
-                    unit_data.effectstacks[data.id] = lvl
-                    DelayAction(myeffect.hit_once_in, function() unit_data.effectstacks[data.id] = nil end)
-                end
-]]
-        end
+        if myeffect.hit_once_in and EffectHitOnceTrigger(myeffect, data, lvl, target, source) then return end
 
             PlaySpecialEffect(myeffect.SFX_on_unit, target, myeffect.SFX_on_unit_point, myeffect.SFX_on_unit_scale, myeffect.SFX_on_unit_duration)
             if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_unit, target) end
@@ -231,7 +213,7 @@ do
                             myeffect.can_crit or false,
                             myeffect.is_direct or false,
                             myeffect.is_sound or false,
-                            { eff = data, l = lvl }
+                            { eff = data, l = lvl}
                     )
 
                     ModifyBuffsEffect(source, target, data, lvl, ON_ENEMY)
@@ -265,14 +247,29 @@ do
         return false
     end
 
+
+    ---@param effect table
+    ---@return integer
+    function GetEffectHitTargetCount(effect)
+        local count = 0
+
+            for k, v in pairs(effect.enemies_hit) do
+                count = count + 1
+            end
+
+        return count
+    end
+
+
     ---@param source unit
     ---@param target unit
     ---@param x real
     ---@param y real
     ---@param effect_id integer
     ---@param lvl integer
+    ---@param ability_instance table
     ---@return table
-    function ApplyEffect(source, target, x, y, effect_id, lvl, tags)
+    function ApplyEffect(source, target, x, y, effect_id, lvl, ability_instance)
         local data = GetEffectData(effect_id)
         local player_entity = GetOwningPlayer(source)
 
@@ -292,7 +289,42 @@ do
         GenerateEffectLevelData(data, data.current_level)
         local current_level = data.current_level
 
-        if tags then data.tags = tags end
+
+        --if ability_instance and ability_instance.tags then data.tags = ability_instance.tags end
+
+        local myeffect = data.level[data.current_level]
+
+        if ability_instance then
+            if ability_instance.tags then data.tags = ability_instance.tags end
+
+            if ability_instance.power_multiplier and myeffect.power then
+                myeffect.power = myeffect.power * (1. + ability_instance.power_multiplier)
+            end
+
+            if ability_instance.attack_multiplier and myeffect.attack_percent_bonus then
+                myeffect.attack_percent_bonus = myeffect.attack_percent_bonus * (1. + ability_instance.attack_multiplier)
+            end
+
+            if ability_instance.weapon_multiplier and myeffect.weapon_damage_percent_bonus then
+                myeffect.weapon_damage_percent_bonus = myeffect.weapon_damage_percent_bonus * ( 1. + ability_instance.weapon_multiplier)
+            end
+
+            if ability_instance.bonus_crit_chance and myeffect.bonus_crit_chance then
+                myeffect.bonus_crit_chance = myeffect.bonus_crit_chance + ability_instance.bonus_crit_chance
+            end
+
+            if ability_instance.bonus_crit_multiplier and myeffect.bonus_crit_multiplier then
+                myeffect.bonus_crit_multiplier = myeffect.bonus_crit_chance + ability_instance.bonus_crit_multiplier
+            end
+
+            if ability_instance.attribute_bonus and myeffect.attribute_bonus then
+                myeffect.attribute_bonus = myeffect.attribute_bonus + ability_instance.attribute_bonus
+            end
+
+        end
+
+        data.ability_instance = ability_instance or nil
+        data.enemies_hit = {}
 
         OnEffectPrecast(source, target, x, y, data)
 
@@ -300,7 +332,7 @@ do
             GenerateEffectLevelData(data, data.current_level)
         end
 
-        local myeffect = data.level[data.current_level]
+        myeffect = data.level[data.current_level]
 
         --print("EFFECT START -> " .. data.name .. " with level " .. data.current_level)
 
@@ -436,6 +468,7 @@ do
 
                                                 targets = targets - 1
                                                 if targets <= 0 then break end
+                                                data.enemies_hit[picked] = true
                                             end
 
                                         end
@@ -468,6 +501,7 @@ do
 
                                         targets = targets - 1
                                         if targets <= 0 then break end
+                                        data.enemies_hit[picked] = true
                                     end
 
                                 end
@@ -488,6 +522,7 @@ do
                                 --print("apply damage effect - " .. GetUnitName(source) .. " to " .. GetUnitName(target) .. " with effect " .. data.name .. " with level " .. I2S(lvl))
                                 ApplyEffectDamage(source, target, data, lvl)
                             end
+                            data.enemies_hit[target] = true
                         end
                     end
 
@@ -530,6 +565,7 @@ do
 
                                             targets = targets - 1
                                             if targets <= 0 then break end
+                                            data.enemies_hit[picked] = true
                                         end
 
                                     end
@@ -556,12 +592,14 @@ do
                                                 GroupAddUnit(result_group, picked)
                                                 targets = targets - 1
                                                 if targets <= 0 then break end
+                                                data.enemies_hit[picked] = true
                                             end
 
                                         end
 
                                         ForGroup(result_group, function()
                                             ApplyBuffEffect(source, GetEnumUnit(), data, lvl, ON_ENEMY)
+                                            data.enemies_hit[GetEnumUnit()] = true
                                         end)
 
                                     GroupClear(result_group)
@@ -574,6 +612,7 @@ do
                         else
                             if IsUnitEnemy(target, player_entity) and GetUnitState(target, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(target, FourCC("Avul")) == 0 then
                                 ApplyBuffEffect(source, target, data, lvl, ON_ENEMY)
+                                data.enemies_hit[target] = true
                             end
                         end
                     end

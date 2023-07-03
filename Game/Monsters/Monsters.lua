@@ -921,7 +921,6 @@ do
             { stat = HP_VALUE,              initial = 0,      delta = 12,    delta_level = 1, method = STRAIGHT_BONUS, per_player = 45 },
             { stat = HP_VALUE,              initial = 1.,     delta = 0.02,  delta_level = 1, method = MULTIPLY_BONUS },
             { stat = MOVING_SPEED,          initial = 0,      delta = 3,     delta_level = 5, method = STRAIGHT_BONUS },
-            { stat = CONTROL_REDUCTION,     initial = 0,      delta = 1,     delta_level = 2, method = STRAIGHT_BONUS },
         }
 
         BONUS_MONSTER_STAT_RATES = {

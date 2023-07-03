@@ -402,7 +402,7 @@ do
             end
 
             ShakeByCoords(GetUnitX(unit), GetUnitY(unit), 4., 0.65, 1600.)
-            AddSoundVolume("Sounds\\Spell\\Diablo_Firestomp_Start_0"..GetRandomInt(1,3)..".wav", start_x, start_y, 145, 1600.)
+            AddSoundVolume("Sounds\\Spells\\Diablo_Firestomp_Start_0"..GetRandomInt(1,3)..".wav", start_x, start_y, 145, 1600.)
 
             for i = 1, waves do
                 ApplyEffect(unit, nil, start_x + Rx(range * steps, fire_waves[i]), start_y + Ry(range * steps, fire_waves[i]), "fire_stomp_effect", 1, nil)
@@ -432,7 +432,7 @@ do
                 local x, y = GetUnitX(PlayerHero[i]), GetUnitY(PlayerHero[i])
                 local sfx = AddSpecialEffect("Effect\\AnnihilationTarget.mdx", x, y)
 
-                    AddSoundVolume("Sounds\\Spell\\Diablo_Apocalypse_Start0"..GetRandomInt(1,4)..".wav", x, y, 120, 1600)
+                    AddSoundVolume("Sounds\\Spells\\Diablo_Apocalypse_Start0"..GetRandomInt(1,4)..".wav", x, y, 120, 1600)
                     BlzSetSpecialEffectScale(sfx, 0.6)
                     DelayAction(3., function()
                         ApplyEffect(unit, nil, x, y, "diablo_apoc_effect", 1, nil)

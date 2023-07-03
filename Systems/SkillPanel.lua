@@ -15,6 +15,11 @@ do
     local LeaveTrigger = 0
 
     local SKILL_BUTTON = 0
+    ProjectionKeyButtonTrigger = 0
+    PlayerProjection = 0
+
+    local last_EnteredFrame
+    local last_EnteredFrameTimer
 
 
     ---@param player integer
@@ -56,6 +61,7 @@ do
                     end
                     --print("skill is found, trying to unbind")
                     UnbindAbilityKey(PlayerHero[player], skill.Id)
+                    OnSkillUnbind(PlayerHero[player], skill.Id)
                     --print("skill is unbinded")
                     BlzFrameSetTexture(button.image, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0, true)
                     FrameChangeTexture(button.button, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp")
@@ -80,6 +86,7 @@ do
                 UnregisterPlayerSkillHotkey(player, skill)
                 if key_button_data.skill then UnregisterPlayerSkillHotkey(player, key_button_data.skill) end
                 BindAbilityKey(PlayerHero[player], skill.Id, key)
+                OnSkillBind(PlayerHero[player], skill.Id)
                 BlzFrameSetTexture(key_button_data.image, skill.icon, 0, true)
                 FrameChangeTexture(key_button_data.button, skill.icon)
                 key_button_data.skill = skill
@@ -115,6 +122,8 @@ do
                         FrameChangeTexture(button_data.button, button_data.skill.icon)
                         if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(SkillPanelFrame[player].displayed_skill_button[i], true) end
                         BlzFrameSetText(button_data.name_text, button_data.skill.name)
+                        if button_data.skill.short_name then BlzFrameSetScale(button_data.name_text, 0.7)
+                        else BlzFrameSetScale(button_data.name_text, 0.86) end
                         BlzFrameSetText(button_data.level_text, LOCALE_LIST[my_locale].SKILL_PANEL_LVL_TEXT .. UnitGetAbilityLevel(PlayerHero[player], button_data.skill.Id))
 
                     else
@@ -205,6 +214,11 @@ do
                     BlzFrameSetPoint(new_FrameBorder, FRAMEPOINT_TOPRIGHT, new_Frame, FRAMEPOINT_TOPRIGHT, 0.0074, 0.0074)
                     BlzFrameSetPoint(new_FrameBorder, FRAMEPOINT_BOTTOMLEFT, new_Frame, FRAMEPOINT_BOTTOMLEFT, -0.0074, -0.0074)
             elseif button_type > 0 then
+                local new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", new_FrameImage, "", 0)
+
+                BlzFrameSetSize(new_FrameBorder, size_x, size_y)
+                BlzFrameSetTexture(new_FrameBorder, "UI\\inventory_frame.blp", 0, true)
+                BlzFrameSetAllPoints(new_FrameBorder, new_FrameImage)
                 local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", new_FrameImage, "", 0)
                 local sprite = CreateSpriteNoCollision("UI\\aganim_sprite.mdx", 0.65, new_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, -0.0048, -0.0048, new_Frame)
 
@@ -228,6 +242,12 @@ do
                     elseif button_type == KEY_R then BlzFrameSetText(new_FrameText, "R")
                     elseif button_type == KEY_D then BlzFrameSetText(new_FrameText, "D")
                     elseif button_type == KEY_F then BlzFrameSetText(new_FrameText, "F") end
+            else
+                local new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", new_FrameImage, "", 0)
+
+                    BlzFrameSetSize(new_FrameBorder, size_x, size_y)
+                    BlzFrameSetTexture(new_FrameBorder, "UI\\inventory_frame.blp", 0, true)
+                    BlzFrameSetAllPoints(new_FrameBorder, new_FrameImage)
 
             end
 
@@ -420,10 +440,14 @@ do
             SkillPanelFrame[player].button_keys = {}
             SkillPanelFrame[player].button_keys[KEY_Q] = NewButton(KEY_Q, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.035, 0.035, skill_bind_panel, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.017, 0., main_frame)
             BackupButtonData[player][KEY_Q] = GetButtonData(SkillPanelFrame[player].button_keys[KEY_Q])
+            --BlzTriggerRegisterFrameEvent(ProjectionKeyButtonTrigger, SkillPanelFrame[player].button_keys[KEY_Q], FRAMEEVENT_MOUSE_ENTER)
+            --BlzTriggerRegisterFrameEvent(ProjectionKeyButtonTrigger, SkillPanelFrame[player].button_keys[KEY_Q], FRAMEEVENT_MOUSE_LEAVE)
 
                 for key = 2, KEY_F do
                     SkillPanelFrame[player].button_keys[key] = NewButton(key, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.035, 0.035, SkillPanelFrame[player].button_keys[key-1], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0012, 0., SkillPanelFrame[player].button_keys[key-1])
                     BackupButtonData[player][key] = GetButtonData(SkillPanelFrame[player].button_keys[key])
+                    --BlzTriggerRegisterFrameEvent(ProjectionKeyButtonTrigger, SkillPanelFrame[player].button_keys[key], FRAMEEVENT_MOUSE_ENTER)
+                    --BlzTriggerRegisterFrameEvent(ProjectionKeyButtonTrigger, SkillPanelFrame[player].button_keys[key], FRAMEEVENT_MOUSE_LEAVE)
                 end
 
 
@@ -588,18 +612,141 @@ do
         LeaveTrigger = CreateTrigger()
 
 
+        ProjectionKeyButtonTrigger = CreateTrigger()
+        PlayerProjection = {}
+        local players_projections_timer = {}
+
+        for i = 1, 6 do
+            players_projections_timer[i] = CreateTimer()
+        end
+
+        last_EnteredFrame = {}
+        last_EnteredFrameTimer = {}
+
+        for i = 1, 6 do
+            last_EnteredFrameTimer[i] = CreateTimer()
+        end
 
 
         TriggerAddAction(LeaveTrigger, function()
-            RemoveTooltip(GetPlayerId(GetTriggerPlayer()) + 1)
+            --local player = GetPlayerId(GetTriggerPlayer())+1
+
+                --RemoveTooltip(player)
+
+                --TimerStart(players_projections_timer[player], 4., false, function()
+                    --if PlayerProjection[player] then
+                      --  DestroyVisual(PlayerProjection[player])
+                      --  PlayerProjection[player] = nil
+                   -- end
+              --  end)
+
         end)
 
         TriggerAddAction(EnterTrigger, function()
             local button_data = GetButtonData(BlzGetTriggerFrame())
             local player = GetPlayerId(GetTriggerPlayer()) + 1
 
+            TimerStart(last_EnteredFrameTimer[player], GLOBAL_TOOLTIP_FADE_TIME, false, function()
+                RemoveTooltip(player)
+
+                TimerStart(players_projections_timer[player], 4., false, function()
+                    if PlayerProjection[player] then
+                        DestroyVisual(PlayerProjection[player])
+                        PlayerProjection[player] = nil
+                    end
+                end)
+                last_EnteredFrame[player] = nil
+                --print("remove timed")
+            end)
+
+            if last_EnteredFrame[player] == BlzGetTriggerFrame() then
+                --print("same frame")
+                return
+            else
+                RemoveTooltip(player)
+
+                TimerStart(players_projections_timer[player], 4., false, function()
+                    if PlayerProjection[player] then
+                        DestroyVisual(PlayerProjection[player])
+                        PlayerProjection[player] = nil
+                    end
+                end)
+                --print("remove")
+            end
+
+        last_EnteredFrame[player] = BlzGetTriggerFrame()
+
                 if button_data.skill ~= nil then
                     ShowSkillTooltip(button_data.skill, SkillPanelFrame[player].tooltip, button_data, player)
+                    local skill = button_data.skill
+
+                        if skill.projection then
+
+                            if PlayerProjection[player] then
+                                DestroyVisual(PlayerProjection[player])
+                                PlayerProjection[player] = nil
+                            end
+
+                            TimerStart(players_projections_timer[player], 0., false, nil)
+                            local level = UnitGetAbilityLevel(PlayerHero[player], skill.Id)
+
+                                if skill.projection.type == PROJECTION_TYPE_ARROW then
+                                    local missile = GetMissileData(skill.level[level].missile or skill.projection.missile) or nil
+                                    local distance = 0.
+                                    local radius = 0.
+
+                                    if missile then
+                                        distance = missile.max_distance
+                                        radius = missile.radius
+                                    else
+                                        distance = skill.projection.max_distance
+                                        radius = skill.projection.radius
+                                    end
+
+                                        PlayerProjection[player] = CreateStraightVisual(distance, PlayerHero[player], radius, GetUnitFacing(PlayerHero[player]))
+                                elseif skill.projection.type == PROJECTION_TYPE_ARC then
+                                    local effect = GetEffectData(skill.level[level].effect or skill.projection.effect)
+                                    local angle_window
+                                    local range
+
+                                        if effect then
+                                            angle_window = effect.level[level].angle_window
+                                            range = effect.level[level].area_of_effect
+                                        else
+                                            angle_window = skill.projection.angle_window
+                                            range = skill.projection.area_of_effect
+                                        end
+
+                                    if skill.projection.angle_window_delta then
+                                        angle_window = angle_window + (math.floor((skill.projection.angle_window_delta / (skill.projection.angle_window_delta_level or 1)) + 0.5) * level)
+                                    end
+
+                                    PlayerProjection[player] = CreateArcAreaVisual(range, PlayerHero[player], angle_window)
+                                elseif skill.projection.type == PROJECTION_TYPE_AREA then
+                                    local effect = GetEffectData(skill.level[level].effect or skill.projection.effect)
+
+                                        if effect then
+                                            PlayerProjection[player] = CreateRadiusVisual(effect.level[level].area_of_effect, PlayerHero[player])
+                                        else
+
+                                            if skill.projection.area_of_effect then
+                                                local range = skill.projection.area_of_effect
+
+                                                    if skill.projection.area_of_effect_delta then
+                                                        range = range + (math.floor((skill.projection.area_of_effect_delta / (skill.projection.area_of_effect_delta_level or 1)) + 0.5) * level)
+                                                    end
+
+                                                PlayerProjection[player] = CreateRadiusVisual(range, PlayerHero[player])
+                                            elseif skill.level[level].range then
+                                                PlayerProjection[player] = CreateRadiusVisual(skill.level[level].range or skill.projection.area_of_effect, PlayerHero[player])
+                                            end
+
+
+                                        end
+
+                                end
+
+                        end
                 end
 
         end)

@@ -122,7 +122,7 @@ do
                 BlzFrameSetVisible(PlayerUI.skill_button_hotkey[i], true)
             end
 
-            for i = 1, 6 do BlzFrameSetVisible(PlayerUI.button_borders[i], true) end
+            for i = 1, #PlayerUI.button_borders do BlzFrameSetVisible(PlayerUI.button_borders[i], true) end
 
             BlzFrameSetVisible(PlayerUI.hp_text_frame, true)
             BlzFrameSetVisible(PlayerUI.mp_text_frame, true)
@@ -317,7 +317,7 @@ do
 
                 BlzFrameClearAllPoints(minimap)
                 --BlzFrameSetVisible(minimap, true)
-                BlzFrameSetPoint(minimap, FRAMEPOINT_TOPRIGHT, GAME_UI, FRAMEPOINT_TOPRIGHT, -0.03, 0.)
+                BlzFrameSetPoint(minimap, FRAMEPOINT_TOPRIGHT, GAME_UI, FRAMEPOINT_TOPRIGHT, -0.04, 0.)
                 BlzFrameSetPoint(minimap_border, FRAMEPOINT_TOPRIGHT, minimap, FRAMEPOINT_TOPRIGHT, 0.008, -0.02)
                 BlzFrameSetPoint(minimap_border, FRAMEPOINT_BOTTOMLEFT, minimap, FRAMEPOINT_BOTTOMLEFT, -0.008, 0.019)
                 BlzFrameSetVisible(minimap_border, false)
@@ -458,7 +458,6 @@ do
                     FileLoad("CastleRevival\\slot3.txt")
                     FileLoad("CastleRevival\\slot4.txt")
                     FileLoad("CastleRevival\\slot5.txt")
-                    --UpdateStashWindow(current_player)
 
                 end)
 
@@ -469,7 +468,9 @@ do
                     CreateUIBorder(GlobalButton[player].inventory_panel_button, 0.),
                     CreateUIBorder(GlobalButton[player].talents_panel_button, 0.),
                     CreateUIBorder(GlobalButton[player].journal_panel_button, 0.),
-                    CreateUIBorder(GlobalButton[player].settings_panel_button, 0.)
+                    CreateUIBorder(GlobalButton[player].settings_panel_button, 0.),
+                    CreateUIBorder(GlobalButton[player].dash_button, 0.),
+                    --CreateUIBorder(GlobalButton[player].switch_button, 0.)
                 }
 
                 PlayerUI.arrow = CreateSprite("UI\\arrow.mdx", 0.001, GlobalButton[player].skill_panel_button, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.01, PlayerUI.button_borders[2])
@@ -481,13 +482,15 @@ do
                 BlzFrameSetPoint(PlayerUI.arrow_ability_text, FRAMEPOINT_TOPLEFT, PlayerUI.arrow, FRAMEPOINT_TOPRIGHT, 0.04, 0.1)
                 BlzFrameSetTextAlignment(PlayerUI.arrow_ability_text, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_MIDDLE)
 
-                if SkillPanelTutorialData[player] then
-                    BlzFrameSetVisible(PlayerUI.arrow, true)
-                    BlzFrameSetVisible(PlayerUI.arrow_ability_text, true)
-                else
-                    BlzFrameSetVisible(PlayerUI.arrow, false)
-                    BlzFrameSetVisible(PlayerUI.arrow_ability_text, false)
-                end
+                BlzFrameSetVisible(PlayerUI.arrow, SkillPanelTutorialData[player] or false)
+                BlzFrameSetVisible(PlayerUI.arrow_ability_text, SkillPanelTutorialData[player] or false)
+
+                PlayerUI.discord_box = BlzCreateFrame("EscMenuEditBoxTemplate", GAME_UI, 0, 0)
+                BlzFrameSetPoint(PlayerUI.discord_box, FRAMEPOINT_TOPRIGHT, GAME_UI, FRAMEPOINT_TOPRIGHT, -0.016, 0.0)
+                BlzFrameSetText(PlayerUI.discord_box, PlayerUI.discord_text)
+                BlzFrameSetVisible(PlayerUI.discord_box, true)
+                BlzFrameSetSize(PlayerUI.discord_box, 0.14, 0.028)
+                BlzFrameSetTextSizeLimit(PlayerUI.discord_box, #PlayerUI.discord_text)
 
             end
         end
@@ -559,19 +562,29 @@ do
             PlayerUI.skill_button_borders = {}
             PlayerUI.skill_button_hotkey = {}
             PlayerUI.skill_button_charges = {}
+            PlayerUI.skill_button = {}
+            PlayerUI.skill_button_bar = {}
 
+            for i = 1, 6 do
+                PlayerUI.skill_button_bar[i] = {}
+            end
 
+            local button_list = {}
             local button = BlzGetFrameByName("CommandButton_10", 0)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, PlayerUI.action_bar, FRAMEPOINT_BOTTOM, -0.003, 0.0345)
             PlayerUI.skill_button_hotkey[1] = CreateSimpleChargesText(button, "E", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[1] = CreateUIBorder(button, 0.0035)
+            button_list[KEY_E] = button
+            --PlayerUI.skill_button[KEY_E] = button
 
             button = BlzGetFrameByName("CommandButton_9", 0)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, BlzGetFrameByName("CommandButton_10", 0), FRAMEPOINT_LEFT, -0.006, 0.)
             PlayerUI.skill_button_hotkey[2] = CreateSimpleChargesText(button, "W", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[2] = CreateUIBorder(button, 0.0035)
+            button_list[KEY_W] = button
+            --PlayerUI.skill_button[KEY_W] = button
 
 
             button = BlzGetFrameByName("CommandButton_8", 0)
@@ -579,7 +592,8 @@ do
             BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, BlzGetFrameByName("CommandButton_9", 0), FRAMEPOINT_LEFT, -0.006, 0.)
             PlayerUI.skill_button_hotkey[3] = CreateSimpleChargesText(button, "Q", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[3] = CreateUIBorder(button, 0.0035)
-
+            button_list[KEY_Q] = button
+            --PlayerUI.skill_button[KEY_Q] = button
 
 
             button = BlzGetFrameByName("CommandButton_11", 0)
@@ -587,18 +601,43 @@ do
             BlzFrameSetPoint(button, FRAMEPOINT_LEFT, PlayerUI.action_bar, FRAMEPOINT_BOTTOM, 0.003, 0.0345)
             PlayerUI.skill_button_hotkey[4] = CreateSimpleChargesText(button, "R", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[4] = CreateUIBorder(button, 0.0035)
+            button_list[KEY_R] = button
+            --PlayerUI.skill_button[KEY_R] = button
 
             button = BlzGetFrameByName("CommandButton_6", 0)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_LEFT, BlzGetFrameByName("CommandButton_11", 0), FRAMEPOINT_RIGHT, 0.006, 0.)
             PlayerUI.skill_button_hotkey[5] = CreateSimpleChargesText(button, "D", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[5] = CreateUIBorder(button, 0.0035)
+            button_list[KEY_D] = button
+            --PlayerUI.skill_button[KEY_D] = button
 
             button = BlzGetFrameByName("CommandButton_7", 0)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_LEFT, BlzGetFrameByName("CommandButton_6", 0), FRAMEPOINT_RIGHT, 0.006, 0.)
             PlayerUI.skill_button_hotkey[6] = CreateSimpleChargesText(button, "F", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[6] = CreateUIBorder(button, 0.0035)
+            button_list[KEY_F] = button
+            --PlayerUI.skill_button[KEY_F] = button
+
+            --[[
+            for player = 1, 6 do
+                for key = 1, 6 do
+                    PlayerUI.skill_button_bar[player][key] = BlzCreateSimpleFrame("MyBar", button_list[key], 0)
+                        BlzFrameSetPoint(PlayerUI.skill_button_bar[player][key], FRAMEPOINT_BOTTOMLEFT, button_list[key], FRAMEPOINT_TOPLEFT, 0., 0.002)
+                        BlzFrameSetPoint(PlayerUI.skill_button_bar[player][key], FRAMEPOINT_BOTTOMRIGHT, button_list[key], FRAMEPOINT_TOPRIGHT, 0., 0.002)
+                        BlzFrameSetValue(PlayerUI.skill_button_bar[player][key], 100)
+                        BlzFrameSetTexture(PlayerUI.skill_button_bar[player][key], "Replaceabletextures\\Teamcolor\\Teamcolor00.blp", 0, true)
+                        BlzFrameSetSize(PlayerUI.skill_button_bar[player][key], 0.208, 0.005)
+
+                        if GetLocalPlayer() == Player(player - 1) then
+                            BlzFrameSetVisible(PlayerUI.skill_button_bar[player][key], true)
+                        else
+                            BlzFrameSetVisible(PlayerUI.skill_button_bar[player][key], false)
+                        end
+
+                end
+            end]]
 
 
             for i = 1, 6 do
@@ -691,7 +730,7 @@ do
 
             BlzFrameClearAllPoints(minimap)
             --BlzFrameSetVisible(minimap, true)
-            BlzFrameSetPoint(minimap, FRAMEPOINT_TOPRIGHT, GAME_UI, FRAMEPOINT_TOPRIGHT, -0.03, 0.)
+            BlzFrameSetPoint(minimap, FRAMEPOINT_TOPRIGHT, GAME_UI, FRAMEPOINT_TOPRIGHT, -0.04, 0.)
             BlzFrameSetPoint(minimap_border, FRAMEPOINT_TOPRIGHT, minimap, FRAMEPOINT_TOPRIGHT, 0.008, -0.02)
             BlzFrameSetPoint(minimap_border, FRAMEPOINT_BOTTOMLEFT, minimap, FRAMEPOINT_BOTTOMLEFT, -0.008, 0.019)
             BlzFrameSetVisible(minimap_border, false)
@@ -860,10 +899,12 @@ do
                 CreateUIBorder(GlobalButton[1].inventory_panel_button, 0.),
                 CreateUIBorder(GlobalButton[1].talents_panel_button, 0.),
                 CreateUIBorder(GlobalButton[1].journal_panel_button, 0.),
-                CreateUIBorder(GlobalButton[1].settings_panel_button, 0.)
+                CreateUIBorder(GlobalButton[1].settings_panel_button, 0.),
+                CreateUIBorder(GlobalButton[1].dash_button, 0.),
+                --CreateUIBorder(GlobalButton[1].switch_button, 0.)
             }
 
-            for i = 1, 6 do BlzFrameSetVisible(PlayerUI.button_borders[i], false) end
+            for i = 1, #PlayerUI.button_borders do BlzFrameSetVisible(PlayerUI.button_borders[i], false) end
             BlzFrameSetVisible(PlayerUI.xp_bar, false)
 
 
@@ -878,6 +919,21 @@ do
 
             BlzFrameSetVisible(PlayerUI.arrow, false)
             BlzFrameSetVisible(PlayerUI.arrow_ability_text, false)
+
+            PlayerUI.discord_box = BlzCreateFrame("EscMenuEditBoxTemplate", GAME_UI, 0, 0)
+            BlzFrameSetPoint(PlayerUI.discord_box, FRAMEPOINT_TOPRIGHT, GAME_UI, FRAMEPOINT_TOPRIGHT, -0.016, 0.)
+            PlayerUI.discord_text = "https://discord.gg/HwHMHvcbgj"
+            BlzFrameSetText(PlayerUI.discord_box, PlayerUI.discord_text)
+            BlzFrameSetVisible(PlayerUI.discord_box, true)
+            BlzFrameSetSize(PlayerUI.discord_box, 0.14, 0.028)
+            BlzFrameSetTextSizeLimit(PlayerUI.discord_box, #PlayerUI.discord_text)
+
+            PlayerUI.discord_trigger = CreateTrigger()
+            BlzTriggerRegisterFrameEvent(PlayerUI.discord_trigger, PlayerUI.discord_box, FRAMEEVENT_EDITBOX_ENTER)
+            TriggerAddAction(PlayerUI.discord_trigger, function()
+                BlzFrameSetText(PlayerUI.discord_box, PlayerUI.discord_text)
+            end)
+
 
     end
 

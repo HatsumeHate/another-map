@@ -1,11 +1,16 @@
 do
 
-
+    --- index 1
     KEY_Q = 1
+    --- index 2
     KEY_W = 2
+    --- index 3
     KEY_E = 3
+    --- index 4
     KEY_R = 4
+    --- index 5
     KEY_D = 5
+    --- index 6
     KEY_F = 6
 
 
@@ -423,6 +428,20 @@ do
         return 0
     end
 
+    ---@param id integer
+    ---@param player integer
+    ---@return string
+    function GetKeybindAbilityString(id, player)
+
+        for key = KEY_Q, KEY_F do
+            if KEYBIND_LIST[key].ability == id then
+                return KEYBIND_LIST[key].player_skill_bind_string_id[player]
+            end
+        end
+
+        return "0"
+    end
+
 
     ---@param unit unit
     ---@param id string
@@ -701,11 +720,15 @@ do
             end
 
             TimerStart(unit_data.action_timer, 0., false, nil)
+            if unit_data.nudge_timer then DestroyTimer(unit_data.nudge_timer); unit_data.nudge_timer = nil end
             --PauseTimer(unit_data.action_timer)
 
                 if unit_data.castsound then
-                    DestroyTimer(unit_data.sound_delay_timer)
-                    StopSound(unit_data.castsound, true, true)
+                    for i = 1, #unit_data.castsound do
+                        DestroyTimer(unit_data.sound_delay_timer[i])
+                        StopSound(unit_data.castsound[i], true, true)
+                    end
+                    unit_data.castsound = nil
                 end
 
                 if unit_data.cast_skill > 0 then
@@ -726,6 +749,7 @@ do
             IssueImmediateOrderById(unit, order_stop)
             SetUnitAnimation(unit, "Stand Ready")
             SetUnitTimeScale(unit, 1.)
+            if unit_data.nudge_timer then DestroyTimer(unit_data.nudge_timer); unit_data.nudge_timer = nil end
             --DestroyTimer(unit_data.sound_delay_timer)
 
             if unit_data.cast_effect_permanent_pack then
@@ -735,6 +759,7 @@ do
                 end
                 unit_data.cast_effect_permanent_pack = nil
             end
+        --print("backswing end")
 
     end
 
@@ -746,6 +771,205 @@ do
         end
 
         return false
+    end
+
+
+
+    function EnableHeroSkills(player)
+        local unit_data = GetUnitData(PlayerHero[player])
+
+            if IsUnitFeared(PlayerHero[player]) then return end
+
+            for key = 1, 6 do BlzUnitDisableAbility(PlayerHero[player], KEYBIND_LIST[key].ability, false, false) end
+            UnitRemoveAbility(PlayerHero[player], FourCC("ARal"))
+
+    end
+
+    function DisableHeroSkills(player)
+        local unit_data = GetUnitData(PlayerHero[player])
+
+            if unit_data.channeled_destructor then unit_data.channeled_destructor(PlayerHero[player]); unit_data.channeled_destructor = nil end
+            for key = 1, 6 do BlzUnitDisableAbility(PlayerHero[player], KEYBIND_LIST[key].ability, true, false) end
+            UnitAddAbility(PlayerHero[player], FourCC("ARal"))
+    end
+
+
+    ---@param source unit
+    ---@param target unit
+    ---@param action_id string
+    ---@param point_x real
+    ---@param point_y real
+    ---@param ability_instance table
+    function DoAction(source, target, action_id, point_x, point_y, ability_instance)
+        local unit_data = GetUnitData(source)
+        local action = GetActionData(action_id)
+        local angle = 0
+
+
+        if not target and (not point_x or point_x == 0) then
+            point_x = GetUnitX(source)
+            point_y = GetUnitY(source)
+            angle = GetUnitFacing(source)
+        else
+            angle = target and AngleBetweenUnits(source, target) or AngleBetweenUnitXY(source, point_x, point_y)
+        end
+
+            if unit_data.channeled_destructor then
+                unit_data.channeled_destructor(source)
+                unit_data.channeled_destructor = nil
+            end
+
+
+            local animation = nil
+            local sequence = nil
+
+            if action.animation then
+                animation = action.animation
+                sequence = animation.sequence
+            end
+
+            if sequence and sequence.tags and unit_data.animation_tag then
+                sequence = sequence.tags[unit_data.animation_tag] or animation.sequence
+            end
+
+            --print(animation.timescale or 1.)
+            local time_reduction = (animation.timescale or 1.) + (sequence.bonus_timescale or 0.)
+
+            if action.action_type == SKILL_PHYSICAL then
+                time_reduction = time_reduction * (1. - unit_data.stats[ATTACK_SPEED].actual_bonus * 0.01)
+            elseif action.action_type == SKILL_MAGICAL then
+                time_reduction = time_reduction * (1. - unit_data.stats[CAST_SPEED].value * 0.01)
+            end
+
+            if time_reduction <= 0. then time_reduction = 0. end
+
+            SetUnitAnimationByIndex(source, 0)
+            ResetUnitAnimation(source)
+
+
+            local scale = 1. / time_reduction
+
+            if scale <= 0.01 then scale = 0.01 end
+            SetUnitTimeScale(source, scale * (sequence.animation_bonus_timescale or 1.))
+
+            local additional_data = {
+                time_reduction = time_reduction,
+                action_id = action_id,
+                level = 1,
+                tags = {}
+            }
+
+
+            OnAction(source, target, additional_data, ability_instance)
+            if GetUnitState(source, UNIT_STATE_LIFE) < 0.045 or (IsUnitStunned(source) or IsUnitFeared(source) or IsUnitFrozen(source)) then return end
+
+            SetUnitFacing(source, angle)
+            SafePauseUnit(source, true)
+            SetUnitAnimationByIndex(source, sequence.animation or 0)
+            if IsAHero(source) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(source))+1] = false end
+
+            PlayCastSfx(unit_data, action.sfx_pack or nil, time_reduction, target or nil, point_x, point_y)
+
+                if action.sound then
+                    local unit_x, unit_y = GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner)
+
+                    if not unit_data.castsound then
+                        unit_data.castsound = { }
+                        unit_data.sound_delay_timer = { }
+                    end
+
+                    for i = 1, #action.sound do
+                        local pack = action.sound[i]
+                        local num = #unit_data.castsound + 1
+
+                        unit_data.castsound[num] = CreateNew3DSound(pack[GetRandomInt(1, #pack)], unit_x, unit_y, 35., pack.volume or 128, pack.cutoff or 1600., false)
+                        unit_data.sound_delay_timer[num] = CreateTimer()
+                        local delay = (pack.delay or 0.) * time_reduction
+                        if delay < 0. then delay = 0. end
+
+                        TimerStart(unit_data.sound_delay_timer[num], delay, false, function()
+                            StartSound(unit_data.castsound[num])
+                            DestroyTimer(GetExpiredTimer())
+                        end)
+                    end
+
+                end
+
+
+            if action.motion then
+                local angle
+
+                    if not unit_data.nudge_timer then unit_data.nudge_timer = CreateTimer() end
+
+                    if target and target ~= unit_data.Owner then angle = AngleBetweenUnits(unit_data.Owner, target)
+                    elseif point_x ~= 0 then angle = AngleBetweenUnitXY(unit_data.Owner, point_x, point_y)
+                    else angle = AngleBetweenUnitXY(unit_data.Owner, PlayerMousePosition[GetPlayerId(GetOwningPlayer(unit_data.Owner))+1].x, PlayerMousePosition[GetPlayerId(GetOwningPlayer(unit_data.Owner))+1].y) end
+
+                    TimerStart(unit_data.nudge_timer, action.motion.delay * time_reduction, false, function()
+                        NudgeUnit(unit_data.Owner, angle + (action.motion.bonus_angle or 0.), action.motion.power, action.motion.time * time_reduction)
+                    end)
+
+            end
+
+
+            TimerStart(unit_data.action_timer, (sequence.animation_point or 0.) * time_reduction, false, function()
+
+                if unit_data.cast_effect_pack then
+                    for i = 1, #unit_data.cast_effect_pack do DestroyEffect(unit_data.cast_effect_pack[i]) end
+                    unit_data.cast_effect_pack = nil
+                end
+
+                    if action.missile then
+                        if target then
+                            if target == source then
+                                ThrowMissile(source, nil, action.missile, { effect = action.effect, additional_data.level, ability_instance = ability_instance }, GetUnitX(source), GetUnitY(source), 0., 0., GetUnitFacing(source), action.from_unit)
+                            else
+                                local angle = AngleBetweenUnits(source, target)
+                                SetUnitFacing(source, angle)
+                                ThrowMissile(source, target, action.missile, { effect = action.effect, additional_data.level, ability_instance = ability_instance }, GetUnitX(source), GetUnitY(source), GetUnitX(target), GetUnitY(target), angle, action.from_unit) end
+                        else
+                            ThrowMissile(source, nil, action.missile, { effect = action.effect, additional_data.level, ability_instance = ability_instance }, GetUnitX(source), GetUnitY(source), point_x, point_y, AngleBetweenUnitXY(source, point_x, point_y), action.from_unit)
+                        end
+                    elseif action.effect then
+                        if target and target ~= source then
+                            SetUnitFacing(source, AngleBetweenUnits(source, target))
+                            ApplyEffect(source, target, 0.,0., action.effect, additional_data.level, ability_instance)
+                        elseif target and target == source then
+                            ApplyEffect(source, target, GetUnitX(source), GetUnitY(source), action.effect, additional_data.level, ability_instance)
+                        else
+                            ApplyEffect(source, nil, point_x, point_y, action.effect, additional_data.level, ability_instance)
+                        end
+
+                    elseif action.aura then
+                        ToggleAuraOnUnit(unit_data.Owner, action.aura, additional_data.level, true, ability_instance)
+                    end
+
+                TimerStart(unit_data.action_timer, (sequence.animation_backswing or 0.) * time_reduction, false, function ()
+                    --print("start backswing")
+                    SpellBackswing(source)
+                end)
+
+                OnActionEnd(source, target, point_x, point_y, action_id, ability_instance)
+
+                if IsAHero(source) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(source))+1] = true end
+
+            end)
+
+    end
+
+
+
+    ---@param ability_instance table
+    ---@param instance string
+    ---@param value real
+    ---@param value_delta real
+    ---@param modifier integer
+    function ModifyAbilityInstance(ability_instance, instance, value, value_delta, modifier)
+        if not ability_instance then return end
+
+        if modifier == STRAIGHT_BONUS then ability_instance[instance] = (ability_instance[instance] or 0.) + value or 0.
+        else ability_instance[instance] = (ability_instance[instance] or 0.) + ((value_delta or 0.) * (value or 0.)) end
+
     end
 
 
@@ -823,18 +1047,33 @@ do
                             if BlzGetUnitAbilityManaCost(PlayerHero[player], KEYBIND_LIST[key].ability, 0) > GetUnitState(PlayerHero[player], UNIT_STATE_MANA) then
                                 Feedback_NoResource(player)
                             else
-                                local skill = GetSkillData(GetKeybindAbility(KEYBIND_LIST[key].ability, player))
+                                local skill = GetUnitSkillData(PlayerHero[player], KEYBIND_LIST[key].player_skill_bind_string_id[player]) --GetKeybindAbilityString(KEYBIND_LIST[key].ability, player))
 
                                     if skill.activation_type == SELF_CAST then
                                         IssueImmediateOrderById(PlayerHero[player], KEYBIND_LIST[key].order)
                                     else
+                                        local range
                                         local target = GetClosestUnitToCursor(player)
+                                        local angle = AngleBetweenUnitXY(PlayerHero[player], PlayerMousePosition[player].x, PlayerMousePosition[player].y)
 
-                                        if (skill.activation_type == POINT_AND_TARGET_CAST or skill.activation_type == TARGET_CAST) and target then
-                                            IssueTargetOrderById(PlayerHero[player], KEYBIND_LIST[key].order, target)
-                                        elseif skill.activation_type == POINT_AND_TARGET_CAST or skill.activation_type == POINT_CAST then
-                                            IssuePointOrderById(PlayerHero[player], KEYBIND_LIST[key].order, PlayerMousePosition[player].x, PlayerMousePosition[player].y)
-                                        end
+                                            if skill.always_max_range_cast then
+                                                range = skill.level[UnitGetAbilityLevel(PlayerHero[player], skill.Id)].range
+                                            else
+                                                range = math.min(DistanceBetweenUnitXY(PlayerHero[player], PlayerMousePosition[player].x, PlayerMousePosition[player].y), (skill.level[UnitGetAbilityLevel(PlayerHero[player], skill.Id)].range or 99999.))
+                                            end
+
+
+                                            if target and (skill.activation_type == TARGET_CAST or skill.activation_type == POINT_AND_TARGET_CAST) and IsUnitInRange(PlayerHero[player], target, range) then
+                                                IssueTargetOrderById(PlayerHero[player], KEYBIND_LIST[key].order, target)
+                                            else
+                                                IssuePointOrderById(PlayerHero[player], KEYBIND_LIST[key].order, GetUnitX(PlayerHero[player]) + Rx(range, angle), GetUnitY(PlayerHero[player]) + Ry(range, angle))
+                                            end
+
+                                       -- if (skill.activation_type == POINT_AND_TARGET_CAST or skill.activation_type == TARGET_CAST) and target then
+                                          --  IssueTargetOrderById(PlayerHero[player], KEYBIND_LIST[key].order, target)
+                                        --elseif skill.activation_type == POINT_AND_TARGET_CAST or skill.activation_type == POINT_CAST then
+                                           -- IssuePointOrderById(PlayerHero[player], KEYBIND_LIST[key].order, PlayerMousePosition[player].x, PlayerMousePosition[player].y)
+                                       -- end
 
                                     end
 
@@ -892,42 +1131,27 @@ do
 
             local track_skill_bug = false
 
-            RegisterTestCommand("trackskill", function()
-                track_skill_bug = true
-            end)
-
             local SkillCastTrigger = CreateTrigger()
             TriggerRegisterAnyUnitEventBJ(SkillCastTrigger, EVENT_PLAYER_UNIT_SPELL_EFFECT)
             TriggerAddAction(SkillCastTrigger, function()
 
-                if track_skill_bug then print("start spell effect") end
-
                 local id = GetSpellAbilityId()
                 local skill = GetKeybindAbility(id, GetPlayerId(GetOwningPlayer(GetTriggerUnit())) + 1)
-
-                if track_skill_bug then print("keybind") end
-                if track_skill_bug then print("skill " .. skill) end
 
                 if skill == 0 then skill = GetSkillData(id)
                 else skill = GetSkillData(skill) end
 
-
-                if track_skill_bug then print("skill name " .. skill.name) end
 
                 if skill then
 
                     local unit_data = GetUnitData(GetTriggerUnit())
                     skill = GetUnitSkillData(unit_data.Owner, skill.Id)
 
-
                     if skill == nil then return end
-
-                    if track_skill_bug then print("skill exists") end
 
                     local ability_level = UnitGetAbilityLevel(unit_data.Owner, skill.Id)
                     local manacost = ((skill.level[ability_level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
 
-                    if track_skill_bug then print("skill manacosts") end
                     if skill.level[ability_level].required_weapon then
                         if not CanCastSkillWithWeapon(skill, ability_level, unit_data.equip_point[WEAPON_POINT].SUBTYPE) then
                             local unit = GetTriggerUnit()
@@ -940,7 +1164,7 @@ do
                         end
                     end
 
-if track_skill_bug then print("skill requirements") end
+
                     local target = GetSpellTargetUnit()
                     local spell_x = GetSpellTargetX()
                     local spell_y = GetSpellTargetY()
@@ -951,7 +1175,7 @@ if track_skill_bug then print("skill requirements") end
                         if target == nil then x, y = spell_x, spell_y
                         else x, y = GetUnitX(target), GetUnitY(target) end
 
-                            if not skill.custom_condition(unit_data.Owner, x, y) then
+                            if not skill.custom_condition(unit_data.Owner, x, y, target) then
                                 IssueImmediateOrderById(unit_data.Owner, order_stop)
                                 DelayAction(0.0, function() SetUnitState(unit_data.Owner, UNIT_STATE_MANA, GetUnitState(unit_data.Owner, UNIT_STATE_MANA) + manacost) end)
                                 Feedback_CantUse(GetPlayerId(GetOwningPlayer(unit_data.Owner)) + 1)
@@ -959,7 +1183,7 @@ if track_skill_bug then print("skill requirements") end
                             end
 
                     end
-if track_skill_bug then print("skill custom cond") end
+
 
                     if not skill.channel then
                         if unit_data.channeled_destructor then
@@ -967,7 +1191,7 @@ if track_skill_bug then print("skill custom cond") end
                             unit_data.channeled_destructor = nil
                         end
                     end
-if track_skill_bug then print("skill channel break") end
+
 
                     local animation = nil
                     local sequence = nil
@@ -1000,7 +1224,7 @@ if track_skill_bug then print("skill channel break") end
                     --else scale = 1. + (1. - time_reduction) end
 
                     if scale <= 0.01 then scale = 0.01 end
-                    SetUnitTimeScale(unit_data.Owner, scale)
+                    SetUnitTimeScale(unit_data.Owner, scale * (sequence.animation_bonus_timescale or 1.))
 
                     --print("result cast time is " .. ((sequence.animation_point or 0.) * time_reduction))
                     --print("skill cooldown is " .. R2S(skill.level[ability_level].cooldown))
@@ -1010,13 +1234,15 @@ if track_skill_bug then print("skill channel break") end
                     local skill_additional_data = {
                         time_reduction = time_reduction,
                         ability_level = ability_level,
-                        cooldown = (skill.level[ability_level].cooldown or 0.1) + ((sequence.animation_point or 0.) * time_reduction),
+                        cooldown = ((skill.level[ability_level].cooldown or 0.1) + ((sequence.animation_point or 0.) * time_reduction)) * GetUnitParameterValue(unit_data.Owner, COOLDOWN_REDUCTION),
                         manacost = manacost,
-                        tags = {}
+                        tags = {},
                     }
 
                     --local manacost = ((skill.level[ability_level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
                     if skill_additional_data.manacost < 0. then skill_additional_data.manacost = 0 end
+
+                    if IsAHero(unit_data.Owner) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(unit_data.Owner))+1] = false end
 
                     OnSkillPrecast(unit_data.Owner, target, skill, ability_level, skill_additional_data)
 
@@ -1080,10 +1306,20 @@ if track_skill_bug then print("skill channel break") end
                     unit_data.cast_skill_mana = skill_additional_data.manacost
 
                     SafePauseUnit(unit_data.Owner, true)
-                    --BlzPauseUnitEx(unit_data.Owner, true)
                     SetUnitAnimationByIndex(unit_data.Owner, sequence.animation or 0)
 
-                    --local cast_effect_pack
+                    if skill.motion then
+                        if not unit_data.nudge_timer then unit_data.nudge_timer = CreateTimer() end
+                        local angle
+
+                            if target and target ~= unit_data.Owner then angle = AngleBetweenUnits(unit_data.Owner, target)
+                            elseif spell_x ~= 0 then angle = AngleBetweenUnitXY(unit_data.Owner, spell_x, spell_y)
+                            else angle = AngleBetweenUnitXY(unit_data.Owner, PlayerMousePosition[GetPlayerId(GetOwningPlayer(unit_data.Owner))+1].x, PlayerMousePosition[GetPlayerId(GetOwningPlayer(unit_data.Owner))+1].y) end
+
+                        TimerStart(unit_data.nudge_timer, skill.motion.delay * time_reduction, false, function()
+                            NudgeUnit(unit_data.Owner, angle + (skill.motion.bonus_angle or 0.), skill.motion.power, skill.motion.time * time_reduction)
+                        end)
+                    end
 
                     PlayCastSfx(unit_data, skill.sfx_pack, time_reduction, target, spell_x, spell_y)
 
@@ -1098,22 +1334,36 @@ if track_skill_bug then print("skill channel break") end
                             DestroyEffect(bj_lastCreatedEffect)
                         end
 
-                        if skill.sound and skill.sound.pack then
-                            unit_data.castsound = CreateNew3DSound(skill.sound.pack[GetRandomInt(1, #skill.sound.pack)], GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), 35., skill.sound.volume, skill.sound.cutoff, false)
-                            unit_data.sound_delay_timer = CreateTimer()
-                            local delay = (skill.sound.delay or 0.) * time_reduction
-                            if delay < 0. then delay = 0. end
 
-                                TimerStart(unit_data.sound_delay_timer, delay, false, function()
-                                    if unit_data.castsound then StartSound(unit_data.castsound) end
-                                    DestroyTimer(GetExpiredTimer())
-                                end)
+                        if skill.sound then
+                            local unit_x, unit_y = GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner)
+
+                            if not unit_data.castsound then
+                                unit_data.castsound = { }
+                                unit_data.sound_delay_timer = { }
+                            end
+
+                            for i = 1, #skill.sound do
+                                local pack = skill.sound[i]
+                                local num = #unit_data.castsound + 1
+
+                                unit_data.castsound[num] = CreateNew3DSound(pack[GetRandomInt(1, #pack)], unit_x, unit_y, 35., pack.volume or 128., pack.cutoff or 1600., false)
+                                unit_data.sound_delay_timer[num] = CreateTimer()
+                                local delay = (pack.delay or 0.) * time_reduction
+                                if delay < 0. then delay = 0. end
+
+                                    TimerStart(unit_data.sound_delay_timer[num], delay, false, function()
+                                        StartSound(unit_data.castsound[num])
+                                        DestroyTimer(GetExpiredTimer())
+                                    end)
+                            end
 
                         end
 
-                    OnSkillCast(unit_data.Owner, target, spell_x, spell_y, skill, ability_level)
-
                     if GetUnitState(unit_data.Owner, UNIT_STATE_LIFE) < 0.045 or HasAnyDisableState(unit_data.Owner) then return end
+
+                    OnSkillCast(unit_data.Owner, target, spell_x, spell_y, skill, ability_level, skill_additional_data)
+
 
                         TimerStart(unit_data.action_timer, (sequence.animation_point or 0.) * time_reduction, false, function()
                             unit_data.cast_skill = 0
@@ -1135,20 +1385,20 @@ if track_skill_bug then print("skill channel break") end
                                         if target then
                                             if target == unit_data.Owner then
                                                 --print("throw missile")
-                                                ThrowMissile(unit_data.Owner, nil, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level, tags = skill_additional_data.tags },
+                                                ThrowMissile(unit_data.Owner, nil, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level, ability_instance = skill_additional_data },
                                                     GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), 0., 0., GetUnitFacing(unit_data.Owner), skill.level[ability_level].from_unit)
                                                 --print("throw missile end")
                                             else
                                                 --print("throw missile")
                                                 local angle = AngleBetweenUnits(unit_data.Owner, target)
                                                 SetUnitFacing(unit_data.Owner, angle)
-                                                ThrowMissile(unit_data.Owner, target, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level, tags = skill_additional_data.tags },
+                                                ThrowMissile(unit_data.Owner, target, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level, ability_instance = skill_additional_data },
                                                     GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), GetUnitX(target), GetUnitY(target), angle, skill.level[ability_level].from_unit)
                                                 --print("throw missile end")
                                             end
                                         else
                                             --print("throw missile")
-                                            ThrowMissile(unit_data.Owner, nil, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level, tags = skill_additional_data.tags },
+                                            ThrowMissile(unit_data.Owner, nil, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level, ability_instance = skill_additional_data },
                                                     GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), spell_x, spell_y, AngleBetweenUnitXY(unit_data.Owner, spell_x, spell_y), skill.level[ability_level].from_unit)
                                             --print("throw missile end")
                                         end
@@ -1156,13 +1406,15 @@ if track_skill_bug then print("skill channel break") end
                                     elseif skill.level[ability_level].effect then
                                         if target and target ~= unit_data.Owner then
                                             SetUnitFacing(unit_data.Owner, AngleBetweenUnits(unit_data.Owner, target))
-                                            ApplyEffect(unit_data.Owner, target, 0.,0., skill.level[ability_level].effect, ability_level, skill_additional_data.tags)
+                                            ApplyEffect(unit_data.Owner, target, 0.,0., skill.level[ability_level].effect, ability_level, skill_additional_data)
                                         elseif target and target == unit_data.Owner then
-                                            ApplyEffect(unit_data.Owner, target, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), skill.level[ability_level].effect, ability_level, skill_additional_data.tags)
+                                            ApplyEffect(unit_data.Owner, target, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), skill.level[ability_level].effect, ability_level, skill_additional_data)
                                         else
-                                            ApplyEffect(unit_data.Owner, nil, spell_x, spell_y, skill.level[ability_level].effect, ability_level, skill_additional_data.tags)
+                                            ApplyEffect(unit_data.Owner, nil, spell_x, spell_y, skill.level[ability_level].effect, ability_level, skill_additional_data)
                                         end
 
+                                    elseif skill.level[ability_level].aura then
+                                        ToggleAuraOnUnit(unit_data.Owner, skill.level[ability_level].aura, ability_level, true, skill_additional_data)
                                     end
                                 end
 
@@ -1170,7 +1422,13 @@ if track_skill_bug then print("skill channel break") end
                                 SpellBackswing(unit_data.Owner)
                             end)
 
-                            OnSkillCastEnd(unit_data.Owner, target, spell_x, spell_y, skill, ability_level)
+                            OnSkillCastEnd(unit_data.Owner, target, spell_x, spell_y, skill, ability_level, skill_additional_data)
+
+                            if skill.sound and skill.sound.on_cast_end then
+                                AddSoundVolume(skill.sound.on_cast_end[GetRandomInt(1, #skill.sound.on_cast_end)], GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), skill.sound.on_cast_end.volume or 128, skill.sound.on_cast_end.cutoff or 1600.)
+                            end
+
+                            if IsAHero(unit_data.Owner) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(unit_data.Owner))+1] = true end
 
                         end)
 
@@ -1178,8 +1436,11 @@ if track_skill_bug then print("skill channel break") end
 
             end)
 
+
+
             DestroyTimer(GetExpiredTimer())
         end)
+
     end
 
 

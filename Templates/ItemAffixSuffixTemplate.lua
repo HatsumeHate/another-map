@@ -48,6 +48,7 @@ do
 
     SINGLE_PARAMETER = 1
     MULTIPLE_PARAMETER = 2
+    SWITCH_PARAMETER = 3
 
     local BOOK_ITEM_LIST = 0
     local BOOK_CLASS_ITEM_LIST = 0
@@ -56,9 +57,14 @@ do
     GeneratedScaling = nil
 
     TEXTURE_ID_EMPTY = "B00X"
-    TEXTURE_ID_ROBE = "B00Y"
-    TEXTURE_ID_MEDIUM_ARMOR = "B010"
-    TEXTURE_ID_HEAVY_ARMOR = "B00Z"
+    TEXTURE_ID_ARMOR_01 = "B00Z"
+    TEXTURE_ID_ARMOR_02 = "B010"
+    TEXTURE_ID_ARMOR_03 = "B00Y"
+    TEXTURE_ID_ARMOR_04 = "B011"
+    TEXTURE_ID_ARMOR_05 = "B012"
+    TEXTURE_ID_ARMOR_06 = "B013"
+    TEXTURE_ID_ARMOR_07 = "B014"
+
 
 
     function GetRandomGeneratedItemId()
@@ -130,11 +136,13 @@ do
         BOOK_ITEM_LIST = {
             [COMMON_ITEM]   = { "I017", "I016", "I015",
                                 "I014", "I013", "I00V", "I00U",
-                                "I028", "I029", "I02A"
+                                "I028", "I029", "I02A",
+                                "I03E", "I03F", "I03G"
             },
             [RARE_ITEM]     = { "I023", "I024", "I025",
                                 "I021", "I020", "I01Z", "I022",
-                                "I02B", "I02C", "I02D"
+                                "I02B", "I02C", "I02D",
+                                "I03H", "I03I", "I03J"
             },
         }
 
@@ -150,6 +158,10 @@ do
             [NECROMANCER_CLASS] = {
                 [COMMON_ITEM]   = { "I028", "I029", "I02A" },
                 [RARE_ITEM]     = { "I02B", "I02C", "I02D" },
+            },
+            [ASSASSIN_CLASS] = {
+                [COMMON_ITEM]   = { "I03E", "I03F", "I03G" },
+                [RARE_ITEM]     = { "I03H", "I03I", "I03J" },
             }
         }
 
@@ -190,6 +202,18 @@ do
                     [SKILL_CATEGORY_DARK_ART] = "I02B",
                     [SKILL_CATEGORY_CURSES] = "I02C",
                     [SKILL_CATEGORY_SUMMONING] = "I02D"
+                }
+            },
+            [ASSASSIN_CLASS]    = {
+                [COMMON_ITEM]   = {
+                    [SKILL_CATEGORY_LETHALITY] = "I03E",
+                    [SKILL_CATEGORY_SHADOWS] = "I03F",
+                    [SKILL_CATEGORY_GEAR] = "I03G"
+                },
+                [RARE_ITEM]     = {
+                    [SKILL_CATEGORY_LETHALITY] = "I03H",
+                    [SKILL_CATEGORY_SHADOWS] = "I03I",
+                    [SKILL_CATEGORY_GEAR] = "I03J"
                 }
             }
         }
@@ -437,7 +461,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_06.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_04
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
@@ -446,7 +470,7 @@ do
                         modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_08.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_07
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
@@ -455,7 +479,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_02
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
@@ -464,7 +488,7 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_HEAVY_ARMOR
+                        texture = TEXTURE_ID_ARMOR_06
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
@@ -473,7 +497,7 @@ do
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_05
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
@@ -482,7 +506,7 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
-                        texture = TEXTURE_ID_HEAVY_ARMOR
+                        texture = TEXTURE_ID_ARMOR_01
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
@@ -491,7 +515,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_05
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
@@ -500,7 +524,7 @@ do
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
-                        texture = TEXTURE_ID_ROBE
+                        texture = TEXTURE_ID_ARMOR_03
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -630,22 +654,36 @@ do
                 },
                 [BELT_ARMOR] = {
                     {
-                        icon = "Armor\\BTNINV_Belt_02.blp",
+                        icon = "Armor\\BTNSdBelt (6).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
                     },
                     {
-                        icon = "Armor\\BTNINV_Belt_03.blp",
+                        icon = "Armor\\BTNSdBelt (96).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
                     },
                     {
-                        icon = "Armor\\BTNINV_Belt_04.blp",
+                        icon = "Armor\\BTNSdBelt (97).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_3,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
+                    },
+                    {
+                        icon = "Armor\\BTNSdBelt (95).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_4,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
+                    },
+                    {
+                        icon = "Armor\\BTNSdBelt (100).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_9,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
@@ -1162,7 +1200,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_06.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_04
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
@@ -1171,7 +1209,7 @@ do
                         modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_08.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_07
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
@@ -1180,7 +1218,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_02
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
@@ -1189,7 +1227,7 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
-                        texture = TEXTURE_ID_HEAVY_ARMOR
+                        texture = TEXTURE_ID_ARMOR_06
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
@@ -1198,7 +1236,7 @@ do
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_05
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
@@ -1207,7 +1245,7 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
-                        texture = TEXTURE_ID_HEAVY_ARMOR
+                        texture = TEXTURE_ID_ARMOR_01
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
@@ -1216,7 +1254,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_05
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
@@ -1225,7 +1263,7 @@ do
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
-                        texture = TEXTURE_ID_ROBE
+                        texture = TEXTURE_ID_ARMOR_03
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -1355,36 +1393,43 @@ do
                 },
                 [BELT_ARMOR] = {
                     {
-                        icon = "Armor\\BTNINV_Belt_02.blp",
+                        icon = "Armor\\BTNSdBelt (6).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
                     },
                     {
-                        icon = "Armor\\BTNINV_Belt_03.blp",
+                        icon = "Armor\\BTNSdBelt (96).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
                     },
                     {
-                        icon = "Armor\\BTNINV_Belt_04.blp",
+                        icon = "Armor\\BTNSdBelt (97).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
                     },
                     {
-                        icon = "Armor\\BTNINV_Belt_05.blp",
+                        icon = "Armor\\BTNSdBelt (95).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
                     },
                     {
-                        icon = "Armor\\BTNINV_Belt_06.blp",
+                        icon = "Armor\\BTNSdBelt (99).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_5,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
+                    },
+                    {
+                        icon = "Armor\\BTNSdBelt (100).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_9,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
@@ -1700,7 +1745,7 @@ do
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_01.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_1,
-                        decl = DECL_IT,
+                        decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
@@ -1973,7 +2018,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_06.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_04
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
@@ -1982,7 +2027,7 @@ do
                         modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_8.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_07
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
@@ -1991,7 +2036,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_02
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
@@ -2000,7 +2045,7 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
-                        texture = TEXTURE_ID_HEAVY_ARMOR
+                        texture = TEXTURE_ID_ARMOR_06
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
@@ -2009,7 +2054,7 @@ do
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_05
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
@@ -2018,7 +2063,7 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
-                        texture = TEXTURE_ID_HEAVY_ARMOR
+                        texture = TEXTURE_ID_ARMOR_06
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
@@ -2027,7 +2072,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_05
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
@@ -2036,7 +2081,7 @@ do
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
-                        texture = TEXTURE_ID_ROBE
+                        texture = TEXTURE_ID_ARMOR_03
                     },
                     {
                         icon = "Armor\\BTNArbalestersArmor.blp",
@@ -2045,7 +2090,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_09.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_04
                     },
                     {
                         icon = "Armor\\BTNDivineArmor.blp",
@@ -2054,7 +2099,7 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_07.mdx",
-                        texture = TEXTURE_ID_HEAVY_ARMOR
+                        texture = TEXTURE_ID_ARMOR_01
                     },
                     {
                         icon = "Armor\\BTNHalfArmor.blp",
@@ -2063,7 +2108,7 @@ do
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_07
                     },
                     {
                         icon = "Armor\\BTNHalfArmor.blp",
@@ -2072,7 +2117,7 @@ do
                         modificator = 1.1,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_HEAVY_ARMOR
+                        texture = TEXTURE_ID_ARMOR_07
                     },
                     {
                         icon = "Armor\\BTNMoongladeArmor.blp",
@@ -2081,7 +2126,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_MEDIUM_ARMOR
+                        texture = TEXTURE_ID_ARMOR_06
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -2260,57 +2305,64 @@ do
                 },
                 [BELT_ARMOR] = {
                     {
-                        icon = "Armor\\BTNINV_Belt_02.blp",
+                        icon = "Armor\\BTNSdBelt (6).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
                     },
                     {
-                        icon = "Armor\\BTNINV_Belt_03.blp",
+                        icon = "Armor\\BTNSdBelt (96).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_2,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
                     },
                     {
-                        icon = "Armor\\BTNINV_Belt_04.blp",
+                        icon = "Armor\\BTNSdBelt (97).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_3,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
                     },
                     {
-                        icon = "Armor\\BTNINV_Belt_05.blp",
+                        icon = "Armor\\BTNSdBelt (95).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_4,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
                     },
                     {
-                        icon = "Armor\\BTNINV_Belt_06.blp",
+                        icon = "Armor\\BTNSdBelt (99).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
                     },
                     {
-                        icon = "Armor\\BTNINV_Belt_09.blp",
+                        icon = "Armor\\BTNSdBelt (30).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_6,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
                     },
                     {
-                        icon = "Armor\\BTNINV_Belt_10.blp",
+                        icon = "Armor\\BTNSdBelt (56).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_7,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
                     },
                     {
-                        icon = "Armor\\BTNINV_Belt_11.blp",
+                        icon = "Armor\\BTNSdBelt (98).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_8,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
+                    },
+                    {
+                        icon = "Armor\\BTNSdBelt (100).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_BELT_NAME_9,
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BELT]
@@ -2671,7 +2723,7 @@ do
                     {
                         icon = "Weapons\\BTNMoongladeWand.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_STAFF_NAME_7,
-                        decl = DECL_IT,
+                        decl = DECL_HE,
                         modificator = 1.7,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_STAFF],
                         model = "Items\\Weapon_Staff.mdx",
@@ -2739,7 +2791,7 @@ do
                     {
                         icon = "Offhand\\BTNINV_Misc_Quiver_01.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_QUIVER_NAME_1,
-                        decl = DECL_IT,
+                        decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_QUIVER]
                     },
@@ -3503,9 +3555,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -3513,10 +3563,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_FIGHTING_MASTERY,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE
-                                },
+                                available_category = { SKILL_CATEGORY_FIGHTING_MASTERY, SKILL_CATEGORY_BATTLE_ADVANTAGE },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -3525,11 +3572,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -3538,10 +3581,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -3601,11 +3650,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS,
-                                SORCERESS_CLASS,
-                                NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -3613,10 +3658,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_FIGHTING_MASTERY,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE
-                                },
+                                available_category = { SKILL_CATEGORY_FIGHTING_MASTERY, SKILL_CATEGORY_BATTLE_ADVANTAGE },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -3625,11 +3667,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -3638,10 +3676,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -3701,9 +3745,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -3711,10 +3753,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_FIGHTING_MASTERY,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE
-                                },
+                                available_category = { SKILL_CATEGORY_FIGHTING_MASTERY, SKILL_CATEGORY_BATTLE_ADVANTAGE },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -3723,11 +3762,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -3736,10 +3771,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -3799,9 +3840,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -3809,10 +3848,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_FIGHTING_MASTERY,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE
-                                },
+                                available_category = { SKILL_CATEGORY_FIGHTING_MASTERY, SKILL_CATEGORY_BATTLE_ADVANTAGE },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -3821,11 +3857,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -3834,10 +3866,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -3883,22 +3921,20 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. },
-                                }
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50., exclude = { MAGICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50., exclude = { MAGICAL_ATTACK } },
+                                },
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 13, value_max = 17, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. }
-                                }
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 13, value_max = 17, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50., exclude = { PHYSICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50., exclude = { PHYSICAL_ATTACK } }
+                                },
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -3906,10 +3942,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_FIGHTING_MASTERY,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE
-                                },
+                                available_category = { SKILL_CATEGORY_FIGHTING_MASTERY, SKILL_CATEGORY_BATTLE_ADVANTAGE },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -3918,11 +3951,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -3931,10 +3960,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -3975,22 +4010,20 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 7, value_max = 12, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 7, value_max = 12, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50., exclude = { MAGICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50., exclude = { MAGICAL_ATTACK } },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50., exclude = { PHYSICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50., exclude = { PHYSICAL_ATTACK } }
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -3998,10 +4031,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_FIGHTING_MASTERY,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE
-                                },
+                                available_category = { SKILL_CATEGORY_FIGHTING_MASTERY, SKILL_CATEGORY_BATTLE_ADVANTAGE },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4010,11 +4040,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4023,10 +4049,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -4067,22 +4099,20 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 12, value_max = 16, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 60. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 60. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 12, value_max = 16, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 60., exclude = { MAGICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 60., exclude = { MAGICAL_ATTACK } },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 21, value_max = 35, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 60. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 60. }
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 21, value_max = 35, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 60., exclude = { PHYSICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 60., exclude = { PHYSICAL_ATTACK } }
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4090,10 +4120,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_FIGHTING_MASTERY,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE
-                                },
+                                available_category = { SKILL_CATEGORY_FIGHTING_MASTERY, SKILL_CATEGORY_BATTLE_ADVANTAGE },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4102,11 +4129,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4115,10 +4138,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -4159,22 +4188,20 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 16, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 70. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.075, METHOD = MULTIPLY_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 16, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 70., exclude = { MAGICAL_ATTACK }  },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.075, METHOD = MULTIPLY_BONUS, probability = 70., exclude = { MAGICAL_ATTACK }  },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 21, value_max = 35, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 70. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.06, value_max = 1.075, METHOD = MULTIPLY_BONUS, probability = 70. }
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 21, value_max = 35, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 70., exclude = { PHYSICAL_ATTACK }  },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.06, value_max = 1.075, METHOD = MULTIPLY_BONUS, probability = 70., exclude = { PHYSICAL_ATTACK }  }
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4182,10 +4209,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_FIGHTING_MASTERY,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE
-                                },
+                                available_category = { SKILL_CATEGORY_FIGHTING_MASTERY, SKILL_CATEGORY_BATTLE_ADVANTAGE },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4194,11 +4218,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4207,10 +4227,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -4256,22 +4282,20 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50., exclude = { MAGICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50., exclude = { MAGICAL_ATTACK } },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 26, value_max = 34, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 26, value_max = 34, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50., exclude = { PHYSICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.04, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50., exclude = { PHYSICAL_ATTACK } }
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4279,10 +4303,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_FIGHTING_MASTERY,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE
-                                },
+                                available_category = { SKILL_CATEGORY_FIGHTING_MASTERY, SKILL_CATEGORY_BATTLE_ADVANTAGE },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4291,11 +4312,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4304,10 +4321,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -4348,22 +4371,20 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.08, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50., exclude = { MAGICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.08, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 50., exclude = { MAGICAL_ATTACK } },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 34, value_max = 40, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.08, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 34, value_max = 40, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50., exclude = { PHYSICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.08, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 50., exclude = { PHYSICAL_ATTACK } }
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4371,10 +4392,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_FIGHTING_MASTERY,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE
-                                },
+                                available_category = { SKILL_CATEGORY_FIGHTING_MASTERY, SKILL_CATEGORY_BATTLE_ADVANTAGE },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4383,11 +4401,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4396,10 +4410,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -4440,22 +4460,20 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 22, value_max = 26, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 60. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 60. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 22, value_max = 26, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 60., exclude = { MAGICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 60., exclude = { MAGICAL_ATTACK } },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 42, value_max = 55, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 60. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 60. }
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 42, value_max = 55, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 60., exclude = { PHYSICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 60., exclude = { PHYSICAL_ATTACK } }
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4463,10 +4481,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_FIGHTING_MASTERY,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE
-                                },
+                                available_category = { SKILL_CATEGORY_FIGHTING_MASTERY, SKILL_CATEGORY_BATTLE_ADVANTAGE },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4475,11 +4490,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4488,10 +4499,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -4532,22 +4549,20 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 26, value_max = 38, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 70. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.12, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 26, value_max = 38, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 70., exclude = { MAGICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.12, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 70., exclude = { MAGICAL_ATTACK } },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 55, value_max = 66, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 70. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.12, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 70. }
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 55, value_max = 66, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 70., exclude = { PHYSICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.12, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 70., exclude = { PHYSICAL_ATTACK } }
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4555,10 +4570,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_FIGHTING_MASTERY,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE
-                                },
+                                available_category = { SKILL_CATEGORY_FIGHTING_MASTERY, SKILL_CATEGORY_BATTLE_ADVANTAGE },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4567,11 +4579,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4580,10 +4588,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -4632,22 +4646,20 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 30., exclude = { MAGICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 70., exclude = { PHYSICAL_ATTACK } }
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 10, value_max = 11, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 70. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 70. }
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30., exclude = { MAGICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 10, value_max = 11, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 70., exclude = { PHYSICAL_ATTACK } },
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS, NECROMANCER_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4655,12 +4667,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4669,11 +4676,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -4693,22 +4696,20 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 7, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 70., exclude = { PHYSICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 30., exclude = { MAGICAL_ATTACK } },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 11, value_max = 14, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 70. }
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 7, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30., exclude = { MAGICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 11, value_max = 14, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75., exclude = { PHYSICAL_ATTACK } },
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS, NECROMANCER_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4716,12 +4717,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4730,11 +4726,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -4754,22 +4746,20 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 30., exclude = { MAGICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 70., exclude = { PHYSICAL_ATTACK } }
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 14, value_max = 18, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 70. }
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 14, value_max = 18, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75., exclude = { PHYSICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30., exclude = { MAGICAL_ATTACK } },
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS, NECROMANCER_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4777,12 +4767,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4791,11 +4776,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -4815,22 +4796,20 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 23, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.06, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 70., exclude = { PHYSICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.06, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 30., exclude = { MAGICAL_ATTACK } },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 18, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.06, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 70. }
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 17, value_max = 23, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30., exclude = { MAGICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 18, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75., exclude = { PHYSICAL_ATTACK } },
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS, NECROMANCER_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4838,12 +4817,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4852,11 +4826,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -4883,22 +4853,20 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 7, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.14, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.14, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 30., exclude = { MAGICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.14, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 70., exclude = { PHYSICAL_ATTACK } }
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 20, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 70. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.14, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 70. }
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 20, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 70., exclude = { PHYSICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 7, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30., exclude = { MAGICAL_ATTACK } },
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS, NECROMANCER_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4906,12 +4874,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4920,11 +4883,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -4944,22 +4903,20 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 19, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.14, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.14, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30., exclude = { MAGICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.08, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 70., exclude = { PHYSICAL_ATTACK } }
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.08, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 70. }
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75., exclude = { PHYSICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 15, value_max = 19, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30., exclude = { MAGICAL_ATTACK } },
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS, NECROMANCER_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4967,12 +4924,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -4981,11 +4933,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -5005,22 +4953,20 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 19, value_max = 24, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 30., exclude = { MAGICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 70., exclude = { PHYSICAL_ATTACK } }
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 36, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 70. }
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 28, value_max = 36, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75., exclude = { PHYSICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 19, value_max = 24, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30., exclude = { MAGICAL_ATTACK } },
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS, NECROMANCER_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -5028,12 +4974,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5042,11 +4983,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -5066,22 +5003,20 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 24, value_max = 30, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30. },
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.12, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 30. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.12, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 30., exclude = { MAGICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.12, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 70., exclude = { PHYSICAL_ATTACK } }
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 36, value_max = 44, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75. },
-                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.12, value_max = 1.14, METHOD = MULTIPLY_BONUS, probability = 70. }
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 36, value_max = 44, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 75., exclude = { PHYSICAL_ATTACK } },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 24, value_max = 30, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 30., exclude = { MAGICAL_ATTACK } },
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS, NECROMANCER_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -5089,12 +5024,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5103,11 +5033,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -5154,9 +5080,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -5164,11 +5088,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5177,12 +5097,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5191,11 +5106,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -5235,9 +5155,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -5245,11 +5163,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5258,12 +5172,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5272,11 +5181,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -5316,9 +5230,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -5326,11 +5238,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5339,12 +5247,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5353,11 +5256,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -5397,9 +5305,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -5407,11 +5313,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5420,12 +5322,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5434,11 +5331,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -5485,9 +5387,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -5495,11 +5395,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5508,12 +5404,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5522,11 +5413,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -5566,9 +5462,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -5576,11 +5470,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5589,12 +5479,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5603,11 +5488,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -5647,9 +5537,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -5657,11 +5545,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5670,12 +5554,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5684,11 +5563,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -5728,9 +5612,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -5738,11 +5620,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5751,12 +5629,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -5765,11 +5638,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -5815,9 +5693,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -5825,9 +5701,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_ICE
-                                },
+                                available_category = { SKILL_CATEGORY_ICE },
                             },
                         },
                         effect_bonus = {
@@ -5880,9 +5754,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -5890,9 +5762,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_ICE
-                                },
+                                available_category = { SKILL_CATEGORY_ICE },
                             },
                         },
                         effect_bonus = {
@@ -5945,9 +5815,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -5955,9 +5823,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_ICE
-                                },
+                                available_category = { SKILL_CATEGORY_ICE },
                             },
                         },
                         effect_bonus = {
@@ -6010,9 +5876,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -6020,9 +5884,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_ICE
-                                },
+                                available_category = { SKILL_CATEGORY_ICE },
                             },
                         },
                         effect_bonus = {
@@ -6082,9 +5944,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -6092,9 +5952,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_FIRE
-                                },
+                                available_category = { SKILL_CATEGORY_FIRE },
                             },
                         },
                         effect_bonus = {
@@ -6147,9 +6005,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -6157,9 +6013,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_FIRE
-                                },
+                                available_category = { SKILL_CATEGORY_FIRE },
                             },
                         },
                         effect_bonus = {
@@ -6212,9 +6066,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -6222,9 +6074,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_FIRE
-                                },
+                                available_category = { SKILL_CATEGORY_FIRE },
                             },
                         },
                         effect_bonus = {
@@ -6277,9 +6127,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -6287,9 +6135,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_FIRE
-                                },
+                                available_category = { SKILL_CATEGORY_FIRE },
                             },
                         },
                         effect_bonus = {
@@ -6349,9 +6195,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -6359,9 +6203,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING },
                             },
                         },
                         effect_bonus = {
@@ -6414,9 +6256,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -6424,9 +6264,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING },
                             },
                         },
                         effect_bonus = {
@@ -6479,9 +6317,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -6489,9 +6325,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING },
                             },
                         },
                         effect_bonus = {
@@ -6544,9 +6378,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                SORCERESS_CLASS
-                            },
+                            can_generate_for = { SORCERESS_CLASS },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -6554,9 +6386,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING },
                             },
                         },
                         effect_bonus = {
@@ -6635,9 +6465,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -6645,11 +6473,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -6658,12 +6482,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -6672,11 +6491,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -6739,9 +6563,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -6749,11 +6571,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -6762,12 +6580,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -6776,11 +6589,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -6843,9 +6661,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -6853,11 +6669,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -6866,12 +6678,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -6880,11 +6687,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -6947,9 +6759,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -6957,11 +6767,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -6970,12 +6776,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -6984,11 +6785,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -7058,9 +6864,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -7068,11 +6872,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7081,12 +6881,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7095,11 +6890,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -7162,9 +6962,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -7172,11 +6970,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7185,12 +6979,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7199,11 +6988,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -7266,9 +7060,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -7276,11 +7068,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7289,12 +7077,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7303,11 +7086,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -7370,9 +7158,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -7380,11 +7166,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7393,12 +7175,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7407,11 +7184,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -7479,9 +7261,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -7489,11 +7269,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7502,12 +7278,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7516,11 +7287,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -7582,9 +7358,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -7592,11 +7366,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7605,12 +7375,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7619,11 +7384,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -7685,9 +7455,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -7695,11 +7463,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7708,12 +7472,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7722,11 +7481,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -7788,9 +7552,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -7798,11 +7560,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7811,12 +7569,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7825,11 +7578,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -7918,9 +7676,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -7928,11 +7684,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7941,12 +7693,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -7955,11 +7702,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -8042,9 +7794,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -8052,11 +7802,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -8065,12 +7811,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -8079,11 +7820,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -8166,9 +7912,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -8176,11 +7920,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -8189,12 +7929,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -8203,11 +7938,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -8290,9 +8030,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -8300,11 +8038,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -8313,12 +8047,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -8327,11 +8056,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -8420,9 +8154,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -8430,11 +8162,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -8443,12 +8171,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -8457,11 +8180,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -8544,9 +8272,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -8554,11 +8280,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -8567,12 +8289,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -8581,11 +8298,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -8668,9 +8390,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -8678,11 +8398,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -8691,12 +8407,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -8705,11 +8416,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -8792,9 +8508,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -8802,11 +8516,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -8815,12 +8525,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 20.,
@@ -8829,11 +8534,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                         effect_bonus = {
@@ -8937,9 +8647,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -8947,11 +8655,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 25.,
@@ -8960,12 +8664,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 25.,
@@ -8974,11 +8673,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                     },
@@ -9064,9 +8768,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -9074,11 +8776,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 25.,
@@ -9087,12 +8785,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 25.,
@@ -9101,11 +8794,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                     },
@@ -9191,9 +8889,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -9201,11 +8897,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 25.,
@@ -9214,12 +8906,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 25.,
@@ -9228,11 +8915,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                     },
@@ -9318,9 +9010,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -9328,11 +9018,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 25.,
@@ -9341,12 +9027,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 25.,
@@ -9355,11 +9036,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                     },
@@ -9412,9 +9098,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 50.,
                                 skill_bonus_probability = 50.,
@@ -9422,11 +9106,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 50.,
@@ -9435,12 +9115,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 50.,
@@ -9449,11 +9124,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                     },
@@ -9499,9 +9179,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 50.,
                                 skill_bonus_probability = 50.,
@@ -9509,11 +9187,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 50.,
@@ -9522,12 +9196,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 50.,
@@ -9536,11 +9205,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                     },
@@ -9586,9 +9260,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 50.,
                                 skill_bonus_probability = 50.,
@@ -9596,11 +9268,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 50.,
@@ -9609,12 +9277,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 50.,
@@ -9623,11 +9286,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                     },
@@ -9673,9 +9341,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 50.,
                                 skill_bonus_probability = 50.,
@@ -9683,11 +9349,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 50.,
@@ -9696,12 +9358,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 50.,
@@ -9710,11 +9367,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                     },
@@ -9782,9 +9444,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 30.,
                                 skill_bonus_probability = 30.,
@@ -9792,11 +9452,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 30.,
@@ -9805,12 +9461,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 30.,
@@ -9819,11 +9470,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                     },
@@ -9884,9 +9540,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 30.,
                                 skill_bonus_probability = 30.,
@@ -9894,11 +9548,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 30.,
@@ -9907,12 +9557,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 30.,
@@ -9921,11 +9566,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                     },
@@ -9986,9 +9636,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 30.,
                                 skill_bonus_probability = 30.,
@@ -9996,11 +9644,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 30.,
@@ -10009,12 +9653,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 30.,
@@ -10023,11 +9662,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                     },
@@ -10088,9 +9732,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS
-                            },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 30.,
                                 skill_bonus_probability = 30.,
@@ -10098,11 +9740,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_INNER_STRENGTH,
-                                    SKILL_CATEGORY_BATTLE_ADVANTAGE,
-                                    SKILL_CATEGORY_FIGHTING_MASTERY
-                                },
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
                             },
                             [SORCERESS_CLASS] = {
                                 category_bonus_probability = 30.,
@@ -10111,12 +9749,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_LIGHTNING,
-                                    SKILL_CATEGORY_FIRE,
-                                    SKILL_CATEGORY_ICE,
-                                    SKILL_CATEGORY_ARCANE
-                                },
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
                             },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 30.,
@@ -10125,11 +9758,16 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
                             },
                         },
                     },
@@ -10178,9 +9816,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                NECROMANCER_CLASS
-                            },
+                            can_generate_for = { NECROMANCER_CLASS },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -10188,11 +9824,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
                             },
                         },
                         effect_bonus = {
@@ -10253,9 +9885,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                NECROMANCER_CLASS
-                            },
+                            can_generate_for = { NECROMANCER_CLASS },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 30.,
                                 skill_bonus_probability = 30.,
@@ -10263,11 +9893,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
                             },
                         },
                         effect_bonus = {
@@ -10328,9 +9954,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                NECROMANCER_CLASS
-                            },
+                            can_generate_for = { NECROMANCER_CLASS },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 30.,
                                 skill_bonus_probability = 30.,
@@ -10338,11 +9962,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
                             },
                         },
                         effect_bonus = {
@@ -10403,9 +10023,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = {
-                                NECROMANCER_CLASS
-                            },
+                            can_generate_for = { NECROMANCER_CLASS },
                             [NECROMANCER_CLASS] = {
                                 category_bonus_probability = 30.,
                                 skill_bonus_probability = 30.,
@@ -10413,11 +10031,7 @@ do
                                 max_level_skill = 2,
                                 min_level_category = 1,
                                 max_level_category = 1,
-                                available_category = {
-                                    SKILL_CATEGORY_DARK_ART,
-                                    SKILL_CATEGORY_CURSES,
-                                    SKILL_CATEGORY_SUMMONING
-                                },
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
                             },
                         },
                         effect_bonus = {
@@ -10454,6 +10068,14 @@ do
             [HP_VALUE] = { delta = 5, delta_level = 2, delta_level_max = 50 },
             [MP_VALUE] = { delta = 3, delta_level = 2, delta_level_max = 50 }
         }
+
+        RegisterTestCommand("affixes", function()
+            print(ITEM_SUFFIX_LIST[ITEM_SUFFIX_KNIGHT].affix_bonus[ITEM_AFFIX_IDEAL].skill_bonus)
+            print(ITEM_SUFFIX_LIST[ITEM_SUFFIX_KNIGHT].affix_bonus[ITEM_AFFIX_IDEAL].skill_bonus[BARBARIAN_CLASS])
+            print(ITEM_SUFFIX_LIST[ITEM_SUFFIX_KNIGHT].affix_bonus[ITEM_AFFIX_IDEAL].skill_bonus[SORCERESS_CLASS])
+            print(ITEM_SUFFIX_LIST[ITEM_SUFFIX_KNIGHT].affix_bonus[ITEM_AFFIX_IDEAL].skill_bonus[NECROMANCER_CLASS])
+            print(ITEM_SUFFIX_LIST[ITEM_SUFFIX_KNIGHT].affix_bonus[ITEM_AFFIX_IDEAL].skill_bonus[ASSASSIN_CLASS])
+        end)
 
     end
 

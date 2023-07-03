@@ -87,22 +87,25 @@ do
     function CreateQualityEffect(item)
         local data = GetItemData(item)
         local color_table = GetQualityEffectColor(data.QUALITY)
+        local ix, iy = GetItemX(item), GetItemY(item)
 
             if data.owner then
                 if GetLocalPlayer() == Player(data.owner) then
-                    data.quality_effect = AddSpecialEffect("QualityGlow.mdx", GetItemX(item), GetItemY(item))
+                    data.quality_effect = AddSpecialEffect("QualityGlow.mdx", ix, iy)
                     BlzSetSpecialEffectColor(data.quality_effect, color_table.r, color_table.g, color_table.b)
                     BlzSetSpecialEffectScale(data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[data.SUBTYPE])
-                    data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], GetItemX(item), GetItemY(item))
+                    data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], ix, iy)
+                    BlzSetSpecialEffectZ(data.quality_effect_light, GetZ(ix, iy) + 10.)
                 else
-                    data.quality_effect = AddSpecialEffect("", GetItemX(item), GetItemY(item))
-                    data.quality_effect_light = AddSpecialEffect("", GetItemX(item), GetItemY(item))
+                    data.quality_effect = AddSpecialEffect("", ix, iy)
+                    data.quality_effect_light = AddSpecialEffect("", ix, iy)
                 end
             elseif not data.picked_up then
-                data.quality_effect = AddSpecialEffect("QualityGlow.mdx", GetItemX(item), GetItemY(item))
+                data.quality_effect = AddSpecialEffect("QualityGlow.mdx", ix, iy)
                 BlzSetSpecialEffectColor(data.quality_effect, color_table.r, color_table.g, color_table.b)
                 BlzSetSpecialEffectScale(data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[data.SUBTYPE])
-                data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], GetItemX(item), GetItemY(item))
+                data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], ix, iy)
+                BlzSetSpecialEffectZ(data.quality_effect_light, GetZ(ix, iy) + 10.)
             end
 
 
@@ -112,9 +115,11 @@ do
     function ApplyQualityGlowColour(item)
         local item_data = GetItemData(item)
         local color_table = GetQualityEffectColor(item_data.QUALITY)
-        BlzSetSpecialEffectColor(item_data.quality_effect, color_table.r, color_table.g, color_table.b)
-        BlzSetSpecialEffectScale(item_data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[item_data.SUBTYPE])
-        item_data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[item_data.QUALITY], GetItemX(item), GetItemY(item))
+
+            BlzSetSpecialEffectColor(item_data.quality_effect, color_table.r, color_table.g, color_table.b)
+            BlzSetSpecialEffectScale(item_data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[item_data.SUBTYPE])
+            --item_data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[item_data.QUALITY], GetItemX(item), GetItemY(item))
+            --BlzSetSpecialEffectZ(item_data.quality_effect_light, GetZ(GetItemX(item), GetItemY(item)) + 10.)
         --print("apply colour")
     end
 
@@ -178,6 +183,9 @@ do
     ---@param x real
     ---@param y real
     ---@param drop_animation boolean
+    ---@param owner number
+    ---@return item
+    ---owner is 0 indexed
 	function CreateCustomItem(raw, x, y, drop_animation, owner)
         if raw == 0 or not ITEM_TEMPLATE_DATA[FourCC(raw)] then return nil end
 		local id     = FourCC(raw)
@@ -244,13 +252,17 @@ do
                                         BlzSetItemSkin(item, GetItemTypeId(item))
                                     end
 
-                                --if data.quality_effect then data.quality_effect_light = AddSpecialEffect(s, x, y); print("added") end
+                                if data.quality_effect then
+                                    data.quality_effect_light = AddSpecialEffect(s, x, y)
+                                    BlzSetSpecialEffectZ(data.quality_effect_light, z + 10.)
+                                end
                                 if data.soundpack then AddSoundForPlayerVolumeZ(data.soundpack.drop, x, y, 35., 128, 2100., data.owner) end
                             else
                                 if not data.picked_up then
                                     if data.quality_effect then
                                         BlzSetSpecialEffectAlpha(data.quality_effect, 255)
-                                        --data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], x, y); print("added")
+                                        data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], x, y)
+                                        BlzSetSpecialEffectZ(data.quality_effect_light, z + 10.)
                                     end
                                     BlzSetItemSkin(item, GetItemTypeId(item))
                                     if data.soundpack then AddSoundVolume(data.soundpack.drop, x, y, 128, 2100.) end
@@ -280,7 +292,8 @@ do
 
                     if data.quality_effect then
                         local s = QUALITY_LIGHT_COLOR[data.QUALITY]
-                        BlzSetSpecialEffectPosition(data.quality_effect, x, y, z)
+
+                        BlzSetSpecialEffectPosition(data.quality_effect, x, y, z + 10.)
 
                             if GetLocalPlayer() == Player(data.owner) then
                                 BlzSetSpecialEffectAlpha(data.quality_effect, 255)
@@ -289,7 +302,8 @@ do
                                 s = ""
                             end
 
-                        --data.quality_effect_light = AddSpecialEffect(s, x, y); print("added")
+                        data.quality_effect_light = AddSpecialEffect(s, x, y)
+                        BlzSetSpecialEffectZ(data.quality_effect_light, z + 10.)
                     end
 
                     if GetLocalPlayer() == Player(data.owner) then
@@ -301,7 +315,8 @@ do
 
                         if data.quality_effect then
                             BlzSetSpecialEffectAlpha(data.quality_effect, 255)
-                            --data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], x, y); print("added")
+                            data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], x, y)
+                            BlzSetSpecialEffectZ(data.quality_effect_light, z + 10.)
                         end
 
                         BlzSetItemSkin(item, GetItemTypeId(item))
@@ -339,7 +354,7 @@ do
                 data.quality_effect = AddSpecialEffect("QualityGlow.mdx", x, y)
                 BlzSetSpecialEffectColor(data.quality_effect, color_table.r, color_table.g, color_table.b)
                 BlzSetSpecialEffectScale(data.quality_effect, ITEMSUBTYPES_EFFECT_SCALE[data.SUBTYPE])
-                --data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], x, y)
+                data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], x, y)
             end
 
             if data.TYPE == ITEM_TYPE_SKILLBOOK then GenerateItemBookSkill(item)
@@ -377,7 +392,6 @@ do
 
 
 
-
     function GenerateItemSuffix(item, variation, quality)
         local item_data = GetItemData(item)
 
@@ -403,7 +417,7 @@ do
         if bonus_parameters_count <= min then bonus_parameters_count = min end
 
         local parameters_list = GetRandomIntTable(1, #preset.parameter_bonus, bonus_parameters_count)
-
+        local exclude_list = { }
 
         --print("ok")
         --print("affix " .. ITEM_AFFIX_NAME_LIST[affix][QUALITY_ITEM_LIST[quality][item_data.SUBTYPE][variation].decl] .. " + " .. item_data.NAME .." + suffix " .. ITEM_SUFFIX_LIST[suffix].name)
@@ -411,9 +425,18 @@ do
         item_data.BONUS = {}
 
             for i = 1, #parameters_list do
+                local skip = false
                 local parameter = GetParameterPreset(preset.parameter_bonus[parameters_list[i]])
 
-                        if GetRandomInt(0, 100) <= parameter.probability or #item_data.BONUS < min then
+                    if #exclude_list > 0 then
+                        for k = 1, #exclude_list do if parameter.PARAM == exclude_list[k] then skip = true; break end end
+                    end
+
+                    if parameter.exclude then
+                        for v = 1, #parameter.exclude do exclude_list[#exclude_list+1] = parameter.exclude[v] end
+                    end
+
+                        if (GetRandomInt(0, 100) <= parameter.probability or #item_data.BONUS < min) and not skip then
 
                             --print("found " .. GetParameterName(parameter.PARAM) .. " method " .. parameter.METHOD)
 
@@ -483,7 +506,6 @@ do
                                 bonus_levels = GetRandomInt(class.min_level_skill, class.max_level_skill),
                                 id = CLASS_SKILL_LIST[gen][category][GetRandomInt(1, #CLASS_SKILL_LIST[gen][category])]
                             }
-
 
                         if bonus_parameters_count > 1 then
                             category = class.available_category[GetRandomInt(1, #class.available_category)]
@@ -784,8 +806,8 @@ do
                 if item_data.SUBTYPE == RING_JEWELRY then
 
                     if flag then
-                        if unit_data.equip_point[RING_1_POINT] then point = RING_2_POINT; if TraceBug then print("ring 2 point") end
-                        else point = RING_1_POINT; if TraceBug then print("ring 1 point") end end
+                        if unit_data.equip_point[RING_1_POINT] then point = RING_2_POINT
+                        else point = RING_1_POINT end
                     else
                         if unit_data.equip_point[RING_1_POINT] and unit_data.equip_point[RING_1_POINT].item == item then point = RING_1_POINT
                         elseif unit_data.equip_point[RING_2_POINT] and unit_data.equip_point[RING_2_POINT].item == item then point = RING_2_POINT end
@@ -840,22 +862,23 @@ do
                     end
 
                 else
-                    if item_data.texture then
-                        SetTexture(unit, TEXTURE_ID_EMPTY)
-                    end
+                    if item_data.texture then SetTexture(unit, TEXTURE_ID_EMPTY) end
                     if item_data.model_effect then BlzSetSpecialEffectScale(item_data.model_effect, 1.); DestroyEffect(item_data.model_effect) end
                 end
             end
 
             if unit_data.equip_point[point] and unit_data.equip_point[point].TYPE == ITEM_TYPE_WEAPON then
-                BlzUnitInterruptAttack(unit)
-                BlzSetUnitRealField(unit, UNIT_RF_ACQUISITION_RANGE, (unit_data.equip_point[point].RANGE or 100.))
+                local old_range = BlzGetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 0)
+                local new_range = unit_data.equip_point[point].RANGE or 100.
+                local new_aquis_range = new_range
 
-                BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 0, 0.)
-                BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 0, (unit_data.equip_point[point].RANGE or 100.))
+                    BlzUnitInterruptAttack(unit)
 
-                BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 1, 0.)
-                BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 1, (unit_data.equip_point[point].RANGE or 100.))
+                    --if new_range < old_range then new_range = (old_range - new_range) * -1.
+                    --else new_range = new_range - old_range end
+
+                    BlzSetUnitRealField(unit, UNIT_RF_ACQUISITION_RANGE, new_aquis_range)
+                    BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 1, new_range - BlzGetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 0))--new_range + 100.)
 
             end
 
@@ -863,30 +886,61 @@ do
                 ApplyLegendaryEffect(unit, item_data.legendary_effect, flag)
             end
 
-            for i = 1, #item_data.STONE_SLOTS do
-                ModifyStat(unit, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].PARAM, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].VALUE, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].METHOD, flag)
+
+            if item_data.runeword then
+
+                for i = 1, #item_data.STONE_SLOTS do
+                    if not IsPartOfRuneword(item_data.runeword, item_data.STONE_SLOTS[i].raw) then
+                        ModifyStat(unit, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].PARAM, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].VALUE, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].METHOD, flag)
+                    end
+                end
+
+                local runeword_data = GetRunewordData(item_data.runeword)
+
+                if runeword_data[item_data.TYPE] then
+
+                    if runeword_data[item_data.TYPE].BONUS then
+                        for i = 1, #runeword_data[item_data.TYPE].BONUS do
+                            ModifyStat(unit, runeword_data[item_data.TYPE].BONUS[i].PARAM, runeword_data[item_data.TYPE].BONUS[i].VALUE, runeword_data[item_data.TYPE].BONUS[i].METHOD, flag)
+                        end
+                    end
+
+                    if runeword_data[item_data.TYPE].EFFECT then
+                        for i = 1, #runeword_data[item_data.TYPE].EFFECT do
+                            if flag then UnitAddEffect(unit, runeword_data[item_data.TYPE].EFFECT[i])
+                            else UnitRemoveEffect(unit, runeword_data[item_data.TYPE].EFFECT[i]) end
+                        end
+                    end
+
+                end
+
+            else
+                for i = 1, #item_data.STONE_SLOTS do
+                    ModifyStat(unit, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].PARAM, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].VALUE, item_data.STONE_SLOTS[i].point_bonus[item_data.TYPE].METHOD, flag)
+                end
             end
+
+
 
             for i = 1, #item_data.BONUS do
                 ModifyStat(unit, item_data.BONUS[i].PARAM, item_data.BONUS[i].VALUE, item_data.BONUS[i].METHOD, flag)
             end
-if TraceBug then print("A") end
+
 
             if item_data.SKILL_BONUS and #item_data.SKILL_BONUS > 0 then
                 UpdateBindedSkillsData(GetPlayerId(GetOwningPlayer(unit)) + 1)
             end
-if TraceBug then print("B") end
+
             if item_data.effect_bonus and #item_data.effect_bonus > 0 then
                 for i = 1, #item_data.effect_bonus do
                     if flag then UnitAddEffect(unit, item_data.effect_bonus[i])
                     else UnitRemoveEffect(unit, item_data.effect_bonus[i]) end
                 end
             end
-if TraceBug then print("C") end
+
             UpdateParameters(unit_data)
-if TraceBug then print("D") end
             OnItemEquip(unit, item, disarmed_item, flag)
-if TraceBug then print("E") end
+
         return disarmed_item
     end
 
@@ -922,8 +976,41 @@ if TraceBug then print("E") end
                             item_data.last_y = GetItemY(item)
                             AddToInventory(player, item)
                             SetUnitFacingTimed(unit, angle+180.,0.)
+                            --print("c1")
                         else
+                            local proximity_timer = CreateTimer()
+                            local proximity_trigger = CreateTrigger()
+                            local x, y = GetItemX(item), GetItemY(item)
+
                             IssuePointOrderById(unit, order_move, GetItemX(item) + Rx(25., angle), GetItemY(item) + Ry(25., angle))
+                            TriggerRegisterUnitEvent(proximity_trigger, unit, EVENT_UNIT_ISSUED_POINT_ORDER)
+                            TriggerRegisterUnitEvent(proximity_trigger, unit, EVENT_UNIT_ISSUED_ORDER)
+                            TriggerRegisterUnitEvent(proximity_trigger, unit, EVENT_UNIT_ISSUED_TARGET_ORDER)
+
+                            TriggerAddAction(proximity_trigger, function()
+                                DestroyTimer(proximity_timer)
+                                DestroyTrigger(proximity_trigger)
+                            end)
+
+                            TimerStart(proximity_timer, 0.025, true, function()
+                                if DistanceBetweenUnitXY(unit, x, y) < 200. and not item_data.picked_up then
+                                    item_data.last_x = GetItemX(item)
+                                    item_data.last_y = GetItemY(item)
+                                    AddToInventory(player, item)
+                                    SetUnitFacingTimed(unit, angle+180.,0.)
+                                    DestroyTimer(proximity_timer)
+                                    DestroyTrigger(proximity_trigger)
+                                    AddSoundVolume("Sound\\Interface\\PickUpItem.wav", x, y, 85, 1200.)
+                                    IssueImmediateOrderById(unit, order_stop)
+                                elseif item_data.picked_up then
+                                    DestroyTimer(proximity_timer)
+                                    DestroyTrigger(proximity_trigger)
+                                    IssueImmediateOrderById(unit, order_stop)
+                                end
+                            end)
+                            --BlzQueueTargetOrderById(unit, order_smart, item)
+                            --EnableTrigger(trg)
+                            --print("c2")
                         end
 
                 end
@@ -987,11 +1074,11 @@ if TraceBug then print("E") end
         }
 
         QUALITY_LIGHT_COLOR = {
-            [COMMON_ITEM] = 'QualityLight_Common.mdx',
-            [RARE_ITEM] = 'QualityLight_Rare.mdx',
-            [MAGIC_ITEM] = 'QualityLight_Magic.mdx',
-            [SET_ITEM] = 'QualityLight_Set.mdx',
-            [UNIQUE_ITEM] = 'QualityLight_Unique.mdx'
+            [COMMON_ITEM] = 'QualityLight_Common.mdl',
+            [RARE_ITEM] = 'QualityLight_Rare.mdl',
+            [MAGIC_ITEM] = 'QualityLight_Magic.mdl',
+            [SET_ITEM] = 'QualityLight_Set.mdl',
+            [UNIQUE_ITEM] = 'QualityLight_Unique.mdl'
         }
 
         ATTRIBUTE_COLOR = {
@@ -1165,8 +1252,7 @@ if TraceBug then print("E") end
 
 
         RegisterTestCommand("dd", function()
-            local item = CreateCustomItem(GetRandomGeneratedItemId(), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), true)
-            GenerateItemStats(item, 1, GetRandomInt(COMMON_ITEM, MAGIC_ITEM))
+            CreateCustomItem("I012", GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]))
         end)
 
         RegisterTestCommand("dd1", function()
@@ -1188,15 +1274,20 @@ if TraceBug then print("E") end
         end)
 
         RegisterTestCommand("gen", function()
-            local item = CreateCustomItem(GetGeneratedItemId(DAGGER_WEAPON), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]))
-            local roll = GetRandomInt(1, 5)
-                local quality
+            xpcall(function()
+                local item = CreateCustomItem(GetGeneratedItemId(BELT_ARMOR), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]))
+                local item_data = GetItemData(item)
+                local roll = GetRandomInt(1, 5)
+                    local quality
 
-                    if roll == 1 then quality = MAGIC_ITEM
-                    elseif roll == 2 then quality = RARE_ITEM
-                    else quality = COMMON_ITEM end
+                        if roll == 1 then quality = MAGIC_ITEM
+                        elseif roll == 2 then quality = RARE_ITEM
+                        else quality = COMMON_ITEM end
+                    item_data.QUALITY = quality
+                    GenerateItemStats(item, Current_Wave + GetRandomInt(1, 2), quality)
 
-                GenerateItemStats(item, Current_Wave + GetRandomInt(1, 2), quality)
+            end, print)
+
         end)
 
         RegisterTestCommand("trace", function()

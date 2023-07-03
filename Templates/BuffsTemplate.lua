@@ -81,6 +81,14 @@ do
                     buff.level[lvl].time = (buff.level[1].time or 0.1) + math.floor(lvl / (buff.time_delta_level or 1.)) * buff.time_delta
                 end
 
+                if buff.endurance_delta then
+                    buff.level[lvl].endurance = (buff.level[1].endurance or 1) + math.floor(lvl / (buff.endurance_delta_level or 1.)) * buff.endurance_delta
+                end
+
+                if buff.endurance_hp_delta then
+                    buff.level[lvl].endurance_hp = (buff.level[1].endurance_hp or 0.1) + math.floor(lvl / (buff.endurance_hp_delta_level or 1.)) * buff.endurance_hp_delta
+                end
+
             --print("generated4")
 
                 if buff.level[1].bonus then
@@ -232,6 +240,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
             max_level = 75,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -259,6 +268,7 @@ do
             max_level = 75,
             time_delta = 0.25,
             time_delta_level = 3,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -281,6 +291,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 75,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -307,14 +318,14 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 75,
+            tags = { "skill", "barrier" },
 
             level = {
                 [1] = {
                     rank = 10,
                     time = 15.,
 
-                    current_level = 1,
-                    max_level = 1,
+                    endurance_hp = 0.15,
 
                     bonus = {
                         { PARAM = FIRE_RESIST, VALUE = 7, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
@@ -334,6 +345,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = false,
             max_level = 8,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -356,6 +368,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 75,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -369,7 +382,6 @@ do
                         { PARAM = FIRE_BONUS, VALUE = 15, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
                         { PARAM = ICE_BONUS, VALUE = 15, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
                         { PARAM = LIGHTNING_BONUS, VALUE = 15, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
-                        { PARAM = ARCANE_BONUS, VALUE = 15, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
                         { PARAM = CRIT_CHANCE, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
                     }
                 }
@@ -609,6 +621,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
             max_level = 75,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -632,6 +645,7 @@ do
             max_level = 75,
             time_delta = 0.1,
             time_delta_level = 1,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -653,6 +667,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 75,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -679,6 +694,7 @@ do
             inherit_level = true,
             max_level = 75,
             level_penalty = 9,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -700,6 +716,7 @@ do
             inherit_level = true,
             max_level = 75,
             breakpoints = { 10 },
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -708,6 +725,9 @@ do
 
                     effect = 'EFAA',
                     effect_delay = 1.,
+                    bonus = {
+                        { PARAM = HP_PER_HIT, VALUE = 3, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 2, value_delta_level_max = 25 },
+                    }
                 },
                 [10] = {
                     rank = 7,
@@ -717,7 +737,8 @@ do
                     effect_delay = 1.,
 
                     bonus = {
-                        { PARAM = POISON_RESIST, VALUE = 2, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 4, value_delta_level_max = 10 }
+                        { PARAM = HP_PER_HIT, VALUE = 3, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 2, value_delta_level_max = 25 },
+                        { PARAM = POISON_RESIST, VALUE = 2, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 4, value_delta_level_max = 10 },
                     }
                 }
             }
@@ -730,6 +751,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
             max_level = 75,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -793,6 +815,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
             max_level = 75,
+            tags = { "skill", "bleeding", "dot" },
 
             level = {
                 [1] = {
@@ -815,6 +838,7 @@ do
             buff_type = NEGATIVE_BUFF,
             max_level = 75,
             inherit_level = true,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -829,6 +853,54 @@ do
                         { PARAM = MAGICAL_ATTACK, VALUE = 0.7, METHOD = MULTIPLY_BONUS, value_delta = -0.05, value_delta_level = 5, value_delta_level_max = 5 },
                         { PARAM = ATTACK_SPEED, VALUE = -20, METHOD = STRAIGHT_BONUS, value_delta = -5, value_delta_level = 5, value_delta_level_max = 5 },
                     }
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "rallying cry buff",
+            id = 'BBRC',
+            buff_id = 'B03E',
+            buff_type = POSITIVE_BUFF,
+            max_level = 75,
+            inherit_level = true,
+            tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 7.,
+
+                    current_level = 1,
+                    max_level = 1,
+
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = 1.10, METHOD = MULTIPLY_BONUS, value_delta = 0.01, value_delta_level = 1, value_delta_level_max = 30 },
+                        { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 25 },
+                        { PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 25 },
+                        { PARAM = CONTROL_REDUCTION, VALUE = 15, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 20 },
+                    }
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "tremble debuff",
+            id = 'ABTR',
+            buff_id = 'B03Q',
+            buff_type = NEGATIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            max_level = 1,
+            tags = { "skill" },
+
+            time_delta_level = 3,
+            time_delta = 0.1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 1.75,
+                    negative_state = STATE_STUN
                 }
             }
         })
@@ -861,9 +933,16 @@ do
             attribute = DARKNESS_ATTRIBUTE,
             inherit_level = true,
             max_level = 75,
+            tags = { "skill", "curse" },
 
             time_delta_level = 1,
             time_delta = 0.1,
+
+            static_sfx = {
+                path = "Effect\\Bone Prison.mdx",
+                autoscaling = true,
+                random_angle = true
+            },
 
             level = {
                 [1] = {
@@ -881,6 +960,7 @@ do
             buff_type = NEGATIVE_BUFF,
             attribute = DARKNESS_ATTRIBUTE,
             max_level = 1,
+            tags = { "skill" },
 
             time_delta_level = 3,
             time_delta = 0.1,
@@ -903,14 +983,15 @@ do
             attribute = DARKNESS_ATTRIBUTE,
             max_level = 75,
             inherit_level = true,
+            tags = { "skill" },
 
             level = {
                 [1] = {
                     rank = 5,
                     time = 10.,
                     bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = 15, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 25 },
-                        { PARAM = CAST_SPEED, VALUE = 15, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 25 },
+                        { PARAM = ATTACK_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 35 },
+                        { PARAM = CAST_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 35 },
                         { PARAM = MOVING_SPEED, VALUE = 20, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 25 },
                     }
                 }
@@ -925,6 +1006,7 @@ do
             attribute = DARKNESS_ATTRIBUTE,
             max_level = 75,
             inherit_level = true,
+            tags = { "skill", "curse" },
 
             level = {
                 [1] = {
@@ -946,6 +1028,7 @@ do
             attribute = DARKNESS_ATTRIBUTE,
             max_level = 75,
             inherit_level = true,
+            tags = { "skill", "curse" },
 
             level = {
                 [1] = {
@@ -968,6 +1051,7 @@ do
             attribute = DARKNESS_ATTRIBUTE,
             max_level = 75,
             inherit_level = true,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -990,6 +1074,7 @@ do
             buff_type = POSITIVE_BUFF,
             max_level = 75,
             inherit_level = true,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -1011,6 +1096,7 @@ do
             attribute = DARKNESS_ATTRIBUTE,
             max_level = 75,
             inherit_level = true,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -1028,6 +1114,7 @@ do
             buff_type = POSITIVE_BUFF,
             max_level = 75,
             inherit_level = true,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -1051,6 +1138,7 @@ do
             inherit_level = true,
             time_delta = 0.25,
             time_delta_level = 10,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -1068,6 +1156,7 @@ do
             buff_type = POSITIVE_BUFF,
             max_level = 75,
             inherit_level = true,
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -1217,6 +1306,7 @@ do
             buff_id = 'B02M',
             buff_type = NEGATIVE_BUFF,
             attribute = POISON_ATTRIBUTE,
+            tags = { "dot", "poisoning" },
 
             inherit_level = true,
             max_level = 3,
@@ -1466,6 +1556,287 @@ do
                     effect = "effect_insanity",
                     effect_delay = 0.5
                 }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "venom bite debuff",
+            id = 'ABVP',
+            buff_id = 'B03F',
+            buff_type = NEGATIVE_BUFF,
+            attribute = POISON_ATTRIBUTE,
+            tags = { "skill", "poisoning", "dot" },
+            inherit_level = true,
+            max_level = 75,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 6.,
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = -40, METHOD = STRAIGHT_BONUS, value_delta = -5, value_delta_level = 5, value_delta_level_max = 25 },
+                    },
+                    effect = 'effect_viper_bite_periodic',
+                    effect_delay = 1.,
+                },
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "target locked debuff",
+            id = 'ADTL',
+            buff_id = 'B03G',
+            buff_type = NEGATIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 8.,
+                },
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "target locked buff",
+            id = 'ABTL',
+            buff_id = 'B03H',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+             tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 3.,
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 5, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 2, value_delta_level_max = 50 },
+                    },
+                },
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "lock and loaded buff",
+            id = 'ABLL',
+            buff_id = 'B03H',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+             tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 3.,
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = 25, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 2, value_delta_level_max = 75 },
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 25, METHOD = STRAIGHT_BONUS, value_delta = 3, value_delta_level = 1, value_delta_level_max = 75 },
+                    },
+                },
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "night shroud buff",
+            id = 'ABNS',
+            buff_id = 'B03I',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+             tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 6.,
+                    bonus = {
+                        { PARAM = DODGE_CHANCE, VALUE = 13, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 2, value_delta_level_max = 75 },
+                        { PARAM = MOVING_SPEED, VALUE = 1.1, METHOD = MULTIPLY_BONUS, value_delta = 0.01, value_delta_level = 2, value_delta_level_max = 50 },
+                        { PARAM = CONTROL_REDUCTION, VALUE = 20, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 2, value_delta_level_max = 50 },
+                    },
+                },
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "shadowstep buff",
+            id = 'ABST',
+            buff_id = 'B03J',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            time_delta = 0.2,
+            time_delta_level = 2,
+            time_delta_level_max = 25,
+             tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 2.,
+                    bonus = {
+                        { PARAM = CRIT_CHANCE, VALUE = 7, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 75 },
+                    },
+                },
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "cursed hit debuff",
+            id = 'ABCA',
+            buff_id = 'B03K',
+            buff_type = NEGATIVE_BUFF,
+            attribute = DARKNESS_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+             tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 0.9, METHOD = MULTIPLY_BONUS, value_delta = 0.01, value_delta_level = 2, value_delta_level_max = 50 },
+                        { PARAM = MAGICAL_ATTACK, VALUE = 0.9, METHOD = MULTIPLY_BONUS, value_delta = 0.01, value_delta_level = 2, value_delta_level_max = 50 },
+                    },
+                },
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "incendiary grenade debuff",
+            id = 'ABID',
+            buff_id = 'B03L',
+            buff_type = NEGATIVE_BUFF,
+            attribute = FIRE_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            tags = { "skill", "dot", "burning" },
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 3.,
+                    effect = "incendiary_grenade_peroidic_effect",
+                    effect_delay = 1.
+                },
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "caltrops debuff",
+            id = 'ABCT',
+            buff_id = 'B03M',
+            buff_type = NEGATIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 1.,
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = 0.9, METHOD = MULTIPLY_BONUS, value_delta = 0.01, value_delta_level = 2, value_delta_level_max = 50 },
+                    },
+                },
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "shocking trap debuff",
+            id = 'AAST',
+            buff_id = 'B03O',
+            buff_type = NEGATIVE_BUFF,
+            attribute = LIGHTNING_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 7,
+                    time = 5.,
+                    negative_state = STATE_STUN
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "smoke bomb debuff",
+            id = 'ABSB',
+            buff_id = 'B03O',
+            buff_type = NEGATIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 7,
+                    time = 5.,
+                    negative_state = STATE_BLIND,
+                    bonus = {
+                        { PARAM = CAST_SPEED, VALUE = -7, METHOD = MULTIPLY_BONUS, value_delta = -1, value_delta_level = 1, value_delta_level_max = 65 },
+                    },
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "twilight debuff",
+            id = 'ABTW',
+            buff_id = 'B03S',
+            buff_type = NEGATIVE_BUFF,
+            attribute = DARKNESS_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 1.,
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = -25, METHOD = STRAIGHT_BONUS, value_delta = -2, value_delta_level = 1, value_delta_level_max = 75 },
+                        { PARAM = ATTACK_SPEED, VALUE = -11, METHOD = STRAIGHT_BONUS, value_delta = -1, value_delta_level = 2, value_delta_level_max = 50 },
+                        { PARAM = CAST_SPEED, VALUE = -11, METHOD = STRAIGHT_BONUS, value_delta = -1, value_delta_level = 2, value_delta_level_max = 50 },
+                    },
+                },
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "twilight buff",
+            id = 'ABTH',
+            buff_id = 'B03R',
+            buff_type = POSITIVE_BUFF,
+            attribute = DARKNESS_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 1.,
+                    bonus = {
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 25, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 1, value_delta_level_max = 75 },
+                        { PARAM = DARKNESS_BONUS, VALUE = 5, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 75 },
+                        { PARAM = MOVING_SPEED, VALUE = 1.1, METHOD = MULTIPLY_BONUS, value_delta = 0.01, value_delta_level = 2, value_delta_level_max = 50 },
+                    },
+                },
             }
         })
         --================================================--
@@ -2072,9 +2443,99 @@ do
                     rank = 15,
                     time = 25.,
                     bonus = {
-                        { PARAM = ALL_RESIST, VALUE = 15, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ALL_RESIST, VALUE = 25, METHOD = STRAIGHT_BONUS },
                     }
                 }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "scroll of petri buff",
+            id = 'ASPT',
+            buff_id = 'B03B',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 25.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 1.75, METHOD = MULTIPLY_BONUS },
+                        { PARAM = MAGICAL_SUPPRESSION, VALUE = 1.75, METHOD = MULTIPLY_BONUS },
+                        { PARAM = MOVING_SPEED, VALUE = -45, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "food buff",
+            id = 'AIFD',
+            buff_id = 'B03C',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = true,
+            max_level = 3,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 600.,
+                    bonus = {
+                        { PARAM = HP_REGEN, VALUE = 1.05, METHOD = MULTIPLY_BONUS },
+                    }
+                },
+                [2] = {
+                    rank = 15,
+                    time = 600.,
+                    bonus = {
+                        { PARAM = HP_REGEN, VALUE = 1.1, METHOD = MULTIPLY_BONUS },
+                    }
+                },
+                [3] = {
+                    rank = 15,
+                    time = 600.,
+                    bonus = {
+                        { PARAM = HP_REGEN, VALUE = 1.15, METHOD = MULTIPLY_BONUS },
+                    }
+                },
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "drinks buff",
+            id = 'AIDR',
+            buff_id = 'B03D',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = true,
+            max_level = 3,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 600.,
+                    bonus = {
+                        { PARAM = MP_REGEN, VALUE = 1.05, METHOD = MULTIPLY_BONUS },
+                    }
+                },
+                [2] = {
+                    rank = 15,
+                    time = 600.,
+                    bonus = {
+                        { PARAM = MP_REGEN, VALUE = 1.1, METHOD = MULTIPLY_BONUS },
+                    }
+                },
+                [3] = {
+                    rank = 15,
+                    time = 600.,
+                    bonus = {
+                        { PARAM = MP_REGEN, VALUE = 1.15, METHOD = MULTIPLY_BONUS },
+                    }
+                },
             }
 
         })
@@ -3088,6 +3549,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
             max_level = 2,
+            tags = { "dot", "bleeding" },
 
             level = {
                 [1] = {
@@ -3285,6 +3747,7 @@ do
             attribute = POISON_ATTRIBUTE,
             inherit_level = true,
             max_level = 1,
+            tags = { "dot", "poisoning" },
 
             level = {
                 [1] = {
@@ -3305,6 +3768,7 @@ do
             attribute = POISON_ATTRIBUTE,
             inherit_level = true,
             max_level = 1,
+            tags = { "dot", "poisoning" },
 
             level = {
                 [1] = {
@@ -3325,6 +3789,7 @@ do
             attribute = FIRE_ATTRIBUTE,
             inherit_level = true,
             max_level = 1,
+            tags = { "dot", "burning" },
 
             level = {
                 [1] = {
@@ -3345,6 +3810,7 @@ do
             attribute = PHYSICAL_ATTRIBUTE,
             inherit_level = true,
             max_level = 1,
+            tags = { "dot", "bleeding" },
 
             level = {
                 [1] = {
@@ -3526,6 +3992,25 @@ do
 
         })
         --================================================--
+        NewBuffTemplate({
+            name = "cc diminishing",
+            id = 'ACCR',
+            buff_id = 'B03N',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 5,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 4.,
+                    bonus = {
+                        { PARAM = CONTROL_REDUCTION, VALUE = 20, METHOD = STRAIGHT_BONUS, value_delta = 20 },
+                    }
+                }
+            }
+        })
 
         RegisterTestCommand("buffme", function()
             ApplyBuff(PlayerHero[1], PlayerHero[1], "A01K", 1)
@@ -3537,8 +4022,8 @@ do
         end)
 
         RegisterTestCommand("buffbug2", function()
-            ApplyBuff(PlayerHero[1], PlayerHero[1], "ATCH", 1)
             ApplyBuff(PlayerHero[1], PlayerHero[1], "ACLS", 1)
+            DelayAction(1., function() ApplyBuff(PlayerHero[1], PlayerHero[1], "ABRD", 1) end)
         end)
         --ACLS
 

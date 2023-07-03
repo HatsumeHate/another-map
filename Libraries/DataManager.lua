@@ -10,6 +10,7 @@ do
     local RA = 0
     PlayerSyncData = nil
     PlayerPackages = nil
+    SaveDataPath = "CastleRevival\\"
 
 
     function IsCyrillic(str)
@@ -121,7 +122,7 @@ do
                 return S2I(SubString(code, i, i+1))
             end
         end
-        return "0"
+        return 0
     end
 
     function FileLoad(path)
@@ -129,18 +130,25 @@ do
             Preloader(path)
             PreloadGenClear()
 
+
         local part_1 = BlzGetAbilityTooltip(FourCC("Agyv"), 0)
         local part_2 = BlzGetAbilityTooltip(FourCC("Aroc"), 0)
         local result = part_1..part_2
         local slot = GetFileSlot(path)
+        local prefix
 
+        if slot > 0 then
+            prefix = "dataload" .. slot
+        else
+            prefix = "dataload_progression"
+        end
 
-            for i = 0, 5 do
-                if GetLocalPlayer() == Player(i) then
-                    BlzSendSyncData("dataload" .. slot, result)
-                   -- print("send data ".. result .." in slot " .. slot)
-                end
+        for i = 0, 5 do
+            if GetLocalPlayer() == Player(i) then
+                BlzSendSyncData(prefix, result)
+                --print("send data ".. result .." in slot " .. slot)
             end
+        end
 
     end
 
@@ -153,6 +161,7 @@ do
         return string.gsub(name, "#", "_", 1)
     end
 
+
     function FileOverwrite(player, path, data)
         PreloadGenClear()
 
@@ -163,7 +172,11 @@ do
         end
     end
 
-    function FileWrite(player, path)
+
+    ---@param player integer
+    ---@param path string
+    ---@param additional_data string
+    function FileWrite(player, path, additional_data)
         local name = GetPlayerName(Player(player))
 
         if IsCyrillic(name) then name = ConvertFromCyrillic(name) end
@@ -176,8 +189,8 @@ do
             result = result .. LoadBuffer[i]
         end
 
-       --print("string to encode: " .. "slot"..GetFileSlot(path)..result)
-        result = enc("slot"..GetFileSlot(path)..result)
+       --print("string to encode: " ..result)
+        result = enc(additional_data..GetFileSlot(path)..result)
        --print("decoded string: " .. result)
 
         PreloadGenClear()
@@ -209,9 +222,11 @@ do
 
         for i = 0, 5 do
 
-            for k = 1, 6 do
-                BlzTriggerRegisterPlayerSyncEvent(trigger, Player(i), "dataload" .. k, false);
+            for k = 1, 7 do
+                BlzTriggerRegisterPlayerSyncEvent(trigger, Player(i), "dataload" .. k, false)
             end
+
+            BlzTriggerRegisterPlayerSyncEvent(trigger, Player(i), "dataload_progression", false)
 
             PlayerSyncData[i+1] = {
                 [1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false
@@ -219,8 +234,14 @@ do
         end
 
         TriggerAddAction(trigger, function()
+            --print("sync event!")
             local sync_string = dec(BlzGetTriggerSyncData())
+            --print("decoded")
             local slot = GetFileSlot(sync_string)
+
+            --print("sync to load" .. sync_string)
+
+            --print("slot is " .. slot)
 
                 if slot > 0 then
                     --print("its a slot with data " .. sync_string)
@@ -255,6 +276,27 @@ do
 
                         end
 
+                elseif BlzGetTriggerSyncPrefix() == "dataload_progression" then
+                    local player = ParsePlayerNameOut(string.sub(sync_string, 2, string.find(sync_string, "@", 1, true)-2))
+
+                    print("player name to load " .. player)
+
+                        for i = 0, 5 do
+                            local name = GetPlayerName(Player(i))
+                            if #name > 0 then
+
+                                if IsCyrillic(name) then name = ConvertFromCyrillic(name) end
+
+                                if name == player and not PlayerSyncData[i+1]["current_wave"] and #sync_string > 1 then
+                                    --LoadItem(sync_string, i+1, slot)
+
+                                    PlayerSyncData[i+1]["current_wave"] = string.sub(sync_string, string.find(sync_string, "@currentwave", 1, true)+12, #sync_string)
+                                    break
+                                end
+                            end
+                            --print("name")
+
+                        end
                 end
 
         end)

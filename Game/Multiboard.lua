@@ -58,7 +58,7 @@ do
     function ReloadMultiboard()
         local multiboard = BlzGetFrameByName("Multiboard", 0)
             BlzFrameClearAllPoints(multiboard)
-            BlzFrameSetPoint(multiboard, FRAMEPOINT_TOPLEFT, PlayerUI.minimap_border, FRAMEPOINT_TOPRIGHT, 0.,0.)
+            BlzFrameSetPoint(multiboard, FRAMEPOINT_TOPLEFT, PlayerUI.minimap_border, FRAMEPOINT_TOPRIGHT, 0.014, 0.)
     end
 
     function InitMultiboard()
@@ -84,16 +84,18 @@ do
             MAIN_MULTIBOARD = CreateMultiboard()
             MultiboardSetTitleText(MAIN_MULTIBOARD, LOCALE_LIST[my_locale].WAVE_INCOMING_TEXT)
             MultiboardSetItemsStyle(MAIN_MULTIBOARD, true, false)
-            MultiboardSetItemsWidth(MAIN_MULTIBOARD, 6.5 / 100.0)
+            MultiboardSetItemsWidth(MAIN_MULTIBOARD, 7. / 100.0)
             MultiboardSetColumnCount(MAIN_MULTIBOARD, 2)
             MultiboardSetRowCount(MAIN_MULTIBOARD, 8)
             MultiboardDisplay(MAIN_MULTIBOARD, true)
+            MultiboardMinimize(MAIN_MULTIBOARD, true)
+            MultiboardMinimize(MAIN_MULTIBOARD, false)
 
 
             --local minimap = BlzGetOriginFrame(ORIGIN_FRAME_MINIMAP, 0)
             local multiboard = BlzGetFrameByName("Multiboard", 0)
             BlzFrameClearAllPoints(multiboard)
-            BlzFrameSetPoint(multiboard, FRAMEPOINT_TOPLEFT, PlayerUI.minimap_border, FRAMEPOINT_TOPRIGHT, 0.,0.)
+            BlzFrameSetPoint(multiboard, FRAMEPOINT_TOPLEFT, PlayerUI.minimap_border, FRAMEPOINT_TOPRIGHT, 0.014, 0.)
 
 
             for i = 0, 4 do
@@ -115,7 +117,7 @@ do
                 end
             end)
 
-            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 1), 7. / 100.0)
+            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 1), 8. / 100.0)
 
     end
 

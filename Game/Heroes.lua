@@ -20,9 +20,52 @@ do
     local PlayerLabels
     PlayerRequiredEXP = nil
     PlayerLastRequiredEXP = nil
+    PlayerDash = nil
+    local DASH_MODE_FACING = 1
+    local DASH_MODE_CURSOR = -1
+    local HpFeedbackCooldown
 
 
 
+    ---@param player integer
+    function SwitchPlayerDashMode(player)
+        PlayerDash[player].mode = PlayerDash[player].mode * -1
+    end
+
+    ---@param player integer
+    function DashPlayerHero(player)
+        local unit_data = GetUnitData(PlayerHero[player])
+
+        if not (TimerGetRemaining(unit_data.action_timer) > 0.) and not (TimerGetRemaining(PlayerDash[player].timer) > 0.) and not (IsUnitDisabled(PlayerHero[player]) or IsUnitRooted(PlayerHero[player])) then
+            local angle = PlayerDash[player].mode == DASH_MODE_FACING and GetUnitFacing(PlayerHero[player]) or AngleBetweenUnitXY(PlayerHero[player], PlayerMousePosition[player].x, PlayerMousePosition[player].y)
+
+                DisableHeroSkills(player)
+                TimerStart(PlayerDash[player].timer, 5., false, nil)
+                SetUnitFacing(PlayerHero[player], angle)
+                unit_data.nudge_timer = CreateTimer()
+                SetCameraQuickPositionForPlayer(Player(player-1), GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]))
+                NudgeUnit(PlayerHero[player], angle, 300., 0.52)
+                TimerStart(CreateTimer(), 0.41, false, function()
+                    EnableHeroSkills(player)
+                    DestroyTimer(GetExpiredTimer())
+                end)
+
+                local value = 0
+                local step = 100. / (5. / 0.025)
+                BlzFrameSetValue(GlobalButton[player].dash_button_cooldown, 0)
+                BlzFrameSetVisible(GlobalButton[player].dash_button_cooldown, true)
+
+                TimerStart(CreateTimer(), 0.025, true, function()
+                    value = value + step
+                    BlzFrameSetValue(GlobalButton[player].dash_button_cooldown, value)
+                    if value >= 100. then
+                        BlzFrameSetVisible(GlobalButton[player].dash_button_cooldown, false)
+                        DestroyTimer(GetExpiredTimer())
+                    end
+                end)
+
+        end
+    end
 
     ---@param player integer
     ---@param label string
@@ -290,6 +333,30 @@ do
                 starting_items[3] = CreateCustomItem("I010", 0., 0.)
                 starting_items[4] = CreateCustomItem("I00Z", 0., 0.)
                 starting_items[5] = CreateCustomItem("I00Y", 0., 0.)
+
+                starting_skills[1] = "AACS"
+                starting_skills[2] = "AABR"
+                starting_skills[3] = "AABA"
+                starting_skills[4] = "AASH"
+                starting_skills[5] = "AAEV"
+                starting_skills[6] = "AAVB"
+                starting_skills[7] = "AABF"
+                starting_skills[8] = "AATL"
+                starting_skills[9] = "AALL"
+                starting_skills[10] = "AANS"
+                starting_skills[11] = "AATW"
+                starting_skills[12] = "AABD"
+                starting_skills[13] = "AAST"
+                starting_skills[14] = "AACB"
+                starting_skills[15] = "AADB"
+                starting_skills[16] = "AAIG"
+                starting_skills[17] = "AACT"
+                starting_skills[18] = "AASC"
+                starting_skills[19] = "AABT"
+                starting_skills[20] = "AASB"
+                starting_skills[21] = "AARL"
+
+
             elseif region == ClassRegions[AMAZON_CLASS] then
                 id = FourCC("HAMA")
                 --starting_items[1] = CreateCustomItem("I02P", 0., 0.)
@@ -327,11 +394,10 @@ do
 
                     if region == ClassRegions[NECROMANCER_CLASS] then RegisterNecromancerCorpseSpawn(hero) end
 
-                    if unit_data.unit_class == BARBARIAN_CLASS then
-                        ModifyStat(hero, VULNERABILITY, -30, STRAIGHT_BONUS, true)
-                    elseif unit_data.unit_class == SORCERESS_CLASS then
-                        AddSpecialEffectTarget("Model\\Sorceress_Hair.mdx", hero, "head")
-                    end
+                    if unit_data.unit_class == BARBARIAN_CLASS or unit_data.unit_class == PALADIN_CLASS then ModifyStat(hero, VULNERABILITY, -30, STRAIGHT_BONUS, true)
+                    elseif unit_data.unit_class == ASSASSIN_CLASS then ModifyStat(hero, VULNERABILITY, -15, STRAIGHT_BONUS, true)
+                    elseif unit_data.unit_class == SORCERESS_CLASS then AddSpecialEffectTarget("Model\\Sorceress_Hair.mdx", hero, "head") end
+
                 end)
 
                 SetCameraBoundsToRectForPlayerBJ(Player(player_id), bj_mapInitialCameraBounds)
@@ -349,7 +415,11 @@ do
                     TriggerAddAction(damage_trigger, function()
                         if GetEventDamage() > 0 then
                             if (GetUnitState(hero, UNIT_STATE_LIFE) - GetEventDamage()) / BlzGetUnitMaxHP(hero) < 0.2 then
-                                Feedback_Health(player_id)
+                                if not HpFeedbackCooldown[player_id] then
+                                    Feedback_Health(player_id)
+                                    HpFeedbackCooldown[player_id] = true
+                                    DelayAction(14., function() HpFeedbackCooldown[player_id] = false end)
+                                end
                                 SetCineFilterTexture("ReplaceableTextures\\CameraMasks\\DreamFilter_Mask.blp")
                                 SetCineFilterBlendMode(BLEND_MODE_ADDITIVE)
                                 SetCineFilterTexMapFlags(TEXMAP_FLAG_NONE)
@@ -380,10 +450,13 @@ do
                     RegisterItemPickUp(PlayerHero[player_id])
 
                     local timer = CreateTimer()
-                    TimerStart(timer, 3., false, function()
+                    TimerStart(timer, 1.5, false, function()
                         local pid = player_id
 
                             for i = 1, #starting_items do
+                                AddToInventory(player_id, starting_items[i])
+                                local id = GetItemData(starting_items[i])
+                                DestroyEffect(id.quality_effect_light)
                                 EquipItem(hero, starting_items[i], true)
                                 SetItemVisible(starting_items[i], false)
                             end
@@ -411,6 +484,7 @@ do
                                 BlzFrameSetVisible(PlayerUI.arrow, true)
                                 BlzFrameSetVisible(PlayerUI.arrow_ability_text, true)
                             end
+                            DisplayPlayerProgression(player_id)
                         end)
                     end)
 
@@ -454,11 +528,15 @@ do
         PlayerLabels = {}
         PlayerRequiredEXP = {}
         PlayerLastRequiredEXP = {}
+        PlayerDash = {}
+        HpFeedbackCooldown = {}
 
         for i = 1, 6 do
             PlayerLastRequiredEXP[i] = 0
             PlayerRequiredEXP[i] = GetLevelXP(1)
             PlayerLabels = { }
+            PlayerDash[i] = { mode = DASH_MODE_CURSOR, timer = CreateTimer() }
+            HpFeedbackCooldown[i] = false
         end
 
         DeathTrigger = CreateTrigger()
@@ -481,7 +559,7 @@ do
             [SORCERESS_CLASS] = true,
             [NECROMANCER_CLASS] = true,
             [PALADIN_CLASS] = false,
-            [ASSASSIN_CLASS] = false,
+            [ASSASSIN_CLASS] = true,
             [DRUID_CLASS] = false,
             [AMAZON_CLASS] = false,
         }
@@ -504,7 +582,6 @@ do
             end
             CreateClassText(gg_rct_paladin_select, LOCALE_LIST[my_locale].PALADIN_NAME)
             CreateClassText(gg_rct_druid_select, LOCALE_LIST[my_locale].DRUID_NAME)
-            CreateClassText(gg_rct_assassin_select, LOCALE_LIST[my_locale].ASSASSIN_NAME)
             CreateClassText(gg_rct_amazon_select, LOCALE_LIST[my_locale].AMAZON_NAME)
         end)
 
@@ -512,6 +589,7 @@ do
         CreateClassText(gg_rct_barbarian_select, LOCALE_LIST[my_locale].BARBARIAN_NAME)
         CreateClassText(gg_rct_sorceress_select, LOCALE_LIST[my_locale].SORCERESS_NAME)
         CreateClassText(gg_rct_necro_select, LOCALE_LIST[my_locale].NECROMANCER_NAME)
+        CreateClassText(gg_rct_assassin_select, LOCALE_LIST[my_locale].ASSASSIN_NAME)
 
 
         TriggerAddAction(trg, HeroSelect)
@@ -605,6 +683,10 @@ do
                 ["soft"] = { "Sound\\BNecromancer\\soft1.wav", "Sound\\Necromancer\\soft3.wav", "Sound\\Necromancer\\soft5.wav" },
                 ["hard"] = { "Sound\\Necromancer\\hard1.wav", "Sound\\Necromancer\\hard6.wav" }
             },
+            [ASSASSIN_CLASS] = {
+                ["soft"] = { "Sound\\BNecromancer\\gethit01.wav", "Sound\\Necromancer\\gethit12.wav", "Sound\\Necromancer\\gethit13.wav" },
+                ["hard"] = { "Sound\\Necromancer\\gethit14.wav", "Sound\\Necromancer\\gethit14.wav" }
+            },
         }
 
 
@@ -618,24 +700,6 @@ do
             [AMAZON_CLASS] = "Emoo",
         }
 
-        --[[
-        [BARBARIAN_CLASS] = {
-                LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_1, LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_2, LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_3, LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_4,
-                LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_5, LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_6, LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_7, LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_8,
-                LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_9, LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_10, LOCALE_LIST[my_locale].BARBARIAN_PROPER_NAME_11
-            },
-            [SORCERESS_CLASS] = {
-                LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_1, LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_2, LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_3, LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_4,
-                LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_5, LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_6, LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_7, LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_8,
-                LOCALE_LIST[my_locale].SORCERESS_PROPER_NAME_9
-            },
-            [NECROMANCER_CLASS] = {
-                LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_1, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_2, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_3, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_4,
-                LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_5, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_6, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_7, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_8,
-                LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_9, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_10, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_11, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_12,
-                LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_13, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_14, LOCALE_LIST[my_locale].NECROMANCER_PROPER_NAME_15
-            },
-        ]]
 
         CemetaryX, CemetaryY = GetRectCenterX(gg_rct_cemetary), GetRectCenterY(gg_rct_cemetary)
 

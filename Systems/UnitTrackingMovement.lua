@@ -28,10 +28,12 @@ do
                 if button == MOUSE_BUTTON_TYPE_RIGHT and PlayerHero[player] and GetUnitState(PlayerHero[player], UNIT_STATE_LIFE) > 0.045 and PlayerMousePosition[player].x ~= 0 then
                     TimerStart(PlayerDelayTable[player], 0.25, true, function()
                         local x, y  = GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player])
-                        local angle = math.deg(AngleBetweenXY(x, y, PlayerMousePosition[player].x, PlayerMousePosition[player].y))
-                        local range = GetMaxAvailableDistance(x, y, angle, DistanceBetweenXY(x, y, PlayerMousePosition[player].x, PlayerMousePosition[player].y))
+                        local point_x, point_y = x + Rx(GetUnitMoveSpeed(PlayerHero[player]), PlayerMouseVectorAngle[player]), y + Ry(GetUnitMoveSpeed(PlayerHero[player]), PlayerMouseVectorAngle[player])
+                        --local angle = math.deg(AngleBetweenXY(x, y, PlayerMousePosition[player].x, PlayerMousePosition[player].y))
+                        local range = GetMaxAvailableDistance(x, y, PlayerMouseVectorAngle[player], DistanceBetweenXY(x, y, point_x, point_y))
 
-                            IssuePointOrderById(PlayerHero[player], order_smart, x + Rx(range, angle), y + Ry(range, angle))
+                            IssuePointOrderById(PlayerHero[player], order_smart, x + Rx(range, PlayerMouseVectorAngle[player]), y + Ry(range, PlayerMouseVectorAngle[player]))
+
                     end)
                 end
 

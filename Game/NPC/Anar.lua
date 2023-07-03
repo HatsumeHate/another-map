@@ -58,6 +58,39 @@ do
         })
 
 
+        NewConversation("quartermaster_suppliesquest_conv", {
+            { phrase = GetLocalString(
+                    "Далеко в руинах отсюда есть торговец. Мы сбываем ему ненужный хлам, и у нас как раз есть что ему отдать",
+                    "There is a wandering trader far from here in ruins. We sell to him all the useless stuff and we got new bag just for him"),
+              duration = 4.45 },
+            { phrase = GetLocalString(
+                    "Сходи отнеси ему этот мешок, заодно и познакомишься",
+                    "Take it, make yourself a useful aquitance"),
+              duration = 4.75 },
+            { phrase = GetLocalString(
+                    "Используй телепорт внутри замка, тут в задворке. Торговец находится в |c00FFFF6Cруинах|r",
+                    "Use the teleporter here in the backyard. The trader is in the |c00FFFF6ruins|r"),
+              duration = 4.55,
+            },
+            feedback = function(conv_id, npc, player)
+                local item = CreateCustomItem("I02T", 0.,0., false, player-1)
+
+                    if AddToInventory(player, item) then
+                        AddJournalEntry(player, "quest_anar_supplies", "ReplaceableTextures\\CommandButtons\\BTNDust.blp", GetLocalString("Припасы", "Supplies"), 125, true)
+                        LockInteractiveOptionIdPlayer(npc, "quest_anar_supplies_interaction", player)
+                        EnableJournalTrackingButton(player, "quest_anar_supplies", nil, GetRectCenterX(gg_rct_castle_loc), GetRectCenterY(gg_rct_castle_loc))
+                        AddJournalEntryText(player, "quest_anar_supplies", GetConversationText("quartermaster_suppliesquest_conv", gg_unit_n029_0022, player), false)
+                        SetItemVisible(item, false)
+                        UnlockInteractiveOptionIdPlayer(gg_unit_n01W_0111, "wand_supply_inter", player)
+                    else
+                        RemoveCustomItem(item)
+                        Feedback_InventoryNoSpace(player)
+                    end
+
+            end
+        })
+
+
         NewConversation("quartermaster_scoutquest_done_conv", {
             { phrase = GetLocalString(
                     "А, @Mвернулся!Fвернулась#",
@@ -399,8 +432,9 @@ do
                 if not IsBlockedByConversation(gg_unit_n029_0022) then
                     IssuePointOrderById(gg_unit_n029_0022, order_move, GetRectCenterX(gg_rct_anar_position), GetRectCenterY(gg_rct_anar_position))
                     TimerStart(timer, 0.5, true, function()
-                        if IsUnitInRangeXY(gg_unit_n029_0022, GetRectCenterX(gg_rct_anar_position), GetRectCenterY(gg_rct_anar_position), 20.) then
+                        if IsUnitInRangeXY(gg_unit_n029_0022, GetRectCenterX(gg_rct_anar_position), GetRectCenterY(gg_rct_anar_position), 15.) then
                             DestroyTimer(timer)
+                            IssueImmediateOrderById(gg_unit_n029_0022, order_stop)
                             SetUnitFacing(gg_unit_n029_0022, 250.)
                         else
                             IssuePointOrderById(gg_unit_n029_0022, order_move, GetRectCenterX(gg_rct_anar_position), GetRectCenterY(gg_rct_anar_position))
@@ -422,7 +456,8 @@ do
                 end
                 LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "quartermaster_game_start_int", player)
                 UnlockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_scoutquest_intro", player)
-                UnlockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_intro_conv", player)
+                UnlockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_scoutquest_intro", player)
+                UnlockInteractiveOptionIdPlayer(gg_unit_n029_0022, "quest_anar_supplies_interaction", player)
             end }, 1)
 
 
@@ -432,7 +467,7 @@ do
             feedback = function(clicked, clicking, player) PlayConversation("quartermaster_intro", gg_unit_n029_0022, player) end }, 1)
         LockInteractiveOptionId(gg_unit_n029_0022, "anar_intro_conv")
 
-
+        -- SCOUTING
         AddInteractiveOption(gg_unit_n029_0022, {
             name = GetLocalString("Разведка", "Scouting"),
             id = "anar_scoutquest_intro",
@@ -453,6 +488,13 @@ do
                 EnableAnarTasks()
             end }, 2)
         LockInteractiveOptionId(gg_unit_n029_0022, "anar_scoutquest_done")
+
+        -- SUPPLIES
+        AddInteractiveOption(gg_unit_n029_0022, {
+            name = GetLocalString("Припасы", "Supplies"),
+            id = "quest_anar_supplies_interaction",
+            feedback = function(clicked, clicking, player) PlayConversation("quartermaster_suppliesquest_conv", gg_unit_n029_0022, player) end }, 2)
+        LockInteractiveOptionId(gg_unit_n029_0022, "quest_anar_supplies_interaction")
 
 
         AddInteractiveOption(gg_unit_n029_0022, {

@@ -9,6 +9,8 @@ do
     local EXCHANGE_COST = 300
     local QUALITY_PENALTY_COST = 200
     local CATEGORY_PENALTY_COST = 200
+    local last_EnteredFrame
+    local last_EnteredFrameTimer
 
 
     local function RemovePlayerItems(player)
@@ -69,7 +71,7 @@ do
 
         BlzTriggerRegisterFrameEvent(ClickTrigger, new_Frame, FRAMEEVENT_CONTROL_CLICK)
         BlzTriggerRegisterFrameEvent(EnterTrigger, new_Frame, FRAMEEVENT_MOUSE_ENTER)
-        BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
+        --BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
 
         if button_type == 0 then
             local sprite = CreateSpriteNoCollision("UI\\vampirism_sprite.mdx", 0.74, new_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, -0.0048, -0.0048, new_Frame)
@@ -194,6 +196,11 @@ do
                     BlzFrameSetSize(new_Frame, 0.0435, 0.0435)
                     LibrarianFrame[player].portrait = new_Frame
 
+                    local border = BlzCreateFrameByType("BACKDROP", "aaa", new_Frame, "", 0)
+                    BlzFrameSetSize(border, 1., 1.)
+                    BlzFrameSetTexture(border, "UI\\inventory_frame.blp", 0, true)
+                    BlzFrameSetAllPoints(border, new_Frame)
+
                     new_Frame = BlzCreateFrameByType("TEXT", "shop name", LibrarianFrame[player].portrait, "", 0)
                     BlzFrameSetPoint(new_Frame, FRAMEPOINT_LEFT, LibrarianFrame[player].portrait, FRAMEPOINT_RIGHT, 0.011, 0.)
                     BlzFrameSetTextAlignment(new_Frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
@@ -265,6 +272,11 @@ do
             BlzFrameSetSize(new_Frame, 0.0435, 0.0435)
             LibrarianFrame[player].portrait = new_Frame
 
+            local border = BlzCreateFrameByType("BACKDROP", "aaa", new_Frame, "", 0)
+            BlzFrameSetSize(border, 1., 1.)
+            BlzFrameSetTexture(border, "UI\\inventory_frame.blp", 0, true)
+            BlzFrameSetAllPoints(border, new_Frame)
+
             new_Frame = BlzCreateFrameByType("TEXT", "shop name", LibrarianFrame[player].portrait, "", 0)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_LEFT, LibrarianFrame[player].portrait, FRAMEPOINT_RIGHT, 0.011, 0.)
             BlzFrameSetTextAlignment(new_Frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
@@ -321,6 +333,13 @@ do
 
 
         LibrarianFrame = {}
+
+        last_EnteredFrame = {}
+        last_EnteredFrameTimer = {}
+
+        for i = 1, 6 do
+            last_EnteredFrameTimer[i] = CreateTimer()
+        end
 
         AddSpecialEffectTarget("Marker\\LibrarianIcon.mdx", unit_owner, "overhead")
 
@@ -404,6 +423,22 @@ do
             local button = GetButtonData(BlzGetTriggerFrame())
             local player = GetPlayerId(GetTriggerPlayer()) + 1
 
+
+            TimerStart(last_EnteredFrameTimer[player], GLOBAL_TOOLTIP_FADE_TIME, false, function()
+                RemoveTooltip(player)
+                last_EnteredFrame[player] = nil
+                --print("remove timed")
+            end)
+
+            if last_EnteredFrame[player] == BlzGetTriggerFrame() then
+                --print("same frame")
+                return
+            else
+                RemoveTooltip(player)
+            end
+
+            last_EnteredFrame[player] = BlzGetTriggerFrame()
+
             if button.item then
                 ShowItemTooltip(button.item, LibrarianFrame[player].tooltip, button, player, FRAMEPOINT_RIGHT)
             else
@@ -463,6 +498,7 @@ do
                                     RemoveTooltip(player)
                                     --ShopInFocus[player] = nil
                                     LibrarianFrame[player].state = false
+                                    TimerStart(last_EnteredFrameTimer[player], 0., false, nil)
                                     if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(LibrarianFrame[player].main_frame, false) end
                                     DestroyTimer(timer)
                                     if soundpack then
@@ -475,6 +511,20 @@ do
                     end
 
             end})
+
+        NewConversation("librarian_new_book_convo", {
+            { phrase = GetLocalString("Принес неизвестную книгу? Я помогу тебе обменять их на те, которые ты сможешь прочитать",
+                    "Got an unknown book? I can exchange it for the one that you can read"), duration = 2.85 },
+        })
+            AddInteractiveOption(unit_owner, { name = GetLocalString("Помощь?", "Help?"), id = "librarian_new_book", feedback = function(clicked, clicking, player)
+                GiveGoldForPlayer(200, player)
+                GiveExpForPlayer(100, player)
+                PlayConversation("librarian_new_book_convo", unit_owner, player)
+                LockInteractiveOptionIdPlayer(unit_owner, "librarian_new_book", player)
+                HideJournalEntry(player, "librarian_journal")
+            end })
+            LockInteractiveOptionId(unit_owner, "librarian_new_book")
+
 
     end
 

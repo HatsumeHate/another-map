@@ -9,6 +9,7 @@ do
     local ClickTrigger
     local EnterTrigger
     local LeaveTrigger
+    local TrackTrigger
 
 
     TASK_DONE_STRING = ""
@@ -87,11 +88,19 @@ do
         if JournalFrame[player].state then
             local in_focus = false
 
+            local entry_list = {}
+
+            for i = 1, #JournalFrame[player].entries_list do
+                if JournalFrame[player].entries_list[i] and not JournalFrame[player].entries_list[i].hidden then
+                    entry_list[#entry_list+1] = JournalFrame[player].entries_list[i]
+                end
+            end
+
                 for i = 1, 6 do
                     local button_data = GetButtonData(JournalFrame[player].entries_buttons[i])
 
-                        if JournalFrame[player].entries_list[i + (JournalFrame[player].slider_value-1)] then
-                            local entry = JournalFrame[player].entries_list[i + JournalFrame[player].slider_value-1]
+                        if entry_list[i + (JournalFrame[player].slider_value-1)] then
+                            local entry = entry_list[i + JournalFrame[player].slider_value-1]
                             BlzFrameSetTexture(button_data.image, entry.icon, 0, true)
                             FrameChangeTexture(button_data.button, entry.icon)
                             button_data.entry = entry
@@ -126,6 +135,10 @@ do
                         for i = 1, #button_data.entry.text do BlzFrameAddText(JournalFrame[player].entry_text_frame, button_data.entry.text[i]) end
                         BlzFrameSetText(JournalFrame[player].header, button_data.entry.header)
                         in_focus = true
+                    elseif not JournalFrame[player].entry_in_focus then
+                        BlzFrameSetText(JournalFrame[player].entry_text_frame, "")
+                        BlzFrameSetText(JournalFrame[player].header, "")
+                        BlzFrameSetVisible(JournalFrame[player].track_button, false)
                     end
 
                 end
@@ -139,6 +152,26 @@ do
     end
 
 
+    local function TrackingButtonClick()
+        local player = GetPlayerId(GetTriggerPlayer()) + 1
+        local entry = JournalFrame[player].entry_in_focus or nil
+
+            if entry then
+                if entry.tracking then
+                    entry.tracking = false
+                    DisableQuestTracking(PlayerHero[player])
+                else
+                    entry.tracking = true
+                    if entry.target then
+                        EnableUnitTargetQuestTracking(PlayerHero[player], entry.target, entry.id, 200.)
+                    else
+                        EnableUnitPointQuestTracking(PlayerHero[player], entry.point_x, entry.point_y, entry.id, 200.)
+                    end
+                end
+            end
+
+    end
+
     local function ClickActions()
         local player = GetPlayerId(GetTriggerPlayer()) + 1
         local button_data = GetButtonData(BlzGetTriggerFrame())
@@ -147,32 +180,71 @@ do
             BlzFrameClearAllPoints(JournalFrame[player].sprite)
             BlzFrameSetPoint(JournalFrame[player].sprite, FRAMEPOINT_BOTTOMLEFT,button_data.border, FRAMEPOINT_BOTTOMLEFT, 0.028, 0.028)
             JournalFrame[player].entry_in_focus = button_data.entry
+            JournalFrame[player].entry_in_focus_id = button_data.entry.id
 
-        if button_data.entry then
-            BlzFrameSetText(JournalFrame[player].entry_text_frame, "")
+                if button_data.entry then
 
-            if button_data.entry.objectives then
-                local objectives_text = ""
+                    BlzFrameSetText(JournalFrame[player].entry_text_frame, "")
+                    BlzFrameSetVisible(JournalFrame[player].track_button, button_data.entry.enabled_tracking or false)
 
-                for i = 1, #button_data.entry.objectives do
-                    if button_data.entry.objectives[i].state == JOURNAL_OBJECTIVE_STATE_DONE then
-                        BlzFrameAddText(JournalFrame[player].entry_text_frame, "- " .. "|c0000FF00" .. button_data.entry.objectives[i].text .. "|r")
-                    elseif button_data.entry.objectives[i].state == JOURNAL_OBJECTIVE_STATE_FAILED then
-                        BlzFrameAddText(JournalFrame[player].entry_text_frame, "- " .. "|c00FF0000" .. button_data.entry.objectives[i].text .. "|r")
-                    else
-                        BlzFrameAddText(JournalFrame[player].entry_text_frame, "- " .. button_data.entry.objectives[i].text)
+                    if button_data.entry.objectives then
+                        local objectives_text = ""
+
+                        for i = 1, #button_data.entry.objectives do
+                            if button_data.entry.objectives[i].state == JOURNAL_OBJECTIVE_STATE_DONE then
+                                BlzFrameAddText(JournalFrame[player].entry_text_frame, "- " .. "|c0000FF00" .. button_data.entry.objectives[i].text .. "|r")
+                            elseif button_data.entry.objectives[i].state == JOURNAL_OBJECTIVE_STATE_FAILED then
+                                BlzFrameAddText(JournalFrame[player].entry_text_frame, "- " .. "|c00FF0000" .. button_data.entry.objectives[i].text .. "|r")
+                            else
+                                BlzFrameAddText(JournalFrame[player].entry_text_frame, "- " .. button_data.entry.objectives[i].text)
+                            end
+                        end
+
+                        BlzFrameAddText(JournalFrame[player].entry_text_frame, "=========================")
                     end
+
+                    for i = 1, #button_data.entry.text do BlzFrameAddText(JournalFrame[player].entry_text_frame, button_data.entry.text[i]) end
+                    BlzFrameSetText(JournalFrame[player].header, button_data.entry.header)
+                else
+                    BlzFrameSetVisible(JournalFrame[player].track_button, false)
+                    BlzFrameSetText(JournalFrame[player].entry_text_frame, "")
+                    BlzFrameSetText(JournalFrame[player].header, "")
                 end
 
-                BlzFrameAddText(JournalFrame[player].entry_text_frame, "=========================")
-            end
+    end
 
-            for i = 1, #button_data.entry.text do BlzFrameAddText(JournalFrame[player].entry_text_frame, button_data.entry.text[i]) end
-            BlzFrameSetText(JournalFrame[player].header, button_data.entry.header)
-        else
-            BlzFrameSetText(JournalFrame[player].entry_text_frame, "")
-            BlzFrameSetText(JournalFrame[player].header, "")
+
+
+    ---@param player number
+    ---@param id string
+    function DisableJournalTrackingButton(player, id)
+        local entry = GetEntry(player, id)
+
+        if entry then
+            if JournalFrame[player].entry_in_focus and JournalFrame[player].entry_in_focus == entry then
+                if entry.tracking then DisableQuestTracking(PlayerHero[player]) end
+            end
+            entry.enabled_tracking = nil
         end
+
+    end
+
+
+    ---@param player number
+    ---@param id string
+    ---@param target unit
+    ---@param point_x real
+    ---@param point_y real
+    function EnableJournalTrackingButton(player, id, target, point_x, point_y)
+        local entry = GetEntry(player, id)
+
+            if entry then
+                entry.enabled_tracking = true
+                entry.target = target or nil
+                entry.point_x = point_x or 0
+                entry.point_y = point_y or 0
+                entry.tracking = false
+            end
 
     end
 
@@ -315,13 +387,21 @@ do
 
 
     local function SortEntries(player)
-        local entry_list = JournalFrame[player].entries_list
+        local entry_list = {}
+
+        for i = 1, #JournalFrame[player].entries_list do
+            if JournalFrame[player].entries_list[i] and not JournalFrame[player].entries_list[i].hidden then
+                entry_list[#entry_list+1] = JournalFrame[player].entries_list[i]
+            end
+        end
+
+        --local entry_list = JournalFrame[player].entries_list
         local max = #entry_list
 
         if max == 1 then
             return
         end
-
+        --GetRandomIntTableFast()
         local continue = true
         while continue do
             continue = false
@@ -345,7 +425,7 @@ do
     function RemoveJournalEntry(player, id)
         for i = 1, #JournalFrame[player].entries_list do
             if JournalFrame[player].entries_list[i] and JournalFrame[player].entries_list[i].id == id then
-                if JournalFrame[player].entry_in_focus == JournalFrame[player].entries_list[i] then JournalFrame[player].entry_in_focus = nil end
+                if JournalFrame[player].entry_in_focus and JournalFrame[player].entry_in_focus == JournalFrame[player].entries_list[i] then JournalFrame[player].entry_in_focus = nil end
                 --JournalFrame[player].entries_list[i] = nil
                 table.remove(JournalFrame[player].entries_list, i)
                 SortEntries(player)
@@ -353,6 +433,29 @@ do
                 break
             end
         end
+    end
+
+
+    function HideJournalEntry(player, id)
+
+        for i = 1, #JournalFrame[player].entries_list do
+            if JournalFrame[player].entries_list[i] and JournalFrame[player].entries_list[i].id == id then
+
+                if JournalFrame[player].entry_in_focus and JournalFrame[player].entries_list[i] == JournalFrame[player].entry_in_focus then
+                    JournalFrame[player].entry_in_focus = nil
+                end
+
+                if JournalFrame[player].entries_list[i].tracking then
+                    DisableQuestTracking(PlayerHero[player])
+                end
+
+                JournalFrame[player].entries_list[i].hidden = true
+                SortEntries(player)
+                UpdateJournalWindow(player)
+                break
+            end
+        end
+
     end
 
 
@@ -396,6 +499,13 @@ do
 
                 local topborder = new_frame
 
+                JournalFrame[player].track_button = BlzCreateFrame("ScriptDialogButton", topborder, 0, 0)
+                BlzFrameSetPoint(JournalFrame[player].track_button, FRAMEPOINT_RIGHT, topborder, FRAMEPOINT_RIGHT, -0.02, 0.)
+                BlzFrameSetSize(JournalFrame[player].track_button, 0.07, 0.04)
+                BlzFrameSetText(JournalFrame[player].track_button, GetLocalString("Отслеживать", "Track"))
+                BlzFrameSetVisible(JournalFrame[player].track_button, false)
+                FrameRegisterNoFocus(JournalFrame[player].track_button)
+                BlzTriggerRegisterFrameEvent(TrackTrigger, JournalFrame[player].track_button, FRAMEEVENT_CONTROL_CLICK)
 
                 local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_frame, "", 0)
                 local new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", new_frame, "", 0)
@@ -411,9 +521,9 @@ do
 
                 new_frame = BlzCreateFrameByType("TEXT", "header", topborder, "", 0)
                 BlzFrameSetPoint(new_frame, FRAMEPOINT_CENTER, topborder, FRAMEPOINT_CENTER, 0., 0.)
-                BlzFrameSetPoint(new_frame, FRAMEPOINT_RIGHT, topborder, FRAMEPOINT_RIGHT, -0.003, 0.)
-                BlzFrameSetPoint(new_frame, FRAMEPOINT_LEFT, new_FrameBorder, FRAMEPOINT_LEFT, 0.003, 0.)
-                BlzFrameSetScale(new_frame, 1.4)
+                BlzFrameSetPoint(new_frame, FRAMEPOINT_RIGHT, JournalFrame[player].track_button, FRAMEPOINT_RIGHT, -0.003, 0.)
+                BlzFrameSetPoint(new_frame, FRAMEPOINT_LEFT, new_FrameBorder, FRAMEPOINT_LEFT, 0.001, 0.)
+                BlzFrameSetScale(new_frame, 1.2)
                 BlzFrameSetTextAlignment(new_frame, TEXT_JUSTIFY_CENTER , TEXT_JUSTIFY_MIDDLE)
 
                 JournalFrame[player].header = new_frame
@@ -482,6 +592,18 @@ do
                 BlzFrameSetVisible(JournalFrame[player].sprite, false)
                 BlzFrameSetVisible(JournalFrame[player].mainframe, false)
                 JournalFrame[player].state = false
+
+
+                if JournalFrame[player].entry_in_focus_id then
+                    for i = 1, #JournalFrame[player].entries_list do
+                        if JournalFrame[player].entry_in_focus_id == JournalFrame[player].entries_list[i].id then
+                            JournalFrame[player].entry_in_focus = JournalFrame[player].entries_list[i]
+                            if JournalFrame[player].entry_in_focus.enabled_tracking then BlzFrameSetVisible(JournalFrame[player].track_button, true) end
+                            break
+                        end
+                    end
+                end
+
             end
         end
     end
@@ -501,6 +623,13 @@ do
 
         local topborder = new_frame
 
+        JournalFrame[player].track_button = BlzCreateFrame("ScriptDialogButton", topborder, 0, 0)
+        BlzFrameSetPoint(JournalFrame[player].track_button, FRAMEPOINT_RIGHT, topborder, FRAMEPOINT_RIGHT, -0.02, 0.)
+        BlzFrameSetSize(JournalFrame[player].track_button, 0.07, 0.04)
+        BlzFrameSetText(JournalFrame[player].track_button, GetLocalString("Отслеживать", "Track"))
+        BlzFrameSetVisible(JournalFrame[player].track_button, false)
+        FrameRegisterNoFocus(JournalFrame[player].track_button)
+        BlzTriggerRegisterFrameEvent(TrackTrigger, JournalFrame[player].track_button, FRAMEEVENT_CONTROL_CLICK)
 
         local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_frame, "", 0)
         local new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", new_frame, "", 0)
@@ -516,9 +645,9 @@ do
 
         new_frame = BlzCreateFrameByType("TEXT", "header", topborder, "", 0)
         BlzFrameSetPoint(new_frame, FRAMEPOINT_CENTER, topborder, FRAMEPOINT_CENTER, 0., 0.)
-        BlzFrameSetPoint(new_frame, FRAMEPOINT_RIGHT, topborder, FRAMEPOINT_RIGHT, -0.003, 0.)
-        BlzFrameSetPoint(new_frame, FRAMEPOINT_LEFT, new_FrameBorder, FRAMEPOINT_LEFT, 0.003, 0.)
-        BlzFrameSetScale(new_frame, 1.4)
+        BlzFrameSetPoint(new_frame, FRAMEPOINT_RIGHT, JournalFrame[player].track_button, FRAMEPOINT_RIGHT, -0.003, 0.)
+        BlzFrameSetPoint(new_frame, FRAMEPOINT_LEFT, new_FrameBorder, FRAMEPOINT_LEFT, 0.001, 0.)
+        BlzFrameSetScale(new_frame, 1.2)
         BlzFrameSetTextAlignment(new_frame, TEXT_JUSTIFY_CENTER , TEXT_JUSTIFY_MIDDLE)
 
         JournalFrame[player].header = new_frame
@@ -579,7 +708,6 @@ do
             [1] = NewButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.04, 0.04, border, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.018, -0.019, main_frame),
         }
 
-
         for i = 2, 6 do
             JournalFrame[player].entries_buttons[i] = NewButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.04, 0.04, JournalFrame[player].entries_buttons[i-1], FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., -0.006, main_frame)
         end
@@ -620,10 +748,13 @@ do
         ClickTrigger = CreateTrigger()
         EnterTrigger = CreateTrigger()
         LeaveTrigger = CreateTrigger()
+        TrackTrigger = CreateTrigger()
+
 
         TASK_DONE_STRING = "|c000080FF" .. GetLocalString("Поручение выполнено", "Task completed") ..": |r"
 
         TriggerAddAction(ClickTrigger, ClickActions)
+        TriggerAddAction(TrackTrigger, TrackingButtonClick)
 
     end
 

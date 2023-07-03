@@ -535,6 +535,8 @@ do
             print("????????")
         end)
 
+
+
         RegisterTestCommand("jr-", function()
             RemoveJournalEntry(1, "task_soldiersrescue")
         end)

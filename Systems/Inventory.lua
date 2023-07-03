@@ -2,6 +2,7 @@ do
 
     PlayerInventoryFrame = 0
     PlayerInventoryFrameState = 0
+    InventoryFallbackFrame = 0
     InventoryData = nil
     InventorySlots = 0
     InventoryOwner = 0
@@ -11,8 +12,12 @@ do
     InventoryItemInFocus = nil
     InventoryKeyState = nil
     INV_SLOT = 0
+    PlayerCanChangeEquipment = nil
+    local ClassFrameTexture
     local ClickTrigger = 0
     local BackupButtonData
+    local last_EnteredFrame
+    local last_EnteredFrameTimer
 
 
 
@@ -164,6 +169,23 @@ do
 
             end
 
+
+            for i = 0, 1 do
+                local button = GetButtonData(InventorySlots[player][43+i])
+                    if button.item then
+                         local item_data = GetItemData(button.item)
+                         button.item = item_data.item
+                         BlzFrameSetTexture(button.image, item_data.frame_texture, 0, true)
+                         FrameChangeTexture(button.button, item_data.frame_texture)
+                     else
+                         button.item = nil
+                         BlzFrameSetTexture(button.image, button.original_texture, 0, true)
+                         FrameChangeTexture(button.button, button.original_texture)
+                     end
+            end
+
+
+
         --print("equip points updated")
         if unit_data.equip_point[WEAPON_POINT].item then
             --print("weapon exists")
@@ -206,11 +228,11 @@ do
                                 BlzFrameSetTexture(button.image, button.original_texture, 0, true)
                                 FrameChangeTexture(button.button, button.original_texture)
                                 BlzFrameSetVisible(button.new_item, false)
-                                if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.charges_frame, false) end
+                                BlzFrameSetVisible(button.charges_frame, false)
                                 button.charges_frame_state = false
 
                                     if button.button_state then
-                                        if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.sprite, false) end
+                                        BlzFrameSetVisible(button.sprite, false)
                                         button.button_state = false
                                     end
 
@@ -219,18 +241,14 @@ do
 
                             else
                                 button.charges_frame_state = true
-                                if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.charges_frame, true) end
+                                BlzFrameSetVisible(button.charges_frame, true)
                                 BlzFrameSetText(button.charges_text_frame, R2I(GetItemCharges(button.item)))
 
                                     if button.button_state and not IsItemInvulnerable(button.item) then
-                                        if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.sprite, false) end
-                                        --BlzFrameSetEnable(button.sprite, false)
+                                        BlzFrameSetVisible(button.sprite, false)
                                         button.button_state = false
-                                        --BlzDestroyFrame(button.sprite)
-                                        --button.sprite = nil
                                     elseif not button.button_state and IsItemInvulnerable(button.item) then
-                                        if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.sprite, true) end
-                                        --BlzFrameSetEnable(button.sprite, true)
+                                        BlzFrameSetVisible(button.sprite, true)
                                         button.button_state = true
                                     end
 
@@ -238,7 +256,7 @@ do
 
                         elseif button.charges_frame_state then
                             button.charges_frame_state = false
-                            if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.charges_frame, false) end
+                            BlzFrameSetVisible(button.charges_frame, false)
                         end
 
                 else
@@ -248,17 +266,14 @@ do
 
                     if button.charges_frame_state then
                         button.charges_frame_state = false
-                        if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.charges_frame, false) end
+                        BlzFrameSetVisible(button.charges_frame, false)
                     end
 
                     BlzFrameSetText(button.charges_text_frame, "")
 
                         if button.button_state then
-                            if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.sprite, false) end
-                            --BlzFrameSetEnable(button.sprite, false)
+                            BlzFrameSetVisible(button.sprite, false)
                             button.button_state = false
-                            --BlzDestroyFrame(button.sprite)
-                            --button.sprite = nil
                         end
 
                 end
@@ -277,15 +292,8 @@ do
     local function LockItemOnBelt(player, button)
         if not button.button_state then
             if UnitInventoryCount(InventoryOwner[player]) < 6 then
-                --button.sprite = BlzCreateFrameByType("SPRITE", "justAName", button.image, "WarCraftIIILogo", 0)
-                --BlzFrameClearAllPoints()
-                --BlzFrameSetPoint(button.sprite, FRAMEPOINT_BOTTOMLEFT, button.image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
-                --BlzFrameSetSize(button.sprite, 1., 1.)
-                --BlzFrameSetScale(button.sprite, 1.)
 
-                --BlzFrameSetModel(button.sprite, "selecter3.mdx", 0)
-                if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.sprite, true) end
-                --BlzFrameSetEnable(button.sprite, true)
+                BlzFrameSetVisible(button.sprite, true)
                 button.button_state = true
                 PlayLocalSound("Sound\\Interface\\AutoCastButtonClick1.wav", player-1)
 
@@ -304,14 +312,11 @@ do
                 Feedback_CantUse(player)
             end
         else
-            if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.sprite, false) end
-            --BlzFrameSetEnable(button.sprite, false)
+            BlzFrameSetVisible(button.sprite, false)
             button.button_state = false
-            --BlzDestroyFrame(button.sprite)
             SetItemInvulnerable(button.item, false)
             UnitRemoveItem(PlayerHero[player], button.item)
             SetItemVisible(button.item, false)
-            --button.sprite = nil
         end
     end
 
@@ -353,19 +358,22 @@ do
     function ShowAlternateInventoryTooltip(player)
 
         if IsTooltipActive(player) then
+            --print("a")
             local item_to_compare = GetItemToCompare(InventoryItemInFocus[player].item, player)
                 if item_to_compare and item_to_compare ~= InventoryItemInFocus[player].item then
                     local proper_tooltip = InventoryTooltip[player]
                     local proper_alternate_tooltip = InventoryAlternateTooltip[player]
-
+                    --print("b")
                     if ShopFrame[player].state then
                         proper_tooltip = ShopFrame[player].tooltip;
                         proper_alternate_tooltip = ShopFrame[player].alternate_tooltip
+                        --print("get shop tooltip")
                     end
-
+--print("c")
                     ShowItemTooltip(item_to_compare, proper_alternate_tooltip, InventoryItemInFocus[player], player, FRAMEPOINT_LEFT, GetTooltip(proper_alternate_tooltip), true, InventoryItemInFocus[player].item)
                     BlzFrameClearAllPoints(proper_alternate_tooltip)
                     BlzFrameSetPoint(proper_alternate_tooltip, FRAMEPOINT_RIGHT, proper_tooltip, FRAMEPOINT_LEFT, 0., 0.)
+                    --print("e")
                 end
         end
 
@@ -381,6 +389,28 @@ do
     local function EnterAction()
         local player = GetPlayerId(GetTriggerPlayer()) + 1
         local frame = BlzGetTriggerFrame()
+
+            TimerStart(last_EnteredFrameTimer[player], GLOBAL_TOOLTIP_FADE_TIME, false, function()
+                InventoryItemInFocus[player] = nil
+                RemoveTooltip(player)
+                last_EnteredFrame[player] = nil
+                --print("remove timed")
+            end)
+
+
+            if last_EnteredFrame[player] == frame then
+                --print("same frame")
+                return
+            else
+                InventoryItemInFocus[player] = nil
+                RemoveTooltip(player)
+                --print("remove")
+            end
+
+        last_EnteredFrame[player] = frame
+
+
+        --print("enter")
         --local h = GetHandleId()
         --print("Entering trigger "..GetHandleId(GetTriggeringTrigger()))
 
@@ -419,8 +449,9 @@ do
     end
 
     local function LeaveAction()
-        InventoryItemInFocus[GetPlayerId(GetTriggerPlayer()) + 1] = nil
-        RemoveTooltip(GetPlayerId(GetTriggerPlayer()) + 1)
+        --print("leave")
+        --InventoryItemInFocus[GetPlayerId(GetTriggerPlayer()) + 1] = nil
+       -- RemoveTooltip(GetPlayerId(GetTriggerPlayer()) + 1)
     end
 
 
@@ -464,8 +495,8 @@ do
             selected_frame = nil,
             mode = 0
         }
-        PlayerMovingItem[player].selector_frame = BlzCreateFrameByType("SPRITE", "justAName", ButtonList[InventorySlots[player][32]].image, "WarCraftIIILogo", 0)
-        BlzFrameSetPoint(PlayerMovingItem[player].selector_frame, FRAMEPOINT_BOTTOMLEFT, ButtonList[InventorySlots[player][32]].image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
+        PlayerMovingItem[player].selector_frame = BlzCreateFrameByType("SPRITE", "justAName", InventorySlots[player][32], "WarCraftIIILogo", 0)
+        BlzFrameSetPoint(PlayerMovingItem[player].selector_frame, FRAMEPOINT_BOTTOMLEFT, InventorySlots[player][32], FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
         BlzFrameSetSize(PlayerMovingItem[player].selector_frame, 1., 1.)
         BlzFrameSetScale(PlayerMovingItem[player].selector_frame, 1.)
         PlayerMovingItem[player].frame = BlzCreateFrameByType("BACKDROP", "selection frame", PlayerMovingItem[player].selector_frame, "", 0)
@@ -565,6 +596,9 @@ do
     local function InteractWithItemInSlot(h, id, offhand)
         local item_data = GetItemData(ButtonList[h].item)
 
+
+            if not PlayerCanChangeEquipment[id] then return end
+
             if item_data.TYPE >= ITEM_TYPE_WEAPON and item_data.TYPE <= ITEM_TYPE_OFFHAND then
                 if ButtonList[h].button_type == INV_SLOT then
 
@@ -601,6 +635,8 @@ do
     local function ForceEquip(h, player, offhand)
         local selected_item = ButtonList[PlayerMovingItem[player].selected_frame].item
         local item_data = GetItemData(selected_item)
+
+        if not PlayerCanChangeEquipment[player] then return end
 
             if (ButtonList[h].button_type >= WEAPON_POINT and ButtonList[h].button_type <= NECKLACE_POINT) and IsItemPointEqualToType(ButtonList[h].button_type, item_data.SUBTYPE) then
 
@@ -640,7 +676,18 @@ do
 
                         if flag then EquipItem(InventoryOwner[player], item, false, (item_data.TYPE == ITEM_TYPE_WEAPON and slot.button_type == OFFHAND_POINT)) end
 
+
                         item_data.STONE_SLOTS[i] = stone_data
+
+                        if item_data.MAX_SLOTS > 2 then
+                            local runeword = GetRunewordId(item_data.STONE_SLOTS)
+                            local runeword_data = GetRunewordData(runeword)
+                            if runeword and runeword_data[item_data.TYPE] then
+                                item_data.runeword = runeword
+                            end
+                        end
+
+
                         if flag then EquipItem(InventoryOwner[player], item, true, (item_data.TYPE == ITEM_TYPE_WEAPON and slot.button_type == OFFHAND_POINT)) end
 
 
@@ -700,14 +747,97 @@ do
     local function UseItem(item, player)
         local item_data = GetItemData(item)
 
-            OnItemUse(PlayerHero[player], item, PlayerHero[player])
 
-            if GetItemType(item) == ITEM_TYPE_CHARGED then RemoveChargesFromInventoryItem(player, item, 1)
-            elseif not item_data.permanent then RemoveItemFromInventory(player, item) end
+            if GetItemType(item) == ITEM_TYPE_CHARGED then
+
+                if IsItemInvulnerable(item) then
+                    UnitUseItem(PlayerHero[player], item)
+                else
+
+                    if UnitInventoryCount(InventoryOwner[player]) < 6 then
+
+                        SetItemVisible(item, true)
+                        SetItemInvulnerable(item, true)
+                        UnitAddItem(PlayerHero[player], item)
+                        UnitUseItem(PlayerHero[player], item)
+
+                            if GetItemCharges(item) > 0 then
+                                SetItemInvulnerable(item, false)
+                                UnitRemoveItem(PlayerHero[player], item)
+                                SetItemVisible(item, false)
+                            end
+
+                        UpdateInventoryWindow(player)
+
+                    else
+                        local islot = UnitItemInSlot(PlayerHero[player], 0)
+
+                            SetItemInvulnerable(islot, false)
+                            UnitRemoveItem(PlayerHero[player], islot)
+                            SetItemVisible(item, true)
+                            SetItemInvulnerable(item, true)
+                            UnitAddItem(PlayerHero[player], item)
+                            UnitUseItem(PlayerHero[player], item)
+
+                                if GetItemCharges(item) > 0 then
+                                    SetItemInvulnerable(item, false)
+                                    UnitRemoveItem(PlayerHero[player], item)
+                                    SetItemVisible(item, false)
+                                end
+
+                            SetItemInvulnerable(islot, true)
+                            UnitAddItem(PlayerHero[player], islot)
+                    end
+
+                end
+
+                --RemoveChargesFromInventoryItem(player, item, 1)
+
+            else
+                OnItemUse(PlayerHero[player], item, PlayerHero[player])
+                if not item_data.permanent then RemoveItemFromInventory(player, item) end
+            end
 
     end
 
 
+    ---@param player integer
+    function SwitchHeroWeapon(player)
+        local main_weapon = GetButtonData(InventorySlots[player][33])
+        local alt_weapon = GetButtonData(InventorySlots[player][34])
+        local main_switch_data = GetButtonData(InventorySlots[player][43])
+        local alt_switch_data = GetButtonData(InventorySlots[player][44])
+        local to_switch_main_item = main_switch_data.item or nil
+        local to_switch_alt_item = alt_switch_data.item or nil
+
+            if not PlayerCanChangeEquipment[player] then return end
+
+            if alt_weapon.item then EquipItem(PlayerHero[player], alt_weapon.item, false) end
+            if main_weapon.item  then EquipItem(PlayerHero[player], main_weapon.item , false) end
+
+            main_switch_data.item = main_weapon.item
+            alt_switch_data.item = alt_weapon.item
+
+            main_weapon.item = to_switch_main_item
+            alt_weapon.item = to_switch_alt_item
+
+            if to_switch_main_item then
+                EquipItem(PlayerHero[player], to_switch_main_item, true)
+                local item_data = GetItemData(to_switch_main_item)
+                if item_data.soundpack and item_data.soundpack.equip then PlayLocalSound(item_data.soundpack.equip, player - 1) end
+            end
+            if to_switch_alt_item then EquipItem(PlayerHero[player], to_switch_alt_item, true) end
+
+
+            UpdateEquipPointsWindow(player)
+
+    end
+
+
+    ---@param item item
+    ---@param count integer
+    ---@param player integer
+    ---@return item
     function SplitChargedItem(item, count, player)
             SetItemCharges(item, GetItemCharges(item) - count)
             local new_item = CreateCustomItem_Id(GetItemTypeId(item), GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]))
@@ -763,7 +893,7 @@ do
                                 if ShopInFocus[player] then
 
                                     if GetItemCharges(ButtonList[h].item) > 1 then
-                                        CreateSlider(player, ButtonList[h], ButtonList[InventorySlots[player][32]].image, function()
+                                        CreateSlider(player, ButtonList[h], InventorySlots[player][45], function()
                                             local value = SliderFrame[player].value
                                             --local value = BlzFrameGetValue(SliderFrame[player].slider)
                                             --print("item charges are " .. GetItemCharges(ButtonList[h].item))
@@ -820,11 +950,14 @@ do
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_ALT_WEAPON, function() InteractWithItemInSlot(h, player, true) end)
                     end
 
-                    
+
 
                     if item_data.TYPE == ITEM_TYPE_GEM then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_ENCHANT, function() StartSelectionMode(player, h, SELECTION_MODE_ENCHANT) end)
                     elseif item_data.TYPE == ITEM_TYPE_CONSUMABLE then
+                        if item_data.usable then
+                            AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_USE, function() if item_data and item_data.item then UseItem(item_data.item, player) end end)
+                        end
                         --AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_USE, function() if item_data and item_data.item then UseItem(item_data.item, player) end end)
                         AddContextOption(player, ButtonList[h].button_state and LOCALE_LIST[my_locale].UI_TEXT_BELT_OFF or LOCALE_LIST[my_locale].UI_TEXT_BELT_ON, function() LockItemOnBelt(player, ButtonList[h]) end)
                     elseif item_data.TYPE == ITEM_TYPE_SKILLBOOK then
@@ -844,7 +977,7 @@ do
                                 DropItemFromInventory(player, ButtonList[h].item, false)
                             else
                                 if GetItemCharges(ButtonList[h].item) > 1 then
-                                    CreateSlider(player, ButtonList[h], ButtonList[InventorySlots[player][32]].image, function()
+                                    CreateSlider(player, ButtonList[h], InventorySlots[player][45], function()
                                         local value = SliderFrame[player].value
                                         if value < GetItemCharges(ButtonList[h].item) then
                                             SetItemCharges(ButtonList[h].item, GetItemCharges(ButtonList[h].item) - value)
@@ -1014,10 +1147,14 @@ do
 
                             if item_data.flippy then
                                 if item_data.flippy and item_data.quality_effect then
-                                    BlzSetSpecialEffectPosition(item_data.quality_effect, GetItemX(item), GetItemY(item), GetZ(GetItemX(item), GetItemY(item)))
-                                    BlzSetItemSkin(item, GetItemTypeId(item))
-                                    BlzSetSpecialEffectAlpha(item_data.quality_effect, 255)
-                                    --item_data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[item_data.QUALITY], GetItemX(item), GetItemY(item))
+                                    local x, y, z = GetItemX(item), GetItemY(item), GetZ(GetItemX(item), GetItemY(item))
+
+                                        BlzSetSpecialEffectPosition(item_data.quality_effect, x, y, z)
+                                        BlzSetItemSkin(item, GetItemTypeId(item))
+                                        BlzSetSpecialEffectAlpha(item_data.quality_effect, 255)
+                                        item_data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[item_data.QUALITY], x, y)
+                                        BlzSetSpecialEffectZ(item_data.quality_effect_light, z + 10.)
+
                                 end
                             end
 
@@ -1037,6 +1174,7 @@ do
 
     ---@param item item
     ---@param player number
+    ---@return boolean
     function IsPlayerHasItem(player, item)
         for i = 1, 32 do
             local button = GetButtonData(InventorySlots[player][i])
@@ -1049,6 +1187,7 @@ do
 
     ---@param itemid integer
     ---@param player number
+    ---@return boolean
     function IsPlayerHasItemId(player, itemid)
         for i = 1, 32 do
             local button = GetButtonData(InventorySlots[player][i])
@@ -1062,6 +1201,7 @@ do
 
     ---@param player number
     ---@param itemid number
+    ---@return item
     function GetItemFromInventory(player, itemid)
         for i = 1, 32 do
             local button = GetButtonData(InventorySlots[player][i])
@@ -1074,6 +1214,7 @@ do
 
     ---@param itemid integer
     ---@param player number
+    ---@return item
     function GetSameItemSlotItem(player, itemid)
         for i = 1, 32 do
             local button = GetButtonData(InventorySlots[player][i])
@@ -1087,6 +1228,7 @@ do
 
     ---@param item item
     ---@param player integer
+    ---@return boolean
     function AddToInventory(player, item)
 
         if GetItemData(item) == nil then return false end
@@ -1150,7 +1292,7 @@ do
                         UpdateInventoryWindow(player)
                         if item_data.quality_effect then
                             BlzSetSpecialEffectAlpha(item_data.quality_effect, 0)
-                            --DestroyEffect(item_data.quality_effect_light)
+                            DestroyEffect(item_data.quality_effect_light)
                         end
                         SetItemVisible(item, false)
                         return true
@@ -1163,6 +1305,8 @@ do
     end
 
 
+    ---@param player number
+    ---@return number
     function CountFreeBagSlots(player)
         local count = 0
 
@@ -1178,13 +1322,6 @@ do
     end
 
 
-    function Inventory_SetAllSprites(player, state)
-        for i = 1, 42 do
-            if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(ButtonList[InventorySlots[player][i]].sprite, state) end
-        end
-    end
-
-
     ---@param button_type number
     ---@param texture string
     ---@param size_x real
@@ -1195,14 +1332,10 @@ do
     ---@param offset_x real
     ---@param offset_y real
     ---@param parent_frame framehandle
+    ---@return framehandle
     local function NewButton(button_type, texture, size_x, size_y, relative_frame, frame_point_from, frame_point_to, offset_x, offset_y, parent_frame)
         local new_Frame = BlzCreateFrame('ScriptDialogButton', parent_frame, 0, 0)
         local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
-        local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", new_Frame, "", 0)
-        local new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
-        local new_ItemSprite = BlzCreateFrameByType("SPRITE", "justAName", new_Frame, "WarCraftIIILogo", 0)
-        local new_Sprite = BlzCreateFrameByType("SPRITE", "justAName", new_FrameImage, "WarCraftIIILogo", 0)
-
         
             ButtonList[new_Frame] = {
                 button_type = button_type,
@@ -1210,11 +1343,11 @@ do
                 button = new_Frame,
                 image = new_FrameImage,
                 original_texture = texture,
-                charges_frame = new_FrameCharges,
-                charges_text_frame = new_FrameChargesText,
+                --charges_frame = new_FrameCharges,
+                --charges_text_frame = new_FrameChargesText,
                 charges_frame_state = false,
-                sprite = new_Sprite,
-                new_sprite = new_ItemSprite,
+                --sprite = new_Sprite,
+                --new_sprite = new_ItemSprite,
                 button_state = false
             }
 
@@ -1225,38 +1358,103 @@ do
 
             BlzTriggerRegisterFrameEvent(ClickTrigger, new_Frame, FRAMEEVENT_CONTROL_CLICK)
             BlzTriggerRegisterFrameEvent(EnterTrigger, new_Frame, FRAMEEVENT_MOUSE_ENTER)
-            BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
-
-            --DestructableAddIndicatorBJ()
-            BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMRIGHT, new_FrameImage, FRAMEPOINT_BOTTOMRIGHT, -0.002, 0.002)
-            BlzFrameSetSize(new_FrameCharges, 0.012, 0.012)
-            BlzFrameSetTexture(new_FrameCharges, "GUI\\ChargesTexture.blp", 0, true)
-            BlzFrameSetPoint(new_FrameChargesText, FRAMEPOINT_CENTER, new_FrameCharges, FRAMEPOINT_CENTER, 0.,0.)
-            BlzFrameSetVisible(new_FrameCharges, false)
-            BlzFrameSetText(new_FrameChargesText, "")
+            --BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
 
             BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
             BlzFrameSetSize(new_Frame, size_x, size_y)
+
             BlzFrameSetTexture(new_FrameImage, texture, 0, true)
             BlzFrameSetAllPoints(new_FrameImage, new_Frame)
 
-
-            BlzFrameSetPoint(new_ItemSprite, FRAMEPOINT_BOTTOMLEFT, new_FrameImage, FRAMEPOINT_BOTTOMLEFT, -0.0052, -0.0052)
-            BlzFrameSetSize(new_ItemSprite, 0.00001, 0.00001)
-            BlzFrameSetScale(new_ItemSprite, 0.74)
-            BlzFrameSetModel(new_ItemSprite, "UI\\holylight_sprite.mdx", 0)
-            BlzFrameSetVisible(new_ItemSprite, false)
-            BlzFrameSetEnable(new_ItemSprite, false)
-            BlzFrameSetLevel(new_ItemSprite, 10)
-
-            BlzFrameSetPoint(new_Sprite, FRAMEPOINT_BOTTOMLEFT, new_FrameImage, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
-            BlzFrameSetSize(new_Sprite, 1., 1.)
-            BlzFrameSetScale(new_Sprite, 1.)
-            BlzFrameSetModel(new_Sprite, "selecter3.mdx", 0)
-            --BlzFrameSetAlpha(new_Sprite, 0)
-            BlzFrameSetVisible(new_Sprite, false)
-
         return new_Frame
+    end
+
+
+    local function CreateButtonsBorders(player, size_x, size_y)
+        local button_data
+        local new_FrameBorder
+
+            for i = 33, 44 do
+                button_data = GetButtonData(InventorySlots[player][i])
+                new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", button_data.button, "", 0)
+
+                BlzFrameSetSize(new_FrameBorder, size_x, size_y)
+                BlzFrameSetTexture(new_FrameBorder, "UI\\inventory_frame.blp", 0, true)
+                BlzFrameSetAllPoints(new_FrameBorder, button_data.button)
+            end
+
+    end
+
+    local function CreateButtonsLayerFrames(player, size_x, size_y)
+        --local button
+        local button_data
+        local new_FrameBorder
+        local new_FrameCharges
+        local new_FrameChargesText
+        local new_ItemSprite
+        local new_Sprite
+
+
+            for i = 1, 32 do
+                button_data = GetButtonData(InventorySlots[player][i])
+                new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", button_data.button, "", 0)
+
+                BlzFrameSetSize(new_FrameBorder, size_x, size_y)
+                BlzFrameSetTexture(new_FrameBorder, "UI\\inventory_frame.blp", 0, true)
+                BlzFrameSetAllPoints(new_FrameBorder, button_data.button)
+            end
+
+
+
+            for i = 1, 32 do
+                button_data = GetButtonData(InventorySlots[player][i])
+                new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", button_data.button, "", 0)
+                new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
+
+                BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMRIGHT, button_data.image, FRAMEPOINT_BOTTOMRIGHT, -0.002, 0.002)
+                BlzFrameSetSize(new_FrameCharges, 0.012, 0.012)
+                BlzFrameSetTexture(new_FrameCharges, "GUI\\ChargesTexture.blp", 0, true)
+                BlzFrameSetPoint(new_FrameChargesText, FRAMEPOINT_CENTER, new_FrameCharges, FRAMEPOINT_CENTER, 0.,0.)
+                BlzFrameSetVisible(new_FrameCharges, false)
+                BlzFrameSetText(new_FrameChargesText, "")
+
+                button_data.charges_frame = new_FrameCharges
+                button_data.charges_text_frame = new_FrameChargesText
+            end
+
+
+
+            for i = 1, 32 do
+                button_data = GetButtonData(InventorySlots[player][i])
+
+                new_Sprite = BlzCreateFrameByType("SPRITE", "justAName", button_data.image, "WarCraftIIILogo", 0)
+                BlzFrameSetPoint(new_Sprite, FRAMEPOINT_BOTTOMLEFT, button_data.image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
+                BlzFrameSetSize(new_Sprite, 1., 1.)
+                BlzFrameSetScale(new_Sprite, 1.)
+                BlzFrameSetModel(new_Sprite, "selecter3.mdx", 0)
+                BlzFrameSetVisible(new_Sprite, false)
+                BlzFrameSetLevel(new_ItemSprite, 7)
+
+                button_data.sprite = new_Sprite
+            end
+
+
+            for i = 1, 32 do
+                button_data = GetButtonData(InventorySlots[player][i])
+                new_ItemSprite = BlzCreateFrameByType("SPRITE", "justAName", button_data.button, "WarCraftIIILogo", 0)
+
+                BlzFrameSetPoint(new_ItemSprite, FRAMEPOINT_BOTTOMLEFT, button_data.image, FRAMEPOINT_BOTTOMLEFT, -0.0052, -0.0052)
+                BlzFrameSetSize(new_ItemSprite, 0.00001, 0.00001)
+                BlzFrameSetScale(new_ItemSprite, 0.74)
+                BlzFrameSetModel(new_ItemSprite, "UI\\holylight_sprite.mdx", 0)
+                BlzFrameSetVisible(new_ItemSprite, false)
+                BlzFrameSetEnable(new_ItemSprite, false)
+                BlzFrameSetLevel(new_ItemSprite, 10)
+
+                button_data.new_sprite = new_ItemSprite
+            end
+
+
     end
 
 
@@ -1266,33 +1464,41 @@ do
                 local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
 
                 BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPRIGHT, GAME_UI, FRAMEPOINT_TOPRIGHT, 0., -0.05)
-                BlzFrameSetSize(main_frame, 0.4, 0.38)
+                BlzFrameSetSize(main_frame, 0.364, 0.386)
                 PlayerInventoryFrame[player] = main_frame
 
                 -- slots box
-                local slots_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
-                BlzFrameSetPoint(slots_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.02, -0.02)
-                BlzFrameSetSize(slots_Frame, 0.36, 0.14)
+                local slots_Frame = BlzCreateFrameByType("BACKDROP", "upper_bar", main_frame, "", 0)
+                BlzFrameSetPoint(slots_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.016, -0.016)
+                BlzFrameSetPoint(slots_Frame, FRAMEPOINT_TOPRIGHT, main_frame, FRAMEPOINT_TOPRIGHT, -0.016, -0.016)
+                BlzFrameSetSize(slots_Frame, 0.36, 0.18)
+                BlzFrameSetTexture(slots_Frame, "UI\\big_bar.blp", 0, true)
 
-                -- inv box
-                local inv_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
-                BlzFrameSetPoint(inv_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
-                BlzFrameSetSize(inv_Frame, 0.36, 0.195)
+                local silhouette = BlzCreateFrameByType("BACKDROP", "silhouette", slots_Frame, "", 0)
+                BlzFrameSetPoint(silhouette, FRAMEPOINT_TOP, slots_Frame, FRAMEPOINT_TOP, 0.,0.)
+                BlzFrameSetPoint(silhouette, FRAMEPOINT_BOTTOM, slots_Frame, FRAMEPOINT_BOTTOM, 0.,0.)
+                BlzFrameSetSize(silhouette, 0.1, 0.1)
+                BlzFrameSetTexture(silhouette, ClassFrameTexture[GetUnitClass(PlayerHero[player])], 0, true)
 
 
                 InventoryData[player].tip_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.02, 0.02, slots_Frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.016, -0.016, slots_Frame)
 
                 CreateTooltip(LOCALE_LIST[my_locale].UI_INVENTORY_TOOLTIP_HEADER, LOCALE_LIST[my_locale].UI_INVENTORY_TOOLTIP_DESCRIPTION, InventoryData[player].tip_button, 0.14, 0.12, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPLEFT)
                 BlzTriggerRegisterFrameEvent(InventoryData[player].tip_trigger, InventoryData[player].tip_button, FRAMEEVENT_CONTROL_CLICK)
+
+                local border = BlzCreateFrameByType("BACKDROP", "aaa", InventoryData[player].tip_button, "", 0)
+                BlzFrameSetSize(border, 1., 1.)
+                BlzFrameSetTexture(border, "UI\\inventory_frame.blp", 0, true)
+                BlzFrameSetAllPoints(border, InventoryData[player].tip_button)
                 
                 -- inventory slots
-                InventorySlots[player][1] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, inv_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.02, -0.017, inv_Frame)
+                InventorySlots[player][1] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, slots_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.006, -0.046, slots_Frame)
                 local new_button_data = GetButtonData(InventorySlots[player][1])
                 new_button_data.item = BackupButtonData[player][1].item or nil
                 BackupButtonData[player][1] = new_button_data
 
                 for i = 2, 8 do
-                    InventorySlots[player][i] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[player][i - 1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPRIGHT, 0., 0., inv_Frame)
+                    InventorySlots[player][i] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[player][i - 1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPRIGHT, 0., 0., slots_Frame)
                     new_button_data = GetButtonData(InventorySlots[player][i])
                     new_button_data.item = BackupButtonData[player][i].item or nil
                     BackupButtonData[player][i] = new_button_data
@@ -1301,32 +1507,69 @@ do
                 for row = 2, 4 do
                     for i = 1, 8 do
                         local slot = i + ((row - 1) * 8)
-                        InventorySlots[player][slot] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[player][slot - 8], FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., inv_Frame)
+                        InventorySlots[player][slot] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[player][slot - 8], FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., slots_Frame)
                         new_button_data = GetButtonData(InventorySlots[player][slot])
                         new_button_data.item = BackupButtonData[player][slot].item or nil
                         BackupButtonData[player][slot] = new_button_data
                     end
                 end
 
-                InventorySlots[player][45] = BlzCreateFrameByType("BACKDROP", "ButtonIcon", InventorySlots[player][32], "", 0)
-                BlzFrameSetAllPoints(InventorySlots[player][45], InventorySlots[player][32])
-                BlzFrameSetAlpha(InventorySlots[player][45], 0)
+                CreateButtonsLayerFrames(player, 0.04, 0.04)
+
+                -- inv box
+                local inv_Frame = BlzCreateFrameByType("BACKDROP", "lower_bar", main_frame, "", 0)
+                BlzFrameSetPoint(inv_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.016, 0.016)
+                BlzFrameSetPoint(inv_Frame, FRAMEPOINT_BOTTOMRIGHT, main_frame, FRAMEPOINT_BOTTOMRIGHT, -0.016, 0.016)
+                BlzFrameSetPoint(inv_Frame, FRAMEPOINT_TOPLEFT, slots_Frame, FRAMEPOINT_BOTTOMLEFT, 0., 0.)
+                BlzFrameSetSize(inv_Frame, 0.36, 0.195)
+                BlzFrameSetTexture(inv_Frame, "UI\\mid_bar_frame.blp", 0, true)
+                InventoryFallbackFrame[player] = inv_Frame
 
                 -- equip slots
-                InventorySlots[player][33] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.044, 0.044, slots_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.03, 0.03, slots_Frame)
-                InventorySlots[player][34] = NewButton(OFFHAND_POINT, "GUI\\BTNWeapon_Slot.blp", 0.04, 0.04, slots_Frame, FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_BOTTOMRIGHT, -0.03, 0.03, slots_Frame)
+                InventorySlots[player][38] = NewButton(LEGS_POINT, "GUI\\BTNBoots_Slot.blp", 0.038, 0.038, slots_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.04, 0.008, slots_Frame)
+                InventorySlots[player][42] = NewButton(BELT_POINT, "GUI\\BTNBeltSlot.blp", 0.038, 0.038, slots_Frame, FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_BOTTOMRIGHT, -0.04, 0.008, slots_Frame)
 
-                InventorySlots[player][35] = NewButton(HEAD_POINT, "GUI\\BTNHead_Slot.blp", 0.038, 0.038, slots_Frame, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.025, slots_Frame)
-                InventorySlots[player][36] = NewButton(CHEST_POINT, "GUI\\BTNChest_Slot.blp", 0.043, 0.043, slots_Frame, FRAMEPOINT_CENTER, FRAMEPOINT_CENTER, 0., -0.015, slots_Frame)
-                InventorySlots[player][37] = NewButton(HANDS_POINT, "GUI\\BTNHands_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_TOPLEFT, -0.003, -0.008, slots_Frame)
-                InventorySlots[player][38] = NewButton(LEGS_POINT, "GUI\\BTNBoots_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_TOPRIGHT, FRAMEPOINT_BOTTOMLEFT, -0.003, 0.032, slots_Frame)
-                InventorySlots[player][42] = NewButton(BELT_POINT, "GUI\\BTNBeltSlot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.0445, 0.0085, slots_Frame)
+                InventorySlots[player][37] = NewButton(HANDS_POINT, "GUI\\BTNHands_Slot.blp", 0.038, 0.038, InventorySlots[player][38], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
+                InventorySlots[player][36] = NewButton(CHEST_POINT, "GUI\\BTNChest_Slot.blp", 0.038, 0.038, InventorySlots[player][37], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
+                InventorySlots[player][35] = NewButton(HEAD_POINT, "GUI\\BTNHead_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
 
-                InventorySlots[player][39] = NewButton(NECKLACE_POINT, "GUI\\BTNNecklace_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0445, 0.0085, slots_Frame)
-                InventorySlots[player][40] = NewButton(RING_1_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_TOPRIGHT, 0.003, -0.008, slots_Frame)
-                InventorySlots[player][41] = NewButton(RING_2_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMRIGHT, 0.003, 0.032, slots_Frame)
+                InventorySlots[player][40] = NewButton(RING_2_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[player][42], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
+                InventorySlots[player][41] = NewButton(RING_1_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[player][40], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
+                InventorySlots[player][39] = NewButton(NECKLACE_POINT, "GUI\\BTNNecklace_Slot.blp", 0.038, 0.038, InventorySlots[player][41], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
 
-                for i = 33, 41 do
+                InventorySlots[player][33] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.038, 0.038, InventorySlots[player][38], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.003, 0., slots_Frame)
+                InventorySlots[player][34] = NewButton(OFFHAND_POINT, "GUI\\BTNWeapon_Slot.blp", 0.038, 0.038, InventorySlots[player][42], FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.003, 0., slots_Frame)
+
+
+                InventorySlots[player][43] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.034, 0.034, InventorySlots[player][33], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
+                InventorySlots[player][44] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.034, 0.034, InventorySlots[player][34], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
+
+                CreateButtonsBorders(player, 0.04, 0.04)
+                local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", InventorySlots[player][43], "", 0)
+                BlzFrameSetPoint(new_FrameImage, FRAMEPOINT_BOTTOM, InventorySlots[player][43], FRAMEPOINT_TOP, 0., 0.003)
+                BlzFrameSetSize(new_FrameImage, 0.026, 0.026)
+                BlzFrameSetTexture(new_FrameImage, "UI\\BTN_CR_WeaponSwitch.blp", 0, true)
+
+                local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", new_FrameImage, "", 0)
+                local new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
+
+                BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMRIGHT, new_FrameImage, FRAMEPOINT_BOTTOMRIGHT, -0.002, 0.002)
+                BlzFrameSetSize(new_FrameCharges, 0.008, 0.008)
+                BlzFrameSetTexture(new_FrameCharges, "GUI\\ChargesTexture.blp", 0, true)
+                BlzFrameSetPoint(new_FrameChargesText, FRAMEPOINT_CENTER, new_FrameCharges, FRAMEPOINT_CENTER, 0.,0.)
+                BlzFrameSetText(new_FrameChargesText, "V")
+
+                local border = BlzCreateFrameByType("BACKDROP", "aaa", new_FrameImage, "", 0)
+                BlzFrameSetSize(border, 1., 1.)
+                BlzFrameSetTexture(border, "UI\\inventory_frame.blp", 0, true)
+                BlzFrameSetAllPoints(border, new_FrameImage)
+
+                InventorySlots[player][45] = BlzCreateFrameByType("BACKDROP", "ButtonIcon", inv_Frame, "", 0)
+                BlzFrameSetAllPoints(InventorySlots[player][45], inv_Frame)
+                BlzFrameSetAlpha(InventorySlots[player][45], 0)
+
+
+                for i = 33, 44 do
                     new_button_data = GetButtonData(InventorySlots[player][i])
                     new_button_data.item = BackupButtonData[player][i].item or nil
                     BackupButtonData[player][i] = new_button_data
@@ -1353,27 +1596,32 @@ do
     end
 
 
+    ---@param player number
+    ---@param unit unit
     function DrawInventoryFrames(player, unit)
         --local new_Frame
         local main_frame = BlzCreateFrame('EscMenuBackdrop', GAME_UI, 0, 0)
 
 
         BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPRIGHT, GAME_UI, FRAMEPOINT_TOPRIGHT, 0., -0.05)
-        BlzFrameSetSize(main_frame, 0.4, 0.38)
+        BlzFrameSetSize(main_frame, 0.364, 0.386)
         PlayerInventoryFrame[player] = main_frame
 
         InventoryOwner[player] = unit
 
 
         -- slots box
-        local slots_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
-        BlzFrameSetPoint(slots_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.02, -0.02)
-        BlzFrameSetSize(slots_Frame, 0.36, 0.14)
+        local slots_Frame = BlzCreateFrameByType("BACKDROP", "upper_bar", main_frame, "", 0)
+        BlzFrameSetPoint(slots_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.016, -0.016)
+        BlzFrameSetPoint(slots_Frame, FRAMEPOINT_TOPRIGHT, main_frame, FRAMEPOINT_TOPRIGHT, -0.016, -0.016)
+        BlzFrameSetSize(slots_Frame, 0.36, 0.18)
+        BlzFrameSetTexture(slots_Frame, "UI\\big_bar.blp", 0, true)
 
-        -- inv box
-        local inv_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
-        BlzFrameSetPoint(inv_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
-        BlzFrameSetSize(inv_Frame, 0.36, 0.195)
+        local silhouette = BlzCreateFrameByType("BACKDROP", "silhouette", slots_Frame, "", 0)
+        BlzFrameSetPoint(silhouette, FRAMEPOINT_TOP, slots_Frame, FRAMEPOINT_TOP, 0.,0.)
+        BlzFrameSetPoint(silhouette, FRAMEPOINT_BOTTOM, slots_Frame, FRAMEPOINT_BOTTOM, 0.,0.)
+        BlzFrameSetSize(silhouette, 0.1, 0.1)
+        BlzFrameSetTexture(silhouette, ClassFrameTexture[GetUnitClass(unit)], 0, true)
 
 
         InventoryData[player] = {
@@ -1381,6 +1629,11 @@ do
         }
 
         CreateTooltip(LOCALE_LIST[my_locale].UI_INVENTORY_TOOLTIP_HEADER, LOCALE_LIST[my_locale].UI_INVENTORY_TOOLTIP_DESCRIPTION, InventoryData[player].tip_button, 0.14, 0.12, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPLEFT)
+
+        local border = BlzCreateFrameByType("BACKDROP", "aaa", InventoryData[player].tip_button, "", 0)
+        BlzFrameSetSize(border, 1., 1.)
+        BlzFrameSetTexture(border, "UI\\inventory_frame.blp", 0, true)
+        BlzFrameSetAllPoints(border, InventoryData[player].tip_button)
 
         InventoryData[player].tip_trigger = CreateTrigger()
         BlzTriggerRegisterFrameEvent(InventoryData[player].tip_trigger, InventoryData[player].tip_button, FRAMEEVENT_CONTROL_CLICK)
@@ -1396,45 +1649,83 @@ do
         BackupButtonData[player] = {}
         InventorySlots[player] = {}
         -- inventory slots
-        InventorySlots[player][1] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, inv_Frame, FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPLEFT, 0.02, -0.017, inv_Frame)
+        InventorySlots[player][1] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, slots_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.006, -0.046, slots_Frame)
         BackupButtonData[player][1] = GetButtonData(InventorySlots[player][1])
 
         for i = 2, 8 do
-            InventorySlots[player][i] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[player][i - 1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPRIGHT, 0., 0., inv_Frame)
+            InventorySlots[player][i] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[player][i - 1], FRAMEPOINT_TOPLEFT, FRAMEPOINT_TOPRIGHT, 0., 0., slots_Frame)
             BackupButtonData[player][i] = GetButtonData(InventorySlots[player][i])
         end
 
         for row = 2, 4 do
             for i = 1, 8 do
                 local slot = i + ((row - 1) * 8)
-                InventorySlots[player][slot] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[player][slot - 8], FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., inv_Frame)
+                InventorySlots[player][slot] = NewButton(INV_SLOT, "GUI\\inventory_slot.blp", 0.04, 0.04, InventorySlots[player][slot - 8], FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., slots_Frame)
                 BackupButtonData[player][slot] = GetButtonData(InventorySlots[player][slot])
             end
         end
 
+        CreateButtonsLayerFrames(player, 0.04, 0.04)
+
+        -- inv box
+        local inv_Frame = BlzCreateFrameByType("BACKDROP", "lower_bar", main_frame, "", 0)
+        BlzFrameSetPoint(inv_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.016, 0.016)
+        BlzFrameSetPoint(inv_Frame, FRAMEPOINT_BOTTOMRIGHT, main_frame, FRAMEPOINT_BOTTOMRIGHT, -0.016, 0.016)
+        BlzFrameSetPoint(inv_Frame, FRAMEPOINT_TOPLEFT, slots_Frame, FRAMEPOINT_BOTTOMLEFT, 0., 0.)
+        BlzFrameSetSize(inv_Frame, 0.36, 0.195)
+        BlzFrameSetTexture(inv_Frame, "UI\\mid_bar_frame.blp", 0, true)
+        InventoryFallbackFrame[player] = inv_Frame
+
 
         -- equip slots
-        InventorySlots[player][33] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.044, 0.044, slots_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.03, 0.03, slots_Frame)
-        InventorySlots[player][34] = NewButton(OFFHAND_POINT, "GUI\\BTNWeapon_Slot.blp", 0.04, 0.04, slots_Frame, FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_BOTTOMRIGHT, -0.03, 0.03, slots_Frame)
+        InventorySlots[player][38] = NewButton(LEGS_POINT, "GUI\\BTNBoots_Slot.blp", 0.038, 0.038, slots_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.04, 0.008, slots_Frame)
+        InventorySlots[player][42] = NewButton(BELT_POINT, "GUI\\BTNBeltSlot.blp", 0.038, 0.038, slots_Frame, FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_BOTTOMRIGHT, -0.04, 0.008, slots_Frame)
 
-        InventorySlots[player][35] = NewButton(HEAD_POINT, "GUI\\BTNHead_Slot.blp", 0.038, 0.038, slots_Frame, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.025, slots_Frame)
-        InventorySlots[player][36] = NewButton(CHEST_POINT, "GUI\\BTNChest_Slot.blp", 0.043, 0.043, slots_Frame, FRAMEPOINT_CENTER, FRAMEPOINT_CENTER, 0., -0.015, slots_Frame)
-        InventorySlots[player][37] = NewButton(HANDS_POINT, "GUI\\BTNHands_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_TOPLEFT, -0.003, -0.008, slots_Frame)
-        InventorySlots[player][38] = NewButton(LEGS_POINT, "GUI\\BTNBoots_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_TOPRIGHT, FRAMEPOINT_BOTTOMLEFT, -0.003, 0.032, slots_Frame)
-        InventorySlots[player][42] = NewButton(BELT_POINT, "GUI\\BTNBeltSlot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.0445, 0.0085, slots_Frame)
+        InventorySlots[player][37] = NewButton(HANDS_POINT, "GUI\\BTNHands_Slot.blp", 0.038, 0.038, InventorySlots[player][38], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
+        InventorySlots[player][36] = NewButton(CHEST_POINT, "GUI\\BTNChest_Slot.blp", 0.038, 0.038, InventorySlots[player][37], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
+        InventorySlots[player][35] = NewButton(HEAD_POINT, "GUI\\BTNHead_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
 
-        InventorySlots[player][39] = NewButton(NECKLACE_POINT, "GUI\\BTNNecklace_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0445, 0.0085, slots_Frame)
-        InventorySlots[player][40] = NewButton(RING_1_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_TOPRIGHT, 0.003, -0.008, slots_Frame)
-        InventorySlots[player][41] = NewButton(RING_2_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[player][36], FRAMEPOINT_TOPLEFT, FRAMEPOINT_BOTTOMRIGHT, 0.003, 0.032, slots_Frame)
+        InventorySlots[player][40] = NewButton(RING_2_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[player][42], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
+        InventorySlots[player][41] = NewButton(RING_1_POINT, "GUI\\BTNRing_Slot.blp", 0.038, 0.038, InventorySlots[player][40], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
+        InventorySlots[player][39] = NewButton(NECKLACE_POINT, "GUI\\BTNNecklace_Slot.blp", 0.038, 0.038, InventorySlots[player][41], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
 
-        for i = 33, 41 do
+        InventorySlots[player][33] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.038, 0.038, InventorySlots[player][38], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.003, 0., slots_Frame)
+        InventorySlots[player][34] = NewButton(OFFHAND_POINT, "GUI\\BTNWeapon_Slot.blp", 0.038, 0.038, InventorySlots[player][42], FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.003, 0., slots_Frame)
+
+        InventorySlots[player][43] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.034, 0.034, InventorySlots[player][33], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
+        InventorySlots[player][44] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.034, 0.034, InventorySlots[player][34], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
+
+        CreateButtonsBorders(player, 0.04, 0.04)
+
+        local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", InventorySlots[player][43], "", 0)
+        BlzFrameSetPoint(new_FrameImage, FRAMEPOINT_BOTTOM, InventorySlots[player][43], FRAMEPOINT_TOP, 0., 0.003)
+        BlzFrameSetSize(new_FrameImage, 0.026, 0.026)
+        BlzFrameSetTexture(new_FrameImage, "UI\\BTN_CR_WeaponSwitch.blp", 0, true)
+
+        local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", new_FrameImage, "", 0)
+        local new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
+
+        BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMRIGHT, new_FrameImage, FRAMEPOINT_BOTTOMRIGHT, -0.002, 0.002)
+        BlzFrameSetSize(new_FrameCharges, 0.008, 0.008)
+        BlzFrameSetTexture(new_FrameCharges, "GUI\\ChargesTexture.blp", 0, true)
+        BlzFrameSetPoint(new_FrameChargesText, FRAMEPOINT_CENTER, new_FrameCharges, FRAMEPOINT_CENTER, 0.,0.)
+        BlzFrameSetText(new_FrameChargesText, "V")
+
+        local border = BlzCreateFrameByType("BACKDROP", "aaa", new_FrameImage, "", 0)
+        BlzFrameSetSize(border, 1., 1.)
+        BlzFrameSetTexture(border, "UI\\inventory_frame.blp", 0, true)
+        BlzFrameSetAllPoints(border, new_FrameImage)
+
+
+
+        for i = 33, 44 do
             BackupButtonData[player][i] = GetButtonData(InventorySlots[player][i])
         end
 
-
-        InventorySlots[player][45] = BlzCreateFrameByType("BACKDROP", "ButtonIcon", InventorySlots[player][32], "", 0)
-        BlzFrameSetAllPoints(InventorySlots[player][45], InventorySlots[player][32])
+        InventorySlots[player][45] = BlzCreateFrameByType("BACKDROP", "ButtonIcon", inv_Frame, "", 0)
+        BlzFrameSetAllPoints(InventorySlots[player][45], inv_Frame)
         BlzFrameSetAlpha(InventorySlots[player][45], 0)
+
 
         local actual_player = Player(player-1)
         local key_trig = CreateTrigger()
@@ -1448,19 +1739,12 @@ do
         TriggerAddAction(key_trig, function()
             local key = BlzGetTriggerPlayerKey()
 
-                if key == OSKEY_1 then
-                    UnitUseItem(PlayerHero[player], UnitItemInSlot(PlayerHero[player], 0))
-                elseif key == OSKEY_2 then
-                    UnitUseItem(PlayerHero[player], UnitItemInSlot(PlayerHero[player], 1))
-                elseif key == OSKEY_3 then
-                    UnitUseItem(PlayerHero[player], UnitItemInSlot(PlayerHero[player], 2))
-                elseif key == OSKEY_4 then
-                    UnitUseItem(PlayerHero[player], UnitItemInSlot(PlayerHero[player], 3))
-                elseif key == OSKEY_5 then
-                    UnitUseItem(PlayerHero[player], UnitItemInSlot(PlayerHero[player], 4))
-                elseif key == OSKEY_6 then
-                    UnitUseItem(PlayerHero[player], UnitItemInSlot(PlayerHero[player], 5))
-                end
+                if key == OSKEY_1 then UnitUseItem(PlayerHero[player], UnitItemInSlot(PlayerHero[player], 0))
+                elseif key == OSKEY_2 then UnitUseItem(PlayerHero[player], UnitItemInSlot(PlayerHero[player], 1))
+                elseif key == OSKEY_3 then UnitUseItem(PlayerHero[player], UnitItemInSlot(PlayerHero[player], 2))
+                elseif key == OSKEY_4 then UnitUseItem(PlayerHero[player], UnitItemInSlot(PlayerHero[player], 3))
+                elseif key == OSKEY_5 then UnitUseItem(PlayerHero[player], UnitItemInSlot(PlayerHero[player], 4))
+                elseif key == OSKEY_6 then UnitUseItem(PlayerHero[player], UnitItemInSlot(PlayerHero[player], 5)) end
 
         end)
 
@@ -1475,6 +1759,8 @@ do
                 if BlzGetTriggerPlayerIsKeyDown() and not InventoryKeyState[player] then
                     InventoryKeyState[player] = true
                     AltState[player] = false
+                    --RemoveSpecificTooltip(ShopFrame[player].alternate_tooltip)
+                    --RemoveSpecificTooltip(InventoryAlternateTooltip[player])
                     ShowAlternateInventoryTooltip(player)
                 elseif not BlzGetTriggerPlayerIsKeyDown() and InventoryKeyState[player] then
                     RemoveSpecificTooltip(ShopFrame[player].alternate_tooltip)
@@ -1580,6 +1866,7 @@ do
             RemoveSelectionFrames(player)
             DestroyContextMenu(player)
             DestroySlider(player)
+            TimerStart(last_EnteredFrameTimer[player], 0., false, nil)
         end
 
         return state
@@ -1600,6 +1887,23 @@ do
         InventoryData = {}
         PlayerMovingItem = {}
         BackupButtonData = {}
+        InventoryFallbackFrame = {}
+        PlayerCanChangeEquipment = {}
+
+        last_EnteredFrame = {}
+        last_EnteredFrameTimer = {}
+
+        for i = 1, 6 do
+            last_EnteredFrameTimer[i] = CreateTimer()
+            PlayerCanChangeEquipment[i] = true
+        end
+
+        ClassFrameTexture = {
+            [BARBARIAN_CLASS] = "UI\\berserk_silhouette_man.blp",
+            [SORCERESS_CLASS] = "UI\\Mage_silhouette_woman.blp",
+            [NECROMANCER_CLASS] = "UI\\shadowmage_silhouette_man.blp",
+            [ASSASSIN_CLASS] = "UI\\assassin_silhouette_woman.blp"
+        }
 
         UNIT_POINT_LIST = {
             [WEAPON_POINT]    = 33,
@@ -1658,6 +1962,11 @@ do
                 DropItemFromInventory(GetPlayerId(GetOwningPlayer(GetManipulatingUnit()))+1, GetManipulatedItem(), false)
             end
         end)
+
+
+        local switch_weapon_trigger = CreateTrigger()
+        for i = 0, 5 do BlzTriggerRegisterPlayerKeyEvent(switch_weapon_trigger, Player(i), OSKEY_V, 0, true) end
+        TriggerAddAction(switch_weapon_trigger, function() SwitchHeroWeapon(GetPlayerId(GetTriggerPlayer())+1) end)
 
 
         FirstTime_Data_Belt = {

@@ -230,13 +230,13 @@ do
             icon = "Talents\\BTNLightningSpell10.blp",
             instant_effects = {
                 [1] = function(unit, flag)
-                    ModifyStat(unit, MOVING_SPEED, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, MOVING_SPEED, 10, STRAIGHT_BONUS, flag)
                 end,
                 [2] = function(unit, flag)
-                    ModifyStat(unit, MOVING_SPEED, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, MOVING_SPEED, 10, STRAIGHT_BONUS, flag)
                 end,
                 [3] = function(unit, flag)
-                    ModifyStat(unit, MOVING_SPEED, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, MOVING_SPEED, 10, STRAIGHT_BONUS, flag)
                 end
             },
             max_level = 3,
@@ -766,7 +766,12 @@ do
 
         -- tier 4
         NewTalentTemplate("talent_penetration", {
-            icon = "Talents\\BTNChain_Impale.blp",
+            icon = "Talents\\BTNicons_112062_btn.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, COOLDOWN_REDUCTION, 25, STRAIGHT_BONUS, flag)
+                end
+            },
             requires = { "talent_opportunity", "talent_lining_armor", "talent_disorientation" },
             points_required = 6,
             max_level = 1,
@@ -1342,6 +1347,350 @@ do
 
 
 
+        --tier 1
+        NewTalentTemplate("talent_evasion", {
+            icon = "ReplaceableTextures\\PassiveButtons\\PASBTNEvasion.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, DODGE_CHANCE, 4, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, DODGE_CHANCE, 4, STRAIGHT_BONUS, flag)
+                end,
+                [3] = function(unit, flag)
+                    ModifyStat(unit, DODGE_CHANCE, 4, STRAIGHT_BONUS, flag)
+                end,
+            },
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_anatomy_master", {
+            icon = "ReplaceableTextures\\CommandButtons\\BTNPolymorph.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, BONUS_HUMAN_DAMAGE, 4, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, BONUS_BEAST_DAMAGE, 4, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, POISON_BONUS, 4, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, BONUS_HUMAN_DAMAGE, 4, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, BONUS_BEAST_DAMAGE, 4, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, POISON_BONUS, 4, STRAIGHT_BONUS, flag)
+                end,
+            },
+            max_level = 2,
+        })
+
+
+        NewTalentTemplate("talent_counterattack", {
+            icon = "ReplaceableTextures\\PassiveButtons\\PASBTNDrunkenDodge.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+
+                end,
+                [2] = function(unit, flag)
+
+                end,
+            },
+            points_required = 2,
+            requires = { "talent_dagger_expert", "talent_evasion" },
+            max_level = 2,
+        })
+
+        NewTalentTemplate("talent_into_the_shadows", {
+            icon = "ReplaceableTextures\\PassiveButtons\\PASBTNEvasion.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+
+                end,
+                [2] = function(unit, flag)
+
+                end,
+            },
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_bloodthirsty", {
+            icon = "ReplaceableTextures\\CommandButtons\\BTNBloodLustOn.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+
+                end,
+                [2] = function(unit, flag)
+
+                end,
+            },
+            max_level = 3,
+            points_required = 4,
+            requires = { "talent_relentless", "talent_counterattack" },
+        })
+
+        NewTalentTemplate("talent_relentless", {
+            icon = "ReplaceableTextures\\CommandButtons\\BTNPossession.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+
+                end,
+                [2] = function(unit, flag)
+
+                end,
+            },
+            max_level = 3,
+            points_required = 2,
+            requires = { "talent_dagger_expert", "talent_pickpocket" },
+        })
+
+        NewTalentTemplate("talent_nimble_hands", {
+            icon = "ReplaceableTextures\\CommandButtons\\BTNSearingArrows.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+
+                end,
+                [2] = function(unit, flag)
+
+                end,
+            },
+            max_level = 3,
+            points_required = 4,
+            requires = { "talent_counterattack", "talent_weak_point" },
+        })
+
+        NewTalentTemplate("talent_pickpocket", {
+            icon = "ReplaceableTextures\\PassiveButtons\\PASBTNPillage.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+                [3] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+            },
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_unmatched_technique", {
+            icon = "ReplaceableTextures\\CommandButtons\\BTNControlMagic.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+
+                end,
+                [2] = function(unit, flag)
+
+                end,
+            },
+            max_level = 1,
+            points_required = 4,
+            requires = { "talent_bloodthirsty", "talent_ambush", "talent_nimble_hands" },
+        })
+
+
+        NewTalentTemplate("talent_ambush", {
+            icon = "ReplaceableTextures\\CommandButtons\\BTNAmbush.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+
+                end,
+                [2] = function(unit, flag)
+
+                end,
+            },
+            max_level = 3,
+            points_required = 4,
+            requires = { "talent_relentless", "talent_counterattack", "talent_weak_point" },
+        })
+
+        NewTalentTemplate("talent_weak_point", {
+            icon = "ReplaceableTextures\\PassiveButtons\\PASBTNCriticalStrike.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+
+                end,
+                [2] = function(unit, flag)
+
+                end,
+            },
+            max_level = 2,
+            points_required = 2,
+            requires = { "talent_evasion", "talent_anatomy_master" },
+        })
+
+        NewTalentTemplate("talent_one_with_shadows", {
+            icon = "Talents\\BTNicons_15644_btn.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+
+                end,
+                [2] = function(unit, flag)
+
+                end,
+            },
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_antimagic", {
+            icon = "Talents\\BTNicons_15272_btn.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+            },
+            max_level = 2,
+        })
+
+        NewTalentTemplate("talent_vampiric_mark", {
+            icon = "Talents\\BTN_CR_Blood-Tap.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+            },
+            max_level = 2,
+        })
+
+        NewTalentTemplate("talent_deeping_darkness", {
+            icon = "Talents\\BTNShadowDisguise.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+            },
+            points_required = 2,
+            requires = { "talent_one_with_shadows", "talent_vampiric_mark" },
+            max_level = 2,
+        })
+
+        NewTalentTemplate("talent_shackles", {
+            icon = "Talents\\BTNEnslaveUndead.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+            },
+            points_required = 2,
+            requires = { "talent_one_with_shadows", "talent_vampiric_mark", "talent_antimagic" },
+            max_level = 2,
+        })
+
+        NewTalentTemplate("talent_magic_devourer", {
+            icon = "Talents\\BTNRavageMagic.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+
+                end,
+                [2] = function(unit, flag)
+
+                end,
+            },
+            points_required = 2,
+            requires = { "talent_vampiric_mark", "talent_antimagic" },
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_in_the_dark", {
+            icon = "Talents\\BTNCR_Blindness.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+            },
+            points_required = 4,
+            requires = { "talent_deeping_darkness", "talent_shackles" },
+            max_level = 2,
+        })
+
+        NewTalentTemplate("talent_torture", {
+            icon = "Talents\\BTNHandOfDisgrace.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+            },
+            points_required = 4,
+            requires = { "talent_deeping_darkness", "talent_shackles", "talent_magic_devourer" },
+            max_level = 2,
+        })
+
+        NewTalentTemplate("talent_nightstalker", {
+            icon = "Talents\\BTNTransfer Pain.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+            },
+            points_required = 4,
+            requires = { "talent_shackles", "talent_magic_devourer" },
+            max_level = 2,
+        })
+
+        NewTalentTemplate("talent_erupting_darkness", {
+            icon = "Talents\\BTNShadowMeld.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+            },
+            points_required = 6,
+            requires = { "talent_in_the_dark", "talent_torture", "talent_nightstalker" },
+            max_level = 2,
+        })
+
+
+        NewTalentTemplate("talent_combustible_mixture", {
+            icon = "ReplaceableTextures\\PassiveButtons\\PASBTNEvasion.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+
+                end,
+                [2] = function(unit, flag)
+
+                end,
+            },
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_dagger_expert", {
+            icon = "ReplaceableTextures\\CommandButtons\\BTNDaggerOfEscape.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+
+                end,
+                [2] = function(unit, flag)
+
+                end,
+            },
+            max_level = 3,
+        })
+
+
+
+
         ClassTalents = {
             [BARBARIAN_CLASS] = {
                 [SKILL_CATEGORY_FIGHTING_MASTERY] = {
@@ -1401,6 +1750,23 @@ do
                     [2] = { "talent_pursuer", "talent_experienced_summoner", "talent_tenacity_of_undead", "talent_bone_spikes" },
                     [3] = { "talent_spirit", "talent_final_favor", "talent_necromorph" },
                     [4] = { "talent_eternal_service" }
+                }
+            },
+            [ASSASSIN_CLASS] = {
+                [SKILL_CATEGORY_LETHALITY] = {
+                    { "talent_pickpocket", "talent_dagger_expert", "talent_evasion", "talent_anatomy_master" },
+                    { "talent_relentless", "talent_counterattack", "talent_weak_point" },
+                    { "talent_bloodthirsty", "talent_ambush", "talent_nimble_hands" },
+                    { "talent_unmatched_technique" },
+                },
+                [SKILL_CATEGORY_SHADOWS] = {
+                    { "talent_one_with_shadows", "talent_vampiric_mark", "talent_antimagic" },
+                    { "talent_deeping_darkness", "talent_shackles", "talent_magic_devourer" },
+                    { "talent_in_the_dark", "talent_torture", "talent_nightstalker" },
+                    { "talent_erupting_darkness" },
+                },
+                [SKILL_CATEGORY_GEAR] = {
+                    [1] = { "talent_evasion" },
                 }
             }
         }

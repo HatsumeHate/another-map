@@ -103,7 +103,6 @@ do
         if not HitnumbersPool[source] then HitnumbersPool[source] = { } end
 
 
-
         if tag_id and HitnumbersPool[source][tag_id] and HitnumbersPool[source][tag_id][victim] then
             local hitnm = HitnumbersPool[source][tag_id][victim]
 
@@ -117,6 +116,10 @@ do
 
                 SetTextTagColor(tag, 255, 255, 255, 255)
                 alpha = 255
+
+                if GetLocalPlayer() ~= GetOwningPlayer(source) and GetLocalPlayer() ~= GetOwningPlayer(victim) then
+                    SetTextTagVisibility(tag, false)
+                end
 
                 TimerStart(hitnm.timer, UPDATE, true, function()
                     time = time + UPDATE
@@ -151,9 +154,14 @@ do
                 damage = text,
                 x = x, y = y
             }
+
             tag = HitnumbersPool[source][tag_id][victim].tag
             SetupTexttag(tag, text, size, x, y)
             text = ColorizeText(text, status)
+
+            if GetLocalPlayer() ~= GetOwningPlayer(source) and GetLocalPlayer() ~= GetOwningPlayer(victim) then
+                SetTextTagVisibility(tag, false)
+            end
 
             TimerStart(HitnumbersPool[source][tag_id][victim].timer, UPDATE, true, function()
                 time = time + UPDATE
@@ -217,6 +225,10 @@ do
         SetTextTagLifespan(tag, DURATION)
         SetTextTagFadepoint(tag, FADEPOINT)
 
+        if GetLocalPlayer() ~= GetOwningPlayer(source) and GetLocalPlayer() ~= GetOwningPlayer(victim) then
+            SetTextTagVisibility(tag, false)
+        end
+
             local timer = CreateTimer()
             TimerStart(timer, UPDATE, true, function()
 
@@ -258,7 +270,8 @@ do
             [ATTACK_STATUS_MISS] = '|c00FFFFFF',
             [HEAL_STATUS] = '|c0000FF00',
             [RESOURCE_STATUS] = '|c00008BFF',
-            [REFLECT_STATUS] = "|c008800FF"
+            [REFLECT_STATUS] = "|c008800FF",
+            [ATTACK_STATUS_SHIELD] = "|c00FF6400"
         }
 
          STATUS_OFFSET = {
@@ -271,6 +284,7 @@ do
             [HEAL_STATUS]                       = { x = { min = -10., max = 20. },  y = { min = 0., max = -40. }, },
             [RESOURCE_STATUS]                   = { x = { min = -10., max = 20. },  y = { min = 20., max = -70. }, },
             [REFLECT_STATUS]                    = { x = { min = -50., max = -30. },  y = { min = 20., max = -70. }, },
+            [ATTACK_STATUS_SHIELD]               = { x = { min = 35., max = 55. },   y = { min = 35., max = 55. }, },
         }
 
     end

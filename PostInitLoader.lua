@@ -1,7 +1,66 @@
 do
 
 	local InitGlobalsOrigin = InitGlobals
-	
+
+
+
+	function CreateShops()
+
+			CreateShop(gg_unit_n000_0056, LOCALE_LIST[my_locale].VENDOR_BILL_NAME, "ReplaceableTextures\\CommandButtons\\BTNVillagerMan1.blp",
+					{
+						open = { "Units\\Human\\Peasant\\PeasantWhat2.wav", "Units\\Human\\Peasant\\PeasantWhat4.wav", },
+						close = { "Units\\Human\\Peasant\\PeasantYesAttack1.wav", "Units\\Human\\Peasant\\PeasantPissed4.wav", },
+					}
+			)
+
+			CreateShop(gg_unit_opeo_0031, LOCALE_LIST[my_locale].SMORC_NAME, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp",
+					{
+						open = { "Units\\Orc\\Peon\\PeonPissed1.wav", "Units\\Orc\\Peon\\PeonWhat1.wav", "Units\\Orc\\Peon\\PeonWhat2.wav", "Units\\Orc\\Peon\\PeonWhat3.wav", "Units\\Orc\\Peon\\PeonYesAttack1.wav", },
+						close = { "Units\\Orc\\Peon\\PeonPissed2.wav", "Units\\Orc\\Peon\\PeonPissed4.wav", "Units\\Orc\\Peon\\PeonYesAttack1.wav", "Units\\Orc\\Peon\\PeonYes3.wav", },
+					}
+			)
+
+			CreateShop(gg_unit_n001_0055, LOCALE_LIST[my_locale].HEALER_NAME, "ReplaceableTextures\\CommandButtons\\BTNVillagerWoman.blp",
+					{
+						open = { "Units\\Human\\Sorceress\\SorceressWhat1.wav", "Units\\Human\\Sorceress\\SorceressWhat2.wav", "Units\\Human\\Sorceress\\SorceressWhat3.wav", "Units\\Human\\Sorceress\\SorceressWhat1.wav", "Units\\Human\\Sorceress\\SorceressWhat1.wav", },
+						close = { "Units\\Human\\Sorceress\\SorceressYes1.wav", "Units\\Human\\Sorceress\\SorceressYes3.wav", "Units\\Human\\Sorceress\\SorceressWhat5.wav", },
+					}
+			)
+
+			CreateShop(gg_unit_n01W_0111, LOCALE_LIST[my_locale].SCAVENGER_NAME, "ReplaceableTextures\\CommandButtons\\BTNAcolyte.blp",
+					{
+						open = { "Units\\Undead\\Acolyte\\AcolyteReady1.wav", "Units\\Undead\\Acolyte\\AcolyteWhat5.wav", "Units\\Undead\\Acolyte\\AcolyteYes4.wav", },
+						close = { "Units\\Undead\\Acolyte\\AcolyteYes1.wav", "Units\\Undead\\Acolyte\\AcolyteYesAttack2.wav", "Units\\Undead\\Acolyte\\AcolytePissed1.wav", },
+					}
+			)
+			InitWanderingTraderNPC()
+
+			CreateShop(gg_unit_n020_0075, LOCALE_LIST[my_locale].LYNN_NAME, "ReplaceableTextures\\CommandButtons\\BTNSorceress.blp",
+					{
+						open = { "Units\\Human\\Sorceress\\SorceressWhat1.wav", "Units\\Human\\Sorceress\\SorceressWhat2.wav", "Units\\Human\\Sorceress\\SorceressWhat3.wav", "Units\\Human\\Sorceress\\SorceressWhat1.wav", "Units\\Human\\Sorceress\\SorceressWhat1.wav", },
+						close = { "Units\\Human\\Sorceress\\SorceressYes1.wav", "Units\\Human\\Sorceress\\SorceressYes3.wav", "Units\\Human\\Sorceress\\SorceressWhat5.wav", },
+					}
+			)
+
+			local my_item = CreateCustomItem("I006",  0.,0.)
+			SetItemCharges(my_item, 20)
+			AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 32, true)
+
+			my_item = CreateCustomItem("I003",  0.,0.)
+			SetItemCharges(my_item, 20)
+			AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 31, true)
+
+			my_item = CreateCustomItem(ITEM_FOOD,  0.,0.)
+			SetItemCharges(my_item, 20)
+			AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 29, true)
+
+			my_item = CreateCustomItem(ITEM_DRINKS,  0.,0.)
+			SetItemCharges(my_item, 20)
+			AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 30, true)
+			my_item = nil
+
+	end
+
 
 	function InitGlobals()
 		InitGlobalsOrigin()
@@ -44,7 +103,7 @@ do
 					InitAltars, InitQuestMaster, InitQuestUtils, InitNPCs, InitFileData
 				}
 
-				TimerStart(GetExpiredTimer(), 0.1, true, function()
+				TimerStart(GetExpiredTimer(), 0.05, true, function()
 					func_id = func_id + 1
 
 					if init_que[func_id] then
@@ -56,95 +115,7 @@ do
 						InitUnitsDataOnMap()
 						print("Done")
 
-
-						CreateShop(gg_unit_n000_0056, LOCALE_LIST[my_locale].VENDOR_BILL_NAME, "ReplaceableTextures\\CommandButtons\\BTNVillagerMan1.blp",
-								{
-									open = {
-										"Units\\Human\\Peasant\\PeasantWhat2.wav",
-										"Units\\Human\\Peasant\\PeasantWhat4.wav",
-									},
-									close = {
-										"Units\\Human\\Peasant\\PeasantYesAttack1.wav",
-										"Units\\Human\\Peasant\\PeasantPissed4.wav",
-									},
-								}
-						)
-						--print("shop 1")
-						CreateShop(gg_unit_opeo_0031, LOCALE_LIST[my_locale].SMORC_NAME, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp",
-								{
-									open = {
-										"Units\\Orc\\Peon\\PeonPissed1.wav",
-										"Units\\Orc\\Peon\\PeonWhat1.wav",
-										"Units\\Orc\\Peon\\PeonWhat2.wav",
-										"Units\\Orc\\Peon\\PeonWhat3.wav",
-										"Units\\Orc\\Peon\\PeonYesAttack1.wav",
-									},
-									close = {
-										"Units\\Orc\\Peon\\PeonPissed2.wav",
-										"Units\\Orc\\Peon\\PeonPissed4.wav",
-										"Units\\Orc\\Peon\\PeonYesAttack1.wav",
-										"Units\\Orc\\Peon\\PeonYes3.wav",
-									},
-								}
-						)
-						--print("shop 2")
-						CreateShop(gg_unit_n001_0055, LOCALE_LIST[my_locale].HEALER_NAME, "ReplaceableTextures\\CommandButtons\\BTNVillagerWoman.blp",
-								{
-									open = {
-										"Units\\Human\\Sorceress\\SorceressWhat1.wav",
-										"Units\\Human\\Sorceress\\SorceressWhat2.wav",
-										"Units\\Human\\Sorceress\\SorceressWhat3.wav",
-										"Units\\Human\\Sorceress\\SorceressWhat1.wav",
-										"Units\\Human\\Sorceress\\SorceressWhat1.wav",
-									},
-									close = {
-										"Units\\Human\\Sorceress\\SorceressYes1.wav",
-										"Units\\Human\\Sorceress\\SorceressYes3.wav",
-										"Units\\Human\\Sorceress\\SorceressWhat5.wav",
-									},
-								}
-						)
-						--print("shop 3")
-						CreateShop(gg_unit_n01W_0111, LOCALE_LIST[my_locale].SCAVENGER_NAME, "ReplaceableTextures\\CommandButtons\\BTNAcolyte.blp",
-								{
-									open = {
-										"Units\\Undead\\Acolyte\\AcolyteReady1.wav",
-										"Units\\Undead\\Acolyte\\AcolyteWhat5.wav",
-										"Units\\Undead\\Acolyte\\AcolyteYes4.wav",
-									},
-									close = {
-										"Units\\Undead\\Acolyte\\AcolyteYes1.wav",
-										"Units\\Undead\\Acolyte\\AcolyteYesAttack2.wav",
-										"Units\\Undead\\Acolyte\\AcolytePissed1.wav",
-									},
-								}
-						)
-						--print("shop 4")
-						CreateShop(gg_unit_n020_0075, LOCALE_LIST[my_locale].LYNN_NAME, "ReplaceableTextures\\CommandButtons\\BTNSorceress.blp",
-								{
-									open = {
-										"Units\\Human\\Sorceress\\SorceressWhat1.wav",
-										"Units\\Human\\Sorceress\\SorceressWhat2.wav",
-										"Units\\Human\\Sorceress\\SorceressWhat3.wav",
-										"Units\\Human\\Sorceress\\SorceressWhat1.wav",
-										"Units\\Human\\Sorceress\\SorceressWhat1.wav",
-									},
-									close = {
-										"Units\\Human\\Sorceress\\SorceressYes1.wav",
-										"Units\\Human\\Sorceress\\SorceressYes3.wav",
-										"Units\\Human\\Sorceress\\SorceressWhat5.wav",
-									},
-								}
-						)
-
-						local my_item = CreateCustomItem("I006",  0.,0.)
-						SetItemCharges(my_item, 20)
-						AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 32, true)
-
-						my_item = CreateCustomItem("I003",  0.,0.)
-						SetItemCharges(my_item, 20)
-						AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 31, true)
-						my_item = nil
+						CreateShops()
 
 						BlzSetUnitName(gg_unit_n013_0011, LOCALE_LIST[my_locale].BLACKSMITH_NAME)
 						BlzSetUnitName(gg_unit_n01V_0110, LOCALE_LIST[my_locale].LIBRARIAN_NAME)
@@ -163,6 +134,30 @@ do
 						--print("librarian")
 						CreateHeroSelections()
 						CreatePlayerUI()
+						LoadPlayerProgression()
+
+						PickUpItemReaction("I02U", function()
+							local picker = GetTriggerUnit()
+
+								for i = 1, 6 do
+									if PlayerHero[i] and IsUnitInRange(picker, PlayerHero[i], 500.) then
+										ApplyEffect(PlayerHero[i], PlayerHero[i], 0.,0., "effect_heal_rune", 1)
+									end
+								end
+
+						end)
+
+						PickUpItemReaction("I02V", function()
+							local picker = GetTriggerUnit()
+
+								for i = 1, 6 do
+									if PlayerHero[i] and IsUnitInRange(picker, PlayerHero[i], 500.) then
+										ApplyEffect(PlayerHero[i], PlayerHero[i], 0.,0., "effect_resource_rune", 1)
+									end
+								end
+
+						end)
+
 
 						local timer = CreateTimer()
 						TimerStart(timer, 5., false, function()
@@ -173,8 +168,8 @@ do
 							AddQuestItem("cred",  "cred2",  "The Panda, Tasyen, Spellbound, Crazy Russian, Judash137, Kenathorn, stan0033, morbent, Solu9, L_Lawliet",  false)
 							AddQuestItem("cred",  "cred3",  "Infrisios, Manoo, Daenar7, -Berz-, graystuff111, Akolyt0r, Hellx-Magnus, ElfWarfare, Pyramidhe@d, San",  false)
 							AddQuestItem("cred",  "cred4",  "The_Spellweaver, CloudWolf, GooS, zbc, The_Silent, JollyD, Big Dub, AL0NE, ~Nightmare, Darkfang, RodOfNOD", false)
-							AddQuestItem("cred",  "cred5",  "Tarrasque, dab, Pyritie, Em!, Mr.Goblin, Avatars Lord, Shardeth, dickxunder, Amigurumi, Mc !, HerrDave", false)
-							AddQuestItem("cred",  "cred6",  "XGM:|nBergiBear, NazarPunk, MF, Empyreal, Beyhut, Prometheus, PrincePhoenix",  false)
+							AddQuestItem("cred",  "cred5",  "Tarrasque, dab, Pyritie, Em!, Mr.Goblin, Avatars Lord, Shardeth, dickxunder, Amigurumi, Mc !, HerrDave, TriggerHappy", false)
+							AddQuestItem("cred",  "cred6",  "XGM:|nBergiBear, NazarPunk, MF, Empyreal, Beyhut, Prometheus, PrincePhoenix, RoyMustang, NightSiren",  false)
 							DelayAction(145., function() EnableQuest1NPC() end)
 							DelayAction(225., function() EnableMainQuest1() end )
 						end)
