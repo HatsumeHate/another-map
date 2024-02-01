@@ -88,6 +88,7 @@ do
 
     end
 
+
     function RaiseSkeletonSkill(caster)
         local group = CreateGroup()
         local raw = FourCC("h003")
@@ -95,95 +96,146 @@ do
         local skill = GetUnitSkillData(caster, "ANRD")
         local level = UnitGetAbilityLevel(caster, "ANRD")
         local max = 2 + math.floor(level / 6)
-        local archer_chance = 5. + level * 1.
+
 
             GroupEnumUnitsInRange(group, GetUnitX(caster), GetUnitY(caster), 600., nil)
-
 
             if not skill.summoned_group then
                 skill.summoned_group = CreateGroup()
             end
 
+
                 for index = BlzGroupGetSize(group) - 1, 0, -1 do
                     local picked = BlzGroupUnitAt(group, index)
 
                     if GetUnitTypeId(picked) == raw and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetOwningPlayer(picked) == player then
-
-                        if BlzGroupGetSize(skill.summoned_group) >= max then
-
-                            --ForGroup(skill.summoned_group, function()
-                                --if GetUnitState(GetEnumUnit(), UNIT_STATE_LIFE) < 0.045 then
-                                    --GroupRemoveUnit(skill.summoned_group, GetEnumUnit())
-                               -- end
-                            --end)
+                        local x,y = GetUnitX(picked), GetUnitY(picked)
 
                             if BlzGroupGetSize(skill.summoned_group) >= max then
-                                KillUnit(BlzGroupUnitAt(skill.summoned_group, 0))
-                                --GroupRemoveUnit(skill.summoned_group, BlzGroupUnitAt(skill.summoned_group, 0))
+                                local acolyte_sfx = AddSpecialEffect("Units\\Summon\\Acolyte.mdx", x, y)
+                                local alpha = 0
+                                local step = 16 --255 / 0.3 / 40
+                                local timer = CreateTimer()
+
+                                    TimerStart(timer, 0.025, true, function()
+                                        if alpha >= 191 then
+                                            BlzSetSpecialEffectAlpha(acolyte_sfx, 191)
+                                            TimerStart(timer, 0., false, nil)
+                                        else
+                                            alpha = alpha + step
+                                            BlzSetSpecialEffectAlpha(acolyte_sfx, alpha)
+                                        end
+                                    end)
+
+                                    BlzSetSpecialEffectYaw(acolyte_sfx, RndAng() * bj_DEGTORAD)
+                                    BlzSetSpecialEffectAlpha(acolyte_sfx, 191)
+                                    BlzSpecialEffectAddSubAnimation(acolyte_sfx, SUBANIM_TYPE_WORK)
+                                    BlzSpecialEffectAddSubAnimation(acolyte_sfx, SUBANIM_TYPE_GOLD)
+                                    BlzPlaySpecialEffectWithTimeScale(acolyte_sfx, ANIM_TYPE_STAND, 1.5)
+
+                                    DestroyEffect(AddSpecialEffect("Effect\\Dark Conversion Classic.mdx", x, y))
+
+                                    DelayAction(1.134 * 0.5, function()
+                                        DestroyEffect(AddSpecialEffect("Effect\\Flamestrike Fel I.mdx", x, y))
+                                        ForGroup(skill.summoned_group, function()
+                                            ApplyBuff(caster, GetEnumUnit(), "A00H", 1)
+                                            DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Items\\RitualDagger\\RitualDaggerTarget.mdx", GetUnitX(GetEnumUnit()), GetUnitY(GetEnumUnit())))
+                                        end)
+
+                                        TimerStart(timer, 0.025, true, function()
+                                            if alpha <= 0 then
+                                                BlzSetSpecialEffectAlpha(acolyte_sfx, 0)
+                                                DestroyTimer(timer)
+                                            else
+                                                alpha = alpha - step
+                                                BlzSetSpecialEffectAlpha(acolyte_sfx, alpha)
+                                            end
+                                        end)
+
+                                    end)
+
+                                    DelayAction(2.267 * 0.5, function()
+                                        BlzSetSpecialEffectX(acolyte_sfx, -3366.)
+                                        BlzSetSpecialEffectY(acolyte_sfx, 11839.)
+                                        DestroyEffect(acolyte_sfx)
+                                    end)
+                                    OnCorpseUse(caster, x, y)
+                                    RemoveUnit(picked)
+                                    break
+                            else
+                                local archer_chance = 5. + level * 1.
+                                local power = GetUnitParameterValue(caster, MINION_POWER)
+                                local summoned
+
+                                if archer_chance > 50. then archer_chance = 50. end
+
+                                if UnitHasEffect(caster, "primal_tome_leg") and Chance(25.) then summoned = CreateUnit(player, FourCC("u00R"), x, y, RndAng())
+                                elseif Chance(archer_chance) then summoned = CreateUnit(player, FourCC("n027"), x, y, RndAng())
+                                else summoned = CreateUnit(player, FourCC("u00Q"), x, y, RndAng()) end
+
+                                local death_trigger = CreateTrigger()
+                                TriggerRegisterUnitEvent(death_trigger, summoned, EVENT_UNIT_DEATH)
+                                TriggerAddAction(death_trigger, function()
+                                    GroupRemoveUnit(skill.summoned_group, summoned)
+                                    DestroyTrigger(death_trigger)
+                                end)
+
+                                local sfx = AddSpecialEffect("Effect\\BonediggerHalo.mdx", GetUnitX(summoned), GetUnitY(summoned))
+
+                                DestroyEffect(AddSpecialEffect("Effect\\Dark Conversion Classic.mdx", GetUnitX(summoned), GetUnitY(summoned)))
+
+
+                                    UnitAddAbility(summoned, FourCC("Avul"))
+                                    SetUnitAnimation(summoned, "birth")
+                                    BlzSetSpecialEffectScale(sfx,  0.4)
+                                    BlzSetSpecialEffectZ(sfx, GetZ(x, y) - 40.)
+                                    GroupAddUnit(skill.summoned_group, summoned)
+                                    SafePauseUnit(summoned, true)
+                                    AddSoundVolume("Sounds\\Spells\\skeletonraise".. GetRandomInt(1, 3) .. ".wav", x, y, 125, 1500.)
+
+
+                                    DelayAction(2.333, function()
+                                        local unit_data = GetUnitData(summoned)
+                                        unit_data.minion_owner = caster
+
+                                        UnitRemoveAbility(summoned, FourCC("Avul"))
+                                        DestroyEffect(sfx)
+                                        SetUnitAnimation(summoned, "Stand")
+                                        SafePauseUnit(summoned, false)
+                                        CreateLeashForSummonedUnit(summoned, caster, 700.)
+                                        ModifyStat(summoned, HP_VALUE, math.floor((50 * level) * power), STRAIGHT_BONUS, true)
+                                        ModifyStat(summoned, HP_REGEN, (1. + (0.01 * level)) * power, MULTIPLY_BONUS, true)
+                                        ModifyStat(summoned, PHYSICAL_ATTACK, math.floor((3 * level) * power), STRAIGHT_BONUS, true)
+                                        ModifyStat(summoned, MAGICAL_ATTACK, math.floor((4 * level) * power), STRAIGHT_BONUS, true)
+                                        ModifyStat(summoned, DARKNESS_BONUS, math.floor((1 * level) * power), STRAIGHT_BONUS, true)
+                                        ModifyStat(summoned, PHYSICAL_BONUS, math.floor((1 * level) * power), STRAIGHT_BONUS, true)
+
+                                        if GetUnitTalentLevel(caster, "talent_experienced_summoner") > 0 then
+                                            if GetUnitTalentLevel(caster, "talent_experienced_summoner") == 1 then ModifyStat(summoned, HP_VALUE, 1.1, MULTIPLY_BONUS, true)
+                                            else ModifyStat(summoned, HP_VALUE, 1.2, MULTIPLY_BONUS, true) end
+                                        end
+
+                                        if GetUnitTalentLevel(caster, "talent_tenacity_of_undead") > 0 then
+                                            SetUnitTalentLevel(summoned, "talent_tenacity_of_undead", GetUnitTalentLevel(caster, "talent_tenacity_of_undead"))
+                                        end
+
+                                        if GetUnitTalentLevel(caster, "talent_bone_spikes") > 0 then
+                                            ModifyStat(summoned, REFLECT_DAMAGE, 35 * GetUnitTalentLevel(caster, "talent_bone_spikes"), STRAIGHT_BONUS, true)
+                                        end
+                                    end)
+
+                                OnCorpseUse(caster, x, y)
+                                RemoveUnit(picked)
+                                break
+
                             end
 
-                        end
-
-                        local x,y = GetUnitX(picked), GetUnitY(picked)
-                        local summoned
-
-                        if UnitHasEffect(caster, "primal_tome_leg") and Chance(25.) then summoned = CreateUnit(player, FourCC("u00R"), x, y, RndAng())
-                        elseif Chance(archer_chance) then summoned = CreateUnit(player, FourCC("n027"), x, y, RndAng())
-                        else summoned = CreateUnit(player, FourCC("u00Q"), x, y, RndAng()) end
-
-                        local death_trigger = CreateTrigger()
-                        TriggerRegisterUnitEvent(death_trigger, summoned, EVENT_UNIT_DEATH)
-                        TriggerAddAction(death_trigger, function()
-                            GroupRemoveUnit(skill.summoned_group, summoned)
-                            DestroyTrigger(death_trigger)
-                        end)
-
-                        local sfx = AddSpecialEffect("Effect\\BonediggerHalo.mdx", GetUnitX(summoned), GetUnitY(summoned))
-
-                            UnitAddAbility(summoned, FourCC("Avul"))
-                            SetUnitAnimation(summoned, "birth")
-                            BlzSetSpecialEffectScale(sfx,  0.4)
-                            BlzSetSpecialEffectZ(sfx, GetZ(x, y) - 40.)
-                            GroupAddUnit(skill.summoned_group, summoned)
-                            SafePauseUnit(summoned, true)
-                            AddSoundVolume("Sounds\\Spells\\skeletonraise".. GetRandomInt(1, 3) .. ".wav", x, y, 125, 1500.)
-
-
-                            DelayAction(2.333, function()
-                                local unit_data = GetUnitData(summoned)
-                                unit_data.minion_owner = caster
-
-                                UnitRemoveAbility(summoned, FourCC("Avul"))
-                                DestroyEffect(sfx)
-                                SetUnitAnimation(summoned, "Stand")
-                                SafePauseUnit(summoned, false)
-                                CreateLeashForSummonedUnit(summoned, caster, 700.)
-                                ModifyStat(summoned, HP_VALUE, 50 * level, STRAIGHT_BONUS, true)
-                                ModifyStat(summoned, HP_REGEN, 1. + (0.01 * level), MULTIPLY_BONUS, true)
-                                ModifyStat(summoned, PHYSICAL_ATTACK, 2 * level, STRAIGHT_BONUS, true)
-                                ModifyStat(summoned, MAGICAL_ATTACK, 3 * level, STRAIGHT_BONUS, true)
-
-                                if GetUnitTalentLevel(caster, "talent_experienced_summoner") > 0 then
-                                    if GetUnitTalentLevel(caster, "talent_experienced_summoner") == 1 then ModifyStat(summoned, HP_VALUE, 1.1, MULTIPLY_BONUS, true)
-                                    else ModifyStat(summoned, HP_VALUE, 1.2, MULTIPLY_BONUS, true) end
-                                end
-
-                                if GetUnitTalentLevel(caster, "talent_tenacity_of_undead") > 0 then
-                                    SetUnitTalentLevel(summoned, "talent_tenacity_of_undead", GetUnitTalentLevel(caster, "talent_tenacity_of_undead"))
-                                end
-
-                                if GetUnitTalentLevel(caster, "talent_bone_spikes") > 0 then
-                                    ModifyStat(summoned, REFLECT_DAMAGE, 35 * GetUnitTalentLevel(caster, "talent_bone_spikes"), STRAIGHT_BONUS, true)
-                                end
-                            end)
-
-                        OnCorpseUse(caster, x, y)
-                        RemoveUnit(picked)
-                        break
                     end
 
                     GroupRemoveUnit(group, picked)
                 end
+
+
 
             DestroyGroup(group)
 
@@ -197,96 +249,124 @@ do
         local skill = GetUnitSkillData(caster, "ANLR")
         local level = UnitGetAbilityLevel(caster, "ANLR")
         local points = {}
-        local summon_x, summon_y
-        local corpses = {}
+
 
             if not skill.summoned_group then
                 skill.summoned_group = CreateGroup()
             end
 
-            GroupEnumUnitsInRange(group, GetUnitX(caster), GetUnitY(caster), 700., nil)
 
-            for index = BlzGroupGetSize(group) - 1, 0, -1 do
-                local picked = BlzGroupUnitAt(group, index)
 
-                    if GetUnitTypeId(picked) == raw and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetOwningPlayer(picked) == player then
-                        corpses[#corpses+1] = picked
-                        points[#corpses] = { x = GetUnitX(picked), y = GetUnitY(picked) }
-                        if #corpses == 3 then break end
+            if BlzGroupGetSize(skill.summoned_group) > 0 then
+
+                ApplyBuff(caster, FirstOfGroup(skill.summoned_group), "A00I", 1)
+                DestroyEffect(AddSpecialEffect("Effect\\Flamestrike Fel I.mdx", GetUnitX(FirstOfGroup(skill.summoned_group)), GetUnitY(FirstOfGroup(skill.summoned_group))))
+
+            else
+                local summon_x, summon_y
+                local corpses = {}
+                local power = GetUnitParameterValue(caster, MINION_POWER)
+
+                GroupEnumUnitsInRange(group, GetUnitX(caster), GetUnitY(caster), 700., nil)
+
+                    for index = BlzGroupGetSize(group) - 1, 0, -1 do
+                        local picked = BlzGroupUnitAt(group, index)
+
+                            if GetUnitTypeId(picked) == raw and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetOwningPlayer(picked) == player then
+                                corpses[#corpses+1] = picked
+                                points[#corpses] = { x = GetUnitX(picked), y = GetUnitY(picked) }
+                                if #corpses == 3 then break end
+                            end
+
+                        GroupRemoveUnit(group, picked)
                     end
 
-                GroupRemoveUnit(group, picked)
-            end
+                DestroyGroup(group)
 
-            DestroyGroup(group)
+                if #corpses > 2 then
 
-            if #corpses > 2 then
+                    summon_x, summon_y = GetCenterFigure(points)
+                    local angle = AngleBetweenUnitXY(caster, summon_x, summon_y)
+                    local range = GetMaxAvailableDistance(GetUnitX(caster), GetUnitY(caster), angle, DistanceBetweenUnitXY(caster, summon_x, summon_y))
+                    summon_x = GetUnitX(caster) + Rx(range, angle)
+                    summon_y = GetUnitY(caster) + Ry(range, angle)
 
-                summon_x, summon_y = GetCenterFigure(points)
-                local angle = AngleBetweenUnitXY(caster, summon_x, summon_y)
-                local range = GetMaxAvailableDistance(GetUnitX(caster), GetUnitY(caster), angle, DistanceBetweenUnitXY(caster, summon_x, summon_y))
-                summon_x = GetUnitX(caster) + Rx(range, angle)
-                summon_y = GetUnitY(caster) + Ry(range, angle)
+                    --KillUnit(CreateUnit(Player(0), FourCC("hpea"), summon_x, summon_y, 0.))
 
-                --KillUnit(CreateUnit(Player(0), FourCC("hpea"), summon_x, summon_y, 0.))
-
-                for i = 1, 3 do
-                    local missile = ThrowMissile(caster, nil, "MNLS", nil, GetUnitX(corpses[i]), GetUnitY(corpses[i]), summon_x, summon_y, 0.)
-                    SetMissileSpeed(missile, DistanceBetweenXY(points[i].x, points[i].y, summon_x, summon_y) / 1.25)
-                    KillUnit(corpses[i])
-                    OnCorpseUse(caster, GetUnitX(corpses[i]), GetUnitY(corpses[i]))
-                end
+                    for i = 1, 3 do
+                        local missile = ThrowMissile(caster, nil, "MNLS", nil, GetUnitX(corpses[i]), GetUnitY(corpses[i]), summon_x, summon_y, 0.)
+                        SetMissileSpeed(missile, DistanceBetweenXY(points[i].x, points[i].y, summon_x, summon_y) / 1.25)
+                        KillUnit(corpses[i])
+                        OnCorpseUse(caster, GetUnitX(corpses[i]), GetUnitY(corpses[i]))
+                    end
 
 
-                DelayAction(1.25, function()
+                    DelayAction(1.25, function()
 
-                    if IsAbilityKeybinded(FourCC("ANLR"), GetPlayerId(player) + 1) then
-                        if BlzGroupGetSize(skill.summoned_group) >= 1 then
+                        if IsAbilityKeybinded(FourCC("ANLR"), GetPlayerId(player) + 1) then
+                            if BlzGroupGetSize(skill.summoned_group) >= 1 then
 
-                            ForGroup(skill.summoned_group, function()
-                                if GetUnitState(GetEnumUnit(), UNIT_STATE_LIFE) < 0.045 then
-                                    GroupRemoveUnit(skill.summoned_group, GetEnumUnit())
+                                ForGroup(skill.summoned_group, function()
+                                    if GetUnitState(GetEnumUnit(), UNIT_STATE_LIFE) < 0.045 then
+                                        GroupRemoveUnit(skill.summoned_group, GetEnumUnit())
+                                    end
+                                end)
+
+                                if BlzGroupGetSize(skill.summoned_group) >= 1 then
+                                    KillUnit(BlzGroupUnitAt(skill.summoned_group, 0))
+                                    GroupRemoveUnit(skill.summoned_group, BlzGroupUnitAt(skill.summoned_group, 0))
                                 end
+
+                            end
+
+                            local summoned = CreateUnit(player, FourCC("u00S"), summon_x, summon_y, RndAng())
+                            GroupAddUnit(skill.summoned_group, summoned)
+                            AddSoundVolume("Sounds\\Spells\\skeletonraise".. GetRandomInt(1, 3) .. ".wav", summon_x, summon_y, 125, 1500.)
+                            DestroyEffect(AddSpecialEffect("Effect\\Soul Discharge Blue.mdx", summon_x, summon_y))
+                            --DestroyEffect(AddSpecialEffect("Effect\\Dark Conversion Classic.mdx", summon_x, summon_y))
+
+                            local death_trigger = CreateTrigger()
+                            TriggerRegisterUnitEvent(death_trigger, summoned, EVENT_UNIT_DEATH)
+                            TriggerAddAction(death_trigger, function()
+                                GroupRemoveUnit(skill.summoned_group, summoned)
+                                DestroyTrigger(death_trigger)
                             end)
 
-                            if BlzGroupGetSize(skill.summoned_group) >= 1 then
-                                KillUnit(BlzGroupUnitAt(skill.summoned_group, 0))
-                                GroupRemoveUnit(skill.summoned_group, BlzGroupUnitAt(skill.summoned_group, 0))
-                            end
+                            DelayAction(0., function()
+                                local unit_data = GetUnitData(summoned)
+                                unit_data.minion_owner = caster
+                                CreateLeashForSummonedUnit(summoned, caster, 600.)
+                                ModifyStat(summoned, HP_VALUE, math.floor((50 * level) * power), STRAIGHT_BONUS, true)
+                                ModifyStat(summoned, HP_REGEN, (1. + (0.01 * level)) * power, MULTIPLY_BONUS, true)
+                                ModifyStat(summoned, PHYSICAL_ATTACK, math.floor((3 * level) * power), STRAIGHT_BONUS, true)
+                                ModifyStat(summoned, MAGICAL_ATTACK, math.floor((4 * level) * power), STRAIGHT_BONUS, true)
+                                ModifyStat(summoned, DARKNESS_BONUS, math.floor((1 * level) * power), STRAIGHT_BONUS, true)
+                                ModifyStat(summoned, PHYSICAL_BONUS, math.floor((1 * level) * power), STRAIGHT_BONUS, true)
 
-                        end
+                                    if GetUnitTalentLevel(caster, "talent_experienced_summoner") > 0 then
+                                        if GetUnitTalentLevel(caster, "talent_experienced_summoner") == 1 then ModifyStat(summoned, HP_VALUE, 1.1, MULTIPLY_BONUS, true)
+                                        else ModifyStat(summoned, HP_VALUE, 1.2, MULTIPLY_BONUS, true) end
+                                    end
 
-                        local summoned = CreateUnit(player, FourCC("u00S"), summon_x, summon_y, RndAng())
-                        GroupAddUnit(skill.summoned_group, summoned)
-                        AddSoundVolume("Sounds\\Spells\\skeletonraise".. GetRandomInt(1, 3) .. ".wav", summon_x, summon_y, 125, 1500.)
-                        DestroyEffect(AddSpecialEffect("Effect\\Soul Discharge Blue.mdx", summon_x, summon_y))
-                        DelayAction(0., function()
-                            local unit_data = GetUnitData(summoned)
-                            unit_data.minion_owner = caster
-                            CreateLeashForSummonedUnit(summoned, caster, 600.)
-                            ModifyStat(summoned, HP_VALUE, 50 * level, STRAIGHT_BONUS, true)
-                            ModifyStat(summoned, HP_REGEN, 1. + (0.01 * level), MULTIPLY_BONUS, true)
-                            ModifyStat(summoned, PHYSICAL_ATTACK, 2 * level, STRAIGHT_BONUS, true)
-                            ModifyStat(summoned, MAGICAL_ATTACK, 3 * level, STRAIGHT_BONUS, true)
-                                if GetUnitTalentLevel(caster, "talent_experienced_summoner") > 0 then
-                                    if GetUnitTalentLevel(caster, "talent_experienced_summoner") == 1 then ModifyStat(summoned, HP_VALUE, 1.1, MULTIPLY_BONUS, true)
-                                    else ModifyStat(summoned, HP_VALUE, 1.2, MULTIPLY_BONUS, true) end
+                                if GetUnitTalentLevel(caster, "talent_tenacity_of_undead") > 0 then
+                                    SetUnitTalentLevel(summoned, "talent_tenacity_of_undead", GetUnitTalentLevel(caster, "talent_tenacity_of_undead"))
                                 end
 
-                            if GetUnitTalentLevel(caster, "talent_tenacity_of_undead") > 0 then
-                                SetUnitTalentLevel(summoned, "talent_tenacity_of_undead", GetUnitTalentLevel(caster, "talent_tenacity_of_undead"))
-                            end
+                                if GetUnitTalentLevel(caster, "talent_bone_spikes") > 0 then
+                                    ModifyStat(summoned, REFLECT_DAMAGE, 35 * GetUnitTalentLevel(caster, "talent_bone_spikes"), STRAIGHT_BONUS, true)
+                                end
 
-                            if GetUnitTalentLevel(caster, "talent_bone_spikes") > 0 then
-                                ModifyStat(summoned, REFLECT_DAMAGE, 35 * GetUnitTalentLevel(caster, "talent_bone_spikes"), STRAIGHT_BONUS, true)
-                            end
+                                ToggleAuraOnUnit(summoned, "lich_aura", level, true)
+                            end)
+                        end
+                    end)
 
-                            ToggleAuraOnUnit(summoned, "lich_aura", level, true)
-                        end)
-                    end
-                end)
+                end
 
             end
+
+
+
 
     end
 
@@ -306,10 +386,6 @@ do
     function RegisterNecromancerCorpseSpawn(hero)
         local death_trigger = CreateTrigger()
         local order_trigger = CreateTrigger()
-
-            RegisterTestCommand("cr", function()
-                UnitApplyTimedLife(CreateUnit(MONSTER_PLAYER, FourCC(MONSTER_ID_ZOMBIE), GetUnitX(hero) - 150., GetUnitY(hero) - 150., 0.), 0, 1.)
-            end)
 
 
             TriggerRegisterAnyUnitEventBJ(death_trigger, EVENT_PLAYER_UNIT_DEATH)
@@ -384,7 +460,7 @@ do
     end
 
 
-    function BoneBarrage(caster, x, y)
+    function BoneBarrage(caster, x, y, ability_instance)
         local waves = 5
         local spread = 1
         local timer = CreateTimer()
@@ -433,7 +509,7 @@ do
 
                                         if IsUnitEnemy(picked, Player(8)) and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and not IsUnitInGroup(picked, damaged_group) then
                                             GroupAddUnit(damaged_group, picked)
-                                            ApplyEffect(caster, picked, 0, 0, "ENBB", 1)
+                                            ApplyEffect(caster, picked, 0, 0, "ENBB", 1, ability_instance)
                                         end
 
                                         GroupRemoveUnit(filter_group, picked)
@@ -465,18 +541,19 @@ do
     end
 
 
-    function PoisonBlast(caster)
+    function PoisonBlast(caster, ability_instance)
         local timer = CreateTimer()
         local duration = 6.
         local x, y = GetUnitX(caster), GetUnitY(caster)
-        local effect = AddSpecialEffect("Effect\\SporeCloud.mdx", x, y)
+        local effect = AddSpecialEffect("Effect\\VFX_PoisonArea.mdx", x, y)
 
-            ApplyEffect(caster, nil, x, y, "ENPB", 1)
+            BlzSetSpecialEffectScale(effect, 0.5)
+            ApplyEffect(caster, nil, x, y, "ENPB", 1, ability_instance)
 
             TimerStart(timer, 0.33, true, function()
                 if duration > 0. then
                     duration = duration - 0.33
-                    ApplyEffect(caster, nil, x, y, "ENPP", 1)
+                    ApplyEffect(caster, nil, x, y, "ENPP", 1, ability_instance)
                 else
                     DestroyEffect(effect)
                     DestroyTimer(timer)
@@ -510,7 +587,7 @@ do
     end
 
 
-    function CorpseExplosionCast(caster, point_x, point_y)
+    function CorpseExplosionCast(caster, point_x, point_y, ability_instance)
         local group = CreateGroup()
         local player = GetOwningPlayer(caster)
 
@@ -520,7 +597,7 @@ do
                     local picked = BlzGroupUnitAt(group, index)
 
                     if GetUnitTypeId(picked) == CORPSE_RAW and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetOwningPlayer(picked) == player then
-                        ApplyEffect(caster, nil, GetUnitX(picked), GetUnitY(picked), "ENCE", 1)
+                        ApplyEffect(caster, nil, GetUnitX(picked), GetUnitY(picked), "ENCE", 1, ability_instance)
                         KillUnit(picked)
                         OnCorpseUse(caster, GetUnitX(picked), GetUnitY(picked))
                         break
@@ -532,7 +609,7 @@ do
     end
 
 
-    function UndeadLandCast(caster)
+    function UndeadLandCast(caster, ability_instance)
         local timer = CreateTimer()
         local effect_timer = CreateTimer()
         local group = CreateGroup()
@@ -546,11 +623,17 @@ do
         local sfx = {}
         local circle_amount = math.floor((range / 75.) + 0.5)
 
+            if UnitHasEffect(caster, "living_horrors_Legendary") then
+                ApplyEffect(caster, nil, GetUnitX(caster), GetUnitY(caster), "living_horrors_fear_effect", 1, ability_instance)
+            end
 
             ShakeByCoords(cast_x, cast_y, 1.2, 1., 1500.)
-            DestroyEffect(AddSpecialEffect("Effect\\AZ_TS_TZ.MDX", cast_x, cast_y))
+            local effect = AddSpecialEffect("Effect\\AZ_TS_TZ.MDX", cast_x, cast_y)
+            BlzSetSpecialEffectScale(effect, 1.15)
+            DestroyEffect(effect)
 
-            local loop_sounds = AddLoopingSound({ "Spells\\Sounds\\undead_land_loop_1.wav", "Spells\\Sounds\\undead_land_loop_2.wav", "Spells\\Sounds\\undead_land_loop_3.wav" }, cast_x, cast_y, 10., 200, 200, -0.2, 115, 1600.)
+
+            local loop_sounds = AddLoopingSound({ "Spells\\Sounds\\undead_land_loop_1.wav", "Spells\\Sounds\\undead_land_loop_2.wav", "Spells\\Sounds\\undead_land_loop_3.wav" }, cast_x, cast_y, 10., 200, 200, -0.2, 115, 1600., 4000.)
 
             local counter = {}
             local angle_table = {}
@@ -588,10 +671,18 @@ do
 
             TimerStart(effect_timer, 0.08, true, function()
                 if GetRandomInt(1, 3) == 1 then
-                    local effect = AddSpecialEffect("Effect\\DeathHandSFX.mdx", cast_x + GetRandomReal(-range, range), cast_y + GetRandomReal(-range, range))
+                    local nx, ny = cast_x + GetRandomReal(-range, range), cast_y + GetRandomReal(-range, range)
+                    local effect = AddSpecialEffect("Effect\\Skeletal Hand.mdx", nx, ny)
                     BlzSetSpecialEffectYaw(effect, GetRandomReal(0., 360.) * bj_DEGTORAD)
-                    BlzSetSpecialEffectScale(effect, GetRandomReal(0.95, 1.05))
-                    DelayAction(2.4, function() DestroyEffect(effect) end)
+                    BlzSetSpecialEffectScale(effect, GetRandomReal(1.05, 1.2))
+                    DestroyEffect(effect)
+
+                        DelayAction(0.155, function()
+                            if UnitHasEffect(caster, "living_horrors_Legendary") then
+                                ApplyEffect(caster, nil, nx, ny, "living_horrors_effect", 1)
+                            end
+                        end)
+
                 end
             end)
 
@@ -701,7 +792,7 @@ do
     end
 
 
-    function RipBonesCast(caster)
+    function RipBonesCast(caster, ability_instance)
         local player = GetOwningPlayer(caster)
         local group = CreateGroup()
         local level = UnitGetAbilityLevel(caster, "ANBR")
@@ -713,7 +804,7 @@ do
                 local picked = BlzGroupUnitAt(group, index)
 
                     if IsUnitEnemy(picked, player) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
-                        ApplyEffect(caster, picked, 0., 0., "ENRP", 1)
+                        ApplyEffect(caster, picked, 0., 0., "ENRP", 1, ability_instance)
                         local effect = AddSpecialEffect("Effect\\az_hit-red-blade.mdx", GetUnitX(picked), GetUnitY(picked))
                         BlzSetSpecialEffectScale(effect, 0.7 * BlzGetUnitRealField(picked, UNIT_RF_SCALING_VALUE))
                         BlzSetSpecialEffectYaw(effect, AngleBetweenUnits(caster, picked) * bj_DEGTORAD)
@@ -764,6 +855,7 @@ do
 
             local center_sfx = AddSpecialEffect("Effect\\Bone Spikes.mdx", x, y)
             BlzSetSpecialEffectYaw(center_sfx, GetRandomReal(0., 360.) * bj_DEGTORAD)
+            AddSoundVolume("Sounds\\Spells\\bone_light_hit_".. GetRandomInt(1, 5) ..".wav", x, y, 122, 1600.)
             DelayAction(0.475, function() DestroyEffect(center_sfx) end)
             DelayAction(0.25, function() ApplyEffect(caster, nil, x, y, "ENBK", 1, ability_instance) end)
 
@@ -781,6 +873,7 @@ do
 
                     circle_sfx[#circle_sfx+1] = AddSpecialEffect("Effect\\Bone Spikes.mdx", eff_x, eff_y)
                     BlzSetSpecialEffectYaw(circle_sfx[i], GetRandomReal(0., 360.) * bj_DEGTORAD)
+                    AddSoundVolume("Sounds\\Spells\\bone_light_hit_".. GetRandomInt(1, 5) ..".wav", eff_x, eff_y, 122, 1600.)
                     DelayAction(0.25, function() ApplyEffect(caster, nil, eff_x, eff_y, "ENBK", 1, ability_instance) end)
                 end
 
@@ -790,26 +883,322 @@ do
             end)
 
 
-            local spikes = #circle_sfx
+            local outer_circle = {}
+            local outer_parts = 12
 
             DelayAction(0.3, function()
-                parts = 12
-                shift = 360. / parts
+                shift = 360. / outer_parts
                 starting_angle = GetRandomReal(0., 359.)
                 offset = offset * 2.
-                for i = 1, parts do
+                for i = 1, outer_parts do
                     starting_angle = starting_angle + shift
                     local eff_x, eff_y = x + Rx(offset, starting_angle), y + Ry(offset, starting_angle)
 
-                    circle_sfx[#circle_sfx+1] = AddSpecialEffect("Effect\\Bone Spikes.mdx", eff_x, eff_y)
-                    BlzSetSpecialEffectYaw(circle_sfx[i], GetRandomReal(0., 360.) * bj_DEGTORAD)
+                    outer_circle[#outer_circle+1] = AddSpecialEffect("Effect\\Bone Spikes.mdx", eff_x, eff_y)
+                    BlzSetSpecialEffectYaw(outer_circle[i], GetRandomReal(0., 360.) * bj_DEGTORAD)
                     DelayAction(0.25, function() ApplyEffect(caster, nil, eff_x, eff_y, "ENBK", 1, ability_instance) end)
                 end
 
                 DelayAction(0.5, function()
-                    for i = spikes, #circle_sfx do DestroyEffect(circle_sfx[i]) end
-                    circle_sfx = nil
+                    for i = 1, #outer_circle do DestroyEffect(outer_circle[i]) end
+                    outer_circle = nil
                 end)
+            end)
+
+    end
+
+
+
+    function ForcedDecayDeactivate(caster)
+        local unit_data = GetUnitData(caster)
+
+            UnitRemoveAbility(caster, FourCC('Abun'))
+            SpellBackswing(caster)
+            unit_data.channeled_destructor = nil
+            unit_data.channeled_ability = nil
+            DestroyLightning(unit_data.channeled_lightning)
+            TimerStart(unit_data.action_timer, 0., false, nil)
+            StopSound(unit_data.channel_sound, true, true)
+            DestroyEffect(unit_data.hand_right_sfx); DestroyEffect(unit_data.hand_left_sfx)
+            UnitRemoveAbility(caster, FourCC("A002")); UnitRemoveAbility(caster, FourCC("B000"))
+            DestroyTrigger(unit_data.channel_trigger)
+            DestroyGroup(unit_data.tether_group)
+            SetUnitTimeScale(caster, 1.)
+    end
+
+
+    function ForcedDecayTetherTraget(caster, original_target, target, ability_instance)
+        local unit_data = GetUnitData(caster)
+        local lightning = AddLightningEx("DRPU", true, GetUnitX(original_target), GetUnitY(original_target), GetUnitZ(original_target) + 70., GetUnitX(target), GetUnitY(target), GetUnitZ(target) + 70.)
+        local timer = CreateTimer()
+        local sfx = AddSpecialEffectTarget("Effect\\DrainTarget.mdx", target, "chest")
+
+            SetLightningColor(lightning, 0.372, 0, 0.796, 1)
+            ApplyEffect(caster, target, 0., 0., "forced_decay_splash_effect", 1, ability_instance)
+            ApplyBuff(caster, target, "ABFD", 1)
+            AddSoundVolume("Sounds\\Spells\\Decompose_Imp_" .. GetRandomInt(1,4).. ".wav", GetUnitX(target), GetUnitY(target), 128, 1600.)
+
+            TimerStart(timer, 0.05, true, function()
+                if IsUnitInRange(target, original_target, 250.) and GetUnitState(caster, UNIT_STATE_LIFE) > 0.045 and GetUnitState(original_target, UNIT_STATE_LIFE) > 0.045 and unit_data.channeled_ability == "ANFD" then
+                    MoveLightningEx(lightning, true, GetUnitX(original_target), GetUnitY(original_target), GetUnitZ(original_target) + 70., GetUnitX(target), GetUnitY(target), GetUnitZ(target) + 70.)
+                    ApplyEffect(caster, target, 0., 0., "forced_decay_splash_effect", 1, ability_instance)
+                    SetBuffLevel(target, "ABFD", GetBuffLevel(target, "ABFD") + 1)
+                else
+                    --GroupRemoveUnit(unit_data.tether_group, target)
+                    DestroyTimer(timer)
+                    DestroyLightning(lightning)
+                    DestroyEffect(sfx)
+                end
+            end)
+
+    end
+
+
+    function ForcedDecayCast(caster, target, ability_instance)
+        local unit_data = GetUnitData(caster)
+
+            if unit_data.channeled_destructor then unit_data.channeled_destructor(caster) else
+                local pos_x, pos_y = GetUnitX(caster), GetUnitY(caster)
+                local additional_targets_amount = math.floor(UnitGetAbilityLevel(caster, "ANFD") / 5)
+                unit_data.tether_group = CreateGroup()
+
+                ResetUnitSpellCast(caster)
+                unit_data.channeled_destructor = ForcedDecayDeactivate
+                unit_data.channeled_ability = "ANFD"
+                unit_data.channeled_lightning = AddLightningEx("DRPU", true, pos_x, pos_y, GetUnitZ(caster) + 70., GetUnitX(target), GetUnitY(target), GetUnitZ(target) + 70.)
+
+                SetLightningColor(unit_data.channeled_lightning, 0.372, 0, 0.796, 1)
+
+                UnitAddAbility(caster, FourCC('Abun'))
+                local player_id = GetPlayerId(GetOwningPlayer(caster)) + 1
+
+
+                unit_data.channel_sound = CreateNew3DSoundEx("Sounds\\Spells\\Decompose_Loop_"..GetRandomInt(1,2)..".wav", GetUnitX(caster), GetUnitY(caster), 65., 128, 1600., 4000., 100, 1000, true)
+                StartSound(unit_data.channel_sound)
+                SetSoundPlayPosition(unit_data.channel_sound, GetRandomInt(0, 2500))
+                UnitAddAbility(caster, FourCC("A002"))
+                unit_data.hand_right_sfx = AddSpecialEffectTarget("Effect\\DrainCaster.mdx", caster, "hand right")
+                unit_data.hand_left_sfx = AddSpecialEffectTarget("Effect\\DrainTarget.mdx", target, "chest")
+
+                AddSoundVolume("Sounds\\Spells\\Decompose_Whoosh_" .. GetRandomInt(1,4).. ".wav", GetUnitX(target), GetUnitY(target), 128, 1600.)
+                unit_data.channel_trigger = CreateTrigger()
+                TriggerRegisterUnitEvent(unit_data.channel_trigger, caster, EVENT_UNIT_ISSUED_POINT_ORDER)
+                TriggerRegisterUnitEvent(unit_data.channel_trigger, caster, EVENT_UNIT_ISSUED_ORDER)
+
+                local duration = 1.25
+                local breakpoint = duration - 0.25
+
+                TriggerAddAction(unit_data.channel_trigger, function()
+                    if not IsItemOrder(GetIssuedOrderId()) and duration <= breakpoint then ForcedDecayDeactivate(caster) end
+                end)
+
+                SetUnitTimeScale(caster, -0.06)
+                SetUnitFacingTimed(caster, AngleBetweenUnits(caster, target), 0.1)
+
+                ApplyEffect(caster, target, 0., 0., "forced_decay_effect", 1, ability_instance)
+                ApplyBuff(caster, target, "ABFD", 1)
+                AddSoundVolume("Sounds\\Spells\\Decompose_Imp_" .. GetRandomInt(1,4).. ".wav", GetUnitX(target), GetUnitY(target), 128, 1600.)
+
+                local amount = additional_targets_amount
+                if additional_targets_amount > 0 then
+                    local new_group = CreateGroup()
+                    GroupEnumUnitsInRange(new_group, GetUnitX(target), GetUnitY(target), 250., nil)
+                        for index = BlzGroupGetSize(new_group) - 1, 0, -1 do
+                            local picked = BlzGroupUnitAt(new_group, index)
+
+                                if picked ~= target and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and IsUnitEnemy(picked, Player(0)) and IsUnitVisible(picked, Player(0)) and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
+                                    ForcedDecayTetherTraget(caster, target, picked, ability_instance)
+                                    amount = amount - 1
+                                    GroupAddUnit(unit_data.tether_group, picked)
+                                    if amount <= 0 then break end
+                                end
+
+                        end
+                    DestroyGroup(new_group)
+                end
+
+                TimerStart(unit_data.action_timer, 0.05, true, function()
+
+                    if duration > 0. and GetUnitState(caster, UNIT_STATE_LIFE) > 0.045 and GetUnitState(target, UNIT_STATE_LIFE) > 0.045 and unit_data.channeled_ability == "ANFD" then
+                        SetUnitFacingTimed(caster, AngleBetweenUnits(caster, target), 0.1)
+                        MoveLightningEx(unit_data.channeled_lightning, true, pos_x, pos_y, GetUnitZ(caster) + 70., GetUnitX(target), GetUnitY(target), GetUnitZ(target) + 70.)
+                        ApplyEffect(caster, target, 0., 0., "forced_decay_effect", 1, ability_instance)
+                        SetBuffLevel(target, "ABFD", GetBuffLevel(target, "ABFD") + 1)
+
+                            if additional_targets_amount > 0 then
+                                local current_target_amount = BlzGroupGetSize(unit_data.tether_group)
+
+                                for index = current_target_amount - 1, 0, -1 do
+                                    local picked = BlzGroupUnitAt(unit_data.tether_group, index)
+                                    if GetUnitState(picked, UNIT_STATE_LIFE) <= 0.045 or not IsUnitInRange(target, picked, 250.) then GroupRemoveUnit(unit_data.tether_group, picked) end
+                                end
+
+                                current_target_amount = BlzGroupGetSize(unit_data.tether_group)
+
+                                if current_target_amount < additional_targets_amount then
+                                    local new_group = CreateGroup()
+                                    amount = additional_targets_amount - current_target_amount
+                                    GroupEnumUnitsInRange(new_group, GetUnitX(target), GetUnitY(target), 250., nil)
+
+                                        for index = BlzGroupGetSize(new_group) - 1, 0, -1 do
+                                            local picked = BlzGroupUnitAt(new_group, index)
+
+                                                if picked ~= target and not IsUnitInGroup(picked, unit_data.tether_group) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and IsUnitEnemy(picked, Player(0)) and IsUnitVisible(picked, Player(0)) and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
+                                                    ForcedDecayTetherTraget(caster, target, picked, ability_instance)
+                                                    GroupAddUnit(unit_data.tether_group, picked)
+                                                    amount = amount - 1
+                                                    if amount <= 0 then break end
+                                                end
+
+                                        end
+
+                                    DestroyGroup(new_group)
+
+                                end
+                            end
+
+                    else
+                        if duration <= 0. then CreateNecromancerCorpse(GetOwningPlayer(caster), GetUnitX(target), GetUnitY(target)) end
+                        if GetUnitState(target, UNIT_STATE_LIFE) <= 0.045 then BlzEndUnitAbilityCooldown(caster, GetKeybindKeyAbility(FourCC("ANFD"), player_id)) end
+                        ForcedDecayDeactivate(caster)
+                    end
+
+                duration = duration - 0.05
+            end)
+
+
+            end
+
+    end
+
+
+    function TortureCast(x, y)
+        local splat_blend = CreateMyImage("ReplaceableTextures\\Splats\\TortureGroundRuneBlend.blp", x, y, 500., 255, 255, 255, 0, 2)
+        local splat = CreateMyImage("ReplaceableTextures\\Splats\\TortureGroundRune.blp", x, y, 500., 255, 255, 255, 0, 1)
+        local splat_additive = CreateMyImage("ReplaceableTextures\\Splats\\TortureGroundRune.blp", x, y, 500., 255, 255, 255, 0, 3)
+
+            DelayAction(0.4, function()
+                FadeInImage(splat_blend, 0.2)
+                FadeInImage(splat, 0.2)
+                FadeInImage(splat_additive, 0.2)
+
+                DelayAction(1., function()
+                    FadeOutImage(splat_additive, 1.)
+                    DelayAction(1., function() DestroyImage(splat_additive.image) end)
+                end)
+
+                DelayAction(1.5, function()
+                    DecolourImage(splat_blend, 3.)
+                    DecolourImage(splat, 3.)
+                    DelayAction(2.5, function()
+                        FadeOutImage(splat_blend, 1.)
+                        FadeOutImage(splat, 1.)
+                        DelayAction(1., function()
+                            DestroyImage(splat_blend.image)
+                            DestroyImage(splat.image)
+                        end)
+                    end)
+                end)
+            end)
+
+    end
+
+
+    function DecrepifyCast(x, y)
+        local splat_blend = CreateMyImage("ReplaceableTextures\\Splats\\DecrepifyGroundRuneBlend.blp", x, y, 500., 255, 255, 255, 0, 2)
+        local splat = CreateMyImage("ReplaceableTextures\\Splats\\DecrepifyGroundRune.blp", x, y, 500., 255, 255, 255, 0, 1)
+        local splat_additive = CreateMyImage("ReplaceableTextures\\Splats\\DecrepifyGroundRune.blp", x, y, 500., 255, 255, 255, 0, 3)
+
+            DelayAction(0.4, function()
+                FadeInImage(splat_blend, 0.2)
+                FadeInImage(splat, 0.2)
+                FadeInImage(splat_additive, 0.2)
+
+                DelayAction(1., function()
+                    FadeOutImage(splat_additive, 1.)
+                    DelayAction(1., function() DestroyImage(splat_additive.image) end)
+                end)
+
+                DelayAction(1.5, function()
+                    DecolourImage(splat_blend, 3.)
+                    DecolourImage(splat, 3.)
+                    DelayAction(2.5, function()
+                        FadeOutImage(splat_blend, 1.)
+                        FadeOutImage(splat, 1.)
+                        DelayAction(1., function()
+                            DestroyImage(splat_blend.image)
+                            DestroyImage(splat.image)
+                        end)
+                    end)
+                end)
+            end)
+
+    end
+
+
+    function WeakenCast(x, y)
+        local splat_blend = CreateMyImage("ReplaceableTextures\\Splats\\WeakenGroundRuneBlend.blp", x, y, 500., 255, 255, 255, 0, 2)
+        local splat_burn = CreateMyImage("ReplaceableTextures\\Splats\\WeakenGroundRuneBurn.blp", x, y, 500., 105, 75, 198, 0, 2)
+        local splat = CreateMyImage("ReplaceableTextures\\Splats\\WeakenGroundRune.blp", x, y, 500., 255, 255, 255, 0, 1)
+        local splat_additive = CreateMyImage("ReplaceableTextures\\Splats\\WeakenGroundRune.blp", x, y, 500., 255, 255, 255, 0, 3)
+
+            WeakenVisual(x, y)
+
+            DelayAction(0.2, function()
+                FadeInImage(splat_blend, 0.2)
+                FadeInImage(splat_burn, 0.2)
+                FadeInImage(splat, 0.2)
+                FadeInImage(splat_additive, 0.2)
+
+                DelayAction(1., function()
+                    FadeOutImage(splat_additive, 1.)
+                    DelayAction(1., function() DestroyImage(splat_additive.image) end)
+                end)
+
+                DelayAction(1.5, function()
+                    DecolourImage(splat_blend, 3.)
+                    DecolourImage(splat_burn, 3.)
+                    DecolourImage(splat, 3.)
+                    DelayAction(2.5, function()
+                        FadeOutImage(splat_blend, 1.)
+                        FadeOutImage(splat_burn, 1.)
+                        FadeOutImage(splat, 1.)
+                        DelayAction(1., function()
+                            DestroyImage(splat_blend.image)
+                            DestroyImage(splat_burn.image)
+                            DestroyImage(splat.image)
+                        end)
+                    end)
+                end)
+            end)
+
+    end
+
+
+    function WeakenVisual(x, y)
+        local timer = CreateTimer()
+        local radius = 5.
+        local step = 400. / ((400. / 1200) / 0.025)
+
+            TimerStart(timer, 0.025, true, function()
+                radius = radius + step
+                local amount = math.floor(radius / 50)
+
+                for i = 1, amount do
+                    local angle = GetRandomReal(0., 360.)
+                    local tx,ty = x + Rx(radius, angle), y + Ry(radius, angle)
+                    local effect = AddSpecialEffect("Effect\\Weaken_BurstEffect.mdx", tx, ty)
+                    local scale = 1.3 - (radius / 400.)
+
+                        if scale < 0.2 then scale = 0.2 end
+                        BlzSetSpecialEffectScale(effect, scale)
+                        BlzSetSpecialEffectYaw(effect, GetRandomReal(0., 360.) * bj_DEGTORAD)
+
+                        DelayAction(0.7, function() DestroyEffect(effect) end)
+                end
+
+
+                if radius >= 400. then DestroyTimer(timer) end
             end)
 
     end

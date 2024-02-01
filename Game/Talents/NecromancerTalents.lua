@@ -57,12 +57,14 @@ do
     function SpiritTalent(caster)
         local unit_data = GetUnitData(caster)
 
+
         if unit_data.spirit_talent then
 
             if not unit_data.spirit or (unit_data.spirit and GetUnitState(unit_data.spirit, UNIT_STATE_LIFE) <= 0.045) then
                 unit_data.spirit_talent = unit_data.spirit_talent + 1
 
                 if unit_data.spirit_talent >= 10 then
+                    local power = GetUnitParameterValue(caster, MINION_POWER)
                     unit_data.spirit_talent = nil
                     local angle = GetRandomReal(0., 360.)
                     local range = GetMaxAvailableDistance(GetUnitX(caster), GetUnitY(caster), angle, 400.)
@@ -91,10 +93,10 @@ do
                             local summon_data = GetUnitData(summoned)
                                 summon_data.minion_owner = caster
                                 CreateLeashForSummonedUnit(summoned, caster, 700.)
-                                ModifyStat(summoned, HP_VALUE, 50 * Current_Wave, STRAIGHT_BONUS, true)
-                                ModifyStat(summoned, HP_REGEN, 1. + (0.01 * Current_Wave), MULTIPLY_BONUS, true)
-                                ModifyStat(summoned, PHYSICAL_ATTACK, 2 * Current_Wave, STRAIGHT_BONUS, true)
-                                ModifyStat(summoned, MAGICAL_ATTACK, 3 * Current_Wave, STRAIGHT_BONUS, true)
+                                ModifyStat(summoned, HP_VALUE, math.floor((50 * Current_Wave) * power), STRAIGHT_BONUS, true)
+                                ModifyStat(summoned, HP_REGEN, (1. + (0.01 * Current_Wave)) * power, MULTIPLY_BONUS, true)
+                                ModifyStat(summoned, PHYSICAL_ATTACK, math.floor((3 * Current_Wave) * power), STRAIGHT_BONUS, true)
+                                ModifyStat(summoned, MAGICAL_ATTACK, math.floor((4 * Current_Wave) * power), STRAIGHT_BONUS, true)
 
                                     if GetUnitTalentLevel(caster, "talent_experienced_summoner") > 0 then
                                         if GetUnitTalentLevel(caster, "talent_experienced_summoner") == 1 then ModifyStat(summoned, HP_VALUE, 1.1, MULTIPLY_BONUS, true)
@@ -247,7 +249,7 @@ do
         local duration = 0
 
             for i = 1, #unit_data.buff_list do
-                if unit_data.buff_list[i].buff_source == source and (unit_data.buff_list[i].id == "ABWK" or unit_data.buff_list[i].id == "ABDC"  or unit_data.buff_list[i].id == "A0PB") then
+                if unit_data.buff_list[i].buff_source == source and HasTag(unit_data.buff_list[i].tags, "curse") then
                     if unit_data.buff_list[i].expiration_time > duration then
                         duration = unit_data.buff_list[i].expiration_time
                     end

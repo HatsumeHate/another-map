@@ -466,6 +466,7 @@ do
                 AddToInventory(player, item)
                 if item_data.soundpack and item_data.soundpack.drop then PlayLocalSound(item_data.soundpack.drop, player-1, 128) end
                 PlayLocalSound("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", player-1)
+                DestroyEffect(AddSpecialEffectTarget("UI\\Feedback\\GoldCredit\\GoldCredit.mdx", ShopInFocus[player], "origin"))
                 return true
             else
                 Feedback_NoGold(player)
@@ -662,6 +663,7 @@ do
 
                         SetUIState(player, SKILL_PANEL, false)
                         SetUIState(player, CHAR_PANEL, false)
+                        SetUIState(player, TALENT_PANEL, false)
 
                         if soundpack then
                             PlayLocalSound(soundpack.open[GetRandomInt(1, #soundpack.open)], id, 125)

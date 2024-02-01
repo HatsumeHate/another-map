@@ -315,7 +315,7 @@ do
 
                                 local vision = CreateFogModifierRadius(Player(8), FOG_OF_WAR_VISIBLE, point_x, point_y, 32., true, false)
                                 FogModifierStart(vision)
-                                AddSoundVolume(ambient_event.events[event].list[rnd].sound, point_x, point_y, ambient_event.events[event].list[rnd].volume, ambient_event.events[event].list[rnd].cutoff)
+                                AddSoundVolume(ambient_event.events[event].list[rnd].sound, point_x, point_y, ambient_event.events[event].list[rnd].volume, ambient_event.events[event].list[rnd].cutoff, ambient_event.events[event].list[rnd].distance or 4000.)
                                 DelayAction(0., function()
                                     FogModifierStop(vision)
                                     DestroyFogModifier(vision)

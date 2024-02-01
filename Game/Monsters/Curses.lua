@@ -151,7 +151,7 @@ do
 
                                             DelayAction(GetRandomReal(3., 5.), function()
                                                 if GetUnitState(curse_totem, UNIT_STATE_LIFE) > 0.045 then
-                                                    CreateBarOnUnit(spawned)
+                                                    --CreateBarOnUnit(spawned)
                                                     TriggerRegisterUnitEvent(death_trigger, spawned, EVENT_UNIT_DEATH)
                                                     local unit_data = GetUnitData(spawned)
                                                     unit_data.xp = math.floor(unit_data.xp / 4.)
@@ -234,14 +234,6 @@ do
         CurseTimer = CreateTimer()
         TimerStart(CurseTimer, I2R(GetRandomInt(CURSE_MIN_TIME, CURSE_MAX_TIME)), true, SpawnCurse)
 
-        RegisterTestCommand("frcr", function()
-            TimerStart(CurseTimer, 1., true, SpawnCurse)
-        end)
-
-        RegisterTestCommand("remcr", function()
-            KillUnit(curse_totems[1])
-            table.remove(curse_totems, 1)
-        end)
 
     end
 

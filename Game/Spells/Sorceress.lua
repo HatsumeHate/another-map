@@ -11,9 +11,10 @@ do
             unit_data.spawned_hydra = CreateUnit(GetOwningPlayer(hero), FourCC('shdr'), x, y, GetRandomReal(0.,359.))
 
 
+            AddSpecialEffectTargetEx("Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeDamageTarget.mdx", unit_data.spawned_hydra, "overhead rear", 1.)
+
             if level > 1 then
                 AddUnitAnimationProperties(unit_data.spawned_hydra, "upgrade", true)
-                AddSpecialEffectTargetEx("Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeDamageTarget.mdx", unit_data.spawned_hydra, "overhead rear", 1.)
             end
 
             if level == 2 then
@@ -26,32 +27,10 @@ do
             end
 
             UnitApplyTimedLife(unit_data.spawned_hydra, 0, 6.75 + (ability_level * 0.25))
+            DestroyEffect(AddSpecialEffect("Effect\\Flamestrike I.mdx", x, y))
 
 
-            local center_fire_sfx = AddSpecialEffect("Doodads\\Cinematic\\FireTrapUp\\FireTrapUp.mdx", x, y)
-            BlzPlaySpecialEffectWithTimeScale(center_fire_sfx, ANIM_TYPE_STAND, 1.5)
-            DelayAction(0.5, function() DestroyEffect(center_fire_sfx) end)
-
-            local circle_sfx = {}
-            local parts = 6
-            local shift = 360. / parts
-            local starting_angle = GetRandomReal(0., 359.)
-
-            DelayAction(0.15, function()
-                for i = 1, parts do
-                    starting_angle = starting_angle + shift
-                    circle_sfx[#circle_sfx+1] = AddSpecialEffect("Doodads\\Cinematic\\FireTrapUp\\FireTrapUp.mdx", x + Rx(65., starting_angle), y + Ry(65., starting_angle))
-                    BlzPlaySpecialEffectWithTimeScale(circle_sfx[#circle_sfx], ANIM_TYPE_STAND, 1.5)
-                end
-                DelayAction(0.5, function()
-                    for i = 1, parts do DestroyEffect(circle_sfx[i]) end
-                    circle_sfx = nil
-                end)
-            end)
-
-
-
-            local percent = 0.7
+            local percent = 0.7 * GetUnitParameterValue(hero, MINION_POWER)
 
                 if unit_data.boost_overflow then
                     percent = percent + 0.3 * GetUnitTalentLevel(hero, "talent_overflow")
@@ -60,7 +39,7 @@ do
 
                 if unit_data.heating_up_boost then percent = percent + 0.4 end
 
-            AddSoundVolume("Sounds\\Spells\\Hydra_Roar_" .. GetRandomInt(1,3).. ".wav", x, y, 300, 1600.)
+            AddSoundVolume("Sounds\\Spells\\Hydra_Roar_" .. GetRandomInt(1,3).. ".wav", x, y, 300, 1600., 4000.)
 
 
             DelayAction(0., function()
@@ -214,7 +193,7 @@ do
         local rebounds = 2 + math.floor(UnitGetAbilityLevel(source, "A019") / 10)
 
 
-        AddSoundVolume("Sounds\\Spells\\lightning_launch_" .. GetRandomInt(1, 3) .. ".wav", GetUnitX(from), GetUnitY(from), 120., 1600.)
+        AddSoundVolume("Sounds\\Spells\\lightning_launch_" .. GetRandomInt(1, 3) .. ".wav", GetUnitX(from), GetUnitY(from), 120., 1600., 4000.)
         LightningEffect_Units(from, target, "BLNL", 0.45, 50., 50.)
         ApplyEffect(source, target, 0., 0.,"ECHL", 1, ability_instance)
 
@@ -253,7 +232,7 @@ do
                         --print("a")
 
 
-                        AddSoundVolume("Sounds\\Spells\\lightning_launch_" .. GetRandomInt(1, 3) .. ".wav", GetUnitX(from), GetUnitY(from), 120., 1600.)
+                        AddSoundVolume("Sounds\\Spells\\lightning_launch_" .. GetRandomInt(1, 3) .. ".wav", GetUnitX(from), GetUnitY(from), 120., 1600., 4000.)
                         LightningEffect_Units(from, next_target, "BLNL", 0.45, 50., 50.)
                            -- print("b")
                         if next_target ~= source then
@@ -363,7 +342,7 @@ do
 
             x = caster_x + Rx(distance, angle)
             y = caster_y + Ry(distance, angle)
-            AddSoundVolumeZ("Sounds\\Spells\\blink_launch_".. GetRandomInt(1, 3) ..".wav", caster_x, caster_y, 35., 120, 1700.)
+            AddSoundVolumeZ("Sounds\\Spells\\blink_launch_".. GetRandomInt(1, 3) ..".wav", caster_x, caster_y, 35., 120, 1700., 4000.)
             SetUnitPosition(caster, x, y)
             DestroyEffect(AddSpecialEffect("Spell\\Blink Blue Target.mdx", GetUnitX(caster), GetUnitY(caster)))
 
@@ -477,10 +456,7 @@ do
 
     function MeltdownDeactivate(unit)
         local unit_data = GetUnitData(unit)
-        local skill = GetUnitSkillData(unit, "AMLT")
-        local ability_level = UnitGetAbilityLevel(unit, "AMLT")
 
-            --BlzSetUnitAbilityCooldown(unit, GetKeybindKeyAbility(FourCC("AMLT"), GetPlayerId(GetOwningPlayer(unit)) + 1), 0, skill.level[ability_level].cooldown)
             UnitRemoveAbility(unit, FourCC('Abun'))
             SpellBackswing(unit)
             unit_data.channeled_destructor = nil
@@ -501,17 +477,18 @@ do
 
             if unit_data.channeled_destructor then unit_data.channeled_destructor(unit) else
 
-            ResetUnitSpellCast(unit)
-            unit_data.channeled_destructor = MeltdownDeactivate
-            unit_data.channeled_ability = "AMLT"
+                ResetUnitSpellCast(unit)
+                unit_data.channeled_destructor = MeltdownDeactivate
+                unit_data.channeled_ability = "AMLT"
 
-            UnitAddAbility(unit, FourCC('Abun'))
-            local player_id = GetPlayerId(GetOwningPlayer(unit)) + 1
+                UnitAddAbility(unit, FourCC('Abun'))
+                local player_id = GetPlayerId(GetOwningPlayer(unit)) + 1
 
 
-            AddSoundVolumeZ("Sounds\\Spells\\disintegration_launch_"..GetRandomInt(1,2)..".wav", GetUnitX(unit), GetUnitY(unit), 65., 120, 1500.)
-            unit_data.channel_sound = CreateNew3DSound("Sounds\\Spells\\disintegration_loop_1.wav", GetUnitX(unit), GetUnitY(unit), 65., 120, 1500., true)
-            StartSound(unit_data.channel_sound)
+                AddSoundVolumeZ("Sounds\\Spells\\disintegration_launch_"..GetRandomInt(1,2)..".wav", GetUnitX(unit), GetUnitY(unit), 65., 120, 1500., 4000.)
+                unit_data.channel_sound = CreateNew3DSound("Sounds\\Spells\\disintegration_loop_1.wav", GetUnitX(unit), GetUnitY(unit), 65., 120, 1500., 4000., true)
+                StartSound(unit_data.channel_sound)
+                SetSoundPlayPosition(unit_data.channel_sound, GetRandomInt(0, GetSoundDuration(unit_data.channel_sound)))
             UnitAddAbility(unit, FourCC("A002"))
             unit_data.hand_right_sfx = AddSpecialEffectTarget("Spell\\Fire Uber.mdx", unit, "hand right")
             unit_data.hand_left_sfx = AddSpecialEffectTarget("Spell\\Fire Uber.mdx", unit, "hand left")
@@ -564,10 +541,7 @@ do
 
     function BlizzardDeactivate(unit)
         local unit_data = GetUnitData(unit)
-        --local skill = GetUnitSkillData(unit, "ABLZ")
-        --local ability_level = UnitGetAbilityLevel(unit, "ABLZ")
 
-            --BlzSetUnitAbilityCooldown(unit, GetKeybindKeyAbility(FourCC("AMLT"), GetPlayerId(GetOwningPlayer(unit)) + 1), 0, skill.level[ability_level].cooldown)
             UnitRemoveAbility(unit, FourCC('Abun'))
             SpellBackswing(unit)
             unit_data.channeled_destructor = nil
@@ -601,7 +575,7 @@ do
             UnitAddAbility(unit, FourCC('Abun'))
             local player_id = GetPlayerId(GetOwningPlayer(unit)) + 1
 
-            unit_data.channel_sound = AddLoopingSoundOnUnit({ "Sounds\\Spells\\blizzard_loop_1.wav", "Sounds\\Spells\\blizzard_loop_2.wav", "Sounds\\Spells\\blizzard_loop_3.wav", }, unit, 150, 150, -0.15, 100, 1500.) --CreateNew3DSound("Sounds\\Spells\\disintegration_loop_1.wav", GetUnitX(unit), GetUnitY(unit), 65., 120, 1500., true)
+            unit_data.channel_sound = AddLoopingSoundOnUnit({ "Sounds\\Spells\\blizzard_loop_1.wav", "Sounds\\Spells\\blizzard_loop_2.wav", "Sounds\\Spells\\blizzard_loop_3.wav", }, unit, 150, 150, -0.15, 100, 1500., 4000.) --CreateNew3DSound("Sounds\\Spells\\disintegration_loop_1.wav", GetUnitX(unit), GetUnitY(unit), 65., 120, 1500., true)
             UnitAddAbility(unit, FourCC("A002"))
 
             unit_data.hand_right_sfx = AddSpecialEffectTarget("Spell\\Ice High.mdx", unit, "hand right")
@@ -670,15 +644,19 @@ do
         if halfarea > 450. then halfarea = 450. end
         if amount > 30 then halfarea = 30 end
 
+            AddSoundVolume("Sounds\\Spells\\IcicleRain_Spawn_" .. GetRandomInt(1,3)..".wav", x, y, 150, 1500., 4000.)
+
             TimerStart(timer, 0.26, true, function()
 
                 if amount > 0 then
                     local point_x = x + GetRandomReal(-halfarea, halfarea)
                     local point_y = y + GetRandomReal(-halfarea, halfarea)
+                    local effect = AddSpecialEffect("Abilities\\Spells\\Human\\Blizzard\\BlizzardTarget.mdx", point_x, point_y)
 
-                        DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Human\\Blizzard\\BlizzardTarget.mdx", point_x, point_y))
-                        AddSoundVolume("Sounds\\Spells\\BlizzardTarget".. GetRandomInt(1,3) .. ".wav", point_x, point_y, 100, 1700.)
-                        DelayAction(0.81, function() ApplyEffect(caster, nil, point_x, point_y, "EICR", 1, ability_instance) end)
+                        BlzSetSpecialEffectTimeScale(effect, 1.5)
+                        DestroyEffect(effect)
+                        AddSoundVolume("Sounds\\Spells\\IcicleRain_Ice_".. GetRandomInt(1,4) .. ".wav", point_x, point_y, 150, 1500.)
+                        DelayAction(0.405, function() ApplyEffect(caster, nil, point_x, point_y, "EICR", 1, ability_instance) end) --0.81
                         amount = amount - 1
                 else
                     DestroyTimer(timer)
@@ -689,7 +667,7 @@ do
     end
 
 
-    function FireWallCast(caster, x, y, ability_instance)
+    function FireWaveCast(caster, x, y, ability_instance)
         local missiles = {}
         local amount = 6
         local arc = 30. / amount
@@ -709,8 +687,9 @@ do
             missiles[#missiles+1] = ThrowMissile(caster, nil, "fire_wall_missile", { ability_instance = ability_instance }, GetUnitX(caster), GetUnitY(caster), 0., 0., angle, true)
 
             local volume = 90
-            local flame_sound = CreateNew3DSound("Sounds\\Spells\\flame_wave_loop.wav", x, y, 10., volume, 1700., true)
+            local flame_sound = CreateNew3DSound("Sounds\\Spells\\flame_wave_loop.wav", x, y, 10., volume, 1700., 4000., true)
             StartSound(flame_sound)
+            SetSoundPlayPosition(flame_sound, GetRandomInt(0, GetSoundDuration(flame_sound)))
 
             local timer = CreateTimer()
             TimerStart(timer, 0.025, true, function()
@@ -730,6 +709,135 @@ do
             end)
 
     end
+
+
+
+    function FrostNovaVisual(source)
+        local x,y = GetUnitX(source), GetUnitY(source)
+        local timer = CreateTimer()
+        local radius = 5.
+        local step = 500. / ((320. / 500) / 0.025)
+
+            TimerStart(timer, 0.025, true, function()
+                radius = radius + step
+                local amount = math.floor(radius / 10)
+
+                for i = 1, amount do
+                    local angle = GetRandomReal(0., 360.)
+                    local tx,ty = x + Rx(radius, angle), y + Ry(radius, angle)
+                    local effect = AddSpecialEffect("Effect\\Ice Shard.mdx", tx, ty)
+
+                        BlzSetSpecialEffectTimeScale(effect, 1.5)
+                        BlzSetSpecialEffectScale(effect, GetRandomReal(0.1, 0.4))
+                        BlzSetSpecialEffectYaw(effect, AngleBetweenXY(x,y,tx,ty))
+                        local anglemod = 1. + (radius / 450.)
+                        if anglemod > 1.8 then anglemod = 1.8 end
+                        BlzSetSpecialEffectPitch(effect, math.rad(45. * anglemod))
+                        DelayAction(2. + GetRandomReal(0.03, 0.07), function() DestroyEffect(effect) end)
+                end
+
+
+                if radius >= 300. then DestroyTimer(timer) end
+            end)
+
+    end
+
+
+    function FireWallCast(caster, x, y, ability_instance)
+        local level = UnitGetAbilityLevel(caster, "AFWL")
+        local angle = AngleBetweenUnitXY(caster, x, y)
+        local time = 6.
+        local timer = CreateTimer()
+        local amount = 1 * math.floor(level / 10)
+        local fires = { [1] = { sfx = AddSpecialEffect("Effect\\FireMedium.mdx", x, y), x = x, y = y } }
+
+        BlzSetSpecialEffectYaw(fires[1].sfx, math.rad(GetRandomReal(0., 360.)))
+
+        if amount > 4 then amount = 4 end
+
+        local start_index = 1
+        local offset = 100.
+        local delay = 0.15
+            for c = 1, amount do
+                local of = offset
+                local ind = start_index
+                DelayAction(delay, function()
+                    local nx,ny = x + Rx(of, angle - 90.), y + Ry(of, angle - 90.)
+                    fires[ind+1] = { sfx = AddSpecialEffect("Effect\\FireMedium.mdx", nx, ny), x = nx, y = ny }
+                    BlzSetSpecialEffectYaw(fires[ind+1].sfx, math.rad(GetRandomReal(0., 360.)))
+                    --DestroyEffect(AddSpecialEffect("Effect\\Pillar of Flame Orange.mdx", nx, ny))
+                    nx,ny = x + Rx(of, angle + 90.), y + Ry(of, angle + 90.)
+                    fires[ind+2] = { sfx = AddSpecialEffect("Effect\\FireMedium.mdx", nx, ny), x = nx, y = ny }
+                    BlzSetSpecialEffectYaw(fires[ind+2].sfx, math.rad(GetRandomReal(0., 360.)))
+                    --DestroyEffect(AddSpecialEffect("Effect\\Pillar of Flame Orange.mdx", nx, ny))
+                end)
+                start_index = start_index + 2
+                offset = offset + 100.
+                delay = delay + 0.15
+            end
+
+            AddSoundVolume("Sounds\\Spells\\Firewall_Deploy_".. GetRandomInt(1,4) ..".wav", x, y, 128, 1700.)
+            local snd = CreateNew3DSound("Sounds\\Spells\\Firewall_Loop.wav", x, y, GetZ(x,y), 128, 1600., 4000., true)
+            StartSound(snd)
+            SetSoundPlayPosition(snd, GetRandomInt(0, GetSoundDuration(snd)))
+
+
+            TimerStart(timer, 0.1, true, function()
+
+                if time > 0. then
+                    time = time - 0.1
+                    for i = 1, #fires do ApplyEffect(caster, nil, fires[i].x, fires[i].y, "fire_wall_effect", level, ability_instance) end
+                else
+                    StopSound(snd, true, true)
+                    DestroyTimer(timer)
+                    for i = 1, #fires do DestroyEffect(fires[i].sfx) end
+                end
+
+            end)
+
+
+            if amount > 0 then
+                local distance = 0.
+                local move_timer = CreateTimer()
+                local effect_data = {}
+                local step = offset / ((offset / 700.) / 0.025)
+
+                    for i = 1, 2 do
+                        effect_data[i] = { sfx = AddSpecialEffect("Abilities\\Spells\\Orc\\Shockwave\\ShockwaveMissile.mdx", x, y), x = x, y = y  }
+                        BlzSetSpecialEffectScale(effect_data[i].sfx, 0.7)
+                    end
+
+                    effect_data[1].a = angle - 90.
+                    effect_data[2].a = angle + 90.
+                    BlzSetSpecialEffectYaw(effect_data[1].sfx, math.rad(effect_data[1].a))
+                    BlzSetSpecialEffectYaw(effect_data[2].sfx, math.rad(effect_data[2].a))
+
+                    TimerStart(move_timer, 0.025, true, function()
+
+                        if distance >= offset then
+                            DestroyEffect(effect_data[1].sfx)
+                            DestroyEffect(effect_data[2].sfx)
+                            DestroyTimer(move_timer)
+                        else
+
+                            for i = 1, 2 do
+                                effect_data[i].x = effect_data[i].x + Rx(step, effect_data[i].a)
+                                effect_data[i].y = effect_data[i].y + Ry(step, effect_data[i].a)
+                                BlzSetSpecialEffectX(effect_data[i].sfx, effect_data[i].x)
+                                BlzSetSpecialEffectY(effect_data[i].sfx, effect_data[i].y)
+                                BlzSetSpecialEffectZ(effect_data[i].sfx, GetZ(effect_data[i].x, effect_data[i].y))
+                            end
+
+                            distance = distance + step
+
+                        end
+
+                    end)
+
+            end
+
+    end
+
 
 end
 

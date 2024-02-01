@@ -28,6 +28,7 @@ do
     local function NewButton(texture, size_x, size_y, relative_frame, frame_point_from, frame_point_to, offset_x, offset_y, parent_frame)
         local new_Frame = BlzCreateFrame('ScriptDialogButton', parent_frame, 0, 0)
         local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
+        local new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", new_Frame, "", 0)
         local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", new_Frame, "", 0)
         local new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
 
@@ -47,6 +48,10 @@ do
             BlzTriggerRegisterFrameEvent(ClickTrigger, new_Frame, FRAMEEVENT_CONTROL_CLICK)
             BlzTriggerRegisterFrameEvent(EnterTrigger, new_Frame, FRAMEEVENT_MOUSE_ENTER)
             --BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
+
+            BlzFrameSetSize(new_FrameBorder, size_x, size_y)
+            BlzFrameSetTexture(new_FrameBorder, "UI\\inventory_frame.blp", 0, true)
+            BlzFrameSetAllPoints(new_FrameBorder, new_Frame)
 
             BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMRIGHT, new_FrameImage, FRAMEPOINT_BOTTOMRIGHT, -0.002, 0.002)
             BlzFrameSetSize(new_FrameCharges, 0.012, 0.012)
@@ -325,6 +330,11 @@ do
                     BlzFrameSetSize(new_Frame, 0.0435, 0.0435)
                     PrivateChestFrame[player].portrait = new_Frame
 
+                    local new_border = BlzCreateFrameByType("BACKDROP", "ButtonBorder", new_Frame, "", 0)
+                    BlzFrameSetSize(new_border, 0.0435, 0.0435)
+                    BlzFrameSetTexture(new_border, "UI\\inventory_frame.blp", 0, true)
+                    BlzFrameSetAllPoints(new_border, new_Frame)
+
                     new_Frame = BlzCreateFrameByType("TEXT", "shop name", PrivateChestFrame[player].portrait, "", 0)
                     BlzFrameSetPoint(new_Frame, FRAMEPOINT_LEFT, PrivateChestFrame[player].portrait, FRAMEPOINT_RIGHT, 0.011, 0.)
                     BlzFrameSetTextAlignment(new_Frame, TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT)
@@ -396,6 +406,11 @@ do
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.02, -0.02)
             BlzFrameSetSize(new_Frame, 0.0435, 0.0435)
             PrivateChestFrame[player].portrait = new_Frame
+
+            local new_border = BlzCreateFrameByType("BACKDROP", "ButtonBorder", new_Frame, "", 0)
+            BlzFrameSetSize(new_border, 0.0435, 0.0435)
+            BlzFrameSetTexture(new_border, "UI\\inventory_frame.blp", 0, true)
+            BlzFrameSetAllPoints(new_border, new_Frame)
 
             new_Frame = BlzCreateFrameByType("TEXT", "shop name", PrivateChestFrame[player].portrait, "", 0)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_LEFT, PrivateChestFrame[player].portrait, FRAMEPOINT_RIGHT, 0.011, 0.)

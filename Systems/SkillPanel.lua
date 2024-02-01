@@ -61,7 +61,7 @@ do
                     end
                     --print("skill is found, trying to unbind")
                     UnbindAbilityKey(PlayerHero[player], skill.Id)
-                    OnSkillUnbind(PlayerHero[player], skill.Id)
+                    OnSkillUnbind(PlayerHero[player], skill)
                     --print("skill is unbinded")
                     BlzFrameSetTexture(button.image, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0, true)
                     FrameChangeTexture(button.button, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp")
@@ -86,7 +86,7 @@ do
                 UnregisterPlayerSkillHotkey(player, skill)
                 if key_button_data.skill then UnregisterPlayerSkillHotkey(player, key_button_data.skill) end
                 BindAbilityKey(PlayerHero[player], skill.Id, key)
-                OnSkillBind(PlayerHero[player], skill.Id)
+                OnSkillBind(PlayerHero[player], skill)
                 BlzFrameSetTexture(key_button_data.image, skill.icon, 0, true)
                 FrameChangeTexture(key_button_data.button, skill.icon)
                 key_button_data.skill = skill

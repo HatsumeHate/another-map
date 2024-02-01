@@ -25,6 +25,12 @@ do
     MONSTER_TRAIT_ELITE_BLUE = 15
     MONSTER_TRAIT_ELITE_YELLOW = 16
     MONSTER_TRAIT_ELITE_GREEN = 17
+    local MonsterAurasData
+    MONSTER_TRAIR_AURA_PHYSICAL = 1 --physical+holy
+    MONSTER_TRAIR_AURA_PRIMAL_ELEMENTS = 2 --fire+lightning+cold
+    MONSTER_TRAIR_AURA_SHADOW = 3 --dark+poison
+    MONSTER_TRAIR_AURA_UNIVERSAL = 4 --everything
+    MONSTER_TRAIR_AURA_STURDY = 5 --damage reduction
 
 
     function GetRandomMonsterEliteTrait()
@@ -73,6 +79,11 @@ do
 
     end
 
+
+    function ApplyMonsterAuaraTrait(unit)
+        ToggleAuraOnUnit(unit, MonsterAurasData[GetRandomInt(1, #MonsterAurasData)], 1, true)
+    end
+
     ---@param unit unit
     ---@param trait number
     function ApplyMonsterTrait(unit, trait)
@@ -117,8 +128,11 @@ do
 
                     BlzSetUnitName(unit, prefix .. " " .. suffix .. appelation)
                     unit_data.classification = MONSTER_RANK_ADVANCED
+                    unit_data.unique_unit = true
                     SetDropList(unit, "adv_enemy")
                     AddDropList(unit, "magic_drop", 100.)
+                    AddDropList(unit, "unique_items", 1.)
+                    AddDropList(unit, "gifts", 20.)
             end
 
 
@@ -348,46 +362,54 @@ do
                 modified_parameters = {
                     { param = PHYSICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
                     { param = MAGICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
-                    { param = HP_VALUE, value = 1.55, method = MULTIPLY_BONUS },
+                    { param = HP_VALUE, value = 2., method = MULTIPLY_BONUS },
                     { param = CONTROL_REDUCTION, value = 40, method = STRAIGHT_BONUS }
                 },
                 color = { r = 255, g = 100, b = 100 },
                 modified_scale = 0.2,
-                bonus_exp = 1.5
+                bonus_exp = 1.75
             },
             [MONSTER_TRAIT_ELITE_BLUE] = {
                 modified_parameters = {
                     { param = PHYSICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
                     { param = MAGICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
-                    { param = HP_VALUE, value = 1.55, method = MULTIPLY_BONUS },
+                    { param = HP_VALUE, value = 2., method = MULTIPLY_BONUS },
                     { param = CONTROL_REDUCTION, value = 40, method = STRAIGHT_BONUS }
                 },
                 color = { r = 100, g = 100, b = 255 },
                 modified_scale = 0.2,
-                bonus_exp = 1.5
+                bonus_exp = 1.75
             },
             [MONSTER_TRAIT_ELITE_YELLOW] = {
                 modified_parameters = {
                     { param = PHYSICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
                     { param = MAGICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
-                    { param = HP_VALUE, value = 1.55, method = MULTIPLY_BONUS },
+                    { param = HP_VALUE, value = 2., method = MULTIPLY_BONUS },
                     { param = CONTROL_REDUCTION, value = 40, method = STRAIGHT_BONUS }
                 },
                 color = { r = 255, g = 190, b = 126 },
                 modified_scale = 0.2,
-                bonus_exp = 1.5
+                bonus_exp = 1.75
             },
             [MONSTER_TRAIT_ELITE_GREEN] = {
                 modified_parameters = {
                     { param = PHYSICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
                     { param = MAGICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
-                    { param = HP_VALUE, value = 1.55, method = MULTIPLY_BONUS },
+                    { param = HP_VALUE, value = 2., method = MULTIPLY_BONUS },
                     { param = CONTROL_REDUCTION, value = 40, method = STRAIGHT_BONUS }
                 },
                 color = { r = 100, g = 255, b = 100 },
                 modified_scale = 0.2,
-                bonus_exp = 1.5
+                bonus_exp = 1.75
             },
+        }
+
+        MonsterAurasData = {
+            [MONSTER_TRAIR_AURA_PHYSICAL] = "monster_physical_aura",
+            [MONSTER_TRAIR_AURA_PRIMAL_ELEMENTS] = "monster_primal_aura",
+            [MONSTER_TRAIR_AURA_SHADOW] = "monster_shadow_aura",
+            [MONSTER_TRAIR_AURA_UNIVERSAL] = "monster_universal_aura",
+            [MONSTER_TRAIR_AURA_STURDY] = "monster_sturdy_aura"
         }
 
     end

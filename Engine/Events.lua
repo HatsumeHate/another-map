@@ -1,21 +1,52 @@
 do
 
 
-    function OnSkillUnbind(unit, skill_id)
+    function OnSkillUnbind(unit, skill)
 
 
-            if skill_id == "AABD" then
+            if skill.Id == "AABD" then
                 local unit_data = GetUnitData(unit)
                 unit_data.blade_of_darkness_stacks = nil
-            elseif skill_id == "AACS" then
+            elseif skill.Id == "AACS" then
                 local unit_data = GetUnitData(unit)
                 unit_data.curved_strike_stacks = nil
+            end
+
+            if skill.minions then
+                local player = GetPlayerId(GetOwningPlayer(unit))+1
+
+                    for key = 1, 6 do
+                        if KEYBIND_LIST[key].player_skill_bind_string_id[player] then
+                            local keyskill = GetUnitSkillData(unit, KEYBIND_LIST[key].player_skill_bind_string_id[player])
+                            if keyskill and keyskill.minions then
+                                return
+                            end
+                        end
+
+                    end
+
+
+                    if GetLocalPlayer() == Player(player-1) then
+                        BlzFrameSetVisible(GlobalButton[player].minion_command_button, false)
+                        BlzFrameSetVisible(PlayerUI.button_borders[8], false)
+                    end
+
             end
 
     end
 
 
-    function OnSkillBind(unit, skill_id)
+    function OnSkillBind(unit, skill)
+
+        if skill.minions then
+            local player = GetPlayerId(GetOwningPlayer(unit))+1
+
+            if GetLocalPlayer() == Player(player-1) then
+                BlzFrameSetVisible(PlayerUI.button_borders[8], true)
+                BlzFrameSetVisible(GlobalButton[player].minion_command_button, true)
+            end
+
+        end
 
     end
 
@@ -26,7 +57,7 @@ do
 
         if GetUnitTypeId(new_unit) == FourCC("n00N") then
             SetDropList(new_unit, "chest")
-        elseif GetUnitTypeId(new_unit) == FourCC("U000") then
+        elseif GetUnitTypeId(new_unit) == FourCC(MONSTER_ID_MEPHISTO) then
             MephistoSouls(new_unit)
         end
 
@@ -38,17 +69,38 @@ do
         if GetOwningPlayer(new_unit) == SECOND_MONSTER_PLAYER or GetOwningPlayer(new_unit) == MONSTER_PLAYER or GetOwningPlayer(new_unit) == Player(12) then
             ScaleMonsterUnit(new_unit, Current_Wave)
             GroupAddUnit(ScaleMonstersGroup, new_unit)
-            if not unit_data.classification or unit_data.classification ~= MONSTER_RANK_BOSS and GetUnitAbilityLevel(new_unit, FourCC("Avul")) == 0 then
-                CreateBarOnUnit(new_unit)
-            end
+            --if not unit_data.classification or unit_data.classification ~= MONSTER_RANK_BOSS and GetUnitAbilityLevel(new_unit, FourCC("Avul")) == 0 then
+               --CreateBarOnUnit(new_unit)
+            --end
 
             if unit_data.classification then
                 if unit_data.classification == MONSTER_RANK_COMMON then SetDropList(new_unit, "common_enemy")
                 elseif unit_data.classification == MONSTER_RANK_ADVANCED then SetDropList(new_unit, "adv_enemy")
                 elseif unit_data.classification == MONSTER_RANK_BOSS then SetDropList(new_unit, "boss_enemy") end
             end
+
+            unit_data.attack_speed_deviation = GetRandomInt(0, 15)
+            ModifyStat(new_unit, ATTACK_SPEED, -unit_data.attack_speed_deviation, STRAIGHT_BONUS, true)
+
         end
 
+    end
+
+
+    function OnMinionDeath(unit, owner)
+        local dead_unit_data = GetUnitData(unit)
+        local unit_data = GetUnitData(owner)
+
+            if dead_unit_data.minion_owner and GetUnitTalentLevel(dead_unit_data.minion_owner, "talent_final_favor") > 0 then
+                DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdx", GetUnitX(unit), GetUnitY(unit)))
+                ApplyEffect(dead_unit_data.minion_owner, dead_unit_data.minion_owner, 0.,0., "effect_final_favor", GetUnitTalentLevel(dead_unit_data.minion_owner, "talent_final_favor"))
+            end
+
+            if dead_unit_data.minion_owner and GetUnitTalentLevel(dead_unit_data.minion_owner, "talent_eternal_service") > 0 then
+                if Chance(70.) then
+                    CreateNecromancerCorpse(GetOwningPlayer(dead_unit_data.minion_owner), GetUnitX(unit), GetUnitY(unit))
+                end
+            end
     end
 
 
@@ -56,38 +108,51 @@ do
 
         if killer then
 
-
-            if GetUnitTalentLevel(killer, "talent_crystallization") > 0 and IsUnitFrozen(unit) then
-                ApplyEffect(killer, nil, GetUnitX(unit), GetUnitY(unit), "crystallization_effect", GetUnitTalentLevel(killer, "talent_crystallization"))
-            end
-
             local dead_unit_data = GetUnitData(unit)
 
-            if IsUnitType(killer, UNIT_TYPE_HERO) then
+            if IsUnitType(killer, UNIT_TYPE_HERO) and GetPlayerId(GetOwningPlayer(killer)) <= 5 then
                 for i = 1, 6 do
                     if PlayerHero[i] and IsUnitInRange(PlayerHero[i], unit, 1000.) then
 
-                        if GetUnitTalentLevel(killer, "talent_incinerate") > 0 then
-                            ApplyBuff(killer, killer, "ATIN", GetUnitTalentLevel(killer, "talent_incinerate"))
+                        if GetUnitTalentLevel(PlayerHero[i], "talent_crystallization") > 0 and IsUnitFrozen(unit) then
+                            ApplyEffect(PlayerHero[i], nil, GetUnitX(unit), GetUnitY(unit), "crystallization_effect", GetUnitTalentLevel(killer, "talent_crystallization"))
                         end
 
-                        if GetUnitTalentLevel(killer, "talent_carnage") > 0 then
-                            ApplyBuff(killer, killer, "ATCR", GetBuffLevel(killer, "ATCR") + 1)
+                        if GetUnitTalentLevel(PlayerHero[i], "talent_incinerate") > 0 then
+                            ApplyBuff(PlayerHero[i], PlayerHero[i], "ATIN", GetUnitTalentLevel(killer, "talent_incinerate"))
                         end
 
-                        if GetUnitTalentLevel(killer, "talent_leeches") > 0 then
-                            for i = 1, GetUnitTalentLevel(killer, "talent_leeches") do
-                                local leech = CreateUnit(GetOwningPlayer(killer), FourCC("u00T"), GetUnitX(unit) + GetRandomReal(-50., 50.), GetUnitY(unit) + GetRandomReal(-50., 50.), GetRandomReal(0.,360.))
+                        if GetUnitTalentLevel(PlayerHero[i], "talent_carnage") > 0 then
+                            ApplyBuff(PlayerHero[i], PlayerHero[i], "ATCR", GetBuffLevel(killer, "ATCR") + 1)
+                        end
+
+                        if GetUnitTalentLevel(PlayerHero[i], "talent_leeches") > 0 then
+                            for i = 1, GetUnitTalentLevel(PlayerHero[i], "talent_leeches") do
+                                local leech = CreateUnit(GetOwningPlayer(PlayerHero[i]), FourCC("u00T"), GetUnitX(unit) + GetRandomReal(-50., 50.), GetUnitY(unit) + GetRandomReal(-50., 50.), GetRandomReal(0.,360.))
                                 UnitApplyTimedLife(leech, 0, 5.)
                                 DelayAction(0., function()
                                     local unit_data = GetUnitData(leech)
-                                    ModifyStat(leech, PHYSICAL_ATTACK, Current_Wave, STRAIGHT_BONUS, true)
+                                    ModifyStat(leech, PHYSICAL_ATTACK, math.floor(Current_Wave * GetUnitParameterValue(PlayerHero[i], MINION_POWER)), STRAIGHT_BONUS, true)
                                 end)
                             end
                         end
 
-                        if GetUnitTalentLevel(killer, "talent_ritual") > 0 then
-                            ApplyBuff(killer, killer, "ARTL", GetUnitTalentLevel(killer, "talent_ritual"))
+                        if GetUnitTalentLevel(PlayerHero[i], "talent_ritual") > 0 then
+                            ApplyBuff(PlayerHero[i], PlayerHero[i], "ARTL", GetUnitTalentLevel(killer, "talent_ritual"))
+                        end
+
+                        if GetUnitParameterValue(PlayerHero[i], HP_PER_KILL) > 0 then
+                            local amount = GetUnitParameterValue(PlayerHero[i], HP_PER_KILL) * (1 + GetUnitParameterValue(PlayerHero[i], HEALING_BONUS) * 0.01)
+                            SetUnitState(PlayerHero[i], UNIT_STATE_LIFE, GetUnitState(PlayerHero[i], UNIT_STATE_LIFE) + amount)
+                            CreateHitnumber(R2I(amount), PlayerHero[i], PlayerHero[i], HEAL_STATUS)
+                            DestroyEffect(AddSpecialEffectTarget("Effect\\DrainHealth.mdx", PlayerHero[i], "chest"))
+                        end
+
+                        if GetUnitParameterValue(PlayerHero[i], MP_PER_KILL) > 0 then
+                            local amount = GetUnitParameterValue(PlayerHero[i], MP_PER_KILL)
+                            SetUnitState(PlayerHero[i], UNIT_STATE_MANA, GetUnitState(PlayerHero[i], UNIT_STATE_MANA) + amount)
+                            CreateHitnumber(R2I(amount), PlayerHero[i], PlayerHero[i], RESOURCE_STATUS)
+                            DestroyEffect(AddSpecialEffectTarget("Effect\\DrainMana.mdx", PlayerHero[i], "chest"))
                         end
 
                     end
@@ -95,7 +160,7 @@ do
 
             end
 
-            if not dead_unit_data.rune then
+            if not IsUnitType(unit, UNIT_TYPE_HERO) and not dead_unit_data.minion_owner and not dead_unit_data.rune then
                 dead_unit_data.rune = true
 
                 if Chance(20.) then
@@ -113,7 +178,6 @@ do
 
             local unit_data = GetUnitData(killer)
 
-
             if dead_unit_data.minion_owner and GetUnitTalentLevel(dead_unit_data.minion_owner, "talent_final_favor") > 0 then
                 DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdx", GetUnitX(unit), GetUnitY(unit)))
                 ApplyEffect(dead_unit_data.minion_owner, dead_unit_data.minion_owner, 0.,0., "effect_final_favor", GetUnitTalentLevel(dead_unit_data.minion_owner, "talent_final_favor"))
@@ -126,7 +190,7 @@ do
             end
 
             if unit_data.minion_owner then
-                OnUnitDeath(unit, unit_data.minion_owner)
+                OnMinionDeath(unit, unit_data.minion_owner)
             end
 
         end
@@ -148,6 +212,8 @@ do
         if sign == "BreakthroughEffect" then
             local unit_data = GetUnitData(source)
             DestroyEffect(unit_data.breakthrough_charge_sfx)
+        elseif sign == "butcher_charge" then
+            ModifyStat(source, CONTROL_REDUCTION, 1000, STRAIGHT_BONUS, false)
         end
 
     end
@@ -161,6 +227,8 @@ do
             PushUnit(source, target, AngleBetweenUnits(source,target), 150., 0.7, "aach")
         elseif sign == "brch" then
             ApplyBuff(source, target, "ABRS", 1)
+        elseif sign == "butcher_charge" then
+            ApplyEffect(source, target, 0, 0, "butcher_charge_effect", 1)
         elseif sign == "diach" then
             ApplyEffect(source, target, 0., 0., "diablo_charge_effect", Current_Wave)
             PushUnit(source, target, AngleBetweenUnits(source, target), 250., 0.7, "diach")
@@ -176,6 +244,7 @@ do
         if sign == "A00O" then
             if not IsUnitDisabled(target) then SpellBackswing(target) end
             if UnitHasEffect(target, "BSTR") then ApplyEffect(target, nil, 0., 0., "ELBS", 1) end
+            ModifyStat(target, CONTROL_REDUCTION, 200, STRAIGHT_BONUS, false)
         end
     end
 
@@ -190,7 +259,7 @@ do
 
     function OnPushExpire(target, data)
         if data.sign == 'EUPP' then
-            ApplyBuff(data.source, target, 'A012', UnitGetAbilityLevel(data.source, "A00B"))
+            ApplyBuff(data.source, target, 'A012', UnitGetAbilityLevel(data.source, "ABUP"))
         end
 
         if GetUnitTalentLevel(data.source, "talent_disorientation") > 0 then
@@ -240,6 +309,9 @@ do
             ApplyBuff(source, target, "ASCB", 1)
         elseif missile.id == 'MNBS' and UnitHasEffect(source, "splitter_legendary") then
             SplitterLegendaryEffect(source, target)
+        elseif missile.id == "MNWS" and UnitHasEffect(source, "death_cry_Legendary") then
+            ModifyStat(target, MOVING_SPEED, 0.2, MULTIPLY_BONUS, true)
+            DelayAction(0.5, function() ModifyStat(target, MOVING_SPEED, 0.2, MULTIPLY_BONUS, false) end)
         end
     end
 
@@ -252,10 +324,8 @@ do
         if missile.id == 'M001' then
             local timer = CreateTimer()
             TimerStart(timer, 0.25, true, function ()
-                RedirectMissile_Deg(missile, GetRandomReal(0., 359.))
-                if missile == nil then
-                    DestroyTimer(GetExpiredTimer())
-                end
+                if missile.time <= 0. then DestroyTimer(GetExpiredTimer())
+                else RedirectMissile_Deg(missile, GetRandomReal(0., 359.)) end
             end)
         elseif missile.id == "MBCH" then BuildChain(source, missile)
         elseif missile.id == "MSHG" then CastShatterGround(source, missile)
@@ -269,6 +339,12 @@ do
                 missile.hit_once_in = 5.
                 missile.max_targets = 300
             end
+        elseif missile.id == "baal_hoarfrost_missile" then
+            local timer = CreateTimer()
+                TimerStart(timer, 0.05, true, function ()
+                    if missile.time <= 0. then DestroyTimer(GetExpiredTimer())
+                    else missile.radius = missile.radius + 15. end
+                end)
         end
 
     end
@@ -416,6 +492,8 @@ do
             end
         elseif effect.id == 'EMTR' then
             PushUnit(source, target, AngleBetweenUnitXY(target, effect.effect_x, effect.effect_y) + 180., 200., 1.25, "smeteor")
+        elseif UnitHasEffect(source, "rot_and_disease_Legendary") and (effect.id == "ENBS" or effect.id == "ENBB" or effect.id == "ENBK" or effect.id == "ENRP") then
+            ApplyBuff(source, target, "A00E", 1)
         end
 
     end
@@ -439,7 +517,7 @@ do
     ---@param buff table
     function OnBuffSourceChange(source, new_source, target, buff)
 
-        if (buff.id == "ABWK" or buff.id == "ABDC" or buff.id == "A0PB") and source ~= new_source then
+        if BuffHasTag(buff.id) == "curse" and source ~= new_source then
             if GetUnitTalentLevel(source, "talent_vile_malediction") > 0 then
                 VileMaledictionStack(source, target, false)
             end
@@ -561,6 +639,10 @@ do
             end
         end
 
+        if UnitHasEffect(source, "rot_and_disease_Legendary") and buff.id == "A0PB" then
+            ApplyBuff(source, target, "A00E", 1)
+        end
+
         if BuffHasTag(buff.id, "curse") then
 
             if GetUnitTalentLevel(source, "talent_vile_malediction") > 0 then
@@ -621,7 +703,7 @@ do
     ---@param damage real
     function OnDamage_End(source, target, damage, damage_data)
 
-        if damage_data.effect and damage_data.effect.eff.id == "EEXC" then
+        if damage_data.effect and damage_data.effect.eff and damage_data.effect.eff.id == "EEXC" then
             local ability_level = UnitGetAbilityLevel(source, "A020")
 
                 if GetUnitState(target, UNIT_STATE_LIFE) < 0.045 then
@@ -793,7 +875,7 @@ do
             end
         end
 
-        if GetUnitTalentLevel(source, "talent_sweeping_strikes") > 0 and (not damage_data.effect or damage_data.effect.eff.id == "critical_strike_effect") then
+        if GetUnitTalentLevel(source, "talent_sweeping_strikes") > 0 and (not damage_data.effect or damage_data.effect.regular_attack) then
             if GetUnitTalentLevel(source, "talent_sweeping_strikes") < 3 then
                 local unit_data = GetUnitData(source)
                 if unit_data.sweeping_strikes_main_target and unit_data.sweeping_strikes_main_target ~= target then
@@ -815,6 +897,16 @@ do
                 local bonus = GetUnitTalentLevel(source, "talent_bigger_they_are") == 1 and 1.06 or 1.1
                 damage_data.damage = damage_data.damage * bonus
             end
+        end
+
+        if UnitHasEffect(source, "unity_Legendary") then
+            local attacker = GetUnitData(source)
+            local b = GetUnitParameterValue(source, GetAttributeBonusParam(damage_data.attribute))
+
+                damage_data.attribute_bonus = attacker.equip_point[WEAPON_POINT].ATTRIBUTE ~= damage_data.attribute and attacker.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS or 0
+                for i = PHYSICAL_BONUS, HOLY_BONUS do damage_data.attribute_bonus = damage_data.attribute_bonus + GetUnitParameterValue(source, i) end
+                damage_data.attribute_bonus = damage_data.attribute_bonus - b
+
         end
 
         return damage_data
@@ -868,8 +960,34 @@ do
                 if Chance(20.) then ApplyEffect(source, target, 0, 0, "EHOR", 1) end
             end
 
+            if UnitHasEffect(target, "greta_revenge_Legendary") and Chance(12.) then
+                GretaRevengeLegendaryEffect(target)
+            end
+
+
+            if GetUnitClass(source) == BARBARIAN_CLASS then
+                if UnitHasEffect(source, "everlasting_madness_Legendary") and GetUnitAbilityLevel(source, FourCC("A00V")) == 0 then
+                    if Chance(20.) then
+                        ApplyBuff(source, source, "A00V", UnitGetAbilityLevel(source, "A00Q") or 1)
+                        SetBuffExpirationTime(source, "A00V", 3.)
+                    end
+                elseif UnitHasEffect(target, "everlasting_madness_Legendary") and GetUnitAbilityLevel(target, FourCC("A00V")) == 0 then
+                    if Chance(20.) then
+                        ApplyBuff(target, target, "A00V", UnitGetAbilityLevel(target, "A00Q") or 1)
+                        SetBuffExpirationTime(target, "A00V", 3.)
+                    end
+                end
+            end
+
+
             --attack_data.effect.proc_list["item_enrage"] = true
-        
+            if GetUnitAbilityLevel(source, FourCC("ABTT")) > 0 then
+                local buff = GetBuffDataFromUnit(source, "ABTT")
+                ApplyEffect(buff.buff_source, source, 0.,0., "torture_damage_effect", 1)
+                ApplyEffect(buff.buff_source, target, 0, 0, "torture_heal_effect", 1)
+            end
+
+
             if GetUnitAbilityLevel(target, FourCC("ADTL")) > 0 then 
                 local buff = GetBuffData("ADTL")
                 if buff.buff_source == source or GetUnitClass(source) == ASSASSIN_CLASS then ApplyBuff(source, source, "ABTL", UnitGetAbilityLevel(source, "AATL")) end
@@ -920,6 +1038,17 @@ do
 
             if GetUnitTalentLevel(target, "talent_extra_charge") > 0 and attack_data.attack_type == MELEE_ATTACK then
                 ExtraChargeShockTalentEffect(source, target)
+            end
+
+
+            if GetUnitTalentLevel(source, "talent_arc_discharge") > 0 and attack_data.attack_status == ATTACK_STATUS_CRITICAL and not AbilityInstanceHasEffect(attack_data, "talent_arc_discharge") then
+                local lvl = GetUnitTalentLevel(source, "talent_arc_discharge")
+
+                    if (lvl == 1 and Chance(25.)) or (lvl == 2 and Chance(30.)) or (lvl == 3 and Chance(35.)) then
+                        ArcDischargeCharge(source)
+                        AbilityInstanceAddEffectProc(attack_data, "talent_arc_discharge")
+                    end
+
             end
 
             if GetUnitTalentLevel(source, "talent_disintegration") > 0 then
@@ -993,7 +1122,26 @@ do
                 if Chance(18.) and GetUnitState(source, UNIT_STATE_LIFE) / BlzGetUnitMaxHP(source) < 100 then BloodPactTalent(source) end
             end
 
+            if GetUnitAbilityLevel(source, FourCC("A007")) > 0 then
+                if Chance(35.) then ApplyBuff(source, target, "A006", Current_Wave) end
+            end
 
+            if GetUnitAbilityLevel(source, FourCC("A00L")) > 0 and attack_data.is_direct and attack_data.attack_type == MELEE_ATTACK then
+                if Chance(40.) then
+                    AddSoundVolume("Sounds\\Spells\\poison".. GetRandomInt(1,4).. ".wav", GetUnitX(target), GetUnitY(target), 128, 1600., 4000)
+                    ApplyBuff(source, target, "A00K", 1)
+                end
+            end
+
+            if IsHexActive("I03S") and IsUnitMonsterPlayer(source) and Chance(25.) then
+                if GetUnitAbilityLevel(source, FourCC("A00A")) == 0 then
+                    ApplyBuff(source, source, "A00A", 1)
+                else
+                    SetBuffLevel(source, "A00A", GetBuffLevel(source, "A00A") + 1)
+                    SetBuffExpirationTime(source, "A00A", -1)
+                end
+
+            end
 
         AI_AttackReaction(source, target)
 
@@ -1040,6 +1188,15 @@ do
                 if unit_data.powerlevel == 3 then
                     ThrowMissile(source, target, nil, nil, GetUnitX(source) + Rx(60.,angle + 90.), GetUnitY(source) + Ry(60.,angle + 90.), GetUnitX(target), GetUnitY(target), 0, false)
                 end
+
+        end
+
+        if IsUnitMonsterPlayer(source) then
+            local unit_data = GetUnitData(source)
+
+                ModifyStat(source, ATTACK_SPEED, -unit_data.attack_speed_deviation, STRAIGHT_BONUS, false)
+                unit_data.attack_speed_deviation = GetRandomInt(0, 25)
+                ModifyStat(source, ATTACK_SPEED, -unit_data.attack_speed_deviation, STRAIGHT_BONUS, true)
 
         end
 
@@ -1098,9 +1255,11 @@ do
 
 
             if class == BARBARIAN_CLASS then
-                if id == 'A00O' then MakeUnitJump(source, AngleBetweenUnitXY(source, x, y), x, y, 920., 0.6, 'A00O')
+                if id == 'A00O' then
+                    MakeUnitJump(source, AngleBetweenUnitXY(source, x, y), x, y, 920., 0.6, 'A00O')
+                    ModifyStat(source, CONTROL_REDUCTION, 200, STRAIGHT_BONUS, true)
                 elseif id == 'A010' then WhirlwindActivate(source, ability_instance)
-                elseif id == 'A00B' then
+                elseif id == 'ABUP' then
                     local effect = AddSpecialEffect("Spell\\DetroitSmash_Effect.mdx", GetUnitX(source) + Rx(50., GetUnitFacing(source)), GetUnitY(source) + Ry(50., GetUnitFacing(source)))
                     BlzSetSpecialEffectOrientation(effect, GetUnitFacing(source) * bj_DEGTORAD, 0., 0.)
                     BlzSetSpecialEffectZ(effect, GetUnitZ(source) + 60.)
@@ -1146,6 +1305,7 @@ do
             elseif class == SORCERESS_CLASS then
                 if id == 'A00L' then CastSorceressBlink(source, x, y, skill)
                 elseif id == 'A00I' then SummonHydra(source, x, y)
+                elseif id == "A001" then FrostNovaVisual(source)
                 elseif id == "A003" and UnitHasEffect(source, "ITCH") then
                     skill.level[ability_level].missile = "MFRB"
                     CastFrostbolt_Legendary(source, target, x, y, ability_instance)
@@ -1153,37 +1313,37 @@ do
                 elseif id == "ABLZ" then CastBlizzard(source, ability_instance)
                 elseif id == "A019" then ChainLightningCast(source, target, ability_instance)
                 elseif id == "ASIR" then IcicleRainCast(source, x, y, ability_instance)
-                elseif id == "AFRW" then FireWallCast(source, x, y, ability_instance)
+                elseif id == "AFRW" then FireWaveCast(source, x, y, ability_instance)
+                elseif id == "AFWL" then FireWallCast(source, x, y, ability_instance)
                 elseif id == 'A00J' then
                     if UnitHasEffect(source,"EOTS") then SparkCast_Legendary(source, ability_instance)
                     else SparkCast(source, target, x, y, ability_instance) end
                 end
 
                 if skill.category == SKILL_CATEGORY_FIRE and GetUnitTalentLevel(source, "talent_heating_up") > 0 then StackHeatingUp(source) end
-
-                if GetUnitTalentLevel(source, "talent_arc_discharge") > 0 then
-                    local unit_data = GetUnitData(source)
-                        if unit_data.arc_discharge_boost and skill.category == SKILL_CATEGORY_LIGHTNING then
-                            unit_data.arc_discharge_boost = 0
-                            DestroyEffect(unit_data.arc_discharge_boost_effect)
-                            unit_data.arc_discharge_boost_effect = nil
-                            ResumeTimer(unit_data.arc_discharge_boost_timer)
-                        end
-                end
+                if skill.category == SKILL_CATEGORY_LIGHTNING and skill.classification == SKILL_CLASS_ATTACK and GetUnitTalentLevel(source, "talent_arc_discharge") > 0 then ArcDischargeRemoveCharge(source) end
 
             elseif class == NECROMANCER_CLASS then
                  if id == "ANRD" then RaiseSkeletonSkill(source)
                  elseif id == "ANLR" then RaiseLichCast(source)
-                 elseif id == "ANBB" then BoneBarrage(source, x, y)
-                 elseif id == "ANPB" then PoisonBlast(source)
+                 elseif id == "ANBB" then BoneBarrage(source, x, y, ability_instance)
+                 elseif id == "ANPB" then PoisonBlast(source, ability_instance)
                  elseif id == "ANDV" then DevourSkill(source)
-                 elseif id == "ANCE" then CorpseExplosionCast(source, x, y)
-                 elseif id == "ANUL" then UndeadLandCast(source)
+                 elseif id == "ANCE" then CorpseExplosionCast(source, x, y, ability_instance)
+                 elseif id == "ANUL" then UndeadLandCast(source, ability_instance)
                  elseif id == "ANGS" then GrowSpikesCast(source)
                  elseif id == "ANDR" then DarkReignCast(source)
                  elseif id == "ANUC" then UnholyCommandCast(source)
-                 elseif id == "ANBR" then RipBonesCast(source)
+                 elseif id == "ANBR" then RipBonesCast(source, ability_instance)
                  elseif id == "ANBK" then BoneSpikesCast(source, x, y, target, ability_instance)
+                 elseif id == "ANFD" then ForcedDecayCast(source, target, ability_instance)
+                 elseif id == "ANTT" then TortureCast(x, y)
+                 elseif id == "ANDF" then DecrepifyCast(x, y)
+                 elseif id == "ANWK" then WeakenCast(x, y)
+                 elseif id == "ANWS" and UnitHasEffect(source, "death_cry_Legendary") then
+                     local angle = target and AngleBetweenUnits(source, target) or AngleBetweenUnitXY(source, x, y)
+                     ThrowMissile(source, nil, "MNWS", { ability_instance = ability_instance }, GetUnitX(source), GetUnitY(source), x, y, angle - 15., true)
+                     ThrowMissile(source, nil, "MNWS", { ability_instance = ability_instance }, GetUnitX(source), GetUnitY(source), x, y, angle + 15., true)
                  end
 
                 if GetUnitTalentLevel(source, "talent_abyss_awakens") > 0 then AbyssAwakensTalent(source) end
@@ -1232,24 +1392,33 @@ do
             else
                 if id == "ASQT" then SpiderQueen_WebTrap(source)
                 elseif id == "ASQS" then SpiderQueen_SpawnBrood(source)
-                elseif id == "ABCH" then ChargeUnit(source, 750., 600., GetUnitFacing(source), 1, 100., "walk", "abch", { effect = "Spell\\Valiant Charge.mdx", point = "origin" } )
-                elseif id == "AACH" then ChargeUnit(source, 500., 500., GetUnitFacing(source), 1, 100., "walk", "aach", { effect = "Spell\\Valiant Charge Fel.mdx", point = "origin" } )
+                elseif id == "ABCH" then ChargeUnit(source, 750., 600., GetUnitFacing(source), 1, 100., nil, "abch", { effect = "Spell\\Valiant Charge.mdx", point = "origin" },  { index = 0, timescale = 2. } )
+                elseif id == "AACH" then ChargeUnit(source, 500., 500., GetUnitFacing(source), 1, 100., nil, "aach", { effect = "Spell\\Valiant Charge Fel.mdx", point = "origin" }, { index = 1, timescale = 2. } )
                 elseif id == "AAPN" then CreatePoisonNova(source)
                 elseif id == "ASSM" then SpawnSkeletons(source)
                 elseif id == "AMLN" then LightningNovaBoss(source)
-                elseif id == "AQBC" then ChargeUnit(source, 600., 350., GetUnitFacing(source), 1, 75., "walk", "brch", { effect = "Spell\\Valiant Charge.mdx", point = "origin" } )
+                elseif id == "AQBC" then ChargeUnit(source, 600., 350., GetUnitFacing(source), 1, 75., nil, "brch", { effect = "Spell\\Valiant Charge.mdx", point = "origin" }, { index = 0, timescale = 2. } )
                 elseif id == "AWRG" then ApplyBuff(source, target, "AWRB", 1)
                 elseif id == "AVDS" then CastVoidDisc(source, x, y)
                 elseif id == "AVDR" then CreateVoidRain(source, x, y, 550., 3.5)
                 elseif id == "AFRR" then CreateFireRain(source, x, y, 600., 4.5)
                 elseif id == "ANRA" then CastReanimate(source)
                 elseif id == "AAPB" then PoisonBarrage(source, x, y)
+                elseif id == "AAHF" then AndarielHellfireCast(source)
                 elseif id == "ABSS" then SummonTentacle(source, x, y)
+                elseif id == "ABFN" then BaalNovaCast(source)
                 elseif id == "ASBL" then SatyrBlinkCast(source)
+                elseif id == "AWWO" then ApplyBuff(source, source, "ABWO", 1)
                 elseif id == "AFBB" then IceBlastCast(source, x, y)
                 elseif id == "AARB" then AstralBarrageCast(source)
                 elseif id == "ABRR" then BloodRavenReviveCast(source)
+                elseif id == "ABRA" then ApplyBuff(source, target, "A00J", 1)
+                elseif id == "ABBC" then
+                    ModifyStat(source, CONTROL_REDUCTION, 1000, STRAIGHT_BONUS, true)
+                    ChargeUnit(source, 800., 800., GetUnitFacing(source), 1, 100., nil, "butcher_charge", { effect = "Spell\\Valiant Charge.mdx", point = "origin" }, { index = 10, timescale = 2. })
                 elseif id == "ARNA" then ReanimatedArrowBarrage(source, x, y)
+                elseif id == "A00B" then PitlordDarknessBarrageCast(source, x, y)
+                elseif id == "A00C" then PitlordMeteorsCast(source)
                 elseif id == "ADLB" then DiabloLightningBreath(source, x, y)
                 elseif id == "ADFS" then DiabloFireStomp(source, x, y)
                 elseif id == "ADCH" then ChargeUnit(source, 750., 800., GetUnitFacing(source), 1, 100., "walk channel", "diach", { effect = "Spell\\Valiant Charge.mdx", point = "origin" })
@@ -1286,6 +1455,10 @@ do
             ToggleAuraOnUnit(source, "grave_cold_aura", 1, true)
         end
 
+        if GetUnitTalentLevel(source, "talent_reinforce") > 0 and skill.classification == SKILL_CLASS_SUPPORT then
+            ApplyBuff(source, source, "A009", GetUnitTalentLevel(source, "talent_reinforce"))
+        end
+
     end
 
 
@@ -1298,7 +1471,22 @@ do
         local unit_data = GetUnitData(source)
 
 
-            if GetUnitTalentLevel(source, "talent_overflow") > 0 and skill.category == SKILL_CATEGORY_FIRE then
+            if skill.Id == "A00B" then
+                local effect = {}
+                local starting_angle = -25.
+
+                    for i = 1, 3 do
+                        effect[i] = AddSpecialEffect("Effect\\effect_yujingzhi.mdx", GetUnitX(source), GetUnitY(source))
+                        BlzSetSpecialEffectYaw(effect[i], math.rad(GetUnitFacing(source) + starting_angle))
+                        starting_angle = starting_angle + 25.
+                        BlzSetSpecialEffectTimeScale(effect[i], 2.5)
+                        DelayAction(0.85, function() DestroyEffect(effect[i]) end)
+                    end
+
+            end
+
+
+            if GetUnitTalentLevel(source, "talent_overflow") > 0 and skill.category == SKILL_CATEGORY_FIRE and skill.classification == SKILL_CLASS_ATTACK then
                 if GetUnitState(source, UNIT_STATE_MANA) / BlzGetUnitMaxMana(source) >= 0.6 then
                     local talent_level = GetUnitTalentLevel(source, "talent_overflow")
                     ModifyAbilityInstance(ability_instance, "power_multiplier", talent_level, 0.3, MULTIPLY_BONUS)
@@ -1310,7 +1498,7 @@ do
                 ModifyAbilityInstance(ability_instance, "power_multiplier", 1, 0.4, MULTIPLY_BONUS)
             end
 
-            if skill.category == SKILL_CATEGORY_LIGHTNING and unit_data.arc_discharge_boost then
+            if skill.category == SKILL_CATEGORY_LIGHTNING and skill.classification == SKILL_CLASS_ATTACK and unit_data.arc_discharge_boost then
                 ModifyAbilityInstance(ability_instance, "power_multiplier", unit_data.arc_discharge_boost, 0.1, MULTIPLY_BONUS)
                 --ability_instance.tags[#ability_instance.tags+1] = "talent_arc_discharge" .. unit_data.arc_discharge_boost
             end
@@ -1369,7 +1557,7 @@ do
                         if IsAHero(GetTriggerUnit()) then
                             AddSoundVolume("Sound\\portalenter.wav",GetUnitX(GetTriggerUnit()), GetUnitY(GetTriggerUnit()), 125, 1500.)
                             SetUnitPosition(GetTriggerUnit(), GetRectCenterX(gg_rct_portal_location), GetRectCenterY(gg_rct_portal_location))
-                            local minions = GetAllUnitSummonUnits(PlayerHero[GetPlayerId(GetOwningPlayer(source))+1])
+                            local minions = GetAllUnitSummonUnits(PlayerHero[GetPlayerId(GetOwningPlayer(GetTriggerUnit()))+1])
 
                             x = GetRectCenterX(gg_rct_portal_location); y = GetRectCenterY(gg_rct_portal_location)
                             ForGroup(minions, function()
@@ -1421,6 +1609,24 @@ do
                 DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Items\\AIem\\AIemTarget.mdx" ,source, "origin"))
                 ModifyStat(source, EXP_BONUS, 40, STRAIGHT_BONUS, true)
                 DelayAction(1800., function() ModifyStat(source, EXP_BONUS, 40, STRAIGHT_BONUS, false) end)
+            elseif id == FourCC("I03Q") then
+                AddSoundVolume("Sound\\strengh_potion.wav", GetUnitX(source), GetUnitY(source), 125, 1500.)
+                ApplyBuff(source, source, "APEI", 1)
+            elseif id == FourCC("I03P") then
+
+                for i = 1, 2 do
+                    DelayAction(0.2 * i, function()
+                        local angle = GetRandomReal(0., 360.)
+                        local range = GetMaxAvailableDistance(GetUnitX(source), GetUnitY(source), angle,  GetRandomReal(150., 400.))
+                        local x,y = GetUnitX(source) + Rx(range, angle), GetUnitY(source) + Ry(range, angle)
+
+                            CreateNecromancerCorpse(GetOwningPlayer(source), x, y)
+                            DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdx",  x, y))
+
+                    end)
+
+                end
+
             end
 
 

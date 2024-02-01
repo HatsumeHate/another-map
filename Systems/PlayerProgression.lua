@@ -12,26 +12,31 @@ do
 
 
     function DisplayPlayerProgression(player)
-        local msg = PlayerColors[player] .. ParsePlayerName(GetPlayerName(Player(player-1))) .. "|r" .. LOCALE_LIST[my_locale].PLAYER_PROGRESSION_MSG_1 .. PlayerSyncData[player]["current_wave"] .. LOCALE_LIST[my_locale].PLAYER_PROGRESSION_MSG_2
+        if PlayerSyncData[player]["current_wave"] then
+            local msg = PlayerColors[player] .. ParsePlayerName(GetPlayerName(Player(player-1))) .. "|r" .. LOCALE_LIST[my_locale].PLAYER_PROGRESSION_MSG_1 .. PlayerSyncData[player]["current_wave"] .. LOCALE_LIST[my_locale].PLAYER_PROGRESSION_MSG_2
 
             DisplayTimedTextToPlayer(Player(player-1), 0, 0, 10., msg)
 
-        local level = S2I(PlayerSyncData[player]["current_wave"])
+            local level = S2I(PlayerSyncData[player]["current_wave"]) or 0
 
             if level > 0 and level <= 10 then AddToInventory(player, CreateCustomItem("I03K", 0.,0., false))
             elseif level > 10 and level <= 20 then AddToInventory(player, CreateCustomItem("I03L", 0.,0., false))
             elseif level > 20 and level <= 30 then AddToInventory(player, CreateCustomItem("I03M", 0.,0., false))
             elseif level > 30 then AddToInventory(player, CreateCustomItem("I03N", 0.,0., false)) end
 
+        end
     end
 
 
     function SavePlayerProgression(player)
+        local max = PlayerSyncData[player]["current_wave"] or 0
 
-        if PlayerHero[player] and PlayerSyncData[player]["current_wave"] and PlayerSyncData[player]["current_wave"] < Current_Wave then
-            AddToBuffer("@currentwave" .. Current_Wave)
-            FileWrite(player-1, SaveDataPath .. "player_progression.txt", "")
-        end
+        max = math.floor(max)
+
+            if PlayerHero[player] and max < Current_Wave then
+                AddToBuffer("@currentwave" .. Current_Wave)
+                FileWrite(player-1, SaveDataPath .. "player_progression.txt", "")
+            end
 
     end
 

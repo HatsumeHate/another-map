@@ -56,31 +56,37 @@ do
     local function NewButton(button_type, texture, size_x, size_y, relative_frame, frame_point_from, frame_point_to, offset_x, offset_y, parent_frame)
         local new_Frame = BlzCreateFrame('ScriptDialogButton', parent_frame, 0, 0)
         local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
+        local new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", new_FrameImage, "", 0)
 
-        ButtonList[new_Frame] = {
-            button_type = button_type,
-            item = nil,
-            button = new_Frame,
-            image = new_FrameImage
-        }
 
-        FrameRegisterNoFocus(new_Frame)
-        FrameRegisterClick(new_Frame, texture)
+            ButtonList[new_Frame] = {
+                button_type = button_type,
+                item = nil,
+                button = new_Frame,
+                image = new_FrameImage
+            }
 
-        BlzTriggerRegisterFrameEvent(ClickTrigger, new_Frame, FRAMEEVENT_CONTROL_CLICK)
-        BlzTriggerRegisterFrameEvent(EnterTrigger, new_Frame, FRAMEEVENT_MOUSE_ENTER)
-        --BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
+            FrameRegisterNoFocus(new_Frame)
+            FrameRegisterClick(new_Frame, texture)
 
-        BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
-        BlzFrameSetSize(new_Frame, size_x, size_y)
-        BlzFrameSetTexture(new_FrameImage, texture, 0, true)
-        BlzFrameSetAllPoints(new_FrameImage, new_Frame)
+            BlzTriggerRegisterFrameEvent(ClickTrigger, new_Frame, FRAMEEVENT_CONTROL_CLICK)
+            BlzTriggerRegisterFrameEvent(EnterTrigger, new_Frame, FRAMEEVENT_MOUSE_ENTER)
+            --BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
 
-        if button_type == BUTTON_SOCKET then
-            local sprite = CreateSpriteNoCollision("UI\\violet_border_sprite.mdx", 0.74, new_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, -0.0052, -0.0048, new_Frame)
-            BlzFrameSetVisible(sprite, false)
-            ButtonList[new_Frame].socket_sprite = sprite
-        end
+            BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
+            BlzFrameSetSize(new_Frame, size_x, size_y)
+            BlzFrameSetTexture(new_FrameImage, texture, 0, true)
+            BlzFrameSetAllPoints(new_FrameImage, new_Frame)
+
+            BlzFrameSetSize(new_FrameBorder, 1., 1.)
+            BlzFrameSetTexture(new_FrameBorder, "UI\\inventory_frame.blp", 0, true)
+            BlzFrameSetAllPoints(new_FrameBorder, new_FrameImage)
+
+            if button_type == BUTTON_SOCKET then
+                local sprite = CreateSpriteNoCollision("UI\\blue_energy_sprite.mdx", 0.74, new_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, -0.0052, -0.0048, new_Frame)
+                BlzFrameSetVisible(sprite, false)
+                ButtonList[new_Frame].socket_sprite = sprite
+            end
 
         return new_Frame
     end
@@ -416,10 +422,6 @@ do
             BlzFrameSetText(BlacksmithFrame[player].create_socket_tooltip.description, GetLocalString("Нет подходящего предмета.", "No fitting item."))
             BlzFrameSetVisible(BlacksmithFrame[player].create_socket_sprite, false)
 
-
-            --"UI\violet_border_sprite.mdx"
-
-
             BlacksmithFrame[player].socket_buttons = {}
             BlacksmithFrame[player].socket_buttons[1] = NewButton(BUTTON_SOCKET, "GUI\\inventory_slot.blp", 0.04, 0.04, BlacksmithFrame[player].socket_item_slot, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0125, 0., BlacksmithFrame[player].socket_item_slot)
             BlacksmithFrame[player].socket_buttons[2] = NewButton(BUTTON_SOCKET, "GUI\\inventory_slot.blp", 0.04, 0.04, BlacksmithFrame[player].socket_buttons[1], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0075, 0., BlacksmithFrame[player].socket_item_slot)
@@ -562,6 +564,10 @@ do
                                 end)
 
                                 PlayLocalSound(soundpack[GetRandomInt(1, #soundpack)], player-1, 125)
+
+                                local effect = AddSpecialEffect("Effect\\ShrapnelExplosionCone.mdx", 14045., 4509.)
+                                BlzSetSpecialEffectZ(effect, GetZ(14045., 4509.) + 80.)
+                                DestroyEffect(effect)
 
                                 if IsItemEquipped(PlayerHero[player], reforge_button.item) then
                                     EquipItem(PlayerHero[player], reforge_button.item, false)

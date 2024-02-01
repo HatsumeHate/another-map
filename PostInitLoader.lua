@@ -4,6 +4,19 @@ do
 
 
 
+	function Showoff()
+
+		for i = 1, 3 do
+			SetTexture(udg_ShowoffUnits[i], TEXTURE_ID_EMPTY)
+			SetTexture(udg_ShowoffUnits[i], TEXTURE_ID_EMPTY)
+			SetTexture(udg_ShowoffUnits[i], TEXTURE_ID_EMPTY)
+		end
+
+		AddSpecialEffectTarget("Model\\Sorceress_Hair.mdx", udg_ShowoffUnits[3], "head")
+
+	end
+
+
 	function CreateShops()
 
 			CreateShop(gg_unit_n000_0056, LOCALE_LIST[my_locale].VENDOR_BILL_NAME, "ReplaceableTextures\\CommandButtons\\BTNVillagerMan1.blp",
@@ -70,12 +83,13 @@ do
 
 		EnableDragSelect(false, false)
 		BlzEnableSelections(false, true)
-		EnablePreSelect(true, false)
+		EnablePreSelect(true, true)
 		SetCameraBoundsToRect(gg_rct_super_starting_location)
 
 		SetTexture(gg_unit_HSRC_0043, TEXTURE_ID_EMPTY)
 		SetTexture(gg_unit_HNCR_0019, TEXTURE_ID_EMPTY)
 		SetTexture(gg_unit_HBRB_0041, TEXTURE_ID_EMPTY)
+		AddSpecialEffectTarget("Model\\Sorceress_Hair.mdx", gg_unit_HSRC_0043, "head")
 
 		ClearMapMusic()
 		StopMusic(false)
@@ -214,7 +228,7 @@ do
 						end
 
 				end)
-
+				
 				local trg = CreateTrigger()
 				TriggerRegisterPlayerEvent(trg, Player(0), EVENT_PLAYER_LEAVE)
 				TriggerRegisterPlayerEvent(trg, Player(1), EVENT_PLAYER_LEAVE)

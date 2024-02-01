@@ -25,7 +25,7 @@ do
         DestroyTimer(GetExpiredTimer())
 
         if missile.sound_on_hit then
-            AddSoundVolume(missile.sound_on_hit.pack[GetRandomInt(1, #missile.sound_on_hit.pack)], missile.current_x, missile.current_y, missile.sound_on_hit.volume or 128, missile.sound_on_hit.cutoff or 1600.)
+            AddSoundVolume(missile.sound_on_hit.pack[GetRandomInt(1, #missile.sound_on_hit.pack)], missile.current_x, missile.current_y, missile.sound_on_hit.volume or 128, missile.sound_on_hit.cutoff or 1600., missile.sound_on_hit.distance or 4000.)
             --AddSound(missile.sound_on_hit[GetRandomInt(1, #missile.sound_on_hit)], x, y)
         end
 
@@ -216,9 +216,10 @@ do
     ---@param radius number
     ---@param animation string
     ---@param sign string
-    function ChargeUnit(source, speed, distance, angle, max_targets, radius, animation, sign, sfx)
+    function ChargeUnit(source, speed, distance, angle, max_targets, radius, animation, sign, sfx, anim_pack)
         local charge_data = {}
         local h = source
+        local anim_update_time
 
 
         if ChargeList[h] then
@@ -253,6 +254,10 @@ do
                 BlzSetSpecialEffectScale(charge_data.effect, sfx.scale or 1.)
             end
 
+            if anim_pack then
+                SetUnitAnimationByIndex(source, anim_pack.index)
+                SetUnitTimeScale(source, anim_pack.timescale or 1.)
+            end
 
         --print("a")
             local timer = CreateTimer()
@@ -262,6 +267,7 @@ do
 
                 if IsUnitInRangeXY(source, charge_data.point_x, charge_data.point_y, 10.) or GetUnitState(source, UNIT_STATE_LIFE) < 0.045 or state or not IsPathable_Ground(GetUnitX(source) + charge_data.vx, GetUnitY(source) + charge_data.vy) then
                     --print("end")
+                    if anim_pack then SetUnitTimeScale(source,  1.) end
                     SetUnitAnimation(source, "stand")
                     if not IsUnitStunned(source) and not IsUnitFrozen(source) then SafePauseUnit(source, false) end
                     OnChargeEnd(source, targets_hit, sign, state)
@@ -283,6 +289,7 @@ do
                                     max_targets = max_targets - 1
                                     if max_targets <= 0 or endcharge then
                                         if not IsUnitStunned(source) and not IsUnitFrozen(source) then SafePauseUnit(source, false) end
+                                        if anim_pack then SetUnitTimeScale(source,  1.) end
                                         OnChargeEnd(source, targets_hit, sign, state)
                                         BlzSetSpecialEffectScale(charge_data.effect, 1.)
                                         DestroyEffect(charge_data.effect)
@@ -296,16 +303,28 @@ do
 
                         end
 
+
                     if animation then SetUnitAnimation(source, animation) end
+
+                    if anim_pack then
+                        SetUnitAnimationByIndex(source, anim_pack.index)
+                        SetUnitTimeScale(source, anim_pack.timescale or 1.)
+                    end
+
                     SetUnitX(source, RealGetUnitX(source) + charge_data.vx)
                     SetUnitY(source, RealGetUnitY(source) + charge_data.vy)
-                    --charge_data.current_distance  = charge_data.current_distance + velocity
 
                 else
+
                     if animation then SetUnitAnimation(source, animation) end
+
+                    if anim_pack then
+                        SetUnitAnimationByIndex(source, anim_pack.index)
+                        SetUnitTimeScale(source, anim_pack.timescale or 1.)
+                    end
+
                     SetUnitX(source, RealGetUnitX(source) + charge_data.vx)
                     SetUnitY(source, RealGetUnitY(source) + charge_data.vy)
-                    --harge_data.current_distance  = charge_data.current_distance + velocity
                 end
             end)
 
@@ -824,12 +843,13 @@ do
         --print("a1")
 
         if m.sound_on_launch then
-            AddSoundVolume(m.sound_on_launch.pack[GetRandomInt(1, #m.sound_on_launch.pack)], start_x, start_y, m.sound_on_launch.volume or 128, m.sound_on_launch.cutoff or 1600.)
+            AddSoundVolume(m.sound_on_launch.pack[GetRandomInt(1, #m.sound_on_launch.pack)], start_x, start_y, m.sound_on_launch.volume or 128, m.sound_on_launch.cutoff or 1600., m.sound_on_launch.distance or 4000.)
         end
 
         if m.sound_on_fly then
-            m.attached_sound = CreateNew3DSound(m.sound_on_fly.pack[GetRandomInt(1, #m.sound_on_fly.pack)], start_x, start_y, start_z, m.sound_on_fly.volume, m.sound_on_fly.cutoff, m.sound_on_fly.looping or nil)
+            m.attached_sound = CreateNew3DSound(m.sound_on_fly.pack[GetRandomInt(1, #m.sound_on_fly.pack)], start_x, start_y, start_z, m.sound_on_fly.volume, m.sound_on_fly.cutoff, m.sound_on_fly.distance or 4000., m.sound_on_fly.looping or nil)
             StartSound(m.attached_sound)
+            if m.sound_on_fly.looping then SetSoundPlayPosition(m.attached_sound, GetRandomInt(0, GetSoundDuration(m.attached_sound))) end
         end
 
         --print("a3")
@@ -938,7 +958,7 @@ do
                     --print("BOUNDS")
 
                     if m.sound_on_destroy then
-                        AddSoundVolume(m.sound_on_destroy.pack[GetRandomInt(1, #m.sound_on_destroy.pack)], m.current_x, m.current_y, m.sound_on_destroy.volume or 128, m.sound_on_destroy.cutoff or 1600.)
+                        AddSoundVolume(m.sound_on_destroy.pack[GetRandomInt(1, #m.sound_on_destroy.pack)], m.current_x, m.current_y, m.sound_on_destroy.volume or 128, m.sound_on_destroy.cutoff or 1600., m.sound_on_destroy.distance or 4000.)
                         --AddSound(m.sound_on_destroy[GetRandomInt(1, #m.sound_on_destroy)], m.current_x, m.current_y)
                     end
                     --if effects and effects.effect then ApplyEffect(from, nil, m.current_x, m.current_y, effects.effect, effects.level) end
@@ -1081,7 +1101,7 @@ do
                         m.time = 0.
 
                             if m.sound_on_hit then
-                                AddSoundVolume(m.sound_on_hit.pack[GetRandomInt(1, #m.sound_on_hit.pack)], m.current_x, m.current_y, m.sound_on_hit.volume or 128, m.sound_on_hit.cutoff or 1600.)
+                                AddSoundVolume(m.sound_on_hit.pack[GetRandomInt(1, #m.sound_on_hit.pack)], m.current_x, m.current_y, m.sound_on_hit.volume or 128, m.sound_on_hit.cutoff or 1600., m.sound_on_hit.distance or 4000.)
                             end
 
                             if weapon then
@@ -1208,7 +1228,7 @@ do
                                     if (m.angle_window and IsPointInAngleWindow(angle, m.angle_window, m.current_x, m.current_y, GetUnitX(picked), GetUnitY(picked))) or not m.angle_window then
 
                                         if do_sound and m.sound_on_hit then
-                                            AddSoundVolume(m.sound_on_hit.pack[GetRandomInt(1, #m.sound_on_hit.pack)], m.current_x, m.current_y, m.sound_on_hit.volume or 128, m.sound_on_hit.cutoff or 1600.)
+                                            AddSoundVolume(m.sound_on_hit.pack[GetRandomInt(1, #m.sound_on_hit.pack)], m.current_x, m.current_y, m.sound_on_hit.volume or 128, m.sound_on_hit.cutoff or 1600., m.sound_on_hit.distance or 4000.)
                                             --AddSound(m.sound_on_hit[GetRandomInt(1, #m.sound_on_hit)], m.current_x, m.current_y);
                                             do_sound = false
                                         end

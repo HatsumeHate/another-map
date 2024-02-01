@@ -7,34 +7,11 @@ do
 
 
     SacrificeAltarFrame = 0
+    local EnterTrigger
+    local last_EnteredFrameTimer
+    local last_EnteredFrame
+    local HexItems
 
-
-    local function NewButton(texture, size_x, size_y, relative_frame, frame_point_from, frame_point_to, offset_x, offset_y, parent_frame)
-        local new_Frame = BlzCreateFrame('ScriptDialogButton', parent_frame, 0, 0)
-        local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
-        local new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", new_Frame, "", 0)
-
-            ButtonList[new_Frame] = {
-                frame = new_Frame, image = new_FrameImage, hex_button = nil
-            }
-
-            FrameRegisterNoFocus(new_Frame)
-            BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
-            BlzFrameSetSize(new_Frame, size_x, size_y)
-            BlzFrameSetTexture(new_FrameImage, texture, 0, true)
-            FrameRegisterClick(new_Frame, texture)
-            BlzFrameSetAllPoints(new_FrameImage, new_Frame)
-
-            BlzFrameSetTexture(new_FrameBorder, "DiabolicUI_Button_64x64_Border.tga", 0, true)
-            BlzFrameSetPoint(new_FrameBorder, FRAMEPOINT_TOPRIGHT, new_Frame, FRAMEPOINT_TOPRIGHT, 0.00, 0.00)
-            BlzFrameSetPoint(new_FrameBorder, FRAMEPOINT_BOTTOMLEFT, new_Frame, FRAMEPOINT_BOTTOMLEFT, 0.00, 0.00)
-
-            --BlzTriggerRegisterFrameEvent(ClickTrigger, new_Frame, FRAMEEVENT_CONTROL_CLICK)
-            --BlzTriggerRegisterFrameEvent(EnterTrigger, new_Frame, FRAMEEVENT_MOUSE_ENTER)
-            --BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
-
-        return new_Frame
-    end
 
     local function NewButtonWithCharges(texture, size_x, size_y, relative_frame, frame_point_from, frame_point_to, offset_x, offset_y, parent_frame)
         local new_Frame = BlzCreateFrame('ScriptDialogButton', parent_frame, 0, 0)
@@ -44,7 +21,7 @@ do
         local new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", new_Frame, "", 0)
 
             ButtonList[new_Frame] = {
-                frame = new_Frame, image = new_FrameImage, charges_frame = new_FrameCharges, charges_text_frame = new_FrameChargesText, hex = nil
+                frame = new_Frame, image = new_FrameImage, charges_frame = new_FrameCharges, charges_text_frame = new_FrameChargesText
             }
 
             FrameRegisterNoFocus(new_Frame)
@@ -66,9 +43,14 @@ do
             BlzFrameSetPoint(new_FrameBorder, FRAMEPOINT_TOPRIGHT, new_Frame, FRAMEPOINT_TOPRIGHT, 0.00, 0.00)
             BlzFrameSetPoint(new_FrameBorder, FRAMEPOINT_BOTTOMLEFT, new_Frame, FRAMEPOINT_BOTTOMLEFT, 0.00, 0.00)
 
+            BlzFrameSetVisible(new_FrameCharges, false)
+            BlzFrameSetEnable(new_Frame, false)
             --BlzTriggerRegisterFrameEvent(ClickTrigger, new_Frame, FRAMEEVENT_CONTROL_CLICK)
-            --BlzTriggerRegisterFrameEvent(EnterTrigger, new_Frame, FRAMEEVENT_MOUSE_ENTER)
+            BlzTriggerRegisterFrameEvent(EnterTrigger, new_Frame, FRAMEEVENT_MOUSE_ENTER)
             --BlzTriggerRegisterFrameEvent(LeaveTrigger, new_Frame, FRAMEEVENT_MOUSE_LEAVE)
+
+            ButtonList[new_Frame].sprite = CreateSpriteNoCollision("UI\\violet_border_sprite.mdx", 0.68, new_FrameBorder, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, -0.0052, -0.0048, new_FrameBorder)
+            --BlzFrameSetVisible(ButtonList[new_Frame].sprite, false)
 
         return new_Frame
     end
@@ -81,12 +63,18 @@ do
             SacrificeAltarFrame[player].main = main_frame
 
             BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0.01, -0.05)
-            BlzFrameSetSize(main_frame, 0.288, 0.24)
+            BlzFrameSetSize(main_frame, 0.26, 0.15)
 
             new_Frame = BlzCreateFrameByType('BACKDROP', "PORTRAIT", main_frame, "",0)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.02, -0.02)
             BlzFrameSetSize(new_Frame, 0.0435, 0.0435)
             SacrificeAltarFrame[player].portrait = new_Frame
+            BlzFrameSetTexture(new_Frame, "ReplaceableTextures\\CommandButtons\\BTNSacrificialPit.blp", 0, true)
+
+            local new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", new_Frame, "", 0)
+            BlzFrameSetSize(new_FrameBorder, 1., 1.)
+            BlzFrameSetTexture(new_FrameBorder, "UI\\inventory_frame.blp", 0, true)
+            BlzFrameSetAllPoints(new_FrameBorder, new_Frame)
 
             new_Frame = BlzCreateFrameByType("TEXT", "shop name", SacrificeAltarFrame[player].portrait, "", 0)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_LEFT, SacrificeAltarFrame[player].portrait, FRAMEPOINT_RIGHT, 0.011, 0.)
@@ -94,73 +82,215 @@ do
             BlzFrameSetScale(new_Frame, 1.35)
             SacrificeAltarFrame[player].name = new_Frame
 
-
-
             new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMRIGHT, main_frame, FRAMEPOINT_BOTTOMRIGHT, -0.015, 0.015)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.015, 0.015)
-            BlzFrameSetSize(new_Frame, 0.28, 0.16)
-            --RegisterConstructor(main_frame, 0.3, 0.24, 0.01)
-            SacrificeAltarFrame[player].backdrop = new_Frame
-
-            new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
-            BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPRIGHT, SacrificeAltarFrame[player].backdrop, FRAMEPOINT_TOPRIGHT, -0.015, -0.015)
-            BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, SacrificeAltarFrame[player].backdrop, FRAMEPOINT_TOPLEFT, 0.015, -0.015)
             BlzFrameSetSize(new_Frame, 0.12, 0.07)
             SacrificeAltarFrame[player].upper_backdrop = new_Frame
-            --RegisterConstructor(SacrificeAltarFrame[player].upper_backdrop, 0.12, 0.06, 0.01)
 
 
-            SacrificeAltarFrame[player].hex_button[1] = NewButtonWithCharges("ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0.036, 0.036, SacrificeAltarFrame[player].upper_backdrop, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.018, 0., SacrificeAltarFrame[player].upper_backdrop)
+            SacrificeAltarFrame[player].hex_button[1] = NewButtonWithCharges("GUI\\inventory_slot.blp", 0.036, 0.036, SacrificeAltarFrame[player].upper_backdrop, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.018, 0., SacrificeAltarFrame[player].upper_backdrop)
+
 
             for i = 2, 5 do
-                SacrificeAltarFrame[player].hex_button[i] = NewButtonWithCharges("ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0.036, 0.036, SacrificeAltarFrame[player].hex_button[i-1], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0034, 0., SacrificeAltarFrame[player].upper_backdrop)
+                SacrificeAltarFrame[player].hex_button[i] = NewButtonWithCharges("GUI\\inventory_slot.blp", 0.036, 0.036, SacrificeAltarFrame[player].hex_button[i-1], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0034, 0., SacrificeAltarFrame[player].upper_backdrop)
             end
 
-            new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
-            BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMRIGHT, SacrificeAltarFrame[player].backdrop, FRAMEPOINT_BOTTOMRIGHT, -0.015, 0.015)
-            BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, SacrificeAltarFrame[player].backdrop, FRAMEPOINT_BOTTOMLEFT, 0.015, 0.015)
-            BlzFrameSetSize(new_Frame, 0.12, 0.07)
-            SacrificeAltarFrame[player].bottom_backdrop = new_Frame
 
-            SacrificeAltarFrame[player].cancel_hex_button[1] = NewButton("ReplaceableTextures\\CommandButtons\\BTNCancel.blp", 0.036, 0.036, SacrificeAltarFrame[player].bottom_backdrop, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.018, 0., SacrificeAltarFrame[player].bottom_backdrop)
 
-            for i = 2, 5 do
-                SacrificeAltarFrame[player].cancel_hex_button[i] = NewButton("ReplaceableTextures\\CommandButtons\\BTNCancel.blp", 0.036, 0.036, SacrificeAltarFrame[player].cancel_hex_button[i-1], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0034, 0., SacrificeAltarFrame[player].bottom_backdrop)
-            end
 
-            if GetLocalPlayer() ~= Player(player-1) then
-                BlzFrameSetVisible(main_frame, false)
-            end
+            BlzFrameSetVisible(main_frame, false)
 
     end
 
 
     function ReloadSacrificeAltarFrame()
-        for player = 1, 6 do DrawUI(player) end
+        for player = 1, 6 do
+            DrawUI(player)
+            SacrificeAltarFrame[player].state = false
+            SacrificeAltarFrame[player].tooltip = NewTooltip(SacrificeAltarFrame[player].hex_button[5])
+        end
+    end
+
+
+    ---@param id string
+    ---@return boolean
+    function IsHexActive(id)
+        for i = 1, 5 do
+            if HexItems[i] and GetItemTypeId(HexItems[i]) == FourCC(id) then
+                return true
+            end
+        end
+        return false
+    end
+
+    function UpdateSacrificeAltarHexCosts()
+
+        for i = 1, 5 do
+            if HexItems[i] then
+                local item_data = GetItemData(HexItems[i])
+
+                    item_data.waves_duration = item_data.waves_duration - 1
+
+                    if item_data.waves_duration <= 0 then
+                        local gift = GetGiftEffectData(item_data.gift)
+                        gift.deactivation_effect()
+                        RemoveCustomItem(HexItems[i])
+                        HexItems[i] = nil
+                    end
+
+            end
+
+        end
+
+        for player = 1, 6 do UpdateSacrificeAltarWindow(player) end
+    end
+
+
+    function GiftSacrifice(item, player)
+        local item_id = GetItemTypeId(item)
+        local item_data = GetItemData(item)
+
+
+            for i = 1, 5 do
+                if HexItems[i] and GetItemTypeId(HexItems[i]) == item_id then
+                    SimError(LOCALE_LIST[my_locale].SAME_GIFT_ACTIVE, player-1)
+                    return
+                end
+            end
+
+            for i = 1, 5 do
+                if not HexItems[i] then
+                    HexItems[i] = item
+                    DropItemFromInventory(player, item, true)
+                    SetItemVisible(item, false)
+                    local gift = GetGiftEffectData(item_data.gift)
+                    gift.activation_effect()
+                    item_data.waves_duration = gift.waves_duration
+                    for players = 1, 6 do UpdateSacrificeAltarWindow(players) end
+                    DestroyEffect(AddSpecialEffect("Effect\\Damnation Green.mdx", GetUnitX(gg_unit_scal_0180), GetUnitY(gg_unit_scal_0180)))
+                    ShowQuestAlert(LOCALE_LIST[my_locale].GIFT_ACTIVE .. "\"" .. item_data.actual_name .."\"")
+                    return
+                end
+            end
+
+            SimError(LOCALE_LIST[my_locale].MAX_GIFTS_ACTIVE, player-1)
+
+
+    end
+
+
+    function UpdateSacrificeAltarWindow(player)
+
+        for i = 1, 5 do
+            local button = GetButtonData(SacrificeAltarFrame[player].hex_button[i])
+
+                if HexItems[i] then
+                    local item_data = GetItemData(HexItems[i])
+                    BlzFrameSetTexture(button.image, item_data.frame_texture, 0, true)
+                    FrameChangeTexture(button.frame, item_data.frame_texture)
+                    BlzFrameSetVisible(button.charges_frame, true)
+                    BlzFrameSetText(button.charges_text_frame, item_data.waves_duration)
+                    BlzFrameSetEnable(button.frame, true)
+                    BlzFrameSetVisible(button.sprite, true)
+                    button.item = HexItems[i]
+                else
+                    BlzFrameSetTexture(button.image, "GUI\\inventory_slot.blp", 0, true)
+                    FrameChangeTexture(button.frame, "GUI\\inventory_slot.blp")
+                    BlzFrameSetVisible(button.charges_frame, false)
+                    BlzFrameSetEnable(button.frame, false)
+                    BlzFrameSetVisible(button.sprite, false)
+                    button.item = nil
+                end
+        end
+
+    end
+
+
+    function SetSacrificeAltarFrameState(player, state)
+
+
+        BlzFrameSetVisible(SacrificeAltarFrame[player].main, state)
+        if GetLocalPlayer() ~= Player(player-1) then
+            BlzFrameSetVisible(SacrificeAltarFrame[player].main, false)
+        end
+
+        SacrificeAltarFrame[player].state = state
+
+        if state then
+            UpdateSacrificeAltarWindow(player)
+        else
+            RemoveTooltip(player)
+        end
+
+        return state
     end
 
 
     function BuildSacrificeAltarUI()
         SacrificeAltarFrame = {}
+        last_EnteredFrame = {}
+        last_EnteredFrameTimer = {}
+
+        for i = 1, 6 do last_EnteredFrameTimer[i] = CreateTimer() end
 
             for player = 1, 6 do
                 SacrificeAltarFrame[player] = {}
                 SacrificeAltarFrame[player].hex_button = {}
-                SacrificeAltarFrame[player].cancel_hex_button = {}
+                SacrificeAltarFrame[player].state = false
+                HexItems = {}
                 DrawUI(player)
+                SacrificeAltarFrame[player].tooltip = NewTooltip(SacrificeAltarFrame[player].hex_button[5])
             end
 
 
     end
 
-    RegisterTestCommand("sa", function()
-        BuildSacrificeAltarUI()
-    end)
+    local function EnterFrameActions()
+        local player = GetPlayerId(GetTriggerPlayer()) + 1
+        local frame = BlzGetTriggerFrame()
+
+            TimerStart(last_EnteredFrameTimer[player], GLOBAL_TOOLTIP_FADE_TIME, false, function()
+                RemoveTooltip(player)
+                last_EnteredFrame[player] = nil
+            end)
+
+
+            if last_EnteredFrame[player] == frame then return
+            else RemoveTooltip(player) end
+
+            last_EnteredFrame[player] = frame
+
+            ShowItemTooltip(ButtonList[frame].item, SacrificeAltarFrame[player].tooltip, ButtonList[frame], player, FRAMEPOINT_RIGHT)
+    end
 
 
     function InitSacrificeAltar()
 
+        EnterTrigger = CreateTrigger()
+        BuildSacrificeAltarUI()
+        CreateNpcData(gg_unit_scal_0180, "altar")
+        AddInteractiveOption(gg_unit_scal_0180, { name = GetLocalString("Жертвенник", "Sacrificial Pit"), id = "sacrf_window_open", feedback = function(clicked, clicking, player)
+        --UI\violet_border_sprite.mdx
+            if not SacrificeAltarFrame[player].state then
+                SetSacrificeAltarFrameState(player, true)
+                SetUIState(player, SKILL_PANEL, false)
+                SetUIState(player, CHAR_PANEL, false)
+                SetUIState(player, TALENT_PANEL, false)
+
+                local timer = CreateTimer()
+                TimerStart(timer, 0.1, true, function()
+                    if not IsUnitInRange(clicking, clicked, 250.) or GetUnitState(clicking, UNIT_STATE_LIFE) < 0.045 then
+                        SetSacrificeAltarFrameState(player, false)
+                        DestroyTimer(timer)
+                    end
+                end)
+            end
+
+        end }, 1)
+
+
+        TriggerAddAction(EnterTrigger, EnterFrameActions)
 
     end
 

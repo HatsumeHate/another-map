@@ -32,24 +32,23 @@ do
         if Current_Wave >= 51 then
             VictoryScreen()
         else
-            Current_Wave = Current_Wave + 1
-            AddWaveTimer(315.)
+            Current_Wave = Current_Wave + 1 + GLOBAL_WAVE_SKIP_BONUS
+            AddWaveTimer(390.)
             --print("reset shops")
             ResetShops()
             --print("toggle citizens")
             ToggleCitizens(true)
             --print("prescale")
             ScaleMonsterPacks()
+            UpdateSacrificeAltarHexCosts()
             --print("scaling done")
             StopMusic(true)
             ClearMapMusic()
             PlayMusic(GetRandomMusicMix())
             ResumeMusic()
-            for i = 1, 6 do
-                SavePlayerProgression(i)
-                --FileOverwrite(i, SaveDataPath .. "player_progression.txt", )
-            end
         end
+
+        for i = 1, 6 do SavePlayerProgression(i) end
 
     end
 
@@ -113,10 +112,10 @@ do
             if WaveToAquireHalfPotions and Current_Wave >= WaveToAquireHalfPotions then
                 local my_item = CreateCustomItem(ITEM_POTION_HEALTH_HALF,  0.,0.)
                     SetItemCharges(my_item, 20)
-                    AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 29, true)
+                    AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 26, true)
                     my_item = CreateCustomItem(ITEM_POTION_MANA_HALF,  0.,0.)
                     SetItemCharges(my_item, 20)
-                    AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 30, true)
+                    AddItemToShopWithSlot(gg_unit_n001_0055, my_item, 27, true)
                     WaveToAquireHalfPotions = nil
             end
             --print("half pots done")
@@ -141,6 +140,7 @@ do
                 SetItemCharges(item, GetRandomInt(1, 2))
                 AddItemToShop(gg_unit_n001_0055, item, false)
             end
+
             --print("herb done")
     end
 
@@ -189,41 +189,55 @@ do
 
         if WavesUntilShopsUpdate == 3 then
             WavesUntilShopsUpdate = 0
-            ResetPeonShop()
-            ResetBlackShop()
-            ResetHerbalistShop()
-            ResetLynnShop()
+            DelayAction(0.1, function() ResetPeonShop() end)
+            DelayAction(0.15, function() ResetBlackShop() end)
+            DelayAction(0.2, function() ResetHerbalistShop() end)
+            DelayAction(0.25, function() ResetLynnShop() end)
         end
 
 
-        --print("end shop A")
-        local item_count = GetRandomInt(0, 7)
-        local item
-            if item_count > 0 then
-                item = CreateCustomItem(ITEM_POTION_ADRENALINE, 0, 0, false)
-                SetItemCharges(item, item_count * ActivePlayers)
-                AddItemToShop(gg_unit_n001_0055, item, false)
-            end
-        --print("end shop B")
-            item_count = GetRandomInt(0, 5)
-            if item_count > 0 then
-                item = CreateCustomItem(ITEM_POTION_ANTIDOTE, 0, 0, false)
-                SetItemCharges(item, item_count * ActivePlayers)
-                AddItemToShop(gg_unit_n001_0055, item, false)
-            end
-        --print("end shop C")
-            item_count = GetRandomInt(0, 7)
-            if item_count > 0 then
-                item = CreateCustomItem(ITEM_SCROLL_OF_PROTECTION, 0, 0, false)
-                SetItemCharges(item, item_count * ActivePlayers)
-                AddItemToShop(gg_unit_n001_0055, item, false)
-            end
-        --print("end shop D")
-            local scrolls = CreateCustomItem(ITEM_SCROLL_OF_TOWN_PORTAL, 0., 0.)
-            SetItemCharges(scrolls, 5 * ActivePlayers)
-            AddItemToShopWithSlot(gg_unit_n001_0055, scrolls, 28, false)
+        DelayAction(0.26, function()
+            local item_count = GetRandomInt(0, 7)
+            local item
 
+                if item_count > 0 then
+                    item = CreateCustomItem(ITEM_POTION_ADRENALINE, 0, 0, false)
+                    SetItemCharges(item, item_count * ActivePlayers)
+                    AddItemToShop(gg_unit_n001_0055, item, false)
+                end
 
+                item_count = GetRandomInt(0, 5)
+                if item_count > 0 then
+                    item = CreateCustomItem(ITEM_POTION_ANTIDOTE, 0, 0, false)
+                    SetItemCharges(item, item_count * ActivePlayers)
+                    AddItemToShop(gg_unit_n001_0055, item, false)
+                end
+
+                item_count = GetRandomInt(0, 7)
+                if item_count > 0 then
+                    item = CreateCustomItem(ITEM_SCROLL_OF_PROTECTION, 0, 0, false)
+                    SetItemCharges(item, item_count * ActivePlayers)
+                    AddItemToShop(gg_unit_n001_0055, item, false)
+                end
+
+                local scrolls = CreateCustomItem(ITEM_SCROLL_OF_TOWN_PORTAL, 0., 0.)
+                SetItemCharges(scrolls, 5 * ActivePlayers)
+                AddItemToShopWithSlot(gg_unit_n001_0055, scrolls, 28, false)
+
+                if GetRandomInt(1, 4) == 1 then
+                    local item = CreateCustomItem(ITEM_ELIXIR_INNOCENCE, 0, 0, false)
+
+                        SetItemCharges(item, GetRandomInt(1, 2) * ActivePlayers)
+                        AddItemToShop(gg_unit_n001_0055, item, false)
+                end
+
+                if GetRandomInt(1, 5) == 1 then
+                    local item = CreateCustomItem(ITEM_NECRONOMICON, 0, 0, false)
+
+                        SetItemCharges(item, GetRandomInt(1, 4))
+                        AddItemToShop(gg_unit_n001_0055, item, false)
+                end
+        end)
         --print("shops resetted")
     end
 
@@ -250,7 +264,6 @@ do
                     StopMusic(true)
                     ClearMapMusic()
                     PlayMusic("Sound\\Music\\mp3Music\\PursuitTheme.mp3")
-                    --SetMapMusic("Sound\\Music\\mp3Music\\PursuitTheme.mp3", false, 0)
                     ResumeMusic()
                 end
 

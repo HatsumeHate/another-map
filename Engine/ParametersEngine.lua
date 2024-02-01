@@ -69,7 +69,7 @@ do
 
 	HEALING_BONUS = 52
 	DAMAGE_BOOST = 53
-	VULNERABILITY = 55
+	VULNERABILITY = 68
 	MANACOST = 54
 
 	BONUS_MELEE_DAMAGE = 55
@@ -82,7 +82,17 @@ do
 	DODGE_CHANCE = 60
 
 	COOLDOWN_REDUCTION = 61
+	ENDURANCE_POWER = 62
+	DAMAGE_TO_ENDURANCE = 63
 
+	CONTROL_DURATION = 64
+
+	HP_PER_KILL = 65
+	MP_PER_KILL = 66
+
+	MINION_POWER =  67
+
+	--start from 69
 
 	
 	-- attributes
@@ -110,6 +120,7 @@ do
 	local PARAMETER_NAME = 0
 	local PARAMETER_UPDATE_FUNC = 0
 	local ParameterLimits = 0
+	local SpecialSymbolParam
 
 
 
@@ -153,21 +164,9 @@ do
 			local special = ""
             local vector = "+"
 
-				if parameter == ATTACK_SPEED or parameter == CAST_SPEED or parameter == CRIT_CHANCE or parameter == BLOCK_CHANCE
-						or parameter == MELEE_DAMAGE_REDUCTION or parameter == RANGE_DAMAGE_REDUCTION or parameter == CONTROL_REDUCTION
-						or parameter == EXP_BONUS or parameter == GOLD_BONUS or parameter == DROP_BONUS or parameter == HEALING_BONUS or parameter == DAMAGE_BOOST or parameter == VULNERABILITY
-						or parameter == BONUS_MELEE_DAMAGE or parameter == BONUS_RANGE_DAMAGE or parameter == DAMAGE_TO_CLOSE_ENEMIES or parameter == DAMAGE_TO_DISTANT_ENEMIES
-						or parameter == DAMAGE_TO_CC_ENEMIES or parameter == COOLDOWN_REDUCTION then
-					special = "%%"
-				end
-
+			if SpecialSymbolParam[parameter] then special = "%%" end
 			if parameter == MELEE_DAMAGE_REDUCTION or parameter == RANGE_DAMAGE_REDUCTION then vector = "-" end
-
-			if parameter ~= CRIT_MULTIPLIER and parameter ~= HP_REGEN and parameter ~= MP_REGEN then
-				value = R2I(value)
-			else
-
-			end
+			if parameter ~= CRIT_MULTIPLIER and parameter ~= HP_REGEN and parameter ~= MP_REGEN then value = R2I(value) end
 
 			if value < 0 then
 				vector = ""
@@ -284,14 +283,6 @@ do
 
 	function InitParameters()
 
-		RegisterTestCommand("mc-", function()
-			ModifyStat(PlayerHero[1], MANACOST, -10, STRAIGHT_BONUS, true)
-		end)
-
-		RegisterTestCommand("mc+", function()
-			ModifyStat(PlayerHero[1], MANACOST, 10, STRAIGHT_BONUS, true)
-		end)
-
 		ParameterLimits = {
 			[PHYSICAL_DEFENCE] = {
 				value_by_percent_1 = 11,
@@ -334,7 +325,21 @@ do
 				value_by_percent_2 = 2,
 				second_limit = 75,
 				value_by_percent_3 = 4
-			}
+			},
+			[MELEE_DAMAGE_REDUCTION] = {
+				value_by_percent_1 = 1,
+				first_limit = 40,
+				value_by_percent_2 = 2,
+				second_limit = 65,
+				value_by_percent_3 = 5
+			},
+			[RANGE_DAMAGE_REDUCTION] = {
+				value_by_percent_1 = 1,
+				first_limit = 40,
+				value_by_percent_2 = 2,
+				second_limit = 65,
+				value_by_percent_3 = 5
+			},
 		}
 
 
@@ -557,6 +562,11 @@ do
 			end,
 
 			---@param data table
+			[CONTROL_DURATION] = function(data)
+				data.stats[CONTROL_DURATION].value = data.stats[CONTROL_DURATION].bonus
+			end,
+
+			---@param data table
 			[ATTACK_SPEED] = function(data)
 				data.stats[ATTACK_SPEED].actual_bonus = ParamToPercent(data.stats[ATTACK_SPEED].bonus + math.floor((data.stats[AGI_STAT].value / 3) + 0.5), ATTACK_SPEED)
 				local modificator = (1. - (data.stats[ATTACK_SPEED].actual_bonus) / 100.)
@@ -729,6 +739,31 @@ do
 				local value = 1. - (data.stats[COOLDOWN_REDUCTION].bonus / 100.)
 				data.stats[COOLDOWN_REDUCTION].value = math.max(value, 0.)
 			end,
+
+			---@param data table
+			[ENDURANCE_POWER] = function(data)
+				data.stats[ENDURANCE_POWER].value = 1. + (data.stats[ENDURANCE_POWER].bonus / 100.)
+			end,
+
+			---@param data table
+			[DAMAGE_TO_ENDURANCE] = function(data)
+				data.stats[DAMAGE_TO_ENDURANCE].value = 1. + (data.stats[DAMAGE_TO_ENDURANCE].bonus / 100.)
+			end,
+
+			---@param data table
+			[HP_PER_KILL] = function(data)
+				data.stats[HP_PER_KILL].value =data.stats[HP_PER_KILL].bonus
+			end,
+
+			---@param data table
+			[MP_PER_KILL] = function(data)
+				data.stats[MP_PER_KILL].value = data.stats[MP_PER_KILL].bonus
+			end,
+
+			---@param data table
+			[MINION_POWER] = function(data)
+				data.stats[MINION_POWER].value = 1. + (data.stats[MINION_POWER].bonus / 100.)
+			end,
 		}
 
 
@@ -775,6 +810,7 @@ do
 			[MELEE_DAMAGE_REDUCTION]  = LOCALE_LIST[my_locale].MELEE_DAMAGE_REDUCTION_PARAM,
 			[RANGE_DAMAGE_REDUCTION]  = LOCALE_LIST[my_locale].RANGE_DAMAGE_REDUCTION_PARAM,
 			[CONTROL_REDUCTION]       = LOCALE_LIST[my_locale].CONTROL_REDUCTION_PARAM,
+			[CONTROL_DURATION]  	  = LOCALE_LIST[my_locale].CONTROL_DURATION_PARAM,
 
 			[ATTACK_SPEED]            = LOCALE_LIST[my_locale].ATTACK_SPEED_PARAM,
 			[CAST_SPEED]              = LOCALE_LIST[my_locale].CAST_SPEED_PARAM,
@@ -813,19 +849,58 @@ do
 			[DAMAGE_TO_CC_ENEMIES]   = LOCALE_LIST[my_locale].DAMAGE_TO_CC_ENEMIES,
 			[DODGE_CHANCE] = LOCALE_LIST[my_locale].DODGE_CHANCE,
 
-			[COOLDOWN_REDUCTION] = LOCALE_LIST[my_locale].COOLDOWN_REDUCTION
+			[COOLDOWN_REDUCTION] = LOCALE_LIST[my_locale].COOLDOWN_REDUCTION,
+			[ENDURANCE_POWER] = LOCALE_LIST[my_locale].ENDURANCE_POWER,
+			[DAMAGE_TO_ENDURANCE] = LOCALE_LIST[my_locale].DAMAGE_TO_ENDURANCE,
+
+			[HP_PER_KILL] = LOCALE_LIST[my_locale].HP_PER_KILL_PARAM,
+			[MP_PER_KILL] = LOCALE_LIST[my_locale].MP_PER_KILL_PARAM,
+
+			[MINION_POWER] = LOCALE_LIST[my_locale].MINION_POWER_PARAM,
 		}
 
 
-		RegisterTestCommand("as+", function()
-			--print(BlzGetUnitWeaponRealField(PlayerHero[1], UNIT_WEAPON_RF_ATTACK_DAMAGE_POINT, 0))
-			ModifyStat(PlayerHero[1], ATTACK_SPEED, 100, STRAIGHT_BONUS, true)
-			--print(BlzGetUnitWeaponRealField(PlayerHero[1], UNIT_WEAPON_RF_ATTACK_DAMAGE_POINT, 0))
-		end)
+		SpecialSymbolParam = {
+			[ATTACK_SPEED] = true,
+			[CAST_SPEED] = true,
+			[CRIT_CHANCE] = true,
+			[BLOCK_CHANCE] = true,
+			[MELEE_DAMAGE_REDUCTION] = true,
+			[RANGE_DAMAGE_REDUCTION] = true,
+			[CONTROL_REDUCTION] = true,
+			[CONTROL_DURATION] = true,
+			[EXP_BONUS] = true,
+			[GOLD_BONUS] = true,
+			[DROP_BONUS] = true,
+			[HEALING_BONUS] = true,
+			[DAMAGE_BOOST] = true,
+			[VULNERABILITY] = true,
+			[BONUS_MELEE_DAMAGE] = true,
+			[BONUS_RANGE_DAMAGE] = true,
+			[DAMAGE_TO_CLOSE_ENEMIES] = true,
+			[DAMAGE_TO_DISTANT_ENEMIES] = true,
+			[DAMAGE_TO_CC_ENEMIES] = true,
+			[COOLDOWN_REDUCTION] = true,
+			[ENDURANCE_POWER] = true,
+			[DAMAGE_TO_ENDURANCE] = true,
+			[MINION_POWER] = true,
+			[PHYSICAL_BONUS] = true,
+			[PHYSICAL_RESIST] = true,
+			[FIRE_BONUS] = true,
+			[FIRE_RESIST] = true,
+			[ICE_BONUS] = true,
+			[ICE_RESIST] = true,
+			[LIGHTNING_BONUS] = true,
+			[LIGHTNING_RESIST] = true,
+			[HOLY_BONUS] = true,
+			[HOLY_RESIST] = true,
+			[POISON_BONUS] = true,
+			[POISON_RESIST] = true,
+			[DARKNESS_BONUS] = true,
+			[DARKNESS_RESIST] = true,
+			[ALL_RESIST] = true,
+		}
 
-		RegisterTestCommand("as-", function()
-			ModifyStat(PlayerHero[1], ATTACK_SPEED, 100, STRAIGHT_BONUS, false)
-		end)
 
 	end
 

@@ -159,7 +159,6 @@ do
 
 
         if GetOwningPlayer(attacker) == MONSTER_PLAYER or GetOwningPlayer(attacker) == SECOND_MONSTER_PLAYER then
-            --UpdateInCombatState(attacker)
             PingAllNearbyAI(attacker)
         elseif GetOwningPlayer(attacked) == MONSTER_PLAYER or GetOwningPlayer(attacked) == SECOND_MONSTER_PLAYER then
             if GetUnitAbilityLevel(attacked, FourCC("AAIM")) == 0 and GetUnitCurrentOrder(attacked) == 0 and not IsUnitInGroup(attacked, AttackGroup) then
@@ -252,7 +251,7 @@ do
             },
             [FourCC(MONSTER_ID_ARACHNID_BOSS)] = {
                 ability_list = {
-                    { order = order_forkedlightning, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 15. },
+                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 15. },
                     { order = order_forceofnature, activation = TARGET_CAST, on_attack_chance = 17., on_hit_chance = 0. },
                     { order = order_cripple, activation = TARGET_CAST, on_attack_chance = 5., on_hit_chance = 12. }
                 }
@@ -264,7 +263,7 @@ do
             },
             [FourCC(MONSTER_ID_SKELETON_KING)] = {
                 ability_list = {
-                    { order = order_forceofnature, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 15. },
+                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 15. },
                     { order = order_slow, activation = TARGET_CAST, on_attack_chance = 10., on_hit_chance = 10. },
                 }
             },
@@ -334,7 +333,8 @@ do
             },
             [FourCC(MONSTER_ID_ANDARIEL)] = {
                 ability_list = {
-                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 17., on_hit_chance = 15., point_max_offset = 150. },
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 17., on_hit_chance = 15., point_max_offset = 125. },
+                    { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 5., on_hit_chance = 12.},
                 }
             },
             [FourCC(MONSTER_ID_DEMONESS)] = {
@@ -345,11 +345,14 @@ do
             [FourCC(MONSTER_ID_BUTCHER)] = {
                 ability_list = {
                     { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 19., on_hit_chance = 0. },
+                    { order = order_cripple, activation = TARGET_CAST, on_attack_chance = 12., on_hit_chance = 12. },
                 }
             },
             [FourCC(MONSTER_ID_BAAL)] = {
                 ability_list = {
                     { order = order_frenzy, activation = POINT_CAST, on_attack_chance = 13., on_hit_chance = 12. },
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 13., on_hit_chance = 12. },
+                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 5., on_hit_chance = 12. },
                 }
             },
             [FourCC(MONSTER_ID_SKELETON_MAGE)] = {
@@ -374,12 +377,12 @@ do
             },
             [FourCC(MONSTER_ID_GNOLL_ASSASSIN)] = {
                 ability_list = {
-                    { order = order_forceofnature, activation = POINT_CAST, on_attack_chance = 19., on_hit_chance = 7., point_max_offset = 125. },
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 19., on_hit_chance = 7., point_max_offset = 125. },
                 }
             },
             [FourCC(MONSTER_ID_GNOLL_POACHER)] = {
                 ability_list = {
-                    { order = order_forceofnature, activation = POINT_CAST, on_attack_chance = 19., on_hit_chance = 7., point_max_offset = 125. },
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 19., on_hit_chance = 7., point_max_offset = 125. },
                 }
             },
             [FourCC(MONSTER_ID_SATYR_HELL)] = {
@@ -404,7 +407,8 @@ do
             },
             [FourCC(MONSTER_ID_BLOOD_RAVEN)] = {
                 ability_list = {
-                    { order = order_forceofnature, activation = SELF_CAST, on_attack_chance = 12., on_hit_chance = 12. },
+                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 12., on_hit_chance = 12. },
+                    { order = order_cripple, activation = TARGET_CAST, on_attack_chance = 12., on_hit_chance = 12. },
                 }
             },
             [FourCC("uDBL")] = {
@@ -413,6 +417,17 @@ do
                     { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 5., on_hit_chance = 12. },
                     { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 16., on_hit_chance = 10. },
                     { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 6., on_hit_chance = 12. },
+                }
+            },
+            [FourCC(MONSTER_ID_WEREWOLF)] = {
+                ability_list = {
+                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 10., on_hit_chance = 10. },
+                }
+            },
+            [FourCC("u013")] = {
+                ability_list = {
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 20., on_hit_chance = 10. },
+                    { order = order_hex, activation = SELF_CAST, on_attack_chance = 20., on_hit_chance = 10. },
                 }
             }
         }
@@ -505,6 +520,8 @@ do
             end
 
         end
+
+
 
         PingGroup = CreateGroup()
         AttackGroup = CreateGroup()

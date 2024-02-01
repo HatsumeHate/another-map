@@ -43,7 +43,7 @@ do
             angle_step = angle_step * -1
         end
 
-        local sound = CreateNew3DSound("Trait_Arcane_Loop_".. GetRandomInt(1,2) ..".wav", x, y, z, 110, 1500., true)
+        local sound = CreateNew3DSound("Trait_Arcane_Loop_".. GetRandomInt(1,2) ..".wav", x, y, z, 110, 1500., 4000., true)
         StartSound(sound)
 
         local player_entity = GetOwningPlayer(unit)

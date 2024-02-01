@@ -291,26 +291,29 @@ do
 
     local function LockItemOnBelt(player, button)
         if not button.button_state then
-            if UnitInventoryCount(InventoryOwner[player]) < 6 then
+            local item_data = GetItemData(button.item)
 
-                BlzFrameSetVisible(button.sprite, true)
-                button.button_state = true
-                PlayLocalSound("Sound\\Interface\\AutoCastButtonClick1.wav", player-1)
+                if UnitInventoryCount(InventoryOwner[player]) < 6 and not (item_data.restricted_to and item_data.restricted_to ~= GetUnitClass(PlayerHero[player])) then
 
-                SetItemVisible(button.item, true)
-                SetItemInvulnerable(button.item, true)
-                UnitAddItem(PlayerHero[player], button.item)
+                    BlzFrameSetVisible(button.sprite, true)
+                    button.button_state = true
+                    PlayLocalSound("Sound\\Interface\\AutoCastButtonClick1.wav", player-1)
 
-                if FirstTime_Data_Belt[player].first_time then
-                    ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_BELT, player-1)
-                    FirstTime_Data_Belt[player].first_time = false
-                    AddJournalEntry(player, "hints", "UI\\BTNLeatherbound_TomeI.blp", GetLocalString("Подсказки", "Hints and Tips"), 1000)
-                    AddJournalEntryText(player, "hints", QUEST_HINT_STRING .. LOCALE_LIST[my_locale].HINT_BELT, true)
+                    SetItemVisible(button.item, true)
+                    SetItemInvulnerable(button.item, true)
+                    UnitAddItem(PlayerHero[player], button.item)
+
+                        if FirstTime_Data_Belt[player].first_time then
+                            ShowQuestHintForPlayer(LOCALE_LIST[my_locale].HINT_BELT, player-1)
+                            FirstTime_Data_Belt[player].first_time = false
+                            AddJournalEntry(player, "hints", "UI\\BTNLeatherbound_TomeI.blp", GetLocalString("Подсказки", "Hints and Tips"), 1000)
+                            AddJournalEntryText(player, "hints", QUEST_HINT_STRING .. LOCALE_LIST[my_locale].HINT_BELT, true)
+                        end
+
+                else
+                    Feedback_CantUse(player)
                 end
 
-            else
-                Feedback_CantUse(player)
-            end
         else
             BlzFrameSetVisible(button.sprite, false)
             button.button_state = false
@@ -747,6 +750,10 @@ do
     local function UseItem(item, player)
         local item_data = GetItemData(item)
 
+            if item_data.restricted_to and item_data.restricted_to ~= GetUnitClass(PlayerHero[player]) then
+                Feedback_CantUse(player)
+                return
+            end
 
             if GetItemType(item) == ITEM_TYPE_CHARGED then
 
@@ -812,7 +819,7 @@ do
 
             if not PlayerCanChangeEquipment[player] then return end
 
-            if alt_weapon.item then EquipItem(PlayerHero[player], alt_weapon.item, false) end
+            if alt_weapon.item then EquipItem(PlayerHero[player], alt_weapon.item, false, true) end
             if main_weapon.item  then EquipItem(PlayerHero[player], main_weapon.item , false) end
 
             main_switch_data.item = main_weapon.item
@@ -826,7 +833,7 @@ do
                 local item_data = GetItemData(to_switch_main_item)
                 if item_data.soundpack and item_data.soundpack.equip then PlayLocalSound(item_data.soundpack.equip, player - 1) end
             end
-            if to_switch_alt_item then EquipItem(PlayerHero[player], to_switch_alt_item, true) end
+            if to_switch_alt_item then EquipItem(PlayerHero[player], to_switch_alt_item, true, true) end
 
 
             UpdateEquipPointsWindow(player)
@@ -872,7 +879,8 @@ do
                     elseif item_data.TYPE == ITEM_TYPE_GEM then StartSelectionMode(player, h, SELECTION_MODE_ENCHANT)
                     elseif item_data.TYPE == ITEM_TYPE_SKILLBOOK then if item_data and item_data.item then LearnBook(item_data.item, player) end
                     elseif item_data.usable and item_data.item then UseItem(item_data.item, player)
-                    elseif item_data.TYPE ~= ITEM_TYPE_OTHER then InteractWithItemInSlot(h, player) end
+                    elseif item_data.TYPE == ITEM_TYPE_GIFT and SacrificeAltarFrame[player].state then GiftSacrifice(item_data.item, player)
+                    elseif item_data.TYPE ~= ITEM_TYPE_OTHER and item_data.TYPE ~= ITEM_TYPE_GIFT then InteractWithItemInSlot(h, player) end
 
                 --DoubleClickTimer[player].locked = true
 
@@ -944,6 +952,8 @@ do
                         end)
                     elseif LibrarianFrame[player].state and item_data.restricted_to then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_EXCHANGE, function() GiveItemToLibrarian(player, ButtonList[h].item) end)
+                    elseif item_data.TYPE == ITEM_TYPE_GIFT and SacrificeAltarFrame[player].state then
+                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_GIFT, function() if item_data and item_data.item then GiftSacrifice(item_data.item, player) end end)
                     end
 
                     if item_data.TYPE == ITEM_TYPE_WEAPON and not IsWeaponTypeTwohanded(item_data.SUBTYPE)  then
@@ -964,7 +974,7 @@ do
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_LEARN, function() if item_data and item_data.item then LearnBook(item_data.item, player) end end)
                     elseif item_data.usable then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_USE, function() if item_data and item_data.item then UseItem(item_data.item, player) end end)
-                    elseif item_data.TYPE ~= ITEM_TYPE_OTHER then
+                    elseif item_data.TYPE ~= ITEM_TYPE_OTHER and item_data.TYPE ~= ITEM_TYPE_GIFT then
                         AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_EQUIP, function() InteractWithItemInSlot(h, player) end)
                     end
 
@@ -1543,6 +1553,8 @@ do
 
                 InventorySlots[player][43] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.034, 0.034, InventorySlots[player][33], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
                 InventorySlots[player][44] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.034, 0.034, InventorySlots[player][34], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
+                BlzFrameSetEnable(InventorySlots[player][43], false)
+                BlzFrameSetEnable(InventorySlots[player][44], false)
 
                 CreateButtonsBorders(player, 0.04, 0.04)
                 local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", InventorySlots[player][43], "", 0)
@@ -1694,6 +1706,8 @@ do
 
         InventorySlots[player][43] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.034, 0.034, InventorySlots[player][33], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
         InventorySlots[player][44] = NewButton(WEAPON_POINT, "GUI\\BTNWeapon_Slot.blp", 0.034, 0.034, InventorySlots[player][34], FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.003, slots_Frame)
+        BlzFrameSetEnable(InventorySlots[player][43], false)
+        BlzFrameSetEnable(InventorySlots[player][44], false)
 
         CreateButtonsBorders(player, 0.04, 0.04)
 

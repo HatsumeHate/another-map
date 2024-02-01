@@ -110,6 +110,10 @@ do
 	ITEM_SCROLL_OF_TOWN_PORTAL = "I01K"
 	ITEM_SCROLL_OF_PROTECTION = "I01Q"
 	ITEM_SCROLL_OF_PETRI = "I02W"
+
+	ITEM_NECRONOMICON = "I03P"
+	ITEM_ELIXIR_INNOCENCE = "I03Q"
+
 	ITEM_FOOD = "I03B"
 	ITEM_DRINKS = "I03C"
 
@@ -395,24 +399,24 @@ do
 		CLASS_SKILL_LIST = {
 			[BARBARIAN_CLASS] = {
 				[SKILL_CATEGORY_FIGHTING_MASTERY] 	= { "A010", "A007", "A006", "A020", "ADBS", "ABRV" },
-				[SKILL_CATEGORY_BATTLE_ADVANTAGE]	= { "A00O", "A00Z", "A00A", "ASHG", "A00B", "ABTR" },
-				[SKILL_CATEGORY_INNER_STRENGTH] 	= { "A00Q", "A00C", "ABFA", "ABRC", "ABCA" }
+				[SKILL_CATEGORY_BATTLE_ADVANTAGE]	= { "A00O", "A00Z", "A00A", "ASHG", "ABUP", "ABTR" },
+				[SKILL_CATEGORY_INNER_STRENGTH] 	= { "A00Q", "ABWC", "ABFA", "ABRC", "ABCA" }
 			},
 			[SORCERESS_CLASS] = {
-				[SKILL_CATEGORY_LIGHTNING] = { 'A00M', "A00J", "A00K", "A019", },
-				[SKILL_CATEGORY_ICE] = { "A003", "A001", "A005", "A00E", "ABLZ", "ASIR" },
-				[SKILL_CATEGORY_FIRE] = { "A00D", "A00F", "A00I", "AMLT", "AFRW" },
-				[SKILL_CATEGORY_ARCANE] = { "A00L", "A00N", "A00H" }
+				[SKILL_CATEGORY_LIGHTNING] 	= { 'A00M', "A00J", "A00K", "A019", "ASSU" },
+				[SKILL_CATEGORY_ICE] 		= { "A003", "A001", "A005", "A00E", "ABLZ", "ASIR" },
+				[SKILL_CATEGORY_FIRE] 		= { "A00D", "A00F", "A00I", "AMLT", "AFRW", "ASFS", "AFWL" },
+				[SKILL_CATEGORY_ARCANE] 	= { "A00L", "A00N", "A00H" }
 			},
 			[NECROMANCER_CLASS] = {
-				[SKILL_CATEGORY_DARK_ART] = { "ANBR", "ANBS", "ANTS", "ANBB", "ANCE", "ANBK", "ANWS", "ANPB" },
-				[SKILL_CATEGORY_CURSES] = { "ANUL", "ANWK", "ANDF", "ANFR", "ANHV", "ANBP" },
-				[SKILL_CATEGORY_SUMMONING] = { "ANRD", "ANLR", "ANDV", "ANUC", "ANDR", "ANGS" }
+				[SKILL_CATEGORY_DARK_ART] 	= { "ANBR", "ANBS", "ANTS", "ANBB", "ANCE", "ANBK", "ANWS", "ANPB", "ANFD" },
+				[SKILL_CATEGORY_CURSES]		= { "ANUL", "ANWK", "ANDF", "ANFR", "ANBP", "ANTT" },
+				[SKILL_CATEGORY_SUMMONING] 	= { "ANRD", "ANLR", "ANDV", "ANUC", "ANDR", "ANGS", "ANHV" }
 			},
 			[ASSASSIN_CLASS] = {
-				[SKILL_CATEGORY_LETHALITY] = { "AACS", "AABR", "AABA", "AASH", "AAEV", "AAVB", "AABF", "AATL", "AALL" },
-				[SKILL_CATEGORY_SHADOWS] = { "AANS", "AATW","AABD","AAST","AACB","AADB" },
-				[SKILL_CATEGORY_GEAR] = { "AAIG", "AACT", "AASC", "AABT", "AASB", "AARL" }
+				[SKILL_CATEGORY_LETHALITY] 	= { "AACS", "AABR", "AABA", "AASH", "AAEV", "AAVB", "AABF", "AATL", "AALL" },
+				[SKILL_CATEGORY_SHADOWS] 	= { "AANS", "AATW", "AABD", "AAST", "AACB", "AADB" },
+				[SKILL_CATEGORY_GEAR] 		= { "AAIG", "AACT", "AASC", "AABT", "AASB", "AARL" }
 			},
 		}
 
@@ -1297,7 +1301,7 @@ do
 			item_description = LOCALE_LIST[my_locale].POTION_WEAK_MP_DESC_TEXT,
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_POTION],
 			cost = 25,
-			cooldown_type = 1,
+			cooldown_type = 5,
 			usable = true
 		})
 
@@ -1308,7 +1312,7 @@ do
 			item_description = LOCALE_LIST[my_locale].POTION_HALF_MP_DESC_TEXT,
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_POTION],
 			cost = 50,
-			cooldown_type = 1,
+			cooldown_type = 5,
 			usable = true
 		})
 
@@ -1319,7 +1323,7 @@ do
 			item_description = LOCALE_LIST[my_locale].POTION_STRONG_MP_DESC_TEXT,
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_POTION],
 			cost = 75,
-			cooldown_type = 1,
+			cooldown_type = 5,
 			usable = true
 		})
 
@@ -1330,7 +1334,7 @@ do
 			item_description   = LOCALE_LIST[my_locale].POTION_WEAK_MIX_DESC_TEXT,
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_POTION],
 			cost = 75,
-			cooldown_type = 1,
+			cooldown_type = 6,
 			usable = true
 		})
 
@@ -1341,7 +1345,7 @@ do
 			item_description = LOCALE_LIST[my_locale].POTION_HALF_MIX_DESC_TEXT,
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_POTION],
 			cost = 100,
-			cooldown_type = 1,
+			cooldown_type = 6,
 			usable = true
 		})
 
@@ -1352,7 +1356,7 @@ do
 			item_description   = LOCALE_LIST[my_locale].POTION_STRONG_MIX_DESC_TEXT,
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_POTION],
 			cost = 125,
-			cooldown_type = 1,
+			cooldown_type = 6,
 			usable = true
 		})
 
@@ -1385,7 +1389,7 @@ do
 			item_description   = LOCALE_LIST[my_locale].DRINKS_DESC_TEXT,
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_RUNE],
 			cost = 50,
-			cooldown_type = 4,
+			cooldown_type = 8,
 			usable = true
 		})
 
@@ -1425,6 +1429,33 @@ do
 			cost = 500,
 			sell_penalty = 0.5
 		})
+
+
+		ItemAddData('I03P', {
+			NAME    		   = LOCALE_LIST[my_locale].SCROLL_NECRONOMICON,
+			TYPE    		   = ITEM_TYPE_CONSUMABLE,
+			frame_texture      = "GUI\\BTNicon8.blp",
+			item_description = LOCALE_LIST[my_locale].SCROLL_NECRONOMICON_TEXT,
+			QUALITY = RARE_ITEM,
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_SCROLL],
+			restricted_to = NECROMANCER_CLASS,
+			usable = true,
+			cost = 150,
+			sell_penalty = 0.5
+		})
+
+		ItemAddData('I03Q', {
+			NAME    		   = LOCALE_LIST[my_locale].INNOCENCE_ELIXIR,
+			TYPE    		   = ITEM_TYPE_CONSUMABLE,
+			QUALITY 		   = RARE_ITEM,
+			frame_texture      = "GUI\\BTN_InvisPot.blp",
+			item_description   = LOCALE_LIST[my_locale].INNOCENCE_ELIXIR_DESC_TEXT,
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_POTION],
+			cost = 100,
+			cooldown_type = 7,
+			usable = true
+		})
+
 
 		ItemAddData('I00U', {
 			NAME    		   = LOCALE_LIST[my_locale].SKILLBOOK_FIRE,
@@ -1783,13 +1814,88 @@ do
 
 
 		ItemAddData('I03D', {
-			NAME    		   = LOCALE_LIST[my_locale].GIFT_SCREAMING_MASK,
-			TYPE    		   = ITEM_TYPE_GIFT,
-			frame_texture      = "ReplaceableTextures\\CommandButtons\\BTNSobiMask.blp",
-			gift 			   = "screaming_mask_gift",
-			soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHARM],
-			cost = 200,
-			sell_penalty = 0.5
+			NAME    		  	= LOCALE_LIST[my_locale].GIFT_SCREAMING_MASK,
+			TYPE    		   	= ITEM_TYPE_GIFT,
+			QUALITY 			= RARE_ITEM,
+			frame_texture      	= "ReplaceableTextures\\CommandButtons\\BTNSobiMask.blp",
+			gift 			   	= "screaming_mask_gift",
+			item_description   	= LOCALE_LIST[my_locale].GIFT_SCREAMING_MASK_DESC,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_CHARM],
+			cost 				= 300,
+			sell_penalty 		= 0.5
+		})
+
+
+		ItemAddData('I03O', {
+			NAME    		   	= LOCALE_LIST[my_locale].GIFT_BONE_CHIMES,
+			TYPE    		   	= ITEM_TYPE_GIFT,
+			QUALITY 		   	= MAGIC_ITEM,
+			frame_texture      	= "ReplaceableTextures\\CommandButtons\\BTNBoneChimes.blp",
+			gift 				= "bonechimes_gift",
+			item_description   	= LOCALE_LIST[my_locale].GIFT_BONE_CHIMES_DESC,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_CHARM],
+			cost 				= 500,
+			sell_penalty 		= 0.5
+		})
+
+		ItemAddData('I03R', {
+			NAME    		   	= LOCALE_LIST[my_locale].GIFT_DEMONIC_HORN,
+			TYPE    		   	= ITEM_TYPE_GIFT,
+			QUALITY 		   	= RARE_ITEM,
+			frame_texture      	= "ReplaceableTextures\\CommandButtons\\BTNHornOfDoom.blp",
+			gift 				= "demonic_horn_gift",
+			item_description   	= LOCALE_LIST[my_locale].GIFT_DEMONIC_HORN_DESC,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_CHARM],
+			cost 				= 300,
+			sell_penalty 		= 0.5
+		})
+
+		ItemAddData('I03S', {
+			NAME    		   	= LOCALE_LIST[my_locale].GIFT_HEARTH_OF_GHOR,
+			TYPE    		   	= ITEM_TYPE_GIFT,
+			QUALITY 		   	= RARE_ITEM,
+			frame_texture      	= "ReplaceableTextures\\CommandButtons\\BTNHeartOfSearinox.blp",
+			gift 				= "hearth_of_ghor_gift",
+			item_description   	= LOCALE_LIST[my_locale].GIFT_HEARTH_OF_GHOR_DESC,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_CHARM],
+			cost 				= 400,
+			sell_penalty 		= 0.5
+		})
+
+		ItemAddData('I03V', {
+			NAME    		   	= LOCALE_LIST[my_locale].GIFT_MOON_STONE,
+			TYPE    		   	= ITEM_TYPE_GIFT,
+			QUALITY 		   	= COMMON_ITEM,
+			frame_texture      	= "ReplaceableTextures\\CommandButtons\\BTNMoonStone.blp",
+			gift 				= "moon_stone_gift",
+			item_description   	= LOCALE_LIST[my_locale].GIFT_MOON_STONE_DESC,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_CHARM],
+			cost 				= 200,
+			sell_penalty 		= 0.5
+		})
+
+		ItemAddData('I03W', {
+			NAME    		   	= LOCALE_LIST[my_locale].GIFT_SWORD_OF_A_HERO,
+			TYPE    		   	= ITEM_TYPE_GIFT,
+			QUALITY 		   	= COMMON_ITEM,
+			frame_texture      	= "ReplaceableTextures\\CommandButtons\\BTNDaggerOfEscape.blp",
+			gift 				= "sword_of_a_hero_gift",
+			item_description   	= LOCALE_LIST[my_locale].GIFT_SWORD_OF_A_HERO_DESC,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_CHARM],
+			cost 				= 200,
+			sell_penalty 		= 0.5
+		})
+
+		ItemAddData('I03X', {
+			NAME    		   	= LOCALE_LIST[my_locale].GIFT_FOREST_WARD,
+			TYPE    		   	= ITEM_TYPE_GIFT,
+			QUALITY 		   	= RARE_ITEM,
+			frame_texture      	= "ReplaceableTextures\\CommandButtons\\BTNStone.blp",
+			gift 				= "forest_ward_gift",
+			item_description   	= LOCALE_LIST[my_locale].GIFT_FOREST_WARD_DESC,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_CHARM],
+			cost 				= 200,
+			sell_penalty 		= 0.5
 		})
 
 
@@ -1799,12 +1905,12 @@ do
 			frame_texture      	= "ReplaceableTextures\\CommandButtons\\BTNMedalionOfCourage.blp",
 			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_CHARM],
 			item_description 	= LOCALE_LIST[my_locale].MEDALLION_DESC_1,
-			cost = 200,
-			sell_penalty = 0.5,
-			sellable = false,
-			droppable = false,
-			cooldown_type = 1,
-			usable = true
+			cost 				= 200,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			cooldown_type 		= 1,
+			usable 				= true
 		})
 
 		ItemAddData('I03L', {
@@ -1814,12 +1920,12 @@ do
 			frame_texture      	= "ReplaceableTextures\\CommandButtons\\BTNMedalionOfCourage.blp",
 			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_CHARM],
 			item_description 	= LOCALE_LIST[my_locale].MEDALLION_DESC_2,
-			cost = 200,
-			sell_penalty = 0.5,
-			sellable = false,
-			droppable = false,
-			cooldown_type = 1,
-			usable = true
+			cost 				= 200,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			cooldown_type 		= 1,
+			usable 				= true
 		})
 
 		ItemAddData('I03M', {
@@ -2001,7 +2107,6 @@ do
 			MAX_SLOTS = 3,
 			frame_texture = "Weapons\\BTNtier4 sword.blp",
 			model = "Items\\Bloodstone Longsword.mdx",
-			--legendary_effect = GetLegendaryEffect("RDAG"),
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_BLOOD_DRINKER .."\"",
 			soundpack = { equip = "Sound\\sword_souldrinker_equip.wav", uneqip = "Sound\\weapon_unequip.wav", drop = "Sound\\largemetalweapon.wav" }
 		})
@@ -2020,9 +2125,8 @@ do
 				{ PARAM = HEALING_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS },
 				{ PARAM = BONUS_UNDEAD_DAMAGE, VALUE = 7, METHOD = STRAIGHT_BONUS, base = 7, delta = 1, delta_level = 10, delta_level_max = 5 },
 			},
-			MAX_SLOTS = 3,
+			MAX_SLOTS = 4,
 			frame_texture = "Jewelry\\BTNGold Mystic Ring.blp",
-			--set_bonus = GetItemSet("FRBD"),
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_FAMILY_RING .."\"",
 			soundpack = { equip = "Sound\\ring_secondchance_equip.wav", uneqip = "Sound\\ring_secondchance_unequip.wav", drop = "Sound\\ring.wav" }
 		})
@@ -2040,6 +2144,7 @@ do
 				{ PARAM = MP_VALUE, VALUE = 50, METHOD = STRAIGHT_BONUS, base = 50, delta = 3, delta_level = 5, delta_level_max = 10 },
 				{ PARAM = INT_STAT, VALUE = 7, METHOD = STRAIGHT_BONUS, base = 7, delta = 1, delta_level = 15, delta_level_max = 5 },
 				{ PARAM = DARKNESS_BONUS, VALUE = 4, METHOD = STRAIGHT_BONUS, base = 4, delta = 1, delta_level = 10, delta_level_max = 5 },
+				{ PARAM = MINION_POWER, VALUE = 25, METHOD = STRAIGHT_BONUS },
 			},
 			MAX_SLOTS = 2,
 			frame_texture = "Offhand\\BTNUmbralTome2.blp",
@@ -2500,7 +2605,7 @@ do
 			level = 10,
 			BONUS   = {
 				{ PARAM = CAST_SPEED, VALUE = 12, METHOD = STRAIGHT_BONUS },
-				{ PARAM = DARKNESS_BONUS, VALUE = 14, METHOD = STRAIGHT_BONUS, base = 14, delta = 1, delta_level = 5, delta_level_max = 5 },
+				{ PARAM = PHYSICAL_BONUS, VALUE = 14, METHOD = STRAIGHT_BONUS, base = 14, delta = 1, delta_level = 5, delta_level_max = 5 },
 				{ PARAM = MAGICAL_ATTACK, VALUE = 35, METHOD = STRAIGHT_BONUS, base = 35, delta = 2, delta_level = 1, delta_level_max = 15 },
 				{ PARAM = BONUS_HUMAN_DAMAGE, VALUE = 14, METHOD = STRAIGHT_BONUS, base = 14, delta = 1, delta_level = 10, delta_level_max = 5 },
 				{ PARAM = BONUS_BEAST_DAMAGE, VALUE = 14, METHOD = STRAIGHT_BONUS, base = 14, delta = 1, delta_level = 10, delta_level_max = 5 },
@@ -2562,7 +2667,7 @@ do
 			stat_modificator = 1.,
 			flippy = true,
 			level = 10,
-			BONUS   = {
+			BONUS = {
 				{ PARAM = VULNERABILITY, VALUE = 100, METHOD = STRAIGHT_BONUS },
 				{ PARAM = DAMAGE_BOOST, VALUE = 100, METHOD = STRAIGHT_BONUS },
 			},
@@ -2583,7 +2688,7 @@ do
 			stat_modificator = 1.25,
 			flippy = true,
 			level = 10,
-			BONUS   = {
+			BONUS = {
 				{ PARAM = CAST_SPEED, VALUE = 12, METHOD = STRAIGHT_BONUS },
 				{ PARAM = MAGICAL_ATTACK, VALUE = 75, METHOD = STRAIGHT_BONUS, base = 75, delta = 1, delta_level = 1, delta_level_max = 25 },
 				{ PARAM = MP_VALUE, VALUE = 25, METHOD = STRAIGHT_BONUS, base = 25, delta = 1, delta_level = 1, delta_level_max = 25 },
@@ -2594,6 +2699,136 @@ do
 			legendary_effect = GetLegendaryEffect("catalyst_Legendary"),
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_CATALYST .."\"",
 			soundpack = { equip = "Sound\\staff_fire_equip.wav", unequip = "Sound\\staff_unequip.wav", drop = "Sound\\staff.wav" }
+		})
+
+		ItemAddData('I03T', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_GRETA_REVENGE,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = LEGS_ARMOR,
+			QUALITY = UNIQUE_ITEM,
+			DEFENCE = 17,
+			stat_modificator = 1.,
+			flippy = true,
+			level = 10,
+			BONUS = {
+				{ PARAM = MOVING_SPEED, VALUE = 1.07, METHOD = MULTIPLY_BONUS },
+				{ PARAM = DAMAGE_TO_CLOSE_ENEMIES, VALUE = 12, METHOD = STRAIGHT_BONUS },
+				{ PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 12, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CONTROL_REDUCTION, VALUE = 15, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 3,
+			frame_texture = "Armor\\BTNwind boots.blp",
+			legendary_effect =  GetLegendaryEffect("greta_revenge_Legendary"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_GRETA_REVENGE .."\"",
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_MID_ARMOR],
+		})
+
+		ItemAddData('I03U', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_UNITY,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = CHEST_ARMOR,
+			QUALITY = UNIQUE_ITEM,
+			DEFENCE = 20,
+			stat_modificator = 1.2,
+			flippy = true,
+			level = 10,
+			BONUS = {
+				{ PARAM = STR_STAT, VALUE = 10, METHOD = STRAIGHT_BONUS, base = 10, delta = 1, delta_level = 10, delta_level_max = 5 },
+				{ PARAM = VIT_STAT, VALUE = 10, METHOD = STRAIGHT_BONUS, base = 10, delta = 1, delta_level = 10, delta_level_max = 5 },
+				{ PARAM = AGI_STAT, VALUE = 10, METHOD = STRAIGHT_BONUS, base = 10, delta = 1, delta_level = 10, delta_level_max = 5 },
+				{ PARAM = INT_STAT, VALUE = 10, METHOD = STRAIGHT_BONUS, base = 10, delta = 1, delta_level = 10, delta_level_max = 5 },
+			},
+			MAX_SLOTS = 3,
+			frame_texture = "Armor\\BTNTenebriousArmor.blp",
+			texture = TEXTURE_ID_ARMOR_02,
+			legendary_effect =  GetLegendaryEffect("unity_Legendary"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_UNITY .."\"",
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+		})
+
+
+		ItemAddData('I03Y', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_DEATH_CRY,
+			TYPE    = ITEM_TYPE_JEWELRY,
+			SUBTYPE = RING_JEWELRY,
+			QUALITY = UNIQUE_ITEM,
+			DEFENCE = 20,
+			stat_modificator = 1.,
+			flippy = true,
+			level = 10,
+			BONUS = {
+				{ PARAM = DARKNESS_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS, base = 10, delta = 1, delta_level = 10, delta_level_max = 5 },
+				{ PARAM = MP_PER_HIT, VALUE = 7, METHOD = STRAIGHT_BONUS, base = 7, delta = 1, delta_level = 5, delta_level_max = 10 },
+				{ PARAM = DAMAGE_TO_CC_ENEMIES, VALUE = 25, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 3,
+			frame_texture = "Jewelry\\BTNNecromancersRing.blp",
+			legendary_effect =  GetLegendaryEffect("death_cry_Legendary"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_DEATH_CRY .."\"",
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_RING],
+		})
+
+		ItemAddData('I03Z', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_ROT_AND_DISEASE,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = HANDS_ARMOR,
+			QUALITY = UNIQUE_ITEM,
+			DEFENCE = 20,
+			stat_modificator = 1.,
+			flippy = true,
+			level = 10,
+			BONUS = {
+				{ PARAM = POISON_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS, base = 10, delta = 1, delta_level = 10, delta_level_max = 5 },
+				{ PARAM = MAGICAL_ATTACK, VALUE = 50, METHOD = STRAIGHT_BONUS, base = 50, delta = 1, delta_level = 1, delta_level_max = 50 },
+				{ PARAM = CRIT_CHANCE, VALUE = 12, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 2,
+			frame_texture = "Armor\\BTNNatureGlove.blp",
+			legendary_effect =  GetLegendaryEffect("rot_and_disease_Legendary"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_ROT_AND_DISEASE .."\"",
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_MID_ARMOR],
+		})
+
+		ItemAddData('I040', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_LIVING_HORRORS,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = LEGS_ARMOR,
+			QUALITY = UNIQUE_ITEM,
+			DEFENCE = 20,
+			stat_modificator = 1.,
+			flippy = true,
+			level = 10,
+			BONUS = {
+				{ PARAM = DARKNESS_BONUS, VALUE = 14, METHOD = STRAIGHT_BONUS, base = 14, delta = 1, delta_level = 10, delta_level_max = 5 },
+				{ PARAM = COOLDOWN_REDUCTION, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				{ PARAM = MOVING_SPEED, VALUE = 25, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 3,
+			frame_texture = "Armor\\BTNDruidic Boots.blp",
+			legendary_effect =  GetLegendaryEffect("living_horrors_Legendary"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_LIVING_HORRORS .."\"",
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_MID_ARMOR],
+		})
+
+		ItemAddData('I041', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_EVERLASTING_MADNESS,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = HEAD_ARMOR,
+			QUALITY = UNIQUE_ITEM,
+			DEFENCE = 20,
+			stat_modificator = 1.15,
+			flippy = true,
+			level = 10,
+			BONUS = {
+				{ PARAM = DAMAGE_TO_CLOSE_ENEMIES, VALUE = 17, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CONTROL_REDUCTION, VALUE = 20, METHOD = STRAIGHT_BONUS },
+				{ PARAM = HP_PER_KILL, VALUE = 25, METHOD = STRAIGHT_BONUS, base = 25, delta = 1, delta_level = 2, delta_level_max = 25 },
+			},
+			MAX_SLOTS = 3,
+			frame_texture = "Armor\\BTNGoldenHelmet.blp",
+			legendary_effect =  GetLegendaryEffect("everlasting_madness_Legendary"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_EVERLASTING_MADNESS .."\"",
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_HEAVY_ARMOR],
 		})
 
 		ItemAddData('I02H', {
@@ -2650,10 +2885,19 @@ do
 		})
 
 		InitRunewords()
+		InitGifts()
 
     end
 
 	--[[
+	выпускает 3 духа вместо 1
+	кольцо
+
+	земля постоянно наносит урон
+	сапоги
+
+	если берсерк забинден, то может дать берсерк бесплатно
+	голова
 
 	The Conductor
 	big lightning strike
@@ -2682,9 +2926,6 @@ do
 	сапоги на некра
 	тяжесть
 	пока действует броня + к резисту контроля
-
-	расщепление
-	костяное копье при столкновении расщепляется на несколько мелких
 
 	]]
 	

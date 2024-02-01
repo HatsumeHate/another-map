@@ -225,9 +225,6 @@ do
 
         end)
 
-        RegisterTestCommand("crift", function()
-            ForGroup(ActiveRift.group, function() KillUnit(GetEnumUnit()) end)
-        end)
 
     end
 

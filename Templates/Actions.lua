@@ -38,7 +38,7 @@ do
             action_type = SKILL_PHYSICAL,
             sound = { pack = { "Sounds\\Spells\\skill_heavy_swing_1.wav", "Sounds\\Spells\\skill_heavy_swing_2.wav", "Sounds\\Spells\\skill_heavy_swing_3.wav" }, volume = 128, cutoff = 1500., delay = 0.45 },
             animation = {
-                sequence = GetAnimationSequence("barb_swing_4"), timescale = 0.8
+                sequence = GetAnimationSequence("barb_swing_4"), timescale = 0.75
             },
             sfx_pack = {
                 on_caster = {
@@ -135,10 +135,6 @@ do
             effect = 'effect_eviscerate',
         })
 
-
-        RegisterTestCommand("act", function()
-            DoAction(PlayerHero[1], nil, "double_swing", GetUnitX(PlayerHero[1]) + 50., GetUnitY(PlayerHero[1]))
-        end)
     end
 
 end

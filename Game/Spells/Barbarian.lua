@@ -40,6 +40,8 @@ do
             unit_data.channeled_destructor = nil
             unit_data.channeled_ability = nil
 
+            ModifyStat(unit, MOVING_SPEED, 0.75, MULTIPLY_BONUS, false)
+
     end
 
 
@@ -59,7 +61,9 @@ do
             AddUnitAnimationProperties(unit, "channel", true)
             UnitAddAbility(unit, FourCC('Abun'))
 
-            unit_data.looping_sound = AddLoopingSoundOnUnit({"Sounds\\Spells\\whirlwind_1.wav", "Sounds\\Spells\\whirlwind_2.wav", "Sounds\\Spells\\whirlwind_3.wav", "Sounds\\Spells\\whirlwind_4.wav"}, unit, 200, 200, -0.15, 110, 1700.)
+            ModifyStat(unit, MOVING_SPEED, 0.75, MULTIPLY_BONUS, true)
+
+            unit_data.looping_sound = AddLoopingSoundOnUnit({"Sounds\\Spells\\whirlwind_1.wav", "Sounds\\Spells\\whirlwind_2.wav", "Sounds\\Spells\\whirlwind_3.wav", "Sounds\\Spells\\whirlwind_4.wav"}, unit, 200, 200, -0.15, 110, 1700., 4200.)
             unit_data.whirlwind_effect_timer = CreateTimer()
             TimerStart(unit_data.whirlwind_effect_timer, 0.05, true, function()
                 local whirlwind_sfx = AddSpecialEffect("Effect\\Ephemeral Slash Orange.mdx", GetUnitX(unit), GetUnitY(unit))
@@ -609,7 +613,7 @@ do
     function CallOfTheAncientsCast(hero)
         local unit_data = GetUnitData(hero)
         local ability_level = UnitGetAbilityLevel(hero, "ABCA")
-        local percent = 0.7
+        local percent = 0.7 * GetUnitParameterValue(hero, MINION_POWER)
         local x, y, angle = GetUnitX(hero), GetUnitY(hero), GetUnitFacing(hero)
         local summon_id = FourCC('bran')
         local heroes = {}
@@ -659,6 +663,7 @@ do
                         ancient_hero.equip_point[WEAPON_POINT].DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL
                         ancient_hero.equip_point[WEAPON_POINT].ATTRIBUTE = PHYSICAL_ATTRIBUTE
                         ancient_hero.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS = R2I((ancient_hero.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS or 0) * percent)
+                        ancient_hero.equip_point[WEAPON_POINT].MAX_TARGETS = 300
                         for param = STR_STAT, VIT_STAT do ancient_hero.stats[param].value = R2I(unit_data.stats[param].value * percent) end
                         ancient_hero.stats[PHYSICAL_BONUS].value = R2I(unit_data.stats[PHYSICAL_BONUS].value * percent)
                         ancient_hero.stats[HP_VALUE].value = R2I(unit_data.stats[HP_VALUE].value * percent)

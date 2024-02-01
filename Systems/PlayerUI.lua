@@ -67,6 +67,7 @@ do
             BlzFrameSetScale(border, 1.)
             BlzFrameSetPoint(border, FRAMEPOINT_TOPRIGHT, frame, FRAMEPOINT_TOPRIGHT, offset, offset)
             BlzFrameSetPoint(border, FRAMEPOINT_BOTTOMLEFT, frame, FRAMEPOINT_BOTTOMLEFT, -offset, -offset)
+            --BlzFrameSetParent(border, frame)
         return border
     end
 
@@ -122,7 +123,7 @@ do
                 BlzFrameSetVisible(PlayerUI.skill_button_hotkey[i], true)
             end
 
-            for i = 1, #PlayerUI.button_borders do BlzFrameSetVisible(PlayerUI.button_borders[i], true) end
+            for i = 1, #PlayerUI.button_borders-1 do BlzFrameSetVisible(PlayerUI.button_borders[i], true) end
 
             BlzFrameSetVisible(PlayerUI.hp_text_frame, true)
             BlzFrameSetVisible(PlayerUI.mp_text_frame, true)
@@ -470,8 +471,26 @@ do
                     CreateUIBorder(GlobalButton[player].journal_panel_button, 0.),
                     CreateUIBorder(GlobalButton[player].settings_panel_button, 0.),
                     CreateUIBorder(GlobalButton[player].dash_button, 0.),
+                    CreateUIBorder(GlobalButton[player].minion_command_button, 0.),
                     --CreateUIBorder(GlobalButton[player].switch_button, 0.)
                 }
+
+
+            BlzFrameSetVisible(GlobalButton[player].minion_command_button, false)
+            BlzFrameSetVisible(PlayerUI.button_borders[8], false)
+                for key = 1, 6 do
+                    if KEYBIND_LIST[key].player_skill_bind_string_id[player] then
+                        local keyskill = GetUnitSkillData(PlayerHero[player], KEYBIND_LIST[key].player_skill_bind_string_id[player])
+                        if keyskill and keyskill.minions then
+                            if GetLocalPlayer() == Player(player-1) then
+                                BlzFrameSetVisible(GlobalButton[player].minion_command_button, true)
+                                BlzFrameSetVisible(PlayerUI.button_borders[8], true)
+                            end
+                            break
+                        end
+                    end
+                end
+
 
                 PlayerUI.arrow = CreateSprite("UI\\arrow.mdx", 0.001, GlobalButton[player].skill_panel_button, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.01, PlayerUI.button_borders[2])
                 PlayerUI.arrow_ability_text = BlzCreateFrameByType("TEXT", "helper", PlayerUI.arrow, "StandardLabelTextTemplate", 0)
@@ -901,7 +920,7 @@ do
                 CreateUIBorder(GlobalButton[1].journal_panel_button, 0.),
                 CreateUIBorder(GlobalButton[1].settings_panel_button, 0.),
                 CreateUIBorder(GlobalButton[1].dash_button, 0.),
-                --CreateUIBorder(GlobalButton[1].switch_button, 0.)
+                CreateUIBorder(GlobalButton[1].minion_command_button, 0.),
             }
 
             for i = 1, #PlayerUI.button_borders do BlzFrameSetVisible(PlayerUI.button_borders[i], false) end

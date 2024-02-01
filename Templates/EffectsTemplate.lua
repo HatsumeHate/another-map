@@ -42,6 +42,7 @@ do
             max_targets           = 1,
 
             heal_amount           = 0,
+            heal_amount_max_hp    = 0.,
 
             applied_buff          = { },
             aura                  = 0,
@@ -136,6 +137,10 @@ do
 
             if effect.heal_amount_delta then
                 effect.level[lvl].heal_amount = (effect.level[1].heal_amount or 0) + math.floor(lvl / (effect.heal_amount_delta_level or 1.)) * effect.heal_amount_delta
+            end
+
+            if effect.heal_amount_max_hp_delta then
+                effect.level[lvl].heal_amount_max_hp = (effect.level[1].heal_amount_max_hp or 0.) + math.floor(lvl / (effect.heal_amount_max_hp_delta_level or 1.)) * effect.heal_amount_max_hp_delta
             end
 
             if effect.life_restored_delta then
@@ -313,7 +318,7 @@ do
 
                     wave_speed = 500.,
 
-                    sound = { { pack = { "Sounds\\Spells\\FrostNova_Effect_1.wav", "Sounds\\Spells\\FrostNova_Effect_2.wav", "Sounds\\Spells\\FrostNova_Effect_3.wav", "Sounds\\Spells\\FrostNova_Effect_4.wav", "Sounds\\Spells\\FrostNova_Effect_5.wav" }, volume = 325, cutoff = 1800. } },
+                    sound = { { pack = { "Sounds\\Spells\\FrostNova_Effect_1.wav", "Sounds\\Spells\\FrostNova_Effect_2.wav", "Sounds\\Spells\\FrostNova_Effect_3.wav", "Sounds\\Spells\\FrostNova_Effect_4.wav", "Sounds\\Spells\\FrostNova_Effect_5.wav" }, volume = 275, cutoff = 1800. } },
                     sound_on_hit = { pack = { "Sounds\\Spells\\frost_nova_hit_1.wav", "Sounds\\Spells\\frost_nova_hit_2.wav", "Sounds\\Spells\\frost_nova_hit_3.wav" }, volume = 100, cutoff = 1800. },
 
                     applied_buff = { [1] = { modificator = ADD_BUFF, buff_id = 'A00S', target_type = ON_ENEMY } },
@@ -397,8 +402,8 @@ do
             }
         })
 
-        NewEffectTemplate('fire_wall_effect', {
-            name = "fire wall effect",
+        NewEffectTemplate('fire_wave_effect', {
+            name = "fire wave effect",
             power_delta = 3,
             power_delta_level = 1,
             get_level_from_skill = "AFRW",
@@ -406,7 +411,7 @@ do
 
             level = {
                 [1] = {
-                    power = 42,
+                    power = 53,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -420,6 +425,41 @@ do
                     sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx", point = "chest", duration = 1.  }, } },
                     max_targets = 1,
                     hit_once_in = 0.5
+                }
+            }
+        })
+
+        --==========================================--
+        NewEffectTemplate('fire_wall_effect', {
+            name = "fire_wall_effect",
+            get_level_from_skill = "AFWL",
+            level = {
+                [1] = {
+                    area_of_effect = 125.,
+                    max_targets = 300,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A00D', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+
+        --==========================================--
+        NewEffectTemplate('fire_wall_damage_effect', {
+            name = "fire_wall_dmg_effect",
+            power_delta = 1,
+            power_delta_level = 1,
+            get_level_from_skill = "AFWL",
+            level = {
+                [1] = {
+                    power = 12,
+                    can_crit = false,
+                    is_direct = false,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = FIRE_ATTRIBUTE,
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx", point = "chest", duration = 1.  }, } },
+                    max_targets = 1
                 }
             }
         })
@@ -715,6 +755,49 @@ do
             }
         })
         --==========================================--
+        NewEffectTemplate('effect_surge', {
+            name = "surge effect",
+            get_level_from_skill = "ASSU",
+            level = {
+                [1] = {
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'ABSU', target_type = ON_SELF }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('effect_flame_shroud', {
+            name = "flame shroud effect",
+            get_level_from_skill = "ASFS",
+            level = {
+                [1] = {
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'ABFS', target_type = ON_SELF }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('effect_flame_shroud_damage', {
+            name = "flame shroud damage effect",
+            get_level_from_skill = "ASFS",
+            level = {
+                [1] = {
+                    power = 12,
+                    can_crit = false,
+                    is_direct = false,
+                    is_sound = false,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attribute = FIRE_ATTRIBUTE,
+                    max_targets = 300,
+                    SFX_on_unit = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx",
+                    SFX_on_unit_point = "chest",
+                    area_of_effect = 200.
+                }
+            }
+        })
+        --==========================================--
         NewEffectTemplate('ETHK', {
             name = "throwing knife effect",
             power_delta = 2,
@@ -745,7 +828,7 @@ do
             name = "uppercut effect",
             power_delta = 3,
             power_delta_level = 2,
-            get_level_from_skill = "A00B",
+            get_level_from_skill = "ABUP",
             single_attack_instance = true,
 
             level = {
@@ -1059,7 +1142,7 @@ do
         --==========================================--
         NewEffectTemplate('EWCR', {
             name = "warcry effect",
-            get_level_from_skill = "A00C",
+            get_level_from_skill = "ABWC",
             single_attack_instance = true,
             level = {
                 [1] = {
@@ -1199,7 +1282,7 @@ do
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
-                    attribute = DARKNESS_ATTRIBUTE,
+                    attribute = PHYSICAL_ATTRIBUTE,
                     max_targets = 1,
                     sound_on_hit = {
                         pack = { "Sounds\\Spells\\bone_light_hit_1.wav", "Sounds\\Spells\\bone_light_hit_2.wav", "Sounds\\Spells\\bone_light_hit_3.wav", "Sounds\\Spells\\bone_light_hit_4.wav", "Sounds\\Spells\\bone_light_hit_5.wav" },
@@ -1220,17 +1303,17 @@ do
 
             level = {
                 [1] = {
-                    power = 27,
+                    power = 33,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
-                    attribute = DARKNESS_ATTRIBUTE,
+                    attribute = PHYSICAL_ATTRIBUTE,
 
                     max_targets = 1,
 
-                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Human\\ManaFlare\\ManaFlareMissile.mdx", point = "chest", duration = 0. }, } },
+                    sfx_pack = { on_unit = { { effect = "Effect\\model (144).mdx", point = "origin", duration = 0. }, } },
                     sound_on_hit = {
                         pack = { "Abilities\\Spells\\Undead\\Impale\\ImpaleHit.wav" },
                         volume = 120, cutoff = 1600.
@@ -1252,19 +1335,19 @@ do
 
             level = {
                 [1] = {
-                    power = 34,
+                    power = 38,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
-                    attribute = DARKNESS_ATTRIBUTE,
+                    attribute = PHYSICAL_ATTRIBUTE,
 
                     hit_once_in = 1.,
                     max_targets = 300,
                     area_of_effect = 100.,
 
-                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Human\\ManaFlare\\ManaFlareMissile.mdx", point = "chest", duration = 0. }, } },
+                    sfx_pack = { on_unit = { { effect = "Effect\\model (144).mdx", point = "origin", duration = 0. }, } },
                     sound_on_hit = {
                         pack = { "Abilities\\Spells\\Undead\\Impale\\ImpaleHit.wav" },
                         volume = 120, cutoff = 1600.
@@ -1382,13 +1465,15 @@ do
             get_level_from_skill = "ANWK",
             level = {
                 [1] = {
-                    area_of_effect = 550.,
-                    max_targets = 300,
+                    area_of_effect = 450.,
+                    max_targets = 3000,
                     SFX_used_scale = 1.,
-                    SFX_used = "Effect\\az_tian.mdx",
-                    SFX_random_angle = true,
-                    SFX_lifetime = 0.99,
-                    delay = 0.27,
+                    SFX_used = "Effect\\Weaken.mdx",
+                    SFX_lifetime = 3.,
+                    SFX_bonus_z = 5.,
+                    SFX_facing = 270.,
+                    wave_speed = 800.,
+                    delay = 0.2,
                     sound = { { pack = { "Sounds\\Spells\\weaken.wav" }, volume = 120, cutoff = 1600. } },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'ABWK', target_type = ON_ENEMY }
@@ -1402,13 +1487,13 @@ do
             get_level_from_skill = "ANDF",
             level = {
                 [1] = {
-                    area_of_effect = 550.,
-                    max_targets = 300,
-                    SFX_used_scale = 1.75,
-                    SFX_used = "Effect\\azrael_mofazhen.mdx",
+                    area_of_effect = 450.,
+                    max_targets = 3000,
+                    SFX_used = "Effect\\Decrepify.mdx",
                     SFX_random_angle = true,
-                    SFX_lifetime = 1.,
-                    delay = 0.15,
+                    SFX_lifetime = 3.,
+                    wave_speed = 800.,
+                    delay = 0.4,
                     sound = { { pack = { "Sounds\\Spells\\decrepify.wav" }, volume = 120, cutoff = 1600. } },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'ABDC', target_type = ON_ENEMY }
@@ -1422,8 +1507,8 @@ do
             get_level_from_skill = "ANDF",
             level = {
                 [1] = {
-                    area_of_effect = 550.,
-                    max_targets = 300,
+                    area_of_effect = 450.,
+                    max_targets = 3000,
                     SFX_used_scale = 1.65,
                     SFX_used = "Effect\\SuperDarkFlash.mdx",
                     SFX_random_angle = true,
@@ -1434,6 +1519,77 @@ do
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'ABHR', target_type = ON_ENEMY }
                     },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('torture_effect', {
+            name = "torture effect",
+            get_level_from_skill = "ANTT",
+            level = {
+                [1] = {
+                    area_of_effect = 450.,
+                    max_targets = 3000,
+                    SFX_used_scale = 1.,
+                    SFX_used = "Effect\\Torture.mdx",
+                    SFX_random_angle = true,
+                    SFX_lifetime = 1.,
+                    SFX_bonus_z = 5.,
+                    wave_speed = 800.,
+                    delay = 0.4,
+                    sound = { { pack = { "Sounds\\Spells\\lowerresist.wav" }, volume = 120, cutoff = 1600. } },
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'ABTT', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('torture_damage_effect', {
+            name = "torture damage effect",
+            get_level_from_skill = "ANTT",
+            power_delta = 1,
+            level = {
+                [1] = {
+                    power = 12,
+                    can_crit = false,
+                    is_direct = false,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = DARKNESS_ATTRIBUTE,
+                    max_targets = 1,
+                    sfx_pack = {
+                        on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest" } },
+                    }
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('torture_heal_effect', {
+            name = "torture heal effect",
+            get_level_from_skill = "ANTT",
+            heal_amount_max_hp_delta = 0.01,
+            heal_amount_max_hp_delta_level = 10,
+            level = {
+                [1] = {
+                    SFX_on_unit            = 'Effect\\VampiricAuraTarget.mdx',
+                    SFX_on_unit_point     = 'origin',
+                    SFX_on_unit_duration = 1.833,
+                    heal_amount_max_hp = 0.02,
+                    max_targets = 1,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('skele_heal_effect', {
+            name = "skele heal effect",
+            level = {
+                [1] = {
+                    SFX_on_unit            = 'Effect\\VampiricAuraTarget.mdx',
+                    SFX_on_unit_point     = 'origin',
+                    SFX_on_unit_duration = 1.833,
+                    heal_amount_max_hp = 0.05,
+                    max_targets = 1,
                 }
             }
         })
@@ -1468,7 +1624,8 @@ do
                     resource_restored_from_hit_max = 20,
                     sfx_pack = {
                         on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest" } },
-                        on_caster_restore = { { effect = "Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdx", point = "origin", duration = 0. }, } },
+                        on_caster_restore = { { effect = "Abilities\\Spells\\Undead\\DeathPact\\DeathPactTarget.mdx", point = "origin", duration = 0. }, }
+                    },
                 }
             }
         })
@@ -1481,7 +1638,7 @@ do
 
             level = {
                 [1] = {
-                    power = 33,
+                    power = 44,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
@@ -1507,19 +1664,19 @@ do
 
             level = {
                 [1] = {
-                    power = 17,
+                    power = 19,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
-                    attribute = DARKNESS_ATTRIBUTE,
+                    attribute = PHYSICAL_ATTRIBUTE,
                     max_targets = 1,
                     sound_on_hit = {
                       pack = { "Sounds\\Spells\\bone_rip_1.wav", "Sounds\\Spells\\bone_rip_2.wav", "Sounds\\Spells\\bone_rip_3.wav" },
                       volume = 125,
                       cutoff = 1500.
                     },
-                    --sfx_pack = { on_unit = { { effect = "Abilities\\Weapons\\PoisonSting\\PoisonStingTarget.mdx", point = "chest", duration = 0.766 }, } },
+                    sfx_pack = { on_unit = { { effect = "Effect\\model (144).mdx", point = "origin", duration = 0. }, } },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'ABRD', target_type = ON_ENEMY }
                     },
@@ -1543,12 +1700,65 @@ do
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
-                    attribute = ICE_ATTRIBUTE,
+                    attribute = DARKNESS_ATTRIBUTE,
                     attribute_bonus = 10,
 
                     area_of_effect = 150.,
                     max_targets = 300,
+                }
+            }
 
+        })
+        --==========================================--
+        NewEffectTemplate('forced_decay_effect', {
+            name = "forced_decay_effect",
+            power_delta = 1,
+            power_delta_level = 1,
+            get_level_from_skill = "ANFD",
+            stack_hitnumbers = true,
+
+            level = {
+                [1] = {
+                    power = 5,
+                    global_crit = true,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = DARKNESS_ATTRIBUTE,
+                    max_targets = 1,
+                    --sound_on_hit = {
+                       -- pack = { "Sounds\\Spells\\bone_light_hit_1.wav", "Sounds\\Spells\\bone_light_hit_2.wav", "Sounds\\Spells\\bone_light_hit_3.wav", "Sounds\\Spells\\bone_light_hit_4.wav", "Sounds\\Spells\\bone_light_hit_5.wav" },
+                       -- volume = 100, cutoff = 1500.
+                    --},
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest" } }, },
+                }
+            }
+
+        })
+        --==========================================--
+        NewEffectTemplate('forced_decay_splash_effect', {
+            name = "forced_decay_splash_effect",
+            power_delta = 1,
+            power_delta_level = 1,
+            get_level_from_skill = "ANFD",
+            stack_hitnumbers = true,
+
+            level = {
+                [1] = {
+                    power = 2,
+                    global_crit = true,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = DARKNESS_ATTRIBUTE,
+                    max_targets = 1,
+                    --sound_on_hit = {
+                       -- pack = { "Sounds\\Spells\\bone_light_hit_1.wav", "Sounds\\Spells\\bone_light_hit_2.wav", "Sounds\\Spells\\bone_light_hit_3.wav", "Sounds\\Spells\\bone_light_hit_4.wav", "Sounds\\Spells\\bone_light_hit_5.wav" },
+                       -- volume = 100, cutoff = 1500.
+                    --},
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest" } }, },
                 }
             }
 
@@ -2410,6 +2620,54 @@ do
             }
         })
         --==========================================--
+        NewEffectTemplate('rot_damage_effect', {
+            name = "rot_damage_effect",
+
+            level = {
+                [1] = {
+                    weapon_damage_percent_bonus = 0.08,
+                    can_crit = false,
+                    is_direct = false,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = POISON_ATTRIBUTE
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('living_horrors_effect', {
+            name = "living_horrors_effect",
+            single_attack_instance = true,
+
+            level = {
+                [1] = {
+                    weapon_damage_percent_bonus = 1.25,
+                    global_crit = true,
+                    can_crit = true,
+                    is_direct = false,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = DARKNESS_ATTRIBUTE,
+                    area_of_effect = 100.,
+                    max_targets = 300,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('living_horrors_fear_effect', {
+            name = "living_horrors_fear_effect",
+
+            level = {
+                [1] = {
+                    area_of_effect = 225.,
+                    max_targets = 3000,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A00F', target_type = ON_ENEMY },
+                    },
+                }
+            }
+        })
+        --==========================================--
         NewEffectTemplate('PHWK', {
             name = "health restore",
             level = {
@@ -2420,7 +2678,7 @@ do
                     SFX_on_caster_scale      = 0.7,
                     SFX_on_caster_duration = 1.833,
                     life_percent_restored = 0.25,
-                    sound = { { pack = { "Sound\\life_potion.wav" }, volume = 120, cutoff = 1600. } },
+                    sound = { { pack = { "Sound\\life_potion.wav" }, volume = 100, cutoff = 1600. } },
                 },
                 [2] = {
                     max_targets = 1,
@@ -2429,7 +2687,7 @@ do
                     SFX_on_caster_scale      = 0.85,
                     SFX_on_caster_duration = 1.833,
                     life_percent_restored = 0.5,
-                    sound = { { pack = { "Sound\\life_potion.wav" }, volume = 120, cutoff = 1600. } },
+                    sound = { { pack = { "Sound\\life_potion.wav" }, volume = 100, cutoff = 1600. } },
                 },
                 [3] = {
                     max_targets = 1,
@@ -2438,7 +2696,7 @@ do
                     SFX_on_caster_scale      = 1.,
                     SFX_on_caster_duration = 1.833,
                     life_percent_restored = 0.75,
-                    sound = { { pack = { "Sound\\life_potion.wav" }, volume = 120, cutoff = 1600. } },
+                    sound = { { pack = { "Sound\\life_potion.wav" }, volume = 100, cutoff = 1600. } },
                 }
             }
         })
@@ -2453,7 +2711,7 @@ do
                     SFX_on_caster_scale      = 0.7,
                     SFX_on_caster_duration = 1.833,
                     resource_percent_restored = 0.25,
-                    sound = { { pack = { "Sound\\mana_potion.wav" }, volume = 120, cutoff = 1600. } },
+                    sound = { { pack = { "Sound\\mana_potion.wav" }, volume = 100, cutoff = 1600. } },
                 },
                 [2] = {
                     max_targets = 1,
@@ -2462,7 +2720,7 @@ do
                     SFX_on_caster_scale      = 0.85,
                     SFX_on_caster_duration = 1.833,
                     resource_percent_restored = 0.5,
-                    sound = { { pack = { "Sound\\mana_potion.wav" }, volume = 120, cutoff = 1600. } },
+                    sound = { { pack = { "Sound\\mana_potion.wav" }, volume = 100, cutoff = 1600. } },
                 },
                 [3] = {
                     max_targets = 1,
@@ -2471,7 +2729,7 @@ do
                     SFX_on_caster_scale      = 1.,
                     SFX_on_caster_duration = 1.833,
                     resource_percent_restored = 0.75,
-                    sound = { { pack = { "Sound\\mana_potion.wav" }, volume = 120, cutoff = 1600. } },
+                    sound = { { pack = { "Sound\\mana_potion.wav" }, volume = 100, cutoff = 1600. } },
                 }
             }
         })
@@ -2481,21 +2739,21 @@ do
             level = {
                 [1] = {
                     max_targets  = 1,
-                    sound = { { pack = { "Sound\\full_life_potion.wav" }, volume = 120, cutoff = 1600. } },
+                    sound = { { pack = { "Sound\\full_life_potion.wav" }, volume = 100, cutoff = 1600. } },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A01D', target_type = ON_SELF }
                     },
                 },
                 [2] = {
                     max_targets  = 1,
-                    sound = { { pack = { "Sound\\full_life_potion.wav" }, volume = 120, cutoff = 1600. } },
+                    sound = { { pack = { "Sound\\full_life_potion.wav" }, volume = 100, cutoff = 1600. } },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A01D', target_type = ON_SELF }
                     },
                 },
                 [3] = {
                     max_targets  = 1,
-                    sound = { { pack = { "Sound\\full_life_potion.wav" }, volume = 120, cutoff = 1600. } },
+                    sound = { { pack = { "Sound\\full_life_potion.wav" }, volume = 100, cutoff = 1600. } },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A01D', target_type = ON_SELF }
                     },
@@ -2529,7 +2787,7 @@ do
             level = {
                 [1] = {
                     max_targets  = 1,
-                    sound = { { pack = { "Sound\\cure_poison_potion.wav" }, volume = 120, cutoff = 1600. } },
+                    sound = { { pack = { "Sound\\cure_poison_potion.wav" }, volume = 100, cutoff = 1600. } },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'AANT', target_type = ON_SELF }
                     },
@@ -2542,7 +2800,7 @@ do
             level = {
                 [1] = {
                     max_targets  = 1,
-                    sound = { { pack = { "Sound\\strengh_potion.wav" }, volume = 120, cutoff = 1600. } },
+                    sound = { { pack = { "Sound\\strengh_potion.wav" }, volume = 100, cutoff = 1600. } },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'AADR', target_type = ON_SELF }
                     },
@@ -2567,7 +2825,7 @@ do
             level = {
                 [1] = {
                     max_targets  = 1,
-                    sound = { { pack = { "Sound\\invulnerability_potion.wav" }, volume = 120, cutoff = 1600. } },
+                    sound = { { pack = { "Sound\\invulnerability_potion.wav" }, volume = 100, cutoff = 1600. } },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'ASPT', target_type = ON_SELF }
                     },
@@ -2611,6 +2869,26 @@ do
                     },
                 }
             }
+        })
+        --==========================================--
+        NewEffectTemplate('spider_poison_dot', {
+            name = "spider poison effect periodic",
+            power_delta = 2,
+            power_delta_level = 5,
+            attack_percent_bonus_delta = 0.1,
+            attack_percent_bonus_delta_level = 5,
+            get_level_from_wave = true,
+
+            level = {
+                [1] = {
+                    power = 5,
+                    attack_percent_bonus = 0.85,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attribute = POISON_ATTRIBUTE,
+                    attribute_bonus = 10,
+                }
+            }
+
         })
         --==========================================--
         NewEffectTemplate('ESQM', {
@@ -2788,7 +3066,7 @@ do
             power_delta_level = 1,
             level = {
                 [1] = {
-                    power = 18,
+                    power = 22,
                     can_crit = true,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -2809,7 +3087,9 @@ do
             get_level_from_wave = true,
             level = {
                 [1] = {
-                    power = 25,
+                    power = 42,
+                    can_crit = true,
+                    is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = ICE_ATTRIBUTE,
@@ -2870,6 +3150,33 @@ do
                     },
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'ABCR', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('butcher_charge_effect', {
+            name = "butcher charge effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_wave = true,
+            single_attack_instance = true,
+            level = {
+                [1] = {
+                    power = 33,
+                    attack_percent_bonus = 0.8,
+                    is_sound = true,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    max_targets = 300,
+                    SFX_on_unit = "Effect\\Ephemeral Cut Red.mdx",
+                    SFX_on_unit_point = "chest",
+                    SFX_on_unit_scale = 1.1,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A00M', target_type = ON_ENEMY }
                     },
                 }
             }
@@ -3274,6 +3581,105 @@ do
                     attribute_bonus = 35
                 }
             }
+        })
+        --==========================================--
+        NewEffectTemplate('andariel_poison_effect', {
+            name = "andariel poison effect",
+            get_level_from_wave = true,
+            power_delta = 1,
+            power_delta_level = 1,
+            attribute_bonus_delta = 1,
+            attribute_bonus_delta_level = 1,
+            level = {
+                [1] = {
+                    power = 7,
+                    can_crit = false,
+                    is_direct = false,
+                    is_sound = false,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = POISON_ATTRIBUTE,
+                    attribute_bonus = 35
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('andariel_hellfire_effect', {
+            name = "andariel hellfire effect",
+            get_level_from_wave = true,
+            power_delta = 2,
+            power_delta_level = 1,
+            attribute_bonus_delta = 1,
+            attribute_bonus_delta_level = 1,
+            level = {
+                [1] = {
+                    power = 25,
+                    can_crit = false,
+                    is_direct = false,
+                    is_sound = false,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = FIRE_ATTRIBUTE,
+                    attribute_bonus = 35,
+                    max_targets = 300,
+                    area_of_effect = 100.,
+                    hit_once_in = 0.32,
+                    sound_on_hit = {
+                        pack = { "Sounds\\Spells\\singe1.wav", "Sounds\\Spells\\singe2.wav", "Sounds\\Spells\\singe3.wav" },
+                        volume = 110, cutoff = 1500.
+                    },
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx", point = "chest", duration = 1.  }, } },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('baal_hoarfrost', {
+            name = "baal hoarfrost damage",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_wave = true,
+
+            level = {
+                [1] = {
+                    power = 50,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = ICE_ATTRIBUTE,
+                    attribute_bonus = 25,
+                    SFX_on_unit = "Abilities\\Spells\\Items\\AIob\\AIobSpecialArt.mdx",
+                    SFX_on_unit_point = "chest",
+                    hit_once_in = 0.1
+                }
+            }
+
+        })
+        --==========================================--
+        NewEffectTemplate('baal_nova', {
+            name = "baal nova damage",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_wave = true,
+
+            level = {
+                [1] = {
+                    power = 67,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = FIRE_ATTRIBUTE,
+                    attribute_bonus = 25,
+                    sound_on_hit = {
+                        pack = { "Sounds\\Spells\\singe1.wav", "Sounds\\Spells\\singe2.wav", "Sounds\\Spells\\singe3.wav" },
+                        volume = 125, cutoff = 1500.
+                    },
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx", point = "chest", duration = 1. }, } },
+                    hit_once_in = 1.
+                }
+            }
+
         })
         --==========================================--
         NewEffectTemplate('ESKC', {
@@ -3798,7 +4204,7 @@ do
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
-                    attribute = DARKNESS_ATTRIBUTE,
+                    attribute = PHYSICAL_ATTRIBUTE,
                     max_targets = 1,
                     hit_once_in = 0.33,
                 }
@@ -3833,6 +4239,83 @@ do
                     sfx_pack = { on_caster_restore = { { effect = "Abilities\\Spells\\Items\\AIma\\AImaTarget.mdx", point = "origin", duration = 0.  }, } },
                 }
             }
+        })
+        --==========================================--
+        NewEffectTemplate('lightning_nova_legendary', {
+            name = "lightning_nova_legendary",
+            single_attack_instance = true,
+
+            level = {
+                [1] = {
+                    power = 79,
+                    global_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = LIGHTNING_ATTRIBUTE,
+
+                    area_of_effect = 320.,
+                    max_targets = 300,
+                    SFX_used = "Effect\\LightningNova.mdx",
+                    SFX_used_scale = 1.,
+                    wave_speed = 500.,
+
+                    sound = { { pack = { "Sounds\\Effects\\Nova_Electricity_1.wav", "Sounds\\Effects\\Nova_Electricity_2.wav", "Sounds\\Effects\\Nova_Electricity_3.wav", "Sounds\\Effects\\Nova_Electricity_4.wav" }, volume = 135, cutoff = 1800. } },
+                    sound_on_hit = { pack = { "Sounds\\Spells\\lightning_hit_1.wav", "Sounds\\Spells\\lightning_hit_2.wav", "Sounds\\Spells\\lightning_hit_3.wav" }, volume = 100, cutoff = 1700. },
+
+                    SFX_on_unit = "Abilities\\Spells\\Items\\AIlb\\AIlbSpecialArt.mdx",
+                    SFX_on_unit_point = "chest",
+                }
+            }
+
+        })
+        --==========================================--
+        NewEffectTemplate('pitlord_darkness_bolt', {
+            name = "darkness effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_wave = true,
+            single_attack_instance = true,
+
+            level = {
+                [1] = {
+                    power = 110,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = DARKNESS_ATTRIBUTE,
+                    attribute_bonus = 10,
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest" } } },
+                }
+            }
+
+        })
+        --==========================================--
+        NewEffectTemplate('pitlord_meteor', {
+            name = "darkness effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_wave = true,
+            single_attack_instance = true,
+
+            level = {
+                [1] = {
+                    delay = 1.,
+                    SFX_used = "Effect\\DarknessMeteor.mdx",
+                    SFX_used_scale = 1.,
+                    power = 67,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = DARKNESS_ATTRIBUTE,
+                    attribute_bonus = 10,
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest" } } },
+                    area_of_effect = 160.
+                }
+            }
+
         })
 
         InitAuras()

@@ -4,7 +4,7 @@ do
     MIN_CRITICAL = 0.
 
     MAX_BLOCK_CHANCE = 60.
-    MIN_ATTACK_DAMAGE_REDUCTION = 0.4
+    MIN_ATTACK_DAMAGE_REDUCTION = 0.22
     MIN_ATTRIBUTE_DAMAGE_REDUCTION = 0.35
 
     MELEE_ATTACK = 1
@@ -25,6 +25,7 @@ do
 
 
     --call AddUnitAnimationProperties(gg_unit_H003_0009, "lumber", true)
+
 
 
     ---@param unit unit
@@ -83,7 +84,7 @@ do
 
             for i = 1, #source.endurance_stack do
                 if source.endurance_stack[i].buffid and source.endurance_stack[i].buffid == buffid then
-                    source.endurance_stack[i].current = source.endurance_stack[i].current + amount
+                    source.endurance_stack[i].current = source.endurance_stack[i].current + amount * GetUnitParameterValue(unit, ENDURANCE_POWER)
                     if source.endurance_stack[i].max > source.endurance_stack[i].current then source.endurance_stack[i].current = source.endurance_stack[i].max end
                     break
                 end
@@ -99,7 +100,7 @@ do
 
             for i = 1, source.endurance_stack do
                 if source.endurance_stack[i].buffid and source.endurance_stack[i].buffid == buffid then
-                    source.endurance_stack[i].max = amount
+                    source.endurance_stack[i].max = amount * GetUnitParameterValue(unit, ENDURANCE_POWER)
                     UpdateEndurance(unit)
                     break
                 end
@@ -114,6 +115,8 @@ do
     function AddMaxEnduranceUnit(unit, amount, buffid, permanent)
         local source = GetUnitData(unit)
         local index = #source.endurance_stack+1
+
+           amount = amount * GetUnitParameterValue(unit, ENDURANCE_POWER)
 
             for i = 1, index-1 do
                 if source.endurance_stack[i].buffid and source.endurance_stack[i].buffid == buffid then
@@ -194,7 +197,6 @@ do
 
         if attacker == nil then print("Warning: " .. GetUnitName(source) .. " doesn't have unit data.") end
         if victim == nil then print("Warning: " .. GetUnitName(target) .. " doesn't have unit data.") end
-        --if source == nil then print("DAMAGE - SOURCE NULL") end
 
             if target == nil then return 0 end
 
@@ -204,7 +206,7 @@ do
 
         if damage_type == DAMAGE_TYPE_PHYSICAL and direct and IsUnitBlinded(source) then
             CreateHitnumber("", source, target, ATTACK_STATUS_MISS)
-            AddSoundVolume("Sound\\Evade".. GetRandomInt(1,3) ..".wav", GetUnitX(target), GetUnitY(target), 115, 1400.)
+            AddSoundVolume("Sound\\Evade".. GetRandomInt(1,3) ..".wav", GetUnitX(target), GetUnitY(target), 115, 1400., 3800.)
         else
 
             if damage_type == DAMAGE_TYPE_PHYSICAL and direct and victim.stats[DODGE_CHANCE].value > 0 then
@@ -216,7 +218,7 @@ do
 
                     if Chance(dodge) then
                         CreateHitnumber("", source, target, ATTACK_STATUS_MISS)
-                        AddSoundVolume("Sound\\Evade".. GetRandomInt(1,3) ..".wav", GetUnitX(target), GetUnitY(target), 115, 1400.)
+                        AddSoundVolume("Sound\\Evade".. GetRandomInt(1,3) ..".wav", GetUnitX(target), GetUnitY(target), 115, 1400., 3800.)
                         return 0
                     end
 
@@ -337,17 +339,16 @@ do
                     if boost < -200. then boost = -200. end
                 end
 
-                --if boost < 0 then boost = 0 end
-
                 damage = damage * (1. + (ParamToPercent(boost, MAGICAL_ATTACK) * 0.01))
+                if damage < 1 then damage = 1 end
             end
-            --print("7")
 
             if attack_type and direct then
                 local bonus_attack_modifier = attack_type == MELEE_ATTACK and attacker.stats[BONUS_MELEE_DAMAGE].value or attacker.stats[BONUS_RANGE_DAMAGE].value
 
+
                     attack_modifier = attack_type == MELEE_ATTACK and victim.stats[MELEE_DAMAGE_REDUCTION].value or victim.stats[RANGE_DAMAGE_REDUCTION].value
-                    attack_modifier = 1. - ((attack_modifier - bonus_attack_modifier) * 0.01)
+                    attack_modifier = 1. - (ParamToPercent(attack_modifier - bonus_attack_modifier, MELEE_DAMAGE_REDUCTION) * 0.01)
 
                 if attack_modifier < MIN_ATTACK_DAMAGE_REDUCTION then attack_modifier = MIN_ATTACK_DAMAGE_REDUCTION end
             end
@@ -362,7 +363,6 @@ do
             local impaired_bonus = 1.
             if IsUnitDisabled(target) then impaired_bonus = impaired_bonus + (attacker.stats[DAMAGE_TO_CC_ENEMIES].value * 0.01) end
 
-            --print("8")
             if attribute then
                 local attribute_value = attacker.equip_point[WEAPON_POINT].ATTRIBUTE == attribute and attacker.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS or 0
 
@@ -370,29 +370,16 @@ do
                         attribute_value = attribute_value + myeffect.eff.level[myeffect.l].attribute_bonus
                     end
 
-                    attribute_bonus = 1. + (((attacker.stats[GetAttributeBonusParam(attribute)].value + attribute_value) - victim.stats[GetAttributeResistParam(attribute)].value) * 0.01)
+                    attribute_bonus = 1. + (((attacker.stats[GetAttributeBonusParam(attribute)].value + attribute_value + (damage_table.attribute_bonus or 0)) - victim.stats[GetAttributeResistParam(attribute)].value) * 0.01)
                     if attribute_bonus < MIN_ATTRIBUTE_DAMAGE_REDUCTION then attribute_bonus = MIN_ATTRIBUTE_DAMAGE_REDUCTION end
 
             end
-            --print("9")
+
             damage = ((damage * attribute_bonus * trait_modifier) * critical_rate * block_reduction) * defence * attack_modifier * distance_bonus * impaired_bonus
-            --print("10")
         end
-
-
-        --print("attrib "..attribute_bonus)
-        --print("rate "..critical_rate)
-        --print("defence "..defence)
-        --print("modifier "..attack_modifier)
-        --print(TimerGetRemaining(attacker.attack_timer))
-        --print("total raw damage "..damage)
-        --print("dispersion "..attacker.equip_point[WEAPON_POINT].DISPERSION[1] .. "/" .. attacker.equip_point[WEAPON_POINT].DISPERSION[2])
-        --print("11")
 
         damage = R2I(GetRandomReal(damage * attacker.equip_point[WEAPON_POINT].DISPERSION[1], damage * attacker.equip_point[WEAPON_POINT].DISPERSION[2]))
 
-
-        --damage_table = { damage = damage, attribute = attribute, attack_status = attack_status, damage_type = damage_type, attack_type = attack_type, is_direct = direct, effect = myeffect }
         damage_table.damage = damage
         damage_table.attribute = attribute
         damage_table.attack_status = attack_status
@@ -401,21 +388,16 @@ do
         damage_table.is_direct = direct
         damage_table.effect = myeffect
 
-           -- myeffect.eff.single_attack_instance
 
         if direct then
 
             if myeffect and myeffect.eff then
                 local ability_instance = myeffect.eff.ability_instance or nil
                 local is_attack = ability_instance and ability_instance.is_attack or false
-                --print("effect")
 
                     if not attacker.attack_instances[myeffect.eff.id] then
-                        --print("effect attack not in cd")
-
                         attacker.attack_instances[myeffect.eff.id] = true
                         ability_instance.is_attack = true
-                        --if myeffect.eff.single_attack_instance then  end
 
                         if attacker.stats[HP_PER_HIT].value > 0 then
                             SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) + attacker.stats[HP_PER_HIT].value)
@@ -449,8 +431,6 @@ do
                             DestroyTimer(timer)
                         end)
 
-                        --print("launch effect attack cd")
-
                         damage_table.proc_list = ability_instance.proc_list
                         damage_table = OnMyAttack(source, target, damage_table)
                         damage = damage_table.damage
@@ -460,7 +440,6 @@ do
                         attack_type = damage_table.attack_type
                         direct = damage_table.is_direct
                         myeffect = damage_table.effect
-                       -- print("main attack done")
                     elseif is_attack then
                         damage_table.proc_list = ability_instance.proc_list
                         damage_table = OnMyAttack(source, target, damage_table)
@@ -471,7 +450,6 @@ do
                         attack_type = damage_table.attack_type
                         direct = damage_table.is_direct
                         myeffect = damage_table.effect
-                        --print("is attack done")
                     end
 
             else
@@ -518,21 +496,20 @@ do
             if damage < 1 then damage = 1 end
 
             if victim.endurance_stack[1] then
-                --print("has shield")
+
+                local expected_barrier_damage = math.floor(damage * GetUnitParameterValue(source, DAMAGE_TO_ENDURANCE) + 0.5)
                 local total_blocked = damage
 
                     for i = 1, #victim.endurance_stack do
 
                         if victim.endurance_stack[i].current >= 0 then
-                            if victim.endurance_stack[i].current >= damage then
-                                victim.endurance_stack[i].current = victim.endurance_stack[i].current - damage
+                            if victim.endurance_stack[i].current >= expected_barrier_damage then
+                                victim.endurance_stack[i].current = victim.endurance_stack[i].current - expected_barrier_damage
                                 damage = 0
-                                --print("stop")
                                 break
                             else
-                                damage = damage - victim.endurance_stack[i].current
+                                damage = (expected_barrier_damage - victim.endurance_stack[i].current) - (expected_barrier_damage - damage)
                                 victim.endurance_stack[i].current = 0
-                                --print("pass next")
                             end
                         end
 
@@ -541,18 +518,13 @@ do
 
                     for k, v in ipairs(victim.endurance_stack) do
                         if victim.endurance_stack[k].current <= 0 then
-                            --print("got one " .. k)
                             RemoveBuff(target, victim.endurance_stack[k].buffid)
                             RemoveEndurance(target, victim.endurance_stack[k].buffid, false)
-                            --print("removed")
                         end
                     end
 
 
-
-                --print("absorb done")
                 total_blocked = total_blocked - damage
-                --print(total_blocked)
                 if total_blocked > 0 then
 
                     if direct then
@@ -564,7 +536,7 @@ do
                             BlzSetSpecialEffectZ(effect, GetUnitFlyHeight(target) + BlzGetUnitZ(target))
                             BlzSetSpecialEffectYaw(effect, angle * bj_DEGTORAD)
                             DestroyEffect(effect)
-                            AddSoundVolume("Abilities\\Spells\\Undead\\DeathPact\\DeathPactTargetBirth1.wav", GetUnitX(target), GetUnitY(target), 100, 1900.)
+                            AddSoundVolume("Abilities\\Spells\\Undead\\DeathPact\\DeathPactTargetBirth1.wav", GetUnitX(target), GetUnitY(target), 100, 1900., 4000.)
                     end
 
                         UpdateEndurance(target)
@@ -601,47 +573,43 @@ do
                 end
 
             end
-            --print("14")
 
-            --if damage == 0 then damage = 1 end
-
-            --print("16")
             if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
-                --SetUnitState(unit, UNIT_STATE_LIFE, BlzGetUnitMaxHP(unit))
+
                 if damage >= BlzGetUnitMaxHP(target) * 0.16 and damage >= GetUnitState(target, UNIT_STATE_LIFE) and not IsAHero(target) then
                     SetUnitExploded(target, true)
                     victim.death_x = GetUnitX(target)
                     victim.death_y = GetUnitY(target)
                     victim.death_z = GetUnitZ(target)
                     victim.exploded = true
-                    if attribute == ICE_ATTRIBUTE then
-                        local effect = AddSpecialEffect("Effect\\Ice Cracks.mdx", victim.death_x, victim.death_y)
-                        BlzSetSpecialEffectScale(effect, 0.9 * BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE))
-                        BlzSetSpecialEffectYaw(effect, GetRandomReal(0., 360.) * bj_DEGTORAD)
-                        DestroyEffect(effect)
-                        AddSoundVolume("Sound\\shatter".. GetRandomInt(1,3) .. ".wav", victim.death_x, victim.death_y, 120, 1500.)
-                    elseif attribute == LIGHTNING_ATTRIBUTE then
-                        local effect = AddSpecialEffect("Effect\\shandian-wave-xiao.mdx", victim.death_x, victim.death_y)
-                        BlzSetSpecialEffectScale(effect, 0.9 * BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE))
-                        BlzSetSpecialEffectYaw(effect, GetRandomReal(0., 360.) * bj_DEGTORAD)
-                        BlzSetSpecialEffectZ(effect, GetZ(victim.death_x, victim.death_y) + 65. + GetUnitFlyHeight(target))
-                        DestroyEffect(effect)
-                    elseif attribute == FIRE_ATTRIBUTE then
-                        local effect = AddSpecialEffect("Effect\\by_wood_effect_yuzhiboyou_fire_fengxianhuo_2.mdx", victim.death_x, victim.death_y)
-                        BlzSetSpecialEffectScale(effect, 0.9 * BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE))
-                        BlzSetSpecialEffectYaw(effect, GetRandomReal(0., 360.) * bj_DEGTORAD)
-                        BlzSetSpecialEffectZ(effect, GetZ(victim.death_x, victim.death_y) + 75. + GetUnitFlyHeight(target))
-                        DestroyEffect(effect)
-                    end
+
+                        if attribute == ICE_ATTRIBUTE then
+                            local effect = AddSpecialEffect("Effect\\Ice Cracks.mdx", victim.death_x, victim.death_y)
+                            BlzSetSpecialEffectScale(effect, 0.9 * BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE))
+                            BlzSetSpecialEffectYaw(effect, GetRandomReal(0., 360.) * bj_DEGTORAD)
+                            DestroyEffect(effect)
+                            AddSoundVolume("Sound\\shatter".. GetRandomInt(1,3) .. ".wav", victim.death_x, victim.death_y, 120, 1500., 4000.)
+                        elseif attribute == LIGHTNING_ATTRIBUTE then
+                            local effect = AddSpecialEffect("Effect\\shandian-wave-xiao.mdx", victim.death_x, victim.death_y)
+                            BlzSetSpecialEffectScale(effect, 0.9 * BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE))
+                            BlzSetSpecialEffectYaw(effect, GetRandomReal(0., 360.) * bj_DEGTORAD)
+                            BlzSetSpecialEffectZ(effect, GetZ(victim.death_x, victim.death_y) + 65. + GetUnitFlyHeight(target))
+                            DestroyEffect(effect)
+                        elseif attribute == FIRE_ATTRIBUTE then
+                            local effect = AddSpecialEffect("Effect\\by_wood_effect_yuzhiboyou_fire_fengxianhuo_2.mdx", victim.death_x, victim.death_y)
+                            BlzSetSpecialEffectScale(effect, 0.9 * BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE))
+                            BlzSetSpecialEffectYaw(effect, GetRandomReal(0., 360.) * bj_DEGTORAD)
+                            BlzSetSpecialEffectZ(effect, GetZ(victim.death_x, victim.death_y) + 75. + GetUnitFlyHeight(target))
+                            DestroyEffect(effect)
+                        end
+
                 end
-                --print("15")
+
 
                 damage_table.damage = damage
                 OnDamage_PreHit(source, target, damage, damage_table)
                 damage = damage_table.damage
 
-                --print("17")
-                --print(damage)
                 if damage > 0  then
 
                     if IsUnitType(target, UNIT_TYPE_HERO) and IsAHero(target) and direct and damage > 0 and not victim.groan_cd then
@@ -652,14 +620,13 @@ do
 
                     UnitDamageTarget(source, target, damage, true, false, ATTACK_TYPE_NORMAL, nil, is_sound and attacker.equip_point[WEAPON_POINT].WEAPON_SOUND or nil)
                     OnDamage_End(source, target, damage, damage_table)
-
-                    if myeffect and myeffect.eff.stack_hitnumbers then
+                    if myeffect and myeffect.eff and myeffect.eff.stack_hitnumbers then
                         CreateHitnumber2(damage, source, target, attack_status, myeffect and myeffect.eff.id or nil)
                     else
                         CreateHitnumber(damage, source, target, attack_status)
                     end
                 end
-                --CreateHitnumber2(damage, source, target, attack_status, myeffect and myeffect.eff.id or nil)
+
             end
 
             --print("18")
@@ -683,6 +650,17 @@ do
                     local target =  GetTriggerUnit()
                     local weapon = data.equip_point[WEAPON_POINT]
 
+
+                    if data.on_attack_sound then
+                        if Chance(data.on_attack_sound.chance or 100.) then
+                            AddSoundVolume(data.on_attack_sound.pack[GetRandomInt(1, #data.on_attack_sound.pack)], GetUnitX(data.Owner), GetUnitY(data.Owner), data.on_attack_sound.volume, data.on_attack_sound.cutoff, data.on_attack_sound.distance or 4000.)
+                        end
+                    end
+
+                    if weapon.sound and weapon.sound.pack then
+                        AddSoundVolume(weapon.sound.pack[GetRandomInt(1, #weapon.sound.pack)], GetUnitX(data.Owner), GetUnitY(data.Owner), weapon.sound.volume, weapon.sound.cutoff or 1600., weapon.sound.distance or 4000.)
+                    end
+
                     if weapon.missile or weapon.ranged then
 
                         if weapon.LIGHTNING then
@@ -691,45 +669,51 @@ do
                             LightningEffect_Units(data.Owner, target, weapon.LIGHTNING.id, weapon.LIGHTNING.fade, weapon.LIGHTNING.bonus_z or 60., 60., weapon.LIGHTNING.range, weapon.LIGHTNING.angle)
                             DamageUnit(data.Owner, GetTriggerUnit(), actual_damage, weapon.ATTRIBUTE, weapon.DAMAGE_TYPE, RANGE_ATTACK, true, true, false, nil)
                         else
-                            ThrowMissile(data.Owner, target, nil, nil, GetUnitX(data.Owner), GetUnitY(data.Owner), GetUnitX(target), GetUnitY(target), 0., true)
+
+                            if weapon.angle_deviation then
+                                ThrowMissile(data.Owner, nil, nil, nil, GetUnitX(data.Owner), GetUnitY(data.Owner), 0, 0, AngleBetweenUnits(data.Owner, target) + GetRandomReal(-weapon.angle_deviation, weapon.angle_deviation), true)
+                            else
+                                ThrowMissile(data.Owner, target, nil, nil, GetUnitX(data.Owner), GetUnitY(data.Owner), GetUnitX(target), GetUnitY(target), 0., true)
+                            end
+
                         end
 
                         OnAttackStart(data.Owner, target, { damage = weapon.DAMAGE_TYPE == DAMAGE_TYPE_PHYSICAL and data.stats[PHYSICAL_ATTACK].value or weapon.DAMAGE, damage_type = weapon.DAMAGE_TYPE, attack_type = RANGE_ATTACK, attribute = weapon.ATTRIBUTE })
                     elseif IsUnitInRange(GetEventDamageSource(), GetTriggerUnit(), weapon.RANGE + 125.) then
                         local actual_damage = weapon.DAMAGE_TYPE == DAMAGE_TYPE_PHYSICAL and data.stats[PHYSICAL_ATTACK].value or (weapon.DAMAGE or 0)
-                        local attack_data = { damage = actual_damage, damage_type = weapon.DAMAGE_TYPE, attack_type = MELEE_ATTACK, attribute = weapon.ATTRIBUTE, max_targets = weapon.MAX_TARGETS, attack_wide_angle = weapon.ANGLE or 50. }
+                        local attack_data = { damage = actual_damage, damage_type = weapon.DAMAGE_TYPE, attack_type = MELEE_ATTACK, attribute = weapon.ATTRIBUTE, max_targets = weapon.MAX_TARGETS, attack_wide_angle = weapon.ANGLE or 60. }
 
                         OnAttackStart(data.Owner, target, attack_data)
 
-                        if attack_data.max_targets > 1 then
-                            local attack_effect = {  }
-                            local enemy_group = CreateGroup()
-                            local facing = AngleBetweenUnits(data.Owner, target) * bj_DEGTORAD
-                            local player = GetOwningPlayer(data.Owner)
+                            if attack_data.max_targets > 1 then
+                                local attack_effect = { regular_attack = true }
+                                local enemy_group = CreateGroup()
+                                local facing = AngleBetweenUnits(data.Owner, target) * bj_DEGTORAD
+                                local player = GetOwningPlayer(data.Owner)
 
-                                if GetRandomInt(1, 100) <= GetCriticalChance(data.Owner, 0.) then attack_effect.critical_strike_flag = true end
-                                GroupEnumUnitsInRange(enemy_group, GetUnitX(target), GetUnitY(target), weapon.RANGE + (weapon.RANGE / 4), nil)
-                                if weapon.LIGHTNING then LightningEffect_Units(data.Owner, target, weapon.LIGHTNING.id, weapon.LIGHTNING.fade, 60., 60.) end
-                                DamageUnit(data.Owner, target, attack_data.damage, attack_data.attribute, attack_data.damage_type, MELEE_ATTACK, attack_effect and true or false, true, true, attack_effect)
+                                    if GetRandomInt(1, 100) <= GetCriticalChance(data.Owner, 0.) then attack_effect.critical_strike_flag = true end
+                                    GroupEnumUnitsInRange(enemy_group, GetUnitX(target), GetUnitY(target), weapon.RANGE + (weapon.RANGE / 4), nil)
+                                    if weapon.LIGHTNING then LightningEffect_Units(data.Owner, target, weapon.LIGHTNING.id, weapon.LIGHTNING.fade, 60., 60.) end
+                                    DamageUnit(data.Owner, target, attack_data.damage, attack_data.attribute, attack_data.damage_type, MELEE_ATTACK, true, true, true, attack_effect)
 
-                                    for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
-                                        local picked = BlzGroupUnitAt(enemy_group, index)
-                                        if picked ~= target and IsUnitEnemy(picked, player) and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
-                                            if GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and IsAngleInFace(data.Owner, attack_data.attack_wide_angle, GetUnitX(picked), GetUnitY(picked), false) then
-                                                if weapon.LIGHTNING then
-                                                    LightningEffect_Units(data.Owner, target, weapon.LIGHTNING.id, weapon.LIGHTNING.fade, 60., 60.)
+                                        for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
+                                            local picked = BlzGroupUnitAt(enemy_group, index)
+                                            if picked ~= target and IsUnitEnemy(picked, player) and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
+                                                if GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and IsAngleInFace(data.Owner, attack_data.attack_wide_angle, GetUnitX(picked), GetUnitY(picked), false) then
+                                                    if weapon.LIGHTNING then
+                                                        LightningEffect_Units(data.Owner, target, weapon.LIGHTNING.id, weapon.LIGHTNING.fade, 60., 60.)
+                                                    end
+                                                    DamageUnit(data.Owner, picked, attack_data.damage, attack_data.attribute, attack_data.damage_type, MELEE_ATTACK, true, true, true, attack_effect)
                                                 end
-                                                DamageUnit(data.Owner, picked, attack_data.damage, attack_data.attribute, attack_data.damage_type, MELEE_ATTACK, attack_effect and true or false, true, true, attack_effect)
                                             end
                                         end
-                                    end
 
-                            GroupClear(enemy_group)
-                            DestroyGroup(enemy_group)
-                        else
-                            if weapon.LIGHTNING then LightningEffect_Units(data.Owner, target, weapon.LIGHTNING.id, weapon.LIGHTNING.fade, 60., 60.) end
-                            DamageUnit(data.Owner, target, attack_data.damage, attack_data.attribute, attack_data.damage_type, MELEE_ATTACK, true, true, true, nil)
-                        end
+                                GroupClear(enemy_group)
+                                DestroyGroup(enemy_group)
+                            else
+                                if weapon.LIGHTNING then LightningEffect_Units(data.Owner, target, weapon.LIGHTNING.id, weapon.LIGHTNING.fade, 60., 60.) end
+                                DamageUnit(data.Owner, target, attack_data.damage, attack_data.attribute, attack_data.damage_type, MELEE_ATTACK, true, true, true, nil)
+                            end
 
                     end
 
@@ -750,43 +734,6 @@ do
         end)
 
         BuffsInit()
-
-        RegisterTestCommand("m100", function()
-            print(ParamToPercent(100, MAGICAL_ATTACK))
-        end)
-
-        RegisterTestCommand("m250", function()
-            print(ParamToPercent(250, MAGICAL_ATTACK))
-        end)
-
-        RegisterTestCommand("m500", function()
-            print(ParamToPercent(500, MAGICAL_ATTACK))
-        end)
-
-        RegisterTestCommand("m750", function()
-            print(ParamToPercent(750, MAGICAL_ATTACK))
-        end)
-
-        RegisterTestCommand("m1000", function()
-            print(ParamToPercent(1000, MAGICAL_ATTACK))
-        end)
-
-        RegisterTestCommand("m1250", function()
-            print(ParamToPercent(1250, MAGICAL_ATTACK))
-        end)
-
-
-        RegisterTestCommand("hurt", function() DamageUnit(PlayerHero[1], PlayerHero[1], 5, PHYSICAL_ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, false, true, true, nil) end)
-
-        RegisterTestCommand("shl", function()
-            AddMaxEnduranceUnit(PlayerHero[1], 300, "test_shield", false)
-        end)
-
-        RegisterTestCommand("d300", function() DamageUnit(PlayerHero[1], PlayerHero[1], 300, PHYSICAL_ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, false, true, true, nil) end)
-
-        RegisterTestCommand("d50", function() DamageUnit(PlayerHero[1], PlayerHero[1], 50, PHYSICAL_ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, false, true, true, nil) end)
-
-        RegisterTestCommand("d350", function() DamageUnit(PlayerHero[1], PlayerHero[1], 350, PHYSICAL_ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, false, true, true, nil) end)
 
     end
 

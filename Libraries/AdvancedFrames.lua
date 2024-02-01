@@ -881,9 +881,11 @@ do
                 property_text = property_text .. LOCALE_LIST[my_locale].SUPPRESSION_UI .. R2I(item_data.SUPPRESSION)
             elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
                 --property_text = property_text .. LOCALE_LIST[my_locale].DEFENCE_UI .. R2I(item_data.DEFENCE)
-                    if item_data.SUBTYPE == SHIELD_OFFHAND then
-                        property_text = property_text .. LOCALE_LIST[my_locale].DEFENCE_UI .. R2I(item_data.DEFENCE) .. "|n" .. LOCALE_LIST[my_locale].BLOCK_UI .. R2I(item_data.BLOCK) .. "%%"
-                    end
+                if item_data.SUBTYPE == SHIELD_OFFHAND then
+                    property_text = property_text .. LOCALE_LIST[my_locale].DEFENCE_UI .. R2I(item_data.DEFENCE) .. "|n" .. LOCALE_LIST[my_locale].BLOCK_UI .. R2I(item_data.BLOCK) .. "%%"
+                else
+                    property_text = property_text .. LOCALE_LIST[my_locale].ALLRESIST_UI .. R2I(item_data.ALLRESIST)
+                end
             end
 
 

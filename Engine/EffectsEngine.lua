@@ -70,11 +70,15 @@ do
     ---@param target_type integer
     local function CountBuffEffects(data, target_type)
         local count = 0
-            for i = 1, #data do
-                if data[i].target_type == target_type then
-                    count = count + 1
+
+            if data then
+                for i = 1, #data do
+                    if data[i].target_type == target_type then
+                        count = count + 1
+                    end
                 end
             end
+
         return count
     end
 
@@ -176,12 +180,21 @@ do
             -- delay for effect animation
             local timer = CreateTimer()
             TimerStart(timer, myeffect.hit_delay or 0., false, function()
+                --print("???????")
                 if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
-                    local value = GetUnitState(target, UNIT_STATE_LIFE) + myeffect.heal_amount
-                    SetUnitState(target, value)
-                    CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
-                    ModifyBuffsEffect(source, target, data, lvl, ON_ALLY)
-                    OnEffectApply(source, target, data)
+                    if myeffect.heal_amount then
+                        SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + myeffect.heal_amount)
+                        CreateHitnumber(R2I(myeffect.heal_amount), source, target, HEAL_STATUS)
+                        ModifyBuffsEffect(source, target, data, lvl, ON_ALLY)
+                        OnEffectApply(source, target, data)
+                    end
+                    if myeffect.heal_amount_max_hp then
+                        local value = GetUnitParameterValue(target, HP_VALUE) * myeffect.heal_amount_max_hp
+                        SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + value)
+                        CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
+                        ModifyBuffsEffect(source, target, data, lvl, ON_ALLY)
+                        OnEffectApply(source, target, data)
+                    end
                 end
                 DestroyTimer(timer)
             end)
@@ -380,7 +393,6 @@ do
                 DestroyTimer(GetExpiredTimer())
             end)
 
-
         PlaySpecialEffect(myeffect.SFX_on_caster, source, myeffect.SFX_on_caster_point, myeffect.SFX_on_caster_scale, myeffect.SFX_on_caster_duration)
         if myeffect.sfx_pack then PlaySpecialEffectPack(myeffect.sfx_pack.on_caster, source) end
 
@@ -393,8 +405,10 @@ do
             end
         end
 
+
             local timer = CreateTimer()
             TimerStart(timer, (myeffect.delay or 0.) * (myeffect.timescale or 1.), false, function()
+
 
                 if myeffect.sound_timed and myeffect.sound_timed.pack then AddSoundVolumeZ(myeffect.sound.pack[GetRandomInt(1, #myeffect.sound_timed.pack)], x, y, 35., myeffect.sound_timed.volume, myeffect.sound_timed.cutoff) end
                 if myeffect.shake_magnitude then ShakeByCoords(x, y, myeffect.shake_magnitude, myeffect.shake_duration, myeffect.shake_distance) end
@@ -618,9 +632,11 @@ do
                     end
 
                 end
-                --print("2")
+                --print(data.name)
                 -- healing
-                if myeffect.heal_amount and myeffect.heal_amount > 0 then
+                --print(myeffect.heal_amount_max_hp or 0)
+                if (myeffect.heal_amount and myeffect.heal_amount > 0) or (myeffect.heal_amount_max_hp and myeffect.heal_amount_max_hp > 0) then
+                    --print("HEALING")
                     -- multiple target healing
                     if myeffect.area_of_effect and myeffect.area_of_effect > 0. then
                         local targets = myeffect.max_targets or 1
@@ -642,7 +658,9 @@ do
                         DestroyGroup(enemy_group)
                     else
                         -- single target healing
+                        --print("single target healing")
                         if IsUnitAlly(target, player_entity) and GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
+                            --print("apply healing")
                             ApplyEffectHealing(source, target, data, lvl)
                         end
                     end

@@ -146,7 +146,7 @@ do
         local item = CreateCustomItem(id, 0.,0., false, player)
         if item == nil then return end
 
-        DelayAction(0., function()
+
             local item_data = GetItemData(item)
 
             if item_data.TYPE == ITEM_TYPE_WEAPON then
@@ -245,12 +245,13 @@ do
 
             --item_data.NAME = ParseData(code, "n")
             item_data.actual_name = GetQualityColor(item_data.QUALITY) .. item_data.NAME .. '|r'
+            BlzSetItemName(item, item_data.actual_name)
             GenerateItemLevel(item, 1)
             GenerateItemCost(item, 1)
 
             SetItemVisible(item, false)
             AddToStash(player, item, true, slot)
-        end)
+
     end
 
 

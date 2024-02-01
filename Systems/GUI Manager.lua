@@ -35,7 +35,7 @@ do
 
             EnableDragSelect(false, false)
             BlzEnableSelections(false, true)
-            EnablePreSelect(true, false)
+            EnablePreSelect(true, true)
 
             --ClearMapMusic()
             --StopMusic(false)
@@ -106,48 +106,46 @@ do
                 BlzFrameSetValue(GlobalButton[i].dash_button_cooldown, 0)
                 BlzFrameSetVisible(GlobalButton[i].dash_button_cooldown, false)
 
-                --[[
-                GlobalButton[i].switch_button = CreateSimpleButton("UI\\BTN_CR_WeaponSwitch.blp", 0.026, 0.026, GlobalButton[i].settings_panel_button, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, -0.02, 0.03, GAME_UI)
-                BlzFrameSetEnable(GlobalButton[i].switch_button, false)
-                --BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].dash_button, FRAMEEVENT_CONTROL_CLICK)
-                CreateTooltip(GetLocalString("Смена оружия", "Weapon Switch"), GetLocalString("Быстро меняет оружие", "Quickly switches weapons"), GlobalButton[i].switch_button, 0.14, 0.08, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
-                CreateSimpleChargesText(GlobalButton[i].switch_button, "V", 0.7, 0.7)
-                BlzFrameSetVisible(GlobalButton[i].switch_button, false)
-                ]]
+                GlobalButton[i].minion_command_button = CreateSimpleButton("GUI\\BTNPurpleAttackGround.blp", 0.026, 0.026, GlobalButton[i].dash_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_TOPRIGHT, 0.006, 0.008, GAME_UI)
+                BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].settings_panel_button, FRAMEEVENT_CONTROL_CLICK)
+                CreateTooltip(GetLocalString("Атака слуг", "Minion Attack"), GetLocalString("Приказывает слугам атаковать эту точку", "Order your minion to attack this point"), GlobalButton[i].minion_command_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
+                CreateSimpleChargesText(GlobalButton[i].minion_command_button, "G", 0.7, 0.7)
+                BlzFrameSetVisible(GlobalButton[i].minion_command_button, false)
+
             end
 
-            --print("0")
             ReloadAdvancedFrames()
-            --print("A")
             ReloadPlayerUIFrames()
-            --print("B")
+
+                for i = 1, 6 do
+                    for key = 1, 6 do
+                        if KEYBIND_LIST[key].player_skill_bind_string_id[i] then
+                            local keyskill = GetUnitSkillData(PlayerHero[i], KEYBIND_LIST[key].player_skill_bind_string_id[i])
+                            if keyskill and keyskill.minions then
+                                BlzFrameSetVisible(GlobalButton[i].minion_command_button, true)
+                                BlzFrameSetVisible(PlayerUI.button_borders[8], true)
+                                break
+                            end
+                        end
+                    end
+                end
+
             ReloadMultiboard()
-            --print("C")
             ReloadTeleportFrames()
-            --print("D")
             ReloadPrivateChestFrames()
             ReloadStashFrames()
             ReloadInventoryFrames()
             ReloadShopFrames()
             ReloadBarFrames()
-            --print("I")
             ReloadLibrarianFrames()
-            --print("J")
             ReloadBlacksmithFrames()
-            --print("K")
             ReloadLocationFrames()
-            --print("L")
             ReloadInteractionFrames()
-            --print("M")
             ReloadStatsFrames()
-            --print("N")
-            --print("O")
             ReloadTalentFrames()
-            --print("P")
             ReloadJournalFrames()
-            --print("R")
             ReloadSkillPanelFrames()
-            --print("S")
+            ReloadSacrificeAltarFrame()
         end)
 
 
@@ -204,6 +202,7 @@ do
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_J, 0, true)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_ESCAPE, 0, true)
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_SPACE, 0, true)
+        BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_G, 0, true)
         GlobalFrameState[player_id] = false
 
     end
@@ -388,6 +387,7 @@ do
         InitUIBars()
         InitTalentsWindow()
         InitJournal()
+        InitSacrificeAltar()
 
         last_OpenedWindow = {}
 
@@ -455,9 +455,7 @@ do
                     "Press [SPACEBAR] to dash. Click to change mode: to the cursor/to the hero facing"), GlobalButton[i].dash_button, 0.14, 0.08, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
             --CreateSimpleChargesText(GlobalButton[i].dash_button, "space", 0.9, 0.9)
             local new_FrameText = BlzCreateFrameByType("TEXT", "hotkeytext", GlobalButton[i].dash_button, "", 0)
-            --BlzFrameSetAllPoints(new_FrameText, GlobalButton[i].dash_button)
             BlzFrameSetPoint(new_FrameText, FRAMEPOINT_BOTTOM, GlobalButton[i].dash_button, FRAMEPOINT_BOTTOM, 0., 0.005)
-            --BlzFrameSetSize(new_FrameText, 0.00001, 0.00001)
             BlzFrameSetTextAlignment(new_FrameText, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_CENTER)
             BlzFrameSetText(new_FrameText, "space")
             BlzFrameSetScale(new_FrameText, 0.65)
@@ -471,14 +469,12 @@ do
             BlzFrameSetValue(GlobalButton[i].dash_button_cooldown, 0)
             BlzFrameSetVisible(GlobalButton[i].dash_button_cooldown, false)
 
-            --[[
-            GlobalButton[i].switch_button = CreateSimpleButton("UI\\BTN_CR_WeaponSwitch.blp", 0.026, 0.026, GlobalButton[i].settings_panel_button, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, -0.02, 0.03, GAME_UI)
-            BlzFrameSetEnable(GlobalButton[i].switch_button, false)
-            --BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].dash_button, FRAMEEVENT_CONTROL_CLICK)
-            CreateTooltip(GetLocalString("Смена оружия", "Weapon Switch"), GetLocalString("Быстро меняет оружие", "Quickly switches weapons"), GlobalButton[i].switch_button, 0.14, 0.08, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
-            CreateSimpleChargesText(GlobalButton[i].switch_button, "V", 0.7, 0.7)
-            BlzFrameSetVisible(GlobalButton[i].switch_button, false)
-]]
+
+            GlobalButton[i].minion_command_button = CreateSimpleButton("GUI\\BTNPurpleAttackGround.blp", 0.026, 0.026, GlobalButton[i].dash_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_TOPRIGHT, 0.006, 0.008, GAME_UI)
+            BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].settings_panel_button, FRAMEEVENT_CONTROL_CLICK)
+            CreateTooltip(GetLocalString("Атака слуг", "Minion Attack"), GetLocalString("Приказывает слугам атаковать эту точку", "Order your minion to attack this point"), GlobalButton[i].minion_command_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
+            CreateSimpleChargesText(GlobalButton[i].minion_command_button, "G", 0.7, 0.7)
+            BlzFrameSetVisible(GlobalButton[i].minion_command_button, false)
 
         end
 
@@ -515,8 +511,26 @@ do
                     end
                 elseif key == OSKEY_SPACE then
                     DashPlayerHero(player)
-                --elseif key == OSKEY_V then
-                    --SwitchHeroWeapon(player)
+                elseif key == OSKEY_G then
+                    PlayLocalSound("Sound\\Interface\\BigButtonClick.wav", player-1)
+                    local minions = GetAllUnitSummonUnits(PlayerHero[player])
+
+                        if BlzGroupGetSize(minions) > 0 then
+                            local target = GetClosestUnitToCursor(player)
+
+                                ForGroup(minions, function()
+                                    if IsUnitInRange(GetEnumUnit(), PlayerHero[player], 1000.) then
+                                        if target then
+                                            IssueTargetOrderById(GetEnumUnit(), order_attack, target)
+                                        else
+                                            IssuePointOrderById(GetEnumUnit(), order_attack, PlayerMousePosition[player].x, PlayerMousePosition[player].y)
+                                        end
+                                    end
+                                end)
+                        end
+
+
+                    DestroyGroup(minions)
                 end
 
         end)

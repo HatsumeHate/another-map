@@ -77,6 +77,7 @@ do
                     end
 
                     if buff_data.static_effect then DestroyEffect(buff_data.static_effect) end
+                    if buff_data.sound then DestroyLoopingSound(buff_data.soundpack, buff_data.sound.fadetime or 0.15) end
 
                     DestroyTimer(buff_data.update_timer)
                     table.remove(unit_data.buff_list, i)
@@ -246,7 +247,14 @@ do
                         end
 
                         if buff_data.level[buff_data.current_level].negative_state and buff_data.level[buff_data.current_level].negative_state > 0 then
-                            buff_data.expiration_time = math.floor((buff_data.expiration_time * ((100. - unit_data.stats[CONTROL_REDUCTION].value) / 100.)) + 0.5)
+                            local cc_duration = 1.
+
+                            if buff_data.buff_source then
+                                local source_data = GetUnitData(buff_data.buff_source)
+                                cc_duration = 1. + source_data.stats[CONTROL_DURATION].value / 100.
+                            end
+
+                            buff_data.expiration_time = math.floor((buff_data.expiration_time * (((100. - unit_data.stats[CONTROL_REDUCTION].value) / 100.) * cc_duration)) + 0.5)
                         end
 
                         break
@@ -341,7 +349,14 @@ do
                                 GroupAddUnit(RootGroup, target)
                             end
 
-                            buff_data.expiration_time = math.floor((buff_data.expiration_time * ((100. - unit_data.stats[CONTROL_REDUCTION].value) / 100.)) + 0.5)
+                            local cc_duration = 1.
+
+                            if buff_data.buff_source then
+                                local source_data = GetUnitData(buff_data.buff_source)
+                                cc_duration = 1. + source_data.stats[CONTROL_DURATION].value / 100.
+                            end
+
+                            buff_data.expiration_time = math.floor((buff_data.expiration_time * (((100. - unit_data.stats[CONTROL_REDUCTION].value) / 100.) * cc_duration)) + 0.5)
 
                             if buff_data.expiration_time <= 0 then
                                 OnBuffExpire(buff_data.buff_source or nil, target, buff_data)
@@ -547,7 +562,13 @@ do
 
                 if buff_data.level[lvl].negative_state and buff_data.level[lvl].negative_state > 0 then
 
-                    buff_data.expiration_time = math.floor((buff_data.expiration_time * ((100. - target_data.stats[CONTROL_REDUCTION].value) / 100.)) + 0.5)
+                    local cc_duration = 1.
+                    if buff_data.buff_source then
+                        local source_data = GetUnitData(buff_data.buff_source)
+                        cc_duration = 1. + source_data.stats[CONTROL_DURATION].value / 100.
+                    end
+
+                    buff_data.expiration_time = math.floor((buff_data.expiration_time * (((100. - target_data.stats[CONTROL_REDUCTION].value) / 100.) * cc_duration)) + 0.5)
 
                     if buff_data.expiration_time <= 0 then
                         buff_data = nil
@@ -595,6 +616,10 @@ do
                     buff_data.static_effect = AddSpecialEffect(buff_data.static_sfx.path, GetUnitX(target), GetUnitY(target))
                     if buff_data.static_sfx.autoscaling then BlzSetSpecialEffectScale(buff_data.static_effect, BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE)) end
                     if buff_data.static_sfx.random_angle then BlzSetSpecialEffectYaw(buff_data.static_effect, GetRandomReal(0., 360.) * bj_DEGTORAD) end
+                end
+
+                if buff_data.sound and buff_data.sound.loop_pack then
+                    buff_data.soundpack = AddLoopingSoundOnUnit(buff_data.sound.loop_pack, target, buff_data.sound.fadein or 200, buff_data.sound.fadeout or 200, buff_data.sound.delay or 0.15, buff_data.sound.volume or 128, buff_data.sound.cutoff or 1400., buff_data.sound.distance or 4000.)
                 end
 
                 if buff_data.level[lvl].bonus then

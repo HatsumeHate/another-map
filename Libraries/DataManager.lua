@@ -279,7 +279,7 @@ do
                 elseif BlzGetTriggerSyncPrefix() == "dataload_progression" then
                     local player = ParsePlayerNameOut(string.sub(sync_string, 2, string.find(sync_string, "@", 1, true)-2))
 
-                    print("player name to load " .. player)
+                    --print("player name to load " .. player)
 
                         for i = 0, 5 do
                             local name = GetPlayerName(Player(i))

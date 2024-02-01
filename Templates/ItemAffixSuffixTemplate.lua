@@ -532,7 +532,7 @@ do
                         icon = "Armor\\BTNFur Gauntlet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_1,
                         decl = DECL_THEY,
-                        modificator = 0.9,
+                        modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_LIGHT_ARMOR]
                     },
                     {
@@ -550,8 +550,29 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_MID_ARMOR]
                     },
                     {
+                        icon = "Armor\\BTNGloveVar2 (5).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_8,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_MID_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNGloveVar2 (40).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_10,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_MID_ARMOR]
+                    },
+                    {
                         icon = "Armor\\BTNPlated Gauntlet2.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_4,
+                        decl = DECL_THEY,
+                        modificator = 1.15,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_HEAVY_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNGloveVar2 (42).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_9,
                         decl = DECL_THEY,
                         modificator = 1.15,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_HEAVY_ARMOR]
@@ -559,38 +580,52 @@ do
                 },
                 [LEGS_ARMOR] = {
                     {
-                        icon = "Armor\\BTNPathfinder 01.blp",
+                        icon = "Armor\\BTNHQBoot (55).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_1,
                         decl = DECL_THEY,
-                        modificator = 1.,
+                        modificator = 1.15,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_HEAVY_ARMOR]
                     },
                     {
                         icon = "Armor\\BTNSandalZ.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_2,
                         decl = DECL_THEY,
-                        modificator = 0.9,
+                        modificator = 0.7,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_LIGHT_ARMOR]
                     },
                     {
                         icon = "Armor\\BTNSandalZ2.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_3,
                         decl = DECL_THEY,
-                        modificator = 1.,
+                        modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_LIGHT_ARMOR]
                     },
                     {
                         icon = "Armor\\BTNSandalZ3.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_4,
                         decl = DECL_THEY,
-                        modificator = 1.1,
+                        modificator = 0.9,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_LIGHT_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNLeather Boots.blp",--"Armor\\BTNHQBoot (6).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_8,
+                        decl = DECL_THEY,
+                        modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_MID_ARMOR]
                     },
                     {
-                        icon = "Armor\\BTNSteelBoots.blp",
+                        icon = "Armor\\BTNComposite boots.blp",--"Armor\\BTNHQBoot (51).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_7,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_MID_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNPlate boots.blp",--"Armor\\BTNHQBoot (41).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_5,
                         decl = DECL_THEY,
-                        modificator = 1.1,
+                        modificator = 1.15,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_HEAVY_ARMOR]
                     },
                 },
@@ -627,7 +662,7 @@ do
                         icon = "Armor\\BTNLeatherHood.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_5,
                         decl = DECL_SHE,
-                        modificator = 0.85,
+                        modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_MID_ARMOR]
                     },
                     {
@@ -650,6 +685,13 @@ do
                         decl = DECL_SHE,
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNTHelm (192).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_13,
+                        decl = DECL_HE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_MID_ARMOR]
                     },
                 },
                 [BELT_ARMOR] = {
@@ -1271,7 +1313,7 @@ do
                         icon = "Armor\\BTNFur Gauntlet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_1,
                         decl = DECL_THEY,
-                        modificator = 0.9,
+                        modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_LIGHT_ARMOR]
                     },
                     {
@@ -1289,8 +1331,29 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_MID_ARMOR]
                     },
                     {
+                        icon = "Armor\\BTNGloveVar2 (5).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_8,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_MID_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNGloveVar2 (40).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_10,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_MID_ARMOR]
+                    },
+                    {
                         icon = "Armor\\BTNPlated Gauntlet2.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_4,
+                        decl = DECL_THEY,
+                        modificator = 1.15,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_HEAVY_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNGloveVar2 (42).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_9,
                         decl = DECL_THEY,
                         modificator = 1.15,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_HEAVY_ARMOR]
@@ -1298,38 +1361,52 @@ do
                 },
                 [LEGS_ARMOR] = {
                     {
-                        icon = "Armor\\BTNPathfinder 01.blp",
+                        icon = "Armor\\BTNHQBoot (55).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_1,
                         decl = DECL_THEY,
-                        modificator = 1.,
+                        modificator = 1.15,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_HEAVY_ARMOR]
                     },
                     {
                         icon = "Armor\\BTNSandalZ.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_2,
                         decl = DECL_THEY,
-                        modificator = 0.9,
+                        modificator = 0.7,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_LIGHT_ARMOR]
                     },
                     {
                         icon = "Armor\\BTNSandalZ2.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_3,
                         decl = DECL_THEY,
-                        modificator = 1.,
+                        modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_LIGHT_ARMOR]
                     },
                     {
                         icon = "Armor\\BTNSandalZ3.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_4,
                         decl = DECL_THEY,
-                        modificator = 1.1,
+                        modificator = 0.9,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_LIGHT_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNLeather Boots.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_8,
+                        decl = DECL_THEY,
+                        modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_MID_ARMOR]
                     },
                     {
-                        icon = "Armor\\BTNSteelBoots.blp",
+                        icon = "Armor\\BTNComposite boots.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_7,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_MID_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNPlate boots.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_5,
                         decl = DECL_THEY,
-                        modificator = 1.1,
+                        modificator = 1.15,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_HEAVY_ARMOR]
                     },
                 },
@@ -1366,7 +1443,7 @@ do
                         icon = "Armor\\BTNLeatherHood.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_5,
                         decl = DECL_SHE,
-                        modificator = 0.85,
+                        modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_MID_ARMOR]
                     },
                     {
@@ -1389,6 +1466,13 @@ do
                         decl = DECL_SHE,
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNTHelm (192).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_13,
+                        decl = DECL_HE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_MID_ARMOR]
                     },
                 },
                 [BELT_ARMOR] = {
@@ -1467,6 +1551,14 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
                         model = "Items\\Metalblade.mdx",
+                    },
+                    {
+                        icon = "Weapons\\BTNrapier.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_6,
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
+                        model = "Items\\Lambent Light.mdx",
                     },
                 },
                 [GREATSWORD_WEAPON] = {
@@ -2134,7 +2226,7 @@ do
                         icon = "Armor\\BTNFur Gauntlet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_1,
                         decl = DECL_THEY,
-                        modificator = 0.9,
+                        modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_LIGHT_ARMOR]
                     },
                     {
@@ -2152,6 +2244,13 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_MID_ARMOR]
                     },
                     {
+                        icon = "Armor\\BTNGloveVar2 (40).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_10,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_MID_ARMOR]
+                    },
+                    {
                         icon = "Armor\\BTNPlated Gauntlet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_5,
                         decl = DECL_THEY,
@@ -2159,8 +2258,22 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_HEAVY_ARMOR]
                     },
                     {
+                        icon = "Armor\\BTNGloveVar2 (42).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_9,
+                        decl = DECL_THEY,
+                        modificator = 1.15,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_HEAVY_ARMOR]
+                    },
+                    {
                         icon = "Armor\\BTNDuelists Gauntlets.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_6,
+                        decl = DECL_THEY,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_MID_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNGloveVar2 (5).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HANDS_NAME_8,
                         decl = DECL_THEY,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_MID_ARMOR]
@@ -2175,42 +2288,56 @@ do
                 },
                 [LEGS_ARMOR] = {
                     {
-                        icon = "Armor\\BTNPathfinder 03.blp",
+                        icon = "Armor\\BTNHQBoot (55).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_1,
                         decl = DECL_THEY,
-                        modificator = 1.,
+                        modificator = 1.15,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_HEAVY_ARMOR]
                     },
                     {
                         icon = "Armor\\BTNSandalZ.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_2,
                         decl = DECL_THEY,
-                        modificator = 0.9,
+                        modificator = 0.7,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_LIGHT_ARMOR]
                     },
                     {
                         icon = "Armor\\BTNSandalZ2.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_3,
                         decl = DECL_THEY,
-                        modificator = 1.,
+                        modificator = 0.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_LIGHT_ARMOR]
                     },
                     {
                         icon = "Armor\\BTNSandalZ3.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_4,
                         decl = DECL_THEY,
-                        modificator = 1.1,
+                        modificator = 0.9,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_LIGHT_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNLeather Boots.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_8,
+                        decl = DECL_THEY,
+                        modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_MID_ARMOR]
                     },
                     {
-                        icon = "Armor\\BTNArmoredBoot.blp",
+                        icon = "Armor\\BTNArmored boots.blp",--"Armor\\BTNHQBoot (115).blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_6,
                         decl = DECL_THEY,
-                        modificator = 1.1,
+                        modificator = 1.15,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_HEAVY_ARMOR]
                     },
                     {
-                        icon = "Armor\\BTNBoots.blp",
+                        icon = "Armor\\BTNPlate boots.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_5,
+                        decl = DECL_THEY,
+                        modificator = 1.15,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOOTS_HEAVY_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNComposite boots.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_LEGS_NAME_7,
                         decl = DECL_THEY,
                         modificator = 1.,
@@ -2245,13 +2372,6 @@ do
                         decl = DECL_HE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_HEAVY_ARMOR]
-                    },
-                    {
-                        icon = "Armor\\BTNLeatherHood.blp",
-                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_5,
-                        decl = DECL_SHE,
-                        modificator = 0.85,
-                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_MID_ARMOR]
                     },
                     {
                         icon = "Armor\\BTNNFHelmet02.blp",
@@ -2301,6 +2421,20 @@ do
                         decl = DECL_SHE,
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNTHelm (192).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_13,
+                        decl = DECL_HE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_MID_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNLeatherHood.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_5,
+                        decl = DECL_SHE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_MID_ARMOR]
                     },
                 },
                 [BELT_ARMOR] = {
@@ -2749,7 +2883,7 @@ do
                     {
                         icon = "Weapons\\BTNPoisonBow.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_BOW_NAME_7,
-                        decl = DECL_IT,
+                        decl = DECL_HE,
                         modificator = 1.45,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_BOW],
                         model = "Items\\Weapon_Bow_1.mdx",
@@ -2987,7 +3121,8 @@ do
                     ITEM_SUFFIX_PRECISION,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_KNOWLEDGE,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [NECKLACE_JEWELRY] = {
                     ITEM_SUFFIX_FURY,
@@ -2995,7 +3130,8 @@ do
                     ITEM_SUFFIX_PRECISION,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_KNOWLEDGE,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [HEAD_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3004,7 +3140,8 @@ do
                     ITEM_SUFFIX_ROCK,
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [HANDS_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3013,7 +3150,8 @@ do
                     ITEM_SUFFIX_ROCK,
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [CHEST_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3022,7 +3160,8 @@ do
                     ITEM_SUFFIX_ROCK,
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [LEGS_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3031,14 +3170,16 @@ do
                     ITEM_SUFFIX_ROCK,
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [BELT_ARMOR] = {
                     ITEM_SUFFIX_ROCK,
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_KNOWLEDGE,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [SWORD_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
@@ -3119,7 +3260,8 @@ do
                     ITEM_SUFFIX_LIGHTNING_WIZARD,
                     ITEM_SUFFIX_DECAY,
                     ITEM_SUFFIX_FIRE_WIZARD,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [SHIELD_OFFHAND] = {
                     ITEM_SUFFIX_KNOWLEDGE,
@@ -3128,14 +3270,16 @@ do
                     ITEM_SUFFIX_ROCK,
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_FURY,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [QUIVER_OFFHAND] = {
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_PRECISION,
                     ITEM_SUFFIX_ANGER,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 }
             },
             [RARE_ITEM] = {
@@ -3148,7 +3292,8 @@ do
                     ITEM_SUFFIX_PRECISION,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_KNOWLEDGE,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [NECKLACE_JEWELRY] = {
                     ITEM_SUFFIX_FURY,
@@ -3159,7 +3304,8 @@ do
                     ITEM_SUFFIX_PRECISION,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_KNOWLEDGE,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [HEAD_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3172,7 +3318,8 @@ do
                     ITEM_SUFFIX_ROCK,
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [HANDS_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3185,7 +3332,8 @@ do
                     ITEM_SUFFIX_PURE_CONCENTRATION,
                     ITEM_SUFFIX_DEADLY_PRECISION,
                     ITEM_SUFFIX_HIGH_KNIGHT,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [CHEST_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3198,7 +3346,8 @@ do
                     ITEM_SUFFIX_PURE_CONCENTRATION,
                     ITEM_SUFFIX_DEADLY_PRECISION,
                     ITEM_SUFFIX_HIGH_KNIGHT,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [LEGS_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3211,7 +3360,8 @@ do
                     ITEM_SUFFIX_PURE_CONCENTRATION,
                     ITEM_SUFFIX_DEADLY_PRECISION,
                     ITEM_SUFFIX_HIGH_KNIGHT,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [BELT_ARMOR] = {
                     ITEM_SUFFIX_ROCK,
@@ -3219,7 +3369,8 @@ do
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_KNOWLEDGE,
                     ITEM_SUFFIX_HIGH_KNIGHT,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [SWORD_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
@@ -3339,7 +3490,8 @@ do
                     ITEM_SUFFIX_ENDLESS_FURY,
                     ITEM_SUFFIX_PURE_CONCENTRATION,
                     ITEM_SUFFIX_DEADLY_PRECISION,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [SHIELD_OFFHAND] = {
                     ITEM_SUFFIX_KNOWLEDGE,
@@ -3350,14 +3502,16 @@ do
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_HIGH_KNIGHT,
                     ITEM_SUFFIX_ENDLESS_FURY,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [QUIVER_OFFHAND] = {
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_PRECISION,
                     ITEM_SUFFIX_ANGER,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 }
             },
             [MAGIC_ITEM] = {
@@ -3367,7 +3521,8 @@ do
                     ITEM_SUFFIX_PRECISION,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_KNOWLEDGE,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [NECKLACE_JEWELRY] = {
                     ITEM_SUFFIX_FURY,
@@ -3375,7 +3530,8 @@ do
                     ITEM_SUFFIX_PRECISION,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_KNOWLEDGE,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [HEAD_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3384,7 +3540,8 @@ do
                     ITEM_SUFFIX_ROCK,
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [HANDS_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3393,7 +3550,8 @@ do
                     ITEM_SUFFIX_ROCK,
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [CHEST_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3402,7 +3560,8 @@ do
                     ITEM_SUFFIX_ROCK,
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [LEGS_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3411,14 +3570,16 @@ do
                     ITEM_SUFFIX_ROCK,
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [BELT_ARMOR] = {
                     ITEM_SUFFIX_ROCK,
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_KNOWLEDGE,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [SWORD_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
@@ -3499,7 +3660,8 @@ do
                     ITEM_SUFFIX_LIGHTNING_WIZARD,
                     ITEM_SUFFIX_DECAY,
                     ITEM_SUFFIX_FIRE_WIZARD,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [SHIELD_OFFHAND] = {
                     ITEM_SUFFIX_KNOWLEDGE,
@@ -3508,14 +3670,16 @@ do
                     ITEM_SUFFIX_ROCK,
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_FURY,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 },
                 [QUIVER_OFFHAND] = {
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_PRECISION,
                     ITEM_SUFFIX_ANGER,
-                    ITEM_SUFFIX_ADVENTURER
+                    ITEM_SUFFIX_ADVENTURER,
+                    ITEM_SUFFIX_TRICKSTER
                 }
             },
         }
@@ -3529,7 +3693,27 @@ do
                     [ITEM_AFFIX_WORN] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = BONUS_MELEE_DAMAGE, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                            { type = SINGLE_PARAMETER, PARAM = BONUS_RANGE_DAMAGE, value_min= 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CLOSE_ENEMIES, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_DISTANT_ENEMIES, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                        },
+                                    },
+                                }
+                            },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 10, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 35. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -3624,7 +3808,27 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = BONUS_MELEE_DAMAGE, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                            { type = SINGLE_PARAMETER, PARAM = BONUS_RANGE_DAMAGE, value_min= 4, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CLOSE_ENEMIES, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_DISTANT_ENEMIES, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                        },
+                                    },
+                                }
+                            },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 14, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 35. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -3719,7 +3923,27 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = BONUS_MELEE_DAMAGE, value_min = 6, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                            { type = SINGLE_PARAMETER, PARAM = BONUS_RANGE_DAMAGE, value_min= 6, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CLOSE_ENEMIES, value_min = 6, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_DISTANT_ENEMIES, value_min = 6, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                        },
+                                    },
+                                }
+                            },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 7, value_max = 11, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 16, value_max = 24, METHOD = STRAIGHT_BONUS, probability = 35. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -3814,7 +4038,27 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = BONUS_MELEE_DAMAGE, value_min = 9, value_max = 11, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                            { type = SINGLE_PARAMETER, PARAM = BONUS_RANGE_DAMAGE, value_min= 9, value_max = 11, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                        },
+                                    },
+                                    {
+                                        type = MULTIPLE_PARAMETER,
+                                        parameters = {
+                                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CLOSE_ENEMIES, value_min = 9, value_max = 11, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_DISTANT_ENEMIES, value_min = 9, value_max = 11, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                        },
+                                    },
+                                }
+                            },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 11, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 50. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 20, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 35. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -3916,6 +4160,7 @@ do
                     [ITEM_AFFIX_WORN] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 10, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 5, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
                             {
@@ -3930,6 +4175,13 @@ do
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 13, value_max = 17, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50., exclude = { PHYSICAL_ATTACK } },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.04, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50., exclude = { PHYSICAL_ATTACK } }
+                                },
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CLOSE_ENEMIES, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_DISTANT_ENEMIES, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. }
                                 },
                             },
                         },
@@ -4003,6 +4255,7 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 14, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -4020,6 +4273,13 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50., exclude = { PHYSICAL_ATTACK } },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.04, value_max = 1.05, METHOD = MULTIPLY_BONUS, probability = 50., exclude = { PHYSICAL_ATTACK } }
                                 }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CLOSE_ENEMIES, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_DISTANT_ENEMIES, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 50. }
+                                },
                             },
                         },
                         skill_bonus = {
@@ -4092,6 +4352,7 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 18, value_max = 25, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -4109,6 +4370,13 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 21, value_max = 35, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 60., exclude = { PHYSICAL_ATTACK } },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.05, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 60., exclude = { PHYSICAL_ATTACK } }
                                 }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CLOSE_ENEMIES, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_DISTANT_ENEMIES, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. }
+                                },
                             },
                         },
                         skill_bonus = {
@@ -4181,6 +4449,7 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 22, value_max = 31, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -4198,6 +4467,13 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 21, value_max = 35, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 70., exclude = { PHYSICAL_ATTACK }  },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.06, value_max = 1.075, METHOD = MULTIPLY_BONUS, probability = 70., exclude = { PHYSICAL_ATTACK }  }
                                 }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CLOSE_ENEMIES, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_DISTANT_ENEMIES, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 50. }
+                                },
                             },
                         },
                         skill_bonus = {
@@ -4277,6 +4553,7 @@ do
                     [ITEM_AFFIX_WORN] = {
                         additional_parameter = -2,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 14, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
                             {
@@ -4292,6 +4569,13 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 26, value_max = 34, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50., exclude = { PHYSICAL_ATTACK } },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.04, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 50., exclude = { PHYSICAL_ATTACK } }
                                 }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CLOSE_ENEMIES, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_DISTANT_ENEMIES, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 50. }
+                                },
                             },
                         },
                         skill_bonus = {
@@ -4364,6 +4648,7 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = -2,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 20, value_max = 26, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -4381,6 +4666,13 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 34, value_max = 40, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50., exclude = { PHYSICAL_ATTACK } },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.08, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 50., exclude = { PHYSICAL_ATTACK } }
                                 }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CLOSE_ENEMIES, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_DISTANT_ENEMIES, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. }
+                                },
                             },
                         },
                         skill_bonus = {
@@ -4453,6 +4745,7 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 30, value_max = 36, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -4470,6 +4763,13 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 42, value_max = 55, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 60., exclude = { PHYSICAL_ATTACK } },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 60., exclude = { PHYSICAL_ATTACK } }
                                 }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CLOSE_ENEMIES, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_DISTANT_ENEMIES, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 50. }
+                                },
                             },
                         },
                         skill_bonus = {
@@ -4542,6 +4842,7 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = -2,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 33, value_max = 42, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 12, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -4559,6 +4860,13 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 55, value_max = 66, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 70., exclude = { PHYSICAL_ATTACK } },
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.12, value_max = 1.15, METHOD = MULTIPLY_BONUS, probability = 70., exclude = { PHYSICAL_ATTACK } }
                                 }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CLOSE_ENEMIES, value_min = 12, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_DISTANT_ENEMIES, value_min = 12, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 50. }
+                                },
                             },
                         },
                         skill_bonus = {
@@ -4638,10 +4946,12 @@ do
                     [ITEM_AFFIX_WORN] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 12, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 1.3, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 10. },
-                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 12. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 12. },
                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -4688,10 +4998,12 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 16, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 1.3, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 10. },
-                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 12. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 12. },
                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -4738,10 +5050,12 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 20, value_max = 24, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 1.4, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 2, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 10. },
-                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 2, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 2, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 15. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 2, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 50. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -4788,10 +5102,12 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 24, value_max = 26, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 7, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 1.5, METHOD = STRAIGHT_BONUS, probability = 30. },
-                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 3, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
-                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 3, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 15. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 14, value_max = 19, METHOD = STRAIGHT_BONUS, probability = 50. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -4845,10 +5161,12 @@ do
                     [ITEM_AFFIX_WORN] = {
                         additional_parameter = -2,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 20, value_max = 24, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 6, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.2, value_max = 1.4, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
-                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 12. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 12. },
                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 50. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -4895,10 +5213,12 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = -2,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 24, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 8, value_max = 11, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.2, value_max = 1.5, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 10. },
-                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 12. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 12. },
                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 14, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 50. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -4945,10 +5265,12 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = -2,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 28, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 10, value_max = 13, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.4, value_max = 1.55, METHOD = STRAIGHT_BONUS, probability = 40. },
-                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 10. },
-                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 15. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 20, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -4995,10 +5317,12 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = -2,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 33, value_max = 37, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 12, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.3, value_max = 1.6, METHOD = STRAIGHT_BONUS, probability = 30. },
-                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 6, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
-                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 6, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
+                            { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 6, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 15. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 6, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = MAGICAL_SUPPRESSION, value_min = 28, value_max = 38, METHOD = STRAIGHT_BONUS, probability = 50. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -5666,6 +5990,7 @@ do
                     [ITEM_AFFIX_WORN] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER,PARAM = ICE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER,PARAM = ICE_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER,PARAM = HP_VALUE, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 40. },
@@ -5727,6 +6052,7 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER,PARAM = ICE_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER,PARAM = ICE_RESIST, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER,PARAM = HP_VALUE, value_min = 28, value_max = 35, METHOD = STRAIGHT_BONUS, probability = 40. },
@@ -5788,6 +6114,7 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER,PARAM = ICE_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER,PARAM = ICE_RESIST, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER,PARAM = HP_VALUE, value_min = 35, value_max = 48, METHOD = STRAIGHT_BONUS, probability = 40. },
@@ -5849,6 +6176,7 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER,PARAM = ICE_BONUS, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER,PARAM = ICE_RESIST, value_min = 6, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER,PARAM = HP_VALUE, value_min = 48, value_max = 55, METHOD = STRAIGHT_BONUS, probability = 40. },
@@ -6419,6 +6747,7 @@ do
                     [ITEM_AFFIX_WORN] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 3, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 20. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -6435,6 +6764,8 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -6517,6 +6848,7 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 20. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -6533,6 +6865,8 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -6615,6 +6949,7 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 5, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 20. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -6631,6 +6966,8 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -6713,6 +7050,7 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 6, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 35. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -6725,10 +7063,12 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -6818,6 +7158,7 @@ do
                     [ITEM_AFFIX_WORN] = {
                         additional_parameter = -2,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 20. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -6834,6 +7175,8 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -6916,6 +7259,7 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = -2,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 20. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -6932,6 +7276,8 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -7014,6 +7360,7 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = -2,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 12, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 6, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 20. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -7030,6 +7377,8 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -7112,6 +7461,7 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = -2,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 14, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 8, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 35. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -7124,10 +7474,12 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -7621,11 +7973,19 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
+                            { type = SINGLE_PARAMETER, PARAM = ENDURANCE_POWER, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 20. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = RANGE_DAMAGE_REDUCTION, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = CONTROL_REDUCTION, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
@@ -7729,7 +8089,6 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -7743,7 +8102,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    --{ type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
@@ -7757,6 +8116,15 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = ENDURANCE_POWER, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 20. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 5, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = RANGE_DAMAGE_REDUCTION, value_min = 5, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = CONTROL_REDUCTION, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -7847,7 +8215,6 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -7861,7 +8228,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    --{ type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
@@ -7875,6 +8242,15 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = ENDURANCE_POWER, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 20. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 6, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = RANGE_DAMAGE_REDUCTION, value_min = 6, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = CONTROL_REDUCTION, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -7965,7 +8341,6 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -7979,7 +8354,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    --{ type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
@@ -7993,6 +8368,15 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = ENDURANCE_POWER, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 20. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = RANGE_DAMAGE_REDUCTION, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = CONTROL_REDUCTION, value_min = 7, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -8103,7 +8487,6 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
@@ -8117,6 +8500,15 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = ENDURANCE_POWER, value_min = 8, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 20. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 8, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = RANGE_DAMAGE_REDUCTION, value_min = 8, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = CONTROL_REDUCTION, value_min = 8, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -8207,21 +8599,20 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = -2,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 6, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    --{ type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
@@ -8235,6 +8626,15 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = ENDURANCE_POWER, value_min = 8, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 20. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = RANGE_DAMAGE_REDUCTION, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = CONTROL_REDUCTION, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -8325,21 +8725,20 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = -2,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 2, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 3, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 3, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 3, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 3, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    --{ type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
@@ -8353,6 +8752,15 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = ENDURANCE_POWER, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 20. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 12, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = RANGE_DAMAGE_REDUCTION, value_min = 12, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = CONTROL_REDUCTION, value_min = 12, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -8443,7 +8851,6 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = -2,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 14, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 25. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -8457,7 +8864,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    --{ type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
@@ -8471,6 +8878,15 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 12. },
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = ENDURANCE_POWER, value_min = 12, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 20. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = MELEE_DAMAGE_REDUCTION, value_min = 8, value_max = 18, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = RANGE_DAMAGE_REDUCTION, value_min = 8, value_max = 18, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = CONTROL_REDUCTION, value_min = 8, value_max = 18, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -8568,6 +8984,7 @@ do
                     [ITEM_AFFIX_WORN] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MINION_POWER, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 20. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -8581,7 +8998,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    --{ type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
@@ -8689,6 +9106,7 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MINION_POWER, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 20. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -8702,7 +9120,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    --{ type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
@@ -8810,6 +9228,7 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MINION_POWER, value_min = 6, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 20. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -8823,7 +9242,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    --{ type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
@@ -8931,6 +9350,7 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = MINION_POWER, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 20. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -8944,7 +9364,7 @@ do
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
-                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                   -- { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
@@ -9059,6 +9479,8 @@ do
                     [ITEM_AFFIX_WORN] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_BOOST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
+                            { type = SINGLE_PARAMETER, PARAM = EXP_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 15. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -9094,6 +9516,13 @@ do
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
                                     { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 12, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 7, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 35. },
                                 }
                             },
                         },
@@ -9140,6 +9569,8 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_BOOST, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 15. },
+                            { type = SINGLE_PARAMETER, PARAM = EXP_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 15. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -9175,6 +9606,13 @@ do
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
                                     { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 16, value_max = 21, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 14, value_max = 18, METHOD = STRAIGHT_BONUS, probability = 35. },
                                 }
                             },
                         },
@@ -9221,6 +9659,8 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_BOOST, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 15. },
+                            { type = SINGLE_PARAMETER, PARAM = EXP_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 15. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -9256,6 +9696,13 @@ do
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 1, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
                                     { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 21, value_max = 26, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 18, value_max = 22, METHOD = STRAIGHT_BONUS, probability = 35. },
                                 }
                             },
                         },
@@ -9302,6 +9749,8 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
                         parameter_bonus = {
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_BOOST, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 15. },
+                            { type = SINGLE_PARAMETER, PARAM = EXP_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 15. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -9337,6 +9786,13 @@ do
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 2, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
                                     { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 26, value_max = 33, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 22, value_max = 25, METHOD = STRAIGHT_BONUS, probability = 35. },
                                 }
                             },
                         },
@@ -9781,17 +10237,17 @@ do
                     [ITEM_AFFIX_WORN] = {
                         additional_parameter = 0,
                         parameter_bonus = {
-                            {
-                                type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 35.
-                            },
-                            {
-                                type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 10.
-                            },
+                            { type = SINGLE_PARAMETER, PARAM = MINION_POWER, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 15. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 15. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 60. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 60. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 60. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 20. },
                                 }
                             },
@@ -9803,9 +10259,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.02, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 40. },
                                 }
                             },
-                            {
-                                type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 40.
-                            },
+                            { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 40. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -9850,17 +10304,17 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
                         parameter_bonus = {
-                            {
-                                type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 35.
-                            },
-                            {
-                                type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 10.
-                            },
+                            { type = SINGLE_PARAMETER, PARAM = MINION_POWER, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 15. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 6, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 60. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 60. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 60. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 20. },
                                 }
                             },
@@ -9872,9 +10326,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.04, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 40. },
                                 }
                             },
-                            {
-                                type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 15, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 40.
-                            },
+                            { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 15, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 40. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -9919,17 +10371,17 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
                         parameter_bonus = {
-                            {
-                                type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 35.
-                            },
-                            {
-                                type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 10.
-                            },
+                            { type = SINGLE_PARAMETER, PARAM = MINION_POWER, value_min = 6, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 20. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 17. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 60. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 60. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 60. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 20. },
                                 }
                             },
@@ -9941,9 +10393,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.06, value_max = 1.08, METHOD = MULTIPLY_BONUS, probability = 40. },
                                 }
                             },
-                            {
-                                type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, probability = 40.
-                            },
+                            { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 20, value_max = 25, METHOD = STRAIGHT_BONUS, probability = 40. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -9988,17 +10438,17 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
                         parameter_bonus = {
-                            {
-                                type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 35.
-                            },
-                            {
-                                type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10.
-                            },
+                            { type = SINGLE_PARAMETER, PARAM = MINION_POWER, value_min = 8, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 20. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 14, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 20. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 60. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 60. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 60. },
                                     { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 20. },
                                 }
                             },
@@ -10010,9 +10460,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.08, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 40. },
                                 }
                             },
-                            {
-                                type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 25, value_max = 30, METHOD = STRAIGHT_BONUS, probability = 40.
-                            },
+                            { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 25, value_max = 30, METHOD = STRAIGHT_BONUS, probability = 40. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -10055,9 +10503,299 @@ do
                         }
                     },
                 }
+            },
+            [ITEM_SUFFIX_TRICKSTER] = {
+                name = LOCALE_LIST[my_locale].ITEM_SUFFIX_TRICKSTER,
+                min_affix = ITEM_AFFIX_WORN,
+                max_affix = ITEM_AFFIX_IDEAL,
+                affix_bonus = {
+                    [ITEM_AFFIX_WORN] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.03, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 11, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 1.03, value_max = 1.03, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                },
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = CONTROL_REDUCTION, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 30, value_max = 37, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 7, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = MOVING_SPEED, value_min = 1.05, value_max = 1.07, METHOD = MULTIPLY_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = DODGE_CHANCE, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
+                            },
+                            [NECROMANCER_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
+                            },
+                            min_level = 1,
+                            max_level = 2,
+                        },
+                        effect_bonus = {
+
+                        }
+                    },
+                    [ITEM_AFFIX_FINE] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 8, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 15, value_max = 18, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = CONTROL_REDUCTION, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 37, value_max = 43, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 12, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = MOVING_SPEED, value_min = 1.07, value_max = 1.1, METHOD = MULTIPLY_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = DODGE_CHANCE, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
+                            },
+                            [NECROMANCER_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
+                            },
+                            min_level = 1,
+                            max_level = 2,
+                        },
+                        effect_bonus = {
+
+                        }
+                    },
+                    [ITEM_AFFIX_EXCELLENT] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 14, value_max = 19, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.035, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 18, value_max = 22, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.035, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = CONTROL_REDUCTION, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 43, value_max = 50, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 16, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = MOVING_SPEED, value_min = 1.1, value_max = 1.12, METHOD = MULTIPLY_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = DODGE_CHANCE, value_min = 7, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
+                            },
+                            [NECROMANCER_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
+                            },
+                            min_level = 1,
+                            max_level = 2,
+                        },
+                        effect_bonus = {
+
+                        }
+                    },
+                    [ITEM_AFFIX_IDEAL] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 19, value_max = 24, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.045, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.045, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = CONTROL_REDUCTION, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_VALUE, value_min = 50, value_max = 67, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_VALUE, value_min = 20, value_max = 24, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = MOVING_SPEED, value_min = 1.1, value_max = 1.13, METHOD = MULTIPLY_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = DODGE_CHANCE, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                }
+                            },
+                        },
+                        skill_bonus = {
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
+                            },
+                            [NECROMANCER_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_GEAR },
+                            },
+                            min_level = 1,
+                            max_level = 2,
+                        },
+                        effect_bonus = {
+
+                        }
+                    },
+                }
             }
         }
-
 
 
         GeneratedScaling = {
@@ -10069,13 +10807,6 @@ do
             [MP_VALUE] = { delta = 3, delta_level = 2, delta_level_max = 50 }
         }
 
-        RegisterTestCommand("affixes", function()
-            print(ITEM_SUFFIX_LIST[ITEM_SUFFIX_KNIGHT].affix_bonus[ITEM_AFFIX_IDEAL].skill_bonus)
-            print(ITEM_SUFFIX_LIST[ITEM_SUFFIX_KNIGHT].affix_bonus[ITEM_AFFIX_IDEAL].skill_bonus[BARBARIAN_CLASS])
-            print(ITEM_SUFFIX_LIST[ITEM_SUFFIX_KNIGHT].affix_bonus[ITEM_AFFIX_IDEAL].skill_bonus[SORCERESS_CLASS])
-            print(ITEM_SUFFIX_LIST[ITEM_SUFFIX_KNIGHT].affix_bonus[ITEM_AFFIX_IDEAL].skill_bonus[NECROMANCER_CLASS])
-            print(ITEM_SUFFIX_LIST[ITEM_SUFFIX_KNIGHT].affix_bonus[ITEM_AFFIX_IDEAL].skill_bonus[ASSASSIN_CLASS])
-        end)
 
     end
 

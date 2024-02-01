@@ -254,7 +254,7 @@ do
                     unit_data.classification = 0
                     unit_data.droplist = nil
                     IssuePointOrderById(unit, order_attack, x, y)
-                    CreateBarOnUnit(unit)
+                    --CreateBarOnUnit(unit)
                 end)
     end
 
@@ -523,22 +523,6 @@ do
                     end
                 end
             end
-        end)
-
-        RegisterTestCommand("jr+", function()
-            print("????????")
-            AddJournalEntry(1, "task_soldiersrescue", "UI\\BTNOrderFootmanIcon.blp", GetLocalString("Спасательная Операция", "Rescue Mission"), 150, true)
-            print("????????")
-            AddJournalEntryText(1, "task_soldiersrescue", GetConversationText(SoldierRescueTaskData[1].conversation, gg_unit_n029_0022, 1))
-            print("????????")
-            AddJournalEntryObjective(1, "task_soldiersrescue", "task_soldiersrescue_obj", GetLocalString("Солдаты спасены", "Soldiers Rescued"))
-            print("????????")
-        end)
-
-
-
-        RegisterTestCommand("jr-", function()
-            RemoveJournalEntry(1, "task_soldiersrescue")
         end)
 
     end

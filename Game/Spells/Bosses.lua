@@ -48,6 +48,56 @@ do
     end
 
 
+    function CreateAndarielHellfire(caster, x, y)
+        local sfx = AddSpecialEffect("Effect\\Flame of Darkness.mdx", x, y)
+        local duration = 6.
+
+            BlzSetSpecialEffectYaw(sfx, GetRandomReal(0., 360) * bj_DEGTORAD)
+            TimerStart(CreateTimer(), 0.33, true, function()
+                ApplyEffect(caster, nil, x, y, "andariel_hellfire_effect", 1)
+                duration = duration - 0.33
+                if duration <= 0. then
+                    DestroyEffect(sfx)
+                    DestroyTimer(GetExpiredTimer())
+                end
+            end)
+
+    end
+
+
+    function AndarielHellfireCast(caster)
+        local amount = GetRandomInt(7, 9)
+        local starting_angle = GetRandomReal(0.01, 360.)
+        local step = 360. / amount
+        local missile_pack = {}
+        local original_angle = {}
+        local dispersion = 45.
+
+            for i = 1, amount do
+                missile_pack[i] = ThrowMissile(caster, nil, "andariel_fire_missile", nil, GetUnitX(caster), GetUnitY(caster), 0, 0, starting_angle)
+                original_angle[i] = starting_angle
+                starting_angle = starting_angle + step
+            end
+
+            local timer = CreateTimer()
+            TimerStart(timer, 0.01, true, function ()
+                for i = 1, amount do
+                    if missile_pack[i].time <= 0. then DestroyTimer(timer)
+                    else if GetRandomInt(1, 7) == 1 then RedirectMissile_Deg(missile_pack[i], original_angle[i] + GetRandomReal(-dispersion, dispersion)) end end
+                end
+            end)
+
+            local timer2 = CreateTimer()
+            TimerStart(timer2, 0.1, true, function ()
+                for i = 1, amount do
+                    if missile_pack[i].time <= 0. then DestroyTimer(timer2)
+                    else CreateAndarielHellfire(caster, missile_pack[i].current_x, missile_pack[i].current_y) end
+                end
+            end)
+
+    end
+
+
     function SpiderQueen_SpawnBrood(boss)
         --local rect = BroodRegions[GetRandomInt(1, #BroodRegions)]
         local x = GetUnitX(boss); local y = GetUnitY(boss)
@@ -445,23 +495,58 @@ do
     end
 
 
+    function PitlordDarknessBarrageCast(caster, point_x, point_y)
+        local starting_angle = -25.
+        local delay = 0.1
+
+            for i = 1, 3 do
+                local angle = GetUnitFacing(caster) + starting_angle
+                DelayAction(delay, function() ThrowMissile(caster, nil, "pitlord_darkness_missile", nil, GetUnitX(caster), GetUnitY(caster), 0, 0, angle, true) end)
+                starting_angle = starting_angle + 25.
+                delay = delay + 0.11
+            end
+
+    end
+
+
+    function PitlordMeteorsCast(caster)
+        local timer = CreateTimer()
+        local trigger_count = 4
+
+
+            TimerStart(timer, 0.6, true, function()
+
+                for i = 1, 6 do
+                    if PlayerHero[i] and IsUnitInRange(caster, PlayerHero[i], 1400.) then
+                        ApplyEffect(caster, PlayerHero[i], GetUnitX(PlayerHero[i]), GetUnitY(PlayerHero[i]), "pitlord_meteor", 1)
+                        CreateSpellCircle("Effect\\Spell Marker Red.mdx", GetUnitX(PlayerHero[i]), GetUnitY(PlayerHero[i]), 1., 1., 0.5, function() end)
+                    end
+                end
+
+                trigger_count = trigger_count - 1
+                if trigger_count <= 0 then DestroyTimer(timer) end
+            end)
+
+    end
+
+
+    function BaalNovaCast(caster)
+        local amount = 14
+        local starting_angle = GetRandomReal(0., 360.)
+        local step = 360. / amount
+
+            for i = 1, amount do
+                ThrowMissile(caster, nil, "baal_nova_missile", nil, GetUnitX(caster), GetUnitY(caster), 0, 0, starting_angle)
+                starting_angle = starting_angle + step
+            end
+
+
+    end
 
 
     function InitSpiderQueenData()
 
         InitMyAI()
-
-        RegisterTestCommand("dl", function()
-            IssuePointOrderById(gg_unit_uDBL_0024, order_frostnova, GetUnitX(gg_unit_uDBL_0024) + Rx(50., GetUnitFacing(gg_unit_uDBL_0024)), GetUnitY(gg_unit_uDBL_0024) + Ry(50., GetUnitFacing(gg_unit_uDBL_0024)))
-        end)
-
-        RegisterTestCommand("dch", function()
-            IssuePointOrderById(gg_unit_uDBL_0024, order_frenzy, GetUnitX(gg_unit_uDBL_0024) + Rx(50., GetUnitFacing(gg_unit_uDBL_0024)), GetUnitY(gg_unit_uDBL_0024) + Ry(50., GetUnitFacing(gg_unit_uDBL_0024)))
-        end)
-
-        RegisterTestCommand("dap", function()
-            IssueImmediateOrderById(gg_unit_uDBL_0024, order_acidbomb)
-        end)
 
     end
 

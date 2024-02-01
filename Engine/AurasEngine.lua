@@ -88,7 +88,7 @@ do
                                         ApplyBuff(from, picked, aura.level[aura.current_level][ON_ENEMY].applied_buff, aura.current_level, ability_instance)
                                     end
 
-                                elseif aura.level[aura.current_level][ON_ALLY] and not IsUnitEnemy(picked, player) then
+                                elseif aura.level[aura.current_level][ON_ALLY] and not IsUnitEnemy(picked, player) and from ~= picked then
 
                                     if aura.level[aura.current_level][ON_ALLY].applied_effect then
                                         ApplyEffect(from, picked, 0.,0., aura.level[aura.current_level][ON_ALLY].applied_effect, aura.current_level, ability_instance)

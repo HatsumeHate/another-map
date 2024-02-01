@@ -5,7 +5,7 @@
 ---
 do
 
-    AuraTemplate = nil
+    local AuraTemplate = nil
     AuraList = nil
 
 
@@ -62,6 +62,7 @@ do
                 [1] = {
                     sfx_scale = 1.,
                     radius = 650.,
+                    [ON_SELF] = { applied_buff = "HDAU" },
                     [ON_ALLY] = { applied_buff = "HDAU" }
                 }
             }
@@ -117,14 +118,86 @@ do
             }
         })
 
+        NewAuraTemplate({
+            id = "monster_physical_aura",
+            name = "monster physical aura",
+            max_level = 1,
+            sfx_path = "Effect\\Providence Aura.mdx",
+            sfx_point = "origin",
+            tickrate = 0.5,
+            level = {
+                [1] = {
+                    sfx_scale = 1.,
+                    radius = 700.,
+                    [ON_ALLY] = { applied_buff = "MPHA" }
+                }
+            }
+        })
 
-        RegisterTestCommand("aon", function()
-            ToggleAuraOnUnit(PlayerHero[1], "twilight_aura", 1, true)
-        end)
+        NewAuraTemplate({
+            id = "monster_primal_aura",
+            name = "monster primal aura",
+            max_level = 1,
+            sfx_path = "Effect\\Providence Aura Red.mdx",
+            sfx_point = "origin",
+            tickrate = 0.5,
+            level = {
+                [1] = {
+                    sfx_scale = 1.,
+                    radius = 700.,
+                    [ON_ALLY] = { applied_buff = "MPRA" }
+                }
+            }
+        })
 
-        RegisterTestCommand("aoff", function()
-            ToggleAuraOnUnit(PlayerHero[1], "grave_cold_aura", 1, false)
-        end)
+        NewAuraTemplate({
+            id = "monster_shadow_aura",
+            name = "monster shadow aura",
+            max_level = 1,
+            sfx_path = "Effect\\Providence Aura Purple.mdx",
+            sfx_point = "origin",
+            tickrate = 0.5,
+            level = {
+                [1] = {
+                    sfx_scale = 1.,
+                    radius = 700.,
+                    [ON_ALLY] = { applied_buff = "MSHA" }
+                }
+            }
+        })
+
+        NewAuraTemplate({
+            id = "monster_universal_aura",
+            name = "monster universal aura",
+            max_level = 1,
+            sfx_path = "Effect\\Providence Aura Green.mdx",
+            sfx_point = "origin",
+            tickrate = 0.5,
+            level = {
+                [1] = {
+                    sfx_scale = 1.,
+                    radius = 700.,
+                    [ON_ALLY] = { applied_buff = "MUNA" }
+                }
+            }
+        })
+
+        NewAuraTemplate({
+            id = "monster_sturdy_aura",
+            name = "monster str aura",
+            max_level = 1,
+            sfx_path = "Effect\\Providence Aura Teal.mdx",
+            sfx_point = "origin",
+            tickrate = 0.5,
+            level = {
+                [1] = {
+                    sfx_scale = 1.,
+                    radius = 700.,
+                    [ON_ALLY] = { applied_buff = "MSTA" }
+                }
+            }
+        })
+
 
 
     end

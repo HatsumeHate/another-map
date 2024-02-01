@@ -67,7 +67,7 @@ do
                 UnitApplyTimedLife(reanimated, 0, 16.)
                 SafePauseUnit(reanimated, false)
                 UnitRemoveAbility(reanimated, FourCC("Avul"))
-                CreateBarOnUnit(reanimated)
+                --CreateBarOnUnit(reanimated)
             end)
 
     end
@@ -95,7 +95,7 @@ do
     function CreateFireRain(caster, x, y, radius, duration)
         local timer = CreateTimer()
 
-        local sound = CreateNew3DSound("Abilities\\Spells\\Demon\\RainOfFire\\RainOfFireLoop1.wav", x, y, 35., 100, 1500.)
+        local sound = CreateNew3DSound("Abilities\\Spells\\Demon\\RainOfFire\\RainOfFireLoop1.wav", x, y, 35., 100, 1500., 4000.)
         StartSound(sound)
 
             TimerStart(timer, 0.18, true, function()
@@ -136,7 +136,7 @@ do
 
     function SatyrBlinkCast(unit)
         local angle = GetRandomReal(0., 359.)
-        local distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), angle, 700.)
+        local distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), angle, GetRandomReal(300., 700.))
         local sfx = AddSpecialEffect("Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdx", GetUnitX(unit), GetUnitY(unit))
         local x = GetUnitX(unit) + Rx(distance, angle)
         local y = GetUnitY(unit) + Ry(distance, angle)
@@ -188,6 +188,7 @@ do
 
 
     end
+
 
 
     ---@param model string

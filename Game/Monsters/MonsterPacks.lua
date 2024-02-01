@@ -420,43 +420,6 @@ do
             end)
         end)
 
-        RegisterTestCommand("band", function()
-            SetUnitX(PlayerHero[1], GetRectCenterX(gg_rct_band_test))
-            SetUnitY(PlayerHero[1], GetRectCenterY(gg_rct_band_test))
-        end)
-
-        RegisterTestCommand("spd", function()
-            SetUnitX(PlayerHero[1], GetRectCenterX(gg_rct_spd_test))
-            SetUnitY(PlayerHero[1], GetRectCenterY(gg_rct_spd_test))
-        end)
-
-        RegisterTestCommand("arch", function()
-            SetUnitX(PlayerHero[1], GetRectCenterX(gg_rct_arch_test))
-            SetUnitY(PlayerHero[1], GetRectCenterY(gg_rct_arch_test))
-        end)
-
-        RegisterTestCommand("vamp", function()
-            local unit = CreateUnit(Player(0), FourCC("u00N"), GetRectCenterX(gg_rct_rectaaa), GetRectCenterY(gg_rct_rectaaa), 0.)
-            DelayAction(0., function() ScaleMonsterUnit(unit, Current_Wave)  end)
-            GroupAddUnit(test_group, unit)
-        end)
-
-        RegisterTestCommand("zmb", function()
-            local unit = CreateUnit(Player(0), FourCC("n00E"), GetRectCenterX(gg_rct_rectaaa), GetRectCenterY(gg_rct_rectaaa), 0.)
-            DelayAction(0., function() ScaleMonsterUnit(unit, Current_Wave)  end)
-            GroupAddUnit(test_group, unit)
-        end)
-
-        RegisterTestCommand("rvn", function()
-            local unit = CreateUnit(Player(0), FourCC("n01N"), GetRectCenterX(gg_rct_rectaaa), GetRectCenterY(gg_rct_rectaaa), 0.)
-            DelayAction(0., function() ScaleMonsterUnit(unit, Current_Wave)  end)
-            GroupAddUnit(test_group, unit)
-        end)
-
-        RegisterTestCommand("outscale", function()
-            ScaleMonsterGroup(test_group, Current_Wave)
-        end)
-
         RegisterTestCommand("inspect", function()
             ForGroup(test_group, function()
                 local unit_data = GetUnitData(GetEnumUnit())
@@ -468,26 +431,6 @@ do
             end)
         end)
 
-        RegisterTestCommand("re", function()
-            Current_Wave = Current_Wave + 1
-            ScaleMonsterGroup(test_group, Current_Wave)
-        end)
-
-        RegisterTestCommand("level8", function()
-            Current_Wave = 8
-        end)
-
-        RegisterTestCommand("level15", function()
-            Current_Wave = 15
-        end)
-
-        RegisterTestCommand("level25", function()
-            Current_Wave = 25
-        end)
-
-        RegisterTestCommand("level35", function()
-            Current_Wave = 35
-        end)
 --print("aaaaaaa2")
     end
 

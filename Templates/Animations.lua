@@ -447,6 +447,12 @@ do
             animation_backswing = 0.3,
         })
 
+        NewAnimationSequence("butcher_spell_throw", {
+            animation           = 3,
+            animation_point     = 0.650,
+            animation_backswing = 0.3,
+        })
+
 
         NewAnimationSequence("boar_charge", {
             animation           = 3,
@@ -496,10 +502,16 @@ do
             animation_backswing = 0.46,
         })
 
+        NewAnimationSequence("andariel_spell", {
+            animation           = 9,
+            animation_point     = 0.533,
+            animation_backswing = 0.46,
+        })
+
         NewAnimationSequence("baal_spell", {
             animation           = 4,
-            animation_point     = 0.333,
-            animation_backswing = 0.46,
+            animation_point     = 0.4,
+            animation_backswing = 0.43,
         })
 
         NewAnimationSequence("skeleton_mage_spell", {
@@ -546,6 +558,12 @@ do
             animation_backswing = 0.4,
         })
 
+        NewAnimationSequence("werewolf_spell", {
+            animation           = 25,
+            animation_point     = 1.528,
+            animation_backswing = 3.333,
+        })
+
         NewAnimationSequence("bloodraven_spell", {
             animation           = 11,
             animation_point     = 0.3,
@@ -562,6 +580,18 @@ do
             animation           = 2,
             animation_point     = 0.434,
             animation_backswing = 0.3,
+        })
+
+        NewAnimationSequence("pitlord_spell_throw", {
+            animation           = 6,
+            animation_point     = 0.733,
+            animation_backswing = 0.767,
+        })
+
+        NewAnimationSequence("pitlord_spell", {
+            animation           = 14,
+            animation_point     = 0.7,
+            animation_backswing = 0.8,
         })
 
         NewAnimationSequence("diablo_breath", {

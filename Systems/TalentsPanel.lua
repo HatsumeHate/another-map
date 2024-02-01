@@ -24,6 +24,7 @@ do
         local new_Frame = BlzCreateFrame('ScriptDialogButton', parent_frame, 0, 0)
         local border = BlzCreateFrame("EscMenuBackdropEx", new_Frame, 0, 0)
         local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
+        local borderex = BlzCreateFrameByType("BACKDROP", "aaa", new_Frame, "", 0)
         local sprite = CreateSprite("selecter4.mdx", 0.9, new_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02, new_Frame)
 
             ButtonList[new_Frame] = {
@@ -41,6 +42,10 @@ do
             BlzFrameSetPoint(border, FRAMEPOINT_BOTTOMLEFT, new_Frame, FRAMEPOINT_BOTTOMLEFT, -0.008, -0.008)
             BlzFrameSetVisible(sprite, false)
             BlzTriggerRegisterFrameEvent(ClickTrigger, new_Frame, FRAMEEVENT_CONTROL_CLICK)
+
+            BlzFrameSetSize(borderex, 1., 1.)
+            BlzFrameSetTexture(borderex, "UI\\inventory_frame.blp", 0, true)
+            BlzFrameSetAllPoints(borderex, new_Frame)
 
 
         return new_Frame
@@ -614,9 +619,14 @@ do
 
         unit_data.talents = nil
         unit_data.talent_list = nil
+        unit_data.talents = {  }
+        unit_data.talent_list = {  }
         AddTalentPointsToPlayer(player, total_points)
         UpdateTalentsRequirements(player)
 
+        if TalentPanel[player].state then
+            ShowTalentCategoryTemplate(player, TalentPanel[player].current_category)
+        end
     end
 
 

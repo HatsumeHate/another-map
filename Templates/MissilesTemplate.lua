@@ -190,7 +190,7 @@ do
             model = "Abilities\\Weapons\\Arrow\\ArrowMissile.mdx",
             max_distance = 900.,
             radius = 50.,
-            speed = 800.,
+            speed = 1200.,
             start_z = 65.,
             end_z = 65.,
             arc = 0.15,
@@ -233,7 +233,7 @@ do
             model = "Abilities\\Weapons\\SearingArrow\\SearingArrowMissile.mdx",
             max_distance = 900.,
             radius = 50.,
-            speed = 800.,
+            speed = 1200.,
             start_z = 65.,
             end_z = 65.,
             arc = 0.15,
@@ -275,7 +275,7 @@ do
             model = "Abilities\\Weapons\\FireBallMissile\\FireBallMissile.mdx",
             max_distance = 1000.,
             radius = 55.,
-            speed = 725.,
+            speed = 925.,
             start_z = 60.,
             end_z = 60.,
             arc = 0.,
@@ -374,7 +374,7 @@ do
             model = "Abilities\\Weapons\\LichMissile\\LichMissile.mdl",
             max_distance = 1000.,
             radius = 55.,
-            speed = 480.,
+            speed = 550.,
             start_z = 65.,
             end_z = 65.,
             arc = 0.,
@@ -431,22 +431,27 @@ do
             name = "BAAL missile",
             model = "Abilities\\Weapons\\GargoyleMissile\\GargoyleMissile.mdx",
             max_distance = 1000.,
-            radius = 57.,
+            radius = 65.,
             speed = 670.,
             start_z = 65.,
             end_z = 60.,
             arc = 0.,
             scale = 1.2,
+            sound_on_launch = {
+                pack = { "Sounds\\Monsters\\baal_attack.wav" },
+                volume = 115,
+                cutoff = 1600.,
+            },
             ignore_terrain = true,
             penetrate = false,
             full_distance = true
         })
         --==============================================--
         NewMissileTemplate('meph_frost_blast_missile', {
-            name = "BAAL missile",
+            name = "meph missile",
             model = "Abilities\\Weapons\\FrostWyrmMissile\\FrostWyrmMissile.mdx",
             max_distance = 1000.,
-            radius = 57.,
+            radius = 70.,
             speed = 425.,
             start_z = 120.,
             end_z = 120.,
@@ -464,7 +469,7 @@ do
             model = "Abilities\\Weapons\\SearingArrow\\SearingArrowMissile.mdx",
             max_distance = 900.,
             radius = 53.,
-            speed = 900.,
+            speed = 1200.,
             start_z = 60.,
             end_z = 30.,
             arc = 0.07,
@@ -503,7 +508,8 @@ do
             sound_on_fly = {
                 pack = { "Sounds\\Spells\\evolt_loop.wav" },
                 volume = 100,
-                cutoff = 1600.
+                cutoff = 1600.,
+                looping = true
             },
             sound_on_launch = {
                 pack = { "Sounds\\Spells\\evolt_launch_1.wav", "Sounds\\Spells\\evolt_launch_2.wav" },
@@ -523,7 +529,7 @@ do
             model = "Abilities\\Weapons\\HarpyMissile\\HarpyMissile.mdx",
             max_distance = 600.,
             radius = 57.,
-            speed = 450.,
+            speed = 850.,
             start_z = 45.,
             end_z = 45.,
             arc = 0.1,
@@ -554,7 +560,7 @@ do
             model = "Abilities\\Weapons\\Banditmissile\\Banditmissile.mdx",
             max_distance = 700.,
             radius = 57.,
-            speed = 470.,
+            speed = 1200.,
             start_z = 65.,
             end_z = 65.,
             arc = 0.1,
@@ -569,7 +575,7 @@ do
             model = "Abilities\\Weapons\\ChimaeraAcidMissile\\ChimaeraAcidMissile.mdx",
             max_distance = 750.,
             radius = 57.,
-            speed = 450.,
+            speed = 650.,
             start_z = 65.,
             end_z = 65.,
             arc = 0.1,
@@ -638,8 +644,9 @@ do
             effect_on_hit = "EALN",
             scale = 1.,
             ignore_terrain = true,
-            penetrate = false,
-            full_distance = true
+            penetrate = true,
+            full_distance = true,
+            max_targets = 300
         })
         --==============================================--
         NewMissileTemplate('MFRB', {
@@ -656,7 +663,8 @@ do
             sound_on_fly = {
                 pack = { "Sounds\\Spells\\FrostBolt_Loop_1.wav", "Sounds\\Spells\\FrostBolt_Loop_2.wav" },
                 volume = 120,
-                cutoff = 1700.
+                cutoff = 1700.,
+                looping = true
             },
             sound_on_launch = {
                 pack = { "Sounds\\Spells\\frosbolt_launch_1.wav", "Sounds\\Spells\\frosbolt_launch_2.wav" },
@@ -677,15 +685,13 @@ do
             start_z = 95.,
             end_z = 95.,
             arc = 0.,
-            --geo_arc = 45.,
-            --geo_arc_length = 200.,
-            --geo_arc_randomize_angle = true,
             scale = 1.1,
             effect_on_hit = 'EGFB',
             sound_on_fly = {
                 pack = { "Sounds\\Spells\\Fireball_Loop_1.wav", "Sounds\\Spells\\Fireball_Loop_2.wav" },
                 volume = 128,
-                cutoff = 1700.
+                cutoff = 1700.,
+                looping = true
             },
             ignore_terrain = true,
             full_distance = true,
@@ -838,7 +844,7 @@ do
             start_z = 0.,
             end_z = 0.,
             scale = 1.15,
-            effect_on_hit = 'fire_wall_effect',
+            effect_on_hit = 'fire_wave_effect',
             max_targets = 500,
             ignore_terrain = true,
             full_distance = true,
@@ -919,7 +925,7 @@ do
             },
             sound_on_fly = {
                 pack = { "Sounds\\Spells\\Bone_Spear_Travel_1.wav", "Sounds\\Spells\\Bone_Spear_Travel_2.wav", "Sounds\\Spells\\Bone_Spear_Travel_3.wav", },
-                volume = 150,
+                volume = 155,
                 cutoff = 1600.
             },
             radius = 75.,
@@ -954,7 +960,7 @@ do
         --===============================================--
         NewMissileTemplate('MNPS', {
             name = "toxic substance missile",
-            model = "Spell\\OrbOfVenom.mdx",
+            model = "Missile\\WidowPoison.mdx",--"Spell\\OrbOfVenom.mdx",
             max_distance = 1000.,
             effect_on_hit = 'ENTS',
             radius = 75.,
@@ -1039,14 +1045,15 @@ do
                 volume = 95,
                 cutoff = 1600.,
             },
-            radius = 75.,
+            radius = 80.,
             speed = 500.,
             start_z = 80.,
             end_z = 80.,
             sound_on_fly = {
                 pack = { "Sounds\\Spells\\Bone_Spirit_Travel_Loop_1.wav", "Sounds\\Spells\\Bone_Spirit_Travel_Loop_2.wav" },
                 volume = 145,
-                cutoff = 1600.
+                cutoff = 1600.,
+                looping = true
             },
             arc = 0.,
             geo_arc = 50,
@@ -1203,6 +1210,62 @@ do
             penetrate = false,
             full_distance = true
         })
+        NewMissileTemplate('baal_hoarfrost_missile', {
+            name = "baal hoarfrost missile",
+            model = "Missile\\WindMissle.mdx",
+            max_distance = 1000.,
+            radius = 100.,
+            speed = 1100.,
+            start_z = 75.,
+            end_z = 75.,
+            arc = 0.,
+            scale = 1.,
+            effect_on_hit = 'baal_hoarfrost',
+            sound_on_fly = {
+                pack = { "Sounds\\Spells\\missile1.wav", "Sounds\\Spells\\missile2.wav", "Sounds\\Spells\\missile3.wav" },
+                volume = 128,
+                cutoff = 1700.,
+                looping = false
+            },
+            max_targets = 300,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            trackable = false
+        })
+        NewMissileTemplate('andariel_fire_missile', {
+            name = "andariel hellfire missile",
+            model = "Effect\\Flame of Darkness.mdx",
+            max_distance = 1500.,
+            radius = 70.,
+            speed = 800.,
+            start_z = 10.,
+            end_z = 10.,
+            arc = 0.,
+            scale = 1.,
+            max_targets = 300,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            trackable = false
+        })
+        NewMissileTemplate('baal_nova_missile', {
+            name = "baal nova missile",
+            model = "Missile\\Firebolt Medium.mdx",
+            max_distance = 1000.,
+            radius = 80.,
+            speed = 900.,
+            start_z = 75.,
+            end_z = 75.,
+            arc = 0.,
+            scale = 1.,
+            effect_on_hit = 'baal_nova',
+            max_targets = 300,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            trackable = false
+        })
         --===============================================--
         NewMissileTemplate('MRLR', {
             name = "revenant lightning missile",
@@ -1282,6 +1345,23 @@ do
             scale = 1.,
             only_on_impact = true,
             ignore_terrain = false,
+            can_enum = false
+        })
+        --===============================================--
+        NewMissileTemplate('pitlord_darkness_missile', {
+            name = "pitlord darkness missile",
+            model = "Missile\\DarknessBomb.mdx",
+            max_distance = 1200.,
+            radius = 70.,
+            speed = 900.,
+            start_z = 70.,
+            end_z = 70.,
+            effect_on_hit = "pitlord_darkness_bolt",
+            max_targets = 300,
+            hit_once_in = 0.25,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
             can_enum = false
         })
     end

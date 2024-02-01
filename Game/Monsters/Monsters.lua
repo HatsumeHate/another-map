@@ -89,6 +89,7 @@ do
     MONSTER_ID_GIGANTIC_SPIDER = "n011"
     MONSTER_ID_ARACHNID_THROWER = "n00O"
     MONSTER_ID_ARACHNID = "n00P"
+    MONSTER_ID_ARACHNID_NIGHTMARE = "n02O"
     MONSTER_ID_ARACHNID_WARRIOR = "n00Q"
     MONSTER_ID_ARACHNID_GROUNDER = "n00R"
     MONSTER_ID_BANDIT_BASIC = "n00T"
@@ -97,6 +98,8 @@ do
     MONSTER_ID_BANDIT_ASSASSIN = "n00W"
     MONSTER_ID_QUILLBEAST = "n01N"
     MONSTER_ID_WOLF = "n01J"
+    MONSTER_ID_BEAR = "e001"
+    MONSTER_ID_WEREWOLF = "n02N"
     MONSTER_ID_INSECT = "n023"
     MONSTER_ID_SATYR = "n01K"
     MONSTER_ID_SATYR_TRICKSTER = "n01L"
@@ -131,9 +134,20 @@ do
     MONSTER_EXP_RATES = 0
     MONSTER_LIST = 0
 
+    MONSTER_TRAIT_SPAWN_KEY = 3
+    MONSTER_ELITE_SPAWN_KEY = 4
+    MONSTER_AURA_SPAWN_KEY = 5
+
 
     -- attack type focus (melee/range ratio) => monster type =>
 
+
+    ---@param unit unit
+    ---@return boolean
+    function IsUnitMonsterPlayer(unit)
+        local p = GetOwningPlayer(unit)
+        return p == SECOND_MONSTER_PLAYER or p == MONSTER_PLAYER or p == Player(12)
+    end
 
 
     function GetRandomMonsterTag()
@@ -369,16 +383,18 @@ do
             end
 
             DelayAction(5., function()
-                if GetRandomInt(1, 3) == 1 then
+
+                if GetRandomInt(1, MONSTER_AURA_SPAWN_KEY) == 1 then
+                    ApplyMonsterAuaraTrait(BlzGroupUnitAt(monster_group, GetRandomInt(0, BlzGroupGetSize(monster_group)-1)))
+                end
+
+                if GetRandomInt(1, MONSTER_TRAIT_SPAWN_KEY) == 1 then
                     local monster_pack_table = SortGroup(monster_group)
                     local random_values = GetRandomIntTable(1, #monster_pack_table, #monster_pack_table)
                     local monsters_with_trait_amount = GetRandomInt(1, 4)
-
                     local spawn_elite = false
 
-                    if GetRandomInt(1, 4) == 1 then
-                        spawn_elite = true
-                    end
+                    if GetRandomInt(1, MONSTER_ELITE_SPAWN_KEY) == 1 then spawn_elite = true end
 
                         for i = 1, #random_values do
                             local current_group = monster_pack_table[random_values[i]]
@@ -476,7 +492,11 @@ do
         local wave_group = CopyGroup(WaveGroup)
         DelayAction(5., function()
 
-                if GetRandomInt(1, 3) == 1 then
+                if GetRandomInt(1, MONSTER_AURA_SPAWN_KEY) == 1 then
+                    ApplyMonsterAuaraTrait(BlzGroupUnitAt(wave_group, GetRandomInt(0, BlzGroupGetSize(wave_group)-1)))
+                end
+
+                if GetRandomInt(1, MONSTER_TRAIT_SPAWN_KEY) == 1 then
                     local monster_pack_table = SortGroup(wave_group)
                     local random_values = GetRandomIntTable(1, #monster_pack_table, #monster_pack_table)
                     local monsters_with_trait_amount = GetRandomInt(1, 3)
@@ -648,6 +668,12 @@ do
                         { id = MONSTER_ID_ARACHNID_THROWER, chance = 50., max = 2 } ,
                         { id = MONSTER_ID_SPIDER_HUNTER, chance = 100., max = 1 } ,
                     }
+                },
+                [MONSTER_RANK_ADVANCED] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_WEREWOLF, chance = 50., max = 4},
+                        { id = MONSTER_ID_BEAR, chance = 100., max = 2}
+                    }
                 }
             },
             [MONSTERPACK_SWARM] = {
@@ -701,6 +727,7 @@ do
             [MONSTERPACK_ARACHNIDS] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_ARACHNID_NIGHTMARE, chance = 25., max = 3},
                         { id = MONSTER_ID_ARACHNID, chance = 100. }
                     },
                     [MONSTER_TAG_RANGE] = {
@@ -828,7 +855,6 @@ do
                 },
                 [MONSTERPACK_BOSS] = {
                     MONSTER_ID_DEMONESS,
-                    MONSTER_ID_DEMONKING,
                     MONSTER_ID_UNDERWORLD_QUEEN,
                     MONSTER_ID_BUTCHER,
                     MONSTER_ID_BAAL,
@@ -886,7 +912,6 @@ do
                 MONSTER_ID_BAAL,
                 MONSTER_ID_MEPHISTO,
                 MONSTER_ID_DEMONESS ,
-                MONSTER_ID_DEMONKING,
                 MONSTER_ID_UNDERWORLD_QUEEN,
                 MONSTER_ID_REANIMATED,
                 MONSTER_ID_SPIDER_QUEEN,
@@ -1022,7 +1047,7 @@ do
                         if unit_Data.xp and unit_Data.xp > 0 then
                             local bonus = MONSTER_EXP_RATES.const_per_level * Current_Wave
                             local mult = 1. + (MONSTER_EXP_RATES.modf_per_level * Current_Wave)
-                            GiveExpForKill(((unit_Data.xp * (1. + GetUnitParameterValue(GetKillingUnit(), EXP_BONUS) * 0.01)) + bonus) * MONSTER_EXP_RATES[unit_Data.classification or MONSTER_RANK_COMMON] * mult, GetUnitX(unit), GetUnitY(unit))
+                            GiveExpForKill(((unit_Data.xp * (1. + GetUnitParameterValue(GetKillingUnit(), EXP_BONUS) * 0.01)) + bonus) * MONSTER_EXP_RATES[unit_Data.classification or MONSTER_RANK_COMMON] * mult * GLOBAL_EXP_RATE, GetUnitX(unit), GetUnitY(unit))
                         end
 
                         unit = nil
@@ -1041,19 +1066,6 @@ do
             ForGroup(WaveGroup, function ()
                 KillUnit(GetEnumUnit())
             end)
-        end)
-
-        RegisterTestCommand("extreme", function()
-            Current_Wave = 48
-        end)
-
-        local test_group
-        RegisterTestCommand("spw", function()
-            test_group = SpawnMonsterPack(gg_rct_Region_343, MONSTERPACK_GNOLLS, 3, 7, 3, 0.)
-        end)
-
-        RegisterTestCommand("spwd", function()
-            ForGroup(test_group, function() KillUnit(GetEnumUnit()) end)
         end)
 
     end

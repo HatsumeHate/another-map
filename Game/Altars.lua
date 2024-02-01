@@ -432,12 +432,6 @@ do
 
         end)
 
-
-        RegisterTestCommand("aaa", function()
-            CreateChest(gg_rct_test_a_1)
-        end)
-
-
         ChestRects = {
             [1]	 = gg_rct_chest_1,
             [2]	 = gg_rct_chest_2,

@@ -17,6 +17,9 @@ do
     KEYBIND_LIST = 0
 
 
+
+
+
     function GetClosestUnitToCursor(player)
         local group = CreateGroup()
         local distance = 64.
@@ -129,7 +132,9 @@ do
                     elseif value_str == "hp" then return "|c0000FF00" .. (effect.level[lvl].life_restored or 0.) .. "|r"
                     elseif value_str == "mp" then return "|c000066FF" .. (effect.level[lvl].resource_restored or 0.) .. "|r"
                     elseif value_str == "hphitmax" then return "|c0000FF00" .. (effect.level[lvl].life_restored_from_hit_max or 0.) .. "|r"
-                    elseif value_str == "mphitmax" then return "|c000066FF" .. (effect.level[lvl].resource_restored_from_hit_max or 0.) .. "|r" end
+                    elseif value_str == "mphitmax" then return "|c000066FF" .. (effect.level[lvl].resource_restored_from_hit_max or 0.) .. "|r"
+                    elseif value_str == "heal_max_hp" then return "|c0000FF00" .. string.format('%%.1f', (effect.level[lvl].heal_amount_max_hp or 0.) * 100.) .. "%%|r"
+                    end
 
 
             elseif tag == "s" then
@@ -143,6 +148,7 @@ do
 
             elseif tag == "b" then
                 local buff = GetBuffData(id)
+                local sub = SubString(value_str, 0,  2)
 
                 if buff == nil then
                     return "invalid buff"
@@ -151,12 +157,16 @@ do
                     GenerateBuffLevelData(buff, lvl)
 
                     if value_str == "time" then return buff.level[lvl].time or 0.1
-                    elseif SubString(value_str, 0,  2) == "va" then
+                    elseif sub == "va" then
                         local param = buff.level[lvl].bonus[S2I(SubString(value_str, 2, 3))]
                         return "|c00FF7600" .. GetCorrectParamText(param.PARAM, param.VALUE, param.METHOD) .. "|r"
-                    elseif SubString(value_str, 0,  2) == "pa" then
+                    elseif sub == "pa" then
                         local param = buff.level[lvl].bonus[S2I(SubString(value_str, 2, 3))]
                         return GetParameterName(param.PARAM)
+                    elseif sub == "en" then
+                        return "|c00FF862F" .. (buff.level[lvl].endurance or 0) .. "|r"
+                    elseif sub == "eh" then
+                        return "|c00FF862F" .. math.floor((buff.level[lvl].endurance_hp or 0) * 100) .. "%%|r"
                     end
 
             elseif tag == "m" then
@@ -882,7 +892,7 @@ do
                         local pack = action.sound[i]
                         local num = #unit_data.castsound + 1
 
-                        unit_data.castsound[num] = CreateNew3DSound(pack[GetRandomInt(1, #pack)], unit_x, unit_y, 35., pack.volume or 128, pack.cutoff or 1600., false)
+                        unit_data.castsound[num] = CreateNew3DSound(pack[GetRandomInt(1, #pack)], unit_x, unit_y, 35., pack.volume or 128, pack.cutoff or 1600., pack.distance or 4000., false)
                         unit_data.sound_delay_timer[num] = CreateTimer()
                         local delay = (pack.delay or 0.) * time_reduction
                         if delay < 0. then delay = 0. end
@@ -958,6 +968,25 @@ do
     end
 
 
+    ---@param ability_instance table
+    ---@param effect string
+    ---@return boolean
+    function AbilityInstanceHasEffect(ability_instance, effect)
+
+        if ability_instance and ability_instance.proc_list[effect] then
+            return true
+        end
+
+        return false
+    end
+
+    ---@param ability_instance table
+    ---@param effect string
+    function AbilityInstanceAddEffectProc(ability_instance, effect)
+        if ability_instance.proc_list then
+            ability_instance.proc_list[effect] = true
+        end
+    end
 
     ---@param ability_instance table
     ---@param instance string
@@ -1144,6 +1173,8 @@ do
 
                 if skill then
 
+
+
                     local unit_data = GetUnitData(GetTriggerUnit())
                     skill = GetUnitSkillData(unit_data.Owner, skill.Id)
 
@@ -1236,6 +1267,8 @@ do
                         ability_level = ability_level,
                         cooldown = ((skill.level[ability_level].cooldown or 0.1) + ((sequence.animation_point or 0.) * time_reduction)) * GetUnitParameterValue(unit_data.Owner, COOLDOWN_REDUCTION),
                         manacost = manacost,
+                        proc_list = {},
+                        proc_rate = skill.proc_rate or 1.,
                         tags = {},
                     }
 
@@ -1298,7 +1331,7 @@ do
                     end
 
 
-                    BlzSetUnitAbilityManaCost(unit_data.Owner, id, 0, skill_additional_data.manacost)
+                    BlzSetUnitAbilityManaCost(unit_data.Owner, id, 0, math.floor(skill_additional_data.manacost + 0.5))
 
 
                     unit_data.cast_skill = id
@@ -1347,7 +1380,7 @@ do
                                 local pack = skill.sound[i]
                                 local num = #unit_data.castsound + 1
 
-                                unit_data.castsound[num] = CreateNew3DSound(pack[GetRandomInt(1, #pack)], unit_x, unit_y, 35., pack.volume or 128., pack.cutoff or 1600., false)
+                                unit_data.castsound[num] = CreateNew3DSound(pack[GetRandomInt(1, #pack)], unit_x, unit_y, 35., pack.volume or 128., pack.cutoff or 1600., pack.distance or 4000., false)
                                 unit_data.sound_delay_timer[num] = CreateTimer()
                                 local delay = (pack.delay or 0.) * time_reduction
                                 if delay < 0. then delay = 0. end
@@ -1425,7 +1458,7 @@ do
                             OnSkillCastEnd(unit_data.Owner, target, spell_x, spell_y, skill, ability_level, skill_additional_data)
 
                             if skill.sound and skill.sound.on_cast_end then
-                                AddSoundVolume(skill.sound.on_cast_end[GetRandomInt(1, #skill.sound.on_cast_end)], GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), skill.sound.on_cast_end.volume or 128, skill.sound.on_cast_end.cutoff or 1600.)
+                                AddSoundVolume(skill.sound.on_cast_end[GetRandomInt(1, #skill.sound.on_cast_end)], GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), skill.sound.on_cast_end.volume or 128, skill.sound.on_cast_end.cutoff or 1600., skill.sound.on_cast_end.distance or 4000.)
                             end
 
                             if IsAHero(unit_data.Owner) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(unit_data.Owner))+1] = true end

@@ -24,16 +24,17 @@ do
                 BlzFrameSetText(StatsList[i][ATTACK_SPEED], LOCALE_LIST[my_locale].STAT_PANEL_ATTACK_SPEED.. math.floor(data.stats[ATTACK_SPEED].actual_bonus + 0.5) .. "%%")
                 BlzFrameSetText(StatsList[i]["ATTACK_SPEED_spec"], LOCALE_LIST[my_locale].STAT_PANEL_ATTACK_SPEED_PERIOD.. string.format('%%.2f', data.stats[ATTACK_SPEED].value))
                 BlzFrameSetText(StatsList[i][CAST_SPEED], LOCALE_LIST[my_locale].STAT_PANEL_CAST_SPEED.. math.floor(data.stats[CAST_SPEED].value + 0.5) .. "%%")
+                BlzFrameSetText(StatsList[i][MOVING_SPEED], LOCALE_LIST[my_locale].STAT_PANEL_MOVE_SPEED.. math.floor(data.stats[MOVING_SPEED].value + 0.5))
                 BlzFrameSetText(StatsList[i][CRIT_CHANCE], LOCALE_LIST[my_locale].STAT_PANEL_CRIT_CHANCE..  math.floor(ParamToPercent(data.stats[CRIT_CHANCE].value, CRIT_CHANCE) + 0.5) .. "%%")
 
-                BlzFrameSetText(StatsList[i][PHYSICAL_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_PHYSICAL.. data.stats[PHYSICAL_RESIST].value)
-                BlzFrameSetText(StatsList[i][FIRE_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_FIRE.. data.stats[FIRE_RESIST].value)
-                BlzFrameSetText(StatsList[i][ICE_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_ICE.. data.stats[ICE_RESIST].value)
-                BlzFrameSetText(StatsList[i][LIGHTNING_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_LIGHTNING.. data.stats[LIGHTNING_RESIST].value)
-                BlzFrameSetText(StatsList[i][DARKNESS_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_DARKNESS.. data.stats[DARKNESS_RESIST].value)
-                BlzFrameSetText(StatsList[i][HOLY_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_HOLY.. data.stats[HOLY_RESIST].value)
-                BlzFrameSetText(StatsList[i][POISON_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_POISON.. data.stats[POISON_RESIST].value)
-                BlzFrameSetText(StatsList[i][ARCANE_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_ARCANE.. data.stats[ARCANE_RESIST].value)
+                BlzFrameSetText(StatsList[i][PHYSICAL_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_PHYSICAL.. data.stats[PHYSICAL_RESIST].value.. "%%")
+                BlzFrameSetText(StatsList[i][FIRE_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_FIRE.. data.stats[FIRE_RESIST].value.. "%%")
+                BlzFrameSetText(StatsList[i][ICE_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_ICE.. data.stats[ICE_RESIST].value.. "%%")
+                BlzFrameSetText(StatsList[i][LIGHTNING_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_LIGHTNING.. data.stats[LIGHTNING_RESIST].value.. "%%")
+                BlzFrameSetText(StatsList[i][DARKNESS_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_DARKNESS.. data.stats[DARKNESS_RESIST].value.. "%%")
+                BlzFrameSetText(StatsList[i][HOLY_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_HOLY.. data.stats[HOLY_RESIST].value.. "%%")
+                BlzFrameSetText(StatsList[i][POISON_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_POISON.. data.stats[POISON_RESIST].value.. "%%")
+                BlzFrameSetText(StatsList[i][ARCANE_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_ARCANE.. data.stats[ARCANE_RESIST].value.. "%%")
             end
         end
     end
@@ -265,7 +266,7 @@ do
 
 
                     new_frame = CreateTextBox("Сила:", STR_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., -0.002, main_frame, player)
-                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_STR_DESC, StatsList[player][STR_STAT], 0.12, 0.1)
+                    CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_STR_DESC, StatsList[player][STR_STAT], 0.13, 0.13)
                     button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
                     NewStatData(player, STR_STAT, button)
                     --MainStatButtons[player].frames[button] = button
@@ -288,6 +289,7 @@ do
                     new_frame = CreateTextBox("", ATTACK_SPEED, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
                     new_subframe = CreateTextBox("Атак в сек.: 1234", "ATTACK_SPEED_spec", 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
                     new_frame = CreateTextBox("Атак в сек.: 1234", CAST_SPEED, 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
+                    new_frame = CreateTextBox("Бег", MOVING_SPEED, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
 
 
 
@@ -429,7 +431,7 @@ do
 
 
             new_frame = CreateTextBox("Сила:", STR_STAT, 0.085, 0.03, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., -0.002, main_frame, player)
-            CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_STR_DESC, StatsList[player][STR_STAT], 0.12, 0.1)
+            CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_MAIN_STAT, LOCALE_LIST[my_locale].STAT_PANEL_STR_DESC, StatsList[player][STR_STAT], 0.13, 0.13)
             button = NewButton("DiabolicUI_Button_51x51_Pushed.tga", 0.022, 0.022, new_frame, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0, 0, new_frame)
             NewStatData(player, STR_STAT, button)
 
@@ -452,6 +454,7 @@ do
             new_frame = CreateTextBox("", ATTACK_SPEED, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
             new_subframe = CreateTextBox("Атак в сек.: 1234", "ATTACK_SPEED_spec", 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
             new_frame = CreateTextBox("Атак в сек.: 1234", CAST_SPEED, 0.1, 0.03, 1., new_subframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
+            new_frame = CreateTextBox("Бег", MOVING_SPEED, 0.1, 0.03, 1., new_frame, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0., main_frame, player)
 
 
 

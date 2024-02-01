@@ -267,6 +267,44 @@ do
     end
 
 
+    function ArcDischargeRemoveCharge(source)
+        local unit_data = GetUnitData(source)
+
+            if unit_data.arc_discharge_boost > 0 then
+                unit_data.arc_discharge_boost = 0
+                DestroyEffect(unit_data.arc_discharge_boost_effect)
+                unit_data.arc_discharge_boost_effect = nil
+                unit_data.arc_discharge_boost_time = 2.
+            end
+
+    end
+
+    function ArcDischargeCharge(source)
+        local unit_data = GetUnitData(source)
+
+            if GetUnitState(source, UNIT_STATE_LIFE) > 0.045 then
+                if unit_data.arc_discharge_boost < GetUnitTalentLevel(source, "talent_arc_discharge") then
+                    unit_data.arc_discharge_boost = unit_data.arc_discharge_boost + 1
+
+                    if not unit_data.arc_discharge_boost_effect then
+                        unit_data.arc_discharge_boost_effect = AddSpecialEffectTarget("Effect\\lightning_arc_discharge.mdx", source, "origin")
+                    end
+
+                    if unit_data.arc_discharge_boost == 1 then BlzPlaySpecialEffect(unit_data.arc_discharge_boost_effect, ANIM_TYPE_STAND)
+                    elseif unit_data.arc_discharge_boost == 2 then BlzPlaySpecialEffect(unit_data.arc_discharge_boost_effect, ANIM_TYPE_SPELL)
+                    else BlzPlaySpecialEffect(unit_data.arc_discharge_boost_effect, ANIM_TYPE_SLEEP) end
+
+                    if unit_data.arc_discharge_boost == GetUnitTalentLevel(source, "talent_arc_discharge") then
+                        unit_data.arc_discharge_boost_time = 2.
+                    else
+                        unit_data.arc_discharge_boost_time = 1.5
+                    end
+                end
+            end
+
+    end
+
+
     function ArcDischargeTalentEffect(source)
         local unit_data = GetUnitData(source)
         unit_data.arc_discharge_boost = 0
@@ -276,29 +314,11 @@ do
 
                 if GetUnitState(source, UNIT_STATE_LIFE) > 0.045 then
 
-                    if unit_data.arc_discharge_boost_time <= 0. then
-                        if unit_data.arc_discharge_boost < GetUnitTalentLevel(source, "talent_arc_discharge") then
-                            unit_data.arc_discharge_boost = unit_data.arc_discharge_boost + 1
-
-                            if not unit_data.arc_discharge_boost_effect then
-                                unit_data.arc_discharge_boost_effect = AddSpecialEffectTarget("Effect\\lightning_arc_discharge.mdx", source, "origin")
-                            end
-
-                            if unit_data.arc_discharge_boost == 1 then BlzPlaySpecialEffect(unit_data.arc_discharge_boost_effect, ANIM_TYPE_STAND)
-                            elseif unit_data.arc_discharge_boost == 2 then BlzPlaySpecialEffect(unit_data.arc_discharge_boost_effect, ANIM_TYPE_SPELL)
-                            else BlzPlaySpecialEffect(unit_data.arc_discharge_boost_effect, ANIM_TYPE_SLEEP) end
-
-
-                            unit_data.arc_discharge_boost_time = 1.5
-
-                            if unit_data.arc_discharge_boost == GetUnitTalentLevel(source, "talent_arc_discharge") then
-                                DelayAction(0., function() PauseTimer(unit_data.arc_discharge_boost_timer); unit_data.arc_discharge_boost_time = 2. end)
-                            end
-                        end
+                    if unit_data.arc_discharge_boost_time <= 0. and unit_data.arc_discharge_boost < GetUnitTalentLevel(source, "talent_arc_discharge") then
+                        ArcDischargeCharge(source)
                     else
                         unit_data.arc_discharge_boost_time = unit_data.arc_discharge_boost_time - 0.1
                     end
-
 
                 else
                     DestroyEffect(unit_data.arc_discharge_boost_effect)

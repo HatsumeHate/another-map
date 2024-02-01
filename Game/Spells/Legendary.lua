@@ -17,4 +17,18 @@ do
             end
     end
 
+
+
+    function GretaRevengeLegendaryEffect(source)
+        local x,y = GetUnitX(source), GetUnitY(source)
+
+            ApplyEffect(source, nil, x, y, "lightning_nova_legendary", 1)
+            local effect = AddSpecialEffect("Effect\\Nova", x, y)
+            BlzSetSpecialEffectZ(effect, GetZ(x, y) + 33.)
+            BlzSetSpecialEffectScale(effect, 0.4)
+            DestroyEffect(effect)
+
+
+    end
+
 end

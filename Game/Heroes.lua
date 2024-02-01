@@ -101,9 +101,9 @@ do
     function PlayGroanSound(target, groan_type)
 
         if groan_type then
-            AddSoundVolume(HeroGroanSoundpack[target.unit_class]["soft"][GetRandomInt(1, #HeroGroanSoundpack[target.unit_class]["soft"])], GetUnitX(target.Owner), GetUnitY(target.Owner), 123, 1400.)
+            AddSoundVolume(HeroGroanSoundpack[target.unit_class]["soft"][GetRandomInt(1, #HeroGroanSoundpack[target.unit_class]["soft"])], GetUnitX(target.Owner), GetUnitY(target.Owner), 123, 1400., 4000.)
         else
-            AddSoundVolume(HeroGroanSoundpack[target.unit_class]["hard"][GetRandomInt(1, #HeroGroanSoundpack[target.unit_class]["hard"])], GetUnitX(target.Owner), GetUnitY(target.Owner), 123, 1400.)
+            AddSoundVolume(HeroGroanSoundpack[target.unit_class]["hard"][GetRandomInt(1, #HeroGroanSoundpack[target.unit_class]["hard"])], GetUnitX(target.Owner), GetUnitY(target.Owner), 123, 1400., 4000.)
         end
 
         DelayAction(1.23, function()
@@ -263,12 +263,8 @@ do
                 starting_items[4] = CreateCustomItem("I00Z", 0., 0.)
                 starting_items[5] = CreateCustomItem("I00Y", 0., 0.)
                 starting_skills[1] = 'A007'
-                starting_skills[2] = 'A00C'
+                starting_skills[2] = 'ABWC'
                 starting_skills[3] = 'A00Z'
-
-                --starting_skills[4] = 'A010'
-                --starting_skills[5] = 'A006'
-                --starting_skills[6] = 'A00O'
             elseif region == ClassRegions[SORCERESS_CLASS] then
                 id = FourCC("HSRC")
                 starting_items[1] = CreateCustomItem("I012", 0., 0.)
@@ -279,19 +275,6 @@ do
                 starting_skills[1] = 'A003'
                 starting_skills[2] = 'A00J'
                 starting_skills[3] = 'A00D'
-                --starting_skills[4] = "AMLT"
-                --[[
-                starting_skills[4] = 'A005'
-                starting_skills[5] = 'A00L'
-                starting_skills[6] = 'A001'
-                starting_skills[7] = 'A00K'
-                starting_skills[8] = 'A00M'
-                starting_skills[9] = 'A019'
-                starting_skills[10] = 'A00F'
-                starting_skills[11] = 'A00I'
-                starting_skills[12] = 'A00N'
-                starting_skills[13] = 'A00E'
-                starting_skills[14] = 'A00H']]
             elseif region == ClassRegions[NECROMANCER_CLASS] then
                 id = FourCC("HNCR")
                 starting_items[1] = CreateCustomItem("I012", 0., 0.)
@@ -302,22 +285,6 @@ do
                 starting_skills[1] = "ANRD"
                 starting_skills[2] = "ANWK"
                 starting_skills[3] = "ANBS"
-                --[[
-                starting_skills[4] = "ANGS"
-                starting_skills[5] = "ANUC"
-                starting_skills[6] = "ANDR"
-                starting_skills[7] = "ANHV"
-                starting_skills[8] = "ANWK"
-                starting_skills[9] = "ANUL"
-                starting_skills[10] = "ANCE"
-                starting_skills[11] = "ANDV"
-                starting_skills[12] = "ANDF"
-                starting_skills[13] = "ANFR"
-                starting_skills[14] = "ANBB"
-                starting_skills[15] = "ANLR"
-                starting_skills[16] = "ANPB"
-                starting_skills[17] = "ANBR"
-                starting_skills[18] = "ANTS"]]
             elseif region == ClassRegions[PALADIN_CLASS] then
                 id = FourCC("HPAL")
                 starting_items[1] = CreateCustomItem("I02O", 0., 0.)
@@ -355,7 +322,6 @@ do
                 starting_skills[19] = "AABT"
                 starting_skills[20] = "AASB"
                 starting_skills[21] = "AARL"
-
 
             elseif region == ClassRegions[AMAZON_CLASS] then
                 id = FourCC("HAMA")
@@ -454,7 +420,7 @@ do
                         local pid = player_id
 
                             for i = 1, #starting_items do
-                                AddToInventory(player_id, starting_items[i])
+                                --AddToInventory(player_id, starting_items[i])
                                 local id = GetItemData(starting_items[i])
                                 DestroyEffect(id.quality_effect_light)
                                 EquipItem(hero, starting_items[i], true)
@@ -559,7 +525,7 @@ do
             [SORCERESS_CLASS] = true,
             [NECROMANCER_CLASS] = true,
             [PALADIN_CLASS] = false,
-            [ASSASSIN_CLASS] = true,
+            [ASSASSIN_CLASS] = false,
             [DRUID_CLASS] = false,
             [AMAZON_CLASS] = false,
         }
@@ -583,13 +549,13 @@ do
             CreateClassText(gg_rct_paladin_select, LOCALE_LIST[my_locale].PALADIN_NAME)
             CreateClassText(gg_rct_druid_select, LOCALE_LIST[my_locale].DRUID_NAME)
             CreateClassText(gg_rct_amazon_select, LOCALE_LIST[my_locale].AMAZON_NAME)
+            CreateClassText(gg_rct_assassin_select, LOCALE_LIST[my_locale].ASSASSIN_NAME)
         end)
 
 
         CreateClassText(gg_rct_barbarian_select, LOCALE_LIST[my_locale].BARBARIAN_NAME)
         CreateClassText(gg_rct_sorceress_select, LOCALE_LIST[my_locale].SORCERESS_NAME)
         CreateClassText(gg_rct_necro_select, LOCALE_LIST[my_locale].NECROMANCER_NAME)
-        CreateClassText(gg_rct_assassin_select, LOCALE_LIST[my_locale].ASSASSIN_NAME)
 
 
         TriggerAddAction(trg, HeroSelect)
@@ -646,20 +612,6 @@ do
         end)
 
 
-
-        RegisterTestCommand("ded", function()
-            KillUnit(PlayerHero[1])
-        end)
-
-        RegisterTestCommand('vct', function()
-            Current_Wave = 51
-            EndWave()
-        end)
-
-        RegisterTestCommand('dft', function()
-            KillUnit(gg_unit_h001_0057)
-        end)
-
         HeroDeathSoundpack = {
             [BARBARIAN_CLASS] = { "Sound\\Barbarian\\death1.wav", "Sound\\Barbarian\\death2.wav" },
             [SORCERESS_CLASS] = { "Sound\\Sorceress\\death1.wav", "Sound\\Sorceress\\death2.wav", "Sound\\Sorceress\\death3.wav" },
@@ -703,11 +655,6 @@ do
 
         CemetaryX, CemetaryY = GetRectCenterX(gg_rct_cemetary), GetRectCenterY(gg_rct_cemetary)
 
-        RegisterTestCommand("exp", function()
-            SuspendHeroXP(PlayerHero[1], false)
-            AddHeroXP(PlayerHero[1], 100, false)
-            SuspendHeroXP(PlayerHero[1], true)
-        end)
 
         InitUnitTracking()
 

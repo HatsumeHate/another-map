@@ -178,6 +178,42 @@ do
             id = "catalyst_Legendary",
             type = ITEM_PASSIVE_EFFECT
         })
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_GRETA_REVENGE,
+            id = "greta_revenge_Legendary",
+            type = ITEM_PASSIVE_EFFECT
+        })
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_UNITY,
+            id = "unity_Legendary",
+            type = ITEM_PASSIVE_EFFECT
+        })
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_DEATH_CRY,
+            id = "death_cry_Legendary",
+            type = ITEM_PASSIVE_EFFECT
+        })
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_ROT_AND_DISEASE,
+            id = "rot_and_disease_Legendary",
+            type = ITEM_PASSIVE_EFFECT
+        })
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_LIVING_HORRORS,
+            id = "living_horrors_Legendary",
+            type = ITEM_PASSIVE_EFFECT
+        })
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_EVERLASTING_MADNESS,
+            id = "everlasting_madness_Legendary",
+            type = ITEM_PASSIVE_EFFECT
+        })
     end
 
 

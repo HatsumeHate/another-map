@@ -692,15 +692,6 @@ do
         LockInteractiveOptionId(gg_unit_n029_0022, "anar_task_soldiersrescue_done")
 
 
-        RegisterTestCommand("dai", function()
-            EnableAnarTasks()
-        end)
-
-        RegisterTestCommand("ddd", function()
-            SetUnitX(PlayerHero[1], GetUnitX(BossPack[4].boss))
-            SetUnitY(PlayerHero[1], GetUnitY(BossPack[4].boss)-150.)
-            KillUnit(BossPack[4].boss)
-        end)
     end
 
 

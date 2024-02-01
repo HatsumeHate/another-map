@@ -149,7 +149,7 @@ do
             if result_scale < MIN_GOLD_SCALE then result_scale = MIN_GOLD_SCALE
             elseif result_scale > MAX_GOLD_SCALE then result_scale = MAX_GOLD_SCALE end
 
-            AddSoundForPlayerVolumeZ("Sound\\gold.wav", x, y, 35., 110, 2100., player)
+            AddSoundForPlayerVolumeZ("Sound\\gold.wav", x, y, 35., 117, 2100., 4200., player)
 
             local trg = CreateTrigger()
             TriggerRegisterEnterRegionSimple(trg, region)
@@ -158,7 +158,7 @@ do
                 if GetOwningPlayer(GetTriggerUnit()) == Player(player) then
                     DestroyEffect(AddSpecialEffectTarget("UI\\Feedback\\GoldCredit\\GoldCredit.mdx", GetTriggerUnit(), "origin"))
                     SetPlayerState(Player(player), PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(Player(player), PLAYER_STATE_RESOURCE_GOLD) + amount)
-                    AddSoundForPlayerVolumeZ("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", x, y, 35., 127, 2200., player)
+                    AddSoundForPlayerVolumeZ("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", x, y, 35., 127, 2200., 4200., player)
                     GoldText(x, y, amount)
                     DestroyEffect(effect)
                     RemoveRegion(region)
@@ -193,17 +193,14 @@ do
 		local data   = MergeTables({}, ITEM_TEMPLATE_DATA[id])
 
             data.item = item
-            --print(GetQualityColor(data.QUALITY) .. data.NAME .. "|r")
-            BlzSetItemName(item, GetQualityColor(data.QUALITY) .. data.NAME .. "|r")
             data.actual_name = GetQualityColor(data.QUALITY) .. data.NAME .. '|r'
-
+            BlzSetItemName(item, data.actual_name)
             data.owner = owner or nil
 
             x = GetItemX(item)
             y = GetItemY(item)
             local z = GetZ(x, y)
 
-            if owner then BlzSetItemSkin(item, FourCC("I01X")) end
 
             if data.flippy then
                 local color_table = GetQualityEffectColor(data.QUALITY)
@@ -217,9 +214,11 @@ do
             ITEM_DATA[item] = data
 
 
-            if drop_animation then
-                DelayAction(0., function()
+            DelayAction(0., function()
 
+                if owner then BlzSetItemSkin(item, FourCC("I01X")) end
+
+                if drop_animation then
                     if data.flippy then
 
                         local model_path = ITEMSUBTYPES_MODELS[data.SUBTYPE].model
@@ -235,7 +234,7 @@ do
                         BlzSetSpecialEffectScale(item_effect, ITEMSUBTYPES_MODELS[data.SUBTYPE].scale)
                         BlzSetSpecialEffectOrientation(item_effect, 270. * bj_DEGTORAD, 0., 0.)
 
-                        if data.owner then AddSoundForPlayerVolumeZ("Sound\\flippy.wav", x, y, 35., 128, 2100., data.owner)
+                        if data.owner then AddSoundForPlayerVolumeZ("Sound\\flippy.wav", x, y, 35., 128, 2100., 4400., data.owner)
                         else AddSoundVolume("Sound\\flippy.wav", x, y, 128, 2100.) end
                         local timer = CreateTimer()
                         TimerStart(timer, 0.48, false, function()
@@ -256,7 +255,7 @@ do
                                     data.quality_effect_light = AddSpecialEffect(s, x, y)
                                     BlzSetSpecialEffectZ(data.quality_effect_light, z + 10.)
                                 end
-                                if data.soundpack then AddSoundForPlayerVolumeZ(data.soundpack.drop, x, y, 35., 128, 2100., data.owner) end
+                                if data.soundpack then AddSoundForPlayerVolumeZ(data.soundpack.drop, x, y, 35., 128, 2100., 4400., data.owner) end
                             else
                                 if not data.picked_up then
                                     if data.quality_effect then
@@ -277,7 +276,7 @@ do
                     else
 
                         if data.owner then
-                            AddSoundForPlayerVolumeZ(data.soundpack.drop, x, y, 35., 128, 2100., data.owner)
+                            AddSoundForPlayerVolumeZ(data.soundpack.drop, x, y, 35., 128, 2100., 4400., data.owner)
                             if GetLocalPlayer() == Player(data.owner) then BlzSetItemSkin(item, GetItemTypeId(item)) end
                         else
                             AddSoundVolume(data.soundpack.drop, x, y, 128, 2100.)
@@ -285,48 +284,47 @@ do
                         end
 
                     end
-
-                end)
-            else
-                if data.owner then
-
-                    if data.quality_effect then
-                        local s = QUALITY_LIGHT_COLOR[data.QUALITY]
-
-                        BlzSetSpecialEffectPosition(data.quality_effect, x, y, z + 10.)
-
-                            if GetLocalPlayer() == Player(data.owner) then
-                                BlzSetSpecialEffectAlpha(data.quality_effect, 255)
-                            else
-                                BlzSetSpecialEffectAlpha(data.quality_effect, 0)
-                                s = ""
-                            end
-
-                        data.quality_effect_light = AddSpecialEffect(s, x, y)
-                        BlzSetSpecialEffectZ(data.quality_effect_light, z + 10.)
-                    end
-
-                    if GetLocalPlayer() == Player(data.owner) then
-                        BlzSetItemSkin(item, GetItemTypeId(item))
-                    end
-
                 else
-                    if not data.picked_up then
-
+                    if data.owner then
                         if data.quality_effect then
-                            BlzSetSpecialEffectAlpha(data.quality_effect, 255)
-                            data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], x, y)
+                            local s = QUALITY_LIGHT_COLOR[data.QUALITY]
+
+                            BlzSetSpecialEffectPosition(data.quality_effect, x, y, z + 10.)
+
+                                if GetLocalPlayer() == Player(data.owner) then
+                                    BlzSetSpecialEffectAlpha(data.quality_effect, 255)
+                                else
+                                    BlzSetSpecialEffectAlpha(data.quality_effect, 0)
+                                    s = ""
+                                end
+
+                            data.quality_effect_light = AddSpecialEffect(s, x, y)
                             BlzSetSpecialEffectZ(data.quality_effect_light, z + 10.)
                         end
 
-                        BlzSetItemSkin(item, GetItemTypeId(item))
+                        if GetLocalPlayer() == Player(data.owner) then
+                            BlzSetItemSkin(item, GetItemTypeId(item))
+                        end
+
+                    else
+                        if not data.picked_up then
+
+                            if data.quality_effect then
+                                BlzSetSpecialEffectAlpha(data.quality_effect, 255)
+                                data.quality_effect_light = AddSpecialEffect(QUALITY_LIGHT_COLOR[data.QUALITY], x, y)
+                                BlzSetSpecialEffectZ(data.quality_effect_light, z + 10.)
+                            end
+
+                            BlzSetItemSkin(item, GetItemTypeId(item))
+                        end
                     end
                 end
-            end
+            end)
 
             GenerateItemLevel(item, 1)
             if data.TYPE == ITEM_TYPE_SKILLBOOK then GenerateItemBookSkill(item)
             elseif data.TYPE == ITEM_TYPE_CONSUMABLE and data.cooldown_type then BlzSetItemIntegerField(item, ITEM_IF_COOLDOWN_GROUP, data.cooldown_type) end
+
 
 		return item
 	end
@@ -340,8 +338,6 @@ do
 
             ITEM_DATA[item] = data
             data.item = item
-            BlzSetItemName(item, GetQualityColor(data.QUALITY) .. data.NAME .. "|r")
-            data.actual_name = GetQualityColor(data.QUALITY) .. data.NAME .. '|r'
 
             x = GetItemX(item)
             y = GetItemY(item)
@@ -360,6 +356,9 @@ do
             if data.TYPE == ITEM_TYPE_SKILLBOOK then GenerateItemBookSkill(item)
             elseif data.TYPE == ITEM_TYPE_CONSUMABLE and data.cooldown_type then BlzSetItemIntegerField(item, ITEM_IF_COOLDOWN_GROUP, data.cooldown_type) end
 
+
+            data.actual_name = GetQualityColor(data.QUALITY) .. data.NAME .. '|r'
+            BlzSetItemName(item, GetQualityColor(data.QUALITY) .. data.actual_name .. "|r")
 
         return item
     end
@@ -449,36 +448,48 @@ do
                                 delta_level = parameter.delta_level or nil,
                                 delta_level_max = parameter.delta_level_max or nil
                             }
+                            
+                            local bonus = item_data.BONUS[index]
 
-                            if item_data.BONUS[index].METHOD == STRAIGHT_BONUS and not (item_data.BONUS[index].PARAM == CRIT_MULTIPLIER or item_data.BONUS[index].PARAM == HP_REGEN or item_data.BONUS[index].PARAM == MP_REGEN) then
+                            if bonus.METHOD == STRAIGHT_BONUS and not (bonus.PARAM == CRIT_MULTIPLIER or bonus.PARAM == HP_REGEN or bonus.PARAM == MP_REGEN) then
                                 --print("straight start")
-                                item_data.BONUS[index].VALUE = GetRandomInt(parameter.value_min, parameter.value_max)
+                                bonus.VALUE = GetRandomInt(parameter.value_min, parameter.value_max)
                                 --print("straight end .. " .. item_data.BONUS[#item_data.BONUS].VALUE)
                             else
                                 --print("mult start")
-                                item_data.BONUS[index].VALUE = GetRandomInt(math.floor((parameter.value_min * 100.) + 0.5), math.floor((parameter.value_max * 100.) + 0.5)) / 100.
+                                bonus.VALUE = GetRandomInt(math.floor((parameter.value_min * 100.) + 0.5), math.floor((parameter.value_max * 100.) + 0.5)) / 100.
 
-                                if item_data.BONUS[index].VALUE < parameter.value_min then item_data.BONUS[index].VALUE = parameter.value_min
-                                elseif item_data.BONUS[index].VALUE > parameter.value_max then item_data.BONUS[index].VALUE = parameter.value_max end
+                                if bonus.VALUE < parameter.value_min then bonus.VALUE = parameter.value_min
+                                elseif bonus.VALUE > parameter.value_max then bonus.VALUE = parameter.value_max end
 
                             end
 
-                            item_data.BONUS[index].base = item_data.BONUS[index].VALUE
+                            bonus.base = bonus.VALUE
 
-                            if item_data.BONUS[index].METHOD == STRAIGHT_BONUS and not item_data.BONUS[index].delta and GeneratedScaling[item_data.BONUS[index].PARAM] then
-                                item_data.BONUS[index].delta = GeneratedScaling[item_data.BONUS[index].PARAM].delta
-                                item_data.BONUS[index].delta_level = GeneratedScaling[item_data.BONUS[index].PARAM].delta_level
-                                item_data.BONUS[index].delta_level_max = GeneratedScaling[item_data.BONUS[index].PARAM].delta_level_max
+                            if bonus.METHOD == STRAIGHT_BONUS and not bonus.delta and GeneratedScaling[bonus.PARAM] then
+                                bonus.delta = GeneratedScaling[bonus.PARAM].delta
+                                bonus.delta_level = GeneratedScaling[bonus.PARAM].delta_level
+                                bonus.delta_level_max = GeneratedScaling[bonus.PARAM].delta_level_max
                             end
 
-                            if item_data.BONUS[index].delta then
-                                local delta_level_bonus = math.floor(Current_Wave / item_data.BONUS[index].delta_level)
+                            if bonus.delta then
+                                local delta_level_bonus = math.floor(Current_Wave / bonus.delta_level)
 
-                                if item_data.BONUS[index].delta_level_max and delta_level_bonus > item_data.BONUS[index].delta_level_max then
-                                    delta_level_bonus = item_data.BONUS[index].delta_level_max
+                                if bonus.delta_level_max and delta_level_bonus > bonus.delta_level_max then
+                                    delta_level_bonus = bonus.delta_level_max
                                 end
 
-                                item_data.BONUS[index].VALUE = (item_data.BONUS[index].base or 1) + item_data.BONUS[index].delta * delta_level_bonus
+                                bonus.VALUE = (bonus.base or 1) + bonus.delta * delta_level_bonus
+
+                                    if IsWeaponTypeTwohanded(item_data.SUBTYPE) then
+                                        bonus.VALUE = bonus.VALUE * 1.5
+
+                                        if bonus.METHOD == STRAIGHT_BONUS and not (bonus.PARAM == CRIT_MULTIPLIER or bonus.PARAM == HP_REGEN or bonus.PARAM == MP_REGEN) then
+                                            bonus.VALUE = math.floor(bonus.VALUE + 0.5)
+                                        end
+
+                                    end
+
                             end
 
                             bonus_parameters_count = bonus_parameters_count - 1
@@ -554,7 +565,7 @@ do
             --print("generator skills done")
 
             item_data.actual_name = GetQualityColor(quality) .. item_data.NAME .. '|r'
-            BlzSetItemName(item, GetQualityColor(quality) .. item_data.NAME .. '|r')
+            BlzSetItemName(item, item_data.actual_name)
 
     end
 
@@ -658,8 +669,10 @@ do
                     item_data.SUPPRESSION = R2I(7 * GetRandomReal(0.75, 1.25)) + 1 * level
                 elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
                     if item_data.SUBTYPE == SHIELD_OFFHAND then
-                        item_data.BLOCK = GetRandomInt(20, 30)
+                        item_data.BLOCK = GetRandomInt(20, 35)
                         item_data.DEFENCE = R2I(15 * GetRandomReal(0.75, 1.25)) + 1 * level
+                    else
+                        item_data.ALLRESIST = GetRandomInt(3, 7) + math.floor((level * 0.5) + 0.5)
                     end
                 end
 
@@ -743,9 +756,9 @@ do
 
             --item_data.NAME =
             --DelayAction(0.01, function()   end)
-            BlzSetItemName(item, GetQualityColor(quality) .. item_data.NAME .. '|r')
-            item_data.actual_name = GetQualityColor(quality) .. item_data.NAME .. '|r'
 
+            item_data.actual_name = GetQualityColor(quality) .. item_data.NAME .. '|r'
+            BlzSetItemName(item, item_data.actual_name)
             --print("generator done")
     end
 
@@ -921,11 +934,13 @@ do
             end
 
 
-
             for i = 1, #item_data.BONUS do
                 ModifyStat(unit, item_data.BONUS[i].PARAM, item_data.BONUS[i].VALUE, item_data.BONUS[i].METHOD, flag)
             end
 
+            if item_data.SUBTYPE == ORB_OFFHAND then
+                ModifyStat(unit, ALL_RESIST, item_data.ALLRESIST or 0, STRAIGHT_BONUS, flag)
+            end
 
             if item_data.SKILL_BONUS and #item_data.SKILL_BONUS > 0 then
                 UpdateBindedSkillsData(GetPlayerId(GetOwningPlayer(unit)) + 1)
@@ -1180,7 +1195,8 @@ do
             [ITEM_TYPE_CONSUMABLE] = LOCALE_LIST[my_locale].ITEM_TYPE_CONSUMABLE_NAME,
             [ITEM_TYPE_GEM]        = LOCALE_LIST[my_locale].ITEM_TYPE_GEM_NAME,
             [ITEM_TYPE_SKILLBOOK]  = LOCALE_LIST[my_locale].ITEM_TYPE_SKILLBOOK,
-            [ITEM_TYPE_OTHER]      = LOCALE_LIST[my_locale].ITEM_TYPE_OTHER
+            [ITEM_TYPE_OTHER]      = LOCALE_LIST[my_locale].ITEM_TYPE_OTHER,
+            [ITEM_TYPE_GIFT]       = LOCALE_LIST[my_locale].ITEM_TYPE_GIFT,
         }
 
         ITEMSUBTYPES_NAMES = {
@@ -1250,49 +1266,6 @@ do
             PlayerPickUpItemFlag[i] = false
         end
 
-
-        RegisterTestCommand("dd", function()
-            CreateCustomItem("I012", GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]))
-        end)
-
-        RegisterTestCommand("dd1", function()
-            local item = CreateCustomItem(GetRandomGeneratedItemId(), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), true, 0)
-            GenerateItemStats(item, 1, GetRandomInt(COMMON_ITEM, MAGIC_ITEM))
-        end)
-
-        RegisterTestCommand("dd2", function()
-            local item = CreateCustomItem(GetRandomGeneratedItemId(), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), true, 1)
-            GenerateItemStats(item, 1, GetRandomInt(COMMON_ITEM, MAGIC_ITEM))
-
-            DelayAction(10., function()
-                BlzSetItemSkin(item, GetItemTypeId(item))
-            end)
-        end)
-
-        RegisterTestCommand("db", function()
-            local item = CreateCustomItem(GetRandomBookItemId(), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), true)
-        end)
-
-        RegisterTestCommand("gen", function()
-            xpcall(function()
-                local item = CreateCustomItem(GetGeneratedItemId(BELT_ARMOR), GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]))
-                local item_data = GetItemData(item)
-                local roll = GetRandomInt(1, 5)
-                    local quality
-
-                        if roll == 1 then quality = MAGIC_ITEM
-                        elseif roll == 2 then quality = RARE_ITEM
-                        else quality = COMMON_ITEM end
-                    item_data.QUALITY = quality
-                    GenerateItemStats(item, Current_Wave + GetRandomInt(1, 2), quality)
-
-            end, print)
-
-        end)
-
-        RegisterTestCommand("trace", function()
-            TraceBug = true
-        end)
 
     end
 

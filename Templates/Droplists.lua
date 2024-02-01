@@ -144,10 +144,10 @@ do
         local bonus_drop_chance = 1. + GetUnitParameterValue(PlayerHero[player], DROP_BONUS) * 0.01
 
             for i = 1, #droplist.list do
-                if Chance(droplist.list[i].chance * bonus_drop_chance) then
+                if Chance(droplist.list[i].chance * bonus_drop_chance * GLOBAL_DROP_RATE) then
                     local inner_droplist = GetProperDropList(droplist.list[i].id)
 
-                    AddItemsToDropBundle(inner_droplist, item_drop, bonus_drop_chance)
+                    AddItemsToDropBundle(inner_droplist, item_drop, bonus_drop_chance * GLOBAL_DROP_RATE)
 
                 end
             end
@@ -164,7 +164,7 @@ do
 
 
                             if item_drop[i].id == "gold" then
-                                CreateGoldStack(math.floor(GetRandomInt(item_drop[i].min, item_drop[i].max) * (1. + GetUnitParameterValue(PlayerHero[player], GOLD_BONUS) * 0.01)), new_x, new_y, player-1)
+                                CreateGoldStack(math.floor(GetRandomInt(item_drop[i].min, item_drop[i].max) * (1. + GetUnitParameterValue(PlayerHero[player], GOLD_BONUS) * 0.01) * GLOBAL_GOLD_RATE), new_x, new_y, player-1)
                             else
                                 local item = CreateCustomItem(item_drop[i].id, new_x, new_y, true, player-1)
 
@@ -306,6 +306,12 @@ do
                 { id = "I02X", generate = true }, --fullmoon
                 { id = "I037", generate = true }, --pain conductor
                 { id = "I03A", generate = true }, --catalyst
+                { id = "I03T", generate = true }, --greta
+                { id = "I03U", generate = true }, --unity
+                { id = "I03Y", generate = true }, --death cry
+                { id = "I03Z", generate = true }, --rot
+                { id = "I040", generate = true }, --horrors
+                { id = "I041", generate = true }, --madness
             }
         })
 
@@ -344,6 +350,20 @@ do
                 { id = ITEM_RUNE_EHW, chance = 7. },
                 { id = ITEM_RUNE_BER, chance = 7. },
                 { id = ITEM_RUNE_KANO, chance = 7. },
+            }
+        })
+
+        NewDropList("gifts", {
+            max = 1,
+            rolls = 3,
+            list = {
+                { id = "I03D", chance = 10. },
+                { id = "I03O", chance = 7. },
+                { id = "I03R", chance = 10. },
+                { id = "I03S", chance = 10. },
+                { id = "I03V", chance = 15. },
+                { id = "I03W", chance = 15. },
+                { id = "I03X", chance = 15. },
             }
         })
 
@@ -395,6 +415,8 @@ do
                 { id = ITEM_SCROLL_OF_TOWN_PORTAL, chance = 8.3 },
                 { id = ITEM_SCROLL_OF_PROTECTION, chance = 7.4 },
                 { id = ITEM_SCROLL_OF_PETRI, chance = 7.4 },
+                { id = ITEM_NECRONOMICON, chance = 3.5, max = 2 },
+                { id = ITEM_ELIXIR_INNOCENCE, chance = 4.7, max = 3 },
             }
         })
 
@@ -410,6 +432,8 @@ do
                 { id = ITEM_POTION_ADRENALINE, chance = 15., max = 5 },
                 { id = ITEM_SCROLL_OF_PROTECTION, chance = 10., max = 5 },
                 { id = ITEM_SCROLL_OF_PETRI, chance = 10., max = 5 },
+                { id = ITEM_NECRONOMICON, chance = 15.5, max = 5 },
+                { id = ITEM_ELIXIR_INNOCENCE, chance = 15., max = 5 },
             }
         })
 
@@ -446,7 +470,7 @@ do
 
         NewDropList("gold_chest", {
             list = {
-                { id = "gold", min = 33, max = 100, ignore_max = true },
+                { id = "gold", min = 300, max = 1500, ignore_max = true },
             }
         })
 
@@ -534,7 +558,8 @@ do
                 { id = "consumables", chance = 11. },
                 { id = "books", chance = 37. },
                 { id = "special_items", chance = 5. },
-                { id = "gold_adv", chance = 70. }
+                { id = "gold_adv", chance = 70. },
+                { id = "gifts", chance = 3. },
             }
         })
 
@@ -614,7 +639,8 @@ do
                 { id = "books", chance = 37. },
                 { id = "shard", chance = 10. },
                 { id = "special_items", chance = 10. },
-                { id = "gold_boss", chance = 70.}
+                { id = "gold_boss", chance = 70.},
+                { id = "gifts", chance = 30. },
             }
         })
 
@@ -660,7 +686,8 @@ do
                 { id = "runes", chance = 9.5 },
                 { id = "consumables", chance = 11. },
                 { id = "special_items", chance = 7. },
-                { id = "gold_chest", chance = 90.}
+                { id = "gold_chest", chance = 90.},
+                { id = "gifts", chance = 7. },
             }
         })
 
@@ -677,13 +704,6 @@ do
             }
         })
 
-
-
-        RegisterTestCommand("D", function()
-            local unit = CreateUnit(MONSTER_PLAYER, FourCC("u00D"), GetUnitX(PlayerHero[1]), GetUnitX(PlayerHero[1]), 0.)
-            DelayAction(0., function() UnitDamageTarget(PlayerHero[1], unit, 99999999., true, false, ATTACK_TYPE_MAGIC, nil, nil) end)
-            --DropForPlayer(, GetDropList("common_enemy"), 0)
-        end)
 
     end
 
