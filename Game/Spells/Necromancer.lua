@@ -1204,4 +1204,44 @@ do
     end
 
 
+    function ReaperCast(caster, target, x, y, ability_instance)
+        local point_x, point_y = GetUnitX(caster), GetUnitY(caster)
+        local angle
+
+            if target then
+                angle = AngleBetweenUnits(caster, target)
+                --x, y = x - Rx(75., angle), y - Ry(75., angle)
+            else
+                angle = AngleBetweenUnitXY(caster, x, y)
+                --x, y = x - Rx(75., angle), y - Ry(75., angle)
+            end
+
+        local sfx = AddSpecialEffect("Effect\\Death Spell My.mdx", point_x + Rx(75., angle), point_y + Ry(75., angle))
+        local sfx_dark = AddSpecialEffect("Missile\\BlackSmokeMissile.mdx", point_x, point_y)
+        BlzSetSpecialEffectYaw(sfx, angle * bj_DEGTORAD)
+        BlzSetSpecialEffectTimeScale(sfx, 2.)
+        local timer = CreateTimer()
+        local missile = ThrowMissile(caster, nil, "reaper_missile", nil, point_x, point_y, 0.,0., angle, true)
+
+        AddSoundVolume("Sounds\\Spells\\ReaperReady_".. GetRandomInt(1,3) ..".wav", point_x, point_y, 128, 1600., 4000.)
+
+        TimerStart(timer, 0.025, true, function()
+            if missile.time > 0. then
+                BlzSetSpecialEffectX(sfx, missile.current_x + Rx(75., angle))
+                BlzSetSpecialEffectY(sfx, missile.current_y + Ry(75., angle))
+
+                BlzSetSpecialEffectX(sfx_dark, missile.current_x)
+                BlzSetSpecialEffectY(sfx_dark, missile.current_y)
+                BlzSetSpecialEffectZ(sfx_dark, GetZ(missile.current_x, missile.current_y) + 125.)
+            else
+                DestroyEffect(sfx)
+                ApplyEffect(caster, nil, missile.current_x, missile.current_y, "reaper_effect", 1, ability_instance)
+                DelayAction(0.3, function() DestroyEffect(sfx_dark) end)
+                DestroyTimer(timer)
+            end
+        end)
+
+    end
+
+
 end

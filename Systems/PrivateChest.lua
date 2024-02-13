@@ -30,6 +30,7 @@ do
         local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
         local new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", new_Frame, "", 0)
         local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", new_Frame, "", 0)
+        local new_FrameChargesBorder = BlzCreateFrameByType("BACKDROP", "Border", new_FrameCharges, "", 0)
         local new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
 
             ButtonList[new_Frame] = {
@@ -59,6 +60,10 @@ do
             BlzFrameSetPoint(new_FrameChargesText, FRAMEPOINT_CENTER, new_FrameCharges, FRAMEPOINT_CENTER, 0.,0.)
             BlzFrameSetVisible(new_FrameCharges, false)
             BlzFrameSetText(new_FrameChargesText, "")
+
+            BlzFrameSetSize(new_FrameChargesBorder, 1., 1.)
+            BlzFrameSetTexture(new_FrameChargesBorder, "UI\\inventory_frame.blp", 0, true)
+            BlzFrameSetAllPoints(new_FrameChargesBorder, new_FrameCharges)
 
             BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
             BlzFrameSetSize(new_Frame, size_x, size_y)
@@ -165,6 +170,14 @@ do
                                 button.charges_frame_state = true
                                 if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.charges_frame, true) end
                                 BlzFrameSetText(button.charges_text_frame, R2I(GetItemCharges(button.item)))
+
+                                    if GetItemCharges(button.item) >= 10 and GetItemCharges(button.item) < 100 then
+                                        BlzFrameSetScale(button.charges_text_frame, 0.95)
+                                    elseif GetItemCharges(button.item) >= 100 and GetItemCharges(button.item) < 1000 then
+                                        BlzFrameSetScale(button.charges_text_frame, 0.65)
+                                    elseif GetItemCharges(button.item) >= 1000 then
+                                        BlzFrameSetScale(button.charges_text_frame, 0.5)
+                                    end
                             end
 
                         elseif button.charges_frame_state then

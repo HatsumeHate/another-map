@@ -179,6 +179,11 @@ do
     ---@param skillId integer
     ---@param data table
     function NewSkillData(skillId, data)
+
+        if SkillsData[FourCC(skillId)] then
+            print("override detected - " .. skillId)
+        end
+        
         local my_new_skill = {
             Id                      = skillId,
             current_level           = 1,
@@ -600,7 +605,7 @@ do
             category = SKILL_CATEGORY_FIRE,
             sound = { { "Sounds\\Spells\\fire_launch_1.wav", "Sounds\\Spells\\fire_launch_2.wav", "Sounds\\Spells\\fire_launch_3.wav", volume = 117, cutoff = 1500. }, },
             animation = {
-                sequence  = GetAnimationSequence("sorc_spell_throw_small"), timescale = 1.2,
+                sequence  = GetAnimationSequence("sorc_spell_throw_small"), timescale = 1.,
             },
             sfx_pack = {
                 on_caster = {
@@ -789,7 +794,7 @@ do
             classification = SKILL_CLASS_SUPPORT,
             sound = {  { "Sounds\\Spells\\focus_cast_1.wav", "Sounds\\Spells\\focus_cast_2.wav", "Sounds\\Spells\\focus_cast_3.wav", volume = 120, cutoff = 1500.}, },
             animation = {
-                sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 0.95,
+                sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 0.85,
             },
             sfx_pack = {
                 on_caster = {
@@ -810,14 +815,14 @@ do
         --============================================--
         NewSkillData('A00E', {
             name            = LOCALE_LIST[my_locale].SKILL_FROSTARMOR,
-            icon            = "Spell\\BTN_AuraCloak_Ice.blp",--"Spell\\BTNCloakOfFrost.blp",
+            icon            = "Spell\\BTN_AuraCloak_Ice.blp",
             activation_type = SELF_CAST,
             type            = SKILL_UNIQUE,
             category        = SKILL_CATEGORY_ICE,
             classification = SKILL_CLASS_SUPPORT,
             sound = {  { "Sounds\\Spells\\frost_armor_launch_2.wav", volume = 110, cutoff = 1500. }, },
             animation = {
-                sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 0.9,
+                sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 0.7,
             },
             sfx_pack = {
                 on_caster = {
@@ -843,7 +848,7 @@ do
             type            = SKILL_UNIQUE,
             category        = SKILL_CATEGORY_ARCANE,
             classification = SKILL_CLASS_SUPPORT,
-            animation       = { sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 0.95, },
+            animation       = { sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 0.75, },
             sfx_pack = {
                 on_caster = {
                     { effect = "Abilities\\Spells\\Orc\\AncestralSpirit\\AncestralSpiritCaster.mdx", point = "origin", duration = 1.233 }
@@ -1364,7 +1369,7 @@ do
         --============================================--
         NewSkillData('ABFA', {
             name            = LOCALE_LIST[my_locale].SKILL_FIRSTAID,
-            icon            = "Spell\\BTNNatureRestore.blp",
+            icon            = "Spell\\BTNBlood (6).blp",
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_INNER_STRENGTH,
@@ -1707,6 +1712,7 @@ do
             type            = SKILL_MAGICAL,
             category        = SKILL_CATEGORY_DARK_ART,
             classification  = SKILL_CLASS_ATTACK,
+            short_name = true,
             sound = {  { "Sounds\\Spells\\poison_cast_1.wav", "Sounds\\Spells\\poison_cast_2.wav", "Sounds\\Spells\\poison_cast_3.wav", volume = 125, cutoff = 1500., delay = 0.23 },  },
             animation = { sequence  = GetAnimationSequence("necro_spell_throw_small"), timescale = 0.9, },
             sfx_pack = {
@@ -1770,7 +1776,7 @@ do
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_DARK_ART,
             classification = SKILL_CLASS_ATTACK,
-            sound = {  { "Sounds\\Spells\\poisonnova.wav", volume = 121, cutoff = 1500. },  },
+            sound = {  { "Sounds\\Spells\\poisonnova.wav", volume = 126, cutoff = 1500. },  },
             animation = {
                 sequence = GetAnimationSequence("necro_spell_slam"), timescale = 1.2,
             },
@@ -1781,6 +1787,7 @@ do
                     { effect = "Spell\\Sweep_Acid_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
                 },
                 on_terrain = {
+                    { effect = "Effect\\Acid Ex.mdx", animation_time_influence = true, timescale = 0.6, permanent = true, scale = 2. },
                     { effect = "Effect\\Nether Blast IV.mdx", animation_time_influence = true, timescale = 1.11 },
                 }
             },
@@ -1887,9 +1894,9 @@ do
             },
             sfx_pack = {
                 on_caster = {
-                    { effect = "Spell\\Sweep_Unholy_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
-                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }, permanent = true },
-                    { effect = "Spell\\Sweep_Unholy_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
+                    { effect = "Spell\\Sweep_Astral_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Astral_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
                 },
             },
             projection = { type = PROJECTION_TYPE_AREA, area_of_effect = 475., area_of_effect_delta = 25., area_of_effect_delta_level = 3 },
@@ -1918,9 +1925,9 @@ do
             },
             sfx_pack = {
                 on_caster = {
-                    { effect = "Spell\\Sweep_Unholy_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
-                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }, permanent = true },
-                    { effect = "Spell\\Sweep_Unholy_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
+                    { effect = "Spell\\Sweep_Astral_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Astral_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
                 },
             },
             projection = { type = PROJECTION_TYPE_AREA },
@@ -1949,9 +1956,9 @@ do
             animation = { sequence  = GetAnimationSequence("necro_spell_throw_small"), timescale = 1.08, },
             sfx_pack = {
                 on_caster = {
-                    { effect = "Spell\\Sweep_Unholy_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
-                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }, permanent = true },
-                    { effect = "Spell\\Sweep_Unholy_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
+                    { effect = "Spell\\Sweep_Black_Frost_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Black_Frost_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Black_Frost_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
                 },
             },
             projection = { type = PROJECTION_TYPE_AREA },
@@ -2105,9 +2112,9 @@ do
             },
             sfx_pack = {
                 on_caster = {
-                    { effect = "Spell\\Sweep_Unholy_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
-                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }, permanent = true },
-                    { effect = "Spell\\Sweep_Unholy_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
+                    { effect = "Spell\\Sweep_Astral_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Astral_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
                 },
                 on_terrain = {
                     { effect = "Spell\\SoulScythe.mdx", plane_offset = 20., height = 125., appear_delay = 0., animation_time_influence = true, appear_delay = 0.2, timescale = 1.45, scale = 1.55, permanent = true, remove_on_recast = false }
@@ -2202,9 +2209,9 @@ do
             animation = { sequence  = GetAnimationSequence("necro_spell_throw_small"), timescale = 0.77, },
             sfx_pack = {
                 on_caster = {
-                    { effect = "Spell\\Sweep_Unholy_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
-                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }, permanent = true },
-                    { effect = "Spell\\Sweep_Unholy_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
+                    { effect = "Spell\\Sweep_Astral_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Astral_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
                 },
             },
             projection = { type = PROJECTION_TYPE_AREA, area_of_effect = 800. },
@@ -2231,9 +2238,9 @@ do
             animation = { sequence  = GetAnimationSequence("necro_spell_throw_small"), timescale = 1.08, },
             sfx_pack = {
                 on_caster = {
-                    { effect = "Spell\\Sweep_Unholy_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
-                    { effect = "Spell\\Sweep_Unholy_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }, permanent = true },
-                    { effect = "Spell\\Sweep_Unholy_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
+                    { effect = "Spell\\Sweep_Blood_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Blood_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Blood_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
                 },
             },
             projection = { type = PROJECTION_TYPE_AREA },
@@ -2246,6 +2253,39 @@ do
                     resource_cost       = 15.,
                     cooldown            = 4.,
                     range               = 800.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ANRP', {
+            name            = LOCALE_LIST[my_locale].SKILL_REAPER,
+            icon            = "Spell\\BTNf9c1640f48f8.blp",
+            activation_type = POINT_AND_TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            category        = SKILL_CATEGORY_SUMMONING,
+            classification  = SKILL_CLASS_ATTACK,
+            sound = {  { "Sounds\\Spells\\ReaperCast_1.wav", "Sounds\\Spells\\ReaperCast_2.wav", "Sounds\\Spells\\ReaperCast_3.wav", "Sounds\\Spells\\ReaperCast_4.wav", volume = 128, cutoff = 1500. },  },
+            animation = { sequence  = GetAnimationSequence("necro_spell_throw_small"), timescale = 0.95, },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Astral_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Astral_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }, permanent = true },
+                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
+                },
+                on_terrain = {
+                    { effect = "Effect\\Soul Discharge Purple.mdx", plane_offset = 50., animation_time_influence = true, },
+                }
+            },
+
+            projection = { type = PROJECTION_TYPE_ARROW, max_distance = 650., radius = 100. },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 5,
+
+            level = {
+                [1] = {
+                    resource_cost       = 20.,
+                    cooldown            = 4.,
+                    range               = 600.,
                 }
             }
         })
@@ -3186,6 +3226,125 @@ do
             }
         })
         --============================================--
+        NewSkillData('A021', {
+            name            = "succubus defence curse",
+            activation_type = TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            sound = { { "Sounds\\Monsters\\Spells\\monster_succubus_cast.wav", volume = 128, cutoff = 1600. }, },
+            animation = {
+                sequence  = GetAnimationSequence("succubus_spell"), timescale = 1.85,
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand right", permanent = true },
+                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand left", permanent = true },
+                },
+                on_target = {
+                    { effect = "Abilities\\Spells\\Human\\MarkOfChaos\\MarkOfChaosTarget.mdx", point = "origin", permanent = true, timescale = 1.25, animation_time_influence = true },
+                }
+            },
+
+            level = {
+                [1] = {
+                    effect              = "succubus_curse_effect",
+                    range               = 800.,
+                    resource_cost       = 0.,
+                    cooldown            = 10.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A01Z', {
+            name            = "succubus blood curse",
+            activation_type = TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            sound = { { "Sounds\\Monsters\\Spells\\monster_succubus_cast.wav", volume = 128, cutoff = 1600. }, },
+            animation = { sequence  = GetAnimationSequence("succubus_spell"), timescale = 1.85, },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Blood_Small.mdx", point = "hand right", permanent = true },
+                    { effect = "Spell\\Sweep_Blood_Small.mdx", point = "hand left", permanent = true },
+                },
+            },
+
+            level = {
+                [1] = {
+                    effect              = "succubus_blood_curse_effect",
+                    range               = 800.,
+                    resource_cost       = 0.,
+                    cooldown            = 10.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A01Y', {
+            name            = "demon assassin defence",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            --sound = { { "Sounds\\Monsters\\Spells\\monster_succubus_cast.wav", volume = 128, cutoff = 1600. }, },
+            animation = { sequence  = GetAnimationSequence("demon_assassin_spell"), timescale = 1.5, },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand right", permanent = true },
+                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand left", permanent = true },
+                },
+            },
+
+            level = {
+                [1] = {
+                    effect              = "demon_assassin_defence_effect",
+                    resource_cost       = 0.,
+                    cooldown            = 6.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A022', {
+            name            = "demon assassin attack",
+            activation_type = POINT_CAST,
+            type            = SKILL_PHYSICAL,
+            sound = { { "Sounds\\Monsters\\Spells\\demon_assassin_attack1.wav", "Sounds\\Monsters\\Spells\\demon_assassin_attack3.wav", "Sounds\\Monsters\\Spells\\demon_assassin_attack5.wav", volume = 128, cutoff = 1600. }, },
+            animation = { sequence  = GetAnimationSequence("demon_assassin_attack"), timescale = 1., },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_True_Ice_Medium.mdx", point = "weapon", permanent = true },
+                    { effect = "Spell\\Ice High.mdx", point = 'hand left', permanent = true }
+                },
+            },
+
+            level = {
+                [1] = {
+                    range               = 125.,
+                    effect              = "demon_assassin_attack_effect",
+                    resource_cost       = 0.,
+                    cooldown            = 6.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A023', {
+            name            = "demon assassin blink",
+            activation_type = TARGET_CAST,
+            type            = SKILL_MAGICAL,
+            sound = { { "Sounds\\Monsters\\Spells\\demon_assassin_attack2.wav", "Sounds\\Monsters\\Spells\\demon_assassin_attack4.wav", volume = 128, cutoff = 1600. }, },
+            animation = { sequence  = GetAnimationSequence("demon_assassin_blink"), timescale = 1., },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand right", permanent = true },
+                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = 'hand left', permanent = true }
+                },
+                on_terrain = { { effect = "Effect\\Blink Red Caster.mdx", permanent = true }, }
+            },
+
+            level = {
+                [1] = {
+                    range               = 500.,
+                    resource_cost       = 0.,
+                    cooldown            = 12.,
+                }
+            }
+        })
+        --============================================--
         NewSkillData('ASBN', {
             name            = "chasing curse",
             activation_type = TARGET_CAST,
@@ -3206,6 +3365,26 @@ do
                     resource_cost       = 0.,
                     cooldown            = 5.,
                     missile             = "MSCN",
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('APNV', {
+            name            = "phantom nova",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            sound = {  { "Sounds\\Monsters\\Spells\\wisp_cast1.wav", "Sounds\\Monsters\\Spells\\wisp_cast2.wav", "Sounds\\Monsters\\Spells\\wisp_cast3.wav", "Sounds\\Monsters\\Spells\\wisp_cast4.wav", volume = 126, cutoff = 1500. }, },
+            animation = { sequence  = GetAnimationSequence("phantom_cast"), timescale = 1.5, },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Lightning_Small.mdx", point = "chest", scale = 1. },
+                }
+            },
+
+            level = {
+                [1] = {
+                    cooldown            = 12.,
+                    resource_cost       = 0.,
                 }
             }
         })
@@ -3476,7 +3655,7 @@ do
             name            = "werewolf howl",
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
-            animation = { sequence  = GetAnimationSequence("werewolf_spell"), timescale = 0.5, },
+            animation = { sequence  = GetAnimationSequence("werewolf_spell"), timescale = 0.3, },
             sfx_pack = {
                 on_caster = {
                     { effect = "Abilities\\Weapons\\LordofFlameMissile\\LordofFlameMissile.mdx", point = "head", permanent = true },
@@ -3579,7 +3758,7 @@ do
             type            = SKILL_PHYSICAL,
             sound = {
                 { "Sounds\\Spells\\andariel_castsmall.wav", volume = 130, cutoff = 1600., delay = 0.4 },
-                { "Sounds\\Monsters\\andarieltaunt1.wav", volume = 150, cutoff = 1600. },
+                { "Sounds\\Monsters\\andarieltaunt1.wav", volume = 170, cutoff = 1600. },
             },
             animation = { sequence  = GetAnimationSequence("andariel_spell_throw"), timescale = 1.9, },
             sfx_pack = {
@@ -3600,7 +3779,7 @@ do
             type            = SKILL_MAGICAL,
             sound = {
                 { "Sounds\\Spells\\andariel_castlarge.wav", volume = 130, cutoff = 1600. },
-                { "Sounds\\Monsters\\andarieltaunt2.wav", volume = 150, cutoff = 1600. },
+                { "Sounds\\Monsters\\andarieltaunt2.wav", volume = 170, cutoff = 1600. },
             },
             animation = { sequence  = GetAnimationSequence("andariel_spell"), timescale = 2., },
             sfx_pack = {

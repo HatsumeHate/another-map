@@ -314,6 +314,8 @@ do
                     SetUnitX(source, RealGetUnitX(source) + charge_data.vx)
                     SetUnitY(source, RealGetUnitY(source) + charge_data.vy)
 
+                    BlzSetUnitFacingEx(source, angle)
+
                 else
 
                     if animation then SetUnitAnimation(source, animation) end
@@ -325,6 +327,8 @@ do
 
                     SetUnitX(source, RealGetUnitX(source) + charge_data.vx)
                     SetUnitY(source, RealGetUnitY(source) + charge_data.vy)
+
+                    BlzSetUnitFacingEx(source, angle)
                 end
             end)
 
@@ -485,15 +489,15 @@ do
         SafePauseUnit(target, true)
 
             TimerStart(push_data.timer, PERIOD, true, function()
-                if IsMapBounds(push_data.x, push_data.y) or push_data.time < 0. then
+                if IsMapBounds(push_data.x, push_data.y) or push_data.time < 0. or GetUnitState(target, UNIT_STATE_LIFE) <= 0.045 then
                     DestroyTimer(push_data.timer)
                     if not IsUnitStunned(unit_data.Owner) and not IsUnitFrozen(unit_data.Owner) then SafePauseUnit(target, false) end
                     OnPushExpire(target, push_data)
                     PushList[handle] = nil
-                    --if GetUnitAbilityLevel(target, FourCC("A01M")) > 0 then BlzPauseUnitEx(target, false) end
-                    --BlzPauseUnitEx(target, false)
+                    if GetUnitState(target, UNIT_STATE_LIFE) <= 0.045 then
+                        SetUnitAnimation(target, "death")
+                    end
                 else
-                    --BlzPauseUnitEx(target, true)
                     SetUnitPositionSmooth(target, push_data.x + push_data.vx, push_data.y + push_data.vy)
                     local faderate = 0.1 + (push_data.time / total_time) - penalty
 

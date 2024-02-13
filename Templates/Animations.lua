@@ -399,6 +399,30 @@ do
             animation_backswing = 0.3,
         })
 
+        NewAnimationSequence("demon_assassin_spell", {
+            animation           = 3,
+            animation_point     = 0.267,
+            animation_backswing = 0.433,
+        })
+
+        NewAnimationSequence("demon_assassin_attack", {
+            animation           = 11,
+            animation_point     = 0.5,
+            animation_backswing = 0.734,
+        })
+
+        NewAnimationSequence("demon_assassin_blink", {
+            animation           = 5,
+            animation_point     = 0.467,
+            animation_backswing = 0.500,
+        })
+
+        NewAnimationSequence("phantom_cast", {
+            animation           = 4,
+            animation_point     = 0.4,
+            animation_backswing = 0.4,
+        })
+
         NewAnimationSequence("arachno_bite", {
             animation           = 2,
             animation_point     = 0.566,
@@ -561,7 +585,7 @@ do
         NewAnimationSequence("werewolf_spell", {
             animation           = 25,
             animation_point     = 1.528,
-            animation_backswing = 3.333,
+            animation_backswing = 1.75,
         })
 
         NewAnimationSequence("bloodraven_spell", {

@@ -301,7 +301,7 @@ do
 				ATTACK_SPEED    = 1.8,
 				CRIT_CHANCE     = 0,
 				CRIT_MULTIPLIER = 1.5,
-				RANGE           = 110,
+				RANGE           = 115,
 				DISPERSION      = { 0.9, 1.1 },
 				WEAPON_SOUND    = WEAPON_TYPE_WOOD_LIGHT_BASH
 			},
@@ -309,7 +309,7 @@ do
 				ATTACK_SPEED    = 1.6,
 				CRIT_CHANCE     = 4,
 				CRIT_MULTIPLIER = 2.1,
-				RANGE           = 160,
+				RANGE           = 170,
 				DISPERSION      = { 0.9, 1.1 },
 				WEAPON_SOUND    = WEAPON_TYPE_METAL_MEDIUM_SLICE
 			},
@@ -317,7 +317,7 @@ do
 				ATTACK_SPEED    = 2.3,
 				CRIT_CHANCE     = 5,
 				CRIT_MULTIPLIER = 1.6,
-				RANGE           = 190,
+				RANGE           = 200,
 				ANGLE           = 35, --math.pi / 5,  36 градусов
 				DISPERSION      = { 0.9, 1.1 },
 				WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_SLICE
@@ -326,7 +326,7 @@ do
 				ATTACK_SPEED    = 1.5,
 				CRIT_CHANCE     = 6,
 				CRIT_MULTIPLIER = 1.7,
-				RANGE           = 150,
+				RANGE           = 160,
 				DISPERSION      = { 0.85, 1.15 },
 				WEAPON_SOUND    = WEAPON_TYPE_METAL_MEDIUM_CHOP
 			},
@@ -334,7 +334,7 @@ do
 				ATTACK_SPEED    = 2.2,
 				CRIT_CHANCE     = 6,
 				CRIT_MULTIPLIER = 1.7,
-				RANGE           = 190,
+				RANGE           = 200,
 				DISPERSION      = { 0.85, 1.15 },
 				WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_CHOP
 			},
@@ -342,16 +342,16 @@ do
 				ATTACK_SPEED    = 1.4,
 				CRIT_CHANCE     = 9,
 				CRIT_MULTIPLIER = 2.3,
-				RANGE           = 130,
+				RANGE           = 140,
 				ANGLE           = 25, --math.pi / 7.2, -- 25 градусов
 				DISPERSION      = { 0.9, 1.1 },
 				WEAPON_SOUND    = WEAPON_TYPE_METAL_LIGHT_SLICE
 			},
 			[STAFF_WEAPON]      = {
 				ATTACK_SPEED    = 2.4,
-				CRIT_CHANCE     = 9,
-				CRIT_MULTIPLIER = 2.3,
-				RANGE           = 195,
+				CRIT_CHANCE     = 5,
+				CRIT_MULTIPLIER = 1.8,
+				RANGE           = 205,
 				DISPERSION      = { 0.85, 1.15 },
 				WEAPON_SOUND    = WEAPON_TYPE_WOOD_MEDIUM_BASH
 			},
@@ -359,30 +359,30 @@ do
 				ATTACK_SPEED    = 2.3,
 				CRIT_CHANCE     = 5,
 				CRIT_MULTIPLIER = 1.7,
-				RANGE           = 200,
+				RANGE           = 210,
 				DISPERSION      = { 0.85, 1.15 },
 				WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_BASH
 			},
 			[BLUNT_WEAPON]      = {
 				ATTACK_SPEED    = 1.7,
 				CRIT_CHANCE     = 5,
-				CRIT_MULTIPLIER = 1.6,
-				RANGE           = 140,
+				CRIT_MULTIPLIER = 1.65,
+				RANGE           = 150,
 				DISPERSION      = { 0.8, 1.2 },
 				WEAPON_SOUND    = WEAPON_TYPE_METAL_MEDIUM_BASH
 			},
 			[GREATBLUNT_WEAPON] = {
 				ATTACK_SPEED    = 2.4,
 				CRIT_CHANCE     = 5,
-				CRIT_MULTIPLIER = 1.7,
-				RANGE           = 180,
+				CRIT_MULTIPLIER = 1.75,
+				RANGE           = 190,
 				DISPERSION      = { 0.8, 1.2 },
 				WEAPON_SOUND    = WEAPON_TYPE_METAL_HEAVY_BASH
 			},
 			[BOW_WEAPON]        = {
 				ATTACK_SPEED    = 2.6,
 				CRIT_CHANCE     = 7,
-				CRIT_MULTIPLIER = 2.2,
+				CRIT_MULTIPLIER = 2.,
 				RANGE           = 850.,
 				ranged          = true,
 				DISPERSION      = { 0.75, 1.25 },
@@ -411,7 +411,7 @@ do
 			[NECROMANCER_CLASS] = {
 				[SKILL_CATEGORY_DARK_ART] 	= { "ANBR", "ANBS", "ANTS", "ANBB", "ANCE", "ANBK", "ANWS", "ANPB", "ANFD" },
 				[SKILL_CATEGORY_CURSES]		= { "ANUL", "ANWK", "ANDF", "ANFR", "ANBP", "ANTT" },
-				[SKILL_CATEGORY_SUMMONING] 	= { "ANRD", "ANLR", "ANDV", "ANUC", "ANDR", "ANGS", "ANHV" }
+				[SKILL_CATEGORY_SUMMONING] 	= { "ANRD", "ANLR", "ANDV", "ANUC", "ANDR", "ANGS", "ANHV", "ANRP" }
 			},
 			[ASSASSIN_CLASS] = {
 				[SKILL_CATEGORY_LETHALITY] 	= { "AACS", "AABR", "AABA", "AASH", "AAEV", "AAVB", "AABF", "AATL", "AALL" },
@@ -2830,6 +2830,32 @@ do
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_EVERLASTING_MADNESS .."\"",
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_HEAVY_ARMOR],
 		})
+
+
+		ItemAddData('I042', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_SKINRIPPER,
+			TYPE    = ITEM_TYPE_WEAPON,
+			SUBTYPE = SWORD_WEAPON,
+			ATTRIBUTE = PHYSICAL_ATTRIBUTE,
+			QUALITY = UNIQUE_ITEM,
+			DAMAGE  = 50,
+			stat_modificator = 1.3,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = ATTACK_SPEED, VALUE = 15, METHOD = STRAIGHT_BONUS },
+				{ PARAM = HP_VALUE, VALUE = 75, METHOD = STRAIGHT_BONUS, base = 75, delta = 1, delta_level = 1, delta_level_max = 50  },
+				{ PARAM = HP_PER_HIT, VALUE = 5, METHOD = STRAIGHT_BONUS, base = 5, delta = 1, delta_level = 5, delta_level_max = 10 },
+				{ PARAM = ALL_RESIST, VALUE = 7, METHOD = STRAIGHT_BONUS, base = 7, delta = 1, delta_level = 10, delta_level_max = 5 },
+			},
+			effect_bonus = { "open_wound_effect" },
+			MAX_SLOTS = 3,
+			frame_texture = "Weapons\\BTNObsidianRuneblade.blp",
+			model = "Items\\DaedricShortsword.mdx",
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_SKINRIPPER .."\"",
+			soundpack = { equip = "Sound\\sword_souldrinker_equip.wav", unequip = "Sound\\sword_unequip.wav", drop = "Sound\\sword.wav" }
+		})
+
 
 		ItemAddData('I02H', {
 			NAME    		   = LOCALE_LIST[my_locale].LOOTBOX_NAME,

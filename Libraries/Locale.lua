@@ -42,6 +42,7 @@ do
                 MONSTER_NAME_GHOUL = "Вурдалак",
                 MONSTER_NAME_ARMORED_SKELETON = "Бронированный Скелет",
                 MONSTER_NAME_ZOMBIE = "Зомби",
+                MONSTER_NAME_ZOMBIE_BLACK_DEATH = "Черная Смерть",
                 MONSTER_NAME_ZOMBIE_NIGHTMARE = "Зомби Кошмара",
                 MONSTER_NAME_ZOMBIE_BIG = "Мутант",
                 MONSTER_NAME_SKELETON = "Скелет",
@@ -58,6 +59,7 @@ do
                 MONSTER_NAME_BANSHEE = "Банши",
                 MONSTER_NAME_BANSHEE_NIGHTMARE = "Банши Кошмара",
                 MONSTER_NAME_GHOST = "Призрак",
+                MONSTER_NAME_PHANTOM = "Фантом",
                 MONSTER_NAME_SUCCUBUS = "Суккуб",
                 MONSTER_NAME_SUCCUBUS_IMPROVED = "Мучительница",
                 MONSTER_NAME_BLOOD_SUCCUBUS = "Садистка",
@@ -99,6 +101,7 @@ do
                 MONSTER_NAME_SPIDER_BOSS = "Мать Стаи",
                 MONSTER_NAME_BANDIT = "Бандит",
                 MONSTER_NAME_ROBBER = "Грабитель",
+                MONSTER_NAME_ROGUE_MAGE = "Беглый Маг",
                 MONSTER_NAME_ROGUE = "Разбойник",
                 MONSTER_NAME_ASSASSIN = "Убийца",
                 MONSTER_NAME_GNOLL = "Гнолл",
@@ -135,6 +138,13 @@ do
                 NAME_SKELETON_GHOST_SUMMONED = "Призрак",
 
                 NAME_BARBARIAN_SUMMONED = "Древний Герой",
+
+
+                MONSTER_TRAIR_AURA_PHYSICAL = "Аура уменьшения урона от физ. и святых атак",
+                MONSTER_TRAIR_AURA_PRIMAL_ELEMENTS = "Аура уменьшения урона от огня холода и молнии",
+                MONSTER_TRAIR_AURA_SHADOW = "Аура уменьшения урона от тьмы и яда",
+                MONSTER_TRAIR_AURA_UNIVERSAL = "Аура уменьшения урона от всех стихий",
+                MONSTER_TRAIR_AURA_STURDY = "Аура уменьшения урона от атак",
 
 
                 MONSTER_TRAITS = {
@@ -409,6 +419,18 @@ do
                 MP_PER_KILL_PARAM = "Ресурс за убийство",
 
                 MINION_POWER_PARAM = "Сила слуг",
+
+                BLEEDING_DAMAGE_BOOST_PARAM = "Сила Кровотечений",
+                BLEEDING_DAMAGE_REDUCTION_PARAM = "Стойкость к кровотечению",
+
+                BURNING_DAMAGE_BOOST_PARAM = "Сила Горения",
+                BURNING_DAMAGE_REDUCTION_PARAM = "Стойкость к Горению",
+
+                POISONING_DAMAGE_BOOST_PARAM = "Сила Отравления",
+                POISONING_DAMAGE_REDUCTION_PARAM = "Стойкость к Отравлению",
+
+                DECAYING_DAMAGE_BOOST_PARAM = "Сила Разложения",
+                DECAYING_DAMAGE_REDUCTION_PARAM = "Стойкость к Разложению",
 
                 ITEM_TYPE_WEAPON_NAME     = "Оружие",
                 ITEM_TYPE_ARMOR_NAME      = "Броня",
@@ -895,11 +917,14 @@ do
                 GENERIC_GREATSWORD_NAME_3 = "клеймор",
                 GENERIC_GREATSWORD_NAME_4 = "эсток",
                 GENERIC_GREATSWORD_NAME_5 = "меч горцев",
+                GENERIC_GREATSWORD_NAME_6 = "широкий меч",
+                GENERIC_GREATSWORD_NAME_7 = "рунный меч",
 
                 GENERIC_AXE_NAME_1 = "широкий топор",
                 GENERIC_AXE_NAME_2 = "зазубренный топор",
                 GENERIC_AXE_NAME_3 = "стальной топор",
                 GENERIC_AXE_NAME_4 = "мистический топор",
+                GENERIC_AXE_NAME_5 = "рунный топор",
 
                 GENERIC_GREATAXE_NAME_1 = "огромный резак",
                 GENERIC_GREATAXE_NAME_2 = "изогнутый топор",
@@ -918,6 +943,7 @@ do
                 GENERIC_GREATBLUNT_NAME_2 = "мифриловый молот",
                 GENERIC_GREATBLUNT_NAME_3 = "зачарованный скипетр",
                 GENERIC_GREATBLUNT_NAME_4 = "рунический боевой молот",
+                GENERIC_GREATBLUNT_NAME_5 = "молот",
 
                 GENERIC_DAGGER_NAME_1 = "изогнутый нож",
                 GENERIC_DAGGER_NAME_2 = "позолоченный нож",
@@ -1268,6 +1294,7 @@ do
                 SKILL_BONE_IMPALE = "Пронзить", --physical
                 SKILL_FORCED_DECAY = "Разложение",
                 SKILL_TORTURE = "Пытка",
+                SKILL_REAPER = "Жнец",
 
                 SKILL_CURVED_STRIKE = "Изогнутый Выпад",
                 SKILL_BREAKTHROUGH = "Прорыв",
@@ -1458,15 +1485,19 @@ do
                 ITEM_NAME_EVERLASTING_MADNESS = "Бесконечное Безумие",
                 ITEM_SPEC_DESCRIPTION_EVERLASTING_MADNESS = "Кровавая пелена застилает зрение и разум. Сможешь ли ты контролировать себя, и направить ярость на врагов?",
 
+                ITEM_NAME_SKINRIPPER = "Свежеватель",
+                ITEM_SPEC_DESCRIPTION_SKINRIPPER = "Он был создан древним магом в попытках сделать оружие, способное обретать силу из самых мрачных источников. Он стал легендой до тех пор, пока не исчез вместе с его таинственным создателем",
+
 
                 ITEM_EFFECTS = {
-                    ["weap_poison_phys"] = "7%% шанс при атаке наложить эффект наносящий @e!poison_physical_weapon_effect.ap#%% урона от атаки типа физический @e!poison_physical_weapon_effect.atr# в течение 6 сек",
+                    ["weap_poison_phys"] = "7%% шанс при атаке наложить эффект наносящий @e!poison_physical_weapon_effect.ap#%% урона от атаки типа @e!poison_physical_weapon_effect.atr# в течение 6 сек",
                     ["weap_poison_mag"] = "7%% шанс при атаке наложить эффект наносящий @e!poison_magical_weapon_effect.ap#%% урона от атаки типа @e!poison_magical_weapon_effect.atr# в течение 6 сек",
                     ["weap_fire_mag"] = "7%% шанс при атаке наложить эффект наносящий @e!fire_magical_weapon_effect.ap#%% урона от атаки типа @e!fire_magical_weapon_effect.atr# в течение 6 сек",
                     ["weap_bleed"] = "7%% шанс при атаке наложить эффект наносящий @e!bleed_physical_weapon_effect.ap#%% урона от атаки типа @e!bleed_physical_weapon_effect.atr# в течение 6 сек",
                     ["item_enrage"] = "5%% шанс при получении или нанесении урона повысить @b!AIEN.pa1# на @b!AIEN.va1# в течение 4 секунд",
                     ["item_conduction"] = "5%% шанс при получении или нанесении урона повысить @b!AICN.pa1# на @b!AICN.va1# в течение 4 секунд",
                     ["item_fortify"] = "10%% шанс при получении урона повысить @b!AIFT.pa1# и @b!AIFT.pa2# на @b!AIFT.va1# в течение 3 секунд",
+                    ["open_wound_effect"] = "15%% шанс при атаке открыть раны противнику нанося ему @e!skinripper_effect.ap#%% кровотечения от атаки в течение 5 секунд",
                 },
 
 
@@ -1670,6 +1701,9 @@ do
                     [5] = "Вытягивает жизненную силу цели, постоянно нанося @e!forced_decay_effect.pwr# типа @e!forced_decay_effect.atr# и 1 дополнительной цели на половину урона в течение 1.25 секунд. По завершению под целью появляется труп. Если цель умирает пока она подвержена способности, способность мгновенно восстанавливается.",
                     [10] = "Вытягивает жизненную силу цели, постоянно нанося @e!forced_decay_effect.pwr# типа @e!forced_decay_effect.atr# и @FM_DIV!0.5# дополнительным целям на половину урона в течение 1.25 секунд. По завершению под целью появляется труп. Если цель умирает пока она подвержена способности, способность мгновенно восстанавливается.",
                 },
+                [FourCC("ANRP")] = {
+                    [1] = "Выпускает вперед жнеца который атакует противников перед собой нанося @e!reaper_effect.pwr# типа @e!reaper_effect.atr#. Имеет 15%% бонус на крит шанс и крит множитель увеличен на @e!reaper_effect.bcm#. По ослабленным противникам наносит на @FM_DIV!14.1#%% больше урона.",
+                },
                 [FourCC("AACS")] = {
                     [1] = "Быстрый удар наносящий @e!effect_curved_strike.dmg# типа @e!effect_curved_strike.atr# в секторе перед собой и увеличивает урон от другого умения на 50%%, эффект суммируется до 3 раз.",
                 },
@@ -1794,11 +1828,11 @@ do
                     },
                     ["talent_apocalypse"] = {
                         name = "Апокалипсис",
-                        [1] = "Урон огнем повышен на 7%%.",
-                        [2] = "Урон огнем повышен на 14%%.",
-                        [3] = "Урон огнем повышен на 21%%.",
-                        [4] = "Урон огнем повышен на 28%%.",
-                        [5] = "Урон огнем повышен на 35%%.",
+                        [1] = "Урон огнем повышен на 7%%. Эффекты горения усилены на 5%%.",
+                        [2] = "Урон огнем повышен на 14%%. Эффекты горения усилены на 10%%.",
+                        [3] = "Урон огнем повышен на 21%%. Эффекты горения усилены на 15%%.",
+                        [4] = "Урон огнем повышен на 28%%. Эффекты горения усилены на 20%%.",
+                        [5] = "Урон огнем повышен на 35%%. Эффекты горения усилены на 25%%.",
                     },
                     ["talent_flash"] = {
                         name = "Вспышка",
@@ -1858,7 +1892,13 @@ do
                     },
                     ["talent_disintegration"] = {
                         name = "Дезинтеграция",
-                        [1] = "С 1/4 от критического шанса при атаке мгновенно убивает неэлитного противника.",
+                        [1] = "С 1/4 от критического шанса при атаке мгновенно убивает неэлитного противника у которого меньше 50%% здоровья.",
+                    },
+                    ["talent_convulsions"] = {
+                        name = "Конвульсии",
+                        [1] = "Урон по ослабленным целям увеличен на 7%%.",
+                        [2] = "Урон по ослабленным целям увеличен на 14%%.",
+                        [3] = "Урон по ослабленным целям увеличен на 21%%.",
                     },
                     ["talent_remorseless"] = {
                         name = "Беспощадность",
@@ -2245,9 +2285,9 @@ do
                     },
                     ["talent_blood_pact"] = {
                         name = "кровавый договор",
-                        [1] = "Атаки восстанавливают 6%% здоровья раз в 14 секунд.",
-                        [2] = "Атаки восстанавливают 12%% здоровья раз в 14 секунд.",
-                        [3] = "Атаки восстанавливают 18%% здоровья раз в 14 секунд.",
+                        [1] = "Атаки с 18%% шансом восстанавливают 6%% здоровья раз в 14 секунд.",
+                        [2] = "Атаки с 18%% шансом восстанавливают 12%% здоровья раз в 14 секунд.",
+                        [3] = "Атаки с 18%% шансом восстанавливают 18%% здоровья раз в 14 секунд.",
                     },
                     ["talent_abyss_awakens"] = {
                         name = "пробуждение бездны",
@@ -2510,6 +2550,7 @@ do
                 MONSTER_NAME_GHOUL = "Ghoul",
                 MONSTER_NAME_ARMORED_SKELETON = "Armored Skeleton",
                 MONSTER_NAME_ZOMBIE = "Zombie",
+                MONSTER_NAME_ZOMBIE_BLACK_DEATH = "Black Death",
                 MONSTER_NAME_ZOMBIE_NIGHTMARE = "Nightmarish Zombie",
                 MONSTER_NAME_ZOMBIE_BIG = "Mutant",
                 MONSTER_NAME_SKELETON = "Skeleton",
@@ -2526,6 +2567,7 @@ do
                 MONSTER_NAME_BANSHEE = "Banshee",
                 MONSTER_NAME_BANSHEE_NIGHTMARE = "Nightmarish Banshee",
                 MONSTER_NAME_GHOST = "Ghost",
+                MONSTER_NAME_PHANTOM = "Phantom",
                 MONSTER_NAME_SUCCUBUS = "Succubus",
                 MONSTER_NAME_SUCCUBUS_IMPROVED = "Vile Tormentor",
                 MONSTER_NAME_BLOOD_SUCCUBUS = "Bloodbather",
@@ -2567,6 +2609,7 @@ do
                 MONSTER_NAME_SPIDER_BOSS = "Brood Mother",
                 MONSTER_NAME_BANDIT = "Bandit",
                 MONSTER_NAME_ROBBER = "Brigand",
+                MONSTER_NAME_ROGUE_MAGE = "Rogue Mage",
                 MONSTER_NAME_ROGUE = "Rogue",
                 MONSTER_NAME_ASSASSIN = "Assassin",
                 MONSTER_NAME_GNOLL = "Gnoll",
@@ -2603,6 +2646,11 @@ do
 
                 NAME_BARBARIAN_SUMMONED = "Ancient Hero",
 
+                MONSTER_TRAIR_AURA_PHYSICAL = "Physical and holy damage reduction aura",
+                MONSTER_TRAIR_AURA_PRIMAL_ELEMENTS = "Fire cold and lightning damage reduction aura",
+                MONSTER_TRAIR_AURA_SHADOW = "Darkness and poison damage reduction aura",
+                MONSTER_TRAIR_AURA_UNIVERSAL = "All elements damage reduction aura",
+                MONSTER_TRAIR_AURA_STURDY = "All attacks damage reduction aura",
 
                 MONSTER_TRAITS = {
                     [MONSTER_TRAIT_ELECTRIFIED]   = { [DECL_HE] = "Electrified ",       [DECL_SHE] = "Electrified ",        [DECL_IT] = "Electrified ", },
@@ -2874,6 +2922,18 @@ do
                 MP_PER_KILL_PARAM = "Resource on kill",
 
                 MINION_POWER_PARAM = "Minion power",
+
+                BLEEDING_DAMAGE_BOOST_PARAM = "Bleeding Power",
+                BLEEDING_DAMAGE_REDUCTION_PARAM = "Bleeding Resist",
+
+                BURNING_DAMAGE_BOOST_PARAM = "Burning Power",
+                BURNING_DAMAGE_REDUCTION_PARAM = "Burning Resist",
+
+                POISONING_DAMAGE_BOOST_PARAM = "Poisoning Power",
+                POISONING_DAMAGE_REDUCTION_PARAM = "Poisoning Resist",
+
+                DECAYING_DAMAGE_BOOST_PARAM = "Decay Power",
+                DECAYING_DAMAGE_REDUCTION_PARAM = "Decay Resist",
 
 
                 ITEM_TYPE_WEAPON_NAME     = "Weapon",
@@ -3276,14 +3336,14 @@ do
                 STAT_PANEL_MAG_ATTACK = "Mag. attack: ",
                 STAT_PANEL_MAG_DEFENCE = "Suppress: ",
                 STAT_PANEL_ATTACK_SPEED = "Attack Speed: ",
-                STAT_PANEL_ATTACK_SPEED_PERIOD = "Attack cooldown: ",
+                STAT_PANEL_ATTACK_SPEED_PERIOD = "Attack CD: ",
                 STAT_PANEL_CAST_SPEED = "Cast Speed: ",
                 STAT_PANEL_CRIT_CHANCE = "Crit. chance: ",
                 STAT_PANEL_MOVE_SPEED = "Move Speed: ",
 
                 STAT_PANEL_FIRE = "Fire: ",
                 STAT_PANEL_PHYSICAL = "Phys.: ",
-                STAT_PANEL_ICE = "Ice: ",
+                STAT_PANEL_ICE = "Cold: ",
                 STAT_PANEL_LIGHTNING = "Lightning: ",
                 STAT_PANEL_DARKNESS = "Darkness: ",
                 STAT_PANEL_HOLY = "Holy: ",
@@ -3345,15 +3405,18 @@ do
                 GENERIC_SWORD_NAME_6 = "rapier",
 
                 GENERIC_GREATSWORD_NAME_1 = "barbaric cutter",
-                GENERIC_GREATSWORD_NAME_2 = "giants knife",
+                GENERIC_GREATSWORD_NAME_2 = "giant's knife",
                 GENERIC_GREATSWORD_NAME_3 = "claymore",
                 GENERIC_GREATSWORD_NAME_4 = "estoc",
                 GENERIC_GREATSWORD_NAME_5 = "highlander's sword",
+                GENERIC_GREATSWORD_NAME_6 = "wide sword",
+                GENERIC_GREATSWORD_NAME_7 = "runic greatsword",
 
                 GENERIC_AXE_NAME_1 = "broad axe",
                 GENERIC_AXE_NAME_2 = "serrated axe",
                 GENERIC_AXE_NAME_3 = "steel axe",
                 GENERIC_AXE_NAME_4 = "mystic axe",
+                GENERIC_AXE_NAME_5 = "runic axe",
 
                 GENERIC_GREATAXE_NAME_1 = "huge cutter",
                 GENERIC_GREATAXE_NAME_2 = "curved axe",
@@ -3372,6 +3435,7 @@ do
                 GENERIC_GREATBLUNT_NAME_2 = "mithril hammer",
                 GENERIC_GREATBLUNT_NAME_3 = "charmed scepter",
                 GENERIC_GREATBLUNT_NAME_4 = "runic warhammer",
+                GENERIC_GREATBLUNT_NAME_5 = "hammer",
 
                 GENERIC_DAGGER_NAME_1 = "curved knife",
                 GENERIC_DAGGER_NAME_2 = "gilded knife",
@@ -3721,6 +3785,7 @@ do
                 SKILL_BONE_IMPALE = "Impale",
                 SKILL_FORCED_DECAY = "Forced Decay",
                 SKILL_TORTURE = "Torture",
+                SKILL_REAPER = "Reaper",
 
                 SKILL_CURVED_STRIKE = "Curved Strike",
                 SKILL_BREAKTHROUGH = "Breakthrough",
@@ -3910,15 +3975,19 @@ do
                 ITEM_NAME_EVERLASTING_MADNESS = "Everlasting Madness",
                 ITEM_SPEC_DESCRIPTION_EVERLASTING_MADNESS = "Blood haze clouds your mind and eyes. Will you manage to control it and direct it to enemies?",
 
+                ITEM_NAME_SKINRIPPER = "Skinripper",
+                ITEM_SPEC_DESCRIPTION_SKINRIPPER = "It was created by an ancient magician in an attempt to make a weapon capable of gaining power from the darkest sources. It became a legend until it disappeared along with its mysterious creator",
+
 
                 ITEM_EFFECTS = {
-                    ["weap_poison_phys"] = "7%% chance to inflict @e!poison_physical_weapon_effect.ap#%% of attack as physical @e!poison_physical_weapon_effect.atr# damage on attack over 6 seconds",
+                    ["weap_poison_phys"] = "7%% chance to inflict @e!poison_physical_weapon_effect.ap#%% of attack as @e!poison_physical_weapon_effect.atr# damage on attack over 6 seconds",
                     ["weap_poison_mag"] = "7%% chance to inflict @e!poison_magical_weapon_effect.ap#%% of attack as @e!poison_magical_weapon_effect.atr# damage on attack over 6 seconds",
                     ["weap_fire_mag"] = "7%% chance to inflict @e!fire_magical_weapon_effect.ap#%% of attack as @e!fire_magical_weapon_effect.atr# damage on attack over 6 seconds",
                     ["weap_bleed"] = "7%% chance to inflict @e!bleed_physical_weapon_effect.ap#%% of attack as @e!bleed_physical_weapon_effect.atr# damage on attack over 6 seconds",
                     ["item_enrage"] = "5%% chance to boost @b!AIEN.pa1# by @b!AIEN.va1# on hit or attack for 4 seconds",
                     ["item_conduction"] = "5%% chance to boost @b!AICN.pa1# by @b!AICN.va1# on hit or attack for 4 seconds",
                     ["item_fortify"] = "10%% chance to boost @b!AIFT.pa1# and @b!AIFT.pa2# reduction by @b!AIFT.va1# on hit for 3 seconds",
+                    ["open_wound_effect"] = "15%% chance to open wounds on enemy, bleeding for @e!skinripper_effect.ap#%% attack over 5 seconds",
                 },
 
 
@@ -4053,8 +4122,8 @@ do
                     [1] = "Creates a fire wall for 6 seconds. All enemies caught in it and 2 seconds after escaping from it ignite and take @e!fire_wall_damage_effect.pwr# as @e!fire_wall_damage_effect.atr# periodically.",
                 },
                 [FourCC("ANRD")] = {
-                  [1] = "Summon a Skeleton Warrior from a nearby corpse within 600 range. Only @FM_DIV!2.6# skeletons can be reanimated simultaneously. With a @FM_PER!5.1#%% chance instead of Skeleton Warrior, Skeleton Archer will be summoned. Upon a cast while at max summoned units instead summons an acolyte which boosts the attack of all skeletons and heal them by 15%% over 3 seconds.",
-                  [50] = "Summon a Skeleton Warrior from a nearby corpse within 600 range. Only @FM_DIV!2.6# skeletons can be reanimated simultaneously. With a 50%% chance instead of Skeleton Warrior, Skeleton Archer will be summoned. Upon a cast while at max summoned units instead summons an acolyte which boosts the attack of all skeletons and heal them by 15%% over 3 seconds.",
+                  [1] = "Summon a Skeleton Warrior from a nearby corpse within 600 range. Only @FM_DIV!2.6# skeletons can be reanimated simultaneously. Has a @FM_PER!5.1#%% chance to summon a Skeleton Archer instead. If cast while at max skeletons, summons an acolyte that boosts the attack of all skeletons and heals them by 15%% over 3 seconds.",
+                  [50] = "Summon a Skeleton Warrior from a nearby corpse within 600 range. Only @FM_DIV!2.6# skeletons can be reanimated simultaneously. Has a 50%% chance to summon a Skeleton Archer instead. If cast while at max skeletons, summons an acolyte that boosts the attack of all skeletons and heals them by 15%% over 3 seconds.",
                 },
                 [FourCC("ANLR")] = {
                   [1] = "Merges 3 souls from corpses nearby into one powerful Lich which provides aura that inscreases @b!NRLA.pa1# by @b!NRLA.va1#. Its parameters are increasing by every level of this spell. Can have only 1 Lich at once. Using skill while having a lich buffs his attack by 25%% and heal 15%% of hp over 3 seconds.",
@@ -4121,6 +4190,9 @@ do
                     [1] = "Draws life from a target continually dealing @e!forced_decay_effect.pwr# as @e!forced_decay_effect.atr# for 1.25 seconds. At the end of cast spawns a corpse under the target. If target dies while its being drained, its cooldown is reset.",
                     [5] = "Draws life from a target continually dealing @e!forced_decay_effect.pwr# as @e!forced_decay_effect.atr# and 1 additional target for half damage for 1.25 seconds. At the end of cast spawns a corpse under the target. If target dies while its being drained, its cooldown is reset.",
                     [10] = "Draws life from a target continually dealing @e!forced_decay_effect.pwr# as @e!forced_decay_effect.atr# and @FM_DIV!0.5# additional targets for half damage for 1.25 seconds. At the end of cast spawns a corpse under the target. If target dies while its being drained, its cooldown is reset.",
+                },
+                [FourCC("ANRP")] = {
+                    [1] = "Releases a reaper whick attack enemies in front of it. Deals @e!reaper_effect.pwr# as @e!reaper_effect.atr#. Has 15%% bonus crit chance and crit multiplier is increased by @e!reaper_effect.bcm#. Impared targets take @FM_DIV!14.1#%% more damage.",
                 },
                 [FourCC("AACS")] = {
                     [1] = "Quick strike that deals @e!effect_curved_strike.dmg# as @e!effect_curved_strike.atr# in front. Increases a power from a next used different skill by 50%%, stacks up to 3 times.",
@@ -4190,9 +4262,9 @@ do
                 TALENTS = {
                     ["talent_ignite"] = {
                         name = "Ignite",
-                        [1] = "Upon taking fire damage enemies can ignite, taking 13 fire damage every second for 3 seconds.",
-                        [2] = "Upon taking fire damage enemies can ignite, taking 17 fire damage every second for 3 seconds.",
-                        [3] = "Upon taking fire damage enemies can ignite, taking 23 fire damage every second for 3 seconds."
+                        [1] = "Upon taking fire damage enemies can ignite, taking 13 fire damage every second over 3 seconds.",
+                        [2] = "Upon taking fire damage enemies can ignite, taking 17 fire damage every second over 3 seconds.",
+                        [3] = "Upon taking fire damage enemies can ignite, taking 23 fire damage every second over 3 seconds."
                     },
                     ["talent_inner_warmth"] = {
                         name = "Reign of Fire",
@@ -4223,9 +4295,9 @@ do
                     },
                     ["talent_heat"] = {
                         name = "Heat",
-                        [1] = "Enemies which were hit with fire attacks suffer loss of physical attack by 7%% for 6 secs.",
-                        [2] = "Enemies which were hit with fire attacks suffer loss of physical attack by 14%% for 6 secs.",
-                        [3] = "Enemies which were hit with fire attacks suffer loss of physical attack by 21%% for 6 secs."
+                        [1] = "Enemies which were hit by fire attacks have their physical attack reduced by 7%% for 6 secs.",
+                        [2] = "Enemies which were hit by fire attacks have their physical attack reduced by 14%% for 6 secs.",
+                        [3] = "Enemies which were hit by fire attacks have their physical attack reduced by 21%% for 6 secs."
                     },
                     ["talent_incinerate"] = {
                         name = "incineration",
@@ -4241,15 +4313,15 @@ do
                     },
                     ["talent_hell_flames"] = {
                         name = "Flames of Hell",
-                        [1] = "Taking range damage with 35%% chance will cause sorceress to ignite, killing all missiles nearby. Can happen once in 7 seconds.",
+                        [1] = "Taking range damage with 35%% chance will cause sorceress to ignite, destroying all missiles nearby. Can happen once in 7 seconds.",
                     },
                     ["talent_apocalypse"] = {
                         name = "Apocalypse",
-                        [1] = "Fire damage is increased by 7%%.",
-                        [2] = "Fire damage is increased by 14%%.",
-                        [3] = "Fire damage is increased by 21%%.",
-                        [4] = "Fire damage is increased by 28%%.",
-                        [5] = "Fire damage is increased by 35%%.",
+                        [1] = "Fire damage is increased by 7%%. Burning damage is increased by 5%%.",
+                        [2] = "Fire damage is increased by 14%%. Burning damage is increased by 10%%.",
+                        [3] = "Fire damage is increased by 21%%. Burning damage is increased by 15%%.",
+                        [4] = "Fire damage is increased by 28%%. Burning damage is increased by 20%%.",
+                        [5] = "Fire damage is increased by 35%%. Burning damage is increased by 25%%.",
                     },
                     ["talent_flash"] = {
                         name = "Flash",
@@ -4266,25 +4338,25 @@ do
                     },
                     ["talent_positive_charge"] = {
                         name = "Positive charge",
-                        [1] = "Dealing a critical lightning attack restores 3%% of mana.",
-                        [2] = "Dealing a critical lightning attack restores 6%% of mana.",
-                        [3] = "Dealing a critical lightning attack restores 9%% of mana."
+                        [1] = "Lightning critical strikes restore 3%% of mana.",
+                        [2] = "Lightning critical strikes restore 6%% of mana.",
+                        [3] = "Lightning critical strikes restore 9%% of mana."
                     },
                     ["talent_lightning_rod"] = {
                         name = "Lightning rod",
-                        [1] = "After enemy recieves lightning damage it can become charged, which creates lightning strikes between it and sorceress. They are dealing 10%% of magic attack as damage to all enemies hit.",
-                        [2] = "After enemy recieves lightning damage it can become charged, which creates lightning strikes between it and sorceress. They are dealing 20%% of magic attack as damage to all enemies hit."
+                        [1] = "After enemy recieves lightning damage it can become charged, which creates lightning strikes between it and the sorceress. They are dealing 10%% of magic attack as damage to all enemies hit.",
+                        [2] = "After enemy recieves lightning damage it can become charged, which creates lightning strikes between it and the sorceress. They are dealing 20%% of magic attack as damage to all enemies hit."
                     },
                     ["talent_voltage"] = {
                         name = "Voltage",
-                        [1] = "Dealing a critical lightning attack increases crit chance by 5%% for 5 secs.",
-                        [2] = "Dealing a critical lightning attack increases crit chance by 10%% for 5 secs."
+                        [1] = "Lightning critical strikes increase crit chance by 5%% for 5 secs.",
+                        [2] = "Lightning critical strikes increase crit chance by 10%% for 5 secs."
                     },
                     ["talent_arc_discharge"] = {
                         name = "Arc discharge",
-                        [1] = "Each 2 seconds you store a charge that increases your next lightning spell power by 10%%. Critical attack instantly gives a charge with 25%% chance.",
-                        [2] = "Each 1.5 seconds you store a stacked charge that increases your next lightning spell power by 10%%. Can store up to 2 charges. First charge charges up in 2 seconds. Critical attack instantly gives a charge with 30%% chance.",
-                        [3] = "Each 1.5 seconds you store a stacked charge that increases your next lightning spell power by 10%%. Can store up to 3 charges. First charge charges up in 2 seconds. Critical attack instantly gives a charge with 35%% chance."
+                        [1] = "Each 2 seconds you store a charge that increases your next lightning spell power by 10%%. Critical attack instantly gives a charge with a 25%% chance.",
+                        [2] = "Each 1.5 seconds you store a stacked charge that increases your next lightning spell power by 10%%. Can store up to 2 charges. First charge charges up in 2 seconds. Critical attack instantly gives a charge with a 30%% chance.",
+                        [3] = "Each 1.5 seconds you store a stacked charge that increases your next lightning spell power by 10%%. Can store up to 3 charges. First charge charges up in 2 seconds. Critical attack instantly gives a charge with a 35%% chance."
                     },
                     ["talent_feedback"] = {
                         name = "Feedback",
@@ -4293,15 +4365,15 @@ do
                     },
                     ["talent_induction"] = {
                         name = "Induction",
-                        [1] = "Critical attacks with lightning increase your casting speed by 5%% for 5 seconds. Can stack up to 2 times.",
-                        [2] = "Critical attacks with lightning increase your casting speed by 5%% for 5 seconds. Can stack up to 3 times.",
-                        [3] = "Critical attacks with lightning increase your casting speed by 5%% for 5 seconds. Can stack up to 4 times."
+                        [1] = "Lightning critical strikes increase your cast speed by 5%% for 5 seconds. Can stack up to 2 times.",
+                        [2] = "Lightning critical strikes increase your cast speed by 5%% for 5 seconds. Can stack up to 3 times.",
+                        [3] = "Lightning critical strikes increase your cast speed by 5%% for 5 seconds. Can stack up to 4 times."
                     },
                     ["talent_extra_charge"] = {
                         name = "Extra charge",
-                        [1] = "Dealing a lightning damage forms a ball of energy that increases your magic suppression by 10%%. Attacking a sorceress in melee will destroy the ball and stuns the attacker for 1.25 seconds. Can exist 1 ball at once.",
-                        [2] = "Dealing a lightning damage forms a ball of energy that increases your magic suppression by 10%%. Attacking a sorceress in melee will destroy the ball and stuns the attacker for 1.25 seconds. Can exist 2 balls at once",
-                        [3] = "Dealing a lightning damage forms a ball of energy that increases your magic suppression by 10%%. Attacking a sorceress in melee will destroy the ball and stuns the attacker for 1.25 seconds. Can exist 3 balls at once"
+                        [1] = "Dealing a lightning damage forms a ball of energy that increases your magic suppression by 10%%. Attacking a sorceress in melee will destroy the ball and stuns the attacker for 1.25 seconds. Only 1 ball at once.",
+                        [2] = "Dealing a lightning damage forms a ball of energy that increases your magic suppression by 10%%. Attacking a sorceress in melee will destroy the ball and stuns the attacker for 1.25 seconds. Only 2 balls at once.",
+                        [3] = "Dealing a lightning damage forms a ball of energy that increases your magic suppression by 10%%. Attacking a sorceress in melee will destroy the ball and stuns the attacker for 1.25 seconds. Only 3 balls at once."
                     },
                     ["talent_shock"] = {
                         name = "Shock",
@@ -4309,7 +4381,13 @@ do
                     },
                     ["talent_disintegration"] = {
                         name = "Disintegration",
-                        [1] = "Instantly kills non-elite enemy with 1/4 of your critical chance.",
+                        [1] = "Instantly kills a non-elite enemy that is under 50%% health with a 1/4 of your critical chance.",
+                    },
+                    ["talent_convulsions"] = {
+                        name = "Convulsions",
+                        [1] = "Damage to impared targets is increased by 7%%.",
+                        [2] = "Damage to impared targets is increased by 14%%.",
+                        [3] = "Damage to impared targets is increased by 21%%.",
                     },
                     ["talent_remorseless"] = {
                         name = "Remorseless",
@@ -4330,9 +4408,9 @@ do
                     },
                     ["talent_glaciation"] = {
                         name = "Glaciation",
-                        [1] = "Periodically forms a barrier of ice on sorceress that increases phys. defence by 10%%. Can stack up to 1 charge. Upon taking physical attack 1 stack is lost.",
-                        [2] = "Periodically forms a barrier of ice on sorceress that increases phys. defence by 10%%. Can stack up to 2 charges. Upon taking physical attack 1 stack is lost.",
-                        [3] = "Periodically forms a barrier of ice on sorceress that increases phys. defence by 10%%. Can stack up to 3 charges. Upon taking physical attack 1 stack is lost.",
+                        [1] = "Periodically forms a barrier of ice on the sorceress that increases phys. defence by 10%%. Can stack up to 1 charge. Upon taking a physical attack 1 stack is lost.",
+                        [2] = "Periodically forms a barrier of ice on the sorceress that increases phys. defence by 10%%. Can stack up to 2 charges. Upon taking a physical attack 1 stack is lost.",
+                        [3] = "Periodically forms a barrier of ice on the sorceress that increases phys. defence by 10%%. Can stack up to 3 charges. Upon taking a physical attack 1 stack is lost.",
                     },
                     ["talent_breath_of_frost"] = {
                         name = "Breath of frost",
@@ -4352,9 +4430,9 @@ do
                     },
                     ["talent_heat_transfer"] = {
                         name = "Heat transfer",
-                        [1] = "After freezing an enemy gain 6%% of casting speed for 6 seconds.",
-                        [2] = "After freezing an enemy gain 12%% of casting speed for 6 seconds.",
-                        [3] = "After freezing an enemy gain 18%% of casting speed for 6 seconds."
+                        [1] = "After freezing an enemy gain 6%% of cast speed for 6 seconds.",
+                        [2] = "After freezing an enemy gain 12%% of cast speed for 6 seconds.",
+                        [3] = "After freezing an enemy gain 18%% of cast speed for 6 seconds."
                     },
                     ["talent_fragility"] = {
                         name = "Fragility",
@@ -4407,9 +4485,9 @@ do
                     },
                     ["talent_pain_killer"] = {
                         name = "Pain killer",
-                        [1] = "While you have positive buff from your abilities all melee and range damage taken is reduced by 4%%.",
-                        [2] = "While you have positive buff from your abilities all melee and range damage taken is reduced by 6%%.",
-                        [3] = "While you have positive buff from your abilities all melee and range damage taken is reduced by 8%%.",
+                        [1] = "While you have a positive buff from your abilities all melee and range damage taken is reduced by 4%%.",
+                        [2] = "While you have a positive buff from your abilities all melee and range damage taken is reduced by 6%%.",
+                        [3] = "While you have a positive buff from your abilities all melee and range damage taken is reduced by 8%%.",
                     },
                     ["talent_momentum"] = {
                         name = "Momentum",
@@ -4429,9 +4507,9 @@ do
                     },
                     ["talent_herbs"] = {
                         name = "Herbs",
-                        [1] = "If barbarian doesn't take any damage on the 7 second duration, he begins to restore 1%% of health every 3 seconds.",
-                        [2] = "If barbarian doesn't take any damage on the 7 second duration, he begins to restore 2%% of health every 3 seconds.",
-                        [3] = "If barbarian doesn't take any damage on the 7 second duration, he begins to restore 3%% of health every 3 seconds.",
+                        [1] = "If barbarian doesn't take any damage over 7 seconds, he begins to restore 1%% of health every 3 seconds.",
+                        [2] = "If barbarian doesn't take any damage over 7 seconds, he begins to restore 2%% of health every 3 seconds.",
+                        [3] = "If barbarian doesn't take any damage over 7 seconds, he begins to restore 3%% of health every 3 seconds.",
                     },
                     ["talent_hard_training"] = {
                         name = "Hard training",
@@ -4452,14 +4530,14 @@ do
                     },
                     ["talent_bigger_they_are"] = {
                         name = "The bigger they are...",
-                        [1] = "Bosses and elite enemies take additional 6%% damage for you.",
-                        [2] = "Bosses and elite enemies take additional 10%% damage for you.",
+                        [1] = "Bosses and elite enemies take additional 6%% damage from you.",
+                        [2] = "Bosses and elite enemies take additional 10%% damage from you.",
                     },
                     ["talent_disorientation"] = {
                         name = "Disorientation",
-                        [1] = "Enemies that were stunned or pushed by you lose 7%% of attack, cast and moving speed for 6 seconds.",
-                        [2] = "Enemies that were stunned or pushed by you lose 15%% of attack, cast and moving speed for 6 seconds.",
-                        [3] = "Enemies that were stunned or pushed by you lose 21%% of attack, cast and moving speed for 6 seconds.",
+                        [1] = "Enemies that were stunned or pushed by you lose 7%% of attack, cast and move speed for 6 seconds.",
+                        [2] = "Enemies that were stunned or pushed by you lose 15%% of attack, cast and move speed for 6 seconds.",
+                        [3] = "Enemies that were stunned or pushed by you lose 21%% of attack, cast and move speed for 6 seconds.",
                     },
                     ["talent_opportunity"] = {
                         name = "Opportunity",
@@ -4489,8 +4567,8 @@ do
                     },
                     ["talent_fracture"] = {
                         name = "Fracture",
-                        [1] = "Your attacks can cause enemies to suffer 6%% of your phys. attack as damage every second for 3 seconds.",
-                        [2] = "Your attacks can cause enemies to suffer 12%% of your phys. attack as damage every second for 3 seconds.",
+                        [1] = "Your attacks can bleed enemies for 6%% of your phys. attack as damage every second over 3 seconds.",
+                        [2] = "Your attacks can bleed enemies for 12%% of your phys. attack as damage every second over 3 seconds.",
                     },
                     ["talent_anger_impulse"] = {
                         name = "Impulse of anger",
@@ -4500,8 +4578,8 @@ do
                     },
                     ["talent_adrenaline"] = {
                         name = "adrenaline",
-                        [1] = "Restoring 15%% of health in span of 5 seconds if your health drops to less than 50%%. Can happen once in 40 seconds.",
-                        [2] = "Restoring 25%% of health in span of 5 seconds if your health drops to less than 50%%. Can happen once in 40 seconds.",
+                        [1] = "Restoring 15%% of health over 5 seconds if your health drops to less than 50%%. Can happen once in 40 seconds.",
+                        [2] = "Restoring 25%% of health over 5 seconds if your health drops to less than 50%%. Can happen once in 40 seconds.",
                     },
                     ["talent_inevitability"] = {
                         name = "Inevitability",
@@ -4685,9 +4763,9 @@ do
                     },
                     ["talent_lesion"] = {
                         name = "lesion",
-                        [1] = "Poison critical strikes apply a 5%% weapon damage effect per sec. for 4 seconds.",
-                        [2] = "Poison critical strikes apply a 10%% weapon damage effect per sec. for 4 seconds.",
-                        [3] = "Poison critical strikes apply a 15%% weapon damage effect per sec. for 4 seconds.",
+                        [1] = "Poison critical strikes apply a 5%% weapon damage poisoning over 4 seconds.",
+                        [2] = "Poison critical strikes apply a 10%% weapon damage poisoning over 4 seconds.",
+                        [3] = "Poison critical strikes apply a 15%% weapon damage poisoning over 4 seconds.",
                     },
                     ["talent_ritual"] = {
                         name = "ritual",
@@ -4696,9 +4774,9 @@ do
                     },
                     ["talent_blood_pact"] = {
                         name = "blood pact",
-                        [1] = "Attack restores 6%% health once per 14 seconds.",
-                        [2] = "Attack restores 12%% health once per 14 seconds.",
-                        [3] = "Attack restores 18%% health once per 14 seconds.",
+                        [1] = "Attacks with a 18%% chance restore 6%% health once per 14 seconds.",
+                        [2] = "Attacks with a 18%% chance restore 12%% health once per 14 seconds.",
+                        [3] = "Attacks with a 18%% chance restore 18%% health once per 14 seconds.",
                     },
                     ["talent_abyss_awakens"] = {
                         name = "awakening of the abyss",

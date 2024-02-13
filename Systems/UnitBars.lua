@@ -66,7 +66,7 @@ do
         BlzFrameSetScale(bar, 0.65)
         BlzFrameSetSize(frame, 0.35, 0.08)
         BlzFrameSetScale(frame, 0.65)
-        RegisterConstructor(bar, 0.152, 0.018, 0.001)
+        --RegisterConstructor(bar, 0.152, 0.018, 0.001)
 
         TimerStart(CreateTimer(), 1., true, function()
             BlzFrameSetValue(bar, GetRandomInt(0, 100))
@@ -99,7 +99,7 @@ do
         BlzFrameSetScale(bar, 1.2)
         BlzFrameSetSize(frame, 0.35, 0.04)
         BlzFrameSetScale(frame, 1.2)
-        RegisterConstructor(bar, 0.132, 0.008, 0.001)
+        --RegisterConstructor(bar, 0.132, 0.008, 0.001)
 
         TimerStart(CreateTimer(), 1., true, function()
             BlzFrameSetValue(bar, GetRandomInt(0, 100))
@@ -133,7 +133,7 @@ do
         BlzFrameSetScale(bar, 1.3)
         BlzFrameSetSize(frame, 0.35, 0.046)
         BlzFrameSetScale(frame, 1.3)
-        RegisterConstructor(bar, 0.154, 0.018, 0.001)
+       --RegisterConstructor(bar, 0.154, 0.018, 0.001)
 
         TimerStart(CreateTimer(), 1., true, function()
             BlzFrameSetValue(bar, GetRandomInt(0, 100))
@@ -209,6 +209,12 @@ do
                 BlzFrameSetScale(BarFrames[player].elite.text, 2.73)
                 BlzFrameSetScale(BarFrames[player].boss.text, 2.95)
 
+                BarFrames[player].label = BlzCreateFrameByType("TEXT", "label", GAME_UI, "MyTextTemplateMedium", 1)
+                BlzFrameSetPoint(BarFrames[player].label, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPRIGHT, 0.01, 0.01)
+                BlzFrameSetSize(BarFrames[player].label, 0.25, 0.04)
+                BlzFrameSetVisible(BarFrames[player].label, false)
+                BlzFrameSetScale(BarFrames[player].label, 0.67)
+
                 EnableTrigger(BarFrames[player].trigger)
             end
         end
@@ -222,6 +228,12 @@ do
         BarFrames[player].common = CreateBar(BAR_TYPE_COMMON, player)
         BarFrames[player].common_adv = CreateBar(BAR_TYPE_COMMON_ADVANCED, player)
         BarFrames[player].boss = CreateBar(BAR_TYPE_BOSS, player)
+
+        BarFrames[player].label = BlzCreateFrameByType("TEXT", "label", GAME_UI, "MyTextTemplateMedium", 1)
+        BlzFrameSetPoint(BarFrames[player].label, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPRIGHT, 0.01, 0.01)
+        BlzFrameSetSize(BarFrames[player].label, 0.25, 0.04)
+        BlzFrameSetVisible(BarFrames[player].label, false)
+        BlzFrameSetScale(BarFrames[player].label, 0.67)
 
         BarFrames[player].boss_bar_state = false
 
@@ -252,9 +264,16 @@ do
                         BlzFrameSetVisible(BarFrames[player].common.bar, false)
                         BlzFrameSetVisible(BarFrames[player].common_adv.bar, false)
 
-                        if unit_data.classification == MONSTER_RANK_ADVANCED then proper_bar = BarFrames[player].elite
-                        elseif unit_data.traits then proper_bar = BarFrames[player].common_adv
-                        else proper_bar = BarFrames[player].common end
+                        if unit_data.classification == MONSTER_RANK_ADVANCED then
+                            proper_bar = BarFrames[player].elite
+                            BlzFrameSetSize(BarFrames[player].label, 0.5, 0.04)
+                        elseif unit_data.traits then
+                            proper_bar = BarFrames[player].common_adv
+                            BlzFrameSetSize(BarFrames[player].label, 0.4, 0.04)
+                        else
+                            proper_bar = BarFrames[player].common
+                            BlzFrameSetSize(BarFrames[player].label, 0.25, 0.04)
+                        end
 
                         if GetLocalPlayer() == actual_player then BlzFrameSetVisible(proper_bar.bar, true) end
                         BlzFrameSetValue(proper_bar.bar, math.floor((GetUnitState(mouse_focus, UNIT_STATE_LIFE) / BlzGetUnitMaxHP(mouse_focus) * 100.)) + 0.5)
@@ -265,6 +284,13 @@ do
                             BlzFrameSetText(proper_bar.text, GetUnitName(mouse_focus))
                         end
 
+                        if unit_data.labels then
+                            BlzFrameSetText(BarFrames[player].label, unit_data.labels)
+                            BlzFrameClearAllPoints(BarFrames[player].label)
+                            BlzFrameSetPoint(BarFrames[player].label, FRAMEPOINT_TOP, proper_bar.bar, FRAMEPOINT_BOTTOM, 0., -0.007)
+                            if GetLocalPlayer() == actual_player then BlzFrameSetVisible(BarFrames[player].label, true) end
+                        end
+
                     end
 
                 else
@@ -272,6 +298,7 @@ do
                     BlzFrameSetVisible(BarFrames[player].elite.bar, false)
                     BlzFrameSetVisible(BarFrames[player].common.bar, false)
                     BlzFrameSetVisible(BarFrames[player].common_adv.bar, false)
+                    BlzFrameSetVisible(BarFrames[player].label, false)
                 end
 
         end)

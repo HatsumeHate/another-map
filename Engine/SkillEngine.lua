@@ -634,7 +634,40 @@ do
                     end
                 end
 
+                if pack.on_target then
+                    for i = 1, #pack.on_target do
+                        local effect = pack.on_target[i]
+
+                        if not effect.conditional_weapon or HasConditionalWeapon(effect, unit_data.equip_point[WEAPON_POINT].SUBTYPE) then
+                            local casteffect = AddSpecialEffectTarget(effect.effect, target, effect.point or "chest")
+                            BlzSetSpecialEffectScale(casteffect, effect.scale or 1.)
+
+                            if effect.animation_time_influence then
+                                BlzSetSpecialEffectTimeScale(casteffect, (effect.timescale or 1.) * animation_timescale)
+                            else
+                                BlzSetSpecialEffectTimeScale(casteffect, effect.timescale or 1.)
+                            end
+
+                                if effect.duration and effect.duration > 0. then
+                                    local timer = CreateTimer()
+                                    TimerStart(timer, effect.duration, false, function()
+                                        DestroyEffect(casteffect)
+                                        DestroyTimer(timer)
+                                    end)
+                                elseif effect.permanent then
+                                    unit_data.cast_effect_permanent_pack[#unit_data.cast_effect_permanent_pack+1] = casteffect
+                                else
+                                    unit_data.cast_effect_pack[#unit_data.cast_effect_pack+1] = casteffect
+                                end
+
+                        end
+
+                    end
+                end
+
+
             if pack.on_terrain then
+
                 for i = 1, #pack.on_terrain do
                     local effect = pack.on_terrain[i]
 
@@ -655,13 +688,11 @@ do
                                 BlzSetSpecialEffectScale(casteffect, effect.scale or 1.)
                                 BlzSetSpecialEffectOrientation(casteffect, (effect.yaw or orientation * bj_DEGTORAD), 0., (effect.roll or 0.) * bj_DEGTORAD)
 
-
                                     if effect.animation_time_influence then
                                         BlzSetSpecialEffectTimeScale(casteffect, (effect.timescale or 1.) * animation_timescale)
                                     else
                                         BlzSetSpecialEffectTimeScale(casteffect, effect.timescale or 1.)
                                     end
-
 
                                     if effect.plane_offset then
                                         BlzSetSpecialEffectPosition(casteffect,
@@ -1341,7 +1372,7 @@ do
                     SafePauseUnit(unit_data.Owner, true)
                     SetUnitAnimationByIndex(unit_data.Owner, sequence.animation or 0)
 
-                    if skill.motion then
+                    if skill.motion and not IsUnitRooted(unit_data.Owner) then
                         if not unit_data.nudge_timer then unit_data.nudge_timer = CreateTimer() end
                         local angle
 

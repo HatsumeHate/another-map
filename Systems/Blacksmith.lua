@@ -12,6 +12,7 @@ do
     local BUTTON_RESOCKET = 3
     local BUTTON_SOCKET = 4
     local BUTTON_CREATE_SOCKET = 5
+    local BUTTON_REFORGE_ALL = 6
     BLACKSMITH_REFORGE = 1
     BLACKSMITH_RESOCKET = 2
     local REFORGE_COST_PER_LEVEL = 75
@@ -152,6 +153,36 @@ do
 
     end
 
+    function UpdateAllReforgeCostText(player)
+        local cost = 0
+        local unit_data = GetUnitData(PlayerHero[player])
+        local main_switch_data = GetButtonData(InventorySlots[player][43])
+        local alt_switch_data = GetButtonData(InventorySlots[player][44])
+
+            for point = 1, NECKLACE_POINT do
+                if unit_data.equip_point[point] and unit_data.equip_point[point].item then
+                    local item_data = GetItemData(unit_data.equip_point[point].item)
+
+                    if item_data.level < Current_Wave then cost = cost + ((Current_Wave - item_data.level) * REFORGE_COST_PER_LEVEL + REFORGE_COST_PER_LEVEL)
+                    else cost = cost + REFORGE_COST_PER_LEVEL end
+
+                end
+            end
+
+            if main_switch_data.item then
+                local item_data = GetItemData(main_switch_data.item)
+                if item_data.level < Current_Wave then cost = cost + ((Current_Wave - item_data.level) * REFORGE_COST_PER_LEVEL + REFORGE_COST_PER_LEVEL)
+                else cost = cost + REFORGE_COST_PER_LEVEL end
+            end
+
+            if alt_switch_data.item then
+                local item_data = GetItemData(alt_switch_data.item)
+                if item_data.level < Current_Wave then cost = cost + ((Current_Wave - item_data.level) * REFORGE_COST_PER_LEVEL + REFORGE_COST_PER_LEVEL)
+                else cost = cost + REFORGE_COST_PER_LEVEL end
+            end
+
+            BlzFrameSetText(BlacksmithFrame[player].reforge_all_button_tooltip.description, GetLocalString("Это будет стоить ", "It will cost ") .. cost)
+    end
 
     ---@param player number
     function UpdateBlacksmithWindow(player)
@@ -227,6 +258,8 @@ do
                 else
                     BlzFrameSetTexture(button.image, "GUI\\inventory_slot.blp", 0, true)
                 end
+
+                UpdateAllReforgeCostText(player)
 
         end
     end
@@ -328,6 +361,11 @@ do
                     BlacksmithFrame[player].socket_buttons[3] = NewButton(BUTTON_SOCKET, "GUI\\inventory_slot.blp", 0.04, 0.04, BlacksmithFrame[player].socket_buttons[2], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0075, 0., BlacksmithFrame[player].socket_item_slot)
                     BlacksmithFrame[player].socket_buttons[4] = NewButton(BUTTON_SOCKET, "GUI\\inventory_slot.blp", 0.04, 0.04, BlacksmithFrame[player].socket_buttons[3], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0075, 0., BlacksmithFrame[player].socket_item_slot)
 
+                    BlacksmithFrame[player].reforge_all_button = NewButton(BUTTON_REFORGE_ALL, "GUI\\BTNForge.blp", 0.04, 0.04, main_frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.018, -0.018, main_frame)
+                    BlacksmithFrame[player].reforge_all_button_tooltip = CreateTooltip("NAME", "DESC", BlacksmithFrame[player].reforge_all_button, 0.125, 0.06)
+                    BlzFrameSetText(BlacksmithFrame[player].reforge_all_button_tooltip.title, GetLocalString("Перековать все", "Reforge everything"))
+                    BlzFrameSetText(BlacksmithFrame[player].reforge_all_button_tooltip.description, GetLocalString("Это будет стоить ", "It will cost "))
+
 
                     BlacksmithFrame[player].socket_button_tooltips = {
                         CreateTooltip("NAME", "DESC", BlacksmithFrame[player].socket_buttons[1], 0.125, 0.06),
@@ -427,6 +465,11 @@ do
             BlacksmithFrame[player].socket_buttons[2] = NewButton(BUTTON_SOCKET, "GUI\\inventory_slot.blp", 0.04, 0.04, BlacksmithFrame[player].socket_buttons[1], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0075, 0., BlacksmithFrame[player].socket_item_slot)
             BlacksmithFrame[player].socket_buttons[3] = NewButton(BUTTON_SOCKET, "GUI\\inventory_slot.blp", 0.04, 0.04, BlacksmithFrame[player].socket_buttons[2], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0075, 0., BlacksmithFrame[player].socket_item_slot)
             BlacksmithFrame[player].socket_buttons[4] = NewButton(BUTTON_SOCKET, "GUI\\inventory_slot.blp", 0.04, 0.04, BlacksmithFrame[player].socket_buttons[3], FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.0075, 0., BlacksmithFrame[player].socket_item_slot)
+
+            BlacksmithFrame[player].reforge_all_button = NewButton(BUTTON_REFORGE_ALL, "GUI\\BTNForge.blp", 0.04, 0.04, main_frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.018, -0.018, main_frame)
+            BlacksmithFrame[player].reforge_all_button_tooltip = CreateTooltip("NAME", "DESC", BlacksmithFrame[player].reforge_all_button, 0.125, 0.06)
+            BlzFrameSetText(BlacksmithFrame[player].reforge_all_button_tooltip.title, GetLocalString("Перековать все", "Reforge everything"))
+            BlzFrameSetText(BlacksmithFrame[player].reforge_all_button_tooltip.description, GetLocalString("Это будет стоить ", "It will cost "))
 
 
             BlacksmithFrame[player].socket_button_tooltips = {
@@ -584,6 +627,88 @@ do
                         else
                             Feedback_CantUse(player)
                         end
+                elseif button.button_type == BUTTON_REFORGE_ALL then
+                    local unit_data = GetUnitData(PlayerHero[player])
+                    local gold = GetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD)
+                    local cost = 0
+                    local items = {}
+                    local main_switch_data = GetButtonData(InventorySlots[player][43])
+                    local alt_switch_data = GetButtonData(InventorySlots[player][44])
+
+                        if main_switch_data.item then items[NECKLACE_POINT+1] = main_switch_data.item end
+                        if alt_switch_data.item then items[NECKLACE_POINT+2] = alt_switch_data.item end
+
+                            for point = 1, NECKLACE_POINT do
+                                if unit_data.equip_point[point] and unit_data.equip_point[point].item then
+                                    items[point] = unit_data.equip_point[point].item
+                                    local item_data = GetItemData(unit_data.equip_point[point].item)
+
+                                        if item_data.level < Current_Wave then
+                                            cost = cost + ((Current_Wave - item_data.level) * REFORGE_COST_PER_LEVEL + REFORGE_COST_PER_LEVEL)
+                                        else
+                                            cost = cost + REFORGE_COST_PER_LEVEL
+                                        end
+
+                                else
+                                    items[point] = nil
+                                end
+                            end
+
+                            if items[NECKLACE_POINT+1] then
+                                local item_data = GetItemData(items[NECKLACE_POINT+1])
+                                if item_data.level < Current_Wave then cost = cost + ((Current_Wave - item_data.level) * REFORGE_COST_PER_LEVEL + REFORGE_COST_PER_LEVEL)
+                                else cost = cost + REFORGE_COST_PER_LEVEL end
+                            end
+
+                            if items[NECKLACE_POINT+2] then
+                                local item_data = GetItemData(items[NECKLACE_POINT+2])
+                                if item_data.level < Current_Wave then cost = cost + ((Current_Wave - item_data.level) * REFORGE_COST_PER_LEVEL + REFORGE_COST_PER_LEVEL)
+                                else cost = cost + REFORGE_COST_PER_LEVEL end
+                            end
+
+
+                        if cost == 0 then
+                            Feedback_CantUse(player)
+                            return
+                        end
+
+                        if gold >= cost then
+                            SetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD, gold - cost)
+
+                            local soundpack = {
+                                "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes3.wav",
+                                "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes4.wav",
+                                "Units\\Critters\\BloodElfPeasant\\BloodElfEngineerYes5.wav",
+                            }
+                            PlayLocalSound(soundpack[GetRandomInt(1, #soundpack)], player-1, 125)
+                            PlayLocalSound("Buildings\\Human\\Blacksmith\\BlacksmithWhat1.wav", player-1, 115)
+
+                            local effect = AddSpecialEffect("Effect\\ShrapnelExplosionCone.mdx", 14045., 4509.)
+                            BlzSetSpecialEffectZ(effect, GetZ(14045., 4509.) + 80.)
+                            DestroyEffect(effect)
+
+                            for point = 1, NECKLACE_POINT do
+                                if items[point] then
+                                    EquipItem(PlayerHero[player], items[point], false, point == OFFHAND_POINT)
+                                    GenerateItemLevel(items[point], Current_Wave)
+                                end
+                            end
+
+                            if items[NECKLACE_POINT+1] then GenerateItemLevel(items[NECKLACE_POINT+1], Current_Wave) end
+                            if items[NECKLACE_POINT+2] then GenerateItemLevel(items[NECKLACE_POINT+2], Current_Wave) end
+
+                            for point = 1, NECKLACE_POINT do
+                                if items[point] then
+                                    EquipItem(PlayerHero[player], items[point], true, point == OFFHAND_POINT)
+                                end
+                            end
+
+                            UpdateAllReforgeCostText(player)
+
+                        else
+                            Feedback_NoGold(player)
+                        end
+
 
                 elseif button.button_type == BUTTON_SOCKET then
                     local resocket_button = GetButtonData(BlacksmithFrame[player].socket_item_slot)

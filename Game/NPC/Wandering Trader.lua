@@ -15,12 +15,12 @@ do
             name = GetLocalString("Отдать припасы", "Give supplies"),
             id = "wand_supply_inter",
             feedback = function(clicked, clicking, player)
+                RemoveItemFromInventory(player, GetItemFromInventory(player, FourCC("I02T")))
+                LockInteractiveOptionIdPlayer(gg_unit_n01W_0111, "wand_supply_inter", player)
                 GiveGoldForPlayer(250, player)
                 GiveExpForPlayer(75, player)
                 PlayConversation("wand_supplies_convo", gg_unit_n01W_0111, player)
                 RemoveJournalEntry(player, "quest_anar_supplies")
-                RemoveItemFromInventory(player, GetItemFromInventory(player, FourCC("I02T")))
-                LockInteractiveOptionIdPlayer(gg_unit_n01W_0111, "wand_supply_inter", player)
             end }, 1)
         LockInteractiveOptionId(gg_unit_n01W_0111, "wand_supply_inter")
 

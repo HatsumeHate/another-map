@@ -120,7 +120,7 @@ do
 
         NewAuraTemplate({
             id = "monster_physical_aura",
-            name = "monster physical aura",
+            name = LOCALE_LIST[my_locale].MONSTER_TRAIR_AURA_PHYSICAL,
             max_level = 1,
             sfx_path = "Effect\\Providence Aura.mdx",
             sfx_point = "origin",
@@ -136,7 +136,7 @@ do
 
         NewAuraTemplate({
             id = "monster_primal_aura",
-            name = "monster primal aura",
+            name = LOCALE_LIST[my_locale].MONSTER_TRAIR_AURA_PRIMAL_ELEMENTS,
             max_level = 1,
             sfx_path = "Effect\\Providence Aura Red.mdx",
             sfx_point = "origin",
@@ -152,7 +152,7 @@ do
 
         NewAuraTemplate({
             id = "monster_shadow_aura",
-            name = "monster shadow aura",
+            name = LOCALE_LIST[my_locale].MONSTER_TRAIR_AURA_SHADOW,
             max_level = 1,
             sfx_path = "Effect\\Providence Aura Purple.mdx",
             sfx_point = "origin",
@@ -168,7 +168,7 @@ do
 
         NewAuraTemplate({
             id = "monster_universal_aura",
-            name = "monster universal aura",
+            name = LOCALE_LIST[my_locale].MONSTER_TRAIR_AURA_UNIVERSAL,
             max_level = 1,
             sfx_path = "Effect\\Providence Aura Green.mdx",
             sfx_point = "origin",
@@ -184,7 +184,7 @@ do
 
         NewAuraTemplate({
             id = "monster_sturdy_aura",
-            name = "monster str aura",
+            name = LOCALE_LIST[my_locale].MONSTER_TRAIR_AURA_STURDY,
             max_level = 1,
             sfx_path = "Effect\\Providence Aura Teal.mdx",
             sfx_point = "origin",

@@ -128,6 +128,14 @@ do
         local x = GetUnitX(unit); local y = GetUnitY(unit)
         local returning = false
 
+            DelayAction(0., function()
+                local data = GetUnitData(unit)
+                data.leash_range = leash_range
+                data.leash_x = x
+                data.leash_y = y
+            end)
+
+
             local timer = CreateTimer()
             TimerStart(timer, 3.25, true, function()
                 local state = GetUnitState(unit, UNIT_STATE_LIFE) > 0.045

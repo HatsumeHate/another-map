@@ -160,9 +160,14 @@ do
             icon = "Talents\\BTNFireSpell8.blp",
             instant_effects = {
                 [1] = function(unit, flag)
-                    if not flag then
+                    if flag then
+                        if GetUnitState(unit, UNIT_STATE_MANA) / BlzGetUnitMaxMana(unit) >= 0.6 then
+                            AddStatusBarState("talent_overflow", "Talents\\BTNFireSpell8.blp", POSITIVE_BUFF, GetPlayerId(GetOwningPlayer(unit))+1)
+                        end
+                    else
                         local unit_data = GetUnitData(unit)
                         unit_data.boost_overflow = nil
+                        RemoveStatusBarState("talent_overflow", GetPlayerId(GetOwningPlayer(unit))+1)
                     end
                 end
             },
@@ -179,6 +184,7 @@ do
                         local unit_data = GetUnitData(unit)
                         unit_data.heating_up_boost = nil
                         DestroyEffect(unit_data.heating_up_effect)
+                        RemoveStatusBarState("talent_heating_up", GetPlayerId(GetOwningPlayer(unit))+1)
                     end
                 end
             },
@@ -232,18 +238,23 @@ do
             instant_effects = {
                 [1] = function(unit, flag)
                     ModifyStat(unit, FIRE_BONUS, 7, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, BURNING_DAMAGE_BOOST, 5, STRAIGHT_BONUS, flag)
                 end,
                 [2] = function(unit, flag)
                     ModifyStat(unit, FIRE_BONUS, 14, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, BURNING_DAMAGE_BOOST, 10, STRAIGHT_BONUS, flag)
                 end,
                 [3] = function(unit, flag)
                     ModifyStat(unit, FIRE_BONUS, 21, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, BURNING_DAMAGE_BOOST, 15, STRAIGHT_BONUS, flag)
                 end,
                 [4] = function(unit, flag)
                     ModifyStat(unit, FIRE_BONUS, 28, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, BURNING_DAMAGE_BOOST, 20, STRAIGHT_BONUS, flag)
                 end,
                 [5] = function(unit, flag)
                     ModifyStat(unit, FIRE_BONUS, 35, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, BURNING_DAMAGE_BOOST, 25, STRAIGHT_BONUS, flag)
                 end,
                 cancel_last_level = true,
             },
@@ -309,6 +320,7 @@ do
                         unit_data.arc_discharge_boost = 0
                         DestroyEffect(unit_data.arc_discharge_boost_effect)
                         DestroyTimer(unit_data.arc_discharge_boost_timer)
+                        RemoveStatusBarState("talent_arc_discharge", GetPlayerId(GetOwningPlayer(unit))+1)
                     end
                 end,
                 [2] = function(unit, flag)
@@ -379,6 +391,25 @@ do
             max_level = 1,
             points_required = 6,
             requires = { "talent_induction", "talent_extra_charge" }
+        })
+
+        -- tier 5
+        NewTalentTemplate("talent_convulsions", {
+            icon = "Talents\\BTNFocusLightning.blp",
+            max_level = 3,
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, DAMAGE_TO_CC_ENEMIES, 7, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, DAMAGE_TO_CC_ENEMIES, 7, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, DAMAGE_TO_CC_ENEMIES, 7, STRAIGHT_BONUS, flag)
+                end,
+            },
+            points_required = 8,
+            requires = { "talent_shock", "talent_disintegration" }
         })
 
 
@@ -1334,6 +1365,7 @@ do
                         local unit_data = GetUnitData(unit)
                         unit_data.spirit_talent = nil
                         DestroyEffect(unit_data.spirit_sfx)
+                        RemoveStatusBarState("talent_spirit", GetPlayerId(GetOwningPlayer(unit))+1)
                         if unit_data.spirit then KillUnit(unit_data.spirit) end
                     end
                 end,
@@ -1342,6 +1374,7 @@ do
                         local unit_data = GetUnitData(unit)
                         unit_data.spirit_talent = nil
                         DestroyEffect(unit_data.spirit_sfx)
+                        RemoveStatusBarState("talent_spirit", GetPlayerId(GetOwningPlayer(unit))+1)
                         if unit_data.spirit then KillUnit(unit_data.spirit) end
                     end
                 end,
@@ -1350,6 +1383,7 @@ do
                         local unit_data = GetUnitData(unit)
                         unit_data.spirit_talent = nil
                         DestroyEffect(unit_data.spirit_sfx)
+                        RemoveStatusBarState("talent_spirit", GetPlayerId(GetOwningPlayer(unit))+1)
                         if unit_data.spirit then KillUnit(unit_data.spirit) end
                     end
                 end,
@@ -1760,7 +1794,8 @@ do
                     [1] = { "talent_flash", "talent_negative_charge", "talent_positive_charge", },
                     [2] = { "talent_lightning_rod", "talent_voltage", "talent_arc_discharge", },
                     [3] = { "talent_feedback", "talent_induction", "talent_extra_charge", },
-                    [4] = { "talent_shock", "talent_disintegration" }
+                    [4] = { "talent_shock", "talent_disintegration" },
+                    [5] = { "talent_convulsions" }
                 },
                 [SKILL_CATEGORY_ICE] = {
                     [1] = { "talent_remorseless", "talent_crystallization", "talent_ice_crust", },

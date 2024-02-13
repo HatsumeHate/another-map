@@ -92,7 +92,17 @@ do
 
 	MINION_POWER =  67
 
-	--start from 69
+	BLEEDING_DAMAGE_BOOST = 69
+	BLEEDING_DAMAGE_REDUCTION = 70
+
+	BURNING_DAMAGE_BOOST = 71
+	BURNING_DAMAGE_REDUCTION = 72
+
+	POISONING_DAMAGE_BOOST = 73
+	POISONING_DAMAGE_REDUCTION = 74
+
+	DECAYING_DAMAGE_BOOST = 75
+	DECAYING_DAMAGE_REDUCTION = 76
 
 	
 	-- attributes
@@ -576,13 +586,9 @@ do
 				if data.stats[ATTACK_SPEED].value > 0.1 then
 					BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 0)
 					BlzSetUnitAttackCooldown(data.Owner, data.stats[ATTACK_SPEED].value, 1)
-					--BlzSetUnitWeaponRealField(data.Owner, UNIT_WEAPON_RF_ATTACK_DAMAGE_POINT, 0, data.base_stats.damage_point * modificator)
-					--BlzSetUnitWeaponRealField(data.Owner, UNIT_WEAPON_RF_ATTACK_BACKSWING_POINT, 0, data.base_stats.backswing_point * modificator)
 				else
 					BlzSetUnitAttackCooldown(data.Owner, 0.1, 0)
 					BlzSetUnitAttackCooldown(data.Owner, 0.1, 1)
-					--BlzSetUnitWeaponRealField(data.Owner, UNIT_WEAPON_RF_ATTACK_DAMAGE_POINT, 0, data.base_stats.damage_point * 0.1)
-					--BlzSetUnitWeaponRealField(data.Owner, UNIT_WEAPON_RF_ATTACK_BACKSWING_POINT, 0, data.base_stats.backswing_point * 0.1)
 				end
 			end,
 
@@ -752,7 +758,7 @@ do
 
 			---@param data table
 			[HP_PER_KILL] = function(data)
-				data.stats[HP_PER_KILL].value =data.stats[HP_PER_KILL].bonus
+				data.stats[HP_PER_KILL].value = data.stats[HP_PER_KILL].bonus
 			end,
 
 			---@param data table
@@ -763,6 +769,46 @@ do
 			---@param data table
 			[MINION_POWER] = function(data)
 				data.stats[MINION_POWER].value = 1. + (data.stats[MINION_POWER].bonus / 100.)
+			end,
+
+			---@param data table
+			[BLEEDING_DAMAGE_BOOST] = function(data)
+				data.stats[BLEEDING_DAMAGE_BOOST].value = 1. + (data.stats[BLEEDING_DAMAGE_BOOST].bonus / 100.)
+			end,
+
+			---@param data table
+			[BLEEDING_DAMAGE_REDUCTION] = function(data)
+				data.stats[BLEEDING_DAMAGE_REDUCTION].value = 1. + (data.stats[BLEEDING_DAMAGE_REDUCTION].bonus / 100.)
+			end,
+
+			---@param data table
+			[BURNING_DAMAGE_BOOST] = function(data)
+				data.stats[BURNING_DAMAGE_BOOST].value = 1. + (data.stats[BURNING_DAMAGE_BOOST].bonus / 100.)
+			end,
+
+			---@param data table
+			[BURNING_DAMAGE_REDUCTION] = function(data)
+				data.stats[BURNING_DAMAGE_REDUCTION].value = 1. + (data.stats[BURNING_DAMAGE_REDUCTION].bonus / 100.)
+			end,
+
+			---@param data table
+			[POISONING_DAMAGE_BOOST] = function(data)
+				data.stats[POISONING_DAMAGE_BOOST].value = 1. + (data.stats[POISONING_DAMAGE_BOOST].bonus / 100.)
+			end,
+
+			---@param data table
+			[POISONING_DAMAGE_REDUCTION] = function(data)
+				data.stats[POISONING_DAMAGE_REDUCTION].value = 1. + (data.stats[POISONING_DAMAGE_REDUCTION].bonus / 100.)
+			end,
+
+			---@param data table
+			[DECAYING_DAMAGE_BOOST] = function(data)
+				data.stats[DECAYING_DAMAGE_BOOST].value = 1. + (data.stats[DECAYING_DAMAGE_BOOST].bonus / 100.)
+			end,
+
+			---@param data table
+			[DECAYING_DAMAGE_REDUCTION] = function(data)
+				data.stats[DECAYING_DAMAGE_REDUCTION].value = 1. + (data.stats[DECAYING_DAMAGE_REDUCTION].bonus / 100.)
 			end,
 		}
 
@@ -857,6 +903,18 @@ do
 			[MP_PER_KILL] = LOCALE_LIST[my_locale].MP_PER_KILL_PARAM,
 
 			[MINION_POWER] = LOCALE_LIST[my_locale].MINION_POWER_PARAM,
+
+			[BLEEDING_DAMAGE_BOOST] = LOCALE_LIST[my_locale].BLEEDING_DAMAGE_BOOST_PARAM,
+			[BLEEDING_DAMAGE_REDUCTION] = LOCALE_LIST[my_locale].BLEEDING_DAMAGE_REDUCTION_PARAM,
+
+			[BURNING_DAMAGE_BOOST] = LOCALE_LIST[my_locale].BURNING_DAMAGE_BOOST_PARAM,
+			[BURNING_DAMAGE_REDUCTION] = LOCALE_LIST[my_locale].BURNING_DAMAGE_REDUCTION_PARAM,
+
+			[POISONING_DAMAGE_BOOST] = LOCALE_LIST[my_locale].POISONING_DAMAGE_BOOST_PARAM,
+			[POISONING_DAMAGE_REDUCTION] = LOCALE_LIST[my_locale].POISONING_DAMAGE_REDUCTION_PARAM,
+
+			[DECAYING_DAMAGE_BOOST] = LOCALE_LIST[my_locale].DECAYING_DAMAGE_BOOST_PARAM,
+			[DECAYING_DAMAGE_REDUCTION] = LOCALE_LIST[my_locale].DECAYING_DAMAGE_REDUCTION_PARAM,
 		}
 
 

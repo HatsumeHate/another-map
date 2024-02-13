@@ -179,8 +179,12 @@ do
             BlzFrameSetVisible(JournalFrame[player].sprite, true)
             BlzFrameClearAllPoints(JournalFrame[player].sprite)
             BlzFrameSetPoint(JournalFrame[player].sprite, FRAMEPOINT_BOTTOMLEFT,button_data.border, FRAMEPOINT_BOTTOMLEFT, 0.028, 0.028)
-            JournalFrame[player].entry_in_focus = button_data.entry
-            JournalFrame[player].entry_in_focus_id = button_data.entry.id
+            JournalFrame[player].entry_in_focus = button_data.entry or nil
+
+            if JournalFrame[player].entry_in_focus then
+                JournalFrame[player].entry_in_focus_id = button_data.entry.id
+            end
+
 
                 if button_data.entry then
 
@@ -395,13 +399,13 @@ do
             end
         end
 
-        --local entry_list = JournalFrame[player].entries_list
+
         local max = #entry_list
 
         if max == 1 then
             return
         end
-        --GetRandomIntTableFast()
+
         local continue = true
         while continue do
             continue = false
@@ -425,8 +429,11 @@ do
     function RemoveJournalEntry(player, id)
         for i = 1, #JournalFrame[player].entries_list do
             if JournalFrame[player].entries_list[i] and JournalFrame[player].entries_list[i].id == id then
-                if JournalFrame[player].entry_in_focus and JournalFrame[player].entry_in_focus == JournalFrame[player].entries_list[i] then JournalFrame[player].entry_in_focus = nil end
-                --JournalFrame[player].entries_list[i] = nil
+
+                if JournalFrame[player].entry_in_focus and JournalFrame[player].entry_in_focus == JournalFrame[player].entries_list[i] then
+                    BlzFrameSetText(JournalFrame[player].entry_text_frame, "")
+                    JournalFrame[player].entry_in_focus = nil
+                end
                 table.remove(JournalFrame[player].entries_list, i)
                 SortEntries(player)
                 UpdateJournalWindow(player)

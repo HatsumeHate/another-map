@@ -48,7 +48,10 @@ do
             ResumeMusic()
         end
 
-        for i = 1, 6 do SavePlayerProgression(i) end
+        for i = 1, 6 do
+            UpdateBlacksmithWindow(i)
+            SavePlayerProgression(i)
+        end
 
     end
 
@@ -62,6 +65,9 @@ do
                 local item = CreateCustomItem(GetRandomGeneratedItemId(), 0., 0.)
                 local roll = GetRandomInt(1, 5)
                 local quality
+                local item_data = GetItemData(item)
+
+                    item_data.picked_up = true
 
                     if roll == 1 then quality = MAGIC_ITEM
                     elseif roll == 2 then quality = RARE_ITEM
@@ -85,16 +91,22 @@ do
             --print("clear ok")
             for i = 1, #item_pool do
                 local item = CreateCustomItem(GetGeneratedItemId(item_pool[i]), 0., 0.)
-                GenerateItemStats(item, Current_Wave, GetRandomInt(1, 5) == 1 and RARE_ITEM or COMMON_ITEM)
-                AddItemToShop(gg_unit_n000_0056, item, false)
+                local item_data = GetItemData(item)
+
+                    item_data.picked_up = true
+                    GenerateItemStats(item, Current_Wave, GetRandomInt(1, 5) == 1 and RARE_ITEM or COMMON_ITEM)
+                    AddItemToShop(gg_unit_n000_0056, item, false)
             end
             --print("smith A")
 
             local item_count = GetRandomInt(2, 5)
             for i = 1, item_count do
                 local item = CreateCustomItem(GetRandomGeneratedItemId(), 0., 0.)
-                GenerateItemStats(item, Current_Wave, GetRandomInt(1, 5) == 1 and RARE_ITEM or COMMON_ITEM)
-                AddItemToShop(gg_unit_n000_0056, item, false)
+                local item_data = GetItemData(item)
+
+                    item_data.picked_up = true
+                    GenerateItemStats(item, Current_Wave, GetRandomInt(1, 5) == 1 and RARE_ITEM or COMMON_ITEM)
+                    AddItemToShop(gg_unit_n000_0056, item, false)
             end
             --print("smith B")
             --print("smith done")
@@ -123,8 +135,11 @@ do
             local item_count = GetRandomInt(2, 6)
             for i = 1, item_count do
                 local item = CreateCustomItem(GetGeneratedItemId(item_pool[GetRandomInt(1, 4)]), 0., 0.)
-                GenerateItemStats(item, Current_Wave, GetRandomInt(1, 5) == 1 and RARE_ITEM or COMMON_ITEM)
-                AddItemToShop(gg_unit_n001_0055, item, false)
+                local item_data = GetItemData(item)
+
+                    item_data.picked_up = true
+                    GenerateItemStats(item, Current_Wave, GetRandomInt(1, 5) == 1 and RARE_ITEM or COMMON_ITEM)
+                    AddItemToShop(gg_unit_n001_0055, item, false)
             end
             --print("herb A")
 
@@ -155,7 +170,9 @@ do
                 local item = CreateCustomItem(GetRandomGeneratedItemId(), 0., 0., false)
                 local roll = GetRandomInt(1, 6)
                 local quality
+                local item_data = GetItemData(item)
 
+                    item_data.picked_up = true
 
                     if roll == 2 then quality = RARE_ITEM
                     else quality = COMMON_ITEM end
@@ -286,6 +303,7 @@ do
         RegisterTestCommand("run", function() AddWaveTimer(3.) end)
 
         RegisterTestCommand("lvl4", function() Current_Wave = 4 end)
+        RegisterTestCommand("extreme", function() Current_Wave = 48 end)
 
     end
 

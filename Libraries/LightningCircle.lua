@@ -6,16 +6,6 @@
 
 do
 
-    RegisterTestCommand("crl", function()
-        LightningCircleInit()
-        local circle = CircleFigure:new(GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), 300., 270., 16, "BLNL")
-        circle.angle = 270.
-        TimerStart(CreateTimer(), 0.025, true, function()
-            circle.angle = circle.angle + 24.45
-        end)
-    end)
-
-
     function LightningCircleInit()
        -- CircleFigureEdge = {}
         --CircleFigure = {}

@@ -9,20 +9,28 @@ do
     function StackHeatingUp(source)
         local unit_data = GetUnitData(source)
         local max_stacks = GetUnitTalentLevel(source, "talent_heating_up") == 1 and 5 or 3
+        local player = GetPlayerId(GetOwningPlayer(source))+1
 
-        if unit_data.heating_up_stacks and unit_data.heating_up_stacks < max_stacks then
-            unit_data.heating_up_stacks = unit_data.heating_up_stacks + 1
 
-            if unit_data.heating_up_stacks >= max_stacks then
-                unit_data.heating_up_boost = true
-                unit_data.heating_up_effect = AddSpecialEffectTarget("Effect\\heating_up.mdx", source, "origin")
+            if unit_data.heating_up_stacks and unit_data.heating_up_stacks < max_stacks then
+                unit_data.heating_up_stacks = unit_data.heating_up_stacks + 1
+
+                SetStatusBarValue("talent_heating_up", unit_data.heating_up_stacks, player)
+
+                    if unit_data.heating_up_stacks >= max_stacks then
+                        unit_data.heating_up_boost = true
+                        unit_data.heating_up_effect = AddSpecialEffectTarget("Effect\\heating_up.mdx", source, "origin")
+                    end
+
+            elseif unit_data.heating_up_boost then
+                unit_data.heating_up_boost = nil
+                DestroyEffect(unit_data.heating_up_effect)
+                RemoveStatusBarState("talent_heating_up", player)
+            else
+                AddStatusBarState("talent_heating_up", "Talents\\BTNFireSpell1.blp", POSITIVE_BUFF, player)
+                SetStatusBarValue("talent_heating_up", 1, player)
+                unit_data.heating_up_stacks = 1
             end
-        elseif unit_data.heating_up_boost then
-            unit_data.heating_up_boost = nil
-            DestroyEffect(unit_data.heating_up_effect)
-        else
-            unit_data.heating_up_stacks = 1
-        end
 
     end
 
@@ -275,6 +283,7 @@ do
                 DestroyEffect(unit_data.arc_discharge_boost_effect)
                 unit_data.arc_discharge_boost_effect = nil
                 unit_data.arc_discharge_boost_time = 2.
+                RemoveStatusBarState("talent_arc_discharge", GetPlayerId(GetOwningPlayer(source))+1)
             end
 
     end
@@ -289,6 +298,9 @@ do
                     if not unit_data.arc_discharge_boost_effect then
                         unit_data.arc_discharge_boost_effect = AddSpecialEffectTarget("Effect\\lightning_arc_discharge.mdx", source, "origin")
                     end
+
+                    AddStatusBarState("talent_arc_discharge", "Talents\\BTNLightningSpell14.blp", POSITIVE_BUFF, GetPlayerId(GetOwningPlayer(source))+1)
+                    SetStatusBarValue("talent_arc_discharge", unit_data.arc_discharge_boost, GetPlayerId(GetOwningPlayer(source))+1)
 
                     if unit_data.arc_discharge_boost == 1 then BlzPlaySpecialEffect(unit_data.arc_discharge_boost_effect, ANIM_TYPE_STAND)
                     elseif unit_data.arc_discharge_boost == 2 then BlzPlaySpecialEffect(unit_data.arc_discharge_boost_effect, ANIM_TYPE_SPELL)
@@ -324,6 +336,7 @@ do
                     DestroyEffect(unit_data.arc_discharge_boost_effect)
                     unit_data.arc_discharge_boost_effect = nil
                     unit_data.arc_discharge_boost = 0
+                    RemoveStatusBarState("talent_arc_discharge", GetPlayerId(GetOwningPlayer(source))+1)
                 end
 
                 ResumeTimer(GetExpiredTimer())
@@ -349,13 +362,15 @@ do
     function DisintegrationTalentEffect(source, target)
         local unit_data = GetUnitData(target)
 
-            if not unit_data.classification or unit_data.classification == MONSTER_RANK_COMMON then
+            if (not unit_data.classification or unit_data.classification == MONSTER_RANK_COMMON) and GetUnitLifePercent(target) < 50. then
                 if Chance(GetUnitParameterValue(source, CRIT_CHANCE) / 4.) then
+                    CreateHitnumberSpecial(math.floor(GetUnitState(target, UNIT_STATE_LIFE)), source, target, LIGHTNING_ATTRIBUTE, ATTACK_STATUS_USUAL)
+                    --CreateHitnumber(math.floor(GetUnitState(target, UNIT_STATE_LIFE)), source, target, ATTACK_STATUS_USUAL)
+                    --SetUnitExploded(target, true)
                     UnitDamageTarget(source, target, 999999999999., true, false, ATTACK_TYPE_NORMAL, nil, WEAPON_TYPE_WHOKNOWS)
-                    DestroyEffect(AddSpecialEffect("Effect\\disintegration.mdx", GetUnitX(source), GetUnitY(target)))
+                    DestroyEffect(AddSpecialEffect("Effect\\disintegration.mdx", GetUnitX(target), GetUnitY(target)))
                 end
             end
-
 
     end
 
@@ -414,7 +429,7 @@ do
         local unit_data = GetUnitData(target)
 
         for i = 1, #unit_data.buff_list do
-            if unit_data.buff_list[i].buff_type == NEGATIVE_BUFF and unit_data.buff_list[i].attribute == ICE_ATTRIBUTE then
+            if unit_data.buff_list[i].buff_type == NEGATIVE_BUFF and unit_data.buff_list[i].attribute and  unit_data.buff_list[i].attribute == ICE_ATTRIBUTE then
                 return true
             end
         end

@@ -34,6 +34,8 @@ do
             ShowUnit(PlayerHero[player], false)
             ShowQuestAlert(string.gsub(LOCALE_LIST[my_locale].PLAYER_LEFT, "#", PlayerNames[player]))
 
+            RemoveFromHeroPool(player)
+
                 if per_player > 0 then
                     for i = 1, 6 do
                         if PlayerHero[player] and not IsUnitHidden(PlayerHero[player]) then
@@ -84,40 +86,52 @@ do
             MAIN_MULTIBOARD = CreateMultiboard()
             MultiboardSetTitleText(MAIN_MULTIBOARD, LOCALE_LIST[my_locale].WAVE_INCOMING_TEXT)
             MultiboardSetItemsStyle(MAIN_MULTIBOARD, true, false)
-            MultiboardSetItemsWidth(MAIN_MULTIBOARD, 7. / 100.0)
-            MultiboardSetColumnCount(MAIN_MULTIBOARD, 2)
+            MultiboardSetItemsWidth(MAIN_MULTIBOARD, 0.048)
+            MultiboardSetColumnCount(MAIN_MULTIBOARD, 3)
             MultiboardSetRowCount(MAIN_MULTIBOARD, 8)
             MultiboardDisplay(MAIN_MULTIBOARD, true)
             MultiboardMinimize(MAIN_MULTIBOARD, true)
             MultiboardMinimize(MAIN_MULTIBOARD, false)
 
 
-            --local minimap = BlzGetOriginFrame(ORIGIN_FRAME_MINIMAP, 0)
             local multiboard = BlzGetFrameByName("Multiboard", 0)
             BlzFrameClearAllPoints(multiboard)
             BlzFrameSetPoint(multiboard, FRAMEPOINT_TOPLEFT, PlayerUI.minimap_border, FRAMEPOINT_TOPRIGHT, 0.014, 0.)
 
 
-            for i = 0, 4 do
-                MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1, i), "==================")
+            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 0), 0.07)
+            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 1), 0.1)
+
+            for i = 0, 2 do
+                MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1, i), "=========================")
+                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1, i), 0.07)
             end
+
+            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 2), 0.)
+            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1, 2), 0.)
 
             for i = 1, 6 do
                 if GetPlayerSlotState(Player(i-1)) == PLAYER_SLOT_STATE_PLAYING then
                     PlayerNames[i] = ParsePlayerName(GetPlayerName(Player(i-1)))
                     MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), PlayerColors[i] .. PlayerNames[i] .. "|r")
-                    --MultiboardSetItemWidth(MAIN_MULTIBOARD, 6.5 / 175.0)
                 end
             end
-            --MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 2, 0), )
+
+            for i = 1, 6 do
+                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), 0.07)
+                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 1), 0.014)
+                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 2), 0.03)
+            end
+
+
             local timer = CreateTimer()
             TimerStart(timer, 2.25, true, function()
                 for i = 1, 6 do
-                    MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 1), "|c00FFFF00"..GetPlayerState(Player(i-1), PLAYER_STATE_RESOURCE_GOLD).."|r")
+                    MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 2), "|c00FFFF00"..GetPlayerState(Player(i-1), PLAYER_STATE_RESOURCE_GOLD).."|r")
+                    if PlayerHero[i] then MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 1), GetHeroLevel(PlayerHero[i])) end
                 end
             end)
 
-            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 1), 8. / 100.0)
 
     end
 

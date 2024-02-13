@@ -68,17 +68,23 @@ do
     end
 
 
+    local CurrentPackNum = 1
 
 
     function MonsterWandering()
+        local i = CurrentPackNum
 
-        for i = 1, #MonsterPack do
+        CurrentPackNum = CurrentPackNum + 1
+        if CurrentPackNum > 18 then
+            CurrentPackNum = 1
+        end
+
 
             for index = BlzGroupGetSize(MonsterPack[i].group) - 1, 0, -1 do
                 local picked = BlzGroupUnitAt(MonsterPack[i].group, index)
                 local current_order = GetUnitCurrentOrder(picked)
 
-                    if current_order == 0 and Chance(12.) then
+                    if current_order == 0 and GetRandomInt(1, 5) == 1 then
                         local rect = MonsterPack[i].wander_region[GetRandomInt(1, #MonsterPack[i].wander_region)]
                         IssuePointOrderById(picked, order_attack, GetRandomRectX(rect), GetRandomRectY(rect))
                         rect = nil
@@ -119,7 +125,7 @@ do
 
                 end
             end
-        end
+
 
     end
 
@@ -165,7 +171,7 @@ do
             [2] = gg_rct_monster_pack_3_2,
             [3] = gg_rct_monster_pack_3_3
         }
-        MonsterPack[3].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_BEASTS, MONSTERPACK_DEMONS, MONSTERPACK_SATYRS, MONSTERPACK_BANDITS, MONSTERPACK_GNOLLS }
+        MonsterPack[3].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_BEASTS, MONSTERPACK_DEMONS, MONSTERPACK_SATYRS, MONSTERPACK_BANDITS, MONSTERPACK_GNOLLS, MONSTERPACK_ZOMBIES }
         MonsterPack[3].respawn = 380.
         MonsterPack[3].min = 3; MonsterPack[3].max = 5
         --##########################################################
@@ -175,7 +181,7 @@ do
         MonsterPack[4].wander_region = {
             [1] = gg_rct_monster_pack_4_1
         }
-        MonsterPack[4].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_BEASTS, MONSTERPACK_GNOLLS }
+        MonsterPack[4].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_BEASTS, MONSTERPACK_GNOLLS, MONSTERPACK_ZOMBIES }
         MonsterPack[4].respawn = 380.
         MonsterPack[4].min = 3; MonsterPack[4].max = 6
         --##########################################################
@@ -185,7 +191,7 @@ do
         MonsterPack[5].wander_region = {
             [1] = gg_rct_monster_pack_5_1
         }
-        MonsterPack[5].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM, MONSTERPACK_SATYRS, MONSTERPACK_GNOLLS }
+        MonsterPack[5].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM, MONSTERPACK_SATYRS, MONSTERPACK_GNOLLS, MONSTERPACK_ZOMBIES }
         MonsterPack[5].respawn = 445.
         MonsterPack[5].min = 7; MonsterPack[5].max = 15; MonsterPack[5].elite = 3
         --##########################################################
@@ -196,7 +202,7 @@ do
             [1] = gg_rct_monster_pack_6_1,
             [2] = gg_rct_monster_pack_6_2
         }
-        MonsterPack[6].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM, MONSTERPACK_GNOLLS }
+        MonsterPack[6].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM, MONSTERPACK_GNOLLS, MONSTERPACK_ZOMBIES }
         MonsterPack[6].respawn = 380.
         MonsterPack[6].min = 6; MonsterPack[6].max = 10; MonsterPack[6].elite = 3
         --##########################################################
@@ -219,7 +225,7 @@ do
             [1] = gg_rct_monster_pack_8_1,
             [2] = gg_rct_monster_pack_8_2
         }
-        MonsterPack[8].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM, MONSTERPACK_BEASTS, MONSTERPACK_GNOLLS }
+        MonsterPack[8].tags = { MONSTERPACK_GHOSTS, MONSTERPACK_SKELETONS, MONSTERPACK_DEMONS, MONSTERPACK_SUCCUBUS, MONSTERPACK_SWARM, MONSTERPACK_BEASTS, MONSTERPACK_GNOLLS, MONSTERPACK_ZOMBIES }
         MonsterPack[8].respawn = 445.
         MonsterPack[8].min = 7; MonsterPack[8].max = 15; MonsterPack[8].elite = 2
         --##########################################################
@@ -289,7 +295,7 @@ do
         MonsterPack[15] = {
             spawner = gg_rct_monster_pack_15_spawner,
             wander_region = { gg_rct_monster_pack_15_1 },
-            tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS, MONSTERPACK_GNOLLS },
+            tags = { MONSTERPACK_ARACHNIDS, MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS, MONSTERPACK_GNOLLS, MONSTERPACK_ZOMBIES },
             respawn = 440., min = 7, max = 12, elite = 2, initial_spawn_time = 16.
         }
         --##########################################################
@@ -311,7 +317,7 @@ do
         MonsterPack[18] = {
             spawner = gg_rct_monster_pack_18_spawner,
             wander_region = { gg_rct_monster_pack_18_1, gg_rct_monster_pack_18_2, gg_rct_monster_pack_18_3, gg_rct_monster_pack_18_4 },
-            tags = { MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS, MONSTERPACK_GNOLLS, MONSTERPACK_BANDITS, MONSTERPACK_SUCCUBUS },
+            tags = { MONSTERPACK_SPIDERS, MONSTERPACK_BEASTS, MONSTERPACK_SATYRS, MONSTERPACK_SWARM, MONSTERPACK_DEMONS, MONSTERPACK_GHOSTS, MONSTERPACK_GNOLLS, MONSTERPACK_BANDITS, MONSTERPACK_SUCCUBUS, MONSTERPACK_ZOMBIES },
             respawn = 440., min = 4, max = 6, elite = 2, initial_spawn_time = 30.
         }
         --##########################################################
@@ -373,7 +379,7 @@ do
             end
 
             local timer = CreateTimer()
-            TimerStart(timer, 2.25, true, MonsterWandering)
+            TimerStart(timer, 1., true, MonsterWandering)
         end)
 
         --print("bosses ok")
@@ -418,6 +424,7 @@ do
                 SetUnitState(PlayerHero[1], UNIT_STATE_LIFE, 3000000.)
                 SetUnitState(PlayerHero[1], UNIT_STATE_MANA, 3000000.)
             end)
+            ModifyStat(PlayerHero[1], HP_VALUE, 10000, STRAIGHT_BONUS, true)
         end)
 
         RegisterTestCommand("inspect", function()

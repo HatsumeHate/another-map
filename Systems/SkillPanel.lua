@@ -220,6 +220,7 @@ do
                 BlzFrameSetTexture(new_FrameBorder, "UI\\inventory_frame.blp", 0, true)
                 BlzFrameSetAllPoints(new_FrameBorder, new_FrameImage)
                 local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", new_FrameImage, "", 0)
+                local new_FrameChargesBorder = BlzCreateFrameByType("BACKDROP", "Border", new_FrameCharges, "", 0)
                 local sprite = CreateSpriteNoCollision("UI\\aganim_sprite.mdx", 0.65, new_Frame, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, -0.0048, -0.0048, new_Frame)
 
                 ButtonList[handle].sprite = sprite
@@ -234,6 +235,10 @@ do
                     BlzFrameSetTextAlignment(new_FrameText, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_MIDDLE)
                     BlzFrameSetPoint(new_FrameText, FRAMEPOINT_CENTER, new_FrameCharges, FRAMEPOINT_CENTER, 0., 0.)
                     BlzFrameSetScale(new_FrameText, 0.98)
+
+                    BlzFrameSetSize(new_FrameChargesBorder, 1., 1.)
+                    BlzFrameSetTexture(new_FrameChargesBorder, "UI\\inventory_frame.blp", 0, true)
+                    BlzFrameSetAllPoints(new_FrameChargesBorder, new_FrameCharges)
 
 
                     if button_type == KEY_Q then BlzFrameSetText(new_FrameText, "Q")

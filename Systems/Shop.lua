@@ -31,6 +31,15 @@ do
                                     if GetItemType(button.item) == ITEM_TYPE_CHARGED then
                                         BlzFrameSetVisible(button.charges_frame, true)
                                         BlzFrameSetText(button.charges_text_frame, I2S(R2I(GetItemCharges(button.item))))
+
+                                            if GetItemCharges(button.item) >= 10 and GetItemCharges(button.item) < 100 then
+                                                BlzFrameSetScale(button.charges_text_frame, 0.95)
+                                            elseif GetItemCharges(button.item) >= 100 and GetItemCharges(button.item) < 1000 then
+                                                BlzFrameSetScale(button.charges_text_frame, 0.65)
+                                            elseif GetItemCharges(button.item) >= 1000 then
+                                                BlzFrameSetScale(button.charges_text_frame, 0.5)
+                                            end
+
                                     else
                                         BlzFrameSetVisible(button.charges_frame, false)
                                         BlzFrameSetText(button.charges_text_frame, "")
@@ -160,6 +169,7 @@ do
         local new_Frame = BlzCreateFrame('ScriptDialogButton', parent_frame, 0, 0)
         local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
         local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", new_Frame, "", 0)
+        local new_FrameChargesBorder = BlzCreateFrameByType("BACKDROP", "Border", new_FrameCharges, "", 0)
         local new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
         local new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", new_FrameImage, "", 0)
 
@@ -188,6 +198,10 @@ do
         BlzFrameSetPoint(new_FrameChargesText, FRAMEPOINT_CENTER, new_FrameCharges, FRAMEPOINT_CENTER, 0.,0.)
         BlzFrameSetText(new_FrameChargesText, "")
         BlzFrameSetVisible(new_FrameCharges, false)
+
+        BlzFrameSetSize(new_FrameChargesBorder, 1., 1.)
+        BlzFrameSetTexture(new_FrameChargesBorder, "UI\\inventory_frame.blp", 0, true)
+        BlzFrameSetAllPoints(new_FrameChargesBorder, new_FrameCharges)
 
         BlzFrameSetSize(new_FrameBorder, size_x, size_y)
         BlzFrameSetTexture(new_FrameBorder, "UI\\inventory_frame.blp", 0, true)
@@ -279,13 +293,11 @@ do
             BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0.01, -0.05)
             BlzFrameSetSize(main_frame, 0.4, 0.28)
 
-
             new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMRIGHT, main_frame, FRAMEPOINT_BOTTOMRIGHT, -0.02, 0.02)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPRIGHT, main_frame, FRAMEPOINT_TOPRIGHT, -0.02, -0.07)
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, main_frame, FRAMEPOINT_TOPLEFT, 0.02, -0.07)
-            --BlzFrameSetSize(new_Frame, 0.4, 0.38)
             ShopFrame[player].inventory_border = new_Frame
 
                     ShopFrame[player].slot = {}

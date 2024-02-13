@@ -50,8 +50,8 @@ do
 
 			CreateShop(gg_unit_n020_0075, LOCALE_LIST[my_locale].LYNN_NAME, "ReplaceableTextures\\CommandButtons\\BTNSorceress.blp",
 					{
-						open = { "Units\\Human\\Sorceress\\SorceressWhat1.wav", "Units\\Human\\Sorceress\\SorceressWhat2.wav", "Units\\Human\\Sorceress\\SorceressWhat3.wav", "Units\\Human\\Sorceress\\SorceressWhat1.wav", "Units\\Human\\Sorceress\\SorceressWhat1.wav", },
-						close = { "Units\\Human\\Sorceress\\SorceressYes1.wav", "Units\\Human\\Sorceress\\SorceressYes3.wav", "Units\\Human\\Sorceress\\SorceressWhat5.wav", },
+						open = { "Units\\NightElf\\Shandris\\ShandrisWhat3.wav", "Units\\NightElf\\Shandris\\ShandrisPissed1.wav", "Units\\NightElf\\Shandris\\ShandrisWhat1.wav" },
+						close = { "Units\\NightElf\\Shandris\\ShandrisYes1.wav", "Units\\NightElf\\Shandris\\ShandrisYes2.wav", "Units\\NightElf\\Shandris\\ShandrisYes3.wav", },
 					}
 			)
 
@@ -176,7 +176,7 @@ do
 						local timer = CreateTimer()
 						TimerStart(timer, 5., false, function()
 							WavesInit()
-							AddWaveTimer(340.)
+							AddWaveTimer(120.)
 							NewQuest("Credits", "Thanks for the resources and help.", "ReplaceableTextures\\WorldEditUI\\Editor-MultipleUnits.blp", false, true, "cred")
 							AddQuestItem("cred",  "cred1",  "Hive:|nGeneral Frank, Mythic, Veronnis, JetFangInferno, Daelin, PeeKay(Novart), stonneash, PrinceYaser,",  false)
 							AddQuestItem("cred",  "cred2",  "The Panda, Tasyen, Spellbound, Crazy Russian, Judash137, Kenathorn, stan0033, morbent, Solu9, L_Lawliet",  false)
@@ -228,7 +228,7 @@ do
 						end
 
 				end)
-				
+
 				local trg = CreateTrigger()
 				TriggerRegisterPlayerEvent(trg, Player(0), EVENT_PLAYER_LEAVE)
 				TriggerRegisterPlayerEvent(trg, Player(1), EVENT_PLAYER_LEAVE)

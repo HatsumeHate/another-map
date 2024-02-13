@@ -517,11 +517,11 @@ do
                     "Got an unknown book? I can exchange it for the one that you can read"), duration = 2.85 },
         })
             AddInteractiveOption(unit_owner, { name = GetLocalString("Помощь?", "Help?"), id = "librarian_new_book", feedback = function(clicked, clicking, player)
+                LockInteractiveOptionIdPlayer(unit_owner, "librarian_new_book", player)
+                HideJournalEntry(player, "librarian_journal")
                 GiveGoldForPlayer(200, player)
                 GiveExpForPlayer(100, player)
                 PlayConversation("librarian_new_book_convo", unit_owner, player)
-                LockInteractiveOptionIdPlayer(unit_owner, "librarian_new_book", player)
-                HideJournalEntry(player, "librarian_journal")
             end })
             LockInteractiveOptionId(unit_owner, "librarian_new_book")
 

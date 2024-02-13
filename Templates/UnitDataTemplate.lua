@@ -223,7 +223,9 @@ do
             end
         end
 
-
+        if reference_data.teamcolour then
+            SetUnitColor(source, GetPlayerColor(Player(reference_data.teamcolour)))
+        end
 
         return data
     end
@@ -480,6 +482,7 @@ do
             hide_body = true
         })
 
+
         --==========================================================--
         -- summoned skeleton archer
         NewUnitTemplate('n027', {
@@ -506,7 +509,7 @@ do
             unit_trait = { TRAIT_UNDEAD },
             time_before_remove = 25.,
             base_stats = { health = 150., hp_regen = 0.26, moving_speed = 335 },
-            weapon = { ATTACK_SPEED = 1.86, DAMAGE = 11, CRIT_CHANCE = 15., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MNLH", angle_deviation = 3. },
+            weapon = { ATTACK_SPEED = 1.86, DAMAGE = 20, CRIT_CHANCE = 15., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MNLH", angle_deviation = 3. },
             has_mp = false,
             height = 165.,
             xp = 0,
@@ -565,7 +568,8 @@ do
             bonus_parameters = {
                 { param = PHYSICAL_DEFENCE, value = 250, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 250, method = STRAIGHT_BONUS },
-                { param = ALL_RESIST, value = 25, method = STRAIGHT_BONUS }
+                { param = ALL_RESIST, value = 25, method = STRAIGHT_BONUS },
+                { param = CONTROL_REDUCTION, value = 10000, method = STRAIGHT_BONUS }
             },
             --weapon = { ATTACK_SPEED = 1.4, DAMAGE = 5, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             has_mp = false,
@@ -644,22 +648,24 @@ do
             name = LOCALE_LIST[my_locale].MONSTER_NAME_ARMORED_SKELETON,
             proper_declension = DECL_HE,
             unit_class = NO_CLASS,
-            classification = MONSTER_RANK_COMMON,
+            classification = MONSTER_RANK_ADVANCED,
             unit_trait = { TRAIT_UNDEAD },
             --trait = TRAIT_UNDEAD,
             time_before_remove = 25.,
-            base_stats = { health = 220., hp_regen = 0.4, moving_speed = 255. },
-            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 4, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
+            base_stats = { health = 275., hp_regen = 0.4, moving_speed = 255. },
+            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 7, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
             offhand = { BLOCK = 25., BLOCK_RATE = 35. },
             effect_list = { "ECBG" },
             bonus_parameters = {
-                { param = PHYSICAL_DEFENCE, value = 70, method = STRAIGHT_BONUS }
+                { param = PHYSICAL_DEFENCE, value = 70, method = STRAIGHT_BONUS },
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
             scale = 1.2,
             has_mp = false,
             height = 140.,
             drop_offset_min = 15., drop_offset_max = 45.,
-            xp = 35,
+            xp = 45,
+            teamcolour = 10,
             hide_body = true
         })
 
@@ -678,11 +684,33 @@ do
                 { param = MELEE_DAMAGE_REDUCTION, value = 11, method = STRAIGHT_BONUS }
             },
             colours = { r = 255, g = 150, b = 150 },
-            scale = 1.15,
+            scale = 1.45,
             height = 120.,
             drop_offset_min = 15., drop_offset_max = 45.,
             has_mp = false,
             xp = 20,
+        })
+
+        -- black death
+        NewUnitTemplate('n02P', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ZOMBIE_BLACK_DEATH,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_UNDEAD },
+            time_before_remove = 25.,
+            base_stats = { health = 456., hp_regen = 0.7, moving_speed = 170. },
+            weapon = { ATTACK_SPEED = 2.35, DAMAGE = 6, CRIT_CHANCE = 5., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
+            bonus_parameters = {
+                { param = MAGICAL_SUPPRESSION, value = 75, method = STRAIGHT_BONUS }
+            },
+            effect_list = { "black_death_effect" },
+            colours = { r = 255, g = 255, b = 0 },
+            scale = 1.45,
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            has_mp = false,
+            xp = 27,
         })
 
         -- zombie of nightmare
@@ -701,7 +729,7 @@ do
                 { param = ALL_RESIST, value = 6, method = STRAIGHT_BONUS }
             },
             colours = { r = 255, g = 150, b = 150 },
-            scale = 1.15,
+            scale = 1.45,
             height = 120.,
             drop_offset_min = 15., drop_offset_max = 45.,
             has_mp = false,
@@ -724,7 +752,11 @@ do
             height = 120.,
             drop_offset_min = 15., drop_offset_max = 45.,
             has_mp = false,
+            bonus_parameters = {
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
+            },
             xp = 25,
+            teamcolour = 24,
             hide_body = true
         })
         --==========================================================--
@@ -743,6 +775,9 @@ do
             effect_list = { "ECBG" },
             has_mp = false,
             drop_offset_min = 15., drop_offset_max = 45.,
+            bonus_parameters = {
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
+            },
             height = 120.,
             xp = 27,
             hide_body = true
@@ -762,7 +797,11 @@ do
             has_mp = false,
             height = 125.,
             drop_offset_min = 15., drop_offset_max = 45.,
+            bonus_parameters = {
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
+            },
             xp = 30,
+            teamcolour = 8,
             hide_body = true
         })
         --==========================================================--
@@ -773,12 +812,14 @@ do
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
             unit_trait = { TRAIT_UNDEAD },
-            --trait = TRAIT_UNDEAD,
             time_before_remove = 25.,
             base_stats = { health = 157., hp_regen = 0.44, moving_speed = 240. },
             weapon = { ATTACK_SPEED = 2.3, DAMAGE = 6, CRIT_CHANCE = 16., missile = "MSKA", angle_deviation = 5. },
             has_mp = false,
             height = 125.,
+            bonus_parameters = {
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
+            },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 35,
             hide_body = true
@@ -791,18 +832,115 @@ do
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
             unit_trait = { TRAIT_UNDEAD },
-            --trait = TRAIT_UNDEAD,
             time_before_remove = 25.,
             base_stats = { health = 140., hp_regen = 0.4, moving_speed = 240. },
-            weapon = { ATTACK_SPEED = 1.95, DAMAGE = 5, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSKM", angle_deviation = 5. },
+            weapon = { ATTACK_SPEED = 2.15, DAMAGE = 5, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSKM", angle_deviation = 5. },
             bonus_parameters = {
-                { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS }
+                { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS },
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
             skill_list = { "ASKC" },
             has_mp = false,
             height = 145.,
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 35,
+            teamcolour = 24,
+            hide_body = true
+        })
+        --==========================================================--
+        -- lightning skeleton mage
+        NewUnitTemplate('u014', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SKELETON_MAGE,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_UNDEAD },
+            time_before_remove = 25.,
+            base_stats = { health = 140., hp_regen = 0.4, moving_speed = 240. },
+            weapon = { ATTACK_SPEED = 2.5, DAMAGE = 6, CRIT_CHANCE = 14., ranged = true,
+                       LIGHTNING = { id = "RENL", fade = 0.65, bonus_z = 100., range = 45., angle = 50. },
+                       sound = { pack = { "Sounds\\Monsters\\castelectric.wav" }, volume = 128, cutoff = 1600. },
+                       ATTRIBUTE = LIGHTNING_ATTRIBUTE, ATTRIBUTE_BONUS = 7, DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL  },
+            bonus_parameters = {
+                { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 25, method = STRAIGHT_BONUS },
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
+            },
+            has_mp = false,
+            height = 145.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 35,
+            teamcolour = 24,
+            hide_body = true
+        })
+        --==========================================================--
+        -- cold skeleton mage
+        NewUnitTemplate('u015', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SKELETON_MAGE,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_UNDEAD },
+            time_before_remove = 25.,
+            base_stats = { health = 140., hp_regen = 0.4, moving_speed = 240. },
+            weapon = { ATTACK_SPEED = 2.17, DAMAGE = 5, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "missile_skeletal_mage_cold", angle_deviation = 5.,
+                       sound = { pack = { "Sounds\\Monsters\\castice.wav" }, volume = 128, cutoff = 1600. }, },
+            bonus_parameters = {
+                { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS },
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
+            },
+            has_mp = false,
+            height = 145.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 35,
+            teamcolour = 24,
+            hide_body = true
+        })
+        --==========================================================--
+        -- fire skeleton mage
+        NewUnitTemplate('u016', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SKELETON_MAGE,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_UNDEAD },
+            time_before_remove = 25.,
+            base_stats = { health = 140., hp_regen = 0.4, moving_speed = 240. },
+            weapon = { ATTACK_SPEED = 2.25, DAMAGE = 6, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "missile_skeletal_mage_fire", angle_deviation = 5.,
+                sound = { pack = { "Sounds\\Monsters\\firemage.wav" }, volume = 128, cutoff = 1600. },},
+            bonus_parameters = {
+                { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 25, method = STRAIGHT_BONUS },
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
+            },
+            has_mp = false,
+            height = 145.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 35,
+            teamcolour = 24,
+            hide_body = true
+        })
+        --==========================================================--
+        -- nightmare skeleton mage
+        NewUnitTemplate('u017', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SKELETON_MAGE,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_UNDEAD },
+            time_before_remove = 25.,
+            base_stats = { health = 175., hp_regen = 0.4, moving_speed = 240. },
+            weapon = { ATTACK_SPEED = 2., DAMAGE = 8, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSKM", angle_deviation = 5. },
+            bonus_parameters = {
+                { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS },
+                { param = ALL_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
+            },
+            has_mp = false,
+            height = 145.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 45,
             hide_body = true
         })
         --==========================================================--
@@ -813,18 +951,19 @@ do
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
             unit_trait = { TRAIT_UNDEAD },
-            --trait = TRAIT_UNDEAD,
             time_before_remove = 25.,
             base_stats = { health = 200., hp_regen = 0.4, moving_speed = 250. },
             weapon = { ATTACK_SPEED = 1.65, DAMAGE = 6, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             bonus_parameters = {
-                { param = PHYSICAL_DEFENCE, value = 50, method = STRAIGHT_BONUS }
+                { param = PHYSICAL_DEFENCE, value = 50, method = STRAIGHT_BONUS },
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
             scale = 1.1,
             height = 135.,
             drop_offset_min = 15., drop_offset_max = 45.,
             has_mp = false,
             xp = 35,
+            teamcolour = 24,
             hide_body = true
         })
         --==========================================================--
@@ -835,7 +974,6 @@ do
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
             unit_trait = { TRAIT_HUMAN },
-            --trait = TRAIT_HUMAN,
             time_before_remove = 25.,
             base_stats = { health = 215., hp_regen = 0.4, moving_speed = 245. },
             weapon = { ATTACK_SPEED = 2.2, DAMAGE = 5, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MNCR", angle_deviation = 5. },
@@ -843,6 +981,7 @@ do
             has_mp = false,
             drop_offset_min = 15., drop_offset_max = 45.,
             height = 125.,
+            teamcolour = 24,
             xp = 45,
         })
         --==========================================================--
@@ -875,7 +1014,6 @@ do
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
             unit_trait = { TRAIT_HUMAN, TRAIT_UNDEAD },
-            --trait = TRAIT_UNDEAD,
             time_before_remove = 25.,
             base_stats = { health = 235., hp_regen = 0.43, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 2.15, DAMAGE = 6, CRIT_CHANCE = 16., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MSSM", angle_deviation = 4. },
@@ -893,7 +1031,6 @@ do
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
             unit_trait = { TRAIT_DEMON },
-            --trait = TRAIT_DEMON,
             time_before_remove = 25.,
             base_stats = { health = 170., hp_regen = 0.4, moving_speed = 277. },
             weapon = { ATTACK_SPEED = 1.53, DAMAGE = 6, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 5 },
@@ -916,7 +1053,6 @@ do
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
             unit_trait = { TRAIT_DEMON },
-            --trait = TRAIT_DEMON,
             time_before_remove = 25.,
             base_stats = { health = 220., hp_regen = 0.47, moving_speed = 277. },
             weapon = { ATTACK_SPEED = 1.37, DAMAGE = 8, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 5 },
@@ -938,19 +1074,22 @@ do
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
             unit_trait = { TRAIT_UNDEAD },
-            --trait = TRAIT_UNDEAD,
             time_before_remove = 25.,
             base_stats = { health = 190., hp_regen = 0.4, moving_speed = 270. },
             weapon = { ATTACK_SPEED = 1.97, DAMAGE = 5, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MBNS", angle_deviation = 6. },
             bonus_parameters = {
                 { param = MELEE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS },
-                { param = RANGE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS }
+                { param = RANGE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
             effect_list = { "EHOR" },
             height = 140.,
             has_mp = false,
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 35,
+            teamcolour = 8,
             hide_body = true,
         })
         --==========================================================--
@@ -961,13 +1100,15 @@ do
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
             unit_trait = { TRAIT_UNDEAD },
-            --trait = TRAIT_UNDEAD,
             time_before_remove = 25.,
             base_stats = { health = 210., hp_regen = 0.4, moving_speed = 276. },
             weapon = { ATTACK_SPEED = 1.93, DAMAGE = 6, CRIT_CHANCE = 22., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 11, missile = "MBON", angle_deviation = 5. },
             bonus_parameters = {
                 { param = MELEE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS },
-                { param = RANGE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS }
+                { param = RANGE_DAMAGE_REDUCTION, value = 8, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
             height = 140.,
             has_mp = false,
@@ -983,7 +1124,6 @@ do
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
             unit_trait = { TRAIT_DEMON },
-            --trait = TRAIT_DEMON,
             time_before_remove = 25.,
             base_stats = { health = 227., hp_regen = 0.55, moving_speed = 265. },
             weapon = { ATTACK_SPEED = 2.33, DAMAGE = 6, CRIT_CHANCE = 10., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSCB", angle_deviation = 5. },
@@ -991,6 +1131,7 @@ do
             scale = 1.2,
             height = 140.,
             drop_offset_min = 15., drop_offset_max = 55.,
+            teamcolour = 9,
             xp = 36,
         })
         --==========================================================--
@@ -1001,14 +1142,20 @@ do
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
             unit_trait = { TRAIT_DEMON },
-            --trait = TRAIT_DEMON,
             time_before_remove = 25.,
             base_stats = { health = 205., hp_regen = 0.52, moving_speed = 285. },
             weapon = { ATTACK_SPEED = 2.44, DAMAGE = 9, CRIT_CHANCE = 12., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 12, missile = "MSCB", angle_deviation = 4. },
             has_mp = false,
             scale = 1.18,
             height = 130.,
+            bonus_parameters = {
+                { param = FIRE_RESIST, value = 20, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 10, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 10, method = STRAIGHT_BONUS },
+            },
+            skill_list = { "A021", "A01Z" },
             drop_offset_min = 15., drop_offset_max = 55.,
+            teamcolour = 12,
             xp = 36,
         })
         --==========================================================--
@@ -1019,13 +1166,14 @@ do
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_COMMON,
             unit_trait = { TRAIT_DEMON },
-            --trait = TRAIT_DEMON,
             time_before_remove = 25.,
             base_stats = { health = 210., hp_regen = 0.6, moving_speed = 265. },
             weapon = { ATTACK_SPEED = 1.65, DAMAGE = 5, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
             has_mp = false,
             height = 130.,
+            on_attack_sound = { pack = { "Sounds\\Monsters\\monster_succubus_attack1.wav", "Sounds\\Monsters\\monster_succubus_attack2.wav", "Sounds\\Monsters\\monster_succubus_attack3.wav", "Sounds\\Monsters\\monster_succubus_attack4.wav", "Sounds\\Monsters\\monster_succubus_attack5.wav" }, volume = 128, cutoff = 1700., chance = 26. },
             drop_offset_min = 15., drop_offset_max = 50.,
+            teamcolour = 23,
             xp = 30,
         })
         --==========================================================--
@@ -1036,14 +1184,21 @@ do
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
             unit_trait = { TRAIT_DEMON },
-            --trait = TRAIT_DEMON,
             time_before_remove = 25.,
             base_stats = { health = 253., hp_regen = 0.65, moving_speed = 265. },
             weapon = { ATTACK_SPEED = 1.61, DAMAGE = 7, CRIT_CHANCE = 11., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
+            bonus_parameters = {
+                { param = POISON_RESIST, value = 20, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 10, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 10, method = STRAIGHT_BONUS },
+            },
             has_mp = false,
             scale = 1.18,
             height = 130.,
+            on_attack_sound = { pack = { "Sounds\\Monsters\\monster_succubus_attack1.wav", "Sounds\\Monsters\\monster_succubus_attack2.wav", "Sounds\\Monsters\\monster_succubus_attack3.wav", "Sounds\\Monsters\\monster_succubus_attack4.wav", "Sounds\\Monsters\\monster_succubus_attack5.wav" }, volume = 128, cutoff = 1700., chance = 26. },
             drop_offset_min = 15., drop_offset_max = 55.,
+            teamcolour = 12,
             xp = 39,
         })
         --==========================================================--
@@ -1120,21 +1275,58 @@ do
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
             unit_trait = { TRAIT_UNDEAD },
-            --trait = TRAIT_UNDEAD,
             time_before_remove = 25.,
             base_stats = { health = 213., hp_regen = 0.4, moving_speed = 260. },
             weapon = { ATTACK_SPEED = 2.1, DAMAGE = 8, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MGHO", angle_deviation = 4. },
             bonus_parameters = {
                 { param = MELEE_DAMAGE_REDUCTION, value = 15, method = STRAIGHT_BONUS },
                 { param = RANGE_DAMAGE_REDUCTION, value = 15, method = STRAIGHT_BONUS },
-                { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS }
+                { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_RESIST, value = 20, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
+                { param = DODGE_CHANCE, value = 7, method = STRAIGHT_BONUS },
             },
             skill_list = { "AFRD" },
             scale = 1.4,
             has_mp = false,
             height = 140.,
             drop_offset_min = 15., drop_offset_max = 45.,
-            xp = 35,
+            xp = 40,
+            hide_body = true,
+        })
+        --==========================================================--
+        -- phantom
+        NewUnitTemplate('n02R', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_PHANTOM,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_UNDEAD },
+            time_before_remove = 25.,
+            base_stats = { health = 166., hp_regen = 0.4, moving_speed = 310. },
+            weapon = { ATTACK_SPEED = 2.15, DAMAGE = 6, CRIT_CHANCE = 15., ranged = true,
+                       LIGHTNING = { id = "WHNL", fade = 0.65, bonus_z = 95. },
+                       sound = { pack = { "Sounds\\Spells\\lightning_launch_1.wav", "Sounds\\Spells\\lightning_launch_2.wav", "Sounds\\Spells\\lightning_launch_3.wav" }, volume = 120, cutoff = 1600. },
+                       ATTRIBUTE = LIGHTNING_ATTRIBUTE, ATTRIBUTE_BONUS = 10, DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL },
+            bonus_parameters = {
+                { param = MELEE_DAMAGE_REDUCTION, value = 12, method = STRAIGHT_BONUS },
+                { param = RANGE_DAMAGE_REDUCTION, value = 12, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_RESIST, value = 20, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 20, method = STRAIGHT_BONUS },
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 75, method = STRAIGHT_BONUS },
+                { param = POISONING_DAMAGE_REDUCTION, value = 75, method = STRAIGHT_BONUS },
+                { param = DODGE_CHANCE, value = 7, method = STRAIGHT_BONUS },
+            },
+            scale = 1.4,
+            has_mp = false,
+            height = 100.,
+            teamcolour = 21,
+            skill_list = {"APNV"},
+            on_attack_sound = { pack = { "Sounds\\Monsters\\wisp_attack1.wav", "Sounds\\Monsters\\wisp_attack2.wav", "Sounds\\Monsters\\wisp_attack3.wav", "Sounds\\Monsters\\wisp_attack4.wav" }, volume = 128, cutoff = 1600., chance = 28. },
+            death_sound = { pack = { "Sounds\\Monsters\\wisp_death1.wav", "Sounds\\Monsters\\wisp_death2.wav", "Sounds\\Monsters\\wisp_death3.wav", "Sounds\\Monsters\\wisp_death4.wav"}, volume = 128, cutoff = 1600. },
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 28,
             hide_body = true,
         })
         --==========================================================--
@@ -1291,6 +1483,7 @@ do
             },
             has_mp = false,
             height = 180.,
+            teamcolour = 24,
             drop_offset_min = 45., drop_offset_max = 85.,
             xp = 79,
         })
@@ -1316,8 +1509,7 @@ do
             drop_offset_min = 45., drop_offset_max = 85.,
             xp = 55,
         })
-        --n02N
-
+        --==========================================================--
         -- insect
         NewUnitTemplate('n023', {
             name = LOCALE_LIST[my_locale].MONSTER_NAME_INSECT,
@@ -1327,13 +1519,16 @@ do
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 25.,
             base_stats = { health = 120., hp_regen = 0.3, moving_speed = 288. },
-            weapon = { ATTACK_SPEED = 1.41, DAMAGE = 5, CRIT_CHANCE = 16., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
+            weapon = { ATTACK_SPEED = 1.41, DAMAGE = 5, CRIT_CHANCE = 16., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH, sound = { pack = { "Sounds\\Monsters\\beetle_attack1.wav", "Sounds\\Monsters\\beetle_attack2.wav", "Sounds\\Monsters\\beetle_attack3.wav", "Sounds\\Monsters\\beetle_attack4.wav" }, volume = 128, cutoff = 1600. }, },
             bonus_parameters = {
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = 25, method = STRAIGHT_BONUS },
             },
             scale = 0.6,
             has_mp = false,
             height = 160.,
+            death_sound = { pack = { "Sounds\\Monsters\\beetle_death1.wav", "Sounds\\Monsters\\beetle_death2.wav", "Sounds\\Monsters\\beetle_death3.wav", "Sounds\\Monsters\\beetle_death4.wav" }, volume = 128, cutoff = 1600. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 27,
         })
@@ -1455,7 +1650,6 @@ do
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
             unit_trait = { TRAIT_DEMON },
-            --trait = TRAIT_DEMON,
             time_before_remove = 25.,
             base_stats = { health = 200., hp_regen = 0.2, moving_speed = 245. },
             weapon = { ATTACK_SPEED = 1.55, DAMAGE = 7, CRIT_CHANCE = 14., ranged = true,
@@ -1486,7 +1680,8 @@ do
             base_stats = { health = 200., hp_regen = 0.4, moving_speed = 230. },
             weapon = { ATTACK_SPEED = 2.11, DAMAGE = 6, CRIT_CHANCE = 11., ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MSKH", angle_deviation = 4. },
             bonus_parameters = {
-                { param = FIRE_RESIST, value = 15, method = STRAIGHT_BONUS }
+                { param = FIRE_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
             has_mp = false,
             height = 155.,
@@ -1506,7 +1701,8 @@ do
             base_stats = { health = 240., hp_regen = 0.4, moving_speed = 230. },
             weapon = { ATTACK_SPEED = 2.16, DAMAGE = 7, CRIT_CHANCE = 11., ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MSKF", angle_deviation = 4. },
             bonus_parameters = {
-                { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS }
+                { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
             has_mp = false,
             height = 155.,
@@ -1532,6 +1728,7 @@ do
             has_mp = false,
             height = 180.,
             drop_offset_min = 20., drop_offset_max = 65.,
+            teamcolour = 10,
             xp = 37,
         })
         --==========================================================--
@@ -1545,10 +1742,19 @@ do
             time_before_remove = 25.,
             base_stats = { health = 310., hp_regen = 1.7, moving_speed = 260. },
             weapon = { ATTACK_SPEED = 1.5, DAMAGE = 12, CRIT_CHANCE = 14., WEAPON_SOUND = WEAPON_TYPE_METAL_LIGHT_SLICE },
+            bonus_parameters = {
+                { param = LIGHTNING_RESIST, value = 25, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = DARKNESS_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 5, method = STRAIGHT_BONUS },
+            },
             has_mp = false,
             scale = 0.9,
             height = 135.,
+            skill_list = { "A022", "A01Y", "A023" },
             drop_offset_min = 20., drop_offset_max = 55.,
+            on_attack_sound = { pack = { "Sounds\\Monsters\\demon_assassin_attack1.wav", "Sounds\\Monsters\\demon_assassin_attack2.wav", "Sounds\\Monsters\\demon_assassin_attack3.wav", "Sounds\\Monsters\\demon_assassin_attack4.wav", "Sounds\\Monsters\\demon_assassin_attack5.wav", "Sounds\\Monsters\\demon_assassin_attack6.wav" }, volume = 128, cutoff = 1600., chance = 28. },
+            death_sound = { pack = { "Sounds\\Monsters\\demon_assassin_die1.wav", "Sounds\\Monsters\\demon_assassin_die2.wav", "Sounds\\Monsters\\demon_assassin_die3.wav", "Sounds\\Monsters\\demon_assassin_die4.wav", "Sounds\\Monsters\\demon_assassin_die5.wav" }, volume = 128, cutoff = 1600. },
             xp = 40,
         })
 
@@ -1571,6 +1777,8 @@ do
             height = 170.,
             drop_offset_min = 20., drop_offset_max = 60.,
             xp = 40,
+            teamcolour = 5,
+            hide_body = true
         })
 
         -- hells guardian
@@ -1636,6 +1844,7 @@ do
             has_mp = false,
             height = 120.,
             drop_offset_min = 15., drop_offset_max = 45.,
+            teamcolour = 12,
             xp = 35,
         })
 
@@ -1654,6 +1863,7 @@ do
             has_mp = false,
             height = 135.,
             drop_offset_min = 20., drop_offset_max = 45.,
+            teamcolour = 12,
             xp = 42,
         })
 
@@ -1671,6 +1881,7 @@ do
             has_mp = false,
             height = 155.,
             drop_offset_min = 35., drop_offset_max = 65.,
+            teamcolour = 17,
             xp = 57,
         })
 
@@ -1689,6 +1900,7 @@ do
             has_mp = false,
             height = 120.,
             drop_offset_min = 15., drop_offset_max = 45.,
+            teamcolour = 12,
             xp = 35,
         })
 
@@ -1708,6 +1920,7 @@ do
             has_mp = false,
             height = 135.,
             drop_offset_min = 20., drop_offset_max = 45.,
+            teamcolour = 18,
             xp = 42,
         })
 
@@ -1725,6 +1938,7 @@ do
             has_mp = false,
             height = 145.,
             drop_offset_min = 25., drop_offset_max = 55.,
+            teamcolour = 9,
             xp = 49,
         })
 
@@ -1746,6 +1960,7 @@ do
             has_mp = false,
             height = 120.,
             drop_offset_min = 15., drop_offset_max = 45.,
+            teamcolour = 0,
             xp = 25,
         })
         --==========================================================--
@@ -1765,7 +1980,9 @@ do
             scale = 0.8,
             has_mp = false,
             height = 125.,
+            teamcolour = 6,
             drop_offset_min = 17., drop_offset_max = 48.,
+            teamcolour = 18,
             xp = 35,
         })
         --==========================================================--
@@ -1808,6 +2025,7 @@ do
             has_mp = false,
             height = 130.,
             drop_offset_min = 20., drop_offset_max = 55.,
+            teamcolour = 12,
             xp = 45,
         })
         --==========================================================--
@@ -1828,6 +2046,7 @@ do
             },
             has_mp = false,
             height = 130.,
+            teamcolour = 6,
             drop_offset_min = 20., drop_offset_max = 55.,
             xp = 40,
         })
@@ -1859,6 +2078,7 @@ do
             respawn_time = 20.,
             has_mp = false,
             drop_offset_min = 25., drop_offset_max = 65.,
+            teamcolour = 21,
             xp = 700,
         })
         --==========================================================--
@@ -1870,7 +2090,7 @@ do
             classification = MONSTER_RANK_COMMON,
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 25.,
-            base_stats = { health = 121., hp_regen = 0.46, moving_speed = 240. },
+            base_stats = { health = 121., hp_regen = 1.5, moving_speed = 240. },
             weapon = { ATTACK_SPEED = 1.55, DAMAGE = 8, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
             bonus_parameters = {
                 { param = POISON_RESIST, value = 5, method = STRAIGHT_BONUS },
@@ -1881,6 +2101,7 @@ do
             has_mp = false,
             height = 120.,
             drop_offset_min = 15., drop_offset_max = 45.,
+            teamcolour = 10,
             xp = 25,
         })
         --==========================================================--
@@ -1892,7 +2113,7 @@ do
             classification = MONSTER_RANK_COMMON,
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 25.,
-            base_stats = { health = 207., hp_regen = 0.46, moving_speed = 255. },
+            base_stats = { health = 207., hp_regen = 1.5, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 1.43, DAMAGE = 13, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
             bonus_parameters = {
                 { param = POISON_RESIST, value = 10, method = STRAIGHT_BONUS },
@@ -1902,6 +2123,7 @@ do
             has_mp = false,
             height = 125.,
             drop_offset_min = 15., drop_offset_max = 45.,
+            teamcolour = 20,
             xp = 45,
         })
         --==========================================================--
@@ -1913,7 +2135,7 @@ do
             classification = MONSTER_RANK_COMMON,
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 25.,
-            base_stats = { health = 265., hp_regen = 0.46, moving_speed = 255. },
+            base_stats = { health = 265., hp_regen = 1.7, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 1.43, DAMAGE = 16, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
             bonus_parameters = {
                 { param = POISON_RESIST, value = 10, method = STRAIGHT_BONUS },
@@ -1934,7 +2156,7 @@ do
             classification = MONSTER_RANK_ADVANCED,
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 25.,
-            base_stats = { health = 191., hp_regen = 0.49, moving_speed = 250. },
+            base_stats = { health = 191., hp_regen = 1.5, moving_speed = 250. },
             weapon = { ATTACK_SPEED = 1.95, DAMAGE = 10, CRIT_CHANCE = 9., missile = "MSSP", ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 7, angle_deviation = 6. },
             bonus_parameters = {
                 { param = POISON_RESIST, value = 10, method = STRAIGHT_BONUS },
@@ -1944,6 +2166,7 @@ do
             has_mp = false,
             height = 130.,
             drop_offset_min = 15., drop_offset_max = 55.,
+            teamcolour = 6,
             xp = 37,
         })
         --==========================================================--
@@ -1955,7 +2178,7 @@ do
             classification = MONSTER_RANK_ADVANCED,
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 25.,
-            base_stats = { health = 246., hp_regen = 0.49, moving_speed = 255. },
+            base_stats = { health = 246., hp_regen = 1.5, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 1.7, DAMAGE = 16, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 11.5, WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
             bonus_parameters = {
                 { param = POISON_RESIST, value = 25, method = STRAIGHT_BONUS },
@@ -1966,6 +2189,7 @@ do
             has_mp = false,
             height = 130.,
             drop_offset_min = 15., drop_offset_max = 55.,
+            teamcolour = 19,
             xp = 40,
         })
         --==========================================================--
@@ -1977,7 +2201,7 @@ do
             classification = MONSTER_RANK_BOSS,
             unit_trait = { TRAIT_BEAST },
             time_before_remove = 25.,
-            base_stats = { health = 1500., hp_regen = 0.86, moving_speed = 265. },
+            base_stats = { health = 1500., hp_regen = 2.86, moving_speed = 265. },
             weapon = { ATTACK_SPEED = 1.35, DAMAGE = 27, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_WOOD_LIGHT_BASH },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
@@ -2038,6 +2262,27 @@ do
                 { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
             },
             scale = 1.1,
+            has_mp = false,
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 30,
+        })
+        --==========================================================--
+        -- rogue mage
+        NewUnitTemplate('n02Q', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ROGUE_MAGE,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_HUMAN },
+            time_before_remove = 25.,
+            base_stats = { health = 133., hp_regen = 0.3, moving_speed = 245. },
+            weapon = { ATTACK_SPEED = 2.17, DAMAGE = 5, CRIT_CHANCE = 12., missile = "bandit_arcane_missile", angle_deviation = 4., ATTRIBUTE = ARCANE_ATTRIBUTE, DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL },
+            bonus_parameters = {
+                { param = FIRE_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 5, method = STRAIGHT_BONUS },
+            },
             has_mp = false,
             height = 120.,
             drop_offset_min = 15., drop_offset_max = 45.,
@@ -2135,15 +2380,17 @@ do
                 { param = MAGICAL_SUPPRESSION, value = 350, method = STRAIGHT_BONUS },
                 { param = RANGE_DAMAGE_REDUCTION, value = 15, method = STRAIGHT_BONUS },
                 { param = CONTROL_REDUCTION, value = 55, method = STRAIGHT_BONUS },
-                { param = FIRE_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 25, method = STRAIGHT_BONUS },
                 { param = POISON_RESIST, value = 45, method = STRAIGHT_BONUS },
-                { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 25, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
-                { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS }
+                { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
             skill_list = { "ASSM", "ASBN" },
             has_mp = false,
+            teamcolour = 10,
             drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
         })
@@ -2170,6 +2417,7 @@ do
             has_mp = false,
             drop_offset_min = 45., drop_offset_max = 95.,
             height = 250.,
+            teamcolour = 12,
             xp = 1000,
         })
         --==========================================================--
@@ -2226,19 +2474,21 @@ do
                 { param = PHYSICAL_DEFENCE, value = 200, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 350, method = STRAIGHT_BONUS },
                 { param = CONTROL_REDUCTION, value = 55, method = STRAIGHT_BONUS },
-                { param = FIRE_RESIST, value = 15, method = STRAIGHT_BONUS },
-                { param = POISON_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 35, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = 20, method = STRAIGHT_BONUS },
                 { param = LIGHTNING_RESIST, value = 45, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 15, method = STRAIGHT_BONUS },
-                { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
-                { param = MAGICAL_ATTACK, value = 125, method = STRAIGHT_BONUS }
+                { param = MAGICAL_ATTACK, value = 125, method = STRAIGHT_BONUS },
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
             on_attack_sound = { pack = { "Sounds\\Monsters\\mephisto_attack1.wav", "Sounds\\Monsters\\mephisto_attack2.wav", "Sounds\\Monsters\\mephisto_attack3.wav", "Sounds\\Monsters\\mephisto_attack4.wav" }, volume = 128, cutoff = 1700., chance = 28. },
             death_sound = { pack = { "Sounds\\Monsters\\mephisto_death.wav" }, volume = 128, cutoff = 1700. },
             skill_list = { "AMLN", "AMFB" },
             has_mp = false,
             drop_offset_min = 20., drop_offset_max = 65.,
+            teamcolour = 9,
             xp = 700,
         })
         --==========================================================--
@@ -2416,6 +2666,7 @@ do
             skill_list = { "ABRR", "ABRA" },
             death_sound = { pack = { "Sounds\\Monsters\\blood_raven_death.wav" }, volume = 128, cutoff = 1700. },
             has_mp = false,
+            teamcolour = 10,
             drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
         })

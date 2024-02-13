@@ -303,8 +303,7 @@ do
             level = {
                 [1] = {
                     power = 49,
-                    --attack_percent_bonus = 1.,
-                    --delay = 0.3,
+                    can_crit = true,
                     global_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -411,7 +410,7 @@ do
 
             level = {
                 [1] = {
-                    power = 53,
+                    power = 68,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -450,6 +449,7 @@ do
             power_delta = 1,
             power_delta_level = 1,
             get_level_from_skill = "AFWL",
+            tags = { "burning" },
             level = {
                 [1] = {
                     power = 12,
@@ -480,7 +480,7 @@ do
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = ICE_ATTRIBUTE,
-                    area_of_effect = 295.,
+                    area_of_effect = 175.,
                     max_targets = 300,
 
                     sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Items\\AIob\\AIobSpecialArt.mdx", point = "chest" }, } },
@@ -568,7 +568,6 @@ do
             level = {
                 [1] = {
                     power = 71,
-                    --attack_percent_bonus = 1.,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
@@ -610,7 +609,7 @@ do
                     delay = 2.45,
                     timescale = 0.5,
 
-                    power = 94,
+                    power = 97,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
@@ -647,7 +646,6 @@ do
             level = {
                 [1] = {
                     power = 33,
-                    --attack_percent_bonus = 1.,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -791,8 +789,7 @@ do
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attribute = FIRE_ATTRIBUTE,
                     max_targets = 300,
-                    SFX_on_unit = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx",
-                    SFX_on_unit_point = "chest",
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx", point = "chest", duration = 1. }, } },
                     area_of_effect = 200.
                 }
             }
@@ -893,8 +890,8 @@ do
 
             level = {
                 [1] = {
-                    power = 18,
-                    attack_percent_bonus = 0.8,
+                    power = 21,
+                    attack_percent_bonus = 1.25,
                     can_crit = true,
                     is_direct = true,
                     global_crit = true,
@@ -994,8 +991,8 @@ do
 
             level = {
                 [1] = {
-                    power = 19,
-                    attack_percent_bonus = 0.7,
+                    power = 27,
+                    attack_percent_bonus = 0.85,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
@@ -1090,8 +1087,8 @@ do
 
             level = {
                 [1] = {
-                    power = 13,
-                    attack_percent_bonus = 0.8,
+                    power = 22,
+                    attack_percent_bonus = 0.93,
                     global_crit = true,
                     can_crit = true,
                     is_direct = true,
@@ -1124,10 +1121,11 @@ do
             attack_percent_bonus_delta = 0.1,
             attack_percent_bonus_delta_level = 5,
             get_level_from_skill = "A006",
+            tags = { "bleeding" },
 
             level = {
                 [1] = {
-                    power = 2,
+                    power = 6,
                     can_crit = false,
                     attack_percent_bonus = 0.45,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
@@ -1180,21 +1178,21 @@ do
         --==========================================--
         NewEffectTemplate('ravage_effect', {
             name = "ravage effect",
-            power_delta = 3,
+            power_delta = 2,
             power_delta_level = 1,
             get_level_from_skill = "ABRV",
 
             level = {
                 [1] = {
-                    power = 45,
-                    attack_percent_bonus = 1.26,
+                    power = 15,
+                    attack_percent_bonus = 0.85,
                     can_crit = true,
                     is_direct = true,
                     is_sound = true,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
                     attack_type = MELEE_ATTACK,
                     attribute = PHYSICAL_ATTRIBUTE,
-                    hit_once_in = 0.1
+                    hit_once_in = 0.33
                 }
             }
         })
@@ -1277,7 +1275,6 @@ do
             level = {
                 [1] = {
                     power = 58,
-                    global_crit = true,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -1367,6 +1364,7 @@ do
             level = {
                 [1] = {
                     area_of_effect = 300.,
+                    wave_speed = 600.,
                     power = 77,
                     global_crit = true,
                     can_crit = true,
@@ -1388,6 +1386,7 @@ do
             power_delta_level = 1,
             get_level_from_skill = "ANPB",
             single_attack_instance = true,
+            tags = { "poisoning" },
             level = {
                 [1] = {
                     area_of_effect = 300.,
@@ -1667,6 +1666,7 @@ do
                     power = 19,
                     can_crit = true,
                     is_direct = true,
+                    global_crit = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = PHYSICAL_ATTRIBUTE,
@@ -1720,17 +1720,12 @@ do
             level = {
                 [1] = {
                     power = 5,
-                    global_crit = true,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = DARKNESS_ATTRIBUTE,
                     max_targets = 1,
-                    --sound_on_hit = {
-                       -- pack = { "Sounds\\Spells\\bone_light_hit_1.wav", "Sounds\\Spells\\bone_light_hit_2.wav", "Sounds\\Spells\\bone_light_hit_3.wav", "Sounds\\Spells\\bone_light_hit_4.wav", "Sounds\\Spells\\bone_light_hit_5.wav" },
-                       -- volume = 100, cutoff = 1500.
-                    --},
                     sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest" } }, },
                 }
             }
@@ -1747,17 +1742,42 @@ do
             level = {
                 [1] = {
                     power = 2,
-                    global_crit = true,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = RANGE_ATTACK,
                     attribute = DARKNESS_ATTRIBUTE,
                     max_targets = 1,
-                    --sound_on_hit = {
-                       -- pack = { "Sounds\\Spells\\bone_light_hit_1.wav", "Sounds\\Spells\\bone_light_hit_2.wav", "Sounds\\Spells\\bone_light_hit_3.wav", "Sounds\\Spells\\bone_light_hit_4.wav", "Sounds\\Spells\\bone_light_hit_5.wav" },
-                       -- volume = 100, cutoff = 1500.
-                    --},
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest" } }, },
+                }
+            }
+
+        })
+        --==========================================--
+        NewEffectTemplate('reaper_effect', {
+            name = "reaper_effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "ANRP",
+            bonus_crit_multiplier_delta = 0.1,
+            bonus_crit_multiplier_delta_level = 5.,
+
+            level = {
+                [1] = {
+                    power = 72,
+                    bonus_crit_chance = 15.,
+                    bonus_crit_multiplier = 0.1,
+                    can_crit = true,
+                    is_direct = true,
+                    global_crit = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = DARKNESS_ATTRIBUTE,
+                    max_targets = 3000,
+                    area_of_effect = 150.,
+                    timescale = 0.5,
+                    delay = 0.33,
+                    sound = { { pack = { "Sounds\\Spells\\ReaperAttack_1.wav", "Sounds\\Spells\\ReaperAttack_2.wav", "Sounds\\Spells\\ReaperAttack_3.wav", "Sounds\\Spells\\ReaperAttack_4.wav" }, volume = 128, cutoff = 1800. } },
                     sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest" } }, },
                 }
             }
@@ -1937,10 +1957,11 @@ do
         --==========================================--
         NewEffectTemplate('lesion_effect', {
             name = "lesion talent effect",
+            tags = { "poisoning" },
             level = {
                 [1] = {
                     weapon_damage_percent_bonus = 0.05,
-                    can_crit = true,
+                    can_crit = false,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = MELEE_ATTACK,
@@ -1948,7 +1969,7 @@ do
                 },
                 [2] = {
                     weapon_damage_percent_bonus = 0.1,
-                    can_crit = true,
+                    can_crit = false,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = MELEE_ATTACK,
@@ -1956,7 +1977,7 @@ do
                 },
                 [3] = {
                     weapon_damage_percent_bonus = 0.15,
-                    can_crit = true,
+                    can_crit = false,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = MELEE_ATTACK,
@@ -1994,8 +2015,7 @@ do
             level = {
                 [1] = {
                     power = 10,
-                    global_crit = true,
-                    can_crit = true,
+                    can_crit = false,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = MELEE_ATTACK,
@@ -2003,8 +2023,7 @@ do
                 },
                 [2] = {
                     power = 20,
-                    global_crit = true,
-                    can_crit = true,
+                    can_crit = false,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = MELEE_ATTACK,
@@ -2012,8 +2031,7 @@ do
                 },
                 [3] = {
                     power = 30,
-                    global_crit = true,
-                    can_crit = true,
+                    can_crit = false,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
                     attack_type = MELEE_ATTACK,
@@ -2028,7 +2046,6 @@ do
             level = {
                 [1] = {
                     power = 7,
-                    global_crit = true,
                     can_crit = false,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -2642,7 +2659,6 @@ do
             level = {
                 [1] = {
                     weapon_damage_percent_bonus = 1.25,
-                    global_crit = true,
                     can_crit = true,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -2838,11 +2854,6 @@ do
             level = {
                 [1] = {
                     max_targets = 1,
-                    --SFX_on_caster            = 'Abilities\\Spells\\Items\\AIhe\\AIheTarget.mdx',
-                    --SFX_on_caster_point      = 'origin',
-                    --SFX_on_caster_scale      = 0.7,
-                    --SFX_on_caster_duration = 1.833,
-                    --life_percent_restored = 0.25,
                     sound = { { pack = { "Sound\\player_eat.wav" }, volume = 120, cutoff = 1600. } },
                     applied_buff = {
                         [1] = { modificator = INCREASE_BUFF_LEVEL, buff_id = 'AIFD', target_type = ON_SELF },
@@ -2857,11 +2868,6 @@ do
             level = {
                 [1] = {
                     max_targets = 1,
-                    --SFX_on_caster            = 'Abilities\\Spells\\Items\\AIhe\\AIheTarget.mdx',
-                    --SFX_on_caster_point      = 'origin',
-                    --SFX_on_caster_scale      = 0.7,
-                    --SFX_on_caster_duration = 1.833,
-                    --life_percent_restored = 0.25,
                     sound = { { pack = { "Sound\\player_drink.wav" }, volume = 120, cutoff = 1600. } },
                     applied_buff = {
                         [1] = { modificator = INCREASE_BUFF_LEVEL, buff_id = 'AIDR', target_type = ON_SELF },
@@ -2873,8 +2879,8 @@ do
         --==========================================--
         NewEffectTemplate('spider_poison_dot', {
             name = "spider poison effect periodic",
-            power_delta = 2,
-            power_delta_level = 5,
+            power_delta = 1,
+            power_delta_level = 1,
             attack_percent_bonus_delta = 0.1,
             attack_percent_bonus_delta_level = 5,
             get_level_from_wave = true,
@@ -2893,7 +2899,6 @@ do
         --==========================================--
         NewEffectTemplate('ESQM', {
             name = "spider queen bile missile effect",
-            --get_level_from_skill = "A006",
             level = {
                 [1] = {
                     sound = {
@@ -2909,11 +2914,10 @@ do
         NewEffectTemplate('ESQB', {
             name = "spider queen bile periodic effect",
             get_level_from_wave = true,
-            power_delta = 4,
-            power_delta_level = 5,
+            power_delta = 1,
+            power_delta_level = 1,
             attack_percent_bonus_delta = 0.1,
             attack_percent_bonus_delta_level = 5,
-            --get_level_from_skill = "A006",
             level = {
                 [1] = {
                     power = 7,
@@ -2933,7 +2937,7 @@ do
             power_delta_level = 1,
             level = {
                 [1] = {
-                    power = 14,
+                    power = 24,
                     attack_percent_bonus = 1.25,
                     can_crit = true,
                     is_direct = true,
@@ -2961,11 +2965,11 @@ do
         NewEffectTemplate('EBCS', {
             name = "bandit boss charge impact effect",
             get_level_from_wave = true,
-            power_delta = 4,
+            power_delta = 3,
             power_delta_level = 1,
             level = {
                 [1] = {
-                    power = 18,
+                    power = 27,
                     attack_percent_bonus = 1.15,
                     can_crit = true,
                     is_direct = true,
@@ -2997,11 +3001,11 @@ do
         NewEffectTemplate('EACL', {
             name = "arachno clac effect",
             get_level_from_wave = true,
-            power_delta = 5,
+            power_delta = 3,
             power_delta_level = 1,
             level = {
                 [1] = {
-                    power = 13,
+                    power = 30,
                     attack_percent_bonus = 1.15,
                     can_crit = true,
                     is_direct = true,
@@ -3023,11 +3027,11 @@ do
         NewEffectTemplate('EAPN', {
             name = "arachno poison nova effect",
             get_level_from_wave = true,
-            power_delta = 4,
+            power_delta = 3,
             power_delta_level = 1,
             level = {
                 [1] = {
-                    power = 20,
+                    power = 40,
                     can_crit = true,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -3046,7 +3050,7 @@ do
             power_delta_level = 1,
             level = {
                 [1] = {
-                    power = 6,
+                    power = 33,
                     attack_percent_bonus = 1.,
                     bonus_crit_chance = 25.,
                     can_crit = true,
@@ -3062,11 +3066,11 @@ do
         NewEffectTemplate('EALN', {
             name = "lightning nova effect",
             get_level_from_wave = true,
-            power_delta = 3,
+            power_delta = 4,
             power_delta_level = 1,
             level = {
                 [1] = {
-                    power = 22,
+                    power = 36,
                     can_crit = true,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -3080,7 +3084,7 @@ do
         --==========================================--
         NewEffectTemplate('meph_frost_blast_effect', {
             name = "frost BLAST effect",
-            power_delta = 3,
+            power_delta = 4,
             power_delta_level = 1,
             attribute_bonus_delta = 2,
             attribute_bonus_delta_level = 5,
@@ -3123,13 +3127,13 @@ do
         --==========================================--
         NewEffectTemplate('butcher_cripple_effect', {
             name = "butcher cripple effect",
-            power_delta = 2,
+            power_delta = 3,
             power_delta_level = 1,
             get_level_from_wave = true,
             single_attack_instance = true,
             level = {
                 [1] = {
-                    power = 12,
+                    power = 17,
                     attack_percent_bonus = 0.8,
                     global_crit = true,
                     can_crit = true,
@@ -3157,7 +3161,7 @@ do
         --==========================================--
         NewEffectTemplate('butcher_charge_effect', {
             name = "butcher charge effect",
-            power_delta = 2,
+            power_delta = 3,
             power_delta_level = 1,
             get_level_from_wave = true,
             single_attack_instance = true,
@@ -3178,6 +3182,100 @@ do
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A00M', target_type = ON_ENEMY }
                     },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('succubus_curse_effect', {
+            name = "succubus curse effect",
+            level = {
+                [1] = {
+                    sound = {
+                        { pack = { "Sounds\\Monsters\\Spells\\monster_succubus_cast_1.wav", "Sounds\\Monsters\\Spells\\monster_succubus_cast_2.wav" },
+                          volume = 128, cutoff = 1600. }
+                    },
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A00N', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('succubus_blood_curse_effect', {
+            name = "succubus blood curse effect",
+            level = {
+                [1] = {
+                    sound = {
+                        { pack = { "Sounds\\Monsters\\Spells\\monster_succubus_cast_3.wav", "Sounds\\Monsters\\Spells\\monster_succubus_cast_4.wav" },
+                          volume = 128, cutoff = 1600. }
+                    },
+                    SFX_on_unit = "Abilities\\Spells\\Human\\DispelMagic\\DispelMagicTarget.mdx",
+                    SFX_on_unit_point = "origin",
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A00Z', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('succubus_blood_curse_damage_effect', {
+            name = "succubus_blood_curse_damage_effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_wave = true,
+            single_attack_instance = true,
+            level = {
+                [1] = {
+                    power = 15,
+                    can_crit = false,
+                    is_direct = false,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = DARKNESS_ATTRIBUTE,
+                    sfx_pack = {
+                        on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest" } },
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('demon_assassin_defence_effect', {
+            name = "demon_assassin_defence_effect",
+            level = {
+                [1] = {
+                    SFX_on_unit = "Abilities\\Spells\\Items\\AIre\\AIreTarget.mdx",
+                    SFX_on_unit_point = "origin",
+                    life_percent_restored = 0.17,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A010', target_type = ON_SELF }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('demon_assassin_attack_effect', {
+            name = "demon_assassin_attack_effect",
+            power_delta = 3,
+            power_delta_level = 1,
+            get_level_from_wave = true,
+            single_attack_instance = true,
+            level = {
+                [1] = {
+                    power = 12,
+                    attack_percent_bonus = 1.15,
+                    global_crit = true,
+                    can_crit = true,
+                    is_direct = true,
+                    is_sound = true,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = MELEE_ATTACK,
+                    attribute = ICE_ATTRIBUTE,
+                    area_of_effect = 200.,
+                    angle_window  = 45.,
+                    force_from_caster_position = true,
+                    max_targets = 300,
+                    SFX_on_unit = "Abilities\\Spells\\Items\\AIob\\AIobSpecialArt.mdx",
+                    SFX_on_unit_point = "chest",
                 }
             }
         })
@@ -3256,7 +3354,7 @@ do
         NewEffectTemplate('EGHC', {
             name = "ghoul clac effect",
             get_level_from_wave = true,
-            power_delta = 2,
+            power_delta = 3,
             power_delta_level = 1,
             level = {
                 [1] = {
@@ -3310,7 +3408,7 @@ do
         NewEffectTemplate('ice_blast_effect', {
             name = "revenant ice blast effect",
             get_level_from_wave = true,
-            power_delta = 3,
+            power_delta = 4,
             power_delta_level = 1,
             level = {
                 [1] = {
@@ -3335,7 +3433,7 @@ do
         NewEffectTemplate('astral_barrage_effect', {
             name = "boss astral barrage effect",
             get_level_from_wave = true,
-            power_delta = 2,
+            power_delta = 4,
             power_delta_level = 1,
             level = {
                 [1] = {
@@ -3358,11 +3456,11 @@ do
         NewEffectTemplate('reanimated_arrow_barrage_effect', {
             name = "boss arrow barrage effect",
             get_level_from_wave = true,
-            power_delta = 2,
+            power_delta = 4,
             power_delta_level = 1,
             level = {
                 [1] = {
-                    power = 12,
+                    power = 15,
                     can_crit = true,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_PHYSICAL,
@@ -3371,9 +3469,6 @@ do
                     attribute_bonus = 10,
                     max_targets = 300,
                     area_of_effect = 75.,
-                    --SFX_used = "Effect\\Gravity Storm.mdx",
-                    --SFX_used_scale = 0.8,
-                    --sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest" } } },
                 }
             }
         })
@@ -3381,7 +3476,7 @@ do
         NewEffectTemplate('ELtrait', {
             name = "discharge trait effect",
             get_level_from_wave = true,
-            power_delta = 1,
+            power_delta = 2,
             power_delta_level = 1,
             level = {
                 [1] = {
@@ -3433,7 +3528,7 @@ do
             power_delta_level = 1,
             level = {
                 [1] = {
-                    power = 6,
+                    power = 9,
                     can_crit = true,
                     is_direct = true,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -3469,7 +3564,7 @@ do
             get_level_from_wave = true,
             power_delta = 2,
             power_delta_level = 1,
-            attribute_bonus_delta = 3,
+            attribute_bonus_delta = 2,
             attribute_bonus_delta_level = 5,
             level = {
                 [1] = {
@@ -3490,7 +3585,7 @@ do
         NewEffectTemplate('EVDR', {
             name = "void rain effect",
             get_level_from_wave = true,
-            power_delta = 2,
+            power_delta = 3,
             power_delta_level = 1,
             level = {
                 [1] = {
@@ -3511,7 +3606,7 @@ do
         NewEffectTemplate('EFRD', {
             name = "frost drop effect",
             get_level_from_wave = true,
-            power_delta = 2,
+            power_delta = 3,
             power_delta_level = 1,
             level = {
                 [1] = {
@@ -3565,7 +3660,7 @@ do
         NewEffectTemplate('poison_barrage_effect', {
             name = "poison barrage effect",
             get_level_from_wave = true,
-            power_delta = 2,
+            power_delta = 3,
             power_delta_level = 1,
             attribute_bonus_delta = 1,
             attribute_bonus_delta_level = 1,
@@ -3607,7 +3702,7 @@ do
         NewEffectTemplate('andariel_hellfire_effect', {
             name = "andariel hellfire effect",
             get_level_from_wave = true,
-            power_delta = 2,
+            power_delta = 3,
             power_delta_level = 1,
             attribute_bonus_delta = 1,
             attribute_bonus_delta_level = 1,
@@ -3635,7 +3730,7 @@ do
         --==========================================--
         NewEffectTemplate('baal_hoarfrost', {
             name = "baal hoarfrost damage",
-            power_delta = 2,
+            power_delta = 3,
             power_delta_level = 1,
             get_level_from_wave = true,
 
@@ -3658,7 +3753,7 @@ do
         --==========================================--
         NewEffectTemplate('baal_nova', {
             name = "baal nova damage",
-            power_delta = 2,
+            power_delta = 4,
             power_delta_level = 1,
             get_level_from_wave = true,
 
@@ -3742,11 +3837,11 @@ do
         NewEffectTemplate('fire_rain_effect', {
             name = "fire rain effect",
             get_level_from_wave = true,
-            power_delta = 2,
+            power_delta = 3,
             power_delta_level = 1,
             level = {
                 [1] = {
-                    power = 12,
+                    power = 15,
                     can_crit = true,
                     is_direct = false,
                     is_sound = false,
@@ -3775,7 +3870,7 @@ do
             attribute_bonus_delta_level = 1,
             level = {
                 [1] = {
-                    power = 6,
+                    power = 7,
                     can_crit = true,
                     is_direct = true,
                     is_sound = false,
@@ -3790,6 +3885,7 @@ do
         --==========================================--
         NewEffectTemplate('ignite_effect_periodic', {
             name = "ignite effect periodic",
+            tags = { "burning" },
             level = {
                 [1] = {
                     power = 13,
@@ -3826,6 +3922,7 @@ do
         --==========================================--
         NewEffectTemplate('napalm_effect', {
             name = "napalm effect",
+            tags = { "burning" },
             level = {
                 [1] = {
                     power = 8,
@@ -3910,7 +4007,7 @@ do
             level = {
                 [1] = {
                     power = 15,
-                    --attack_percent_bonus = 1.,
+                    global_crit = true,
                     can_crit = true,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -3928,7 +4025,7 @@ do
                 },
                 [2] = {
                     power = 30,
-                    --attack_percent_bonus = 1.,
+                    global_crit = true,
                     can_crit = true,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -3946,7 +4043,7 @@ do
                 },
                 [3] = {
                     power = 45,
-                    --attack_percent_bonus = 1.,
+                    global_crit = true,
                     can_crit = true,
                     is_direct = false,
                     damage_type = DAMAGE_TYPE_MAGICAL,
@@ -3969,7 +4066,6 @@ do
             name = "ice enduring effect",
             level = {
                 [1] = {
-                    --delay = 0.3,
                     wave_speed = 530.,
 
                     area_of_effect = 350.,
@@ -3993,6 +4089,7 @@ do
         --==========================================--
         NewEffectTemplate('fracture_talent_effect', {
             name = "fracture periodic effect",
+            tags = { "bleeding" },
             level = {
                 [1] = {
                     power = 0,
@@ -4035,6 +4132,7 @@ do
         --==========================================--
         NewEffectTemplate('poison_physical_weapon_effect', {
             name = "poison weapon effect",
+            tags = { "poisoning" },
             level = {
                 [1] = {
                     attack_percent_bonus = 0.05,
@@ -4049,6 +4147,7 @@ do
         --==========================================--
         NewEffectTemplate('poison_magical_weapon_effect', {
             name = "poison weapon effect",
+            tags = { "poisoning" },
             level = {
                 [1] = {
                     attack_percent_bonus = 0.05,
@@ -4063,6 +4162,7 @@ do
         --==========================================--
         NewEffectTemplate('fire_magical_weapon_effect', {
             name = "fire weapon effect",
+            tags = { "burning" },
             level = {
                 [1] = {
                     attack_percent_bonus = 0.05,
@@ -4077,6 +4177,7 @@ do
         --==========================================--
         NewEffectTemplate('bleed_physical_weapon_effect', {
             name = "bleed weapon effect",
+            tags = { "bleeding" },
             level = {
                 [1] = {
                     attack_percent_bonus = 0.05,
@@ -4270,9 +4371,27 @@ do
 
         })
         --==========================================--
+        NewEffectTemplate('skinripper_effect', {
+            name = "skinripper periodic effect",
+            tags = { "bleeding" },
+
+            level = {
+                [1] = {
+                    attack_percent_bonus = 0.18,
+                    can_crit = false,
+                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    attack_type = nil,
+                    attribute = PHYSICAL_ATTRIBUTE,
+                    max_targets = 1,
+                    SFX_on_unit = 'Spell\\Lascerate.mdx',
+                    SFX_on_unit_point = 'chest',
+                }
+            }
+        })
+        --==========================================--
         NewEffectTemplate('pitlord_darkness_bolt', {
             name = "darkness effect",
-            power_delta = 2,
+            power_delta = 3,
             power_delta_level = 1,
             get_level_from_wave = true,
             single_attack_instance = true,
@@ -4294,7 +4413,7 @@ do
         --==========================================--
         NewEffectTemplate('pitlord_meteor', {
             name = "darkness effect",
-            power_delta = 2,
+            power_delta = 3,
             power_delta_level = 1,
             get_level_from_wave = true,
             single_attack_instance = true,
@@ -4313,6 +4432,32 @@ do
                     attribute_bonus = 10,
                     sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", point = "chest" } } },
                     area_of_effect = 160.
+                }
+            }
+
+        })
+        --==========================================--
+        NewEffectTemplate('phantom_nova_effect', {
+            name = "phantom_nova_effect",
+            power_delta = 3,
+            power_delta_level = 1,
+            get_level_from_wave = true,
+
+            level = {
+                [1] = {
+                    power = 33,
+                    can_crit = true,
+                    is_direct = true,
+                    damage_type = DAMAGE_TYPE_MAGICAL,
+                    attack_type = RANGE_ATTACK,
+                    attribute = LIGHTNING_ATTRIBUTE,
+                    max_targets = 3000,
+                    area_of_effect = 350.,
+                    sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Items\\AIlb\\AIlbSpecialArt.mdx", point = "chest" } }, },
+                    hit_once_in = 0.33,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A027', target_type = ON_ENEMY }
+                    },
                 }
             }
 

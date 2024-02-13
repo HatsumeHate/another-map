@@ -790,6 +790,14 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
                         model = "Items\\Battlesword.mdx",
                     },
+                    {
+                        icon = "Weapons\\BTNEdgeOfTheEclipse.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_6,
+                        decl = DECL_HE,
+                        modificator = 1.7,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "Items\\Edge of the Eclipse.mdx",
+                    },
                 },
                 [AXE_WEAPON] = {
                     {
@@ -901,6 +909,14 @@ do
                         modificator = 1.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
                         model = "Items\\Mithril Mace.mdx",
+                    },
+                    {
+                        icon = "Weapons\\BTNHammer.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_5,
+                        decl = DECL_HE,
+                        modificator = 1.8,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "Items\\HammerTime.mdx",
                     },
                 },
                 [DAGGER_WEAPON] = {
@@ -1586,6 +1602,22 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
                         model = "Items\\Battlesword.mdx",
                     },
+                    {
+                        icon = "Weapons\\BTNEdgeOfTheEclipse.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_6,
+                        decl = DECL_HE,
+                        modificator = 1.7,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "Items\\Edge of the Eclipse.mdx",
+                    },
+                    {
+                        icon = "Weapons\\BTNRunestoneGreatsword.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_7,
+                        decl = DECL_HE,
+                        modificator = 1.7,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "Items\\Runestone Greatsword.mdx",
+                    },
                 },
                 [AXE_WEAPON] = {
                     {
@@ -1611,6 +1643,14 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
                         model = "Items\\Weapon_Axe_1.mdx",
+                    },
+                    {
+                        icon = "Weapons\\BTNRunestoneBattleaxe.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_5,
+                        decl = DECL_HE,
+                        modificator = 0.95,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "Items\\RunestoneBattleaxe.mdx",
                     },
                 },
                 [GREATAXE_WEAPON] = {
@@ -1697,6 +1737,22 @@ do
                         modificator = 1.8,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
                         model = "Items\\Mithril Mace.mdx",
+                    },
+                    {
+                        icon = "Weapons\\BTNRunestoneWarhammer.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_4,
+                        decl = DECL_HE,
+                        modificator = 1.7,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "Items\\Runestone Warhammer.mdx",
+                    },
+                    {
+                        icon = "Weapons\\BTNHammer.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_5,
+                        decl = DECL_HE,
+                        modificator = 1.8,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "Items\\HammerTime.mdx",
                     },
                 },
                 [DAGGER_WEAPON] = {
@@ -2585,6 +2641,14 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
                         model = "Items\\Battlesword.mdx",
                     },
+                    {
+                        icon = "Weapons\\BTNRunestoneGreatsword.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATSWORD_NAME_7,
+                        decl = DECL_HE,
+                        modificator = 1.7,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "Items\\Runestone Greatsword.mdx",
+                    },
                 },
                 [AXE_WEAPON] = {
                     {
@@ -2618,6 +2682,14 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
                         model = "Items\\Weapon_Axe_1.mdx",
+                    },
+                    {
+                        icon = "Weapons\\BTNRunestoneBattleaxe.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_5,
+                        decl = DECL_HE,
+                        modificator = 0.95,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "Items\\RunestoneBattleaxe.mdx",
                     },
                 },
                 [GREATAXE_WEAPON] = {
@@ -2741,9 +2813,17 @@ do
                         icon = "Weapons\\BTNRunestoneWarhammer.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_4,
                         decl = DECL_HE,
-                        modificator = 1.6,
+                        modificator = 1.7,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
                         model = "Items\\Runestone Warhammer.mdx",
+                    },
+                    {
+                        icon = "Weapons\\BTNHammer.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_5,
+                        decl = DECL_HE,
+                        modificator = 1.8,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "Items\\HammerTime.mdx",
                     },
                 },
                 [DAGGER_WEAPON] = {
@@ -2790,7 +2870,7 @@ do
                     {
                         icon = "Weapons\\BTNAcid Stinger.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_6,
-                        decl = DECL_SHE,
+                        decl = DECL_IT,
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
                         model = "Items\\Energy Scimitar.mdx",

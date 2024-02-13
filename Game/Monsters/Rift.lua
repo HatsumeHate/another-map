@@ -78,8 +78,10 @@ do
 
             rift.minimap_icon = CreateMinimapIcon(GetRectCenterX(rift.spawner), GetRectCenterY(rift.spawner), 255, 255, 255, "Marker\\MarkDemonGate.mdx", FOG_OF_WAR_MASKED)
             rift.sfx = AddSpecialEffect("Effect\\Effect_RiftRed.mdx", GetRectCenterX(rift.spawner), GetRectCenterY(rift.spawner))
+            rift.sfx_ex = AddSpecialEffect("Effect\\Black Mist.mdx", GetRectCenterX(rift.spawner), GetRectCenterY(rift.spawner))
             BlzSetSpecialEffectScale(rift.sfx, 2.5)
             BlzSetSpecialEffectZ(rift.sfx, GetZ(GetRectCenterX(rift.spawner), GetRectCenterY(rift.spawner)) + 50.)
+            BlzSetSpecialEffectZ(rift.sfx_ex, GetZ(GetRectCenterX(rift.spawner), GetRectCenterY(rift.spawner)) + 50.)
 
             for index = BlzGroupGetSize(rift.group) - 1, 0, -1 do
                 TriggerRegisterUnitEvent(DeathTrigger, BlzGroupUnitAt(rift.group, index), EVENT_UNIT_DEATH)
@@ -185,6 +187,8 @@ do
                 DestroyMinimapIcon(ActiveRift.minimap_icon)
                 ShowQuestAlert(LOCALE_LIST[my_locale].RIFT_CLOSED_MSG)
                 DestroyEffect(ActiveRift.sfx)
+                DestroyEffect(ActiveRift.sfx_ex)
+
 
                     if BlzGroupGetSize(ActiveRift.group) > 0 then
                         local group = CopyGroup(ActiveRift.group)

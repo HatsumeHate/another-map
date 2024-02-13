@@ -623,8 +623,7 @@ do
         end
 
         if GetUnitTalentLevel(source, "talent_pain_killer") > 0 then
-            if BuffHasTag(buff.id, "skill") and buff.buff_source == source then
-                --buff_id == "A00V" or buff_id == "ANRD" or buff_id == "A01N" or buff_id == "BBRC"
+            if BuffHasTag(buff.id, "skill") and buff.buff_source == source and buff.buff_type == POSITIVE_BUFF then
                 ApplyBuff(source, source, "ATPK", 1)
             end
         end
@@ -727,11 +726,41 @@ do
             TraitToxicEffect(target)
         end
 
-        if GetUnitTalentLevel(source, "talent_ignite") > 0 and damage_data.attribute == FIRE_ATTRIBUTE and damage_data.is_direct then
-            if Chance(35.) then
-                ApplyBuff(source, target, "ATIG", GetUnitTalentLevel(source, "talent_ignite"))
+
+        if GetUnitClass(source) == SORCERESS_CLASS then
+
+            if GetUnitTalentLevel(source, "talent_ignite") > 0 and damage_data.attribute == FIRE_ATTRIBUTE and damage_data.is_direct then
+                if Chance(35.) then
+                    ApplyBuff(source, target, "ATIG", GetUnitTalentLevel(source, "talent_ignite"))
+                end
             end
+
+            if GetUnitTalentLevel(source, "talent_lightning_rod") > 0 and (damage_data.is_direct or (damage_data.effect and damage_data.effect.eff.id == "ELBL")) and damage_data.attribute == LIGHTNING_ATTRIBUTE then
+                if Chance(30.) then
+                    LightningRodTalentEffect(source, target)
+                end
+            end
+
+            if GetUnitTalentLevel(source, "talent_negative_charge") > 0 and damage_data.attribute == LIGHTNING_ATTRIBUTE then
+                ApplyBuff(source, target, "ATNC", GetUnitTalentLevel(source, "talent_negative_charge"))
+            end
+
+            if GetUnitTalentLevel(source, "talent_extra_charge") > 0 and damage_data.attribute == LIGHTNING_ATTRIBUTE then
+                ExtraChargeTalentEffect(source, damage)
+            end
+
+            if GetUnitTalentLevel(source, "talent_shock") > 0 and damage_data.attribute == LIGHTNING_ATTRIBUTE then
+                if Chance(15.) then
+                    ShockTalentEffect(source, target)
+                end
+            end
+
+            if GetUnitTalentLevel(source, "talent_remorseless") > 0 and damage_data.attribute == ICE_ATTRIBUTE then
+                ApplyBuff(source, target, "ATRM", GetUnitTalentLevel(source, "talent_remorseless"))
+            end
+
         end
+
 
         if GetUnitTalentLevel(target, "talent_hell_flames") > 0 and damage_data.attack_type == RANGE_ATTACK and damage_data.is_direct then
             local unit_data = GetUnitData(target)
@@ -742,30 +771,6 @@ do
             end
         end
 
-
-        if GetUnitTalentLevel(source, "talent_lightning_rod") > 0 and (damage_data.is_direct or (damage_data.effect and damage_data.effect.eff.id == "ELBL")) and damage_data.attribute == LIGHTNING_ATTRIBUTE then
-            if Chance(30.) then
-                LightningRodTalentEffect(source, target)
-            end
-        end
-
-        if GetUnitTalentLevel(source, "talent_negative_charge") > 0 and damage_data.attribute == LIGHTNING_ATTRIBUTE then
-            ApplyBuff(source, target, "ATNC", GetUnitTalentLevel(source, "talent_negative_charge"))
-        end
-
-        if GetUnitTalentLevel(source, "talent_extra_charge") > 0 and damage_data.attribute == LIGHTNING_ATTRIBUTE then
-            ExtraChargeTalentEffect(source, damage)
-        end
-
-        if GetUnitTalentLevel(source, "talent_shock") > 0 and damage_data.attribute == LIGHTNING_ATTRIBUTE then
-            if Chance(15.) then
-                ShockTalentEffect(source, target)
-            end
-        end
-
-        if GetUnitTalentLevel(source, "talent_remorseless") > 0 and damage_data.attribute == ICE_ATTRIBUTE then
-            ApplyBuff(source, target, "ATRM", GetUnitTalentLevel(source, "talent_remorseless"))
-        end
 
         if GetUnitTalentLevel(target, "talent_glaciation") > 0 and damage_data.is_direct and damage_data.damage_type == DAMAGE_TYPE_PHYSICAL then
             local unit_data = GetUnitData(target)
@@ -803,13 +808,14 @@ do
         end
 
 
-        if GetUnitTalentLevel(source, "talent_pressure_point") > 0 and (damage_data.attack_status == ATTACK_STATUS_CRITICAL or damage_data.attack_status == ATTACK_STATUS_CRITICAL_BLOCKED) then
+        if GetUnitTalentLevel(source, "talent_pressure_point") > 0 and (damage_data.attack_status == ATTACK_STATUS_CRITICAL or damage_data.attack_status == ATTACK_STATUS_CRITICAL_BLOCKED) and not AbilityInstanceHasEffect(damage_data, "talent_pressure_point") then
             local max = 1 + GetUnitTalentLevel(source, "talent_pressure_point")
             local current = GetBuffLevel(source, "ATPP") + 1
 
             if current > max then current = max end
 
-            ApplyBuff(source, source, "ATPP", current)
+                ApplyBuff(source, source, "ATPP", current)
+                AbilityInstanceAddEffectProc(damage_data, "talent_pressure_point")
         end
 
     end
@@ -862,6 +868,12 @@ do
                     DelayAction(180., function() unit_data.cheat_death_cooldown = nil end)
                 end
 
+        end
+
+        if damage_data.effect and damage_data.effect.eff and damage_data.effect.eff.id == "reaper_effect" then
+            if IsUnitDisabled(target) or IsUnitRooted(target) then
+                damage_data.damage = math.floor(damage_data.damage * (1. + (14. + (UnitGetAbilityLevel(source, "ANRP") * 1.)) / 100.) )
+            end
         end
 
     end
@@ -945,6 +957,7 @@ do
             if UnitHasEffect(source, "weap_poison_mag") and Chance(7.) then ApplyBuff(source, target, "AWPM", 1) end
             if UnitHasEffect(source, "weap_fire_mag") and Chance(7.) then ApplyBuff(source, target, "AWFM", 1) end
             if UnitHasEffect(source, "weap_bleed") and Chance(7.) then ApplyBuff(source, target, "AWBP", 1) end
+            if UnitHasEffect(source, "open_wound_effect") and Chance(15.) then ApplyBuff(source, target, "A028", 1) end
 
             if UnitHasEffect(target, "item_fortify") and Chance(10.) then ApplyBuff(target, target, "AIFT", 1) end
 
@@ -965,7 +978,8 @@ do
             end
 
 
-            if GetUnitClass(source) == BARBARIAN_CLASS then
+            if GetUnitClass(source) == BARBARIAN_CLASS or GetUnitClass(target) == BARBARIAN_CLASS then
+
                 if UnitHasEffect(source, "everlasting_madness_Legendary") and GetUnitAbilityLevel(source, FourCC("A00V")) == 0 then
                     if Chance(20.) then
                         ApplyBuff(source, source, "A00V", UnitGetAbilityLevel(source, "A00Q") or 1)
@@ -977,6 +991,125 @@ do
                         SetBuffExpirationTime(target, "A00V", 3.)
                     end
                 end
+
+                if GetUnitTalentLevel(target, "talent_herbs") > 0 then
+                    local unit_data = GetUnitData(target)
+                    unit_data.herbs_charge_time = 7.
+                end
+
+                if GetUnitTalentLevel(target, "talent_reflexes") > 0 and attack_data.attack_type == RANGE_ATTACK and attack_data.damage_type == DAMAGE_TYPE_PHYSICAL then
+                    if ReflexesTalentEffect(target) then
+                        local modificator = GetUnitTalentLevel(target, "talent_reflexes") == 1 and 0.5 or 0.2
+                        attack_data.damage = attack_data.damage * modificator
+                        DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Items\\SpellShieldAmulet\\SpellShieldCaster.mdx", "origin", target))
+                    end
+                end
+
+                if GetUnitTalentLevel(source, "talent_breaking_defence") > 0 then
+                    if Chance(20.) then
+                        ApplyBuff(source, target, "ATBD", GetUnitTalentLevel(source, "talent_breaking_defence"))
+                    end
+                end
+
+                if GetUnitTalentLevel(source, "talent_carnage") > 0 then
+                    SetBuffExpirationTime(source, "ATCR", -1.)
+                end
+
+                if GetUnitTalentLevel(source, "talent_elbow_strike") > 0 and attack_data.attack_type == MELEE_ATTACK then
+                    local chance = GetUnitTalentLevel(source, "talent_elbow_strike") == 1 and 13. or 17.
+                    if Chance(chance) then
+                        PushUnit(source, target, AngleBetweenUnits(source, target), 75, 0.5, "talent_elbow_strike")
+                    end
+                end
+
+                if GetUnitTalentLevel(source, "talent_fracture") > 0 then
+                    if Chance(15.) then
+                        ApplyBuff(source, target, "ATFR", GetUnitTalentLevel(source, "talent_fracture"))
+                    end
+                end
+
+                if GetUnitTalentLevel(source, "talent_vulnerability") > 0 and (attack_data.attack_status == ATTACK_STATUS_CRITICAL or attack_data.attack_status == ATTACK_STATUS_CRITICAL_BLOCKED) then
+                    ApplyBuff(source, target, "ATVL", GetUnitTalentLevel(source, "talent_vulnerability"))
+                end
+
+
+            elseif GetUnitClass(source) == SORCERESS_CLASS then
+
+                if GetUnitTalentLevel(source, "talent_heat") > 0 then
+                    ApplyBuff(source, target, "ATHT", GetUnitTalentLevel(source, "talent_heat"))
+                end
+
+                if GetUnitTalentLevel(source, "talent_positive_charge") > 0 and attack_data.attack_status == ATTACK_STATUS_CRITICAL and attack_data.attribute == LIGHTNING_ATTRIBUTE and not AbilityInstanceHasEffect(attack_data, "talent_positive_charge") then
+                    local mp = math.floor((BlzGetUnitMaxMana(source) * (0.03 * GetUnitTalentLevel(source, "talent_positive_charge"))) + 0.5)
+                    SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + mp)
+                    CreateHitnumber(mp, source, source, RESOURCE_STATUS)
+                    AbilityInstanceAddEffectProc(attack_data, "talent_positive_charge")
+                end
+
+                if GetUnitTalentLevel(source, "talent_voltage") > 0 and attack_data.attribute == LIGHTNING_ATTRIBUTE and attack_data.attack_status == ATTACK_STATUS_CRITICAL then
+                    ApplyBuff(source, source, "ATAD", GetUnitTalentLevel(source, "talent_voltage"))
+                end
+
+                if GetUnitTalentLevel(source, "talent_induction") > 0 and attack_data.attribute == LIGHTNING_ATTRIBUTE and attack_data.attack_status == ATTACK_STATUS_CRITICAL and not AbilityInstanceHasEffect(attack_data, "talent_induction") then
+                   InductionTalentEffect(source)
+                    AbilityInstanceAddEffectProc(attack_data, "talent_induction")
+                end
+
+
+                if GetUnitTalentLevel(source, "talent_arc_discharge") > 0 and attack_data.attack_status == ATTACK_STATUS_CRITICAL and not AbilityInstanceHasEffect(attack_data, "talent_arc_discharge") then
+                    local lvl = GetUnitTalentLevel(source, "talent_arc_discharge")
+
+                        if (lvl == 1 and Chance(25.)) or (lvl == 2 and Chance(30.)) or (lvl == 3 and Chance(35.)) then
+                            ArcDischargeCharge(source)
+                            AbilityInstanceAddEffectProc(attack_data, "talent_arc_discharge")
+                        end
+
+                end
+
+                if GetUnitTalentLevel(source, "talent_disintegration") > 0 then
+                    DisintegrationTalentEffect(source, target)
+                end
+
+                if GetUnitTalentLevel(source, "talent_breath_of_frost") > 0 and attack_data.attribute == ICE_ATTRIBUTE then
+                    if Chance(17.) then
+                        BreathOfFrostTalentEffect(source, target)
+                    end
+                end
+
+            elseif GetUnitClass(source) == NECROMANCER_CLASS then
+
+                if GetUnitTalentLevel(source, "talent_pursuer") > 0 and attack_data.effect and attack_data.effect.eff.id ~= "effect_pursuer" and not AbilityInstanceHasEffect(attack_data, "talent_pursuer") then
+                    if Chance(17.) then
+                        LaunchPursuer(source)
+                        AbilityInstanceAddEffectProc(attack_data, "talent_pursuer")
+                    end
+                end
+
+                if GetUnitTalentLevel(source, "talent_tenacity_of_undead") > 0 and not IsAHero(source) then
+                    if Chance(17.) then ApplyBuff(source, source, "ATOD", GetUnitTalentLevel(source, "talent_tenacity_of_undead")) end
+                end
+
+                if GetUnitTalentLevel(source, "talent_life_steal") > 0 and (attack_data.attack_status == ATTACK_STATUS_CRITICAL or attack_data.attack_status == ATTACK_STATUS_CRITICAL_BLOCKED) then
+                    ApplyBuff(source, source, "ANLS", GetUnitTalentLevel(source, "talent_life_steal"))
+                end
+
+                if GetUnitTalentLevel(source, "talent_lesion") > 0 and attack_data.attribute == POISON_ATTRIBUTE and (attack_data.attack_status == ATTACK_STATUS_CRITICAL or attack_data.attack_status == ATTACK_STATUS_CRITICAL_BLOCKED) then
+                    AddSoundVolume("Sounds\\Spells\\poison".. GetRandomInt(1,4) ..".wav")
+                    ApplyBuff(source, target, "ATLS", GetUnitTalentLevel(source, "talent_lesion"))
+                end
+
+                if GetUnitTalentLevel(source, "talent_blood_pact") > 0 and not AbilityInstanceHasEffect(attack_data, "talent_blood_pact")  then
+                    if Chance(18.) and GetUnitState(source, UNIT_STATE_LIFE) / BlzGetUnitMaxHP(source) < 1. then
+                        BloodPactTalent(source)
+                        AbilityInstanceAddEffectProc(attack_data, "talent_blood_pact")
+                    end
+                end
+
+            end
+
+
+            if GetUnitTalentLevel(target, "talent_extra_charge") > 0 and attack_data.attack_type == MELEE_ATTACK then
+                ExtraChargeShockTalentEffect(source, target)
             end
 
 
@@ -1018,112 +1151,12 @@ do
                 end
             end
 
-            if GetUnitTalentLevel(source, "talent_heat") > 0 then
-                ApplyBuff(source, target, "ATHT", GetUnitTalentLevel(source, "talent_heat"))
-            end
-
-            if GetUnitTalentLevel(source, "talent_positive_charge") > 0 and attack_data.attack_status == ATTACK_STATUS_CRITICAL and attack_data.attribute == LIGHTNING_ATTRIBUTE then
-                local mp = math.floor((BlzGetUnitMaxMana(source) * (0.03 * GetUnitTalentLevel(source, "talent_positive_charge"))) + 0.5)
-                SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + mp)
-                CreateHitnumber(mp, source, source, RESOURCE_STATUS)
-            end
-
-            if GetUnitTalentLevel(source, "talent_voltage") > 0 and attack_data.attribute == LIGHTNING_ATTRIBUTE and attack_data.attack_status == ATTACK_STATUS_CRITICAL then
-                ApplyBuff(source, source, "ATAD", GetUnitTalentLevel(source, "talent_voltage"))
-            end
-
-            if GetUnitTalentLevel(source, "talent_induction") > 0 and attack_data.attribute == LIGHTNING_ATTRIBUTE and attack_data.attack_status == ATTACK_STATUS_CRITICAL then
-               InductionTalentEffect(source)
-            end
-
-            if GetUnitTalentLevel(target, "talent_extra_charge") > 0 and attack_data.attack_type == MELEE_ATTACK then
-                ExtraChargeShockTalentEffect(source, target)
-            end
-
-
-            if GetUnitTalentLevel(source, "talent_arc_discharge") > 0 and attack_data.attack_status == ATTACK_STATUS_CRITICAL and not AbilityInstanceHasEffect(attack_data, "talent_arc_discharge") then
-                local lvl = GetUnitTalentLevel(source, "talent_arc_discharge")
-
-                    if (lvl == 1 and Chance(25.)) or (lvl == 2 and Chance(30.)) or (lvl == 3 and Chance(35.)) then
-                        ArcDischargeCharge(source)
-                        AbilityInstanceAddEffectProc(attack_data, "talent_arc_discharge")
-                    end
-
-            end
-
-            if GetUnitTalentLevel(source, "talent_disintegration") > 0 then
-                DisintegrationTalentEffect(source, target)
-            end
-
-            if GetUnitTalentLevel(source, "talent_breath_of_frost") > 0 and attack_data.attribute == ICE_ATTRIBUTE then
-                if Chance(17.) then
-                    BreathOfFrostTalentEffect(source, target)
-                end
-            end
-
-            if GetUnitTalentLevel(target, "talent_reflexes") > 0 and attack_data.attack_type == RANGE_ATTACK and attack_data.damage_type == DAMAGE_TYPE_PHYSICAL then
-                if ReflexesTalentEffect(target) then
-                    local modificator = GetUnitTalentLevel(target, "talent_reflexes") == 1 and 0.5 or 0.2
-                    attack_data.damage = attack_data.damage * modificator
-                    DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Items\\SpellShieldAmulet\\SpellShieldCaster.mdx", "origin", target))
-                end
-            end
-
-            if GetUnitTalentLevel(source, "talent_breaking_defence") > 0 then
-                if Chance(20.) then
-                    ApplyBuff(source, target, "ATBD", GetUnitTalentLevel(source, "talent_breaking_defence"))
-                end
-            end
-
-            if GetUnitTalentLevel(source, "talent_carnage") > 0 then
-                SetBuffExpirationTime(source, "ATCR", -1.)
-            end
-
-            if GetUnitTalentLevel(target, "talent_herbs") > 0 then
-                local unit_data = GetUnitData(target)
-                unit_data.herbs_charge_time = 7.
-            end
-
-            if GetUnitTalentLevel(source, "talent_elbow_strike") > 0 and attack_data.attack_type == MELEE_ATTACK then
-                local chance = GetUnitTalentLevel(source, "talent_elbow_strike") == 1 and 13. or 17.
-                if Chance(chance) then
-                    PushUnit(source, target, AngleBetweenUnits(source, target), 75, 0.5, "talent_elbow_strike")
-                end
-            end
-
-            if GetUnitTalentLevel(source, "talent_fracture") > 0 then
-                if Chance(15.) then
-                    ApplyBuff(source, target, "ATFR", GetUnitTalentLevel(source, "talent_fracture"))
-                end
-            end
-
-            if GetUnitTalentLevel(source, "talent_vulnerability") > 0 and (attack_data.attack_status == ATTACK_STATUS_CRITICAL or attack_data.attack_status == ATTACK_STATUS_CRITICAL_BLOCKED) then
-                ApplyBuff(source, target, "ATVL", GetUnitTalentLevel(source, "talent_vulnerability"))
-            end
-
-            if GetUnitTalentLevel(source, "talent_pursuer") > 0 and attack_data.effect and attack_data.effect.eff.id ~= "effect_pursuer" then
-                if Chance(17.) then LaunchPursuer(source) end
-            end
-
-            if GetUnitTalentLevel(source, "talent_tenacity_of_undead") > 0 and not IsAHero(source) then
-                if Chance(17.) then ApplyBuff(source, source, "ATOD", GetUnitTalentLevel(source, "talent_tenacity_of_undead")) end
-            end
-
-            if GetUnitTalentLevel(source, "talent_life_steal") > 0 and (attack_data.attack_status == ATTACK_STATUS_CRITICAL or attack_data.attack_status == ATTACK_STATUS_CRITICAL_BLOCKED) then
-                ApplyBuff(source, source, "ANLS", GetUnitTalentLevel(source, "talent_life_steal"))
-            end
-
-            if GetUnitTalentLevel(source, "talent_lesion") > 0 and attack_data.attribute == POISON_ATTRIBUTE and (attack_data.attack_status == ATTACK_STATUS_CRITICAL or attack_data.attack_status == ATTACK_STATUS_CRITICAL_BLOCKED) then
-                AddSoundVolume("Sounds\\Spells\\poison".. GetRandomInt(1,4) ..".wav")
-                ApplyBuff(source, target, "ATLS", GetUnitTalentLevel(source, "talent_lesion"))
-            end
-
-            if GetUnitTalentLevel(source, "talent_blood_pact") > 0 then
-                if Chance(18.) and GetUnitState(source, UNIT_STATE_LIFE) / BlzGetUnitMaxHP(source) < 100 then BloodPactTalent(source) end
-            end
 
             if GetUnitAbilityLevel(source, FourCC("A007")) > 0 then
-                if Chance(35.) then ApplyBuff(source, target, "A006", Current_Wave) end
+                if Chance(35.) then
+                    AddSoundVolume("Sounds\\Spells\\poison".. GetRandomInt(1,4).. ".wav", GetUnitX(target), GetUnitY(target), 128, 1600., 4000)
+                    ApplyBuff(source, target, "A006", Current_Wave)
+                end
             end
 
             if GetUnitAbilityLevel(source, FourCC("A00L")) > 0 and attack_data.is_direct and attack_data.attack_type == MELEE_ATTACK then
@@ -1131,6 +1164,11 @@ do
                     AddSoundVolume("Sounds\\Spells\\poison".. GetRandomInt(1,4).. ".wav", GetUnitX(target), GetUnitY(target), 128, 1600., 4000)
                     ApplyBuff(source, target, "A00K", 1)
                 end
+            end
+
+            if UnitHasEffect(source, "black_death_effect") then
+                ApplyBuff(source, target, "A019", 1)
+                SetBuffExpirationTime(target, "A019", -1)
             end
 
             if IsHexActive("I03S") and IsUnitMonsterPlayer(source) and Chance(25.) then
@@ -1170,6 +1208,7 @@ do
             local bonus = 1.02 + GetUnitTalentLevel(source, "talent_sharpened_blade") * 0.02
 
                 unit_data.sharpened_blade_counter = unit_data.sharpened_blade_counter - 1
+                SetStatusBarValue("ATSB", unit_data.sharpened_blade_counter, GetPlayerId(GetOwningPlayer(source))+1)
                 attack_data.damage = attack_data.damage * bonus
                 if unit_data.sharpened_blade_counter <= 0 then RemoveBuff(source, "ATSB") end
 
@@ -1291,6 +1330,7 @@ do
 
                     if unit_data.sharpened_blade_counter > 0 then
                         unit_data.sharpened_blade_counter = unit_data.sharpened_blade_counter - 1
+                        SetStatusBarValue("ATSB", unit_data.sharpened_blade_counter, GetPlayerId(GetOwningPlayer(source))+1)
 
                         if unit_data.sharpened_blade_counter <= 0 then
                             RemoveBuff(source, "ATSB")
@@ -1340,13 +1380,14 @@ do
                  elseif id == "ANTT" then TortureCast(x, y)
                  elseif id == "ANDF" then DecrepifyCast(x, y)
                  elseif id == "ANWK" then WeakenCast(x, y)
+                 elseif id == "ANRP" then ReaperCast(source, target, x, y, ability_instance)
                  elseif id == "ANWS" and UnitHasEffect(source, "death_cry_Legendary") then
                      local angle = target and AngleBetweenUnits(source, target) or AngleBetweenUnitXY(source, x, y)
                      ThrowMissile(source, nil, "MNWS", { ability_instance = ability_instance }, GetUnitX(source), GetUnitY(source), x, y, angle - 15., true)
                      ThrowMissile(source, nil, "MNWS", { ability_instance = ability_instance }, GetUnitX(source), GetUnitY(source), x, y, angle + 15., true)
                  end
 
-                if GetUnitTalentLevel(source, "talent_abyss_awakens") > 0 then AbyssAwakensTalent(source) end
+                if GetUnitTalentLevel(source, "talent_abyss_awakens") > 0 and Chance(GetUnitParameterValue(source, CRIT_CHANCE)) then AbyssAwakensTalent(source) end
                 if GetUnitTalentLevel(source, "talent_death_march") > 0 then ApplyBuff(source, source, "ADEM", GetUnitTalentLevel(source, "talent_death_march")) end
 
             elseif class == ASSASSIN_CLASS then
@@ -1412,6 +1453,7 @@ do
                 elseif id == "AFBB" then IceBlastCast(source, x, y)
                 elseif id == "AARB" then AstralBarrageCast(source)
                 elseif id == "ABRR" then BloodRavenReviveCast(source)
+                elseif id == "A023" then DemonAssassinBlinkCast(source, target)
                 elseif id == "ABRA" then ApplyBuff(source, target, "A00J", 1)
                 elseif id == "ABBC" then
                     ModifyStat(source, CONTROL_REDUCTION, 1000, STRAIGHT_BONUS, true)
@@ -1419,6 +1461,7 @@ do
                 elseif id == "ARNA" then ReanimatedArrowBarrage(source, x, y)
                 elseif id == "A00B" then PitlordDarknessBarrageCast(source, x, y)
                 elseif id == "A00C" then PitlordMeteorsCast(source)
+                elseif id == "APNV" then PhantomLightningNova(source)
                 elseif id == "ADLB" then DiabloLightningBreath(source, x, y)
                 elseif id == "ADFS" then DiabloFireStomp(source, x, y)
                 elseif id == "ADCH" then ChargeUnit(source, 750., 800., GetUnitFacing(source), 1, 100., "walk channel", "diach", { effect = "Spell\\Valiant Charge.mdx", point = "origin" })
@@ -1491,6 +1534,9 @@ do
                     local talent_level = GetUnitTalentLevel(source, "talent_overflow")
                     ModifyAbilityInstance(ability_instance, "power_multiplier", talent_level, 0.3, MULTIPLY_BONUS)
                     ability_instance.manacost = talent_level == 1 and ability_instance.manacost * 1.5 or ability_instance.manacost * 2.
+                    AddStatusBarState("talent_overflow", "Talents\\BTNFireSpell8.blp", POSITIVE_BUFF, GetPlayerId(GetOwningPlayer(source))+1)
+                else
+                    RemoveStatusBarState("talent_overflow", GetPlayerId(GetOwningPlayer(source))+1)
                 end
             end
 
@@ -1516,6 +1562,11 @@ do
                 ModifyAbilityInstance(ability_instance, "power_multiplier", unit_data.curved_strike_stacks, 0.5, MULTIPLY_BONUS)
                 --ability_instance.power_multiplier = (ability_instance.power_multiplier or 0.)  + (0.5 * unit_data.curved_strike_stacks)
                 print("prepare to boost")
+            end
+
+            if GetUnitAbilityLevel(source, FourCC("A00Z")) > 0 and skill.type == SKILL_MAGICAL then
+                local buff = GetBuffDataFromUnit(source, "A00Z")
+                ApplyEffect(buff.buff_source, source, 0, 0, "succubus_blood_curse_damage_effect", 1)
             end
 
 

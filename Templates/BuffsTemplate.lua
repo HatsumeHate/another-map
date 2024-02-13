@@ -253,6 +253,9 @@ do
             inherit_level = true,
             max_level = 75,
             tags = { "skill" },
+            sfx = {
+                { path = "Effect\\WaterSlow.mdx", point = "origin" },
+            },
 
             level = {
                 [1] = {
@@ -281,6 +284,7 @@ do
             time_delta = 0.25,
             time_delta_level = 3,
             tags = { "skill" },
+            sfx = { { path = "Effect\\FreezeEffect.mdx", point = "origin" }, },
 
             level = {
                 [1] = {
@@ -304,6 +308,8 @@ do
             inherit_level = true,
             max_level = 75,
             tags = { "skill" },
+            sfx = { { path = "Effect\\Energy_Shield_Re_edit_002.mdx", point = "origin" }, },
+            icon = "Spell\\BTN_ArcaneProtection.blp",
 
             level = {
                 [1] = {
@@ -326,6 +332,10 @@ do
             inherit_level = true,
             max_level = 75,
             tags = { "skill", "barrier" },
+            sfx = {
+                { path = "Effect\\Energy_Shield_Re_edit_002.mdx", point = "origin" }
+            },
+            icon = "Spell\\BTNCloakOfFrost.blp",
 
             level = {
                 [1] = {
@@ -353,6 +363,9 @@ do
             inherit_level = false,
             max_level = 8,
             tags = { "skill" },
+            sfx = {
+                { path = "Abilities\\Spells\\Other\\Tornado\\Tornado_Target.mdx", point = "origin" }
+            },
 
             level = {
                 [1] = {
@@ -376,6 +389,10 @@ do
             inherit_level = true,
             max_level = 75,
             tags = { "skill" },
+            sfx = {
+                { path = "Abilities\\Spells\\Orc\\SpiritLink\\SpiritLinkTarget.mdx", point = "chest" }
+            },
+            icon = "Spell\\BTN_cr_Dark Arts.blp",
 
             level = {
                 [1] = {
@@ -399,6 +416,11 @@ do
             buff_type = POSITIVE_BUFF,
             max_level = 75,
             inherit_level = true,
+            sfx = {
+                { path = "Abilities\\Spells\\Human\\InnerFire\\InnerFireTarget.mdx", point = "overhead" }
+            },
+            icon = "ReplaceableTextures\\CommandButtons\\BTNInnerFire.blp",
+            statusbar_dont_show_time = true,
 
             level = {
                 [1] = {
@@ -423,6 +445,10 @@ do
             tags = { "skill" },
             sound = { loop_pack = { "Sounds\\Spells\\Surge_Loop_1.wav", "Sounds\\Spells\\Surge_Loop_2.wav", "Sounds\\Spells\\Surge_Loop_3.wav", "Sounds\\Spells\\Surge_Loop_4.wav", "Sounds\\Spells\\Surge_Loop_5.wav" },
                       volume = 160, cutoff = 1400., fadein = 0, fadeout = 100, delay = -0.14 },
+            sfx = {
+                { path = "Buffs\\ThunderAuraMod.mdx", point = "origin" }
+            },
+            icon = "Spell\\BTNElectricStrike.blp",
 
             level = {
                 [1] = {
@@ -430,8 +456,8 @@ do
                     time = 5.,
 
                     bonus = {
-                        { PARAM = CAST_SPEED, VALUE = 7, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 3, value_delta_level_max = 10 },
-                        { PARAM = ATTACK_SPEED, VALUE = 7, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 3, value_delta_level_max = 10 },
+                        { PARAM = CAST_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 3, value_delta_level_max = 15 },
+                        { PARAM = ATTACK_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 3, value_delta_level_max = 15 },
                         { PARAM = MOVING_SPEED, VALUE = 1.1, METHOD = MULTIPLY_BONUS, value_delta = 0.01, value_delta_level = 1, value_delta_level_max = 50 },
                     }
                 }
@@ -448,6 +474,10 @@ do
             attribute = FIRE_ATTRIBUTE,
             tags = { "skill" },
             sound = { loop_pack = { "Sounds\\Spells\\FlameShield_Loop_1.wav" }, volume = 140, cutoff = 1400. },
+            sfx = {
+                { path = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedTarget.mdx", point = "chest" }
+            },
+            icon = "Spell\\BTNFlameCloak.blp",
 
             level = {
                 [1] = {
@@ -474,6 +504,7 @@ do
             max_level = 75,
             attribute = FIRE_ATTRIBUTE,
             tags = { "skill", "burning" },
+
 
             level = {
                 [1] = {
@@ -631,6 +662,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 15,
+            icon = "Weapons\\BTNBlack Navaja.blp",
 
             level = {
                 [1] = {
@@ -746,6 +778,7 @@ do
             inherit_level = true,
             max_level = 75,
             tags = { "skill" },
+            icon = "Spell\\BTN_cr_CarA10.blp",
 
             level = {
                 [1] = {
@@ -773,6 +806,7 @@ do
             max_level = 75,
             level_penalty = 9,
             tags = { "skill" },
+            icon = "Spell\\BTNHearbreak.blp",
 
             level = {
                 [1] = {
@@ -797,6 +831,7 @@ do
             tags = { "skill" },
             endurance_hp_delta = 0.01,
             endurance_hp_delta_level = 3,
+            icon = "Spell\\BTNBlood (6).blp",
 
 
             level = {
@@ -837,6 +872,7 @@ do
             inherit_level = true,
             max_level = 2,
             tags = { "talent" },
+            icon = "Talents\\BTNability_warrior_unrelentingassault.blp",
 
             level = {
                 [1] = {
@@ -865,13 +901,9 @@ do
                 [1] = {
                     rank = 7,
                     time = 5.,
-
-                    current_level = 1,
-                    max_level = 1,
-
                     bonus = {
-                        { PARAM = PHYSICAL_RESIST, VALUE = -10, METHOD = STRAIGHT_BONUS, value_delta = -5, value_delta_level = 5, value_delta_level_max = 10 },
-                        { PARAM = ATTACK_SPEED, VALUE = -20, METHOD = STRAIGHT_BONUS, value_delta = -3, value_delta_level = 3, value_delta_level_max = 16 },
+                        { PARAM = PHYSICAL_RESIST, VALUE = -10, METHOD = STRAIGHT_BONUS, value_delta = -1, value_delta_level = 1, value_delta_level_max = 75 },
+                        { PARAM = ATTACK_SPEED, VALUE = -10, METHOD = STRAIGHT_BONUS, value_delta = -1, value_delta_level = 1, value_delta_level_max = 35 },
                     }
                 }
             }
@@ -890,10 +922,6 @@ do
                 [1] = {
                     rank = 15,
                     time = 1000.,
-
-                    current_level = 1,
-                    max_level = 1,
-
                     negative_state = STATE_STUN
                 }
             }
@@ -910,7 +938,6 @@ do
                 [1] = {
                     rank = 15,
                     time = 3.,
-
                     negative_state = STATE_STUN
                 }
             }
@@ -929,10 +956,6 @@ do
                 [1] = {
                     rank = 5,
                     time = 5.,
-
-                    current_level = 1,
-                    max_level = 1,
-
                     effect = 'ECSP',
                     effect_delay = 1.,
                 }
@@ -952,14 +975,10 @@ do
                 [1] = {
                     rank = 5,
                     time = 6.,
-
-                    current_level = 1,
-                    max_level = 1,
-
                     bonus = {
-                        { PARAM = PHYSICAL_ATTACK, VALUE = 0.7, METHOD = MULTIPLY_BONUS, value_delta = -0.05, value_delta_level = 5, value_delta_level_max = 5 },
-                        { PARAM = MAGICAL_ATTACK, VALUE = 0.7, METHOD = MULTIPLY_BONUS, value_delta = -0.05, value_delta_level = 5, value_delta_level_max = 5 },
-                        { PARAM = ATTACK_SPEED, VALUE = -20, METHOD = STRAIGHT_BONUS, value_delta = -5, value_delta_level = 5, value_delta_level_max = 5 },
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 0.85, METHOD = MULTIPLY_BONUS, value_delta = -0.01, value_delta_level = 1, value_delta_level_max = 50 },
+                        { PARAM = MAGICAL_ATTACK, VALUE = 0.85, METHOD = MULTIPLY_BONUS, value_delta = -0.01, value_delta_level = 1, value_delta_level_max = 50 },
+                        { PARAM = ATTACK_SPEED, VALUE = -15, METHOD = STRAIGHT_BONUS, value_delta = -1, value_delta_level = 1, value_delta_level_max = 50 },
                     }
                 }
             }
@@ -973,20 +992,17 @@ do
             max_level = 75,
             inherit_level = true,
             tags = { "skill" },
+            icon = "Spell\\BTNrallying cry.blp",
 
             level = {
                 [1] = {
                     rank = 5,
                     time = 5.,
-
-                    current_level = 1,
-                    max_level = 1,
-
                     bonus = {
-                        { PARAM = MOVING_SPEED, VALUE = 1.10, METHOD = MULTIPLY_BONUS, value_delta = 0.01, value_delta_level = 1, value_delta_level_max = 30 },
-                        { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 25 },
-                        { PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 25 },
-                        { PARAM = CONTROL_REDUCTION, VALUE = 15, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 20 },
+                        { PARAM = MOVING_SPEED, VALUE = 1.05, METHOD = MULTIPLY_BONUS, value_delta = 0.01, value_delta_level = 1, value_delta_level_max = 50 },
+                        { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 50 },
+                        { PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 50 },
+                        { PARAM = CONTROL_REDUCTION, VALUE = 15, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 25 },
                     }
                 }
             }
@@ -1021,6 +1037,7 @@ do
             current_level = 1,
             max_level = 3,
             inherit_level = true,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNGreaterRejuvScroll.blp",
 
             level = {
                 [1] = {
@@ -1093,6 +1110,7 @@ do
             max_level = 75,
             inherit_level = true,
             tags = { "skill" },
+            icon = "Spell\\BTNDevour.blp",
 
             level = {
                 [1] = {
@@ -1202,6 +1220,7 @@ do
             max_level = 75,
             inherit_level = true,
             tags = { "skill" },
+            icon = "Spell\\BTNNecroGrip2.blp",
 
             level = {
                 [1] = {
@@ -1242,6 +1261,7 @@ do
             max_level = 75,
             inherit_level = true,
             tags = { "skill" },
+            icon = "Spell\\BTNGalvanize.blp",
 
             level = {
                 [1] = {
@@ -1284,6 +1304,7 @@ do
             max_level = 75,
             inherit_level = true,
             tags = { "skill" },
+            icon = "Spell\\BTNCR_Spiked_Armor.blp",
 
             level = {
                 [1] = {
@@ -1303,6 +1324,8 @@ do
             buff_type = POSITIVE_BUFF,
             max_level = 75,
             inherit_level = true,
+            icon = "Spell\\BTNReanimate66.blp",
+            statusbar_dont_show = true,
 
             level = {
                 [1] = {
@@ -1324,6 +1347,8 @@ do
             buff_type = POSITIVE_BUFF,
             max_level = 75,
             inherit_level = true,
+            icon = "Spell\\BTNSkeletal_Hand.blp",
+            statusbar_dont_show = true,
 
             level = {
                 [1] = {
@@ -1345,6 +1370,8 @@ do
             buff_type = POSITIVE_BUFF,
             max_level = 1,
             inherit_level = true,
+            icon = "Spell\\BTNDullahan1.blp",
+            statusbar_dont_show = true,
 
             level = {
                 [1] = {
@@ -1370,6 +1397,8 @@ do
             buff_type = POSITIVE_BUFF,
             max_level = 1,
             inherit_level = true,
+            icon = "Spell\\BTNEArthLich.blp",
+            statusbar_dont_show = true,
 
             level = {
                 [1] = {
@@ -1395,6 +1424,8 @@ do
             buff_type = POSITIVE_BUFF,
             max_level = 75,
             inherit_level = true,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNBrilliance.blp",
+            statusbar_dont_show_time = true,
 
             level = {
                 [1] = {
@@ -1470,6 +1501,8 @@ do
             buff_type = POSITIVE_BUFF,
             max_level = 3,
             inherit_level = true,
+            icon = "Talents\\BTNLifeSteal.blp",
+            statusbar_show_level = true,
 
             level = {
                 [1] = {
@@ -1536,6 +1569,7 @@ do
             buff_type = POSITIVE_BUFF,
             max_level = 2,
             inherit_level = true,
+            icon = "Talents\\BTNNecromancy1.blp",
 
             level = {
                 [1] = {
@@ -1562,6 +1596,8 @@ do
             buff_type = POSITIVE_BUFF,
             max_level = 3,
             inherit_level = true,
+            icon = "Talents\\BTN_EyeOfShadows.blp",
+            statusbar_show_level = true,
 
             level = {
                 [1] = {
@@ -1595,6 +1631,7 @@ do
             buff_type = POSITIVE_BUFF,
             max_level = 1,
             inherit_level = true,
+            icon = "Talents\\BTNTaint.blp",
 
             level = {
                 [1] = {
@@ -1646,6 +1683,7 @@ do
             buff_type = POSITIVE_BUFF,
             max_level = 3,
             inherit_level = true,
+            icon = "Talents\\BTNAgi.blp",
 
             level = {
                 [1] = {
@@ -1896,7 +1934,7 @@ do
             attribute = DARKNESS_ATTRIBUTE,
             inherit_level = true,
             max_level = 75,
-             tags = { "skill" },
+            tags = { "skill" },
 
             level = {
                 [1] = {
@@ -2127,6 +2165,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = false,
             max_level = 8,
+            icon = "Armor\\BTNbt.blp",
 
             level = {
                 [1] = {
@@ -2232,6 +2271,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = false,
             max_level = 100,
+            icon = "Weapons\\BTN_CW_Red_Scepter.blp",
 
             level = {
                 [1] = {
@@ -2292,6 +2332,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNControlMagic.blp",
 
             level = {
                 [1] = {
@@ -2321,6 +2362,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNBloodLust.blp",
 
             level = {
                 [1] = {
@@ -2350,6 +2392,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNLightningShield.blp",
 
             level = {
                 [1] = {
@@ -2408,6 +2451,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNAntiMagicShell.blp",
 
             level = {
                 [1] = {
@@ -2437,6 +2481,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNSentryWard.blp",
 
             level = {
                 [1] = {
@@ -2465,6 +2510,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNWeb.blp",
 
             level = {
                 [1] = {
@@ -2485,6 +2531,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
             max_level = 75,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNEnvenomedSpear.blp",
 
             level = {
                 [1] = {
@@ -2504,6 +2551,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
             max_level = 75,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNEnvenomedSpear.blp",
 
             level = {
                 [1] = {
@@ -2523,6 +2571,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNStun.blp",
 
             level = {
                 [1] = {
@@ -2610,6 +2659,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNStun.blp",
 
             level = {
                 [1] = {
@@ -2628,6 +2678,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNPossession.blp",
 
             level = {
                 [1] = {
@@ -2650,6 +2701,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNPotionGreenSmall.blp",
 
             level = {
                 [1] = {
@@ -2670,6 +2722,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "GUI\\BTNYellowBottle.blp",
 
             level = {
                 [1] = {
@@ -2690,6 +2743,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNScrollOfProtection.blp",
 
             level = {
                 [1] = {
@@ -2710,6 +2764,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNScrollOfTownPortal.blp",
 
             level = {
                 [1] = {
@@ -2732,6 +2787,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "GUI\\BTN_InvisPot.blp",
 
             level = {
                 [1] = {
@@ -2752,6 +2808,8 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 3,
+            icon = "GUI\\BTNRpgFood.blp",
+            statusbar_show_level = true,
 
             level = {
                 [1] = {
@@ -2786,6 +2844,8 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 3,
+            icon = "GUI\\BTNRpgDrink.blp",
+            statusbar_show_level = true,
 
             level = {
                 [1] = {
@@ -2842,6 +2902,8 @@ do
             attribute = DARKNESS_ATTRIBUTE,
             inherit_level = false,
             max_level = 5,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNCurse.blp",
+            statusbar_show_level = true,
 
             level = {
                 [1] = {
@@ -2863,6 +2925,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNStun.blp",
 
             level = {
                 [1] = {
@@ -2903,6 +2966,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNStun.blp",
 
             level = {
                 [1] = {
@@ -2921,6 +2985,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNBanish.blp",
 
             level = {
                 [1] = {
@@ -2941,11 +3006,12 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNEnsnare.blp",
 
             level = {
                 [1] = {
                     rank = 15,
-                    time = 5.,
+                    time = 3.,
                     bonus = {
                         { PARAM = PHYSICAL_DEFENCE, VALUE = 0.75, METHOD = MULTIPLY_BONUS },
                     },
@@ -2962,6 +3028,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNFreezingBreath.blp",
 
             level = {
                 [1] = {
@@ -2980,6 +3047,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNCripple.blp",
 
             level = {
                 [1] = {
@@ -2995,12 +3063,34 @@ do
         })
         --================================================--
         NewBuffTemplate({
+            name = "lightning struck debuff",
+            id = 'A027',
+            buff_id = 'B04K',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNPurge.blp",
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 7.,
+                    bonus = {
+                        { PARAM = LIGHTNING_RESIST, VALUE = -15, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
             name = "conflagrate debuff",
             id = 'ACND',
             buff_id = 'B019',
             buff_type = NEGATIVE_BUFF,
             inherit_level = true,
             max_level = 50,
+            icon = "Spell\\BTNEruption.blp",
 
             level = {
                 [1] = {
@@ -3024,6 +3114,7 @@ do
             inherit_level = true,
             max_level = 1,
             infinite = true,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNDevotion.blp",
 
             level = {
                 [1] = {
@@ -3046,6 +3137,7 @@ do
             inherit_level = true,
             max_level = 1,
             infinite = true,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNTrueShot.blp",
 
             level = {
                 [1] = {
@@ -3068,6 +3160,7 @@ do
             inherit_level = true,
             max_level = 1,
             infinite = true,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNMaskOfDeath.blp",
 
             level = {
                 [1] = {
@@ -3089,6 +3182,7 @@ do
             inherit_level = true,
             max_level = 1,
             infinite = true,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNSpiritOfVengeance.blp",
 
             level = {
                 [1] = {
@@ -3160,12 +3254,13 @@ do
         })
         --================================================--
         NewBuffTemplate({
-            name = "incinerate debuff",
+            name = "incinerate buff",
             id = 'ATIN',
             buff_id = 'B01G',
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 3,
+            icon = "Talents\\BTNFireSpell3.blp",
 
             level = {
                 [1] = {
@@ -3241,6 +3336,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 2,
+            icon = "Talents\\BTNLightningSpell7.blp",
 
             level = {
                 [1] = {
@@ -3268,6 +3364,8 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 4,
+            icon = "Talents\\BTNLightningSpell17.blp",
+            statusbar_show_level = true,
 
             level = {
                 [1] = {
@@ -3328,6 +3426,8 @@ do
             inherit_level = true,
             max_level = 3,
             infinite = true,
+            icon = "Talents\\BTNLightningSpell1.blp",
+            statusbar_show_level = true,
 
             level = {
                 [1] = {
@@ -3409,6 +3509,8 @@ do
             inherit_level = true,
             max_level = 3,
             infinite = true,
+            icon = "Talents\\BTNFrozenShield.blp",
+            statusbar_show_level = true,
 
             level = {
                 [1] = {
@@ -3467,6 +3569,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 3,
+            icon = "Talents\\BTN_CR_BloodTapRED.blp",
 
             level = {
                 [1] = {
@@ -3519,7 +3622,9 @@ do
             buff_id = 'B01S',
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
-            max_level = 3,
+            max_level = 9,
+            icon = "Talents\\BTNEssenceOfCelerity.blp",
+            --statusbar_show_level = true,
 
             level = {
                 [1] = {
@@ -3631,6 +3736,7 @@ do
             inherit_level = true,
             max_level = 3,
             infinite = true,
+            icon = "Talents\\BTN_cr_VeeR8.blp",
 
             level = {
                 [1] = {
@@ -3668,6 +3774,8 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 7,
+            icon = "Talents\\BTN_cr_CarA1.blp",
+            statusbar_show_level = true,
 
             level = {
                 [1] = {
@@ -3731,6 +3839,7 @@ do
             inherit_level = true,
             max_level = 1,
             infinite = true,
+            icon = "Talents\\BTNDER_Weapon_Forge.blp",
 
             level = {
                 [1] = {
@@ -3749,6 +3858,7 @@ do
             inherit_level = true,
             max_level = 3,
             infinite = true,
+            icon = "Talents\\BTN_cr_CarA3.blp",
 
             level = {
                 [1] = {
@@ -3849,6 +3959,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 3,
+            icon = "Talents\\BTNCR_Human_Bloodlust.blp",
 
             level = {
                 [1] = {
@@ -3910,6 +4021,8 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 4,
+            icon = "Talents\\BTN_cr_CarA8.blp",
+            statusbar_show_level = true,
 
             level = {
                 [1] = {
@@ -3974,6 +4087,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 2,
+            icon = "Talents\\BTNAdrenalin.blp",
 
             level = {
                 [1] = {
@@ -3999,6 +4113,7 @@ do
             buff_type = POSITIVE_BUFF,
             inherit_level = true,
             max_level = 1,
+            icon = "Talents\\BTN_cr_Warp6.blp",
 
             level = {
                 [1] = {
@@ -4105,6 +4220,7 @@ do
             attribute = PHYSICAL_ATTRIBUTE,
             inherit_level = true,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNBarkskin.blp",
 
             level = {
                 [1] = {
@@ -4127,6 +4243,7 @@ do
             attribute = PHYSICAL_ATTRIBUTE,
             inherit_level = true,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNBloodLust.blp",
 
             level = {
                 [1] = {
@@ -4148,6 +4265,7 @@ do
             attribute = PHYSICAL_ATTRIBUTE,
             inherit_level = true,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNBrilliance.blp",
 
             level = {
                 [1] = {
@@ -4159,6 +4277,28 @@ do
                     }
                 }
             }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "black death debuff",
+            id = 'A019',
+            buff_id = 'B04I',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNRegenerationAura.blp",
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 3.,
+
+                    bonus = {
+                        { PARAM = HEALING_BONUS, VALUE = -10000, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+
         })
         --================================================--
         NewBuffTemplate({
@@ -4176,7 +4316,7 @@ do
 
                     bonus = {
                         { PARAM = CRIT_CHANCE, VALUE = 20, METHOD = STRAIGHT_BONUS },
-                        { PARAM = ATTACK_SPEED, VALUE = 1.35, METHOD = MULTIPLY_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = 35, METHOD = STRAIGHT_BONUS },
                         { PARAM = MOVING_SPEED, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
                     }
                 }
@@ -4216,6 +4356,7 @@ do
             attribute = ICE_ATTRIBUTE,
             inherit_level = true,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNFrost.blp",
 
             level = {
                 [1] = {
@@ -4231,6 +4372,71 @@ do
         })
         --================================================--
         NewBuffTemplate({
+            name = "succubi defence debuff",
+            id = 'A00N',
+            buff_id = 'B04F',
+            buff_type = NEGATIVE_BUFF,
+            attribute = DARKNESS_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNFaerieFire.blp",
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 5.,
+
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.5, METHOD = MULTIPLY_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "succubi blood debuff",
+            id = 'A00Z',
+            buff_id = 'B04G',
+            buff_type = NEGATIVE_BUFF,
+            attribute = DARKNESS_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNSilence.blp",
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 5.,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "demon assassin buff",
+            id = 'A010',
+            buff_id = 'B04H',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 3.,
+
+                    bonus = {
+                        { PARAM = DODGE_CHANCE, VALUE = 33, METHOD = STRAIGHT_BONUS },
+                        { PARAM = MAGICAL_SUPPRESSION, VALUE = 300, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
             name = "butcher cripple debuff",
             id = 'ABCR',
             buff_id = 'B036',
@@ -4238,6 +4444,7 @@ do
             attribute = PHYSICAL_ATTRIBUTE,
             inherit_level = true,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNSlow.blp",
 
             level = {
                 [1] = {
@@ -4260,6 +4467,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNStun.blp",
 
             level = {
                 [1] = {
@@ -4279,6 +4487,7 @@ do
             attribute = PHYSICAL_ATTRIBUTE,
             inherit_level = true,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNDoom.blp",
 
             level = {
                 [1] = {
@@ -4301,6 +4510,7 @@ do
             inherit_level = true,
             attribute = POISON_ATTRIBUTE,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNOrbOfVenom.blp",
 
             level = {
                 [1] = {
@@ -4321,6 +4531,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNStun.blp",
 
             level = {
                 [1] = {
@@ -4339,6 +4550,7 @@ do
             buff_type = NEGATIVE_BUFF,
             inherit_level = false,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNStun.blp",
 
             level = {
                 [1] = {
@@ -4478,6 +4690,27 @@ do
         })
         --================================================--
         NewBuffTemplate({
+            name = "skinripper debuff",
+            id = 'A028',
+            buff_id = 'B04L',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 1,
+            tags = { "dot", "bleeding" },
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 5.,
+                    effect = "skinripper_effect",
+                    effect_delay = 1.,
+                    effect_initial_delay = 0.
+                },
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
             name = "cc diminishing",
             id = 'ACCR',
             buff_id = 'B03N',
@@ -4485,6 +4718,7 @@ do
             attribute = PHYSICAL_ATTRIBUTE,
             inherit_level = true,
             max_level = 5,
+            statusbar_dont_show = true,
 
             level = {
                 [1] = {
@@ -4496,6 +4730,7 @@ do
                 }
             }
         })
+
 
 
     end

@@ -45,12 +45,22 @@ do
         return false
     end
 
+
     function RageTalentEffect(source)
         local max = GetUnitTalentLevel(source, "talent_rage") * 3
-        local current = (GetBuffLevel(source, "ATRG") + 1) + (max - 3)
+        local level = GetBuffLevel(source, "ATRG")
+        local min = max - 3
+        local current = 1
+
+            if level == 0 then current = min + 1
+            else current = min + (3 - max + level) + 1 end
 
             if current <= max then ApplyBuff(source, source, "ATRG", current) end
             SetBuffExpirationTime(source, "ATRG", -1.)
+            local val = 3 - (max - current)
+            if val > 3 then val = 3 end
+            SetStatusBarValue("ATRG", val, GetPlayerId(GetOwningPlayer(source))+1)
+
     end
 
 
@@ -88,6 +98,7 @@ do
                     if unit_data.sharpened_blade_charge_time <= 0. then
                         unit_data.sharpened_blade_counter = 3 + (GetUnitTalentLevel(source, "talent_sharpened_blade")-1) * 2
                         ApplyBuff(source, source, "ATSB", 1)
+                        SetStatusBarValue("ATSB", unit_data.sharpened_blade_counter, GetPlayerId(GetOwningPlayer(source))+1)
                         unit_data.sharpened_blade_time = 15.
                         DelayAction(0., function() PauseTimer(unit_data.sharpened_blade_charge_timer); unit_data.sharpened_blade_charge_time = 15. end)
                     else

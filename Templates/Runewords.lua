@@ -110,13 +110,39 @@ do
         })
 
         NewRuneword({
+            name = GetLocalString("Гора", "Mountain"),
+            runeword = { ITEM_RUNE_FEH, ITEM_RUNE_DAG, ITEM_RUNE_SOL  },
+            [ITEM_TYPE_WEAPON] = {
+                BONUS = {
+                    { PARAM = PHYSICAL_BONUS, VALUE = 60, METHOD = STRAIGHT_BONUS },
+                    { PARAM = HP_PER_KILL, VALUE = 50, METHOD = STRAIGHT_BONUS },
+                    { PARAM = COOLDOWN_REDUCTION, VALUE = 20, METHOD = STRAIGHT_BONUS },
+                    { PARAM = CONTROL_REDUCTION, VALUE = 15, METHOD = STRAIGHT_BONUS },
+                },
+            },
+        })
+
+        NewRuneword({
             name = GetLocalString("Ужас", "Dread"),
             runeword = { ITEM_RUNE_BER, ITEM_RUNE_DAG, ITEM_RUNE_ISA },
             [ITEM_TYPE_WEAPON] = {
                 BONUS = {
+                    { PARAM = DARKNESS_BONUS, VALUE = 60, METHOD = STRAIGHT_BONUS },
                     { PARAM = HP_PER_HIT, VALUE = 15, METHOD = STRAIGHT_BONUS },
                     { PARAM = CAST_SPEED, VALUE = 18, METHOD = STRAIGHT_BONUS },
-                    { PARAM = DARKNESS_BONUS, VALUE = 60, METHOD = STRAIGHT_BONUS },
+                },
+            },
+        })
+
+        NewRuneword({
+            name = GetLocalString("Увядание", "Wither"),
+            runeword = { ITEM_RUNE_ISA, ITEM_RUNE_BER, ITEM_RUNE_DAG },
+            [ITEM_TYPE_WEAPON] = {
+                BONUS = {
+                    { PARAM = POISON_BONUS, VALUE = 60, METHOD = STRAIGHT_BONUS },
+                    { PARAM = DAMAGE_TO_CC_ENEMIES, VALUE = 25, METHOD = STRAIGHT_BONUS },
+                    { PARAM = CONTROL_DURATION, VALUE = 20, METHOD = STRAIGHT_BONUS },
+                    { PARAM = POISON_RESIST, VALUE = 20, METHOD = STRAIGHT_BONUS },
                 },
             },
         })
@@ -152,7 +178,7 @@ do
             runeword = { ITEM_RUNE_ISA, ITEM_RUNE_DAG, ITEM_RUNE_GEBO },
             [ITEM_TYPE_JEWELRY] = {
                 BONUS = {
-                    { PARAM = BONUS_BEAST_DAMAGE, VALUE = 35, METHOD = STRAIGHT_BONUS },
+                    { PARAM = DAMAGE_TO_DISTANT_ENEMIES, VALUE = 35, METHOD = STRAIGHT_BONUS },
                     { PARAM = DROP_BONUS, VALUE = 15, METHOD = STRAIGHT_BONUS },
                     { PARAM = GOLD_BONUS, VALUE = 25, METHOD = STRAIGHT_BONUS },
                 },

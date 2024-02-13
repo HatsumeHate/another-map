@@ -312,6 +312,7 @@ do
                 { id = "I03Z", generate = true }, --rot
                 { id = "I040", generate = true }, --horrors
                 { id = "I041", generate = true }, --madness
+                { id = "I042", generate = true }, --skinripper
             }
         })
 
@@ -341,15 +342,15 @@ do
             max = 2,
             rolls = 3,
             list = {
-                { id = ITEM_RUNE_FEH, chance = 7. },
-                { id = ITEM_RUNE_GEBO, chance = 7. },
-                { id = ITEM_RUNE_RAIDO, chance = 7. },
-                { id = ITEM_RUNE_DAG, chance = 7. },
-                { id = ITEM_RUNE_SOL, chance = 7. },
-                { id = ITEM_RUNE_ISA, chance = 7. },
-                { id = ITEM_RUNE_EHW, chance = 7. },
-                { id = ITEM_RUNE_BER, chance = 7. },
-                { id = ITEM_RUNE_KANO, chance = 7. },
+                { id = ITEM_RUNE_FEH, chance = 11. },
+                { id = ITEM_RUNE_GEBO, chance = 11. },
+                { id = ITEM_RUNE_RAIDO, chance = 11. },
+                { id = ITEM_RUNE_DAG, chance = 11. },
+                { id = ITEM_RUNE_SOL, chance = 11. },
+                { id = ITEM_RUNE_ISA, chance = 11. },
+                { id = ITEM_RUNE_EHW, chance = 11. },
+                { id = ITEM_RUNE_BER, chance = 11. },
+                { id = ITEM_RUNE_KANO, chance = 11. },
             }
         })
 
@@ -536,9 +537,9 @@ do
             max = 2,
             list = {
                 { id = "common_item", chance = 10.5 },
-                { id = "gems", chance = 15.5 },
+                { id = "gems", chance = 5. },
                 { id = "consumables", chance = 11. },
-                { id = "books", chance = 33. },
+                { id = "books", chance = 20. },
                 { id = "gold_common", chance = 70. }
             }
         })
@@ -553,10 +554,10 @@ do
             max = 3,
             list = {
                 { id = "adv_item", chance = 14.7 },
-                { id = "gems", chance = 17.7 },
-                { id = "runes", chance = 5.9 },
+                { id = "gems", chance = 15. },
+                { id = "runes", chance = 6.9 },
                 { id = "consumables", chance = 11. },
-                { id = "books", chance = 37. },
+                { id = "books", chance = 42. },
                 { id = "special_items", chance = 5. },
                 { id = "gold_adv", chance = 70. },
                 { id = "gifts", chance = 3. },
@@ -633,8 +634,8 @@ do
             list = {
                 { id = "boss_item", chance = 38.5 },
                 { id = "unique_items", chance = 7. },
-                { id = "gems", chance = 11.3 },
-                { id = "runes", chance = 15.3 },
+                { id = "gems", chance = 25. },
+                { id = "runes", chance = 20. },
                 { id = "consumables", chance = 11. },
                 { id = "books", chance = 37. },
                 { id = "shard", chance = 10. },
@@ -682,12 +683,13 @@ do
             list = {
                 { id = "chest_item", chance = 47.5 },
                 { id = "set_items", chance = 5. },
-                { id = "gems", chance = 11.3 },
-                { id = "runes", chance = 9.5 },
+                { id = "gems", chance = 20. },
+                { id = "runes", chance = 15. },
                 { id = "consumables", chance = 11. },
                 { id = "special_items", chance = 7. },
                 { id = "gold_chest", chance = 90.},
                 { id = "gifts", chance = 7. },
+                { id = "books", chance = 50. },
             }
         })
 
@@ -697,8 +699,8 @@ do
             list = {
                 { id = "chest_item", chance = 65.5 },
                 { id = "unique_items", chance = 1. },
-                { id = "gems_supply", chance = 23.7 },
-                { id = "runes_supply", chance = 20. },
+                { id = "gems_supply", chance = 50. },
+                { id = "runes_supply", chance = 50. },
                 { id = "consumables_supply", chance = 20. },
                 { id = "gold_supply", chance = 100.}
             }

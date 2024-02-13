@@ -62,6 +62,7 @@ do
 
             if not unit_data.spirit or (unit_data.spirit and GetUnitState(unit_data.spirit, UNIT_STATE_LIFE) <= 0.045) then
                 unit_data.spirit_talent = unit_data.spirit_talent + 1
+                SetStatusBarValue("talent_spirit", unit_data.spirit_talent, GetPlayerId(GetOwningPlayer(caster))+1)
 
                 if unit_data.spirit_talent >= 10 then
                     local power = GetUnitParameterValue(caster, MINION_POWER)
@@ -74,6 +75,8 @@ do
                     BlzSetSpecialEffectTimeScale(effect, 3.)
 
                     DestroyEffect(unit_data.spirit_sfx)
+
+                    RemoveStatusBarState("talent_spirit", GetPlayerId(GetOwningPlayer(caster))+1)
 
                     DelayAction(1.333, function()
                         DestroyEffect(effect)
@@ -121,6 +124,8 @@ do
 
 
         else
+            AddStatusBarState("talent_spirit", "Talents\\BTN_CR_death.blp", POSITIVE_BUFF, GetPlayerId(GetOwningPlayer(caster))+1)
+            SetStatusBarValue("talent_spirit", 1, GetPlayerId(GetOwningPlayer(caster))+1)
             unit_data.spirit_talent = 1
             unit_data.spirit_sfx = AddSpecialEffectTarget("Abilities\\Spells\\NightElf\\SpiritOfVengeance\\SpiritOfVengeanceOrbs1.mdx", caster, "chest")
             unit_data.spirit = nil
@@ -167,33 +172,41 @@ do
         TimerStart(unit_data.death_embrace_timer, 0.05, true, function()
             local health = GetUnitState(caster, UNIT_STATE_LIFE) / BlzGetUnitMaxHP(caster)
 
-                if health < 0.25 then
+                if health <= 0.25 then
                     local bonus = unit_data.death_embrace_bonus * 3
 
-                        if bonus ~= unit_data.death_embrace_current_bonus then
-                            if unit_data.death_embrace_current_bonus > 0 then ModifyStat(caster, MAGICAL_ATTACK, 1. + (unit_data.death_embrace_current_bonus * 0.01), MULTIPLY_BONUS, false) end
-                            unit_data.death_embrace_current_bonus = bonus
-                            ModifyStat(caster, MAGICAL_ATTACK, 1. + (unit_data.death_embrace_current_bonus * 0.01), MULTIPLY_BONUS, true)
-                        end
+                    if bonus ~= unit_data.death_embrace_current_bonus then
+                        if unit_data.death_embrace_current_bonus > 0 then ModifyStat(caster, MAGICAL_ATTACK, 1. + (unit_data.death_embrace_current_bonus * 0.01), MULTIPLY_BONUS, false) end
+                        unit_data.death_embrace_current_bonus = bonus
+                        ModifyStat(caster, MAGICAL_ATTACK, 1. + (unit_data.death_embrace_current_bonus * 0.01), MULTIPLY_BONUS, true)
+                        AddStatusBarState("talent_death_embrace", "Talents\\BTNTrueDamageNew.blp", POSITIVE_BUFF, GetPlayerId(GetOwningPlayer(caster))+1)
+                        SetStatusBarValue("talent_death_embrace", 3, GetPlayerId(GetOwningPlayer(caster))+1)
+                    end
 
-                elseif health < 0.5 then
+                elseif health <= 0.5 then
                     local bonus = unit_data.death_embrace_bonus * 2
 
-                        if bonus ~= unit_data.death_embrace_current_bonus then
-                            if unit_data.death_embrace_current_bonus > 0 then ModifyStat(caster, MAGICAL_ATTACK, 1. + (unit_data.death_embrace_current_bonus * 0.01), MULTIPLY_BONUS, false) end
-                            unit_data.death_embrace_current_bonus = bonus
-                            ModifyStat(caster, MAGICAL_ATTACK, 1. + (unit_data.death_embrace_current_bonus * 0.01), MULTIPLY_BONUS, true)
-                        end
+                    if bonus ~= unit_data.death_embrace_current_bonus then
+                        if unit_data.death_embrace_current_bonus > 0 then ModifyStat(caster, MAGICAL_ATTACK, 1. + (unit_data.death_embrace_current_bonus * 0.01), MULTIPLY_BONUS, false) end
+                        unit_data.death_embrace_current_bonus = bonus
+                        ModifyStat(caster, MAGICAL_ATTACK, 1. + (unit_data.death_embrace_current_bonus * 0.01), MULTIPLY_BONUS, true)
+                        AddStatusBarState("talent_death_embrace", "Talents\\BTNTrueDamageNew.blp", POSITIVE_BUFF, GetPlayerId(GetOwningPlayer(caster))+1)
+                        SetStatusBarValue("talent_death_embrace", 2, GetPlayerId(GetOwningPlayer(caster))+1)
+                    end
 
-                elseif health < 0.75 then
+                elseif health <= 0.75 then
                     local bonus = unit_data.death_embrace_bonus * 1
 
-                        if bonus ~= unit_data.death_embrace_current_bonus then
-                            if unit_data.death_embrace_current_bonus > 0 then ModifyStat(caster, MAGICAL_ATTACK, 1. + (unit_data.death_embrace_current_bonus * 0.01), MULTIPLY_BONUS, false) end
-                            unit_data.death_embrace_current_bonus = bonus
-                            ModifyStat(caster, MAGICAL_ATTACK, 1. + (unit_data.death_embrace_current_bonus * 0.01), MULTIPLY_BONUS, true)
-                        end
+                    if bonus ~= unit_data.death_embrace_current_bonus then
+                        if unit_data.death_embrace_current_bonus > 0 then ModifyStat(caster, MAGICAL_ATTACK, 1. + (unit_data.death_embrace_current_bonus * 0.01), MULTIPLY_BONUS, false) end
+                        unit_data.death_embrace_current_bonus = bonus
+                        ModifyStat(caster, MAGICAL_ATTACK, 1. + (unit_data.death_embrace_current_bonus * 0.01), MULTIPLY_BONUS, true)
+                        AddStatusBarState("talent_death_embrace", "Talents\\BTNTrueDamageNew.blp", POSITIVE_BUFF, GetPlayerId(GetOwningPlayer(caster))+1)
+                        SetStatusBarValue("talent_death_embrace", 1, GetPlayerId(GetOwningPlayer(caster))+1)
+                    end
 
+                else
+                    RemoveStatusBarState("talent_death_embrace", GetPlayerId(GetOwningPlayer(caster))+1)
                 end
 
         end)
@@ -276,8 +289,16 @@ do
             local result = BlzGroupGetSize(unit_data.malediction_group) * bonus
             if result > max then result = max end
 
-            ModifyStat(caster, MAGICAL_ATTACK, unit_data.malediction_stacks, STRAIGHT_BONUS, false)
+            ModifyStat(caster, MAGICAL_ATTACK, unit_data.malediction_stacks or 0, STRAIGHT_BONUS, false)
             ModifyStat(caster, MAGICAL_ATTACK, result, STRAIGHT_BONUS, true)
+
+            if result > 0 then
+                AddStatusBarState("talent_vile_malediction", "Talents\\BTNDarkHarvest.blp", POSITIVE_BUFF, GetPlayerId(GetOwningPlayer(caster))+1)
+                SetStatusBarValue("talent_vile_malediction", result, GetPlayerId(GetOwningPlayer(caster))+1)
+            else
+                RemoveStatusBarState("talent_vile_malediction", GetPlayerId(GetOwningPlayer(caster))+1)
+            end
+
             unit_data.malediction_stacks = result
 
 

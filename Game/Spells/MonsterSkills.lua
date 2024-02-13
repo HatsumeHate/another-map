@@ -211,6 +211,120 @@ do
     end
 
 
+    function DemonAssassinBlinkCast(source, target)
+        local angle = AngleBetweenUnits(source, target)
+        local x,y = GetUnitX(target), GetUnitY(target)
+        local range = GetMaxAvailableDistance(x, y, angle, 125.)
+
+            x = x + Rx(range, angle)
+            y = y + Ry(range, angle)
+            SetUnitX(source, x)
+            SetUnitY(source, y)
+
+            DestroyEffect(AddSpecialEffect("Effect\\Blink Red Target.mdx", x, y))
+            BlzSetUnitFacingEx(source, angle + 180.)
+
+    end
+
+
+    ---@param source unit
+    ---@param id string
+    ---@param faderate real
+    ---@param bonus_start_z real
+    ---@param bonus_end_z real
+    ---@param bonus_range real
+    ---@param bonus_angle real
+    function LightningEffect_Point(source, point_x,  point_y, id, faderate, bonus_start_z, bonus_end_z, bonus_range, bonus_angle)
+        local source_x = GetUnitX(source); local source_y = GetUnitY(source); local source_z = GetUnitZ(source) + bonus_start_z
+        local unit_data = GetUnitData(source)
+        if unit_data.exploded then
+            source_x = unit_data.death_x; source_y = unit_data.death_y; source_z = unit_data.death_z + bonus_start_z
+        end
+
+        if bonus_range then
+            bonus_angle = GetUnitFacing(source) + bonus_angle
+            source_x = source_x + (bonus_range * Cos(bonus_angle * bj_DEGTORAD))
+            source_y = source_y + (bonus_range * Sin(bonus_angle * bj_DEGTORAD))
+        end
+
+        local point_z = GetZ(point_x,  point_y) + bonus_end_z
+
+        local bolt = AddLightningEx(id, true, source_x, source_y, source_z, point_x, point_y, point_z)
+        local fade_time = faderate
+
+            local timer = CreateTimer()
+            TimerStart(timer, 0.025, true, function()
+                if faderate <= 0. then
+                    DestroyLightning(bolt)
+                    DestroyTimer(GetExpiredTimer())
+                else
+                    SetLightningColor(bolt, 1, 1, 1, faderate / fade_time)
+
+                    unit_data = GetUnitData(source)
+                    if unit_data.exploded then source_x = unit_data.death_x; source_y = unit_data.death_y; source_z = unit_data.death_z + bonus_start_z
+                    else source_x = GetUnitX(source); source_y = GetUnitY(source); source_z = GetUnitZ(source) + bonus_start_z end
+
+                    MoveLightningEx(bolt, true, source_x, source_y, source_z, point_x,  point_y, point_z)
+                    faderate = faderate - 0.025
+                end
+            end)
+
+    end
+
+
+    function Lightningeffect_Nova(source, id, radius, parts, bonus_start_z, faderate)
+        local pack = {}
+        local starting_angle = GetRandomReal(0., 360.)
+        local step = 360. / parts
+        local x,y = GetUnitX(source), GetUnitY(source)
+        local z = GetZ(x, y) + bonus_start_z
+
+            for i = 1, parts do
+                local next = starting_angle + step
+                pack[i] = AddLightningEx(id, true, x + Rx(radius, starting_angle), y + Ry(radius, starting_angle), z, x + Rx(radius, next), y + Ry(radius, next), z)
+                starting_angle = next
+            end
+
+            local fade_time = faderate
+
+            local timer = CreateTimer()
+            TimerStart(timer, 0.025, true, function()
+                if faderate <= 0. then
+                    for i = 1, parts do DestroyLightning(pack[i]) end
+                    DestroyTimer(timer)
+                else
+                    for i = 1, parts do SetLightningColor(pack[i], 1, 1, 1, faderate / fade_time) end
+                    faderate = faderate - 0.025
+                end
+            end)
+
+    end
+
+
+    function PhantomLightningNova(caster)
+        local point_x, point_y = GetUnitX(caster), GetUnitY(caster)
+        local duration = 1.
+        local timer = CreateTimer()
+
+            Lightningeffect_Nova(caster, "WHNL", 350., 18, 5, 1.25)
+            TimerStart(timer, 0.05, true, function()
+                if duration <= 0. then
+                    DestroyTimer(timer)
+                else
+                    local angle = GetRandomReal(0., 360.)
+                    local range = GetRandomReal(75., 350.)
+                    local x,y = point_x + Rx(range, angle), point_y + Ry(range, angle)
+                    LightningEffect_Point(caster, x,  y, "WHNL", 0.33, 85, 5., 0., 0.)
+                    AddSoundVolume("Sounds\\Spells\\lightning_zap".. GetRandomInt(1,4) ..".wav", x, y, 114, 1500, 4000.)
+                    ApplyEffect(caster, nil, point_x, point_y, "phantom_nova_effect", 1)
+                    duration = duration - 0.05
+                end
+            end)
+
+    end
+
+
+
 
 
 end

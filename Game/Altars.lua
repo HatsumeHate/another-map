@@ -45,6 +45,7 @@ do
         local skins = { "n00N", "n02A", "n02B", "n02C", "n02D", "n02E" }
 
             BlzSetUnitSkin(altar, FourCC(skins[var]))
+            UnitAddAbility(altar, FourCC("A01H"))
 
             AltarsList[altar] = {
                 rect = rect,
@@ -160,6 +161,119 @@ do
                 end
             end)
 
+    end
+
+
+    function AltarInteraction()
+
+            if GetUnitAbilityLevel(GetOrderTargetUnit(), FourCC("A01H")) == 0 then
+                return
+            end
+
+            local hero = GetTriggerUnit()
+
+                if IsAHero(hero) then
+
+                    if IsUnitInRange(hero, GetOrderTargetUnit(), 225.) then
+                        local altar_unit = GetOrderTargetUnit()
+                        local altar = GetAltarData(altar_unit)
+
+
+                        UnitRemoveAbility(altar_unit, FourCC("A01H"))
+
+                        if altar.altar_type == ALTAR_TYPE_CHEST then
+                            altar.obelisk_effect.effect(altar_unit)
+                        elseif altar.altar_type == ALTAR_TYPE_HATRED then
+                            altar.obelisk_effect.effect(altar_unit, hero)
+                        else
+                            altar.obelisk_effect.effect(hero)
+                        end
+
+
+                        if altar.altar_type == ALTAR_TYPE_OBELISK then
+                            DestroyTextTag(altar.texttag)
+                            DestroyMinimapIcon(altar.minimap_icon)
+                            altar.minimap_icon = CreateMinimapIconOnUnit(altar_unit, 255, 255, 255, altar.obelisk_effect.minimap_model_used, FOG_OF_WAR_VISIBLE)
+                            if GetUnitTypeId(altar_unit) == FourCC("n00K") then AddUnitAnimationProperties(altar_unit, "alternate", false) end
+                        elseif altar.altar_type == ALTAR_TYPE_WELL_HP or altar.altar_type == ALTAR_TYPE_WELL_MP then
+                            DestroyMinimapIcon(altar.minimap_icon)
+                            altar.minimap_icon = CreateMinimapIconOnUnit(altar_unit, 255, 255, 255, "Marker\\MarkWellEmpty.mdx", FOG_OF_WAR_VISIBLE)
+                            SetUnitState(altar_unit, UNIT_STATE_MANA, 0.)
+                            AddUnitAnimationProperties(altar_unit, "First", false)
+                            AddUnitAnimationProperties(altar_unit, "Third", true)
+                        elseif altar.altar_type == ALTAR_TYPE_CHEST then
+
+                            DestroyMinimapIcon(altar.minimap_icon)
+
+                                if BlzGetUnitSkin(altar_unit) == FourCC("n00N") then
+                                    AddUnitAnimationProperties(altar_unit, "alternate", true)
+                                    SetUnitAnimation(altar_unit, "birth alternate")
+                                    UnitAddAbility(altar_unit, FourCC("Aloc"))
+                                else
+                                    KillUnit(altar_unit)
+                                end
+
+                        end
+
+
+                        if altar.obelisk_effect.recharge_time then
+                            local timer = CreateTimer()
+                            TimerStart(timer, altar.obelisk_effect.recharge_time, false, function()
+
+                                UnitAddAbility(altar_unit, FourCC("A01H"))
+
+                                if altar.altar_type == ALTAR_TYPE_OBELISK then
+                                    GenerateAltarEffect(altar_unit)
+                                    DestroyMinimapIcon(altar.minimap_icon)
+                                    altar.minimap_icon = CreateMinimapIconOnUnit(altar, 255, 255, 255, altar.obelisk_effect.minimap_model_active, FOG_OF_WAR_VISIBLE)
+                                    if GetUnitTypeId(altar_unit) == FourCC("n00K") then AddUnitAnimationProperties(altar_unit, "alternate", true) end
+                                elseif altar.altar_type == ALTAR_TYPE_WELL_HP or altar.altar_type == ALTAR_TYPE_WELL_MP then
+                                    SetUnitState(altar_unit, UNIT_STATE_MANA, GetUnitState(altar_unit, UNIT_STATE_MAX_MANA))
+                                    AddUnitAnimationProperties(altar_unit, "First", true)
+                                    AddUnitAnimationProperties(altar_unit, "Third", false)
+                                elseif altar.altar_type == ALTAR_TYPE_CHEST then
+                                    GroupRemoveUnit(ChestGroup, altar_unit)
+                                    RemoveUnit(altar_unit)
+                                    AltarsList[altar_unit] = nil
+                                end
+
+                                DestroyTimer(GetExpiredTimer())
+                                altar_unit = nil
+                            end)
+                        end
+
+                    else
+                        local target = GetOrderTargetUnit()
+                        local x, y = GetUnitX(target), GetUnitY(target)
+                        local proximity_timer = CreateTimer()
+                        local proximity_trigger = CreateTrigger()
+
+                            TriggerRegisterUnitEvent(proximity_trigger, hero, EVENT_UNIT_ISSUED_POINT_ORDER)
+                            TriggerRegisterUnitEvent(proximity_trigger, hero, EVENT_UNIT_ISSUED_ORDER)
+                            TriggerRegisterUnitEvent(proximity_trigger, hero, EVENT_UNIT_ISSUED_TARGET_ORDER)
+
+                            DelayAction(0., function()
+                                TriggerAddAction(proximity_trigger, function()
+                                    DestroyTimer(proximity_timer)
+                                    DestroyTrigger(proximity_trigger)
+                                end)
+                            end)
+
+                            TimerStart(proximity_timer, 0.025, true, function()
+                                if IsUnitInRange(hero, target, 225.) and GetUnitAbilityLevel(target, FourCC("A01H")) > 0 then
+                                    DestroyTimer(proximity_timer)
+                                    DestroyTrigger(proximity_trigger)
+                                    IssueTargetOrderById(hero, order_smart, target)
+                                elseif GetUnitAbilityLevel(target, FourCC("A01H")) == 0 then
+                                    DestroyTimer(proximity_timer)
+                                    DestroyTrigger(proximity_trigger)
+                                    IssueImmediateOrderById(hero, order_stop)
+                                end
+                            end)
+
+                    end
+
+                end
     end
 
 
@@ -320,7 +434,8 @@ do
         TriggerRegisterPlayerUnitEvent(trg, Player(3), EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER, nil)
         TriggerRegisterPlayerUnitEvent(trg, Player(4), EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER, nil)
         TriggerRegisterPlayerUnitEvent(trg, Player(5), EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER, nil)
-        TriggerAddAction(trg, function()
+        TriggerAddAction(trg, AltarInteraction)
+        --[[TriggerAddAction(trg, function()
 
             if GetOrderTargetItem() ~= nil or GetUnitAbilityLevel(GetOrderTargetUnit(), FourCC("A01H")) == 0 then
                 return
@@ -430,7 +545,7 @@ do
 
                 end
 
-        end)
+        end)]]
 
         ChestRects = {
             [1]	 = gg_rct_chest_1,

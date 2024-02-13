@@ -146,6 +146,8 @@ do
             ReloadJournalFrames()
             ReloadSkillPanelFrames()
             ReloadSacrificeAltarFrame()
+            DrawHeroBars()
+            ReloadStatusBar()
         end)
 
 
@@ -572,6 +574,7 @@ do
         end)
 
         TeleporterInit()
+        InitStatusBar()
 
         local LoadTrigger = CreateTrigger()
         TriggerRegisterGameEvent(LoadTrigger, EVENT_GAME_LOADED)

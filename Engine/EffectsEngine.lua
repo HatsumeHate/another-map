@@ -10,8 +10,11 @@ do
 
         if sfx then
             local new_effect = AddSpecialEffectTarget(sfx, target, point or "chest")
+
                 BlzSetSpecialEffectScale(new_effect, scale or 1.)
-                DelayAction(duration or 0., function() DestroyEffect(new_effect) end)
+                if duration then DelayAction(duration, function() DestroyEffect(new_effect) end)
+                else DestroyEffect(new_effect) end
+
         end
 
     end
@@ -21,7 +24,8 @@ do
             for i = 1, #pack do
                 local new_effect = AddSpecialEffectTarget(pack[i].effect, target, pack[i].point or "chest")
                 BlzSetSpecialEffectScale(new_effect, pack[i].scale or 1.)
-                DelayAction(pack[i].duration or 0., function() DestroyEffect(new_effect) end)
+                if pack[i].duration then DelayAction(pack[i].duration, function() DestroyEffect(new_effect) end)
+                else DestroyEffect(new_effect) end
             end
         end
     end
@@ -99,7 +103,11 @@ do
             if not unit_data.effectstacks[source] or not unit_data.effectstacks[source][data.id] then
                 if not unit_data.effectstacks[source] then unit_data.effectstacks[source] = {} end
                 unit_data.effectstacks[source][data.id] = true
-                DelayAction(myeffect.hit_once_in, function() unit_data.effectstacks[source][data.id] = nil end)
+                local timer = CreateTimer()
+                TimerStart(timer, myeffect.hit_once_in, false, function()
+                    unit_data.effectstacks[source][data.id] = nil
+                    DestroyTimer(timer)
+                end)
                 return false
             else
                 return true
@@ -112,12 +120,19 @@ do
         local myeffect = data.level[lvl]
 
             if myeffect.life_restored and myeffect.life_restored > 0 then
-                SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + (myeffect.life_restored * (1. + GetUnitParameterValue(target, HEALING_BONUS) * 0.01)))
-                CreateHitnumber(R2I(myeffect.life_restored), source, target, HEAL_STATUS)
+                local healing = myeffect.life_restored * (1. + GetUnitParameterValue(target, HEALING_BONUS) * 0.01)
+
+                    if healing < 0 then healing = 0 end
+                    SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + healing)
+                    CreateHitnumber(R2I(myeffect.life_restored), source, target, HEAL_STATUS)
+
             elseif myeffect.life_percent_restored and myeffect.life_percent_restored > 0 then
-                local value = BlzGetUnitMaxHP(target) * (myeffect.life_percent_restored * (1. + GetUnitParameterValue(target, HEALING_BONUS) * 0.01))
-                SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + value)
-                CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
+                local healing = myeffect.life_percent_restored * (1. + GetUnitParameterValue(target, HEALING_BONUS) * 0.01)
+                if healing < 0 then healing = 0 end
+                local value = BlzGetUnitMaxHP(target) * healing
+
+                    SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + value)
+                    CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
             end
 
             if myeffect.resource_restored and myeffect.resource_restored > 0 then
@@ -183,17 +198,24 @@ do
                 --print("???????")
                 if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
                     if myeffect.heal_amount then
-                        SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + myeffect.heal_amount)
-                        CreateHitnumber(R2I(myeffect.heal_amount), source, target, HEAL_STATUS)
-                        ModifyBuffsEffect(source, target, data, lvl, ON_ALLY)
-                        OnEffectApply(source, target, data)
+                        local healing = myeffect.heal_amount * (1. + GetUnitParameterValue(target, HEALING_BONUS) * 0.01)
+
+                            if healing < 0 then healing = 0 end
+                            SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + healing)
+                            CreateHitnumber(R2I(myeffect.heal_amount), source, target, HEAL_STATUS)
+                            ModifyBuffsEffect(source, target, data, lvl, ON_ALLY)
+                            OnEffectApply(source, target, data)
                     end
                     if myeffect.heal_amount_max_hp then
-                        local value = GetUnitParameterValue(target, HP_VALUE) * myeffect.heal_amount_max_hp
-                        SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + value)
-                        CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
-                        ModifyBuffsEffect(source, target, data, lvl, ON_ALLY)
-                        OnEffectApply(source, target, data)
+                        local healing = myeffect.heal_amount_max_hp * (1. + GetUnitParameterValue(target, HEALING_BONUS) * 0.01)
+
+                            if healing < 0 then healing = 0 end
+                            local value = GetUnitParameterValue(target, HP_VALUE) * healing
+
+                            SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + value)
+                            CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
+                            ModifyBuffsEffect(source, target, data, lvl, ON_ALLY)
+                            OnEffectApply(source, target, data)
                     end
                 end
                 DestroyTimer(timer)
@@ -217,7 +239,6 @@ do
             TimerStart(timer, myeffect.hit_delay or 0., false, function()
                 if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
                     --print("effect level data : ".. "attribute " .. GetItemAttributeName(myeffect.attribute) .. " damage type " .. I2S(myeffect.damage_type) .. " power " .. I2S(myeffect.power))
-
                     DamageUnit(source, target,
                             myeffect.power or 0,
                             myeffect.attribute or PHYSICAL_ATTRIBUTE,
@@ -387,7 +408,11 @@ do
                         end
 
                         if myeffect.SFX_bonus_z then BlzSetSpecialEffectZ(effect, GetZ(x, y) + myeffect.SFX_bonus_z) end
-                        DelayAction(myeffect.SFX_lifetime or 0., function() DestroyEffect(effect) end)
+
+
+                    if myeffect.SFX_lifetime then DelayAction(myeffect.SFX_lifetime, function() DestroyEffect(effect) end)
+                    else DestroyEffect(effect) end
+
 
                 end
                 DestroyTimer(GetExpiredTimer())
@@ -398,10 +423,15 @@ do
 
         if myeffect.sound then
             for i = 1, #myeffect.sound do
-                DelayAction(myeffect.sound[i].delay or 0., function()
+                if myeffect.sound[i].delay then
+                    DelayAction(myeffect.sound[i].delay, function()
+                        local sound = myeffect.sound[i]
+                        AddSoundVolumeZ(sound.pack[GetRandomInt(1, #sound.pack)], x, y, 35., sound.volume, sound.cutoff)
+                    end)
+                else
                     local sound = myeffect.sound[i]
                     AddSoundVolumeZ(sound.pack[GetRandomInt(1, #sound.pack)], x, y, 35., sound.volume, sound.cutoff)
-                end)
+                end
             end
         end
 
@@ -420,12 +450,11 @@ do
                     local timer = CreateTimer()
                     TimerStart(timer, myeffect.hit_delay or 0., false, function()
                         ApplyRestoreEffect(source, source, data, lvl)
-                        DestroyTimer(GetExpiredTimer())
+                        DestroyTimer(timer)
                     end)
 
                 end
 
-                --print("1")
                 -- damaging
                 if (myeffect.power and myeffect.power > 0) or (myeffect.attack_percent_bonus and myeffect.attack_percent_bonus > 0.) or (myeffect.weapon_damage_percent_bonus and myeffect.weapon_damage_percent_bonus > 0.) then
                     -- multiple target damage
@@ -434,10 +463,10 @@ do
                     if myeffect.global_crit then
                         local bonus_critical = myeffect.bonus_crit_chance and myeffect.bonus_crit_chance or 0.
 
-                            if GetRandomInt(1, 100) <= GetCriticalChance(source, bonus_critical) then myeffect.critical_strike_flag = true
+                            if GetRandomInt(1, 100) <= GetCriticalChance(source, bonus_critical) then ability_instance.critical_strike_flag = true
                             else myeffect.can_crit = false end
 
-                        end
+                    end
 
                     if data.single_attack then
                         local attacker = GetUnitData(source)
@@ -491,6 +520,12 @@ do
                                         DestroyTimer(timer)
                                         DestroyGroup(damaged_group)
                                         DestroyGroup(enemy_group)
+                                        if myeffect.hit_delay then
+                                            DelayAction(myeffect.hit_delay, function() myeffect = nil; data = nil end)
+                                        else
+                                            myeffect = nil
+                                            data = nil
+                                        end
                                     end
 
                                 end)
@@ -520,6 +555,13 @@ do
 
                                 end
 
+                            if myeffect.hit_delay then
+                                DelayAction(myeffect.hit_delay, function() myeffect = nil; data = nil end)
+                            else
+                                myeffect = nil
+                                data = nil
+                            end
+
                             GroupClear(enemy_group)
                             DestroyGroup(enemy_group)
                         end
@@ -528,6 +570,7 @@ do
                         --print("single target")
                         -- single target damage
                         if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 and IsUnitEnemy(target, player_entity) and GetUnitAbilityLevel(target, FourCC("Avul")) == 0 then
+
                             if myeffect.angle_window ~= nil and myeffect.angle_window > 0. then
                                 if IsAngleInFace(source, myeffect.angle_window, GetUnitX(target), GetUnitY(target), false) then
                                     ApplyEffectDamage(source, target, data, lvl)
@@ -536,7 +579,16 @@ do
                                 --print("apply damage effect - " .. GetUnitName(source) .. " to " .. GetUnitName(target) .. " with effect " .. data.name .. " with level " .. I2S(lvl))
                                 ApplyEffectDamage(source, target, data, lvl)
                             end
+
                             data.enemies_hit[target] = true
+
+                            if myeffect.hit_delay then
+                                DelayAction(myeffect.hit_delay, function() myeffect = nil; data = nil end)
+                            else
+                                myeffect = nil
+                                data = nil
+                            end
+
                         end
                     end
 
@@ -588,6 +640,12 @@ do
                                         DestroyTimer(timer)
                                         DestroyGroup(damaged_group)
                                         DestroyGroup(enemy_group)
+                                        if myeffect.hit_delay then
+                                            DelayAction(myeffect.hit_delay, function() myeffect = nil; data = nil end)
+                                        else
+                                            myeffect = nil
+                                            data = nil
+                                        end
                                     end
 
                                 end)
@@ -632,7 +690,6 @@ do
                     end
 
                 end
-                --print(data.name)
                 -- healing
                 --print(myeffect.heal_amount_max_hp or 0)
                 if (myeffect.heal_amount and myeffect.heal_amount > 0) or (myeffect.heal_amount_max_hp and myeffect.heal_amount_max_hp > 0) then

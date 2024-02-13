@@ -81,7 +81,12 @@ do
 
 
     function ApplyMonsterAuaraTrait(unit)
-        ToggleAuraOnUnit(unit, MonsterAurasData[GetRandomInt(1, #MonsterAurasData)], 1, true)
+        local aura = MonsterAurasData[GetRandomInt(1, #MonsterAurasData)]
+        local aura_data = GetAuraData(aura)
+        local unit_data = GetUnitData(unit)
+
+            unit_data.labels = aura_data.name
+            ToggleAuraOnUnit(unit, aura, 1, true)
     end
 
     ---@param unit unit

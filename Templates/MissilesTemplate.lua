@@ -270,6 +270,34 @@ do
             full_distance = true
         })
         --==============================================--
+        NewMissileTemplate('missile_skeletal_mage_fire', {
+            name = "skeleton mage",
+            model = "Abilities\\Weapons\\FireBallMissile\\FireBallMissile.mdч",
+            max_distance = 1000.,
+            radius = 55.,
+            speed = 1100.,
+            start_z = 60.,
+            end_z = 60.,
+            arc = 0.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('missile_skeletal_mage_cold', {
+            name = "skeleton mage",
+            model = "Abilities\\Spells\\Other\\FrostBolt\\FrostBoltMissile.mdx",
+            max_distance = 1000.,
+            radius = 55.,
+            speed = 1000.,
+            start_z = 60.,
+            end_z = 60.,
+            arc = 0.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
         NewMissileTemplate('MSSM', {
             name = "sorceress nightmare",
             model = "Abilities\\Weapons\\FireBallMissile\\FireBallMissile.mdx",
@@ -570,6 +598,21 @@ do
             full_distance = true
         })
         --==============================================--
+        NewMissileTemplate('bandit_arcane_missile', {
+            name = "bandit arcane missile",
+            model = "Missile\\ArcaneMissileComplete.mdx",
+            max_distance = 700.,
+            radius = 57.,
+            speed = 1000.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.1,
+            scale = 1.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
         NewMissileTemplate('MSSP', {
             name = "arachno missile",
             model = "Abilities\\Weapons\\ChimaeraAcidMissile\\ChimaeraAcidMissile.mdx",
@@ -840,7 +883,7 @@ do
             model = "Effect\\fire3.mdx",
             max_distance = 700.,
             radius = 100.,
-            speed = 600.,
+            speed = 1000.,
             start_z = 0.,
             end_z = 0.,
             scale = 1.15,
@@ -1062,6 +1105,23 @@ do
             max_targets = 1,
             ignore_terrain = true,
             full_distance = true,
+            can_enum = true
+        })
+
+        --===============================================--
+        NewMissileTemplate('reaper_missile', {
+            name = "reaper missile",
+            model = "",
+            max_distance = 650.,
+            radius = 100.,
+            speed = 1100.,
+            start_z = 50.,
+            end_z = 50.,
+            arc = 0.,
+            max_targets = 1,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
             can_enum = true
         })
 

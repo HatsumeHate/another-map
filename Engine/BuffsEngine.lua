@@ -79,6 +79,8 @@ do
                     if buff_data.static_effect then DestroyEffect(buff_data.static_effect) end
                     if buff_data.sound then DestroyLoopingSound(buff_data.soundpack, buff_data.sound.fadetime or 0.15) end
 
+                    RemoveStatusBarState(buff_data.id, GetPlayerId(GetOwningPlayer(unit_data.Owner))+1)
+
                     DestroyTimer(buff_data.update_timer)
                     table.remove(unit_data.buff_list, i)
                     buff_data = nil
@@ -257,6 +259,7 @@ do
                             buff_data.expiration_time = math.floor((buff_data.expiration_time * (((100. - unit_data.stats[CONTROL_REDUCTION].value) / 100.) * cc_duration)) + 0.5)
                         end
 
+                        SetStatusBarTime(buff_data.id, buff_data.expiration_time / 1000, GetPlayerId(GetOwningPlayer(target))+1)
                         break
                     end
                 end
@@ -322,6 +325,11 @@ do
 
                     buff_data.current_level = lvl
 
+                    local player = GetPlayerId(GetOwningPlayer(target))+1
+                    if buff_data.statusbar_show_level then
+                        SetStatusBarValue(buff_data.id, lvl, player)
+                    end
+
                         if buff_data.level[lvl].negative_state and buff_data.level[lvl].negative_state > 0 then
 
                             if buff_data.level[lvl].negative_state == STATE_FREEZE then
@@ -357,6 +365,8 @@ do
                             end
 
                             buff_data.expiration_time = math.floor((buff_data.expiration_time * (((100. - unit_data.stats[CONTROL_REDUCTION].value) / 100.) * cc_duration)) + 0.5)
+
+                            SetStatusBarTime(buff_data.id, buff_data.expiration_time / 1000, player)
 
                             if buff_data.expiration_time <= 0 then
                                 OnBuffExpire(buff_data.buff_source or nil, target, buff_data)
@@ -502,7 +512,6 @@ do
             buff_data.buff_source = source
             buff_data.current_level = lvl
 
-
         if buff_data.level_penalty then
             buff_data.current_level = buff_data.current_level - buff_data.level_penalty
             if buff_data.current_level < 1 then buff_data.current_level = 1 end
@@ -547,7 +556,6 @@ do
                     end
                 end
 
-
                 if buff_data.level[lvl].buff_sfx then
                     local new_effect
                         if buff_data.level[lvl].buff_sfx_point and StringLength(buff_data.level[lvl].buff_sfx_point) > 0 then
@@ -558,7 +566,6 @@ do
                     BlzSetSpecialEffectScale(new_effect, buff_data.level[lvl].buff_sfx_scale or 1.)
                     DestroyEffect(new_effect)
                 end
-
 
                 if buff_data.level[lvl].negative_state and buff_data.level[lvl].negative_state > 0 then
 
@@ -611,7 +618,6 @@ do
             table.insert(target_data.buff_list, buff_data)
             buff_data.ability_instance = ability_instance
 
-
                 if buff_data.static_sfx then
                     buff_data.static_effect = AddSpecialEffect(buff_data.static_sfx.path, GetUnitX(target), GetUnitY(target))
                     if buff_data.static_sfx.autoscaling then BlzSetSpecialEffectScale(buff_data.static_effect, BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE)) end
@@ -627,7 +633,6 @@ do
                         ModifyStat(target, buff_data.level[lvl].bonus[i].PARAM, buff_data.level[lvl].bonus[i].VALUE, buff_data.level[lvl].bonus[i].METHOD, true)
                     end
                 end
-
 
                 if buff_data.level[lvl].effects then
                     for i = 1, #buff_data.level[lvl].effects do
@@ -655,6 +660,21 @@ do
 
             OnBuffApply(buff_data.buff_source or nil, target, buff_data)
 
+            local player = GetPlayerId(GetOwningPlayer(target))+1
+
+            if not buff_data.statusbar_dont_show then
+                AddStatusBarState(buff_id, buff_data.icon or "", buff_data.buff_type, player)
+            end
+
+
+            if not buff_data.infinite and not buff_data.statusbar_dont_show_time then
+                SetStatusBarTime(buff_id, buff_data.expiration_time / 1000, player)
+            end
+
+            if buff_data.statusbar_show_level then
+                SetStatusBarValue(buff_id, lvl, player)
+            end
+
             buff_data.update_timer = CreateTimer()
             TimerStart(buff_data.update_timer, BUFF_UPDATE, true, function()
                 if buff_data.expiration_time <= 0 or GetUnitState(target, UNIT_STATE_LIFE) < 0.045 then
@@ -680,6 +700,9 @@ do
 
                     if not buff_data.infinite then
                         buff_data.expiration_time = buff_data.expiration_time - 100
+                        if not buff_data.statusbar_dont_show_time then
+                            UpdateStatusBarTime(buff_id, buff_data.expiration_time / 1000, player)
+                        end
                     end
 
                     local state = buff_data.level[buff_data.current_level].negative_state

@@ -24,6 +24,7 @@ do
     local DASH_MODE_FACING = 1
     local DASH_MODE_CURSOR = -1
     local HpFeedbackCooldown
+    local Colours
 
 
 
@@ -36,7 +37,7 @@ do
     function DashPlayerHero(player)
         local unit_data = GetUnitData(PlayerHero[player])
 
-        if not (TimerGetRemaining(unit_data.action_timer) > 0.) and not (TimerGetRemaining(PlayerDash[player].timer) > 0.) and not (IsUnitDisabled(PlayerHero[player]) or IsUnitRooted(PlayerHero[player])) then
+        if GetUnitState(PlayerHero[player], UNIT_STATE_LIFE) > 0.045 and not (TimerGetRemaining(unit_data.action_timer) > 0.) and not (TimerGetRemaining(PlayerDash[player].timer) > 0.) and not (IsUnitDisabled(PlayerHero[player]) or IsUnitRooted(PlayerHero[player])) then
             local angle = PlayerDash[player].mode == DASH_MODE_FACING and GetUnitFacing(PlayerHero[player]) or AngleBetweenUnitXY(PlayerHero[player], PlayerMousePosition[player].x, PlayerMousePosition[player].y)
 
                 DisableHeroSkills(player)
@@ -155,7 +156,7 @@ do
 
             if PlayerHero[player] then
                 SuspendHeroXP(PlayerHero[player], false)
-                AddHeroXP(PlayerHero[player], amount * (1. + GetUnitParameterValue(PlayerHero[player], EXP_BONUS) * 0.01), false)
+                AddHeroXP(PlayerHero[player], math.ceil(amount * (1. + GetUnitParameterValue(PlayerHero[player], EXP_BONUS) * 0.01)), false)
                 SuspendHeroXP(PlayerHero[player], true)
             end
 
@@ -169,7 +170,7 @@ do
         for i = 1, 6 do
             if PlayerHero[i] then
                 SuspendHeroXP(PlayerHero[i], false)
-                AddHeroXP(PlayerHero[i], amount * (1. + GetUnitParameterValue(PlayerHero[i], EXP_BONUS) * 0.01), false)
+                AddHeroXP(PlayerHero[i], math.ceil(amount * (1. + GetUnitParameterValue(PlayerHero[i], EXP_BONUS) * 0.01)), false)
                 SuspendHeroXP(PlayerHero[i], true)
             end
         end
@@ -184,7 +185,7 @@ do
     function GiveGoldForPlayer(amount, player)
         amount = amount + Current_Wave * 20
             if PlayerHero[player] then
-                SetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD) + amount)
+                SetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD) + math.floor(amount))
                 PlayLocalSound("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", player-1, 120)
             end
         return amount
@@ -196,7 +197,7 @@ do
         amount = amount + Current_Wave * 20
         for i = 1, 6 do
             if PlayerHero[i] then
-                SetPlayerState(Player(i-1), PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(Player(i-1), PLAYER_STATE_RESOURCE_GOLD) + amount)
+                SetPlayerState(Player(i-1), PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(Player(i-1), PLAYER_STATE_RESOURCE_GOLD) + math.floor(amount))
                 PlayLocalSound("Abilities\\Spells\\Items\\ResourceItems\\ReceiveGold.wav", i-1, 120)
             end
         end
@@ -253,6 +254,7 @@ do
         local player_id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
         local starting_items = {}
         local starting_skills = {}
+        local icon
 
             ActivePlayers = ActivePlayers + 1
             if region == ClassRegions[BARBARIAN_CLASS] then
@@ -265,6 +267,7 @@ do
                 starting_skills[1] = 'A007'
                 starting_skills[2] = 'ABWC'
                 starting_skills[3] = 'A00Z'
+                icon = "ReplaceableTextures\\CommandButtons\\BTNBandit.blp"
             elseif region == ClassRegions[SORCERESS_CLASS] then
                 id = FourCC("HSRC")
                 starting_items[1] = CreateCustomItem("I012", 0., 0.)
@@ -275,6 +278,7 @@ do
                 starting_skills[1] = 'A003'
                 starting_skills[2] = 'A00J'
                 starting_skills[3] = 'A00D'
+                icon = "war3mapImported\\BTNSorceress.blp"
             elseif region == ClassRegions[NECROMANCER_CLASS] then
                 id = FourCC("HNCR")
                 starting_items[1] = CreateCustomItem("I012", 0., 0.)
@@ -285,6 +289,7 @@ do
                 starting_skills[1] = "ANRD"
                 starting_skills[2] = "ANWK"
                 starting_skills[3] = "ANBS"
+                icon = "ReplaceableTextures\\CommandButtons\\BTNLichVersion2.blp"
             elseif region == ClassRegions[PALADIN_CLASS] then
                 id = FourCC("HPAL")
                 starting_items[1] = CreateCustomItem("I02O", 0., 0.)
@@ -322,7 +327,7 @@ do
                 starting_skills[19] = "AABT"
                 starting_skills[20] = "AASB"
                 starting_skills[21] = "AARL"
-
+                icon = "ReplaceableTextures\\CommandButtons\\BTNAssassin.blp"
             elseif region == ClassRegions[AMAZON_CLASS] then
                 id = FourCC("HAMA")
                 --starting_items[1] = CreateCustomItem("I02P", 0., 0.)
@@ -364,6 +369,7 @@ do
                     elseif unit_data.unit_class == ASSASSIN_CLASS then ModifyStat(hero, VULNERABILITY, -15, STRAIGHT_BONUS, true)
                     elseif unit_data.unit_class == SORCERESS_CLASS then AddSpecialEffectTarget("Model\\Sorceress_Hair.mdx", hero, "head") end
 
+                    local glow = AddSpecialEffectTarget(Colours[player_id], hero, "origin")--Colours
                 end)
 
                 SetCameraBoundsToRectForPlayerBJ(Player(player_id), bj_mapInitialCameraBounds)
@@ -371,6 +377,14 @@ do
                 local player_number = player_id
                 player_id = player_id + 1
                 PlayerHero[player_id] = hero
+                local last_damages = {}
+                local last_damages_timer = {}
+                for i = 1, 6 do
+                    last_damages[i] = 0
+                    last_damages_timer[i] = CreateTimer()
+                end
+
+
 
                     TriggerRegisterDeathEvent(DeathTrigger, hero)
                     TriggerRegisterUnitEvent(LvlupTrigger, hero, EVENT_UNIT_HERO_LEVEL)
@@ -379,26 +393,63 @@ do
                     local hp_state_trigger = CreateTrigger()
                     TriggerRegisterUnitEvent(damage_trigger, hero, EVENT_UNIT_DAMAGED)
                     TriggerAddAction(damage_trigger, function()
-                        if GetEventDamage() > 0 then
-                            if (GetUnitState(hero, UNIT_STATE_LIFE) - GetEventDamage()) / BlzGetUnitMaxHP(hero) < 0.2 then
-                                if not HpFeedbackCooldown[player_id] then
-                                    Feedback_Health(player_id)
-                                    HpFeedbackCooldown[player_id] = true
-                                    DelayAction(14., function() HpFeedbackCooldown[player_id] = false end)
+                        local damage = GetEventDamage()
+
+                            if damage > 0 then
+                                local hero_data = GetUnitData(hero)
+
+                                if not hero_data.groan_cd then
+                                    if Chance(12.) then
+                                        PlayGroanSound(hero, (damage / BlzGetUnitMaxHP(hero) > 0.1))
+                                    end
                                 end
-                                SetCineFilterTexture("ReplaceableTextures\\CameraMasks\\DreamFilter_Mask.blp")
-                                SetCineFilterBlendMode(BLEND_MODE_ADDITIVE)
-                                SetCineFilterTexMapFlags(TEXMAP_FLAG_NONE)
-                                SetCineFilterStartUV(0, 0, 1, 1)
-                                SetCineFilterEndUV(0, 0, 1, 1)
-                                SetCineFilterStartColor(255, 75, 75, 0)
-                                SetCineFilterEndColor(255, 75, 75, 100)
-                                if GetLocalPlayer() == Player(player_number) then DisplayCineFilter(true) end
-                                SetCineFilterDuration(0.75)
-                                EnableTrigger(hp_state_trigger)
-                                DisableTrigger(damage_trigger)
+
+                                if (GetUnitState(hero, UNIT_STATE_LIFE) - GetEventDamage()) / BlzGetUnitMaxHP(hero) < 0.2 then
+                                    if not HpFeedbackCooldown[player_id] then
+                                        Feedback_Health(player_id)
+                                        HpFeedbackCooldown[player_id] = true
+                                        DelayAction(14., function() HpFeedbackCooldown[player_id] = false end)
+                                    end
+
+                                    if GetLocalPlayer() == Player(player_number) then
+                                        SetCineFilterTexture("ReplaceableTextures\\CameraMasks\\DreamFilter_Mask.blp")
+                                        SetCineFilterBlendMode(BLEND_MODE_ADDITIVE)
+                                        SetCineFilterTexMapFlags(TEXMAP_FLAG_NONE)
+                                        SetCineFilterStartUV(0, 0, 1, 1)
+                                        SetCineFilterEndUV(0, 0, 1, 1)
+                                        SetCineFilterStartColor(255, 75, 75, 0)
+                                        SetCineFilterEndColor(255, 75, 75, 100)
+                                        DisplayCineFilter(true)
+                                        SetCineFilterDuration(0.75)
+                                    end
+
+                                    EnableTrigger(hp_state_trigger)
+                                    DisableTrigger(damage_trigger)
+                                elseif damage > last_damages[player_id] * 2. then
+                                    last_damages[player_id] = damage
+
+                                    local alpha = math.floor(80 * (damage / (BlzGetUnitMaxHP(hero) * 0.15)))
+                                    if alpha > 150 then alpha = 150 end
+
+
+                                    if GetLocalPlayer() == Player(player_number) then
+                                        SetCineFilterTexture("ReplaceableTextures\\CameraMasks\\DreamFilter_Mask.blp")
+                                        SetCineFilterBlendMode(BLEND_MODE_ADDITIVE)
+                                        SetCineFilterTexMapFlags(TEXMAP_FLAG_NONE)
+                                        SetCineFilterStartUV(0, 0, 1, 1)
+                                        SetCineFilterEndUV(0, 0, 1, 1)
+                                        SetCineFilterStartColor(255, 35, 35, alpha)
+                                        SetCineFilterEndColor(255, 35, 35, 0)
+                                        SetCineFilterDuration(0.33)
+                                        DisplayCineFilter(true)
+                                    end
+
+                                    TimerStart(last_damages_timer[player_id], 0.57, false, function()
+                                        last_damages[player_id] = 0
+                                    end)
+                                end
                             end
-                        end
+
                     end)
 
                     TriggerRegisterTimerEventPeriodic(hp_state_trigger, 0.33)
@@ -408,6 +459,31 @@ do
                             EnableTrigger(damage_trigger)
                             DisableTrigger(hp_state_trigger)
                         end
+                    end)
+
+
+                    local order_trigger = CreateTrigger()
+                    local last_order_point = nil
+                    TriggerRegisterUnitEvent(order_trigger, hero, EVENT_UNIT_ISSUED_POINT_ORDER)
+                    TriggerRegisterUnitEvent(order_trigger, hero, EVENT_UNIT_ISSUED_ORDER)
+                    TriggerRegisterUnitEvent(order_trigger, hero, EVENT_UNIT_ISSUED_TARGET_ORDER)
+                    TriggerAddAction(order_trigger, function()
+                        local order = GetIssuedOrderId()
+
+                            if order == order_smart then
+                                if GetOrderTarget() then last_order_point = { widget = GetOrderTarget() }
+                                else last_order_point = { x = GetOrderPointX(), y = GetOrderPointY() } end
+                            elseif IsItemOrder(order) then
+                                DelayAction(0., function()
+                                   if last_order_point then
+                                       if last_order_point.widget then IssueTargetOrderById(hero, order_smart, last_order_point.widget)
+                                       else IssuePointOrderById(hero, order_smart, last_order_point.x, last_order_point.y) end
+                                    end
+                                end)
+                            else
+                                last_order_point = nil
+                            end
+
                     end)
 
 
@@ -434,6 +510,8 @@ do
                         SetItemCharges(potions, 5)
                         AddToInventory(pid, potions)
                         UpdateEquipPointsWindow(pid)
+
+                        AddToInventory(pid, CreateCustomItem(ITEM_SCROLL_OF_TOWN_PORTAL, 0.,0., false))
 
                         for i = 1, #starting_skills do
                             UnitAddMyAbility(hero, starting_skills[i])
@@ -466,6 +544,8 @@ do
                     if GetLocalPlayer() == Player(player_id - 1) then
                         PanCameraToTimed(GetUnitX(hero), GetUnitY(hero), 0.)
                     end
+
+                AddToHeroPool(player_id, icon)
 
         SuspendHeroXP(hero, true)
         SetPlayerHandicapXP(Player(player_id-1), 0.)
@@ -573,34 +653,35 @@ do
             local player = GetOwningPlayer(hero)
             local unit_data = GetUnitData(hero)
 
-            DisplayTextToPlayer(player, 0.,0., LOCALE_LIST[my_locale].RESSURECT_TEXT_1 .. string.format('%%.2f', R2S(7. + (Current_Wave / 4.))) .. LOCALE_LIST[my_locale].RESSURECT_TEXT_2)
-            ResetUnitSpellCast(hero)
-            SetUIState(GetPlayerId(player)+1, INV_PANEL, false)
-            SetUIState(GetPlayerId(player)+1, SKILL_PANEL, false)
-            local gold_lost = R2I(GetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD) * 0.2)
+                DestroyEffect(AddSpecialEffect("Effect\\BloodExplosionEx.mdx", GetUnitX(hero), GetUnitY(hero)))
+                DisplayTextToPlayer(player, 0.,0., LOCALE_LIST[my_locale].RESSURECT_TEXT_1 .. string.format('%%.2f', R2S(8. + (Current_Wave / 5.))) .. LOCALE_LIST[my_locale].RESSURECT_TEXT_2)
+                ResetUnitSpellCast(hero)
+                SetUIState(GetPlayerId(player)+1, INV_PANEL, false)
+                SetUIState(GetPlayerId(player)+1, SKILL_PANEL, false)
+                local gold_lost = R2I(GetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD) * 0.2)
 
-            if gold_lost > 1 then
-                DisplayTextToPlayer(player, 0.,0., LOCALE_LIST[my_locale].GOLD_PENALTY_TEXT_1 .. R2I(gold_lost) .. LOCALE_LIST[my_locale].GOLD_PENALTY_TEXT_2)
-                SetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD) - gold_lost)
-            end
+                if gold_lost > 1 then
+                    DisplayTextToPlayer(player, 0.,0., LOCALE_LIST[my_locale].GOLD_PENALTY_TEXT_1 .. R2I(gold_lost) .. LOCALE_LIST[my_locale].GOLD_PENALTY_TEXT_2)
+                    SetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD) - gold_lost)
+                end
 
 
-            AddSoundVolumeZ(HeroDeathSoundpack[unit_data.unit_class][GetRandomInt(1, #HeroDeathSoundpack[unit_data.unit_class])], GetUnitX(hero), GetUnitY(hero), 50., 115, 2200.)
-                local timer = CreateTimer()
-                TimerStart(timer, 7. + (Current_Wave / 4.), false, function()
-                    ReviveHero(hero, CemetaryX, CemetaryY, true)
-                    SetUnitTimeScale(hero, 1.)
-                    SetUnitAnimationByIndex(hero, 0)
-                    IssueImmediateOrderById(hero, order_stop)
-                    SetUnitState(hero, UNIT_STATE_LIFE, GetUnitState(hero, UNIT_STATE_MAX_LIFE) * 0.5)
-                    SetUnitState(hero, UNIT_STATE_MANA, GetUnitState(hero, UNIT_STATE_MAX_MANA) * 0.5)
-                    DestroyTimer(GetExpiredTimer())
-                    SelectUnitForPlayerSingle(hero, player)
-                    for i = 1, #ActiveCurses do ApplyCurse(ActiveCurses[i]) end
-                    local minions = GetAllUnitSummonUnits(hero)
-                    ForGroup(minions, function() KillUnit(GetEnumUnit()) end)
-                    DestroyGroup(minions)
-                end)
+                AddSoundVolumeZ(HeroDeathSoundpack[unit_data.unit_class][GetRandomInt(1, #HeroDeathSoundpack[unit_data.unit_class])], GetUnitX(hero), GetUnitY(hero), 50., 115, 2200.)
+                    local timer = CreateTimer()
+                    TimerStart(timer, 8. + (Current_Wave / 5.), false, function()
+                        ReviveHero(hero, CemetaryX, CemetaryY, true)
+                        SetUnitTimeScale(hero, 1.)
+                        SetUnitAnimation(hero, "stand")
+                        IssueImmediateOrderById(hero, order_stop)
+                        SetUnitState(hero, UNIT_STATE_LIFE, GetUnitState(hero, UNIT_STATE_MAX_LIFE) * 0.5)
+                        SetUnitState(hero, UNIT_STATE_MANA, GetUnitState(hero, UNIT_STATE_MAX_MANA) * 0.5)
+                        DestroyTimer(GetExpiredTimer())
+                        SelectUnitForPlayerSingle(hero, player)
+                        for i = 1, #ActiveCurses do ApplyCurse(ActiveCurses[i]) end
+                        local minions = GetAllUnitSummonUnits(hero)
+                        ForGroup(minions, function() KillUnit(GetEnumUnit()) end)
+                        DestroyGroup(minions)
+                    end)
 
         end)
 
@@ -652,11 +733,20 @@ do
             [AMAZON_CLASS] = "Emoo",
         }
 
+        Colours = {
+            [1] = "Units\\Hero\\HeroGlow_Red.mdx",
+            [2] = "Units\\Hero\\HeroGlow_Blue.mdx",
+            [3] = "Units\\Hero\\HeroGlow_Teal.mdx",
+            [4] = "Units\\Hero\\HeroGlow_Purple.mdx",
+            [5] = "Units\\Hero\\HeroGlow_Yellow.mdx",
+            [6] = "Units\\Hero\\HeroGlow_Orange.mdx",
+        }
 
         CemetaryX, CemetaryY = GetRectCenterX(gg_rct_cemetary), GetRectCenterY(gg_rct_cemetary)
 
 
         InitUnitTracking()
+        InitAlliedHeroesBar()
 
     end
 

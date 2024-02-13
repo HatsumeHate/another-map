@@ -202,6 +202,11 @@ do
 
                 new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
 
+                TalentPanel[player].glow_frame = CreateSprite("UI\\Buttons\\HeroLevel\\HeroLevel.mdx", 0.88, GlobalButton[player].talents_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.,0., GlobalButton[player].talents_panel_button)
+
+
+                if TalentPanel[player].points > 0 then BlzFrameSetVisible(TalentPanel[player].glow_frame, true)
+                else BlzFrameSetVisible(TalentPanel[player].glow_frame, false) end
 
                 TalentPanel[player].categories_border = new_Frame
 
@@ -300,6 +305,8 @@ do
             new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
 
 
+            TalentPanel[player].glow_frame = CreateSprite("UI\\Buttons\\HeroLevel\\HeroLevel.mdx", 0.88, GlobalButton[player].talents_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.,0., GlobalButton[player].talents_panel_button)
+            --BlzFrameSetVisible(TalentPanel[player].glow_frame, false)
 
             TalentPanel[player].categories_border = new_Frame
 
@@ -633,6 +640,8 @@ do
     function AddTalentPointsToPlayer(player, amount)
         TalentPanel[player].points = TalentPanel[player].points + amount
         BlzFrameSetText(TalentPanel[player].points_text_frame, TalentPanel[player].points)
+        if TalentPanel[player].points > 0 then if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(TalentPanel[player].glow_frame, true) end
+        else if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(TalentPanel[player].glow_frame, false) end end
     end
 
 

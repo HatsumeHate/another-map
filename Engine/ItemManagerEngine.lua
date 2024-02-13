@@ -144,7 +144,9 @@ do
             BlzSetSpecialEffectOrientation(effect, GetRandomInt(1, 360) * bj_DEGTORAD, 0.,0.)
             --BlzSetSpecialEffectYaw(effect, GetRandomInt(1, 360) * bj_DEGTORAD)
 
+            amount = amount + (Current_Wave)
             local result_scale = (amount  / MAX_GOLD_SCALE_AMOUNT) + MIN_GOLD_SCALE
+
 
             if result_scale < MIN_GOLD_SCALE then result_scale = MIN_GOLD_SCALE
             elseif result_scale > MAX_GOLD_SCALE then result_scale = MAX_GOLD_SCALE end
@@ -801,7 +803,7 @@ do
         local point
         local disarmed_item
 
-           --print("eqip item is ".. GetItemName(item).. " state is " .. (flag and "equip" or "unequip"))
+           --print("equip item is ".. GetItemName(item).. " state is " .. (flag and "equip" or "unequip"))
 
             if item_data.TYPE == ITEM_TYPE_OFFHAND or (offhand and item_data.TYPE == ITEM_TYPE_WEAPON) then
                 point = OFFHAND_POINT
@@ -986,10 +988,11 @@ do
                 if not item_data.picked_up then
                     local angle = AngleBetweenXY_DEG(GetItemX(item), GetItemY(item), GetUnitX(unit), GetUnitY(unit))
 
-                        if IsUnitInRangeXY(unit, GetItemX(item), GetItemY(item), 200.) then
+                        if IsUnitInRangeXY(unit, GetItemX(item), GetItemY(item), 150.) then
                             item_data.last_x = GetItemX(item)
                             item_data.last_y = GetItemY(item)
                             AddToInventory(player, item)
+                            DelayAction(0., function() IssueImmediateOrderById(unit, order_stop) end)
                             SetUnitFacingTimed(unit, angle+180.,0.)
                             --print("c1")
                         else
@@ -1008,7 +1011,7 @@ do
                             end)
 
                             TimerStart(proximity_timer, 0.025, true, function()
-                                if DistanceBetweenUnitXY(unit, x, y) < 200. and not item_data.picked_up then
+                                if DistanceBetweenUnitXY(unit, x, y) < 150. and not item_data.picked_up then
                                     item_data.last_x = GetItemX(item)
                                     item_data.last_y = GetItemY(item)
                                     AddToInventory(player, item)
@@ -1181,7 +1184,7 @@ do
             [MAGIC_ITEM] = {
                 { affix = ITEM_AFFIX_IDEAL, chance = 50. },
                 { affix = ITEM_AFFIX_EXCELLENT, chance = 50. },
-                { affix = ITEM_AFFIX_FINE, chance = 50. },
+                { affix = ITEM_AFFIX_FINE, chance = 66. },
             },
         }
 
@@ -1268,5 +1271,6 @@ do
 
 
     end
+
 
 end

@@ -485,7 +485,7 @@ do
                 PlayConversation("quartermaster_scoutquest_done_conv", gg_unit_n029_0022, player)
                 LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_scoutquest_done", player)
                 if GetLocalPlayer() == Player(player - 1) then BlzPlaySpecialEffect(anar_data.questmarker_done, ANIM_TYPE_DEATH) end
-                EnableAnarTasks()
+                EnableAnarTasks(player)
             end }, 2)
         LockInteractiveOptionId(gg_unit_n029_0022, "anar_scoutquest_done")
 
@@ -606,6 +606,7 @@ do
             id = "anar_task_spiderqueen_done",
             feedback = function(clicked, clicking, player)
                 PlayConversation("quartermaster_task_spiderqueen_done", gg_unit_n029_0022, player)
+                LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_task_spiderqueen_done", player)
                 Task_SpiderQueen_Done(player)
             end }, 3)
         LockInteractiveOptionId(gg_unit_n029_0022, "anar_task_spiderqueen_done")
@@ -626,6 +627,8 @@ do
             id = "anar_task_restlessundead_done",
             feedback = function(clicked, clicking, player)
                 PlayConversation("quartermaster_task_restlessundead_done", gg_unit_n029_0022, player)
+                --LockInteractiveOptionId(gg_unit_n029_0022, "anar_task_restlessundead_done")
+                LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_task_restlessundead_done", player)
                 Task_RestlessUndead_Done(player)
             end }, 3)
         LockInteractiveOptionId(gg_unit_n029_0022, "anar_task_restlessundead_done")
@@ -646,6 +649,7 @@ do
             id = "anar_task_banditlord_done",
             feedback = function(clicked, clicking, player)
                 PlayConversation("quartermaster_task_banditlord_done", gg_unit_n029_0022, player)
+                LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_task_banditlord_done", player)
                 Task_BanditLord_Done(player)
             end }, 3)
         LockInteractiveOptionId(gg_unit_n029_0022, "anar_task_banditlord_done")
@@ -666,6 +670,7 @@ do
             id = "anar_task_arachno_done",
             feedback = function(clicked, clicking, player)
                 PlayConversation("quartermaster_task_arachno_done", gg_unit_n029_0022, player)
+                LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_task_arachno_done", player)
                 Task_Arachno_Done(player)
             end }, 3)
         LockInteractiveOptionId(gg_unit_n029_0022, "anar_task_arachno_done")
@@ -687,10 +692,12 @@ do
             id = "anar_task_soldiersrescue_done",
             feedback = function(clicked, clicking, player)
                 PlayConversation("quartermaster_task_soldiersrescue_done", gg_unit_n029_0022, player)
+                LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_task_soldiersrescue_done", player)
                 Task_SoldiersRescue_Done(player)
             end }, 3)
         LockInteractiveOptionId(gg_unit_n029_0022, "anar_task_soldiersrescue_done")
 
+        InitTasksData()
 
     end
 

@@ -212,13 +212,16 @@ do
                 end
             end
 
-            if item_data.MAX_SLOTS > 2 then
-                local runeword = GetRunewordId(item_data.STONE_SLOTS)
-                local runeword_data = GetRunewordData(runeword)
-                if runeword and runeword_data[item_data.TYPE] then
-                    item_data.runeword = runeword
+            DelayAction(0.001, function()
+                if item_data.MAX_SLOTS > 2 then
+                    local runeword = GetRunewordId(item_data.STONE_SLOTS)
+                    local runeword_data = GetRunewordData(runeword)
+                    if runeword and runeword_data[item_data.TYPE] then
+                        item_data.runeword = runeword
+                    end
                 end
-            end
+            end)
+
 
             bonuses = S2I(ParseData(code, "m"))
             if bonuses > 0 then

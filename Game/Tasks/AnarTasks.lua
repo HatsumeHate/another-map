@@ -18,8 +18,7 @@ do
             GiveGoldForPlayer(1000, player)
             GiveExpForPlayer(450, player)
             RemoveJournalEntry(player, "task_arachno")
-            LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_task_arachno_done", player)
-            PlayerTask[player] = false
+            PlayerTask[player] = nil
 
     end
 
@@ -35,6 +34,7 @@ do
         AddJournalEntry(player, "task_arachno", "ReplaceableTextures\\CommandButtons\\BTNArachnathidpurple.blp", GetLocalString("Поручение: Арахнид Повелитель", "Task: The Arachno Overlord"), 150, true)
         AddJournalEntryObjective(player, "task_arachno", "arachno_killed", GetLocalString("Арахнид убит","Arachno is killed"))
         AddJournalEntryText(player, "task_arachno", GetConversationText("quartermaster_task_arachno_give", gg_unit_n029_0022, player))
+        EnableJournalTrackingButton(player, "task_arachno", BossPack[1].boss, 0., 0.)
 
         TriggerRegisterPlayerUnitEvent(trigger, SECOND_MONSTER_PLAYER, EVENT_PLAYER_UNIT_DEATH, nil)
         TriggerAddAction(trigger, function()
@@ -71,8 +71,7 @@ do
             GiveGoldForPlayer(1000, player)
             GiveExpForPlayer(450, player)
             RemoveJournalEntry(player, "task_banditlord")
-            LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_task_banditlord_done", player)
-            PlayerTask[player] = false
+            PlayerTask[player] = nil
 
     end
 
@@ -88,6 +87,7 @@ do
         AddJournalEntry(player, "task_banditlord", "ReplaceableTextures\\CommandButtons\\BTNBanditLord.blp", GetLocalString("Поручение: Главарь Бандитов", "Task: The Bandit Lord"), 150, true)
         AddJournalEntryObjective(player, "task_banditlord", "banditlord_killed", GetLocalString("Главарь бандитов убит","Bandit Lord is killed"))
         AddJournalEntryText(player, "task_banditlord", GetConversationText("quartermaster_task_banditlord_give", gg_unit_n029_0022, player))
+        EnableJournalTrackingButton(player, "task_banditlord", BossPack[2].boss, 0., 0.)
 
         TriggerRegisterPlayerUnitEvent(trigger, SECOND_MONSTER_PLAYER, EVENT_PLAYER_UNIT_DEATH, nil)
         TriggerAddAction(trigger, function()
@@ -123,8 +123,7 @@ do
             GiveGoldForPlayer(1000, player)
             GiveExpForPlayer(450, player)
             RemoveJournalEntry(player, "task_restlessundead")
-            LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_task_restlessundead_done", player)
-            PlayerTask[player] = false
+            PlayerTask[player] = nil
 
     end
 
@@ -140,6 +139,7 @@ do
         AddJournalEntry(player, "task_restlessundead", "UI\\BTND1KingLeoric.blp", GetLocalString("Поручение: Неупокоенный Мертвец", "Task: The Restless Undead"), 150, true)
         AddJournalEntryObjective(player, "task_restlessundead", "restlessundead_killed", GetLocalString("Мертвый Король убит", "Undead King is killed"))
         AddJournalEntryText(player, "task_restlessundead", GetConversationText("quartermaster_task_restlessundead_give", gg_unit_n029_0022, player))
+        EnableJournalTrackingButton(player, "task_restlessundead", BossPack[4].boss, 0., 0.)
 
         TriggerRegisterPlayerUnitEvent(trigger, SECOND_MONSTER_PLAYER, EVENT_PLAYER_UNIT_DEATH, nil)
         TriggerAddAction(trigger, function()
@@ -176,8 +176,7 @@ do
             GiveGoldForPlayer(1000, player)
             GiveExpForPlayer(450, player)
             RemoveJournalEntry(player, "task_spiderqueen")
-            LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_task_spiderqueen_done", player)
-            PlayerTask[player] = false
+            PlayerTask[player] = nil
 
     end
 
@@ -193,6 +192,7 @@ do
         AddJournalEntry(player, "task_spiderqueen", "ReplaceableTextures\\CommandButtons\\BTNSpiderBlue.blp", GetLocalString("Поручение: Королева Пауков", "Task: The Brood Mother"), 150, true)
         AddJournalEntryObjective(player, "task_spiderqueen", "spiderqueen_killed", GetLocalString("Королева Пауков убита","Spider Queen is killed"))
         AddJournalEntryText(player, "task_spiderqueen", GetConversationText("quartermaster_task_spiderqueen_give", gg_unit_n029_0022, player))
+        EnableJournalTrackingButton(player, "task_spiderqueen", BossPack[3].boss, 0., 0.)
 
         TriggerRegisterPlayerUnitEvent(trigger, SECOND_MONSTER_PLAYER, EVENT_PLAYER_UNIT_DEATH, nil)
         TriggerAddAction(trigger, function()
@@ -285,7 +285,6 @@ do
         GiveGoldForPlayer(1000, player)
         GiveExpForPlayer(450, player)
         RemoveJournalEntry(player, "task_soldiersrescue")
-        LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_task_soldiersrescue_done", player)
     end
 
 
@@ -295,6 +294,7 @@ do
         AddJournalEntry(player, "task_soldiersrescue", "UI\\BTNOrderFootmanIcon.blp", GetLocalString("Спасательная Операция", "Rescue Mission"), 150, true)
         AddJournalEntryText(player, "task_soldiersrescue", GetConversationText(SoldierRescueTaskData[PlayerTask[player]].conversation, gg_unit_n029_0022, player))
         AddJournalEntryObjective(player, "task_soldiersrescue", "task_soldiersrescue_obj", GetLocalString("Солдаты спасены", "Soldiers Rescued"))
+        EnableJournalTrackingButton(player, "task_soldiersrescue", nil, GetRectCenterX(SoldierRescueTaskData[PlayerTask[player]].rect), GetRectCenterY(SoldierRescueTaskData[PlayerTask[player]].rect))
 
         LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_task_soldiersrescue", player)
         local unit_data = GetUnitData(gg_unit_n029_0022)
@@ -435,19 +435,6 @@ do
 
     function InitTasksData()
         PlayerTask = {}
-        SoldierRescueTaskData = {}
-        SoldierRescueTaskData[1] = {
-            rect = gg_rct_soldiers_rescue_spawn_1,
-            monster_spawner = { gg_rct_soldier_rescue_1_monster_spawn_1, gg_rct_soldier_rescue_1_monster_spawn_2, gg_rct_soldier_rescue_1_monster_spawn_3 },
-            occupied = false,
-            conversation = "quartermaster_task_soldiersrescue_1_give"
-        }
-    end
-
-
-    function EnableAnarTasks()
-
-        PlayerTask = {}
         SoldierRescueTaskData = {
             [1] = {
                 rect = gg_rct_soldiers_rescue_spawn_1,
@@ -457,7 +444,7 @@ do
             },
             [2] = {
                 rect = gg_rct_soldiers_rescue_spawn_2,
-                monster_spawner = { gg_rct_soldier_rescue_1_monster_spawn_2, gg_rct_soldier_rescue_2_monster_spawn_2, gg_rct_soldier_rescue_2_monster_spawn_3 },
+                monster_spawner = { gg_rct_soldier_rescue_2_monster_spawn_1, gg_rct_soldier_rescue_2_monster_spawn_2, gg_rct_soldier_rescue_2_monster_spawn_3 },
                 occupied = false,
                 conversation = "quartermaster_task_soldiersrescue_2_give"
             },
@@ -492,11 +479,14 @@ do
                 conversation = "quartermaster_task_soldiersrescue_7_give"
             },
         }
+    end
 
+
+    function EnableAnarTasks(player)
 
         TimerStart(CreateTimer(), 10., true, function()
-            for player = 1, 6 do
-                if PlayerHero[player] and not PlayerTask[player] then
+
+                if PlayerHero[player] and PlayerTask[player] == nil then
                     if Chance(3.) then
                         if GetRandomInt(1, 2) == 1 then
                             local random = GetRandomInt(1, 4)
@@ -522,7 +512,7 @@ do
 
                     end
                 end
-            end
+
         end)
 
     end

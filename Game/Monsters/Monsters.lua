@@ -44,6 +44,7 @@ do
 
 
     MONSTER_ID_ZOMBIE = "n00C"
+    MONSTER_ID_ZOMBIE_BLACK_DEATH = "n02P"
     MONSTER_ID_ZOMBIE_N = "n01G"
     MONSTER_ID_ZOMBIE_MUTANT = "n00E"
     MONSTER_ID_FIEND = "u007"
@@ -66,6 +67,7 @@ do
     MONSTER_ID_BANSHEE = "u00C"
     MONSTER_ID_BANSHEE_N = "u00K"
     MONSTER_ID_GHOST = "n006"
+    MONSTER_ID_PHANTOM = "n02R"
     MONSTER_ID_VOIDWALKER = "n008"
     MONSTER_ID_ANCIENT_VOIDWALKER = "n009"
     MONSTER_ID_SKELETON = "u00D"
@@ -73,6 +75,10 @@ do
     MONSTER_ID_SKELETON_ARMORED = "u00B"
     MONSTER_ID_SKELETON_ARCHER = "n005"
     MONSTER_ID_SKELETON_MAGE = "u00E"
+    MONSTER_ID_SKELETON_MAGE_COLD = "u015"
+    MONSTER_ID_SKELETON_MAGE_FIRE = "u016"
+    MONSTER_ID_SKELETON_MAGE_LIGHTNING = "u014"
+    MONSTER_ID_SKELETON_MAGE_N = "u017"
     MONSTER_ID_SKELETON_N = "u00O"
     MONSTER_ID_SKELETON_ARCHER_N = "n01P"
     MONSTER_ID_SKELETON_HELL_ARCHER = "n004"
@@ -93,6 +99,7 @@ do
     MONSTER_ID_ARACHNID_WARRIOR = "n00Q"
     MONSTER_ID_ARACHNID_GROUNDER = "n00R"
     MONSTER_ID_BANDIT_BASIC = "n00T"
+    MONSTER_ID_BANDIT_ROGUE_MAGE = "n02Q"
     MONSTER_ID_BANDIT_ROBBER = "n00U"
     MONSTER_ID_BANDIT_ROGUE = "n00V"
     MONSTER_ID_BANDIT_ASSASSIN = "n00W"
@@ -136,7 +143,7 @@ do
 
     MONSTER_TRAIT_SPAWN_KEY = 3
     MONSTER_ELITE_SPAWN_KEY = 4
-    MONSTER_AURA_SPAWN_KEY = 5
+    MONSTER_AURA_SPAWN_KEY = 6
 
 
     -- attack type focus (melee/range ratio) => monster type =>
@@ -709,6 +716,7 @@ do
                         { id = MONSTER_ID_BANDIT_BASIC, chance = 100. }
                     },
                     [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_BANDIT_ROGUE_MAGE, chance = 33., max = 2 },
                         { id = MONSTER_ID_BANDIT_ROBBER, chance = 100., max = 4 }
                     }
                 },
@@ -770,7 +778,9 @@ do
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
                         { id = MONSTER_ID_FACELESS, chance = 15., max = 1 },
-                        { id = MONSTER_ID_SKELETON_ARMORED, chance = 22.5, max = 2 },
+                        { id = MONSTER_ID_PHANTOM, chance = 10., max = 2 },
+                        { id = MONSTER_ID_ZOMBIE, chance = 10., max = 2 },
+                        { id = MONSTER_ID_ZOMBIE_BLACK_DEATH, chance = 7., max = 1 },
                         { id = MONSTER_ID_SKELETON_N, chance = 20., max = 4 },
                         { id = MONSTER_ID_SKELETON_IMPROVED, chance = 32.5, max = 2 },
                         { id = MONSTER_ID_SKELETON, chance = 100., max = 5 },
@@ -779,12 +789,19 @@ do
                         { id = MONSTER_ID_SKELETON_ARCHER, chance = 40., max = 3 },
                         { id = MONSTER_ID_SKELETON_ARCHER_N, chance = 20., max = 2 },
                         { id = MONSTER_ID_SKELETON_MAGE, chance = 40., max = 2 },
-                        { id = MONSTER_ID_SORCERESS, chance = 40., max = 2 },
+                        { id = MONSTER_ID_SKELETON_MAGE_COLD, chance = 40., max = 2 },
+                        { id = MONSTER_ID_SKELETON_MAGE_LIGHTNING, chance = 40., max = 2 },
+                        { id = MONSTER_ID_SKELETON_MAGE_FIRE, chance = 40., max = 2 },
+                        { id = MONSTER_ID_SKELETON_MAGE_N, chance = 25., max = 2 },
                         { id = MONSTER_ID_NECROMANCER_N, chance = 20., max = 2 },
                         { id = MONSTER_ID_NECROMANCER, chance = 100., max = 2 },
                     }
                 },
                 [MONSTER_RANK_ADVANCED] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_ZOMBIE_MUTANT, chance = 10., max = 1 },
+                        { id = MONSTER_ID_SKELETON_ARMORED, chance = 100., max = 2 },
+                    },
                     [MONSTER_TAG_RANGE] = {
                         { id = MONSTER_ID_SKELETON_HELL_ARCHER, chance = 50., max = 2 },
                         { id = MONSTER_ID_SKELETON_SNIPER, chance = 100., max = 2 },
@@ -799,14 +816,21 @@ do
             [MONSTERPACK_ZOMBIES] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_PHANTOM, chance = 7.5, max = 2 },
                         { id = MONSTER_ID_SKELETON_N, chance = 10., max = 2 },
                         { id = MONSTER_ID_SKELETON, chance = 20., max = 3 },
                         { id = MONSTER_ID_FACELESS, chance = 15., max = 2 },
                         { id = MONSTER_ID_SCAVENGER, chance = 20., max = 6 },
+                        { id = MONSTER_ID_ZOMBIE_BLACK_DEATH, chance = 20., max = 3 },
                         { id = MONSTER_ID_ZOMBIE_N, chance = 35., max = 2 },
                         { id = MONSTER_ID_ZOMBIE, chance = 100., max = 3 },
                     },
                     [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_SKELETON_MAGE, chance = 15., max = 2 },
+                        { id = MONSTER_ID_SKELETON_MAGE_COLD, chance = 15., max = 2 },
+                        { id = MONSTER_ID_SKELETON_MAGE_LIGHTNING, chance = 15., max = 2 },
+                        { id = MONSTER_ID_SKELETON_MAGE_FIRE, chance = 15., max = 2 },
+                        { id = MONSTER_ID_SKELETON_MAGE_N, chance = 15., max = 2 },
                         { id = MONSTER_ID_NECROMANCER_N, chance = 20., max = 2 },
                         { id = MONSTER_ID_NECROMANCER, chance = 100., max = 3 },
                     }
@@ -841,14 +865,16 @@ do
                 },
                 [MONSTER_RANK_ADVANCED] = {
                     [MONSTER_TAG_MELEE] = {
-                        { id = MONSTER_ID_DEMON_ASSASSIN, chance = 40.5 },
+                        { id = MONSTER_ID_DEMON_ASSASSIN, chance = 40.5, max = 2 },
                         { id = MONSTER_ID_FALLEN_ANGEL, chance = 30.5, max = 3 },
                         { id = MONSTER_ID_MEAT_GOLEM, chance = 15., max = 1 },
                         { id = MONSTER_ID_ABOMINATION, chance = 25.5, max = 2 },
+                        { id = MONSTER_ID_BLOOD_SUCCUBUS, chance = 35., max = 3 },
                         { id = MONSTER_ID_DEMON_HELL_GUARD, chance = 100. },
                     },
                     [MONSTER_TAG_RANGE] = {
-                        { id = MONSTER_ID_REVENANT, chance = 33.5, max = 3 },
+                        { id = MONSTER_ID_REVENANT, chance = 20., max = 3 },
+                        { id = MONSTER_ID_HELL_SUCCUBUS, chance = 27., max = 2 },
                         { id = MONSTER_ID_DEMON_WIZARD, chance = 33.5, max = 2 },
                         { id = MONSTER_ID_ANCIENT_VOIDWALKER, chance = 100. },
                     }
@@ -865,7 +891,8 @@ do
             [MONSTERPACK_GHOSTS] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
-                        { id = MONSTER_ID_REVENANT_FROST, chance = 36.5, max = 2 },
+                        { id = MONSTER_ID_REVENANT_FROST, chance = 30.5, max = 2 },
+                        { id = MONSTER_ID_PHANTOM, chance = 36.5, max = 2 },
                         { id = MONSTER_ID_REVENANT_MELEE, chance = 100., max = 3 },
                     },
                     [MONSTER_TAG_RANGE] = {

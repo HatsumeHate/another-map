@@ -306,6 +306,9 @@ do
                     new_subframe = CreateTextBox("Огонь: 100", FIRE_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., main_frame, player)
 
 
+                    for stat = PHYSICAL_RESIST, HOLY_RESIST do
+                        BlzFrameSetScale(StatsList[player][stat], 0.75)
+                    end
 
                 PlayerStatsFrame[player] = main_frame
                 BlzFrameSetVisible(PlayerStatsFrame[player], false)
@@ -469,6 +472,12 @@ do
 
             new_frame = CreateTextBox("Физ: 100", PHYSICAL_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0., main_frame, player)
             new_subframe = CreateTextBox("Огонь: 100", FIRE_RESIST, 0.07, 0.02, 1., new_frame, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., main_frame, player)
+
+
+
+                for stat = PHYSICAL_RESIST, HOLY_RESIST do
+                    BlzFrameSetScale(StatsList[player][stat], 0.75)
+                end
 
 
 

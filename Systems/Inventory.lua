@@ -205,6 +205,10 @@ do
 
         end
 
+        if BlacksmithFrame[player].state then
+            UpdateAllReforgeCostText(player)
+        end
+
 
     end
 
@@ -244,6 +248,14 @@ do
                                 BlzFrameSetVisible(button.charges_frame, true)
                                 BlzFrameSetText(button.charges_text_frame, R2I(GetItemCharges(button.item)))
 
+                                    if GetItemCharges(button.item) >= 10 and GetItemCharges(button.item) < 100 then
+                                        BlzFrameSetScale(button.charges_text_frame, 0.95)
+                                    elseif GetItemCharges(button.item) >= 100 and GetItemCharges(button.item) < 1000 then
+                                        BlzFrameSetScale(button.charges_text_frame, 0.65)
+                                    elseif GetItemCharges(button.item) >= 1000 then
+                                        BlzFrameSetScale(button.charges_text_frame, 0.5)
+                                    end
+
                                     if button.button_state and not IsItemInvulnerable(button.item) then
                                         BlzFrameSetVisible(button.sprite, false)
                                         button.button_state = false
@@ -262,7 +274,7 @@ do
                 else
                     BlzFrameSetTexture(button.image, button.original_texture, 0, true)
                     FrameChangeTexture(button.button, button.original_texture)
-                    BlzFrameSetVisible(button.new_item, false)
+                    BlzFrameSetVisible(button.new_sprite, false)
 
                     if button.charges_frame_state then
                         button.charges_frame_state = false
@@ -1403,7 +1415,7 @@ do
         local new_FrameChargesText
         local new_ItemSprite
         local new_Sprite
-
+        local new_FrameChargesBorder
 
             for i = 1, 32 do
                 button_data = GetButtonData(InventorySlots[player][i])
@@ -1419,6 +1431,7 @@ do
             for i = 1, 32 do
                 button_data = GetButtonData(InventorySlots[player][i])
                 new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", button_data.button, "", 0)
+                new_FrameChargesBorder = BlzCreateFrameByType("BACKDROP", "Border", new_FrameCharges, "", 0)
                 new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
 
                 BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMRIGHT, button_data.image, FRAMEPOINT_BOTTOMRIGHT, -0.002, 0.002)
@@ -1428,8 +1441,13 @@ do
                 BlzFrameSetVisible(new_FrameCharges, false)
                 BlzFrameSetText(new_FrameChargesText, "")
 
+                BlzFrameSetSize(new_FrameChargesBorder, 1., 1.)
+                BlzFrameSetTexture(new_FrameChargesBorder, "UI\\inventory_frame.blp", 0, true)
+                BlzFrameSetAllPoints(new_FrameChargesBorder, new_FrameCharges)
+
                 button_data.charges_frame = new_FrameCharges
                 button_data.charges_text_frame = new_FrameChargesText
+
             end
 
 

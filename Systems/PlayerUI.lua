@@ -290,8 +290,8 @@ do
                 local buff_bar = BlzGetOriginFrame(ORIGIN_FRAME_UNIT_PANEL_BUFF_BAR, 0)
                 BlzFrameSetParent(buff_bar, PlayerUI.xp_bar)
                 BlzFrameClearAllPoints(buff_bar)
-                BlzFrameSetAbsPoint(buff_bar, FRAMEPOINT_CENTER, 0.23, 0.086)
-                BlzFrameSetVisible(buff_bar, true)
+                BlzFrameSetAbsPoint(buff_bar, FRAMEPOINT_CENTER, 0.0, -1.)
+                BlzFrameSetVisible(buff_bar, false)
                 BlzFrameSetText(BlzGetOriginFrame(ORIGIN_FRAME_UNIT_PANEL_BUFF_BAR_LABEL, 0), "")
 
 
@@ -595,7 +595,6 @@ do
             PlayerUI.skill_button_hotkey[1] = CreateSimpleChargesText(button, "E", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[1] = CreateUIBorder(button, 0.0035)
             button_list[KEY_E] = button
-            --PlayerUI.skill_button[KEY_E] = button
 
             button = BlzGetFrameByName("CommandButton_9", 0)
             BlzFrameClearAllPoints(button)
@@ -603,7 +602,6 @@ do
             PlayerUI.skill_button_hotkey[2] = CreateSimpleChargesText(button, "W", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[2] = CreateUIBorder(button, 0.0035)
             button_list[KEY_W] = button
-            --PlayerUI.skill_button[KEY_W] = button
 
 
             button = BlzGetFrameByName("CommandButton_8", 0)
@@ -612,7 +610,6 @@ do
             PlayerUI.skill_button_hotkey[3] = CreateSimpleChargesText(button, "Q", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[3] = CreateUIBorder(button, 0.0035)
             button_list[KEY_Q] = button
-            --PlayerUI.skill_button[KEY_Q] = button
 
 
             button = BlzGetFrameByName("CommandButton_11", 0)
@@ -621,7 +618,6 @@ do
             PlayerUI.skill_button_hotkey[4] = CreateSimpleChargesText(button, "R", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[4] = CreateUIBorder(button, 0.0035)
             button_list[KEY_R] = button
-            --PlayerUI.skill_button[KEY_R] = button
 
             button = BlzGetFrameByName("CommandButton_6", 0)
             BlzFrameClearAllPoints(button)
@@ -629,7 +625,6 @@ do
             PlayerUI.skill_button_hotkey[5] = CreateSimpleChargesText(button, "D", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[5] = CreateUIBorder(button, 0.0035)
             button_list[KEY_D] = button
-            --PlayerUI.skill_button[KEY_D] = button
 
             button = BlzGetFrameByName("CommandButton_7", 0)
             BlzFrameClearAllPoints(button)
@@ -637,26 +632,6 @@ do
             PlayerUI.skill_button_hotkey[6] = CreateSimpleChargesText(button, "F", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[6] = CreateUIBorder(button, 0.0035)
             button_list[KEY_F] = button
-            --PlayerUI.skill_button[KEY_F] = button
-
-            --[[
-            for player = 1, 6 do
-                for key = 1, 6 do
-                    PlayerUI.skill_button_bar[player][key] = BlzCreateSimpleFrame("MyBar", button_list[key], 0)
-                        BlzFrameSetPoint(PlayerUI.skill_button_bar[player][key], FRAMEPOINT_BOTTOMLEFT, button_list[key], FRAMEPOINT_TOPLEFT, 0., 0.002)
-                        BlzFrameSetPoint(PlayerUI.skill_button_bar[player][key], FRAMEPOINT_BOTTOMRIGHT, button_list[key], FRAMEPOINT_TOPRIGHT, 0., 0.002)
-                        BlzFrameSetValue(PlayerUI.skill_button_bar[player][key], 100)
-                        BlzFrameSetTexture(PlayerUI.skill_button_bar[player][key], "Replaceabletextures\\Teamcolor\\Teamcolor00.blp", 0, true)
-                        BlzFrameSetSize(PlayerUI.skill_button_bar[player][key], 0.208, 0.005)
-
-                        if GetLocalPlayer() == Player(player - 1) then
-                            BlzFrameSetVisible(PlayerUI.skill_button_bar[player][key], true)
-                        else
-                            BlzFrameSetVisible(PlayerUI.skill_button_bar[player][key], false)
-                        end
-
-                end
-            end]]
 
 
             for i = 1, 6 do
@@ -721,8 +696,8 @@ do
             local buff_bar = BlzGetOriginFrame(ORIGIN_FRAME_UNIT_PANEL_BUFF_BAR, 0)
             BlzFrameSetParent(buff_bar, PlayerUI.xp_bar)
             BlzFrameClearAllPoints(buff_bar)
-            BlzFrameSetAbsPoint(buff_bar, FRAMEPOINT_CENTER, 0.23, 0.086)
-            BlzFrameSetVisible(buff_bar, true)
+            BlzFrameSetAbsPoint(buff_bar, FRAMEPOINT_CENTER, 0., -1.)
+            BlzFrameSetVisible(buff_bar, false)
             BlzFrameSetText(BlzGetOriginFrame(ORIGIN_FRAME_UNIT_PANEL_BUFF_BAR_LABEL, 0), "")
 
 
