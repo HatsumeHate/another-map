@@ -141,7 +141,8 @@ do
 
             MoveRectTo(rect, x, y)
             local web_effect = AddSpecialEffect("Abilities\\Spells\\Undead\\Web\\WebTarget.mdx", x, y)
-            BlzSetSpecialEffectHeight(web_effect, 84.)
+            BlzSetSpecialEffectZ(web_effect, GetZ(x, y) + 84.)
+            --BlzSetSpecialEffectHeight(web_effect, 84.)
             BlzSetSpecialEffectScale(web_effect, 1.1)
 
             local trg = CreateTrigger()
@@ -543,6 +544,18 @@ do
 
     end
 
+    function DemonessPrisonCast(caster, x, y)
+        local sfx = AddSpecialEffect("Effect\\Chain Prison.mdx", x, y)
+
+            DelayAction(1., function()
+                ApplyEffect(caster, nil, x, y, "demoness_prison_effect", 1)
+                DelayAction(5., function()
+                    DestroyEffect(sfx)
+                end)
+            end)
+
+        --CreateSpellCircle("Effect\\Spell Marker Red.mdx", x, y, 1.4, 1.2, 0.8, function()  end)
+    end
 
     function InitSpiderQueenData()
 

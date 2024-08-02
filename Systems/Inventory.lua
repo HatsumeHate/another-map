@@ -430,7 +430,12 @@ do
         --print("Entering trigger "..GetHandleId(GetTriggeringTrigger()))
 
             if PlayerMovingItem[player].state then
-                BlzFrameSetAllPoints(PlayerMovingItem[player].frame, ButtonList[frame].image)
+                --if ButtonList[frame].button_type == INV_SLOT then BlzFrameSetParent(PlayerMovingItem[player].frame, PlayerMovingItem[player].selector_frame)
+                --else BlzFrameSetParent(PlayerMovingItem[player].frame, ButtonList[frame].image) end
+                BlzFrameClearAllPoints(PlayerMovingItem[player].frame)
+                BlzFrameSetPoint(PlayerMovingItem[player].frame, FRAMEPOINT_BOTTOMLEFT, ButtonList[frame].image, FRAMEPOINT_BOTTOMLEFT, 0.005, 0.005)
+                BlzFrameSetPoint(PlayerMovingItem[player].frame, FRAMEPOINT_TOPRIGHT, ButtonList[frame].image, FRAMEPOINT_TOPRIGHT, -0.005, -0.005)
+                --BlzFrameSetAllPoints(PlayerMovingItem[player].frame, ButtonList[frame].image)
                 local scale = 0.0415
                 if PlayerMovingItem[player].mode == 2 then scale = 0.035 end
                 BlzFrameSetSize(PlayerMovingItem[player].frame, scale, scale)
@@ -480,18 +485,14 @@ do
                 PlayerMovingItem[player].state = false
 
                 if PlayerMovingItem[player].selected_frame and ButtonList[PlayerMovingItem[player].selected_frame].button_state then
-                    if GetLocalPlayer() == Player(player - 1) then
-                        BlzFrameSetVisible(ButtonList[PlayerMovingItem[player].selected_frame].sprite, true)
-                    end
+                    BlzFrameSetVisible(ButtonList[PlayerMovingItem[player].selected_frame].sprite, true)
                 end
 
                 PlayerMovingItem[player].selected_frame = nil
                 PlayerMovingItem[player].mode = 0
 
-                if GetLocalPlayer() == Player(player - 1) then
-                    BlzFrameSetVisible(PlayerMovingItem[player].frame, false)
-                    BlzFrameSetVisible(PlayerMovingItem[player].selector_frame, false)
-                end
+                BlzFrameSetVisible(PlayerMovingItem[player].frame, false)
+                BlzFrameSetVisible(PlayerMovingItem[player].selector_frame, false)
 
             end
 
@@ -504,44 +505,40 @@ do
 
 
     local function CreateSelectionFrames(player)
+
         PlayerMovingItem[player] = {
             frame = nil,
             selector_frame = nil,
             selected_frame = nil,
             mode = 0
         }
+
         PlayerMovingItem[player].selector_frame = BlzCreateFrameByType("SPRITE", "justAName", InventorySlots[player][32], "WarCraftIIILogo", 0)
         BlzFrameSetPoint(PlayerMovingItem[player].selector_frame, FRAMEPOINT_BOTTOMLEFT, InventorySlots[player][32], FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
         BlzFrameSetSize(PlayerMovingItem[player].selector_frame, 1., 1.)
         BlzFrameSetScale(PlayerMovingItem[player].selector_frame, 1.)
-        PlayerMovingItem[player].frame = BlzCreateFrameByType("BACKDROP", "selection frame", PlayerMovingItem[player].selector_frame, "", 0)
+        PlayerMovingItem[player].frame = BlzCreateFrameByType("BACKDROP", "selection frame", InventorySlots[player][45], "", 0)
         PlayerMovingItem[player].state = false
-        if GetLocalPlayer() == Player(player - 1) then
-            BlzFrameSetVisible(PlayerMovingItem[player].frame, false)
-            BlzFrameSetVisible(PlayerMovingItem[player].selector_frame, false)
-        end
+
+        BlzFrameSetVisible(PlayerMovingItem[player].frame, false)
+        BlzFrameSetVisible(PlayerMovingItem[player].selector_frame, false)
+
     end
 
     local function StartSelectionMode(player, h, mode)
         local item_data = GetItemData(ButtonList[h].item)
 
-            --PlayerMovingItem[player] = { frame = nil, selector_frame = nil, selected_frame = h, mode = mode }
+
             PlayerMovingItem[player].state = true
-            --PlayerMovingItem[player].selector_frame = BlzCreateFrameByType("SPRITE", "justAName", ButtonList[GetHandleId(InventorySlots[player][32])].image, "WarCraftIIILogo", 0)
-            PlayerMovingItem[player].selected_frame = h -- = { frame = nil, selector_frame = nil, selected_frame = h, mode = mode }
+            PlayerMovingItem[player].selected_frame = h
             PlayerMovingItem[player].mode = mode
             BlzFrameClearAllPoints(PlayerMovingItem[player].selector_frame)
 
-            if GetLocalPlayer() == Player(player - 1) then
-                BlzFrameSetVisible(PlayerMovingItem[player].frame, true)
-                BlzFrameSetVisible(PlayerMovingItem[player].selector_frame, true)
-            end
-
+            BlzFrameSetVisible(PlayerMovingItem[player].frame, true)
+            BlzFrameSetVisible(PlayerMovingItem[player].selector_frame, true)
             BlzFrameSetPoint(PlayerMovingItem[player].selector_frame, FRAMEPOINT_BOTTOMLEFT, ButtonList[h].image, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
 
-
-            if ButtonList[h].button_state then if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(ButtonList[h].sprite, false) end end
-
+            if ButtonList[h].button_state then BlzFrameSetVisible(ButtonList[h].sprite, false) end
 
             BlzFrameClearAllPoints(PlayerMovingItem[player].frame)
             BlzFrameSetTexture(PlayerMovingItem[player].frame, item_data.frame_texture, 0, true)
@@ -555,7 +552,7 @@ do
                     BlzFrameSetModel(PlayerMovingItem[player].selector_frame, "selecter5.mdx", 0)
                 end
 
-            BlzFrameSetAlpha(PlayerMovingItem[player].frame, 175)
+            BlzFrameSetAlpha(PlayerMovingItem[player].frame, 165)
             InventoryItemInFocus[player] = nil
             RemoveTooltip(player)
 
@@ -586,18 +583,18 @@ do
             --print("checking " .. GetItemName(item))
             --print("type is  " .. GetItemTypeName(item_data.TYPE))
             --print("subtype is  " .. GetItemSubTypeName(item_data.SUBTYPE))
-            --print("item in weapon point is  " .. GetItemName(unit_Data.equip_point[WEAPON_POINT].item))
-            --print("item in offhand point is  " .. GetItemName(unit_Data.equip_point[OFFHAND_POINT].item))
+
 
 
             if (item_data.TYPE == ITEM_TYPE_OFFHAND or (item_data.TYPE == ITEM_TYPE_WEAPON and target_slot)) and unit_Data.equip_point[WEAPON_POINT].item and not CanEquipOffhand(item, unit_Data.equip_point[WEAPON_POINT].item) then
                 Feedback_CantUse(player)
                 return false
-            elseif offhand_point and (IsWeaponTypeTwohanded(item_data.SUBTYPE) or (item_data.SUBTYPE ~= BOW_WEAPON and unit_Data.equip_point[OFFHAND_POINT].SUBTYPE == QUIVER_OFFHAND)) then
+            elseif (item_data.TYPE == ITEM_TYPE_OFFHAND or item_data.TYPE == ITEM_TYPE_WEAPON) and offhand_point and (IsWeaponTypeTwohanded(item_data.SUBTYPE) or (item_data.SUBTYPE ~= BOW_WEAPON and unit_Data.equip_point[OFFHAND_POINT].SUBTYPE == QUIVER_OFFHAND)) then
                 if CountFreeBagSlots(player) == 0 then
                     Feedback_InventoryNoSpace(player)
                     return false
                 else
+                    --print("get offhand off")
                     local free_slot = GetFirstFreeSlotButton(player)
                     free_slot.item = unit_Data.equip_point[OFFHAND_POINT].item
                     EquipItem(InventoryOwner[player], unit_Data.equip_point[OFFHAND_POINT].item, false, true)
@@ -739,7 +736,10 @@ do
             DestroyEffect(AddSpecialEffectTarget(item_data.learn_effect, PlayerHero[player], "origin"))
 
             if item_data.improving_skill then
-                local points = item_data.QUALITY == RARE_ITEM and 3 or 1
+                local points = 1
+
+                    if item_data.QUALITY == RARE_ITEM then points = 3
+                    elseif item_data.QUALITY == MAGIC_ITEM then points = 5 end
 
                     if not UnitAddMyAbility(PlayerHero[player], item_data.improving_skill) then
                         UnitAddAbilityLevel(PlayerHero[player], item_data.improving_skill, points)
@@ -819,6 +819,11 @@ do
 
     end
 
+    function GetAlternateWeaponSlotItem(player)
+        local alt_switch_data = GetButtonData(InventorySlots[player][43])
+        return alt_switch_data.item or nil
+    end
+
 
     ---@param player integer
     function SwitchHeroWeapon(player)
@@ -829,7 +834,7 @@ do
         local to_switch_main_item = main_switch_data.item or nil
         local to_switch_alt_item = alt_switch_data.item or nil
 
-            if not PlayerCanChangeEquipment[player] then return end
+            if not PlayerCanChangeEquipment[player] or GetWidgetLife(PlayerHero[player]) < 0.045 then return end
 
             if alt_weapon.item then EquipItem(PlayerHero[player], alt_weapon.item, false, true) end
             if main_weapon.item  then EquipItem(PlayerHero[player], main_weapon.item , false) end
@@ -1777,6 +1782,8 @@ do
                 elseif key == OSKEY_4 then UnitUseItem(PlayerHero[player], UnitItemInSlot(PlayerHero[player], 3))
                 elseif key == OSKEY_5 then UnitUseItem(PlayerHero[player], UnitItemInSlot(PlayerHero[player], 4))
                 elseif key == OSKEY_6 then UnitUseItem(PlayerHero[player], UnitItemInSlot(PlayerHero[player], 5)) end
+
+                PlayerSkillQueue[player].queue_skill = nil
 
         end)
 

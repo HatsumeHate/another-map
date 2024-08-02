@@ -25,6 +25,7 @@ do
     local DASH_MODE_CURSOR = -1
     local HpFeedbackCooldown
     local Colours
+    local DashAnimationTable
 
 
 
@@ -37,18 +38,32 @@ do
     function DashPlayerHero(player)
         local unit_data = GetUnitData(PlayerHero[player])
 
-        if GetUnitState(PlayerHero[player], UNIT_STATE_LIFE) > 0.045 and not (TimerGetRemaining(unit_data.action_timer) > 0.) and not (TimerGetRemaining(PlayerDash[player].timer) > 0.) and not (IsUnitDisabled(PlayerHero[player]) or IsUnitRooted(PlayerHero[player])) then
+        if GetUnitState(PlayerHero[player], UNIT_STATE_LIFE) > 0.045  and not (TimerGetRemaining(PlayerDash[player].timer) > 0.) and not (IsUnitDisabled(PlayerHero[player]) or IsUnitRooted(PlayerHero[player])) then
             local angle = PlayerDash[player].mode == DASH_MODE_FACING and GetUnitFacing(PlayerHero[player]) or AngleBetweenUnitXY(PlayerHero[player], PlayerMousePosition[player].x, PlayerMousePosition[player].y)
+                --and not (TimerGetRemaining(unit_data.action_timer) > 0.)
 
+                ResetUnitSpellCast(PlayerHero[player])
+                --SpellBackswing(PlayerHero[player])
                 DisableHeroSkills(player)
                 TimerStart(PlayerDash[player].timer, 5., false, nil)
                 SetUnitFacing(PlayerHero[player], angle)
                 unit_data.nudge_timer = CreateTimer()
                 SetCameraQuickPositionForPlayer(Player(player-1), GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]))
-                NudgeUnit(PlayerHero[player], angle, 300., 0.52)
-                TimerStart(CreateTimer(), 0.41, false, function()
+                NudgeUnit(PlayerHero[player], angle, 300., 0.5)
+                PlayerSkillQueue[player].is_casting_skill = false
+                PlayerSkillQueue[player].queue_skill = nil
+                unit_data.dashing = true
+
+                SetUnitAnimationByIndex(PlayerHero[player], DashAnimationTable[unit_data.unit_class])
+                ModifyStat(PlayerHero[player], CONTROL_REDUCTION, 1000, STRAIGHT_BONUS, true)
+                SetUnitTimeScale(PlayerHero[player], 1. / 0.5)
+
+                TimerStart(CreateTimer(), 0.4, false, function()
+                    SetUnitTimeScale(PlayerHero[player], 1.)
+                    ModifyStat(PlayerHero[player], CONTROL_REDUCTION, 1000, STRAIGHT_BONUS, false)
                     EnableHeroSkills(player)
                     DestroyTimer(GetExpiredTimer())
+                    unit_data.dashing = false
                 end)
 
                 local value = 0
@@ -247,6 +262,50 @@ do
     end
 
 
+    function CloneHero(unit, id, x, y, angle, time, death_sfx_path)
+        local illusion = CreateUnit(GetOwningPlayer(unit), FourCC("srci"), x, y, angle)
+        local hair_sfx = nil
+        local weapon_sfx
+        local offhand_sfx
+
+            UnitApplyTimedLife(illusion, 0, time)
+
+            if GetUnitClass(unit) == SORCERESS_CLASS then
+                hair_sfx = AddSpecialEffectTarget("Model\\Sorceress_Hair.mdx", illusion, "head")
+            end
+
+            DelayAction(0., function()
+                local unit_data = GetUnitData(unit)
+                local illusion_data = GetUnitData(illusion)
+
+                for i = 1, #illusion_data.stats do illusion_data.stats[i].value = unit_data.stats[i].value end
+                UpdateParameters(illusion_data)
+
+                if GetUnitClass(unit) == ASSASSIN_CLASS then
+                    SetTexture(illusion, unit_data.equip_point[CHEST_POINT] and unit_data.equip_point[CHEST_POINT].assassin_texture or TEXTURE_ID_ASSASSIN_BASE)
+                else
+                    SetTexture(illusion, unit_data.equip_point[CHEST_POINT] and unit_data.equip_point[CHEST_POINT].texture or TEXTURE_ID_EMPTY)
+                end
+
+                weapon_sfx = AddSpecialEffectTarget(unit_data.equip_point[WEAPON_POINT].model or "", illusion, "hand right")
+                offhand_sfx = AddSpecialEffectTarget(unit_data.equip_point[OFFHAND_POINT] and unit_data.equip_point[OFFHAND_POINT].model or "", illusion, "hand left")
+            end)
+
+            local timer = CreateTimer()
+            local trg = CreateTrigger()
+                TriggerRegisterUnitEvent(trg, illusion, EVENT_UNIT_DEATH)
+                TriggerAddAction(trg, function()
+                    AddSpecialEffect(death_sfx_path or "Abilities\\Spells\\Orc\\FeralSpirit\\feralspirittarget.mdx", GetUnitX(illusion), GetUnitY(illusion))
+                    ShowUnit(illusion, false)
+                    DestroyEffect(weapon_sfx)
+                    if hair_sfx then DestroyEffect(hair_sfx) end
+                    DestroyEffect(offhand_sfx)
+                    DestroyTrigger(trg)
+                    DestroyTimer(timer)
+                end)
+
+    end
+
 
     function HeroSelect()
         local region = GetTriggeringRegion()
@@ -305,8 +364,14 @@ do
                 starting_items[3] = CreateCustomItem("I010", 0., 0.)
                 starting_items[4] = CreateCustomItem("I00Z", 0., 0.)
                 starting_items[5] = CreateCustomItem("I00Y", 0., 0.)
+                --starting_items[6] = CreateCustomItem("I046", 0., 0.)
+
 
                 starting_skills[1] = "AACS"
+                starting_skills[2] = "AABD"
+                starting_skills[3] = "AAPS"
+
+                --[[
                 starting_skills[2] = "AABR"
                 starting_skills[3] = "AABA"
                 starting_skills[4] = "AASH"
@@ -317,7 +382,7 @@ do
                 starting_skills[9] = "AALL"
                 starting_skills[10] = "AANS"
                 starting_skills[11] = "AATW"
-                starting_skills[12] = "AABD"
+
                 starting_skills[13] = "AAST"
                 starting_skills[14] = "AACB"
                 starting_skills[15] = "AADB"
@@ -326,7 +391,15 @@ do
                 starting_skills[18] = "AASC"
                 starting_skills[19] = "AABT"
                 starting_skills[20] = "AASB"
-                starting_skills[21] = "AARL"
+
+                starting_skills[22] = "AAEX"
+                starting_skills[23] = "AACA"
+                starting_skills[24] = "AACR"
+                starting_skills[25] = "AASR"
+                starting_skills[26] = "AASF"
+                starting_skills[27] = "AACO"
+                starting_skills[28] = "AAMH"
+                starting_skills[29] = "AAPA"]]
                 icon = "ReplaceableTextures\\CommandButtons\\BTNAssassin.blp"
             elseif region == ClassRegions[AMAZON_CLASS] then
                 id = FourCC("HAMA")
@@ -349,6 +422,7 @@ do
 
             SetPlayerState(Player(player_id), PLAYER_STATE_RESOURCE_GOLD, 1000)
 
+                local sprint_timer = CreateTimer()
                 local hero = CreateUnit(Player(player_id), id, GetRectCenterX(gg_rct_starting_location) , GetRectCenterY(gg_rct_starting_location), 270.)
                 RemoveUnit(GetTriggerUnit())
                 DelayAction(0., function()
@@ -366,10 +440,11 @@ do
                     if region == ClassRegions[NECROMANCER_CLASS] then RegisterNecromancerCorpseSpawn(hero) end
 
                     if unit_data.unit_class == BARBARIAN_CLASS or unit_data.unit_class == PALADIN_CLASS then ModifyStat(hero, VULNERABILITY, -30, STRAIGHT_BONUS, true)
-                    elseif unit_data.unit_class == ASSASSIN_CLASS then ModifyStat(hero, VULNERABILITY, -15, STRAIGHT_BONUS, true)
-                    elseif unit_data.unit_class == SORCERESS_CLASS then AddSpecialEffectTarget("Model\\Sorceress_Hair.mdx", hero, "head") end
+                    elseif unit_data.unit_class == ASSASSIN_CLASS then ModifyStat(hero, VULNERABILITY, -15, STRAIGHT_BONUS, true); AddSpecialEffectTarget("Units\\Hero\\Appearance\\SlayerHead.mdx", hero, "head")
+                    elseif unit_data.unit_class == SORCERESS_CLASS then AddSpecialEffectTarget("Units\\Hero\\Appearance\\Sorceress_Hair.mdx", hero, "head") end
 
                     local glow = AddSpecialEffectTarget(Colours[player_id], hero, "origin")--Colours
+                    unit_data.sprint_timer = sprint_timer
                 end)
 
                 SetCameraBoundsToRectForPlayerBJ(Player(player_id), bj_mapInitialCameraBounds)
@@ -385,18 +460,28 @@ do
                 end
 
 
-
                     TriggerRegisterDeathEvent(DeathTrigger, hero)
                     TriggerRegisterUnitEvent(LvlupTrigger, hero, EVENT_UNIT_HERO_LEVEL)
                     TriggerRegisterUnitEvent(OrderInterceptionTrigger, hero, EVENT_UNIT_ATTACKED)
                     local damage_trigger = CreateTrigger()
                     local hp_state_trigger = CreateTrigger()
+
+
+                    TimerStart(sprint_timer, 10., false, function()
+                        ApplyBuff(hero, hero, "A02Z", 1)
+                    end)
+
                     TriggerRegisterUnitEvent(damage_trigger, hero, EVENT_UNIT_DAMAGED)
                     TriggerAddAction(damage_trigger, function()
                         local damage = GetEventDamage()
 
                             if damage > 0 then
                                 local hero_data = GetUnitData(hero)
+
+                                RemoveBuff(hero, "A02Z")
+                                TimerStart(sprint_timer, 10., false, function()
+                                    ApplyBuff(hero, hero, "A02Z", 1)
+                                end)
 
                                 if not hero_data.groan_cd then
                                     if Chance(12.) then
@@ -511,6 +596,10 @@ do
                         AddToInventory(pid, potions)
                         UpdateEquipPointsWindow(pid)
 
+                        if GetUnitClass(hero) == ASSASSIN_CLASS then
+                            AddToInventory(pid, CreateCustomItem("I046", 0, 0, false))
+                        end
+
                         AddToInventory(pid, CreateCustomItem(ITEM_SCROLL_OF_TOWN_PORTAL, 0.,0., false))
 
                         for i = 1, #starting_skills do
@@ -605,7 +694,7 @@ do
             [SORCERESS_CLASS] = true,
             [NECROMANCER_CLASS] = true,
             [PALADIN_CLASS] = false,
-            [ASSASSIN_CLASS] = false,
+            [ASSASSIN_CLASS] = true,
             [DRUID_CLASS] = false,
             [AMAZON_CLASS] = false,
         }
@@ -629,13 +718,17 @@ do
             CreateClassText(gg_rct_paladin_select, LOCALE_LIST[my_locale].PALADIN_NAME)
             CreateClassText(gg_rct_druid_select, LOCALE_LIST[my_locale].DRUID_NAME)
             CreateClassText(gg_rct_amazon_select, LOCALE_LIST[my_locale].AMAZON_NAME)
-            CreateClassText(gg_rct_assassin_select, LOCALE_LIST[my_locale].ASSASSIN_NAME)
+
         end)
 
+        RegisterTestCommand("invul", function()
+            UnitAddAbility(PlayerHero[1], FourCC("Avul"))
+        end)
 
         CreateClassText(gg_rct_barbarian_select, LOCALE_LIST[my_locale].BARBARIAN_NAME)
         CreateClassText(gg_rct_sorceress_select, LOCALE_LIST[my_locale].SORCERESS_NAME)
         CreateClassText(gg_rct_necro_select, LOCALE_LIST[my_locale].NECROMANCER_NAME)
+        CreateClassText(gg_rct_assassin_select, LOCALE_LIST[my_locale].ASSASSIN_NAME)
 
 
         TriggerAddAction(trg, HeroSelect)
@@ -653,35 +746,42 @@ do
             local player = GetOwningPlayer(hero)
             local unit_data = GetUnitData(hero)
 
-                DestroyEffect(AddSpecialEffect("Effect\\BloodExplosionEx.mdx", GetUnitX(hero), GetUnitY(hero)))
-                DisplayTextToPlayer(player, 0.,0., LOCALE_LIST[my_locale].RESSURECT_TEXT_1 .. string.format('%%.2f', R2S(8. + (Current_Wave / 5.))) .. LOCALE_LIST[my_locale].RESSURECT_TEXT_2)
-                ResetUnitSpellCast(hero)
-                SetUIState(GetPlayerId(player)+1, INV_PANEL, false)
-                SetUIState(GetPlayerId(player)+1, SKILL_PANEL, false)
-                local gold_lost = R2I(GetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD) * 0.2)
+            DestroyEffect(AddSpecialEffect("Effect\\BloodExplosionEx.mdx", GetUnitX(hero), GetUnitY(hero)))
+            DisplayTextToPlayer(player, 0.,0., LOCALE_LIST[my_locale].RESSURECT_TEXT_1 .. string.format('%%.2f', R2S(8. + (Current_Wave / 5.))) .. LOCALE_LIST[my_locale].RESSURECT_TEXT_2)
+            ResetUnitSpellCast(hero)
+            SetUIState(GetPlayerId(player)+1, INV_PANEL, false)
+            SetUIState(GetPlayerId(player)+1, SKILL_PANEL, false)
+            local gold_lost = R2I(GetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD) * 0.2)
 
-                if gold_lost > 1 then
-                    DisplayTextToPlayer(player, 0.,0., LOCALE_LIST[my_locale].GOLD_PENALTY_TEXT_1 .. R2I(gold_lost) .. LOCALE_LIST[my_locale].GOLD_PENALTY_TEXT_2)
-                    SetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD) - gold_lost)
-                end
+            if gold_lost > 1 then
+                DisplayTextToPlayer(player, 0.,0., LOCALE_LIST[my_locale].GOLD_PENALTY_TEXT_1 .. R2I(gold_lost) .. LOCALE_LIST[my_locale].GOLD_PENALTY_TEXT_2)
+                SetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD) - gold_lost)
+            end
 
-
-                AddSoundVolumeZ(HeroDeathSoundpack[unit_data.unit_class][GetRandomInt(1, #HeroDeathSoundpack[unit_data.unit_class])], GetUnitX(hero), GetUnitY(hero), 50., 115, 2200.)
-                    local timer = CreateTimer()
-                    TimerStart(timer, 8. + (Current_Wave / 5.), false, function()
-                        ReviveHero(hero, CemetaryX, CemetaryY, true)
-                        SetUnitTimeScale(hero, 1.)
-                        SetUnitAnimation(hero, "stand")
-                        IssueImmediateOrderById(hero, order_stop)
-                        SetUnitState(hero, UNIT_STATE_LIFE, GetUnitState(hero, UNIT_STATE_MAX_LIFE) * 0.5)
-                        SetUnitState(hero, UNIT_STATE_MANA, GetUnitState(hero, UNIT_STATE_MAX_MANA) * 0.5)
-                        DestroyTimer(GetExpiredTimer())
-                        SelectUnitForPlayerSingle(hero, player)
-                        for i = 1, #ActiveCurses do ApplyCurse(ActiveCurses[i]) end
-                        local minions = GetAllUnitSummonUnits(hero)
-                        ForGroup(minions, function() KillUnit(GetEnumUnit()) end)
-                        DestroyGroup(minions)
-                    end)
+            AddSoundVolumeZ(HeroDeathSoundpack[unit_data.unit_class][GetRandomInt(1, #HeroDeathSoundpack[unit_data.unit_class])], GetUnitX(hero), GetUnitY(hero), 50., 115, 2200.)
+            local timer = CreateTimer()
+            TimerStart(timer, 8. + (Current_Wave / 5.), false, function()
+                local unit_data = GetUnitData(hero)
+                ReviveHero(hero, CemetaryX, CemetaryY, true)
+                SetUnitTimeScale(hero, 1.)
+                SetUnitAnimation(hero, "Birth")
+                IssueImmediateOrderById(hero, order_stop)
+                SetUnitState(hero, UNIT_STATE_LIFE, GetUnitState(hero, UNIT_STATE_MAX_LIFE) * 0.5)
+                SetUnitState(hero, UNIT_STATE_MANA, GetUnitState(hero, UNIT_STATE_MAX_MANA) * 0.5)
+                DestroyTimer(GetExpiredTimer())
+                SelectUnitForPlayerSingle(hero, player)
+                for i = 1, #ActiveCurses do ApplyCurse(ActiveCurses[i]) end
+                local minions = GetAllUnitSummonUnits(hero)
+                ForGroup(minions, function() KillUnit(GetEnumUnit()) end)
+                DestroyGroup(minions)
+                OnHeroRevive(hero)
+                TimerStart(unit_data.sprint_timer, 10., false, function()
+                    ApplyBuff(hero, hero, "A02Z", 1)
+                end)
+                PlayerSkillQueue[GetPlayerId(player)+1].queue_skill = nil
+                PlayerSkillQueue[GetPlayerId(player)+1].is_casting_skill = false
+                PlayerCanChangeEquipment[GetPlayerId(player)+1] = true
+            end)
 
         end)
 
@@ -713,12 +813,12 @@ do
                 ["hard"] = { "Sound\\Sorceress\\hard3.wav" }
             },
             [NECROMANCER_CLASS] = {
-                ["soft"] = { "Sound\\BNecromancer\\soft1.wav", "Sound\\Necromancer\\soft3.wav", "Sound\\Necromancer\\soft5.wav" },
+                ["soft"] = { "Sound\\Necromancer\\soft1.wav", "Sound\\Necromancer\\soft3.wav", "Sound\\Necromancer\\soft5.wav" },
                 ["hard"] = { "Sound\\Necromancer\\hard1.wav", "Sound\\Necromancer\\hard6.wav" }
             },
             [ASSASSIN_CLASS] = {
-                ["soft"] = { "Sound\\BNecromancer\\gethit01.wav", "Sound\\Necromancer\\gethit12.wav", "Sound\\Necromancer\\gethit13.wav" },
-                ["hard"] = { "Sound\\Necromancer\\gethit14.wav", "Sound\\Necromancer\\gethit14.wav" }
+                ["soft"] = { "Sound\\Assassin\\gethit01.wav", "Sound\\Assassin\\gethit12.wav", "Sound\\Assassin\\gethit13.wav" },
+                ["hard"] = { "Sound\\Assassin\\gethit14.wav", "Sound\\Assassin\\gethit16.wav" }
             },
         }
 
@@ -740,6 +840,13 @@ do
             [4] = "Units\\Hero\\HeroGlow_Purple.mdx",
             [5] = "Units\\Hero\\HeroGlow_Yellow.mdx",
             [6] = "Units\\Hero\\HeroGlow_Orange.mdx",
+        }
+
+        DashAnimationTable = {
+            [BARBARIAN_CLASS] = 44,
+            [SORCERESS_CLASS] = 8,
+            [NECROMANCER_CLASS] = 37,
+            [ASSASSIN_CLASS] = 28,
         }
 
         CemetaryX, CemetaryY = GetRectCenterX(gg_rct_cemetary), GetRectCenterY(gg_rct_cemetary)

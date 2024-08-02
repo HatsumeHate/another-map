@@ -136,7 +136,8 @@ do
                     unit_data.unique_unit = true
                     SetDropList(unit, "adv_enemy")
                     AddDropList(unit, "magic_drop", 100.)
-                    AddDropList(unit, "unique_items", 1.)
+                    SetDropChance(unit, "unique_items", 1.)
+                    --AddDropList(unit, "unique_items", 1.)
                     AddDropList(unit, "gifts", 20.)
             end
 

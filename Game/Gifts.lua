@@ -52,7 +52,7 @@ do
         TimerStart(BoneChimesTimer, 15., true, function()
             if BoneChimesBosses[1] and GetUnitState(BoneChimesBosses[1], UNIT_STATE_LIFE) > 0.045 then PingMinimap(GetRectCenterX(gg_rct_chimes_boss_1), GetRectCenterY(gg_rct_chimes_boss_1), 3.) end
             if BoneChimesBosses[2] and GetUnitState(BoneChimesBosses[2], UNIT_STATE_LIFE) > 0.045 then PingMinimap(GetRectCenterX(gg_rct_chimes_boss_2), GetRectCenterY(gg_rct_chimes_boss_2), 3.) end
-            if BoneChimesBosses[2] and GetUnitState(BoneChimesBosses[3], UNIT_STATE_LIFE) > 0.045 then PingMinimap(GetRectCenterX(gg_rct_chimes_boss_3), GetRectCenterY(gg_rct_chimes_boss_3), 3.) end
+            if BoneChimesBosses[3] and GetUnitState(BoneChimesBosses[3], UNIT_STATE_LIFE) > 0.045 then PingMinimap(GetRectCenterX(gg_rct_chimes_boss_3), GetRectCenterY(gg_rct_chimes_boss_3), 3.) end
         end)
 
     end

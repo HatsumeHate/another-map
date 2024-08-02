@@ -193,6 +193,11 @@ do
         local rebounds = 2 + math.floor(UnitGetAbilityLevel(source, "A019") / 10)
 
 
+        if UnitHasEffect(source, "infinity_chain_effect_Legendary") then
+            rebounds = rebounds * 2
+        end
+
+
         AddSoundVolume("Sounds\\Spells\\lightning_launch_" .. GetRandomInt(1, 3) .. ".wav", GetUnitX(from), GetUnitY(from), 120., 1600., 4000.)
         LightningEffect_Units(from, target, "BLNL", 0.45, 50., 50.)
         ApplyEffect(source, target, 0., 0.,"ECHL", 1, ability_instance)
@@ -548,7 +553,7 @@ do
             unit_data.channeled_ability = nil
             TimerStart(unit_data.action_timer, 0., false, nil)
             DestroyLoopingSound(unit_data.channel_sound, 0.3)
-            DestroyEffect(unit_data.hand_left_sfx); DestroyEffect(unit_data.hand_right_sfx); DestroyEffect(unit_data.channel_sfx)
+            DestroyEffect(unit_data.hand_left_sfx); DestroyEffect(unit_data.hand_right_sfx); DestroyEffect(unit_data.channel_sfx); DestroyEffect(unit_data.ground_sfx)
             UnitRemoveAbility(unit, FourCC("A002")); UnitRemoveAbility(unit, FourCC("B000"))
             DestroyTrigger(unit_data.channel_trigger)
             SetUnitTimeScale(unit, 1.)
@@ -564,73 +569,75 @@ do
 
             if unit_data.channeled_destructor then unit_data.channeled_destructor(unit) else
 
-            ResetUnitSpellCast(unit)
+                ResetUnitSpellCast(unit)
 
-            local time_point = 0.3
-            local start_scale = 1.3
+                local time_point = 0.3
+                local start_scale = 1.3
 
-            unit_data.channeled_destructor = BlizzardDeactivate
-            unit_data.channeled_ability = "ABLZ"
+                unit_data.channeled_destructor = BlizzardDeactivate
+                unit_data.channeled_ability = "ABLZ"
 
-            UnitAddAbility(unit, FourCC('Abun'))
-            local player_id = GetPlayerId(GetOwningPlayer(unit)) + 1
+                UnitAddAbility(unit, FourCC('Abun'))
+                local player_id = GetPlayerId(GetOwningPlayer(unit)) + 1
 
-            unit_data.channel_sound = AddLoopingSoundOnUnit({ "Sounds\\Spells\\blizzard_loop_1.wav", "Sounds\\Spells\\blizzard_loop_2.wav", "Sounds\\Spells\\blizzard_loop_3.wav", }, unit, 150, 150, -0.15, 100, 1500., 4000.) --CreateNew3DSound("Sounds\\Spells\\disintegration_loop_1.wav", GetUnitX(unit), GetUnitY(unit), 65., 120, 1500., true)
-            UnitAddAbility(unit, FourCC("A002"))
+                unit_data.channel_sound = AddLoopingSoundOnUnit({ "Sounds\\Spells\\blizzard_loop_1.wav", "Sounds\\Spells\\blizzard_loop_2.wav", "Sounds\\Spells\\blizzard_loop_3.wav", }, unit, 150, 150, -0.15, 100, 1500., 4000.) --CreateNew3DSound("Sounds\\Spells\\disintegration_loop_1.wav", GetUnitX(unit), GetUnitY(unit), 65., 120, 1500., true)
+                UnitAddAbility(unit, FourCC("A002"))
 
-            unit_data.hand_right_sfx = AddSpecialEffectTarget("Spell\\Ice High.mdx", unit, "hand right")
-            unit_data.hand_left_sfx = AddSpecialEffectTarget("Spell\\Ice High.mdx", unit, "hand left")
-            unit_data.channel_sfx = AddSpecialEffect("Spell\\Sleet Storm.mdx", GetUnitX(unit), GetUnitY(unit))
-            BlzSetSpecialEffectZ(unit_data.channel_sfx, GetUnitZ(unit) + 100.)
-
-
-            unit_data.channel_trigger = CreateTrigger()
-            TriggerRegisterUnitEvent(unit_data.channel_trigger, unit, EVENT_UNIT_ISSUED_POINT_ORDER)
-            TriggerRegisterUnitEvent(unit_data.channel_trigger, unit, EVENT_UNIT_ISSUED_ORDER)
-
-            local level = UnitGetAbilityLevel(unit, "ABLZ")
-            local duration = 2. + level * 0.1
-            local breakpoint = duration - 0.25
-            local scale = start_scale
-            local max_scale = RMinBJ(2., 1.3 + level * 0.02)
-            BlzSetSpecialEffectScale(unit_data.channel_sfx, scale)
-            unit_data.blz_scale = scale
+                unit_data.hand_right_sfx = AddSpecialEffectTarget("Spell\\FrostHands.mdx", unit, "hand right")
+                unit_data.hand_left_sfx = AddSpecialEffectTarget("Spell\\FrostHands.mdx", unit, "hand left")
+                unit_data.channel_sfx = AddSpecialEffect("Spell\\Sleet Storm.mdx", GetUnitX(unit), GetUnitY(unit))
+                unit_data.ground_sfx = AddSpecialEffect("Effect\\Effect 1xeshteg1.mdx", GetUnitX(unit), GetUnitY(unit))
+                BlzSetSpecialEffectZ(unit_data.channel_sfx, GetUnitZ(unit) + 100.)
 
 
-            TriggerAddAction(unit_data.channel_trigger, function()
-                if not IsItemOrder(GetIssuedOrderId()) and duration <= breakpoint then BlizzardDeactivate(unit) end
-            end)
+                unit_data.channel_trigger = CreateTrigger()
+                TriggerRegisterUnitEvent(unit_data.channel_trigger, unit, EVENT_UNIT_ISSUED_POINT_ORDER)
+                TriggerRegisterUnitEvent(unit_data.channel_trigger, unit, EVENT_UNIT_ISSUED_ORDER)
 
-            SetUnitTimeScale(unit, 0.05)
-            SetUnitFacingTimed(unit, AngleBetweenUnitXY(unit, PlayerMousePosition[player_id].x or 0., PlayerMousePosition[player_id].y or 0.), 0.1)
+                local level = UnitGetAbilityLevel(unit, "ABLZ")
+                local duration = 2. + level * 0.1
+                local breakpoint = duration - 0.25
+                local scale = start_scale
+                local max_scale = RMinBJ(2., 1.3 + level * 0.02)
+                BlzSetSpecialEffectScale(unit_data.channel_sfx, scale)
+                BlzSetSpecialEffectScale(unit_data.ground_sfx, RMinBJ(2.75, 1.75 + level * 0.02))
+                unit_data.blz_scale = scale
 
-            TimerStart(unit_data.action_timer, 0.025, true, function()
 
-                if duration > 0. and GetUnitState(unit, UNIT_STATE_LIFE) > 0.045 and unit_data.channeled_ability == "ABLZ" then
-                    time_point = time_point - 0.025
+                TriggerAddAction(unit_data.channel_trigger, function()
+                    if not IsItemOrder(GetIssuedOrderId()) and duration <= breakpoint then BlizzardDeactivate(unit) end
+                end)
 
-                    if time_point <= 0. then
-                        local effect = ApplyEffect(unit, nil, GetUnitX(unit), GetUnitY(unit), "EBLZ", 1, ability_instance)
-                        ability_instance.is_attack = false
-                        time_point = 0.3
+                SetUnitTimeScale(unit, 0.05)
+                SetUnitFacingTimed(unit, AngleBetweenUnitXY(unit, PlayerMousePosition[player_id].x or 0., PlayerMousePosition[player_id].y or 0.), 0.1)
+
+                TimerStart(unit_data.action_timer, 0.025, true, function()
+
+                    if duration > 0. and GetUnitState(unit, UNIT_STATE_LIFE) > 0.045 and unit_data.channeled_ability == "ABLZ" then
+                        time_point = time_point - 0.025
+
+                        if time_point <= 0. then
+                            local effect = ApplyEffect(unit, nil, GetUnitX(unit), GetUnitY(unit), "EBLZ", 1, ability_instance)
+                            ability_instance.is_attack = false
+                            time_point = 0.3
+                        end
+
+                        if scale < max_scale then
+                            scale = scale + 0.005
+                            BlzSetSpecialEffectScale(unit_data.channel_sfx, scale)
+                            unit_data.blz_scale = scale
+                        end
+
+                        SetUnitFacingTimed(unit, AngleBetweenUnitXY(unit, PlayerMousePosition[player_id].x or 0., PlayerMousePosition[player_id].y or 0.), 0.1)
+
+                    else
+                        BlizzardDeactivate(unit)
                     end
 
-                    if scale < max_scale then
-                        scale = scale + 0.005
-                        BlzSetSpecialEffectScale(unit_data.channel_sfx, scale)
-                        unit_data.blz_scale = scale
-                    end
+                    duration = duration - 0.025
+                end)
 
-                    SetUnitFacingTimed(unit, AngleBetweenUnitXY(unit, PlayerMousePosition[player_id].x or 0., PlayerMousePosition[player_id].y or 0.), 0.1)
-
-                else
-                    BlizzardDeactivate(unit)
-                end
-
-                duration = duration - 0.025
-            end)
-
-        end
+            end
     end
 
 
@@ -642,7 +649,7 @@ do
         local timer = CreateTimer()
 
         if halfarea > 450. then halfarea = 450. end
-        if amount > 30 then halfarea = 30 end
+        if amount > 30 then amount = 30 end
 
             AddSoundVolume("Sounds\\Spells\\IcicleRain_Spawn_" .. GetRandomInt(1,3)..".wav", x, y, 150, 1500., 4000.)
 
@@ -651,7 +658,7 @@ do
                 if amount > 0 then
                     local point_x = x + GetRandomReal(-halfarea, halfarea)
                     local point_y = y + GetRandomReal(-halfarea, halfarea)
-                    local effect = AddSpecialEffect("Abilities\\Spells\\Human\\Blizzard\\BlizzardTarget.mdx", point_x, point_y)
+                    local effect = AddSpecialEffect("Effect\\Blizzard II.mdx", point_x, point_y)
 
                         BlzSetSpecialEffectTimeScale(effect, 1.5)
                         DestroyEffect(effect)
@@ -836,6 +843,139 @@ do
 
             end
 
+    end
+
+
+
+    function ArcaneRiftCast(caster)
+        local level = UnitGetAbilityLevel(caster, "AARF")
+        local amount = 1 + math.floor(level / 10)
+        local cx, cy = GetUnitX(caster), GetUnitY(caster)
+
+            if amount > 5 then amount = 5 end
+
+            for i = 1, amount do
+                local angle = GetRandomReal(0., 360.)
+                local range = GetMaxAvailableDistance(cx, cy, angle, GetRandomReal(150, 500))
+                local x,y = cx + Rx(range, angle), cy + Ry(range, angle)
+
+
+                    DestroyEffect(AddSpecialEffect("Effect\\Flamestrike Starfire I.mdx", x, y))
+                    CreateAuraOnPoint(caster, x, y, "arcane_rift_aura", level, nil)
+            end
+
+    end
+
+    function ArcaneBarrageCast(source, x, y, ability_instance)
+        local timer = CreateTimer()
+        local arc_side = GetRandomInt(1, 2) == 1 and 1. or -1.
+        local distance = DistanceBetweenUnitXY(source, x, y) + GetRandomReal(-150., 150.)
+        if distance < 400. then distance = 400. end
+        local distance_first = distance + GetRandomReal(-150., 150.)
+        local distance_second = distance + GetRandomReal(-150., 150.)
+
+            ThrowMissile(source, nil, "arcane_barrage_missile", { ability_instance = ability_instance }, GetUnitX(source), GetUnitY(source), x, y, 0., true)
+
+            TimerStart(timer, 0.12, false, function()
+                local missile = ThrowMissile(source, nil, "arcane_barrage_missile_side", { ability_instance = ability_instance, geo_arc_side = arc_side, geo_arc_length = distance_first }, GetUnitX(source), GetUnitY(source), x, y, 0., true)
+                TimerStart(timer, 0.12, false, function()
+                    missile = ThrowMissile(source, nil, "arcane_barrage_missile_side", { ability_instance = ability_instance, geo_arc_side = arc_side > 0 and -1. or 1., geo_arc_length = distance_second }, GetUnitX(source), GetUnitY(source), x, y, 0., true)
+                    DestroyTimer(timer)
+                end)
+            end)
+
+    end
+
+
+    function LightningSpearSubEffect(caster, x, y, target, ability_instance)
+        local group = CreateGroup()
+
+            GroupEnumUnitsInRange(group, x, y, 250., nil)
+
+                if BlzGroupGetSize(group) > 0 then
+                    for index = BlzGroupGetSize(group) - 1, 0, -1 do
+                        local picked = BlzGroupUnitAt(group, index)
+
+                            if IsUnitEnemy(picked, Player(0)) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 and picked ~= target then
+                                ApplyEffect(caster, picked, 0, 0, "lightning_spear_sub_effect", 1, ability_instance)
+                                LightningEffect_Units(target, picked, "BLNL", 0.27, 80., 80.)
+                            end
+
+                    end
+                end
+
+            DestroyGroup(group)
+
+    end
+
+
+    function PermafrostEffect(caster, x, y, ability_instance)
+        local timer = CreateTimer()
+        local angle = AngleBetweenUnitXY(caster, x, y)
+        local angle_mod = GetRandomReal(-6.,6.)
+        local scale = 0.75
+        local distance = 90.
+        local distance_mod = 75.
+        local start_x, start_y = GetUnitX(caster), GetUnitY(caster)
+
+            local new_x, new_y = start_x + Rx(distance, angle + angle_mod), start_y + Ry(distance, angle + angle_mod)
+            bj_lastCreatedEffect = AddSpecialEffect("Effect\\NNmodel (59).mdx", new_x, new_y)
+            BlzSetSpecialEffectYaw(bj_lastCreatedEffect, (angle + angle_mod) * bj_DEGTORAD)
+            BlzSetSpecialEffectScale(bj_lastCreatedEffect, scale)
+            DestroyEffect(bj_lastCreatedEffect)
+            ApplyEffect(caster, nil, new_x, new_y, "permafrost_effect", 1, ability_instance)
+            ability_instance.bonus_radius = 15.
+
+            TimerStart(timer, 0.07, true, function()
+
+                distance_mod = distance_mod * 1.12
+                distance = distance + distance_mod
+                scale = scale * 1.12
+                ability_instance.bonus_radius = ability_instance.bonus_radius * 1.14
+                angle_mod = GetRandomReal(-6.,6.)
+
+
+                new_x, new_y = start_x + Rx(distance, angle + angle_mod), start_y + Ry(distance, angle + angle_mod)
+                bj_lastCreatedEffect = AddSpecialEffect("Effect\\NNmodel (59).mdx", new_x, new_y)
+                BlzSetSpecialEffectYaw(bj_lastCreatedEffect, (angle + angle_mod) * bj_DEGTORAD)
+                BlzSetSpecialEffectScale(bj_lastCreatedEffect, scale)
+                DestroyEffect(bj_lastCreatedEffect)
+                ApplyEffect(caster, nil, new_x, new_y, "permafrost_effect", 1, ability_instance)
+
+                if distance > 600. then DestroyTimer(timer) end
+            end)
+
+
+    end
+
+
+    function EnflameEffect(source)
+
+        for i = 1, 6 do
+            if PlayerHero[i] and GetWidgetLife(PlayerHero[i]) > 0.045 and IsUnitInRange(PlayerHero[i], source, 800.) then
+                ApplyBuff(source, PlayerHero[i], "ABEF", UnitGetAbilityLevel(source, "ASEF"))
+            end
+        end
+
+    end
+
+    function ApplyEnflameWeaponEffect(target, flag)
+        local point = "hand right"
+            local unit_data = GetUnitData(target)
+
+                if IsWeaponTypeTwohanded(unit_data.equip_point[WEAPON_POINT].SUBTYPE) and unit_data.equip_point[WEAPON_POINT].SUBTYPE ~= STAFF_WEAPON and unit_data.equip_point[WEAPON_POINT].SUBTYPE ~= BOW_WEAPON then
+                    point = "weapon"
+                end
+
+                if GetUnitClass(target) == ASSASSIN_CLASS and unit_data.equip_point[WEAPON_POINT].SUBTYPE == BOW_WEAPON then
+                    point = "hand left"
+                end
+
+            if unit_data.enflame then
+                DestroyEffect(unit_data.enflame)
+            end
+
+            unit_data.enflame = AddSpecialEffectTarget("Buffs\\Ember Sword FX 5.mdx", target, point)
     end
 
 

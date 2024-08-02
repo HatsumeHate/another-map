@@ -188,6 +188,11 @@ do
                 BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0., -0.05)
                 BlzFrameSetSize(main_frame, 0.34, 0.43)
 
+                TalentPanel[player].background_texture = BlzCreateFrameByType("BACKDROP", "background", main_frame, "", 0)
+                BlzFrameSetPoint(TalentPanel[player].background_texture, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.0155, 0.0135)
+                BlzFrameSetPoint(TalentPanel[player].background_texture, FRAMEPOINT_TOPRIGHT, main_frame, FRAMEPOINT_TOPRIGHT, -0.0155, -0.0135)
+                BlzFrameSetTexture(TalentPanel[player].background_texture, "UI\\big_bar_bg.blp", 0, true)
+
                 local new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
 
                 BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
@@ -199,10 +204,12 @@ do
                 TalentPanel[player].connector_index = 0
                 TalentPanel[player].background = new_Frame
 
+                --big_bar_bg
+
 
                 new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
 
-                TalentPanel[player].glow_frame = CreateSprite("UI\\Buttons\\HeroLevel\\HeroLevel.mdx", 0.88, GlobalButton[player].talents_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.,0., GlobalButton[player].talents_panel_button)
+                TalentPanel[player].glow_frame = CreateSprite("UI\\Buttons\\HeroLevel\\HeroLevel.mdx", 0.8, GlobalButton[player].talents_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.,0., GlobalButton[player].talents_panel_button)
 
 
                 if TalentPanel[player].points > 0 then BlzFrameSetVisible(TalentPanel[player].glow_frame, true)
@@ -240,9 +247,10 @@ do
                     BlzFrameSetVisible(TalentPanel[player].talent_buttons[i], false)
                 end
 
-                new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
-                BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPRIGHT, main_frame, FRAMEPOINT_TOPRIGHT, -0.02, -0.02)
-                BlzFrameSetSize(new_Frame, 0.07, 0.06)
+                new_Frame = BlzCreateFrameByType("BACKDROP", "score background", main_frame, "", 0)
+                BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPRIGHT, main_frame, FRAMEPOINT_TOPRIGHT, -0.034, -0.034)
+                BlzFrameSetSize(new_Frame, 0.03, 0.03)
+                BlzFrameSetTexture(new_Frame, "UI\\little_round_frame2.blp", 0, true)
                 TalentPanel[player].points_border_frame = new_Frame
 
                 new_Frame = BlzCreateFrameByType("TEXT", "text", main_frame, "MyTextTemplate", 0)
@@ -287,6 +295,11 @@ do
             BlzFrameSetPoint(main_frame, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPLEFT, 0., -0.05)
             BlzFrameSetSize(main_frame, 0.34, 0.43)
 
+            TalentPanel[player].background_texture = BlzCreateFrameByType("BACKDROP", "background", main_frame, "", 0)
+            BlzFrameSetPoint(TalentPanel[player].background_texture, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.0155, 0.0135)
+            BlzFrameSetPoint(TalentPanel[player].background_texture, FRAMEPOINT_TOPRIGHT, main_frame, FRAMEPOINT_TOPRIGHT, -0.0155, -0.0135)
+            BlzFrameSetTexture(TalentPanel[player].background_texture, "UI\\big_bar_bg.blp", 0, true)
+
             local new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
 
             BlzFrameSetPoint(new_Frame, FRAMEPOINT_BOTTOMLEFT, main_frame, FRAMEPOINT_BOTTOMLEFT, 0.02, 0.02)
@@ -305,7 +318,7 @@ do
             new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
 
 
-            TalentPanel[player].glow_frame = CreateSprite("UI\\Buttons\\HeroLevel\\HeroLevel.mdx", 0.88, GlobalButton[player].talents_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.,0., GlobalButton[player].talents_panel_button)
+            TalentPanel[player].glow_frame = CreateSprite("UI\\Buttons\\HeroLevel\\HeroLevel.mdx", 0.8, GlobalButton[player].talents_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.,0., GlobalButton[player].talents_panel_button)
             --BlzFrameSetVisible(TalentPanel[player].glow_frame, false)
 
             TalentPanel[player].categories_border = new_Frame
@@ -344,9 +357,11 @@ do
                 BlzFrameSetVisible(TalentPanel[player].talent_buttons[i], false)
             end
 
-            new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
-            BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPRIGHT, main_frame, FRAMEPOINT_TOPRIGHT, -0.02, -0.02)
-            BlzFrameSetSize(new_Frame, 0.07, 0.06)
+
+            new_Frame = BlzCreateFrameByType("BACKDROP", "score background", main_frame, "", 0)
+            BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPRIGHT, main_frame, FRAMEPOINT_TOPRIGHT, -0.034, -0.034)
+            BlzFrameSetSize(new_Frame, 0.03, 0.03)
+            BlzFrameSetTexture(new_Frame, "UI\\little_round_frame2.blp", 0, true)
             TalentPanel[player].points_border_frame = new_Frame
 
             new_Frame = BlzCreateFrameByType("TEXT", "text", main_frame, "MyTextTemplate", 0)

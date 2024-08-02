@@ -97,32 +97,34 @@ do
                     PauseTimer(ai_timer)
                 end
 
-                local logic = BlzGetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 0) >= 450. or BlzGetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 1) > 450.
+                local unit_data = GetUnitData(unit)
 
-                if logic then
-                    local unit_data = GetUnitData(unit)
-                    local closest_hero =  GetClosestHero(unit, 400.)
+                -- flee behaviour
+                if GetUnitAbilityLevel(unit, FourCC("A038")) > 0 then
 
-                        if closest_hero then
-                            if GetRandomInt(1, 5) == 1 then
-                                local angle = AngleBetweenUnits(closest_hero, unit)
-                                local runaway_angle = angle + GetRandomReal(-35., 35.)
-                                local max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                        if unit_data.classification ~= MONSTER_RANK_BOSS then
+                            local closest_hero =  GetClosestHero(unit, 400.)
 
-                                    if max_runaway_distance < 50. then
-                                        runaway_angle = angle - 90.
-                                        max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                if closest_hero and GetRandomInt(1, 10) == 1 then
+                                    local angle = AngleBetweenUnits(closest_hero, unit)
+                                    local runaway_angle = angle + GetRandomReal(-35., 35.)
+                                    local max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+
                                         if max_runaway_distance < 50. then
-                                            runaway_angle = angle + 180.
+                                            runaway_angle = angle - 90.
                                             max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                            if max_runaway_distance < 50. then
+                                                runaway_angle = angle + 180.
+                                                max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                            end
                                         end
-                                    end
 
-                                    IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(max_runaway_distance, runaway_angle), GetUnitY(unit) + Ry(max_runaway_distance, runaway_angle))
-                            end
-                        elseif logic and unit_data.classification == MONSTER_RANK_BOSS then
+                                        IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(max_runaway_distance, runaway_angle), GetUnitY(unit) + Ry(max_runaway_distance, runaway_angle))
+                                end
+
+                        else
                             if unit_data.leash_range then
-                                if GetRandomInt(1, 7) == 1 then
+                                if GetRandomInt(1, 18) == 1 then
                                     local distance_to_center = DistanceBetweenUnitXY(unit, unit_data.leash_x, unit_data.leash_y)
                                     local runaway_angle
                                     local max_runaway_distance
@@ -150,7 +152,7 @@ do
                                     IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(max_runaway_distance, runaway_angle), GetUnitY(unit) + Ry(max_runaway_distance, runaway_angle))
                                 end
                             else
-                                if GetRandomInt(1, 7) == 1 then
+                                if GetRandomInt(1, 17) == 1 then
                                     local runaway_angle = GetRandomReal(0., 360.)
                                     local max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
 
@@ -172,6 +174,70 @@ do
                             end
                         end
 
+                    -- erratic behaviour
+                elseif GetUnitAbilityLevel(unit, FourCC("A03D")) > 0 then
+                    if GetRandomInt(1, 18) == 1 then
+                        local direction = GetRandomInt(1, 4)
+                        local runaway_angle = GetRandomReal(0., 360.)
+                        local max_runaway_distance = 0.
+
+                            if direction == 1 then runaway_angle = GetUnitFacing(unit) - 90.
+                            elseif direction == 2 then runaway_angle = GetUnitFacing(unit) + 90.
+                            elseif direction == 3 then runaway_angle = GetUnitFacing(unit) + 180. end
+
+                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                            IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(max_runaway_distance, runaway_angle), GetUnitY(unit) + Ry(max_runaway_distance, runaway_angle))
+                    end
+                elseif unit_data.classification == MONSTER_RANK_BOSS then
+                    if unit_data.leash_range then
+                        if GetRandomInt(1, 20) == 1 then
+                            local distance_to_center = DistanceBetweenUnitXY(unit, unit_data.leash_x, unit_data.leash_y)
+                            local runaway_angle
+                            local max_runaway_distance
+
+                            if (distance_to_center / unit_data.leash_range) > 0.7 then
+                                runaway_angle = AngleBetweenUnitXY(unit, unit_data.leash_x, unit_data.leash_y) + GetRandomReal(-35., 35.)
+                                max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                            else
+                                runaway_angle = GetRandomReal(0., 360.)
+                                max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                if max_runaway_distance < 50. then
+                                    runaway_angle = runaway_angle - 90.
+                                    max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                    if max_runaway_distance < 50. then
+                                        runaway_angle = runaway_angle + 180.
+                                        max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                        if max_runaway_distance < 50. then
+                                            runaway_angle = GetRandomReal(0., 360.)
+                                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                        end
+                                    end
+                                end
+                            end
+
+                            IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(max_runaway_distance, runaway_angle), GetUnitY(unit) + Ry(max_runaway_distance, runaway_angle))
+                        end
+                    else
+                        if GetRandomInt(1, 19) == 1 then
+                            local runaway_angle = GetRandomReal(0., 360.)
+                            local max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+
+                            if max_runaway_distance < 50. then
+                                runaway_angle = runaway_angle - 90.
+                                max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                if max_runaway_distance < 50. then
+                                    runaway_angle = runaway_angle + 180.
+                                    max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                    if max_runaway_distance < 50. then
+                                        runaway_angle = GetRandomReal(0., 360.)
+                                        max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                    end
+                                end
+                            end
+
+                            IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(max_runaway_distance, runaway_angle), GetUnitY(unit) + Ry(max_runaway_distance, runaway_angle))
+                        end
+                    end
                 end
 
                 if AITable[GetUnitTypeId(unit)].on_period and GetUnitAbilityLevel(unit, FourCC("AAIM")) == 0 then
@@ -248,7 +314,7 @@ do
                                 IssuePointOrderById(unit, ai.ability_list[i].order, x, y)
                             end
 
-                            DelayAction(3., function() UnitRemoveAbility(unit, FourCC("AAIM")) end)
+                            DelayAction(2., function() UnitRemoveAbility(unit, FourCC("AAIM")) end)
 
                             break
                         end
@@ -280,7 +346,7 @@ do
                            IssuePointOrderById(unit, ai.ability_list[i].order, x, y)
                         end
 
-                        DelayAction(3., function() UnitRemoveAbility(unit, FourCC("AAIM")) end)
+                        DelayAction(2., function() UnitRemoveAbility(unit, FourCC("AAIM")) end)
 
                         break
                     end
@@ -392,13 +458,14 @@ do
             },
             [FourCC(MONSTER_ID_ANDARIEL)] = {
                 ability_list = {
-                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 17., on_hit_chance = 15., point_max_offset = 125. },
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 17., on_hit_chance = 15., point_max_offset = 50. },
                     { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 5., on_hit_chance = 12.},
                 }
             },
             [FourCC(MONSTER_ID_DEMONESS)] = {
                 ability_list = {
-                    { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 14., on_hit_chance = 10., point_max_offset = 120. },
+                    { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 14., on_hit_chance = 10., point_max_offset = 50. },
+                    { order = order_frenzy, activation = POINT_CAST, on_attack_chance = 12., on_hit_chance = 17., point_max_offset = 10. },
                 }
             },
             [FourCC(MONSTER_ID_PHANTOM)] = {
@@ -470,6 +537,11 @@ do
                     { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 17., on_hit_chance = 3. },
                 }
             },
+            [FourCC(MONSTER_ID_DEMON_HELL_GUARD)] = {
+                ability_list = {
+                    { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 17., on_hit_chance = 17. },
+                }
+            },
             [FourCC(MONSTER_ID_UNDERWORLD_QUEEN)] = {
                 ability_list = {
                     { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 15., on_hit_chance = 20. },
@@ -499,7 +571,17 @@ do
                     { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 20., on_hit_chance = 10. },
                     { order = order_hex, activation = SELF_CAST, on_attack_chance = 20., on_hit_chance = 10. },
                 }
-            }
+            },
+            [FourCC(MONSTER_ID_ZOMBIE)] = {
+                ability_list = {
+                    { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 17., on_hit_chance = 0. },
+                }
+            },
+            [FourCC(MONSTER_ID_ZOMBIE_N)] = {
+                ability_list = {
+                    { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 17., on_hit_chance = 0. },
+                }
+            },
         }
 
 

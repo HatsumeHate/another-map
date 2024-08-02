@@ -104,6 +104,8 @@ do
 	DECAYING_DAMAGE_BOOST = 75
 	DECAYING_DAMAGE_REDUCTION = 76
 
+	RESOURCE_GENERATION = 77
+
 	
 	-- attributes
 	PHYSICAL_ATTRIBUTE     = 1
@@ -349,6 +351,20 @@ do
 				value_by_percent_2 = 2,
 				second_limit = 65,
 				value_by_percent_3 = 5
+			},
+			[COOLDOWN_REDUCTION] = {
+				value_by_percent_1 = 1,
+				first_limit = 50,
+				value_by_percent_2 = 2,
+				second_limit = 75,
+				value_by_percent_3 = 4
+			},
+			[DODGE_CHANCE] = {
+				value_by_percent_1 = 1,
+				first_limit = 44,
+				value_by_percent_2 = 2,
+				second_limit = 65,
+				value_by_percent_3 = 3
 			},
 		}
 
@@ -693,6 +709,11 @@ do
 			end,
 
 			---@param data table
+			[RESOURCE_GENERATION] = function(data)
+				data.stats[RESOURCE_GENERATION].value = data.stats[RESOURCE_GENERATION].bonus
+			end,
+
+			---@param data table
 			[DAMAGE_BOOST] = function(data)
 				data.stats[DAMAGE_BOOST].value = data.stats[DAMAGE_BOOST].bonus
 			end,
@@ -742,7 +763,7 @@ do
 
 			---@param data table
 			[COOLDOWN_REDUCTION] = function(data)
-				local value = 1. - (data.stats[COOLDOWN_REDUCTION].bonus / 100.)
+				local value = 1. - (ParamToPercent(data.stats[COOLDOWN_REDUCTION].bonus, COOLDOWN_REDUCTION) / 100.)
 				data.stats[COOLDOWN_REDUCTION].value = math.max(value, 0.)
 			end,
 
@@ -915,6 +936,8 @@ do
 
 			[DECAYING_DAMAGE_BOOST] = LOCALE_LIST[my_locale].DECAYING_DAMAGE_BOOST_PARAM,
 			[DECAYING_DAMAGE_REDUCTION] = LOCALE_LIST[my_locale].DECAYING_DAMAGE_REDUCTION_PARAM,
+
+			[RESOURCE_GENERATION] = LOCALE_LIST[my_locale].RESOURCE_GENERATION_PARAM,
 		}
 
 
@@ -956,7 +979,22 @@ do
 			[POISON_RESIST] = true,
 			[DARKNESS_BONUS] = true,
 			[DARKNESS_RESIST] = true,
+			[ARCANE_BONUS] = true,
+			[ARCANE_RESIST] = true,
 			[ALL_RESIST] = true,
+			[RESOURCE_GENERATION] = true,
+			[BONUS_BEAST_DAMAGE] = true,
+			[BONUS_UNDEAD_DAMAGE] = true,
+			[BONUS_DEMON_DAMAGE] = true,
+			[BONUS_HUMAN_DAMAGE] = true,
+			[BLEEDING_DAMAGE_BOOST] = true,
+			[BLEEDING_DAMAGE_REDUCTION] = true,
+			[BURNING_DAMAGE_BOOST] = true,
+			[BURNING_DAMAGE_REDUCTION] = true,
+			[POISONING_DAMAGE_BOOST] = true,
+			[POISONING_DAMAGE_REDUCTION] = true,
+			[DECAYING_DAMAGE_BOOST] = true,
+			[DECAYING_DAMAGE_REDUCTION] = true,
 		}
 
 

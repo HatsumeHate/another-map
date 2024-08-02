@@ -9,6 +9,7 @@ do
     WaveTimer = 0
     Current_Wave = 1
     WavesUntilShopsUpdate = 2
+    OngoingWave = false
     local MusicMix = 0
     local WaveToAquireHalfPotions = 12
 
@@ -46,6 +47,7 @@ do
             ClearMapMusic()
             PlayMusic(GetRandomMusicMix())
             ResumeMusic()
+            OngoingWave = false
         end
 
         for i = 1, 6 do
@@ -81,7 +83,7 @@ do
 
     function ResetBlackShop()
         local item_pool = {
-            SWORD_WEAPON, GREATSWORD_WEAPON, AXE_WEAPON, GREATAXE_WEAPON, BLUNT_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON, --BOW_WEAPON,
+            SWORD_WEAPON, GREATSWORD_WEAPON, AXE_WEAPON, GREATAXE_WEAPON, BLUNT_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON, BOW_WEAPON,
             DAGGER_WEAPON, CHEST_ARMOR, HANDS_ARMOR, HEAD_ARMOR, LEGS_ARMOR, SHIELD_OFFHAND
         }
 
@@ -274,6 +276,7 @@ do
             MultiboardSetItemValue(item, TimeToText(total_time))
 
                 if total_time <= 0. then
+                    OngoingWave = true
                     PauseTimer(WaveTimer)
                     SpawnMonstersWave(GetRandomMonsterSpawnPoint())
                     ToggleCitizens(false)

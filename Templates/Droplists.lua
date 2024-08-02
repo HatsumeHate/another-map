@@ -6,6 +6,8 @@
 do
 
     local Droplists
+    local GOLD_CONST_PER_LEVEL = 1
+    local GOLD_MOD_PER_LEVEL = 0.012
 
 
 
@@ -143,70 +145,76 @@ do
         local time_offset = 0.
         local bonus_drop_chance = 1. + GetUnitParameterValue(PlayerHero[player], DROP_BONUS) * 0.01
 
+
             for i = 1, #droplist.list do
                 if Chance(droplist.list[i].chance * bonus_drop_chance * GLOBAL_DROP_RATE) then
                     local inner_droplist = GetProperDropList(droplist.list[i].id)
 
-                    AddItemsToDropBundle(inner_droplist, item_drop, bonus_drop_chance * GLOBAL_DROP_RATE)
+                        if inner_droplist then
+                            AddItemsToDropBundle(inner_droplist, item_drop, bonus_drop_chance * GLOBAL_DROP_RATE)
+                        end
 
                 end
             end
 
-            --print(#item_drop)
-            for i = 1, #item_drop do
-                if current < max or item_drop[i].ignore_max then
+            --print("to drop "..#item_drop)
+            if #item_drop > 0 then
+                for i = 1, #item_drop do
+                    if current < max or item_drop[i].ignore_max then
 
-                    DelayAction(initial_time_offset + time_offset, function()
-                        local angle = GetRandomReal(0., 359.)
-                        local drop_offset = GetMaxAvailableDistance(x, y, angle, GetRandomReal(min_offset or 45., max_offset or 65.))
-                        local new_x = x + Rx(drop_offset, angle)
-                        local new_y = y + Ry(drop_offset, angle)
+                        DelayAction(initial_time_offset + time_offset, function()
+                            local angle = GetRandomReal(0., 359.)
+                            local drop_offset = GetMaxAvailableDistance(x, y, angle, GetRandomReal(min_offset or 45., max_offset or 65.))
+                            local new_x = x + Rx(drop_offset, angle)
+                            local new_y = y + Ry(drop_offset, angle)
 
 
-                            if item_drop[i].id == "gold" then
-                                CreateGoldStack(math.floor(GetRandomInt(item_drop[i].min, item_drop[i].max) * (1. + GetUnitParameterValue(PlayerHero[player], GOLD_BONUS) * 0.01) * GLOBAL_GOLD_RATE), new_x, new_y, player-1)
-                            else
-                                local item = CreateCustomItem(item_drop[i].id, new_x, new_y, true, player-1)
+                                if item_drop[i].id == "gold" then
+                                    CreateGoldStack(math.floor((GetRandomInt(item_drop[i].min, item_drop[i].max) + (GOLD_CONST_PER_LEVEL * Current_Wave)) * (1. + GOLD_MOD_PER_LEVEL * Current_Wave) * (1. + GetUnitParameterValue(PlayerHero[player], GOLD_BONUS) * 0.01) * GLOBAL_GOLD_RATE), new_x, new_y, player-1)
+                                else
+                                    local item = CreateCustomItem(item_drop[i].id, new_x, new_y, true, player-1)
 
-                                    if item_drop[i].generate then
-                                        local item_data = GetItemData(item)
+                                        if item_drop[i].generate then
+                                            local item_data = GetItemData(item)
 
-                                        if item_data.QUALITY == SET_ITEM or item_data.QUALITY == UNIQUE_ITEM then
-                                            GenerateItemLevel(item, Current_Wave + GetRandomInt(0, 2))
-                                        else
-                                            local quality = COMMON_ITEM
+                                            if item_data.QUALITY == SET_ITEM or item_data.QUALITY == UNIQUE_ITEM then
+                                                GenerateItemLevel(item, Current_Wave + GetRandomInt(0, 2))
+                                            else
+                                                local quality = COMMON_ITEM
 
-                                            for k = 1, #item_drop[i].quality_list do
-                                                if Chance(item_drop[i].quality_list[k].chance) then
-                                                    quality = item_drop[i].quality_list[k].quality
-                                                    break
+                                                for k = 1, #item_drop[i].quality_list do
+                                                    if Chance(item_drop[i].quality_list[k].chance) then
+                                                        quality = item_drop[i].quality_list[k].quality
+                                                        break
+                                                    end
                                                 end
+
+                                                GenerateItemStats(item, Current_Wave + GetRandomInt(0, 2), quality)
                                             end
 
-                                            GenerateItemStats(item, Current_Wave + GetRandomInt(0, 2), quality)
+                                        elseif GetItemType(item) == ITEM_TYPE_CHARGED then
+                                            SetItemCharges(item, GetRandomInt(item_drop[i].min or 1, item_drop[i].max or 1))
                                         end
 
-                                    elseif GetItemType(item) == ITEM_TYPE_CHARGED then
-                                        SetItemCharges(item, GetRandomInt(item_drop[i].min or 1, item_drop[i].max or 1))
-                                    end
+                                    DelayAction(480., function()
+                                        local item_data = GetItemData(item)
+                                        if item and item_data and item_data.item and item_data.owner then
+                                            RemoveCustomItem(item)
+                                        end
+                                end)
 
-                                DelayAction(480., function()
-                                    local item_data = GetItemData(item)
-                                    if item and item_data and item_data.item and item_data.owner then
-                                        RemoveCustomItem(item)
-                                    end
-                            end)
+                                end
 
-                            end
+                            --print(item_drop[i].id)
+                        end)
 
-                        --print(item_drop[i].id)
-                    end)
+                        time_offset = time_offset + 0.347
+                        current = current + 1
+                    end
 
-                    time_offset = time_offset + 0.347
-                    current = current + 1
                 end
-
             end
+
             --print("done")
     end
 
@@ -313,6 +321,11 @@ do
                 { id = "I040", generate = true }, --horrors
                 { id = "I041", generate = true }, --madness
                 { id = "I042", generate = true }, --skinripper
+                { id = "I043", generate = true }, --grounder
+                { id = "I00N", generate = true }, --rat hunter
+                { id = "I047", generate = true }, --infinity chain
+                { id = "I04M", generate = true }, --nightwalkers
+                { id = "I04N", generate = true }, --trick
             }
         })
 
@@ -421,6 +434,15 @@ do
             }
         })
 
+        NewDropList("consumables_potions_strong", {
+            max = 2,
+            rolls = 3,
+            list = {
+                { id = ITEM_POTION_HEALTH_STRONG, chance = 15., max = 2 },
+                { id = ITEM_POTION_MANA_STRONG, chance = 15., max = 2 },
+            }
+        })
+
         NewDropList("consumables_supply", {
             max = 3,
             rolls = 5,
@@ -501,7 +523,8 @@ do
                 { id = "I02A" },
                 { id = "I03E" },
                 { id = "I03F" },
-                { id = "I03G" }
+                { id = "I03G" },
+                { id = "I044" },
             }
         })
 
@@ -519,7 +542,27 @@ do
                 { id = "I02D" },
                 { id = "I03H" },
                 { id = "I03I" },
-                { id = "I03J" }
+                { id = "I03J" },
+                { id = "I045" }
+            }
+        })
+
+        NewDropList("magic_books", {
+            list = {
+                { id = "I04C" },
+                { id = "I04D" },
+                { id = "I04E" },
+                { id = "I048" },
+                { id = "I049" },
+                { id = "I04A" },
+                { id = "I04B" },
+                { id = "I04F" },
+                { id = "I04G" },
+                { id = "I04H" },
+                { id = "I04I" },
+                { id = "I04J" },
+                { id = "I04K" },
+                { id = "I04L" }
             }
         })
 
@@ -527,8 +570,9 @@ do
         NewDropList("books", {
             template = true,
             list = {
-                { id = "rare_books", chance = 30. },
-                { id = "common_books", chance = 70. }
+                { id = "magic_books", chance = 7. },
+                { id = "rare_books", chance = 23. },
+                { id = "common_books", chance = 45. },
             }
         })
 
@@ -536,10 +580,11 @@ do
             template = true,
             max = 2,
             list = {
-                { id = "common_item", chance = 10.5 },
-                { id = "gems", chance = 5. },
-                { id = "consumables", chance = 11. },
-                { id = "books", chance = 20. },
+                { id = "common_item", chance = 8.2 },
+                { id = "consumables", chance = 4. },
+                { id = "gems", chance = 2. },
+                { id = "books", chance = 16.5 },
+                { id = "unique_items", chance = 0.03 },
                 { id = "gold_common", chance = 70. }
             }
         })
@@ -551,15 +596,17 @@ do
 
         NewDropList("adv_enemy", {
             template = true,
-            max = 3,
+            max = 4,
             list = {
-                { id = "adv_item", chance = 14.7 },
-                { id = "gems", chance = 15. },
-                { id = "runes", chance = 6.9 },
-                { id = "consumables", chance = 11. },
-                { id = "books", chance = 42. },
+                { id = "adv_item", chance = 16.2 },
+                { id = "gems", chance = 17. },
+                { id = "runes", chance = 9. },
+                { id = "consumables", chance = 9. },
+                { id = "consumables_potions_strong", chance = 4. },
+                { id = "books", chance = 31. },
                 { id = "special_items", chance = 5. },
                 { id = "gold_adv", chance = 70. },
+                { id = "unique_items", chance = 0.05 },
                 { id = "gifts", chance = 3. },
             }
         })
@@ -630,18 +677,19 @@ do
 
         NewDropList("boss_enemy", {
             template = true,
-            max = 5,
+            max = 6,
             list = {
                 { id = "boss_item", chance = 38.5 },
                 { id = "unique_items", chance = 7. },
                 { id = "gems", chance = 25. },
-                { id = "runes", chance = 20. },
+                { id = "runes", chance = 33. },
                 { id = "consumables", chance = 11. },
+                { id = "consumables_potions_strong", chance = 11. },
                 { id = "books", chance = 37. },
                 { id = "shard", chance = 10. },
                 { id = "special_items", chance = 10. },
                 { id = "gold_boss", chance = 70.},
-                { id = "gifts", chance = 30. },
+                { id = "gifts", chance = 40. },
             }
         })
 
@@ -682,9 +730,9 @@ do
             max = 4,
             list = {
                 { id = "chest_item", chance = 47.5 },
-                { id = "set_items", chance = 5. },
-                { id = "gems", chance = 20. },
-                { id = "runes", chance = 15. },
+                { id = "unique_items", chance = 4. },
+                { id = "gems", chance = 25. },
+                { id = "runes", chance = 17. },
                 { id = "consumables", chance = 11. },
                 { id = "special_items", chance = 7. },
                 { id = "gold_chest", chance = 90.},
@@ -705,6 +753,9 @@ do
                 { id = "gold_supply", chance = 100.}
             }
         })
+
+
+        RegisterTestCommand("rnd", function() print(GetRandomReal(0., 100.)) end)
 
 
     end

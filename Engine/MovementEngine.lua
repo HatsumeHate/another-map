@@ -220,7 +220,7 @@ do
         local charge_data = {}
         local h = source
         local anim_update_time
-
+        local time = distance / speed
 
         if ChargeList[h] then
             local velocity = (speed * PERIOD) / distance
@@ -229,11 +229,13 @@ do
                 charge_data.point_y = GetUnitY(source) + Ry(distance, angle)
                 ChargeList[h].vx = (charge_data.point_x - GetUnitX(source)) * velocity
                 ChargeList[h].vy = (charge_data.point_y - GetUnitY(source)) * velocity
+                ChargeList[h].time = time
                 charge_data = nil
 
             return
         end
 
+            charge_data.time = time
             ChargeList[h] = charge_data
             local velocity = (speed * PERIOD) / distance
             charge_data.point_x = GetUnitX(source) + Rx(distance, angle)
@@ -265,7 +267,7 @@ do
                --print("tick")
                 local state = HasAnyDisableState(source) or IsUnitRooted(source)
 
-                if IsUnitInRangeXY(source, charge_data.point_x, charge_data.point_y, 10.) or GetUnitState(source, UNIT_STATE_LIFE) < 0.045 or state or not IsPathable_Ground(GetUnitX(source) + charge_data.vx, GetUnitY(source) + charge_data.vy) then
+                if charge_data.time <= 0. or GetUnitState(source, UNIT_STATE_LIFE) < 0.045 or state or not IsPathable_Ground(GetUnitX(source) + charge_data.vx, GetUnitY(source) + charge_data.vy) then
                     --print("end")
                     if anim_pack then SetUnitTimeScale(source,  1.) end
                     SetUnitAnimation(source, "stand")
@@ -314,6 +316,8 @@ do
                     SetUnitX(source, RealGetUnitX(source) + charge_data.vx)
                     SetUnitY(source, RealGetUnitY(source) + charge_data.vy)
 
+                    charge_data.time = charge_data.time - PERIOD
+
                     BlzSetUnitFacingEx(source, angle)
 
                 else
@@ -327,6 +331,8 @@ do
 
                     SetUnitX(source, RealGetUnitX(source) + charge_data.vx)
                     SetUnitY(source, RealGetUnitY(source) + charge_data.vy)
+
+                    charge_data.time = charge_data.time - PERIOD
 
                     BlzSetUnitFacingEx(source, angle)
                 end
@@ -367,7 +373,7 @@ do
         local step = speed / FPS
         local start_height = unit_z
         local end_height = endpoint_z
-        local time = (speed / distance) * (1. + arc)
+        local time = (distance / speed) * (1. + arc)
         local safe_time = 0.15
 
         SetUnitFacing(target, angle)
@@ -529,7 +535,7 @@ do
     ---@param angle real
     ---@param power real
     ---@param time real
-    function NudgeUnit(source, angle, power, time)
+    function NudgeUnit(source, angle, power, time, dont_reset_animation)
         local handle = source
         local unit_data = GetUnitData(source)
         local push_data = { x = RealGetUnitX(source), y = RealGetUnitY(source), vx = 0., vy = 0. }
@@ -562,6 +568,7 @@ do
                     if IsMapBounds(push_data.x, push_data.y) or push_data.time < 0. then
                         DestroyTimer(unit_data.nudge_timer)
                         unit_data.nudge_timer = nil
+                        if GetUnitState(source, UNIT_STATE_LIFE) > 0.045 and not dont_reset_animation then SetUnitAnimation(source, "stand ready") end
                     else
                         SetUnitPositionSmooth(source, push_data.x + push_data.vx, push_data.y + push_data.vy)
                         local faderate = 0.1 + (push_data.time / total_time) - penalty
@@ -910,15 +917,22 @@ do
             distance2d = DistanceBetweenXY(start_x, start_y, end_x, end_y)
             local distance_bezie = 0.
 
-            if m.geo_arc_length then
-                distance_bezie = m.geo_arc_length / 2.
-                m.total_length = distance2d / m.geo_arc_length
-                m.bezie_step = 1. / (m.geo_arc_length / (m.speed * (m.speed_mod or 1.) / FPS))
-            else
-                distance_bezie = distance2d / 2.
-                m.total_length = 1.
-                m.bezie_step = 1. / (distance2d / (m.speed * (m.speed_mod or 1.) / FPS))
-            end
+                if m.geo_arc_length then
+                    distance_bezie = m.geo_arc_length / 2.
+                    m.total_length = distance2d / m.geo_arc_length
+                    m.bezie_step = 1. / (m.geo_arc_length / (m.speed * (m.speed_mod or 1.) / FPS))
+
+                elseif effects and effects.geo_arc_length then
+                    m.geo_arc_length = effects.geo_arc_length
+                    distance_bezie = m.geo_arc_length / 2.
+                    m.total_length = distance2d / m.geo_arc_length
+                    m.bezie_step = 1. / (m.geo_arc_length / (m.speed * (m.speed_mod or 1.) / FPS))
+                else
+                    distance_bezie = distance2d / 2.
+                    m.total_length = 1.
+                    m.bezie_step = 1. / (distance2d / (m.speed * (m.speed_mod or 1.) / FPS))
+
+                end
 
             local start_angle = m.geo_arc
 
@@ -934,7 +948,7 @@ do
 
                 point_start = { x = start_x, y = start_y }
                 point_mid = { x = start_x + Rx(distance_bezie, angle - start_angle), y = start_y + Ry(distance_bezie, angle -  start_angle) }
-                point_end = { x = start_x + Rx(m.geo_arc_length, angle), y = start_y + Ry(m.geo_arc_length, angle) }
+                point_end = { x = start_x + Rx(m.geo_arc_length or distance2d , angle), y = start_y + Ry(m.geo_arc_length or distance2d, angle) }
                 m.current_length = 0.
                 m.current_bezie_angle = start_angle
 
@@ -951,7 +965,12 @@ do
         local targets = m.max_targets or 1
         --print("aaaaaaa")
 
-        local ability_instance = effects and effects.ability_instance or nil
+        local ability_instance = nil
+
+        if effects and effects.ability_instance then
+            ability_instance = effects.ability_instance
+            m.ability_instance = ability_instance
+        end
 
         MissileList[#MissileList+1] = m
 

@@ -12,29 +12,30 @@ do
         for i = 1, 6 do
             if PlayerHero[i] then
                 local data = GetUnitData(PlayerHero[i])
-                BlzFrameSetText(StatsList[i][STR_STAT], LOCALE_LIST[my_locale].STAT_PANEL_STR.. data.stats[STR_STAT].value)
-                BlzFrameSetText(StatsList[i][INT_STAT], LOCALE_LIST[my_locale].STAT_PANEL_INT.. data.stats[INT_STAT].value)
-                BlzFrameSetText(StatsList[i][VIT_STAT], LOCALE_LIST[my_locale].STAT_PANEL_VIT.. data.stats[VIT_STAT].value)
-                BlzFrameSetText(StatsList[i][AGI_STAT], LOCALE_LIST[my_locale].STAT_PANEL_AGI.. data.stats[AGI_STAT].value)
+                data = data.stats
+                BlzFrameSetText(StatsList[i][STR_STAT], LOCALE_LIST[my_locale].STAT_PANEL_STR.. data[STR_STAT].value)
+                BlzFrameSetText(StatsList[i][INT_STAT], LOCALE_LIST[my_locale].STAT_PANEL_INT.. data[INT_STAT].value)
+                BlzFrameSetText(StatsList[i][VIT_STAT], LOCALE_LIST[my_locale].STAT_PANEL_VIT.. data[VIT_STAT].value)
+                BlzFrameSetText(StatsList[i][AGI_STAT], LOCALE_LIST[my_locale].STAT_PANEL_AGI.. data[AGI_STAT].value)
 
-                BlzFrameSetText(StatsList[i][PHYSICAL_ATTACK], LOCALE_LIST[my_locale].STAT_PANEL_PHYS_ATTACK.. R2I(data.stats[PHYSICAL_ATTACK].value))
-                BlzFrameSetText(StatsList[i][PHYSICAL_DEFENCE], LOCALE_LIST[my_locale].STAT_PANEL_PHYS_DEFENCE.. R2I(data.stats[PHYSICAL_DEFENCE].value))
-                BlzFrameSetText(StatsList[i][MAGICAL_ATTACK], LOCALE_LIST[my_locale].STAT_PANEL_MAG_ATTACK.. R2I(data.stats[MAGICAL_ATTACK].value))
-                BlzFrameSetText(StatsList[i][MAGICAL_SUPPRESSION], LOCALE_LIST[my_locale].STAT_PANEL_MAG_DEFENCE.. R2I(data.stats[MAGICAL_SUPPRESSION].value))
-                BlzFrameSetText(StatsList[i][ATTACK_SPEED], LOCALE_LIST[my_locale].STAT_PANEL_ATTACK_SPEED.. math.floor(data.stats[ATTACK_SPEED].actual_bonus + 0.5) .. "%%")
-                BlzFrameSetText(StatsList[i]["ATTACK_SPEED_spec"], LOCALE_LIST[my_locale].STAT_PANEL_ATTACK_SPEED_PERIOD.. string.format('%%.2f', data.stats[ATTACK_SPEED].value))
-                BlzFrameSetText(StatsList[i][CAST_SPEED], LOCALE_LIST[my_locale].STAT_PANEL_CAST_SPEED.. math.floor(data.stats[CAST_SPEED].value + 0.5) .. "%%")
-                BlzFrameSetText(StatsList[i][MOVING_SPEED], LOCALE_LIST[my_locale].STAT_PANEL_MOVE_SPEED.. math.floor(data.stats[MOVING_SPEED].value + 0.5))
-                BlzFrameSetText(StatsList[i][CRIT_CHANCE], LOCALE_LIST[my_locale].STAT_PANEL_CRIT_CHANCE..  math.floor(ParamToPercent(data.stats[CRIT_CHANCE].value, CRIT_CHANCE) + 0.5) .. "%%")
+                BlzFrameSetText(StatsList[i][PHYSICAL_ATTACK], LOCALE_LIST[my_locale].STAT_PANEL_PHYS_ATTACK.. R2I(data[PHYSICAL_ATTACK].value))
+                BlzFrameSetText(StatsList[i][PHYSICAL_DEFENCE], LOCALE_LIST[my_locale].STAT_PANEL_PHYS_DEFENCE.. R2I(data[PHYSICAL_DEFENCE].value) .. "(" .. string.format('%%.1f',ParamToPercent(data[PHYSICAL_DEFENCE].value, PHYSICAL_DEFENCE)) .. "%%)")
+                BlzFrameSetText(StatsList[i][MAGICAL_ATTACK], LOCALE_LIST[my_locale].STAT_PANEL_MAG_ATTACK.. R2I(data[MAGICAL_ATTACK].value).. "(" .. string.format('%%.1f',ParamToPercent(data[MAGICAL_ATTACK].value, MAGICAL_ATTACK)) .. "%%)")
+                BlzFrameSetText(StatsList[i][MAGICAL_SUPPRESSION], LOCALE_LIST[my_locale].STAT_PANEL_MAG_DEFENCE.. R2I(data[MAGICAL_SUPPRESSION].value))
+                BlzFrameSetText(StatsList[i][ATTACK_SPEED], LOCALE_LIST[my_locale].STAT_PANEL_ATTACK_SPEED.. math.floor(data[ATTACK_SPEED].actual_bonus + 0.5) .. "%%")
+                BlzFrameSetText(StatsList[i]["ATTACK_SPEED_spec"], LOCALE_LIST[my_locale].STAT_PANEL_ATTACK_SPEED_PERIOD.. string.format('%%.2f', data[ATTACK_SPEED].value))
+                BlzFrameSetText(StatsList[i][CAST_SPEED], LOCALE_LIST[my_locale].STAT_PANEL_CAST_SPEED.. math.floor(data[CAST_SPEED].value + 0.5) .. "%%")
+                BlzFrameSetText(StatsList[i][MOVING_SPEED], LOCALE_LIST[my_locale].STAT_PANEL_MOVE_SPEED.. math.floor(data[MOVING_SPEED].value + 0.5))
+                BlzFrameSetText(StatsList[i][CRIT_CHANCE], LOCALE_LIST[my_locale].STAT_PANEL_CRIT_CHANCE..  math.floor(ParamToPercent(data[CRIT_CHANCE].value, CRIT_CHANCE) + 0.5) .. "%%")
 
-                BlzFrameSetText(StatsList[i][PHYSICAL_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_PHYSICAL.. data.stats[PHYSICAL_RESIST].value.. "%%")
-                BlzFrameSetText(StatsList[i][FIRE_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_FIRE.. data.stats[FIRE_RESIST].value.. "%%")
-                BlzFrameSetText(StatsList[i][ICE_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_ICE.. data.stats[ICE_RESIST].value.. "%%")
-                BlzFrameSetText(StatsList[i][LIGHTNING_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_LIGHTNING.. data.stats[LIGHTNING_RESIST].value.. "%%")
-                BlzFrameSetText(StatsList[i][DARKNESS_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_DARKNESS.. data.stats[DARKNESS_RESIST].value.. "%%")
-                BlzFrameSetText(StatsList[i][HOLY_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_HOLY.. data.stats[HOLY_RESIST].value.. "%%")
-                BlzFrameSetText(StatsList[i][POISON_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_POISON.. data.stats[POISON_RESIST].value.. "%%")
-                BlzFrameSetText(StatsList[i][ARCANE_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_ARCANE.. data.stats[ARCANE_RESIST].value.. "%%")
+                BlzFrameSetText(StatsList[i][PHYSICAL_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_PHYSICAL.. data[PHYSICAL_RESIST].value.. "%%")
+                BlzFrameSetText(StatsList[i][FIRE_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_FIRE.. data[FIRE_RESIST].value.. "%%")
+                BlzFrameSetText(StatsList[i][ICE_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_ICE.. data[ICE_RESIST].value.. "%%")
+                BlzFrameSetText(StatsList[i][LIGHTNING_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_LIGHTNING.. data[LIGHTNING_RESIST].value.. "%%")
+                BlzFrameSetText(StatsList[i][DARKNESS_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_DARKNESS.. data[DARKNESS_RESIST].value.. "%%")
+                BlzFrameSetText(StatsList[i][HOLY_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_HOLY.. data[HOLY_RESIST].value.. "%%")
+                BlzFrameSetText(StatsList[i][POISON_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_POISON.. data[POISON_RESIST].value.. "%%")
+                BlzFrameSetText(StatsList[i][ARCANE_RESIST], LOCALE_LIST[my_locale].STAT_PANEL_ARCANE.. data[ARCANE_RESIST].value.. "%%")
             end
         end
     end
@@ -73,7 +74,7 @@ do
             BlzFrameSetPoint(StatsList[player][stat], FRAMEPOINT_LEFT, new_frame, FRAMEPOINT_LEFT, 0.01, 0.)
             --BlzFrameSetPoint(StatsList[player][stat], FRAMEPOINT_RIGHT, new_frame, FRAMEPOINT_RIGHT, 0., 0.)
             --BlzFrameSetAllPoints(StatsList[player][stat], new_frame)
-            BlzFrameSetSize(StatsList[player][stat], 0.08, 0.03)
+            BlzFrameSetSize(StatsList[player][stat], 0.09, 0.03)
             BlzFrameSetText(StatsList[player][stat], text)
             BlzFrameSetTextAlignment(StatsList[player][stat], TEXT_JUSTIFY_MIDDLE , TEXT_JUSTIFY_LEFT )
             BlzFrameSetScale(StatsList[player][stat], scale-0.2)
@@ -219,7 +220,7 @@ do
 
 
 
-                    MainStatButtons[player].glow_frame = CreateSprite("UI\\Buttons\\HeroLevel\\HeroLevel.mdx", 0.88, GlobalButton[player].char_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.,0., GlobalButton[player].char_panel_button)
+                    MainStatButtons[player].glow_frame = CreateSprite("UI\\Buttons\\HeroLevel\\HeroLevel.mdx", 0.8, GlobalButton[player].char_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.,0., GlobalButton[player].char_panel_button)
                     BlzFrameSetVisible(MainStatButtons[player].glow_frame, false)
 
 
@@ -394,7 +395,7 @@ do
 
 
 
-            MainStatButtons[player].glow_frame = CreateSprite("UI\\Buttons\\HeroLevel\\HeroLevel.mdx", 0.88, GlobalButton[player].char_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.,0., GlobalButton[player].char_panel_button)
+            MainStatButtons[player].glow_frame = CreateSprite("UI\\Buttons\\HeroLevel\\HeroLevel.mdx", 0.8, GlobalButton[player].char_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.,0., GlobalButton[player].char_panel_button)
             BlzFrameSetVisible(MainStatButtons[player].glow_frame, false)
 
             local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", GlobalButton[player].char_panel_button, "", 0)

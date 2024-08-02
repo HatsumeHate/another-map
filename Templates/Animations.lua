@@ -375,6 +375,138 @@ do
             animation_backswing = 0.33,
         })
 
+
+        NewAnimationSequence("assassin_swing_long_upwing", {
+            animation           = 33,
+            animation_point     = 1.750,
+            animation_backswing = 0.1,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 33,
+                    animation_point     = 1.750,
+                    animation_backswing = 0.3,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 33,
+                    animation_point     = 1.750,
+                    animation_backswing = 0.3,
+                },
+                [ANIM_TAG_STAFF] = {
+                    animation           = 33,
+                    animation_point     = 1.750,
+                    animation_backswing = 0.3,
+                }
+            }
+        })
+
+        NewAnimationSequence("assassin_swing_right_to_left", {
+            animation           = 34,
+            animation_point     = 0.416,
+            animation_backswing = 0.201,
+        })
+
+        NewAnimationSequence("assassin_swing_combo_1", {
+            animation           = 30,
+            animation_point     = 0.291,
+            animation_backswing = 0.125,
+        })
+
+        NewAnimationSequence("assassin_swing_combo_2", {
+            animation           = 31,
+            animation_point     = 0.145,
+            animation_backswing = 0.165,
+        })
+
+        NewAnimationSequence("assassin_swing_combo_3", {
+            animation           = 32,
+            animation_point     = 0.375,
+            animation_backswing = 0.208,
+        })
+
+        NewAnimationSequence("assassin_swing_long_upwing_left_to_right", {
+            animation           = 29,
+            animation_point     = 1.2,
+            animation_backswing = 1.015,
+        })
+
+        NewAnimationSequence("assassin_stab", {
+            animation           = 50,
+            animation_point     = 1.250,
+            animation_backswing = 0.12,
+        })
+
+        NewAnimationSequence("assassin_stab_2", {
+            animation           = 38,
+            animation_point     = 1.875,
+            animation_backswing = 1.,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 38,
+                    animation_point     = 1.875,
+                    animation_backswing = 1.,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 38,
+                    animation_point     = 1.875,
+                    animation_backswing = 1.,
+                },
+                [ANIM_TAG_STAFF] = {
+                    animation           = 38,
+                    animation_point     = 1.875,
+                    animation_backswing = 1.,
+                }
+            }
+        })
+
+        NewAnimationSequence("assassin_bow_shot_1", {
+            animation           = 45,
+            animation_point     = 1.125,
+            animation_backswing = 0.6,
+        })
+
+        NewAnimationSequence("assassin_bow_shot_fast_1", {
+            animation           = 24,
+            animation_point     = 0.5,
+            animation_backswing = 0.3,
+        })
+
+        NewAnimationSequence("assassin_bow_shot_fast_2", {
+            animation           = 25,
+            animation_point     = 0.458,
+            animation_backswing = 0.33,
+        })
+
+        NewAnimationSequence("assassin_bow_shot_heavy", {
+            animation           = 43,
+            animation_point     = 1.166,
+            animation_backswing = 0.9,
+        })
+
+        NewAnimationSequence("assassin_bow_shot_sky", {
+            animation           = 53,
+            animation_point     = 1.125,
+            animation_backswing = 0.6,
+        })
+
+        NewAnimationSequence("assassin_blink", {
+            animation           = 49,
+            animation_point     = 0.25,
+            animation_backswing = 0.25,
+        })
+
+        NewAnimationSequence("assassin_empower", {
+            animation           = 42,
+            animation_point     = 2.166,
+            animation_backswing = 1.25,
+        })
+
+        NewAnimationSequence("assassin_throw", {
+            animation           = 41,
+            animation_point     = 1.083,
+            animation_backswing = 0.8,
+        })
+
+
         NewAnimationSequence("spider_venom_bile", {
             animation           = 3,
             animation_point     = 0.7,
@@ -465,6 +597,18 @@ do
             animation_backswing = 0.333,
         })
 
+        NewAnimationSequence("demoness_spell_whip", {
+            animation           = 9,
+            animation_point     = 0.541,
+            animation_backswing = 0.445,
+        })
+
+        NewAnimationSequence("demoness_spell_kiss", {
+            animation           = 11,
+            animation_point     = 0.417,
+            animation_backswing = 0.445,
+        })
+
         NewAnimationSequence("butcher_spell", {
             animation           = 7,
             animation_point     = 0.650,
@@ -513,6 +657,13 @@ do
             animation_point     = 1.,
             animation_backswing = 0.3,
         })
+
+        NewAnimationSequence("hguard_spell", {
+            animation           = 3,
+            animation_point     = 0.3,
+            animation_backswing = 0.3,
+        })
+
 
         NewAnimationSequence("ghost_spell", {
             animation           = 3,
@@ -641,6 +792,12 @@ do
             animation           = 6,
             animation_point     = 0.3,
             animation_backswing = 0.3,
+        })
+
+        NewAnimationSequence("zombie_vomit", {
+            animation           = 0,
+            animation_point     = 0.25,
+            animation_backswing = 0.35,
         })
 
 

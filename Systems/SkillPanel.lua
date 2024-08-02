@@ -20,6 +20,7 @@ do
 
     local last_EnteredFrame
     local last_EnteredFrameTimer
+    SkillPanelKeybindActive = false
 
 
     ---@param player integer
@@ -194,9 +195,12 @@ do
 
 
             if button_type == SKILL_BUTTON then
+                --local new_FrameBackground = BlzCreateFrameByType("BACKDROP", "Skill background", new_FrameImage, "", 0)
                 local new_FrameText = BlzCreateFrameByType("TEXT", "skill name", new_FrameImage, "MyTextTemplateMedium", 0)
                 local new_FrameLevelText = BlzCreateFrameByType("TEXT", "skill level", new_FrameImage, "MyTextTemplateMedium", 0)
                 local new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", new_FrameImage, "", 0)
+
+                    --BlzFrameSetTexture(new_FrameBackground, "UI\\basic_bar.blp", 0, true)
 
                     BlzFrameSetTextAlignment(new_FrameText, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_LEFT)
                     BlzFrameSetPoint(new_FrameText, FRAMEPOINT_LEFT, new_FrameImage, FRAMEPOINT_RIGHT, 0.007, 0.008)
@@ -332,14 +336,23 @@ do
 
 
                     local last_frame
+
                     for i = 1, 4 do
                         new_Frame = BlzCreateFrame('EscMenuBackdrop', main_frame, 0, 0)
+
                             if i == 1 then
                                 BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOPLEFT, category_border_panel, FRAMEPOINT_TOPRIGHT, -0.006, 0.)
                             else
                                 BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOP, last_frame, FRAMEPOINT_BOTTOM, 0., 0.01)
                             end
+
                         BlzFrameSetSize(new_Frame, 0.18, 0.06)
+
+                        local new_FrameBackground = BlzCreateFrameByType("BACKDROP", "Skill background", new_Frame, "", 0)
+                        BlzFrameSetPoint(new_FrameBackground, FRAMEPOINT_BOTTOMLEFT, new_Frame, FRAMEPOINT_BOTTOMLEFT, 0.015, 0.0145)
+                        BlzFrameSetPoint(new_FrameBackground, FRAMEPOINT_TOPRIGHT, new_Frame, FRAMEPOINT_TOPRIGHT, -0.015, -0.0145)
+                        BlzFrameSetTexture(new_FrameBackground, "UI\\basic_bar.blp", 0, true)
+
                         SkillPanelFrame[player].displayed_skill_button[i] = NewButton(SKILL_BUTTON, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.03, 0.03, new_Frame, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.015, 0., new_Frame)
                         BlzFrameSetVisible(SkillPanelFrame[player].displayed_skill_button[i], false)
                         last_frame = new_Frame
@@ -467,6 +480,12 @@ do
                         BlzFrameSetPoint(new_Frame, FRAMEPOINT_TOP, last_frame, FRAMEPOINT_BOTTOM, 0., 0.01)
                     end
                 BlzFrameSetSize(new_Frame, 0.18, 0.06)
+
+                local new_FrameBackground = BlzCreateFrameByType("BACKDROP", "Skill background", new_Frame, "", 0)
+                BlzFrameSetPoint(new_FrameBackground, FRAMEPOINT_BOTTOMLEFT, new_Frame, FRAMEPOINT_BOTTOMLEFT, 0.015, 0.0145)
+                BlzFrameSetPoint(new_FrameBackground, FRAMEPOINT_TOPRIGHT, new_Frame, FRAMEPOINT_TOPRIGHT, -0.015, -0.0145)
+                BlzFrameSetTexture(new_FrameBackground, "UI\\basic_bar.blp", 0, true)
+
                 SkillPanelFrame[player].displayed_skill_button[i] = NewButton(SKILL_BUTTON, "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.03, 0.03, new_Frame, FRAMEPOINT_LEFT, FRAMEPOINT_LEFT, 0.015, 0., new_Frame)
                 BlzFrameSetVisible(SkillPanelFrame[player].displayed_skill_button[i], false)
                 last_frame = new_Frame
@@ -513,7 +532,6 @@ do
 
             BlzTriggerRegisterFrameEvent(SkillPanelFrame[player].slider_trigger, SkillPanelFrame[player].slider, FRAMEEVENT_MOUSE_WHEEL)
 
-
         local actual_player = Player(player-1)
         SkillPanelFrame[player].key_trigger = CreateTrigger()
         BlzTriggerRegisterPlayerKeyEvent(SkillPanelFrame[player].key_trigger, actual_player, OSKEY_Q, 0, true)
@@ -526,37 +544,36 @@ do
         TriggerAddAction(SkillPanelFrame[player].key_trigger, function()
             local key = BlzGetTriggerPlayerKey()
 
+                SkillPanelKeybindActive[player] = true
+
                 if key == OSKEY_Q then
                     RegisterPlayerSkillHotkey(player, SkillPanelFrame[player].current_button.skill, KEY_Q)
                     BlzUnitDisableAbility(PlayerHero[player], KEYBIND_LIST[KEY_Q].ability, true, false)
                     BlzUnitDisableAbility(PlayerHero[player], KEYBIND_LIST[KEY_Q].ability, false, false)
-                    DestroyContextMenu(player)
                 elseif key == OSKEY_W then
                     RegisterPlayerSkillHotkey(player, SkillPanelFrame[player].current_button.skill, KEY_W)
                     BlzUnitDisableAbility(PlayerHero[player], KEYBIND_LIST[KEY_W].ability, true, false)
                     BlzUnitDisableAbility(PlayerHero[player], KEYBIND_LIST[KEY_W].ability, false, false)
-                    DestroyContextMenu(player)
                 elseif key == OSKEY_E then
                     RegisterPlayerSkillHotkey(player, SkillPanelFrame[player].current_button.skill, KEY_E)
                     BlzUnitDisableAbility(PlayerHero[player], KEYBIND_LIST[KEY_E].ability, true, false)
                     BlzUnitDisableAbility(PlayerHero[player], KEYBIND_LIST[KEY_E].ability, false, false)
-                    DestroyContextMenu(player)
                 elseif key == OSKEY_R then
                     RegisterPlayerSkillHotkey(player, SkillPanelFrame[player].current_button.skill, KEY_R)
                     BlzUnitDisableAbility(PlayerHero[player], KEYBIND_LIST[KEY_R].ability, true, false)
                     BlzUnitDisableAbility(PlayerHero[player], KEYBIND_LIST[KEY_R].ability, false, false)
-                    DestroyContextMenu(player)
                 elseif key == OSKEY_D then
                     RegisterPlayerSkillHotkey(player, SkillPanelFrame[player].current_button.skill, KEY_D)
                     BlzUnitDisableAbility(PlayerHero[player], KEYBIND_LIST[KEY_D].ability, true, false)
                     BlzUnitDisableAbility(PlayerHero[player], KEYBIND_LIST[KEY_D].ability, false, false)
-                    DestroyContextMenu(player)
                 elseif key == OSKEY_F then
                     RegisterPlayerSkillHotkey(player, SkillPanelFrame[player].current_button.skill, KEY_F)
                     BlzUnitDisableAbility(PlayerHero[player], KEYBIND_LIST[KEY_F].ability, true, false)
                     BlzUnitDisableAbility(PlayerHero[player], KEYBIND_LIST[KEY_F].ability, false, false)
-                    DestroyContextMenu(player)
                 end
+
+                SkillPanelKeybindActive[player] = false
+                DestroyContextMenu(player)
 
         end)
 
@@ -628,8 +645,10 @@ do
         last_EnteredFrame = {}
         last_EnteredFrameTimer = {}
 
+        SkillPanelKeybindActive = {}
         for i = 1, 6 do
             last_EnteredFrameTimer[i] = CreateTimer()
+            SkillPanelKeybindActive[i] = false
         end
 
 

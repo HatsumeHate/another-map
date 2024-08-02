@@ -61,10 +61,12 @@ do
 
             aura.timer = CreateTimer()
             aura.group = CreateGroup()
+            if level > aura.max_level then level = aura.max_level end
             aura.current_level = level
             aura.time = aura.level[aura.current_level].duration or nil
             aura.sfx = AddSpecialEffect(aura.sfx_path, x, y)
             BlzSetSpecialEffectScale(aura.sfx, aura.level[aura.current_level].sfx_scale or 1.)
+            BlzSetSpecialEffectZ(aura.sfx, GetZ(x, y) + (aura.bonus_z or 0.))
 
             TimerStart(aura.timer, aura.tickrate, true, function()
 
@@ -94,6 +96,14 @@ do
                                         ApplyEffect(from, picked, 0.,0., aura.level[aura.current_level][ON_ALLY].applied_effect, aura.current_level, ability_instance)
                                     elseif aura.level[aura.current_level][ON_ALLY].applied_buff then
                                         ApplyBuff(from, picked, aura.level[aura.current_level][ON_ALLY].applied_buff, aura.current_level, ability_instance)
+                                    end
+
+                                elseif aura.level[aura.current_level][ON_HEROES] and IsAHero(picked) then
+
+                                    if aura.level[aura.current_level][ON_HEROES].applied_effect then
+                                        ApplyEffect(from, picked, 0.,0., aura.level[aura.current_level][ON_HEROES].applied_effect, aura.current_level, ability_instance)
+                                    elseif aura.level[aura.current_level][ON_HEROES].applied_buff then
+                                        ApplyBuff(from, picked, aura.level[aura.current_level][ON_HEROES].applied_buff, aura.current_level, ability_instance)
                                     end
 
                                 end
@@ -130,6 +140,7 @@ do
 
                 if aura then
                     aura.current_level = level
+                    if level > aura.max_level then level = aura.max_level end
                     if aura.level[aura.current_level].duration then aura.time = aura.level[aura.current_level].duration end
                 else
 
@@ -140,6 +151,7 @@ do
                     AuraList[target][id] = aura
                     aura.timer = CreateTimer()
                     aura.group = CreateGroup()
+                    if level > aura.max_level then level = aura.max_level end
                     aura.current_level = level
                     --print("3")
                     aura.time = aura.level[aura.current_level].duration or nil
@@ -175,6 +187,13 @@ do
                                                     ApplyEffect(target, picked, 0.,0., aura.level[aura.current_level][ON_ALLY].applied_effect, aura.current_level, ability_instance)
                                                 elseif aura.level[aura.current_level][ON_ALLY].applied_buff then
                                                     ApplyBuff(target, picked, aura.level[aura.current_level][ON_ALLY].applied_buff, aura.current_level, ability_instance)
+                                                end
+                                            elseif aura.level[aura.current_level][ON_HEROES] and IsAHero(picked) then
+
+                                                if aura.level[aura.current_level][ON_HEROES].applied_effect then
+                                                    ApplyEffect(target, picked, 0.,0., aura.level[aura.current_level][ON_HEROES].applied_effect, aura.current_level, ability_instance)
+                                                elseif aura.level[aura.current_level][ON_HEROES].applied_buff then
+                                                    ApplyBuff(target, picked, aura.level[aura.current_level][ON_HEROES].applied_buff, aura.current_level, ability_instance)
                                                 end
 
                                             end

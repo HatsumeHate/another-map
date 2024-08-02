@@ -214,6 +214,36 @@ do
             id = "everlasting_madness_Legendary",
             type = ITEM_PASSIVE_EFFECT
         })
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_SKINRIPPER,
+            id = "open_wound_effect",
+            type = ITEM_PASSIVE_EFFECT
+        })
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_GROUNDER,
+            id = "grounder_effect_Legendary",
+            type = ITEM_PASSIVE_EFFECT
+        })
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_INFINITY_CHAIN,
+            id = "infinity_chain_effect_Legendary",
+            type = ITEM_PASSIVE_EFFECT
+        })
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_NIGHTWALKERS,
+            id = "nightwalkers_effect_Legendary",
+            type = ITEM_PASSIVE_EFFECT
+        })
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_GALACOS_TRICK,
+            id = "galacos_trick_effect_Legendary",
+            type = ITEM_PASSIVE_EFFECT
+        })
     end
 
 

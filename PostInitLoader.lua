@@ -87,9 +87,15 @@ do
 		SetCameraBoundsToRect(gg_rct_super_starting_location)
 
 		SetTexture(gg_unit_HSRC_0043, TEXTURE_ID_EMPTY)
+		AddSpecialEffect("Effect\\Hightlight_Aura.mdx", GetUnitX(gg_unit_HSRC_0043), GetUnitY(gg_unit_HSRC_0043))
 		SetTexture(gg_unit_HNCR_0019, TEXTURE_ID_EMPTY)
+		AddSpecialEffect("Effect\\Hightlight_Purple.mdx", GetUnitX(gg_unit_HNCR_0019), GetUnitY(gg_unit_HNCR_0019))
 		SetTexture(gg_unit_HBRB_0041, TEXTURE_ID_EMPTY)
-		AddSpecialEffectTarget("Model\\Sorceress_Hair.mdx", gg_unit_HSRC_0043, "head")
+		AddSpecialEffect("Effect\\Hightlight_Orange.mdx", GetUnitX(gg_unit_HBRB_0041), GetUnitY(gg_unit_HBRB_0041))
+		SetTexture(gg_unit_HASS_0275, "B015")
+		AddSpecialEffect("Effect\\Hightlight_Red.mdx", GetUnitX(gg_unit_HASS_0275), GetUnitY(gg_unit_HASS_0275))
+		AddSpecialEffectTarget("Units\\Hero\\Appearance\\Sorceress_Hair.mdx", gg_unit_HSRC_0043, "head")
+		AddSpecialEffectTarget("Units\\Hero\\Appearance\\SlayerHead.mdx", gg_unit_HASS_0275, "head")
 
 		ClearMapMusic()
 		StopMusic(false)

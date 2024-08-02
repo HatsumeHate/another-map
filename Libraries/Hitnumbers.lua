@@ -436,7 +436,7 @@ do
             end
             local x = GetUnitX(victim) + GetRandomReal(STATUS_OFFSET[status].x.min, STATUS_OFFSET[status].x.max) - ((#text * offset) * 0.5)
             local y = GetUnitY(victim) + GetRandomReal(STATUS_OFFSET[status].y.min, STATUS_OFFSET[status].y.max)
-            local z = GetUnitZ(victim) + 90.
+            local z = GetUnitZ(victim) + 90. + GetRandomReal(-STATUS_OFFSET[status].z_deviation, STATUS_OFFSET[status].z_deviation)
             local pack = {}
             local model = ""
             local attribute_sfx
@@ -588,16 +588,16 @@ do
         }
 
          STATUS_OFFSET = {
-            [ATTACK_STATUS_USUAL]               = { x = { min = 40., max = 55. },   y = { min = 40., max = 55. }, },
-            [ATTACK_STATUS_CRITICAL]            = { x = { min = 55., max = 75. },   y = { min = 55., max = 75. }, },
-            [ATTACK_STATUS_CRITICAL_BLOCKED]    = { x = { min = 40., max = 55. },   y = { min = 40., max = 55. }, },
-            [ATTACK_STATUS_BLOCKED]             = { x = { min = 55., max = 75. },   y = { min = 55., max = 75. }, },
+            [ATTACK_STATUS_USUAL]               = { x = { min = 40., max = 65. },   y = { min = 40., max = 65. }, z_deviation = 3. },
+            [ATTACK_STATUS_CRITICAL]            = { x = { min = 55., max = 75. },   y = { min = 55., max = 75. }, z_deviation = 5. },
+            [ATTACK_STATUS_CRITICAL_BLOCKED]    = { x = { min = 40., max = 65. },   y = { min = 40., max = 65. }, z_deviation = 4. },
+            [ATTACK_STATUS_BLOCKED]             = { x = { min = 55., max = 75. },   y = { min = 55., max = 75. }, z_deviation = 3. },
             [ATTACK_STATUS_EVADE]               = { x = { min = 55., max = 75. },   y = { min = 55., max = 75. }, },
-            [ATTACK_STATUS_MISS]               = { x = { min = 55., max = 75. },   y = { min = 55., max = 75. }, },
+            [ATTACK_STATUS_MISS]                = { x = { min = 55., max = 75. },   y = { min = 55., max = 75. }, },
             [HEAL_STATUS]                       = { x = { min = -10., max = 20. },  y = { min = 0., max = -40. }, },
             [RESOURCE_STATUS]                   = { x = { min = -10., max = 20. },  y = { min = 20., max = -70. }, },
             [REFLECT_STATUS]                    = { x = { min = -50., max = -30. },  y = { min = 20., max = -70. }, },
-            [ATTACK_STATUS_SHIELD]               = { x = { min = 40., max = 55. },   y = { min = 40., max = 55. }, },
+            [ATTACK_STATUS_SHIELD]              = { x = { min = 40., max = 65. },   y = { min = 40., max = 65. }, z_deviation = 3. },
         }
 
         TexttagMap = {

@@ -6,16 +6,19 @@ do
     local BlindGroup
     local FreezeGroup
     local RootGroup
+    local SlowGroup
 
 
 
     ---@param target unit
     local function AddCCDiminishing(target)
-        if GetUnitAbilityLevel(target, FourCC("ACCR")) > 0 then
-            SetBuffLevel(target, "ACCR", GetBuffLevel(target, "ACCR") + 1)
-            SetBuffExpirationTime(target, "ACCR", -1)
-        else
-            ApplyBuff(target, target, "ACCR", 1)
+        if GetBuffLevel(target, "ACCR") < 5 then
+            if GetUnitAbilityLevel(target, FourCC("ACCR")) > 0 then
+                SetBuffLevel(target, "ACCR", GetBuffLevel(target, "ACCR") + 1)
+                SetBuffExpirationTime(target, "ACCR", -1)
+            else
+                ApplyBuff(target, target, "ACCR", 1)
+            end
         end
     end
 
@@ -29,27 +32,41 @@ do
                     UnitRemoveAbility(unit_data.Owner, FourCC(buff_data.buff_id))
                     UnitRemoveAbility(unit_data.Owner, FourCC(buff_data.id))
 
-                    if buff_data.level[buff_data.current_level].bonus ~= nil then
-                        for i2 = 1, #buff_data.level[buff_data.current_level].bonus do
-                            ModifyStat(unit_data.Owner, buff_data.level[buff_data.current_level].bonus[i2].PARAM, buff_data.level[buff_data.current_level].bonus[i2].VALUE, buff_data.level[buff_data.current_level].bonus[i2].METHOD, false)
+                    local level_data = buff_data.level[buff_data.current_level]
+
+                    if level_data.bonus then
+                        for i2 = 1, #level_data.bonus do
+                            ModifyStat(unit_data.Owner, level_data.bonus[i2].PARAM, level_data.bonus[i2].VALUE, level_data.bonus[i2].METHOD, false)
                         end
                     end
 
-                    if buff_data.level[buff_data.current_level].effects then
-                        for i = 1, #buff_data.level[buff_data.current_level].effects do
-                            UnitRemoveEffect(unit_data.Owner, buff_data.level[buff_data.current_level].effects[i])
+                    if level_data.effects then
+                        for num = 1, #level_data.effects do
+                            UnitRemoveEffect(unit_data.Owner, level_data.effects[num])
                         end
                     end
 
-                    if buff_data.level[buff_data.current_level].endurance or buff_data.level[buff_data.current_level].endurance_hp then
+                    if level_data.endurance or level_data.endurance_hp then
                         RemoveEndurance(unit_data.Owner, buff_data.id, false)
                     end
 
+                    if level_data.attack_status then
+                        local statuses = unit_data.attack_status[level_data.attack_status.status]
 
-                    if buff_data.level[buff_data.current_level].negative_state and buff_data.level[buff_data.current_level].negative_state > 0 then
+                            for index = 1, #statuses do
+                                if statuses[index].buff_id == buff_data.id then
+                                    table.remove(statuses, index)
+                                    break
+                                end
+                            end
 
-                        local state = buff_data.level[buff_data.current_level].negative_state
-                        buff_data.level[buff_data.current_level].negative_state = nil
+                    end
+
+
+                    if level_data.negative_state and level_data.negative_state > 0 then
+
+                        local state = level_data.negative_state
+                        level_data.negative_state = nil
 
                             if state == STATE_FREEZE and not HasNegativeState(unit_data.Owner, STATE_FREEZE) then
                                 SetUnitVertexColor(unit_data.Owner, unit_data.colours.r or 255, unit_data.colours.g or 255, unit_data.colours.b or 255, unit_data.colours.a or 255)
@@ -67,6 +84,8 @@ do
                                 GroupRemoveUnit(BlindGroup, unit_data.Owner)
                             elseif state == STATE_ROOT and not HasNegativeState(unit_data.Owner, STATE_ROOT) then
                                 GroupRemoveUnit(RootGroup, unit_data.Owner)
+                            elseif state == STATE_SLOW and not HasNegativeState(unit_data.Owner, STATE_SLOW) then
+                                GroupRemoveUnit(SlowGroup, unit_data.Owner)
                             end
 
                         if (state == STATE_STUN or state == STATE_FREEZE) and not IsUnitStunned(unit_data.Owner) and not IsUnitFrozen(unit_data.Owner) then
@@ -259,7 +278,10 @@ do
                             buff_data.expiration_time = math.floor((buff_data.expiration_time * (((100. - unit_data.stats[CONTROL_REDUCTION].value) / 100.) * cc_duration)) + 0.5)
                         end
 
-                        SetStatusBarTime(buff_data.id, buff_data.expiration_time / 1000, GetPlayerId(GetOwningPlayer(target))+1)
+                        if not buff_data.infinite and buff_data.statusbar_dont_show_time then
+                            SetStatusBarTime(buff_data.id, buff_data.expiration_time / 1000, GetPlayerId(GetOwningPlayer(target))+1)
+                        end
+
                         break
                     end
                 end
@@ -366,7 +388,9 @@ do
 
                             buff_data.expiration_time = math.floor((buff_data.expiration_time * (((100. - unit_data.stats[CONTROL_REDUCTION].value) / 100.) * cc_duration)) + 0.5)
 
-                            SetStatusBarTime(buff_data.id, buff_data.expiration_time / 1000, player)
+                            if not buff_data.infinite and not buff_data.statusbar_dont_show_time then
+                                SetStatusBarTime(buff_data.id, buff_data.expiration_time / 1000, player)
+                            end
 
                             if buff_data.expiration_time <= 0 then
                                 OnBuffExpire(buff_data.buff_source or nil, target, buff_data)
@@ -411,6 +435,7 @@ do
                     end
 
                     OnBuffLevelChange(buff_data.buff_source or nil, target, buff_data, logic)
+                    UpdateStatusBarTooltip(buff_id, player)
 
                     break
                 end
@@ -449,6 +474,12 @@ do
         return IsUnitInGroup(unit, RootGroup)
     end
 
+    ---@param unit unit
+    ---@return boolean
+    function IsUnitSlowed(unit)
+        return IsUnitInGroup(unit, SlowGroup)
+    end
+
 
     ---@param unit unit
     ---@param state integer
@@ -457,7 +488,8 @@ do
         local data = GetUnitData(unit)
 
             for i = 1, #data.buff_list do
-                local buff_state = data.buff_list[i].level[data.buff_list[i].current_level].negative_state or nil
+                local list = data.buff_list[i]
+                local buff_state = list.level[list.current_level].negative_state or nil
 
                     if buff_state and buff_state == state then
                         return true
@@ -474,8 +506,8 @@ do
         local data = GetUnitData(unit)
 
             for i = 1, #data.buff_list do
-
-                local state = data.buff_list[i].level[data.buff_list[i].current_level].negative_state or nil
+                local list = data.buff_list[i]
+                local state = list.level[list.current_level].negative_state or nil
 
                     if state then
                         if state == STATE_STUN or state == STATE_FREEZE or state == STATE_FEAR then
@@ -504,10 +536,11 @@ do
     ---@param ability_instance table
     ---@return table
     function ApplyBuff(source, target, buff_id, lvl, ability_instance)
-        if lvl <= 0 then return end
+        if lvl <= 0 or GetWidgetLife(target) < 0.045 then return end
         local buff_data = MergeTables({}, GetBuffData(buff_id))
         local target_data = GetUnitData(target)
         local existing_buff
+        local level_data = buff_data.level[lvl]
 
             buff_data.buff_source = source
             buff_data.current_level = lvl
@@ -521,7 +554,9 @@ do
             elseif buff_data.current_level > buff_data.max_level then buff_data.current_level = buff_data.max_level end
 
             GenerateBuffLevelData(buff_data, buff_data.current_level)
-            buff_data.expiration_time = math.floor((buff_data.level[lvl].time * 1000) + 0.5)
+
+            level_data = buff_data.level[buff_data.current_level]
+            buff_data.expiration_time = math.floor((level_data.time * 1000) + 0.5)
 
             OnBuffPrecast(source, target, buff_data)
 
@@ -531,15 +566,30 @@ do
 
                         if target_data.buff_list[i].id == buff_id then
                             existing_buff = target_data.buff_list[i]
-                            if lvl > existing_buff.current_level then
-                                DeleteBuff(target_data, existing_buff)
-                            else
-                                existing_buff.expiration_time = math.floor((existing_buff.level[existing_buff.current_level].time * 1000) + 0.5)
-                                OnBuffSourceChange(existing_buff.buff_source or nil, source, target, existing_buff)
-                                existing_buff.buff_source = source
-                                buff_data = nil
-                                return false
-                            end
+
+                                if lvl > existing_buff.current_level then
+                                    DeleteBuff(target_data, existing_buff)
+                                else
+                                    existing_buff.expiration_time = math.floor((existing_buff.level[existing_buff.current_level].time * 1000) + 0.5)
+
+                                    if level_data.negative_state and level_data.negative_state > 0 then
+                                        local cc_duration = 1.
+
+                                            if buff_data.buff_source then
+                                                local source_data = GetUnitData(buff_data.buff_source)
+                                                cc_duration = 1. + source_data.stats[CONTROL_DURATION].value / 100.
+                                            end
+
+                                        existing_buff.expiration_time = math.floor((existing_buff.expiration_time * (((100. - target_data.stats[CONTROL_REDUCTION].value) / 100.) * cc_duration)) + 0.5)
+                                    end
+
+                                    OnBuffSourceChange(existing_buff.buff_source or nil, source, target, existing_buff)
+                                    if existing_buff.expiration_time <= 0. then RemoveBuff(target, buff_id) end
+                                    existing_buff.buff_source = source
+                                    buff_data = nil
+                                    return false
+                                end
+
                             break
                         end
 
@@ -548,26 +598,28 @@ do
 
                 if #buff_data.buff_replacer > 0 then
                     for b = 1, #buff_data.buff_replacer do
-                        for i = 1, #target_data.buff_list do
-                            if buff_data.buff_replacer[b] == target_data.buff_list[i].id then
-                                DeleteBuff(target_data, target_data.buff_list[i])
-                            end
-                        end
+                        RemoveBuff(target, buff_data.buff_replacer[b])
+                        --for i = 1, #target_data.buff_list do
+                            --if buff_data.buff_replacer[b] == target_data.buff_list[i].id then
+
+                                --DeleteBuff(target_data, target_data.buff_list[i])
+                            --end
+                        --end
                     end
                 end
 
-                if buff_data.level[lvl].buff_sfx then
+                if level_data.buff_sfx then
                     local new_effect
-                        if buff_data.level[lvl].buff_sfx_point and StringLength(buff_data.level[lvl].buff_sfx_point) > 0 then
-                            new_effect = AddSpecialEffectTarget(buff_data.level[lvl].buff_sfx, target, buff_data.level[lvl].buff_sfx_point)
+                        if level_data.buff_sfx_point and StringLength(level_data.buff_sfx_point) > 0 then
+                            new_effect = AddSpecialEffectTarget(level_data.buff_sfx, target, level_data.buff_sfx_point)
                         else
-                            new_effect = AddSpecialEffect(buff_data.level[lvl].buff_sfx, GetUnitX(target), GetUnitY(target))
+                            new_effect = AddSpecialEffect(level_data.buff_sfx, GetUnitX(target), GetUnitY(target))
                         end
-                    BlzSetSpecialEffectScale(new_effect, buff_data.level[lvl].buff_sfx_scale or 1.)
+                    BlzSetSpecialEffectScale(new_effect, level_data.buff_sfx_scale or 1.)
                     DestroyEffect(new_effect)
                 end
 
-                if buff_data.level[lvl].negative_state and buff_data.level[lvl].negative_state > 0 then
+                if level_data.negative_state and level_data.negative_state > 0 then
 
                     local cc_duration = 1.
                     if buff_data.buff_source then
@@ -582,7 +634,7 @@ do
                         return false
                     end
 
-                    if buff_data.level[lvl].negative_state == STATE_FREEZE then
+                    if level_data.negative_state == STATE_FREEZE then
                         --if target_data.channeled_destructor then target_data.channeled_destructor(target); target_data.channeled_destructor = nil end
                         SetUnitVertexColor(target, 57, 57, 255, 255)
                         ResetUnitSpellCast(target)
@@ -590,27 +642,31 @@ do
                         SetUnitTimeScale(target, 0.)
                         GroupAddUnit(FreezeGroup, target)
                         if IsAHero(target) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(target))+1] = false end
-                    elseif buff_data.level[lvl].negative_state == STATE_STUN then
+                    elseif level_data.negative_state == STATE_STUN then
                         --if target_data.channeled_destructor then target_data.channeled_destructor(target); target_data.channeled_destructor = nil end
                         ResetUnitSpellCast(target)
                         SafePauseUnit(target, true)
                         GroupAddUnit(StunGroup, target)
                         SetUnitAnimation(target, "stand ready")
                         if IsAHero(target) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(target))+1] = false end
-                    elseif buff_data.level[lvl].negative_state == STATE_FEAR then
+                    elseif level_data.negative_state == STATE_FEAR then
                         if target_data.channeled_destructor then target_data.channeled_destructor(target); target_data.channeled_destructor = nil end
                         for key = 1, 6 do BlzUnitDisableAbility(target, KEYBIND_LIST[key].ability, true, false) end
                         UnitAddAbility(target, FourCC("ARal"))
                         ModifyStat(target, MOVING_SPEED, 0.5, MULTIPLY_BONUS, true)
                         GroupAddUnit(FearGroup, target)
                         if IsAHero(target) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(target))+1] = false end
-                    elseif buff_data.level[lvl].negative_state == STATE_BLIND then
+                    elseif level_data.negative_state == STATE_BLIND then
                         GroupAddUnit(BlindGroup, target)
-                    elseif buff_data.level[lvl].negative_state == STATE_ROOT then
+                    elseif level_data.negative_state == STATE_ROOT then
                         GroupAddUnit(RootGroup, target)
+                    elseif level_data.negative_state == STATE_SLOW then
+                        GroupAddUnit(SlowGroup, target)
                     end
 
-                    AddCCDiminishing(target)
+                    if level_data.negative_state ~= STATE_SLOW then
+                        AddCCDiminishing(target)
+                    end
 
                 end
 
@@ -628,32 +684,40 @@ do
                     buff_data.soundpack = AddLoopingSoundOnUnit(buff_data.sound.loop_pack, target, buff_data.sound.fadein or 200, buff_data.sound.fadeout or 200, buff_data.sound.delay or 0.15, buff_data.sound.volume or 128, buff_data.sound.cutoff or 1400., buff_data.sound.distance or 4000.)
                 end
 
-                if buff_data.level[lvl].bonus then
-                    for i = 1, #buff_data.level[lvl].bonus do
-                        ModifyStat(target, buff_data.level[lvl].bonus[i].PARAM, buff_data.level[lvl].bonus[i].VALUE, buff_data.level[lvl].bonus[i].METHOD, true)
+                if level_data.bonus then
+                    for i = 1, #level_data.bonus do
+                        ModifyStat(target, level_data.bonus[i].PARAM, level_data.bonus[i].VALUE, level_data.bonus[i].METHOD, true)
                     end
                 end
 
-                if buff_data.level[lvl].effects then
-                    for i = 1, #buff_data.level[lvl].effects do
-                        UnitAddEffect(target, buff_data.level[lvl].effects[i])
+                if level_data.effects then
+                    for i = 1, #level_data.effects do
+                        UnitAddEffect(target, level_data.effects[i])
                     end
                 end
 
-                if buff_data.level[lvl].endurance then
-                    AddMaxEnduranceUnit(target, buff_data.level[lvl].endurance, buff_data.id, false)
+                if level_data.endurance then
+                    AddMaxEnduranceUnit(target, level_data.endurance, buff_data.id, false)
                 end
 
-                if buff_data.level[lvl].endurance_hp then
-                    AddMaxEnduranceUnit(target, BlzGetUnitMaxHP(target) * buff_data.level[lvl].endurance_hp, buff_data.id, false)
+                if level_data.endurance_hp then
+                    AddMaxEnduranceUnit(target, BlzGetUnitMaxHP(target) * level_data.endurance_hp, buff_data.id, false)
+                end
+
+                if level_data.attack_status then
+                    local unit_data = GetUnitData(target)
+                    local status = unit_data.attack_status[level_data.attack_status.status]
+
+                        status[#status+1] = MergeTables({ buff_id = buff_id }, level_data.attack_status)
+
                 end
 
             local over_time_effect_delay
-            if buff_data.level[lvl].effect_delay and buff_data.level[lvl].effect_delay > 0. then
+            if level_data.effect_delay and level_data.effect_delay > 0. then
                 over_time_effect_delay = math.floor((buff_data.level[buff_data.current_level].effect_delay * 1000.) + 0.5)
             end
 
-            if buff_data.level[lvl].effect_initial_delay then
+            if level_data.effect_initial_delay then
                 over_time_effect_delay = math.floor((buff_data.level[buff_data.current_level].effect_initial_delay * 1000.) + 0.5)
             end
 
@@ -733,6 +797,7 @@ do
         FearGroup = CreateGroup()
         BlindGroup = CreateGroup()
         RootGroup = CreateGroup()
+        SlowGroup = CreateGroup()
     end
 
 end

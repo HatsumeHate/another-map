@@ -11,6 +11,8 @@ do
     local hp_globe_textures
     local mp_globe_textures
     LevelUpFrameTrigger = nil
+    local SpriteOverlayData = nil
+    local button_list = nil
 
 
 
@@ -71,6 +73,110 @@ do
         return border
     end
 
+
+    local function CreateSpriteOverlayFrame(key, button)
+        for i = 1, 6 do
+            PlayerUI.skill_button_sprite_overlay[i][key] = CreateSpriteNoCollision(".mdx", 1., button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, -0.0044, -0.001, GAME_UI)
+            BlzFrameSetVisible(PlayerUI.skill_button_sprite_overlay[i][key], false)
+        end
+    end
+
+    function EnableAbilitySpriteOverlay(id, player)
+        local overlay = GetSkillOverlayData(id)
+
+            for key = KEY_Q, KEY_F do
+                if KEYBIND_LIST[key].ability > 0 then
+                    local keybind = SpriteOverlayData[player].key[key]
+                    local index = #keybind.overlay+1
+                    local skill = GetUnitSkillData(PlayerHero[player], KEYBIND_LIST[key].player_skill_bind_string_id[player])
+
+
+                        for i = 1, #keybind.overlay do
+                            if keybind.overlay[i].id == id then
+                                break
+                            end
+                        end
+
+                        if skill and OverlayHasSkillClassification(overlay, skill.classification) and OverlayHasSkillCategory(overlay, skill.category)  then
+                            keybind.overlay[index] = { id = id, model_path = overlay.sprite_model_path, scale = overlay.scale, offsetx = overlay.offsetx, offsety = overlay.offsety, priority = overlay.priority }
+
+                            if overlay.priority >= keybind.last_priority then
+                                local sprite = PlayerUI.skill_button_sprite_overlay[player][key]
+
+                                    keybind.last_priority = overlay.priority
+                                    keybind.current_id = id
+                                    BlzFrameSetModel(sprite, overlay.sprite_model_path, 0)
+                                    BlzFrameSetScale(sprite, overlay.scale)
+                                    BlzFrameSetVisible(sprite, true)
+                                    BlzFrameClearAllPoints(sprite)
+                                    BlzFrameSetPoint(sprite, FRAMEPOINT_BOTTOMLEFT, button_list[key], FRAMEPOINT_BOTTOMLEFT, overlay.offsetx, overlay.offsety)
+
+                            end
+
+                        end
+
+                end
+            end
+
+
+    end
+
+    function DisableAbilitySpriteOverlay(id, player)
+
+
+        for key = KEY_Q, KEY_F do
+            if KEYBIND_LIST[key].ability > 0 then
+                local keybind = SpriteOverlayData[player].key[key]
+                --local skill = GetUnitSkillData(PlayerHero[player], KEYBIND_LIST[key].player_skill_bind_string_id[player])
+
+                    if id == keybind.current_id then
+                        local sprite = PlayerUI.skill_button_sprite_overlay[player][key]
+
+                        BlzFrameSetModel(sprite, ".mdx", 0)
+                        BlzFrameSetScale(sprite, 1.)
+                        BlzFrameSetVisible(sprite, false)
+
+                        if #keybind.overlay > 1 then
+                            local highest_id
+                            local last_priority = 0
+                            local index = 0
+
+                            for i = 1, #keybind.overlay do
+                                if keybind.overlay[i].priority >= last_priority then
+                                    last_priority = keybind.overlay[i].priority
+                                    highest_id = keybind.overlay[i].id
+                                    index = i
+                                end
+                            end
+
+                            if highest_id then
+                                keybind.last_priority = last_priority
+                                keybind.current_id = highest_id
+                                keybind.overlay[index] = nil
+                                EnableAbilitySpriteOverlay(highest_id, player)
+                            end
+
+                        else
+                            keybind.current_id = 0
+                            keybind.last_priority = 0
+
+                            for i = 1, #keybind.overlay do
+                                if keybind.overlay[i].id == id then
+                                    keybind.overlay[i] = nil
+                                end
+                            end
+
+                        end
+                    end
+
+            end
+        end
+
+    end
+
+    function IsSpriteOverlayEnabled(player, keybind)
+        return #SpriteOverlayData[player].key[keybind].overlay > 0
+    end
 
 
     function TurnOffOriginUI()
@@ -153,40 +259,44 @@ do
             if PlayerHero[player] then
                 PlayerUI.xp_bar = BlzCreateSimpleFrame("MyBar", GAME_UI, 0)
                 BlzFrameClearAllPoints(PlayerUI.xp_bar)
-                BlzFrameSetAbsPoint(PlayerUI.xp_bar, FRAMEPOINT_CENTER, 0.4, 0.056)
+                BlzFrameSetAbsPoint(PlayerUI.xp_bar, FRAMEPOINT_CENTER, 0.4, 0.048)
                 BlzFrameSetTexture(PlayerUI.xp_bar, "Replaceabletextures\\Teamcolor\\Teamcolor09.blp", 0, true)
                 BlzFrameSetSize(PlayerUI.xp_bar, 0.495, 0.006)
-                BlzFrameSetScale(PlayerUI.xp_bar, 1.)
+                BlzFrameSetScale(PlayerUI.xp_bar, 0.9)
                 PlayerUI.xp_bar_text = BlzGetFrameByName("MyBarText", 0)
                 BlzFrameSetText(PlayerUI.xp_bar_text, "")
                 BlzFrameSetValue(PlayerUI.xp_bar, 0)
+                BlzFrameSetScale(PlayerUI.xp_bar_text, 1.7)
 
 
-                PlayerUI.action_bar = CreateUIElement("DiabolicUI_ActionBarArt1BarXP.tga", 0.4, -0.006, FRAMEPOINT_BOTTOM, 0.78, 1., 0.25, PlayerUI.xp_bar)
+                PlayerUI.action_bar = CreateUIElement("DiabolicUI_ActionBarArt1BarXP.tga", 0.4, -0.006, FRAMEPOINT_BOTTOM, 0.68, 1., 0.25, PlayerUI.xp_bar)
 
-                PlayerUI.hp_globe_backdrop = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Backdrop.tga", 0.083, 0.07, FRAMEPOINT_CENTER, 0.206, 1., 1., PlayerUI.action_bar)
-                PlayerUI.mp_globe_backdrop = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Backdrop.tga", 0.717, 0.07, FRAMEPOINT_CENTER, 0.206, 1., 1., PlayerUI.action_bar)
+                PlayerUI.hp_globe_backdrop = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Backdrop.tga", 0.118, 0.062, FRAMEPOINT_CENTER, 0.196, 1., 1., PlayerUI.action_bar)
+                PlayerUI.mp_globe_backdrop = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Backdrop.tga", 0.682, 0.062, FRAMEPOINT_CENTER, 0.196, 1., 1., PlayerUI.action_bar)
 
-                PlayerUI.hp_globe = CreateUIElement("UI\\globe_empty.blp", 0.083, 0.07, FRAMEPOINT_CENTER, 0.119, 1., 1., PlayerUI.hp_globe_backdrop)
-                PlayerUI.mp_globe = CreateUIElement("UI\\globe_empty.blp", 0.717, 0.07, FRAMEPOINT_CENTER, 0.119, 1., 1., PlayerUI.mp_globe_backdrop)
+                PlayerUI.hp_globe = CreateUIElement("UI\\globe_empty.blp", 0.118, 0.062, FRAMEPOINT_CENTER, 0.109, 1., 1., PlayerUI.hp_globe_backdrop)
+                PlayerUI.mp_globe = CreateUIElement("UI\\globe_empty.blp", 0.682, 0.062, FRAMEPOINT_CENTER, 0.109, 1., 1., PlayerUI.mp_globe_backdrop)
 
-                PlayerUI.hp_globe_shade = CreateUIElement("DiabolicUI_HealthGlobe512x512_Shade.tga", 0.083, 0.07, FRAMEPOINT_CENTER, 0.119, 1., 1., PlayerUI.hp_globe)
-                PlayerUI.mp_globe_shade = CreateUIElement("DiabolicUI_HealthGlobe512x512_Shade.tga", 0.717, 0.07, FRAMEPOINT_CENTER, 0.119, 1., 1., PlayerUI.mp_globe)
+                PlayerUI.hp_globe_shade = CreateUIElement("DiabolicUI_HealthGlobe512x512_Shade.tga", 0.118, 0.062, FRAMEPOINT_CENTER, 0.109, 1., 1., PlayerUI.hp_globe)
+                PlayerUI.mp_globe_shade = CreateUIElement("DiabolicUI_HealthGlobe512x512_Shade.tga", 0.682, 0.062, FRAMEPOINT_CENTER, 0.109, 1., 1., PlayerUI.mp_globe)
                 BlzFrameSetAllPoints(PlayerUI.hp_globe_shade, PlayerUI.hp_globe)
                 BlzFrameSetAllPoints(PlayerUI.mp_globe_shade, PlayerUI.mp_globe)
 
                 BlzFrameSetVertexColor(PlayerUI.hp_globe_shade, BlzConvertColor(145, 255, 255, 255))
                 BlzFrameSetVertexColor(PlayerUI.mp_globe_shade, BlzConvertColor(145, 255, 255, 255))
 
-                PlayerUI.hp_globe_border = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Border.tga", 0.083, 0.07, FRAMEPOINT_CENTER, 0.206, 1., 1., PlayerUI.hp_globe_shade)
-                PlayerUI.mp_globe_border = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Border.tga", 0.717, 0.07, FRAMEPOINT_CENTER, 0.206, 1., 1., PlayerUI.mp_globe_shade)
-                PlayerUI.demon_border = CreateUIElement("DiabolicUI_Artwork_Demon.tga", -0.01, 0.093, FRAMEPOINT_CENTER, 0.2, 1., 1., PlayerUI.hp_globe_border)
-                PlayerUI.angel_border = CreateUIElement("DiabolicUI_Artwork_Angel.tga", 0.81, 0.093, FRAMEPOINT_CENTER, 0.2, 1., 1., PlayerUI.mp_globe_border)
+
+                PlayerUI.hp_globe_border = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Border.tga", 0.118, 0.062, FRAMEPOINT_CENTER, 0.196, 1., 1., PlayerUI.hp_globe_shade)
+                PlayerUI.mp_globe_border = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Border.tga", 0.682, 0.062, FRAMEPOINT_CENTER, 0.196, 1., 1., PlayerUI.mp_globe_shade)
+                PlayerUI.demon_border = CreateUIElement("DiabolicUI_Artwork_Demon.tga", 0.034, 0.07, FRAMEPOINT_CENTER, 0.15, 1., 1., PlayerUI.hp_globe_border)
+                PlayerUI.angel_border = CreateUIElement("DiabolicUI_Artwork_Angel.tga", 0.766, 0.07, FRAMEPOINT_CENTER, 0.15, 1., 1., PlayerUI.mp_globe_border)
 
                 BlzEnableUIAutoPosition(false)
                 for i = 0, 11 do
-                    BlzFrameClearAllPoints(BlzGetFrameByName("CommandButton_".. i, 0))
-                    BlzFrameSetPoint(BlzGetFrameByName("CommandButton_".. i, 0), FRAMEPOINT_TOPRIGHT, WORLD_FRAME, FRAMEPOINT_TOPRIGHT, 0.064, 0.064)
+                local btn = BlzGetFrameByName("CommandButton_".. i, 0)
+                    BlzFrameClearAllPoints(btn)
+                    BlzFrameSetPoint(btn, FRAMEPOINT_TOPRIGHT, WORLD_FRAME, FRAMEPOINT_TOPRIGHT, 0.064, 0.064)
+                    BlzFrameSetScale(btn, 0.9)
                 end
 
                 local button = BlzGetFrameByName("CommandButton_10", 0)
@@ -194,38 +304,48 @@ do
                 BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, PlayerUI.action_bar, FRAMEPOINT_BOTTOM, -0.003, 0.0345)
                 PlayerUI.skill_button_hotkey[1] = CreateSimpleChargesText(button, "E", 0.9, 0.9, 0., 0., GAME_UI)
                 PlayerUI.skill_button_borders[1] = CreateUIBorder(button, 0.0035)
+                button_list[KEY_E] = button
+                CreateSpriteOverlayFrame(KEY_E, button)
 
                 button = BlzGetFrameByName("CommandButton_9", 0)
                 BlzFrameClearAllPoints(button)
                 BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, BlzGetFrameByName("CommandButton_10", 0), FRAMEPOINT_LEFT, -0.006, 0.)
                 PlayerUI.skill_button_hotkey[2] = CreateSimpleChargesText(button, "W", 0.9, 0.9, 0., 0., GAME_UI)
                 PlayerUI.skill_button_borders[2] = CreateUIBorder(button, 0.0035)
-
+                button_list[KEY_W] = button
+                CreateSpriteOverlayFrame(KEY_W, button)
 
                 button = BlzGetFrameByName("CommandButton_8", 0)
                 BlzFrameClearAllPoints(button)
                 BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, BlzGetFrameByName("CommandButton_9", 0), FRAMEPOINT_LEFT, -0.006, 0.)
                 PlayerUI.skill_button_hotkey[3] = CreateSimpleChargesText(button, "Q", 0.9, 0.9, 0., 0., GAME_UI)
                 PlayerUI.skill_button_borders[3] = CreateUIBorder(button, 0.0035)
-
+                button_list[KEY_Q] = button
+                CreateSpriteOverlayFrame(KEY_Q, button)
 
                 button = BlzGetFrameByName("CommandButton_11", 0)
                 BlzFrameClearAllPoints(button)
                 BlzFrameSetPoint(button, FRAMEPOINT_LEFT, PlayerUI.action_bar, FRAMEPOINT_BOTTOM, 0.003, 0.0345)
                 PlayerUI.skill_button_hotkey[4] = CreateSimpleChargesText(button, "R", 0.9, 0.9, 0., 0., GAME_UI)
                 PlayerUI.skill_button_borders[4] = CreateUIBorder(button, 0.0035)
+                button_list[KEY_R] = button
+                CreateSpriteOverlayFrame(KEY_R, button)
 
                 button = BlzGetFrameByName("CommandButton_6", 0)
                 BlzFrameClearAllPoints(button)
                 BlzFrameSetPoint(button, FRAMEPOINT_LEFT, BlzGetFrameByName("CommandButton_11", 0), FRAMEPOINT_RIGHT, 0.006, 0.)
                 PlayerUI.skill_button_hotkey[5] = CreateSimpleChargesText(button, "D", 0.9, 0.9, 0., 0., GAME_UI)
                 PlayerUI.skill_button_borders[5] = CreateUIBorder(button, 0.0035)
+                button_list[KEY_D] = button
+                CreateSpriteOverlayFrame(KEY_D, button)
 
                 button = BlzGetFrameByName("CommandButton_7", 0)
                 BlzFrameClearAllPoints(button)
                 BlzFrameSetPoint(button, FRAMEPOINT_LEFT, BlzGetFrameByName("CommandButton_6", 0), FRAMEPOINT_RIGHT, 0.006, 0.)
                 PlayerUI.skill_button_hotkey[6] = CreateSimpleChargesText(button, "F", 0.9, 0.9, 0., 0., GAME_UI)
                 PlayerUI.skill_button_borders[6] = CreateUIBorder(button, 0.0035)
+                button_list[KEY_F] = button
+                CreateSpriteOverlayFrame(KEY_F, button)
 
 
                 for i = 1, 6 do
@@ -242,6 +362,7 @@ do
                 BlzFrameSetAbsPoint(BlzGetFrameByName("InventoryCoverTexture",0), FRAMEPOINT_TOP, 0.4, -0.1)
                 BlzFrameSetAbsPoint(BlzGetFrameByName("SimpleInventoryCover",0), FRAMEPOINT_TOP, 0.4, -0.1)
                 BlzFrameSetAbsPoint(BlzGetFrameByName("InventoryText",0), FRAMEPOINT_TOP, 0.4, -0.1)
+                BlzFrameSetVisible(BlzGetFrameByName("InventoryText",0), false)
 
 
                 for i = 0, 5 do
@@ -253,7 +374,7 @@ do
                 local last_element = CreateUIElement("DiabolicUI_Button_64x64_BackdropBag.tga", 0.33, 0.097, FRAMEPOINT_CENTER, 1., 0.032, 0.032, PlayerUI.action_bar)
                 BlzFrameSetLevel(last_element, 0)
                 BlzFrameClearAllPoints(inventory_button_0)
-                BlzFrameSetAbsPoint(inventory_button_0, FRAMEPOINT_CENTER, 0.322, 0.077)
+                BlzFrameSetAbsPoint(inventory_button_0, FRAMEPOINT_CENTER, 0.322, 0.068)
                 BlzFrameClearAllPoints(last_element)
                 BlzFrameSetAllPoints(last_element, inventory_button_0)
                 PlayerUI.inventory_borders[6] = CreateUIBorder(inventory_button_0, 0.)
@@ -283,7 +404,7 @@ do
                 BlzFrameSetTexture(PlayerUI.skull_decorator, "DiabolicUI_Artwork_Skull.tga", 0, true)
                 BlzFrameSetScale(PlayerUI.skull_decorator, 0.33)
                 BlzFrameClearAllPoints(PlayerUI.skull_decorator)
-                BlzFrameSetAbsPoint(PlayerUI.skull_decorator, FRAMEPOINT_CENTER, 0.4, 0.093)
+                BlzFrameSetAbsPoint(PlayerUI.skull_decorator, FRAMEPOINT_CENTER, 0.4, 0.084)
                 BlzFrameSetSize(PlayerUI.skull_decorator, 1., 0.25)
                 BlzFrameSetVisible(PlayerUI.skull_decorator, false)
 
@@ -437,6 +558,35 @@ do
 
                     ShowPlayerUI(current_player)
                     UpdateBindedSkillsData(current_player)
+
+                    for k = 1, 6 do
+                        if IsSpriteOverlayEnabled(player, k) then
+                            local keybind = SpriteOverlayData[player].key[k]
+                            local last_priority
+                            local highest_id
+                            local index
+
+                                for i = 1, #keybind.overlay do
+                                    if keybind.overlay[i].priority >= last_priority then
+                                        last_priority = keybind.overlay[i].priority
+                                        highest_id = keybind.overlay[i].id
+                                        index = i
+                                    end
+                                end
+
+                                if highest_id then
+                                    keybind.last_priority = last_priority
+                                    keybind.current_id = highest_id
+                                    keybind.overlay[index] = nil
+                                    EnableAbilitySpriteOverlay(highest_id, player)
+                                end
+
+                        end
+                    end
+
+
+
+
                     local unit_data = GetUnitData(PlayerHero[current_player])
 
                         if unit_data.equip_point[CHEST_POINT] then
@@ -541,24 +691,26 @@ do
 
             PlayerUI.xp_bar = BlzCreateSimpleFrame("MyBar", GAME_UI, 0)
             BlzFrameClearAllPoints(PlayerUI.xp_bar)
-            BlzFrameSetAbsPoint(PlayerUI.xp_bar, FRAMEPOINT_CENTER, 0.4, 0.056)
+            BlzFrameSetAbsPoint(PlayerUI.xp_bar, FRAMEPOINT_CENTER, 0.4, 0.048)
             BlzFrameSetTexture(PlayerUI.xp_bar, "Replaceabletextures\\Teamcolor\\Teamcolor09.blp", 0, true)
             BlzFrameSetSize(PlayerUI.xp_bar, 0.495, 0.006)
-            BlzFrameSetScale(PlayerUI.xp_bar, 1.)
+            BlzFrameSetScale(PlayerUI.xp_bar, 0.9)
             PlayerUI.xp_bar_text = BlzGetFrameByName("MyBarText", 0)
             BlzFrameSetText(PlayerUI.xp_bar_text, "")
             BlzFrameSetValue(PlayerUI.xp_bar, 0)
+            BlzFrameSetScale(PlayerUI.xp_bar_text, 1.7)
 
-            PlayerUI.action_bar = CreateUIElement("DiabolicUI_ActionBarArt1BarXP.tga", 0.4, -0.006, FRAMEPOINT_BOTTOM, 0.78, 1., 0.25, PlayerUI.xp_bar)
 
-            PlayerUI.hp_globe_backdrop = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Backdrop.tga", 0.083, 0.07, FRAMEPOINT_CENTER, 0.206, 1., 1., PlayerUI.action_bar)
-            PlayerUI.mp_globe_backdrop = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Backdrop.tga", 0.717, 0.07, FRAMEPOINT_CENTER, 0.206, 1., 1., PlayerUI.action_bar)
+            PlayerUI.action_bar = CreateUIElement("DiabolicUI_ActionBarArt1BarXP.tga", 0.4, -0.006, FRAMEPOINT_BOTTOM, 0.68, 1., 0.25, PlayerUI.xp_bar)
 
-            PlayerUI.hp_globe = CreateUIElement("UI\\globe_empty.blp", 0.083, 0.07, FRAMEPOINT_CENTER, 0.119, 1., 1., PlayerUI.hp_globe_backdrop)
-            PlayerUI.mp_globe = CreateUIElement("UI\\globe_empty.blp", 0.717, 0.07, FRAMEPOINT_CENTER, 0.119, 1., 1., PlayerUI.mp_globe_backdrop)
+            PlayerUI.hp_globe_backdrop = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Backdrop.tga", 0.118, 0.062, FRAMEPOINT_CENTER, 0.196, 1., 1., PlayerUI.action_bar)
+            PlayerUI.mp_globe_backdrop = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Backdrop.tga", 0.682, 0.062, FRAMEPOINT_CENTER, 0.196, 1., 1., PlayerUI.action_bar)
 
-            PlayerUI.hp_globe_shade = CreateUIElement("DiabolicUI_HealthGlobe512x512_Shade.tga", 0.083, 0.07, FRAMEPOINT_CENTER, 0.119, 1., 1., PlayerUI.hp_globe)
-            PlayerUI.mp_globe_shade = CreateUIElement("DiabolicUI_HealthGlobe512x512_Shade.tga", 0.717, 0.07, FRAMEPOINT_CENTER, 0.119, 1., 1., PlayerUI.mp_globe)
+            PlayerUI.hp_globe = CreateUIElement("UI\\globe_empty.blp", 0.118, 0.062, FRAMEPOINT_CENTER, 0.109, 1., 1., PlayerUI.hp_globe_backdrop)
+            PlayerUI.mp_globe = CreateUIElement("UI\\globe_empty.blp", 0.682, 0.062, FRAMEPOINT_CENTER, 0.109, 1., 1., PlayerUI.mp_globe_backdrop)
+
+            PlayerUI.hp_globe_shade = CreateUIElement("DiabolicUI_HealthGlobe512x512_Shade.tga", 0.118, 0.062, FRAMEPOINT_CENTER, 0.109, 1., 1., PlayerUI.hp_globe)
+            PlayerUI.mp_globe_shade = CreateUIElement("DiabolicUI_HealthGlobe512x512_Shade.tga", 0.682, 0.062, FRAMEPOINT_CENTER, 0.109, 1., 1., PlayerUI.mp_globe)
             BlzFrameSetAllPoints(PlayerUI.hp_globe_shade, PlayerUI.hp_globe)
             BlzFrameSetAllPoints(PlayerUI.mp_globe_shade, PlayerUI.mp_globe)
 
@@ -566,15 +718,18 @@ do
             BlzFrameSetVertexColor(PlayerUI.mp_globe_shade, BlzConvertColor(145, 255, 255, 255))
 
 
-            PlayerUI.hp_globe_border = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Border.tga", 0.083, 0.07, FRAMEPOINT_CENTER, 0.206, 1., 1., PlayerUI.hp_globe_shade)
-            PlayerUI.mp_globe_border = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Border.tga", 0.717, 0.07, FRAMEPOINT_CENTER, 0.206, 1., 1., PlayerUI.mp_globe_shade)
-            PlayerUI.demon_border = CreateUIElement("DiabolicUI_Artwork_Demon.tga", -0.01, 0.093, FRAMEPOINT_CENTER, 0.2, 1., 1., PlayerUI.hp_globe_border)
-            PlayerUI.angel_border = CreateUIElement("DiabolicUI_Artwork_Angel.tga", 0.81, 0.093, FRAMEPOINT_CENTER, 0.2, 1., 1., PlayerUI.mp_globe_border)
+            PlayerUI.hp_globe_border = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Border.tga", 0.118, 0.062, FRAMEPOINT_CENTER, 0.196, 1., 1., PlayerUI.hp_globe_shade)
+            PlayerUI.mp_globe_border = CreateUIElement("DiabolicUI_PlayerGlobes_150x150_Border.tga", 0.682, 0.062, FRAMEPOINT_CENTER, 0.196, 1., 1., PlayerUI.mp_globe_shade)
+            PlayerUI.demon_border = CreateUIElement("DiabolicUI_Artwork_Demon.tga", 0.034, 0.07, FRAMEPOINT_CENTER, 0.15, 1., 1., PlayerUI.hp_globe_border)
+            PlayerUI.angel_border = CreateUIElement("DiabolicUI_Artwork_Angel.tga", 0.766, 0.07, FRAMEPOINT_CENTER, 0.15, 1., 1., PlayerUI.mp_globe_border)
+
 
             BlzEnableUIAutoPosition(false)
             for i = 0, 11 do
-                BlzFrameClearAllPoints(BlzGetFrameByName("CommandButton_".. i, 0))
-                BlzFrameSetPoint(BlzGetFrameByName("CommandButton_".. i, 0), FRAMEPOINT_TOPRIGHT, WORLD_FRAME, FRAMEPOINT_TOPRIGHT, 0.064, 0.064)
+                local btn = BlzGetFrameByName("CommandButton_".. i, 0)
+                BlzFrameClearAllPoints(btn)
+                BlzFrameSetPoint(btn, FRAMEPOINT_TOPRIGHT, WORLD_FRAME, FRAMEPOINT_TOPRIGHT, 0.064, 0.064)
+                BlzFrameSetScale(btn, 0.9)
             end
 
 
@@ -583,18 +738,33 @@ do
             PlayerUI.skill_button_charges = {}
             PlayerUI.skill_button = {}
             PlayerUI.skill_button_bar = {}
+            PlayerUI.skill_button_sprite_overlay = {}
+            SpriteOverlayData = {}
 
             for i = 1, 6 do
                 PlayerUI.skill_button_bar[i] = {}
+                PlayerUI.skill_button_sprite_overlay[i] = {}
+                SpriteOverlayData[i] = {}
+                SpriteOverlayData[i].key = {}
+                SpriteOverlayData[i].key[KEY_Q] = { overlay = {}, last_priority = 0 }
+                SpriteOverlayData[i].key[KEY_W] = { overlay = {}, last_priority = 0 }
+                SpriteOverlayData[i].key[KEY_E] = { overlay = {}, last_priority = 0 }
+                SpriteOverlayData[i].key[KEY_R] = { overlay = {}, last_priority = 0 }
+                SpriteOverlayData[i].key[KEY_F] = { overlay = {}, last_priority = 0 }
+                SpriteOverlayData[i].key[KEY_D] = { overlay = {}, last_priority = 0 }
             end
 
-            local button_list = {}
+
+
+            button_list = {}
             local button = BlzGetFrameByName("CommandButton_10", 0)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, PlayerUI.action_bar, FRAMEPOINT_BOTTOM, -0.003, 0.0345)
             PlayerUI.skill_button_hotkey[1] = CreateSimpleChargesText(button, "E", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[1] = CreateUIBorder(button, 0.0035)
             button_list[KEY_E] = button
+            CreateSpriteOverlayFrame(KEY_E, button)
+
 
             button = BlzGetFrameByName("CommandButton_9", 0)
             BlzFrameClearAllPoints(button)
@@ -602,6 +772,7 @@ do
             PlayerUI.skill_button_hotkey[2] = CreateSimpleChargesText(button, "W", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[2] = CreateUIBorder(button, 0.0035)
             button_list[KEY_W] = button
+            CreateSpriteOverlayFrame(KEY_W, button)
 
 
             button = BlzGetFrameByName("CommandButton_8", 0)
@@ -610,6 +781,7 @@ do
             PlayerUI.skill_button_hotkey[3] = CreateSimpleChargesText(button, "Q", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[3] = CreateUIBorder(button, 0.0035)
             button_list[KEY_Q] = button
+            CreateSpriteOverlayFrame(KEY_Q, button)
 
 
             button = BlzGetFrameByName("CommandButton_11", 0)
@@ -618,6 +790,7 @@ do
             PlayerUI.skill_button_hotkey[4] = CreateSimpleChargesText(button, "R", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[4] = CreateUIBorder(button, 0.0035)
             button_list[KEY_R] = button
+            CreateSpriteOverlayFrame(KEY_R, button)
 
             button = BlzGetFrameByName("CommandButton_6", 0)
             BlzFrameClearAllPoints(button)
@@ -625,6 +798,8 @@ do
             PlayerUI.skill_button_hotkey[5] = CreateSimpleChargesText(button, "D", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[5] = CreateUIBorder(button, 0.0035)
             button_list[KEY_D] = button
+            CreateSpriteOverlayFrame(KEY_D, button)
+
 
             button = BlzGetFrameByName("CommandButton_7", 0)
             BlzFrameClearAllPoints(button)
@@ -632,6 +807,8 @@ do
             PlayerUI.skill_button_hotkey[6] = CreateSimpleChargesText(button, "F", 0.9, 0.9, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[6] = CreateUIBorder(button, 0.0035)
             button_list[KEY_F] = button
+            CreateSpriteOverlayFrame(KEY_F, button)
+
 
 
             for i = 1, 6 do
@@ -648,6 +825,7 @@ do
             BlzFrameSetAbsPoint(BlzGetFrameByName("InventoryCoverTexture",0), FRAMEPOINT_TOP, 0.4, -0.1)
             BlzFrameSetAbsPoint(BlzGetFrameByName("SimpleInventoryCover",0), FRAMEPOINT_TOP, 0.4, -0.1)
             BlzFrameSetAbsPoint(BlzGetFrameByName("InventoryText",0), FRAMEPOINT_TOP, 0.4, -0.1)
+            BlzFrameSetVisible(BlzGetFrameByName("InventoryText",0), false)
 
 
             for i = 0, 5 do
@@ -659,7 +837,7 @@ do
             local last_element = CreateUIElement("DiabolicUI_Button_64x64_BackdropBag.tga", 0.33, 0.097, FRAMEPOINT_CENTER, 1., 0.032, 0.032, PlayerUI.action_bar)
             BlzFrameSetLevel(last_element, 0)
             BlzFrameClearAllPoints(inventory_button_0)
-            BlzFrameSetAbsPoint(inventory_button_0, FRAMEPOINT_CENTER, 0.322, 0.077)
+            BlzFrameSetAbsPoint(inventory_button_0, FRAMEPOINT_CENTER, 0.322, 0.068)
             BlzFrameClearAllPoints(last_element)
             BlzFrameSetAllPoints(last_element, inventory_button_0)
             PlayerUI.inventory_borders[6] = CreateUIBorder(inventory_button_0, 0.)
@@ -688,7 +866,7 @@ do
             --BlzFrameSetTexture(PlayerUI.skull_decorator, "war3mapImported\\DiabolicUI_Artwork_Skull123.tga", 0, true)
             BlzFrameSetScale(PlayerUI.skull_decorator, 0.33)
             BlzFrameClearAllPoints(PlayerUI.skull_decorator)
-            BlzFrameSetAbsPoint(PlayerUI.skull_decorator, FRAMEPOINT_CENTER, 0.4, 0.093)
+            BlzFrameSetAbsPoint(PlayerUI.skull_decorator, FRAMEPOINT_CENTER, 0.4, 0.084)
             BlzFrameSetSize(PlayerUI.skull_decorator, 1., 0.25)
             BlzFrameSetVisible(PlayerUI.skull_decorator, false)
 
@@ -926,6 +1104,15 @@ do
             BlzTriggerRegisterFrameEvent(PlayerUI.discord_trigger, PlayerUI.discord_box, FRAMEEVENT_EDITBOX_ENTER)
             TriggerAddAction(PlayerUI.discord_trigger, function()
                 BlzFrameSetText(PlayerUI.discord_box, PlayerUI.discord_text)
+            end)
+
+
+            RegisterTestCommand("f1", function()
+                EnableAbilitySpriteOverlay("ambush", 1)
+            end)
+
+            RegisterTestCommand("f2", function()
+                DisableAbilitySpriteOverlay("ambush", 1)
             end)
 
 

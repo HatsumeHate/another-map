@@ -367,8 +367,8 @@ do
                 INT_STAT_PARAM            = 'Разум',
                 VIT_STAT_PARAM            = 'Выносливость',
 
-                MELEE_DAMAGE_REDUCTION_PARAM  = 'Урон от атак ближнего боя',
-                RANGE_DAMAGE_REDUCTION_PARAM  = 'Урон от атак дальнего боя',
+                MELEE_DAMAGE_REDUCTION_PARAM  = 'Получаемый урон ближнего боя',
+                RANGE_DAMAGE_REDUCTION_PARAM  = 'Получаемый урон дальнего боя',
                 CONTROL_REDUCTION_PARAM       = 'Снижение времени контроля',
                 CONTROL_DURATION_PARAM        = "Увеличение времени контроля",
 
@@ -397,7 +397,7 @@ do
                 DROP_BONUS_PARAM = "Поиск предметов",
 
                 HEALING_BONUS_PARAM = "Полученное исцеление",
-                DAMAGE_BOOST_PARAM = "Наносимый урон",
+                DAMAGE_BOOST_PARAM = "Урон",
                 VULNERABILITY_PARAM = "Получаемый урон",
                 MANACOST_PARAM = "Стоимость ресурсов",
                 ENDURANCE_PARAM = "Стойкость",
@@ -420,17 +420,20 @@ do
 
                 MINION_POWER_PARAM = "Сила слуг",
 
-                BLEEDING_DAMAGE_BOOST_PARAM = "Сила Кровотечений",
+                BLEEDING_DAMAGE_BOOST_PARAM = "Сила кровотечения",
                 BLEEDING_DAMAGE_REDUCTION_PARAM = "Стойкость к кровотечению",
 
-                BURNING_DAMAGE_BOOST_PARAM = "Сила Горения",
-                BURNING_DAMAGE_REDUCTION_PARAM = "Стойкость к Горению",
+                BURNING_DAMAGE_BOOST_PARAM = "Сила горения",
+                BURNING_DAMAGE_REDUCTION_PARAM = "Стойкость к горению",
 
-                POISONING_DAMAGE_BOOST_PARAM = "Сила Отравления",
-                POISONING_DAMAGE_REDUCTION_PARAM = "Стойкость к Отравлению",
+                POISONING_DAMAGE_BOOST_PARAM = "Сила отравления",
+                POISONING_DAMAGE_REDUCTION_PARAM = "Стойкость к отравлению",
 
-                DECAYING_DAMAGE_BOOST_PARAM = "Сила Разложения",
-                DECAYING_DAMAGE_REDUCTION_PARAM = "Стойкость к Разложению",
+                DECAYING_DAMAGE_BOOST_PARAM = "Сила разложения",
+                DECAYING_DAMAGE_REDUCTION_PARAM = "Стойкость к разложению",
+
+                RESOURCE_GENERATION_PARAM = "Полученный ресурс",
+
 
                 ITEM_TYPE_WEAPON_NAME     = "Оружие",
                 ITEM_TYPE_ARMOR_NAME      = "Броня",
@@ -682,6 +685,7 @@ do
                 SKILL_CATEGORY_INNER_STRENGTH = "Внутренние силы",
                 SKILL_CATEGORY_LETHALITY = "Смертельность",
                 SKILL_CATEGORY_SHADOWS = "Тени",
+                SKILL_CATEGORY_BOW = "Лучник",
                 SKILL_CATEGORY_GEAR = "Устройства",
 
 
@@ -700,6 +704,7 @@ do
                 SKILL_CATEGORY_HOLY_DOCTRINE_ADVANCED = "Умения доктрины (Паладин): ",
                 SKILL_CATEGORY_LETHALITY_ADVANCED = "Умения смертельности (Ассассин): ",
                 SKILL_CATEGORY_SHADOWS_ADVANCED = "Умения теней (Ассассин): ",
+                SKILL_CATEGORY_BOW_ADVANCED = "Умения лучника (Ассассин)",
                 SKILL_CATEGORY_GEAR_ADVANCED = "Умения устройств (Ассассин): ",
 
 
@@ -853,7 +858,7 @@ do
 
                 STAT_PANEL_FIRE = "Огонь: ",
                 STAT_PANEL_PHYSICAL = "Физ.: ",
-                STAT_PANEL_ICE = "Лед: ",
+                STAT_PANEL_ICE = "Холод: ",
                 STAT_PANEL_LIGHTNING = "Молния: ",
                 STAT_PANEL_DARKNESS = "Тьма: ",
                 STAT_PANEL_HOLY = "Свет: ",
@@ -903,7 +908,9 @@ do
                 ITEM_SUFFIX_ENDLESS_FURY            = " Бесконечной ярости",
                 ITEM_SUFFIX_DEADLY_PRECISION        = " Смертельной точности",
                 ITEM_SUFFIX_ADVENTURER              = " Приключенца",
-                ITEM_SUFFIX_DECAY = " Разложения",
+                ITEM_SUFFIX_EFFICIENCY              = " Эффективности",
+                ITEM_SUFFIX_PEAK_EFFICIENCY         = " Безупречности",
+
 
                 GENERIC_SWORD_NAME_1 = "необработанный клинок",
                 GENERIC_SWORD_NAME_2 = "короткий меч",
@@ -969,11 +976,12 @@ do
                 GENERIC_BOW_NAME_4 = "лук разведчика",
                 GENERIC_BOW_NAME_5 = "тяжелый лук",
                 GENERIC_BOW_NAME_6 = "Рог",
-                GENERIC_BOW_NAME_7 = "рунный лук",
+                GENERIC_BOW_NAME_7 = "нечестивый лук",
                 GENERIC_BOW_NAME_8 = "усиленный лук",
                 GENERIC_BOW_NAME_9 = "дергающийся лук",
                 GENERIC_BOW_NAME_10 = "мистический лук",
                 GENERIC_BOW_NAME_11 = "заиневший лук",
+                GENERIC_BOW_NAME_12 = "рунный лук",
 
                 GENERIC_QUIVER_NAME_1 = "колчан",
                 GENERIC_QUIVER_NAME_2 = "кожанный колчан",
@@ -1018,6 +1026,9 @@ do
                 GENERIC_CHEST_NAME_11 = "кираса",
                 GENERIC_CHEST_NAME_12 = "составной нагрудник",
                 GENERIC_CHEST_NAME_13 = "Сияние Ночи",
+                GENERIC_CHEST_NAME_14 = "одеяния боевого мага",
+                GENERIC_CHEST_NAME_15 = "роба послушника",
+                GENERIC_CHEST_NAME_16 = "почерневший латный доспех",
 
 
                 GENERIC_HANDS_NAME_1 = "меховые перчатки",
@@ -1077,6 +1088,7 @@ do
                 GENERIC_RING_NAME_9 = "жестокое кольцо",
                 GENERIC_RING_NAME_10 = "руническое кольцо",
                 GENERIC_RING_NAME_11 = "заиневшее кольцо",
+                GENERIC_RING_NAME_12 = "рубиновое кольцо",
 
                 GENERIC_NECKLACE_NAME_1 = "подвеска с камнем",
                 GENERIC_NECKLACE_NAME_2 = "серебрянный амулет",
@@ -1086,7 +1098,8 @@ do
                 GENERIC_NECKLACE_NAME_6 = "заряженный амулет",
                 GENERIC_NECKLACE_NAME_7 = "изумрудная подвеска",
                 GENERIC_NECKLACE_NAME_8 = "рубиновая подвеска",
-                GENERIC_NECKLACE_NAME_9 = "сапфировая подвеска",
+                GENERIC_NECKLACE_NAME_9 = "сапфировый кулон",
+                GENERIC_NECKLACE_NAME_10 = "кулон маны",
 
                 STARTING_ITEM_NAME_2HSWORD = "Клеймор",
                 STARTING_ITEM_NAME_CHEST = "Клепанная броня",
@@ -1097,6 +1110,7 @@ do
                 STARTING_ITEM_NAME_MACE = "Добротная Булава",
                 STARTING_ITEM_NAME_SHIELD = "Старый Щит",
                 STARTING_ITEM_NAME_DAGGER = "Затупленный Кинжал",
+                STARTING_ITEM_NAME_BOW = "Проржавевший Лук",
 
                 --STARTING_ITEM_NAME_ = "",
 
@@ -1225,6 +1239,7 @@ do
                 SKILLBOOK_SUMMONING = "Книга призыва Некроманта",
                 SKILLBOOK_LETHALITY = "Книга смертоносности Убийцы",
                 SKILLBOOK_SHADOWS = "Книга теней Убийцы",
+                SKILLBOOK_BOW = "Книга о стрельбе Убийцы",
                 SKILLBOOK_GEAR = "Книга о механизмах Убийцы",
 
                 SKILLBOOK_TEXT = "Позволяет увеличить знания:",
@@ -1271,6 +1286,12 @@ do
                 SKILL_BLIZZARD = "Буран",
                 SKILL_SURGE = "Скачок Напряжения",
                 SKILL_FLAME_SHROUD = "Покров Пламени",
+                SKILL_STATIC_FIELD = "Статическое Поле",
+                SKILL_LIGHTNING_SPEAR = "Электрическое Копье",
+                SKILL_ARCANE_RIFT = "Магический Разлом",
+                SKILL_ARCANE_BARRAGE = "Залп Магических Стрел",
+                SKILL_PERMAFROST = "Заморозка",
+                SKILL_ENFLAME = "Воспламенить",
 
                 SKILL_RAISE_DEAD = "Оживить Скелет",
                 SKILL_LICH_RITUAL = "Ритуал Лича",
@@ -1317,6 +1338,16 @@ do
                 SKILL_BLADE_TRAP = "Ловушка Лезвий",
                 SKILL_SMOKE_BOMB = "Дымовая Шашка",
                 SKILL_ROCKET_LAUNCHER = "Ракетница",
+                SKILL_PRECISION_SALVO = "Прицельный залп",
+                SKILL_EXPOSE = "Уязвимость",
+                SKILL_CLUSTER_SHOT = "Кластер",
+                SKILL_FROST_ARROWS = "Ледяные Стрелы",
+                SKILL_POISON_ARROWS = "Отравленные Стрелы",
+                SKILL_STEEL_RAIN = "Стальной Дождь",
+                SKILL_CHARGED_SHOT = "Заряженный Выстрел",
+                SKILL_SUPPRESSION_FIRE = "Подавляющий Обстрел",
+                SKILL_MULTISHOT = "Мультишот",
+                --SKILL_MULTISHOT = "Мультишот",
 
 
                 SET_NAME_ANCIENT_LEGACY = "Наследие предков",
@@ -1348,6 +1379,11 @@ do
                 ITEM_LEG_DESCRIPTION_ROT_AND_DISEASE = "Все умения костей при поражении наносят 8%% от урона оружия ядом в течение 3 сек.",
                 ITEM_LEG_DESCRIPTION_LIVING_HORRORS = "Руки скелетов от \"Земли Мертвых\" наносят 125%% урона от оружия тьмой, а при ее применении противники вблизи повергаются в страх на 2 сек",
                 ITEM_LEG_DESCRIPTION_EVERLASTING_MADNESS = "Пока \"Берсерк\" не активен он может бесплатно активироваться на 3 секунды",
+                ITEM_LEG_DESCRIPTION_SKINRIPPER = "15%% шанс при атаке открыть раны противнику нанося ему 18%% кровотечения от физ. атаки в течение 5 секунд",
+                ITEM_LEG_DESCRIPTION_GROUNDER = "Критический урон оглушает цель и всех вокруг на 1.5 секунд. Срабатывает раз в 5 секунд",
+                ITEM_LEG_DESCRIPTION_INFINITY_CHAIN = "Удваивает количество отскоков \"Электрошока\"",
+                ITEM_LEG_DESCRIPTION_NIGHTWALKERS = "После применения \"Шаг Сквозь Тень\" дает 15%% уменьшение урона в течение 4 секунд",
+                ITEM_LEG_DESCRIPTION_GALACOS_TRICK  = "Оглушение противника поворачивает его вам спиной",
 
 
                 ITEM_NAME_RAT_HUNTER = 'Охотник на крыс',
@@ -1486,8 +1522,19 @@ do
                 ITEM_SPEC_DESCRIPTION_EVERLASTING_MADNESS = "Кровавая пелена застилает зрение и разум. Сможешь ли ты контролировать себя, и направить ярость на врагов?",
 
                 ITEM_NAME_SKINRIPPER = "Свежеватель",
-                ITEM_SPEC_DESCRIPTION_SKINRIPPER = "Он был создан древним магом в попытках сделать оружие, способное обретать силу из самых мрачных источников. Он стал легендой до тех пор, пока не исчез вместе с его таинственным создателем",
+                ITEM_SPEC_DESCRIPTION_SKINRIPPER = "Он был создан древним магом в попытках сделать оружие, способное обретать силу из самых мрачных источников. Он был легендой до тех пор, пока не исчез вместе с его таинственным создателем",
 
+                ITEM_NAME_GROUNDER = "Впечатыватель",
+                ITEM_SPEC_DESCRIPTION_GROUNDER = "Выкован в сердце древних вулканических огней легендарным гномьим кузнецом Трамом Железная Борода. Легенды рассказывают о героях, которые с помощью молота переломили ход сражений, считавшихся давно проигранными",
+
+                ITEM_NAME_INFINITY_CHAIN = "Цепь Бесконечности",
+                ITEM_SPEC_DESCRIPTION_INFINITY_CHAIN = "Достигнув алтаря, Лира была притянута к перчаткам словно волею судьбы. Когда она подняла Цепь Бесконечности, по ее венам пробежал электрический разряд, и она почувствовала, как между ней и артефактом образовалась нерушимая связь. Теперь сила бури принадлежала ей",
+
+                ITEM_NAME_NIGHTWALKERS = "Поступь Ночи",
+                ITEM_SPEC_DESCRIPTION_NIGHTWALKERS = "Если не знаешь куда ступить в темноте - опирайся на саму тьму",
+
+                ITEM_NAME_GALACOS_TRICK = "Трюк Галакоса",
+                ITEM_SPEC_DESCRIPTION_GALACOS_TRICK = "Галакос был известен ни своей силой, ни магией, а поразительной хитростью и ловкостью. Он мог раствориться на месте, ударить из тени и вновь исчезнуть пока никто не понял, что произошло",
 
                 ITEM_EFFECTS = {
                     ["weap_poison_phys"] = "7%% шанс при атаке наложить эффект наносящий @e!poison_physical_weapon_effect.ap#%% урона от атаки типа @e!poison_physical_weapon_effect.atr# в течение 6 сек",
@@ -1497,7 +1544,6 @@ do
                     ["item_enrage"] = "5%% шанс при получении или нанесении урона повысить @b!AIEN.pa1# на @b!AIEN.va1# в течение 4 секунд",
                     ["item_conduction"] = "5%% шанс при получении или нанесении урона повысить @b!AICN.pa1# на @b!AICN.va1# в течение 4 секунд",
                     ["item_fortify"] = "10%% шанс при получении урона повысить @b!AIFT.pa1# и @b!AIFT.pa2# на @b!AIFT.va1# в течение 3 секунд",
-                    ["open_wound_effect"] = "15%% шанс при атаке открыть раны противнику нанося ему @e!skinripper_effect.ap#%% кровотечения от атаки в течение 5 секунд",
                 },
 
 
@@ -1534,7 +1580,7 @@ do
                     [1] = "Раскалывает ударом землю в конусе перед собой. Задетые расколом противники получают @e!ESHG.dmg# типа @e!ESHG.atr# и оглушаются на @b!ASHS.time# сек. Имеет повышенный критический множитель (+@e!ESHG.bcm#).",
                 },
                 [FourCC("A00O")] = {
-                    [1] = "Прыжок, позволяющий переместиться на расстояние до @s!A00O.rng#. Пока вы в прыжке, дает полный иммунитет к контролю.",
+                    [1] = "Прыжок, позволяющий переместиться на расстояние до @s!A00O.rng#. Пока вы в прыжке, дает полный иммунитет к контролю. Следующее применение умения в течение 5 секунд будет критическим.",
                 },
                 [FourCC("A020")] = {
                     [1] = "Добивающий удар. Наносит @e!EEXC.dmg# типа @e!EEXC.atr#, при применении на противников у которых осталось менее 33%% здоровья сила умения увеличивается втрое, а критический шанс возрастает на 15%%.",
@@ -1560,16 +1606,22 @@ do
                     [1] = "Призывает неуязвимую огненную гидру, которая атакует врагов. Она наследует 70%% значений характеристик и распространяет ауру повышающую @b!HDAU.pa1# на @b!HDAU.va1#. С повышением уровня заклинания увеличивается ее время существования.",
                 },
                 [FourCC("A00H")] = {
-                    [1] = "Волшебница подчиняет себе мощь стихий, весь урон от стихий [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3#] на @b!A00U.va1# и @b!A00U.pa4# увеличивается на @b!A00U.va4#. Время эффекта - @b!A00U.time# сек. ",
+                    [1] = "Волшебница подчиняет себе мощь стихий, весь урон от стихий [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3#] на @b!A00U.va1# и @b!A00U.pa4# увеличивается на @b!A00U.va4#. Время эффекта - @b!A00U.time# сек.",
                 },
                 [FourCC("A00E")] = {
-                    [1] = "Волшебница формирует вокруг себя ледяной барьер, дающий 15%% стойкости повышающий ее защитные параметры: @b!A011.pa1# на @b!A011.va1# ед., @b!A011.pa2# на @b!A011.va2# ед., @b!A011.pa3# на @b!A011.va3# ед. и @b!A011.pa4# на @b!A011.va4# ед.",
+                    [1] = "Волшебница формирует вокруг себя ледяной барьер, дающий 25%% стойкости повышающий ее защитные параметры: @b!A011.pa1# на @b!A011.va1# ед., @b!A011.pa2# на @b!A011.va2# ед., @b!A011.pa3# на @b!A011.va3# ед. и @b!A011.pa4# на @b!A011.va4# ед.",
                 },
                 [FourCC("A00N")] = {
                     [1] = "Волшебница фокусирует энергии тайной магии, улучшая свою защиту: @b!A00T.pa1# на @b!A00T.va1# ед. в течение @b!A00T.time#.",
                 },
                 [FourCC("A00K")] = {
-                    [1] = "Выпускает заряженный сгусток энергии медленно летящий вперед, периодически пульсируя разрядами в радиусе @m!MBLB.rad#, которые наносят @e!ELBL.pwr# ед. урона типа @e!ELBL.atr#",
+                    [1] = "Выпускает заряженный сгусток энергии медленно летящий вперед, периодически пульсируя разрядами в радиусе @m!MBLB.rad#, которые наносят @e!ELBL.pwr# ед. урона типа @e!ELBL.atr#.",
+                },
+                [FourCC("ALSP")] = {
+                    [1] = "Стреляет стремительным зарядом электричества который проходит сквозь врагов и наносит им @e!lightning_spear_effect.pwr# ед. урона типа @e!lightning_spear_effect.atr# и оглушает их на @b!A035.time# секунд. Попадание зарядом с половинным шансом критического удара так же наносит @e!lightning_spear_sub_effect.pwr# ед. урона типа @e!lightning_spear_sub_effect.atr# всем врагам неподалеку.",
+                },
+                [FourCC("ASEF")] = {
+                    [1] = "Воспламеняет оружие всех окружающих героев повышая их @b!ABEF.pa1# на @b!ABEF.va1#. При каждой атаке наносит @e!enflame_instant_effect.pwr# ед. урона типа @e!enflame_instant_effect.atr# и понижает @b!A03E.pa1# на 1 до максимума в 25 единиц в течение @b!A03E.time# секунд, а с шансом равному пониженному сопротивлению к огню этим умением оглушает цель на 1 секунду и наносит всем врагам поблизости @e!enflame_crit_effect.pwr# ед. урона типа @e!enflame_crit_effect.atr#.",
                 },
                 [FourCC("A00J")] = {
                     [1] = "Выстреливает 3 хаотично перемещающимися зарядами электричества, которые наносят при контакте первому противнику @e!EDSC.pwr# ед. урона типа @e!EDSC.atr#, после чего исчезают.",
@@ -1582,16 +1634,16 @@ do
                     [1] = "Чародейка пускает волну огня наносящую @e!fire_wave_effect.pwr# ед. урона типа @e!fire_wave_effect.atr#."
                 },
                 [FourCC("A00F")] = {
-                    [1] = "Призывает с неба метеор падающий на землю после небольшой задержки нанося @e!EMTR.pwr# ед. урона типа @e!EMTR.atr# в радиусе @e!EMTR.aoe# и отталкивая противников из центра падения. Имеет повышенный бонус к стихии (+@e!EMTR.ab#)",
+                    [1] = "Призывает с неба метеор падающий на землю после небольшой задержки нанося @e!EMTR.pwr# ед. урона типа @e!EMTR.atr# в радиусе @e!EMTR.aoe# и отталкивая противников из центра падения. Имеет повышенный бонус к стихии (+@e!EMTR.ab#).",
                 },
                 [FourCC("A00L")] = {
                     [1] = "Позволяет мгновенно переместиться на расстояние до @s!A00L.rng#.",
                 },
                 [FourCC("A00M")] = {
-                    [1] = "Призывает мощный разряд поражающий в радиусе @e!ELST.aoe# нанося @e!ELST.pwr# ед. урона типа @e!ELST.atr#. Имеет повышенный бонус к стихии (+@e!ELST.ab#) и множителю критического урона (+@e!ELST.bcm#)",
+                    [1] = "Призывает мощный разряд поражающий в радиусе @e!ELST.aoe# нанося @e!ELST.pwr# ед. урона типа @e!ELST.atr#. Имеет повышенный бонус к стихии (+@e!ELST.ab#) и множителю критического урона (+@e!ELST.bcm#).",
                 },
                 [FourCC("A005")] = {
-                    [1] = "Запускает вперед ледяной шар, который наносит постоянно в радиусе @e!EFOA.aoe# @e!EFOA.pwr# ед. урона типа @e!EFOA.atr# (+@e!EFOA.ab#). В конце пути взрывается, нанося @e!EFRO.pwr# ед. урона типа @e!EFRO.atr#, с повышенном шансом критического урона на (+@e!EFRO.bcc#)",
+                    [1] = "Запускает вперед ледяной шар, который наносит постоянно в радиусе @e!EFOA.aoe# @e!EFOA.pwr# ед. урона типа @e!EFOA.atr# (+@e!EFOA.ab#). В конце пути взрывается, нанося @e!EFRO.pwr# ед. урона типа @e!EFRO.atr#, с повышенном шансом критического урона на (+@e!EFRO.bcc#).",
                 },
                 [FourCC("ASIR")] = {
                     [1] = "Призывает с неба падающие льдины в радиусе @FM_PER!250.5#. Каждая наносит @e!EICR.pwr# ед. урона типа @e!EICR.atr# в небольшом радиусе. Количество льдин - @FM_DIV!3.3#.",
@@ -1630,6 +1682,19 @@ do
                 },
                 [FourCC("AFWL")] = {
                     [1] = "Формирует стену огня на 6 секунд. Все противники контактирующие с ней и покинувшие ее в течение 2 секунд воспламеняются и периодически получают @e!fire_wall_damage_effect.pwr# ед. урона типа @e!fire_wall_damage_effect.atr#.",
+                },
+                [FourCC("ASSF")] = {
+                    [1] = "Электризует противников в радиусе @e!effect_static_field.aoe#, замедляя их на @b!A029.va1# в течение @b!A029.time# сек. При получении прямого урона от волшебницы противникам дополнительно наносится @e!static_field_damage_effect.pwr# ед. урона типа @e!static_field_damage_effect.atr#.",
+                },
+                [FourCC("AARF")] = {
+                    [1] = "Создает разлом в случайной точке в радиусе 500. Любой союзный герой находящийся в этой точке усилит @b!A036.pa1# на @b!A036.va1# и @b!A036.pa2# на @b!A036.va2#. Разлом существует в течение 8 секунд.",
+                    [10] = "Создает @FM_DIV!1.10# разломов в случайной точке в радиусе 500. Любой союзный герой находящийся в этой точке усилит @b!A036.pa1# на @b!A036.va1# и @b!A036.pa2# на @b!A036.va2#. Разлом существует в течение 8 секунд.",
+                },
+                [FourCC("AARC")] = {
+                    [1] = "Выстрел 3 зарядами тайной магии, наносящих @e!effect_arcane_missile.pwr# ед. урона типа @e!effect_arcane_missile.atr#. Умение получает бонусы урона от стихий огня, льда и молнии.",
+                },
+                [FourCC("APRF")] = {
+                    [1] = "Пускает вперед ледяную волну наносящую @e!permafrost_effect.pwr# ед. урона типа @e!permafrost_effect.atr# и замораживающая врагов на @b!A037.time# секунд.",
                 },
                 [FourCC("ANRD")] = {
                   [1] = "Призывает из ближайшего трупа в радиусе 600 Воина Скелета. Одновременно может существовать до @FM_DIV!2.6# скелетов. С шансом @FM_PER!5.1#%% вместо Скелета Воина призовется Скелет Лучник. На максимуме существ призывает аколита, который повышает атаку всех скелетов и исцеляет их на 15%% в течение 3 секунд.",
@@ -1726,7 +1791,7 @@ do
                     [1] = "Метает ножи во все стороны вокруг себя нанося @e!effect_blade_flurry.dmg# типа @e!effect_blade_flurry.atr#.",
                 },
                 [FourCC("AATL")] = {
-                    [1] = "Помечает врагов в радиусе @e!effect_target_locked.aoe# на @b!ADTL.time# сек., атаки по ним увеличивают вашу и других ассассинов @b!ABTL.pa1# на @b!ABTL.va1# в течении @b!ABTL.time# сек.",
+                    [1] = "Помечает врагов в радиусе @e!effect_target_locked.aoe# на @b!ADTL.time# сек., атаки по ним увеличивают @b!ABTL.pa1# на @b!ABTL.va1#, @b!ABTL.pa2# на @b!ABTL.va2# и @b!ABTL.pa3# на @b!ABTL.va3# атакующему в течении @b!ABTL.time# сек.",
                 },
                 [FourCC("AALL")] = {
                     [1] = "Восстанавливает все способности находящиеся в перезарядке и усиливает свою @b!ABLL.pa1# на @b!ABLL.va1# и @b!ABLL.pa2# на @b!ABLL.va2# в течение @b!ABLL.time# сек.",
@@ -1735,7 +1800,7 @@ do
                     [1] = "Покров усиливает @b!ABNS.pa1# на @b!ABNS.va1#, @b!ABNS.pa2# на @b!ABNS.va2# и @b!ABNS.pa3# на @b!ABNS.va3# в течение @b!ABNS.time# сек.",
                 },
                 [FourCC("AATW")] = {
-                    [1] = "Аура, наносящая @e!twilight_effect.dmg# типа @e!twilight_effect.atr# в радиусе 450. У противников снижается @b!ABTW.pa1# на @b!ABTW.va1#, @b!ABTW.pa2# на @b!ABTW.va2# и @b!ABTW.pa3# на @b!ABTW.va3#, пока вы @b!ABTH.pa1# на @b!ABTH.va1#, @b!ABTH.pa2# на @b!ABTH.va2# и @b!ABTH.pa3# на @b!ABTH.va3#.",
+                    [1] = "Аура, наносящая @e!twilight_effect.dmg# типа @e!twilight_effect.atr# в радиусе 450. У противников снижается @b!ABTW.pa1# на @b!ABTW.va1#, @b!ABTW.pa2# на @b!ABTW.va2# и @b!ABTW.pa3# на @b!ABTW.va3#.",
                 },
                 [FourCC("AABD")] = {
                     [1] = "Удар перед собой наносящий @e!effect_blade_of_darkness.dmg# типа @e!effect_blade_of_darkness.atr#. Каждая атака не этим умением усиливает его на 15%%, вплоть до 150%%. Использование умения тратит все заряды.",
@@ -1750,10 +1815,10 @@ do
                     [1] = "Бросает вперед два летящих по дуге лезвия, каждый из которых наносит @e!effect_dancing_blade.dmg# типа @e!effect_dancing_blade.atr# всем противникам на своем пути.",
                 },
                 [FourCC("AAIG")] = {
-                    [1] = "Метает бутылку с горючим веществом, которая взрывается об первого противника или об землю, наносит @e!incendiary_grenade_effect.dmg# типа @e!incendiary_grenade_effect.atr# всем врагам в радиусе @e!incendiary_grenade_effect.aoe# и затем по @e!incendiary_grenade_peroidic_effect.dmg# каждую секунду в течение @b!ABID.time# секунд.",
+                    [1] = "Метает бутылку с горючим веществом, которая взрывается об землю, наносит @e!incendiary_grenade_effect.dmg# типа @e!incendiary_grenade_effect.atr# всем врагам в радиусе @e!incendiary_grenade_effect.aoe# и затем по @e!incendiary_grenade_peroidic_effect.dmg# каждую секунду в течение @b!ABID.time# секунд, так же снижая их @b!ABID.pa1# на @b!ABID.va1#.",
                 },
                 [FourCC("AACT")] = {
-                    [1] = "Разбрасывает шипы вокруг, все заходящие противники теряют @b!ABCT.va1# скорости передвижения и получают @e!caltrops_effect.dmg# типа @e!caltrops_effect.atr#. Шипы существуют в течение 5 секунд.",
+                    [1] = "Разбрасывает шипы вокруг, все заходящие противники теряют @b!ABCT.va1# скорости передвижения а так же уязвимость на @b!ABCT.va2#%% и получают @e!caltrops_effect.dmg# типа @e!caltrops_effect.atr#. Шипы существуют в течение 5 секунд.",
                 },
                 [FourCC("AASC")] = {
                     [1] = "Устанавливает ловушку которая срабатывает от врагов. При срабатывании взрывается и наносит @e!shocking_trap_effect.dmg# типа @e!shocking_trap_effect.atr# в радиусе @e!shocking_trap_effect.aoe#, а так же оглушает на @b!AAST.time# секунд.",
@@ -1762,12 +1827,260 @@ do
                     [1] = "Ловушка, выстреливающая ножами во все стороны в радиусе @e!blade_trap_effect.aoe#, наносит @e!blade_trap_effect.dmg# типа @e!blade_trap_effect.atr#.",
                 },
                 [FourCC("AASB")] = {
-                    [1] = "Кидает шашку, которая ослепляет всех врагов в радиусе @e!smoke_bomb_effect.aoe# и снижает скорость их заклинаний на @b!ABSB.va1# на @b!ABSB.time#.",
+                    [1] = "Кидает шашку которая ослепляет всех врагов в радиусе @e!smoke_bomb_effect.aoe# и снижает скорость их заклинаний на @b!ABSB.va1# на @b!ABSB.time#.",
                 },
                 [FourCC("AARL")] = {
                     [1] = "Стреляет ракетой которая поражает первого противника и взрывается нанося @e!effect_rocket.dmg# типа @e!effect_rocket.atr# в радиусе @e!effect_rocket.aoe#.",
                 },
+                [FourCC("AAPS")] = {
+                    [1] = "Быстрый выстрел наносящий @e!precision_arrow_effect.dmg# типа @e!precision_arrow_effect.atr#.",
+                },
+                [FourCC("AAEX")] = {
+                    [1] = "Выстрел из лука наносящий @e!expose_arrow_effect.dmg# типа @e!expose_arrow_effect.atr# и увеличивающий критический шанс атак по пораженному противнику на @FM_PER!10.0.5#%% в течение @b!A02G.time# секунд.",
+                },
+                [FourCC("AACA")] = {
+                    [1] = "Стрела разлетающаяся на шрапнель наносящая @e!main_cluster_arrow_effect.dmg# типа @e!main_cluster_arrow_effect.atr# основной цели и @e!sub_cluster_arrow_effect.dmg# типа @e!sub_cluster_arrow_effect.atr# всем противникам в радиусе @e!sub_cluster_arrow_effect.aoe#.",
+                },
+                [FourCC("AACR")] = {
+                    [1] = "Выстрел зачарованной стрелой наносящей @e!frost_arrow_effect.dmg# типа @e!frost_arrow_effect.atr# после чего все атаки стрелами становятся уроном от холода в течение @b!A02F.time# секунд.",
+                },
+                [FourCC("AAPA")] = {
+                    [1] = "Выстрел отравленной стрелой наносящей @e!poison_arrow_effect.dmg# типа @e!poison_arrow_effect.atr# сразу и @e!poison_arrow_periodic_effect.dmg# каждую секунду в течение @b!A02H.time# секунд, после чего все атаки стрелами становятся уроном от яда в течение @b!A02E.time# секунд.",
+                },
+                [FourCC("AASR")] = {
+                    [1] = "Вызывает град из стрел поражающих все на пути нанося @e!steel_rain_effect.dmg# типа @e!steel_rain_effect.atr#.",
+                },
+                [FourCC("AASF")] = {
+                    [1] = "Залп из многочисленных стрел в беспорядочном направлении перед собой которые наносят @e!supp_fire_effect.dmg# типа @e!supp_fire_effect.atr#.",
+                },
+                [FourCC("AACO")] = {
+                    [1] = "Выстрел стрелой с устройством которое наносит @e!charged_shot_effect.dmg# типа @e!charged_shot_effect.atr# и оглушает всех пораженных противников в радиусе @e!charged_shot_effect.aoe# оглушая их на @b!A02J.time# секунд.",
+                },
+                [FourCC("AAMH")] = {
+                    [1] = "Подготовка дополнительных стрел для следующего выстрела. Следующее умение использующее лук будет с большим количеством снарядов и с увеличенной на @FM_PER!1.1#%% силой.",
+                },
 
+
+                BUFF_FOCUS = "Сосредоточенность",
+                BUFF_FROST_ARMOR = "Ледянаяя Броня",
+                BUFF_ELEM_MASTERY = "Мастерство Стихий",
+                BUFF_HYDRA = "Тепло Гидры",
+                BUFF_SURGE = "Скачок Напряжения",
+                BUFF_FIRE_SHROUD = "Покров Пламени",
+                BUFF_JUMP = "Готовность Ударить",
+                BUFF_BERSERK = "Берсерк",
+                BUFF_EXECUTION = "Запах Смерти",
+                BUFF_BLOOD_RUSH = "Прилив Крови",
+                BUFF_REINFORCE = "Укрепление",
+                BUFF_RALLYING_CRY = "Призыв Сплотиться",
+                BUFF_DEVOUR = "Поглощение",
+                BUFF_UNDEAD_LAND = "Земля Мертвых",
+                BUFF_BONE_RIP = "Вырвать Кости",
+                BUFF_GROW_SPIKES = "Отрастить Шипы",
+                BUFF_DARK_REIGN = "Темное Царство",
+                BUFF_UNHOLY_COMMAND = "Нечестивый Приказ",
+                BUFF_SKELETON_SUMMON = "Восстановление Нежити",
+                BUFF_LICH_SUMMON = "Усиление Лича",
+                BUFF_LICH_AURA = "Духовная Связь",
+
+                BUFF_RAGE = "Раж",
+                BUFF_PAIN_KILLER = "Подавление Боли",
+                BUFF_CARNAGE = "Резня",
+                BUFF_SHARPENED_BLADE = "Заточенное Оружие",
+                BUFF_DISADVANTAGE = "Неравный Бой",
+                BUFF_IMPULSE_OF_ANGER = "Вспышка Злости",
+                BUFF_PRESSURE_POINT = "Точка Давления",
+                BUFF_ADRENALINE = "Адреналин",
+                BUFF_SECOND_WIND = "Второе дыхание",
+                BUFF_INCINERATE = "Сожжение",
+                BUFF_VOLTAGE = "Напряжение",
+                BUFF_INDUCTION = "Индукция",
+                BUFF_EXTRA_CHARGE = "Сверхзаряд",
+                BUFF_GLACIATION = "Оледенение",
+                BUFF_HEAT_TRANSFER = "Вытягивание Тепла",
+                BUFF_TENACITY_OF_THE_UNDEAD = "Упорство Мертвецов",
+                BUFF_LIFE_STEAL = "Кража Жизни",
+                BUFF_RITUAL_TALENT = "Ритуал",
+                BUFF_ABYSS = "Бездна",
+                BUFF_CHEAT_DEATH = "Обман Смерти",
+                BUFF_DEATH_MARCH = "Марш Смерти",
+
+                BUFF_REGEN = "Восстановление",
+
+                BUFF_RITUAL = "Древний Ритуал",
+                BUFF_COWARD = "Трусость",
+                BUFF_WITCH = "Колдовство",
+
+                BUFF_FLURRY_ALTAR = "Ловкость Рук",
+                BUFF_POWER_ALTAR = "Мощь",
+                BUFF_ELEMENTAL_ALTAR = "Приручение Стихий",
+                BUFF_ENDURANCE_ALTAR = "Крепость",
+                BUFF_EXP_ALTAR = "Знание",
+
+                BUFF_WEAKNESS = "Слабость",
+                BUFF_INDECISIVENESS = "Нерешительность",
+                BUFF_VULNERABILITY = "Уязвимость",
+                BUFF_WITHERING = "Увядание",
+
+                BUFF_WEB = "Паутина",
+                BUFF_SPIDER_POISON = "Отравление",
+                BUFF_SPIDER_BITE = "Укушен",
+                BUFF_BOSS_CURSE = "Сильное Проклятие",
+                BUFF_HORROR = "Ужас",
+                BUFF_ANTIMAGIC = "Антимагия",
+                BUFF_SNARE = "Связан",
+                BUFF_PRISON = "Тюрьма Души",
+                BUFF_CHILL = "Заморозка",
+                BUFF_SKELE_CURSE = "Проклятие",
+                BUFF_STRUCK = "Поражен",
+                BUFF_CONFLAGRATE = "Возгорание",
+                BUFF_BLACK_DEATH = "Черная Смерть",
+                BUFF_STUN = "Оглушение",
+                BUFF_ICE_BLAST = "Ледяной Удар",
+                BUFF_SUCCUBUS_DEFENCE = "Сломлен",
+                BUFF_SUCCUBUS_BLOOD = "Вскипание Крови",
+                BUFF_CRIPPLE = "Увечие",
+                BUFF_RAVEN_AMPLIFY = "Усиление Урона",
+                BUFF_SKELE_MAGE_FIRE_BURNING = "Ожог",
+                BUFF_SKELE_MAGE_COLD_SLOW = "Обморожение",
+
+                BUFF_ITEM_FORTIFY = "Укрепление",
+                BUFF_ITEM_ENRAGE = "Ярость",
+                BUFF_ITEM_CONDUCTION = "Проводник",
+
+
+                BUFFS = {
+                    ["A00T"] = { [1] = "@b!A00T.pa1# увеличены на @b!A00T.va1#" },
+                    ["A011"] = { [1] = "Увеличивает @b!A011.pa1# на @b!A011.va1#, @b!A011.pa2# на @b!A011.va2#, @b!A011.pa3# на @b!A011.va3# и @b!A011.pa4# на @b!A011.va4#" },
+                    ["A00U"] = { [1] = "@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# увеличены на @b!A00U.va1# и @b!A00U.pa4# на @b!A00U.va4#           " },
+                    ["HDAU"] = { [1] = "Увеличивает @b!HDAU.pa1# на @b!HDAU.va1#" },
+                    ["ABSU"] = { [1] = "Увеличивает @b!ABSU.pa1# и @b!ABSU.pa2# на @b!ABSU.va1#, @b!ABSU.pa3# на @b!ABSU.va3#           " },
+                    ["ABFS"] = { [1] = "Наносит @e!effect_flame_shroud_damage.pwr# урона типа @e!effect_flame_shroud_damage.atr# противникам поблизости. Увеличивает @b!ABFS.pa1# на @b!ABFS.va1# и @b!ABFS.pa2# на @b!ABFS.va2#" },
+                    ["A02D"] = { [1] = "Следующая способность нанесет критический урон" },
+                    ["A00V"] = { [1] = "Физ. атака увеличена на @b!A00V.va1#, сопротивление контролю на @b!A00V.va2# и скорость передвижения на @b!A00V.va3#" },
+                    ["ANRD"] = { [1] = "Увеличивает @b!ANRD.pa1# на @b!ANRD.va1# и @b!ANRD.pa2# на @b!ANRD.va2#" },
+                    ["A01N"] = {
+                        [1] = "Увеличивает @b!A01N.pa1# на @b!A01N.va1#",
+                        [10] = "Увеличивает @b!A01N.pa1# на @b!A01N.va1# и @b!A01N.va2# на @b!A01N.pa2#",
+                    },
+                    ["ANRD"] = { [1] = "Увеличивает @b!ANRD.pa1# на @b!ANRD.va1# and @b!ANRD.pa2# by @b!ANRD.va2#" },
+                    ["A009"] = { [1] = "Поглощение урона на @b!A009.eh#" },
+                    ["BBRC"] = { [1] = "Увеличивает @b!BBRC.pa1# на @b!BBRC.va1#, @b!BBRC.pa2# на @b!BBRC.va2#, @b!BBRC.pa3# на @b!BBRC.va3# и @b!BBRC.pa4# на @b!BBRC.va4#" },
+                    ["A01D"] = { [1] = "Восстановление здоровья и ресурсов" },
+                    ["AANT"] = { [1] = "Увеличивает @b!AANT.pa1# на @b!AANT.va1#" },
+                    ["AADR"] = { [1] = "Увеличивает @b!AADR.pa1# на @b!AADR.va1#" },
+                    ["ASOP"] = { [1] = "Увеличивает @b!ASOP.pa1# на @b!ASOP.va1#" },
+                    ["ASPT"] = { [1] = "Увеличивает @b!ASPT.pa1# и @b!ASPT.pa2# на @b!ASPT.va1# и @b!ASPT.pa3# снижена на @b!ASPT.va3#           " },
+                    ["APEI"] = { [1] = "Увеличивает @b!APEI.pa1# на @b!APEI.va1#" },
+                    ["AIFD"] = { [1] = "Увеличивает @b!AIFD.pa1# на @b!AIFD.va1#" },
+                    ["AIDR"] = { [1] = "Увеличивает @b!AIDR.pa1# на @b!AIDR.va1#" },
+                    ["ABDV"] = { [1] = "Увеличивает скорость атаки и каста на @b!ABDV.va1# и скорость передвижения @b!ABDV.va3#          " },
+                    ["AULB"] = { [1] = "Увеличивает @b!AULB.pa1# на @b!AULB.va1# и @b!AULB.pa2# на @b!AULB.va2#" },
+                    ["ANBR"] = { [1] = "Увеличивает @b!ANBR.pa1# на @b!ANBR.va1# и @b!ANBR.pa2# на @b!ANBR.va2#" },
+                    ["ABGS"] = { [1] = "Увеличивает @b!ABGS.pa1# на @b!ABGS.va1#" },
+                    ["ANDR"] = { [1] = "Увеличивает @b!ANDR.pa1# на @b!ANDR.va1#, @b!ANDR.pa2# на @b!ANDR.va2# и @b!ANDR.pa3# на @b!ANDR.va3#" },
+                    ["ANUC"] = { [1] = "Увеличивает @b!ANUC.pa1# на @b!ANUC.va1#, @b!ANUC.pa2# на @b!ANUC.va2# и @b!ANUC.pa3# на @b!ANUC.va3#" },
+                    ["A00H"] = { [1] = "Увеличивает @b!A00H.pa1# и @b!A00H.pa2# на @b!A00H.va1#" },
+                    ["A00I"] = { [1] = "Увеличивает @b!A00I.pa1# и @b!A00I.pa2# на @b!A00I.va1#" },
+                    ["NRLA"] = { [1] = "Увеличивает @b!NRLA.pa1# на @b!NRLA.va1#" },
+                    ["ATIN"] = { [1] = "Увеличивает @b!ATIN.pa1# на @b!ATIN.va1#" },
+                    ["ATAD"] = { [1] = "Увеличивает @b!ATAD.pa1# на @b!ATAD.va1#" },
+                    ["ATEE"] = { [1] = "Увеличивает @b!ATEE.pa1# на @b!ATEE.va1#" },
+                    ["ATGL"] = { [1] = "Увеличивает @b!ATGL.pa1# на @b!ATGL.va1#" },
+                    ["ATHE"] = { [1] = "Увеличивает @b!ATHE.pa1# на @b!ATHE.va1#" },
+                    ["ATRG"] = { [1] = "Увеличивает @b!ATRG.pa1# на @b!ATRG.va1#" },
+                    ["ATPK"] = { [1] = "Увеличивает @b!ATPK.pa1# и @b!ATPK.pa2# на @b!ATPK.va1#" },
+                    ["ATCR"] = { [1] = "Увеличивает @b!ATCR.pa1# на @b!ATCR.va1#" },
+                    ["ATSB"] = { [1] = "Атаки наносят больше урона" },
+                    ["ATDA"] = { [1] = "Увеличивает @b!ATDA.pa1# на @b!ATDA.va1#" },
+                    ["ATRI"] = { [1] = "Увеличивает @b!ATRI.pa1# на @b!ATRI.va1#" },
+                    ["ATPP"] = { [1] = "Увеличивает @b!ATPP.pa1# на @b!ATPP.va1#" },
+                    ["ATAR"] = { [1] = "Восстановление здоровья" },
+                    ["ATSW"] = { [1] = "Увеличивает @b!ATSW.pa1# на @b!ATSW.va1# и @b!ATSW.pa2# на @b!ATSW.va2#" },
+                    ["ATOD"] = { [1] = "Увеличивает @b!ATOD.pa1# и @b!ATOD.pa2# на @b!ATOD.va1#" },
+                    ["ANLS"] = { [1] = "Увеличивает @b!ANLS.pa1# на @b!ANLS.va1#" },
+                    ["ARTL"] = { [1] = "Увеличивает @b!ARTL.pa1# на @b!ARTL.va1#" },
+                    ["AABS"] = { [1] = "Увеличивает @b!AABS.pa1# на @b!AABS.va1#" },
+                    ["ACHD"] = { [1] = "Увеличивает @b!ACHD.pa1# на @b!ACHD.va1#" },
+                    ["ADEM"] = { [1] = "Увеличивает @b!ADEM.pa1# на @b!ADEM.va1#" },
+                    ["A01G"] = { [1] = "Увеличивает @b!A01G.pa1# и @b!A01G.pa2# на @b!A01G.va1#" },
+                    ["A01L"] = { [1] = "Увеличивает @b!A01L.pa1# и @b!A01L.pa2# на @b!A01L.va1#" },
+                    ["A01K"] = { [1] = "Увеличивает @b!A01K.pa1# на @b!A01K.va1#" },
+                    ["A01J"] = { [1] = "Увеличивает @b!A01J.pa1# и @b!A01J.pa2# на @b!A01J.va1#" },
+                    ["ALEX"] = { [1] = "Увеличивает @b!ALEX.pa1# на @b!ALEX.va1#" },
+                    ["A01T"] = { [1] = "Обездвиживание" },
+                    ["A006"] = { [1] = "Отравление" },
+                    ["A01U"] = { [1] = "Отравление" },
+                    ["A01V"] = { [1] = "Оглушение" },
+                    ["ACLS"] = { [1] = "Оглушение" },
+                    ["ABRS"] = { [1] = "Оглушение" },
+                    ["AGHB"] = { [1] = "Оглушение" },
+                    ["AHRF"] = { [1] = "Уменьшает @b!AHRF.pa1# и @b!AHRF.pa2# на @b!AHRF.va1#" },
+                    ["ASCB"] = { [1] = "Уменьшает @b!ASCB.pa1# и @b!ASCB.pa2# на @b!ASCB.va1# и @b!ASCB.pa3# на @b!ASCB.va3#          " },
+                    ["AHBB"] = { [1] = "Уменьшает @b!AHBB.pa1# на @b!AHBB.va1#" },
+                    ["A005"] = { [1] = "Уменьшает @b!A005.pa1# на @b!A005.va1# и вы обездвижены" },
+                    ["A02C"] = { [1] = "Обездвивание, здоровье высасывается" },
+                    ["ATCH"] = { [1] = "Заморозка" },
+                    ["A019"] = { [1] = "Невозможно исцелиться" },
+                    ["A039"] = { [1] = "Получение периодического огненного урона" },
+                    ["A03B"] = { [1] = "Уменьшает @b!A03B.pa1# на @b!A03B.va1#" },
+                    ["AIBL"] = { [1] = "Уменьшает @b!AIBL.pa1# на @b!AIBL.va1#" },
+                    ["A00N"] = { [1] = "Уменьшает @b!A00N.pa1# на @b!A00N.va1#" },
+                    ["A00Z"] = { [1] = "Применение магического заклинания наносит урон" },
+                    ["ABCR"] = { [1] = "Уменьшает @b!ABCR.pa1# на @b!ABCR.va1# и @b!ABCR.pa2# на @b!ABCR.va2#" },
+                    ["A00M"] = { [1] = "Оглушение" },
+                    ["A00J"] = { [1] = "Уменьшает @b!A00J.pa1# на @b!A00J.va1#" },
+                    ["A00K"] = { [1] = "Отравление" },
+                    ["AFCS"] = { [1] = "Оглушение" },
+                    ["ADIC"] = { [1] = "Оглушение" },
+                    ["ASKD"] = { [1] = "Уменьшает @b!ASKD.pa1# и @b!ASKD.pa2# на @b!ASKD.va1#" },
+                    ["A027"] = { [1] = "Уменьшает @b!A027.pa1# на @b!A027.va1#" },
+                    ["ACND"] = { [1] = "Уменьшает @b!ACND.pa1# на @b!ACND.va1#" },
+                    ["ACWK"] = { [1] = "Уменьшает @b!ACWK.pa1# и @b!ACWK.pa2# на @b!ACWK.va1#" },
+                    ["ACIN"] = { [1] = "Уменьшает @b!ACIN.pa1# и @b!ACIN.pa2# на @b!ACIN.va1#" },
+                    ["ACVN"] = { [1] = "Уменьшает @b!ACVN.pa1# на @b!ACVN.va1#" },
+                    ["ACWT"] = { [1] = "Уменьшает @b!ACWT.pa1# и @b!ACWT.pa2# на @b!ACWT.va1# и @b!ACWT.pa3# и @b!ACWT.pa4# на @b!ACWT.va3#" },
+                    ["A01S"] = {
+                        [1] = "Подготавливается ритуал...",
+                        [15] = "Увеличивает @b!A01S.pa1# и @b!A01S.pa2# на @b!A01S.va1# и @b!A01S.pa3# на @b!A01S.va3#",
+                    },
+                    ["A03C"] = { [1] = "Уменьшение получаемого урона" },
+                    ["A01Q"] = { [1] = "Увеличивает @b!A01Q.pa1# на @b!A01Q.va1#" },
+                    ["A01R"] = { [1] = "Увеличивает @b!A01R.pa1# на @b!A01R.va1#" },
+                    ["AIFT"] = { [1] = "Увеличивает @b!AIFT.pa1# и @b!AIFT.pa2# на @b!AIFT.va1#" },
+                    ["AIEN"] = { [1] = "Увеличивает @b!AIEN.pa1# на @b!AIEN.va1#" },
+                    ["AICN"] = { [1] = "Увеличивает @b!AICN.pa1# на @b!AICN.va1#" },
+                    ["A02F"] = { [1] = "Стрельба из лука наносит урон от холода" },
+                    ["A02E"] = { [1] = "Стрельба из лука наносит урон от яда" },
+                    ["A02K"] = { [1] = "Следующее умение будет с увеличенным количеством снарядов" },
+                    ["A02R"] = { [1] = "Увеличенный урон" },
+                    ["A02T"] = { [1] = "Скорость передвижения увеличена @b!A02T.va1#" },
+                    ["A02U"] = { [1] = "Скорость передвижения увеличена на @b!A02U.va1#" },
+                    ["A02V"] = { [1] = "Скорость атаки увеличена на @b!A02V.va1#" },
+                    ["A02W"] = { [1] = "Снаряды пробивают цели" },
+                    ["A02Y"] = { [1] = "Следующее умение будет критическим" },
+                    ["A031"] = { [1] = "Следующая атака исцелит" },
+                    ["A032"] = { [1] = "Увеличивает @b!A032.pa1# на @b!A032.va1#" },
+                    ["A02M"] = { [1] = "Увеличивает @b!A02M.pa1# на @b!A02M.va1#" },
+                    ["A02N"] = { [1] = "Увеличивает @b!A02N.pa1# на @b!A02N.va1#" },
+                    ["A02O"] = { [1] = "Следующая атака оглушает" },
+                    ["A02Q"] = { [1] = "Сила умений увеличена" },
+                    ["ABTL"] = { [1] = "Увеличивает @b!ABTL.pa1# на @b!ABTL.va1#" },
+                    ["ABLL"] = { [1] = "Увеличивает @b!ABLL.pa1# на @b!ABLL.va1# и @b!ABLL.pa2# на @b!ABLL.va2#" },
+                    ["ABST"] = { [1] = "Увеличивает @b!ABST.pa1# на @b!ABST.va1#" },
+                    ["ABNS"] = { [1] = "Увеличивает @b!ABNS.pa1# на @b!ABNS.va1#, @b!ABNS.pa2# на @b!ABNS.va2#, @b!ABNS.pa3# на @b!ABNS.va3#" },
+                    ["A02L"] = { [1] = "Увеличивает @b!A02L.pa1# на @b!A02L.va1#" },
+                    ["A036"] = { [1] = "Увеличивает @b!A036.pa1# на @b!A036.va1# и @b!A036.pa2# на @b!A036.va2#" },
+                    ["ABEF"] = { [1] = "Увеличивает @b!ABEF.pa1# на @b!ABEF.va1#" },
+                    ["curved_strike_stacks"] = { [1] = "Следующее умение будет сильнее" },
+                    ["blade_of_darkness_stacks"] = { [1] = "Урон умения увеличивается" },
+                    ["talent_arc_discharge"] = { [1] = "Следующее умение молнии сильнее" },
+                    ["talent_heating_up"] = { [1] = "Следующее умение огня сильнее" },
+                    ["talent_overflow"] = { [1] = "Следующее умение сильнее" },
+                    ["talent_spirit"] = { [1] = "Души" },
+                    ["talent_death_embrace"] = { [1] = "Урон увеличен" },
+                    ["talent_vile_malediction"] = { [1] = "Магическая атака увеличена" },
+                },
 
 
                 TALENTS = {
@@ -1904,6 +2217,7 @@ do
                         name = "Беспощадность",
                         [1] = "Нанесение урона от холода снижает сопротивление к холоду на 5%% на 3 сек.",
                         [2] = "Нанесение урона от холода снижает сопротивление к холоду на 10%% на 4 сек.",
+                        [3] = "Нанесение урона от холода снижает сопротивление к холоду на 15%% на 4 сек.",
                     },
                     ["talent_crystallization"] = {
                         name = "Кристаллизация",
@@ -1915,7 +2229,9 @@ do
                         name = "Ледяная корка",
                         [1] = "Понижает урон от атак ближнего боя по вам на 2%%.",
                         [2] = "Понижает урон от атак ближнего боя по вам на 4%%.",
-                        [3] = "Понижает урон от атак ближнего боя по вам на 6%%."
+                        [3] = "Понижает урон от атак ближнего боя по вам на 6%%.",
+                        [4] = "Понижает урон от атак ближнего боя по вам на 8%%.",
+                        [5] = "Понижает урон от атак ближнего боя по вам на 10%%."
                     },
                     ["talent_glaciation"] = {
                         name = "Оледенение",
@@ -1948,7 +2264,8 @@ do
                     ["talent_fragility"] = {
                         name = "Хрупкость",
                         [1] = "Ваш урон по противникам страдающим от негативных эффектов от холода увеличен на 10%%.",
-                        [2] = "Ваш урон по противникам страдающим от негативных эффектов от холода увеличен на 20%%.",
+                        [2] = "Ваш урон по противникам страдающим от негативных эффектов от холода увеличен на 15%%.",
+                        [3] = "Ваш урон по противникам страдающим от негативных эффектов от холода увеличен на 20%%.",
                     },
                     ["talent_ice_enduring"] = {
                         name = "Ледяная выдержка",
@@ -2325,16 +2642,22 @@ do
                         [1] = "Урон по людям и животным +7%%. Урон от яда +10%%.",
                         [2] = "Урон по людям и животным +12%%. Урон от яда +15%%.",
                     },
+                    ["talent_exhausting_venom"] = {
+                        name = "Изматывающий Яд",
+                        [1] = "Противники под ядом теряют 10%% физ. и маг. атаки.",
+                        [2] = "Противники под ядом теряют 13%% физ. и маг. атаки.",
+                        [3] = "Противники под ядом теряют 16%% физ. и маг. атаки.",
+                    },
                     ["talent_relentless"] = {
                         name = "Неутомимость",
-                        [1] = "Использование умения повышает восстановление ресурса на 4 ед. на 1 секунду.",
-                        [2] = "Использование умения повышает восстановление ресурса на 8 ед. на 1 секунду.",
-                        [3] = "Использование умения повышает восстановление ресурса на 12 ед. на 1 секунду.",
+                        [1] = "Использование атакующего умения с шансом в 20%% повышает восстановление ресурса на 4 ед. на 1 секунду.",
+                        [2] = "Использование атакующего умения с шансом в 20%% повышает восстановление ресурса на 8 ед. на 1 секунду.",
+                        [3] = "Использование атакующего умения с шансом в 20%% повышает восстановление ресурса на 12 ед. на 1 секунду.",
                     },
                     ["talent_counterattack"] = {
                         name = "Контратака",
-                        [1] = "Уклонение повышает весь урон на 7%%.",
-                        [2] = "Уклонение повышает весь урон на 14%%.",
+                        [1] = "Уклонение повышает весь урон на 7%% на 4 секунды.",
+                        [2] = "Уклонение повышает весь урон на 14%% на 4 секунды.",
                     },
                     ["talent_weak_point"] = {
                         name = "Слабое место",
@@ -2349,19 +2672,127 @@ do
                     },
                     ["talent_ambush"] = {
                         name = "Засада",
-                        [1] = "Не нанося и не получая урона в течение 5 секунд при следующей атаке оглушает противников на 3 секунды.",
-                        [2] = "Не нанося и не получая урона в течение 4 секунд при следующей атаке оглушает противников на 3 секунды.",
-                        [3] = "Не нанося и не получая урона в течение 3 секунд при следующей атаке оглушает противников на 3 секунды.",
+                        [1] = "При критической атаке с шансом в 20%% накладывает на убийцу эффект засады. Применение атакующего умения под этим эффектом оглушит противников на 3 секунды.",
+                        [2] = "При критической атаке с шансом в 25%% накладывает на убийцу эффект засады. Применение атакующего умения под этим эффектом оглушит противников на 3 секунды.",
+                        [3] = "При критической атаке с шансом в 30%% накладывает на убийцу эффект засады. Применение атакующего умения под этим эффектом оглушит противников на 3 секунды.",
                     },
                     ["talent_nimble_hands"] = {
                         name = "Ловкость рук",
-                        [1] = "Использование умения с 15%% шансом бросает сюрикен наносящий 17%% урона от атаки.",
-                        [2] = "Использование умения с 20%% шансом бросает сюрикен наносящий 22%% урона от атаки.",
-                        [3] = "Использование умения с 25%% шансом бросает сюрикен наносящий 28%% урона от атаки.",
+                        [1] = "Использование атакующего умения с 15%% шансом бросает сюрикен наносящий 17%% урона от атаки.",
+                        [2] = "Использование атакующего умения с 20%% шансом бросает сюрикен наносящий 22%% урона от атаки.",
+                        [3] = "Использование атакующего умения с 25%% шансом бросает сюрикен наносящий 28%% урона от атаки.",
                     },
                     ["talent_unmatched_technique"] = {
                         name = "Неподражаемая техника",
                         [1] = "Каждое новое использование другого умения отличное от предыдущего увеличивает силу умений на 10%% на 7 секунд. Суммируется до 5 раз.",
+                    },
+                    ["talent_one_with_shadows"] = {
+                        name = "един с тенью",
+                        [1] = "Увеличивает урон и сопротивление тьме на 7%%.",
+                        [2] = "Увеличивает урон и сопротивление тьме на 14%%.",
+                        [3] = "Увеличивает урон и сопротивление тьме на 21%%.",
+                    },
+                    ["talent_vampiric_mark"] = {
+                        name = "прикосновение вампира",
+                        [1] = "Следующая атака после крита исцелит убийцу на 4%% от запаса здоровья. Срабатывает раз в 15 секунд.",
+                        [2] = "Следующая атака после крита исцелит убийцу на 8%% от запаса здоровья. Срабатывает раз в 15 секунд.",
+                    },
+                    ["talent_antimagic"] = {
+                        name = "антимагия",
+                        [1] = "Увеличивает сопротивление молнии, льду, огню, тьме и тайному на 5%%.",
+                        [2] = "Увеличивает сопротивление молнии, льду, огню, тьме и тайному на 10%%.",
+                        [3] = "Увеличивает сопротивление молнии, льду, огню, тьме и тайному на 15%%.",
+                    },
+                    ["talent_deeping_darkness"] = {
+                        name = "сгущающаяся тьма",
+                        [1] = "критический удар увеличивает урон тьмой на 7%% на 5 секунд.",
+                        [2] = "критический удар увеличивает урон тьмой на 14%% на 5 секунд.",
+                    },
+                    ["talent_shackles"] = {
+                        name = "оковы",
+                        [1] = "критический удар сковывает цель на месте на 2 секунды.",
+                        [2] = "критический удар сковывает цель на месте на 3 секунды.",
+                    },
+                    ["talent_magic_devourer"] = {
+                        name = "поглотитель магии",
+                        [1] = "Раз в 5 секунд полностью поглощает урон от магической атаки и исцеляет на 75%% от этого урона.",
+                        [2] = "Раз в 5 секунд полностью поглощает урон от магической атаки и исцеляет на 100%% от этого урона.",
+                        [3] = "Раз в 5 секунд полностью поглощает урон от магической атаки и исцеляет на 125%% от этого урона.",
+                    },
+                    ["talent_in_the_dark"] = {
+                        name = "во тьме",
+                        [1] = "С половиной шанса критического удара при атаке ослепляет цель на 1 секунду.",
+                        [2] = "С половиной шанса критического удара при атаке ослепляет цель на 2 секунды.",
+                    },
+                    ["talent_torture"] = {
+                        name = "пытка",
+                        [1] = "Урон по целям в контроле увеличивается на 10%%.",
+                        [2] = "Урон по целям в контроле увеличивается на 17%%.",
+                    },
+                    ["talent_nightstalker"] = {
+                        name = "ночной охотник",
+                        [1] = "Уменьшает максимальный запас здоровья на 5%%, взамен дает 5 здоровья за удар.",
+                        [2] = "Уменьшает максимальный запас здоровья на 7%%, взамен дает 7 здоровья за удар.",
+                        [3] = "Уменьшает максимальный запас здоровья на 10%%, взамен дает 10 здоровья за удар.",
+                    },
+                    ["talent_erupting_darkness"] = {
+                        name = "прорывающаяся тьма",
+                        [1] = "С шансом критической атаки вызывает взрыв тьмы наносящий всем противникам неподалеку 75%% урона тьмой от атаки.",
+                    },
+                    ["talent_tactician"] = {
+                        name = "тактик",
+                        [1] = "После использования не атакующего умения из категории луков скорость передвижения увеличивается на 15%%. Если умение было атакующщим, на 7%%.",
+                        [2] = "После использования не атакующего умения из категории луков скорость передвижения увеличивается на 20%%. Если умение было атакующщим, на 10%%.",
+                        [3] = "После использования не атакующего умения из категории луков скорость передвижения увеличивается на 25%%. Если умение было атакующщим, на 12%%.",
+                    },
+                    ["talent_clear_sight"] = {
+                        name = "Свободный обзор",
+                        [1] = "Если рядом нет противников, урон увеличивается на 10%%.",
+                        [2] = "Если рядом нет противников, урон увеличивается на 15%%.",
+                    },
+                    ["talent_archery_master"] = {
+                        name = "Точные удары",
+                        [1] = "Увеличивает критический шанс на 5%%.",
+                        [2] = "Увеличивает критический шанс на 10%%.",
+                        [3] = "Увеличивает критический шанс на 15%%.",
+                    },
+                    ["talent_fast_reload"] = {
+                        name = "быстрая перезарядка",
+                        [1] = "Использование атакующего умения стрельбы из лука увеличивает скорость атаки на 4%% на 3 секунды. Суммируется до 3 раз.",
+                        [2] = "Использование атакующего умения стрельбы из лука увеличивает скорость атаки на 7%% на 3 секунды. Суммируется до 3 раз",
+                        [3] = "Использование атакующего умения стрельбы из лука увеличивает скорость атаки на 10%% на 3 секунды. Суммируется до 3 раз",
+                    },
+                    ["talent_penetrate"] = {
+                        name = "Пробивание",
+                        [1] = "Следующее умение лука после критического удара в течение 10 секунд пробьет основную цель и одну дополнительную.",
+                        [2] = "Следующее умение лука после критического удара в течение 10 секунд пробьет основную цель и 2 дополнительные цели.",
+                    },
+                    ["talent_trauma"] = {
+                        name = "травма",
+                        [1] = "При прямой атаке дальнего боя с 15%% шансом замедляет противника на 50%% на 1 секунду.",
+                        [2] = "При прямой атаке дальнего боя с 15%% шансом замедляет противника на 60%% на 1 секунду.",
+                        [3] = "При прямой атаке дальнего боя с 15%% шансом замедляет противника на 70%% на 1 секунду.",
+                    },
+                    ["talent_forceful_hit"] = {
+                        name = "увесистый удар",
+                        [1] = "С шансом 1/4 от критического отталкивает противника при атаке.",
+                        [2] = "С шансом 1/3 от критического отталкивает противника при атаке.",
+                    },
+                    ["talent_hawkeye"] = {
+                        name = "соколиный глаз",
+                        [1] = "Нанесение урона по далеким целям увеличивает их получаемый урон от вас на 3%%, суммируется до 3 раз.",
+                        [2] = "Нанесение урона по далеким целям увеличивает их получаемый урон от вас на 4%%, суммируется до 3 раз.",
+                        [3] = "Нанесение урона по далеким целям увеличивает их получаемый урон от вас на 5%%, суммируется до 3 раз.",
+                    },
+                    ["talent_enchanter"] = {
+                        name = "зачаровыватель",
+                        [1] = "Когда враг получает прямой урон от вас находясь под эффектом замедления от ледяных стрел, он с шансом 22%% замораживается на 1 секунду. Под отравленными стрелами наносит мгновенный урон 65%% от атаки ядом.",
+                        [2] = "Когда враг получает прямой урон от вас находясь под эффектом замедления от ледяных стрел, он с шансом 22%% замораживается на 2 секунды. Под отравленными стрелами наносит мгновенный урон 85%% от атаки ядом.",
+                    },
+                    ["talent_unremarkable_marksman"] = {
+                        name = "превосходный стрелок",
+                        [1] = "Попадание критическим ударом гарантирует следующую атаку критической. Срабатывает раз в 12 секунд.",
+                        [2] = "Попадание критическим ударом гарантирует следующуюе 2 атаки критическими. Срабатывает раз в 12 секунд.",
                     },
                 },
 
@@ -2871,8 +3302,8 @@ do
                 INT_STAT_PARAM            = 'Intelligence',
                 VIT_STAT_PARAM            = 'Vitality',
 
-                MELEE_DAMAGE_REDUCTION_PARAM  = 'Melee damage',
-                RANGE_DAMAGE_REDUCTION_PARAM  = 'Range damage',
+                MELEE_DAMAGE_REDUCTION_PARAM  = 'Melee damage taken',
+                RANGE_DAMAGE_REDUCTION_PARAM  = 'Range damage taken',
                 CONTROL_REDUCTION_PARAM       = 'Control resistance',
                 CONTROL_DURATION_PARAM        = "Control duration",
 
@@ -2900,7 +3331,7 @@ do
                 DROP_BONUS_PARAM = "Drop chance",
 
                 HEALING_BONUS_PARAM = "Heal received",
-                DAMAGE_BOOST_PARAM = "Damage boost",
+                DAMAGE_BOOST_PARAM = "Damage",
                 VULNERABILITY_PARAM = "Damage received",
                 MANACOST_PARAM = "Resource costs",
                 ENDURANCE_PARAM = "Endurance amount",
@@ -2923,17 +3354,19 @@ do
 
                 MINION_POWER_PARAM = "Minion power",
 
-                BLEEDING_DAMAGE_BOOST_PARAM = "Bleeding Power",
-                BLEEDING_DAMAGE_REDUCTION_PARAM = "Bleeding Resist",
+                BLEEDING_DAMAGE_BOOST_PARAM = "Bleeding power",
+                BLEEDING_DAMAGE_REDUCTION_PARAM = "Bleeding resist",
 
-                BURNING_DAMAGE_BOOST_PARAM = "Burning Power",
-                BURNING_DAMAGE_REDUCTION_PARAM = "Burning Resist",
+                BURNING_DAMAGE_BOOST_PARAM = "Burning power",
+                BURNING_DAMAGE_REDUCTION_PARAM = "Burning resist",
 
-                POISONING_DAMAGE_BOOST_PARAM = "Poisoning Power",
-                POISONING_DAMAGE_REDUCTION_PARAM = "Poisoning Resist",
+                POISONING_DAMAGE_BOOST_PARAM = "Poisoning power",
+                POISONING_DAMAGE_REDUCTION_PARAM = "Poisoning resist",
 
-                DECAYING_DAMAGE_BOOST_PARAM = "Decay Power",
-                DECAYING_DAMAGE_REDUCTION_PARAM = "Decay Resist",
+                DECAYING_DAMAGE_BOOST_PARAM = "Decay power",
+                DECAYING_DAMAGE_REDUCTION_PARAM = "Decay resist",
+
+                RESOURCE_GENERATION_PARAM = "Resource generation",
 
 
                 ITEM_TYPE_WEAPON_NAME     = "Weapon",
@@ -3177,6 +3610,7 @@ do
                 SKILL_CATEGORY_INNER_STRENGTH = "Inner Strength",
                 SKILL_CATEGORY_LETHALITY = "Lethality",
                 SKILL_CATEGORY_SHADOWS = "Shadows",
+                SKILL_CATEGORY_BOW = "Archery",
                 SKILL_CATEGORY_GEAR = "Gear",
 
                 SKILL_CATEGORY_LIGHTNING_ADVANCED = "Lightning skills (sorceress): ",
@@ -3187,13 +3621,14 @@ do
                 SKILL_CATEGORY_BATTLE_ADVANTAGE_ADVANCED = "Battle Advantage skills (barbarian): ",
                 SKILL_CATEGORY_INNER_STRENGTH_ADVANCED = "Inner Strength skills (barbarian): ",
                 SKILL_CATEGORY_DARK_ART_ADVANCED = "Dark Art skills (necromancer): ",
-                SKILL_CATEGORY_CURSES_ADVANCED = "Curses skills (necromancer): ",
+                SKILL_CATEGORY_CURSES_ADVANCED = "Curse skills (necromancer): ",
                 SKILL_CATEGORY_SUMMONING_ADVANCED = "Reanimation skills (necromancer): ",
                 SKILL_CATEGORY_COMBAT_SKILLS_ADVANCED = "Combat skills (paladin): ",
                 SKILL_CATEGORY_FAITH_ADVANCED = "Faith skills (paladin): ",
                 SKILL_CATEGORY_HOLY_DOCTRINE_ADVANCED = "Holy Doctrine skills (paladin): ",
                 SKILL_CATEGORY_LETHALITY_ADVANCED = "Lethality skills (assassin): ",
                 SKILL_CATEGORY_SHADOWS_ADVANCED = "Shadows skills (assassin): ",
+                SKILL_CATEGORY_BOW_ADVANCED = "Archery skills (assassin)",
                 SKILL_CATEGORY_GEAR_ADVANCED = "Gear skills (assassin): ",
 
                 SKILL_PANEL_LVL_TEXT = "Level: ",
@@ -3396,6 +3831,8 @@ do
                 ITEM_SUFFIX_DEADLY_PRECISION        = " of Deadly Precision",
                 ITEM_SUFFIX_ADVENTURER = " of Adventurer",
                 ITEM_SUFFIX_DECAY = " of Decay",
+                ITEM_SUFFIX_EFFICIENCY              = " of Efficiency",
+                ITEM_SUFFIX_PEAK_EFFICIENCY         = " Peak Efficiency",
 
                 GENERIC_SWORD_NAME_1 = "rough blade",
                 GENERIC_SWORD_NAME_2 = "short blade",
@@ -3461,11 +3898,12 @@ do
                 GENERIC_BOW_NAME_4 = "Scouter bow",
                 GENERIC_BOW_NAME_5 = "Heavy bow",
                 GENERIC_BOW_NAME_6 = "Horn",
-                GENERIC_BOW_NAME_7 = "runic bow",
+                GENERIC_BOW_NAME_7 = "unholy bow",
                 GENERIC_BOW_NAME_8 = "empowered bow",
                 GENERIC_BOW_NAME_9 = "twitching bow",
                 GENERIC_BOW_NAME_10 = "mystic bow",
-                GENERIC_BOW_NAME_11 = "iced bow",
+                GENERIC_BOW_NAME_11 = "frosty bow",
+                GENERIC_BOW_NAME_12 = "runic bow",
 
                 GENERIC_QUIVER_NAME_1 = "quiver",
                 GENERIC_QUIVER_NAME_2 = "leather quiver",
@@ -3482,7 +3920,7 @@ do
                 GENERIC_ORB_NAME_2 = "water orb",
                 GENERIC_ORB_NAME_3 = "sand orb",
                 GENERIC_ORB_NAME_4 = "scorching orb",
-                GENERIC_ORB_NAME_5 = "clot of chaos",
+                GENERIC_ORB_NAME_5 = "chaotic clot",
                 GENERIC_ORB_NAME_6 = "charged orb",
                 GENERIC_ORB_NAME_7 = "darkness drop",
 
@@ -3509,6 +3947,9 @@ do
                 GENERIC_CHEST_NAME_11 = "cuirass",
                 GENERIC_CHEST_NAME_12 = "complex chest",
                 GENERIC_CHEST_NAME_13 = "Moonglade",
+                GENERIC_CHEST_NAME_14 = "battle mage robes",
+                GENERIC_CHEST_NAME_15 = "priest robe",
+                GENERIC_CHEST_NAME_16 = "blackened chest plate",
 
                 GENERIC_HANDS_NAME_1 = "fur gloves",
                 GENERIC_HANDS_NAME_2 = "leather gloves",
@@ -3566,6 +4007,7 @@ do
                 GENERIC_RING_NAME_9 = "cruel ring",
                 GENERIC_RING_NAME_10 = "runic ring",
                 GENERIC_RING_NAME_11 = "hoarfrost ring",
+                GENERIC_RING_NAME_12 = "ruby ring",
 
 
                 GENERIC_NECKLACE_NAME_1 = "pendant with stone",
@@ -3577,6 +4019,7 @@ do
                 GENERIC_NECKLACE_NAME_7 = "emerald pendant",
                 GENERIC_NECKLACE_NAME_8 = "ruby pendant",
                 GENERIC_NECKLACE_NAME_9 = "sapphire pendant",
+                GENERIC_NECKLACE_NAME_10 = "mana pendant",
 
 
                 STARTING_ITEM_NAME_2HSWORD = "Claymore",
@@ -3588,6 +4031,7 @@ do
                 STARTING_ITEM_NAME_MACE = "Solid Mace",
                 STARTING_ITEM_NAME_SHIELD = "Old Shield",
                 STARTING_ITEM_NAME_DAGGER = "Blunt Dagger",
+                STARTING_ITEM_NAME_BOW = "Rusty Bow",
 
                 SHARD_OF_HATE = "Shard of Hate",
                 SHARD_OF_HATE_DESC = "Strange glowing shard.|nYou feel rise of hatred|nupon touching it.",
@@ -3716,7 +4160,8 @@ do
                 SKILLBOOK_SUMMONING = "Necromancer's Book of Reanimation",
                 SKILLBOOK_LETHALITY = "Assassin's Book of Lethality",
                 SKILLBOOK_SHADOWS = "Assassin's Book of Shadows",
-                SKILLBOOK_GEAR = "Assassin's Book of Gearing",
+                SKILLBOOK_BOW = "Assassin's Book of Archery",
+                SKILLBOOK_GEAR = "Assassin's Book of Gear",
 
                 SKILLBOOK_TEXT = "Improving your knowledge:",
 
@@ -3758,10 +4203,16 @@ do
                 SKILL_FROSTNOVA = 'Frost Nova',
                 SKILL_ICICLERAIN = "Icicle Rain",
                 SKILL_CHAIN_LIGHTNING = "Electrocute",
+                SKILL_LIGHTNING_SPEAR = "Lightning Spear",
                 SKILL_MELTDOWN = "Meltdown",
                 SKILL_BLIZZARD = "Blizzard",
                 SKILL_SURGE = "Surge",
                 SKILL_FLAME_SHROUD = "Flame Shroud",
+                SKILL_STATIC_FIELD = "Static Field",
+                SKILL_ARCANE_RIFT = "Arcane Rift",
+                SKILL_ARCANE_BARRAGE = "Arcane Barrage",
+                SKILL_PERMAFROST = "Permafrost",
+                SKILL_ENFLAME = "Enflame",
 
                 SKILL_RAISE_DEAD = "Raise Skeleton",
                 SKILL_LICH_RITUAL = "Lich Ritual",
@@ -3808,6 +4259,15 @@ do
                 SKILL_BLADE_TRAP = "Blade Trap",
                 SKILL_SMOKE_BOMB = "Smoke Bomb",
                 SKILL_ROCKET_LAUNCHER = "Rocket Launcher",
+                SKILL_PRECISION_SALVO = "Precision Salvo",
+                SKILL_EXPOSE = "Expose",
+                SKILL_CLUSTER_SHOT = "Cluster Shot",
+                SKILL_FROST_ARROWS = "Frost Arrows",
+                SKILL_POISON_ARROWS = "Poison Arrows",
+                SKILL_STEEL_RAIN = "Steel Rain",
+                SKILL_CHARGED_SHOT = "Charged Shot",
+                SKILL_SUPPRESSION_FIRE = "Suppression Fire",
+                SKILL_MULTISHOT = "Multishot",
 
 
                 SET_NAME_ANCIENT_LEGACY = "Ancient Legacy",
@@ -3839,7 +4299,11 @@ do
                 ITEM_LEG_DESCRIPTION_ROT_AND_DISEASE = "All bone skills periodically deal 8%% of weapon damage as poison for 3 seconds",
                 ITEM_LEG_DESCRIPTION_LIVING_HORRORS = "Skeletal hands from \"Undead Land\" now damage for 125%% of weapon damage as darkness and when casted all enemies at close range are horrified for 2 seconds",
                 ITEM_LEG_DESCRIPTION_EVERLASTING_MADNESS = "While \"Berserk\" isn't active it may activate for free for 3 seconds",
-
+                ITEM_LEG_DESCRIPTION_SKINRIPPER = "Attacks have a 15%% chance to open wounds on enemy, bleeding for 18%% phys. attack over 5 seconds",
+                ITEM_LEG_DESCRIPTION_GROUNDER = "Critical damage stuns the target and everyone around for 1.5 seconds. Triggers once per 5 seconds",
+                ITEM_LEG_DESCRIPTION_INFINITY_CHAIN = "Doubles \"Electrocute\" bounces",
+                ITEM_LEG_DESCRIPTION_NIGHTWALKERS = "After blinking, \"Shadowstep\" gives 15%% damage reduction during 4 seconds",
+                ITEM_LEG_DESCRIPTION_GALACOS_TRICK  = "Stunning an enemy make them facing backwards to you",
 
                 ITEM_NAME_RAT_HUNTER = 'Rat Hunter',
                 ITEM_SPEC_DESCRIPTION_RAT_HUNTER = "Even the rat-hunters had a legendary bows, which all rat hunters are desire.",
@@ -3978,6 +4442,17 @@ do
                 ITEM_NAME_SKINRIPPER = "Skinripper",
                 ITEM_SPEC_DESCRIPTION_SKINRIPPER = "It was created by an ancient magician in an attempt to make a weapon capable of gaining power from the darkest sources. It became a legend until it disappeared along with its mysterious creator",
 
+                ITEM_NAME_GROUNDER = "Grounder",
+                ITEM_SPEC_DESCRIPTION_GROUNDER = "Forged in the heart of ancient volcanic fires by the legendary dwarf smith, Thram Ironbeard. Legends speak of heroes who have wielded this hammer to turn the tide of battles long thought lost",
+
+                ITEM_NAME_INFINITY_CHAIN = "Infinity Chain",
+                ITEM_SPEC_DESCRIPTION_INFINITY_CHAIN = "Upon reaching the altar, Lyra was drawn to the gloves as if by destiny. As she lifted the Infinity Chain, a surge of lightning coursed through her veins, and she felt an unbreakable bond form between her and the artifact. The power of the storms was now hers to command",
+
+                ITEM_NAME_NIGHTWALKERS = "Nightwalkers",
+                ITEM_SPEC_DESCRIPTION_NIGHTWALKERS = "In case you don't know where to step in the dark - step on the darkness itself",
+
+                ITEM_NAME_GALACOS_TRICK = "Galacos's Trick",
+                ITEM_SPEC_DESCRIPTION_GALACOS_TRICK = "Galacos was not known for his brute strength, nor for his magic, but for his unparalleled cunning and agility. He could vanish into thin air, strike from the shadows, and disappear before his enemies even knew he was there",
 
                 ITEM_EFFECTS = {
                     ["weap_poison_phys"] = "7%% chance to inflict @e!poison_physical_weapon_effect.ap#%% of attack as @e!poison_physical_weapon_effect.atr# damage on attack over 6 seconds",
@@ -3987,7 +4462,7 @@ do
                     ["item_enrage"] = "5%% chance to boost @b!AIEN.pa1# by @b!AIEN.va1# on hit or attack for 4 seconds",
                     ["item_conduction"] = "5%% chance to boost @b!AICN.pa1# by @b!AICN.va1# on hit or attack for 4 seconds",
                     ["item_fortify"] = "10%% chance to boost @b!AIFT.pa1# and @b!AIFT.pa2# reduction by @b!AIFT.va1# on hit for 3 seconds",
-                    ["open_wound_effect"] = "15%% chance to open wounds on enemy, bleeding for @e!skinripper_effect.ap#%% attack over 5 seconds",
+                    --["open_wound_effect"] = "Attacks have a 15%% chance to open wounds on enemy, bleeding for @e!skinripper_effect.ap#%% attack over 5 seconds",
                 },
 
 
@@ -4012,7 +4487,7 @@ do
                     [1] = "Barbarian forms storm of fury, rapidly spinning around and dealing enemies @e!EWHW.dmg# as @e!EWHW.atr# 3 times per second for a cost of 9 mana per second and 25%% movement speed penalty.",
                 },
                 [FourCC("A00Q")] = {
-                    [1] = "Falling into pure rage, increasing attack by @b!A00V.va1#, effects control reduction by @b!A00V.va2# and movement speed by @b!A00V.va3# for @b!A00V.time# sec.",
+                    [1] = "Falling into pure rage, increasing attack by @b!A00V.va1#, impared effects control reduction by @b!A00V.va2# and movement speed by @b!A00V.va3# for @b!A00V.time# sec.",
                 },
                 [FourCC("ABUP")] = {
                     [1] = "Punch that deals @e!EUPP.dmg# as @e!EUPP.atr# and pushing back targets, after which they are stunned for @b!A012.time# sec.",
@@ -4024,11 +4499,11 @@ do
                     [1] = "Shatters ground in an arc in front of you. Enemies that caught in it take @e!ESHG.dmg# as @e!ESHG.atr# and stunned for @b!ASHS.time# secs. This skill has increased critical multiplier (+@e!ESHG.bcm#).",
                 },
                 [FourCC("A00O")] = {
-                    [1] = "Allows you to jump up to @s!A00O.rng# range. You are immune to crowd control effects while jumping.",
+                    [1] = "Allows you to jump up to @s!A00O.rng# range. You are immune to control impared effects while jumping. Next skill cast within 5 seconds will be critical.",
                 },
                 [FourCC("A020")] = {
                     [1] = "Finishing strike. Deals @e!EEXC.dmg# as @e!EEXC.atr#, if it is used on enemies that have less than 33%% of health its power is increased by 3 times and chances to crit by 15%%.",
-                    [10] = "Finishing strike. Deals @e!EEXC.dmg# as @e!EEXC.atr#, if it is used on enemies that have less than 33%% of health its power is increased by 3 times and chances to crit by 15%%. If enemy is killed by it, you gain @b!ANRD.pa1# на @b!ANRD.va1# and @b!ANRD.pa2# на @b!ANRD.va2#.",
+                    [10] = "Finishing strike. Deals @e!EEXC.dmg# as @e!EEXC.atr#, if it is used on enemies that have less than 33%% of health its power is increased by 3 times and chances to crit by 15%%. If enemy is killed by it, you gain @b!ANRD.pa1# by @b!ANRD.va1# and @b!ANRD.pa2# by @b!ANRD.va2#.",
                 },
                 [FourCC("ABFA")] = {
                     [1] = "Provides endurance of @b!A01N.eh# from max hp and heals you for @e!EFAA.hp_perc# every second and gives @b!A01N.va1# @b!A01N.pa1# during @b!A01N.time# seconds.",
@@ -4050,16 +4525,22 @@ do
                     [1] = "Summons an immortal flame hydra that attacks enemies. Hydra inherits 70%% of Sorceress stats and emits aura that increases @b!HDAU.pa1# by @b!HDAU.va1#. Increasing the level of this skill enhances hydra's life duration.",
                 },
                 [FourCC("A00H")] = {
-                    [1] = "Sorceress binds elemental forces to her will, which boosting her powers: [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3#] inscreasing for @b!A00U.va1# and @b!A00U.pa4# for @b!A00U.va4#. Duration - @b!A00U.time# sec.",
+                    [1] = "Sorceress binds elemental forces to her will, which boosting her powers: [@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3#] inscreased by @b!A00U.va1# and @b!A00U.pa4# for @b!A00U.va4#. Duration - @b!A00U.time# sec.",
                 },
                 [FourCC("A00E")] = {
-                    [1] = "Sorceress forms frost barrier around herself giving her 15%% endurance, boosting @b!A011.pa1# for @b!A011.va1#, @b!A011.pa2# for @b!A011.va2#, @b!A011.pa3# for @b!A011.va3# and @b!A011.pa4# for @b!A011.va4#. Duration - @b!A011.time# sec.",
+                    [1] = "Sorceress forms frost barrier around herself giving her 25%% endurance, boosting @b!A011.pa1# for @b!A011.va1#, @b!A011.pa2# for @b!A011.va2#, @b!A011.pa3# for @b!A011.va3# and @b!A011.pa4# for @b!A011.va4#. Duration - @b!A011.time# sec.",
                 },
                 [FourCC("A00N")] = {
                     [1] = "Sorceress focusing her arcane powers that boosting her defence: @b!A00T.pa1# for @b!A00T.va1#. Duration - @b!A00T.time# sec.",
                 },
                 [FourCC("A00K")] = {
-                    [1] = "Forms an energized ball that slowly flies forward, periodically pulsing in @e!MBLB.rad# range on a nearby enemies for a @e!ELBL.pwr# @e!ELBL.atr# damage.",
+                    [1] = "Forms an energized ball that slowly flies forward, periodically pulsing in @m!MBLB.rad# range on a nearby enemies for a @e!ELBL.pwr# @e!ELBL.atr# damage.",
+                },
+                [FourCC("ALSP")] = {
+                    [1] = "Shots a rapid lightning charge which penetrates every enemy, dealing them @e!lightning_spear_effect.pwr# as @e!lightning_spear_effect.atr# and stunning them for @b!A035.time# seconds. With a half of critical strike chance also hits for @e!lightning_spear_sub_effect.pwr# as @e!lightning_spear_sub_effect.atr# to all enemies nearby on hit.",
+                },
+                [FourCC("ASEF")] = {
+                    [1] = "Enflames weapons of nearby heroes increasing their @b!ABEF.pa1# by @b!ABEF.va1#. With each attack they deal @e!enflame_instant_effect.pwr# as @e!enflame_instant_effect.atr# and reduce target's @b!A03E.pa1# by 1 to a maximum of 25 for @b!A03E.time# seconds. With a chance equal to reduced fire resist by this skill deals @e!enflame_crit_effect.pwr# as @e!enflame_crit_effect.atr# and stun enemies nearby for 1 second.",
                 },
                 [FourCC("A00J")] = {
                     [1] = "Shots 3 electrical bolts that are moving in a chaotic pattern. First enemy that they hit takes @e!EDSC.pwr# as @e!EDSC.atr# damage.",
@@ -4113,13 +4594,26 @@ do
                     [1] = "Forms a sleet storm around the sorceress that is increasing in size and slows enemy attack speed, cast and moving speed. Enemies inside the storm take @e!EBLZ.pwr# damage as @e!EBLZ.atr#. While casting sorceress has to stand still. Improving skill level will increase maximum radius and channel time.",
                 },
                 [FourCC("ASSU")] = {
-                    [1] = "Fuel yourself with energy increasing @b!ABSU.pa1# and @b!ABSU.pa2# by @b!ABSU.va1# as wellm as @b!ABSU.pa3# by @b!ABSU.va3# for @b!ABSU.time# seconds.",
+                    [1] = "Fuel yourself with energy increasing @b!ABSU.pa1# and @b!ABSU.pa2# by @b!ABSU.va1# as well as @b!ABSU.pa3# by @b!ABSU.va3# for @b!ABSU.time# seconds.",
                 },
                 [FourCC("ASFS")] = {
                     [1] = "Engulfing yourself with flames, deal @e!effect_flame_shroud_damage.pwr# as @e!effect_flame_shroud_damage.atr# to nearby enemies and boost @b!ABFS.pa1# by @b!ABFS.va1# and @b!ABFS.pa2# by @b!ABFS.va2# for @b!ABFS.time# seconds.",
                 },
                 [FourCC("AFWL")] = {
                     [1] = "Creates a fire wall for 6 seconds. All enemies caught in it and 2 seconds after escaping from it ignite and take @e!fire_wall_damage_effect.pwr# as @e!fire_wall_damage_effect.atr# periodically.",
+                },
+                [FourCC("ASSF")] = {
+                    [1] = "Temporarily electrifies enemies in @e!effect_static_field.aoe# radius, slowing them down by @b!A029.va1# for @b!A029.time# seconds. While electrified, enemies take additional @e!static_field_damage_effect.pwr# damage as @e!static_field_damage_effect.atr# from the sorceress's direct damage.",
+                },
+                [FourCC("AARF")] = {
+                    [1] = "Creates an arcane rift within 500 range. Any allied hero which stays in that point gets @b!A036.pa1# boost by @b!A036.va1# and @b!A036.pa2# by @b!A036.va2#. Rift exists for 8 seconds.",
+                    [10] = "Creates @FM_DIV!1.10# arcane rifts within 500 range. Any allied hero which stays in those points gets @b!A036.pa1# boost by @b!A036.va1# and @b!A036.pa2# by @b!A036.va2#. Rifts exist for 8 seconds.",
+                },
+                [FourCC("AARC")] = {
+                    [1] = "Shots 3 arcane missiles dealing @e!effect_arcane_missile.pwr# as @e!effect_arcane_missile.atr#. The ability gains all bonuses from fire, ice and lightning damage.",
+                },
+                [FourCC("APRF")] = {
+                    [1] = "Emits a wave of cold which deals @e!permafrost_effect.pwr# as @e!permafrost_effect.atr# and freezing enemies for @b!A037.time# seconds.",
                 },
                 [FourCC("ANRD")] = {
                   [1] = "Summon a Skeleton Warrior from a nearby corpse within 600 range. Only @FM_DIV!2.6# skeletons can be reanimated simultaneously. Has a @FM_PER!5.1#%% chance to summon a Skeleton Archer instead. If cast while at max skeletons, summons an acolyte that boosts the attack of all skeletons and heals them by 15%% over 3 seconds.",
@@ -4216,7 +4710,7 @@ do
                     [1] = "Hurl blades in every direction, damaging everyone for @e!effect_blade_flurry.dmg# as @e!effect_blade_flurry.atr#.",
                 },
                 [FourCC("AATL")] = {
-                    [1] = "Marks all enemies in @e!effect_target_locked.aoe# radius for @b!ADTL.time#, attacking them gives you or other assassins @b!ABTL.pa1# by @b!ABTL.va1# for @b!ABTL.time# seconds.",
+                    [1] = "Marks all enemies in @e!effect_target_locked.aoe# radius for @b!ADTL.time#, attacking them gives to attacker @b!ABTL.pa1# by @b!ABTL.va1#, @b!ABTL.pa2# by @b!ABTL.va2# and @b!ABTL.pa3# by @b!ABTL.va3# for @b!ABTL.time# seconds.",
                 },
                 [FourCC("AALL")] = {
                     [1] = "Resets all abilities and increases @b!ABLL.pa1# by @b!ABLL.va1# and @b!ABLL.pa2# by @b!ABLL.va2# for @b!ABLL.time# seconds.",
@@ -4225,7 +4719,7 @@ do
                     [1] = "Shrouds you, increasing your @b!ABNS.pa1# by @b!ABNS.va1#, @b!ABNS.pa2# by @b!ABNS.va2# and @b!ABNS.pa3# by @b!ABNS.va3# for @b!ABNS.time# seconds.",
                 },
                 [FourCC("AATW")] = {
-                    [1] = "Aura is surrounding Assassin, damaging all enemies in 450 radius for @e!twilight_effect.dmg# as @e!twilight_effect.atr# and reducing their @b!ABTW.pa1# by @b!ABTW.va1#, @b!ABTW.pa2# by @b!ABTW.va2# and @b!ABTW.pa3# by @b!ABTW.va3#, while you gain @b!ABTH.pa1# by @b!ABTH.va1#, @b!ABTH.pa2# by @b!ABTH.va2# and @b!ABTH.pa3# by @b!ABTH.va3#.",
+                    [1] = "Aura is surrounding Assassin, damaging all enemies in 450 radius for @e!twilight_effect.dmg# as @e!twilight_effect.atr# and reducing their @b!ABTW.pa1# by @b!ABTW.va1#, @b!ABTW.pa2# by @b!ABTW.va2# and @b!ABTW.pa3# by @b!ABTW.va3#.",
                 },
                 [FourCC("AABD")] = {
                     [1] = "A strike that deals @e!effect_blade_of_darkness.dmg# as @e!effect_blade_of_darkness.atr#. Each attack charges the skill by 15%% up to 150%%. Attacking with that skill consumes all charges and increases the power of it.",
@@ -4240,13 +4734,13 @@ do
                     [1] = "Throws 2 blades which are moving in a curve way, each deals @e!effect_dancing_blade.dmg# as @e!effect_dancing_blade.atr# to all caught enemies.",
                 },
                 [FourCC("AAIG")] = {
-                    [1] = "Throws a bottle with incendiary liquid that breaks on the first enemy hit or ground. Deals to all enemies @e!incendiary_grenade_effect.dmg# as @e!incendiary_grenade_effect.atr# in @e!incendiary_grenade_effect.aoe# radius and @e!incendiary_grenade_peroidic_effect.dmg# every second for @b!ABID.time# seconds.",
+                    [1] = "Throws a bottle with an incendiary liquid that breaks on the ground. Deals to all enemies hit @e!incendiary_grenade_effect.dmg# as @e!incendiary_grenade_effect.atr# in @e!incendiary_grenade_effect.aoe# radius and reducing their @b!ABID.pa1# by @b!ABID.va1# while dealing them @e!incendiary_grenade_peroidic_effect.dmg# every second for @b!ABID.time# seconds.",
                 },
                 [FourCC("AACT")] = {
-                    [1] = "Throws caltrops around, all enemies which step in them take @e!caltrops_effect.dmg# as @e!caltrops_effect.atr# and slowing for @b!ABCT.va1#. Caltrops persist for 5 seconds.",
+                    [1] = "Throws caltrops around, all enemies which step in them take @e!caltrops_effect.dmg# as @e!caltrops_effect.atr# and slowing them for @b!ABCT.va1# and applying vulnerability by @b!ABCT.va2#. Caltrops persist for 5 seconds.",
                 },
                 [FourCC("AASC")] = {
-                    [1] = "Place a trap that triggers from enemies. Upon triggering it explodes in @e!shocking_trap_effect.aoe# and deals @e!shocking_trap_effect.dmg# as @e!shocking_trap_effect.atr#, as well as stunning them for @b!AAST.time# seconds.",
+                    [1] = "Place a trap that triggers from enemies. Upon triggering it explodes in @e!shocking_trap_effect.aoe# radius and deals @e!shocking_trap_effect.dmg# as @e!shocking_trap_effect.atr#, as well as stunning them for @b!AAST.time# seconds.",
                 },
                 [FourCC("AABT")] = {
                     [1] = "A trap that throws out blades in @e!blade_trap_effect.aoe# raduis, deals @e!blade_trap_effect.dmg# as @e!blade_trap_effect.atr#.",
@@ -4257,7 +4751,255 @@ do
                 [FourCC("AARL")] = {
                     [1] = "A rocket detonates on a first enemy hit and explodes dealing @e!effect_rocket.dmg# as @e!effect_rocket.atr# in @e!effect_rocket.aoe# radius.",
                 },
+                [FourCC("AAPS")] = {
+                    [1] = "A quick shot which deals @e!precision_arrow_effect.dmg# as @e!precision_arrow_effect.atr#.",
+                },
+                [FourCC("AAEX")] = {
+                    [1] = "a Bow shot which deals @e!expose_arrow_effect.dmg# as @e!expose_arrow_effect.atr# and boosting your crit chance for that target by @FM_PER!10.0.5#%% during @b!A02G.time# seconds.",
+                },
+                [FourCC("AACA")] = {
+                    [1] = "A shparnel arrow that explodes dealing @e!main_cluster_arrow_effect.dmg# as @e!main_cluster_arrow_effect.atr# to the main target and @e!sub_cluster_arrow_effect.dmg# as @e!sub_cluster_arrow_effect.atr# to all enemies within @e!sub_cluster_arrow_effect.aoe# radius.",
+                },
+                [FourCC("AACR")] = {
+                    [1] = "An enchanted arrow shot which deals @e!frost_arrow_effect.dmg# as @e!frost_arrow_effect.atr# and making your bow skills deal @e!frost_arrow_effect.atr# damage for the next @b!A02F.time# seconds.",
+                },
+                [FourCC("AAPA")] = {
+                    [1] = "A poisoned arrow shot which deals @e!poison_arrow_effect.dmg# as @e!poison_arrow_effect.atr# on impact and @e!poison_arrow_periodic_effect.dmg# every second during @b!A02H.time# seconds. Your bow skills deal @e!poison_arrow_effect.atr# damage for the next @b!A02E.time# seconds.",
+                },
+                [FourCC("AASR")] = {
+                    [1] = "Summons a rain of arrows from the skies forward, dealing @e!steel_rain_effect.dmg# as @e!steel_rain_effect.atr# upon its path.",
+                },
+                [FourCC("AASF")] = {
+                    [1] = "A multiple arrow shots in chaotic pattern in front of the assassin which deal @e!supp_fire_effect.dmg# as @e!supp_fire_effect.atr#.",
+                },
+                [FourCC("AACO")] = {
+                    [1] = "Shoot an arrow with a device which deals @e!charged_shot_effect.dmg# as @e!charged_shot_effect.atr#, stunning enemies within @e!charged_shot_effect.aoe# radius for @b!A02J.time# seconds.",
+                },
+                [FourCC("AAMH")] = {
+                    [1] = "Prepairing arrows for the follow up shot. Next bow skill will have a projectile increase and its power boosted by @FM_PER!1.1#%%.",
+                },
 
+
+                BUFF_FOCUS = "Focus",
+                BUFF_FROST_ARMOR = "Frost Armor",
+                BUFF_ELEM_MASTERY = "Elemental Mastery",
+                BUFF_HYDRA = "Hydra Warmth",
+                BUFF_SURGE = "Surge",
+                BUFF_FIRE_SHROUD = "Fire Shroud",
+                BUFF_JUMP = "Ready to Strike",
+                BUFF_BERSERK = "Berserk",
+                BUFF_EXECUTION = "Smell of Death",
+                BUFF_BLOOD_RUSH = "Blood Rush",
+                BUFF_REINFORCE = "Reinforce",
+                BUFF_RALLYING_CRY = "Rallying Cry",
+                BUFF_DEVOUR = "Devour",
+                BUFF_UNDEAD_LAND = "Undead Land",
+                BUFF_BONE_RIP = "Bone Rip",
+                BUFF_GROW_SPIKES = "Grow Spikes",
+                BUFF_DARK_REIGN = "Dark Reign",
+                BUFF_UNHOLY_COMMAND = "Unholy Command",
+                BUFF_SKELETON_SUMMON = "Undead Restoration",
+                BUFF_LICH_SUMMON = "Lich Empower",
+                BUFF_LICH_AURA = "Spirit Link",
+
+                BUFF_RAGE = "Rage",
+                BUFF_PAIN_KILLER = "Pain Killer",
+                BUFF_CARNAGE = "Carnage",
+                BUFF_SHARPENED_BLADE = "Sharpened Blade",
+                BUFF_DISADVANTAGE = "Disadvantage",
+                BUFF_IMPULSE_OF_ANGER = "Impulse of Anger",
+                BUFF_PRESSURE_POINT = "Pressure Point",
+                BUFF_ADRENALINE = "Adrenaline",
+                BUFF_SECOND_WIND = "Second Wind",
+                BUFF_INCINERATE = "Incinerate",
+                BUFF_VOLTAGE = "Voltage",
+                BUFF_INDUCTION = "Induction",
+                BUFF_EXTRA_CHARGE = "Extra Charge",
+                BUFF_GLACIATION = "Glaciation",
+                BUFF_HEAT_TRANSFER = "Heat Transfer",
+                BUFF_TENACITY_OF_THE_UNDEAD = "Tenacity of the Undead",
+                BUFF_LIFE_STEAL = "Life Steal",
+                BUFF_RITUAL_TALENT = "Ritual",
+                BUFF_ABYSS = "Abyss",
+                BUFF_CHEAT_DEATH = "Cheat Death",
+                BUFF_DEATH_MARCH = "Death March",
+
+                BUFF_REGEN = "Restoration",
+
+                BUFF_RITUAL = "Eldrich Ritual",
+                BUFF_COWARD = "Coward",
+                BUFF_WITCH = "Witchcraft",
+
+                BUFF_FLURRY_ALTAR = "Flurry",
+                BUFF_POWER_ALTAR = "Might",
+                BUFF_ELEMENTAL_ALTAR = "Harnessed Elements",
+                BUFF_ENDURANCE_ALTAR = "Endure",
+                BUFF_EXP_ALTAR = "Knowledge",
+
+                BUFF_WEAKNESS = "Weakness",
+                BUFF_INDECISIVENESS = "Indecisiveness",
+                BUFF_VULNERABILITY = "Vulnerability",
+                BUFF_WITHERING = "Withering",
+
+                BUFF_WEB = "Web",
+                BUFF_SPIDER_POISON = "Poisoned",
+                BUFF_SPIDER_BITE = "Bitten",
+                BUFF_BOSS_CURSE = "Heavy Curse",
+                BUFF_HORROR = "Horror",
+                BUFF_ANTIMAGIC = "Antimagic",
+                BUFF_SNARE = "Snare",
+                BUFF_PRISON = "Soul Prison",
+                BUFF_CHILL = "Frozen",
+                BUFF_SKELE_CURSE = "Curse",
+                BUFF_STRUCK = "Lightning Struck",
+                BUFF_CONFLAGRATE = "Conflagrate",
+                BUFF_BLACK_DEATH = "Black Death",
+                BUFF_STUN = "Stun",
+                BUFF_ICE_BLAST = "Ice Blast",
+                BUFF_SUCCUBUS_DEFENCE = "Breaking",
+                BUFF_SUCCUBUS_BLOOD = "Blood Boil",
+                BUFF_CRIPPLE = "Cripple",
+                BUFF_RAVEN_AMPLIFY = "Amplify Damage",
+                BUFF_SKELE_MAGE_FIRE_BURNING = "Burned",
+                BUFF_SKELE_MAGE_COLD_SLOW = "Frostbitten",
+
+                BUFF_ITEM_FORTIFY = "Fortify",
+                BUFF_ITEM_ENRAGE = "Enrage",
+                BUFF_ITEM_CONDUCTION = "Conduction",
+
+
+                BUFFS = {
+                    ["A00T"] = { [1] = "@b!A00T.pa1# is increased by @b!A00T.va1#   " },
+                    ["A011"] = { [1] = "@b!A011.pa1# is increased by @b!A011.va1#, @b!A011.pa2# is increased by @b!A011.va2#, @b!A011.pa3# is increased by @b!A011.va3# and @b!A011.pa4# by @b!A011.va4#" },
+                    ["A00U"] = { [1] = "@b!A00U.pa1#, @b!A00U.pa2#, @b!A00U.pa3# are inscreased by @b!A00U.va1# and @b!A00U.pa4# by @b!A00U.va4#           " },
+                    ["HDAU"] = { [1] = "@b!HDAU.pa1# is increased by @b!HDAU.va1#" },
+                    ["ABSU"] = { [1] = "@b!ABSU.pa1# and @b!ABSU.pa2# are increased by @b!ABSU.va1#, @b!ABSU.pa3# is increased by @b!ABSU.va3#           " },
+                    ["ABFS"] = { [1] = "Deal @e!effect_flame_shroud_damage.pwr# as @e!effect_flame_shroud_damage.atr# to nearby enemies. @b!ABFS.pa1# is increased by @b!ABFS.va1# and @b!ABFS.pa2# by @b!ABFS.va2#" },
+                    ["A02D"] = { [1] = "Next ability will crit" },
+                    ["A00V"] = { [1] = "Physical attack is increased by @b!A00V.va1#, impared effects control reduction by @b!A00V.va2# and movement speed by @b!A00V.va3#" },
+                    ["ANRD"] = { [1] = "@b!ANRD.pa1# is increased by @b!ANRD.va1# and @b!ANRD.pa2# by @b!ANRD.va2#" },
+                    ["A01N"] = {
+                        [1] = "@b!A01N.pa1# is increased by @b!A01N.va1#",
+                        [10] = "@b!A01N.pa1# is increased by @b!A01N.va1# and @b!A01N.va2# @b!A01N.pa2#",
+                    },
+                    ["ANRD"] = { [1] = "@b!ANRD.pa1# is increased by @b!ANRD.va1# and @b!ANRD.pa2# by @b!ANRD.va2#" },
+                    ["A009"] = { [1] = "A barrier for @b!A009.eh#   " },
+                    ["BBRC"] = { [1] = "@b!BBRC.pa1# is increased by @b!BBRC.va1#, @b!BBRC.pa2# by @b!BBRC.va2#, @b!BBRC.pa3# by @b!BBRC.va3# and @b!BBRC.pa4# by @b!BBRC.va4#" },
+                    ["A01D"] = { [1] = "Regenerating Life and Resources" },
+                    ["AANT"] = { [1] = "@b!AANT.pa1# is increased by @b!AANT.va1#   " },
+                    ["AADR"] = { [1] = "@b!AADR.pa1# is increased by @b!AADR.va1#   " },
+                    ["ASOP"] = { [1] = "@b!ASOP.pa1# is increased by @b!ASOP.va1#   " },
+                    ["ASPT"] = { [1] = "@b!ASPT.pa1# and @b!ASPT.pa2# are increased by @b!ASPT.va1# and @b!ASPT.pa3# is reduced by @b!ASPT.va3#           " },
+                    ["APEI"] = { [1] = "@b!APEI.pa1# is increased by @b!APEI.va1#   " },
+                    ["AIFD"] = { [1] = "@b!AIFD.pa1# is increased by @b!AIFD.va1#   " },
+                    ["AIDR"] = { [1] = "@b!AIDR.pa1# is increased by @b!AIDR.va1#   " },
+                    ["ABDV"] = { [1] = "Attack and Cast speed are increased by @b!ABDV.va1# and Move speed by @b!ABDV.va3#" },
+                    ["AULB"] = { [1] = "@b!AULB.pa1# is increased by @b!AULB.va1# and @b!AULB.pa2# by @b!AULB.va2#" },
+                    ["ANBR"] = { [1] = "@b!ANBR.pa1# is increased by @b!ANBR.va1# and @b!ANBR.pa2# by @b!ANBR.va2#" },
+                    ["ABGS"] = { [1] = "@b!ABGS.pa1# is increased by @b!ABGS.va1#   " },
+                    ["ANDR"] = { [1] = "@b!ANDR.pa1# is increased by @b!ANDR.va1#, @b!ANDR.pa2# by @b!ANDR.va2# and @b!ANDR.pa3# by @b!ANDR.va3#" },
+                    ["ANUC"] = { [1] = "@b!ANUC.pa1# is increased by @b!ANUC.va1#, @b!ANUC.pa2# by @b!ANUC.va2# and @b!ANUC.pa3# by @b!ANUC.va3#" },
+                    ["A00H"] = { [1] = "@b!A00H.pa1# and @b!A00H.pa2# are increased by @b!A00H.va1#   " },
+                    ["A00I"] = { [1] = "@b!A00I.pa1# and @b!A00I.pa2# are increased by @b!A00I.va1#   " },
+                    ["NRLA"] = { [1] = "@b!NRLA.pa1# is increased by @b!NRLA.va1#   " },
+                    ["ATIN"] = { [1] = "@b!ATIN.pa1# is increased by @b!ATIN.va1#   " },
+                    ["ATAD"] = { [1] = "@b!ATAD.pa1# is increased by @b!ATAD.va1#   " },
+                    ["ATEE"] = { [1] = "@b!ATEE.pa1# is increased by @b!ATEE.va1#   " },
+                    ["ATGL"] = { [1] = "@b!ATGL.pa1# is increased by @b!ATGL.va1#   " },
+                    ["ATHE"] = { [1] = "@b!ATHE.pa1# is increased by @b!ATHE.va1#   " },
+                    ["ATRG"] = { [1] = "@b!ATRG.pa1# is increased by @b!ATRG.va1#   " },
+                    ["ATPK"] = { [1] = "@b!ATPK.pa1# and @b!ATPK.pa2# are increased by @b!ATPK.va1#   " },
+                    ["ATCR"] = { [1] = "@b!ATCR.pa1# is increased by @b!ATCR.va1#" },
+                    ["ATSB"] = { [1] = "Attacks deal more damage" },
+                    ["ATDA"] = { [1] = "@b!ATDA.pa1# is increased by @b!ATDA.va1#   " },
+                    ["ATRI"] = { [1] = "@b!ATRI.pa1# is increased by @b!ATRI.va1#   " },
+                    ["ATPP"] = { [1] = "@b!ATPP.pa1# is increased by @b!ATPP.va1#   " },
+                    ["ATAR"] = { [1] = "Restoring health" },
+                    ["ATSW"] = { [1] = "@b!ATSW.pa1# is increased by @b!ATSW.va1# and @b!ATSW.pa2# is increased by @b!ATSW.va2#" },
+                    ["ATOD"] = { [1] = "@b!ATOD.pa1# and @b!ATOD.pa2# are increased by @b!ATOD.va1#   " },
+                    ["ANLS"] = { [1] = "@b!ANLS.pa1# is increased by @b!ANLS.va1#   " },
+                    ["ARTL"] = { [1] = "@b!ARTL.pa1# is increased by @b!ARTL.va1#   " },
+                    ["AABS"] = { [1] = "@b!AABS.pa1# is increased by @b!AABS.va1#   " },
+                    ["ACHD"] = { [1] = "@b!ACHD.pa1# is increased by @b!ACHD.va1#   " },
+                    ["ADEM"] = { [1] = "@b!ADEM.pa1# is increased by @b!ADEM.va1#   " },
+                    ["A01G"] = { [1] = "@b!A01G.pa1# and @b!A01G.pa2# are increased by @b!A01G.va1#   " },
+                    ["A01L"] = { [1] = "@b!A01L.pa1# and @b!A01L.pa2# are increased by @b!A01L.va1#   " },
+                    ["A01K"] = { [1] = "@b!A01K.pa1# is increased by @b!A01K.va1#" },
+                    ["A01J"] = { [1] = "@b!A01J.pa1# and @b!A01J.pa2# are increased by @b!A01J.va1#   " },
+                    ["ALEX"] = { [1] = "@b!ALEX.pa1# is increased by @b!ALEX.va1#   " },
+                    ["A01T"] = { [1] = "Immobilized" },
+                    ["A006"] = { [1] = "Taking poison damage over time" },
+                    ["A01U"] = { [1] = "Taking poison damage over time" },
+                    ["A01V"] = { [1] = "Stunned" },
+                    ["ACLS"] = { [1] = "Stunned" },
+                    ["ABRS"] = { [1] = "Stunned" },
+                    ["AGHB"] = { [1] = "Stunned" },
+                    ["AHRF"] = { [1] = "@b!AHRF.pa1# and @b!AHRF.pa2# are reduced by @b!AHRF.va1#" },
+                    ["ASCB"] = { [1] = "@b!ASCB.pa1# and @b!ASCB.pa2# are reduced by @b!ASCB.va1# and @b!ASCB.pa3# by @b!ASCB.va3#" },
+                    ["AHBB"] = { [1] = "@b!AHBB.pa1# is reduced by @b!AHBB.va1#" },
+                    ["A005"] = { [1] = "@b!A005.pa1# is reduced by @b!A005.va1# and you are immobilized" },
+                    ["A02C"] = { [1] = "You are immobilized and your health is being drain over time" },
+                    ["ATCH"] = { [1] = "You are frozen" },
+                    ["A019"] = { [1] = "You cannot heal" },
+                    ["A039"] = { [1] = "Taking periodoc fire damage" },
+                    ["A03B"] = { [1] = "@b!A03B.pa1# is reduced by @b!A03B.va1#   " },
+                    ["AIBL"] = { [1] = "@b!AIBL.pa1# is reduced by @b!AIBL.va1#   " },
+                    ["A00N"] = { [1] = "@b!A00N.pa1# is reduced by @b!A00N.va1#   " },
+                    ["A00Z"] = { [1] = "Casting a magic spell inflicts damage" },
+                    ["ABCR"] = { [1] = "@b!ABCR.pa1# is reduced by @b!ABCR.va1# and @b!ABCR.pa2# is reduced by @b!ABCR.va2#" },
+                    ["A00M"] = { [1] = "Stunned" },
+                    ["A00J"] = { [1] = "@b!A00J.pa1# is reduced by @b!A00J.va1#   " },
+                    ["A00K"] = { [1] = "Taking poison damage over time" },
+                    ["AFCS"] = { [1] = "Stunned" },
+                    ["ADIC"] = { [1] = "Stunned" },
+                    ["ASKD"] = { [1] = "@b!ASKD.pa1# and @b!ASKD.pa2# are reduced by @b!ASKD.va1#   " },
+                    ["A027"] = { [1] = "@b!A027.pa1# is reduced by @b!A027.va1#   " },
+                    ["ACND"] = { [1] = "@b!ACND.pa1# is reduced by @b!ACND.va1#   " },
+                    ["ACWK"] = { [1] = "@b!ACWK.pa1# and @b!ACWK.pa2# are reduced by @b!ACWK.va1#   " },
+                    ["ACIN"] = { [1] = "@b!ACIN.pa1# and @b!ACIN.pa2# are reduced by @b!ACIN.va1#   " },
+                    ["ACVN"] = { [1] = "@b!ACVN.pa1# is reduced by @b!ACVN.va1#   " },
+                    ["ACWT"] = { [1] = "@b!ACWT.pa1# and @b!ACWT.pa2# are reduced by @b!ACWT.va1# and @b!ACWT.pa3# and @b!ACWT.pa4# are reduced by @b!ACWT.va3#     " },
+                    ["A01S"] = {
+                        [1] = "Channeling a ritual...",
+                        [15] = "@b!A01S.pa1# and @b!A01S.pa2# are increased by @b!A01S.va1# and @b!A01S.pa3# by @b!A01S.va3#",
+                    },
+                    ["A03C"] = { [1] = "Damage reduction          " },
+                    ["A01Q"] = { [1] = "@b!A01Q.pa1# is increased by @b!A01Q.va1#   " },
+                    ["A01R"] = { [1] = "@b!A01R.pa1# is increased by @b!A01R.va1#     " },
+                    ["AIFT"] = { [1] = "@b!AIFT.pa1# and @b!AIFT.pa2# are increased by @b!AIFT.va1#" },
+                    ["AIEN"] = { [1] = "@b!AIEN.pa1# is increased by @b!AIEN.va1#     " },
+                    ["AICN"] = { [1] = "@b!AICN.pa1# is increased by @b!AICN.va1#     " },
+                    ["A02F"] = { [1] = "Attacks with a bow now deal cold damage" },
+                    ["A02E"] = { [1] = "Attacks with a bow now deal poison damage" },
+                    ["A02K"] = { [1] = "Next bow skill will have multiple projectiles" },
+                    ["A02R"] = { [1] = "Increased Damage" },
+                    ["A02T"] = { [1] = "Move speeed is increased by @b!A02T.va1#    " },
+                    ["A02U"] = { [1] = "Move speeed is increased by @b!A02U.va1#      " },
+                    ["A02V"] = { [1] = "Attack speeed is increased by @b!A02V.va1#   " },
+                    ["A02W"] = { [1] = "Missiles penetrate" },
+                    ["A02Y"] = { [1] = "Next skill has a guaranteed crit" },
+                    ["A031"] = { [1] = "Next attack heals     " },
+                    ["A032"] = { [1] = "@b!A032.pa1# is increased by @b!A032.va1#     " },
+                    ["A02M"] = { [1] = "@b!A02M.pa1# is increased by @b!A02M.va1#    " },
+                    ["A02N"] = { [1] = "@b!A02N.pa1# is increased by @b!A02N.va1#     " },
+                    ["A02O"] = { [1] = "Next attack stuns      " },
+                    ["A02Q"] = { [1] = "Skill power is increased     " },
+                    ["ABTL"] = { [1] = "@b!ABTL.pa1# is increased by @b!ABTL.va1#      " },
+                    ["ABLL"] = { [1] = "@b!ABLL.pa1# is increased by @b!ABLL.va1# and @b!ABLL.pa2# by @b!ABLL.va2#" },
+                    ["ABST"] = { [1] = "@b!ABST.pa1# is increased by @b!ABST.va1#     " },
+                    ["ABNS"] = { [1] = "@b!ABNS.pa1# is increased by @b!ABNS.va1#, @b!ABNS.pa2# by @b!ABNS.va2#, @b!ABNS.pa3# by @b!ABNS.va3#" },
+                    ["A02L"] = { [1] = "@b!A02L.pa1# is increased by @b!A02L.va1#     " },
+                    ["A036"] = { [1] = "@b!A036.pa1# is increased by @b!A036.va1# and @b!A036.pa2# by @b!A036.va2#" },
+                    ["ABEF"] = { [1] = "@b!ABEF.pa1# is increased by @b!ABEF.va1#     " },
+                    ["curved_strike_stacks"] = { [1] = "Next skill is stronger    " },
+                    ["blade_of_darkness_stacks"] = { [1] = "The skill power is increasing"       },
+                    ["talent_arc_discharge"] = { [1] = "Next lightning skill does more damage     " },
+                    ["talent_heating_up"] = { [1] = "Next fire skill is stronger   " },
+                    ["talent_overflow"] = { [1] = "Next skill is stronger   " },
+                    ["talent_spirit"] = { [1] = "Storing souls    " },
+                    ["talent_death_embrace"] = { [1] = "Damage is increased     " },
+                    ["talent_vile_malediction"] = { [1] = "Magic attack is increased     " },
+                },
 
                 TALENTS = {
                     ["talent_ignite"] = {
@@ -4285,8 +5027,8 @@ do
                     },
                     ["talent_overflow"] = {
                         name = "Overflow",
-                        [1] = "While above 60%% of mana next spell will be by 30%% stronger but mana cost is increased by 50%%.",
-                        [2] = "While above 60%% of mana next spell will be by 60%% stronger but mana cost is increased by 100%%.",
+                        [1] = "While above 60%% of mana next spell will be 30%% stronger but mana cost is increased by 50%%.",
+                        [2] = "While above 60%% of mana next spell will be 60%% stronger but mana cost is increased by 100%%.",
                     },
                     ["talent_heating_up"] = {
                         name = "Heating up",
@@ -4393,6 +5135,7 @@ do
                         name = "Remorseless",
                         [1] = "Dealing cold damage reduces enemies cold resist by 5%% for 3 seconds.",
                         [2] = "Dealing cold damage reduces enemies cold resist by 10%% for 4 seconds.",
+                        [3] = "Dealing cold damage reduces enemies cold resist by 15%% for 4 seconds.",
                     },
                     ["talent_crystallization"] = {
                         name = "Crystallization",
@@ -4404,7 +5147,9 @@ do
                         name = "Ice crust",
                         [1] = "Reduces melee damage taken by 2%%.",
                         [2] = "Reduces melee damage taken by 4%%.",
-                        [3] = "Reduces melee damage taken by 6%%."
+                        [3] = "Reduces melee damage taken by 6%%.",
+                        [4] = "Reduces melee damage taken by 8%%.",
+                        [5] = "Reduces melee damage taken by 10%%."
                     },
                     ["talent_glaciation"] = {
                         name = "Glaciation",
@@ -4437,7 +5182,8 @@ do
                     ["talent_fragility"] = {
                         name = "Fragility",
                         [1] = "Damage dealt to enemies that are under cold negative effects is increased by 10%%.",
-                        [2] = "Damage dealt to enemies that are under cold negative effects is increased by 20%%.",
+                        [2] = "Damage dealt to enemies that are under cold negative effects is increased by 15%%.",
+                        [3] = "Damage dealt to enemies that are under cold negative effects is increased by 20%%.",
                     },
                     ["talent_ice_enduring"] = {
                         name = "Ice enduring",
@@ -4794,10 +5540,178 @@ do
                     },
                     ["talent_evasion"] = {
                         name = "Evasion",
-                        [1] = "Increases dodge by 5%%.",
-                        [2] = "Increases dodge by 10%%.",
-                        [3] = "Increases dodge by 15%%.",
-                    }
+                        [1] = "Increases dodge by 4%%.",
+                        [2] = "Increases dodge by 8%%.",
+                        [3] = "Increases dodge by 12%%.",
+                    },
+                    ["talent_pickpocket"] = {
+                        name = "Pickpocket",
+                        [1] = "Gold received is increased by 5%%.",
+                        [2] = "Gold received is increased by 10%%.",
+                        [3] = "Gold received is increased by 15%%.",
+                    },
+                    ["talent_dagger_expert"] = {
+                        name = "dagger expert",
+                        [1] = "Physical attack with daggers equipped is increased by 5%%. This bonus is doubled while daggers equipped in both hands.",
+                        [2] = "Physical attack with daggers equipped is increased by 10%%. This bonus is doubled while daggers equipped in both hands.",
+                    },
+                    ["talent_anatomy_master"] = {
+                        name = "anatomy master",
+                        [1] = "Damage to human and beasts is increased by 7%%. Poison damage is increased by +10%%.",
+                        [2] = "Damage to human and beasts is increased by +12%%. Poison damage is increased by +15%%.",
+                    },
+                    ["talent_exhausting_venom"] = {
+                        name = "Exhausting venom",
+                        [1] = "Enemies under poison effects lose 10%% physical and magical attack.",
+                        [2] = "Enemies under poison effects lose 13%% physical and magical attack.",
+                        [3] = "Enemies under poison effects lose 16%% physical and magical attack.",
+                    },
+                    ["talent_relentless"] = {
+                        name = "relentless",
+                        [1] = "Using an attacking skill with a 20%% chance increases your resource regeneration by 4 for 1 second.",
+                        [2] = "Using an attacking skill with a 20%% chance increases your resource regeneration by 8 for 1 second.",
+                        [3] = "Using an attacking skill with a 20%% chance increases your resource regeneration by 12 for 1 second.",
+                    },
+                    ["talent_counterattack"] = {
+                        name = "counterattack",
+                        [1] = "On evade your damage is increased by 7%% for 4 seconds.",
+                        [2] = "On evade your damage is increased by 14%% for 4 seconds.",
+                    },
+                    ["talent_weak_point"] = {
+                        name = "weak point",
+                        [1] = "While being at side of the enemy, damage to them is increased by 7%%. Doubles this bonus while you are behind.",
+                        [2] = "While being at side of the enemy, damage to them is increased by 15%%. Doubles this bonus while you are behind.",
+                    },
+                    ["talent_bloodthirsty"] = {
+                        name = "bloodthirsty",
+                        [1] = "Your critical strikes provide 5 health per hit for 4 seconds.",
+                        [2] = "Your critical strikes provide 10 health per hit for 4 seconds.",
+                        [3] = "Your critical strikes provide 15 health per hit for 4 seconds.",
+                    },
+                    ["talent_ambush"] = {
+                        name = "ambush",
+                        [1] = "After a critical hit with 20%% chance assassin gains Ambush effect. Using an attacking skill under that effect stuns enemies for 3 seconds.",
+                        [2] = "After a critical hit with 25%% chance assassin gains Ambush effect. Using an attacking skill under that effect stuns enemies for 3 seconds.",
+                        [3] = "After a critical hit with 30%% chance assassin gains Ambush effect. Using an attacking skill under that effect stuns enemies for 3 seconds.",
+                    },
+                    ["talent_nimble_hands"] = {
+                        name = "nimble hands",
+                        [1] = "Using an attacking skill with a 15%% chance thows a shuriken which deals 17%% of attack as damage.",
+                        [2] = "Using an attacking skill with a 20%% chance thows a shuriken which deals 17%% of attack as damage.",
+                        [3] = "Using an attacking skill with a 25%% chance thows a shuriken which deals 17%% of attack as damage.",
+                    },
+                    ["talent_unmatched_technique"] = {
+                        name = "unmatched technique",
+                        [1] = "Each skill used which is different to the last skill used, increases skills damage by 10%% for 7 seconds. Stacks up to 5 times.",
+                    },
+                    ["talent_one_with_shadows"] = {
+                        name = "one with shadows",
+                        [1] = "Darkness damage and resist is increased by 7%%.",
+                        [2] = "Darkness damage and resist is increased by 14%%.",
+                        [3] = "Darkness damage and resist is increased by 21%%.",
+                    },
+                    ["talent_vampiric_mark"] = {
+                        name = "vampiric mark",
+                        [1] = "Next attack after a critical strike heals you for 4%% of max health. Triggers once in 15 seconds.",
+                        [2] = "Next attack after a critical strike heals you for 8%% of max health. Triggers once in 15 seconds.",
+                    },
+                    ["talent_antimagic"] = {
+                        name = "antimagic",
+                        [1] = "Lightning, cold, fire, darkness and arcane resist is increased by 5%%.",
+                        [2] = "Lightning, cold, fire, darkness and arcane resist is increased by 10%%.",
+                        [3] = "Lightning, cold, fire, darkness and arcane resist is increased by 15%%.",
+                    },
+                    ["talent_deeping_darkness"] = {
+                        name = "deeping darkness",
+                        [1] = "A critical strike increases damage with darkness by 7%% for 5 seconds.",
+                        [2] = "A critical strike increases damage with darkness by 14%% for 5 seconds.",
+                    },
+                    ["talent_shackles"] = {
+                        name = "shackles",
+                        [1] = "A critical strike immobilizes the target for 2 seconds.",
+                        [2] = "A critical strike immobilizes the target for 3 seconds.",
+                    },
+                    ["talent_magic_devourer"] = {
+                        name = "magic devourer",
+                        [1] = "Once in 5 seconds negates a damage from a magic attack and heals for 75%% of that damage.",
+                        [2] = "Once in 5 seconds negates a damage from a magic attack and heals for 100%% of that damage.",
+                        [3] = "Once in 5 seconds negates a damage from a magic attack and heals for 125%% of that damage.",
+                    },
+                    ["talent_in_the_dark"] = {
+                        name = "in the dark",
+                        [1] = "With a half of critical chance on attack blinds the target for 1 second.",
+                        [2] = "With a half of critical chance on attack blinds the target for 2 seconds.",
+                    },
+                    ["talent_torture"] = {
+                        name = "torture",
+                        [1] = "Damage to impared targets is increased by 10%%.",
+                        [2] = "Damage to impared targets is increased by 17%%.",
+                    },
+                    ["talent_nightstalker"] = {
+                        name = "nightstalker",
+                        [1] = "Max health is reduced by 5%%, grants 5 health per hit.",
+                        [2] = "Max health is reduced by 7%%, grants 7 health per hit.",
+                        [3] = "Max health is reduced by 10%%, grants 10 health per hit",
+                    },
+                    ["talent_erupting_darkness"] = {
+                        name = "erupting darkness",
+                        [1] = "With a critical chance creates an explosion of darkness which deals 75%% of attack as darkness damage.",
+                    },
+                    ["talent_tactician"] = {
+                        name = "tactician",
+                        [1] = "After using a non-attacking skill from an archery category increases move speed by 15%%. 7%% if the skill was attacking.",
+                        [2] = "After using a non-attacking skill from an archery category increases move speed by 20%%. 10%% if the skill was attacking.",
+                        [3] = "After using a non-attacking skill from an archery category increases move speed by 25%%. 12%% if the skill was attacking.",
+                    },
+                    ["talent_clear_sight"] = {
+                        name = "clear sight",
+                        [1] = "While there are no enemies nearby all damage is increased by 10%%.",
+                        [2] = "While there are no enemies nearby all damage is increased by 15%%.",
+                    },
+                    ["talent_archery_master"] = {
+                        name = "precise strikes",
+                        [1] = "Critical chance is increased by 5%%.",
+                        [2] = "Critical chance is increased by 10%%.",
+                        [3] = "Critical chance is increased by 15%%.",
+                    },
+                    ["talent_fast_reload"] = {
+                        name = "fast reload",
+                        [1] = "Using an attacking archery skill increases attack speed by 4%% for 3 seconds. Stacks up to 3 times.",
+                        [2] = "Using an attacking archery skill increases attack speed by 7%% for 3 seconds. Stacks up to 3 times.",
+                        [3] = "Using an attacking archery skill increases attack speed by 10%% for 3 seconds. Stacks up to 3 times.",
+                    },
+                    ["talent_penetrate"] = {
+                        name = "penetrate",
+                        [1] = "Next archery skill after a critical strike within 10 seconds penetrates a main target and hits one additional.",
+                        [2] = "Next archery skill after a critical strike within 10 seconds penetrates a main target and hits 2 additional.",
+                    },
+                    ["talent_trauma"] = {
+                        name = "trauma",
+                        [1] = "With a direct ranged attack with a 15%% chance slows enemies by 50%% for 1 second.",
+                        [2] = "With a direct ranged attack with a 15%% chance slows enemies by 60%% for 1 second.",
+                        [3] = "With a direct ranged attack with a 15%% chance slows enemies by 70%% for 1 second.",
+                    },
+                    ["talent_forceful_hit"] = {
+                        name = "forceful hit",
+                        [1] = "With a 1/4 of critical chance staggers enemies on attack.",
+                        [2] = "With a 1/3 of critical chance staggers enemies on attack.",
+                    },
+                    ["talent_hawkeye"] = {
+                        name = "hawkeye",
+                        [1] = "Dealing damage to far targets increases their damage taken from you by 3%%. Stacks up to 3 times.",
+                        [2] = "Dealing damage to far targets increases their damage taken from you by 4%%. Stacks up to 3 times.",
+                        [3] = "Dealing damage to far targets increases their damage taken from you by 5%%. Stacks up to 3 times.",
+                    },
+                    ["talent_enchanter"] = {
+                        name = "enchanter",
+                        [1] = "When you deal direct damage to enemies that are slowed by your frost arrows with a 22%% chance they freeze for 1 second. Under the effect of poisoned arrows they take immediate 65%% of attack as poison damage.",
+                        [2] = "When you deal direct damage to enemies that are slowed by your frost arrows with a 22%% chance they freeze for 2 seconds. Under the effect of poisoned arrows they take immediate 85%% of attack as poison damage.",
+                    },
+                    ["talent_unremarkable_marksman"] = {
+                        name = "unremarkable marksman",
+                        [1] = "Hitting a critical strike guarantees next skill a critical hit. Triggers once in 12 seconds.",
+                        [2] = "Hitting a critical strike guarantees next 2 skills a critical hit. Triggers once in 12 seconds.",
+                    },
                 },
 
                 BARBARIAN_NAME = "Barbarian",

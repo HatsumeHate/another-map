@@ -163,6 +163,7 @@ do
                     if flag then
                         if GetUnitState(unit, UNIT_STATE_MANA) / BlzGetUnitMaxMana(unit) >= 0.6 then
                             AddStatusBarState("talent_overflow", "Talents\\BTNFireSpell8.blp", POSITIVE_BUFF, GetPlayerId(GetOwningPlayer(unit))+1)
+                            SetStatusBarHeaderName("talent_overflow", LOCALE_LIST[my_locale].TALENTS["talent_overflow"].name, GetPlayerId(GetOwningPlayer(unit))+1)
                         end
                     else
                         local unit_data = GetUnitData(unit)
@@ -416,7 +417,7 @@ do
         -- tier 1
         NewTalentTemplate("talent_remorseless", {
             icon = "Talents\\BTNFrostDeath.blp",
-            max_level = 2,
+            max_level = 3,
         })
 
         NewTalentTemplate("talent_crystallization", {
@@ -436,8 +437,14 @@ do
                 [3] = function(unit, flag)
                     ModifyStat(unit, MELEE_DAMAGE_REDUCTION, 2, STRAIGHT_BONUS, flag)
                 end,
+                [4] = function(unit, flag)
+                    ModifyStat(unit, MELEE_DAMAGE_REDUCTION, 2, STRAIGHT_BONUS, flag)
+                end,
+                [5] = function(unit, flag)
+                    ModifyStat(unit, MELEE_DAMAGE_REDUCTION, 2, STRAIGHT_BONUS, flag)
+                end,
             },
-            max_level = 3,
+            max_level = 5,
         })
 
         -- tier 2
@@ -525,7 +532,7 @@ do
             icon = "Talents\\BTNSkullTreasure.blp",
             requires = { "talent_breath_of_frost", "talent_icy_veins" },
             points_required = 4,
-            max_level = 2,
+            max_level = 3,
         })
 
         -- tier 4
@@ -1436,94 +1443,41 @@ do
         })
 
         NewTalentTemplate("talent_anatomy_master", {
+            icon = "Talents\\BTNsadist.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, BONUS_HUMAN_DAMAGE, 7, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, BONUS_BEAST_DAMAGE, 7, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, POISON_BONUS, 10, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, BONUS_HUMAN_DAMAGE, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, BONUS_BEAST_DAMAGE, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, POISON_BONUS, 5, STRAIGHT_BONUS, flag)
+                end,
+            },
+            max_level = 2,
+        })
+
+        NewTalentTemplate("talent_exhausting_venom", {
             icon = "Talents\\BTNPoisonGen.blp",
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_dagger_expert", {
+            icon = "Talents\\BTNQinsSais.blp",
             instant_effects = {
                 [1] = function(unit, flag)
-                    ModifyStat(unit, BONUS_HUMAN_DAMAGE, 4, STRAIGHT_BONUS, flag)
-                    ModifyStat(unit, BONUS_BEAST_DAMAGE, 4, STRAIGHT_BONUS, flag)
-                    ModifyStat(unit, POISON_BONUS, 4, STRAIGHT_BONUS, flag)
+                    DaggerExpertTalentEffect(unit)
                 end,
                 [2] = function(unit, flag)
-                    ModifyStat(unit, BONUS_HUMAN_DAMAGE, 4, STRAIGHT_BONUS, flag)
-                    ModifyStat(unit, BONUS_BEAST_DAMAGE, 4, STRAIGHT_BONUS, flag)
-                    ModifyStat(unit, POISON_BONUS, 4, STRAIGHT_BONUS, flag)
+                    DaggerExpertTalentEffect(unit)
+                end,
+                [3] = function(unit, flag)
+                    DaggerExpertTalentEffect(unit)
                 end,
             },
             max_level = 2,
-        })
-
-
-        NewTalentTemplate("talent_counterattack", {
-            icon = "Talents\\BTNOS1.blp",
-            instant_effects = {
-                [1] = function(unit, flag)
-
-                end,
-                [2] = function(unit, flag)
-
-                end,
-            },
-            points_required = 2,
-            requires = { "talent_dagger_expert", "talent_evasion" },
-            max_level = 2,
-        })
-
-        NewTalentTemplate("talent_into_the_shadows", {
-            icon = "ReplaceableTextures\\PassiveButtons\\PASBTNEvasion.blp",
-            instant_effects = {
-                [1] = function(unit, flag)
-
-                end,
-                [2] = function(unit, flag)
-
-                end,
-            },
-            max_level = 3,
-        })
-
-        NewTalentTemplate("talent_bloodthirsty", {
-            icon = "Talents\\BTNbloodthirsty.blp",--"Talents\\BTNUkus.blp",
-            instant_effects = {
-                [1] = function(unit, flag)
-
-                end,
-                [2] = function(unit, flag)
-
-                end,
-            },
-            max_level = 3,
-            points_required = 4,
-            requires = { "talent_relentless", "talent_counterattack" },
-        })
-
-        NewTalentTemplate("talent_relentless", {
-            icon = "ReplaceableTextures\\CommandButtons\\BTNPossession.blp",
-            instant_effects = {
-                [1] = function(unit, flag)
-
-                end,
-                [2] = function(unit, flag)
-
-                end,
-            },
-            max_level = 3,
-            points_required = 2,
-            requires = { "talent_dagger_expert", "talent_pickpocket" },
-        })
-
-        NewTalentTemplate("talent_nimble_hands", {
-            icon = "ReplaceableTextures\\CommandButtons\\BTNSearingArrows.blp",
-            instant_effects = {
-                [1] = function(unit, flag)
-
-                end,
-                [2] = function(unit, flag)
-
-                end,
-            },
-            max_level = 3,
-            points_required = 4,
-            requires = { "talent_counterattack", "talent_weak_point" },
         })
 
         NewTalentTemplate("talent_pickpocket", {
@@ -1542,14 +1496,50 @@ do
             max_level = 3,
         })
 
+
+        NewTalentTemplate("talent_counterattack", {
+            icon = "Talents\\BTNOS1.blp",
+            points_required = 2,
+            requires = { "talent_dagger_expert", "talent_evasion" },
+            max_level = 2,
+        })
+
+        NewTalentTemplate("talent_into_the_shadows", {
+            icon = "ReplaceableTextures\\PassiveButtons\\PASBTNEvasion.blp",
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_bloodthirsty", {
+            icon = "Talents\\BTNbloodthirsty.blp",--"Talents\\BTNUkus.blp",
+            max_level = 3,
+            points_required = 4,
+            requires = { "talent_relentless", "talent_counterattack" },
+        })
+
+        NewTalentTemplate("talent_relentless", {
+            icon = "Talents\\BTNMeditation.blp",
+            max_level = 3,
+            points_required = 2,
+            requires = { "talent_dagger_expert", "talent_pickpocket" },
+        })
+
+        NewTalentTemplate("talent_nimble_hands", {
+            icon = "Talents\\BTNShuriken.blp",
+            max_level = 3,
+            points_required = 4,
+            requires = { "talent_counterattack", "talent_weak_point" },
+        })
+
         NewTalentTemplate("talent_unmatched_technique", {
             icon = "Talents\\BTNSlaugther Saber.blp",
             instant_effects = {
                 [1] = function(unit, flag)
-
-                end,
-                [2] = function(unit, flag)
-
+                    if not flag then
+                        local unit_data = GetUnitData(unit)
+                        unit_data.unmatched_technique_bonus = 0.
+                        unit_data.last_used_skill = nil
+                        RemoveBuff(unit, "A02Q")
+                    end
                 end,
             },
             max_level = 1,
@@ -1560,42 +1550,54 @@ do
 
         NewTalentTemplate("talent_ambush", {
             icon = "Talents\\BTNicons_4602_pas.blp",
-            instant_effects = {
-                [1] = function(unit, flag)
-
-                end,
-                [2] = function(unit, flag)
-
-                end,
-            },
             max_level = 3,
+            instant_effects = {
+              [1] = function(unit, flag)
+                  if flag then
+                      --AmbushTalentEffect(unit)
+                  else
+                      --local unit_data = GetUnitData(unit)
+                      --DestroyTimer(unit_data.ambush_timer)
+                      --unit_data.ambush_timer = nil
+                      RemoveBuff(unit, "A02O")
+                  end
+              end,
+              [2] = function(unit, flag)
+                    if flag then
+                        --AmbushTalentEffect(unit)
+                    end
+              end,
+              [3] = function(unit, flag)
+                    if flag then
+                       -- AmbushTalentEffect(unit)
+                    end
+              end,
+            },
             points_required = 4,
             requires = { "talent_relentless", "talent_counterattack", "talent_weak_point" },
         })
 
         NewTalentTemplate("talent_weak_point", {
             icon = "Talents\\BTN_CR_Heart-Strike.blp",
-            instant_effects = {
-                [1] = function(unit, flag)
-
-                end,
-                [2] = function(unit, flag)
-
-                end,
-            },
             max_level = 2,
             points_required = 2,
-            requires = { "talent_evasion", "talent_anatomy_master" },
+            requires = { "talent_evasion", "talent_exhausting_venom" },
         })
 
         NewTalentTemplate("talent_one_with_shadows", {
             icon = "Talents\\BTNicons_15644_btn.blp",
             instant_effects = {
                 [1] = function(unit, flag)
-
+                    ModifyStat(unit, DARKNESS_RESIST, 7, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, DARKNESS_BONUS, 7, STRAIGHT_BONUS, flag)
                 end,
                 [2] = function(unit, flag)
-
+                    ModifyStat(unit, DARKNESS_RESIST, 7, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, DARKNESS_BONUS, 7, STRAIGHT_BONUS, flag)
+                end,
+                [3] = function(unit, flag)
+                    ModifyStat(unit, DARKNESS_RESIST, 7, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, DARKNESS_BONUS, 7, STRAIGHT_BONUS, flag)
                 end,
             },
             max_level = 3,
@@ -1605,38 +1607,37 @@ do
             icon = "Talents\\BTNicons_15272_btn.blp",
             instant_effects = {
                 [1] = function(unit, flag)
-                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, LIGHTNING_RESIST, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, FIRE_RESIST, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, ICE_RESIST, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, ARCANE_RESIST, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, DARKNESS_RESIST, 5, STRAIGHT_BONUS, flag)
                 end,
                 [2] = function(unit, flag)
-                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, LIGHTNING_RESIST, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, FIRE_RESIST, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, ICE_RESIST, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, ARCANE_RESIST, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, DARKNESS_RESIST, 5, STRAIGHT_BONUS, flag)
+                end,
+                [3] = function(unit, flag)
+                    ModifyStat(unit, LIGHTNING_RESIST, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, FIRE_RESIST, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, ICE_RESIST, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, ARCANE_RESIST, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, DARKNESS_RESIST, 5, STRAIGHT_BONUS, flag)
                 end,
             },
-            max_level = 2,
+            max_level = 3,
         })
 
         NewTalentTemplate("talent_vampiric_mark", {
             icon = "Talents\\BTN_CR_Blood-Tap.blp",
-            instant_effects = {
-                [1] = function(unit, flag)
-                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
-                end,
-                [2] = function(unit, flag)
-                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
-                end,
-            },
             max_level = 2,
         })
 
         NewTalentTemplate("talent_deeping_darkness", {
             icon = "Talents\\BTNShadowDisguise.blp",
-            instant_effects = {
-                [1] = function(unit, flag)
-                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
-                end,
-                [2] = function(unit, flag)
-                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
-                end,
-            },
             points_required = 2,
             requires = { "talent_one_with_shadows", "talent_vampiric_mark" },
             max_level = 2,
@@ -1644,14 +1645,6 @@ do
 
         NewTalentTemplate("talent_shackles", {
             icon = "Talents\\BTNEnslaveUndead.blp",
-            instant_effects = {
-                [1] = function(unit, flag)
-                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
-                end,
-                [2] = function(unit, flag)
-                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
-                end,
-            },
             points_required = 2,
             requires = { "talent_one_with_shadows", "talent_vampiric_mark", "talent_antimagic" },
             max_level = 2,
@@ -1659,14 +1652,6 @@ do
 
         NewTalentTemplate("talent_magic_devourer", {
             icon = "Talents\\BTNRavageMagic.blp",
-            instant_effects = {
-                [1] = function(unit, flag)
-
-                end,
-                [2] = function(unit, flag)
-
-                end,
-            },
             points_required = 2,
             requires = { "talent_vampiric_mark", "talent_antimagic" },
             max_level = 3,
@@ -1674,14 +1659,6 @@ do
 
         NewTalentTemplate("talent_in_the_dark", {
             icon = "Talents\\BTNCR_Blindness.blp",
-            instant_effects = {
-                [1] = function(unit, flag)
-                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
-                end,
-                [2] = function(unit, flag)
-                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
-                end,
-            },
             points_required = 4,
             requires = { "talent_deeping_darkness", "talent_shackles" },
             max_level = 2,
@@ -1691,10 +1668,10 @@ do
             icon = "Talents\\BTNHandOfDisgrace.blp",
             instant_effects = {
                 [1] = function(unit, flag)
-                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, DAMAGE_TO_CC_ENEMIES, 10, STRAIGHT_BONUS, flag)
                 end,
                 [2] = function(unit, flag)
-                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, DAMAGE_TO_CC_ENEMIES, 7, STRAIGHT_BONUS, flag)
                 end,
             },
             points_required = 4,
@@ -1706,59 +1683,134 @@ do
             icon = "Talents\\BTNTransfer Pain.blp",
             instant_effects = {
                 [1] = function(unit, flag)
-                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, HP_VALUE, 0.95, MULTIPLY_BONUS, flag)
+                    ModifyStat(unit, HP_PER_HIT, 5, STRAIGHT_BONUS, flag)
                 end,
                 [2] = function(unit, flag)
-                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, HP_VALUE, 0.93, MULTIPLY_BONUS, flag)
+                    ModifyStat(unit, HP_PER_HIT, 7, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, HP_VALUE, 0.9, MULTIPLY_BONUS, flag)
+                    ModifyStat(unit, HP_PER_HIT, 10, STRAIGHT_BONUS, flag)
                 end,
             },
+            cancel_last_level = true,
             points_required = 4,
             requires = { "talent_shackles", "talent_magic_devourer" },
-            max_level = 2,
+            max_level = 3,
         })
 
         NewTalentTemplate("talent_erupting_darkness", {
             icon = "Talents\\BTNShadowMeld.blp",
-            instant_effects = {
-                [1] = function(unit, flag)
-                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
-                end,
-                [2] = function(unit, flag)
-                    ModifyStat(unit, GOLD_BONUS, 5, STRAIGHT_BONUS, flag)
-                end,
-            },
             points_required = 6,
             requires = { "talent_in_the_dark", "talent_torture", "talent_nightstalker" },
-            max_level = 2,
+            max_level = 1,
         })
 
 
-        NewTalentTemplate("talent_combustible_mixture", {
-            icon = "ReplaceableTextures\\PassiveButtons\\PASBTNEvasion.blp",
+        NewTalentTemplate("talent_archery_master", {
+            icon = "Talents\\BTNSpellBookPreface_23.blp",
             instant_effects = {
                 [1] = function(unit, flag)
-
+                    ModifyStat(unit, CRIT_CHANCE, 5, STRAIGHT_BONUS, flag)
+                    --BowExpertTalentEffect(unit)
                 end,
                 [2] = function(unit, flag)
-
+                    ModifyStat(unit, CRIT_CHANCE, 5, STRAIGHT_BONUS, flag)
+                    --BowExpertTalentEffect(unit)
+                end,
+                [3] = function(unit, flag)
+                    ModifyStat(unit, CRIT_CHANCE, 5, STRAIGHT_BONUS, flag)
+                    --BowExpertTalentEffect(unit)
                 end,
             },
             max_level = 3,
         })
 
-        NewTalentTemplate("talent_dagger_expert", {
-            icon = "Talents\\BTNQinsSais.blp",
+        NewTalentTemplate("talent_clear_sight", {
+            icon = "Talents\\BTNAccuracy.blp",
             instant_effects = {
                 [1] = function(unit, flag)
-
+                    if flag then
+                        ClearSightTalentEffect(unit)
+                    else
+                        local unit_data = GetUnitData(unit)
+                        DestroyTimer(unit_data.clear_sight_timer)
+                        unit_data.clear_sight_timer = nil
+                        RemoveBuff(unit, "A02R")
+                    end
                 end,
                 [2] = function(unit, flag)
-
+                    if flag then
+                        ClearSightTalentEffect(unit)
+                    else
+                        local unit_data = GetUnitData(unit)
+                        DestroyTimer(unit_data.clear_sight_timer)
+                        unit_data.clear_sight_timer = nil
+                        RemoveBuff(unit, "A02R")
+                    end
                 end,
             },
+            cancel_last_level = true,
             max_level = 2,
         })
 
+        NewTalentTemplate("talent_trauma", {
+            icon = "Talents\\BTN_cr_cara9.blp",
+            points_required = 2,
+            requires = { "talent_archery_master" },
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_hawkeye", {
+            icon = "Talents\\BTNicons_11543_btn.blp",
+            points_required = 2,
+            requires = { "talent_archery_master", "talent_clear_sight" },
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_tactician", {
+            icon = "Talents\\BTNFadeStrike.blp",
+            points_required = 2,
+            requires = { "talent_clear_sight", "talent_anatomy_master" },
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_enchanter", {
+            icon = "Talents\\BTNinnerflamebuff.blp",
+            points_required = 2,
+            requires = { "talent_tactician", "talent_anatomy_master" },
+            max_level = 2,
+        })
+
+        NewTalentTemplate("talent_forceful_hit", {
+            icon = "Talents\\BTNicons_11465_btn.blp",
+            points_required = 4,
+            requires = { "talent_trauma", "talent_hawkeye" },
+            max_level = 2,
+        })
+
+        NewTalentTemplate("talent_unremarkable_marksman", {
+            icon = "Talents\\BTNAimForBlood.blp",
+            points_required = 4,
+            requires = { "talent_hawkeye", "talent_tactician" },
+            max_level = 2,
+        })
+
+        NewTalentTemplate("talent_fast_reload", {
+            icon = "Talents\\BTNRapid Fire.blp",
+            requires = { "talent_enchanter", "talent_tactician" },
+            points_required = 4,
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_penetrate", {
+            icon = "Talents\\BTNCriticalWound.blp",
+            points_required = 6,
+            requires = { "talent_forceful_hit", "talent_unremarkable_marksman", "talent_fast_reload" },
+            max_level = 2,
+        })
 
 
 
@@ -1789,19 +1841,22 @@ do
                     [2] = { "talent_burnout", "talent_overflow", "talent_heating_up", },
                     [3] = { "talent_heat", "talent_incinerate", "talent_napalm", },
                     [4] = { "talent_hell_flames", "talent_apocalypse" },
+                    background = "UI\\test_fire_back.blp"
                 },
                 [SKILL_CATEGORY_LIGHTNING] = {
                     [1] = { "talent_flash", "talent_negative_charge", "talent_positive_charge", },
                     [2] = { "talent_lightning_rod", "talent_voltage", "talent_arc_discharge", },
                     [3] = { "talent_feedback", "talent_induction", "talent_extra_charge", },
                     [4] = { "talent_shock", "talent_disintegration" },
-                    [5] = { "talent_convulsions" }
+                    [5] = { "talent_convulsions" },
+                    background = "UI\\test_lightning_back.blp"
                 },
                 [SKILL_CATEGORY_ICE] = {
                     [1] = { "talent_remorseless", "talent_crystallization", "talent_ice_crust", },
                     [2] = { "talent_glaciation", "talent_breath_of_frost", "talent_icy_veins", },
                     [3] = { "talent_deep_freeze", "talent_heat_transfer", "talent_fragility", },
                     [4] = { "talent_ice_enduring", },
+                    background = "UI\\test_ice_back.blp"
                 },
             },
             [NECROMANCER_CLASS] = {
@@ -1826,7 +1881,7 @@ do
             },
             [ASSASSIN_CLASS] = {
                 [SKILL_CATEGORY_LETHALITY] = {
-                    { "talent_pickpocket", "talent_dagger_expert", "talent_evasion", "talent_anatomy_master" },
+                    { "talent_pickpocket", "talent_dagger_expert", "talent_evasion", "talent_exhausting_venom" },
                     { "talent_relentless", "talent_counterattack", "talent_weak_point" },
                     { "talent_bloodthirsty", "talent_ambush", "talent_nimble_hands" },
                     { "talent_unmatched_technique" },
@@ -1837,8 +1892,11 @@ do
                     { "talent_in_the_dark", "talent_torture", "talent_nightstalker" },
                     { "talent_erupting_darkness" },
                 },
-                [SKILL_CATEGORY_GEAR] = {
-                    [1] = { "talent_evasion" },
+                [SKILL_CATEGORY_BOW] = {
+                    { "talent_archery_master", "talent_clear_sight", "talent_anatomy_master" },
+                    { "talent_trauma", "talent_hawkeye", "talent_tactician", "talent_enchanter" },
+                    { "talent_forceful_hit", "talent_unremarkable_marksman", "talent_fast_reload" },
+                    { "talent_penetrate" },
                 }
             }
         }

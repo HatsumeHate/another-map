@@ -36,7 +36,10 @@ do
         NewActionData("double_swing", {
             name = "double swing barb",
             action_type = SKILL_PHYSICAL,
-            sound = { pack = { "Sounds\\Spells\\skill_heavy_swing_1.wav", "Sounds\\Spells\\skill_heavy_swing_2.wav", "Sounds\\Spells\\skill_heavy_swing_3.wav" }, volume = 128, cutoff = 1500., delay = 0.45 },
+            sound = {
+                { "Sound\\Barbarian\\Barbarian_Gasp_Medium_1.wav", "Sound\\Barbarian\\Barbarian_Gasp_Medium_2.wav", volume = 150, cutoff = 1500., delay = 0.4 },
+                { "Sounds\\Spells\\skill_heavy_swing_1.wav", "Sounds\\Spells\\skill_heavy_swing_2.wav", "Sounds\\Spells\\skill_heavy_swing_3.wav", volume = 128, cutoff = 1500., delay = 0.45 }
+            },
             animation = {
                 sequence = GetAnimationSequence("barb_swing_4"), timescale = 0.75
             },
@@ -65,24 +68,40 @@ do
         NewActionData("shuriken_throw", {
             name = "shuriken assassin",
             action_type = SKILL_PHYSICAL,
-            --sound = { pack = { "Sounds\\Spells\\skill_heavy_swing_1.wav", "Sounds\\Spells\\skill_heavy_swing_2.wav", "Sounds\\Spells\\skill_heavy_swing_3.wav" }, volume = 128, cutoff = 1500., delay = 0.45 },
+            sound = {  { "Sound\\Assassin\\Assassin_Gasp_hmph_1.wav", "Sound\\Assassin\\Assassin_Gasp_hmph_2.wav", volume = 150, cutoff = 1500., delay = 0.9 } },
             animation = {
-                sequence = GetAnimationSequence("assassin_swing_3"), timescale = 0.5
+                sequence = GetAnimationSequence("assassin_swing_long_upwing_left_to_right"), timescale = 0.27
             },
             sfx_pack = {
                 on_caster = {
                     { effect = "Spell\\Sweep_Chaos_Small.mdx", point = "weapon", permanent = true },
                 },
             },
-            --effect = 'effect_double_strike',
+        })
+
+        NewActionData("shuriken_throw_end", {
+            name = "shuriken assassin",
+            action_type = SKILL_PHYSICAL,
+            sound = {  { "Sound\\Assassin\\Assassin_Gasp_hmph_1.wav", "Sound\\Assassin\\Assassin_Gasp_hmph_2.wav", volume = 150, cutoff = 1500., delay = 0.8 } },
+            animation = {
+                sequence = GetAnimationSequence("assassin_throw"), timescale = 0.3
+            },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Chaos_Small.mdx", point = "weapon", permanent = true },
+                },
+            },
         })
 
         NewActionData("eviscerate_action_1", {
             name = "eviscerate assassin",
             action_type = SKILL_PHYSICAL,
-            sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 128, cutoff = 1500., delay = 0.3},
+            sound = {
+                { "Sound\\Assassin\\Assassin_Gasp_Medium_1.wav", "Sound\\Assassin\\Assassin_Gasp_Medium_2.wav", "Sound\\Assassin\\Assassin_Gasp_Medium_3.wav", volume = 150, cutoff = 1500., delay = 0.25 },
+                { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" , volume = 128, cutoff = 1500., delay = 0.3 }
+            },
             animation = {
-                sequence = GetAnimationSequence("assassin_swing_3"), timescale = 0.8
+                sequence = GetAnimationSequence("assassin_swing_combo_2"), timescale = 1.2
             },
             sfx_pack = {
                 on_caster = {
@@ -90,10 +109,10 @@ do
                     { effect = "Spell\\Sweep_Chaos_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
                 },
                 on_terrain = {
-                    { effect = "Effect\\[TX]LTSMN_R2.mdx", plane_offset = 60., height = 75., roll = 0., appear_delay = 0.57, animation_time_influence = true, scale = 0.4,
+                    { effect = "Effect\\[TX]LTSMN_R2.mdx", plane_offset = 60., height = 75., roll = 35., appear_delay = 0.13, animation_time_influence = true, scale = 0.4,
                       conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }
                     },
-                    { effect = "Effect\\[TX]LTSMN_R2.mdx", plane_offset = 60., height = 75., appear_delay = 0.56, animation_time_influence = true, scale = 0.3,
+                    { effect = "Effect\\[TX]LTSMN_R2.mdx", plane_offset = 60., height = 75., appear_delay = 0.13, animation_time_influence = true, scale = 0.3,
                     conditional_weapon = { FIST_WEAPON }
                     }
                 }
@@ -109,9 +128,12 @@ do
         NewActionData("eviscerate_action_2", {
             name = "eviscerate assassin",
             action_type = SKILL_PHYSICAL,
-            sound = { pack = { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" }, volume = 128, cutoff = 1500., delay = 0.3},
+            sound = {
+                { "Sound\\Assassin\\Assassin_Gasp_Heavy_1.wav", "Sound\\Assassin\\Assassin_Gasp_Heavy_2.wav", "Sound\\Assassin\\Assassin_Gasp_Heavy_3.wav", volume = 150, cutoff = 1500., delay = 0.25 },
+                { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" , volume = 128, cutoff = 1500., delay = 0.3 }
+            },
             animation = {
-                sequence = GetAnimationSequence("assassin_swing_1"), timescale = 0.8
+                sequence = GetAnimationSequence("assassin_swing_combo_3"), timescale = 0.75
             },
             sfx_pack = {
                 on_caster = {
@@ -119,10 +141,10 @@ do
                     { effect = "Spell\\Sweep_Chaos_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
                 },
                 on_terrain = {
-                    { effect = "Effect\\[TX]LTSMN_R2.mdx", plane_offset = 60., height = 75., roll = -245., appear_delay = 0.57, animation_time_influence = true, scale = 0.5,
+                    { effect = "Effect\\[TX]LTSMN_R2.mdx", plane_offset = 60., height = 75., roll = -225., appear_delay = 0.35, animation_time_influence = true, scale = 0.5,
                       conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }
                     },
-                    { effect = "Effect\\[TX]LTSMN_R2.mdx", plane_offset = 60., height = 75., appear_delay = 0.56, animation_time_influence = true, scale = 0.4,
+                    { effect = "Effect\\[TX]LTSMN_R2.mdx", plane_offset = 60., height = 75., appear_delay = 0.35, animation_time_influence = true, scale = 0.4,
                     conditional_weapon = { FIST_WEAPON }
                     }
                 }

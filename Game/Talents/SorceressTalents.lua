@@ -20,15 +20,18 @@ do
                     if unit_data.heating_up_stacks >= max_stacks then
                         unit_data.heating_up_boost = true
                         unit_data.heating_up_effect = AddSpecialEffectTarget("Effect\\heating_up.mdx", source, "origin")
+                        EnableAbilitySpriteOverlay("fire", 1)
                     end
 
             elseif unit_data.heating_up_boost then
                 unit_data.heating_up_boost = nil
                 DestroyEffect(unit_data.heating_up_effect)
                 RemoveStatusBarState("talent_heating_up", player)
+                DisableAbilitySpriteOverlay("fire", 1)
             else
                 AddStatusBarState("talent_heating_up", "Talents\\BTNFireSpell1.blp", POSITIVE_BUFF, player)
                 SetStatusBarValue("talent_heating_up", 1, player)
+                SetStatusBarHeaderName("talent_heating_up", LOCALE_LIST[my_locale].TALENTS["talent_heating_up"].name, GetPlayerId(GetOwningPlayer(source))+1)
                 unit_data.heating_up_stacks = 1
             end
 
@@ -301,6 +304,7 @@ do
 
                     AddStatusBarState("talent_arc_discharge", "Talents\\BTNLightningSpell14.blp", POSITIVE_BUFF, GetPlayerId(GetOwningPlayer(source))+1)
                     SetStatusBarValue("talent_arc_discharge", unit_data.arc_discharge_boost, GetPlayerId(GetOwningPlayer(source))+1)
+                    SetStatusBarHeaderName("talent_arc_discharge", LOCALE_LIST[my_locale].TALENTS["talent_arc_discharge"].name, GetPlayerId(GetOwningPlayer(source))+1)
 
                     if unit_data.arc_discharge_boost == 1 then BlzPlaySpecialEffect(unit_data.arc_discharge_boost_effect, ANIM_TYPE_STAND)
                     elseif unit_data.arc_discharge_boost == 2 then BlzPlaySpecialEffect(unit_data.arc_discharge_boost_effect, ANIM_TYPE_SPELL)

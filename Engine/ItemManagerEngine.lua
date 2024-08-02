@@ -144,9 +144,7 @@ do
             BlzSetSpecialEffectOrientation(effect, GetRandomInt(1, 360) * bj_DEGTORAD, 0.,0.)
             --BlzSetSpecialEffectYaw(effect, GetRandomInt(1, 360) * bj_DEGTORAD)
 
-            amount = amount + (Current_Wave)
             local result_scale = (amount  / MAX_GOLD_SCALE_AMOUNT) + MIN_GOLD_SCALE
-
 
             if result_scale < MIN_GOLD_SCALE then result_scale = MIN_GOLD_SCALE
             elseif result_scale > MAX_GOLD_SCALE then result_scale = MAX_GOLD_SCALE end
@@ -710,6 +708,7 @@ do
             item_data.stat_modificator = item_preset.modificator
             item_data.model = item_preset.model or nil
             item_data.texture = item_preset.texture or nil
+            item_data.assassin_texture = item_preset.assassin_texture or nil
             item_data.item_variation = item_variation
             --print("1")
             ApplyQualityGlowColour(item)
@@ -740,8 +739,10 @@ do
                         item_data.ATTRIBUTE_BONUS = GetRandomInt(0, 5)
 
                     else
-                        if GetRandomInt(1, 2) == 1 then item_data.ATTRIBUTE = PHYSICAL_ATTRIBUTE
-                        else item_data.ATTRIBUTE = POISON_ATTRIBUTE end
+                        local rnd = GetRandomInt(1, 5)
+                        if rnd <= 3 then item_data.ATTRIBUTE = PHYSICAL_ATTRIBUTE
+                        elseif rnd == 4 then item_data.ATTRIBUTE = ICE_ATTRIBUTE
+                        elseif rnd == 5 then item_data.ATTRIBUTE = POISON_ATTRIBUTE end
                     end
 
                 end
@@ -865,19 +866,35 @@ do
                 if flag then
 
                     if point == CHEST_POINT then
-                        SetTexture(unit, item_data.texture or TEXTURE_ID_EMPTY)
+                        if GetUnitClass(unit) == ASSASSIN_CLASS then
+                            SetTexture(unit, item_data.assassin_texture or TEXTURE_ID_ASSASSIN_BASE)
+                        else
+                            SetTexture(unit, item_data.texture or TEXTURE_ID_EMPTY)
+                        end
                     else
                         local ref_point = "chest"
 
                         if point == OFFHAND_POINT then ref_point = "hand left"
                         elseif point == WEAPON_POINT then ref_point = "hand right" end
 
+                        if GetUnitClass(unit) == ASSASSIN_CLASS and item_data.SUBTYPE == BOW_WEAPON then
+                            ref_point = "hand left"
+                        end
+
                         item_data.model_effect = AddSpecialEffectTarget(item_data.model, unit, ref_point)
                         BlzSetSpecialEffectScale(item_data.model_effect, 0.88)
                     end
 
                 else
-                    if item_data.texture then SetTexture(unit, TEXTURE_ID_EMPTY) end
+
+                    if point == CHEST_POINT then
+                        if GetUnitClass(unit) == ASSASSIN_CLASS then
+                            SetTexture(unit, TEXTURE_ID_ASSASSIN_BASE)
+                        else
+                            if item_data.texture then SetTexture(unit, TEXTURE_ID_EMPTY) end
+                        end
+                    end
+
                     if item_data.model_effect then BlzSetSpecialEffectScale(item_data.model_effect, 1.); DestroyEffect(item_data.model_effect) end
                 end
             end
@@ -1268,7 +1285,6 @@ do
         for i = 1, 6 do
             PlayerPickUpItemFlag[i] = false
         end
-
 
     end
 

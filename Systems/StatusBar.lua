@@ -30,6 +30,7 @@ do
         local new_FrameBar = BlzCreateSimpleFrame("MyBarEx", new_Frame, 0)
         local new_FrameBarText = BlzGetFrameByName("MyBarExText", 0)
         local new_FrameStatusBorder = BlzCreateFrameByType("BACKDROP", "Border", new_Frame, "", 0)
+        local tooltip = CreateTooltip("header", "context", new_Frame, 0.14, 0.12)
 
         ButtonList[new_Frame] = {
             status = nil,
@@ -39,7 +40,8 @@ do
             charges_text_frame = new_FrameChargesText,
             bar = new_FrameBar,
             bar_text = new_FrameBarText,
-            status_border = new_FrameStatusBorder
+            status_border = new_FrameStatusBorder,
+            tooltip = tooltip
         }
 
         BlzFrameSetScale(new_FrameBarText, 0.9)
@@ -92,27 +94,12 @@ do
 
             StatusBarData[player][to] = MergeTables({}, StatusBarData[player][from])
             BlzFrameSetValue(target_Button.bar, BlzFrameGetValue(button.bar))
-
-        --[[
-            if StringLength(BlzFrameGetText(button.charges_text_frame)) > 0 then
-                BlzFrameSetVisible(target_Button.charges_frame, true)
-                BlzFrameSetText(target_Button.charges_text_frame, BlzFrameGetText(button.charges_text_frame))
-
-                local length = StringLength(BlzFrameGetText(button.charges_text_frame))
-
-                if length >= 3 then BlzFrameSetScale(target_Button.charges_text_frame, 0.65)
-                elseif length >= 2 then BlzFrameSetScale(target_Button.charges_text_frame, 0.75)
-                else BlzFrameSetScale(target_Button.charges_text_frame, 0.85) end
-
-            end
-
-            if StatusBarData[player][to].time then
-                if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(target_Button.bar, true) end
-                BlzFrameSetMinMaxValue(target_Button.bar, 0, StatusBarData[player][to].time)
-            end
-
-            BlzFrameSetVisible(target_Button.status_border, StatusBarData[player][to].polarity == NEGATIVE_BUFF)]]
+            BlzFrameSetText(target_Button.tooltip.title, BlzFrameGetText(button.tooltip.title))
+            BlzFrameSetText(target_Button.tooltip.description, BlzFrameGetText(button.tooltip.description))
+            BlzFrameSetSize(target_Button.tooltip.tooltip, StatusBarData[player][from].width, StatusBarData[player][from].height)
             UpdateStatusBarState(to, player)
+
+
     end
 
 
@@ -120,31 +107,33 @@ do
     ---@param player integer
     function UpdateStatusBarState(index, player)
         if player > 6 then return end
+        local data = StatusBarData[player][index] or nil
         local button = GetButtonData(StatusBarButtons[player][index])
 
-            if StatusBarData[player][index] then
+            if data then
 
-                BlzFrameSetTexture(button.image, StatusBarData[player][index].icon, 0, true)
-                if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(StatusBarButtons[player][index], true) end
+                    BlzFrameSetTexture(button.image, data.icon, 0, true)
+                    if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(StatusBarButtons[player][index], true) end
 
+                    if data.time then
+                        if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.bar, true) end
+                        BlzFrameSetMinMaxValue(button.bar, 0, data.time)
+                    end
 
-                if StatusBarData[player][index].time then
-                    if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.bar, true) end
-                    BlzFrameSetMinMaxValue(button.bar, 0, StatusBarData[player][index].time)
-                end
+                    if data.value and data.value > 0 then
+                        BlzFrameSetVisible(button.charges_frame, true)
+                        BlzFrameSetText(button.charges_text_frame, I2S(math.floor(data.value + 0.5)))
+                        if data.value >= 100 then BlzFrameSetScale(button.charges_text_frame, 0.65)
+                        elseif data.value >= 10 then BlzFrameSetScale(button.charges_text_frame, 0.75)
+                        else BlzFrameSetScale(button.charges_text_frame, 0.85) end
+                    end
 
-                if StatusBarData[player][index].value and StatusBarData[player][index].value > 0 then
-                    BlzFrameSetVisible(button.charges_frame, true)
-                    BlzFrameSetText(button.charges_text_frame, I2S(math.floor(StatusBarData[player][index].value + 0.5)))
-                    if StatusBarData[player][index].value >= 100 then BlzFrameSetScale(button.charges_text_frame, 0.65)
-                    elseif StatusBarData[player][index].value >= 10 then BlzFrameSetScale(button.charges_text_frame, 0.75)
-                    else BlzFrameSetScale(button.charges_text_frame, 0.85) end
-                end
+                    BlzFrameSetVisible(button.status_border, data.polarity == NEGATIVE_BUFF)
 
-                BlzFrameSetVisible(button.status_border, StatusBarData[player][index].polarity == NEGATIVE_BUFF)
             else
                 BlzFrameSetTexture(button.image, "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", 0, true)
-                if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(StatusBarButtons[player][index], false); BlzFrameSetVisible(button.bar, false) end
+                BlzFrameSetVisible(StatusBarButtons[player][index], false)
+                BlzFrameSetVisible(button.bar, false)
                 BlzFrameSetVisible(button.charges_frame, false)
                 BlzFrameSetText(button.charges_text_frame, "")
 
@@ -177,13 +166,24 @@ do
 
                         BlzFrameSetValue(button.bar, value)
                         BlzFrameSetText(button.bar_text, I2S(math.floor(value  + 0.5)))
-
-                    break
+                        break
                 end
             end
 
     end
 
+    function SetStatusBarHeaderName(id, header, player)
+        if player > 6 then return end
+
+            for i = 1, MAX_STATUSES do
+                if StatusBarData[player][i] and StatusBarData[player][i].id == id then
+                    local button = GetButtonData(StatusBarButtons[player][i])
+                    BlzFrameSetText(button.tooltip.title, header)
+                    break
+                end
+            end
+
+    end
 
     ---@param id string
     ---@param time real
@@ -199,6 +199,7 @@ do
                         BlzFrameSetMinMaxValue(button.bar, 0, time)
                         BlzFrameSetText(button.bar_text, I2S(math.floor(time  + 0.5)))
                         if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.bar, true) end
+                        break
                 end
             end
 
@@ -218,12 +219,66 @@ do
                         BlzFrameSetText(button.charges_text_frame, I2S(math.floor(value  + 0.5)))
                         BlzFrameSetVisible(button.charges_frame, true)
                         StatusBarData[player][i].value = value
+                        break
                 end
 
             end
 
     end
 
+
+    function UpdateStatusBarTooltip(id, player)
+
+        if player > 6 then return end
+
+        for slot = 1, MAX_STATUSES do
+            if StatusBarData[player][slot] and StatusBarData[player][slot].id == id then
+                local button = GetButtonData(StatusBarButtons[player][slot])
+                local buff_data = GetBuffDataFromUnit(PlayerHero[player], id) or nil
+                local locale_data = LOCALE_LIST[my_locale].BUFFS[id]
+                local description = "no description       "
+                local level = 1
+
+                    if buff_data then
+                        BlzFrameSetText(button.tooltip.title, buff_data.name)
+                        level = buff_data.current_level
+                    else
+                        BlzFrameSetText(button.tooltip.title, "no name")
+                    end
+
+                    if locale_data then
+                        if locale_data[level] then
+                            description = ParseLocalizationSkillTooltipString(locale_data[level], level)
+                        else
+                            for i = level, 1, -1 do
+                                if locale_data[i] then
+                                    description = ParseLocalizationSkillTooltipString(locale_data[i], level)
+                                    break
+                                end
+                            end
+                        end
+                    end
+
+
+                    local height_segments = math.ceil((#description / 25))
+                    local width_segments = 0
+
+                    if height_segments > 7 then
+                        width_segments = math.floor(height_segments / 7)
+                        height_segments = 7
+                    end
+
+                    local height = 0.02 + height_segments * 0.009
+                    local width = 0.18 + width_segments * 0.07
+                    BlzFrameSetSize(button.tooltip.tooltip, width, height)
+                    BlzFrameSetText(button.tooltip.description, description)
+                    StatusBarData[player][slot].height = height
+                    StatusBarData[player][slot].width = width
+                    break
+            end
+        end
+
+    end
 
     ---@param id string
     ---@param player integer
@@ -235,7 +290,18 @@ do
             if StatusBarData[player][i] and StatusBarData[player][i].id == id then
                 StatusBarData[player][i] = nil
                 UpdateStatusBarState(i, player)
-                break
+            end
+        end
+
+    end
+
+    function ClearStatusBar(player)
+        if player > 6 then return end
+
+        for i = 1, MAX_STATUSES do
+            if StatusBarData[player][i] then
+                StatusBarData[player][i] = nil
+                UpdateStatusBarState(i, player)
             end
         end
 
@@ -270,7 +336,6 @@ do
                         for i = slot, 1, -1 do
                             if StatusBarData[player][i] and StatusBarData[player][i].polarity == NEGATIVE_BUFF then
                                 ReplaceSlot(i, i+1, player)
-                                --UpdateStatusBarState(i+1, player)
                             else
                                 break
                             end
@@ -281,8 +346,8 @@ do
 
 
         StatusBarData[player][slot] = { id = id, icon = icon or "ReplaceableTextures\\CommandButtons\\BTNPeon.blp", polarity = polarity }
+        UpdateStatusBarTooltip(id, player)
         UpdateStatusBarState(slot, player)
-
 
     end
 
@@ -316,6 +381,7 @@ do
                 for i = 1, MAX_STATUSES do
                     if StatusBarData[player][i] then
                         UpdateStatusBarState(i, player)
+                        UpdateStatusBarTooltip(StatusBarData[player][i].id, player)
                     end
                 end
             end

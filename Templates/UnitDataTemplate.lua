@@ -168,7 +168,12 @@ do
             skill_list = {},
             effects = {},
             endurance_stack = {},
-            attack_instances = {}
+            attack_instances = {},
+            attack_status = {
+                [ATTACK_STATUS_CRITICAL] = {},
+                [ATTACK_STATUS_EVADE] = {},
+                [ATTACK_STATUS_BLOCKED] = {},
+            }
         }
 
         data.default_weapon = CreateDefaultWeapon()
@@ -400,7 +405,7 @@ do
             time_before_remove = 0.,
             missile_eject_range = 50.,
             base_stats = { health = 250., moving_speed = 335 },
-            classic_model = true,
+            classic_model = false,
         })
 
         NewUnitTemplate('HAMA', {
@@ -683,6 +688,7 @@ do
             bonus_parameters = {
                 { param = MELEE_DAMAGE_REDUCTION, value = 11, method = STRAIGHT_BONUS }
             },
+            skill_list = {"AZVO"},
             colours = { r = 255, g = 150, b = 150 },
             scale = 1.45,
             height = 120.,
@@ -728,6 +734,7 @@ do
                 { param = MELEE_DAMAGE_REDUCTION, value = 11, method = STRAIGHT_BONUS },
                 { param = ALL_RESIST, value = 6, method = STRAIGHT_BONUS }
             },
+            skill_list = {"AZVO"},
             colours = { r = 255, g = 150, b = 150 },
             scale = 1.45,
             height = 120.,
@@ -890,6 +897,7 @@ do
                 { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
+            effect_list = { "skele_mage_cold" },
             has_mp = false,
             height = 145.,
             drop_offset_min = 15., drop_offset_max = 45.,
@@ -1506,6 +1514,7 @@ do
             skill_list = { "AWWO" },
             has_mp = false,
             height = 180.,
+            death_sound = { pack = { "Sounds\\Units\\Creeps\\Wendigo\\WendigoDeath.wav" }, volume = 128, cutoff = 1600. },
             drop_offset_min = 45., drop_offset_max = 85.,
             xp = 55,
         })
@@ -1704,6 +1713,7 @@ do
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
+            effect_list = { "skele_mage_cold" },
             has_mp = false,
             height = 155.,
             drop_offset_min = 20., drop_offset_max = 55.,
@@ -1790,12 +1800,14 @@ do
             unit_trait = { TRAIT_DEMON },
             time_before_remove = 25.,
             base_stats = { health = 290., hp_regen = 1.4, moving_speed = 245. },
-            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 7, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 10, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_SLICE },
+            weapon = { ATTACK_SPEED = 1.8, DAMAGE = 7, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 10, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_SLICE },
+            offhand = { BLOCK = 25., BLOCK_RATE = 35. },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = PHYSICAL_DEFENCE, value = 70, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS },
             },
+            skill_list = { "AHGF" },
             scale = 1.3,
             has_mp = false,
             height = 160.,
@@ -2743,7 +2755,7 @@ do
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
-            skill_list = { "ADME" },
+            skill_list = { "ADME", "ADMP" },
             has_mp = false,
             drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,

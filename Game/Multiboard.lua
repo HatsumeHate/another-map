@@ -61,6 +61,36 @@ do
         local multiboard = BlzGetFrameByName("Multiboard", 0)
             BlzFrameClearAllPoints(multiboard)
             BlzFrameSetPoint(multiboard, FRAMEPOINT_TOPLEFT, PlayerUI.minimap_border, FRAMEPOINT_TOPRIGHT, 0.014, 0.)
+            MultiboardSetTitleText(MAIN_MULTIBOARD, LOCALE_LIST[my_locale].WAVE_INCOMING_TEXT)
+            MultiboardSetItemsStyle(MAIN_MULTIBOARD, true, false)
+            MultiboardSetItemsWidth(MAIN_MULTIBOARD, 0.048)
+            MultiboardSetColumnCount(MAIN_MULTIBOARD, 3)
+            MultiboardSetRowCount(MAIN_MULTIBOARD, 8)
+            MultiboardDisplay(MAIN_MULTIBOARD, true)
+            MultiboardMinimize(MAIN_MULTIBOARD, true)
+            MultiboardMinimize(MAIN_MULTIBOARD, false)
+            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 0), 0.07)
+            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 1), 0.1)
+
+            for i = 0, 2 do
+                MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1, i), "=========================")
+                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1, i), 0.07)
+            end
+
+            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 2), 0.)
+            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1, 2), 0.)
+
+            for i = 1, 6 do
+                if GetPlayerSlotState(Player(i-1)) == PLAYER_SLOT_STATE_PLAYING then
+                    MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), PlayerColors[i] .. PlayerNames[i] .. "|r")
+                end
+            end
+
+            for i = 1, 6 do
+                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), 0.07)
+                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 1), 0.014)
+                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 2), 0.03)
+            end
     end
 
     function InitMultiboard()

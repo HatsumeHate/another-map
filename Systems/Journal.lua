@@ -136,7 +136,7 @@ do
                         BlzFrameSetText(JournalFrame[player].header, button_data.entry.header)
                         in_focus = true
                     elseif not JournalFrame[player].entry_in_focus then
-                        BlzFrameSetText(JournalFrame[player].entry_text_frame, "")
+                        BlzFrameSetText(JournalFrame[player].entry_text_frame, " ")
                         BlzFrameSetText(JournalFrame[player].header, "")
                         BlzFrameSetVisible(JournalFrame[player].track_button, false)
                     end
@@ -211,7 +211,7 @@ do
                     BlzFrameSetText(JournalFrame[player].header, button_data.entry.header)
                 else
                     BlzFrameSetVisible(JournalFrame[player].track_button, false)
-                    BlzFrameSetText(JournalFrame[player].entry_text_frame, "")
+                    BlzFrameSetText(JournalFrame[player].entry_text_frame, " ")
                     BlzFrameSetText(JournalFrame[player].header, "")
                 end
 
@@ -431,7 +431,7 @@ do
             if JournalFrame[player].entries_list[i] and JournalFrame[player].entries_list[i].id == id then
 
                 if JournalFrame[player].entry_in_focus and JournalFrame[player].entry_in_focus == JournalFrame[player].entries_list[i] then
-                    BlzFrameSetText(JournalFrame[player].entry_text_frame, "")
+                    BlzFrameSetText(JournalFrame[player].entry_text_frame, " ")
                     JournalFrame[player].entry_in_focus = nil
                 end
                 table.remove(JournalFrame[player].entries_list, i)

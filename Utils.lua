@@ -667,6 +667,20 @@
 		return float_angle <= window
 	end
 
+		function IsPointInTrapezium(px, py, ax, ay, bx, by, cx, cy, dx, dy)
+			local apx, apy = ax - px, ay - py
+			local bpx, bpy = bx - px, by - py
+			local cpx, cpy = cx - px, cy - py
+			local dpx, dpy = dx - px, dy - py
+
+			local ab = apx * bpy - apy * bpx
+			local bc = bpx * cpy - bpy * cpx
+			local cd = cpx * dpy - cpy * dpx
+			local da = dpx * apy - dpy * apx
+
+			return (ab >= 0 and bc >= 0 and cd >= 0 and da >= 0) or (ab <= 0 and bc <= 0 and cd <= 0 and da <= 0)
+		end
+
 	function GetDirection(u, targ)
 		local alpha = GetUnitFacing(u)
 		local gamma = bj_RADTODEG * Atan2(GetUnitY(targ) - GetUnitY(u), GetUnitX(targ) - GetUnitX(u))
@@ -840,6 +854,25 @@
 			RemoveDestructable(bj_lastCreatedDestructable)
 			SetUnitAnimation(u, "stand")
 	end
+
+
+		---@param caster unit
+		---@param target unit
+		---@param x real
+		---@param y real
+		---@param id string
+		---@param order integer
+		function DummyCast(caster, target, x, y, id, order)
+			local angle = target and AngleBetweenUnits(caster, target) or AngleBetweenUnitXY(caster, x, y)
+			local dummy = CreateUnit(GetOwningPlayer(caster), FourCC("dmcs"), GetUnitX(caster), GetUnitY(caster), angle)
+                UnitAddAbility(dummy, FourCC(id))
+
+				if target then IssueTargetOrderById(dummy, order, caster)
+				else IssuePointOrderById(dummy, order, x, y) end
+
+                DelayAction(0.2, function() RemoveUnit(dummy) end)
+		end
+
 
 
 end

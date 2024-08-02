@@ -33,7 +33,7 @@ do
         AuraTemplate = {}
         AuraList = {}
 
-
+        --=================================================================--
         NewAuraTemplate({
             id = "grave_cold_aura",
             name = "grave cold aura",
@@ -50,7 +50,7 @@ do
                 }
             }
         })
-
+        --=================================================================--
         NewAuraTemplate({
             id = "hydra_aura",
             name = "hydra fire aura",
@@ -67,7 +67,7 @@ do
                 }
             }
         })
-
+        --=================================================================--
         NewAuraTemplate({
             id = "lich_aura",
             name = "lich aura",
@@ -83,41 +83,40 @@ do
                 }
             }
         })
-
+        --=================================================================--
         NewAuraTemplate({
             id = "caltrops_aura",
             name = "caltrops aura",
             max_level = 1,
-            sfx_path = "Abilities\\Spells\\Undead\\UnholyAura\\UnholyAura.mdx",
-            tickrate = 0.2,
+            sfx_path = "",
+            tickrate = 0.5,
             level = {
                 [1] = {
                     sfx_scale = 1.5,
-                    radius = 350.,
+                    radius = 300.,
                     duration = 5.,
                     [ON_ENEMY] = { applied_effect = "caltrops_effect" }
                 }
             }
         })
-
+        --=================================================================--
         NewAuraTemplate({
             id = "twilight_aura",
             name = "twilight aura",
             max_level = 75,
-            sfx_path = "Effect\\Black Mist.mdx",
+            sfx_path = "Effect\\Blind Aura.mdx",
             sfx_point = "origin",
             tickrate = 0.5,
             level = {
                 [1] = {
-                    sfx_scale = 1.5,
+                    sfx_scale = 1.3,
                     radius = 450.,
                     duration = 6.,
                     [ON_ENEMY] = { applied_effect = "twilight_effect" },
-                    [ON_SELF] = { applied_buff = "ABTH" }
                 }
             }
         })
-
+        --=================================================================--
         NewAuraTemplate({
             id = "monster_physical_aura",
             name = LOCALE_LIST[my_locale].MONSTER_TRAIR_AURA_PHYSICAL,
@@ -133,7 +132,7 @@ do
                 }
             }
         })
-
+        --=================================================================--
         NewAuraTemplate({
             id = "monster_primal_aura",
             name = LOCALE_LIST[my_locale].MONSTER_TRAIR_AURA_PRIMAL_ELEMENTS,
@@ -149,7 +148,7 @@ do
                 }
             }
         })
-
+        --=================================================================--
         NewAuraTemplate({
             id = "monster_shadow_aura",
             name = LOCALE_LIST[my_locale].MONSTER_TRAIR_AURA_SHADOW,
@@ -165,7 +164,7 @@ do
                 }
             }
         })
-
+        --=================================================================--
         NewAuraTemplate({
             id = "monster_universal_aura",
             name = LOCALE_LIST[my_locale].MONSTER_TRAIR_AURA_UNIVERSAL,
@@ -181,7 +180,7 @@ do
                 }
             }
         })
-
+        --=================================================================--
         NewAuraTemplate({
             id = "monster_sturdy_aura",
             name = LOCALE_LIST[my_locale].MONSTER_TRAIR_AURA_STURDY,
@@ -194,6 +193,23 @@ do
                     sfx_scale = 1.,
                     radius = 700.,
                     [ON_ALLY] = { applied_buff = "MSTA" }
+                }
+            }
+        })
+        --=================================================================--
+        NewAuraTemplate({
+            id = "arcane_rift_aura",
+            name = "arcane rift aura",
+            max_level = 75,
+            sfx_path = "Effect\\Ambition_Aura_pink.mdx",
+            tickrate = 0.2,
+            bonus_z = 5.,
+            level = {
+                [1] = {
+                    sfx_scale = 1.65,
+                    radius = 150.,
+                    duration = 8.,
+                    [ON_HEROES] = { applied_buff = "A036" }
                 }
             }
         })

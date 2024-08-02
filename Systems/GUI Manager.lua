@@ -51,7 +51,7 @@ do
 
 
             for i = 1, 6 do
-                GlobalButton[i].char_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOMLEFT, 0.1725, 0.028, GAME_UI)
+                GlobalButton[i].char_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOM, -0.221, 0.0262, GAME_UI)
                 CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].char_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
                 BlzFrameSetVisible(GlobalButton[i].char_panel_button, false)
                 BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].char_panel_button, FRAMEEVENT_CONTROL_CLICK)
@@ -69,7 +69,7 @@ do
                 BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].inventory_panel_button, FRAMEEVENT_CONTROL_CLICK)
                 CreateSimpleChargesText(GlobalButton[i].inventory_panel_button, "TAB", 0.9, 0.7, 0.008)
 
-                GlobalButton[i].talents_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNMarksmanship.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOMLEFT, 0.6275, 0.028, GAME_UI)
+                GlobalButton[i].talents_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNMarksmanship.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOM, 0.221, 0.0262, GAME_UI)
                 BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].talents_panel_button, FRAMEEVENT_CONTROL_CLICK)
                 CreateTooltip(GetLocalString("Таланты", "Talents"), GetLocalString("Изучение всех доступных талантов героя.", "Learning of all hero talents."), GlobalButton[i].talents_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
                 CreateSimpleChargesText(GlobalButton[i].talents_panel_button, "N", 0.9, 0.9)
@@ -87,7 +87,7 @@ do
                 CreateSimpleChargesText(GlobalButton[i].settings_panel_button, "P", 0.9, 0.9)
                 BlzFrameSetVisible(GlobalButton[i].settings_panel_button, false)
 
-                GlobalButton[i].dash_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNEvasion.blp", 0.026, 0.026, GlobalButton[i].talents_panel_button, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.05, GAME_UI)
+                GlobalButton[i].dash_button = CreateSimpleButton("Spell\\BTNTravelersShoes.blp", 0.026, 0.026, GlobalButton[i].talents_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_TOP, 0.01, 0.07, GAME_UI)
                 BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].dash_button, FRAMEEVENT_CONTROL_CLICK)
                 CreateTooltip(GetLocalString("Рывок", "Dash"), GetLocalString("Нажмите [SPACE] что бы сделать рывок. Кликните что бы сменить режим: на курсор/по направлению взгляда героя",
                     "Press [SPACEBAR] to dash. Click to change mode: to the cursor/to the hero facing"), GlobalButton[i].dash_button, 0.14, 0.08, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
@@ -415,43 +415,49 @@ do
             -- "UI\\StatPanelIcon.blp"
             -- "UI\\SkillPanelIcon.blp"
             -- "UI\\IventoryIcon.blp"
-            GlobalButton[i].char_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOMLEFT, 0.1725, 0.028, GAME_UI)
+            GlobalButton[i].char_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOM, -0.221, 0.0262, GAME_UI)
+            BlzFrameSetScale(GlobalButton[i].char_panel_button, 0.9)
             CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].char_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
             BlzFrameSetVisible(GlobalButton[i].char_panel_button, false)
             BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].char_panel_button, FRAMEEVENT_CONTROL_CLICK)
             CreateSimpleChargesText(GlobalButton[i].char_panel_button, "C", 0.9, 0.9)
 
-            GlobalButton[i].skill_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSpellBookBLS.blp", 0.034, 0.034, GlobalButton[i].char_panel_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.003, 0., GAME_UI)
+            GlobalButton[i].skill_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSpellBookBLS.blp", 0.034, 0.034, GlobalButton[i].char_panel_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0., 0., GAME_UI)
+            BlzFrameSetScale(GlobalButton[i].skill_panel_button, 0.9)
             CreateTooltip(LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].skill_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
             BlzFrameSetVisible(GlobalButton[i].skill_panel_button, false)
             BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].skill_panel_button, FRAMEEVENT_CONTROL_CLICK)
             CreateSimpleChargesText(GlobalButton[i].skill_panel_button, "B", 0.9, 0.9)
 
-            GlobalButton[i].inventory_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp", 0.034, 0.034, GlobalButton[i].skill_panel_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.003, 0., GAME_UI)
+            GlobalButton[i].inventory_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp", 0.034, 0.034, GlobalButton[i].skill_panel_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0., 0., GAME_UI)
+            BlzFrameSetScale(GlobalButton[i].inventory_panel_button, 0.9)
             CreateTooltip(LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].inventory_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
             BlzFrameSetVisible(GlobalButton[i].inventory_panel_button, false)
             BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].inventory_panel_button, FRAMEEVENT_CONTROL_CLICK)
             CreateSimpleChargesText(GlobalButton[i].inventory_panel_button, "TAB", 0.9, 0.7, 0.008)
 
-            GlobalButton[i].talents_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNMarksmanship.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOMLEFT, 0.6275, 0.028, GAME_UI)
+            GlobalButton[i].talents_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNMarksmanship.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOM, 0.221, 0.0262, GAME_UI)
+            BlzFrameSetScale(GlobalButton[i].talents_panel_button, 0.9)
             BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].talents_panel_button, FRAMEEVENT_CONTROL_CLICK)
             CreateTooltip(GetLocalString("Таланты", "Talents"), GetLocalString("Изучение всех доступных талантов героя.", "Learning of all hero talents."), GlobalButton[i].talents_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
             CreateSimpleChargesText(GlobalButton[i].talents_panel_button, "N", 0.9, 0.9)
             BlzFrameSetVisible(GlobalButton[i].talents_panel_button, false)
 
-            GlobalButton[i].journal_panel_button = CreateSimpleButton("UI\\BTNScribeScroll.blp", 0.034, 0.034, GlobalButton[i].talents_panel_button, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.003, 0., GAME_UI)
+            GlobalButton[i].journal_panel_button = CreateSimpleButton("UI\\BTNScribeScroll.blp", 0.034, 0.034, GlobalButton[i].talents_panel_button, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., GAME_UI)
+            BlzFrameSetScale(GlobalButton[i].journal_panel_button, 0.9)
             BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].journal_panel_button, FRAMEEVENT_CONTROL_CLICK)
             CreateTooltip(GetLocalString("Журнал", "Journal"), GetLocalString("Все заметки и задания.", "All notes and quests tracking."), GlobalButton[i].journal_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
             CreateSimpleChargesText(GlobalButton[i].journal_panel_button, "J", 0.9, 0.9)
             BlzFrameSetVisible(GlobalButton[i].journal_panel_button, false)
 
-            GlobalButton[i].settings_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNEngineeringUpgrade.blp", 0.034, 0.034, GlobalButton[i].journal_panel_button, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.003, 0., GAME_UI)
+            GlobalButton[i].settings_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNEngineeringUpgrade.blp", 0.034, 0.034, GlobalButton[i].journal_panel_button, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., GAME_UI)
+            BlzFrameSetScale(GlobalButton[i].settings_panel_button, 0.9)
             BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].settings_panel_button, FRAMEEVENT_CONTROL_CLICK)
             CreateTooltip(GetLocalString("Настройки", "Settings"), GetLocalString("Пока что отключено.", "Not yet implemented."), GlobalButton[i].settings_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
             CreateSimpleChargesText(GlobalButton[i].settings_panel_button, "P", 0.9, 0.9)
             BlzFrameSetVisible(GlobalButton[i].settings_panel_button, false)
 
-            GlobalButton[i].dash_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNEvasion.blp", 0.026, 0.026, GlobalButton[i].talents_panel_button, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP, 0., 0.05, GAME_UI)
+            GlobalButton[i].dash_button = CreateSimpleButton("Spell\\BTNTravelersShoes.blp", 0.026, 0.026, GlobalButton[i].talents_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_TOP, 0.01, 0.07, GAME_UI)
             BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].dash_button, FRAMEEVENT_CONTROL_CLICK)
             CreateTooltip(GetLocalString("Рывок", "Dash"), GetLocalString("Нажмите [SPACE] что бы сделать рывок. Кликните что бы сменить режим: на курсор/по направлению взгляда героя",
                     "Press [SPACEBAR] to dash. Click to change mode: to the cursor/to the hero facing"), GlobalButton[i].dash_button, 0.14, 0.08, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)

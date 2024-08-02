@@ -143,6 +143,7 @@ do
             TriggerAddAction(trigger, function()
                 local player = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))+1
                 if IsAHero(GetTriggerUnit()) and not HasJournalEntryLabel(player, "shrine_journal", "shrine_journal_met") then
+                    CreateMinimapIcon(GetUnitX(altar), GetUnitY(altar), 255, 255, 255, "Marker\\MarkAltar.mdx", FOG_OF_WAR_MASKED)
                     AddJournalEntry(player, "shrine_journal", "Journal\\BTNBTNEldritchCovenant.blp", GetLocalString("Загадочный Алтарь", "The Mystic Altar"), 200, false)
                     AddJournalEntryText(player, "shrine_journal",
                             GetLocalString(
@@ -181,13 +182,10 @@ do
 
                         UnitRemoveAbility(altar_unit, FourCC("A01H"))
 
-                        if altar.altar_type == ALTAR_TYPE_CHEST then
-                            altar.obelisk_effect.effect(altar_unit)
-                        elseif altar.altar_type == ALTAR_TYPE_HATRED then
-                            altar.obelisk_effect.effect(altar_unit, hero)
-                        else
-                            altar.obelisk_effect.effect(hero)
-                        end
+
+                        if altar.altar_type == ALTAR_TYPE_CHEST then altar.obelisk_effect.effect(altar_unit)
+                        elseif altar.altar_type == ALTAR_TYPE_HATRED then altar.obelisk_effect.effect(altar_unit, hero)
+                        else altar.obelisk_effect.effect(hero) end
 
 
                         if altar.altar_type == ALTAR_TYPE_OBELISK then
@@ -363,7 +361,7 @@ do
                             DropForPlayer(target, i-1)
                         end
                     end
-                    AddSoundVolume("Sounds\\Altar\\chestbig.wav", GetUnitX(target), GetUnitY(target), 128, 2100.)
+                    AddSoundVolume("Sounds\\Altar\\chestbig.wav", GetUnitX(target), GetUnitY(target), 140, 1800.)
                 end
             },
             shrine_of_hatred = {
@@ -372,7 +370,7 @@ do
                     local player = GetPlayerId(GetOwningPlayer(source)) + 1
                     local item = GetItemFromInventory(player, FourCC("I01O"))
 
-                        if item then
+                        if item and not OngoingWave then
                             local charges = GetItemCharges(item)
                             if charges >= 5 then
                                 RemoveChargesFromInventoryItem(player, item, 5)
@@ -385,6 +383,7 @@ do
                                         ScaleMonsterPacks()
                                         UnitAddAbility(altar, FourCC("A01H"))
                                         MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 0, 0),  LOCALE_LIST[my_locale].WAVE_LEVEL .. I2S(Current_Wave))
+                                        ShowQuestAlert(GetLocalString("Уровень волн был повышен на 5 уровней", "Wave level has been increased by 5 levels"), 5.)
                                     end)
                                     --SetUnitAnimation(altar, "Stand Work")
                                 end)

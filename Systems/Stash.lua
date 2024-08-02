@@ -123,7 +123,7 @@ do
         end
 
         --print("parse result "..result)
-        --result = result .. "-n" .. item_data.NAME .. "-enditem"
+        result = result .. "-n" .. item_data.NAME .. "-enditem"
 
 
         return result
@@ -642,7 +642,6 @@ do
                     TimerStart(DoubleClickTimer[player].timer, 0.25, false, function()
 
                         if item_data then
-
                             CreatePlayerContextMenu(player, button.button, FRAMEPOINT_RIGHT, StashFrame[player].slots[5])
                             AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_FROM_STASH, function()
                                 if AddToInventory(player, button.item) then

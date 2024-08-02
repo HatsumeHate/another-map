@@ -126,6 +126,7 @@ do
         else
             AddStatusBarState("talent_spirit", "Talents\\BTN_CR_death.blp", POSITIVE_BUFF, GetPlayerId(GetOwningPlayer(caster))+1)
             SetStatusBarValue("talent_spirit", 1, GetPlayerId(GetOwningPlayer(caster))+1)
+            SetStatusBarHeaderName("talent_spirit", LOCALE_LIST[my_locale].TALENTS["talent_spirit"].name, GetPlayerId(GetOwningPlayer(caster))+1)
             unit_data.spirit_talent = 1
             unit_data.spirit_sfx = AddSpecialEffectTarget("Abilities\\Spells\\NightElf\\SpiritOfVengeance\\SpiritOfVengeanceOrbs1.mdx", caster, "chest")
             unit_data.spirit = nil
@@ -181,6 +182,7 @@ do
                         ModifyStat(caster, MAGICAL_ATTACK, 1. + (unit_data.death_embrace_current_bonus * 0.01), MULTIPLY_BONUS, true)
                         AddStatusBarState("talent_death_embrace", "Talents\\BTNTrueDamageNew.blp", POSITIVE_BUFF, GetPlayerId(GetOwningPlayer(caster))+1)
                         SetStatusBarValue("talent_death_embrace", 3, GetPlayerId(GetOwningPlayer(caster))+1)
+                        SetStatusBarHeaderName("talent_death_embrace", LOCALE_LIST[my_locale].TALENTS["talent_death_embrace"].name, GetPlayerId(GetOwningPlayer(caster))+1)
                     end
 
                 elseif health <= 0.5 then
@@ -192,6 +194,7 @@ do
                         ModifyStat(caster, MAGICAL_ATTACK, 1. + (unit_data.death_embrace_current_bonus * 0.01), MULTIPLY_BONUS, true)
                         AddStatusBarState("talent_death_embrace", "Talents\\BTNTrueDamageNew.blp", POSITIVE_BUFF, GetPlayerId(GetOwningPlayer(caster))+1)
                         SetStatusBarValue("talent_death_embrace", 2, GetPlayerId(GetOwningPlayer(caster))+1)
+                        SetStatusBarHeaderName("talent_death_embrace", LOCALE_LIST[my_locale].TALENTS["talent_death_embrace"].name, GetPlayerId(GetOwningPlayer(caster))+1)
                     end
 
                 elseif health <= 0.75 then
@@ -203,6 +206,7 @@ do
                         ModifyStat(caster, MAGICAL_ATTACK, 1. + (unit_data.death_embrace_current_bonus * 0.01), MULTIPLY_BONUS, true)
                         AddStatusBarState("talent_death_embrace", "Talents\\BTNTrueDamageNew.blp", POSITIVE_BUFF, GetPlayerId(GetOwningPlayer(caster))+1)
                         SetStatusBarValue("talent_death_embrace", 1, GetPlayerId(GetOwningPlayer(caster))+1)
+                        SetStatusBarHeaderName("talent_death_embrace", LOCALE_LIST[my_locale].TALENTS["talent_death_embrace"].name, GetPlayerId(GetOwningPlayer(caster))+1)
                     end
 
                 else
@@ -295,6 +299,7 @@ do
             if result > 0 then
                 AddStatusBarState("talent_vile_malediction", "Talents\\BTNDarkHarvest.blp", POSITIVE_BUFF, GetPlayerId(GetOwningPlayer(caster))+1)
                 SetStatusBarValue("talent_vile_malediction", result, GetPlayerId(GetOwningPlayer(caster))+1)
+                SetStatusBarHeaderName("talent_vile_malediction", LOCALE_LIST[my_locale].TALENTS["talent_vile_malediction"].name, GetPlayerId(GetOwningPlayer(caster))+1)
             else
                 RemoveStatusBarState("talent_vile_malediction", GetPlayerId(GetOwningPlayer(caster))+1)
             end

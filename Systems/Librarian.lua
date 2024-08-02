@@ -7,7 +7,7 @@ do
 
     LibrarianFrame = 0
     local EXCHANGE_COST = 300
-    local QUALITY_PENALTY_COST = 200
+    local QUALITY_PENALTY_COST = 300
     local CATEGORY_PENALTY_COST = 200
     local last_EnteredFrame
     local last_EnteredFrameTimer
@@ -139,9 +139,8 @@ do
                     local total_cost = EXCHANGE_COST
                     local item_data = GetItemData(button.item)
 
-                    if item_data.QUALITY == RARE_ITEM then
-                        total_cost = total_cost + QUALITY_PENALTY_COST
-                    end
+                        if item_data.QUALITY == RARE_ITEM then total_cost = total_cost + QUALITY_PENALTY_COST
+                        elseif item_data.QUALITY == MAGIC_ITEM then total_cost = total_cost + math.floor(QUALITY_PENALTY_COST * 2) end
 
                     local category_button = GetButtonData(LibrarianFrame[player].categories[LibrarianFrame[player].last_category])
 

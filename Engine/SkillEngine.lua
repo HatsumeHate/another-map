@@ -15,6 +15,7 @@ do
 
 
     KEYBIND_LIST = 0
+    PlayerSkillQueue = 0
 
 
 
@@ -56,6 +57,30 @@ do
             if flag then EnableTrigger(KEYBIND_LIST[key].trigger)
             else DisableTrigger(KEYBIND_LIST[key].trigger) end
         end
+    end
+
+    function ResetAbilityCooldown(source, ability_id)
+        local player = GetPlayerId(GetOwningPlayer(source)) + 1
+        local skill = GetUnitSkillData(source, ability_id)
+        local level = UnitGetAbilityLevel(source, ability_id)
+        local key = GetKeybindKey(FourCC(ability_id), player)
+
+            if skill and skill.current_max_charges then
+
+                for i = 1, #skill.charges_timers do
+                    DestroyTimer(skill.charges_timers[i])
+                end
+
+                skill.charges_timers = {}
+                skill.current_charges = skill.current_max_charges
+
+                if IsAbilityKeybinded(FourCC(ability_id), player) then
+                    BlzFrameSetText(KEYBIND_LIST[key].player_charges_frame[player].text, skill.current_charges)
+                end
+
+            end
+
+        BlzEndUnitAbilityCooldown(source, KEYBIND_LIST[key].ability)
     end
 
     ---@param unit unit
@@ -120,7 +145,7 @@ do
 
                     if value_str == "pwr" then return "|c00FF7600" .. (effect.level[lvl].power or 0) .. "|r"
                     elseif value_str == "dmg" then return "|c00FF7600" .. (effect.level[lvl].power or 0) .. " + " .. S2I(R2S((effect.level[lvl].attack_percent_bonus or 1.) * 100.)) .. "%%|r " .. LOCALE_LIST[my_locale].GENERATED_TOOLTIP
-                    elseif value_str == "atr" then return GetAttributeColor(effect.level[lvl].attribute) .. GetAttributeName(effect.level[lvl].attribute) .. "|r"
+                    elseif value_str == "atr" then return GetAttributeColor(effect.attribute) .. GetAttributeName(effect.attribute) .. "|r"
                     elseif value_str == "ap" then return math.floor((effect.level[lvl].attack_percent_bonus or 1.) * 100.)
                     elseif value_str == "ab" then return "|c007AB3FF" ..  (effect.level[lvl].attribute_bonus or 0) .. "|r"
                     elseif value_str == "wdpb" then return math.floor((effect.level[lvl].weapon_damage_percent_bonus or 1.) * 100.)
@@ -222,33 +247,20 @@ do
         local true_id = FourCC(id)
         local ability = GetKeybindKeyAbility(true_id, player)
 
-        --print("================================")
-        --print("SetAbilityExtendedTooltip - ability " .. ability)
-        --print("SetAbilityExtendedTooltip - id " .. true_id)
-
-
             if ability == 0 then return end
             local lvl = UnitGetAbilityLevel(unit, id)
-            --print("SetAbilityExtendedTooltip - ability level " .. lvl)
 
                 if LOCALE_LIST[my_locale][true_id] then
-                    --local proper_level_data = lvl
 
                     if LOCALE_LIST[my_locale][true_id][lvl] then
-                        --print("SetAbilityExtendedTooltip - exists")
                         local description = ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id][lvl], lvl)
-                        --print("SetAbilityExtendedTooltip - description " .. description)
                         if GetLocalPlayer() == Player(player-1) then
                             BlzSetAbilityExtendedTooltip(ability, description, 0)
                         end
                     else
-                        --print("has " .. lvl .. " elemets")
                         for i = lvl, 1, -1 do
-                            --print("checking ".. i)
                             if LOCALE_LIST[my_locale][true_id][i] then
-                                --print("SetAbilityExtendedTooltip - local string" .. LOCALE_LIST[my_locale][true_id][i])
                                 local description = ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id][i], lvl)
-                                --print("SetAbilityExtendedTooltip - description " .. description)
                                 if GetLocalPlayer() == Player(player-1) then
                                     BlzSetAbilityExtendedTooltip(ability, description, 0)
                                 end
@@ -256,9 +268,7 @@ do
                             end
                         end
                     end
-                    --BlzSetAbilityExtendedTooltip(ability, ParseLocalizationSkillTooltipString(LOCALE_LIST[my_locale][true_id].bind, lvl), 0)
                 end
-
 
     end
 
@@ -327,7 +337,7 @@ do
                     local manacost = ((skill.level[level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
                     if manacost < 0. then manacost = 0 end
 
-                    if skill.level[level].charges and (skill.current_max_charges or 1) > skill.level[level].charges then
+                    if skill.level[level].charges and (skill.current_max_charges or 1) > skill.level[level].charges and not skill.separate_recharge then
                         local difference = skill.current_max_charges - skill.level[level].charges
                         for i = 1, difference do StartAbilityCharge(PlayerHero[player], id) end
                     end
@@ -607,7 +617,7 @@ do
                     for i = 1, #pack.on_caster do
                         local effect = pack.on_caster[i]
 
-                        if not effect.conditional_weapon or HasConditionalWeapon(effect, unit_data.equip_point[WEAPON_POINT].SUBTYPE) then
+                        if not effect.conditional_weapon or HasConditionalWeapon(effect, unit_data.equip_point[WEAPON_POINT].SUBTYPE) and not unit_data.dashing and not IsUnitDisabled(unit_data.Owner) then
                             local casteffect = AddSpecialEffectTarget(effect.effect, unit_data.Owner, effect.point or "chest")
                             BlzSetSpecialEffectScale(casteffect, effect.scale or 1.)
 
@@ -638,7 +648,7 @@ do
                     for i = 1, #pack.on_target do
                         local effect = pack.on_target[i]
 
-                        if not effect.conditional_weapon or HasConditionalWeapon(effect, unit_data.equip_point[WEAPON_POINT].SUBTYPE) then
+                        if not effect.conditional_weapon or HasConditionalWeapon(effect, unit_data.equip_point[WEAPON_POINT].SUBTYPE) and not unit_data.dashing and not IsUnitDisabled(unit_data.Owner) then
                             local casteffect = AddSpecialEffectTarget(effect.effect, target, effect.point or "chest")
                             BlzSetSpecialEffectScale(casteffect, effect.scale or 1.)
 
@@ -671,9 +681,12 @@ do
                 for i = 1, #pack.on_terrain do
                     local effect = pack.on_terrain[i]
 
-                    if not effect.conditional_weapon or HasConditionalWeapon(effect, unit_data.equip_point[WEAPON_POINT].SUBTYPE) then
+                    if not effect.conditional_weapon or HasConditionalWeapon(effect, unit_data.equip_point[WEAPON_POINT].SUBTYPE) and not unit_data.dashing and not IsUnitDisabled(unit_data.Owner) then
 
                         DelayAction(effect.appear_delay and (effect.appear_delay * animation_timescale) or 0., function()
+
+                            if unit_data.dashing or IsUnitDisabled(unit_data.Owner) or unit_data.skip_sfx_effects then return end
+
                             local casteffect = AddSpecialEffect(effect.effect, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner))
                             local orientation = target and AngleBetweenUnits(unit_data.Owner, target) or AngleBetweenUnitXY(unit_data.Owner, x, y)
 
@@ -741,6 +754,11 @@ do
 
             SafePauseUnit(unit, false)
 
+            if IsAHero(unit) then
+                PlayerSkillQueue[GetPlayerId(GetOwningPlayer(unit))+1].is_casting_skill = false
+                PlayerSkillQueue[GetPlayerId(GetOwningPlayer(unit))+1].queue_skill = nil
+            end
+
             IssueImmediateOrderById(unit, order_stop)
             SetUnitTimeScale(unit, 1.)
             DestroyEffect(unit_data.cast_effect)
@@ -773,11 +791,25 @@ do
                 end
 
                 if unit_data.cast_skill > 0 then
+                    local skill = GetUnitSkillData(unit, unit_data.cast_skill_id)
+
+                        if skill.level[1].charges then
+                            skill.current_charges = skill.current_charges + 1
+                            if skill.current_charges > skill.current_max_charges then skill.current_charges = skill.current_max_charges end
+                            DestroyTimer(skill.charges_timers[#skill.charges_timers])
+                            table.remove(skill.charges_timers, #skill.charges_timers)
+                            local player = GetPlayerId(GetOwningPlayer(unit)) + 1
+                            if IsAbilityKeybinded(FourCC(skill.Id), player) then
+                                BlzFrameSetText(KEYBIND_LIST[GetKeybindKey(FourCC(skill.Id), player)].player_charges_frame[player].text, skill.current_charges)
+                            end
+                        end
+
                     BlzEndUnitAbilityCooldown(unit, unit_data.cast_skill)
                     SetUnitState(unit, UNIT_STATE_MANA, GetUnitState(unit, UNIT_STATE_MANA) + unit_data.cast_skill_mana)
                     unit_data.cast_skill_mana = 0
                 end
 
+            unit_data.skip_sfx_effects = true
             unit_data.cast_skill = 0
     end
 
@@ -788,8 +820,17 @@ do
 
             SafePauseUnit(unit, false)
             IssueImmediateOrderById(unit, order_stop)
-            SetUnitAnimation(unit, "Stand Ready")
+
+            if unit_data.animation_tag then SetUnitAnimation(unit, "Stand Ready " .. unit_data.animation_tag)
+            else SetUnitAnimation(unit, "Stand Ready") end
+
             SetUnitTimeScale(unit, 1.)
+
+            if IsAHero(unit) then
+                PlayerSkillQueue[GetPlayerId(GetOwningPlayer(unit))+1].is_casting_skill = false
+                PlayerSkillQueue[GetPlayerId(GetOwningPlayer(unit))+1].queue_skill = nil
+            end
+
             if unit_data.nudge_timer then DestroyTimer(unit_data.nudge_timer); unit_data.nudge_timer = nil end
             --DestroyTimer(unit_data.sound_delay_timer)
 
@@ -805,10 +846,10 @@ do
     end
 
 
-    function CanCastSkillWithWeapon(skill, level, weapontype)
+    function CanCastSkillWithWeapon(skill, weapontype)
 
-        for i = 1, #skill.level[level].required_weapon do
-            if skill.level[level].required_weapon[i] == weapontype then return true end
+        for i = 1, #skill.required_weapon do
+            if skill.required_weapon[i] == weapontype then return true end
         end
 
         return false
@@ -863,6 +904,8 @@ do
 
             local animation = nil
             local sequence = nil
+
+            unit_data.skip_sfx_effects = false
 
             if action.animation then
                 animation = action.animation
@@ -947,7 +990,7 @@ do
                     else angle = AngleBetweenUnitXY(unit_data.Owner, PlayerMousePosition[GetPlayerId(GetOwningPlayer(unit_data.Owner))+1].x, PlayerMousePosition[GetPlayerId(GetOwningPlayer(unit_data.Owner))+1].y) end
 
                     TimerStart(unit_data.nudge_timer, action.motion.delay * time_reduction, false, function()
-                        NudgeUnit(unit_data.Owner, angle + (action.motion.bonus_angle or 0.), action.motion.power, action.motion.time * time_reduction)
+                        NudgeUnit(unit_data.Owner, angle + (action.motion.bonus_angle or 0.), action.motion.power, action.motion.time * time_reduction, true)
                     end)
 
             end
@@ -1095,6 +1138,10 @@ do
                 end
             end
 
+            PlayerSkillQueue = {}
+            for i = 1, 6 do
+                PlayerSkillQueue[i] = {}
+            end
 
             for key = KEY_Q, KEY_F do
                 KEYBIND_LIST[key].player_charges_frame = {}
@@ -1103,39 +1150,55 @@ do
                 TriggerAddAction(KEYBIND_LIST[key].trigger, function()
                     local player = GetPlayerId(GetTriggerPlayer()) + 1
 
-                        if KEYBIND_LIST[key].player_skill_bind[player] ~= 0 then
+                    if SkillPanelKeybindActive[player] then return end
+
+                        if KEYBIND_LIST[key].player_skill_bind[player] ~= 0 and not IsUnitDisabled(PlayerHero[player]) then
                             if BlzGetUnitAbilityManaCost(PlayerHero[player], KEYBIND_LIST[key].ability, 0) > GetUnitState(PlayerHero[player], UNIT_STATE_MANA) then
                                 Feedback_NoResource(player)
                             else
-                                local skill = GetUnitSkillData(PlayerHero[player], KEYBIND_LIST[key].player_skill_bind_string_id[player]) --GetKeybindAbilityString(KEYBIND_LIST[key].ability, player))
+                                local skill = GetUnitSkillData(PlayerHero[player], KEYBIND_LIST[key].player_skill_bind_string_id[player])
+
+                                if skill then
 
                                     if skill.activation_type == SELF_CAST then
-                                        IssueImmediateOrderById(PlayerHero[player], KEYBIND_LIST[key].order)
+                                        if PlayerSkillQueue[player].is_casting_skill then
+                                            PlayerSkillQueue[player].queue_skill = KEYBIND_LIST[key].order
+                                            PlayerSkillQueue[player].queue_skill_activation_type = skill.activation_type
+                                        else
+                                            IssueImmediateOrderById(PlayerHero[player], KEYBIND_LIST[key].order)
+                                        end
                                     else
                                         local range
                                         local target = GetClosestUnitToCursor(player)
                                         local angle = AngleBetweenUnitXY(PlayerHero[player], PlayerMousePosition[player].x, PlayerMousePosition[player].y)
 
-                                            if skill.always_max_range_cast then
-                                                range = skill.level[UnitGetAbilityLevel(PlayerHero[player], skill.Id)].range
+                                            if skill.always_max_range_cast then range = skill.level[UnitGetAbilityLevel(PlayerHero[player], skill.Id)].range
+                                            else range = math.min(DistanceBetweenUnitXY(PlayerHero[player], PlayerMousePosition[player].x, PlayerMousePosition[player].y), (skill.level[UnitGetAbilityLevel(PlayerHero[player], skill.Id)].range or 99999.)) end
+
+
+                                            if PlayerSkillQueue[player].is_casting_skill then
+                                                PlayerSkillQueue[player].queue_skill = KEYBIND_LIST[key].order
+                                                PlayerSkillQueue[player].queue_skill_activation_type = skill.activation_type
+                                                PlayerSkillQueue[player].queue_skill_range = range
+
+                                                    if target and (skill.activation_type == TARGET_CAST or skill.activation_type == POINT_AND_TARGET_CAST) and IsUnitInRange(PlayerHero[player], target, range) then
+                                                        PlayerSkillQueue[player].queue_skill_target = target
+                                                    else
+                                                        PlayerSkillQueue[player].queue_skill_x = GetUnitX(PlayerHero[player]) + Rx(range, angle)
+                                                        PlayerSkillQueue[player].queue_skill_y = GetUnitY(PlayerHero[player]) + Ry(range, angle)
+                                                    end
+
                                             else
-                                                range = math.min(DistanceBetweenUnitXY(PlayerHero[player], PlayerMousePosition[player].x, PlayerMousePosition[player].y), (skill.level[UnitGetAbilityLevel(PlayerHero[player], skill.Id)].range or 99999.))
+                                                if target and (skill.activation_type == TARGET_CAST or skill.activation_type == POINT_AND_TARGET_CAST) and IsUnitInRange(PlayerHero[player], target, range) then
+                                                    IssueTargetOrderById(PlayerHero[player], KEYBIND_LIST[key].order, target)
+                                                else
+                                                    IssuePointOrderById(PlayerHero[player], KEYBIND_LIST[key].order, GetUnitX(PlayerHero[player]) + Rx(range, angle), GetUnitY(PlayerHero[player]) + Ry(range, angle))
+                                                end
                                             end
 
-
-                                            if target and (skill.activation_type == TARGET_CAST or skill.activation_type == POINT_AND_TARGET_CAST) and IsUnitInRange(PlayerHero[player], target, range) then
-                                                IssueTargetOrderById(PlayerHero[player], KEYBIND_LIST[key].order, target)
-                                            else
-                                                IssuePointOrderById(PlayerHero[player], KEYBIND_LIST[key].order, GetUnitX(PlayerHero[player]) + Rx(range, angle), GetUnitY(PlayerHero[player]) + Ry(range, angle))
-                                            end
-
-                                       -- if (skill.activation_type == POINT_AND_TARGET_CAST or skill.activation_type == TARGET_CAST) and target then
-                                          --  IssueTargetOrderById(PlayerHero[player], KEYBIND_LIST[key].order, target)
-                                        --elseif skill.activation_type == POINT_AND_TARGET_CAST or skill.activation_type == POINT_CAST then
-                                           -- IssuePointOrderById(PlayerHero[player], KEYBIND_LIST[key].order, PlayerMousePosition[player].x, PlayerMousePosition[player].y)
-                                       -- end
 
                                     end
+                                end
 
                             end
                         end
@@ -1204,37 +1267,58 @@ do
 
                 if skill then
 
-
-
                     local unit_data = GetUnitData(GetTriggerUnit())
                     skill = GetUnitSkillData(unit_data.Owner, skill.Id)
 
                     if skill == nil then return end
 
+                    unit_data.skip_sfx_effects = false
+                    unit_data.cast_skill_id = skill.Id
+
                     local ability_level = UnitGetAbilityLevel(unit_data.Owner, skill.Id)
-                    local manacost = ((skill.level[ability_level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
-
-                    if skill.level[ability_level].required_weapon then
-                        if not CanCastSkillWithWeapon(skill, ability_level, unit_data.equip_point[WEAPON_POINT].SUBTYPE) then
-                            local unit = GetTriggerUnit()
-                            local player = GetPlayerId(GetOwningPlayer(unit))
-                            IssueImmediateOrderById(unit, order_stop)
-                            DelayAction(0.0, function() SetUnitState(unit, UNIT_STATE_MANA, GetUnitState(unit, UNIT_STATE_MANA) + manacost) end)
-                            SimError(LOCALE_LIST[my_locale].INVALID_WEAPON_FEEDBACK, player)
-                            Feedback_CantUse(player + 1)
-                            return
-                        end
-                    end
-
+                    local manacost = SuperRound(((skill.level[ability_level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier)
 
                     local target = GetSpellTargetUnit()
                     local spell_x = GetSpellTargetX()
                     local spell_y = GetSpellTargetY()
 
+
+                    if skill.required_weapon then
+                        if not CanCastSkillWithWeapon(skill, unit_data.equip_point[WEAPON_POINT].SUBTYPE) then
+                            local player_id = GetPlayerId(GetOwningPlayer(unit_data.Owner))+1
+                            local alt_weapon = GetAlternateWeaponSlotItem(player_id)
+                            local alt_weapon_data = GetItemData(alt_weapon)
+
+                                if alt_weapon and CanCastSkillWithWeapon(skill, alt_weapon_data.SUBTYPE) then
+                                    SwitchHeroWeapon(player_id)
+                                else
+                                    local unit = GetTriggerUnit()
+                                    local player = GetPlayerId(GetOwningPlayer(unit))
+
+                                        IssueImmediateOrderById(unit, order_stop)
+                                        DelayAction(0.0, function() SetUnitState(unit, UNIT_STATE_MANA, GetUnitState(unit, UNIT_STATE_MANA) + manacost) end)
+                                        SimError(LOCALE_LIST[my_locale].INVALID_WEAPON_FEEDBACK, player)
+                                        Feedback_CantUse(player + 1)
+                                        return
+                                end
+
+                        end
+                    end
+
+                    if (target and GetWidgetLife(target) <= 0.045) then
+                        if skill.activation_type == POINT_AND_TARGET_CAST then
+                            spell_x, spell_y = GetUnitX(target), GetUnitY(target)
+                        elseif skill.activation_type == TARGET_CAST then
+                            IssueImmediateOrderById(unit_data.Owner, order_stop)
+                            DelayAction(0.0, function() SetUnitState(unit_data.Owner, UNIT_STATE_MANA, GetUnitState(unit_data.Owner, UNIT_STATE_MANA) + manacost) end)
+                            return
+                        end
+                    end
+
                     if skill.custom_condition then
                         local x, y
 
-                        if target == nil then x, y = spell_x, spell_y
+                        if target == nil or (target and GetWidgetLife(target) <= 0.045) then x, y = spell_x, spell_y
                         else x, y = GetUnitX(target), GetUnitY(target) end
 
                             if not skill.custom_condition(unit_data.Owner, x, y, target) then
@@ -1293,6 +1377,7 @@ do
                     --print("ability level is " .. I2S(ability_level))
                     -- 0.4 * 2. -> 0.8 /// 0.4 * 0.5 -> 0.2
 
+
                     local skill_additional_data = {
                         time_reduction = time_reduction,
                         ability_level = ability_level,
@@ -1303,12 +1388,26 @@ do
                         tags = {},
                     }
 
-                    --local manacost = ((skill.level[ability_level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
                     if skill_additional_data.manacost < 0. then skill_additional_data.manacost = 0 end
+                    --local manacost = ((skill.level[ability_level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
+
 
                     if IsAHero(unit_data.Owner) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(unit_data.Owner))+1] = false end
 
+                    local player_id = GetPlayerId(GetOwningPlayer(unit_data.Owner)) + 1
+
+                    if IsAHero(unit_data.Owner) then
+                        PlayerSkillQueue[player_id].is_casting_skill = true
+                    end
+
                     OnSkillPrecast(unit_data.Owner, target, skill, ability_level, skill_additional_data)
+
+
+                    if skill.classification == SKILL_CLASS_ATTACK and unit_data.attack_status[ATTACK_STATUS_CRITICAL][1] then
+                        unit_data.attack_status[ATTACK_STATUS_CRITICAL][1].amount = unit_data.attack_status[ATTACK_STATUS_CRITICAL][1].amount - 1
+                        if unit_data.attack_status[ATTACK_STATUS_CRITICAL][1].amount <= 0 then RemoveBuff(unit_data.Owner, unit_data.attack_status[ATTACK_STATUS_CRITICAL][1].buff_id) end
+                        skill_additional_data.critical_strike_flag = true
+                    end
 
 
                     if skill.current_charges then
@@ -1334,26 +1433,56 @@ do
                             end
 
 
-                        local timer = CreateTimer()
-                        skill.charges_timers[#skill.charges_timers+1] = timer
-                        TimerStart(timer, skill_additional_data.cooldown, false, function()
-                            for i = 1, #skill.charges_timers do
-                                if skill.charges_timers[i] == timer then
-                                    DestroyTimer(skill.charges_timers[i])
-                                    table.remove(skill.charges_timers, i)
-                                    break
-                                end
-                            end
 
-                            skill.current_charges = skill.current_charges + 1
-                            if skill.current_charges > skill.current_max_charges then skill.current_charges = skill.current_max_charges end
-                            if IsAbilityKeybinded(FourCC(skill.Id), player) then
-                                BlzFrameSetText(KEYBIND_LIST[GetKeybindKey(FourCC(skill.Id), player)].player_charges_frame[player].text, skill.current_charges)
-                                if BlzGetUnitAbilityCooldownRemaining(unit_data.Owner, GetKeybindKeyAbility(FourCC(skill.Id), player)) > 0. then
-                                    BlzEndUnitAbilityCooldown(unit_data.Owner, GetKeybindKeyAbility(FourCC(skill.Id), player))
+                        if skill.separate_recharge then
+                            local timer = skill.charges_timers[1] or nil
+
+                                if not timer then
+                                    timer = CreateTimer()
+                                    skill.charges_timers[1] = timer
+
+                                        TimerStart(timer, skill_additional_data.cooldown, true, function()
+                                            skill.current_charges = skill.current_charges + 1
+
+                                            if skill.current_charges >= skill.current_max_charges then
+                                                skill.current_charges = skill.current_max_charges
+                                                DestroyTimer(skill.charges_timers[1])
+                                                skill.charges_timers[1] = nil
+                                            end
+
+                                            if IsAbilityKeybinded(FourCC(skill.Id), player) then
+                                                BlzFrameSetText(KEYBIND_LIST[GetKeybindKey(FourCC(skill.Id), player)].player_charges_frame[player].text, skill.current_charges)
+                                            end
+
+                                        end)
                                 end
-                            end
-                        end)
+
+
+                        else
+                            local timer = CreateTimer()
+                            skill.charges_timers[#skill.charges_timers+1] = timer
+
+                                TimerStart(timer, skill_additional_data.cooldown, false, function()
+
+                                    for i = 1, #skill.charges_timers do
+                                        if skill.charges_timers[i] == timer then
+                                            DestroyTimer(skill.charges_timers[i])
+                                            table.remove(skill.charges_timers, i)
+                                            break
+                                        end
+                                    end
+
+                                    skill.current_charges = skill.current_charges + 1
+                                    if skill.current_charges > skill.current_max_charges then skill.current_charges = skill.current_max_charges end
+                                    if IsAbilityKeybinded(FourCC(skill.Id), player) then
+                                        BlzFrameSetText(KEYBIND_LIST[GetKeybindKey(FourCC(skill.Id), player)].player_charges_frame[player].text, skill.current_charges)
+                                        if BlzGetUnitAbilityCooldownRemaining(unit_data.Owner, GetKeybindKeyAbility(FourCC(skill.Id), player)) > 0. then
+                                            BlzEndUnitAbilityCooldown(unit_data.Owner, GetKeybindKeyAbility(FourCC(skill.Id), player))
+                                        end
+                                    end
+                                end)
+
+                        end
 
                         BlzFrameSetText(KEYBIND_LIST[GetKeybindKey(FourCC(skill.Id), player)].player_charges_frame[player].text, skill.current_charges)
 
@@ -1362,7 +1491,7 @@ do
                     end
 
 
-                    BlzSetUnitAbilityManaCost(unit_data.Owner, id, 0, math.floor(skill_additional_data.manacost + 0.5))
+                    BlzSetUnitAbilityManaCost(unit_data.Owner, id, 0, skill_additional_data.manacost)
 
 
                     unit_data.cast_skill = id
@@ -1381,7 +1510,7 @@ do
                             else angle = AngleBetweenUnitXY(unit_data.Owner, PlayerMousePosition[GetPlayerId(GetOwningPlayer(unit_data.Owner))+1].x, PlayerMousePosition[GetPlayerId(GetOwningPlayer(unit_data.Owner))+1].y) end
 
                         TimerStart(unit_data.nudge_timer, skill.motion.delay * time_reduction, false, function()
-                            NudgeUnit(unit_data.Owner, angle + (skill.motion.bonus_angle or 0.), skill.motion.power, skill.motion.time * time_reduction)
+                            NudgeUnit(unit_data.Owner, angle + (skill.motion.bonus_angle or 0.), skill.motion.power, skill.motion.time * time_reduction, true)
                         end)
                     end
 
@@ -1399,7 +1528,7 @@ do
                         end
 
 
-                        if skill.sound then
+                        if skill.sound and #skill.sound > 0 then
                             local unit_x, unit_y = GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner)
 
                             if not unit_data.castsound then
@@ -1430,6 +1559,7 @@ do
 
 
                         TimerStart(unit_data.action_timer, (sequence.animation_point or 0.) * time_reduction, false, function()
+                            --print("cast action")
                             unit_data.cast_skill = 0
                             DestroyEffect(unit_data.cast_effect)
 
@@ -1483,7 +1613,31 @@ do
                                 end
 
                             TimerStart(unit_data.action_timer, (sequence.animation_backswing or 0.) * time_reduction, false, function ()
+                                --print("backswing start")
+                                local casting_queue_skill
+
+                                    if IsAHero(unit_data.Owner) then casting_queue_skill = PlayerSkillQueue[player_id].queue_skill end
+
                                 SpellBackswing(unit_data.Owner)
+
+                                    if casting_queue_skill then
+
+                                         if GetUnitState(PlayerHero[player_id], UNIT_STATE_LIFE) > 0.045 and not IsUnitDisabled(PlayerHero[player_id]) then
+
+                                            if (PlayerSkillQueue[player_id].queue_skill_activation_type == TARGET_CAST or PlayerSkillQueue[player_id].queue_skill_activation_type == POINT_AND_TARGET_CAST) and PlayerSkillQueue[player_id].queue_skill_target and IsUnitInRange(PlayerHero[player_id], PlayerSkillQueue[player_id].queue_skill_target, PlayerSkillQueue[player_id].queue_skill_range) then
+
+                                                if GetUnitState(PlayerSkillQueue[player_id].queue_skill_target, UNIT_STATE_LIFE) > 0.045 then
+                                                    IssueTargetOrderById(PlayerHero[player_id], casting_queue_skill, PlayerSkillQueue[player_id].queue_skill_target)
+                                                end
+
+                                            elseif PlayerSkillQueue[player_id].queue_skill_activation_type == POINT_CAST or PlayerSkillQueue[player_id].queue_skill_activation_type == POINT_AND_TARGET_CAST then
+                                                IssuePointOrderById(PlayerHero[player_id], casting_queue_skill, PlayerSkillQueue[player_id].queue_skill_x, PlayerSkillQueue[player_id].queue_skill_y)
+                                            else
+                                               IssueImmediateOrderById(PlayerHero[player_id], casting_queue_skill)
+                                            end
+                                        end
+                                    end
+
                             end)
 
                             OnSkillCastEnd(unit_data.Owner, target, spell_x, spell_y, skill, ability_level, skill_additional_data)
@@ -1504,6 +1658,7 @@ do
 
             DestroyTimer(GetExpiredTimer())
         end)
+
 
     end
 

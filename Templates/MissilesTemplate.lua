@@ -178,7 +178,7 @@ do
             speed = 950.,
             start_z = 65.,
             end_z = 65.,
-            arc = 0.11,
+            arc = 0.1,
             ignore_terrain = false,
             penetrate = false,
             full_distance = true
@@ -193,7 +193,7 @@ do
             speed = 1200.,
             start_z = 65.,
             end_z = 65.,
-            arc = 0.15,
+            arc = 0.12,
             ignore_terrain = false,
             penetrate = false,
             full_distance = true
@@ -694,14 +694,14 @@ do
         --==============================================--
         NewMissileTemplate('MFRB', {
             name = "frostbolt missile",
-            model = "Spell\\Blizzard II Missile.mdx",
+            model = "Missile\\FrostBoltV1.mdx", --"Spell\\Blizzard II Missile.mdx",
             max_distance = 1000.,
             radius = 70.,
             speed = 1200.,
             start_z = 95.,
             end_z = 95.,
             arc = 0.,
-            scale = 0.75,
+            scale = 0.85,
             effect_on_hit = 'EFRB',
             sound_on_fly = {
                 pack = { "Sounds\\Spells\\FrostBolt_Loop_1.wav", "Sounds\\Spells\\FrostBolt_Loop_2.wav" },
@@ -876,6 +876,77 @@ do
             ignore_terrain = true,
             full_distance = true,
             penetrate = true
+        })
+        --===============================================--
+        NewMissileTemplate('lightning_spear_missile', {
+            name = "lightning_spear_missile",
+            model = "Missile\\Lightning Missile.mdx",
+            max_distance = 1200.,
+            radius = 100.,
+            speed = 1400.,
+            start_z = 80.,
+            end_z = 80.,
+            scale = 1.,
+            effect_on_hit = 'lightning_spear_effect',
+            sound_on_fly = {
+                pack = { "Sounds\\Spells\\lightning_loop_7.wav", "Sounds\\Spells\\lightning_loop_6.wav"},
+                volume = 100,
+                cutoff = 1700.,
+                looping = true
+            },
+            hit_once_in = 1.,
+            max_targets = 500,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+        })
+        --===============================================--
+        NewMissileTemplate('arcane_barrage_missile', {
+            name = "arcane barrage missile",
+            model = "Missile\\ArcaneMissileComplete.mdx",
+            max_distance = 1000.,
+            radius = 80.,
+            speed = 1100.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 1.,
+            sound_on_launch = {
+                pack = { "Sounds\\Spells\\cast_large_1.wav", "Sounds\\Spells\\cast_large_2.wav", "Sounds\\Spells\\cast_large_3.wav" },
+                volume = 110,
+                cutoff = 1500.
+            },
+            effect_on_hit = 'effect_arcane_missile',
+            max_targets = 1,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --===============================================--
+        NewMissileTemplate('arcane_barrage_missile_side', {
+            name = "arcane barrage missile",
+            model = "Missile\\ArcaneMissileComplete.mdx", --"Abilities\\Weapons\\SentinelMissile\\SentinelMissile.mdx",
+            max_distance = 1000.,
+            radius = 80.,
+            speed = 1100.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.,
+            scale = 1.,
+            geo_arc = 45.,
+            geo_arc_randomize_angle = false,
+            sound_on_launch = {
+                pack = { "Sounds\\Spells\\cast_large_1.wav", "Sounds\\Spells\\cast_large_2.wav", "Sounds\\Spells\\cast_large_3.wav" },
+                volume = 110,
+                cutoff = 1500.
+            },
+            effect_on_hit = 'effect_arcane_missile',
+            max_targets = 1,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
         })
         --===============================================--
         NewMissileTemplate('fire_wall_missile', {
@@ -1145,7 +1216,7 @@ do
 
         NewMissileTemplate('dancingblade_missile', {
             name = "dancing blade missile",
-            model = "Abilities\\Weapons\\SentinelMissile\\SentinelMissile.mdx",
+            model = "Missile\\GlaiveMissileUpg2.mdx", --"Abilities\\Weapons\\SentinelMissile\\SentinelMissile.mdx",
             max_distance = 1000.,
             radius = 80.,
             speed = 500.,
@@ -1154,7 +1225,7 @@ do
             arc = 0.,
             scale = 1.,
             geo_arc = 45,
-            geo_arc_length = 275.,
+            geo_arc_length = 300.,
             geo_arc_randomize_angle = false,
             effect_on_hit = 'effect_dancing_blade',
             max_targets = 3000,
@@ -1175,7 +1246,6 @@ do
             end_z = 0.,
             arc = 0.5,
             scale = 1.,
-            --effect_on_target = 'incendiary_grenade_effect',
             effect_on_expire = 'incendiary_grenade_effect',
             max_targets = 1,
             ignore_terrain = false,
@@ -1221,7 +1291,427 @@ do
             penetrate = false,
             trackable = false
         })
-        --
+
+        --==============================================--
+        NewMissileTemplate('precision_arrow', {
+            name = "precision salvo arrow missile",
+            model = "Missile\\Bloodstone Arrow.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 1.,
+            effect_on_hit = 'precision_arrow_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('precision_arrow_cold', {
+            name = "precision salvo arrow missile",
+            model = "Missile\\Bloodstone Arrow_Cold.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 1.,
+            effect_on_hit = 'precision_arrow_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('precision_arrow_poison', {
+            name = "precision salvo arrow missile",
+            model = "Missile\\Bloodstone Arrow_Poison.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 1.,
+            effect_on_hit = 'precision_arrow_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('cluster_arrow', {
+            name = "cluster arrow missile",
+            model = "Missile\\ExplosiveBolt.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 0.75,
+            effect_on_hit = 'main_cluster_arrow_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('cluster_arrow_cold', {
+            name = "cluster arrow missile",
+            model = "Missile\\ExplosiveBolt_Cold.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 0.75,
+            effect_on_hit = 'main_cluster_arrow_effect',
+            effect_on_expire = 'sub_cluster_arrow_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('cluster_arrow_poison', {
+            name = "cluster arrow missile",
+            model = "Missile\\ExplosiveBolt_Poison.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 0.75,
+            effect_on_hit = 'main_cluster_arrow_effect',
+            effect_on_expire = 'sub_cluster_arrow_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('cluster_sub_arrow', {
+            name = "cluster sub arrow missile",
+            model = "Missile\\ExplosiveBolt.mdx",
+            max_distance = 1000.,
+            radius = 100.,
+            speed = 1500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 0.75,
+            --effect_on_hit = 'EGFB',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('charged_arrow', {
+            name = "charged arrow missile",
+            model = "Missile\\ElectricalArrow.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 1.,
+            effect_on_hit = 'charged_shot_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('frost_arrow', {
+            name = "frost arrow missile",
+            model = "Missile\\Azul Arrow.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 1.,
+            effect_on_hit = 'frost_arrow_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('poison_arrow', {
+            name = "poison arrow missile",
+            model = "Abilities\\Weapons\\PoisonArrow\\PoisonArrowMissile.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 1.,
+            effect_on_hit = 'poison_arrow_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('expose_arrow', {
+            name = "expose missile",
+            model = "Missile\\Daemonic Arrow Classic.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 0.7,
+            effect_on_hit = 'expose_arrow_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('expose_arrow_cold', {
+            name = "expose missile",
+            model = "Missile\\Daemonic Arrow Classic_Cold.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 0.7,
+            effect_on_hit = 'expose_arrow_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('expose_arrow_poison', {
+            name = "expose missile",
+            model = "Missile\\Daemonic Arrow Classic_Poison.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 0.7,
+            effect_on_hit = 'expose_arrow_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('steel_rain_arrow', {
+            name = "steel rain arrow missile",
+            model = ".mdx",
+            max_distance = 1000.,
+            radius = 100.,
+            speed = 800.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.,
+            scale = 1.,
+            sound_on_fly = {
+                pack = { "Sounds\\Spells\\SteelRain_Impacts_1.wav", "Sounds\\Spells\\SteelRain_Impacts_2.wav" },
+                volume = 145,
+                cutoff = 1600.,
+                looping = true
+            },
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            max_targets = 3000,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('steel_rain_cast_arrow', {
+            name = "steel rain impact arrow missile",
+            model = "Missile\\ArrowMissileSoundless.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1650.,
+            start_z = 80.,
+            end_z = 700.,
+            arc = 0.,
+            scale = 1.,
+            ignore_terrain = false,
+            full_distance = false,
+            penetrate = false,
+            trackable = false,
+            only_on_impact = false
+        })
+        --==============================================--
+        NewMissileTemplate('steel_rain_cast_arrow_poison', {
+            name = "steel rain impact arrow missile",
+            model = "Missile\\PoisonArrowMissileSoundless.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1650.,
+            start_z = 80.,
+            end_z = 700.,
+            arc = 0.,
+            scale = 1.,
+            ignore_terrain = false,
+            full_distance = false,
+            penetrate = false,
+            trackable = false,
+            only_on_impact = false
+        })
+        --==============================================--
+        NewMissileTemplate('steel_rain_cast_arrow_cold', {
+            name = "steel rain impact arrow missile",
+            model = "Missile\\Azul Arrow Soundless.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1650.,
+            start_z = 80.,
+            end_z = 700.,
+            arc = 0.,
+            scale = 1.,
+            ignore_terrain = false,
+            full_distance = false,
+            penetrate = false,
+            trackable = false,
+            only_on_impact = false
+        })
+        --==============================================--
+        NewMissileTemplate('steel_rain_impact_arrow', {
+            name = "steel rain impact arrow missile",
+            model = "Missile\\ArrowMissileSoundless.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1650.,
+            start_z = 700.,
+            end_z = 0.,
+            arc = 0.,
+            scale = 1.,
+            effect_on_impact = "steel_rain_effect",
+            ignore_terrain = false,
+            full_distance = false,
+            penetrate = false,
+            trackable = false,
+            only_on_impact = true
+        })
+        --==============================================--
+        NewMissileTemplate('steel_rain_impact_arrow_cold', {
+            name = "steel rain impact arrow missile",
+            model = "Missile\\Azul Arrow Soundless.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1650.,
+            start_z = 700.,
+            end_z = 0.,
+            arc = 0.,
+            scale = 1.,
+            effect_on_impact = "steel_rain_effect",
+            ignore_terrain = false,
+            full_distance = false,
+            penetrate = false,
+            trackable = false,
+            only_on_impact = true
+        })
+        --==============================================--
+        NewMissileTemplate('steel_rain_impact_arrow_poison', {
+            name = "steel rain impact arrow missile",
+            model = "Missile\\PoisonArrowMissileSoundless.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1650.,
+            start_z = 700.,
+            end_z = 0.,
+            arc = 0.,
+            scale = 1.,
+            effect_on_impact = "steel_rain_effect",
+            ignore_terrain = false,
+            full_distance = false,
+            penetrate = false,
+            trackable = false,
+            only_on_impact = true
+        })
+        --==============================================--
+        NewMissileTemplate('suppression_fire_arrow', {
+            name = "supp arrow missile",
+            model = "Missile\\SpiritArrow_ByEpsilon.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 0.9,
+            effect_on_hit = 'supp_fire_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('suppression_fire_cold_arrow', {
+            name = "supp arrow missile",
+            model = "Missile\\SpiritArrow_ByEpsilon_Cold.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 0.9,
+            effect_on_hit = 'supp_fire_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('suppression_fire_poison_arrow', {
+            name = "supp arrow missile",
+            model = "Missile\\SpiritArrow_ByEpsilon_Poison.mdx",
+            max_distance = 1000.,
+            radius = 75.,
+            speed = 1500.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.07,
+            scale = 0.9,
+            effect_on_hit = 'supp_fire_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+
+        NewMissileTemplate('shuriken_talent_missile', {
+            name = "shuriken missile",
+            model = "Effect\\Shuriken.mdx",
+            max_distance = 1000.,
+            radius = 70.,
+            speed = 1000.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.,
+            scale = 0.6,
+            effect_on_hit = 'effect_talent_shuriken',
+            max_targets = 1,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
 
         --==============================================--
         NewMissileTemplate('void_rain_missile', {

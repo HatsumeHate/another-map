@@ -323,7 +323,27 @@ do
 
     end
 
+    function ZombieVomitCast(source, x, y)
+        local timer = CreateTimer()
+        local sfx = AddSpecialEffect("Effect\\ToxicGas.mdx", GetUnitX(source), GetUnitY(source))
+        local duration = 0.4
 
+            BlzSetSpecialEffectYaw(sfx, AngleBetweenUnitXY(source, x, y) * bj_DEGTORAD)
+            BlzSetSpecialEffectZ(sfx, GetZ(GetUnitX(source), GetUnitY(source)) + 80.)
+            BlzSetSpecialEffectPitch(sfx, -45. * bj_DEGTORAD)
+
+            TimerStart(timer, 0.1, true, function()
+                if GetWidgetLife(source) <= 0.045 or IsUnitDisabled(source) or duration <= 0. then
+                    DestroyTimer(timer)
+                    DestroyEffect(sfx)
+                else
+                    duration = duration - 0.1
+                    ApplyEffect(source, nil, x, y, "zombie_vomit_effect", 1)
+                end
+            end)
+
+
+    end
 
 
 

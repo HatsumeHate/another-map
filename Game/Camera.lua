@@ -7,9 +7,9 @@ do
 
 
 
-    PlayerCameraState = 0
-    PlayerCameraSetup = 0
-    PlayerCameraZoomMode = nil
+    local PlayerCameraState = 0
+    local PlayerCameraSetup = 0
+    local PlayerCameraZoomMode = nil
 
 
 
@@ -30,11 +30,11 @@ do
 
         for i = 1, 6 do
             PlayerCameraSetup[i] = CreateCameraSetup()
-            CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_ANGLE_OF_ATTACK, 304., 0.)
-            CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_TARGET_DISTANCE, 1650., 0.)
-            CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_ROTATION, 90., 0.)
-            CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_FIELD_OF_VIEW, 70., 0.)
-            CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_FARZ, 5000., 0.)
+            CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_ANGLE_OF_ATTACK, 304., 0)
+            CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_TARGET_DISTANCE, 1800., 0)
+            CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_ROTATION, 90., 0)
+            CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_FIELD_OF_VIEW, 70., 0)
+            CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_FARZ, 5000., 0)
             BlzTriggerRegisterPlayerKeyEvent(trigger, Player(i-1), OSKEY_Z, 0, true)
         end
 
@@ -48,12 +48,12 @@ do
                         CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_ZOFFSET, 85., 0.5)
                         CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_ANGLE_OF_ATTACK, 320., 0.5)
                     else
-                        CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_TARGET_DISTANCE, 1650., 0.07)
+                        CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_TARGET_DISTANCE, 1800., 0.07)
                         CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_ANGLE_OF_ATTACK, 304., 0.07)
                         CameraSetupSetField(PlayerCameraSetup[i], CAMERA_FIELD_ZOFFSET, GetZ(GetUnitX(PlayerHero[i]), GetUnitY(PlayerHero[i])) * 0.1, 0.07)
                     end
 
-                    CameraSetupSetDestPosition(PlayerCameraSetup[i], GetUnitX(PlayerHero[i]), GetUnitY(PlayerHero[i]), 0.07)
+                    CameraSetupSetDestPosition(PlayerCameraSetup[i], GetUnitX(PlayerHero[i]), GetUnitY(PlayerHero[i])+55., 0.07)
                     if GetLocalPlayer() == Player(i-1) then CameraSetupApply(PlayerCameraSetup[i], true, true) end
 
                 end

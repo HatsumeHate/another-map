@@ -26,6 +26,8 @@ do
             local button = BlzGetTriggerPlayerMouseButton()
 
                 if button == MOUSE_BUTTON_TYPE_RIGHT and PlayerHero[player] and GetUnitState(PlayerHero[player], UNIT_STATE_LIFE) > 0.045 and PlayerMousePosition[player].x ~= 0 then
+                    PlayerSkillQueue[player].queue_skill = nil
+                    PlayerSkillQueue[player].is_casting_skill = false
                     TimerStart(PlayerDelayTable[player], 0.25, true, function()
                         local x, y  = GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player])
                         local point_x, point_y = x + Rx(GetUnitMoveSpeed(PlayerHero[player]), PlayerMouseVectorAngle[player]), y + Ry(GetUnitMoveSpeed(PlayerHero[player]), PlayerMouseVectorAngle[player])
