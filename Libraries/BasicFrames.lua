@@ -163,6 +163,11 @@ do
 
     end
 
+    function ImitateFrameClick(frame)
+        BlzFrameSetVisible(ButtonClickList[frame].frame, true)
+        TimerStart(ButtonClickList[frame].timer, 0.1, false, function() BlzFrameSetVisible(ButtonClickList[frame].frame, false) end)
+    end
+
 
     function BasicFramesInit()
         ButtonList = {}

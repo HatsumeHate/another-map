@@ -13,15 +13,15 @@ do
     function SpawnCitizens(rect, min, max)
         for i = 1, GetRandomInt(min, max) do
             if Chance(65.) then
-                if Chance(50.) then
-                    bj_lastCreatedUnit = CreateUnit(Player(8), FourCC('n00H'), GetRandomRectX(rect), GetRandomRectY(rect), GetRandomReal(0, 360.))
+                local pack = { "n00H", "n00G", "n034", "n035", "n036" }
+
+                    bj_lastCreatedUnit = CreateUnit(Player(8), FourCC(pack[GetRandomInt(1, #pack)]), GetRandomRectX(rect), GetRandomRectY(rect), GetRandomReal(0, 360.))
                     GroupAddUnit(CitizenGroup, bj_lastCreatedUnit)
-                else
-                    bj_lastCreatedUnit = CreateUnit(Player(8), FourCC('n00G'), GetRandomRectX(rect), GetRandomRectY(rect), GetRandomReal(0, 360.))
-                    GroupAddUnit(CitizenGroup, bj_lastCreatedUnit)
-                end
+
             else
-                bj_lastCreatedUnit = CreateUnit(Player(8), FourCC('n00F'), GetRandomRectX(rect), GetRandomRectY(rect), GetRandomReal(0, 360.))
+                local pack = { "n00F", "n037" }
+
+                bj_lastCreatedUnit = CreateUnit(Player(8), FourCC(pack[GetRandomInt(1, #pack)]), GetRandomRectX(rect), GetRandomRectY(rect), GetRandomReal(0, 360.))
                 GroupAddUnit(CitizenGroup, bj_lastCreatedUnit)
             end
         end

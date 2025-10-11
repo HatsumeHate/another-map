@@ -158,6 +158,7 @@ do
                     elseif value_str == "mp" then return "|c000066FF" .. (effect.level[lvl].resource_restored or 0.) .. "|r"
                     elseif value_str == "hphitmax" then return "|c0000FF00" .. (effect.level[lvl].life_restored_from_hit_max or 0.) .. "|r"
                     elseif value_str == "mphitmax" then return "|c000066FF" .. (effect.level[lvl].resource_restored_from_hit_max or 0.) .. "|r"
+                    elseif value_str == "heal_hp" then return "|c0000FF00" .. (effect.level[lvl].heal_amount or 0.) .. "|r"
                     elseif value_str == "heal_max_hp" then return "|c0000FF00" .. string.format('%%.1f', (effect.level[lvl].heal_amount_max_hp or 0.) * 100.) .. "%%|r"
                     end
 
@@ -276,6 +277,9 @@ do
     function UpdateBindedSkillsManacosts(unit)
         local unit_data = GetUnitData(unit)
         local player = GetPlayerId(GetOwningPlayer(unit)) + 1
+
+            if player > 6 then return end
+
             for key = KEY_Q, KEY_F do
                 if KEYBIND_LIST[key].player_skill_bind[player] and KEYBIND_LIST[key].player_skill_bind[player] > 0 then
                     local skill = GetUnitSkillData(PlayerHero[player], KEYBIND_LIST[key].player_skill_bind_string_id[player])
@@ -289,6 +293,28 @@ do
             end
     end
 
+    function UpdateBindedSkillsRange(unit)
+        local unit_data = GetUnitData(unit)
+        local player = GetPlayerId(GetOwningPlayer(unit)) + 1
+
+            if player > 6 then return end
+
+            for key = KEY_Q, KEY_F do
+                if KEYBIND_LIST[key].player_skill_bind[player] and KEYBIND_LIST[key].player_skill_bind[player] > 0 then
+                    local skill = GetUnitSkillData(PlayerHero[player], KEYBIND_LIST[key].player_skill_bind_string_id[player])
+                    local ability = BlzGetUnitAbility(PlayerHero[player], KEYBIND_LIST[key].ability)
+                    local range = skill.level[UnitGetAbilityLevel(PlayerHero[player], skill.Id)].range or 0.
+
+                        if range > 0 then
+                            range = (range + unit_data.stats[RANGE_BONUS].bonus) * unit_data.stats[RANGE_BONUS].multiplier
+                                if range < 0. then range = 0. end
+                                BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, range)
+                        end
+
+                end
+            end
+    end
+
 
     function UpdateBindedSkillsData(player)
         local unit_data = GetUnitData(PlayerHero[player])
@@ -298,8 +324,14 @@ do
                     local skill = GetUnitSkillData(PlayerHero[player], KEYBIND_LIST[key].player_skill_bind_string_id[player])
                     local ability = BlzGetUnitAbility(PlayerHero[player], KEYBIND_LIST[key].ability)
                     local level = UnitGetAbilityLevel(PlayerHero[player], skill.Id)
+                    local range = skill.level[level].range or 0.
 
-                        BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[level].range or 0.)
+                        if range > 0 then
+                            range = (range + unit_data.stats[RANGE_BONUS].bonus) * unit_data.stats[RANGE_BONUS].multiplier
+                            if range < 0. then range = 0. end
+                            BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, range)
+                        end
+
                         BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[level].radius or 0.)
                         BlzSetAbilityIntegerLevelField(ability, ABILITY_ILF_TARGET_TYPE, 0, skill.activation_type)
 
@@ -330,8 +362,14 @@ do
                 local ability_id = GetKeybindKeyAbility(FourCC(id), player)
                 local ability = BlzGetUnitAbility(PlayerHero[player], ability_id)
                 local level = UnitGetAbilityLevel(PlayerHero[player], id)
+                local range = skill.level[level].range or 0.
 
-                    BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[level].range or 0.)
+                    if range > 0 then
+                        range = (range + unit_data.stats[RANGE_BONUS].bonus) * unit_data.stats[RANGE_BONUS].multiplier
+                        if range < 0. then range = 0. end
+                        BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, range)
+                    end
+
                     BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[level].radius or 0.)
                     BlzSetAbilityIntegerLevelField(ability, ABILITY_ILF_TARGET_TYPE, 0, skill.activation_type)
                     local manacost = ((skill.level[level].resource_cost or 0.) + unit_data.stats[MANACOST].bonus) * unit_data.stats[MANACOST].multiplier
@@ -356,6 +394,7 @@ do
         local ability_id = KEYBIND_LIST[key].ability
         local ability
         local unit_data = GetUnitData(unit)
+        local player_id = GetPlayerId(GetOwningPlayer(unit)) + 1
 
 
             if GetUnitAbilityLevel(unit, ability_id) == 0 then
@@ -364,8 +403,14 @@ do
 
             ability = BlzGetUnitAbility(unit, ability_id)
             local level = UnitGetAbilityLevel(unit, id)
+            local range = skill.level[level].range or 0.
 
-            BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, skill.level[level].range or 0.)
+            if range > 0 then
+                range = (range + unit_data.stats[RANGE_BONUS].bonus) * unit_data.stats[RANGE_BONUS].multiplier
+                if range < 0. then range = 0. end
+                BlzSetAbilityRealLevelField(ability, ABILITY_RLF_CAST_RANGE, 0, (range + unit_data.stats[RANGE_BONUS].bonus) * unit_data.stats[RANGE_BONUS].multiplier)
+            end
+
             BlzSetAbilityRealLevelField(ability, ABILITY_RLF_AREA_OF_EFFECT, 0, skill.level[level].radius or 0.)
             BlzSetAbilityIntegerLevelField(ability, ABILITY_ILF_TARGET_TYPE, 0, skill.activation_type)
 
@@ -375,9 +420,9 @@ do
 
             if skill.level[level].charges then
                 if GetLocalPlayer() == GetOwningPlayer(unit) then
-                    BlzFrameSetVisible(KEYBIND_LIST[key].player_charges_frame[GetPlayerId(GetOwningPlayer(unit))+1].border, true)
+                    BlzFrameSetVisible(KEYBIND_LIST[key].player_charges_frame[player_id].border, true)
                 end
-                BlzFrameSetText(KEYBIND_LIST[key].player_charges_frame[GetPlayerId(GetOwningPlayer(unit))+1].text, skill.current_charges or skill.level[level].charges)
+                BlzFrameSetText(KEYBIND_LIST[key].player_charges_frame[player_id].text, skill.current_charges or skill.level[level].charges)
                 if not skill.current_charges then skill.current_charges = skill.level[level].charges end
                 skill.current_max_charges = skill.level[level].charges
             end
@@ -388,10 +433,10 @@ do
                 end
 
 
-        KEYBIND_LIST[key].player_skill_bind[GetPlayerId(GetOwningPlayer(unit)) + 1] = FourCC(id)
-        KEYBIND_LIST[key].player_skill_bind_string_id[GetPlayerId(GetOwningPlayer(unit)) + 1] = id
+        KEYBIND_LIST[key].player_skill_bind[player_id] = FourCC(id)
+        KEYBIND_LIST[key].player_skill_bind_string_id[player_id] = id
         --print("keybind done")
-        SetAbilityExtendedTooltip(unit, id, GetPlayerId(GetOwningPlayer(unit)) + 1)
+        SetAbilityExtendedTooltip(unit, id, player_id)
     end
 
 
@@ -1168,13 +1213,15 @@ do
                                             IssueImmediateOrderById(PlayerHero[player], KEYBIND_LIST[key].order)
                                         end
                                     else
-                                        local range
+                                        local range = skill.level[UnitGetAbilityLevel(PlayerHero[player], skill.Id)].range or 0.
                                         local target = GetClosestUnitToCursor(player)
                                         local angle = AngleBetweenUnitXY(PlayerHero[player], PlayerMousePosition[player].x, PlayerMousePosition[player].y)
+                                        local unit_data = GetUnitData(PlayerHero[player])
 
-                                            if skill.always_max_range_cast then range = skill.level[UnitGetAbilityLevel(PlayerHero[player], skill.Id)].range
-                                            else range = math.min(DistanceBetweenUnitXY(PlayerHero[player], PlayerMousePosition[player].x, PlayerMousePosition[player].y), (skill.level[UnitGetAbilityLevel(PlayerHero[player], skill.Id)].range or 99999.)) end
 
+                                            range = (range + unit_data.stats[RANGE_BONUS].bonus) * unit_data.stats[RANGE_BONUS].multiplier
+
+                                            if not skill.always_max_range_cast then range = math.min(DistanceBetweenUnitXY(PlayerHero[player], PlayerMousePosition[player].x, PlayerMousePosition[player].y), (range or 99999.)) end
 
                                             if PlayerSkillQueue[player].is_casting_skill then
                                                 PlayerSkillQueue[player].queue_skill = KEYBIND_LIST[key].order
@@ -1284,25 +1331,50 @@ do
 
 
                     if skill.required_weapon then
-                        if not CanCastSkillWithWeapon(skill, unit_data.equip_point[WEAPON_POINT].SUBTYPE) then
-                            local player_id = GetPlayerId(GetOwningPlayer(unit_data.Owner))+1
-                            local alt_weapon = GetAlternateWeaponSlotItem(player_id)
-                            local alt_weapon_data = GetItemData(alt_weapon)
+                        local player_id = GetPlayerId(GetOwningPlayer(unit_data.Owner))+1
 
-                                if alt_weapon and CanCastSkillWithWeapon(skill, alt_weapon_data.SUBTYPE) then
-                                    SwitchHeroWeapon(player_id)
-                                else
-                                    local unit = GetTriggerUnit()
-                                    local player = GetPlayerId(GetOwningPlayer(unit))
+                            if skill.required_weapon[1] == SHIELD_OFFHAND then
+
+                                if not unit_data.equip_point[OFFHAND_POINT] or (unit_data.equip_point[OFFHAND_POINT].item and not IsItemSubType(unit_data.equip_point[OFFHAND_POINT].item, SHIELD_OFFHAND)) then
+                                    local alt_offhand = GetAlternateOffhandSlotItem(player_id)
+
+                                    if alt_offhand and IsItemSubType(alt_offhand, SHIELD_OFFHAND) then
+                                        --print("switch to shield")
+                                        SwitchHeroWeapon(player_id)
+                                    else
+                                        --print("cancel, no shield")
+                                        local unit = GetTriggerUnit()
+                                        local player = GetPlayerId(GetOwningPlayer(unit))
 
                                         IssueImmediateOrderById(unit, order_stop)
                                         DelayAction(0.0, function() SetUnitState(unit, UNIT_STATE_MANA, GetUnitState(unit, UNIT_STATE_MANA) + manacost) end)
                                         SimError(LOCALE_LIST[my_locale].INVALID_WEAPON_FEEDBACK, player)
                                         Feedback_CantUse(player + 1)
                                         return
+                                    end
                                 end
 
-                        end
+                            else
+                                if not CanCastSkillWithWeapon(skill, unit_data.equip_point[WEAPON_POINT].SUBTYPE) then
+                                    local alt_weapon = GetAlternateWeaponSlotItem(player_id)
+                                    local alt_weapon_data = GetItemData(alt_weapon)
+
+                                        if alt_weapon and CanCastSkillWithWeapon(skill, alt_weapon_data.SUBTYPE) then
+                                            SwitchHeroWeapon(player_id)
+                                        else
+                                            local unit = GetTriggerUnit()
+                                            local player = GetPlayerId(GetOwningPlayer(unit))
+
+                                                IssueImmediateOrderById(unit, order_stop)
+                                                DelayAction(0.0, function() SetUnitState(unit, UNIT_STATE_MANA, GetUnitState(unit, UNIT_STATE_MANA) + manacost) end)
+                                                SimError(LOCALE_LIST[my_locale].INVALID_WEAPON_FEEDBACK, player)
+                                                Feedback_CantUse(player + 1)
+                                                return
+                                        end
+
+                                end
+                            end
+
                     end
 
                     if (target and GetWidgetLife(target) <= 0.045) then
@@ -1636,6 +1708,37 @@ do
                                                IssueImmediateOrderById(PlayerHero[player_id], casting_queue_skill)
                                             end
                                         end
+                                    else
+
+                                        if skill.activation_type ~= SELF_CAST then
+
+                                            if target and GetUnitState(target, UNIT_STATE_LIFE) > 0.045 and DistanceBetweenUnits(unit_data.Owner, target) <= unit_data.equip_point[WEAPON_POINT].RANGE then
+                                                IssueTargetOrderById(unit_data.Owner, order_attack,  target)
+                                            else
+                                                local group = CreateGroup()
+                                                local closest_range = unit_data.equip_point[WEAPON_POINT].RANGE
+                                                local closest_unit
+                                                local player = GetPlayerId(GetOwningPlayer(unit_data.Owner))
+
+                                                    GroupEnumUnitsInRange(group, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), unit_data.equip_point[WEAPON_POINT].RANGE or 125., nil)
+
+                                                    for index = BlzGroupGetSize(group) - 1, 0, -1 do
+                                                        local picked = BlzGroupUnitAt(group, index)
+                                                        local range = DistanceBetweenUnits(picked, unit_data.Owner)
+
+                                                            if IsUnitEnemy(picked, player) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 and range < closest_range then
+                                                                closest_range = range
+                                                                closest_unit = picked
+                                                            end
+
+                                                    end
+
+                                                if closest_unit then IssueTargetOrderById(unit_data.Owner, order_attack,  closest_unit) end
+                                                DestroyGroup(group)
+                                            end
+
+                                        end
+
                                     end
 
                             end)

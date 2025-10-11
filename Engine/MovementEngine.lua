@@ -150,7 +150,7 @@ do
             --AddSpecialEffect("Abilities\\Spells\\Other\\Aneu\\AneuTarget.mdl", missile.end_point_x, missile.end_point_y)
             --BlzSetSpecialEffectYaw(missile.missile_effect, AngleBetweenXY(x, y, missile.end_point_x, missile.end_point_y))
             missile.heading_angle = AngleBetweenXY(x, y, missile.end_point_x, missile.end_point_y)
-            BlzSetSpecialEffectOrientation(missile.missile_effect, missile.heading_angle * bj_DEGTORAD, missile.last_pitch or 0., 0.)
+            BlzSetSpecialEffectOrientation(missile.my_missile, missile.heading_angle * bj_DEGTORAD, missile.last_pitch or 0., 0.)
     end
 
 
@@ -216,6 +216,7 @@ do
     ---@param radius number
     ---@param animation string
     ---@param sign string
+    ---@return table
     function ChargeUnit(source, speed, distance, angle, max_targets, radius, animation, sign, sfx, anim_pack)
         local charge_data = {}
         local h = source
@@ -282,29 +283,35 @@ do
                 elseif max_targets and GetUnitState(source, UNIT_STATE_LIFE) > 0.045 and not state then
                     GroupEnumUnitsInRange(enemy_group, GetUnitX(source), GetUnitY(source), radius, nil)
 
-                        for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
-                            local picked = BlzGroupUnitAt(enemy_group, index)
+                        if charge_data.safe_time then
+                            charge_data.safe_time = charge_data.safe_time - PERIOD
+                            if charge_data.safe_time <= 0. then charge_data.safe_time = nil end
+                        else
 
-                                if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
-                                    local endcharge = OnChargeHit(source, picked, sign)
-                                    targets_hit = targets_hit + 1
-                                    max_targets = max_targets - 1
-                                    if max_targets <= 0 or endcharge then
-                                        if not IsUnitStunned(source) and not IsUnitFrozen(source) then SafePauseUnit(source, false) end
-                                        if anim_pack then SetUnitTimeScale(source,  1.) end
-                                        OnChargeEnd(source, targets_hit, sign, state)
-                                        BlzSetSpecialEffectScale(charge_data.effect, 1.)
-                                        DestroyEffect(charge_data.effect)
-                                        charge_data = nil
-                                        ChargeList[h] = nil
-                                        DestroyTimer(GetExpiredTimer())
-                                        DestroyGroup(enemy_group)
-                                        break
+                            for index = BlzGroupGetSize(enemy_group) - 1, 0, -1 do
+                                local picked = BlzGroupUnitAt(enemy_group, index)
+
+                                    if IsUnitEnemy(picked, player_entity) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
+                                        local endcharge = OnChargeHit(source, picked, sign)
+                                        targets_hit = targets_hit + 1
+                                        max_targets = max_targets - 1
+                                        if max_targets <= 0 or endcharge then
+                                            if not IsUnitStunned(source) and not IsUnitFrozen(source) then SafePauseUnit(source, false) end
+                                            if anim_pack then SetUnitTimeScale(source,  1.) end
+                                            OnChargeEnd(source, targets_hit, sign, state)
+                                            BlzSetSpecialEffectScale(charge_data.effect, 1.)
+                                            DestroyEffect(charge_data.effect)
+                                            charge_data = nil
+                                            ChargeList[h] = nil
+                                            DestroyTimer(GetExpiredTimer())
+                                            DestroyGroup(enemy_group)
+                                            break
+                                        end
                                     end
-                                end
+
+                            end
 
                         end
-
 
                     if animation then SetUnitAnimation(source, animation) end
 
@@ -338,6 +345,7 @@ do
                 end
             end)
 
+        return charge_data
     end
 
 
@@ -901,6 +909,9 @@ do
 
         if m.trackable then
             m.time = m.time * 1.25
+            if m.tracking_max_angle_per_second then
+                m.tracking_angle_clamp = m.tracking_max_angle_per_second / FPS
+            end
         end
 
         if m.only_on_impact then
@@ -1027,13 +1038,44 @@ do
                         if GetUnitState(m.target, UNIT_STATE_LIFE) < 0.045 or m.target == nil then
                             m.time = 0.
                         else
-                            distance = GetDistance3D(m.current_x, m.current_y, m.current_z, GetUnitX(m.target), GetUnitY(m.target), m.end_z + GetUnitZ(m.target))
-                            velocity = (m.speed * PERIOD) / distance
-                            m.vx = (GetUnitX(m.target) - m.current_x) * velocity
-                            m.vy = (GetUnitY(m.target) - m.current_y) * velocity
-                            m.vz = (m.end_z + GetUnitZ(m.target) - m.current_z) * velocity
-                            m.heading_angle = AngleBetweenXY_DEG(m.current_x, m.current_y, GetUnitX(m.target), GetUnitY(m.target))
-                            BlzSetSpecialEffectOrientation(missile_effect, m.heading_angle * bj_DEGTORAD, 0., 0.)
+                            local tx, ty = GetUnitX(m.target), GetUnitY(m.target)
+
+                                if not m.tracking_angle_window or (m.tracking_angle_window and IsPointInAngleWindow(m.heading_angle, m.tracking_angle_window, m.current_x, m.current_y, tx, ty)) then
+                                    distance = GetDistance3D(m.current_x, m.current_y, m.current_z, tx, ty, m.end_z + GetUnitZ(m.target))
+                                    --print("in window")
+
+                                        if m.tracking_angle_clamp then
+                                            --print("clamp")
+                                            local angle_diff = AngleBetweenXY(m.current_x, m.current_y, tx, ty)
+
+                                                if angle_diff - m.heading_angle > m.tracking_angle_clamp then
+                                                    --print("clamp exceeds")
+                                                    angle_diff = m.tracking_angle_clamp
+
+                                                    if WhichSideEx(m.heading_angle, m.current_x, m.current_y, tx, ty) then m.heading_angle = m.heading_angle + m.tracking_angle_clamp
+                                                    else m.heading_angle = m.heading_angle - m.tracking_angle_clamp end
+
+                                                    tx, ty = m.current_x + Rx(distance, m.heading_angle), m.current_y + Ry(distance, m.heading_angle)
+                                                    velocity = (m.speed * PERIOD) / distance
+                                                    m.vx = (tx - m.current_x) * velocity
+                                                    m.vy = (ty - m.current_y) * velocity
+                                                    m.vz = (m.end_z + GetUnitZ(m.target) - m.current_z) * velocity
+                                                    BlzSetSpecialEffectOrientation(missile_effect, m.heading_angle * bj_DEGTORAD, 0., 0.)
+                                                   -- print("clamped tracking")
+                                                end
+
+                                        else
+                                            velocity = (m.speed * PERIOD) / distance
+                                            m.vx = (tx - m.current_x) * velocity
+                                            m.vy = (ty - m.current_y) * velocity
+                                            m.vz = (m.end_z + GetUnitZ(m.target) - m.current_z) * velocity
+                                            m.heading_angle = AngleBetweenXY_DEG(m.current_x, m.current_y, tx, ty)
+                                            BlzSetSpecialEffectOrientation(missile_effect, m.heading_angle * bj_DEGTORAD, 0., 0.)
+                                            --print("no clamp tracking")
+                                        end
+
+                                end
+
                         end
                     end
 

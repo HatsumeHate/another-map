@@ -326,6 +326,7 @@ do
                 { id = "I047", generate = true }, --infinity chain
                 { id = "I04M", generate = true }, --nightwalkers
                 { id = "I04N", generate = true }, --trick
+                { id = "I04X", generate = true }, --icebound
             }
         })
 
@@ -525,6 +526,9 @@ do
                 { id = "I03F" },
                 { id = "I03G" },
                 { id = "I044" },
+                { id = "I04O" },
+                { id = "I04R" },
+                { id = "I04U" }
             }
         })
 
@@ -543,7 +547,10 @@ do
                 { id = "I03H" },
                 { id = "I03I" },
                 { id = "I03J" },
-                { id = "I045" }
+                { id = "I045" },
+                { id = "I04P" },
+                { id = "I04S" },
+                { id = "I04V" }
             }
         })
 
@@ -562,7 +569,10 @@ do
                 { id = "I04I" },
                 { id = "I04J" },
                 { id = "I04K" },
-                { id = "I04L" }
+                { id = "I04L" },
+                { id = "I04Q" },
+                { id = "I04T" },
+                { id = "I04W" }
             }
         })
 
@@ -580,7 +590,7 @@ do
             template = true,
             max = 2,
             list = {
-                { id = "common_item", chance = 8.2 },
+                { id = "common_item", chance = 7.5 },
                 { id = "consumables", chance = 4. },
                 { id = "gems", chance = 2. },
                 { id = "books", chance = 16.5 },
@@ -598,7 +608,7 @@ do
             template = true,
             max = 4,
             list = {
-                { id = "adv_item", chance = 16.2 },
+                { id = "adv_item", chance = 13.8 },
                 { id = "gems", chance = 17. },
                 { id = "runes", chance = 9. },
                 { id = "consumables", chance = 9. },

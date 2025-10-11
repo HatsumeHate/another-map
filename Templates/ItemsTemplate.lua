@@ -398,14 +398,14 @@ do
 
 		CLASS_SKILL_LIST = {
 			[BARBARIAN_CLASS] = {
-				[SKILL_CATEGORY_FIGHTING_MASTERY] 	= { "A010", "A007", "A006", "A020", "ADBS", "ABRV" },
+				[SKILL_CATEGORY_FIGHTING_MASTERY] 	= { "A010", "A007", "A006", "A020", "ADBS", "ABRV", "ABLC" },
 				[SKILL_CATEGORY_BATTLE_ADVANTAGE]	= { "A00O", "A00Z", "A00A", "ASHG", "ABUP", "ABTR" },
-				[SKILL_CATEGORY_INNER_STRENGTH] 	= { "A00Q", "ABWC", "ABFA", "ABRC", "ABCA" }
+				[SKILL_CATEGORY_INNER_STRENGTH] 	= { "A00Q", "ABWC", "ABFA", "ABRC", "ABCA", "ABFR", "ABEQ" }
 			},
 			[SORCERESS_CLASS] = {
-				[SKILL_CATEGORY_LIGHTNING] 			= { 'A00M', "A00J", "A00K", "A019", "ASSU", "ASSF", "ALSP" },
+				[SKILL_CATEGORY_LIGHTNING] 			= { 'A00M', "A00J", "A00K", "A019", "ASSU", "ASSF", "ALSP", "ASLF" },
 				[SKILL_CATEGORY_ICE] 				= { "A003", "A001", "A005", "A00E", "ABLZ", "ASIR", "APRF" },
-				[SKILL_CATEGORY_FIRE] 				= { "A00D", "A00F", "A00I", "AMLT", "AFRW", "ASFS", "AFWL", "ASEF" },
+				[SKILL_CATEGORY_FIRE] 				= { "A00D", "A00F", "A00I", "AMLT", "AFRW", "ASFS", "AFWL", "ASEF", "AFCR" },
 				[SKILL_CATEGORY_ARCANE] 			= { "A00L", "A00N", "A00H", "AARF", "AARC" }
 			},
 			[NECROMANCER_CLASS] = {
@@ -418,6 +418,11 @@ do
 				[SKILL_CATEGORY_SHADOWS] 			= { "AANS", "AATW", "AABD", "AAST", "AACB", "AADB" },
 				[SKILL_CATEGORY_BOW] 				= { "AAPS", "AAEX", "AACA", "AACR", "AAPA", "AASR", "AASF", "AACO", "AAMH" },
 				[SKILL_CATEGORY_GEAR] 				= { "AAIG", "AACT", "AASC", "AABT", "AASB" }
+			},
+			[PALADIN_CLASS] = {
+				[SKILL_CATEGORY_COMBAT_SKILLS] 		= { "APGA", "APZE", "APSB", "APCR", "APCH", "APSH", "APRT" },
+				[SKILL_CATEGORY_FAITH]				= { "APSM", "APVA", "APPR", "APDW", "APSA", "APCP", "APFH" },
+				[SKILL_CATEGORY_HOLY_DOCTRINE] 		= { "APAP", "APAF", "APAD", "APAM", "APIL", "APSL", "APRW" }
 			},
 		}
 
@@ -663,7 +668,7 @@ do
 			SUBTYPE = SHIELD_OFFHAND,
 			DEFENCE  = 15,
 			BLOCK = 20.,
-			BLOCK_RATE = 0.3,
+			BLOCK_RATE = 20.,
 			stat_modificator = 0.9,
 			QUALITY = COMMON_ITEM,
 			flippy = true,
@@ -2058,6 +2063,130 @@ do
 		})
 
 
+		ItemAddData('I04O', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_COMBAT_SKILLS,
+			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
+			frame_texture      	= "Items\\Book\\BTNTomePowerFlame.BLP",
+			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= PALADIN_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[PALADIN_CLASS][SKILL_CATEGORY_COMBAT_SKILLS],
+			learn_effect		= "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 200,
+			sell_penalty 		= 0.5
+		})
+
+		ItemAddData('I04P', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_COMBAT_SKILLS,
+			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
+			QUALITY 		   	= RARE_ITEM,
+			frame_texture      	= "Items\\Book\\BTNTomePowerFlame.BLP",
+			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= PALADIN_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[PALADIN_CLASS][SKILL_CATEGORY_COMBAT_SKILLS],
+			learn_effect		= "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 500,
+			sell_penalty 		= 0.5
+		})
+
+		ItemAddData('I04Q', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_COMBAT_SKILLS,
+			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
+			QUALITY 		   	= MAGIC_ITEM,
+			frame_texture      	= "Items\\Book\\BTNTomePowerFlame.BLP",
+			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= PALADIN_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[PALADIN_CLASS][SKILL_CATEGORY_COMBAT_SKILLS],
+			learn_effect		= "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 700,
+			sell_penalty 		= 0.5
+		})
+
+		ItemAddData('I04R', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_FAITH,
+			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
+			frame_texture      	= "Items\\Book\\BTNTomePowerDevine.BLP",
+			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= PALADIN_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[PALADIN_CLASS][SKILL_CATEGORY_FAITH],
+			learn_effect		= "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 200,
+			sell_penalty 		= 0.5
+		})
+
+		ItemAddData('I04S', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_FAITH,
+			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
+			QUALITY 		   	= RARE_ITEM,
+			frame_texture      	= "Items\\Book\\BTNTomePowerDevine.BLP",
+			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= PALADIN_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[PALADIN_CLASS][SKILL_CATEGORY_FAITH],
+			learn_effect		= "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 500,
+			sell_penalty 		= 0.5
+		})
+
+		ItemAddData('I04T', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_FAITH,
+			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
+			QUALITY 		   	= MAGIC_ITEM,
+			frame_texture      	= "Items\\Book\\BTNTomePowerDevine.BLP",
+			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= PALADIN_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[PALADIN_CLASS][SKILL_CATEGORY_FAITH],
+			learn_effect		= "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 700,
+			sell_penalty 		= 0.5
+		})
+
+		ItemAddData('I04U', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_HOLY_DOCTRINE,
+			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
+			frame_texture      	= "Items\\Book\\BTNRuneBook1.BLP",
+			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= PALADIN_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[PALADIN_CLASS][SKILL_CATEGORY_HOLY_DOCTRINE],
+			learn_effect		= "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 200,
+			sell_penalty 		= 0.5
+		})
+
+		ItemAddData('I04V', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_HOLY_DOCTRINE,
+			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
+			QUALITY 		   	= RARE_ITEM,
+			frame_texture      	= "Items\\Book\\BTNRuneBook1.BLP",
+			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= PALADIN_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[PALADIN_CLASS][SKILL_CATEGORY_HOLY_DOCTRINE],
+			learn_effect		= "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 500,
+			sell_penalty 		= 0.5
+		})
+
+		ItemAddData('I04W', {
+			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_HOLY_DOCTRINE,
+			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
+			QUALITY 		   	= MAGIC_ITEM,
+			frame_texture      	= "Items\\Book\\BTNRuneBook1.BLP",
+			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
+			restricted_to 		= PALADIN_CLASS,
+			skill_category 		= CLASS_SKILL_LIST[PALADIN_CLASS][SKILL_CATEGORY_HOLY_DOCTRINE],
+			learn_effect		= "Abilities\\Spells\\Items\\AIsm\\AIsmTarget.mdx",
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BOOK],
+			cost 				= 700,
+			sell_penalty 		= 0.5
+		})
+
+
 		ItemAddData('I03D', {
 			NAME    		  	= LOCALE_LIST[my_locale].GIFT_SCREAMING_MASK,
 			TYPE    		   	= ITEM_TYPE_GIFT,
@@ -2929,7 +3058,7 @@ do
 			MAX_SLOTS = 3,
 			frame_texture = "Jewelry\\BTNRing.blp",
 			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_PAIN_CONDUCTOR .."\"",
-			soundpack = { equip = "Sound\\ring_mana_equip.wav", unequip = "Sound\\ring_unequip.wav", drop = "Sound\\ring.wav" }
+			soundpack = { equip = "Sound\\ring_mana_equip.wav", unequip = "Sound\\ring_mana_unequip.wav", drop = "Sound\\ring.wav" }
 		})
 
 		ItemAddData('I03A', {
@@ -3201,6 +3330,28 @@ do
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_HANDS_MID_ARMOR],
 		})
 
+		ItemAddData('I04X', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_ICEBOUND_LOOP,
+			TYPE    = ITEM_TYPE_JEWELRY,
+			SUBTYPE = RING_JEWELRY,
+			QUALITY = UNIQUE_ITEM,
+			stat_modificator = 0.85,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = ICE_BONUS, VALUE = 24, METHOD = STRAIGHT_BONUS, base = 24, delta = 1, delta_level = 1, delta_level_max = 75 },
+				{ PARAM = CONTROL_DURATION, VALUE = 25, METHOD = STRAIGHT_BONUS },
+				{ PARAM = DAMAGE_TO_CC_ENEMIES, VALUE = 24, METHOD = STRAIGHT_BONUS, base = 24, delta = 1, delta_level = 1, delta_level_max = 50 },
+			},
+			MAX_SLOTS = 2,
+			SKILL_BONUS = { { category = SKILL_CATEGORY_ICE, bonus_levels = 3 } },
+			frame_texture = "Jewelry\\BTNRing_Of_Water_10_Classic-2.blp",
+			legendary_effect = GetLegendaryEffect("icebound_loop_effect"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_ICEBOUND_LOOP .."\"",
+			soundpack = { equip = "Sound\\ring_mana_equip.wav", uneqip = "Sound\\ring_mana_unequip.wav", drop = "Sound\\ring.wav" }
+		})
+
+
 		ItemAddData('I02H', {
 			NAME    		   = LOCALE_LIST[my_locale].LOOTBOX_NAME,
 			TYPE    		   = ITEM_TYPE_OTHER,
@@ -3259,42 +3410,6 @@ do
 
     end
 
-	--[[
-	Вбиватель
 
-	Каждый удар этим молотом наносит дополнительный урон в размере 20% от максимального запаса здоровья противника.
-	При ударе по земле создается ударная волна, которая оглушает всех противников в радиусе 10 метров на 2 секунды.
-	При каждом третьем ударе этот молот вызывает землетрясение, наносящее урон в радиусе 15 метров и замедляющее движение противников на 50% на 5 секунд.
-
-
-	The Conductor
-	big lightning strike
-
-	Кукла вуду
-	Содержит чьи-то волосы. Опасная игрушка.
-
-	Громоотвод
-	Где вы его раздобыли??? В любом случае, может воскресить вас при ударе молнии. Или убить.
-
-		Амулет хаоса
-	Переодически нестабильным и начинается дичь.
-
-	Рубик в Кубике
-	Маленькое существо в кубике. Вы чувствуете что его зовут Рубик.
-
-		Трезубец короля морей
-	Может в красивые молнии. Однако владелец также в опасности.
-
-	Непробиваемый Наколенник Искателя Приключений
-
-	хочу легендарный меч проворства
-	легенда увеличивает шанс крита на 20%, а проворства +25 ловкости
-
-
-	сапоги на некра
-	тяжесть
-	пока действует броня + к резисту контроля
-
-	]]
 	
 end

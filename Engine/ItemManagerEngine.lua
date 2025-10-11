@@ -511,6 +511,10 @@ do
                 local class = preset.skill_bonus[gen]
                 local category = class.available_category[GetRandomInt(1, #class.available_category)]
 
+                if gen ~= ASSASSIN_CLASS and (item_data.SUBTYPE == BOW_WEAPON or item_data.SUBTYPE == QUIVER_OFFHAND) then
+                elseif (gen ~= SORCERESS_CLASS and gen ~= NECROMANCER_CLASS) and (item_data.SUBTYPE == ORB_OFFHAND or item_data.SUBTYPE == STAFF_WEAPON) then
+                elseif gen == ASSASSIN_CLASS and (item_data.SUBTYPE == SHIELD_OFFHAND or item_data.SUBTYPE == BLUNT_WEAPON or item_data.SUBTYPE == GREATBLUNT_WEAPON or item_data.SUBTYPE == AXE_WEAPON or item_data.SUBTYPE == GREATAXE_WEAPON or item_data.SUBTYPE == GREATSWORD_WEAPON) then
+                else
                     if GetRandomInt(0, 100) <= class.skill_bonus_probability then
 
                             item_data.SKILL_BONUS[#item_data.SKILL_BONUS + 1] = {
@@ -546,6 +550,7 @@ do
                         bonus_parameters_count = bonus_parameters_count - 1
 
                     end
+                end
 
             end
 
@@ -1011,6 +1016,10 @@ do
                             AddToInventory(player, item)
                             DelayAction(0., function() IssueImmediateOrderById(unit, order_stop) end)
                             SetUnitFacingTimed(unit, angle+180.,0.)
+                            if PlayerInventoryFrameState[player] then
+                                InventoryItemInFocus[player] = nil
+                                DestroyContextMenu(player)
+                            end
                             --print("c1")
                         else
                             local proximity_timer = CreateTimer()
@@ -1037,6 +1046,10 @@ do
                                     DestroyTrigger(proximity_trigger)
                                     AddSoundVolume("Sound\\Interface\\PickUpItem.wav", x, y, 85, 1200.)
                                     IssueImmediateOrderById(unit, order_stop)
+                                    if PlayerInventoryFrameState[player] then
+                                        InventoryItemInFocus[player] = nil
+                                        DestroyContextMenu(player)
+                                    end
                                 elseif item_data.picked_up then
                                     DestroyTimer(proximity_timer)
                                     DestroyTrigger(proximity_trigger)
@@ -1285,6 +1298,16 @@ do
         for i = 1, 6 do
             PlayerPickUpItemFlag[i] = false
         end
+
+        RegisterTestCommand("bn", function()
+            local item = CreateCustomItem("IGAC", GetUnitX(PlayerHero[1]), GetUnitY(PlayerHero[1]), true)
+            local item_data = GetItemData(item)
+
+                GenerateItemStats(item, 1, MAGIC_ITEM)
+                item_data.MAX_SLOTS = 4
+
+
+        end)
 
     end
 

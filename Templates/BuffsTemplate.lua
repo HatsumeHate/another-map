@@ -561,6 +561,25 @@ do
         })
         --================================================--
         NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].SKILL_STORM_FRONT,
+            id = 'A04X',
+            buff_id = 'B06Z',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = true,
+            max_level = 75,
+            attribute = LIGHTNING_ATTRIBUTE,
+            tags = { "skill" },
+            icon = "Spell\\BTNFile00000990.blp",
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 7.,
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
             name = LOCALE_LIST[my_locale].SKILL_ENFLAME,
             id = 'ABEF',
             buff_id = 'B05O',
@@ -642,6 +661,26 @@ do
                     effect_delay = 0.33,
                 }
             }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "charring orb stun",
+            id = 'A04A',
+            buff_id = 'B06D',
+            buff_type = NEGATIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 1.,
+                    negative_state = STATE_STUN,
+                }
+            }
+
         })
         --================================================--
         NewBuffTemplate({
@@ -1131,6 +1170,60 @@ do
                     time = 5.,
                     effect = 'ECSP',
                     effect_delay = 1.,
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "lacerate debuff",
+            id = 'A04P',
+            buff_id = 'B06S',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 75,
+            tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 7.,
+                    bonus = {
+                        { PARAM = BLEEDING_DAMAGE_REDUCTION, VALUE = -25, METHOD = STRAIGHT_BONUS, value_delta = -1, value_delta_level = 1, value_delta_level_max = 50 },
+                    }
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].SKILL_FIERY_RAGE,
+            id = 'A04S',
+            buff_id = 'B06V',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = true,
+            max_level = 75,
+            tags = { "skill" },
+            icon = "Spell\\BTNFieryRage2.blp",
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 7.,
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "sunder debuff",
+            id = 'A04T',
+            buff_id = 'B06W',
+            buff_type = NEGATIVE_BUFF,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 3.,
+                    negative_state = STATE_STUN
                 }
             }
         })
@@ -1647,7 +1740,7 @@ do
                     time = 1.,
 
                     bonus = {
-                        { PARAM = MP_REGEN, VALUE = 1., METHOD = STRAIGHT_BONUS, value_delta = 0.25, value_delta_level = 5, value_delta_level_max = 14 },
+                        { PARAM = MP_REGEN, VALUE = 1., METHOD = STRAIGHT_BONUS, value_delta = 0.03, value_delta_level = 1, value_delta_level_max = 75 },
                     }
                 }
             }
@@ -2993,7 +3086,7 @@ do
                         { PARAM = DARKNESS_BONUS, VALUE = 7, METHOD = STRAIGHT_BONUS },
                     },
                 },
-                [1] = {
+                [2] = {
                     rank = 5,
                     time = 5.,
                     bonus = {
@@ -3019,7 +3112,7 @@ do
                     time = 2.,
                     negative_state = STATE_ROOT,
                 },
-                [1] = {
+                [2] = {
                     rank = 5,
                     time = 3.,
                     negative_state = STATE_ROOT,
@@ -3043,12 +3136,1103 @@ do
                     time = 1.,
                     negative_state = STATE_BLIND,
                 },
-                [1] = {
+                [2] = {
                     rank = 5,
                     time = 2.,
                     negative_state = STATE_BLIND,
                 },
             }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].SKILL_GUARDIAN,
+            id = 'A03J',
+            buff_id = 'B05U',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            tags = { "skill" },
+            inherit_level = false,
+            icon = "Spell\\BTNicons_12440_btn.blp",
+            statusbar_show_level = true,
+            max_level = 5,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = BLOCK_CHANCE, VALUE = 3, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [2] = {
+                    rank = 5,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = BLOCK_CHANCE, VALUE = 6, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [3] = {
+                    rank = 5,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = BLOCK_CHANCE, VALUE = 9, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [4] = {
+                    rank = 5,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = BLOCK_CHANCE, VALUE = 12, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [5] = {
+                    rank = 5,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = BLOCK_CHANCE, VALUE = 15, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].SKILL_RETRIBUTION,
+            id = 'A03K',
+            buff_id = 'B05V',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            tags = { "skill" },
+            inherit_level = true,
+            icon = "Spell\\BTNjntb_255.blp",
+            max_level = 75,
+            time_delta = 0.1,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 5.,
+                },
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].SKILL_ZEAL,
+            id = 'A03L',
+            buff_id = 'B05W',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            tags = { "skill" },
+            inherit_level = false,
+            icon = "Spell\\BTNHolyStrike.blp",
+            statusbar_show_level = true,
+            max_level = 5,
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 6.,
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 2, METHOD = STRAIGHT_BONUS },
+                        { PARAM = CAST_SPEED, VALUE = 2, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [2] = {
+                    rank = 5,
+                    time = 6.,
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 5, METHOD = STRAIGHT_BONUS },
+                        { PARAM = CAST_SPEED, VALUE = 5, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [3] = {
+                    rank = 5,
+                    time = 6.,
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 8, METHOD = STRAIGHT_BONUS },
+                        { PARAM = CAST_SPEED, VALUE = 8, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [4] = {
+                    rank = 5,
+                    time = 6.,
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 11, METHOD = STRAIGHT_BONUS },
+                        { PARAM = CAST_SPEED, VALUE = 11, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [5] = {
+                    rank = 5,
+                    time = 6.,
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 14, METHOD = STRAIGHT_BONUS },
+                        { PARAM = CAST_SPEED, VALUE = 14, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].SKILL_SHIELDBASH,
+            id = 'A03M',
+            buff_id = 'B05X',
+            buff_type = NEGATIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 2.25,
+                    negative_state = STATE_STUN,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "verdict stun",
+            id = 'A03N',
+            buff_id = 'B05Y',
+            buff_type = NEGATIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 2.5,
+                    negative_state = STATE_STUN,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].SKILL_PURIFY,
+            id = 'A04R',
+            buff_id = 'B06U',
+            buff_type = NEGATIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
+            tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 1.5,
+                    negative_state = STATE_FEAR,
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "collective punishment root",
+            id = 'A03O',
+            buff_id = 'B05Z',
+            buff_type = NEGATIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 2.5,
+                    negative_state = STATE_ROOT,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].SKILL_INNER_LIGHT,
+            id = 'A03P',
+            buff_id = 'B060',
+            buff_type = POSITIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            icon = "Spell\\BTNRighteousBlessing.blp",
+            tags = { "skill" },
+
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 7.,
+                    bonus = {
+                        { PARAM = CRIT_CHANCE, VALUE = 7, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 2, value_delta_level_max = 50 },
+                        { PARAM = MOVING_SPEED, VALUE = 49, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 75 },
+                        { PARAM = HEALING_BONUS, VALUE = 14, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 2, value_delta_level_max = 50 }
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].SKILL_AURA_OF_PURITY,
+            id = 'A03R',
+            buff_id = 'B062',
+            buff_type = POSITIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            breakpoints = { 10, 20 },
+            icon = "Spell\\BTNprotect-sky-2.blp",
+            tags = { "skill" },
+            statusbar_dont_show_time = true,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 1.,
+                    bonus = {
+                        { PARAM = ALL_RESIST, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 75 },
+                    }
+                },
+                [10] = {
+                    rank = 15,
+                    time = 1.,
+                    bonus = {
+                        { PARAM = ALL_RESIST, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 75 },
+                        { PARAM = HP_REGEN, VALUE = 0.5, METHOD = STRAIGHT_BONUS, value_delta = 0.02, value_delta_level = 1, value_delta_level_max = 75 },
+                    }
+                },
+                [20] = {
+                    rank = 15,
+                    time = 1.,
+                    bonus = {
+                        { PARAM = ALL_RESIST, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 75 },
+                        { PARAM = HP_REGEN, VALUE = 0.5, METHOD = STRAIGHT_BONUS, value_delta = 0.02, value_delta_level = 1, value_delta_level_max = 75 },
+                        { PARAM = MP_REGEN, VALUE = 0.3, METHOD = STRAIGHT_BONUS, value_delta = 0.02, value_delta_level = 1, value_delta_level_max = 75 },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].SKILL_AURA_OF_FALLEN_FLAME,
+            id = 'A03S',
+            buff_id = 'B063',
+            buff_type = POSITIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            icon = "Spell\\BTNhaste-fire-3.blp",
+            tags = { "skill" },
+            statusbar_dont_show_time = true,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 1.,
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 2, value_delta_level_max = 75 },
+                        { PARAM = CAST_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 2, value_delta_level_max = 75 },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].SKILL_AURA_OF_DEAD_RESOLVE,
+            id = 'A03T',
+            buff_id = 'B064',
+            buff_type = POSITIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            icon = "Spell\\BTNevil-eye-eerie-2.blp",
+            tags = { "skill" },
+            statusbar_dont_show_time = true,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 1.,
+                    bonus = {
+                        { PARAM = DODGE_CHANCE, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 2, value_delta_level_max = 75 },
+                        { PARAM = BLOCK_CHANCE, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 2, value_delta_level_max = 75 },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].SKILL_AURA_OF_MARTYRDOM,
+            id = 'A03U',
+            buff_id = 'B065',
+            buff_type = POSITIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            icon = "Spell\\BTNPitOfMaliceV3.blp",
+            tags = { "skill" },
+            statusbar_dont_show_time = true,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 1.,
+                    bonus = {
+                        { PARAM = DAMAGE_BOOST, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 75 },
+                        { PARAM = VULNERABILITY, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 75 },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].SKILL_SALVATION,
+            id = 'A03Q',
+            buff_id = 'B061',
+            buff_type = POSITIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            icon = "Spell\\BTNLight (10).blp",
+            tags = { "skill", "barrier" },
+            endurance_delta = 15,
+            endurance_delta_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 4.,
+                    endurance = 50,
+                    bonus = {
+                        { PARAM = HP_REGEN, VALUE = 1.25, METHOD = MULTIPLY_BONUS, value_delta = 0.02, value_delta_level = 1, value_delta_level_max = 75 },
+                    }
+                }
+            }
+
+        })
+
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].SKILL_RENEWAL,
+            id = 'A03V',
+            buff_id = 'B066',
+            buff_type = POSITIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            icon = "Spell\\BTNlay_on_hands.blp",
+            tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 6.,
+                    effect = "effect_renewal_periodic",
+                    effect_delay = 1.,
+                    bonus = {
+                        { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 10, METHOD = STRAIGHT_BONUS },
+                        { PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 10, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "sanctify",
+            id = 'A03W',
+            buff_id = 'B067',
+            buff_type = NEGATIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 75,
+            tags = { "skill", "dot", "burning" },
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 1.,
+                    effect = "effect_sanctify_periodic",
+                    effect_delay = 1.,
+                    effect_initial_delay = 0.,
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = 0.75, METHOD = MULTIPLY_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].TALENTS["talent_unflinched"].name,
+            id = 'A04B',
+            buff_id = 'B06E',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 3,
+            icon = "Talents\\BTN0001.blp",
+            tags = { "talent" },
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 3.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 75, METHOD = STRAIGHT_BONUS },
+                    }
+                },
+                [2] = {
+                    rank = 15,
+                    time = 3.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 125, METHOD = STRAIGHT_BONUS },
+                    }
+                },
+                [3] = {
+                    rank = 15,
+                    time = 3.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 175, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].TALENTS["talent_crusade"].name,
+            id = 'A04C',
+            buff_id = 'B06F',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 3,
+            icon = "Talents\\BTNuser345395_pic19839_1287152255.blp",
+            tags = { "talent" },
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 4.,
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = 1.1, METHOD = MULTIPLY_BONUS },
+                    }
+                },
+                [2] = {
+                    rank = 15,
+                    time = 4.,
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = 1.15, METHOD = MULTIPLY_BONUS },
+                    }
+                },
+                [3] = {
+                    rank = 15,
+                    time = 4.,
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = 1.2, METHOD = MULTIPLY_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].TALENTS["talent_holy_fire"].name,
+            id = 'A04D',
+            buff_id = 'B06G',
+            buff_type = NEGATIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 3,
+            tags = { "talent", "burning" },
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 4.,
+                    effect = "holy_fire_periodic_effect",
+                    effect_delay = 1.,
+                },
+                [2] = {
+                    rank = 15,
+                    time = 4.,
+                    effect = "holy_fire_periodic_effect",
+                    effect_delay = 1.,
+                },
+                [3] = {
+                    rank = 15,
+                    time = 4.,
+                    effect = "holy_fire_periodic_effect",
+                    effect_delay = 1.,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "mighty strikes stun",
+            id = 'A04E',
+            buff_id = 'B06H',
+            buff_type = NEGATIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 2,
+            tags = { "skill" },
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 1.,
+                    negative_state = STATE_STUN,
+                },
+                [1] = {
+                    rank = 15,
+                    time = 1.25,
+                    negative_state = STATE_STUN,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].TALENTS["talent_growing_faith"].name,
+            id = 'A04F',
+            buff_id = 'B06I',
+            buff_type = POSITIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 40,
+            tags = { "talent" },
+            icon = "Talents\\BTNMagocracy2.blp",
+            statusbar_show_level = true,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 6.,
+                    bonus = {
+                        { PARAM = HOLY_BONUS, VALUE = 1, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 50 },
+                    }
+                },
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].TALENTS["talent_sacred_resilience"].name,
+            id = 'A04G',
+            buff_id = 'B06J',
+            buff_type = POSITIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 3,
+            tags = { "talent", "barrier" },
+            icon = "Talents\\BTNLight (9).blp",
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 10.,
+                    endurance_hp = 0.2
+                },
+                [2] = {
+                    rank = 15,
+                    time = 10.,
+                    endurance_hp = 0.27
+                },
+                [3] = {
+                    rank = 15,
+                    time = 10.,
+                    endurance_hp = 0.35
+                },
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].TALENTS["talent_avenging_wrath"].name,
+            id = 'A04I',
+            buff_id = 'B06L',
+            buff_type = POSITIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 3,
+            tags = { "talent" },
+            icon = "Talents\\BTNopr0018X.blp",
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 10.,
+                    bonus = {
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 1.23, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [2] = {
+                    rank = 15,
+                    time = 10.,
+                    bonus = {
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 1.34, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [3] = {
+                    rank = 15,
+                    time = 10.,
+                    bonus = {
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 1.45, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].TALENTS["talent_avenging_wrath"].name,
+            id = 'A04H',
+            buff_id = 'B06K',
+            buff_type = POSITIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 5,
+            tags = { "talent" },
+            icon = "Talents\\BTNopr0018X.blp",
+            statusbar_show_level = true,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 5.,
+                },
+                [2] = {
+                    rank = 15,
+                    time = 5.,
+                },
+                [3] = {
+                    rank = 15,
+                    time = 5.,
+                },
+                [4] = {
+                    rank = 15,
+                    time = 5.,
+                },
+                [5] = {
+                    rank = 15,
+                    time = 5.,
+                },
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].TALENTS["talent_crusaders_hymn"].name,
+            id = 'A04J',
+            buff_id = 'B06M',
+            buff_type = POSITIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 3,
+            tags = { "talent" },
+            icon = "Talents\\BTNLight (15).blp",
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 4.,
+                    bonus = {
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 1.1, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [2] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 1.14, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [3] = {
+                    rank = 15,
+                    time = 6.,
+                    bonus = {
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 1.18, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].TALENTS["talent_resolve"].name,
+            id = 'A04K',
+            buff_id = 'B06N',
+            buff_type = POSITIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 3,
+            tags = { "talent" },
+            icon = "Talents\\BTNCommandership.blp",
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 2.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 1.25, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [2] = {
+                    rank = 15,
+                    time = 2.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 1.33, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [3] = {
+                    rank = 15,
+                    time = 2.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 1.45, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "penance",
+            id = 'A04L',
+            buff_id = 'B06O',
+            buff_type = NEGATIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 1,
+            tags = { "talent" },
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 4.,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "talent_judgmental_strikes",
+            id = 'A04M',
+            buff_id = 'B06P',
+            buff_type = NEGATIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 30,
+            tags = { "talent" },
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.99, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [2] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.98, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [3] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.97, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [4] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.96, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [5] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.95, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [6] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.94, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [7] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.93, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [8] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 1.45, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [9] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.92, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [10] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.91, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [11] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.98, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [12] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.96, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [13] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.94, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [14] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.92, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [15] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.9, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [16] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.88, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [17] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.86, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [18] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 1.84, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [19] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.82, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [20] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.8, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [21] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.97, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [22] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.94, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [23] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.91, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [24] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.88, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [25] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.85, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [26] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.82, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [27] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.79, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [28] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 1.76, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [29] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.73, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+                [30] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 0.7, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].TALENTS["talent_celestial_sanctuary"].name,
+            id = 'A04N',
+            buff_id = 'B06Q',
+            buff_type = POSITIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 1,
+            tags = { "talent" },
+            icon = "Talents\\BTNFreedom.blp",
+            statusbar_dont_show_time = true,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 1.,
+                    bonus = {
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = 1.8, METHOD = MULTIPLY_BONUS },
+                        { PARAM = MAGICAL_SUPPRESSION, VALUE = 1.8, METHOD = MULTIPLY_BONUS }
+                    }
+                },
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].TALENTS["talent_lights_grace"].name,
+            id = 'A04O',
+            buff_id = 'B06R',
+            buff_type = POSITIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 3,
+            tags = { "talent" },
+            icon = "Talents\\BTNFirePlate.blp",
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 3.,
+                    bonus = {
+                        { PARAM = VULNERABILITY, VALUE = -10, METHOD = STRAIGHT_BONUS },
+                    }
+                },
+                [2] = {
+                    rank = 15,
+                    time = 3.5,
+                    bonus = {
+                        { PARAM = VULNERABILITY, VALUE = -14, METHOD = STRAIGHT_BONUS },
+                    }
+                },
+                [3] = {
+                    rank = 15,
+                    time = 4.,
+                    bonus = {
+                        { PARAM = VULNERABILITY, VALUE = -18, METHOD = STRAIGHT_BONUS },
+                    }
+                },
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].TALENTS["talent_solar_brand"].name,
+            id = 'A04Q',
+            buff_id = 'B06T',
+            buff_type = POSITIVE_BUFF,
+            attribute = HOLY_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 3,
+            tags = { "talent" },
+            icon = "Talents\\BTNmonk_ability_avertharm.blp",
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 5.,
+                    bonus = {
+                        { PARAM = MANACOST, VALUE = 0.75, METHOD = MULTIPLY_BONUS },
+                    }
+                },
+            }
+
         })
         --================================================--
         NewBuffTemplate({
@@ -5542,6 +6726,30 @@ do
         })
         --================================================--
         NewBuffTemplate({
+            name = "blood raven crimson cloak",
+            id = 'A03Z',
+            buff_id = 'B068',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 5.,
+
+                    bonus = {
+                        { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 35, METHOD = STRAIGHT_BONUS },
+                        { PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 35, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = 50, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
             name = LOCALE_LIST[my_locale].BUFF_SPIDER_POISON,
             id = 'A00K',
             buff_id = 'B04D',
@@ -5558,6 +6766,99 @@ do
 
                     effect = "andariel_poison_effect",
                     effect_delay = 1.,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = GetLocalString("Коррозия", "Corrosion"),
+            id = 'A040',
+            buff_id = 'B069',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            attribute = POISON_ATTRIBUTE,
+            max_level = 10,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNDeathCoil.blp",
+            statusbar_show_level = true,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 5.,
+
+                    bonus = {
+                        { PARAM = POISON_RESIST, VALUE = 5, METHOD = STRAIGHT_BONUS, delta = 5, value_delta = 5, value_delta_level = 1, value_delta_level_max = 10 },
+                    }
+
+                }
+            }
+
+        })
+         --================================================--
+        NewBuffTemplate({
+            name = GetLocalString("Испуг", "Fear"),
+            id = 'A043',
+            buff_id = 'B06A',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            attribute = DARKNESS_ATTRIBUTE,
+            max_level = 10,
+            icon = "ReplaceableTextures\\PassiveButtons\\PASBTNShade.blp",
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 2.25,
+                    negative_state = STATE_FEAR,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = GetLocalString("Сомнение", "Doubt"),
+            id = 'A046',
+            buff_id = 'B06B',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            attribute = POISON_ATTRIBUTE,
+            max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNRegenerationAura.blp",
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 4.,
+
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = 0.45, METHOD = MULTIPLY_BONUS },
+                    }
+
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = GetLocalString("Уязвимость", "Vulnerable"),
+            id = 'A048',
+            buff_id = 'B06C',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            attribute = PHYSICAL_ATTRIBUTE,
+            max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNSkeletalLongevity.blp",
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 8.,
+
+                    bonus = {
+                        { PARAM = ALL_RESIST, VALUE = -15, METHOD = STRAIGHT_BONUS },
+                    }
+
                 }
             }
 
@@ -5750,6 +7051,201 @@ do
         })
         --================================================--
         NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].BUFF_STUN,
+            id = 'A03G',
+            buff_id = 'B05R',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNStun.blp",
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 2.35,
+                    negative_state = STATE_STUN,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].BUFF_MEAT_GOLEM_VULN,
+            id = 'A03H',
+            buff_id = 'B05S',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNStun.blp",
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 4.,
+                    bonus = {
+                        { PARAM = VULNERABILITY, VALUE = 15, METHOD = STRAIGHT_BONUS },
+                        { PARAM = MOVING_SPEED, VALUE = 0.7, METHOD = MULTIPLY_BONUS }
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "regen",
+            id = 'A03I',
+            buff_id = 'B05T',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 6.,
+                    effect = "meat_golem_regen_period_effect",
+                    effect_delay = 1.,
+                    effect_initial_delay = 0.
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "duriel_dot",
+            id = 'A04U',
+            buff_id = 'B06X',
+            buff_type = NEGATIVE_BUFF,
+            attribute = POISON_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 10,
+            tags = { "dot", "poisoning" },
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 5.,
+                    effect = "effect_duriel_periodic",
+                    effect_delay = 1.,
+                    effect_initial_delay = 0.,
+                    bonus = {
+                        { PARAM = POISON_RESIST, VALUE = -10, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [2] = {
+                    rank = 15,
+                    time = 5.,
+                    effect = "effect_duriel_periodic",
+                    effect_delay = 1.,
+                    effect_initial_delay = 0.,
+                    bonus = {
+                        { PARAM = POISON_RESIST, VALUE = -20, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [3] = {
+                    rank = 15,
+                    time = 5.,
+                    effect = "effect_duriel_periodic",
+                    effect_delay = 1.,
+                    effect_initial_delay = 0.,
+                    bonus = {
+                        { PARAM = POISON_RESIST, VALUE = -30, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [4] = {
+                    rank = 15,
+                    time = 5.,
+                    effect = "effect_duriel_periodic",
+                    effect_delay = 1.,
+                    effect_initial_delay = 0.,
+                    bonus = {
+                        { PARAM = POISON_RESIST, VALUE = -40, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [5] = {
+                    rank = 15,
+                    time = 5.,
+                    effect = "effect_duriel_periodic",
+                    effect_delay = 1.,
+                    effect_initial_delay = 0.,
+                    bonus = {
+                        { PARAM = POISON_RESIST, VALUE = -50, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [6] = {
+                    rank = 15,
+                    time = 5.,
+                    effect = "effect_duriel_periodic",
+                    effect_delay = 1.,
+                    effect_initial_delay = 0.,
+                    bonus = {
+                        { PARAM = POISON_RESIST, VALUE = -60, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [7] = {
+                    rank = 15,
+                    time = 5.,
+                    effect = "effect_duriel_periodic",
+                    effect_delay = 1.,
+                    effect_initial_delay = 0.,
+                    bonus = {
+                        { PARAM = POISON_RESIST, VALUE = -70, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [8] = {
+                    rank = 15,
+                    time = 5.,
+                    effect = "effect_duriel_periodic",
+                    effect_delay = 1.,
+                    effect_initial_delay = 0.,
+                    bonus = {
+                        { PARAM = POISON_RESIST, VALUE = -80, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [9] = {
+                    rank = 15,
+                    time = 5.,
+                    effect = "effect_duriel_periodic",
+                    effect_delay = 1.,
+                    effect_initial_delay = 0.,
+                    bonus = {
+                        { PARAM = POISON_RESIST, VALUE = -90, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+                [10] = {
+                    rank = 15,
+                    time = 5.,
+                    effect = "effect_duriel_periodic",
+                    effect_delay = 1.,
+                    effect_initial_delay = 0.,
+                    bonus = {
+                        { PARAM = POISON_RESIST, VALUE = -100, METHOD = STRAIGHT_BONUS }
+                    }
+                },
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].BUFF_STUN,
+            id = 'A04W',
+            buff_id = 'B06Y',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNStun.blp",
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 2.,
+                    negative_state = STATE_STUN,
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
             name = "cc diminishing",
             id = 'ACCR',
             buff_id = 'B03N',
@@ -5771,18 +7267,6 @@ do
         })
 
         DefineSkillOverlaysData()
-
-        RegisterTestCommand("av", function()
-            ApplyBuff(PlayerHero[1], PlayerHero[1], "ACVN", 1)
-        end)
-
-        RegisterTestCommand("rv", function()
-            RemoveBuff(PlayerHero[1], "ACVN")
-        end)
-
-        RegisterTestCommand("car", function()
-            ApplyBuff(PlayerHero[1], PlayerHero[1], "ACVN", 1)
-        end)
 
     end
 

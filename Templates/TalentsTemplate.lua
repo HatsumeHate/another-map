@@ -1543,7 +1543,7 @@ do
                 end,
             },
             max_level = 1,
-            points_required = 4,
+            points_required = 6,
             requires = { "talent_bloodthirsty", "talent_ambush", "talent_nimble_hands" },
         })
 
@@ -1812,7 +1812,488 @@ do
             max_level = 2,
         })
 
+        --paladin
+        NewTalentTemplate("talent_bastion", {
+            icon = "Talents\\BTNGlove.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, PHYSICAL_DEFENCE, 1.05, MULTIPLY_BONUS, flag)
+                    ModifyStat(unit, HP_VALUE, 35, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, PHYSICAL_DEFENCE, 1.05, MULTIPLY_BONUS, flag)
+                    ModifyStat(unit, HP_VALUE, 35, STRAIGHT_BONUS, flag)
+                end,
+                [3] = function(unit, flag)
+                    ModifyStat(unit, PHYSICAL_DEFENCE, 1.05, MULTIPLY_BONUS, flag)
+                    ModifyStat(unit, HP_VALUE, 35, STRAIGHT_BONUS, flag)
+                end,
+            },
+            max_level = 3,
+        })
 
+
+        NewTalentTemplate("talent_aegis", {
+            icon = "Talents\\BTNColdGuard.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, BLOCK_CHANCE, 3, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, BLOCK_ABSORB, 5, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, BLOCK_CHANCE, 3, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, BLOCK_ABSORB, 5, STRAIGHT_BONUS, flag)
+                end,
+                [3] = function(unit, flag)
+                    ModifyStat(unit, BLOCK_CHANCE, 3, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, BLOCK_ABSORB, 5, STRAIGHT_BONUS, flag)
+                end,
+            },
+            max_level = 3,
+        })
+
+
+        -- having 1h increases AS
+        NewTalentTemplate("talent_fanatic", {
+            icon = "Talents\\BTN119014-6073d09c6da61e5533ae34a8a360aad6_tn2.blp",
+            instant_effects = {
+              [1] = function(unit, flag)
+                  FanaticTalentEffect(unit)
+              end,
+              [2] = function(unit, flag)
+                  FanaticTalentEffect(unit)
+              end,
+              [3] = function(unit, flag)
+                  FanaticTalentEffect(unit)
+              end,
+            },
+            max_level = 3,
+        })
+
+
+        -- on block increases defence
+        NewTalentTemplate("talent_unflinched", {
+            icon = "Talents\\BTN0001.blp",
+            points_required = 4,
+            requires = { "talent_holy_fire", "talent_avenging_wrath" },
+            max_level = 3,
+        })
+
+
+        NewTalentTemplate("talent_crusade", {
+            icon = "Talents\\BTNuser345395_pic19839_1287152255.blp",
+            points_required = 2,
+            requires = { "talent_darkness_ward", "talent_fire_ward" },
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_justice_reach", {
+            icon = "Talents\\BTNImmolation_peasant3.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, RANGE_BONUS, 1.1, MULTIPLY_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, RANGE_BONUS, 1.1, MULTIPLY_BONUS, flag)
+                end,
+            },
+            max_level = 2,
+        })
+
+        -- less hp, more armor
+        NewTalentTemplate("talent_everlasting_light", {
+            icon = "Talents\\BTNSpellBookPreface_23.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, HP_VALUE, 0.9, MULTIPLY_BONUS, flag)
+                    ModifyStat(unit, PHYSICAL_DEFENCE, 1.15, MULTIPLY_BONUS, flag)
+                    ModifyStat(unit, MAGICAL_SUPPRESSION, 1.15, MULTIPLY_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, HP_VALUE, 0.8, MULTIPLY_BONUS, flag)
+                    ModifyStat(unit, PHYSICAL_DEFENCE, 1.2, MULTIPLY_BONUS, flag)
+                    ModifyStat(unit, MAGICAL_SUPPRESSION, 1.2, MULTIPLY_BONUS, flag)
+                end,
+            },
+            cancel_last_level = true,
+            max_level = 2,
+        })
+
+
+        NewTalentTemplate("talent_blessed_fortitude", {
+            icon = "Talents\\BTNRAIB63.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, HEALING_BONUS, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, VIT_STAT, 2, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, HEALING_BONUS, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, VIT_STAT, 2, STRAIGHT_BONUS, flag)
+                end,
+                [3] = function(unit, flag)
+                    ModifyStat(unit, HEALING_BONUS, 5, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, VIT_STAT, 2, STRAIGHT_BONUS, flag)
+                end,
+            },
+            points_required = 2,
+            requires = { "talent_earth_ward", "talent_darkness_ward" },
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_banisher", {
+            icon = "Talents\\BTNPurify.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, BONUS_UNDEAD_DAMAGE, 6, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, BONUS_DEMON_DAMAGE, 6, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, BONUS_UNDEAD_DAMAGE, 6, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, BONUS_DEMON_DAMAGE, 6, STRAIGHT_BONUS, flag)
+                end,
+                [3] = function(unit, flag)
+                    ModifyStat(unit, BONUS_UNDEAD_DAMAGE, 6, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, BONUS_DEMON_DAMAGE, 6, STRAIGHT_BONUS, flag)
+                end,
+            },
+            max_level = 3,
+        })
+
+        -- equipping 2h increases magic damage
+        NewTalentTemplate("talent_exalted_armaments", {
+            icon = "Talents\\BTNSw_LightSword3.blp",
+            instant_effects = {
+              [1] = function(unit, flag)
+                  ExaltedArmamentsTalentEffect(unit)
+              end,
+              [2] = function(unit, flag)
+                  ExaltedArmamentsTalentEffect(unit)
+              end,
+              [3] = function(unit, flag)
+                  ExaltedArmamentsTalentEffect(unit)
+              end,
+            },
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_earth_ward", {
+            icon = "Talents\\BTNEarthShield.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, PHYSICAL_RESIST, 11, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, LIGHTNING_RESIST, 11, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, PHYSICAL_RESIST, 11, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, LIGHTNING_RESIST, 11, STRAIGHT_BONUS, flag)
+                end,
+                [3] = function(unit, flag)
+                    ModifyStat(unit, PHYSICAL_RESIST, 11, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, LIGHTNING_RESIST, 11, STRAIGHT_BONUS, flag)
+                end,
+            },
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_darkness_ward", {
+            icon = "Talents\\BTNDarkPoisonShield.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, DARKNESS_RESIST, 11, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, POISON_RESIST, 11, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, DARKNESS_RESIST, 11, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, POISON_RESIST, 11, STRAIGHT_BONUS, flag)
+                end,
+                [3] = function(unit, flag)
+                    ModifyStat(unit, DARKNESS_RESIST, 11, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, POISON_RESIST, 11, STRAIGHT_BONUS, flag)
+                end,
+            },
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_fire_ward", {
+            icon = "Talents\\BTNFrostFlameShield.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, FIRE_RESIST, 11, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, ICE_RESIST, 11, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, FIRE_RESIST, 11, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, ICE_RESIST, 11, STRAIGHT_BONUS, flag)
+                end,
+                [3] = function(unit, flag)
+                    ModifyStat(unit, FIRE_RESIST, 11, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, ICE_RESIST, 11, STRAIGHT_BONUS, flag)
+                end,
+            },
+            max_level = 3,
+        })
+
+        NewTalentTemplate("talent_stone_ward", {
+            icon = "Talents\\BTNStoneShield.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, HOLY_RESIST, 11, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, ARCANE_RESIST, 11, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, HOLY_RESIST, 11, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, ARCANE_RESIST, 11, STRAIGHT_BONUS, flag)
+                end,
+                [3] = function(unit, flag)
+                    ModifyStat(unit, HOLY_RESIST, 11, STRAIGHT_BONUS, flag)
+                    ModifyStat(unit, ARCANE_RESIST, 11, STRAIGHT_BONUS, flag)
+                end,
+            },
+            max_level = 3,
+        })
+
+        -- critical hits ignite
+        NewTalentTemplate("talent_holy_fire", {
+            icon = "Talents\\BTNSwordIgnite.blp",
+            points_required = 2,
+            requires = { "talent_bastion", "talent_fanatic", "talent_aegis" },
+            max_level = 3,
+        })
+
+
+        -- summons holy weapon
+        NewTalentTemplate("talent_sacred_arsenal", {
+            icon = "Talents\\BTNSpearOfMars.blp",
+            points_required = 2,
+            instant_effects = {
+                [1] = function(unit, flag)
+                    if not flag then
+                        local unit_data = GetUnitData(unit)
+
+                            if not unit_data.summoned_arsenal.sword then KillUnit(unit_data.summoned_arsenal.sword) end
+                            if not unit_data.summoned_arsenal.hammer then KillUnit(unit_data.summoned_arsenal.hammer) end
+                            if not unit_data.summoned_arsenal.axe then KillUnit(unit_data.summoned_arsenal.axe) end
+                            if not unit_data.summoned_arsenal.spear then KillUnit(unit_data.summoned_arsenal.spear) end
+
+                            unit_data.summoned_arsenal = nil
+
+                    end
+                end,
+                [2] = function(unit, flag)
+
+                end,
+                [3] = function(unit, flag)
+
+                end,
+            },
+            requires = { "talent_banisher", "talent_exalted_armaments","talent_justice_reach" },
+            max_level = 3,
+        })
+
+        -- strikes with hammers stuns
+        NewTalentTemplate("talent_mighty_strikes", {
+            icon = "Talents\\BTNHammerCrush.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    ModifyStat(unit, CRIT_CHANCE, 4, STRAIGHT_BONUS, flag)
+                end,
+                [2] = function(unit, flag)
+                    ModifyStat(unit, CRIT_CHANCE, 4, STRAIGHT_BONUS, flag)
+                end,
+            },
+            points_required = 4,
+            requires = { "talent_resolve", "talent_holy_fire", "talent_avenging_wrath" },
+            max_level = 2,
+        })
+
+        -- dealing holy damage inscreases holy damage, 1-30 stacks 1%
+        -- Unyielding Faith
+        NewTalentTemplate("talent_growing_faith", {
+            icon = "Talents\\BTNMagocracy2.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    if not flag then
+                        RemoveBuff(unit, "A04F")
+                    end
+                end,
+                [2] = function(unit, flag) end,
+                [3] = function(unit, flag) end,
+            },
+            points_required = 2,
+            requires = { "talent_exalted_armaments", "talent_justice_reach" },
+            max_level = 3,
+        })
+
+        -- converts physical damage % into magical damage %
+        NewTalentTemplate("talent_reverse_force", {
+            icon = "Talents\\BTNMagicFist.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    if flag then
+                        ReverseForceTalentEffect(unit)
+                    else
+                        local unit_data = GetUnitData(unit)
+                        DestroyTimer(unit_data.reverse_timer)
+                        if unit_data.reverse_force > 0 then ModifyStat(unit, MAGICAL_ATTACK, unit_data.reverse_force, MULTIPLY_BONUS, false) end
+                    end
+                end,
+                [2] = function(unit, flag)
+                end,
+            },
+            points_required = 2,
+            requires = { "talent_banisher", "talent_exalted_armaments" },
+            max_level = 2,
+        })
+
+        -- hp drops 65% get shield for 30%
+        NewTalentTemplate("talent_sacred_resilience", {
+            icon = "Talents\\BTNLight (9).blp",
+            points_required = 2,
+            requires = { "talent_fire_ward", "talent_stone_ward" },
+            max_level = 3,
+        })
+
+        -- blocking 5 attacks gives damage
+        NewTalentTemplate("talent_avenging_wrath", {
+            icon = "Talents\\BTNopr0018X.blp",
+            instant_effects = {
+                [1] = function(unit, flag)
+                    RemoveBuff(unit, "A04H")
+                end,
+                [2] = function(unit, flag) end,
+                [3] = function(unit, flag) end,
+            },
+            points_required = 2,
+            requires = { "talent_fanatic", "talent_aegis" },
+            max_level = 3,
+        })
+
+        -- each attack generates holy projectiles that fly toward nearby enemies
+        NewTalentTemplate("talent_lightforged", {
+            icon = "Talents\\BTNLight Beam.blp",
+            points_required = 4,
+            requires = { "talent_reverse_force", "talent_sacred_arsenal" },
+            max_level = 3,
+        })
+
+
+        -- aquiring buff increases attack
+        NewTalentTemplate("talent_crusaders_hymn", {
+            icon = "Talents\\BTNLight (15).blp",
+            points_required = 4,
+            requires = { "talent_blessed_fortitude", "talent_crusade" },
+            max_level = 3,
+        })
+
+        -- taking cc increases defence
+        NewTalentTemplate("talent_resolve", {
+            icon = "Talents\\BTNCommandership.blp",
+            points_required = 2,
+            requires = { "talent_bastion", "talent_fanatic" },
+            max_level = 3,
+        })
+
+
+        -- critical hits leave mark on the enemy, deal bonus damage
+        NewTalentTemplate("talent_penance", {
+            icon = "Talents\\BTNholy_light_icon_by_bogrim.blp",
+            points_required = 4,
+            requires = { "talent_reverse_force", "talent_sacred_arsenal", "talent_growing_faith" },
+            max_level = 3,
+        })
+
+        -- can block magic damage
+        NewTalentTemplate("talent_resistant", {
+            icon = "Talents\\BTNresistelementsuitexture.blp",
+            points_required = 6,
+            requires = { "talent_judgmental_strikes", "talent_mighty_strikes", "talent_unflinched" },
+            max_level = 1,
+        })
+
+
+        -- consecutive hits lower the enemy’s defense, stacking up to 10 times
+        NewTalentTemplate("talent_judgmental_strikes", {
+            icon = "Talents\\BTNrandom_icon_004.blp",
+            points_required = 4,
+            requires = { "talent_resolve", "talent_holy_fire" },
+            max_level = 3,
+        })
+
+        -- vengeful – The lower your HP, the more damage you deal (max +20%)
+        NewTalentTemplate("talent_vengeful", {
+            icon = "Talents\\BTNDoombringer.blp",
+            points_required = 4,
+            instant_effects = {
+                [1] = function(unit, flag)
+                    if flag then
+                        VengefulTalentEffect(unit)
+                    else
+                        local unit_data = GetUnitData(unit)
+                        DestroyTimer(unit_data.vengeful_timer)
+                        if unit_data.vengeful_current_bonus > 0 then ModifyStat(unit, DAMAGE_BOOST, unit_data.vengeful_current_bonus, STRAIGHT_BONUS, false) end
+                    end
+                end,
+                [2] = function(unit, flag)
+                    if flag then
+                        local unit_data = GetUnitData(unit)
+                        unit_data.vengeful_bonus = 6
+                    end
+                end,
+            },
+            requires = { "talent_blessed_fortitude", "talent_crusade", "talent_sacred_resilience" },
+            max_level = 2,
+        })
+
+        -- sunforged will – The more mana missing, the higher your spell damage.
+        NewTalentTemplate("talent_sunforged_will", {
+            icon = "Talents\\BTNFieryClaw.blp",
+            points_required = 4,
+            instant_effects = {
+                [1] = function(unit, flag)
+                    if flag then
+                        SunforgedWillTalentEffect(unit)
+                    else
+                        local unit_data = GetUnitData(unit)
+                        DestroyTimer(unit_data.vengeful_timer)
+                        if unit_data.sunforged_current_bonus > 0 then ModifyStat(unit, MAGICAL_ATTACK, unit_data.sunforged_current_bonus, MULTIPLY_BONUS, false) end
+                    end
+                end,
+                [2] = function(unit, flag)
+                    if flag then
+                        local unit_data = GetUnitData(unit)
+                        unit_data.sunforged_bonus = 7
+                    end
+                end,
+            },
+            requires = { "talent_sacred_arsenal", "talent_growing_faith" },
+            max_level = 2,
+        })
+
+
+        -- Celestial Sanctuary  - dropping below 50% health creates aoe dome of light increasing defence by 80%
+        NewTalentTemplate("talent_celestial_sanctuary", {
+            icon = "Talents\\BTNjntb_385.blp",
+            points_required = 6,
+            requires = { "talent_crusaders_hymn", "talent_vengeful", "talent_lights_grace" },
+            max_level = 1,
+        })
+
+        -- heals grants bonus armor for 5 seconds
+        NewTalentTemplate("talent_lights_grace", {
+            icon = "Talents\\BTNFirePlate.blp",
+            points_required = 4,
+            requires = { "talent_crusade", "talent_sacred_resilience" },
+            max_level = 3,
+        })
+
+        --
+        NewTalentTemplate("talent_solar_brand", {
+            icon = "Talents\\BTNmonk_ability_avertharm.blp",
+            points_required = 6,
+            requires = { "talent_lightforged", "talent_penance", "talent_sunforged_will"  },
+            max_level = 1,
+        })
 
         ClassTalents = {
             [BARBARIAN_CLASS] = {
@@ -1898,6 +2379,26 @@ do
                     { "talent_forceful_hit", "talent_unremarkable_marksman", "talent_fast_reload" },
                     { "talent_penetrate" },
                 }
+            },
+            [PALADIN_CLASS] = {
+                [SKILL_CATEGORY_COMBAT_SKILLS] = {
+                    { "talent_bastion", "talent_fanatic", "talent_aegis" },
+                    { "talent_resolve", "talent_holy_fire", "talent_avenging_wrath" },
+                    { "talent_judgmental_strikes", "talent_mighty_strikes", "talent_unflinched" },
+                    { "talent_resistant" }
+                },
+                [SKILL_CATEGORY_FAITH] = {
+                    { "talent_banisher", "talent_exalted_armaments", "talent_justice_reach" },
+                    { "talent_reverse_force", "talent_sacred_arsenal", "talent_growing_faith" },
+                    { "talent_lightforged", "talent_penance", "talent_sunforged_will" },
+                    { "talent_solar_brand" }
+                },
+                [SKILL_CATEGORY_HOLY_DOCTRINE] = {
+                    { "talent_earth_ward", "talent_darkness_ward", "talent_fire_ward", "talent_stone_ward" },
+                    { "talent_blessed_fortitude", "talent_crusade", "talent_sacred_resilience" },
+                    { "talent_crusaders_hymn", "talent_vengeful", "talent_lights_grace" },
+                    { "talent_celestial_sanctuary" }
+                },
             }
         }
 

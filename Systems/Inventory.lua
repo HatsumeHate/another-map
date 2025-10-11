@@ -13,6 +13,8 @@ do
     InventoryKeyState = nil
     INV_SLOT = 0
     PlayerCanChangeEquipment = nil
+    ControlState = 0
+    QualityHighlightTexture = nil
     local ClassFrameTexture
     local ClickTrigger = 0
     local BackupButtonData
@@ -158,12 +160,14 @@ do
                         button.item = item_data.item
                         BlzFrameSetTexture(button.image, item_data.frame_texture, 0, true)
                         FrameChangeTexture(button.button, item_data.frame_texture)
-
+                        BlzFrameSetVisible(button.highlight, true)
+                        BlzFrameSetTexture(button.highlight, QualityHighlightTexture[item_data.QUALITY], 0, true)
                     else
                        -- print("cleanse!")
                         button.item = nil
                         BlzFrameSetTexture(button.image, button.original_texture, 0, true)
                         FrameChangeTexture(button.button, button.original_texture)
+                        BlzFrameSetVisible(button.highlight, false)
                         --local weapon_button = ButtonList[GetHandleId(InventorySlots[player][33])]
                     end
 
@@ -173,15 +177,20 @@ do
             for i = 0, 1 do
                 local button = GetButtonData(InventorySlots[player][43+i])
                     if button.item then
-                         local item_data = GetItemData(button.item)
-                         button.item = item_data.item
-                         BlzFrameSetTexture(button.image, item_data.frame_texture, 0, true)
-                         FrameChangeTexture(button.button, item_data.frame_texture)
-                     else
-                         button.item = nil
-                         BlzFrameSetTexture(button.image, button.original_texture, 0, true)
-                         FrameChangeTexture(button.button, button.original_texture)
-                     end
+                        local item_data = GetItemData(button.item)
+
+                            button.item = item_data.item
+                            BlzFrameSetTexture(button.image, item_data.frame_texture, 0, true)
+                            FrameChangeTexture(button.button, item_data.frame_texture)
+                            BlzFrameSetVisible(button.highlight, true)
+                            BlzFrameSetTexture(button.highlight, QualityHighlightTexture[item_data.QUALITY], 0, true)
+
+                    else
+                        button.item = nil
+                        BlzFrameSetTexture(button.image, button.original_texture, 0, true)
+                        FrameChangeTexture(button.button, button.original_texture)
+                        BlzFrameSetVisible(button.highlight, false)
+                    end
             end
 
 
@@ -197,10 +206,12 @@ do
                     --print("twohanded")
                     BlzFrameSetTexture(button.image, "ReplaceableTextures\\CommandButtons\\BTNCancel.blp", 0, true)
                     FrameChangeTexture(button.button, "ReplaceableTextures\\CommandButtons\\BTNCancel.blp")
+                    BlzFrameSetVisible(button.highlight, false)
                 elseif not unit_data.equip_point[OFFHAND_POINT] or not unit_data.equip_point[OFFHAND_POINT].item then
                     --print("no offhand")
                     BlzFrameSetTexture(button.image, "GUI\\BTNWeapon_Slot.blp", 0, true)
                     FrameChangeTexture(button.button, button.original_texture)
+                    BlzFrameSetVisible(button.highlight, false)
                 end
 
         end
@@ -271,10 +282,16 @@ do
                             BlzFrameSetVisible(button.charges_frame, false)
                         end
 
+                    if item_data.flippy then
+                        BlzFrameSetVisible(button.highlight, true)
+                        BlzFrameSetTexture(button.highlight, QualityHighlightTexture[item_data.QUALITY], 0, true)
+                    end
+
                 else
                     BlzFrameSetTexture(button.image, button.original_texture, 0, true)
                     FrameChangeTexture(button.button, button.original_texture)
                     BlzFrameSetVisible(button.new_sprite, false)
+                    BlzFrameSetVisible(button.highlight, false)
 
                     if button.charges_frame_state then
                         button.charges_frame_state = false
@@ -608,7 +625,6 @@ do
     local function InteractWithItemInSlot(h, id, offhand)
         local item_data = GetItemData(ButtonList[h].item)
 
-
             if not PlayerCanChangeEquipment[id] then return end
 
             if item_data.TYPE >= ITEM_TYPE_WEAPON and item_data.TYPE <= ITEM_TYPE_OFFHAND then
@@ -617,12 +633,11 @@ do
                         if not OffhandPointCheck(ButtonList[h].item, id, offhand) then return end
 
                         local unequipped_item = EquipItem(InventoryOwner[id], ButtonList[h].item, true, offhand)
-
                         if item_data.soundpack and item_data.soundpack.equip then PlayLocalSound(item_data.soundpack.equip, id - 1) end
-
                         ButtonList[h].item = unequipped_item
                         UpdateEquipPointsWindow(id)
                         UpdateInventoryWindow(id)
+
                 elseif ButtonList[h].button_type >= WEAPON_POINT and ButtonList[h].button_type <= NECKLACE_POINT then
                     if CountFreeBagSlots(id) == 0 then
                         Feedback_InventoryNoSpace(id)
@@ -824,6 +839,11 @@ do
         return alt_switch_data.item or nil
     end
 
+    function GetAlternateOffhandSlotItem(player)
+        local alt_switch_data = GetButtonData(InventorySlots[player][44])
+        return alt_switch_data.item or nil
+    end
+
 
     ---@param player integer
     function SwitchHeroWeapon(player)
@@ -872,6 +892,145 @@ do
     end
 
 
+    local function SellToShop(h, player)
+        if ShopInFocus[player] then
+            if GetItemCharges(ButtonList[h].item) > 1 then
+                CreateSlider(player, ButtonList[h], InventorySlots[player][45], function()
+                    local value = SliderFrame[player].value
+
+                        if value < GetItemCharges(ButtonList[h].item) then
+                            local new_item = SplitChargedItem(ButtonList[h].item, value, player)
+                            SellItem(player, new_item)
+                            UpdateInventoryWindow(player)
+                        else
+                            SellItem(player, ButtonList[h].item)
+                        end
+
+                end, nil)
+            else
+                SellItem(player, ButtonList[h].item)
+            end
+        end
+    end
+
+
+    local function OpenContextMenu(h, player)
+        local item_data = GetItemData(ButtonList[h].item) or nil
+
+        if ButtonList[h].item and not PlayerMovingItem[player].state and ButtonList[h].button_type == INV_SLOT then
+            CreatePlayerContextMenu(player, ButtonList[h].button, FRAMEPOINT_LEFT, InventorySlots[player][45])
+
+            if ShopInFocus[player] and item_data.sellable then
+                AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_SELL, function()
+                    if ShopInFocus[player] then
+
+                        if GetItemCharges(ButtonList[h].item) > 1 then
+                            CreateSlider(player, ButtonList[h], InventorySlots[player][45], function()
+                                local value = SliderFrame[player].value
+
+                                if value < GetItemCharges(ButtonList[h].item) then
+                                    local new_item = SplitChargedItem(ButtonList[h].item, value, player)
+                                    SellItem(player, new_item)
+                                    UpdateInventoryWindow(player)
+                                else
+                                    SellItem(player, ButtonList[h].item)
+                                end
+
+                            end, nil)
+                        else
+                            SellItem(player, ButtonList[h].item)
+                        end
+
+                    end
+                end)
+            end
+
+
+            if BlacksmithFrame[player].state and (item_data.TYPE == ITEM_TYPE_OFFHAND or item_data.TYPE == ITEM_TYPE_WEAPON or item_data.TYPE == ITEM_TYPE_ARMOR or item_data.TYPE == ITEM_TYPE_JEWELRY) then
+                AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_REFORGE, function() if ButtonList[h].item then GiveItemToBlacksmith(player, ButtonList[h].item, BLACKSMITH_REFORGE) end end)
+                AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_RESOCKET, function() if ButtonList[h].item then GiveItemToBlacksmith(player, ButtonList[h].item, BLACKSMITH_RESOCKET) end end)
+            elseif PrivateChestFrame[player].state and item_data.droppable then
+                AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_TO_STASH, function()
+                    if IsPlayerHasItem(player, ButtonList[h].item) then
+                        if AddToPrivateChest(player, ButtonList[h].item) then
+                            if IsItemInvulnerable(ButtonList[h].item) then LockItemOnBelt(player, ButtonList[h]) end
+                            ButtonList[h].item = nil
+                            UpdateInventoryWindow(player)
+                        end
+                    end
+                end)
+            elseif StashFrame[player].state and item_data.flippy then
+                AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_TO_STASH, function()
+                    if IsPlayerHasItem(player, ButtonList[h].item) then
+                        if AddToStash(player, ButtonList[h].item) then
+                            ButtonList[h].item = nil
+                            UpdateInventoryWindow(player)
+                            UpdateStashWindow(player)
+                        end
+                    end
+                end)
+            elseif LibrarianFrame[player].state and item_data.restricted_to then
+                AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_EXCHANGE, function() GiveItemToLibrarian(player, ButtonList[h].item) end)
+            elseif item_data.TYPE == ITEM_TYPE_GIFT and SacrificeAltarFrame[player].state then
+                AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_GIFT, function() if item_data and item_data.item then GiftSacrifice(item_data.item, player) end end)
+            end
+
+            if item_data.TYPE == ITEM_TYPE_WEAPON and not IsWeaponTypeTwohanded(item_data.SUBTYPE)  then
+                AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_ALT_WEAPON, function() InteractWithItemInSlot(h, player, true) end)
+            end
+
+
+            if item_data.TYPE == ITEM_TYPE_GEM then
+                AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_ENCHANT, function() StartSelectionMode(player, h, SELECTION_MODE_ENCHANT) end)
+            elseif item_data.TYPE == ITEM_TYPE_CONSUMABLE then
+                if item_data.usable then
+                    AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_USE, function() if item_data and item_data.item then UseItem(item_data.item, player) end end)
+                end
+                --AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_USE, function() if item_data and item_data.item then UseItem(item_data.item, player) end end)
+                AddContextOption(player, ButtonList[h].button_state and LOCALE_LIST[my_locale].UI_TEXT_BELT_OFF or LOCALE_LIST[my_locale].UI_TEXT_BELT_ON, function() LockItemOnBelt(player, ButtonList[h]) end)
+            elseif item_data.TYPE == ITEM_TYPE_SKILLBOOK then
+                AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_LEARN, function() if item_data and item_data.item then LearnBook(item_data.item, player) end end)
+            elseif item_data.usable then
+                AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_USE, function() if item_data and item_data.item then UseItem(item_data.item, player) end end)
+            elseif item_data.TYPE ~= ITEM_TYPE_OTHER and item_data.TYPE ~= ITEM_TYPE_GIFT then
+                AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_EQUIP, function() InteractWithItemInSlot(h, player) end)
+            end
+            AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_MOVE, function() StartSelectionMode(player, h, SELECTION_MODE_MOVE) end)
+            if item_data.droppable then
+                AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_DROP, function()
+
+                    if GetItemType(ButtonList[h].item) ~= ITEM_TYPE_CHARGED then
+                        DropItemFromInventory(player, ButtonList[h].item, false)
+                    else
+                        if GetItemCharges(ButtonList[h].item) > 1 then
+                            CreateSlider(player, ButtonList[h], InventorySlots[player][45], function()
+                                local value = SliderFrame[player].value
+                                    if value < GetItemCharges(ButtonList[h].item) then
+                                        SetItemCharges(ButtonList[h].item, GetItemCharges(ButtonList[h].item) - value)
+                                        local new_item = CreateCustomItem_Id(GetItemTypeId(ButtonList[h].item), GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]))
+                                        SetItemCharges(new_item, value)
+                                            if item_data.soundpack and item_data.soundpack.drop then
+                                                AddSoundVolumeZ(item_data.soundpack.drop, GetItemX(new_item), GetItemY(new_item), 25., 127, 1100.)
+                                            end
+                                            --print("bbbb")
+                                    else
+                                            --print("aaa")
+                                        DropItemFromInventory(player, ButtonList[h].item, false)
+                                    end
+                                UpdateInventoryWindow(player)
+
+                            end, nil)
+                        else
+                            DropItemFromInventory(player, ButtonList[h].item, false)
+                                    --print("ccccccc")
+                        end
+                    end
+
+                end)
+            end
+
+        end
+    end
 
 
     -- ========================= CLICK ============================= --
@@ -888,9 +1047,13 @@ do
             if ButtonList[h].item then
                 --print("doubleclick")
                 RemoveSelectionFrames(player)
+                --print("a")
                 InventoryItemInFocus[player] = nil
+                --print("b")
                 RemoveTooltip(player)
+                --print("c")
                 DestroyContextMenu(player)
+                --print("d")
 
                     if item_data.TYPE == ITEM_TYPE_CONSUMABLE then LockItemOnBelt(player, ButtonList[h])
                     elseif item_data.TYPE == ITEM_TYPE_GEM then StartSelectionMode(player, h, SELECTION_MODE_ENCHANT)
@@ -899,201 +1062,95 @@ do
                     elseif item_data.TYPE == ITEM_TYPE_GIFT and SacrificeAltarFrame[player].state then GiftSacrifice(item_data.item, player)
                     elseif item_data.TYPE ~= ITEM_TYPE_OTHER and item_data.TYPE ~= ITEM_TYPE_GIFT then InteractWithItemInSlot(h, player) end
 
+            --print("e")
                 --DoubleClickTimer[player].locked = true
 
                 TimerStart(DoubleClickTimer[player].timer, 0., false, nil)
 
             end
         else
-            TimerStart(DoubleClickTimer[player].timer, 0.25, false, function()
-                InventoryItemInFocus[player] = nil
-                RemoveSelectionFrames(player)
-                local item_data = GetItemData(ButtonList[h].item) or nil
 
-                if ButtonList[h].item and not PlayerMovingItem[player].state and ButtonList[h].button_type == INV_SLOT then
-                    CreatePlayerContextMenu(player, ButtonList[h].button, FRAMEPOINT_LEFT, InventorySlots[player][45])
-
-                        if ShopInFocus[player] and item_data.sellable then
-                            AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_SELL, function()
-                                if ShopInFocus[player] then
-
-                                    if GetItemCharges(ButtonList[h].item) > 1 then
-                                        CreateSlider(player, ButtonList[h], InventorySlots[player][45], function()
-                                            local value = SliderFrame[player].value
-                                            --local value = BlzFrameGetValue(SliderFrame[player].slider)
-                                            --print("item charges are " .. GetItemCharges(ButtonList[h].item))
-                                            --print("frame value is " .. value)
-
-
-                                            if value < GetItemCharges(ButtonList[h].item) then
-                                                local new_item = SplitChargedItem(ButtonList[h].item, value, player)
-                                                SellItem(player, new_item)
-                                                UpdateInventoryWindow(player)
-                                            else
-                                                SellItem(player, ButtonList[h].item)
-                                                -- DropItemFromInventory(player, ButtonList[h].item)
-                                            end
-
-                                        end, nil)
-                                    else
-                                        SellItem(player, ButtonList[h].item)
-                                    end
-
-                                end
-                            end)
-                        end
-
-
-                    if BlacksmithFrame[player].state and (item_data.TYPE == ITEM_TYPE_OFFHAND or item_data.TYPE == ITEM_TYPE_WEAPON or item_data.TYPE == ITEM_TYPE_ARMOR or item_data.TYPE == ITEM_TYPE_JEWELRY) then
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_REFORGE, function() if ButtonList[h].item then GiveItemToBlacksmith(player, ButtonList[h].item, BLACKSMITH_REFORGE) end end)
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_RESOCKET, function() if ButtonList[h].item then GiveItemToBlacksmith(player, ButtonList[h].item, BLACKSMITH_RESOCKET) end end)
-                    elseif PrivateChestFrame[player].state and item_data.droppable then
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_TO_STASH, function()
-                            if IsPlayerHasItem(player, ButtonList[h].item) then
-                                if AddToPrivateChest(player, ButtonList[h].item) then
-                                    if IsItemInvulnerable(ButtonList[h].item) then LockItemOnBelt(player, ButtonList[h]) end
-                                    ButtonList[h].item = nil
-                                    UpdateInventoryWindow(player)
-                                end
-                            end
-                        end)
-                    elseif StashFrame[player].state and item_data.flippy then
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_TO_STASH, function()
-                            if IsPlayerHasItem(player, ButtonList[h].item) then
-                                if AddToStash(player, ButtonList[h].item) then
-                                    ButtonList[h].item = nil
-                                    UpdateInventoryWindow(player)
-                                    UpdateStashWindow(player)
-                                end
-                            end
-                        end)
-                    elseif LibrarianFrame[player].state and item_data.restricted_to then
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_EXCHANGE, function() GiveItemToLibrarian(player, ButtonList[h].item) end)
-                    elseif item_data.TYPE == ITEM_TYPE_GIFT and SacrificeAltarFrame[player].state then
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_GIFT, function() if item_data and item_data.item then GiftSacrifice(item_data.item, player) end end)
+            if ControlState[player] then
+                if ShopInFocus[player] then
+                    SellToShop(h, player)
+                elseif PrivateChestFrame[player].state and item_data.droppable then
+                    if AddToPrivateChest(player, ButtonList[h].item) then
+                        if IsItemInvulnerable(ButtonList[h].item) then LockItemOnBelt(player, ButtonList[h]) end
+                        ButtonList[h].item = nil
+                        UpdateInventoryWindow(player)
                     end
-
-                    if item_data.TYPE == ITEM_TYPE_WEAPON and not IsWeaponTypeTwohanded(item_data.SUBTYPE)  then
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_ALT_WEAPON, function() InteractWithItemInSlot(h, player, true) end)
-                    end
-
-
-
-                    if item_data.TYPE == ITEM_TYPE_GEM then
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_ENCHANT, function() StartSelectionMode(player, h, SELECTION_MODE_ENCHANT) end)
-                    elseif item_data.TYPE == ITEM_TYPE_CONSUMABLE then
-                        if item_data.usable then
-                            AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_USE, function() if item_data and item_data.item then UseItem(item_data.item, player) end end)
-                        end
-                        --AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_USE, function() if item_data and item_data.item then UseItem(item_data.item, player) end end)
-                        AddContextOption(player, ButtonList[h].button_state and LOCALE_LIST[my_locale].UI_TEXT_BELT_OFF or LOCALE_LIST[my_locale].UI_TEXT_BELT_ON, function() LockItemOnBelt(player, ButtonList[h]) end)
-                    elseif item_data.TYPE == ITEM_TYPE_SKILLBOOK then
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_LEARN, function() if item_data and item_data.item then LearnBook(item_data.item, player) end end)
-                    elseif item_data.usable then
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_USE, function() if item_data and item_data.item then UseItem(item_data.item, player) end end)
-                    elseif item_data.TYPE ~= ITEM_TYPE_OTHER and item_data.TYPE ~= ITEM_TYPE_GIFT then
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_EQUIP, function() InteractWithItemInSlot(h, player) end)
-                    end
-
-                    AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_MOVE, function() StartSelectionMode(player, h, SELECTION_MODE_MOVE) end)
-
-                    if item_data.droppable then
-                        AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_DROP, function()
-
-                            if GetItemType(ButtonList[h].item) ~= ITEM_TYPE_CHARGED then
-                                DropItemFromInventory(player, ButtonList[h].item, false)
-                            else
-                                if GetItemCharges(ButtonList[h].item) > 1 then
-                                    CreateSlider(player, ButtonList[h], InventorySlots[player][45], function()
-                                        local value = SliderFrame[player].value
-                                        if value < GetItemCharges(ButtonList[h].item) then
-                                            SetItemCharges(ButtonList[h].item, GetItemCharges(ButtonList[h].item) - value)
-                                            local new_item = CreateCustomItem_Id(GetItemTypeId(ButtonList[h].item), GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]))
-                                            SetItemCharges(new_item, value)
-                                            if item_data.soundpack and item_data.soundpack.drop then
-                                                AddSoundVolumeZ(item_data.soundpack.drop, GetItemX(new_item), GetItemY(new_item), 25., 127, 1100.)
-                                            end
-                                            --print("bbbb")
-                                        else
-                                            --print("aaa")
-                                            DropItemFromInventory(player, ButtonList[h].item, false)
-                                        end
-                                        UpdateInventoryWindow(player)
-
-                                    end, nil)
-                                else
-                                    DropItemFromInventory(player, ButtonList[h].item, false)
-                                    --print("ccccccc")
-                                end
-                            end
-
-                        end)
-                    end
-
                 end
-            end)
+            else
 
-            DestroySlider(player)
-            DestroyContextMenu(player)
+                TimerStart(DoubleClickTimer[player].timer, 0.25, false, function()
+                    --InventoryItemInFocus[player] = nil
+                    RemoveSelectionFrames(player)
+                    --local item_data = GetItemData(ButtonList[h].item) or nil
+                    --OpenContextMenu(h, player)
+                end)
 
-            if PlayerMovingItem[player].state then
-                TimerStart(DoubleClickTimer[player].timer, 0., false, nil)
-                local moved_item_data = GetItemData(ButtonList[PlayerMovingItem[player].selected_frame].item)
+                DestroySlider(player)
+                DestroyContextMenu(player)
 
-                    if PlayerMovingItem[player].mode == SELECTION_MODE_ENCHANT then
-                            if ButtonList[h].item then
-                                if item_data.TYPE >= ITEM_TYPE_WEAPON and item_data.TYPE <= ITEM_TYPE_OFFHAND then
-                                    Socket(ButtonList[PlayerMovingItem[player].selected_frame].item, ButtonList[h].item, player, ButtonList[h])
+                if PlayerMovingItem[player].state then
+                    TimerStart(DoubleClickTimer[player].timer, 0., false, nil)
+                    local moved_item_data = GetItemData(ButtonList[PlayerMovingItem[player].selected_frame].item)
+
+                        if PlayerMovingItem[player].mode == SELECTION_MODE_ENCHANT then
+                                if ButtonList[h].item then
+                                    if item_data.TYPE >= ITEM_TYPE_WEAPON and item_data.TYPE <= ITEM_TYPE_OFFHAND then
+                                        Socket(ButtonList[PlayerMovingItem[player].selected_frame].item, ButtonList[h].item, player, ButtonList[h])
+                                    else
+                                        Feedback_CantUse(player)
+                                    end
+                                else
+                                    RemoveSelectionFrames(player)
+                                end
+                            return
+                        end
+
+
+                        if ButtonList[h].item == nil then
+
+                            if ButtonList[h].button_type == INV_SLOT then
+                                --print("moved")
+                                if moved_item_data.soundpack and moved_item_data.soundpack.drop then PlayLocalSound(moved_item_data.soundpack.drop, player - 1) end
+                                ButtonList[h].item = ButtonList[PlayerMovingItem[player].selected_frame].item
+                                ButtonList[PlayerMovingItem[player].selected_frame].item = nil
+                                UpdateInventoryWindow(player)
+                                RemoveSelectionFrames(player)
+                                InventoryItemInFocus[player] = ButtonList[h]
+                            else
+                                if moved_item_data.TYPE ~= ITEM_TYPE_GEM and moved_item_data.TYPE ~= ITEM_TYPE_CONSUMABLE and moved_item_data.TYPE ~= ITEM_TYPE_OTHER then
+                                    ForceEquip(h, player)
+                                    RemoveSelectionFrames(player)
                                 else
                                     Feedback_CantUse(player)
                                 end
-                            else
-                                RemoveSelectionFrames(player)
                             end
-                        return
-                    end
 
-
-                    if ButtonList[h].item == nil then
-
-                        if ButtonList[h].button_type == INV_SLOT then
-                            --print("moved")
-                            if moved_item_data.soundpack and moved_item_data.soundpack.drop then PlayLocalSound(moved_item_data.soundpack.drop, player - 1) end
-                            ButtonList[h].item = ButtonList[PlayerMovingItem[player].selected_frame].item
-                            ButtonList[PlayerMovingItem[player].selected_frame].item = nil
-                            UpdateInventoryWindow(player)
-                            RemoveSelectionFrames(player)
-                            InventoryItemInFocus[player] = ButtonList[h]
                         else
-                            if moved_item_data.TYPE ~= ITEM_TYPE_GEM and moved_item_data.TYPE ~= ITEM_TYPE_CONSUMABLE and moved_item_data.TYPE ~= ITEM_TYPE_OTHER then
-                                ForceEquip(h, player)
+
+                            if ButtonList[h].button_type == INV_SLOT then
+                                local item = ButtonList[PlayerMovingItem[player].selected_frame].item
+                                ButtonList[PlayerMovingItem[player].selected_frame].item = ButtonList[h].item
+                                ButtonList[h].item = item
+                                UpdateInventoryWindow(player)
                                 RemoveSelectionFrames(player)
+                                InventoryItemInFocus[player] = ButtonList[h]
                             else
-                                Feedback_CantUse(player)
+                                if moved_item_data.TYPE ~= ITEM_TYPE_GEM and moved_item_data.TYPE ~= ITEM_TYPE_CONSUMABLE and moved_item_data.TYPE ~= ITEM_TYPE_OTHER then
+                                    ForceEquip(h, player)
+                                    --UpdateInventoryWindow(player)
+                                    RemoveSelectionFrames(player)
+                                else
+                                    Feedback_CantUse(player)
+                                end
                             end
+
                         end
 
-                    else
-
-                        if ButtonList[h].button_type == INV_SLOT then
-                            local item = ButtonList[PlayerMovingItem[player].selected_frame].item
-                            ButtonList[PlayerMovingItem[player].selected_frame].item = ButtonList[h].item
-                            ButtonList[h].item = item
-                            UpdateInventoryWindow(player)
-                            RemoveSelectionFrames(player)
-                            InventoryItemInFocus[player] = ButtonList[h]
-                        else
-                            if moved_item_data.TYPE ~= ITEM_TYPE_GEM and moved_item_data.TYPE ~= ITEM_TYPE_CONSUMABLE and moved_item_data.TYPE ~= ITEM_TYPE_OTHER then
-                                ForceEquip(h, player)
-                                --UpdateInventoryWindow(player)
-                                RemoveSelectionFrames(player)
-                            else
-                                Feedback_CantUse(player)
-                            end
-                        end
-
-                    end
-
+                end
             end
 
         end
@@ -1363,6 +1420,7 @@ do
     local function NewButton(button_type, texture, size_x, size_y, relative_frame, frame_point_from, frame_point_to, offset_x, offset_y, parent_frame)
         local new_Frame = BlzCreateFrame('ScriptDialogButton', parent_frame, 0, 0)
         local new_FrameImage = BlzCreateFrameByType("BACKDROP", "ButtonIcon", new_Frame, "", 0)
+
         
             ButtonList[new_Frame] = {
                 button_type = button_type,
@@ -1400,14 +1458,21 @@ do
     local function CreateButtonsBorders(player, size_x, size_y)
         local button_data
         local new_FrameBorder
+        local new_FrameBorderHighlight
 
             for i = 33, 44 do
                 button_data = GetButtonData(InventorySlots[player][i])
                 new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", button_data.button, "", 0)
+                new_FrameBorderHighlight = BlzCreateFrameByType("BACKDROP", "ButtonIconH", button_data.button, "", 0)
 
                 BlzFrameSetSize(new_FrameBorder, size_x, size_y)
                 BlzFrameSetTexture(new_FrameBorder, "UI\\inventory_frame.blp", 0, true)
                 BlzFrameSetAllPoints(new_FrameBorder, button_data.button)
+
+                BlzFrameSetPoint(new_FrameBorderHighlight, FRAMEPOINT_TOPRIGHT, button_data.button, FRAMEPOINT_TOPRIGHT, -0.002, -0.002)
+                BlzFrameSetPoint(new_FrameBorderHighlight, FRAMEPOINT_BOTTOMLEFT, button_data.button, FRAMEPOINT_BOTTOMLEFT, 0.002, 0.002)
+                BlzFrameSetVisible(new_FrameBorderHighlight, false)
+                button_data.highlight = new_FrameBorderHighlight
             end
 
     end
@@ -1421,16 +1486,24 @@ do
         local new_ItemSprite
         local new_Sprite
         local new_FrameChargesBorder
+        local new_FrameImageHighlight
 
             for i = 1, 32 do
                 button_data = GetButtonData(InventorySlots[player][i])
                 new_FrameBorder = BlzCreateFrameByType("BACKDROP", "ButtonBorder", button_data.button, "", 0)
+                new_FrameImageHighlight = BlzCreateFrameByType("BACKDROP", "ButtonIconH", new_FrameBorder, "", 0)
 
                 BlzFrameSetSize(new_FrameBorder, size_x, size_y)
                 BlzFrameSetTexture(new_FrameBorder, "UI\\inventory_frame.blp", 0, true)
                 BlzFrameSetAllPoints(new_FrameBorder, button_data.button)
-            end
 
+                BlzFrameSetSize(new_FrameImageHighlight, size_x, size_y)
+                BlzFrameSetVisible(new_FrameImageHighlight, false)
+                --BlzFrameSetAllPoints(new_FrameImageHighlight, button_data.button)
+                BlzFrameSetPoint(new_FrameImageHighlight, FRAMEPOINT_TOPRIGHT, button_data.button, FRAMEPOINT_TOPRIGHT, -0.002, -0.002)
+                BlzFrameSetPoint(new_FrameImageHighlight, FRAMEPOINT_BOTTOMLEFT, button_data.button, FRAMEPOINT_BOTTOMLEFT, 0.002, 0.002)
+                button_data.highlight = new_FrameImageHighlight
+            end
 
 
             for i = 1, 32 do
@@ -1516,7 +1589,7 @@ do
 
                 InventoryData[player].tip_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.02, 0.02, slots_Frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.016, -0.016, slots_Frame)
 
-                CreateTooltip(LOCALE_LIST[my_locale].UI_INVENTORY_TOOLTIP_HEADER, LOCALE_LIST[my_locale].UI_INVENTORY_TOOLTIP_DESCRIPTION, InventoryData[player].tip_button, 0.14, 0.12, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPLEFT)
+                CreateTooltip(LOCALE_LIST[my_locale].UI_INVENTORY_TOOLTIP_HEADER, LOCALE_LIST[my_locale].UI_INVENTORY_TOOLTIP_DESCRIPTION, InventoryData[player].tip_button, 0.14, 0.145, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPLEFT)
                 BlzTriggerRegisterFrameEvent(InventoryData[player].tip_trigger, InventoryData[player].tip_button, FRAMEEVENT_CONTROL_CLICK)
 
                 local border = BlzCreateFrameByType("BACKDROP", "aaa", InventoryData[player].tip_button, "", 0)
@@ -1663,7 +1736,7 @@ do
             tip_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp", 0.02, 0.02, slots_Frame, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPRIGHT, -0.016, -0.016, slots_Frame)
         }
 
-        CreateTooltip(LOCALE_LIST[my_locale].UI_INVENTORY_TOOLTIP_HEADER, LOCALE_LIST[my_locale].UI_INVENTORY_TOOLTIP_DESCRIPTION, InventoryData[player].tip_button, 0.14, 0.12, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPLEFT)
+        CreateTooltip(LOCALE_LIST[my_locale].UI_INVENTORY_TOOLTIP_HEADER, LOCALE_LIST[my_locale].UI_INVENTORY_TOOLTIP_DESCRIPTION, InventoryData[player].tip_button, 0.14, 0.145, FRAMEPOINT_TOPRIGHT, FRAMEPOINT_TOPLEFT)
 
         local border = BlzCreateFrameByType("BACKDROP", "aaa", InventoryData[player].tip_button, "", 0)
         BlzFrameSetSize(border, 1., 1.)
@@ -1813,6 +1886,12 @@ do
 
         end)
 
+        local fast_sell_trigger = CreateTrigger()
+        BlzTriggerRegisterPlayerKeyEvent(fast_sell_trigger, actual_player, OSKEY_LCONTROL, 2, true)
+        BlzTriggerRegisterPlayerKeyEvent(fast_sell_trigger, actual_player, OSKEY_LCONTROL, 0, false)
+        TriggerAddAction(fast_sell_trigger, function()
+            ControlState[player] = BlzGetTriggerPlayerIsKeyDown()
+        end)
 
         local AltStateTrigger = CreateTrigger()
         BlzTriggerRegisterPlayerKeyEvent(AltStateTrigger, actual_player, OSKEY_LALT, 5, true)
@@ -1828,6 +1907,16 @@ do
 
         end)
 
+        local rmb_result = function()
+            if InventoryItemInFocus[player] then
+                DestroyContextMenu(player)
+                OpenContextMenu(InventoryItemInFocus[player].button, player)
+                PlayLocalSound("Sound\\Interface\\BigButtonClick.wav", player-1)
+                ImitateFrameClick(InventoryItemInFocus[player].button)
+            end
+        end
+
+
         local mouse_state = false
         local DragTimer = CreateTimer()
         local MouseDownTrigger = CreateTrigger()
@@ -1835,23 +1924,32 @@ do
         TriggerRegisterPlayerEvent(MouseDownTrigger, actual_player, EVENT_PLAYER_MOUSE_DOWN)
         TriggerAddAction(MouseDownTrigger, function()
 
-            if PlayerInventoryFrameState[player] and BlzGetTriggerPlayerMouseButton() == MOUSE_BUTTON_TYPE_LEFT then
-                  if InventoryItemInFocus[player] and InventoryItemInFocus[player].item and InventoryItemInFocus[player].button_type == INV_SLOT then
-                        mouse_state = true
-                        local in_focus = InventoryItemInFocus[player]
-                        TimerStart(DragTimer, 0.2, false, function()
-                            if InventoryItemInFocus[player] and in_focus == InventoryItemInFocus[player] and mouse_state and InventoryItemInFocus[player].item and InventoryItemInFocus[player].button_type == INV_SLOT then
-                                --print("drag start")
-                                DestroyContextMenu(player)
-                                StartSelectionMode(player, InventoryItemInFocus[player].button, SELECTION_MODE_MOVE)
-                            end
-                        end)
-                  else
-                      mouse_state = false
-                      --print("drag stop")
-                      TimerStart(DragTimer, 0., false, nil)
-                  end
+            if PlayerInventoryFrameState[player] and InventoryItemInFocus[player].item and InventoryItemInFocus[player].button_type == INV_SLOT then
+                local mouse_button = BlzGetTriggerPlayerMouseButton()
+
+                    if mouse_button == MOUSE_BUTTON_TYPE_LEFT then
+                          if InventoryItemInFocus[player] then
+                                mouse_state = true
+                                local in_focus = InventoryItemInFocus[player]
+                                TimerStart(DragTimer, 0.2, false, function()
+                                    if InventoryItemInFocus[player] and in_focus == InventoryItemInFocus[player] and InventoryItemInFocus[player].item and InventoryItemInFocus[player].button_type == INV_SLOT and mouse_state then
+                                        --print("drag start")
+                                        DestroyContextMenu(player)
+                                        StartSelectionMode(player, InventoryItemInFocus[player].button, SELECTION_MODE_MOVE)
+                                    end
+                                end)
+                          else
+                              mouse_state = false
+                              --print("drag stop")
+                              TimerStart(DragTimer, 0., false, nil)
+                          end
+
+                    elseif mouse_button == MOUSE_BUTTON_TYPE_RIGHT  then
+                        DelayAction(0., rmb_result)
+                    end
+
             end
+
 
         end)
 
@@ -1921,6 +2019,7 @@ do
         InventoryTooltip = {}
         InventoryAlternateTooltip = {}
         AltState = {}
+        ControlState = {}
         InventoryItemInFocus = {}
         InventoryKeyState = {}
         InventoryData = {}
@@ -1941,7 +2040,8 @@ do
             [BARBARIAN_CLASS] = "UI\\berserk_silhouette_man.blp",
             [SORCERESS_CLASS] = "UI\\Mage_silhouette_woman.blp",
             [NECROMANCER_CLASS] = "UI\\shadowmage_silhouette_man.blp",
-            [ASSASSIN_CLASS] = "UI\\assassin_silhouette_woman.blp"
+            [ASSASSIN_CLASS] = "UI\\assassin_silhouette_woman.blp",
+            [PALADIN_CLASS] = "UI\\warrior_silhouette_man.blp"
         }
 
         UNIT_POINT_LIST = {
@@ -2024,6 +2124,14 @@ do
             [4] = { state = true, timer = CreateTimer() },
             [5] = { state = true, timer = CreateTimer() },
             [6] = { state = true, timer = CreateTimer() }
+        }
+
+        QualityHighlightTexture = {
+            [COMMON_ITEM] = "UI\\CommonHighlight.blp",
+            [RARE_ITEM] = "UI\\RareHighlight.blp",
+            [MAGIC_ITEM] = "UI\\MagicHighlight.blp",
+            [SET_ITEM] = "UI\\SetHighlight.blp",
+            [UNIQUE_ITEM] = "UI\\UniqueHighlight.blp",
         }
 
     end

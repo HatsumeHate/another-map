@@ -312,6 +312,22 @@ do
             full_distance = true
         })
         --==============================================--
+        NewMissileTemplate('meat_golem_meat', {
+            name = "meat_golem_meat",
+            model = "Abilities\\Weapons\\MeatwagonMissile\\MeatwagonMissile.mdx",
+            max_distance = 900.,
+            radius = 65.,
+            speed = 800.,
+            start_z = 65.,
+            end_z = 65.,
+            effect_on_hit = "meat_golem_meat_effect",
+            arc = 0.15,
+            max_targets = 1,
+            ignore_terrain = false,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
         NewMissileTemplate('MVWS', {
             name = "void walker small",
             model = "Effect\\Voidball Minor.mdx",
@@ -591,7 +607,22 @@ do
             speed = 1200.,
             start_z = 65.,
             end_z = 65.,
-            arc = 0.1,
+            arc = 0.06,
+            scale = 1.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('goatman_spear', {
+            name = "goatman missile",
+            model = "Missile\\goatrmissile_brown.mdx",
+            max_distance = 700.,
+            radius = 60.,
+            speed = 1000.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.06,
             scale = 1.,
             ignore_terrain = true,
             penetrate = false,
@@ -804,7 +835,7 @@ do
                 cutoff = 1700.
             },
             ignore_terrain = true,
-            full_distance = true,
+            full_distance = false,
             penetrate = true,
             trackable = false
         })
@@ -880,13 +911,13 @@ do
         --===============================================--
         NewMissileTemplate('lightning_spear_missile', {
             name = "lightning_spear_missile",
-            model = "Missile\\Lightning Missile.mdx",
-            max_distance = 1200.,
+            model = "Missile\\Lightning_Fury_Missile_Blue.mdx",
+            max_distance = 1300.,
             radius = 100.,
-            speed = 1400.,
-            start_z = 80.,
-            end_z = 80.,
-            scale = 1.,
+            speed = 1500.,
+            start_z = 55.,
+            end_z = 55.,
+            scale = 0.85,
             effect_on_hit = 'lightning_spear_effect',
             sound_on_fly = {
                 pack = { "Sounds\\Spells\\lightning_loop_7.wav", "Sounds\\Spells\\lightning_loop_6.wav"},
@@ -984,6 +1015,23 @@ do
                 volume = 100,
                 cutoff = 1700.
             },
+        })
+        --===============================================--
+        NewMissileTemplate('fiery_rage_missile', {
+            name = "fiery_rage_missile",
+            model = "Missile\\Effect 32.mdx",
+            max_distance = 500.,
+            radius = 75.,
+            speed = 1500.,
+            start_z = 0.,
+            end_z = 0.,
+            scale = 0.5,
+            effect_on_hit = 'fiery_rage_effect',
+            hit_once_in = 1.,
+            max_targets = 500,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
         })
         --===============================================--
         NewMissileTemplate('MBCH', {
@@ -1714,6 +1762,58 @@ do
         })
 
         --==============================================--
+        NewMissileTemplate('purify_missile', {
+            name = "purify missile",
+            model = "Missile\\Holy Cross.mdx",
+            max_distance = 1000.,
+            radius = 80.,
+            speed = 550.,
+            start_z = 50.,
+            end_z = 50.,
+            arc = 0.,
+            scale = 1.,
+            effect_on_hit = 'purify_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            max_targets = 3000,
+            trackable = false
+        })
+        --==============================================--
+        NewMissileTemplate('lightforged_light_missile', {
+            name = "lightforged_light_missile",
+            model = "Missile\\Firebrand Shot Yellow.mdx",
+            speed = 750.,
+            start_z = 100.,
+            end_z = 100.,
+            radius = 80.,
+            scale = 1.,
+            effect_on_hit = "effect_lightforged",
+            max_targets = 1,
+            only_on_target = true,
+            ignore_terrain = true,
+            can_enum = false
+        })
+        --==============================================--
+        NewMissileTemplate('shield_throw_missile', {
+            name = "shield throw missile",
+            model = "Missile\\shield_throw.mdx",
+            max_distance = 600.,
+            radius = 70.,
+            speed = 1200.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.,
+            scale = 1.4,
+            effect_on_hit = 'shield_throw_effect',
+            max_targets = 300,
+            hit_once_in = 10.,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            trackable = false,
+        })
+        --==============================================--
         NewMissileTemplate('void_rain_missile', {
             name = "void rain",
             model = "Effect\\Void Rain Missile.mdx",
@@ -1912,6 +2012,45 @@ do
             ignore_terrain = true,
             full_distance = true,
             penetrate = true,
+            can_enum = false
+        })
+        --===============================================--
+        NewMissileTemplate('belial_missile', {
+            name = "belial missile",
+            model = "Missile\\Psionic Shot Green.mdx",
+            max_distance = 1000.,
+            radius = 100.,
+            speed = 1100.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.,
+            scale = 1.1,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = false,
+            trackable = false
+        })
+        --===============================================--
+        NewMissileTemplate('belial_pillar_flame_missile', {
+            name = "belial fel fire missile",
+            model = "Missile\\BatSwarm.mdx",
+            max_distance = 1000.,
+            radius = 100.,
+            speed = 700.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.,
+            scale = 0.6,
+            effect_on_hit = "belial_fel_effect",
+            tracking_angle_window = 15.,
+            tracking_max_distance = 1000.,
+            --tracking_max_angle_per_second = 5.,
+            hit_once_in = 0.33,
+            max_targets = 300,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            trackable = true,
             can_enum = false
         })
     end

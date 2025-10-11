@@ -51,6 +51,7 @@ do
             elseif unit_data.unit_class == SORCERESS_CLASS then portrait = "war3mapImported\\BTNSorceress.blp"
             elseif unit_data.unit_class == NECROMANCER_CLASS then portrait = "ReplaceableTextures\\CommandButtons\\BTNLichVersion2.blp"
             elseif unit_data.unit_class == ASSASSIN_CLASS then portrait = "ReplaceableTextures\\CommandButtons\\BTNAssassin.blp"
+            elseif unit_data.unit_class == PALADIN_CLASS then portrait = "ReplaceableTextures\\CommandButtons\\BTNTheCaptain.blp"
             end
 
         BlzFrameSetTexture(MainStatButtons[player].portrait, portrait, 0, true)

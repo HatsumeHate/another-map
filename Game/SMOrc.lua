@@ -5,7 +5,7 @@
 ---
 do
 
-    local function IsAnyHeroInRange(range, point)
+    local function IsAnyHeroInRangeEx(range, point)
 
         for indx = 1, 6 do
             if PlayerHero[indx] ~= nil and IsUnitInRangeXY(PlayerHero[indx], GetRectCenterX(point), GetRectCenterY(point), range) then
@@ -41,7 +41,7 @@ do
 
                     ShowUnit(SMOrc, true)
                 else
-                    if not IsAnyHeroInRange(1600, SMOrc_location) then
+                    if not IsAnyHeroInRange( GetRectCenterX(SMOrc_location), GetRectCenterY(SMOrc_location), 1600.) then
                         ShowUnit(SMOrc, false)
                     end
                 end

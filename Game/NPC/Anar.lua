@@ -16,7 +16,10 @@ do
                 class_related = true,
                 [BARBARIAN_CLASS] = { phrase = LOCALE_LIST[my_locale].INTRODUCTION_BARBARIAN_RESPONCE, duration = 6.25 },
                 [SORCERESS_CLASS] = { phrase = LOCALE_LIST[my_locale].INTRODUCTION_SORCERESS_RESPONCE, duration = 5.25 },
-                [NECROMANCER_CLASS] = { phrase = LOCALE_LIST[my_locale].INTRODUCTION_NECROMANCER_RESPONCE, duration = 5.25 }
+                [NECROMANCER_CLASS] = { phrase = LOCALE_LIST[my_locale].INTRODUCTION_NECROMANCER_RESPONCE, duration = 5.25 },
+                [ASSASSIN_CLASS] = { phrase = LOCALE_LIST[my_locale].INTRODUCTION_ASSASSIN_RESPONCE, duration = 5.25 },
+                [PALADIN_CLASS] = { phrase = LOCALE_LIST[my_locale].INTRODUCTION_PALADIN_RESPONCE, duration = 5.25 },
+                [DRUID_CLASS] = { phrase = LOCALE_LIST[my_locale].INTRODUCTION_DRUID_RESPONCE, duration = 5.25 }
             }, duration = 6.25 },
             { phrase = LOCALE_LIST[my_locale].INTRODUCTION_TEXT_4, duration = 5.25 },
         })

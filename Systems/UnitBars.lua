@@ -204,10 +204,10 @@ do
                 BarFrames[player].boss_bar_state = false
 
                 BlzFrameSetVertexColor(BarFrames[player].boss.bar, BlzConvertColor(255, 225, 200, 200))
-                BlzFrameSetScale(BarFrames[player].common.text, 2.58)
-                BlzFrameSetScale(BarFrames[player].common_adv.text, 2.5)
-                BlzFrameSetScale(BarFrames[player].elite.text, 2.73)
-                BlzFrameSetScale(BarFrames[player].boss.text, 2.95)
+                BlzFrameSetScale(BarFrames[player].common.text, 0.9)
+                BlzFrameSetScale(BarFrames[player].common_adv.text, 0.86) -- 2.5
+                BlzFrameSetScale(BarFrames[player].elite.text, 1.) -- 2.73
+                BlzFrameSetScale(BarFrames[player].boss.text, 1.2) -- 2.95
 
                 BarFrames[player].label = BlzCreateFrameByType("TEXT", "label", GAME_UI, "MyTextTemplateMedium", 1)
                 BlzFrameSetPoint(BarFrames[player].label, FRAMEPOINT_TOPLEFT, GAME_UI, FRAMEPOINT_TOPRIGHT, 0.01, 0.01)
@@ -238,10 +238,10 @@ do
         BarFrames[player].boss_bar_state = false
 
         BlzFrameSetVertexColor(BarFrames[player].boss.bar, BlzConvertColor(255, 225, 200, 200))
-        BlzFrameSetScale(BarFrames[player].common.text, 2.58)
-        BlzFrameSetScale(BarFrames[player].common_adv.text, 2.5)
-        BlzFrameSetScale(BarFrames[player].elite.text, 2.73)
-        BlzFrameSetScale(BarFrames[player].boss.text, 2.95)
+        BlzFrameSetScale(BarFrames[player].common.text, 0.9) -- 2.58
+        BlzFrameSetScale(BarFrames[player].common_adv.text, 0.86)
+        BlzFrameSetScale(BarFrames[player].elite.text, 1.)
+        BlzFrameSetScale(BarFrames[player].boss.text, 1.2) -- 2.95
 
         BarFrames[player].hpbar_value_timer = CreateTimer()
 

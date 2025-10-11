@@ -105,6 +105,9 @@ do
 	DECAYING_DAMAGE_REDUCTION = 76
 
 	RESOURCE_GENERATION = 77
+	RANGE_BONUS = 78
+
+
 
 	
 	-- attributes
@@ -167,7 +170,7 @@ do
     function GetCorrectParamText(parameter, value, method)
         if method == MULTIPLY_BONUS then
             local v = value
-			value =  S2I(R2S((value - 1.) * 100.))
+			value = S2I(R2S((value - 1.) * 100.)) --math.floor((value - 1.) * 100.) --string.format('%%.0f', (value - 1.) * 100.) --
 
 				if v >= 1. then value = "+" .. value .. "%%"
 				else value = math.abs(value) .. "%%" end
@@ -178,7 +181,7 @@ do
 
 			if SpecialSymbolParam[parameter] then special = "%%" end
 			if parameter == MELEE_DAMAGE_REDUCTION or parameter == RANGE_DAMAGE_REDUCTION then vector = "-" end
-			if parameter ~= CRIT_MULTIPLIER and parameter ~= HP_REGEN and parameter ~= MP_REGEN then value = R2I(value) end
+			if parameter ~= CRIT_MULTIPLIER and parameter ~= HP_REGEN and parameter ~= MP_REGEN then value = R2I(value) end --math.floor(value) end --
 
 			if value < 0 then
 				vector = ""
@@ -831,6 +834,17 @@ do
 			[DECAYING_DAMAGE_REDUCTION] = function(data)
 				data.stats[DECAYING_DAMAGE_REDUCTION].value = 1. + (data.stats[DECAYING_DAMAGE_REDUCTION].bonus / 100.)
 			end,
+
+			---@param data table
+			[RANGE_BONUS] = function(data)
+				data.stats[RANGE_BONUS].value = data.stats[RANGE_BONUS].bonus * data.stats[RANGE_BONUS].multiplier
+
+					if IsUnitType(data.Owner, UNIT_TYPE_HERO) and IsAHero(data.Owner) then
+						UpdateBindedSkillsRange(data.Owner)
+					end
+
+			end,
+
 		}
 
 
@@ -938,6 +952,7 @@ do
 			[DECAYING_DAMAGE_REDUCTION] = LOCALE_LIST[my_locale].DECAYING_DAMAGE_REDUCTION_PARAM,
 
 			[RESOURCE_GENERATION] = LOCALE_LIST[my_locale].RESOURCE_GENERATION_PARAM,
+			[RANGE_BONUS] = LOCALE_LIST[my_locale].RANGE_BONUS_PARAM,
 		}
 
 
@@ -995,6 +1010,7 @@ do
 			[POISONING_DAMAGE_REDUCTION] = true,
 			[DECAYING_DAMAGE_BOOST] = true,
 			[DECAYING_DAMAGE_REDUCTION] = true,
+			[RANGE_BONUS] = false,
 		}
 
 

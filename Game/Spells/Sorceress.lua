@@ -644,7 +644,7 @@ do
 
     function IcicleRainCast(caster, x, y, ability_instance)
         local level = UnitGetAbilityLevel(caster, "ASIR")
-        local amount = 3 + math.floor(level / 3)
+        local amount = 6 + math.floor(level / 3)
         local halfarea = (250. + level * 5.) * 0.5
         local timer = CreateTimer()
 
@@ -723,7 +723,10 @@ do
         local x,y = GetUnitX(source), GetUnitY(source)
         local timer = CreateTimer()
         local radius = 5.
-        local step = 500. / ((320. / 500) / 0.025)
+        local area_of_effect = 320. + (1. * UnitGetAbilityLevel(source, "A001"))
+        local step = 500. / ((area_of_effect / 500) / 0.025)
+        local aoe_effect
+
 
             TimerStart(timer, 0.025, true, function()
                 radius = radius + step
@@ -740,11 +743,22 @@ do
                         local anglemod = 1. + (radius / 450.)
                         if anglemod > 1.8 then anglemod = 1.8 end
                         BlzSetSpecialEffectPitch(effect, math.rad(45. * anglemod))
-                        DelayAction(2. + GetRandomReal(0.03, 0.07), function() DestroyEffect(effect) end)
+                        DelayAction(2. + GetRandomReal(0.03, 0.07), function()
+                            DestroyEffect(effect)
+                            DelayAction(0.2, function() DestroyEffect(aoe_effect) end)
+                        end)
                 end
 
 
-                if radius >= 300. then DestroyTimer(timer) end
+                if radius >= (area_of_effect - 20.) then
+                    DestroyTimer(timer)
+                    DelayAction(0.2, function()
+                        aoe_effect = AddSpecialEffect("Effect\\Sfx_Arthas_LichKing_Sindragosa_Splat.mdx", x, y)
+                        BlzSetSpecialEffectYaw(aoe_effect, GetRandomReal(0., 360.) * bj_DEGTORAD)
+                        BlzSetSpecialEffectScale(aoe_effect, 1.28 * (area_of_effect / 320.))
+                    end)
+                end
+
             end)
 
     end
@@ -858,10 +872,11 @@ do
                 local angle = GetRandomReal(0., 360.)
                 local range = GetMaxAvailableDistance(cx, cy, angle, GetRandomReal(150, 500))
                 local x,y = cx + Rx(range, angle), cy + Ry(range, angle)
-
+                local vortex_sfx = AddSpecialEffect("Effect\\XJCSMppBYQ.mdx", x, y)
 
                     DestroyEffect(AddSpecialEffect("Effect\\Flamestrike Starfire I.mdx", x, y))
                     CreateAuraOnPoint(caster, x, y, "arcane_rift_aura", level, nil)
+                    DelayAction(8., function() DestroyEffect(vortex_sfx) end)
             end
 
     end
@@ -978,6 +993,67 @@ do
             unit_data.enflame = AddSpecialEffectTarget("Buffs\\Ember Sword FX 5.mdx", target, point)
     end
 
+
+    function FlamecrashEffect(caster, x, y, ability_instance)
+        local sfx = AddSpecialEffect("Effect\\Orb of Fire.mdx", x, y)
+        local timer = CreateTimer()
+        local duration = 7.
+
+            DelayAction(0.2, function()
+                ApplyEffect(caster, nil, x, y, "effect_flamecrash_initial", 1, ability_instance)
+                TimerStart(timer, 1., true, function()
+                    if duration <= 0 then
+                        DestroyTimer(timer)
+                        DestroyEffect(sfx)
+                    else
+                        duration = duration - 1
+                        ApplyEffect(caster, nil, x, y, "effect_flamecrash", 1, ability_instance)
+                    end
+                end)
+            end)
+
+    end
+
+
+    function StormFrontCast(caster, ability_instance)
+
+            if GetUnitAbilityLevel(caster, FourCC("A04X")) == 0 then
+                local player = GetPlayerId(GetOwningPlayer(caster))+1
+                local unit_data = GetUnitData(caster)
+                local hit_group = CreateGroup()
+                local seek_group = CreateGroup()
+                local timer = CreateTimer()
+
+                ApplyBuff(caster, caster, "A04X", UnitGetAbilityLevel(caster, "ASLF"), ability_instance)
+
+                TimerStart(timer, 0.33, true, function()
+                    if GetUnitAbilityLevel(caster, FourCC("A04X")) == 0. or GetWidgetLife(caster) <= 0.045 then
+                        DestroyTimer(timer)
+                        DestroyGroup(hit_group)
+                        DestroyGroup(seek_group)
+                    else
+                        GroupEnumUnitsInRange(seek_group, GetUnitX(caster), GetUnitY(caster), 800., nil)
+
+                        for index = BlzGroupGetSize(seek_group) - 1, 0, -1 do
+                            local picked = BlzGroupUnitAt(seek_group, index)
+
+                            if IsUnitEnemy(picked, Player(0)) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 and not IsUnitInGroup(picked, hit_group) and Chance(18.) then
+                                ApplyEffect(caster, picked, 0, 0, "effect_storm_front", 1, ability_instance)
+                                GroupAddUnit(hit_group, picked)
+                                DelayAction(1., function() GroupRemoveUnit(hit_group, picked) end)
+                                break
+                            end
+
+                        end
+
+                    end
+                end)
+
+            else
+                SetBuffExpirationTime(caster, "A04X", -1)
+            end
+        
+    end
 
 end
 

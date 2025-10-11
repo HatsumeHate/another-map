@@ -214,6 +214,121 @@ do
             }
         })
 
+        --=================================================================--
+        NewAuraTemplate({
+            id = "purity_aura",
+            name = "purity_aura",
+            max_level = 75,
+            sfx_path = "Buffs\\Laws of Justice - Faiths Armor Rune.mdx",
+            sfx_point = "origin",
+            tickrate = 0.5,
+            level = {
+                [1] = {
+                    radius = 700.,
+                    [ON_HEROES] = { applied_buff = "A03R" }
+                }
+            }
+        })
+
+        --=================================================================--
+        NewAuraTemplate({
+            id = "fallen_flame_aura",
+            name = "fallen_flame_aura",
+            max_level = 75,
+            sfx_path = "Buffs\\Laws of Hope.mdx",
+            sfx_point = "origin",
+            tickrate = 0.5,
+            level = {
+                [1] = {
+                    radius = 700.,
+                    [ON_HEROES] = { applied_buff = "A03S" }
+                }
+            }
+        })
+
+        --=================================================================--
+        NewAuraTemplate({
+            id = "dead_resolve_aura",
+            name = "dead_resolve_aura",
+            max_level = 75,
+            sfx_path = "Buffs\\Laws of Fate.mdx",
+            sfx_point = "origin",
+            tickrate = 0.5,
+            level = {
+                [1] = {
+                    radius = 700.,
+                    [ON_HEROES] = { applied_buff = "A03T" }
+                }
+            }
+        })
+
+        --=================================================================--
+        NewAuraTemplate({
+            id = "martyrdom_aura",
+            name = "arcane rift aura",
+            max_level = 75,
+            sfx_path = "Buffs\\Laws of Valor - Invincible Rune.mdx",
+            sfx_point = "origin",
+            tickrate = 0.5,
+            level = {
+                [1] = {
+                    radius = 700.,
+                    [ON_HEROES] = { applied_buff = "A03U" },
+                    [ON_ENEMY] = { applied_buff = "A03U" },
+                }
+            }
+        })
+
+        --=================================================================--
+        NewAuraTemplate({
+            id = "sanctify_aura",
+            name = "sanctify_aura",
+            sfx_path = "",
+            max_level = 75,
+            tickrate = 0.2,
+
+            level = {
+                [1] = {
+                    radius = 550.,
+                    duration = 7.,
+                    [ON_ENEMY] = { applied_buff = "A03W" }
+                }
+            }
+        })
+        --=================================================================--
+        NewAuraTemplate({
+            id = "talent_celestial_sanctuary",
+            name = "sanctify dome",
+            max_level = 1,
+            sfx_path = "Effect\\Sfx_Anduin_Salvation_Ground.mdx",
+            tickrate = 0.5,
+
+            level = {
+                [1] = {
+                    sfx_scale = 1.,
+                    radius = 400.,
+                    duration = 6.,
+                    [ON_ALLY] = { applied_buff = "A04N", include_self = true }
+                }
+            }
+        })
+        NewAuraTemplate({
+            id = "duriel_poison_aura",
+            name = "duriel_poison_aura",
+            max_level = 1,
+            sfx_path = "Effect\\EndemicFieldArea.mdx",
+            sfx_point = "origin",
+            tickrate = 0.5,
+            level = {
+                [1] = {
+                    sfx_scale = 1.,
+                    radius = 300.,
+                    duration = 15.,
+                    [ON_ENEMY] = { applied_effect = "effect_duriel_poison_aura" }
+                }
+            }
+        })
+
 
 
     end

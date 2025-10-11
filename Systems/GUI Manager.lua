@@ -54,37 +54,43 @@ do
                 GlobalButton[i].char_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNStatUp.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOM, -0.221, 0.0262, GAME_UI)
                 CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].char_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
                 BlzFrameSetVisible(GlobalButton[i].char_panel_button, false)
+                BlzFrameSetScale(GlobalButton[i].char_panel_button, 0.9)
                 BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].char_panel_button, FRAMEEVENT_CONTROL_CLICK)
-                CreateSimpleChargesText(GlobalButton[i].char_panel_button, "C", 0.9, 0.9)
+                --CreateSimpleChargesText(GlobalButton[i].char_panel_button, "C", 0.9, 0.9)
 
                 GlobalButton[i].skill_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSpellBookBLS.blp", 0.034, 0.034, GlobalButton[i].char_panel_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.003, 0., GAME_UI)
                 CreateTooltip(LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].skill_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
                 BlzFrameSetVisible(GlobalButton[i].skill_panel_button, false)
+                BlzFrameSetScale(GlobalButton[i].skill_panel_button, 0.9)
                 BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].skill_panel_button, FRAMEEVENT_CONTROL_CLICK)
-                CreateSimpleChargesText(GlobalButton[i].skill_panel_button, "B", 0.9, 0.9)
+                --CreateSimpleChargesText(GlobalButton[i].skill_panel_button, "B", 0.9, 0.9)
 
                 GlobalButton[i].inventory_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp", 0.034, 0.034, GlobalButton[i].skill_panel_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.003, 0., GAME_UI)
                 CreateTooltip(LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].inventory_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
                 BlzFrameSetVisible(GlobalButton[i].inventory_panel_button, false)
+                BlzFrameSetScale(GlobalButton[i].inventory_panel_button, 0.9)
                 BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].inventory_panel_button, FRAMEEVENT_CONTROL_CLICK)
-                CreateSimpleChargesText(GlobalButton[i].inventory_panel_button, "TAB", 0.9, 0.7, 0.008)
+                --CreateSimpleChargesText(GlobalButton[i].inventory_panel_button, "TAB", 0.9, 0.7, 0.008)
 
                 GlobalButton[i].talents_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNMarksmanship.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOM, 0.221, 0.0262, GAME_UI)
                 BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].talents_panel_button, FRAMEEVENT_CONTROL_CLICK)
+                BlzFrameSetScale(GlobalButton[i].talents_panel_button, 0.9)
                 CreateTooltip(GetLocalString("Таланты", "Talents"), GetLocalString("Изучение всех доступных талантов героя.", "Learning of all hero talents."), GlobalButton[i].talents_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
-                CreateSimpleChargesText(GlobalButton[i].talents_panel_button, "N", 0.9, 0.9)
+                --CreateSimpleChargesText(GlobalButton[i].talents_panel_button, "N", 0.9, 0.9)
                 BlzFrameSetVisible(GlobalButton[i].talents_panel_button, false)
 
                 GlobalButton[i].journal_panel_button = CreateSimpleButton("UI\\BTNScribeScroll.blp", 0.034, 0.034, GlobalButton[i].talents_panel_button, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.003, 0., GAME_UI)
                 BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].journal_panel_button, FRAMEEVENT_CONTROL_CLICK)
+                BlzFrameSetScale(GlobalButton[i].journal_panel_button, 0.9)
                 CreateTooltip(GetLocalString("Журнал", "Journal"), GetLocalString("Все заметки и задания.", "All notes and quests tracking."), GlobalButton[i].journal_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
-                CreateSimpleChargesText(GlobalButton[i].journal_panel_button, "J", 0.9, 0.9)
+                --CreateSimpleChargesText(GlobalButton[i].journal_panel_button, "J", 0.9, 0.9)
                 BlzFrameSetVisible(GlobalButton[i].journal_panel_button, false)
 
                 GlobalButton[i].settings_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNEngineeringUpgrade.blp", 0.034, 0.034, GlobalButton[i].journal_panel_button, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, -0.003, 0., GAME_UI)
                 BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].settings_panel_button, FRAMEEVENT_CONTROL_CLICK)
+                BlzFrameSetScale(GlobalButton[i].settings_panel_button, 0.9)
                 CreateTooltip(GetLocalString("Настройки", "Settings"), GetLocalString("Пока что отключено.", "Not yet implemented."), GlobalButton[i].settings_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
-                CreateSimpleChargesText(GlobalButton[i].settings_panel_button, "P", 0.9, 0.9)
+                --CreateSimpleChargesText(GlobalButton[i].settings_panel_button, "P", 0.9, 0.9)
                 BlzFrameSetVisible(GlobalButton[i].settings_panel_button, false)
 
                 GlobalButton[i].dash_button = CreateSimpleButton("Spell\\BTNTravelersShoes.blp", 0.026, 0.026, GlobalButton[i].talents_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_TOP, 0.01, 0.07, GAME_UI)
@@ -109,7 +115,7 @@ do
                 GlobalButton[i].minion_command_button = CreateSimpleButton("GUI\\BTNPurpleAttackGround.blp", 0.026, 0.026, GlobalButton[i].dash_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_TOPRIGHT, 0.006, 0.008, GAME_UI)
                 BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].settings_panel_button, FRAMEEVENT_CONTROL_CLICK)
                 CreateTooltip(GetLocalString("Атака слуг", "Minion Attack"), GetLocalString("Приказывает слугам атаковать эту точку", "Order your minion to attack this point"), GlobalButton[i].minion_command_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
-                CreateSimpleChargesText(GlobalButton[i].minion_command_button, "G", 0.7, 0.7)
+                --CreateSimpleChargesText(GlobalButton[i].minion_command_button, "G", 0.7, 0.7)
                 BlzFrameSetVisible(GlobalButton[i].minion_command_button, false)
 
             end
@@ -354,9 +360,13 @@ do
 
     function CreateSimpleChargesText(frame, text, scale, text_scale, bonus_size_x, bonus_size_y, owner)
         local new_FrameCharges = BlzCreateFrameByType("BACKDROP", "ButtonCharges", owner or frame, "", 0)
-            BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMRIGHT, frame, FRAMEPOINT_BOTTOMRIGHT, -0.002, 0.002)
+            BlzFrameSetPoint(new_FrameCharges, FRAMEPOINT_BOTTOMRIGHT, frame, FRAMEPOINT_BOTTOMRIGHT, -0.0015, 0.0015)
             BlzFrameSetSize(new_FrameCharges, 0.012 + (bonus_size_x or 0.), 0.012 + (bonus_size_y or 0.))
             BlzFrameSetTexture(new_FrameCharges, "GUI\\ChargesTexture.blp", 0, true)
+        local new_FrameChargesBorder = BlzCreateFrameByType("BACKDROP", "Border", new_FrameCharges, "", 0)
+            BlzFrameSetSize(new_FrameChargesBorder, 1., 1.)
+            BlzFrameSetTexture(new_FrameChargesBorder, "UI\\inventory_frame.blp", 0, true)
+            BlzFrameSetAllPoints(new_FrameChargesBorder, new_FrameCharges)
         local new_FrameChargesText = BlzCreateFrameByType("TEXT", "ButtonChargesText", new_FrameCharges, "", 0)
             BlzFrameSetAllPoints(new_FrameChargesText, new_FrameCharges)
             BlzFrameSetTextAlignment(new_FrameChargesText, TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_CENTER)
@@ -420,41 +430,38 @@ do
             CreateTooltip(LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].STAT_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].char_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
             BlzFrameSetVisible(GlobalButton[i].char_panel_button, false)
             BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].char_panel_button, FRAMEEVENT_CONTROL_CLICK)
-            CreateSimpleChargesText(GlobalButton[i].char_panel_button, "C", 0.9, 0.9)
+
 
             GlobalButton[i].skill_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNSpellBookBLS.blp", 0.034, 0.034, GlobalButton[i].char_panel_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0., 0., GAME_UI)
             BlzFrameSetScale(GlobalButton[i].skill_panel_button, 0.9)
             CreateTooltip(LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].SKILL_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].skill_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
             BlzFrameSetVisible(GlobalButton[i].skill_panel_button, false)
             BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].skill_panel_button, FRAMEEVENT_CONTROL_CLICK)
-            CreateSimpleChargesText(GlobalButton[i].skill_panel_button, "B", 0.9, 0.9)
+
 
             GlobalButton[i].inventory_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNDustOfAppearance.blp", 0.034, 0.034, GlobalButton[i].skill_panel_button, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0., 0., GAME_UI)
             BlzFrameSetScale(GlobalButton[i].inventory_panel_button, 0.9)
             CreateTooltip(LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_NAME, LOCALE_LIST[my_locale].INVENTORY_PANEL_TOOLTIP_DESCRIPTION, GlobalButton[i].inventory_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
             BlzFrameSetVisible(GlobalButton[i].inventory_panel_button, false)
             BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].inventory_panel_button, FRAMEEVENT_CONTROL_CLICK)
-            CreateSimpleChargesText(GlobalButton[i].inventory_panel_button, "TAB", 0.9, 0.7, 0.008)
+
 
             GlobalButton[i].talents_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNMarksmanship.blp", 0.034, 0.034, GAME_UI, FRAMEPOINT_CENTER, FRAMEPOINT_BOTTOM, 0.221, 0.0262, GAME_UI)
             BlzFrameSetScale(GlobalButton[i].talents_panel_button, 0.9)
             BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].talents_panel_button, FRAMEEVENT_CONTROL_CLICK)
             CreateTooltip(GetLocalString("Таланты", "Talents"), GetLocalString("Изучение всех доступных талантов героя.", "Learning of all hero talents."), GlobalButton[i].talents_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
-            CreateSimpleChargesText(GlobalButton[i].talents_panel_button, "N", 0.9, 0.9)
             BlzFrameSetVisible(GlobalButton[i].talents_panel_button, false)
 
             GlobalButton[i].journal_panel_button = CreateSimpleButton("UI\\BTNScribeScroll.blp", 0.034, 0.034, GlobalButton[i].talents_panel_button, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., GAME_UI)
             BlzFrameSetScale(GlobalButton[i].journal_panel_button, 0.9)
             BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].journal_panel_button, FRAMEEVENT_CONTROL_CLICK)
             CreateTooltip(GetLocalString("Журнал", "Journal"), GetLocalString("Все заметки и задания.", "All notes and quests tracking."), GlobalButton[i].journal_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
-            CreateSimpleChargesText(GlobalButton[i].journal_panel_button, "J", 0.9, 0.9)
             BlzFrameSetVisible(GlobalButton[i].journal_panel_button, false)
 
             GlobalButton[i].settings_panel_button = CreateSimpleButton("ReplaceableTextures\\CommandButtons\\BTNEngineeringUpgrade.blp", 0.034, 0.034, GlobalButton[i].journal_panel_button, FRAMEPOINT_RIGHT, FRAMEPOINT_LEFT, 0., 0., GAME_UI)
             BlzFrameSetScale(GlobalButton[i].settings_panel_button, 0.9)
             BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].settings_panel_button, FRAMEEVENT_CONTROL_CLICK)
             CreateTooltip(GetLocalString("Настройки", "Settings"), GetLocalString("Пока что отключено.", "Not yet implemented."), GlobalButton[i].settings_panel_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
-            CreateSimpleChargesText(GlobalButton[i].settings_panel_button, "P", 0.9, 0.9)
             BlzFrameSetVisible(GlobalButton[i].settings_panel_button, false)
 
             GlobalButton[i].dash_button = CreateSimpleButton("Spell\\BTNTravelersShoes.blp", 0.026, 0.026, GlobalButton[i].talents_panel_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_TOP, 0.01, 0.07, GAME_UI)
@@ -481,7 +488,6 @@ do
             GlobalButton[i].minion_command_button = CreateSimpleButton("GUI\\BTNPurpleAttackGround.blp", 0.026, 0.026, GlobalButton[i].dash_button, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_TOPRIGHT, 0.006, 0.008, GAME_UI)
             BlzTriggerRegisterFrameEvent(GlobalButtonClickTrigger, GlobalButton[i].settings_panel_button, FRAMEEVENT_CONTROL_CLICK)
             CreateTooltip(GetLocalString("Атака слуг", "Minion Attack"), GetLocalString("Приказывает слугам атаковать эту точку", "Order your minion to attack this point"), GlobalButton[i].minion_command_button, 0.14, 0.06, FRAMEPOINT_BOTTOM, FRAMEPOINT_TOP)
-            CreateSimpleChargesText(GlobalButton[i].minion_command_button, "G", 0.7, 0.7)
             BlzFrameSetVisible(GlobalButton[i].minion_command_button, false)
 
         end

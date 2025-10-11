@@ -66,6 +66,11 @@ do
     TEXTURE_ID_ARMOR_05 = "B012"
     TEXTURE_ID_ARMOR_06 = "B013"
     TEXTURE_ID_ARMOR_07 = "B014"
+    TEXTURE_ID_ARMOR_08 = "B022"
+    TEXTURE_ID_ARMOR_09 = "B023"
+    TEXTURE_ID_ARMOR_10 = "B024"
+    TEXTURE_ID_ARMOR_11 = "B025"
+    TEXTURE_ID_ARMOR_12 = "B026"
 
     TEXTURE_ID_ASSASSIN_BASE = "B015"
     TEXTURE_ID_ASSASSIN_ARMOR_01 = "B016"
@@ -173,17 +178,20 @@ do
             [COMMON_ITEM]   = { "I017", "I016", "I015",
                                 "I014", "I013", "I00V", "I00U",
                                 "I028", "I029", "I02A",
-                                "I03E", "I03F", "I03G", "I044"
+                                "I03E", "I03F", "I03G", "I044",
+                                "I04O", "I04R", "I04U"
             },
             [RARE_ITEM]     = { "I023", "I024", "I025",
                                 "I021", "I020", "I01Z", "I022",
                                 "I02B", "I02C", "I02D",
-                                "I03H", "I03I", "I03J", "I045"
+                                "I03H", "I03I", "I03J", "I045",
+                                "I04P", "I04S", "I04V"
             },
             [MAGIC_ITEM]     = { "I04C", "I04D", "I04E",
-                                "I048", "I049", "I04A", "I04B",
-                                "I04F", "I04G", "I04H",
-                                "I04I", "I04J", "I04K", "I04L"
+                                 "I048", "I049", "I04A", "I04B",
+                                 "I04F", "I04G", "I04H",
+                                 "I04I", "I04J", "I04K", "I04L",
+                                 "I04Q", "I04T", "I04W"
             },
         }
 
@@ -207,7 +215,12 @@ do
                 [COMMON_ITEM]   = { "I03E", "I03F", "I03G", "I044" },
                 [RARE_ITEM]     = { "I03H", "I03I", "I03J", "I045" },
                 [MAGIC_ITEM]    = { "I04I", "I04J", "I04K", "I04L" },
-            }
+            },
+            [PALADIN_CLASS] = {
+                [COMMON_ITEM]   = { "I04O", "I04R", "I04U" },
+                [RARE_ITEM]     = { "I04P", "I04S", "I04V" },
+                [MAGIC_ITEM]    = { "I04Q", "I04T", "I04W" },
+            },
         }
 
         BOOK_CLASS_CATEGORY_ITEM_LIST = {
@@ -284,7 +297,24 @@ do
                     [SKILL_CATEGORY_BOW] = "I04L",
                     [SKILL_CATEGORY_GEAR] = "I04K"
                 }
-            }
+            },
+            [PALADIN_CLASS] = {
+                [COMMON_ITEM]   = {
+                    [SKILL_CATEGORY_COMBAT_SKILLS]  = "I04O",
+                    [SKILL_CATEGORY_FAITH]          = "I04R",
+                    [SKILL_CATEGORY_HOLY_DOCTRINE]  = "I04U"
+                },
+                [RARE_ITEM]     = {
+                    [SKILL_CATEGORY_COMBAT_SKILLS]  = "I04P",
+                    [SKILL_CATEGORY_FAITH]          = "I04S",
+                    [SKILL_CATEGORY_HOLY_DOCTRINE]  = "I04V"
+                },
+                [MAGIC_ITEM]     = {
+                    [SKILL_CATEGORY_COMBAT_SKILLS]  = "I04Q",
+                    [SKILL_CATEGORY_FAITH]          = "I04T",
+                    [SKILL_CATEGORY_HOLY_DOCTRINE]  = "I04W"
+                }
+            },
         }
 
         GENERATED_ITEM_LIST = {
@@ -498,6 +528,13 @@ do
                         modificator = 0.7,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_RING]
                     },
+                    {
+                        icon = "Jewelry\\BTNVilya_10_Classic.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_13,
+                        decl = DECL_IT,
+                        modificator = 0.7,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_RING]
+                    },
                 },
                 [NECKLACE_JEWELRY] = {
                     {
@@ -535,6 +572,20 @@ do
                         modificator = 1.15,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_AMULET]
                     },
+                    {
+                        icon = "Jewelry\\BTNGemAmulet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_11,
+                        decl = DECL_HE,
+                        modificator = 1.15,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_AMULET]
+                    },
+                    {
+                        icon = "Jewelry\\BTNPinkAmulet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_12,
+                        decl = DECL_HE,
+                        modificator = 1.15,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_AMULET]
+                    },
                 },
                 [CHEST_ARMOR] = {
                     {
@@ -554,7 +605,7 @@ do
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_08.mdx",
-                        texture = TEXTURE_ID_ARMOR_07,
+                        texture = TEXTURE_ID_ARMOR_12,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_22
                     },
                     {
@@ -574,7 +625,7 @@ do
                         modificator = 1.25,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_ARMOR_06,
+                        texture = TEXTURE_ID_ARMOR_10,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_28
                     },
                     {
@@ -594,7 +645,7 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
-                        texture = TEXTURE_ID_ARMOR_01,
+                        texture = TEXTURE_ID_ARMOR_06,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_20
                     },
                     {
@@ -604,7 +655,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_ARMOR_05,
+                        texture = TEXTURE_ID_ARMOR_01,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_06
                     },
                     {
@@ -614,7 +665,7 @@ do
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
-                        texture = TEXTURE_ID_ARMOR_03,
+                        texture = TEXTURE_ID_ARMOR_09,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_04
                     },
                     {
@@ -624,7 +675,7 @@ do
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
-                        texture = TEXTURE_ID_ARMOR_03,
+                        texture = TEXTURE_ID_ARMOR_08,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_21
                     },
                     {
@@ -644,8 +695,18 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
-                        texture = TEXTURE_ID_ARMOR_04,
+                        texture = TEXTURE_ID_ARMOR_11,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_30
+                    },
+                    {
+                        icon = "Armor\\BTNClassicArmor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_17,
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "Items\\Armor_10.mdx",
+                        texture = TEXTURE_ID_ARMOR_02,
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_01
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -783,7 +844,7 @@ do
                         icon = "Armor\\BTNLeatherHood.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_5,
                         decl = DECL_SHE,
-                        modificator = 0.75,
+                        modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_MID_ARMOR]
                     },
                     {
@@ -813,6 +874,34 @@ do
                         decl = DECL_HE,
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_MID_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNWizardsHat.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_12,
+                        decl = DECL_SHE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNCirclet (3).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_14,
+                        decl = DECL_HE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNCirclet (2).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_15,
+                        decl = DECL_SHE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNVilya_9_Classic.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_17,
+                        decl = DECL_HE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
                     },
                 },
                 [BELT_ARMOR] = {
@@ -1251,6 +1340,14 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
                         model = "Abilities\\Spells\\Items\\AIfb\\AIfbTarget.mdx",
                     },
+                    {
+                        icon = "Offhand\\BTNFrostOrb.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_8,
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "Abilities\\Spells\\Items\\AIob\\AIobTarget.mdx",
+                    },
                 },
                 [SHIELD_OFFHAND] = {
                     {
@@ -1347,6 +1444,13 @@ do
                         modificator = 0.7,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_RING]
                     },
+                    {
+                        icon = "Jewelry\\BTNVilya_10_Classic.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_13,
+                        decl = DECL_IT,
+                        modificator = 0.7,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_RING]
+                    },
                 },
                 [NECKLACE_JEWELRY] = {
                     {
@@ -1384,6 +1488,20 @@ do
                         modificator = 1.15,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_AMULET]
                     },
+                    {
+                        icon = "Jewelry\\BTNGemAmulet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_11,
+                        decl = DECL_HE,
+                        modificator = 1.15,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_AMULET]
+                    },
+                    {
+                        icon = "Jewelry\\BTNPinkAmulet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_12,
+                        decl = DECL_HE,
+                        modificator = 1.15,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_AMULET]
+                    },
                 },
                 [CHEST_ARMOR] = {
                     {
@@ -1403,7 +1521,7 @@ do
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_08.mdx",
-                        texture = TEXTURE_ID_ARMOR_07,
+                        texture = TEXTURE_ID_ARMOR_12,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_22
                     },
                     {
@@ -1423,7 +1541,7 @@ do
                         modificator = 1.25,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
-                        texture = TEXTURE_ID_ARMOR_06,
+                        texture = TEXTURE_ID_ARMOR_10,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_28
                     },
                     {
@@ -1443,7 +1561,7 @@ do
                         modificator = 1.25,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
-                        texture = TEXTURE_ID_ARMOR_01,
+                        texture = TEXTURE_ID_ARMOR_06,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_20
                     },
                     {
@@ -1453,7 +1571,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_ARMOR_05,
+                        texture = TEXTURE_ID_ARMOR_01,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_06
                     },
                     {
@@ -1463,7 +1581,7 @@ do
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
-                        texture = TEXTURE_ID_ARMOR_03,
+                        texture = TEXTURE_ID_ARMOR_09,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_04
                     },
                     {
@@ -1473,7 +1591,7 @@ do
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
-                        texture = TEXTURE_ID_ARMOR_03,
+                        texture = TEXTURE_ID_ARMOR_08,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_21
                     },
                     {
@@ -1493,8 +1611,18 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
-                        texture = TEXTURE_ID_ARMOR_04,
+                        texture = TEXTURE_ID_ARMOR_11,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_30
+                    },
+                    {
+                        icon = "Armor\\BTNClassicArmor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_17,
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "Items\\Armor_10.mdx",
+                        texture = TEXTURE_ID_ARMOR_02,
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_01
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -1632,7 +1760,7 @@ do
                         icon = "Armor\\BTNLeatherHood.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_5,
                         decl = DECL_SHE,
-                        modificator = 0.75,
+                        modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_MID_ARMOR]
                     },
                     {
@@ -1662,6 +1790,34 @@ do
                         decl = DECL_HE,
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_MID_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNCirclet (3).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_14,
+                        decl = DECL_HE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNCirclet (2).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_15,
+                        decl = DECL_SHE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNCirclet (4).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_16,
+                        decl = DECL_SHE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNVilya_9_Classic.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_17,
+                        decl = DECL_HE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
                     },
                 },
                 [BELT_ARMOR] = {
@@ -2148,7 +2304,7 @@ do
                         model = "Abilities\\Spells\\Items\\AIfb\\AIfbTarget.mdx",
                     },
                     {
-                        icon = "Offhand\\BTNChaosOrb.blp",
+                        icon = "Offhand\\BTNPoisonOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
@@ -2162,6 +2318,14 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
                         model = "Abilities\\Spells\\Items\\AIlb\\AIlbTarget.mdx",
+                    },
+                    {
+                        icon = "Offhand\\BTNFrostOrb.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_8,
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "Abilities\\Spells\\Items\\AIob\\AIobTarget.mdx",
                     },
                 },
                 [SHIELD_OFFHAND] = {
@@ -2301,6 +2465,13 @@ do
                         modificator = 0.7,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_RING]
                     },
+                    {
+                        icon = "Jewelry\\BTNVilya_10_Classic.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_RING_NAME_13,
+                        decl = DECL_IT,
+                        modificator = 0.7,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_RING]
+                    },
                 },
                 [NECKLACE_JEWELRY] = {
                     {
@@ -2352,6 +2523,20 @@ do
                         modificator = 1.15,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_AMULET]
                     },
+                    {
+                        icon = "Jewelry\\BTNGemAmulet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_11,
+                        decl = DECL_HE,
+                        modificator = 1.15,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_AMULET]
+                    },
+                    {
+                        icon = "Jewelry\\BTNPinkAmulet.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_NECKLACE_NAME_12,
+                        decl = DECL_HE,
+                        modificator = 1.15,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_AMULET]
+                    },
                 },
                 [CHEST_ARMOR] = {
                     {
@@ -2371,7 +2556,7 @@ do
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_8.mdx",
-                        texture = TEXTURE_ID_ARMOR_07,
+                        texture = TEXTURE_ID_ARMOR_12,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_22
                     },
                     {
@@ -2391,7 +2576,7 @@ do
                         modificator = 1.25,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
-                        texture = TEXTURE_ID_ARMOR_06,
+                        texture = TEXTURE_ID_ARMOR_10,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_28
                     },
                     {
@@ -2421,7 +2606,7 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
-                        texture = TEXTURE_ID_ARMOR_05,
+                        texture = TEXTURE_ID_ARMOR_01,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_06
                     },
                     {
@@ -2431,7 +2616,7 @@ do
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
-                        texture = TEXTURE_ID_ARMOR_03,
+                        texture = TEXTURE_ID_ARMOR_09,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_04
                     },
                     {
@@ -2491,7 +2676,7 @@ do
                         modificator = 0.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
-                        texture = TEXTURE_ID_ARMOR_03,
+                        texture = TEXTURE_ID_ARMOR_08,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_21
                     },
                     {
@@ -2511,8 +2696,18 @@ do
                         modificator = 1.2,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
-                        texture = TEXTURE_ID_ARMOR_04,
+                        texture = TEXTURE_ID_ARMOR_11,
                         assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_30
+                    },
+                    {
+                        icon = "Armor\\BTNClassicArmor.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_CHEST_NAME_17,
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
+                        model = "Items\\Armor_10.mdx",
+                        texture = TEXTURE_ID_ARMOR_02,
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_01
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -2727,8 +2922,36 @@ do
                         icon = "Armor\\BTNLeatherHood.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_5,
                         decl = DECL_SHE,
-                        modificator = 0.75,
+                        modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_MID_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNCirclet (3).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_14,
+                        decl = DECL_HE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNCirclet (2).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_15,
+                        decl = DECL_SHE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNCirclet (4).blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_16,
+                        decl = DECL_SHE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
+                    },
+                    {
+                        icon = "Armor\\BTNVilya_9_Classic.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_HEAD_NAME_17,
+                        decl = DECL_HE,
+                        modificator = 0.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR]
                     },
                 },
                 [BELT_ARMOR] = {
@@ -3353,7 +3576,7 @@ do
                         model = "Abilities\\Spells\\Items\\AIfb\\AIfbTarget.mdx",
                     },
                     {
-                        icon = "Offhand\\BTNChaosOrb.blp",
+                        icon = "Offhand\\BTNPoisonOrb.blp", --"Offhand\\BTNChaosOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_5,
                         decl = DECL_HE,
                         modificator = 1.,
@@ -3369,12 +3592,20 @@ do
                         model = "Abilities\\Spells\\Items\\AIlb\\AIlbTarget.mdx",
                     },
                     {
-                        icon = "Offhand\\BTNOrbPain.blp",
+                        icon = "Offhand\\BTNDarknessOrb.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_7,
                         decl = DECL_SHE,
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
                         model = "Abilities\\Spells\\Items\\OrbDarkness\\OrbDarkness.mdx",
+                    },
+                    {
+                        icon = "Offhand\\BTNFrostOrb.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_8,
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "Abilities\\Spells\\Items\\AIob\\AIobTarget.mdx",
                     },
                 },
                 [SHIELD_OFFHAND] = {
@@ -4047,7 +4278,7 @@ do
                                 }
                             },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 5, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -4085,7 +4316,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4121,6 +4352,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -4174,7 +4414,7 @@ do
                                 }
                             },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 1, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -4212,7 +4452,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4248,6 +4488,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -4301,7 +4550,7 @@ do
                                 }
                             },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 7, value_max = 11, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 8, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 2, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -4339,7 +4588,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4375,6 +4624,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -4428,7 +4686,7 @@ do
                                 }
                             },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 11, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 50. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 4, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 25. },
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
@@ -4466,7 +4724,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4502,6 +4760,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -4542,7 +4809,7 @@ do
                     [ITEM_AFFIX_WORN] = {
                         additional_parameter = 0,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 5, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 5, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
                             {
@@ -4568,7 +4835,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4604,6 +4871,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -4637,7 +4913,7 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 1, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -4665,7 +4941,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4701,6 +4977,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -4734,7 +5019,7 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 9, value_max = 13, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 3, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -4762,7 +5047,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4798,6 +5083,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -4831,7 +5125,7 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 11, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 5, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -4859,7 +5153,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4895,6 +5189,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -4935,7 +5238,7 @@ do
                     [ITEM_AFFIX_WORN] = {
                         additional_parameter = -2,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 1, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
                             {
@@ -4961,7 +5264,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -4997,6 +5300,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -5030,7 +5342,7 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = -2,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 10, value_max = 13, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 50. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -5058,7 +5370,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -5094,6 +5406,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -5127,7 +5448,7 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 15, value_max = 18, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 8, value_max = 13, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -5155,7 +5476,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -5191,6 +5512,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -5224,7 +5554,7 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = -2,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 16, value_max = 21, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 12, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 50. },
@@ -5252,7 +5582,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -5288,6 +5618,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -5328,7 +5667,7 @@ do
                     [ITEM_AFFIX_WORN] = {
                         additional_parameter = 0,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 1.3, METHOD = STRAIGHT_BONUS, probability = 40. },
@@ -5381,7 +5720,7 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = 0,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 1.3, METHOD = STRAIGHT_BONUS, probability = 40. },
@@ -5434,7 +5773,7 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = 0,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 1.4, METHOD = STRAIGHT_BONUS, probability = 40. },
@@ -5487,7 +5826,7 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = 0,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 12, value_max = 13, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 8, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 7, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 1.5, METHOD = STRAIGHT_BONUS, probability = 30. },
@@ -5547,7 +5886,7 @@ do
                     [ITEM_AFFIX_WORN] = {
                         additional_parameter = -2,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 6, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.2, value_max = 1.4, METHOD = STRAIGHT_BONUS, probability = 40. },
@@ -5600,7 +5939,7 @@ do
                     [ITEM_AFFIX_FINE] = {
                         additional_parameter = -2,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 12, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 8, value_max = 11, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.2, value_max = 1.5, METHOD = STRAIGHT_BONUS, probability = 40. },
@@ -5653,7 +5992,7 @@ do
                     [ITEM_AFFIX_EXCELLENT] = {
                         additional_parameter = -2,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 14, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 10, value_max = 13, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.4, value_max = 1.55, METHOD = STRAIGHT_BONUS, probability = 40. },
@@ -5706,7 +6045,7 @@ do
                     [ITEM_AFFIX_IDEAL] = {
                         additional_parameter = -2,
                         parameter_bonus = {
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 16, value_max = 19, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 12, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = CONTROL_DURATION, value_min = 12, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.3, value_max = 1.6, METHOD = STRAIGHT_BONUS, probability = 30. },
@@ -5806,7 +6145,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -5842,6 +6181,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -5893,7 +6241,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -5929,6 +6277,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -5980,7 +6337,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -6016,6 +6373,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -6067,7 +6433,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -6103,6 +6469,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -6161,7 +6536,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -6197,6 +6572,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -6248,7 +6632,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -6284,6 +6668,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 1,
@@ -6335,7 +6728,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -6371,6 +6764,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -6422,7 +6824,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -6458,6 +6860,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -7283,7 +7694,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -7319,6 +7730,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -7385,7 +7805,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -7421,6 +7841,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -7487,7 +7916,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -7523,6 +7952,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -7589,7 +8027,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -7625,6 +8063,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -7698,7 +8145,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -7734,6 +8181,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -7800,7 +8256,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -7836,6 +8292,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -7902,7 +8367,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -7938,6 +8403,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -8004,7 +8478,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -8040,6 +8514,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -8108,7 +8591,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -8144,6 +8627,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -8206,7 +8698,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -8242,6 +8734,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -8303,7 +8804,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -8339,6 +8840,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -8400,7 +8910,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -8436,6 +8946,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -8535,7 +9054,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -8571,6 +9090,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -8663,7 +9191,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -8699,6 +9227,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -8791,7 +9328,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -8827,6 +9364,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -8919,7 +9465,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -8955,6 +9501,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -9054,7 +9609,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -9090,6 +9645,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -9182,7 +9746,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -9218,6 +9782,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -9310,7 +9883,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -9346,6 +9919,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -9438,7 +10020,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -9474,6 +10056,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                         effect_bonus = {
@@ -9579,7 +10170,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -9615,6 +10206,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                     },
@@ -9702,7 +10302,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -9738,6 +10338,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                     },
@@ -9826,7 +10435,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -9862,6 +10471,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                     },
@@ -9949,7 +10567,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 25.,
                                 skill_bonus_probability = 25.,
@@ -9985,6 +10603,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                     },
@@ -10041,13 +10668,13 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 7, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 35. },
-                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 50.,
                                 skill_bonus_probability = 50.,
@@ -10083,6 +10710,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                     },
@@ -10132,13 +10768,13 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 8, value_max = 11, METHOD = STRAIGHT_BONUS, probability = 35. },
-                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 7, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 50.,
                                 skill_bonus_probability = 50.,
@@ -10174,6 +10810,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                     },
@@ -10223,13 +10868,13 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 11, value_max = 13, METHOD = STRAIGHT_BONUS, probability = 35. },
-                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 9, value_max = 11, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 7, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 50.,
                                 skill_bonus_probability = 50.,
@@ -10265,6 +10910,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                     },
@@ -10314,13 +10968,13 @@ do
                             {
                                 type = MULTIPLE_PARAMETER,
                                 parameters = {
-                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 13, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 35. },
-                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 11, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 35. },
+                                    { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 9, value_max = 13, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 50.,
                                 skill_bonus_probability = 50.,
@@ -10356,6 +11010,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                     },
@@ -10423,7 +11086,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 30.,
                                 skill_bonus_probability = 30.,
@@ -10459,6 +11122,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                     },
@@ -10519,7 +11191,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 30.,
                                 skill_bonus_probability = 30.,
@@ -10555,6 +11227,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                     },
@@ -10615,7 +11296,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 30.,
                                 skill_bonus_probability = 30.,
@@ -10651,6 +11332,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                         },
                     },
@@ -10711,7 +11401,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 30.,
                                 skill_bonus_probability = 30.,
@@ -10748,6 +11438,15 @@ do
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
                             },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
+                            },
                         },
                     },
                 }
@@ -10761,7 +11460,7 @@ do
                         additional_parameter = 0,
                         parameter_bonus = {
                             { type = SINGLE_PARAMETER, PARAM = MINION_POWER, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 15. },
@@ -10828,7 +11527,7 @@ do
                         additional_parameter = 0,
                         parameter_bonus = {
                             { type = SINGLE_PARAMETER, PARAM = MINION_POWER, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 15. },
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 6, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 2, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 15. },
@@ -10895,7 +11594,7 @@ do
                         additional_parameter = 0,
                         parameter_bonus = {
                             { type = SINGLE_PARAMETER, PARAM = MINION_POWER, value_min = 6, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 20. },
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 6, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 17. },
@@ -10962,7 +11661,7 @@ do
                         additional_parameter = 0,
                         parameter_bonus = {
                             { type = SINGLE_PARAMETER, PARAM = MINION_POWER, value_min = 8, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 20. },
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 14, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 10, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 15. },
                             { type = SINGLE_PARAMETER, PARAM = DAMAGE_TO_CC_ENEMIES, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 35. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 20. },
@@ -11059,7 +11758,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -11095,6 +11794,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -11130,7 +11838,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -11166,6 +11874,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -11201,7 +11918,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -11237,6 +11954,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -11272,7 +11998,7 @@ do
                             },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -11308,6 +12034,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -11331,9 +12066,9 @@ do
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 0.65, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 0.65, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 5, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 1, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 5, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 1, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 35. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -11354,7 +12089,7 @@ do
                             { type = SINGLE_PARAMETER, PARAM = RESOURCE_GENERATION, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 35. },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -11391,6 +12126,15 @@ do
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
                             },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 4,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
+                            },
                             min_level = 1,
                             max_level = 2,
                         },
@@ -11406,9 +12150,9 @@ do
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1, value_max = 1.25, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1, value_max = 1.25, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 7, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 1, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 7, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 3, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 35. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -11429,7 +12173,7 @@ do
                             { type = SINGLE_PARAMETER, PARAM = RESOURCE_GENERATION, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 35. },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -11466,6 +12210,15 @@ do
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
                             },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 4,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
+                            },
                             min_level = 1,
                             max_level = 2,
                         },
@@ -11481,9 +12234,9 @@ do
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.25, value_max = 1.5, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1.25, value_max = 1.5, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 8, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 2, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 8, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 3, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 35. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -11504,7 +12257,7 @@ do
                             { type = SINGLE_PARAMETER, PARAM = RESOURCE_GENERATION, value_min = 10, value_max = 13, METHOD = STRAIGHT_BONUS, probability = 35. },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -11541,6 +12294,15 @@ do
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
                             },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 2,
+                                max_level_skill = 4,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
+                            },
                             min_level = 1,
                             max_level = 2,
                         },
@@ -11556,9 +12318,9 @@ do
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.5, value_max = 1.75, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1.5, value_max = 1.75, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 8, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 3, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 8, value_max = 16, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 3, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 35. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -11579,7 +12341,7 @@ do
                             { type = SINGLE_PARAMETER, PARAM = RESOURCE_GENERATION, value_min = 13, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 35. },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -11615,6 +12377,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 2,
+                                max_level_skill = 5,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 2,
@@ -11638,9 +12409,9 @@ do
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.25, value_max = 1.5, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1.25, value_max = 1.5, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 6, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 1, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 6, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 2, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 35. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -11661,7 +12432,7 @@ do
                             { type = SINGLE_PARAMETER, PARAM = RESOURCE_GENERATION, value_min = 13, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 35. },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -11698,6 +12469,15 @@ do
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
                             },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 2,
+                                max_level_skill = 4,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
+                            },
                             min_level = 1,
                             max_level = 2,
                         },
@@ -11713,9 +12493,9 @@ do
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.5, value_max = 1.75, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1.5, value_max = 1.75, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 4, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 10, value_max = 15, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 6, value_max = 11, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 6, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 35. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -11736,7 +12516,7 @@ do
                             { type = SINGLE_PARAMETER, PARAM = RESOURCE_GENERATION, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 35. },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -11773,6 +12553,15 @@ do
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
                             },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 2,
+                                max_level_skill = 4,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
+                            },
                             min_level = 1,
                             max_level = 2,
                         },
@@ -11788,9 +12577,9 @@ do
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 1.75, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 1.75, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 9, value_max = 11, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 15, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 11, value_max = 13, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 35. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -11811,7 +12600,7 @@ do
                             { type = SINGLE_PARAMETER, PARAM = RESOURCE_GENERATION, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 35. },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -11848,6 +12637,15 @@ do
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
                             },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 3,
+                                max_level_skill = 4,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
+                            },
                             min_level = 1,
                             max_level = 2,
                         },
@@ -11863,9 +12661,9 @@ do
                             { type = SINGLE_PARAMETER, PARAM = HP_REGEN, value_min = 2, value_max = 2.25, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = MP_REGEN, value_min = 2, value_max = 2.25, METHOD = STRAIGHT_BONUS, probability = 20. },
                             { type = SINGLE_PARAMETER, PARAM = HP_PER_HIT, value_min = 6, value_max = 9, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 16, value_max = 18, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = HP_PER_KILL, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = MP_PER_HIT, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 35. },
-                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 16, value_max = 18, METHOD = STRAIGHT_BONUS, probability = 35. },
+                            { type = SINGLE_PARAMETER, PARAM = MP_PER_KILL, value_min = 12, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
                             { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 4, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 35. },
                             {
                                 type = MULTIPLE_PARAMETER,
@@ -11886,7 +12684,7 @@ do
                             { type = SINGLE_PARAMETER, PARAM = RESOURCE_GENERATION, value_min = 20, value_max = 24, METHOD = STRAIGHT_BONUS, probability = 35. },
                         },
                         skill_bonus = {
-                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS },
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
                             [BARBARIAN_CLASS] = {
                                 category_bonus_probability = 20.,
                                 skill_bonus_probability = 20.,
@@ -11922,6 +12720,15 @@ do
                                 min_level_category = 1,
                                 max_level_category = 1,
                                 available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 3,
+                                max_level_skill = 5,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
                             },
                             min_level = 1,
                             max_level = 2,

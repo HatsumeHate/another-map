@@ -99,13 +99,16 @@ do
         local facing = GetUnitFacing(target) + 180.
         local x, y = GetUnitX(target) + Rx(100., facing), GetUnitY(target) + Ry(100., facing)
 
+            DestroyEffect(AddSpecialEffect("Effect\\ChaosBlinkCaster.mdx", GetUnitX(source), GetUnitY(source)))
             SetUnitX(source, x)
             SetUnitY(source, y)
             SetUnitPositionSmooth(source, x, y)
             BlzSetUnitFacingEx(source, facing - 180.)
             DestroyEffect(AddSpecialEffect("Effect\\WarpStrike.mdx", x, y))
             UnitAddAbility(source, FourCC("Avul"))
-            DestroyEffect(AddSpecialEffect("Effect\\BlinkTargetPurple.mdx", GetUnitX(source), GetUnitY(source)))
+            local target_blink_sfx = AddSpecialEffect("Effect\\ChaosBlinkTarget.mdx", GetUnitX(source), GetUnitY(source))
+            BlzSetSpecialEffectYaw(target_blink_sfx, AngleBetweenUnits(source, target) * bj_DEGTORAD)
+            DestroyEffect(target_blink_sfx)
 
     end
 
@@ -170,7 +173,7 @@ do
                         for index = BlzGroupGetSize(group) - 1, 0, -1 do
                             local picked = BlzGroupUnitAt(group, index)
 
-                                if IsUnitEnemy(picked, player) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) then
+                                if IsUnitEnemy(picked, player) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
                                     ApplyEffect(source, nil, x, y, "shocking_trap_effect", 1, ability_instance)
                                     BlzSpecialEffectAddSubAnimation(effect, SUBANIM_TYPE_ALTERNATE_EX)
                                     DestroyTimer(timer)
@@ -216,7 +219,7 @@ do
                         for index = BlzGroupGetSize(group) - 1, 0, -1 do
                             local picked = BlzGroupUnitAt(group, index)
 
-                                if IsUnitEnemy(picked, player) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) then
+                                if IsUnitEnemy(picked, player) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
                                     local sfx = AddSpecialEffect("Abilities\\Spells\\NightElf\\FanOfKnives\\FanOfKnivesCaster.mdx", x, y)
                                     local sfx45 = AddSpecialEffect("Abilities\\Spells\\NightElf\\FanOfKnives\\FanOfKnivesCaster.mdx", x, y)
 

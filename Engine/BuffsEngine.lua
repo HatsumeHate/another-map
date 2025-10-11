@@ -110,7 +110,7 @@ do
     end
 
     ---@param target unit
-    ---@param buff_id integer
+    ---@param buff_id string
     function GetBuffDataFromUnit(target, buff_id)
         local target_data = GetUnitData(target)
 
@@ -126,7 +126,7 @@ do
     end
 
     ---@param target unit
-    ---@param buff_id integer
+    ---@param buff_id string
     function GetBuffLevel(target, buff_id)
         local target_data = GetUnitData(target)
 
@@ -599,12 +599,6 @@ do
                 if #buff_data.buff_replacer > 0 then
                     for b = 1, #buff_data.buff_replacer do
                         RemoveBuff(target, buff_data.buff_replacer[b])
-                        --for i = 1, #target_data.buff_list do
-                            --if buff_data.buff_replacer[b] == target_data.buff_list[i].id then
-
-                                --DeleteBuff(target_data, target_data.buff_list[i])
-                            --end
-                        --end
                     end
                 end
 
@@ -736,7 +730,7 @@ do
             end
 
             if buff_data.statusbar_show_level then
-                SetStatusBarValue(buff_id, lvl, player)
+                SetStatusBarValue(buff_id, buff_data.current_level, player)
             end
 
             buff_data.update_timer = CreateTimer()
@@ -756,7 +750,6 @@ do
                                 end
 
                             over_time_effect_delay = math.floor((buff_data.level[buff_data.current_level].effect_delay * 1000.) + 0.5)
-
                         else
                             over_time_effect_delay = over_time_effect_delay - 100
                         end

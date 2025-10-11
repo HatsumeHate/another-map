@@ -44,7 +44,7 @@ do
             tooltip = tooltip
         }
 
-        BlzFrameSetScale(new_FrameBarText, 0.9)
+        BlzFrameSetScale(new_FrameBarText, 0.6)
 
         BlzFrameSetEnable(new_Frame, false)
         BlzFrameSetPoint(new_Frame, frame_point_from, relative_frame, frame_point_to, offset_x, offset_y)
@@ -116,8 +116,10 @@ do
                     if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(StatusBarButtons[player][index], true) end
 
                     if data.time then
-                        if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.bar, true) end
+                        if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.bar, data.time > 0) end
                         BlzFrameSetMinMaxValue(button.bar, 0, data.time)
+                    else
+                        if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.bar, false) end
                     end
 
                     if data.value and data.value > 0 then

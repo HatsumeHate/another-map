@@ -31,4 +31,15 @@ do
 
     end
 
+
+    function IceboundLoopSpikeEffect(source, target)
+        --local x, y = GetUnitX(target), GetUnitY(target)
+        --local sfx = AddSpecialEffect("Effect\\Frost Spike.mdx", x, y)
+
+            --BlzSetSpecialEffectYaw(sfx, GetRandomReal(0., 360.) * bj_DEGTORAD)
+            ApplyEffect(source, nil, GetUnitX(target) + GetRandomReal(-25., 25.), GetUnitY(target) + GetRandomReal(-25., 25.), "icebound_loop_effect", 1, nil)
+            --DestroyEffect(sfx)
+
+    end
+
 end

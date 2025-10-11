@@ -93,6 +93,8 @@ do
     ---@param trait number
     function ApplyMonsterTrait(unit, trait)
 
+        if not UnitAlive(unit) then return end
+
         if MonsterTraitsData[trait] then
             local unit_data = GetUnitData(unit)
 

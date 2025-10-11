@@ -124,7 +124,8 @@ do
 
                     if healing < 0 then healing = 0 end
                     SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + healing)
-                    CreateHitnumber(R2I(myeffect.life_restored), source, target, HEAL_STATUS)
+                    CreateHitnumber(R2I(healing), source, target, HEAL_STATUS)
+                    OnHealing(source, target, healing, myeffect)
 
             elseif myeffect.life_percent_restored and myeffect.life_percent_restored > 0 then
                 local healing = myeffect.life_percent_restored * (1. + GetUnitParameterValue(target, HEALING_BONUS) * 0.01)
@@ -133,6 +134,7 @@ do
 
                     SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + value)
                     CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
+                    OnHealing(source, target, value, myeffect)
             end
 
             if myeffect.resource_restored and myeffect.resource_restored > 0 then
@@ -140,7 +142,7 @@ do
 
                 if mp < 0 then mp = 0 end
                 SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + mp)
-                CreateHitnumber(R2I(myeffect.resource_restored), source, target, RESOURCE_STATUS)
+                CreateHitnumber(R2I(mp), source, target, RESOURCE_STATUS)
             elseif myeffect.resource_percent_restored ~= nil and myeffect.resource_percent_restored > 0 then
                 local mp = myeffect.resource_percent_restored * (1. + GetUnitParameterValue(target, RESOURCE_GENERATION) * 0.01)
                 local value = BlzGetUnitMaxMana(target) * mp
@@ -198,22 +200,22 @@ do
         PlaySpecialEffect(data.SFX_on_unit, target, data.SFX_on_unit_point, data.SFX_on_unit_scale, data.SFX_on_unit_duration)
         if data.sfx_pack then PlaySpecialEffectPack(data.sfx_pack.on_unit, target) end
 
-        --print("healing effect")
             -- delay for effect animation
             local timer = CreateTimer()
             TimerStart(timer, myeffect.hit_delay or 0., false, function()
-                --print("???????")
                 if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
-                    if myeffect.heal_amount then
+                    if myeffect.heal_amount and myeffect.heal_amount > 0 then
                         local healing = myeffect.heal_amount * (1. + GetUnitParameterValue(target, HEALING_BONUS) * 0.01)
 
                             if healing < 0 then healing = 0 end
                             SetUnitState(target, UNIT_STATE_LIFE, GetUnitState(target, UNIT_STATE_LIFE) + healing)
-                            CreateHitnumber(R2I(myeffect.heal_amount), source, target, HEAL_STATUS)
+                            CreateHitnumber(R2I(healing), source, target, HEAL_STATUS)
                             ModifyBuffsEffect(source, target, data, lvl, ON_ALLY)
                             OnEffectApply(source, target, data)
+                            OnHealing(source, target, healing, myeffect)
+
                     end
-                    if myeffect.heal_amount_max_hp then
+                    if myeffect.heal_amount_max_hp and myeffect.heal_amount_max_hp > 0. then
                         local healing = myeffect.heal_amount_max_hp * (1. + GetUnitParameterValue(target, HEALING_BONUS) * 0.01)
 
                             if healing < 0 then healing = 0 end
@@ -223,6 +225,8 @@ do
                             CreateHitnumber(R2I(value), source, target, HEAL_STATUS)
                             ModifyBuffsEffect(source, target, data, lvl, ON_ALLY)
                             OnEffectApply(source, target, data)
+                            OnHealing(source, target, value, myeffect)
+
                     end
                 end
                 DestroyTimer(timer)
@@ -235,6 +239,7 @@ do
     ---@param data table
     ---@param lvl integer
     function ApplyEffectDamage(source, target, data, lvl)
+        --print("APPLY EFFECT DAMAGE START")
         local myeffect = data.level[lvl]
 
         if data.hit_once_in and EffectHitOnceTrigger(myeffect, data, lvl, target, source) then return end
@@ -245,8 +250,8 @@ do
             local timer = CreateTimer()
             TimerStart(timer, myeffect.hit_delay or 0., false, function()
                 if GetUnitState(target, UNIT_STATE_LIFE) > 0.045 then
-                    --print("effect level data : ".. "attribute " .. GetItemAttributeName(myeffect.attribute) .. " damage type " .. I2S(myeffect.damage_type) .. " power " .. I2S(myeffect.power))
-                    DamageUnit(source, target,
+                    --print("effect level data : ".. "attribute " .. GetAttributeName(myeffect.attribute) .. " damage type " .. I2S(myeffect.damage_type) .. " power " .. I2S(myeffect.power))
+                    local damage = DamageUnit(source, target,
                             myeffect.power or 0,
                             data.attribute or PHYSICAL_ATTRIBUTE,
                             data.damage_type or DAMAGE_TYPE_NONE,
@@ -256,23 +261,28 @@ do
                             data.is_sound or false,
                             { eff = data, l = lvl }
                     )
+                    --print("effect damage is done")
 
-                    ModifyBuffsEffect(source, target, data, lvl, ON_ENEMY)
+                    if damage > 0 then
+                        --print("damage > 0")
+                        ModifyBuffsEffect(source, target, data, lvl, ON_ENEMY)
 
-                    if data.sound_on_hit then
-                        AddSoundVolumeZ(data.sound_on_hit.pack[GetRandomInt(1, #data.sound_on_hit.pack)], GetUnitX(target), GetUnitY(target), 35., data.sound_on_hit.volume, data.sound_on_hit.cutoff)
-                        --AddSound(myeffect.sound, x, y)
+                        if data.sound_on_hit then
+                            AddSoundVolumeZ(data.sound_on_hit.pack[GetRandomInt(1, #data.sound_on_hit.pack)], GetUnitX(target), GetUnitY(target), 35., data.sound_on_hit.volume, data.sound_on_hit.cutoff)
+                            --AddSound(myeffect.sound, x, y)
+                        end
+
+                        if myeffect.life_restored_from_hit or myeffect.resource_restored_from_hit then
+                            ApplyRestoreEffect(source, source, data, lvl)
+                        end
                     end
-
-                    if myeffect.life_restored_from_hit or myeffect.resource_restored_from_hit then
-                        ApplyRestoreEffect(source, source, data, lvl)
-                    end
-
 
                     OnEffectApply(source, target, data)
                 end
                 DestroyTimer(timer)
             end)
+
+        --print("APPLY EFFECT DAMAGE END")
 
     end
 
@@ -372,6 +382,8 @@ do
 
         OnEffectPrecast(source, target, x, y, data)
 
+        lvl = data.current_level
+
         if current_level ~= data.current_level then
             GenerateEffectLevelData(data, data.current_level)
         end
@@ -409,6 +421,11 @@ do
                     BlzSetSpecialEffectScale(effect, 1.)
                     BlzSetSpecialEffectScale(effect, data.SFX_used_scale or 1.)
 
+                    if data.SFX_used_matrix_scale then
+                        BlzSetSpecialEffectMatrixScale(effect, data.SFX_used_matrix_scale or 1., data.SFX_used_matrix_scale or 1., data.SFX_used_matrix_scale or 1.)
+                    end
+
+
                         if data.timescale then BlzSetSpecialEffectTimeScale(effect, 1. + (1. - data.timescale)) end
 
                         if data.SFX_inherit_angle then
@@ -422,7 +439,11 @@ do
                         if data.SFX_bonus_z then BlzSetSpecialEffectZ(effect, GetZ(x, y) + data.SFX_bonus_z) end
 
 
-                    if data.SFX_lifetime then DelayAction(data.SFX_lifetime, function() DestroyEffect(effect) end)
+                    if data.SFX_lifetime then
+                        DelayAction(data.SFX_lifetime, function()
+                            DestroyEffect(effect)
+                            if data.SFX_hide then BlzSetSpecialEffectZ(effect, -1000.) end
+                        end)
                     else DestroyEffect(effect) end
 
 

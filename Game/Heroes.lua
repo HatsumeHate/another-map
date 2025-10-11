@@ -357,6 +357,32 @@ do
                 starting_items[4] = CreateCustomItem("I00Z", 0., 0.)
                 starting_items[5] = CreateCustomItem("I00Y", 0., 0.)
                 starting_items[6] = CreateCustomItem("I02N", 0., 0.)
+                starting_skills[1] = "APGA"
+                starting_skills[2] = "APSM"
+                starting_skills[3] = "APIL"
+                --[[
+                starting_skills[1] = "APGA"
+                starting_skills[2] = "APRT"
+                starting_skills[3] = "APZE"
+                starting_skills[4] = "APSB"
+                starting_skills[5] = "APCR"
+                starting_skills[6] = "APCH"
+                starting_skills[7] = "APSM"
+                starting_skills[8] = "APVA"
+                starting_skills[9] = "APPR"
+                starting_skills[10] = "APDW"
+                starting_skills[11] = "APSA"
+                starting_skills[12] = "APCP"
+                starting_skills[13] = "APIL"
+                starting_skills[14] = "APSL"
+                starting_skills[15] = "APAP"
+                starting_skills[16] = "APAF"
+                starting_skills[17] = "APAD"
+                starting_skills[18] = "APAM"
+                starting_skills[19] = "APRW"
+                starting_skills[20] = "APFH"
+                starting_skills[21] = "APSH"]]
+                icon = "ReplaceableTextures\\CommandButtons\\BTNHeroPaladin.blp"
             elseif region == ClassRegions[ASSASSIN_CLASS] then
                 id = FourCC("HASS")
                 starting_items[1] = CreateCustomItem("I02P", 0., 0.)
@@ -556,15 +582,24 @@ do
                         local order = GetIssuedOrderId()
 
                             if order == order_smart then
+
                                 if GetOrderTarget() then last_order_point = { widget = GetOrderTarget() }
                                 else last_order_point = { x = GetOrderPointX(), y = GetOrderPointY() } end
+
+                                if PlayerInventoryFrameState[player_id] then
+                                    InventoryItemInFocus[player_id] = nil
+                                    DestroyContextMenu(player_id)
+                                end
+
                             elseif IsItemOrder(order) then
+
                                 DelayAction(0., function()
                                    if last_order_point then
                                        if last_order_point.widget then IssueTargetOrderById(hero, order_smart, last_order_point.widget)
                                        else IssuePointOrderById(hero, order_smart, last_order_point.x, last_order_point.y) end
                                     end
                                 end)
+
                             else
                                 last_order_point = nil
                             end
@@ -693,7 +728,7 @@ do
             [BARBARIAN_CLASS] = true,
             [SORCERESS_CLASS] = true,
             [NECROMANCER_CLASS] = true,
-            [PALADIN_CLASS] = false,
+            [PALADIN_CLASS] = true,
             [ASSASSIN_CLASS] = true,
             [DRUID_CLASS] = false,
             [AMAZON_CLASS] = false,
@@ -715,7 +750,7 @@ do
                     TriggerRegisterEnterRegionSimple(trg, ClassRegions[i])
                 end
             end
-            CreateClassText(gg_rct_paladin_select, LOCALE_LIST[my_locale].PALADIN_NAME)
+
             CreateClassText(gg_rct_druid_select, LOCALE_LIST[my_locale].DRUID_NAME)
             CreateClassText(gg_rct_amazon_select, LOCALE_LIST[my_locale].AMAZON_NAME)
 
@@ -729,6 +764,7 @@ do
         CreateClassText(gg_rct_sorceress_select, LOCALE_LIST[my_locale].SORCERESS_NAME)
         CreateClassText(gg_rct_necro_select, LOCALE_LIST[my_locale].NECROMANCER_NAME)
         CreateClassText(gg_rct_assassin_select, LOCALE_LIST[my_locale].ASSASSIN_NAME)
+        CreateClassText(gg_rct_paladin_select, LOCALE_LIST[my_locale].PALADIN_NAME)
 
 
         TriggerAddAction(trg, HeroSelect)
@@ -820,6 +856,14 @@ do
                 ["soft"] = { "Sound\\Assassin\\gethit01.wav", "Sound\\Assassin\\gethit12.wav", "Sound\\Assassin\\gethit13.wav" },
                 ["hard"] = { "Sound\\Assassin\\gethit14.wav", "Sound\\Assassin\\gethit16.wav" }
             },
+            [PALADIN_CLASS] = {
+                ["soft"] = { "Sound\\Paladin\\soft1.wav", "Sound\\Paladin\\soft2.wav", "Sound\\Paladin\\soft3.wav" },
+                ["hard"] = { "Sound\\Paladin\\hard1.wav", "Sound\\Paladin\\hard2.wav" }
+            },
+            [DRUID_CLASS] = {
+                ["soft"] = { "Sound\\Druid\\gethit1.wav", "Sound\\Druid\\gethit2.wav", "Sound\\Druid\\gethit3.wav" },
+                ["hard"] = { "Sound\\Druid\\gethit4.wav", "Sound\\Druid\\gethit7.wav" }
+            },
         }
 
 
@@ -847,6 +891,7 @@ do
             [SORCERESS_CLASS] = 8,
             [NECROMANCER_CLASS] = 37,
             [ASSASSIN_CLASS] = 28,
+            [PALADIN_CLASS] = 41,
         }
 
         CemetaryX, CemetaryY = GetRectCenterX(gg_rct_cemetary), GetRectCenterY(gg_rct_cemetary)

@@ -39,7 +39,8 @@ do
     MONSTERPACK_SWARM = 10
     MONSTERPACK_SATYRS = 11
     MONSTERPACK_GNOLLS = 12
-    MONSTERPACK_BOSS = 13
+    MONSTERPACK_GOATMEN = 13
+    MONSTERPACK_BOSS = 14
 
 
 
@@ -99,10 +100,12 @@ do
     MONSTER_ID_ARACHNID_WARRIOR = "n00Q"
     MONSTER_ID_ARACHNID_GROUNDER = "n00R"
     MONSTER_ID_BANDIT_BASIC = "n00T"
+    MONSTER_ID_BANDIT_CANNIBAL = "n038"
     MONSTER_ID_BANDIT_ROGUE_MAGE = "n02Q"
     MONSTER_ID_BANDIT_ROBBER = "n00U"
     MONSTER_ID_BANDIT_ROGUE = "n00V"
     MONSTER_ID_BANDIT_ASSASSIN = "n00W"
+    MONSTER_NAME_ASSASSIN_CANNIBAL = "n039"
     MONSTER_ID_QUILLBEAST = "n01N"
     MONSTER_ID_WOLF = "n01J"
     MONSTER_ID_BEAR = "e001"
@@ -118,6 +121,19 @@ do
     MONSTER_ID_GNOLL_ASSASSIN = "n02K"
     MONSTER_ID_GNOLL_WARDEN = "n02H"
     MONSTER_ID_FACELESS = "n02L"
+    MONSTER_ID_GOATMAN_1H_BROWN = "n02S"
+    MONSTER_ID_GOATMAN_2H_BROWN = "n02T"
+    MONSTER_ID_GOATMAN_BOW_BROWN = "n02U"
+    MONSTER_ID_GOATMAN_SPEAR_BROWN = "n02V"
+    MONSTER_ID_GOATMAN_1H_DARK = "n033"
+    MONSTER_ID_GOATMAN_2H_DARK = "n032"
+    MONSTER_ID_GOATMAN_BOW_DARK = "n031"
+    MONSTER_ID_GOATMAN_SPEAR_DARK = "n030"
+    MONSTER_ID_GOATMAN_1H_RED = "n02Y"
+    MONSTER_ID_GOATMAN_2H_RED = "n02Z"
+    MONSTER_ID_GOATMAN_BOW_RED = "n02X"
+    MONSTER_ID_GOATMAN_SPEAR_RED = "n02W"
+
 
 
     MONSTER_ID_BUTCHER = "u012"
@@ -133,6 +149,8 @@ do
     MONSTER_ID_SPIDER_QUEEN = "n012"
     MONSTER_ID_ARACHNID_BOSS = "n00S"
     MONSTER_ID_BANDIT_BOSS = "n00X"
+    MONSTER_ID_BELIAL = "u019"
+    MONSTER_ID_DURIEL = "u01F"
 
 
 
@@ -713,7 +731,8 @@ do
             [MONSTERPACK_BANDITS] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
-                        { id = MONSTER_ID_BANDIT_BASIC, chance = 100. }
+                        { id = MONSTER_ID_BANDIT_CANNIBAL, chance = 33., max = 2 },
+                        { id = MONSTER_ID_BANDIT_BASIC, chance = 100., max = 4 }
                     },
                     [MONSTER_TAG_RANGE] = {
                         { id = MONSTER_ID_BANDIT_ROGUE_MAGE, chance = 33., max = 2 },
@@ -725,6 +744,7 @@ do
                         { id = MONSTER_ID_BANDIT_ROGUE, chance = 100. }
                     },
                     [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_NAME_ASSASSIN_CANNIBAL, chance = 33., max = 2 },
                         { id = MONSTER_ID_BANDIT_ASSASSIN, chance = 100., max = 2 },
                     }
                 },
@@ -751,7 +771,8 @@ do
                     }
                 },
                 [MONSTERPACK_BOSS] = {
-                    MONSTER_ID_ARACHNID_BOSS
+                    MONSTER_ID_ARACHNID_BOSS,
+                    MONSTER_ID_DURIEL
                 }
             },
             [MONSTERPACK_SPIDERS] = {
@@ -771,7 +792,8 @@ do
                     }
                 },
                 [MONSTERPACK_BOSS] = {
-                    MONSTER_ID_SPIDER_QUEEN
+                    MONSTER_ID_SPIDER_QUEEN,
+                    MONSTER_ID_DURIEL
                 }
             },
             [MONSTERPACK_SKELETONS] = {
@@ -810,7 +832,8 @@ do
                 [MONSTERPACK_BOSS] = {
                     MONSTER_ID_REANIMATED,
                     MONSTER_ID_SKELETON_KING,
-                    MONSTER_ID_BLOOD_RAVEN
+                    MONSTER_ID_BLOOD_RAVEN,
+                    MONSTER_ID_BELIAL
                 }
             },
             [MONSTERPACK_ZOMBIES] = {
@@ -842,7 +865,8 @@ do
                 },
                 [MONSTERPACK_BOSS] = {
                     MONSTER_ID_BUTCHER,
-                    MONSTER_ID_BLOOD_RAVEN
+                    MONSTER_ID_BLOOD_RAVEN,
+                    MONSTER_ID_SKELETON_KING
                 }
             },
             [MONSTERPACK_DEMONS] = {
@@ -885,7 +909,9 @@ do
                     MONSTER_ID_BUTCHER,
                     MONSTER_ID_BAAL,
                     MONSTER_ID_MEPHISTO,
-                    MONSTER_ID_ANDARIEL
+                    MONSTER_ID_ANDARIEL,
+                    MONSTER_ID_BELIAL,
+                    MONSTER_ID_DURIEL
                 }
             },
             [MONSTERPACK_GHOSTS] = {
@@ -911,7 +937,8 @@ do
                 },
                 [MONSTERPACK_BOSS] = {
                     MONSTER_ID_MEPHISTO,
-                    MONSTER_ID_BLOOD_RAVEN
+                    MONSTER_ID_BLOOD_RAVEN,
+                    MONSTER_ID_BELIAL
                 }
             },
             [MONSTERPACK_GNOLLS] = {
@@ -934,6 +961,32 @@ do
                     }
                 }
             },
+            [MONSTERPACK_GOATMEN] = {
+                [MONSTER_RANK_COMMON] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_GOATMAN_2H_DARK, chance = 50., max = 2 },
+                        { id = MONSTER_ID_GOATMAN_1H_DARK, chance = 50., max = 2 },
+                        { id = MONSTER_ID_GOATMAN_2H_BROWN, chance = 50., max = 2 },
+                        { id = MONSTER_ID_GOATMAN_1H_BROWN, chance = 100., max = 2 },
+                    },
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_GOATMAN_SPEAR_DARK, chance = 50., max = 2 },
+                        { id = MONSTER_ID_GOATMAN_BOW_DARK, chance = 50., max = 2 },
+                        { id = MONSTER_ID_GOATMAN_SPEAR_BROWN, chance = 50., max = 2 },
+                        { id = MONSTER_ID_GOATMAN_BOW_BROWN, chance = 100., max = 2 },
+                    }
+                },
+                [MONSTER_RANK_ADVANCED] = {
+                    [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_GOATMAN_2H_RED, chance = 50., max = 2 },
+                        { id = MONSTER_ID_GOATMAN_1H_RED, chance = 100., max = 2 }
+                    },
+                    [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_GOATMAN_SPEAR_RED, chance = 50., max = 2 },
+                        { id = MONSTER_ID_GOATMAN_BOW_RED, chance = 100., max = 2 },
+                    }
+                }
+            },
             [MONSTERPACK_BOSS] = {
                 MONSTER_ID_BUTCHER,
                 MONSTER_ID_BAAL,
@@ -946,7 +999,9 @@ do
                 MONSTER_ID_BANDIT_BOSS,
                 MONSTER_ID_SKELETON_KING,
                 MONSTER_ID_ANDARIEL,
-                MONSTER_ID_BLOOD_RAVEN
+                MONSTER_ID_BLOOD_RAVEN,
+                MONSTER_ID_BELIAL,
+                MONSTER_ID_DURIEL
             }
         }
 

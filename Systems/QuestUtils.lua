@@ -104,6 +104,17 @@ do
 
 
     ---@param myfunction function
+    function PickUpItemReactionEx(item_id, myfunction)
+        local trg = CreateTrigger()
+        TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_PICKUP_ITEM)
+        TriggerAddAction(trg, function()
+            if GetItemTypeId(GetManipulatedItem()) == FourCC(item_id) then
+                myfunction(GetTriggerUnit())
+            end
+        end)
+    end
+
+    ---@param myfunction function
     function PickUpItemReaction(item_id, myfunction)
         local trg = CreateTrigger()
         TriggerRegisterAnyUnitEventBJ(trg, EVENT_PLAYER_UNIT_PICKUP_ITEM)

@@ -7,6 +7,7 @@ do
     ON_ALLY = 2
     ON_SELF = 3
     ON_HEROES = 4
+    ON_SELF_WHEN_HIT = 5
 
     ADD_BUFF = 1
     REMOVE_BUFF = 2
@@ -540,6 +541,36 @@ do
             }
         })
         --==========================================--
+        NewEffectTemplate('effect_storm_front', {
+            name = "storm_front effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "ASLF",
+            single_attack_instance = true,
+            global_crit = true,
+            can_crit = true,
+            is_direct = false,
+            damage_type = DAMAGE_TYPE_MAGICAL,
+            attack_type = RANGE_ATTACK,
+            attribute = LIGHTNING_ATTRIBUTE,
+            SFX_used = "Effect\\AZ_SDDJ.mdx",
+            SFX_random_angle = true,
+            SFX_lifetime = 0.467,
+            SFX_hide = true,
+            delay = 0.1,
+            SFX_on_unit = "Abilities\\Spells\\Items\\AIlb\\AIlbSpecialArt.mdx",
+            SFX_on_unit_point = "chest",
+            sound = { { pack = { "Sounds\\Spells\\static1.wav", "Sounds\\Spells\\static2.wav", "Sounds\\Spells\\static3.wav", "Sounds\\Spells\\static4.wav" }, volume = 110, cutoff = 1500. } },
+
+            level = {
+                [1] = {
+                    power = 20,
+                    area_of_effect = 100.,
+                    max_targets = 300,
+                }
+            }
+        })
+        --==========================================--
         NewEffectTemplate('EMTR', {
             name = "meteor effect",
             power_delta = 3,
@@ -570,6 +601,75 @@ do
                     shake_distance = 1450.,
                     shake_duration = 0.7,
                     area_of_effect = 300.,
+                    max_targets = 300,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('effect_flamecrash_initial', {
+            name = "flamecrash crash effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            attribute_bonus_delta = 1,
+            attribute_bonus_delta_level = 5,
+            get_level_from_skill = "AFCR",
+            single_attack_instance = true,
+            global_crit = true,
+            can_crit = true,
+            is_direct = true,
+            damage_type = DAMAGE_TYPE_MAGICAL,
+            attack_type = RANGE_ATTACK,
+            attribute = FIRE_ATTRIBUTE,
+            --SFX_used = "Effect\\az_cwlava_t201.mdx",
+            --SFX_used_scale = 1.1,
+            --SFX_delay = 0.7,
+            --SFX_random_angle = true,
+            --timescale = 0.5,
+            --sound = { { pack = { "Sounds\\Spells\\meteorimpact.wav" }, volume = 128, cutoff = 1800. } },
+            sound = { { pack = { "Sounds\\Spells\\sizzle1.wav", "Sounds\\Spells\\sizzle2.wav", "Sounds\\Spells\\sizzle3.wav" }, volume = 115, cutoff = 1500. } },
+            sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx", point = "chest", duration = 1.  }, } },
+            --delay = 2.45,
+
+            level = {
+                [1] = {
+                    power = 16,
+                    area_of_effect = 400.,
+                    max_targets = 300,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A04A', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('effect_flamecrash', {
+            name = "flamecrash effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            attribute_bonus_delta = 1,
+            attribute_bonus_delta_level = 5,
+            get_level_from_skill = "AFCR",
+            single_attack_instance = true,
+            global_crit = true,
+            can_crit = true,
+            is_direct = false,
+            damage_type = DAMAGE_TYPE_MAGICAL,
+            attack_type = RANGE_ATTACK,
+            attribute = FIRE_ATTRIBUTE,
+            SFX_used = "Effect\\az_cwlava_t201.mdx",
+            SFX_used_scale = 1.1,
+            --SFX_delay = 0.7,
+            SFX_random_angle = true,
+            --timescale = 0.5,
+            --sound = { { pack = { "Sounds\\Spells\\meteorimpact.wav" }, volume = 128, cutoff = 1800. } },
+            sound = { { pack = { "Sounds\\Spells\\sizzle1.wav", "Sounds\\Spells\\sizzle2.wav", "Sounds\\Spells\\sizzle3.wav" }, volume = 115, cutoff = 1500. } },
+            sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx", point = "chest", duration = 1.  }, } },
+            --delay = 2.45,
+
+            level = {
+                [1] = {
+                    power = 16,
+                    area_of_effect = 400.,
                     max_targets = 300,
                 }
             }
@@ -941,6 +1041,29 @@ do
             }
         })
         --==========================================--
+        NewEffectTemplate('fiery_rage_effect', {
+            name = "fiery_rage effect",
+            power_delta = 1,
+            power_delta_level = 1,
+            get_level_from_skill = "ABFR",
+            single_attack_instance = true,
+            can_crit = true,
+            is_direct = false,
+            is_sound = false,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+            attack_type = RANGE_ATTACK,
+            attribute = PHYSICAL_ATTRIBUTE,
+            hit_once_in = 0.75,
+
+            level = {
+                [1] = {
+                    power = 10,
+                    attack_percent_bonus = 0.25,
+                    max_targets = 1,
+                }
+            }
+        })
+        --==========================================--
         NewEffectTemplate('EUPP', {
             name = "uppercut effect",
             power_delta = 3,
@@ -959,8 +1082,8 @@ do
                 [1] = {
                     power = 22,
                     attack_percent_bonus = 1.25,
-                    area_of_effect = 255.,
-                    angle_window  = 45.,
+                    area_of_effect = 235.,
+                    angle_window  = 55.,
                     shake_magnitude = 1.15,
                     shake_distance = 1000.,
                     shake_duration = 0.5,
@@ -991,7 +1114,7 @@ do
                 [1] = {
                     power = 24,
                     attack_percent_bonus = 1.,
-                    area_of_effect = 255.,
+                    area_of_effect = 235.,
                     angle_window  = 45,
                     max_targets = 300,
                 }
@@ -1088,8 +1211,8 @@ do
                 [1] = {
                     power = 25,
                     attack_percent_bonus = 1.25,
-                    area_of_effect = 255.,
-                    angle_window  = 45.,
+                    area_of_effect = 235.,
+                    angle_window  = 55.,
                     max_targets = 300,
                     shake_magnitude = 1.2,
                     shake_distance = 1000.,
@@ -1121,7 +1244,7 @@ do
                 [1] = {
                     power = 27,
                     attack_percent_bonus = 0.85,
-                    area_of_effect = 255.,
+                    area_of_effect = 235.,
                     angle_window  = 50.,
                     max_targets = 300,
                 }
@@ -1216,8 +1339,8 @@ do
                 [1] = {
                     power = 22,
                     attack_percent_bonus = 0.93,
-                    area_of_effect = 255.,
-                    angle_window  = 45.,
+                    area_of_effect = 235.,
+                    angle_window  = 55.,
                     max_targets = 300,
                     wave_speed = 500.,
                     applied_buff = {
@@ -1225,6 +1348,74 @@ do
                     },
                 }
             }
+        })
+        --==========================================--
+        NewEffectTemplate('effect_lacerate', {
+            name = "lacerate effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "ABLC",
+            single_attack_instance = true,
+            global_crit = true,
+            can_crit = true,
+            is_direct = true,
+            force_from_caster_position = true,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+            attack_type = MELEE_ATTACK,
+            attribute = PHYSICAL_ATTRIBUTE,
+            SFX_on_unit = "Effect\\Ephemeral Cut Red.mdx",
+            SFX_on_unit_point = "chest",
+            SFX_on_unit_scale = 1.2,
+            --sound_on_hit = {
+                --pack = { "Sounds\\Spells\\stab_1.wav", "Sounds\\Spells\\stab_2.wav", "Sounds\\Spells\\stab_3.wav", "Sounds\\Spells\\stab_4.wav", "Sounds\\Spells\\stab_5.wav", "Sounds\\Spells\\stab_6.wav" },
+                --volume = 115, cutoff = 1600.
+            --},
+
+            level = {
+                [1] = {
+                    power = 30,
+                    attack_percent_bonus = 1.1,
+                    area_of_effect = 255.,
+                    angle_window  = 70.,
+                    max_targets = 300,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A04P', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        NewEffectTemplate('sunder_effect', {
+            name = "sunder effect",
+            power_delta = 3,
+            power_delta_level = 1,
+            get_level_from_skill = "ABEQ",
+            single_attack_instance = true,
+            can_crit = true,
+            global_crit = true,
+            is_direct = false,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+            attack_type = MELEE_ATTACK,
+            attribute = PHYSICAL_ATTRIBUTE,
+            SFX_used = "Effect\\chushou_by_wood_effect_earth_longzhituxi.mdx",
+            SFX_used_scale = 1.,
+            SFX_random_angle = true,
+            sound = { { pack = { "Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.wav" }, volume = 127, cutoff = 1800. } },
+            --sound_on_hit = { pack = { "Sounds\\Spells\\frost_nova_hit_1.wav", "Sounds\\Spells\\frost_nova_hit_2.wav", "Sounds\\Spells\\frost_nova_hit_3.wav" }, volume = 100, cutoff = 1800. },
+
+            level = {
+                [1] = {
+                    power = 75,
+                    attack_percent_bonus = 1.,
+                    area_of_effect = 450.,
+                    max_targets = 300,
+                    wave_speed = 600.,
+                    shake_magnitude = 1.7,
+                    shake_distance = 1400.,
+                    shake_duration = 0.6,
+                    applied_buff = { [1] = { modificator = ADD_BUFF, buff_id = 'A04T', target_type = ON_ENEMY } },
+                }
+            }
+
         })
         --==========================================--
         NewEffectTemplate('ECSP', {
@@ -2092,7 +2283,7 @@ do
                     power = 20,
                     attack_percent_bonus = 1.,
                     area_of_effect = 200.,
-                    angle_window  = 45.,
+                    angle_window  = 55.,
                     max_targets = 300,
                 }
             }
@@ -2143,7 +2334,7 @@ do
                     power = 28,
                     attack_percent_bonus = 1.05,
                     area_of_effect = 200.,
-                    angle_window  = 45.,
+                    angle_window  = 55.,
                     max_targets = 300,
                 }
             }
@@ -2220,7 +2411,7 @@ do
                     power = 22,
                     attack_percent_bonus = 1.07,
                     area_of_effect = 200.,
-                    angle_window  = 45.,
+                    angle_window  = 55.,
                     max_targets = 300,
                     attack_cooldown = 0.5,
                     shake_distance = 1200.,
@@ -2254,7 +2445,7 @@ do
                     attack_percent_bonus = 0.9,
                     attribute_bonus = 15,
                     area_of_effect = 200.,
-                    angle_window  = 45.,
+                    angle_window  = 55.,
                     max_targets = 300,
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'ABVP', target_type = ON_ENEMY },
@@ -2278,6 +2469,7 @@ do
             sfx_pack = {
                 on_unit = { { effect = "Abilities\\Weapons\\PoisonSting\\PoisonStingTarget.mdx", point = "chest" } },
             },
+            tags = { "poisoning" },
 
             level = {
                 [1] = {
@@ -2357,7 +2549,7 @@ do
                     attribute_bonus = 10,
                     attack_percent_bonus = 1.15,
                     area_of_effect = 200.,
-                    angle_window  = 45.,
+                    angle_window  = 55.,
                     max_targets = 300,
                 }
             }
@@ -2387,7 +2579,7 @@ do
                     attribute_bonus = 10,
                     attack_percent_bonus = 1.1,
                     area_of_effect = 200.,
-                    angle_window  = 45.,
+                    angle_window  = 55.,
                     max_targets = 300,
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'ABCA', target_type = ON_ENEMY },
@@ -2917,6 +3109,471 @@ do
                 }
             }
         })
+
+        --==========================================--
+        NewEffectTemplate('guardian_effect', {
+            name = "guardian_effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "APGA",
+            single_attack_instance = true,
+            global_crit = true,
+            can_crit = true,
+            is_direct = true,
+            is_sound = true,
+            force_from_caster_position = true,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+            attack_type = MELEE_ATTACK,
+            attribute = PHYSICAL_ATTRIBUTE,
+
+            level = {
+                [1] = {
+                    power = 17,
+                    attack_percent_bonus = 1.15,
+                    area_of_effect = 235.,
+                    angle_window  = 55.,
+                    max_targets = 300,
+                    applied_buff = {
+                        [1] = { modificator = INCREASE_BUFF_LEVEL, buff_id = 'A03J', target_type = ON_SELF },
+                        [2] = { modificator = SET_BUFF_TIME, buff_id = 'A03J', target_type = ON_SELF, value = -1 }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('retribution_effect', {
+            name = "retribution_effect",
+            power_delta = 1,
+            power_delta_level = 1,
+            get_level_from_skill = "APRT",
+            can_crit = false,
+            is_direct = false,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+            attack_type = MELEE_ATTACK,
+            attribute = PHYSICAL_ATTRIBUTE,
+
+            level = {
+                [1] = {
+                    power = 17,
+                    attack_percent_bonus = 0.46,
+                    area_of_effect = 150.,
+                    max_targets = 300,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('zeal_effect', {
+            name = "zeal_effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "APZE",
+            single_attack_instance = true,
+            global_crit = true,
+            can_crit = true,
+            is_direct = true,
+            is_sound = true,
+            force_from_caster_position = true,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+            attack_type = MELEE_ATTACK,
+            attribute = PHYSICAL_ATTRIBUTE,
+
+            level = {
+                [1] = {
+                    power = 25,
+                    attack_percent_bonus = 1.12,
+                    area_of_effect = 235.,
+                    angle_window  = 55.,
+                    max_targets = 300,
+                    applied_buff = {
+                        [1] = { modificator = INCREASE_BUFF_LEVEL, buff_id = 'A03L', target_type = ON_SELF },
+                        [2] = { modificator = SET_BUFF_TIME, buff_id = 'A03L', target_type = ON_SELF, value = -1 }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('shieldbash_effect', {
+            name = "shieldbash_effect",
+            power_delta = 3,
+            power_delta_level = 1,
+            get_level_from_skill = "APSB",
+            single_attack_instance = true,
+            global_crit = true,
+            can_crit = true,
+            is_direct = true,
+            is_sound = true,
+            force_from_caster_position = true,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+            attack_type = MELEE_ATTACK,
+            attribute = PHYSICAL_ATTRIBUTE,
+
+            level = {
+                [1] = {
+                    power = 39,
+                    attack_percent_bonus = 1.15,
+                    area_of_effect = 245.,
+                    angle_window  = 90.,
+                    max_targets = 300,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A03M', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('advance_effect', {
+            name = "advance_effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "APCR",
+            single_attack_instance = true,
+            global_crit = true,
+            can_crit = true,
+            is_direct = true,
+            is_sound = true,
+            force_from_caster_position = true,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+            attack_type = MELEE_ATTACK,
+            attribute = PHYSICAL_ATTRIBUTE,
+
+            level = {
+                [1] = {
+                    power = 37,
+                    attack_percent_bonus = 1.27,
+                    area_of_effect = 240.,
+                    angle_window  = 90.,
+                    max_targets = 300,
+                    shake_distance = 1500.,
+                    shake_duration = 0.33,
+                    shake_magnitude = 1.5,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('chastise_effect', {
+            name = "chastise_effect",
+            power_delta = 3,
+            power_delta_level = 1,
+            get_level_from_skill = "APCH",
+            single_attack_instance = true,
+            global_crit = true,
+            can_crit = true,
+            is_direct = true,
+            is_sound = true,
+            force_from_caster_position = true,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+            attack_type = MELEE_ATTACK,
+            attribute = PHYSICAL_ATTRIBUTE,
+
+            level = {
+                [1] = {
+                    power = 35,
+                    attack_percent_bonus = 1.18,
+                    area_of_effect = 255.,
+                    angle_window  = 70.,
+                    max_targets = 300
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('smite_effect', {
+            name = "smite effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "APSM",
+            single_attack_instance = true,
+            global_crit = true,
+            can_crit = true,
+            is_direct = true,
+            damage_type = DAMAGE_TYPE_MAGICAL,
+            attack_type = RANGE_ATTACK,
+            attribute = HOLY_ATTRIBUTE,
+            SFX_used = "Effect\\Flash.mdx",
+            SFX_used_scale = 1.65,
+            --SFX_used_matrix_scale = 1.4,
+            SFX_random_angle = true,
+            SFX_on_unit = "Effect\\model (342).mdx",
+            SFX_on_unit_point = "chest",
+            SFX_on_unit_duration = 0.234,
+            SFX_on_unit_scale = 0.75,
+            delay = 0.1,
+            sound = { { pack = { "Sounds\\Spells\\smite_hit_1.wav", "Sounds\\Spells\\smite_hit_2.wav", "Sounds\\Spells\\smite_hit_3.wav" }, volume = 128, cutoff = 1800. } },
+
+            level = {
+                [1] = {
+                    power = 38,
+                    area_of_effect = 150.,
+                    max_targets = 300,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('fist_of_heavens_effect', {
+            name = "fist_of_heavens effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "APFH",
+            single_attack_instance = true,
+            global_crit = true,
+            can_crit = true,
+            is_direct = true,
+            damage_type = DAMAGE_TYPE_MAGICAL,
+            attack_type = RANGE_ATTACK,
+            attribute = HOLY_ATTRIBUTE,
+            SFX_used = "Effect\\Stormfall Orange.mdx",
+            SFX_random_angle = true,
+            SFX_on_unit = "Abilities\\Spells\\Other\\Incinerate\\IncinerateBuff.mdx",
+            SFX_on_unit_point = "chest",
+            sound = { { pack = { "Sounds\\Spells\\foth_effect_1.wav", "Sounds\\Spells\\foth_effect_2.wav", "Sounds\\Spells\\foth_effect_3.wav", "Sounds\\Spells\\foth_effect_4.wav" }, volume = 128, cutoff = 1800. } },
+
+            level = {
+                [1] = {
+                    power = 82,
+                    area_of_effect = 250.,
+                    max_targets = 300,
+                    shake_distance = 1200.,
+                    shake_duration = 0.33,
+                    shake_magnitude = 1.25,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('shield_throw_effect', {
+            name = "shield throw effect",
+            power_delta = 3,
+            power_delta_level = 1,
+            get_level_from_skill = "APSH",
+            single_attack_instance = true,
+            global_crit = true,
+            can_crit = true,
+            is_direct = true,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+            attack_type = RANGE_ATTACK,
+            attribute = PHYSICAL_ATTRIBUTE,
+            SFX_on_unit = "Abilities\\Spells\\Other\\Incinerate\\IncinerateBuff.mdx",
+            SFX_on_unit_point = "chest",
+            sound = { { pack = { "Sounds\\Spells\\shield_throw_hit_1.wav", "Sounds\\Spells\\shield_throw_hit_2.wav" }, volume = 128, cutoff = 1800. } },
+
+            level = {
+                [1] = {
+                    power = 30,
+                    attack_percent_bonus = 1.12,
+                    max_targets = 300,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('verdict_effect', {
+            name = "verdict effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "APVA",
+            single_attack_instance = true,
+            global_crit = true,
+            can_crit = true,
+            is_direct = true,
+            damage_type = DAMAGE_TYPE_MAGICAL,
+            attack_type = RANGE_ATTACK,
+            attribute = HOLY_ATTRIBUTE,
+            SFX_used = "Effect\\Judgement NoHive.mdx",
+            SFX_used_scale = 0.75,
+            SFX_random_angle = true,
+            SFX_on_unit = "Abilities\\Spells\\Other\\Incinerate\\IncinerateBuff.mdx",
+            SFX_on_unit_point = "chest",
+            delay = 0.9,
+            timescale = 0.5,
+            sound = { { pack = { "Sounds\\Spells\\verdict_impact_1.wav", "Sounds\\Spells\\verdict_impact_2.wav", "Sounds\\Spells\\verdict_impact_3.wav", "Sounds\\Spells\\verdict_impact_4.wav" }, volume = 128, cutoff = 1800. } },
+
+            level = {
+                [1] = {
+                    power = 60,
+                    area_of_effect = 158.,
+                    max_targets = 300,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A03N', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('purify_effect', {
+            name = "purify effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            get_level_from_skill = "APPR",
+            single_attack_instance = true,
+            global_crit = false,
+            can_crit = true,
+            is_direct = true,
+            damage_type = DAMAGE_TYPE_MAGICAL,
+            attack_type = RANGE_ATTACK,
+            attribute = HOLY_ATTRIBUTE,
+            hit_once_in = 1.,
+            SFX_on_unit = "Abilities\\Spells\\Other\\Incinerate\\IncinerateBuff.mdx",
+            SFX_on_unit_point = "chest",
+            --sound = { { pack = { "Sounds\\Spells\\lightning_hit_1.wav", "Sounds\\Spells\\lightning_hit_2.wav", "Sounds\\Spells\\lightning_hit_3.wav" }, volume = 128, cutoff = 1800. } },
+
+            level = {
+                [1] = {
+                    power = 29,
+                }
+            }
+        })
+        NewEffectTemplate('divine_wrath_effect', {
+            name = "divine wrath effect",
+            power_delta = 3,
+            power_delta_level = 1,
+            get_level_from_skill = "APDW",
+            single_attack_instance = true,
+            can_crit = true,
+            global_crit = true,
+            is_direct = true,
+            damage_type = DAMAGE_TYPE_MAGICAL,
+            attack_type = MELEE_ATTACK,
+            attribute = HOLY_ATTRIBUTE,
+            SFX_used = "Effect\\Empyrean Nova Classic.mdx",
+            SFX_on_unit = "Abilities\\Spells\\Other\\Incinerate\\IncinerateBuff.mdx",
+            SFX_on_unit_point = "chest",
+
+            level = {
+                [1] = {
+                    power = 100,
+                    area_of_effect = 350.,
+                    max_targets = 300,
+                    wave_speed = 700.,
+                    shake_distance = 1500.,
+                    shake_duration = 0.33,
+                    shake_magnitude = 1.65,
+                }
+            }
+
+        })
+        --==========================================--
+        NewEffectTemplate('collective_punishment_effect', {
+            name = "collective punishment effect",
+            get_level_from_skill = "APCP",
+            attribute = HOLY_ATTRIBUTE,
+            --sound = { { pack = { "Sounds\\Spells\\lightning_hit_1.wav", "Sounds\\Spells\\lightning_hit_2.wav", "Sounds\\Spells\\lightning_hit_3.wav" }, volume = 128, cutoff = 1800. } },
+
+            level = {
+                [1] = {
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A03N', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('effect_renewal', {
+            name = "effect_renewal",
+            get_level_from_skill = "APRW",
+            sfx_pack = { on_unit = { { effect = "Effect\\Heal.mdx", point = "origin", duration = 1. }, } },
+            heal_amount_delta = 5,
+            heal_amount_delta_level = 1,
+
+            level = {
+                [1] = {
+                    heal_amount = 50,
+                    area_of_effect = 600.,
+                    max_targets = 300,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A03V', target_type = ON_ALLY }
+                    },
+                }
+            }
+
+        })
+        --==========================================--
+        NewEffectTemplate('effect_renewal_periodic', {
+            name = "effect_renewal",
+            get_level_from_skill = "APRW",
+            heal_amount_delta = 1,
+            heal_amount_delta_level = 1,
+
+            level = {
+                [1] = {
+                    heal_amount = 15,
+                    max_targets = 1,
+                }
+            }
+
+        })
+        --==========================================--
+        NewEffectTemplate('effect_sanctify_periodic', {
+            name = "effect_sanctify_periodic",
+            get_level_from_skill = "APSA",
+            power_delta = 1,
+            power_delta_level = 1,
+            single_attack_instance = false,
+            global_crit = false,
+            can_crit = false,
+            is_direct = false,
+            damage_type = DAMAGE_TYPE_MAGICAL,
+            attack_type = MELEE_ATTACK,
+            attribute = HOLY_ATTRIBUTE,
+            hit_once_in = 0.199,
+            SFX_on_unit = "Abilities\\Spells\\Other\\Incinerate\\IncinerateBuff.mdx",
+            SFX_on_unit_point = "chest",
+            tags = { "burning" },
+
+            level = {
+                [1] = {
+                    power = 12,
+                }
+            }
+
+        })
+        --==========================================--
+        NewEffectTemplate('holy_fire_periodic_effect', {
+            name = "holy_fire_periodic_effect",
+            can_crit = false,
+            is_direct = false,
+            damage_type = DAMAGE_TYPE_MAGICAL,
+            attack_type = RANGE_ATTACK,
+            attribute = HOLY_ATTRIBUTE,
+            tags = { "burning" },
+
+            level = {
+                [1] = {
+                    power = 15,
+                    max_targets = 1
+                },
+                [2] = {
+                    power = 27,
+                    max_targets = 1
+                },
+                [3] = {
+                    power = 39,
+                    max_targets = 1
+                },
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('effect_lightforged', {
+            name = "effect_lightforged",
+            single_attack_instance = false,
+            global_crit = false,
+            can_crit = true,
+            is_direct = false,
+            damage_type = DAMAGE_TYPE_MAGICAL,
+            attack_type = MELEE_ATTACK,
+            attribute = HOLY_ATTRIBUTE,
+            SFX_on_unit = "Abilities\\Spells\\Other\\Incinerate\\IncinerateBuff.mdx",
+            SFX_on_unit_point = "chest",
+
+            level = {
+                [1] = {
+                    power = 26,
+                },
+                [2] = {
+                    power = 33,
+                },
+                [3] = {
+                    power = 40,
+                },
+            }
+
+        })
         --==========================================--
         NewEffectTemplate('EWTM', {
             name = "witch effect",
@@ -3048,6 +3705,36 @@ do
                     applied_buff = {
                         [1] = { modificator = ADD_BUFF, buff_id = 'A00F', target_type = ON_ENEMY },
                     },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('icebound_loop_effect', {
+            name = "icebound loop effect",
+            power_delta = 2,
+            power_delta_level = 1,
+            single_attack_instance = true,
+            global_crit = true,
+            can_crit = true,
+            is_direct = false,
+            damage_type = DAMAGE_TYPE_MAGICAL,
+            attack_type = RANGE_ATTACK,
+            attribute = ICE_ATTRIBUTE,
+            SFX_used = "Effect\\Frost Spike.mdx",
+            SFX_used_scale = 1.5,
+            delay = 0.38,
+            --SFX_used_matrix_scale = 1.4,
+            SFX_random_angle = true,
+            SFX_on_unit = "Abilities\\Spells\\Undead\\FrostArmor\\FrostArmorDamage.mdx",
+            SFX_on_unit_point = "chest",
+            sound = { { pack = { "Abilities\\Spells\\Other\\FrostBolt\\FrostBoltHit1.wav" }, volume = 128, cutoff = 1800. } },
+
+            level = {
+                [1] = {
+                    --power = 20,
+                    attack_percent_bonus = 0.17,
+                    area_of_effect = 150.,
+                    max_targets = 300,
                 }
             }
         })
@@ -3644,7 +4331,7 @@ do
                     power = 12,
                     attack_percent_bonus = 1.15,
                     area_of_effect = 200.,
-                    angle_window  = 45.,
+                    angle_window  = 55.,
                     max_targets = 300,
                 }
             }
@@ -3843,7 +4530,7 @@ do
                     attack_percent_bonus = 0.25,
                     attribute_bonus = 15,
                     area_of_effect = 200.,
-                    angle_window  = 45.,
+                    angle_window  = 55.,
                     max_targets = 300,
                 }
             }
@@ -3865,7 +4552,7 @@ do
 
             level = {
                 [1] = {
-                    power = 33,
+                    power = 34,
                     attribute_bonus = 25,
                     max_targets = 300,
                     area_of_effect = 250.,
@@ -3886,7 +4573,7 @@ do
 
             level = {
                 [1] = {
-                    power = 15,
+                    power = 31,
                     attribute_bonus = 10,
                     max_targets = 300,
                     area_of_effect = 75.,
@@ -3928,10 +4615,11 @@ do
             power_delta = 1,
             power_delta_level = 2,
             sfx_pack = { on_unit = { { effect = "Units\\Undead\\PlagueCloud\\PlagueCloudtarget.mdx", point = "chest", duration = 0.33 } } },
+            hit_once_in = 0.66,
 
             level = {
                 [1] = {
-                    power = 5,
+                    power = 4,
                     area_of_effect = 225.,
                     max_targets = 300,
                 }
@@ -3952,7 +4640,7 @@ do
 
             level = {
                 [1] = {
-                    power = 12,
+                    power = 13,
                 }
             }
         })
@@ -3971,7 +4659,7 @@ do
 
             level = {
                 [1] = {
-                    power = 7,
+                    power = 6,
                     area_of_effect = 200.,
                     max_targets = 300,
                 }
@@ -4149,6 +4837,36 @@ do
                 }
             }
         })
+
+        --==========================================--
+        NewEffectTemplate('andariel_poison_pool_effect', {
+            name = "andariel poison pool effect",
+            get_level_from_wave = true,
+            can_crit = false,
+            is_direct = false,
+            is_sound = false,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+            attack_type = MELEE_ATTACK,
+            attribute = POISON_ATTRIBUTE,
+            power_delta = 1,
+            power_delta_level = 2,
+            attribute_bonus_delta = 1,
+            attribute_bonus_delta_level = 1,
+
+            level = {
+                [1] = {
+                    power = 3,
+                    attribute_bonus = 20,
+                    area_of_effect = 150.,
+                    max_targets = 300,
+                    hit_once_in = 0.49,
+                    applied_buff = {
+                        [1] = { modificator = INCREASE_BUFF_LEVEL, buff_id = 'A040', target_type = ON_ENEMY },
+                        [2] = { modificator = SET_BUFF_TIME, buff_id = 'A040', target_type = ON_ENEMY, value = -1 }
+                    },
+                }
+            }
+        })
         --==========================================--
         NewEffectTemplate('baal_hoarfrost', {
             name = "baal hoarfrost damage",
@@ -4250,6 +4968,7 @@ do
             power_delta = 2,
             power_delta_level = 1,
             sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx", point = "chest", duration = 1. }, } },
+            tags = { "burning" },
 
             level = {
                 [1] = {
@@ -4343,21 +5062,21 @@ do
             attribute = FIRE_ATTRIBUTE,
             sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\Other\\ImmolationRed\\ImmolationRedDamage.mdx", point = "chest", duration = 0.33 }, } },
             tags = { "burning" },
-            hit_once_in = 0.32,
+            hit_once_in = 0.49,
 
             level = {
                 [1] = {
-                    power = 8,
-                    area_of_effect = 100.,
-                    max_targets = 300,
-                },
-                [2] = {
                     power = 10,
                     area_of_effect = 100.,
                     max_targets = 300,
                 },
+                [2] = {
+                    power = 14,
+                    area_of_effect = 100.,
+                    max_targets = 300,
+                },
                 [3] = {
-                    power = 12,
+                    power = 17,
                     area_of_effect = 100.,
                     max_targets = 300,
                 }
@@ -4900,11 +5619,244 @@ do
             level = {
                 [1] = {
                     power = 12,
-                    life_percent_restored = 0.06,
+                    life_percent_restored = 0.04,
                     life_restored_from_hit = true,
                 }
             }
 
+        })
+        --==========================================--
+        NewEffectTemplate('meat_golem_meat_effect', {
+            name = "meat golem meat effect",
+            get_level_from_wave = true,
+            power_delta = 3,
+            power_delta_level = 1,
+            can_crit = true,
+            is_direct = true,
+            is_sound = true,
+            global_crit = true,
+            force_from_caster_position = true,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+            attack_type = MELEE_ATTACK,
+            attribute = PHYSICAL_ATTRIBUTE,
+
+            level = {
+                [1] = {
+                    power = 27,
+                    attack_percent_bonus = 0.7,
+                    max_targets = 50,
+                    area_of_effect = 100.,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'AGHB', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('meat_golem_regen_effect', {
+            name = "meat golem meat effect",
+
+            level = {
+                [1] = {
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A03I', target_type = ON_SELF }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('meat_golem_regen_period_effect', {
+            name = "meat_golem_regen_effect",
+            sfx_pack = { on_caster_restore = { { effect = "Abilities\\Spells\\Undead\\VampiricAura\\VampiricAuraTarget.mdx", point = "origin", duration = 1.833  }, } },
+
+            level = {
+                [1] = {
+                    life_percent_restored = 0.05,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('belial_rain_effect', {
+            name = "belial rain effect",
+            get_level_from_wave = true,
+            power_delta = 3,
+            power_delta_level = 1,
+            can_crit = true,
+            is_direct = false,
+            is_sound = false,
+            damage_type = DAMAGE_TYPE_MAGICAL,
+            attack_type = RANGE_ATTACK,
+            attribute = POISON_ATTRIBUTE,
+            SFX_used = "Effect\\Rain of Fire Fel.mdx",
+            SFX_random_angle = true,
+            sound = {
+                { pack = { "Abilities\\Spells\\Demon\\RainOfFire\\RainOfFireTarget1.wav", "Abilities\\Spells\\Demon\\RainOfFire\\RainOfFireTarget2.wav", "Abilities\\Spells\\Demon\\RainOfFire\\RainOfFireTarget3.wav" },
+                  volume = 80, cutoff = 1500., delay = 1.25 }
+            },
+            delay = 1.25,
+            sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\NightElf\\Immolation\\ImmolationDamage.mdx", point = "chest", duration = 1. }, } },
+
+            level = {
+                [1] = {
+                    power = 27,
+                    max_targets = 300,
+                    area_of_effect = 125.,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('belial_fel_effect', {
+            name = "belial fel flame effect",
+            get_level_from_wave = true,
+            power_delta = 3,
+            power_delta_level = 1,
+            can_crit = true,
+            is_direct = true,
+            is_sound = false,
+            damage_type = DAMAGE_TYPE_MAGICAL,
+            attack_type = RANGE_ATTACK,
+            attribute = POISON_ATTRIBUTE,
+            sfx_pack = { on_unit = { { effect = "Abilities\\Spells\\NightElf\\Immolation\\ImmolationDamage.mdx", point = "chest", duration = 1. }, } },
+
+            level = {
+                [1] = {
+                    power = 45,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('belial_fear_effect', {
+            name = "belial fear effect",
+            SFX_used = "Effect\\LaughingSkull_RoarCaster.mdx",
+            SFX_random_angle = true,
+
+            level = {
+                [1] = {
+                    max_targets = 300,
+                    area_of_effect = 300.,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A043', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('belial_doubt_effect', {
+            name = "belial doubt effect",
+            SFX_used = "Effect\\Falling Light.mdx",
+            SFX_random_angle = true,
+            SFX_bonus_z = 5.,
+            delay = 1.6,
+            timescale = 0.6,
+
+            level = {
+                [1] = {
+                    max_targets = 300,
+                    area_of_effect = 250.,
+                    wave_speed = 700.,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A046', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('sboss_necrotic_effect', {
+            name = "execution effect",
+            power_delta = 2,
+            power_delta_level = 2,
+            get_level_from_wave = true,
+            single_attack_instance = true,
+            global_crit = true,
+            can_crit = true,
+            is_direct = true,
+            is_sound = true,
+            force_from_caster_position = true,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+            attack_type = MELEE_ATTACK,
+            attribute = PHYSICAL_ATTRIBUTE,
+            SFX_on_unit = "Effect\\Ephemeral Cut Avocado.mdx",
+            SFX_on_unit_point = "chest",
+            SFX_on_unit_scale = 1.25,
+
+            level = {
+                [1] = {
+                    power = 45,
+                    attack_percent_bonus = 1.,
+                    area_of_effect = 275.,
+                    angle_window  = 50,
+                    max_targets = 300,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A048', target_type = ON_ENEMY }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('effect_duriel_poison_aura', {
+            name = "effect_duriel_poison_aura",
+            get_level_from_wave = false,
+            can_crit = false,
+            is_direct = false,
+            is_sound = false,
+
+            level = {
+                [1] = {
+                    applied_buff = {
+                        [1] = { modificator = INCREASE_BUFF_LEVEL, buff_id = 'A04U', target_type = ON_ENEMY },
+                        [2] = { modificator = SET_BUFF_TIME, buff_id = 'A04U', target_type = ON_ENEMY, value = -1 }
+                    },
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('effect_duriel_periodic', {
+            name = "effect_duriel_periodic",
+            get_level_from_wave = true,
+            power_delta = 1,
+            power_delta_level = 1,
+            can_crit = false,
+            is_direct = false,
+            is_sound = false,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+            attack_type = RANGE_ATTACK,
+            attribute = POISON_ATTRIBUTE,
+            tags = { "poisoning" },
+
+            level = {
+                [1] = {
+                    power = 14,
+                }
+            }
+        })
+        --==========================================--
+        NewEffectTemplate('duriel_stun_effect', {
+            name = "duriel_stun_effect",
+            power_delta = 2,
+            power_delta_level = 2,
+            get_level_from_wave = true,
+            single_attack_instance = true,
+            global_crit = true,
+            can_crit = true,
+            is_direct = true,
+            is_sound = true,
+            force_from_caster_position = true,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+            attack_type = MELEE_ATTACK,
+            attribute = PHYSICAL_ATTRIBUTE,
+
+            level = {
+                [1] = {
+                    power = 57,
+                    attack_percent_bonus = 1.15,
+                    area_of_effect = 275.,
+                    angle_window  = 50,
+                    max_targets = 300,
+                    applied_buff = {
+                        [1] = { modificator = ADD_BUFF, buff_id = 'A04W', target_type = ON_ENEMY }
+                    },
+                }
+            }
         })
 
         InitAuras()

@@ -13,6 +13,7 @@ do
     local AI_Tick = 0.75
     local PingGroup
     local AttackGroup
+    local NEARBY_PING_RANGE = 900.
 
 
 
@@ -108,18 +109,36 @@ do
                                 if closest_hero and GetRandomInt(1, 10) == 1 then
                                     local angle = AngleBetweenUnits(closest_hero, unit)
                                     local runaway_angle = angle + GetRandomReal(-35., 35.)
-                                    local max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                    local distance = GetRandomReal(100., 220.)
+                                    local max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
 
                                         if max_runaway_distance < 50. then
                                             runaway_angle = angle - 90.
-                                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
                                             if max_runaway_distance < 50. then
                                                 runaway_angle = angle + 180.
-                                                max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                                max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
                                             end
                                         end
 
-                                        IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(max_runaway_distance, runaway_angle), GetUnitY(unit) + Ry(max_runaway_distance, runaway_angle))
+                                        if distance > max_runaway_distance then distance = max_runaway_distance end
+
+                                        IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(distance, runaway_angle), GetUnitY(unit) + Ry(distance, runaway_angle))
+                                elseif GetRandomInt(1, 19) == 1 then
+                                    local bonus_angle = GetRandomReal(-40., 40.)
+                                    local angle = GetUnitFacing(unit) - 90. + bonus_angle
+                                    local distance = GetRandomReal(100., 125.)
+                                    local max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), angle, distance)
+
+                                        if GetRandomInt(1, 2) == 1 then
+                                            angle = GetUnitFacing(unit) + 90. + bonus_angle
+                                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), angle, distance)
+                                        end
+
+                                        if distance > max_runaway_distance then distance = max_runaway_distance end
+
+                                        IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(distance, angle), GetUnitY(unit) + Ry(distance, angle))
+
                                 end
 
                         else
@@ -127,49 +146,55 @@ do
                                 if GetRandomInt(1, 18) == 1 then
                                     local distance_to_center = DistanceBetweenUnitXY(unit, unit_data.leash_x, unit_data.leash_y)
                                     local runaway_angle
+                                    local distance = GetRandomReal(100., 220.)
                                     local max_runaway_distance
 
                                         if (distance_to_center / unit_data.leash_range) > 0.7 then
                                             runaway_angle = AngleBetweenUnitXY(unit, unit_data.leash_x, unit_data.leash_y) + GetRandomReal(-35., 35.)
-                                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
                                         else
                                             runaway_angle = GetRandomReal(0., 360.)
-                                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
                                             if max_runaway_distance < 50. then
                                                 runaway_angle = runaway_angle - 90.
-                                                max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                                max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
                                                 if max_runaway_distance < 50. then
                                                     runaway_angle = runaway_angle + 180.
-                                                    max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                                    max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
                                                     if max_runaway_distance < 50. then
                                                         runaway_angle = GetRandomReal(0., 360.)
-                                                        max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                                        max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
                                                     end
                                                 end
                                             end
                                         end
 
-                                    IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(max_runaway_distance, runaway_angle), GetUnitY(unit) + Ry(max_runaway_distance, runaway_angle))
+                                    if distance > max_runaway_distance then distance = max_runaway_distance end
+
+                                    IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(distance, runaway_angle), GetUnitY(unit) + Ry(distance, runaway_angle))
                                 end
                             else
                                 if GetRandomInt(1, 17) == 1 then
                                     local runaway_angle = GetRandomReal(0., 360.)
-                                    local max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                    local distance = GetRandomReal(100., 220.)
+                                    local max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
 
                                         if max_runaway_distance < 50. then
                                             runaway_angle = runaway_angle - 90.
-                                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
                                             if max_runaway_distance < 50. then
                                                 runaway_angle = runaway_angle + 180.
-                                                max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                                max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
                                                 if max_runaway_distance < 50. then
                                                     runaway_angle = GetRandomReal(0., 360.)
-                                                    max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                                    max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
                                                 end
                                             end
                                         end
 
-                                    IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(max_runaway_distance, runaway_angle), GetUnitY(unit) + Ry(max_runaway_distance, runaway_angle))
+                                    if distance > max_runaway_distance then distance = max_runaway_distance end
+
+                                    IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(distance, runaway_angle), GetUnitY(unit) + Ry(distance, runaway_angle))
                                 end
                             end
                         end
@@ -179,63 +204,71 @@ do
                     if GetRandomInt(1, 18) == 1 then
                         local direction = GetRandomInt(1, 4)
                         local runaway_angle = GetRandomReal(0., 360.)
+                        local distance = GetRandomReal(100., 220.)
                         local max_runaway_distance = 0.
 
                             if direction == 1 then runaway_angle = GetUnitFacing(unit) - 90.
                             elseif direction == 2 then runaway_angle = GetUnitFacing(unit) + 90.
                             elseif direction == 3 then runaway_angle = GetUnitFacing(unit) + 180. end
 
-                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
-                            IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(max_runaway_distance, runaway_angle), GetUnitY(unit) + Ry(max_runaway_distance, runaway_angle))
+                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
+                            if distance > max_runaway_distance then distance = max_runaway_distance end
+                            IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(distance, runaway_angle), GetUnitY(unit) + Ry(distance, runaway_angle))
                     end
                 elseif unit_data.classification == MONSTER_RANK_BOSS then
                     if unit_data.leash_range then
                         if GetRandomInt(1, 20) == 1 then
                             local distance_to_center = DistanceBetweenUnitXY(unit, unit_data.leash_x, unit_data.leash_y)
                             local runaway_angle
+                            local distance = GetRandomReal(100., 220.)
                             local max_runaway_distance
 
                             if (distance_to_center / unit_data.leash_range) > 0.7 then
                                 runaway_angle = AngleBetweenUnitXY(unit, unit_data.leash_x, unit_data.leash_y) + GetRandomReal(-35., 35.)
-                                max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
                             else
                                 runaway_angle = GetRandomReal(0., 360.)
-                                max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
                                 if max_runaway_distance < 50. then
                                     runaway_angle = runaway_angle - 90.
-                                    max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                    max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
                                     if max_runaway_distance < 50. then
                                         runaway_angle = runaway_angle + 180.
-                                        max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                        max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
                                         if max_runaway_distance < 50. then
                                             runaway_angle = GetRandomReal(0., 360.)
-                                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
                                         end
                                     end
                                 end
                             end
 
-                            IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(max_runaway_distance, runaway_angle), GetUnitY(unit) + Ry(max_runaway_distance, runaway_angle))
+                            if distance > max_runaway_distance then distance = max_runaway_distance end
+
+                            IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(distance, runaway_angle), GetUnitY(unit) + Ry(distance, runaway_angle))
                         end
                     else
                         if GetRandomInt(1, 19) == 1 then
                             local runaway_angle = GetRandomReal(0., 360.)
-                            local max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                            local distance = GetRandomReal(100., 220.)
+                            local max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
 
-                            if max_runaway_distance < 50. then
-                                runaway_angle = runaway_angle - 90.
-                                max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
                                 if max_runaway_distance < 50. then
-                                    runaway_angle = runaway_angle + 180.
-                                    max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                    runaway_angle = runaway_angle - 90.
+                                    max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
                                     if max_runaway_distance < 50. then
-                                        runaway_angle = GetRandomReal(0., 360.)
-                                        max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, 200.)
+                                        runaway_angle = runaway_angle + 180.
+                                        max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
+                                        if max_runaway_distance < 50. then
+                                            runaway_angle = GetRandomReal(0., 360.)
+                                            max_runaway_distance = GetMaxAvailableDistance(GetUnitX(unit), GetUnitY(unit), runaway_angle, distance)
+                                        end
                                     end
                                 end
-                            end
 
-                            IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(max_runaway_distance, runaway_angle), GetUnitY(unit) + Ry(max_runaway_distance, runaway_angle))
+                            if distance > max_runaway_distance then distance = max_runaway_distance end
+
+                            IssuePointOrderById(unit, order_move, GetUnitX(unit) + Rx(distance, runaway_angle), GetUnitY(unit) + Ry(distance, runaway_angle))
                         end
                     end
                 end
@@ -259,7 +292,7 @@ do
     function PingAllNearbyAI(unit)
 
         if not InCombat[unit] then
-            GroupEnumUnitsInRange(PingGroup, GetUnitX(unit), GetUnitY(unit), 700., nil)
+            GroupEnumUnitsInRange(PingGroup, GetUnitX(unit), GetUnitY(unit), NEARBY_PING_RANGE, nil)
 
             for index = BlzGroupGetSize(PingGroup) - 1, 0, -1 do
                 local picked = BlzGroupUnitAt(PingGroup, index)
@@ -383,6 +416,7 @@ do
                 ability_list = {
                     { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 0., on_hit_chance = 15. },
                     { order = order_slow, activation = TARGET_CAST, on_attack_chance = 10., on_hit_chance = 10. },
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 22., on_hit_chance = 0. },
                 }
             },
             [FourCC(MONSTER_ID_REANIMATED)] = {
@@ -400,7 +434,7 @@ do
             },
             [FourCC(MONSTER_ID_FACELESS)] = {
                 ability_list = {
-                    { order = order_flamestrike, activation = TARGET_CAST, on_attack_chance = 18., on_hit_chance = 0. },
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 18., on_hit_chance = 0. },
                 }
             },
             [FourCC(MONSTER_ID_QUILLBEAST)] = {
@@ -460,6 +494,7 @@ do
                 ability_list = {
                     { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 17., on_hit_chance = 15., point_max_offset = 50. },
                     { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 5., on_hit_chance = 12.},
+                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 10., on_hit_chance = 10.},
                 }
             },
             [FourCC(MONSTER_ID_DEMONESS)] = {
@@ -551,6 +586,7 @@ do
                 ability_list = {
                     { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 12., on_hit_chance = 12. },
                     { order = order_cripple, activation = TARGET_CAST, on_attack_chance = 12., on_hit_chance = 12. },
+                    { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 12., on_hit_chance = 12. },
                 }
             },
             [FourCC("uDBL")] = {
@@ -580,6 +616,25 @@ do
             [FourCC(MONSTER_ID_ZOMBIE_N)] = {
                 ability_list = {
                     { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 17., on_hit_chance = 0. },
+                }
+            },
+            [FourCC(MONSTER_ID_MEAT_GOLEM)] = {
+                ability_list = {
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 5., on_hit_chance = 15. },
+                    { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 5., on_hit_chance = 15. },
+                }
+            },
+            [FourCC(MONSTER_ID_BELIAL)] = {
+                ability_list = {
+                    { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 15., on_hit_chance = 15. },
+                    { order = order_cripple, activation = TARGET_CAST, on_attack_chance = 15., on_hit_chance = 15. },
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 15., on_hit_chance = 15. },
+                    { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 15., on_hit_chance = 15. },
+                }
+            },
+            [FourCC(MONSTER_ID_DURIEL)] = {
+                ability_list = {
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 20., on_hit_chance = 0. },
                 }
             },
         }
@@ -673,6 +728,15 @@ do
 
         end
 
+        AITable[FourCC(MONSTER_ID_BELIAL)].on_period = function(unit)
+
+            if IsAnyHeroInRange(GetUnitX(unit), GetUnitY(unit), 300.) then
+                if GetRandomInt(1, 7) == 1 then
+                    IssueImmediateOrderById(unit, order_acidbomb)
+                end
+            end
+
+        end
 
 
         PingGroup = CreateGroup()

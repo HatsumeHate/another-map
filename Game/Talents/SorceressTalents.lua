@@ -111,11 +111,11 @@ do
         end)
 
 
-            TimerStart(timer, 0.33, true, function()
+            TimerStart(timer, 0.5, true, function()
                 if duration <= 0. then
                     DestroyTimer(timer)
                 else
-                    duration = duration - 0.33
+                    duration = duration - 0.5
                     local myeffect = ApplyEffect(source, nil, x, y, "napalm_effect", GetUnitTalentLevel(source, "talent_napalm"))
                     myeffect.level[myeffect.current_level].area_of_effect = area
                 end

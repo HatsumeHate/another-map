@@ -680,4 +680,75 @@ do
 
     end
 
+
+    function SunderEffect(caster)
+        local x, y = GetUnitX(caster), GetUnitY(caster)
+        local delay = 0.08
+        local range = 400.
+        local counter = {}
+        local angle_table = {}
+        local sfx = {}
+        local circle_amount = math.floor((range / 75.) + 0.5)
+        local myindex = 0
+        local scale
+
+            for i = 1, circle_amount do
+                angle_table[i] = 360. / ((2 + i) * i)
+                counter[i] = ((2 + i) * i)
+                DelayAction(delay, function()
+                    myindex = myindex + 1
+                    local angle = GetRandomReal(0., 360.)
+                    for k = 1, counter[myindex] do
+                        sfx[#sfx+1] = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("h00A"), x + GetRandomReal(-10., 10.) + Rx((75. + GetRandomReal(-11., 11.)) * i, angle), y + GetRandomReal(-10., 10.) + Ry((75. + GetRandomReal(-11., 11.)) * i, angle), 0.)
+                        BlzSetUnitFacingEx(sfx[#sfx], AngleBetweenUnitXY(sfx[#sfx], x, y))
+                        scale = GetRandomReal(0.6, 0.8)
+                        SetUnitScale(sfx[#sfx], scale, scale, scale)
+                        UnitApplyTimedLife(sfx[#sfx], 0, 6.)
+                        angle = angle + angle_table[i]
+                    end
+                end)
+                delay = delay + 0.08
+            end
+
+
+    end
+
+
+    function SunderAirThrow(target)
+        local unit_data = GetUnitData(target)
+        local timer = CreateTimer()
+        --local buff_data = GetBuffDataFromUnit(target, "A04T")
+        local max_height = 95. * ((100. - unit_data.stats[CONTROL_REDUCTION].value) / 100.)
+        --local time = buff_data.level[1].time / 3.
+        local current_height = 0.
+        local current_acceleration = 8.
+        local acceleration_mod = 0.97
+        local fh = GetUnitDefaultFlyHeight(target)
+
+
+            UnitAddAbility(target, FourCC("Arav"))
+            UnitRemoveAbility(target, FourCC("Arav"))
+
+            TimerStart(timer, 0.025, true, function()
+                if acceleration_mod < 1. then
+                    current_height = current_height + current_acceleration
+                    current_acceleration = current_acceleration * acceleration_mod
+                    if current_height > max_height then acceleration_mod = 1.06; current_acceleration = 5. end
+                    SetUnitFlyHeight(target, fh + current_height, 0.)
+                else
+                    current_height = current_height - current_acceleration
+                    current_acceleration = current_acceleration * acceleration_mod
+                    SetUnitFlyHeight(target, fh + current_height, 0.)
+
+                    if current_height <= 0 then
+                        DestroyTimer(timer)
+                        SetUnitFlyHeight(target, fh, 0.)
+                    end
+
+                end
+            end)
+
+    end
+
+
 end

@@ -244,6 +244,12 @@ do
             id = "galacos_trick_effect_Legendary",
             type = ITEM_PASSIVE_EFFECT
         })
+        --=========================================================================
+        NewLegendaryEffect({
+            name = LOCALE_LIST[my_locale].ITEM_LEG_DESCRIPTION_ICEBOUND_LOOP,
+            id = "icebound_loop_effect",
+            type = ITEM_PASSIVE_EFFECT
+        })
     end
 
 

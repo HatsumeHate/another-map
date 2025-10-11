@@ -232,6 +232,8 @@ do
             SetUnitColor(source, GetPlayerColor(Player(reference_data.teamcolour)))
         end
 
+        data.scale = BlzGetUnitRealField(source, UNIT_RF_SCALING_VALUE)
+
         return data
     end
 
@@ -304,7 +306,7 @@ do
         BASE_STATS = {
             [BARBARIAN_CLASS]   = { 10, 9, 6, 5 },
             [SORCERESS_CLASS]   = { 5, 6, 5, 10 },
-            [PALADIN_CLASS]     = { 8, 11, 6, 5 },
+            [PALADIN_CLASS]     = { 8, 11, 7, 5 },
             [ASSASSIN_CLASS]    = { 6, 6, 10, 6 },
             [AMAZON_CLASS]      = { 6, 8, 7, 5 },
             [NECROMANCER_CLASS] = { 5, 6, 7, 8 },
@@ -396,7 +398,7 @@ do
             time_before_remove = 0.,
             missile_eject_range = 50.,
             base_stats = { health = 250., moving_speed = 335 },
-            classic_model = true,
+            classic_model = false,
         })
 
         NewUnitTemplate('HASS', {
@@ -549,6 +551,66 @@ do
             base_stats = { health = 120., hp_regen = 0.26, moving_speed = 335 },
             weapon = { ATTACK_SPEED = 1.7, DAMAGE = 7, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_CHOP },
             height = 120.,
+            has_mp = false,
+            hide_body = true
+        })
+
+        --==========================================================--
+        -- summoned sword
+        NewUnitTemplate('u01B', {
+            name = LOCALE_LIST[my_locale].NAME_SWORD_SUMMONED,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = 0,
+            time_before_remove = 15.,
+            base_stats = { health = 120., hp_regen = 0.26, moving_speed = 300 },
+            weapon = { ATTACK_SPEED = 1.7, DAMAGE = 12, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
+            height = 90.,
+            has_mp = false,
+            hide_body = true
+        })
+
+        --==========================================================--
+        -- summoned axe
+        NewUnitTemplate('u01C', {
+            name = LOCALE_LIST[my_locale].NAME_AXE_SUMMONED,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = 0,
+            time_before_remove = 15.,
+            base_stats = { health = 120., hp_regen = 0.26, moving_speed = 300 },
+            weapon = { ATTACK_SPEED = 2., DAMAGE = 15, CRIT_CHANCE = 14., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_SLICE },
+            height = 90.,
+            has_mp = false,
+            hide_body = true
+        })
+
+        --==========================================================--
+        -- summoned hammer
+        NewUnitTemplate('u01D', {
+            name = LOCALE_LIST[my_locale].NAME_HAMMER_SUMMONED,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = 0,
+            time_before_remove = 15.,
+            base_stats = { health = 120., hp_regen = 0.26, moving_speed = 300 },
+            weapon = { ATTACK_SPEED = 2.2, DAMAGE = 20, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_BASH },
+            height = 90.,
+            has_mp = false,
+            hide_body = true
+        })
+
+        --==========================================================--
+        -- summoned spear
+        NewUnitTemplate('u01E', {
+            name = LOCALE_LIST[my_locale].NAME_SPEAR_SUMMONED,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = 0,
+            time_before_remove = 15.,
+            base_stats = { health = 120., hp_regen = 0.26, moving_speed = 300 },
+            weapon = { ATTACK_SPEED = 1.85, DAMAGE = 14, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_BASH },
+            height = 90.,
             has_mp = false,
             hide_body = true
         })
@@ -1377,6 +1439,7 @@ do
                 { param = CONTROL_REDUCTION, value = 33, method = STRAIGHT_BONUS },
                 { param = ALL_RESIST, value = 6, method = STRAIGHT_BONUS }
             },
+            skill_list = {"AMGT", "AMGR"},
             has_mp = false,
             height = 240.,
             drop_offset_min = 25., drop_offset_max = 65.,
@@ -2234,6 +2297,270 @@ do
             xp = 700,
         })
         --==========================================================--
+        -- goatman brown 2h
+        NewUnitTemplate('n02T', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GOATMAN,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 25.,
+            base_stats = { health = 220., hp_regen = 0.3, moving_speed = 260. },
+            weapon = { ATTACK_SPEED = 1.5, DAMAGE = 6, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
+            bonus_parameters = {
+                { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = -5, method = STRAIGHT_BONUS },
+            },
+            has_mp = false,
+            height = 125.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 25,
+        })
+        --==========================================================--
+        -- goatman brown 1h
+        NewUnitTemplate('n02S', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GOATMAN,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 25.,
+            base_stats = { health = 220., hp_regen = 0.3, moving_speed = 260. },
+            weapon = { ATTACK_SPEED = 1.35, DAMAGE = 6, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
+            bonus_parameters = {
+                { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = -5, method = STRAIGHT_BONUS },
+            },
+            has_mp = false,
+            height = 125.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 25,
+        })
+        --==========================================================--
+        -- goatman brown bow
+        NewUnitTemplate('n02U', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GOATMAN,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 25.,
+            base_stats = { health = 175., hp_regen = 0.3, moving_speed = 260. },
+            weapon = { ATTACK_SPEED = 1.94, DAMAGE = 6, CRIT_CHANCE = 12., missile = "MSKA", angle_deviation = 6. },
+            bonus_parameters = {
+                { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = -5, method = STRAIGHT_BONUS },
+            },
+            has_mp = false,
+            height = 125.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 30,
+        })
+        --==========================================================--
+        -- goatman brown spear
+        NewUnitTemplate('n02V', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GOATMAN,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 25.,
+            base_stats = { health = 175., hp_regen = 0.3, moving_speed = 260. },
+            weapon = { ATTACK_SPEED = 1.94, DAMAGE = 8, CRIT_CHANCE = 12., missile = "goatman_spear", angle_deviation = 6. },
+            bonus_parameters = {
+                { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = -5, method = STRAIGHT_BONUS },
+            },
+            has_mp = false,
+            height = 125.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 30,
+        })
+        --==========================================================--
+        -- goatman dark 2h
+        NewUnitTemplate('n032', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GOATMAN,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 25.,
+            base_stats = { health = 220., hp_regen = 0.3, moving_speed = 260. },
+            weapon = { ATTACK_SPEED = 1.5, DAMAGE = 6, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_BASH },
+            bonus_parameters = {
+                { param = PHYSICAL_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = DARKNESS_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = HOLY_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = MAGICAL_SUPPRESSION, value = 1.15, method = MULTIPLY_BONUS },
+            },
+            has_mp = false,
+            height = 125.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 25,
+        })
+        --==========================================================--
+        -- goatman dark 1h
+        NewUnitTemplate('n033', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GOATMAN,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 25.,
+            base_stats = { health = 220., hp_regen = 0.3, moving_speed = 260. },
+            weapon = { ATTACK_SPEED = 1.35, DAMAGE = 6, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
+            bonus_parameters = {
+                { param = PHYSICAL_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = DARKNESS_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = HOLY_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = MAGICAL_SUPPRESSION, value = 1.15, method = MULTIPLY_BONUS },
+            },
+            has_mp = false,
+            height = 125.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 25,
+        })
+        --==========================================================--
+        -- goatman dark bow
+        NewUnitTemplate('n031', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GOATMAN,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 25.,
+            base_stats = { health = 175., hp_regen = 0.3, moving_speed = 260. },
+            weapon = { ATTACK_SPEED = 1.94, DAMAGE = 6, CRIT_CHANCE = 12., missile = "MSKA", angle_deviation = 6. },
+            bonus_parameters = {
+                { param = PHYSICAL_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = DARKNESS_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = HOLY_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = MAGICAL_SUPPRESSION, value = 1.15, method = MULTIPLY_BONUS },
+            },
+            has_mp = false,
+            height = 125.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 30,
+        })
+        --==========================================================--
+        -- goatman dark spear
+        NewUnitTemplate('n030', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GOATMAN,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 25.,
+            base_stats = { health = 175., hp_regen = 0.3, moving_speed = 260. },
+            weapon = { ATTACK_SPEED = 1.94, DAMAGE = 8, CRIT_CHANCE = 12., missile = "goatman_spear", angle_deviation = 6. },
+            bonus_parameters = {
+                { param = PHYSICAL_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = DARKNESS_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = HOLY_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = MAGICAL_SUPPRESSION, value = 1.15, method = MULTIPLY_BONUS },
+            },
+            has_mp = false,
+            height = 125.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 30,
+        })
+        --==========================================================--
+        -- goatman red 2h
+        NewUnitTemplate('n02Z', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GOATMAN,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 25.,
+            base_stats = { health = 275., hp_regen = 0.3, moving_speed = 265. },
+            weapon = { ATTACK_SPEED = 1.5, DAMAGE = 12, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_SLICE },
+            bonus_parameters = {
+                { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = -5, method = STRAIGHT_BONUS },
+            },
+            has_mp = false,
+            height = 130.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 45,
+        })
+        --==========================================================--
+        -- goatman red 1h
+        NewUnitTemplate('n02Y', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GOATMAN,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 25.,
+            base_stats = { health = 275., hp_regen = 0.3, moving_speed = 265. },
+            weapon = { ATTACK_SPEED = 1.35, DAMAGE = 12, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
+            bonus_parameters = {
+                { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = -5, method = STRAIGHT_BONUS },
+            },
+            has_mp = false,
+            height = 130.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 45,
+        })
+        --==========================================================--
+        -- goatman red bow
+        NewUnitTemplate('n02X', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GOATMAN,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 25.,
+            base_stats = { health = 245., hp_regen = 0.3, moving_speed = 265. },
+            weapon = { ATTACK_SPEED = 1.94, DAMAGE = 8, CRIT_CHANCE = 12., missile = "MSKA", angle_deviation = 6. },
+            bonus_parameters = {
+                { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = -5, method = STRAIGHT_BONUS },
+            },
+            has_mp = false,
+            height = 130.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 37,
+        })
+        --==========================================================--
+        -- goatman red spear
+        NewUnitTemplate('n02W', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_GOATMAN,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 25.,
+            base_stats = { health = 245., hp_regen = 0.3, moving_speed = 265. },
+            weapon = { ATTACK_SPEED = 1.94, DAMAGE = 10, CRIT_CHANCE = 12., missile = "goatman_spear", angle_deviation = 6. },
+            bonus_parameters = {
+                { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = -5, method = STRAIGHT_BONUS },
+            },
+            has_mp = false,
+            height = 130.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 37,
+        })
+        --==========================================================--
         -- bandit
         NewUnitTemplate('n00T', {
             name = LOCALE_LIST[my_locale].MONSTER_NAME_BANDIT,
@@ -2246,7 +2573,7 @@ do
             weapon = { ATTACK_SPEED = 1.35, DAMAGE = 6, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
             offhand = { BLOCK = 25., BLOCK_RATE = 35. },
             bonus_parameters = {
-                { param = RANGE_DAMAGE_REDUCTION, value = 5, method = STRAIGHT_BONUS },
+                { param = RANGE_DAMAGE_REDUCTION, value = 7, method = STRAIGHT_BONUS },
                 { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
             },
@@ -2254,6 +2581,28 @@ do
             height = 120.,
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 25,
+        })
+        --==========================================================--
+        -- cannibal
+        NewUnitTemplate('n038', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_CANNIBAL,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_HUMAN },
+            time_before_remove = 25.,
+            base_stats = { health = 245., hp_regen = 0.3, moving_speed = 255. },
+            weapon = { ATTACK_SPEED = 1.35, DAMAGE = 8, CRIT_CHANCE = 12., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
+            offhand = { BLOCK = 30., BLOCK_RATE = 35. },
+            bonus_parameters = {
+                { param = RANGE_DAMAGE_REDUCTION, value = 7, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
+            },
+            has_mp = false,
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 31,
         })
         --==========================================================--
         -- robber
@@ -2348,6 +2697,27 @@ do
             xp = 42,
         })
         --==========================================================--
+        -- assassin cannibal
+        NewUnitTemplate('n039', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_ASSASSIN_CANNIBAL,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            unit_trait = { TRAIT_HUMAN },
+            time_before_remove = 25.,
+            base_stats = { health = 224., hp_regen = 0.3, moving_speed = 255. },
+            weapon = { ATTACK_SPEED = 2.05, DAMAGE = 12, ATTRIBUTE = POISON_ATTRIBUTE, CRIT_CHANCE = 18., missile = "MSBN", angle_deviation = 4. },
+            bonus_parameters = {
+                { param = CRIT_MULTIPLIER, value = 0.3, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
+            },
+            scale = 1.3,
+            height = 130.,
+            has_mp = false,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 47,
+        })
+        --==========================================================--
         -- bandit's boss
         NewUnitTemplate('n00X', {
             name = LOCALE_LIST[my_locale].MONSTER_NAME_BANDIT_BOSS,
@@ -2400,7 +2770,7 @@ do
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
-            skill_list = { "ASSM", "ASBN" },
+            skill_list = { "ASSM", "ASBN", "A049" },
             has_mp = false,
             teamcolour = 10,
             drop_offset_min = 20., drop_offset_max = 65.,
@@ -2460,7 +2830,7 @@ do
             has_mp = false,
             xp = 0,
         })
-         --==========================================================--
+        --==========================================================--
         -- MEPH
         NewUnitTemplate(MONSTER_ID_MEPHISTO, {
             name = LOCALE_LIST[my_locale].MONSTER_NAME_MEPHISTO,
@@ -2472,14 +2842,12 @@ do
             base_stats = { health = 1370., hp_regen = 0.4, moving_speed = 245. },
             weapon = {
                 ATTACK_SPEED = 1.95,
-                DAMAGE = 15,
+                DAMAGE = 22,
                 CRIT_CHANCE = 13.,
-                ranged = true,
-                LIGHTNING = { id = "YENL", fade = 0.65 },
-                DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL,
-                ATTRIBUTE = LIGHTNING_ATTRIBUTE,
+                ranged = false,
+                DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL,
+                ATTRIBUTE = PHYSICAL_ATTRIBUTE,
                 ATTRIBUTE_BONUS = 15,
-                sound = { pack = { "Sounds\\Spells\\lightning_launch_1.wav", "Sounds\\Spells\\lightning_launch_2.wav", "Sounds\\Spells\\lightning_launch_3.wav" }, volume = 120, cutoff = 1600. },
             },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
@@ -2513,7 +2881,7 @@ do
             unit_trait = { TRAIT_DEMON },
             time_before_remove = 25.,
             base_stats = { health = 1750., hp_regen = 0.4, moving_speed = 255. },
-            weapon = { ATTACK_SPEED = 1.71, DAMAGE = 25, CRIT_CHANCE = 13., missile = "MBAL", DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 15, angle_deviation = 4. },
+            weapon = { ATTACK_SPEED = 1.71, DAMAGE = 29, CRIT_CHANCE = 13., DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 15, angle_deviation = 4. },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = PHYSICAL_DEFENCE, value = 450, method = STRAIGHT_BONUS },
@@ -2576,7 +2944,7 @@ do
             bonus_parameters = {
                 { param = DAMAGE_TO_CC_ENEMIES, value = 35, method = STRAIGHT_BONUS },
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
-                { param = PHYSICAL_DEFENCE, value = 650, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_DEFENCE, value = 450, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 150, method = STRAIGHT_BONUS },
                 { param = CONTROL_REDUCTION, value = 65, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
@@ -2594,6 +2962,35 @@ do
             xp = 700,
         })
         --==========================================================--
+        -- duriel
+        NewUnitTemplate(MONSTER_ID_DURIEL, {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_DURIEL,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_BOSS,
+            unit_trait = { TRAIT_DEMON },
+            time_before_remove = 25.,
+            base_stats = { health = 2305., hp_regen = 0.49, moving_speed = 275. },
+            weapon = { ATTACK_SPEED = 1.66, DAMAGE = 44, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_BASH },
+            bonus_parameters = {
+                { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_DEFENCE, value = 500, method = STRAIGHT_BONUS },
+                { param = MAGICAL_SUPPRESSION, value = 150, method = STRAIGHT_BONUS },
+                { param = CONTROL_REDUCTION, value = 65, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS },
+                { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
+            },
+            on_attack_sound = { pack = { "Sounds\\Monsters\\duriel_attack1.wav", "Sounds\\Monsters\\duriel_attack2.wav", "Sounds\\Monsters\\duriel_attack3.wav", "Sounds\\Monsters\\duriel_attack4.wav", "Sounds\\Monsters\\duriel_attack5.wav" }, volume = 128, cutoff = 1700., chance = 28. },
+            skill_list = { "ADSM" },
+            death_sound = { pack = { "Sounds\\Monsters\\duriel_death" }, volume = 128, cutoff = 1700. },
+            has_mp = false,
+            drop_offset_min = 20., drop_offset_max = 65.,
+            xp = 700,
+        })
+        --==========================================================--
         -- ANDARIEL
         NewUnitTemplate("n022", {
             name = LOCALE_LIST[my_locale].MONSTER_NAME_ANDARIEL,
@@ -2606,7 +3003,7 @@ do
             weapon = { ATTACK_SPEED = 1.53, DAMAGE = 27, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE, ATTRIBUTE = POISON_ATTRIBUTE, ATTRIBUTE_BONUS = 10 },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
-                { param = PHYSICAL_DEFENCE, value = 650, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_DEFENCE, value = 350, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 150, method = STRAIGHT_BONUS },
                 { param = CONTROL_REDUCTION, value = 55, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -35, method = STRAIGHT_BONUS },
@@ -2617,7 +3014,7 @@ do
             },
             on_attack_sound = { pack = { "Sounds\\Monsters\\andariel_attack1.wav", "Sounds\\Monsters\\andariel_attack2.wav", "Sounds\\Monsters\\andariel_attack3.wav", "Sounds\\Monsters\\andariel_attack3.wav" }, volume = 128, cutoff = 1700., chance = 28. },
             death_sound = { pack = { "Sounds\\Monsters\\andariel_death.wav" }, volume = 128, cutoff = 1700. },
-            skill_list = { "AAPB", "AAHF" },
+            skill_list = { "AAPB", "AAHF", "A041" },
             has_mp = false,
             drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
@@ -2675,7 +3072,7 @@ do
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
-            skill_list = { "ABRR", "ABRA" },
+            skill_list = { "ABRR", "ABRA", "A03Y" },
             death_sound = { pack = { "Sounds\\Monsters\\blood_raven_death.wav" }, volume = 128, cutoff = 1700. },
             has_mp = false,
             teamcolour = 10,
@@ -2702,6 +3099,90 @@ do
             height = 120.,
             drop_offset_min = 15., drop_offset_max = 45.,
             has_mp = false,
+            xp = 0,
+        })
+        --==========================================================--
+        -- BELIAL
+        NewUnitTemplate(MONSTER_ID_BELIAL, {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_BELIAL,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_BOSS,
+            unit_trait = { TRAIT_DEMON },
+            time_before_remove = 25.,
+            base_stats = { health = 1370., hp_regen = 0.4, moving_speed = 245. },
+            missile_eject_z = 60.,
+            missile_eject_range = 50.,
+            weapon = {
+                ATTACK_SPEED = 1.95,
+                DAMAGE = 15,
+                CRIT_CHANCE = 13.,
+                missile = "belial_missile",
+                DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL,
+                ATTRIBUTE = POISON_ATTRIBUTE,
+                ATTRIBUTE_BONUS = 15,
+                angle_deviation = 3.
+            },
+            bonus_parameters = {
+                { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_DEFENCE, value = 200, method = STRAIGHT_BONUS },
+                { param = MAGICAL_SUPPRESSION, value = 350, method = STRAIGHT_BONUS },
+                { param = CONTROL_REDUCTION, value = 55, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 25, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = 20, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 35, method = STRAIGHT_BONUS },
+                { param = DARKNESS_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS },
+                { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
+                { param = MAGICAL_ATTACK, value = 125, method = STRAIGHT_BONUS },
+            },
+            on_attack_sound = { pack = { "Units\\Creeps\\SeaGiant\\SeaGiantWhat1.wav", "Units\\Creeps\\SeaGiant\\SeaGiantWhat2.wav", "Units\\Creeps\\SeaGiant\\SeaGiantYes3.wav" }, volume = 128, cutoff = 1700., chance = 28. },
+            skill_list = { "A03X", "A042", "A044", "A045", "A047" },
+            has_mp = false,
+            drop_offset_min = 20., drop_offset_max = 65.,
+            teamcolour = 9,
+            xp = 700,
+        })
+        --==========================================================--
+        -- BELIAL illusion
+        NewUnitTemplate("u01A", {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_BELIAL,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = 0,
+            unit_trait = { TRAIT_DEMON },
+            time_before_remove = 25.,
+            base_stats = { health = 200., hp_regen = 0.4, moving_speed = 245. },
+            missile_eject_z = 60.,
+            missile_eject_range = 50.,
+            weapon = {
+                ATTACK_SPEED = 1.95,
+                DAMAGE = 15,
+                CRIT_CHANCE = 13.,
+                missile = "belial_missile",
+                DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL,
+                ATTRIBUTE = ICE_ATTRIBUTE,
+                ATTRIBUTE_BONUS = 15,
+                angle_deviation = 3.
+            },
+            bonus_parameters = {
+                { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_DEFENCE, value = 200, method = STRAIGHT_BONUS },
+                { param = MAGICAL_SUPPRESSION, value = 350, method = STRAIGHT_BONUS },
+                { param = CONTROL_REDUCTION, value = 55, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 25, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = 20, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 35, method = STRAIGHT_BONUS },
+                { param = DARKNESS_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS },
+                { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
+                { param = MAGICAL_ATTACK, value = 125, method = STRAIGHT_BONUS },
+            },
+            on_attack_sound = { pack = { "Units\\Creeps\\SeaGiant\\SeaGiantWhat1.wav", "Units\\Creeps\\SeaGiant\\SeaGiantWhat2.wav", "Units\\Creeps\\SeaGiant\\SeaGiantYes3.wav" }, volume = 128, cutoff = 1700., chance = 28. },
+            --skill_list = { "AMLN", "AMFB" },
+            has_mp = false,
+            drop_offset_min = 20., drop_offset_max = 65.,
+            teamcolour = 9,
             xp = 0,
         })
         --==========================================================--

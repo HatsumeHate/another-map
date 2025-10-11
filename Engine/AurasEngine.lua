@@ -64,7 +64,7 @@ do
             if level > aura.max_level then level = aura.max_level end
             aura.current_level = level
             aura.time = aura.level[aura.current_level].duration or nil
-            aura.sfx = AddSpecialEffect(aura.sfx_path, x, y)
+            aura.sfx = AddSpecialEffect(aura.sfx_path or "", x, y)
             BlzSetSpecialEffectScale(aura.sfx, aura.level[aura.current_level].sfx_scale or 1.)
             BlzSetSpecialEffectZ(aura.sfx, GetZ(x, y) + (aura.bonus_z or 0.))
 
@@ -90,7 +90,7 @@ do
                                         ApplyBuff(from, picked, aura.level[aura.current_level][ON_ENEMY].applied_buff, aura.current_level, ability_instance)
                                     end
 
-                                elseif aura.level[aura.current_level][ON_ALLY] and not IsUnitEnemy(picked, player) and from ~= picked then
+                                elseif aura.level[aura.current_level][ON_ALLY] and not IsUnitEnemy(picked, player) and (picked ~= from or (picked == from and aura.level[aura.current_level][ON_ALLY].include_self)) then
 
                                     if aura.level[aura.current_level][ON_ALLY].applied_effect then
                                         ApplyEffect(from, picked, 0.,0., aura.level[aura.current_level][ON_ALLY].applied_effect, aura.current_level, ability_instance)
@@ -134,6 +134,7 @@ do
     ---@param flag boolean
     function ToggleAuraOnUnit(target, id, level, flag, ability_instance)
         local aura = GetUnitAuraData(target, id)
+        local unit_data = GetUnitData(target)
 
 
             if flag then
@@ -166,7 +167,7 @@ do
                             DestroyEffect(aura.sfx)
                             AuraList[target][id] = nil
                         else
-                            GroupEnumUnitsInRange(aura.group, GetUnitX(target), GetUnitY(target), aura.level[aura.current_level].radius, nil)
+                            GroupEnumUnitsInRange(aura.group, GetUnitX(target), GetUnitY(target), (aura.level[aura.current_level].radius + unit_data.stats[RANGE_BONUS].bonus) * unit_data.stats[RANGE_BONUS].multiplier, nil)
 
                                 for index = BlzGroupGetSize(aura.group) - 1, 0, -1 do
                                     local picked = BlzGroupUnitAt(aura.group, index)
@@ -181,7 +182,7 @@ do
                                                     ApplyBuff(target, picked, aura.level[aura.current_level][ON_ENEMY].applied_buff, aura.current_level, ability_instance)
                                                 end
 
-                                            elseif aura.level[aura.current_level][ON_ALLY] and not IsUnitEnemy(picked, player) and picked ~= target then
+                                            elseif aura.level[aura.current_level][ON_ALLY] and not IsUnitEnemy(picked, player) and (picked ~= target or (picked == target and aura.level[aura.current_level][ON_ALLY].include_self)) then
 
                                                 if aura.level[aura.current_level][ON_ALLY].applied_effect then
                                                     ApplyEffect(target, picked, 0.,0., aura.level[aura.current_level][ON_ALLY].applied_effect, aura.current_level, ability_instance)
@@ -218,9 +219,13 @@ do
 
             else
                 AuraList[target][id] = nil
-                DestroyGroup(aura.group)
-                DestroyTimer(aura.timer)
-                DestroyEffect(aura.sfx)
+
+                    if aura then
+                        DestroyGroup(aura.group)
+                        DestroyTimer(aura.timer)
+                        DestroyEffect(aura.sfx)
+                    end
+
             end
 
 

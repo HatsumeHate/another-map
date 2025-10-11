@@ -406,6 +406,35 @@ do
     end
 
 
+    local function OpenContextMenu(button, frame, player)
+        local item_data = GetItemData(button.item) or nil
+
+            if item_data then
+                local context_parent_frame = PrivateChestFrame[player].slots[40]
+
+                if PlayerInventoryFrameState[player] then
+                    context_parent_frame = InventorySlots[player][45]
+                end
+
+                CreatePlayerContextMenu(player, button.button, FRAMEPOINT_RIGHT, context_parent_frame)
+
+                AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_FROM_STASH, function()
+                    if AddToInventory(player, button.item) then
+                        if item_data.soundpack and item_data.soundpack.drop then PlayLocalSound(item_data.soundpack.drop, player - 1) end
+                        button.item = nil
+                        UpdatePrivateChestWindow(player)
+                    else
+                        Feedback_InventoryNoSpace(player)
+                    end
+                end)
+
+                AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_MOVE, function() StartSelectionMode(player, frame) end)
+            end
+
+
+    end
+
+
     ---@param player integer
     function DrawPrivateChestFrames(player)
         local new_Frame
@@ -502,7 +531,6 @@ do
         end)
 
 
-
         local mouse_state = false
         local DragTimer = CreateTimer()
         local MouseDownTrigger = CreateTrigger()
@@ -510,20 +538,30 @@ do
         TriggerRegisterPlayerEvent(MouseDownTrigger, actual_player, EVENT_PLAYER_MOUSE_DOWN)
         TriggerAddAction(MouseDownTrigger, function()
 
-            if PrivateChestFrame[player].state and BlzGetTriggerPlayerMouseButton() == MOUSE_BUTTON_TYPE_LEFT then
-                  if PrivateChestFrame[player].in_focus and PrivateChestFrame[player].in_focus.item then
-                        mouse_state = true
-                        local in_focus = PrivateChestFrame[player].in_focus
-                        TimerStart(DragTimer, 0.2, false, function()
-                            if PrivateChestFrame[player].in_focus and in_focus == PrivateChestFrame[player].in_focus and mouse_state and PrivateChestFrame[player].in_focus.item then
-                                DestroyContextMenu(player)
-                                StartSelectionMode(player, PrivateChestFrame[player].in_focus.button)
-                            end
-                        end)
-                  else
-                      mouse_state = false
-                      TimerStart(DragTimer, 0., false, nil)
-                  end
+            if PrivateChestFrame[player].state then
+                local mouse_button = BlzGetTriggerPlayerMouseButton()
+
+                    if mouse_button == MOUSE_BUTTON_TYPE_LEFT then
+                        if PrivateChestFrame[player].in_focus and PrivateChestFrame[player].in_focus.item then
+                            mouse_state = true
+                            local in_focus = PrivateChestFrame[player].in_focus
+                            TimerStart(DragTimer, 0.2, false, function()
+                                if PrivateChestFrame[player].in_focus and in_focus == PrivateChestFrame[player].in_focus and mouse_state and PrivateChestFrame[player].in_focus.item then
+                                    DestroyContextMenu(player)
+                                    StartSelectionMode(player, PrivateChestFrame[player].in_focus.button)
+                                end
+                            end)
+                      else
+                          mouse_state = false
+                          TimerStart(DragTimer, 0., false, nil)
+                      end
+                    elseif mouse_button == MOUSE_BUTTON_TYPE_RIGHT then
+                        DestroyContextMenu(player)
+                        OpenContextMenu(PrivateChestFrame[player].in_focus, PrivateChestFrame[player].in_focus.button, player)
+                        PlayLocalSound("Sound\\Interface\\BigButtonClick.wav", player-1)
+                        ImitateFrameClick(PrivateChestFrame[player].in_focus.button)
+                    end
+
             end
 
         end)
@@ -742,32 +780,7 @@ do
                         TimerStart(DoubleClickTimer[player].timer, 0., false, nil)
                     end
                 else
-
-                    TimerStart(DoubleClickTimer[player].timer, 0.25, false, function()
-
-                        if item_data then
-                            local context_parent_frame = PrivateChestFrame[player].slots[40]
-
-                            if PlayerInventoryFrameState[player] then
-                                context_parent_frame = InventorySlots[player][45]
-                            end
-
-                            CreatePlayerContextMenu(player, button.button, FRAMEPOINT_RIGHT, context_parent_frame)
-
-                            AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_FROM_STASH, function()
-                                if AddToInventory(player, button.item) then
-                                    if item_data.soundpack and item_data.soundpack.drop then PlayLocalSound(item_data.soundpack.drop, player - 1) end
-                                    button.item = nil
-                                    UpdatePrivateChestWindow(player)
-                                else
-                                    Feedback_InventoryNoSpace(player)
-                                end
-                            end)
-
-                            AddContextOption(player, LOCALE_LIST[my_locale].UI_TEXT_MOVE, function() StartSelectionMode(player, frame) end)
-                        end
-
-                    end)
+                    TimerStart(DoubleClickTimer[player].timer, 0.25, false, nil)
                 end
 
 

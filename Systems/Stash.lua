@@ -70,14 +70,18 @@ do
 
             for i = 1, #item_data.BONUS do
                 local value = item_data.BONUS[i].VALUE
+                local base_value = item_data.BONUS[i].base or value
 
                 --print("value before " .. value)
-                if item_data.BONUS[i].METHOD == MULTIPLY_BONUS or (item_data.BONUS[i].PARAM == CRIT_MULTIPLIER or item_data.BONUS[i].PARAM == HP_REGEN or item_data.BONUS[i].PARAM == MP_REGEN) then value = R2I(math.floor((value * 100.)+0.5)) end
+                if item_data.BONUS[i].METHOD == MULTIPLY_BONUS or (item_data.BONUS[i].PARAM == CRIT_MULTIPLIER or item_data.BONUS[i].PARAM == HP_REGEN or item_data.BONUS[i].PARAM == MP_REGEN) then
+                    value = math.floor((value * 100.)+0.5)
+                    --base_value = math.floor((base_value * 100.)+0.5)
+                end
+
                 --print("value after " .. value)
 
-                result = result .. "-q" .. i .. R2I(item_data.BONUS[i].PARAM) .. "-w" .. i .. value .. "-e" .. i .. R2I(item_data.BONUS[i].METHOD) .. "-k" .. i .. (item_data.BONUS[i].base or value) .. "-y" .. i .. (item_data.BONUS[i].delta or 0) .. "-c" .. i .. (item_data.BONUS[i].delta_level or 0) .. "-z" .. i .. (item_data.BONUS[i].delta_level_max or 0)
+                result = result .. "-q" .. i .. R2I(item_data.BONUS[i].PARAM) .. "-w" .. i .. value .. "-e" .. i .. R2I(item_data.BONUS[i].METHOD) .. "-k" .. i .. base_value .. "-y" .. i .. (item_data.BONUS[i].delta or 0) .. "-c" .. i .. (item_data.BONUS[i].delta_level or 0) .. "-z" .. i .. (item_data.BONUS[i].delta_level_max or 0)
             end
-
 
         if item_data.SKILL_BONUS then
 
@@ -116,15 +120,15 @@ do
 
         result = result .. "-r" .. item_data.MAX_SLOTS
 
+
         if item_data.item_variation then
             result = result .. "-t" .. item_data.item_variation .. "-af" .. item_data.affix .. "-sf" .. item_data.suffix
         else
             result = result .. "-t0"
         end
 
+        result = result .. "-enditem"
         --print("parse result "..result)
-        result = result .. "-n" .. item_data.NAME .. "-enditem"
-
 
         return result
     end
@@ -174,11 +178,13 @@ do
                      --print("loaded method " .. item_data.BONUS[i].METHOD)
                      item_data.BONUS[i].VALUE = S2R(ParseData(code, "w"..i))
                      item_data.BONUS[i].PARAM = S2I(ParseData(code, "q"..i))
+                     item_data.BONUS[i].base = S2I(ParseData(code, "k"..i))
 
-                     if item_data.BONUS[i].METHOD == MULTIPLY_BONUS or (item_data.BONUS[i].PARAM == CRIT_MULTIPLIER or item_data.BONUS[i].PARAM == HP_REGEN or item_data.BONUS[i].PARAM == MP_REGEN) then item_data.BONUS[i].VALUE = item_data.BONUS[i].VALUE / 100.
+                     if item_data.BONUS[i].METHOD == MULTIPLY_BONUS or (item_data.BONUS[i].PARAM == CRIT_MULTIPLIER or item_data.BONUS[i].PARAM == HP_REGEN or item_data.BONUS[i].PARAM == MP_REGEN) then
+                         item_data.BONUS[i].VALUE = item_data.BONUS[i].VALUE / 100.
+                         --if item_data.BONUS[i].base >= 100 or item_data.BONUS[i].PARAM == CRIT_MULTIPLIER and item_data.BONUS[i].base >= 1 then item_data.BONUS[i].base = item_data.BONUS[i].base / 100. end
                      else item_data.BONUS[i].VALUE = R2I(item_data.BONUS[i].VALUE) end
 
-                     item_data.BONUS[i].base = S2I(ParseData(code, "k"..i))
 
                      local delta = S2I(ParseData(code, "y"..i))
 
@@ -235,14 +241,19 @@ do
             local var = ParseData(code, "t") or 0
 
             if S2I(var) > 0 then
-                local item_preset = QUALITY_ITEM_LIST[item_data.QUALITY][item_data.SUBTYPE][S2I(var)]
-                item_data.NAME = ITEM_AFFIX_NAME_LIST[S2I(ParseData(code, "af"))][item_preset.decl] .. item_preset.name .. ITEM_SUFFIX_LIST[S2I(ParseData(code, "sf"))].name
+                var = S2I(var)
+                local item_preset = QUALITY_ITEM_LIST[item_data.QUALITY][item_data.SUBTYPE][var]
+                item_data.affix = S2I(ParseData(code, "af"))
+                item_data.suffix = S2I(ParseData(code, "sf"))
+                item_data.NAME = ITEM_AFFIX_NAME_LIST[item_data.affix][item_preset.decl] .. item_preset.name .. ITEM_SUFFIX_LIST[item_data.suffix].name
                 item_data.item_variation = var
                 item_data.frame_texture = item_preset.icon
                 item_data.soundpack = item_preset.soundpack
                 item_data.stat_modificator = item_preset.modificator
                 item_data.model = item_preset.model or nil
                 item_data.texture = item_preset.texture or nil
+                item_data.assassin_texture = item_preset.assassin_texture or nil
+
             end
 
 

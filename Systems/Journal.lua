@@ -345,6 +345,33 @@ do
     end
 
 
+
+    ---@param player integer
+    ---@param id string
+    ---@param obj_id string
+    ---@param text string
+    ---@param hint_update boolean
+    function ChangeJournalEntryObjective(player, id, obj_id, text, hint_update)
+        local entry = GetEntry(player, id)
+
+            if entry then
+                for i = 1, #entry.objectives do
+                    if entry.objectives[i].id == obj_id then
+                        entry.objectives[i].text = text
+
+                            if hint_update then
+                                SendQuestMessage(QUEST_UPDATED_STRING .. entry.header, bj_TEXT_DELAY_QUESTUPDATE)
+                                if GetLocalPlayer() == Player(player - 1) then StartSound(QUEST_UPDATED_SOUND or bj_questUpdatedSound) end
+                            end
+
+                        UpdateJournalWindow(player)
+                        break
+                    end
+                end
+
+            end
+    end
+
     ---@param player integer
     ---@param id string
     ---@param obj_id string
@@ -434,6 +461,11 @@ do
                     BlzFrameSetText(JournalFrame[player].entry_text_frame, " ")
                     JournalFrame[player].entry_in_focus = nil
                 end
+
+                if JournalFrame[player].entries_list[i].tracking then
+                    DisableQuestTracking(PlayerHero[player])
+                end
+
                 table.remove(JournalFrame[player].entries_list, i)
                 SortEntries(player)
                 UpdateJournalWindow(player)

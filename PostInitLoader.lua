@@ -80,6 +80,7 @@ do
 
 		GetUnitX = GetUnitRealX
         GetUnitY = GetUnitRealY
+		R2S = RealToString
 
 		EnableDragSelect(false, false)
 		BlzEnableSelections(false, true)
@@ -94,6 +95,8 @@ do
 		AddSpecialEffect("Effect\\Hightlight_Orange.mdx", GetUnitX(gg_unit_HBRB_0041), GetUnitY(gg_unit_HBRB_0041))
 		SetTexture(gg_unit_HASS_0275, "B015")
 		AddSpecialEffect("Effect\\Hightlight_Red.mdx", GetUnitX(gg_unit_HASS_0275), GetUnitY(gg_unit_HASS_0275))
+		AddSpecialEffect("Effect\\Hightlight_Yellow.mdx", GetUnitX(gg_unit_HPAL_0007), GetUnitY(gg_unit_HPAL_0007))
+		SetTexture(gg_unit_HPAL_0007, TEXTURE_ID_EMPTY)
 		AddSpecialEffectTarget("Units\\Hero\\Appearance\\Sorceress_Hair.mdx", gg_unit_HSRC_0043, "head")
 		AddSpecialEffectTarget("Units\\Hero\\Appearance\\SlayerHead.mdx", gg_unit_HASS_0275, "head")
 

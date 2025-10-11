@@ -5,7 +5,7 @@ do
 
     MAX_BLOCK_CHANCE = 60.
     MIN_ATTACK_DAMAGE_REDUCTION = 0.22
-    MIN_ATTRIBUTE_DAMAGE_REDUCTION = 0.3
+    MIN_ATTRIBUTE_DAMAGE_REDUCTION = 0.25
 
     MELEE_ATTACK = 1
     RANGE_ATTACK = 2
@@ -197,13 +197,9 @@ do
         local attacker_stats = attacker.stats
         local target_stats =  victim.stats
 
-        if attacker == nil then print("Warning: " .. GetUnitName(source) .. " doesn't have unit data.") end
-        if victim == nil then print("Warning: " .. GetUnitName(target) .. " doesn't have unit data.") end
 
-            if target == nil then return 0 end
-
-        if GetUnitState(target, UNIT_STATE_LIFE) <= 0.045 then
-            return
+        if target == nil or GetUnitState(target, UNIT_STATE_LIFE) <= 0.045 then
+            return 0
         end
 
         if damage_type == DAMAGE_TYPE_PHYSICAL and direct and IsUnitBlinded(source) then
@@ -258,10 +254,10 @@ do
                 if myeffect.eff.tags then
                     local mod = 1.
 
-                    if HasTag(myeffect.eff.tags, "bleeding") then mod = 1. + (attacker_stats[BLEEDING_DAMAGE_BOOST].value - target_stats[BLEEDING_DAMAGE_REDUCTION].value)
-                    elseif HasTag(myeffect.eff.tags, "burning") then mod = 1. + (attacker_stats[BURNING_DAMAGE_BOOST].value - target_stats[BURNING_DAMAGE_REDUCTION].value)
-                    elseif HasTag(myeffect.eff.tags, "poisoning") then mod = 1. + (attacker_stats[POISONING_DAMAGE_BOOST].value - target_stats[POISONING_DAMAGE_REDUCTION].value)
-                    elseif HasTag(myeffect.eff.tags, "decaying") then mod = 1. + (attacker_stats[DECAYING_DAMAGE_BOOST].value - target_stats[DECAYING_DAMAGE_REDUCTION].value) end
+                        if HasTag(myeffect.eff.tags, "bleeding") then mod = 1. + ((attacker_stats[BLEEDING_DAMAGE_BOOST].value - target_stats[BLEEDING_DAMAGE_REDUCTION].value) / 100.)
+                        elseif HasTag(myeffect.eff.tags, "burning") then mod = 1. + ((attacker_stats[BURNING_DAMAGE_BOOST].value - target_stats[BURNING_DAMAGE_REDUCTION].value) / 100.)
+                        elseif HasTag(myeffect.eff.tags, "poisoning") then mod = 1. + ((attacker_stats[POISONING_DAMAGE_BOOST].value - target_stats[POISONING_DAMAGE_REDUCTION].value) / 100.)
+                        elseif HasTag(myeffect.eff.tags, "decaying") then mod = 1. + ((attacker_stats[DECAYING_DAMAGE_BOOST].value - target_stats[DECAYING_DAMAGE_REDUCTION].value) / 100.) end
 
                     if mod < 0.1 then mod = 0.1 end
                     damage = damage * mod
@@ -335,7 +331,7 @@ do
             end
             --print("5")
 
-            if direct and (damage_type  and damage_type == DAMAGE_TYPE_PHYSICAL) and (victim.equip_point[OFFHAND_POINT] and victim.equip_point[OFFHAND_POINT].SUBTYPE == SHIELD_OFFHAND) then
+            if direct and ((damage_type and damage_type == DAMAGE_TYPE_PHYSICAL) or GetUnitTalentLevel(target, "talent_resistant") > 0) and (victim.equip_point[OFFHAND_POINT] and victim.equip_point[OFFHAND_POINT].SUBTYPE == SHIELD_OFFHAND) then
                 local block_chance = target_stats[BLOCK_CHANCE].value
 
                     if block_chance > MAX_BLOCK_CHANCE then block_chance = MAX_BLOCK_CHANCE end
@@ -353,7 +349,7 @@ do
                     if GetRandomInt(1, 100) <= block_chance then
                         attack_status = attack_status == ATTACK_STATUS_CRITICAL and ATTACK_STATUS_CRITICAL_BLOCKED or ATTACK_STATUS_BLOCKED
                         block_reduction = 1. - target_stats[BLOCK_ABSORB].value * 0.01
-                        if block_reduction > 0.8 then block_reduction = 0.8 end
+                        if block_reduction < 0.2 then block_reduction = 0.2 end
                         DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Defend\\DefendCaster.mdx", target, "origin"))
                     end
 
@@ -385,7 +381,7 @@ do
 
                 if attack_modifier < MIN_ATTACK_DAMAGE_REDUCTION then attack_modifier = MIN_ATTACK_DAMAGE_REDUCTION end
             end
---print("8")
+        --print("8")
 
             local distance_bonus = 1.
 
@@ -406,6 +402,7 @@ do
                     attribute_bonus = 1. + (((attacker_stats[GetAttributeBonusParam(attribute)].value + attribute_value + (damage_table.attribute_bonus or 0)) - target_stats[GetAttributeResistParam(attribute)].value) * 0.01)
                     if attribute_bonus < MIN_ATTRIBUTE_DAMAGE_REDUCTION then attribute_bonus = MIN_ATTRIBUTE_DAMAGE_REDUCTION end
 
+                    --print("attribute bonus ".. attribute_bonus)
             end
 
             damage = ((damage * attribute_bonus * trait_modifier) * critical_rate * block_reduction) * defence * attack_modifier * distance_bonus * impaired_bonus
@@ -424,16 +421,75 @@ do
 
         if direct then
 
-            if myeffect and myeffect.eff then
-                local ability_instance = myeffect.eff.ability_instance or { is_attack = false }
-                local is_attack = ability_instance and ability_instance.is_attack or false
-                local id = myeffect.eff.id
+            --if not (TimerGetRemaining(attacker.attack_timer) > 0.) then
+                if myeffect and myeffect.eff then
+                    local ability_instance = myeffect.eff.ability_instance or { is_attack = false }
+                    local is_attack = ability_instance and ability_instance.is_attack or false
+                    local id = myeffect.eff.id
 
-                    damage_table.proc_rate = ability_instance.proc_rate or 1.
+                        damage_table.proc_rate = ability_instance.proc_rate or 1.
 
-                    if not attacker.attack_instances[id] then
-                        attacker.attack_instances[id] = true
-                        ability_instance.is_attack = true
+
+                        if not attacker.attack_instances[id] and not (TimerGetRemaining(attacker.attack_timer) > 0.) then
+                            attacker.attack_instances[id] = true
+                            ability_instance.is_attack = true
+
+                            if attacker_stats[HP_PER_HIT].value > 0 then
+                                local amount = math.floor(attacker_stats[HP_PER_HIT].value * (1. + GetUnitParameterValue(source, HEALING_BONUS) * 0.01) + 0.5)
+                                if amount < 0 then amount = 0 end
+                                SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) + amount)
+                                CreateHitnumber(amount, source, source, HEAL_STATUS)
+                                DestroyEffect(AddSpecialEffectTarget("Effect\\DrainHealth.mdx", source, "chest"))
+                            end
+
+                            if attacker_stats[MP_PER_HIT].value > 0 then
+                                local amount = math.floor(attacker_stats[MP_PER_HIT].value * (1. + GetUnitParameterValue(source, RESOURCE_GENERATION) * 0.01) + 0.5)
+                                if amount < 0 then amount = 0 end
+                                SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + amount)
+                                CreateHitnumber(amount, source, source, RESOURCE_STATUS)
+                                DestroyEffect(AddSpecialEffectTarget("Effect\\DrainMana.mdx", source,"chest"))
+                            end
+
+                            local attack_cooldown = BlzGetUnitAttackCooldown(source, 0) - 0.01
+                            if myeffect.eff.level[myeffect.l].attack_cooldown then attack_cooldown = (myeffect.eff.level[myeffect.l].attack_cooldown * (1. - attacker_stats[ATTACK_SPEED].value / 100.)) - 0.01 end
+                            TimerStart(attacker.attack_timer, attack_cooldown, false, function()
+                                attacker.proc_list = nil
+                                attacker.proc_list = { }
+                            end)
+
+                            local timer = CreateTimer()
+                            ability_instance.attack_timer = timer
+                            TimerStart(timer, attack_cooldown, false, function()
+                                attacker.attack_instances[id] = nil
+                                ability_instance.proc_list = nil
+                                ability_instance.proc_list = {}
+                                ability_instance.is_attack = false
+                                DestroyTimer(timer)
+                            end)
+
+                            damage_table.proc_list = ability_instance.proc_list
+                            damage_table = OnMyAttack(source, target, damage_table)
+                            damage = damage_table.damage
+                            attribute = damage_table.attribute
+                            attack_status = damage_table.attack_status
+                            damage_type = damage_table.damage_type
+                            attack_type = damage_table.attack_type
+                            direct = damage_table.is_direct
+                            myeffect = damage_table.effect
+                        elseif attacker.attack_instances[id] and is_attack then
+                            damage_table.proc_list = ability_instance.proc_list
+                            damage_table = OnMyAttack(source, target, damage_table)
+                            damage = damage_table.damage
+                            attribute = damage_table.attribute
+                            attack_status = damage_table.attack_status
+                            damage_type = damage_table.damage_type
+                            attack_type = damage_table.attack_type
+                            direct = damage_table.is_direct
+                            myeffect = damage_table.effect
+                        end
+                else
+                    if not (TimerGetRemaining(attacker.attack_timer) > 0.) then
+
                         if attacker_stats[HP_PER_HIT].value > 0 then
                             local amount = math.floor(attacker_stats[HP_PER_HIT].value * (1. + GetUnitParameterValue(source, HEALING_BONUS) * 0.01) + 0.5)
                             if amount < 0 then amount = 0 end
@@ -441,42 +497,20 @@ do
                             CreateHitnumber(amount, source, source, HEAL_STATUS)
                             DestroyEffect(AddSpecialEffectTarget("Effect\\DrainHealth.mdx", source, "chest"))
                         end
-
                         if attacker_stats[MP_PER_HIT].value > 0 then
-                            local amount = math.floor(attacker_stats[MP_PER_HIT].value * (1. + GetUnitParameterValue(source, RESOURCE_GENERATION) * 0.01) + 0.5)
-                            if amount < 0 then amount = 0 end
-                            SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + amount)
-                            CreateHitnumber(amount, source, source, RESOURCE_STATUS)
+                            SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + attacker_stats[MP_PER_HIT].value)
+                            CreateHitnumber(R2I(attacker_stats[MP_PER_HIT].value), source, source, RESOURCE_STATUS)
                             DestroyEffect(AddSpecialEffectTarget("Effect\\DrainMana.mdx", source,"chest"))
                         end
-
                         local attack_cooldown = BlzGetUnitAttackCooldown(source, 0) - 0.01
-                        if myeffect.eff.level[myeffect.l].attack_cooldown then attack_cooldown = (myeffect.eff.level[myeffect.l].attack_cooldown * (1. - attacker_stats[ATTACK_SPEED].value / 100.)) - 0.01 end
+
                         TimerStart(attacker.attack_timer, attack_cooldown, false, function()
                             attacker.proc_list = nil
                             attacker.proc_list = { }
                         end)
 
-                        local timer = CreateTimer()
-                        ability_instance.attack_timer = timer
-                        TimerStart(timer, attack_cooldown, false, function()
-                            attacker.attack_instances[id] = nil
-                            ability_instance.proc_list = nil
-                            ability_instance.proc_list = {}
-                            ability_instance.is_attack = false
-                            DestroyTimer(timer)
-                        end)
-                        damage_table.proc_list = ability_instance.proc_list
-                        damage_table = OnMyAttack(source, target, damage_table)
-                        damage = damage_table.damage
-                        attribute = damage_table.attribute
-                        attack_status = damage_table.attack_status
-                        damage_type = damage_table.damage_type
-                        attack_type = damage_table.attack_type
-                        direct = damage_table.is_direct
-                        myeffect = damage_table.effect
-                    elseif is_attack then
-                        damage_table.proc_list = ability_instance.proc_list
+                        if not attacker.proc_list then attacker.proc_list = {} end
+                        damage_table.proc_list = attacker.proc_list
                         damage_table = OnMyAttack(source, target, damage_table)
                         damage = damage_table.damage
                         attribute = damage_table.attribute
@@ -486,40 +520,8 @@ do
                         direct = damage_table.is_direct
                         myeffect = damage_table.effect
                     end
-            else
-                if not (TimerGetRemaining(attacker.attack_timer) > 0.) then
-
-                    if attacker_stats[HP_PER_HIT].value > 0 then
-                        local amount = math.floor(attacker_stats[HP_PER_HIT].value * (1. + GetUnitParameterValue(source, HEALING_BONUS) * 0.01) + 0.5)
-                        if amount < 0 then amount = 0 end
-                        SetUnitState(source, UNIT_STATE_LIFE, GetUnitState(source, UNIT_STATE_LIFE) + amount)
-                        CreateHitnumber(amount, source, source, HEAL_STATUS)
-                        DestroyEffect(AddSpecialEffectTarget("Effect\\DrainHealth.mdx", source, "chest"))
-                    end
-                    if attacker_stats[MP_PER_HIT].value > 0 then
-                        SetUnitState(source, UNIT_STATE_MANA, GetUnitState(source, UNIT_STATE_MANA) + attacker_stats[MP_PER_HIT].value)
-                        CreateHitnumber(R2I(attacker_stats[MP_PER_HIT].value), source, source, RESOURCE_STATUS)
-                        DestroyEffect(AddSpecialEffectTarget("Effect\\DrainMana.mdx", source,"chest"))
-                    end
-                    local attack_cooldown = BlzGetUnitAttackCooldown(source, 0) - 0.01
-
-                    TimerStart(attacker.attack_timer, attack_cooldown, false, function()
-                        attacker.proc_list = nil
-                        attacker.proc_list = { }
-                    end)
-
-                    if not attacker.proc_list then attacker.proc_list = {} end
-                    damage_table.proc_list = attacker.proc_list
-                    damage_table = OnMyAttack(source, target, damage_table)
-                    damage = damage_table.damage
-                    attribute = damage_table.attribute
-                    attack_status = damage_table.attack_status
-                    damage_type = damage_table.damage_type
-                    attack_type = damage_table.attack_type
-                    direct = damage_table.is_direct
-                    myeffect = damage_table.effect
                 end
-            end
+
 
         end
 
@@ -604,21 +606,13 @@ do
                         BlzSetSpecialEffectZ(damage_effect, GetUnitZ(target) + 55.)
                         DestroyEffect(damage_effect)
                 elseif not myeffect or not myeffect.eff then
-                    if attribute == FIRE_ATTRIBUTE then
-                        DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Items\\AIfb\\AIfbSpecialArt.mdx", target, "chest"))
-                    elseif attribute == ICE_ATTRIBUTE then
-                        DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Items\\AIob\\AIobSpecialArt.mdx", target, "chest"))
-                    elseif attribute == LIGHTNING_ATTRIBUTE then
-                        DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Items\\AIlb\\AIlbSpecialArt.mdx", target, "chest"))
-                    elseif attribute == ARCANE_ATTRIBUTE then
-                        DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Other\\BlackArrow\\BlackArrowMissile.mdx", target, "chest"))
-                    elseif attribute == POISON_ATTRIBUTE then
-                        DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Items\\OrbVenom\\OrbVenomSpecialArt.mdx", target, "chest"))
-                    elseif attribute == HOLY_ATTRIBUTE then
-                        DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Feedback\\SpellBreakerAttack.mdx", target, "chest"))
-                    elseif attribute == DARKNESS_ATTRIBUTE then
-                        DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", target, "chest"))
-                    end
+                    if attribute == FIRE_ATTRIBUTE then DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Items\\AIfb\\AIfbSpecialArt.mdx", target, "chest"))
+                    elseif attribute == ICE_ATTRIBUTE then DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Items\\AIob\\AIobSpecialArt.mdx", target, "chest"))
+                    elseif attribute == LIGHTNING_ATTRIBUTE then DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Items\\AIlb\\AIlbSpecialArt.mdx", target, "chest"))
+                    elseif attribute == ARCANE_ATTRIBUTE then DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Other\\BlackArrow\\BlackArrowMissile.mdx", target, "chest"))
+                    elseif attribute == POISON_ATTRIBUTE then DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Items\\OrbVenom\\OrbVenomSpecialArt.mdx", target, "chest"))
+                    elseif attribute == HOLY_ATTRIBUTE then DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Feedback\\SpellBreakerAttack.mdx", target, "chest"))
+                    elseif attribute == DARKNESS_ATTRIBUTE then DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Undead\\DeathandDecay\\DeathandDecayDamage.mdx", target, "chest")) end
                 end
 
             end

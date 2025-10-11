@@ -125,30 +125,68 @@ do
         return 0
     end
 
+    function IsFileItemSlot(code)
+        for i = 1, #code do
+            if SubString(code, i, i+8) == "dataload" then return true end
+        end
+        return false
+    end
+    
+    function IsFileProgressionSlot(code)
+        for i = 1, #code do
+            if SubString(code, i, i+11) == "progression" then return true end
+        end
+        return false
+    end
+
+    function GetFileItemPackage(code)
+        return math.floor(string.sub(code, string.find(code, "item", 1, true)+4, #code))
+    end
+
     function FileLoad(path)
 
             Preloader(path)
             PreloadGenClear()
 
+        --print("starting to load file " .. path)
 
         local part_1 = BlzGetAbilityTooltip(FourCC("Agyv"), 0)
         local part_2 = BlzGetAbilityTooltip(FourCC("Aroc"), 0)
-        local result = part_1..part_2
+        --local part_3 = BlzGetAbilityTooltip(FourCC("Ahsb"), 0)
+        local result = part_1..part_2--..part_3
         local slot = GetFileSlot(path)
         local prefix
 
-        if slot > 0 then
-            prefix = "dataload" .. slot
-        else
-            prefix = "dataload_progression"
-        end
+        --print("loading slot " .. slot)
+
+        if slot > 0 then prefix = "dataload" .. "slot" .. slot
+        else prefix = "progression" end
+
 
         for i = 0, 5 do
             if GetLocalPlayer() == Player(i) then
-                BlzSendSyncData(prefix, result)
+
+                if slot > 0 then
+                    --print("item slot loading, sending packages")
+                    BlzSendSyncData(i..prefix .. "item1", part_1)
+                    BlzSendSyncData(i..prefix .. "item2", part_2)
+                    --BlzSendSyncData(i..prefix .. "item3", part_3)
+                else
+                    --print("progression loading, sending packages")
+                    BlzSendSyncData(i..prefix .. "item1", part_1)
+                    BlzSendSyncData(i..prefix .. "item2", part_2)
+                end
+
+                --BlzSendSyncData(prefix, result)
                 --print("send data ".. result .." in slot " .. slot)
             end
         end
+
+        BlzSetAbilityTooltip(FourCC("Agyv"),"0", 0)
+        BlzSetAbilityTooltip(FourCC("Aroc"),"0", 0)
+        BlzSetAbilityTooltip(FourCC("Ahsb"),"0", 0)
+
+        --print("file load end")
 
     end
 
@@ -168,6 +206,7 @@ do
         if GetLocalPlayer() == Player(player) then
             Preload("\")\ncall BlzSetAbilityTooltip ('Agyv',\"".. data .. "\",0)" .. "\n//")
             Preload("\")\ncall BlzSetAbilityTooltip ('Aroc',\"".. data .. "\",0)" .. "\n//")
+            --Preload("\")\ncall BlzSetAbilityTooltip ('Ahsb',\"".. data .. "\",0)" .. "\n//")
             PreloadGenEnd(path)
         end
     end
@@ -185,25 +224,54 @@ do
 
         if not LoadBuffer then return end
 
+
         for i = 1, #LoadBuffer do
             result = result .. LoadBuffer[i]
         end
 
        --print("string to encode: " ..result)
         result = enc(additional_data..GetFileSlot(path)..result)
-       --print("decoded string: " .. result)
+       --print("encoded string: " .. result)
 
         PreloadGenClear()
+        --[[
+        if additional_data == "" then
+            local half = math.floor(#result / 2)
+            local part_1 = string.sub(result, 1, half)
+            local part_2 = string.sub(result, half+1, #result)
+
+            if GetLocalPlayer() == Player(player) then
+                Preload("\")\ncall BlzSetAbilityTooltip ('Agyv',\"".. part_1 .. "\",0)" .. "\n//")
+                Preload("\")\ncall BlzSetAbilityTooltip ('Aroc',\"".. part_2 .. "\",0)" .. "\n//")
+                PreloadGenEnd(path)
+                --print("saved!")
+            end
+        else
+            local thirth = math.floor(#result / 3)
+            local part_1 = string.sub(result, 1, thirth)
+            local part_2 = string.sub(result, thirth+1, #result - thirth)
+            local part_3 = string.sub(result, #result - thirth+1, #result)
+
+                if GetLocalPlayer() == Player(player) then
+                    Preload("\")\ncall BlzSetAbilityTooltip ('Agyv',\"".. part_1 .. "\",0)" .. "\n//")
+                    Preload("\")\ncall BlzSetAbilityTooltip ('Aroc',\"".. part_2 .. "\",0)" .. "\n//")
+                    Preload("\")\ncall BlzSetAbilityTooltip ('Ahsb',\"".. part_3 .. "\",0)" .. "\n//")
+                    PreloadGenEnd(path)
+                    --print("saved!")
+                end
+
+        end]]
         local half = math.floor(#result / 2)
         local part_1 = string.sub(result, 1, half)
         local part_2 = string.sub(result, half+1, #result)
 
-        if GetLocalPlayer() == Player(player) then
-            Preload("\")\ncall BlzSetAbilityTooltip ('Agyv',\"".. part_1 .. "\",0)" .. "\n//")
-            Preload("\")\ncall BlzSetAbilityTooltip ('Aroc',\"".. part_2 .. "\",0)" .. "\n//")
-            PreloadGenEnd(path)
-            --print("saved!")
-        end
+            if GetLocalPlayer() == Player(player) then
+                Preload("\")\ncall BlzSetAbilityTooltip ('Agyv',\"".. part_1 .. "\",0)" .. "\n//")
+                Preload("\")\ncall BlzSetAbilityTooltip ('Aroc',\"".. part_2 .. "\",0)" .. "\n//")
+                PreloadGenEnd(path)
+                --print("saved!")
+            end
+        --local half = math.floor(#result / 2)
 
         LoadBuffer = nil
     end
@@ -223,26 +291,114 @@ do
         for i = 0, 5 do
 
             for k = 1, 7 do
-                BlzTriggerRegisterPlayerSyncEvent(trigger, Player(i), "dataload" .. k, false)
+                BlzTriggerRegisterPlayerSyncEvent(trigger, Player(i), i .. "dataloadslot" .. k .. "item1", false)
+                BlzTriggerRegisterPlayerSyncEvent(trigger, Player(i), i .. "dataloadslot" .. k .. "item2", false)
+                BlzTriggerRegisterPlayerSyncEvent(trigger, Player(i), i .. "dataloadslot" .. k .. "item3", false)
             end
 
-            BlzTriggerRegisterPlayerSyncEvent(trigger, Player(i), "dataload_progression", false)
+            BlzTriggerRegisterPlayerSyncEvent(trigger, Player(i), i .. "progressionitem" .. 1, false)
+            BlzTriggerRegisterPlayerSyncEvent(trigger, Player(i), i .. "progressionitem" .. 2, false)
+
+            --BlzTriggerRegisterPlayerSyncEvent(trigger, Player(i), "dataload_progression", false)
 
             PlayerSyncData[i+1] = {
                 [1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false
             }
+
+            PlayerPackages[i+1] = {
+                item_data = {
+                    [1] = { [1] = nil, [2] = nil, [3] = nil },
+                    [2] = { [1] = nil, [2] = nil, [3] = nil },
+                    [3] = { [1] = nil, [2] = nil, [3] = nil },
+                    [4] = { [1] = nil, [2] = nil, [3] = nil },
+                    [5] = { [1] = nil, [2] = nil, [3] = nil },
+                },
+                progression_data = { [1] = nil, [2] = nil }
+            }
+
         end
 
         TriggerAddAction(trigger, function()
+            local prefix = BlzGetTriggerSyncPrefix()
+            local data = BlzGetTriggerSyncData()
+            local player_number = math.floor(string.sub(prefix, 1, 1) + 1)
+            local slot = GetFileSlot(prefix)
             --print("sync event!")
-            local sync_string = dec(BlzGetTriggerSyncData())
+            --print("sync to load " .. BlzGetTriggerSyncData())
+            --local sync_string = dec(BlzGetTriggerSyncData())
             --print("decoded")
-            local slot = GetFileSlot(sync_string)
+            --local half = math.floor(#sync_string / 2)
+            --sync_string = dec(string.sub(sync_string, 1, half)) .. dec(string.sub(sync_string, half+1, #sync_string))
 
-            --print("sync to load" .. sync_string)
 
             --print("slot is " .. slot)
 
+            --print(prefix)
+
+            if #data > 1 then
+                if IsFileItemSlot(prefix) then
+                    --print("it's an item for player " .. player_number .." with a package num " .. GetFileItemPackage(prefix))
+                    PlayerPackages[player_number].item_data[slot][GetFileItemPackage(prefix)] = data
+                        --and PlayerPackages[player_number].item_data[slot][3]
+                        if PlayerPackages[player_number].item_data[slot][1] and PlayerPackages[player_number].item_data[slot][2]  then
+                            --print("all packages received")
+                            local sync_string = dec(PlayerPackages[player_number].item_data[slot][1] .. PlayerPackages[player_number].item_data[slot][2])
+                            local begin = string.find(sync_string, "slot", 1, true)+5
+                            local delc = string.find(sync_string, "_-a", begin, true)
+                            local player = ParsePlayerNameOut(string.sub(sync_string, begin, delc-1))--SubString(sync_string, 5, delc-3))
+
+                            if StringLength(sync_string) > 1 then sync_string = string.sub(sync_string, delc, #sync_string)
+                            else sync_string = "" end
+
+                                for i = 0, 5 do
+                                    local name = GetPlayerName(Player(i))
+
+                                    if #name > 0 then
+
+                                        if IsCyrillic(name) then name = ConvertFromCyrillic(name) end
+
+                                        if name == player and not PlayerSyncData[i+1][slot] and #sync_string > 1 then
+                                            --print("its a slot with data " .. sync_string)
+                                            LoadItem(sync_string, i+1, slot)
+                                            PlayerSyncData[i+1][slot] = true
+                                            break
+                                        end
+                                    end
+
+                                end
+
+                        end
+
+                elseif IsFileProgressionSlot(prefix) then
+                    PlayerPackages[player_number].progression_data[GetFileItemPackage(prefix)] = data
+
+                        if PlayerPackages[player_number].progression_data[1] and PlayerPackages[player_number].progression_data[2] then
+                            local sync_string = dec(PlayerPackages[player_number].progression_data[1] .. PlayerPackages[player_number].progression_data[2])
+                            local player = ParsePlayerNameOut(string.sub(sync_string, 2, string.find(sync_string, "@", 1, true)-2))
+
+                                for i = 0, 5 do
+                                    local name = GetPlayerName(Player(i))
+                                    if #name > 0 then
+
+                                        if IsCyrillic(name) then name = ConvertFromCyrillic(name) end
+
+                                        if name == player and not PlayerSyncData[i+1]["current_wave"] and #sync_string > 1 then
+                                            PlayerSyncData[i+1]["current_wave"] = string.sub(sync_string, string.find(sync_string, "@currentwave", 1, true)+12, #sync_string)
+                                            break
+                                        end
+                                    end
+
+                                end
+                        end
+
+                end
+            end
+
+
+
+
+
+                --[[
                 if slot > 0 then
                     --print("its a slot with data " .. sync_string)
                     local begin = string.find(sync_string, "slot", 1, true)+5
@@ -267,6 +423,7 @@ do
                                 if IsCyrillic(name) then name = ConvertFromCyrillic(name) end
 
                                 if name == player and not PlayerSyncData[i+1][slot] and #sync_string > 1 then
+                                    print("its a slot with data " .. sync_string)
                                     LoadItem(sync_string, i+1, slot)
                                     PlayerSyncData[i+1][slot] = true
                                     break
@@ -297,17 +454,19 @@ do
                             --print("name")
 
                         end
-                end
+                end]]
 
         end)
 
-        BlzSetAbilityTooltip(FourCC("Agyv"),"", 0)
-        BlzSetAbilityTooltip(FourCC("Aroc"),"", 0)
+        BlzSetAbilityTooltip(FourCC("Agyv"),"0", 0)
+        BlzSetAbilityTooltip(FourCC("Aroc"),"0", 0)
+        BlzSetAbilityTooltip(FourCC("Ahsb"),"0", 0)
 
 
         CA      = { "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", "ё", }
         CAUP    = { "Й", "Ц", "У", "К", "Е", "Н", "Г", "Ш", "Щ", "З", "Х", "Ъ", "Ф", "Ы", "В", "А", "П", "Р", "О", "Л", "Д", "Ж", "Э", "Я", "Ч", "С", "М", "И", "М", "Ь", "Б", "Ю", "Ё", }
         RA      = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "1", "2", "3", "4", "5", "6", "7", }
+
 
     end
 

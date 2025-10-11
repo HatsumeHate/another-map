@@ -422,6 +422,8 @@
 		return curRange
 	end
 
+
+
 	---@param a unit
 	---@param b unit
 	function AngleBetweenUnits (a, b)
@@ -532,6 +534,18 @@
 		return r1 <= (r2 + 45.) and r1 >= (r2 - 45.)
 	end
 
+
+		local TAU = math.pi * 2.
+
+		function IsPointInsideCone(coneX, coneY, coneDirection, coneWidth, targetX, targetY)
+        local a = (coneDirection - math.atan(targetY - coneY, targetX - coneX) + math.pi) %% TAU - math.pi
+        return a * a <= coneWidth * coneWidth * 0.25
+    end
+
+		function IsPointInsideCone(coneX, coneY, coneDirection, coneWidth, targetX, targetY)
+        return math.abs((coneDirection - math.atan(targetY - coneY, targetX - coneX) + math.pi) %% (math.pi * 2.) - math.pi) <= coneWidth * 0.5
+    end
+
 	---@param ataker unit
 	---@param victim unit
 	function IsUnitAtSide(ataker, victim)
@@ -590,6 +604,25 @@
 	function WhichSide(a, x, y)
 		local facing = GetUnitFacing(a)
 		local angle  = AngleBetweenUnitXY(a, x, y)
+		local float_angle
+
+		if angle < 0 then
+			angle = angle + 360
+		end
+
+		float_angle = facing - angle
+
+		if float_angle < 0 then
+			float_angle = float_angle + 360
+		end
+
+		return float_angle < 180
+	end
+		---@param facing angle
+	---@param x real
+	---@param y real
+	function WhichSideEx(facing, ox, oy, x, y)
+		local angle  = AngleBetweenXY_DEG(ox, oy, x, y)
 		local float_angle
 
 		if angle < 0 then
@@ -819,9 +852,14 @@
 	end
 
 
+
+
 		RealGetUnitX = GetUnitX
     	RealGetUnitY = GetUnitY
 
+		function RealToString(s)
+			return string.format('%%.3f', s)
+		end
 
     function GetUnitRealX(unit)
         local collision = math.floor(BlzGetUnitCollisionSize(unit) + 0.5)

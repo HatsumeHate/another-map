@@ -106,6 +106,12 @@ do
             animation_backswing = 0.35,
         })
 
+        NewAnimationSequence("barb_spell_stomp", {
+            animation           = 45,
+            animation_point     = 0.5,
+            animation_backswing = 0.5,
+        })
+
         NewAnimationSequence("barb_swing_1", {
             animation           = 39,--24,
             animation_point     = 0.521,
@@ -195,6 +201,30 @@ do
                     animation           = 39,--10,
                     animation_point     = 0.61,
                     animation_backswing = 0.33,
+                }
+            }
+        })
+
+        NewAnimationSequence("barb_swing_5", {
+            animation           = 12,
+            animation_point     = 0.521,
+            animation_backswing = 0.33,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 12,
+                    animation_point     = 0.541,
+                    animation_backswing = 0.4,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 12,
+                    animation_point     = 0.541,
+                    animation_backswing = 0.4,
+                    animation_bonus_timescale = 1.2
+                },
+                [ANIM_TAG_STAFF] = {
+                    animation           = 12,
+                    animation_point     = 0.541,
+                    animation_backswing = 0.4,
                 }
             }
         })
@@ -506,6 +536,179 @@ do
             animation_backswing = 0.8,
         })
 
+        NewAnimationSequence("paladin_basic_swing1", {
+            animation           = 3,
+            animation_point     = 0.367,
+            animation_backswing = 0.35,
+        })
+
+        NewAnimationSequence("paladin_basic_swing2", {
+            animation           = 4,
+            animation_point     = 0.6,
+            animation_backswing = 0.45,
+        })
+
+        NewAnimationSequence("paladin_basic_spell", {
+            animation           = 6,
+            animation_point     = 0.93,
+            animation_backswing = 0.8,
+        })
+
+        NewAnimationSequence("paladin_spell_throw_left", {
+            animation           = 8,
+            animation_point     = 0.584,
+            animation_backswing = 0.6,
+        })
+
+        NewAnimationSequence("paladin_spell_throw", {
+            animation           = 36,
+            animation_point     = 0.458,
+            animation_backswing = 0.55,
+        })
+
+        NewAnimationSequence("paladin_spell_throw_slow", {
+            animation           = 27,
+            animation_point     = 0.584,
+            animation_backswing = 0.6,
+        })
+
+        NewAnimationSequence("paladin_spell_slam", {
+            animation           = 17,
+            animation_point     = 0.623,
+            animation_backswing = 0.42,
+        })
+
+        NewAnimationSequence("paladin_spell_shieldbash", {
+            animation           = 40,
+            animation_point     = 0.5,
+            animation_backswing = 0.5,
+        })
+
+        NewAnimationSequence("paladin_spell_charge", {
+            animation           = 42,
+            animation_point     = 0.7,
+            animation_backswing = 0.,
+        })
+
+        NewAnimationSequence("paladin_spell_sky", {
+            animation           = 43,
+            animation_point     = 0.5,
+            animation_backswing = 0.4,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 44,
+                    animation_point     = 0.5,
+                    animation_backswing = 0.4,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 43,
+                    animation_point     = 0.5,
+                    animation_backswing = 0.4,
+                },
+                [ANIM_TAG_FISTS] = {
+                    animation           = 43,
+                    animation_point     = 0.5,
+                    animation_backswing = 0.4,
+                }
+            }
+        })
+
+
+        NewAnimationSequence("paladin_swing_1", {
+            animation           = 11,
+            animation_point     = 0.521,
+            animation_backswing = 0.33,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 11,
+                    animation_point     = 0.561,
+                    animation_backswing = 0.33,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 0,
+                    animation_point     = 0.542,
+                    animation_backswing = 0.33,
+                    animation_bonus_timescale = 1.1
+                },
+                [ANIM_TAG_STAFF] = {
+                    animation           = 11,
+                    animation_point     = 0.561,
+                    animation_backswing = 0.33,
+                }
+            }
+        })
+
+        NewAnimationSequence("paladin_swing_2", {
+            animation           = 12,
+            animation_point     = 0.625,
+            animation_backswing = 0.33,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 12,
+                    animation_point     = 0.625,
+                    animation_backswing = 0.33,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 2,
+                    animation_point     = 0.562,
+                    animation_backswing = 0.33,
+                    animation_bonus_timescale = 1.1
+                },
+                [ANIM_TAG_STAFF] = {
+                    animation           = 12,
+                    animation_point     = 0.625,
+                    animation_backswing = 0.33,
+                }
+            }
+        })
+
+        NewAnimationSequence("paladin_swing_3", {
+            animation           = 13,
+            animation_point     = 0.521,
+            animation_backswing = 0.33,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 13,
+                    animation_point     = 0.541,
+                    animation_backswing = 0.3,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 2,
+                    animation_point     = 0.562,
+                    animation_backswing = 0.33,
+                    animation_bonus_timescale = 1.2
+                },
+                [ANIM_TAG_STAFF] = {
+                    animation           = 13,
+                    animation_point     = 0.541,
+                    animation_backswing = 0.3,
+                }
+            }
+        })
+
+        NewAnimationSequence("paladin_swing_4", {
+            animation           = 11,--24,
+            animation_point     = 0.521,
+            animation_backswing = 0.33,
+            tags = {
+                [ANIM_TAG_TWOHANDED] = {
+                    animation           = 39,--10,
+                    animation_point     = 0.61,
+                    animation_backswing = 0.33,
+                },
+                [ANIM_TAG_ONEHANDED] = {
+                    animation           = 2,
+                    animation_point     = 0.584,
+                    animation_backswing = 0.33,
+                },
+                [ANIM_TAG_STAFF] = {
+                    animation           = 39,--10,
+                    animation_point     = 0.61,
+                    animation_backswing = 0.33,
+                }
+            }
+        })
+
 
         NewAnimationSequence("spider_venom_bile", {
             animation           = 3,
@@ -579,16 +782,22 @@ do
             animation_backswing = 0.45,
         })
 
+        NewAnimationSequence("skele_boss_swing", {
+            animation           = 7,
+            animation_point     = 0.57,
+            animation_backswing = 0.35,
+        })
+
         NewAnimationSequence("meph_spell", {
-            animation           = 14,
-            animation_point     = 0.333,
-            animation_backswing = 0.333,
+            animation           = 3,
+            animation_point     = 0.466,
+            animation_backswing = 0.534,
         })
 
         NewAnimationSequence("meph_spell_throw", {
-            animation           = 16,
-            animation_point     = 0.2,
-            animation_backswing = 0.333,
+            animation           = 2,
+            animation_point     = 0.466,
+            animation_backswing = 0.8,
         })
 
         NewAnimationSequence("demoness_spell_throw", {
@@ -683,10 +892,28 @@ do
             animation_backswing = 0.46,
         })
 
-        NewAnimationSequence("baal_spell", {
-            animation           = 4,
+        NewAnimationSequence("baal_spell_summon", {
+            animation           = 5,
+            animation_point     = 1.,
+            animation_backswing = 0.6,
+        })
+
+        NewAnimationSequence("baal_spell_throw", {
+            animation           = 6,
             animation_point     = 0.4,
             animation_backswing = 0.43,
+        })
+
+        NewAnimationSequence("baal_spell_slam", {
+            animation           = 4,
+            animation_point     = 0.573,
+            animation_backswing = 0.333,
+        })
+
+        NewAnimationSequence("baal_spell", {
+            animation           = 7,
+            animation_point     = 0.533,
+            animation_backswing = 0.467,
         })
 
         NewAnimationSequence("skeleton_mage_spell", {
@@ -800,7 +1027,35 @@ do
             animation_backswing = 0.35,
         })
 
+        NewAnimationSequence("meat_golem_throw", {
+            animation           = 3,
+            animation_point     = 0.55,
+            animation_backswing = 0.45,
+        })
 
+        NewAnimationSequence("meat_golem_spell", {
+            animation           = 2,
+            animation_point     = 0.834,
+            animation_backswing = 0.8,
+        })
+
+        NewAnimationSequence("belial_spell", {
+            animation           = 3,
+            animation_point     = 0.833,
+            animation_backswing = 0.6,
+        })
+
+        NewAnimationSequence("belial_spell_throw", {
+            animation           = 0,
+            animation_point     = 0.8,
+            animation_backswing = 0.333,
+        })
+
+        NewAnimationSequence("duriel_doubleattack", {
+            animation           = 5,
+            animation_point     = 0.2,
+            animation_backswing = 0.4,
+        })
 
     end
 

@@ -269,12 +269,31 @@ do
 
                 if BlzGroupGetSize(enemies) > 0 then
                     local target = RandomFromGroup(enemies)
-                    local ghost = CreateUnit(MONSTER_PLAYER, FourCC("u00H"), GetUnitX(target) + GetRandomReal(-250., 250.), GetUnitY(target) + GetRandomReal(-250., 250.), GetRandomReal(0., 359.))
+                    local x, y = GetUnitX(target) + GetRandomReal(-100., 100.), GetUnitY(target) + GetRandomReal(-100., 100.)
+                    local ghost = AddSpecialEffect("Monster\\Spirit.mdx", x, y)
 
-                    SetUnitVertexColor(ghost, 59, 155, 255, 125)
-                    DelayAction(2., function()
-                        KillUnit(ghost)
-                        ShowUnit(ghost, false)
+                    BlzSetSpecialEffectYaw(ghost, GetRandomReal(0., 359.) * bj_DEGTORAD)
+                    BlzSetSpecialEffectScale(ghost, 1.5)
+                    DestroyEffect(ghost)
+
+                    --local ghost = CreateUnit(MONSTER_PLAYER, FourCC("u00H"), GetUnitX(target) + GetRandomReal(-250., 250.), GetUnitY(target) + GetRandomReal(-250., 250.), GetRandomReal(0., 359.))
+
+                    --SetUnitVertexColor(ghost, 59, 155, 255, 125)
+                    DelayAction(1., function()
+                        local g = CreateGroup()
+
+                        GroupEnumUnitsInRange(g, x, y, 120., nil)
+
+                            for index = BlzGroupGetSize(g) - 1, 0, -1 do
+                                local picked = BlzGroupUnitAt(g, index)
+                                if IsUnitEnemy(picked, MONSTER_PLAYER) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
+                                    DamageUnit(boss, picked, 35 + Current_Wave, ICE_ATTRIBUTE, DAMAGE_TYPE_PHYSICAL, MELEE_ATTACK, true, false, false, nil)
+                                end
+                            end
+
+                        DestroyGroup(g)
+                        --KillUnit(ghost)
+                        --ShowUnit(ghost, false)
                     end)
 
                 end
@@ -556,6 +575,117 @@ do
 
         --CreateSpellCircle("Effect\\Spell Marker Red.mdx", x, y, 1.4, 1.2, 0.8, function()  end)
     end
+
+
+    function BelialFelRain(caster, x, y)
+        local timer = CreateTimer()
+        local duration = 4.
+        local radius = 500.
+        local sound = CreateNew3DSound("Abilities\\Spells\\Demon\\RainOfFire\\RainOfFireLoop1.wav", x, y, 35., 100, 1500., 4000.)
+
+            StartSound(sound)
+            TimerStart(timer, 0.18, true, function()
+                if duration < 0 then
+                    StopSound(sound, true, false)
+                    DestroyTimer(timer)
+                else
+                    duration = duration - 0.18
+                    local impact_angle = GetRandomReal(0., 359.)
+                    local impact_offset = GetRandomReal(0., radius / 2.)
+                    local impact_x, impact_y = x + Rx(impact_offset, impact_angle), y + Ry(impact_offset, impact_angle)
+                    ApplyEffect(caster, nil, impact_x, impact_y, "belial_rain_effect", 1)
+                end
+            end)
+
+
+    end
+
+
+    function BelialFelFlameMissile(source, missile)
+        local timer = CreateTimer()
+        local sfx = AddSpecialEffect("Effect\\Pillar of Flame Green.mdx", missile.current_x, missile.current_y)
+
+            BlzSetSpecialEffectYaw(sfx, GetRandomReal(0., 360.) * bj_DEGTORAD)
+            BlzSetSpecialEffectColorByPlayer(missile.my_missile, Player(6))
+            DestroyEffect(sfx)
+
+            TimerStart(timer, 0.2, true, function()
+
+                if missile.time > 0. then
+                    sfx = AddSpecialEffect("Effect\\Pillar of Flame Green.mdx", missile.current_x, missile.current_y)
+                    BlzSetSpecialEffectYaw(sfx, GetRandomReal(0., 360.) * bj_DEGTORAD)
+                    DestroyEffect(sfx)
+                else
+                    DestroyTimer(timer)
+                end
+            end)
+
+
+    end
+
+
+    function BelialIllusions(source)
+        local points = {}
+        local starting_angle = GetRandomReal(0., 360.)
+        local x, y = GetUnitX(source), GetUnitY(source)
+        local data = GetUnitData(source)
+
+        if not data.illusions then data.illusions = CreateGroup() end
+
+            ForGroup(data.illusions, function()
+                KillUnit(GetEnumUnit())
+                ShowUnit(GetEnumUnit(), false)
+                GroupRemoveUnit(data.illusions, GetEnumUnit())
+            end)
+
+
+            for i = 1, 3 do
+                points[i] = {}
+                local distance = GetMaxAvailableDistance(x, y, starting_angle, 600.)
+                points[i].x = x + Rx(distance, starting_angle)
+                points[i].y = y + Ry(distance, starting_angle)
+                starting_angle = 120. + starting_angle
+            end
+
+
+            local real_point = GetRandomInt(1, 3)
+
+            for i = 1, 3 do
+                if real_point == i then
+                    SetUnitX(source, points[i].x)
+                    SetUnitY(source, points[i].y)
+                else
+                    local unit = CreateUnit(GetOwningPlayer(source), FourCC("u01A"), points[i].x, points[i].y, GetRandomReal(0., 360.))
+                    GroupAddUnit(data.illusions, unit)
+                    UnitApplyTimedLife(unit, 0, 30.)
+                end
+                DestroyEffect(AddSpecialEffect("Effect\\Flamestrike Dark Void I.mdx", points[i].x, points[i].y))
+            end
+
+    end
+
+
+    function AndarielPoisonPoolCast(caster)
+        local x,y = GetUnitX(caster), GetUnitY(caster)
+        local sfx = AddSpecialEffect("Effect\\HydraCorrosiveGroundEffectV054.mdx", x, y)
+        local timer = CreateTimer()
+        local duration = 30.
+
+            BlzSetSpecialEffectScale(sfx, 3.)
+
+            TimerStart(timer, 0.5, true, function()
+                if duration <= 0. then
+                    DestroyTimer(timer)
+                    DestroyEffect(sfx)
+                else
+                    duration = duration - 0.5
+                    ApplyEffect(caster, nil, x, y, "andariel_poison_pool_effect", 1)
+                end
+            end)
+
+
+    end
+
 
     function InitSpiderQueenData()
 
