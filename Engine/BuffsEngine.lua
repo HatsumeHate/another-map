@@ -62,7 +62,6 @@ do
 
                     end
 
-
                     if level_data.negative_state and level_data.negative_state > 0 then
 
                         local state = level_data.negative_state
@@ -96,9 +95,9 @@ do
                     end
 
                     if buff_data.static_effect then DestroyEffect(buff_data.static_effect) end
+                    if buff_data.permanent_sfx then DestroyEffect(buff_data.permanent_sfx) end
                     if buff_data.sound then DestroyLoopingSound(buff_data.soundpack, buff_data.sound.fadetime or 0.15) end
-
-                    RemoveStatusBarState(buff_data.id, GetPlayerId(GetOwningPlayer(unit_data.Owner))+1)
+                    if IsAHero(unit_data.Owner) then RemoveStatusBarState(buff_data.id, GetPlayerId(GetOwningPlayer(unit_data.Owner))+1) end
 
                     DestroyTimer(buff_data.update_timer)
                     table.remove(unit_data.buff_list, i)
@@ -159,6 +158,26 @@ do
                     end
                 end
 
+            end
+
+        return false
+    end
+
+
+    ---@param unit unit
+    ---@param tag string
+    ---@return table
+    function HasBuffWithTag(unit, tag)
+        local unit_data = GetUnitData(unit)
+
+            for i = 1, #unit_data.buff_list do
+                if unit_data.buff_list[i].tags then
+                    for k = 1, #unit_data.buff_list[i].tags do
+                        if unit_data.buff_list[i].tags[k] == tag then
+                            return true
+                        end
+                    end
+                end
             end
 
         return false
@@ -278,7 +297,7 @@ do
                             buff_data.expiration_time = math.floor((buff_data.expiration_time * (((100. - unit_data.stats[CONTROL_REDUCTION].value) / 100.) * cc_duration)) + 0.5)
                         end
 
-                        if not buff_data.infinite and buff_data.statusbar_dont_show_time then
+                        if not buff_data.infinite and buff_data.statusbar_dont_show_time and IsAHero(target) then
                             SetStatusBarTime(buff_data.id, buff_data.expiration_time / 1000, GetPlayerId(GetOwningPlayer(target))+1)
                         end
 
@@ -348,7 +367,7 @@ do
                     buff_data.current_level = lvl
 
                     local player = GetPlayerId(GetOwningPlayer(target))+1
-                    if buff_data.statusbar_show_level then
+                    if buff_data.statusbar_show_level and IsAHero(target) then
                         SetStatusBarValue(buff_data.id, lvl, player)
                     end
 
@@ -388,7 +407,7 @@ do
 
                             buff_data.expiration_time = math.floor((buff_data.expiration_time * (((100. - unit_data.stats[CONTROL_REDUCTION].value) / 100.) * cc_duration)) + 0.5)
 
-                            if not buff_data.infinite and not buff_data.statusbar_dont_show_time then
+                            if not buff_data.infinite and not buff_data.statusbar_dont_show_time and IsAHero(target) then
                                 SetStatusBarTime(buff_data.id, buff_data.expiration_time / 1000, player)
                             end
 
@@ -536,7 +555,7 @@ do
     ---@param ability_instance table
     ---@return table
     function ApplyBuff(source, target, buff_id, lvl, ability_instance)
-        if lvl <= 0 or GetWidgetLife(target) < 0.045 then return end
+        if lvl <= 0 or GetWidgetLife(target) <= 0.045 then return end
         local buff_data = MergeTables({}, GetBuffData(buff_id))
         local target_data = GetUnitData(target)
         local existing_buff
@@ -567,7 +586,7 @@ do
                         if target_data.buff_list[i].id == buff_id then
                             existing_buff = target_data.buff_list[i]
 
-                                if lvl > existing_buff.current_level then
+                                if buff_data.current_level > existing_buff.current_level then
                                     DeleteBuff(target_data, existing_buff)
                                 else
                                     existing_buff.expiration_time = math.floor((existing_buff.level[existing_buff.current_level].time * 1000) + 0.5)
@@ -644,6 +663,7 @@ do
                         SetUnitAnimation(target, "stand ready")
                         if IsAHero(target) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(target))+1] = false end
                     elseif level_data.negative_state == STATE_FEAR then
+                        ResetUnitSpellCast(target)
                         if target_data.channeled_destructor then target_data.channeled_destructor(target); target_data.channeled_destructor = nil end
                         for key = 1, 6 do BlzUnitDisableAbility(target, KEYBIND_LIST[key].ability, true, false) end
                         UnitAddAbility(target, FourCC("ARal"))
@@ -672,6 +692,19 @@ do
                     buff_data.static_effect = AddSpecialEffect(buff_data.static_sfx.path, GetUnitX(target), GetUnitY(target))
                     if buff_data.static_sfx.autoscaling then BlzSetSpecialEffectScale(buff_data.static_effect, BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE)) end
                     if buff_data.static_sfx.random_angle then BlzSetSpecialEffectYaw(buff_data.static_effect, GetRandomReal(0., 360.) * bj_DEGTORAD) end
+                end
+
+                if buff_data.permanent_sfx then
+                    local sfx = AddSpecialEffectTarget(buff_data.permanent_sfx.path, target, buff_data.permanent_sfx.point or "origin")
+
+                        if buff_data.permanent_sfx.autoscaling then
+                            BlzSetSpecialEffectScale(sfx, BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE) * (buff_data.permanent_sfx.scale or 1.))
+                        else
+                            BlzSetSpecialEffectScale(sfx, buff_data.permanent_sfx.scale or 1.)
+                        end
+
+                        buff_data.permanent_sfx = sfx
+
                 end
 
                 if buff_data.sound and buff_data.sound.loop_pack then
@@ -720,18 +753,9 @@ do
 
             local player = GetPlayerId(GetOwningPlayer(target))+1
 
-            if not buff_data.statusbar_dont_show then
-                AddStatusBarState(buff_id, buff_data.icon or "", buff_data.buff_type, player)
-            end
-
-
-            if not buff_data.infinite and not buff_data.statusbar_dont_show_time then
-                SetStatusBarTime(buff_id, buff_data.expiration_time / 1000, player)
-            end
-
-            if buff_data.statusbar_show_level then
-                SetStatusBarValue(buff_id, buff_data.current_level, player)
-            end
+            if not buff_data.statusbar_dont_show and IsAHero(target) then AddStatusBarState(buff_id, buff_data.icon or "", buff_data.buff_type, player) end
+            if not buff_data.infinite and not buff_data.statusbar_dont_show_time and IsAHero(target) then SetStatusBarTime(buff_id, buff_data.expiration_time / 1000, player) end
+            if buff_data.statusbar_show_level and IsAHero(target) then SetStatusBarValue(buff_id, buff_data.current_level, player) end
 
             buff_data.update_timer = CreateTimer()
             TimerStart(buff_data.update_timer, BUFF_UPDATE, true, function()
@@ -757,7 +781,7 @@ do
 
                     if not buff_data.infinite then
                         buff_data.expiration_time = buff_data.expiration_time - 100
-                        if not buff_data.statusbar_dont_show_time then
+                        if not buff_data.statusbar_dont_show_time and IsAHero(target) then
                             UpdateStatusBarTime(buff_id, buff_data.expiration_time / 1000, player)
                         end
                     end

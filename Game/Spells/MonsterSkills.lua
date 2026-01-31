@@ -346,5 +346,26 @@ do
     end
 
 
+    function SirenFireClaws(source, x, y)
+        local angle = AngleBetweenUnitXY(source, x, y)
+        local start_x, start_y = GetUnitX(source), GetUnitY(source)
+
+            ThrowMissile(source, nil, "siren_fire_missile", nil, start_x, start_y, 0.,0., angle + 15., true)
+            ThrowMissile(source, nil, "siren_fire_missile", nil, start_x, start_y, 0.,0., angle + 30., true)
+            ThrowMissile(source, nil, "siren_fire_missile", nil, start_x, start_y, 0.,0., angle - 15., true)
+            ThrowMissile(source, nil, "siren_fire_missile", nil, start_x, start_y, 0.,0., angle - 30., true)
+
+    end
+
+    function SirenWardCast(source)
+        local angle = GetRandomReal(0., 360.)
+        local range = GetMaxAvailableDistance(GetUnitX(source), GetUnitY(source), angle, 300.)
+        local unit = CreateUnit(SECOND_MONSTER_PLAYER, FourCC("o005"), GetUnitX(source) + Rx(range, angle), GetUnitY(source) + Ry(range, angle), GetRandomReal(0., 360.))
+
+            DelayAction(0., function() ToggleAuraOnUnit(unit, "monster_sirenward_aura", 1, true) end)
+            UnitApplyTimedLife(unit, 0, 15.)
+
+    end
+
 
 end

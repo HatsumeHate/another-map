@@ -109,6 +109,7 @@ do
             local target_blink_sfx = AddSpecialEffect("Effect\\ChaosBlinkTarget.mdx", GetUnitX(source), GetUnitY(source))
             BlzSetSpecialEffectYaw(target_blink_sfx, AngleBetweenUnits(source, target) * bj_DEGTORAD)
             DestroyEffect(target_blink_sfx)
+            AddSoundVolume("Sounds\\Spells\\CloakAndDagger_Launch01.wav", x, y, 115, 1500.)
 
     end
 

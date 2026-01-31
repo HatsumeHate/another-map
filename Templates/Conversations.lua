@@ -39,14 +39,13 @@ do
             for i = 1, #conv do
                 if conv[i].responce_phrase then
                     if conv[i].responce_phrase.class_related then
-                        text = text .. "|c009FC8FF" .. GetUnitName(PlayerHero[player]) .. "|r: " .. conv[i].responce_phrase[GetUnitClass(PlayerHero[player])].phrase .. "|n"
+                        text = text .. "|c009FC8FF" .. GetUnitName(PlayerHero[player]) .. "|r: " .. ParseStringHeroGender(PlayerHero[player], conv[i].responce_phrase[GetUnitClass(PlayerHero[player])].phrase) .. "|n"
                     else
-                        text = text .. "|c009FC8FF" .. GetUnitName(PlayerHero[player]) .. "|r: " .. conv[i].responce_phrase.phrase .. "|n"
+                        text = text .. "|c009FC8FF" .. GetUnitName(PlayerHero[player]) .. "|r: " .. ParseStringHeroGender(PlayerHero[player], conv[i].responce_phrase.phrase)  .. "|n"
                     end
                 else
-                    text = text .. "|c009FC8FF" .. GetUnitName(unit) .. "|r: " .. conv[i].phrase .. "|n"
+                    text = text .. "|c009FC8FF" .. GetUnitName(unit) .. "|r: " .. ParseStringHeroGender(PlayerHero[player], conv[i].phrase)  .. "|n"
                 end
-                --text = text .. "|c009FC8FF" .. GetUnitName(unit) .. "|r: " .. conv[i].phrase .. "|n"
             end
 
         return text
@@ -72,7 +71,7 @@ do
     function PlayConversation(id, npc, player)
         local texttag = CreateTextTag()
         local conv = GetConversation(id)
-        local duration = conv[1].duration
+        local duration = conv[1].duration or 0.
         local a = 255
         local index = 1
         local unit_data = GetUnitData(npc)
@@ -93,15 +92,21 @@ do
             Conversations[player].texttag = texttag
             Conversations[player].npc = npc
 
-            SetTextTagText(texttag, "[1/" .. #conv .. "] " .. ParseStringHeroGender(PlayerHero[player], conv[1].phrase), CONSTANT_TEXT_SIZE)
-            SetTextTagPos(texttag, GetUnitX(npc), GetUnitY(npc), 45. + GetUnitFlyHeight(npc))
-            SetTextTagColor(texttag, 255, 255, 255, a)
-            local x, y, z = GetUnitX(npc), GetUnitY(npc), (45. + GetUnitFlyHeight(npc))
+            local x, y, z
+            local phrase = ""
 
             if conv[1].responce_phrase then
                 x, y, z = GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]), (45. + GetUnitFlyHeight(PlayerHero[player]))
+                duration = conv[1].responce_phrase.duration
+                phrase = conv[1].responce_phrase.phrase
+            else
+                x, y, z = GetUnitX(npc), GetUnitY(npc), (45. + GetUnitFlyHeight(npc))
+                phrase = conv[1].phrase
             end
 
+            SetTextTagPos(texttag, x, y, z)
+            SetTextTagText(texttag, "[1/" .. #conv .. "] " .. ParseStringHeroGender(PlayerHero[player], phrase), CONSTANT_TEXT_SIZE)
+            SetTextTagColor(texttag, 255, 255, 255, a)
 
             TimerStart(Conversations[player].timer, 0.05, true, function()
 
@@ -115,10 +120,11 @@ do
                             if conv.feedback then conv.feedback(id, npc, player) end
                             TimerStart(Conversations[player].timer, 0., false, nil)
                         else
-                            local phrase = ""
+                            phrase = ""
 
 
                                 if conv[index].responce_phrase then
+
                                     if conv[index].responce_phrase.class_related then
                                         local class = GetUnitClass(PlayerHero[player])
                                         phrase = conv[index].responce_phrase[class].phrase
@@ -127,6 +133,7 @@ do
                                         phrase = conv[index].responce_phrase.phrase
                                         duration = conv[index].responce_phrase.duration
                                     end
+
                                     x, y, z = GetUnitX(PlayerHero[player]), GetUnitY(PlayerHero[player]), (45. + GetUnitFlyHeight(PlayerHero[player]))
                                 else
                                     duration = conv[index].duration

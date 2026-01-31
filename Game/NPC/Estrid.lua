@@ -50,6 +50,15 @@ do
                 duration = 6.35
             },
         })
+
+        NewConversation("estrid_common_conv", {
+            {
+                phrase = GetLocalString(
+                    "Нет. Я не буду говорить о себе. Моя личность не имеет значения в общем и целом",
+                    "No. I won't talk about myself. My identity does not matter in a grand scheme of things"),
+                duration = 5.25
+            },
+        })
     end
 
 
@@ -75,6 +84,12 @@ do
         --========================INTERACTIONS=========================--
         --=============================================================--
         AddInteractiveOption(Estrid, {
+            name = GetLocalString("Ты кто?", "Who are you?"),
+            id = "estrid_common_conv",
+            feedback = function(clicked, clicking, player)
+                    PlayConversation("estrid_common_conv", Estrid, player)
+            end }, 1)
+        AddInteractiveOption(Estrid, {
             name = GetLocalString("Инфекция", "The infection"),
             id = "estrid_infected_start_conv",
             feedback = function(clicked, clicking, player)
@@ -82,7 +97,7 @@ do
                     LockInteractiveOptionIdPlayer(Estrid, "estrid_infected_start_conv", player)
                     if GetLocalPlayer() == Player(player - 1) then BlzPlaySpecialEffect(EstridData.questmarker, ANIM_TYPE_DEATH) end
                     StartInfectedQuest(player)
-                end }, 1)
+            end }, 2)
         LockInteractiveOptionId(Estrid, "estrid_infected_start_conv")
         --=============================================================--
         AddInteractiveOption(Estrid, {
@@ -93,7 +108,7 @@ do
                     LockInteractiveOptionIdPlayer(Estrid, "estrid_infected_end_conv", player)
                     if GetLocalPlayer() == Player(player - 1) then BlzPlaySpecialEffect(EstridData.questmarker_done, ANIM_TYPE_DEATH) end
                     CompleteInfectedQuest(player)
-                end }, 1)
+            end }, 2)
         LockInteractiveOptionId(Estrid, "estrid_infected_end_conv")
         --=============================================================--
         EnableInfectedQuest()

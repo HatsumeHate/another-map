@@ -440,7 +440,7 @@ do
         local angle = target and AngleBetweenUnits(caster, target) or AngleBetweenUnitXY(caster, x, y)
         local chains = {}
         local start_x, start_y = GetUnitX(caster), GetUnitY(caster)
-        local starting_angle = angle - 25.
+        local starting_angle = angle - 15.
         local distance = 10.
         local distance_bonus = 50.
         local pull_group = CreateGroup()
@@ -455,38 +455,43 @@ do
             for i = 1, 3 do
                 chains[i] = BuildVisualChain(start_x + Rx(50., starting_angle), start_y + Ry(50., starting_angle), GetUnitZ(caster), 100., starting_angle, 10., 500.)
                 AddVisualChainEndingModel("Effect\\spearhead.mdx", chains[i], 0., 0., 0.)
-                starting_angle = starting_angle + 25.
+                starting_angle = starting_angle + 15.
             end
 
-            TimerStart(CreateTimer(), 0.025, true, function()
+            local chain_timer = CreateTimer()
+            TimerStart(chain_timer, 0.025, true, function()
                 distance = distance + distance_bonus
 
                 for i = 1, 3 do chains[i].distance = chains[i].distance + distance_bonus end
 
-                for i = 1, 3 do
-                    GroupEnumUnitsInRange(hit_group, chains[i].end_x, chains[i].end_y, 75., nil)
-                    for index = BlzGroupGetSize(hit_group) - 1, 0, -1 do
-                        local picked = BlzGroupUnitAt(hit_group, index)
-                        if GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 and IsUnitEnemy(picked, player) and not IsUnitInGroup(picked, pull_group) then
-                            GroupAddUnit(pull_group, picked)
-                            ApplyBuff(caster, picked, "A013", 1, nil)
-                            AddSoundVolume("Sounds\\Spells\\Chain_Impact_".. GetRandomInt(1,3) ..".wav", GetUnitX(caster), GetUnitY(caster), 135, 1600.)
+                if distance_bonus > 0 then
+                    for i = 1, 3 do
+                        GroupEnumUnitsInRange(hit_group, chains[i].end_x, chains[i].end_y, 80., nil)
+                        for index = BlzGroupGetSize(hit_group) - 1, 0, -1 do
+                            local picked = BlzGroupUnitAt(hit_group, index)
+                            if GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 and IsUnitEnemy(picked, player) and not IsUnitInGroup(picked, pull_group) and GetUnitParameterValue(picked, CONTROL_REDUCTION) < 100 then
+                                GroupAddUnit(pull_group, picked)
+                                ApplyBuff(caster, picked, "A013", 1, nil)
+                                AddSoundVolume("Sounds\\Spells\\Chain_Impact_".. GetRandomInt(1,3) ..".wav", GetUnitX(caster), GetUnitY(caster), 135, 1600.)
+                            end
                         end
                     end
                 end
 
 
                 if distance >= 500. then
+
                     distance_bonus = distance_bonus * -1.
                     distance = 499.
 
                     AddSoundVolume("Sounds\\Spells\\chains_throw_".. GetRandomInt(1,2) ..".wav", GetUnitX(caster), GetUnitY(caster), 135, 1600.)
+
                     ForGroup(pull_group, function()
                         PullUnitToUnit(GetEnumUnit(), caster, 1000., 125., 15, "EBCH")
                     end)
 
                 elseif distance <= 0. then
-                    DestroyTimer(GetExpiredTimer())
+                    DestroyTimer(chain_timer)
                     for i = 1, 3 do DestroyVisualChain(chains[i]) end
                     DestroyGroup(pull_group)
                     DestroyGroup(hit_group)
@@ -609,11 +614,108 @@ do
     end
 
 
+    function ScaleHeroMinionStats(minion, from_hero, percent)
+        local minionparam = GetUnitData(minion)
+        local hero_stats = GetUnitData(from_hero)
+
+            minionparam.base_stats.strength = math.floor(hero_stats.base_stats.strength * percent)
+            minionparam.base_stats.agility = math.floor(hero_stats.base_stats.agility * percent)
+            minionparam.base_stats.vitality = math.floor(hero_stats.base_stats.vitality * percent)
+            minionparam.base_stats.intellect = math.floor(hero_stats.base_stats.intellect * percent)
+            minionparam.base_stats.health = hero_stats.base_stats.health
+            minionparam.base_stats.mana = hero_stats.base_stats.mana
+            minionparam.base_stats.moving_speed = hero_stats.base_stats.moving_speed
+
+            minionparam.stats = MergeTables({}, hero_stats.stats)
+
+            ModifyStat(minion, STR_STAT, (minionparam.stats[STR_STAT].bonus - math.floor(minionparam.stats[STR_STAT].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, VIT_STAT, (minionparam.stats[VIT_STAT].bonus - math.floor(minionparam.stats[VIT_STAT].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, AGI_STAT, (minionparam.stats[AGI_STAT].bonus - math.floor(minionparam.stats[AGI_STAT].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, INT_STAT, (minionparam.stats[INT_STAT].bonus - math.floor(minionparam.stats[INT_STAT].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+
+
+            ModifyStat(minion, PHYSICAL_ATTACK, percent, MULTIPLY_BONUS, true)
+            ModifyStat(minion, PHYSICAL_DEFENCE, percent, MULTIPLY_BONUS, true)
+            ModifyStat(minion, MAGICAL_ATTACK, percent, MULTIPLY_BONUS, true)
+            ModifyStat(minion, MAGICAL_SUPPRESSION, percent, MULTIPLY_BONUS, true)
+
+            ModifyStat(minion, ALL_RESIST, (minionparam.stats[ALL_RESIST].bonus - math.floor(minionparam.stats[ALL_RESIST].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, PHYSICAL_RESIST, (minionparam.stats[PHYSICAL_RESIST].bonus - math.floor(minionparam.stats[PHYSICAL_RESIST].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, HOLY_RESIST, (minionparam.stats[HOLY_RESIST].bonus - math.floor(minionparam.stats[HOLY_RESIST].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, FIRE_RESIST, (minionparam.stats[FIRE_RESIST].bonus - math.floor(minionparam.stats[FIRE_RESIST].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, ICE_RESIST, (minionparam.stats[ICE_RESIST].bonus - math.floor(minionparam.stats[ICE_RESIST].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, LIGHTNING_RESIST, (minionparam.stats[LIGHTNING_RESIST].bonus - math.floor(minionparam.stats[LIGHTNING_RESIST].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, POISON_RESIST, (minionparam.stats[POISON_RESIST].bonus - math.floor(minionparam.stats[POISON_RESIST].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, DARKNESS_RESIST, (minionparam.stats[DARKNESS_RESIST].bonus - math.floor(minionparam.stats[DARKNESS_RESIST].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, ARCANE_RESIST, (minionparam.stats[ARCANE_RESIST].bonus - math.floor(minionparam.stats[ARCANE_RESIST].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+
+            ModifyStat(minion, PHYSICAL_BONUS, (minionparam.stats[PHYSICAL_BONUS].bonus - math.floor(minionparam.stats[PHYSICAL_BONUS].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, HOLY_BONUS, (minionparam.stats[HOLY_BONUS].bonus - math.floor(minionparam.stats[HOLY_BONUS].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, FIRE_BONUS, (minionparam.stats[FIRE_BONUS].bonus - math.floor(minionparam.stats[FIRE_BONUS].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, ICE_BONUS, (minionparam.stats[ICE_BONUS].bonus - math.floor(minionparam.stats[ICE_BONUS].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, LIGHTNING_BONUS, (minionparam.stats[LIGHTNING_BONUS].bonus - math.floor(minionparam.stats[LIGHTNING_BONUS].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, POISON_BONUS, (minionparam.stats[POISON_BONUS].bonus - math.floor(minionparam.stats[POISON_BONUS].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, DARKNESS_BONUS, (minionparam.stats[DARKNESS_BONUS].bonus - math.floor(minionparam.stats[DARKNESS_BONUS].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, ARCANE_BONUS, (minionparam.stats[ARCANE_BONUS].bonus - math.floor(minionparam.stats[ARCANE_BONUS].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+
+            ModifyStat(minion, CRIT_CHANCE, (minionparam.stats[CRIT_CHANCE].bonus - math.floor(minionparam.stats[CRIT_CHANCE].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, CRIT_MULTIPLIER, percent, MULTIPLY_BONUS, true)
+
+            ModifyStat(minion, HP_VALUE, percent, MULTIPLY_BONUS, true)
+            ModifyStat(minion, HP_REGEN, percent, MULTIPLY_BONUS, true)
+            ModifyStat(minion, MP_VALUE, percent, MULTIPLY_BONUS, true)
+            ModifyStat(minion, MP_REGEN, percent, MULTIPLY_BONUS, true)
+
+            ModifyStat(minion, MELEE_DAMAGE_REDUCTION, (minionparam.stats[MELEE_DAMAGE_REDUCTION].bonus - math.floor(minionparam.stats[MELEE_DAMAGE_REDUCTION].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, RANGE_DAMAGE_REDUCTION, (minionparam.stats[RANGE_DAMAGE_REDUCTION].bonus - math.floor(minionparam.stats[RANGE_DAMAGE_REDUCTION].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+
+            ModifyStat(minion, CONTROL_REDUCTION, (minionparam.stats[CONTROL_REDUCTION].bonus - math.floor(minionparam.stats[CONTROL_REDUCTION].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, CONTROL_DURATION, (minionparam.stats[CONTROL_DURATION].bonus - math.floor(minionparam.stats[CONTROL_DURATION].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+
+            ModifyStat(minion, ATTACK_SPEED, (minionparam.stats[ATTACK_SPEED].actual_bonus - math.floor(minionparam.stats[ATTACK_SPEED].actual_bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, CAST_SPEED, (minionparam.stats[CAST_SPEED].bonus - math.floor(minionparam.stats[CAST_SPEED].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+
+            ModifyStat(minion, MOVING_SPEED, percent, MULTIPLY_BONUS, true)
+
+            ModifyStat(minion, REFLECT_MELEE_DAMAGE, (minionparam.stats[REFLECT_MELEE_DAMAGE].bonus - math.floor(minionparam.stats[REFLECT_MELEE_DAMAGE].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, REFLECT_RANGE_DAMAGE, (minionparam.stats[REFLECT_RANGE_DAMAGE].bonus - math.floor(minionparam.stats[REFLECT_RANGE_DAMAGE].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, REFLECT_DAMAGE, (minionparam.stats[REFLECT_DAMAGE].bonus - math.floor(minionparam.stats[REFLECT_DAMAGE].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+
+            ModifyStat(minion, HP_PER_HIT, (minionparam.stats[HP_PER_HIT].bonus - math.floor(minionparam.stats[HP_PER_HIT].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, MP_PER_HIT, (minionparam.stats[MP_PER_HIT].bonus - math.floor(minionparam.stats[MP_PER_HIT].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, HP_PER_KILL, (minionparam.stats[HP_PER_KILL].bonus - math.floor(minionparam.stats[HP_PER_KILL].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, MP_PER_KILL, (minionparam.stats[MP_PER_KILL].bonus - math.floor(minionparam.stats[MP_PER_KILL].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+
+            ModifyStat(minion, BONUS_DEMON_DAMAGE, (minionparam.stats[BONUS_DEMON_DAMAGE].bonus - math.floor(minionparam.stats[BONUS_DEMON_DAMAGE].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, BONUS_UNDEAD_DAMAGE, (minionparam.stats[BONUS_UNDEAD_DAMAGE].bonus - math.floor(minionparam.stats[BONUS_UNDEAD_DAMAGE].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, BONUS_BEAST_DAMAGE, (minionparam.stats[BONUS_BEAST_DAMAGE].bonus - math.floor(minionparam.stats[BONUS_BEAST_DAMAGE].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, BONUS_HUMAN_DAMAGE, (minionparam.stats[BONUS_HUMAN_DAMAGE].bonus - math.floor(minionparam.stats[BONUS_HUMAN_DAMAGE].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+
+            ModifyStat(minion, HEALING_BONUS, (minionparam.stats[HEALING_BONUS].bonus - math.floor(minionparam.stats[HEALING_BONUS].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+
+            ModifyStat(minion, DAMAGE_BOOST, (minionparam.stats[DAMAGE_BOOST].bonus - math.floor(minionparam.stats[DAMAGE_BOOST].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, VULNERABILITY, (minionparam.stats[VULNERABILITY].bonus - math.floor(minionparam.stats[VULNERABILITY].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, BONUS_MELEE_DAMAGE, (minionparam.stats[BONUS_MELEE_DAMAGE].bonus - math.floor(minionparam.stats[BONUS_MELEE_DAMAGE].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, BONUS_RANGE_DAMAGE, (minionparam.stats[BONUS_RANGE_DAMAGE].bonus - math.floor(minionparam.stats[BONUS_RANGE_DAMAGE].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, DAMAGE_TO_CLOSE_ENEMIES, (minionparam.stats[DAMAGE_TO_CLOSE_ENEMIES].bonus - math.floor(minionparam.stats[DAMAGE_TO_CLOSE_ENEMIES].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, DAMAGE_TO_DISTANT_ENEMIES, (minionparam.stats[DAMAGE_TO_DISTANT_ENEMIES].bonus - math.floor(minionparam.stats[DAMAGE_TO_DISTANT_ENEMIES].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+            ModifyStat(minion, DAMAGE_TO_CC_ENEMIES, (minionparam.stats[DAMAGE_TO_CC_ENEMIES].bonus - math.floor(minionparam.stats[DAMAGE_TO_CC_ENEMIES].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+
+            ModifyStat(minion, DODGE_CHANCE, (minionparam.stats[DODGE_CHANCE].bonus - math.floor(minionparam.stats[DODGE_CHANCE].bonus * percent)) * -1, STRAIGHT_BONUS, true)
+
+            --for i = 1, #minionparam.stats do
+              --  print(GetParameterName(i) .. " " .. minionparam.stats[i].value)
+            --end
+
+            --print("===============")
+
+    end
+    
 
     function CallOfTheAncientsCast(hero)
         local unit_data = GetUnitData(hero)
         local ability_level = UnitGetAbilityLevel(hero, "ABCA")
-        local percent = 0.7 * GetUnitParameterValue(hero, MINION_POWER)
+        local percent = (0.59 + ability_level * 0.01) * GetUnitParameterValue(hero, MINION_POWER)
         local x, y, angle = GetUnitX(hero), GetUnitY(hero), GetUnitFacing(hero)
         local summon_id = FourCC('bran')
         local heroes = {}
@@ -651,28 +753,20 @@ do
                 SetUnitVertexColor(heroes[i], 255, 150, 0, 128)
             end
 
-
             DelayAction(0., function()
+
                 for i = 1, 2 do
                     local ancient_hero = GetUnitData(heroes[i])
 
-                        for param = PHYSICAL_ATTACK, HOLY_RESIST do ancient_hero.stats[param].value = R2I(unit_data.stats[param].value * percent) end
-                        ancient_hero.stats[CRIT_CHANCE].value = unit_data.stats[CRIT_CHANCE].value * percent
-                        ancient_hero.equip_point[WEAPON_POINT].DAMAGE = unit_data.equip_point[WEAPON_POINT].DAMAGE * percent
-                        ancient_hero.equip_point[WEAPON_POINT].ATTACK_SPEED = unit_data.stats[ATTACK_SPEED].value * percent
-                        ancient_hero.equip_point[WEAPON_POINT].DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL
-                        ancient_hero.equip_point[WEAPON_POINT].ATTRIBUTE = PHYSICAL_ATTRIBUTE
-                        ancient_hero.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS = R2I((ancient_hero.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS or 0) * percent)
                         ancient_hero.equip_point[WEAPON_POINT].MAX_TARGETS = 300
-                        for param = STR_STAT, VIT_STAT do ancient_hero.stats[param].value = R2I(unit_data.stats[param].value * percent) end
-                        ancient_hero.stats[PHYSICAL_BONUS].value = R2I(unit_data.stats[PHYSICAL_BONUS].value * percent)
-                        ancient_hero.stats[HP_VALUE].value = R2I(unit_data.stats[HP_VALUE].value * percent)
-                        ancient_hero.stats[HP_REGEN].value = R2I(unit_data.stats[HP_REGEN].value * percent)
-
-                        for param = BONUS_DEMON_DAMAGE, BONUS_HUMAN_DAMAGE do ancient_hero.stats[param].value = R2I(unit_data.stats[param].value * percent) end
-                        for param = BONUS_MELEE_DAMAGE, DAMAGE_TO_CC_ENEMIES do ancient_hero.stats[param].value = R2I(unit_data.stats[param].value * percent) end
-
-                        UpdateParameters(ancient_hero)
+                        ancient_hero.equip_point[WEAPON_POINT].DAMAGE = (unit_data.equip_point[WEAPON_POINT].DAMAGE * percent)
+                        ancient_hero.equip_point[WEAPON_POINT].ATTACK_SPEED = unit_data.equip_point[WEAPON_POINT].ATTACK_SPEED
+                        ancient_hero.equip_point[WEAPON_POINT].DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL
+                        ancient_hero.equip_point[WEAPON_POINT].CRIT_CHANCE = math.floor(unit_data.equip_point[WEAPON_POINT].CRIT_CHANCE * percent)
+                        ancient_hero.equip_point[WEAPON_POINT].ATTRIBUTE = PHYSICAL_ATTRIBUTE
+                        ancient_hero.equip_point[WEAPON_POINT].RANGE = 150.
+                        ancient_hero.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS = R2I((ancient_hero.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS or 0) * percent)
+                        ScaleHeroMinionStats(heroes[i], hero, percent)
 
                 end
 

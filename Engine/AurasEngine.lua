@@ -64,16 +64,22 @@ do
             if level > aura.max_level then level = aura.max_level end
             aura.current_level = level
             aura.time = aura.level[aura.current_level].duration or nil
-            aura.sfx = AddSpecialEffect(aura.sfx_path or "", x, y)
+            aura.sfx = AddSpecialEffect(aura.sfx_path or ".mdl", x, y)
             BlzSetSpecialEffectScale(aura.sfx, aura.level[aura.current_level].sfx_scale or 1.)
             BlzSetSpecialEffectZ(aura.sfx, GetZ(x, y) + (aura.bonus_z or 0.))
+
+            if aura.sound and aura.sound.loop_pack then
+                aura.soundpack = AddLoopingSound(aura.sound.loop_pack, x, y, GetZ(x, y) + (aura.bonus_z or 0.), aura.sound.fadein or 200, aura.sound.fadeout or 200, aura.sound.delay or 0.15, aura.sound.volume or 128, aura.sound.cutoff or 1400., aura.sound.distance or 4000.)
+            end
 
             TimerStart(aura.timer, aura.tickrate, true, function()
 
                 if aura.time and aura.time <= 0. then
+                    OnAuraEnd(aura, nil, x, y)
                     DestroyGroup(aura.group)
                     DestroyTimer(aura.timer)
                     DestroyEffect(aura.sfx)
+                    if aura.sound then DestroyLoopingSound(aura.soundpack, aura.sound.fadetime or 0.15) end
                 else
                     GroupEnumUnitsInRange(aura.group, x, y, aura.level[aura.current_level].radius, nil)
 
@@ -156,16 +162,22 @@ do
                     aura.current_level = level
                     --print("3")
                     aura.time = aura.level[aura.current_level].duration or nil
-                    aura.sfx = AddSpecialEffectTarget(aura.sfx_path or "", target, aura.sfx_point or "origin")
+                    aura.sfx = AddSpecialEffectTarget(aura.sfx_path or ".mdl", target, aura.sfx_point or "origin")
                     BlzSetSpecialEffectScale(aura.sfx, aura.level[aura.current_level].sfx_scale or 1.)
+
+                    if aura.sound and aura.sound.loop_pack then
+                        aura.soundpack = AddLoopingSoundOnUnit(aura.sound.loop_pack, target, aura.sound.fadein or 200, aura.sound.fadeout or 200, aura.sound.delay or 0.15, aura.sound.volume or 128, aura.sound.cutoff or 1400., aura.sound.distance or 4000.)
+                    end
                     --print("3")
                     TimerStart(aura.timer, aura.tickrate, true, function()
 
                         if GetUnitState(target, UNIT_STATE_LIFE) < 0.045 or (aura.time and aura.time <= 0.) then
+                            OnAuraEnd(aura, target, 0., 0.)
                             DestroyGroup(aura.group)
                             DestroyTimer(aura.timer)
                             DestroyEffect(aura.sfx)
                             AuraList[target][id] = nil
+                            if aura.sound then DestroyLoopingSound(aura.soundpack, aura.sound.fadetime or 0.15) end
                         else
                             GroupEnumUnitsInRange(aura.group, GetUnitX(target), GetUnitY(target), (aura.level[aura.current_level].radius + unit_data.stats[RANGE_BONUS].bonus) * unit_data.stats[RANGE_BONUS].multiplier, nil)
 
@@ -221,9 +233,11 @@ do
                 AuraList[target][id] = nil
 
                     if aura then
+                        OnAuraEnd(aura, target, 0., 0.)
                         DestroyGroup(aura.group)
                         DestroyTimer(aura.timer)
                         DestroyEffect(aura.sfx)
+                        if aura.sound then DestroyLoopingSound(aura.soundpack, aura.sound.fadetime or 0.15) end
                     end
 
             end

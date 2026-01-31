@@ -27,7 +27,13 @@ do
     local Colours
     local DashAnimationTable
 
+    function RemoveMinionSprint()
+        RemoveBuff(GetEnumUnit(), "A02Z")
+    end
 
+    function ApplyMinionSprint()
+        ApplyBuff(GetEnumUnit(), GetEnumUnit(), "A02Z", 1)
+    end
 
     ---@param player integer
     function SwitchPlayerDashMode(player)
@@ -155,7 +161,7 @@ do
 
                 if xp_rate < MIN_XP_LOSS_RATE then xp_rate = MIN_XP_LOSS_RATE end
                 SuspendHeroXP(PlayerHero[i], false)
-                AddHeroXP(PlayerHero[i], math.ceil(amount * xp_rate), false)
+                AddHeroXP(PlayerHero[i], math.ceil(amount * (1. + GetUnitParameterValue(PlayerHero[i], EXP_BONUS) * 0.01) * xp_rate), false)
                 SuspendHeroXP(PlayerHero[i], true)
             end
         end
@@ -315,6 +321,8 @@ do
         local starting_skills = {}
         local icon
 
+        if (player_id > 5) or GetUnitTypeId(GetTriggerUnit()) ~= FourCC("ewsp") then return end
+
             ActivePlayers = ActivePlayers + 1
             if region == ClassRegions[BARBARIAN_CLASS] then
                 id = FourCC("HBRB")
@@ -360,28 +368,6 @@ do
                 starting_skills[1] = "APGA"
                 starting_skills[2] = "APSM"
                 starting_skills[3] = "APIL"
-                --[[
-                starting_skills[1] = "APGA"
-                starting_skills[2] = "APRT"
-                starting_skills[3] = "APZE"
-                starting_skills[4] = "APSB"
-                starting_skills[5] = "APCR"
-                starting_skills[6] = "APCH"
-                starting_skills[7] = "APSM"
-                starting_skills[8] = "APVA"
-                starting_skills[9] = "APPR"
-                starting_skills[10] = "APDW"
-                starting_skills[11] = "APSA"
-                starting_skills[12] = "APCP"
-                starting_skills[13] = "APIL"
-                starting_skills[14] = "APSL"
-                starting_skills[15] = "APAP"
-                starting_skills[16] = "APAF"
-                starting_skills[17] = "APAD"
-                starting_skills[18] = "APAM"
-                starting_skills[19] = "APRW"
-                starting_skills[20] = "APFH"
-                starting_skills[21] = "APSH"]]
                 icon = "ReplaceableTextures\\CommandButtons\\BTNHeroPaladin.blp"
             elseif region == ClassRegions[ASSASSIN_CLASS] then
                 id = FourCC("HASS")
@@ -390,50 +376,22 @@ do
                 starting_items[3] = CreateCustomItem("I010", 0., 0.)
                 starting_items[4] = CreateCustomItem("I00Z", 0., 0.)
                 starting_items[5] = CreateCustomItem("I00Y", 0., 0.)
-                --starting_items[6] = CreateCustomItem("I046", 0., 0.)
-
-
                 starting_skills[1] = "AACS"
                 starting_skills[2] = "AABD"
                 starting_skills[3] = "AAPS"
-
-                --[[
-                starting_skills[2] = "AABR"
-                starting_skills[3] = "AABA"
-                starting_skills[4] = "AASH"
-                starting_skills[5] = "AAEV"
-                starting_skills[6] = "AAVB"
-                starting_skills[7] = "AABF"
-                starting_skills[8] = "AATL"
-                starting_skills[9] = "AALL"
-                starting_skills[10] = "AANS"
-                starting_skills[11] = "AATW"
-
-                starting_skills[13] = "AAST"
-                starting_skills[14] = "AACB"
-                starting_skills[15] = "AADB"
-                starting_skills[16] = "AAIG"
-                starting_skills[17] = "AACT"
-                starting_skills[18] = "AASC"
-                starting_skills[19] = "AABT"
-                starting_skills[20] = "AASB"
-
-                starting_skills[22] = "AAEX"
-                starting_skills[23] = "AACA"
-                starting_skills[24] = "AACR"
-                starting_skills[25] = "AASR"
-                starting_skills[26] = "AASF"
-                starting_skills[27] = "AACO"
-                starting_skills[28] = "AAMH"
-                starting_skills[29] = "AAPA"]]
                 icon = "ReplaceableTextures\\CommandButtons\\BTNAssassin.blp"
-            elseif region == ClassRegions[AMAZON_CLASS] then
-                id = FourCC("HAMA")
-                --starting_items[1] = CreateCustomItem("I02P", 0., 0.)
-                starting_items[2] = CreateCustomItem("I00X", 0., 0.)
-                starting_items[3] = CreateCustomItem("I010", 0., 0.)
-                starting_items[4] = CreateCustomItem("I00Z", 0., 0.)
-                starting_items[5] = CreateCustomItem("I00Y", 0., 0.)
+            elseif region == ClassRegions[7] then
+                local pool = {
+                    [BARBARIAN_CLASS] = gg_rct_barbarian_select,
+                    [SORCERESS_CLASS] = gg_rct_sorceress_select,
+                    [NECROMANCER_CLASS] = gg_rct_necro_select,
+                    [PALADIN_CLASS] = gg_rct_paladin_select,
+                    [ASSASSIN_CLASS] = gg_rct_assassin_select,
+                    --[DRUID_CLASS] = gg_rct_druid_select,
+                }
+                local number = GetRandomInt(1, #pool)
+                SetUnitPosition(GetTriggerUnit(), GetRectCenterX(pool[number]), GetRectCenterY(pool[number]))
+                return
             elseif region == ClassRegions[DRUID_CLASS] then
                 id = FourCC("HDRU")
                 starting_items[1] = CreateCustomItem("I012", 0., 0.)
@@ -441,9 +399,7 @@ do
                 starting_items[3] = CreateCustomItem("I010", 0., 0.)
                 starting_items[4] = CreateCustomItem("I00Z", 0., 0.)
                 starting_items[5] = CreateCustomItem("I00Y", 0., 0.)
-            else
-                ActivePlayers = ActivePlayers - 1
-                return
+                icon = "ReplaceableTextures\\CommandButtons\\BTNAssassin.blp"
             end
 
             SetPlayerState(Player(player_id), PLAYER_STATE_RESOURCE_GOLD, 1000)
@@ -465,15 +421,15 @@ do
 
                     if region == ClassRegions[NECROMANCER_CLASS] then RegisterNecromancerCorpseSpawn(hero) end
 
-                    if unit_data.unit_class == BARBARIAN_CLASS or unit_data.unit_class == PALADIN_CLASS then ModifyStat(hero, VULNERABILITY, -30, STRAIGHT_BONUS, true)
-                    elseif unit_data.unit_class == ASSASSIN_CLASS then ModifyStat(hero, VULNERABILITY, -15, STRAIGHT_BONUS, true); AddSpecialEffectTarget("Units\\Hero\\Appearance\\SlayerHead.mdx", hero, "head")
+                    if unit_data.unit_class == BARBARIAN_CLASS or unit_data.unit_class == PALADIN_CLASS then ModifyStat(hero, VULNERABILITY, -20, STRAIGHT_BONUS, true)
+                    elseif unit_data.unit_class == ASSASSIN_CLASS then ModifyStat(hero, VULNERABILITY, -10, STRAIGHT_BONUS, true); AddSpecialEffectTarget("Units\\Hero\\Appearance\\SlayerHead.mdx", hero, "head")
                     elseif unit_data.unit_class == SORCERESS_CLASS then AddSpecialEffectTarget("Units\\Hero\\Appearance\\Sorceress_Hair.mdx", hero, "head") end
 
                     local glow = AddSpecialEffectTarget(Colours[player_id], hero, "origin")--Colours
                     unit_data.sprint_timer = sprint_timer
                 end)
 
-                SetCameraBoundsToRectForPlayerBJ(Player(player_id), bj_mapInitialCameraBounds)
+                SetCameraBoundsToRectForPlayerBJ(Player(player_id), gg_rct_outer_map)
 
                 local player_number = player_id
                 player_id = player_id + 1
@@ -492,10 +448,7 @@ do
                     local damage_trigger = CreateTrigger()
                     local hp_state_trigger = CreateTrigger()
 
-
-                    TimerStart(sprint_timer, 10., false, function()
-                        ApplyBuff(hero, hero, "A02Z", 1)
-                    end)
+                    TimerStart(sprint_timer, 10., false, function() ApplyBuff(hero, hero, "A02Z", 1) end)
 
                     TriggerRegisterUnitEvent(damage_trigger, hero, EVENT_UNIT_DAMAGED)
                     TriggerAddAction(damage_trigger, function()
@@ -504,9 +457,18 @@ do
                             if damage > 0 then
                                 local hero_data = GetUnitData(hero)
 
-                                RemoveBuff(hero, "A02Z")
+                                if GetUnitAbilityLevel(hero, FourCC("A02Z")) > 0 then
+                                    RemoveBuff(hero, "A02Z")
+                                    local group = GetAllUnitSummonUnits(hero)
+                                    ForGroup(group, RemoveMinionSprint)
+                                    DestroyGroup(group)
+                                end
+
                                 TimerStart(sprint_timer, 10., false, function()
                                     ApplyBuff(hero, hero, "A02Z", 1)
+                                    local group = GetAllUnitSummonUnits(hero)
+                                    ForGroup(group, ApplyMinionSprint)
+                                    DestroyGroup(group)
                                 end)
 
                                 if not hero_data.groan_cd then
@@ -645,6 +607,7 @@ do
                         ShowPlayerUI(player_id)
                         SelectUnitForPlayerSingle(hero, Player(player_number))
                         EnableGUIForPlayer(player_id)
+
                         DelayAction(3., function()
                             SkillPanelTutorialData[player_id] = true
                             if GetLocalPlayer() == Player(player_number) then
@@ -721,7 +684,6 @@ do
             [PALADIN_CLASS] = gg_rct_paladin_select,
             [ASSASSIN_CLASS] = gg_rct_assassin_select,
             [DRUID_CLASS] = gg_rct_druid_select,
-            [AMAZON_CLASS] = gg_rct_amazon_select,
         }
 
         local hero_state = {
@@ -731,12 +693,11 @@ do
             [PALADIN_CLASS] = true,
             [ASSASSIN_CLASS] = true,
             [DRUID_CLASS] = false,
-            [AMAZON_CLASS] = false,
         }
 
         ClassRegions = { }
 
-        for i = 1, 7 do
+        for i = 1, 6 do
             if class_rects[i] then
                 ClassRegions[i] = CreateRegion()
                 RegionAddRect(ClassRegions[i], class_rects[i])
@@ -744,16 +705,18 @@ do
             end
         end
 
+        ClassRegions[7] = CreateRegion()
+        RegionAddRect(ClassRegions[7], gg_rct_random_select)
+        TriggerRegisterEnterRegionSimple(trg, ClassRegions[7])
+
+
         RegisterTestCommand("unlock", function()
             for i = 1, 7 do
                 if class_rects[i] and not hero_state[i] then
                     TriggerRegisterEnterRegionSimple(trg, ClassRegions[i])
                 end
             end
-
             CreateClassText(gg_rct_druid_select, LOCALE_LIST[my_locale].DRUID_NAME)
-            CreateClassText(gg_rct_amazon_select, LOCALE_LIST[my_locale].AMAZON_NAME)
-
         end)
 
         RegisterTestCommand("invul", function()
@@ -765,6 +728,7 @@ do
         CreateClassText(gg_rct_necro_select, LOCALE_LIST[my_locale].NECROMANCER_NAME)
         CreateClassText(gg_rct_assassin_select, LOCALE_LIST[my_locale].ASSASSIN_NAME)
         CreateClassText(gg_rct_paladin_select, LOCALE_LIST[my_locale].PALADIN_NAME)
+        CreateClassText(gg_rct_random_select, GetLocalString("Случайный", "Random"))
 
 
         TriggerAddAction(trg, HeroSelect)
@@ -782,42 +746,66 @@ do
             local player = GetOwningPlayer(hero)
             local unit_data = GetUnitData(hero)
 
-            DestroyEffect(AddSpecialEffect("Effect\\BloodExplosionEx.mdx", GetUnitX(hero), GetUnitY(hero)))
-            DisplayTextToPlayer(player, 0.,0., LOCALE_LIST[my_locale].RESSURECT_TEXT_1 .. string.format('%%.2f', R2S(8. + (Current_Wave / 5.))) .. LOCALE_LIST[my_locale].RESSURECT_TEXT_2)
-            ResetUnitSpellCast(hero)
-            SetUIState(GetPlayerId(player)+1, INV_PANEL, false)
-            SetUIState(GetPlayerId(player)+1, SKILL_PANEL, false)
-            local gold_lost = R2I(GetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD) * 0.2)
+                DestroyEffect(AddSpecialEffect("Effect\\BloodExplosionEx.mdx", GetUnitX(hero), GetUnitY(hero)))
+                DisplayTextToPlayer(player, 0.,0., LOCALE_LIST[my_locale].RESSURECT_TEXT_1 .. string.format('%.2f', R2S(8. + (Current_Wave / 5.))) .. LOCALE_LIST[my_locale].RESSURECT_TEXT_2)
+                ResetUnitSpellCast(hero)
+                SetUIState(GetPlayerId(player)+1, INV_PANEL, false)
+                SetUIState(GetPlayerId(player)+1, SKILL_PANEL, false)
+                local gold_lost = R2I(GetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD) * 0.2)
 
-            if gold_lost > 1 then
-                DisplayTextToPlayer(player, 0.,0., LOCALE_LIST[my_locale].GOLD_PENALTY_TEXT_1 .. R2I(gold_lost) .. LOCALE_LIST[my_locale].GOLD_PENALTY_TEXT_2)
-                SetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD) - gold_lost)
-            end
+                if gold_lost > 1 then
+                    DisplayTextToPlayer(player, 0.,0., LOCALE_LIST[my_locale].GOLD_PENALTY_TEXT_1 .. R2I(gold_lost) .. LOCALE_LIST[my_locale].GOLD_PENALTY_TEXT_2)
+                    SetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(player, PLAYER_STATE_RESOURCE_GOLD) - gold_lost)
+                end
 
-            AddSoundVolumeZ(HeroDeathSoundpack[unit_data.unit_class][GetRandomInt(1, #HeroDeathSoundpack[unit_data.unit_class])], GetUnitX(hero), GetUnitY(hero), 50., 115, 2200.)
-            local timer = CreateTimer()
-            TimerStart(timer, 8. + (Current_Wave / 5.), false, function()
-                local unit_data = GetUnitData(hero)
-                ReviveHero(hero, CemetaryX, CemetaryY, true)
-                SetUnitTimeScale(hero, 1.)
-                SetUnitAnimation(hero, "Birth")
-                IssueImmediateOrderById(hero, order_stop)
-                SetUnitState(hero, UNIT_STATE_LIFE, GetUnitState(hero, UNIT_STATE_MAX_LIFE) * 0.5)
-                SetUnitState(hero, UNIT_STATE_MANA, GetUnitState(hero, UNIT_STATE_MAX_MANA) * 0.5)
-                DestroyTimer(GetExpiredTimer())
-                SelectUnitForPlayerSingle(hero, player)
-                for i = 1, #ActiveCurses do ApplyCurse(ActiveCurses[i]) end
                 local minions = GetAllUnitSummonUnits(hero)
                 ForGroup(minions, function() KillUnit(GetEnumUnit()) end)
                 DestroyGroup(minions)
-                OnHeroRevive(hero)
-                TimerStart(unit_data.sprint_timer, 10., false, function()
-                    ApplyBuff(hero, hero, "A02Z", 1)
+
+                AddSoundVolumeZ(HeroDeathSoundpack[unit_data.unit_class][GetRandomInt(1, #HeroDeathSoundpack[unit_data.unit_class])], GetUnitX(hero), GetUnitY(hero), 50., 125, 2200.)
+
+                local timer = CreateTimer()
+                TimerStart(timer, 8. + (Current_Wave / 5.), false, function()
+                    local unit_data = GetUnitData(hero)
+
+                        local minimap = BlzGetOriginFrame(ORIGIN_FRAME_MINIMAP, 0)
+                        if GetLocalPlayer() == player then
+                            SetCameraBoundsToRect(gg_rct_outer_map)
+                            SetDayNightModels("Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl")
+                            BlzFrameSetVisible(minimap, true)
+                        end
+
+                        ReviveHero(hero, CemetaryX, CemetaryY, true)
+                        SetUnitTimeScale(hero, 1.)
+                        SetUnitAnimation(hero, "Birth")
+                        IssueImmediateOrderById(hero, order_stop)
+                        SetUnitState(hero, UNIT_STATE_LIFE, GetUnitState(hero, UNIT_STATE_MAX_LIFE) * 0.5)
+                        SetUnitState(hero, UNIT_STATE_MANA, GetUnitState(hero, UNIT_STATE_MAX_MANA) * 0.5)
+                        DestroyTimer(GetExpiredTimer())
+                        SelectUnitForPlayerSingle(hero, player)
+
+                        OnHeroRevive(hero)
+
+                        TimerStart(unit_data.sprint_timer, 10., false, function()
+                            ApplyBuff(hero, hero, "A02Z", 1)
+                            local group = GetAllUnitSummonUnits(hero)
+                            ForGroup(group, ApplyMinionSprint)
+                            DestroyGroup(group)
+                        end)
+
+                        PlayerSkillQueue[GetPlayerId(player)+1].queue_skill = nil
+                        PlayerSkillQueue[GetPlayerId(player)+1].is_casting_skill = false
+                        PlayerCanChangeEquipment[GetPlayerId(player)+1] = true
+
+                        for i = 1, #unit_data.buff_list do
+                            RemoveBuff(hero, unit_data.buff_list[i].id)
+                        end
+
+                        for i = 1, #ActiveCurses do ApplyCurse(ActiveCurses[i]) end
+
+                        DestroyTimer(timer)
+
                 end)
-                PlayerSkillQueue[GetPlayerId(player)+1].queue_skill = nil
-                PlayerSkillQueue[GetPlayerId(player)+1].is_casting_skill = false
-                PlayerCanChangeEquipment[GetPlayerId(player)+1] = true
-            end)
 
         end)
 
@@ -834,7 +822,7 @@ do
             [SORCERESS_CLASS] = { "Sound\\Sorceress\\death1.wav", "Sound\\Sorceress\\death2.wav", "Sound\\Sorceress\\death3.wav" },
             [NECROMANCER_CLASS] = { "Sound\\Necromancer\\death1.wav", "Sound\\Necromancer\\death3.wav" },
             [PALADIN_CLASS] = { "Sound\\Paladin\\death1.wav", "Sound\\Paladin\\death2.wav","Sound\\Paladin\\death3.wav" },
-            [ASSASSIN_CLASS] = { "Sound\\Assassin\\death1.wav", "Sound\\Assassin\\death2.wav","Sound\\Assassin\\death3.wav" },
+            [ASSASSIN_CLASS] = { "Sound\\Assassin\\death01.wav", "Sound\\Assassin\\death02.wav","Sound\\Assassin\\death03.wav" },
             [DRUID_CLASS] = { "Sound\\Druid\\death1.wav","Sound\\Druid\\death3.wav" },
             [AMAZON_CLASS] = { "Sound\\Amazon\\death1.wav","Sound\\Amazon\\death2.wav" },
         }
@@ -895,7 +883,6 @@ do
         }
 
         CemetaryX, CemetaryY = GetRectCenterX(gg_rct_cemetary), GetRectCenterY(gg_rct_cemetary)
-
 
         InitUnitTracking()
         InitAlliedHeroesBar()

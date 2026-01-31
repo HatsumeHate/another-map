@@ -307,6 +307,7 @@ do
         InitAnarNPC()
         InitEstridNPC()
         InitRavens()
+        DungeonsInit()
 
     end
 

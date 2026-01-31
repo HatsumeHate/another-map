@@ -6,33 +6,42 @@
 do
 
 
-    function StackHeatingUp(source)
+    function StackHeatingUp(source, classification)
         local unit_data = GetUnitData(source)
         local max_stacks = GetUnitTalentLevel(source, "talent_heating_up") == 1 and 5 or 3
         local player = GetPlayerId(GetOwningPlayer(source))+1
 
-
-            if unit_data.heating_up_stacks and unit_data.heating_up_stacks < max_stacks then
-                unit_data.heating_up_stacks = unit_data.heating_up_stacks + 1
-
-                SetStatusBarValue("talent_heating_up", unit_data.heating_up_stacks, player)
-
-                    if unit_data.heating_up_stacks >= max_stacks then
-                        unit_data.heating_up_boost = true
-                        unit_data.heating_up_effect = AddSpecialEffectTarget("Effect\\heating_up.mdx", source, "origin")
-                        EnableAbilitySpriteOverlay("fire", 1)
-                    end
-
-            elseif unit_data.heating_up_boost then
-                unit_data.heating_up_boost = nil
-                DestroyEffect(unit_data.heating_up_effect)
-                RemoveStatusBarState("talent_heating_up", player)
-                DisableAbilitySpriteOverlay("fire", 1)
-            else
+            if not unit_data.heating_up_stacks then
                 AddStatusBarState("talent_heating_up", "Talents\\BTNFireSpell1.blp", POSITIVE_BUFF, player)
                 SetStatusBarValue("talent_heating_up", 1, player)
                 SetStatusBarHeaderName("talent_heating_up", LOCALE_LIST[my_locale].TALENTS["talent_heating_up"].name, GetPlayerId(GetOwningPlayer(source))+1)
                 unit_data.heating_up_stacks = 1
+            elseif unit_data.heating_up_stacks < max_stacks then
+                unit_data.heating_up_stacks = unit_data.heating_up_stacks + 1
+                SetStatusBarValue("talent_heating_up", unit_data.heating_up_stacks, player)
+
+                    if unit_data.heating_up_stacks == max_stacks then
+                        unit_data.heating_up_boost = true
+                        unit_data.heating_up_effect = AddSpecialEffectTarget("Effect\\heating_up.mdx", source, "origin")
+                        EnableAbilitySpriteOverlay("fire", player)
+                    end
+
+            elseif unit_data.heating_up_boost and classification == SKILL_CLASS_ATTACK then
+                unit_data.heating_up_stacks = nil
+                unit_data.heating_up_boost = nil
+                DestroyEffect(unit_data.heating_up_effect)
+                RemoveStatusBarState("talent_heating_up", player)
+                DisableAbilitySpriteOverlay("fire", player)
+            elseif unit_data.heating_up_stacks > max_stacks then
+                unit_data.heating_up_stacks = max_stacks
+                SetStatusBarValue("talent_heating_up", unit_data.heating_up_stacks, player)
+
+                    if not unit_data.heating_up_boost then
+                        unit_data.heating_up_boost = true
+                        unit_data.heating_up_effect = AddSpecialEffectTarget("Effect\\heating_up.mdx", source, "origin")
+                        EnableAbilitySpriteOverlay("fire", player)
+                    end
+
             end
 
     end
@@ -41,7 +50,8 @@ do
     function NapalmTalentEffect(source, x, y, effect)
         local timer = CreateTimer()
         local duration = 8.
-        local area = effect.level[effect.current_level].area_of_effect
+        local original_aoe = effect.level[effect.current_level].area_of_effect
+        local area = original_aoe * 0.93
         local sfx = {}
         local flame_sfx = {}
         local flame_timer = CreateTimer()
@@ -84,8 +94,9 @@ do
 
 
         for i = 1, circle_amount do
-            angle_table[i] = 360. / ((7 + i) * i)
-            counter[i] = ((7 + i) * i)
+            local mod = math.floor((7 + i) * (i / 2))
+            angle_table[i] = 360. / mod
+            counter[i] = mod
             DelayAction(delay, function()
                 myindex = myindex + 1
                 local angle = GetRandomReal(0., 359.)
@@ -117,10 +128,50 @@ do
                 else
                     duration = duration - 0.5
                     local myeffect = ApplyEffect(source, nil, x, y, "napalm_effect", GetUnitTalentLevel(source, "talent_napalm"))
-                    myeffect.level[myeffect.current_level].area_of_effect = area
+                    myeffect.level[myeffect.current_level].area_of_effect = original_aoe
                 end
             end)
 
+
+    end
+
+    local function SpawnNapalmSmall(source, x, y)
+        local sfx = AddSpecialEffect("Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeEmbers.mdx", x, y)
+        local timer = CreateTimer()
+
+            AddSoundVolume("Sounds\\Spells\\sizzle"..GetRandomInt(1,3)..".wav", x, y, 95, 1600.)
+            DestroyEffect(AddSpecialEffect("Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeDamageTarget.mdx", x, y))
+
+            TimerStart(timer, 0.5, true, function()
+                local myeffect = ApplyEffect(source, nil, x, y, "napalm_effect", GetUnitTalentLevel(source, "talent_napalm"))
+                myeffect.level[myeffect.current_level].area_of_effect = 75.
+            end)
+
+            DelayAction(6.5, function()
+                DestroyEffect(sfx)
+                DestroyTimer(timer)
+            end)
+
+    end
+
+    function NapalmTalentEffectSpecial(source, x, y, missile_pack)
+        local timer = CreateTimer()
+        local chance = 7.
+        local chance_bonus = 1.25
+
+
+            TimerStart(timer, 0.025, true, function()
+
+                for i = 1, #missile_pack do
+                    if GetRandomReal(0., 100.) <= chance then
+                        SpawnNapalmSmall(source, missile_pack[i].current_x, missile_pack[i].current_y)
+                    end
+                end
+
+                chance = chance + chance_bonus
+                if missile_pack[1].time <= 0. then DestroyTimer(timer) end
+
+            end)
 
     end
 
@@ -368,7 +419,7 @@ do
 
             if (not unit_data.classification or unit_data.classification == MONSTER_RANK_COMMON) and GetUnitLifePercent(target) < 50. then
                 if Chance(GetUnitParameterValue(source, CRIT_CHANCE) / 4.) then
-                    CreateHitnumberSpecial(math.floor(GetUnitState(target, UNIT_STATE_LIFE)), source, target, LIGHTNING_ATTRIBUTE, ATTACK_STATUS_USUAL)
+                    CreateHitnumberSpecial(math.floor(GetUnitState(target, UNIT_STATE_LIFE)), source, target, LIGHTNING_ATTRIBUTE, ATTACK_STATUS_USUAL, false)
                     --CreateHitnumber(math.floor(GetUnitState(target, UNIT_STATE_LIFE)), source, target, ATTACK_STATUS_USUAL)
                     --SetUnitExploded(target, true)
                     UnitDamageTarget(source, target, 999999999999., true, false, ATTACK_TYPE_NORMAL, nil, WEAPON_TYPE_WHOKNOWS)

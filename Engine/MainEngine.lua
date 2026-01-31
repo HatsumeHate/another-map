@@ -23,6 +23,15 @@ do
 
     OrderInterceptionTrigger = 0
 
+    TAG_BLEEDING = "bleeding"
+    TAG_BURNING = "burning"
+    TAG_POISONING = "poisoning"
+    TAG_DECAYING = "decaying"
+    TAG_DAMAGE_OVER_TIME = "dot"
+    TAG_SKILL = "skill"
+    TAG_TALENT = "talent"
+
+
 
     --call AddUnitAnimationProperties(gg_unit_H003_0009, "lumber", true)
 
@@ -254,10 +263,10 @@ do
                 if myeffect.eff.tags then
                     local mod = 1.
 
-                        if HasTag(myeffect.eff.tags, "bleeding") then mod = 1. + ((attacker_stats[BLEEDING_DAMAGE_BOOST].value - target_stats[BLEEDING_DAMAGE_REDUCTION].value) / 100.)
-                        elseif HasTag(myeffect.eff.tags, "burning") then mod = 1. + ((attacker_stats[BURNING_DAMAGE_BOOST].value - target_stats[BURNING_DAMAGE_REDUCTION].value) / 100.)
-                        elseif HasTag(myeffect.eff.tags, "poisoning") then mod = 1. + ((attacker_stats[POISONING_DAMAGE_BOOST].value - target_stats[POISONING_DAMAGE_REDUCTION].value) / 100.)
-                        elseif HasTag(myeffect.eff.tags, "decaying") then mod = 1. + ((attacker_stats[DECAYING_DAMAGE_BOOST].value - target_stats[DECAYING_DAMAGE_REDUCTION].value) / 100.) end
+                        if HasTag(myeffect.eff.tags, "bleeding") then mod = 1. + ((attacker_stats[BLEEDING_DAMAGE_BOOST].value - target_stats[BLEEDING_DAMAGE_REDUCTION].value))
+                        elseif HasTag(myeffect.eff.tags, "burning") then mod = 1. + ((attacker_stats[BURNING_DAMAGE_BOOST].value - target_stats[BURNING_DAMAGE_REDUCTION].value))
+                        elseif HasTag(myeffect.eff.tags, "poisoning") then mod = 1. + ((attacker_stats[POISONING_DAMAGE_BOOST].value - target_stats[POISONING_DAMAGE_REDUCTION].value) )
+                        elseif HasTag(myeffect.eff.tags, "decaying") then mod = 1. + ((attacker_stats[DECAYING_DAMAGE_BOOST].value - target_stats[DECAYING_DAMAGE_REDUCTION].value)) end
 
                     if mod < 0.1 then mod = 0.1 end
                     damage = damage * mod
@@ -573,7 +582,7 @@ do
                     end
 
                         UpdateEndurance(target)
-                        CreateHitnumberSpecial(total_blocked, source, target, attribute, ATTACK_STATUS_SHIELD)
+                        CreateHitnumberSpecial(total_blocked, source, target, attribute, ATTACK_STATUS_SHIELD, direct)
                         --CreateHitnumber(total_blocked, source, target, ATTACK_STATUS_SHIELD)
 
                 end
@@ -617,12 +626,23 @@ do
 
             end
 
-                if damage >= BlzGetUnitMaxHP(target) * 0.16 and damage >= GetUnitState(target, UNIT_STATE_LIFE) and not IsAHero(target) then
-                    SetUnitExploded(target, true)
-                    victim.death_x = GetUnitX(target)
-                    victim.death_y = GetUnitY(target)
-                    victim.death_z = GetUnitZ(target)
-                    victim.exploded = true
+
+                damage_table.damage = damage
+                OnDamage_PreHit(source, target, damage, damage_table)
+                damage = damage_table.damage
+
+                if damage > 0  then
+
+                    if direct and damage >= BlzGetUnitMaxHP(target) * 0.16 and damage >= GetUnitState(target, UNIT_STATE_LIFE) and not IsAHero(target) then
+
+                    if victim.classification and victim.classification ~= MONSTER_RANK_BOSS and not victim.exploded then
+                        SetUnitExploded(target, true)
+                        victim.death_x = GetUnitX(target)
+                        victim.death_y = GetUnitY(target)
+                        victim.death_z = GetUnitZ(target)
+                        victim.exploded = true
+                    end
+
                     --SafePauseUnit(target, false)
 
                         if attribute == ICE_ATTRIBUTE then
@@ -645,20 +665,13 @@ do
                             DestroyEffect(effect)
                         elseif attribute == POISON_ATTRIBUTE then
                             local effect = AddSpecialEffect("Effect\\plaguebomb_bigger_002.mdx", victim.death_x, victim.death_y)
-                            BlzSetSpecialEffectScale(effect, 1. * BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE))
+                            BlzSetSpecialEffectScale(effect, 0.85 * BlzGetUnitRealField(target, UNIT_RF_SCALING_VALUE))
                             BlzSetSpecialEffectYaw(effect, GetRandomReal(0., 360.) * bj_DEGTORAD)
                             BlzSetSpecialEffectZ(effect, GetZ(victim.death_x, victim.death_y) + 35. + GetUnitFlyHeight(target))
                             DestroyEffect(effect)
                         end
 
                 end
-
-
-                damage_table.damage = damage
-                OnDamage_PreHit(source, target, damage, damage_table)
-                damage = damage_table.damage
-
-                if damage > 0  then
 
                     UnitDamageTarget(source, target, damage, true, false, ATTACK_TYPE_NORMAL, nil, is_sound and attacker.equip_point[WEAPON_POINT].WEAPON_SOUND or nil)
                     OnDamage_End(source, target, damage, damage_table)
@@ -667,7 +680,7 @@ do
                             CreateHitnumberSpecialStacked(damage, source, target, myeffect.eff.id, attribute, attack_status)
                             --CreateHitnumber2(damage, source, target, attack_status, myeffect and myeffect.eff.id or nil)
                         else
-                            CreateHitnumberSpecial(damage, source, target, attribute, attack_status)
+                            CreateHitnumberSpecial(damage, source, target, attribute, attack_status, direct)
                             --CreateHitnumber(damage, source, target, attack_status)
                         end
 
@@ -736,7 +749,7 @@ do
                                 local player = GetOwningPlayer(data.Owner)
 
                                     if GetRandomInt(1, 100) <= GetCriticalChance(data.Owner, 0.) then attack_effect.critical_strike_flag = true end
-                                    GroupEnumUnitsInRange(enemy_group, GetUnitX(target), GetUnitY(target), weapon.RANGE + (weapon.RANGE / 4), nil)
+                                    GroupEnumUnitsInRange(enemy_group, GetUnitX(target), GetUnitY(target), weapon.RANGE, nil)
                                     if weapon.LIGHTNING then LightningEffect_Units(data.Owner, target, weapon.LIGHTNING.id, weapon.LIGHTNING.fade, 60., 60.) end
                                     DamageUnit(data.Owner, target, attack_data.damage, attack_data.attribute, attack_data.damage_type, MELEE_ATTACK, true, true, true, attack_effect)
 

@@ -10,6 +10,8 @@ do
     Current_Wave = 1
     WavesUntilShopsUpdate = 2
     OngoingWave = false
+    WIN_WAVE = 50
+    RESET_SHOP_INDEX = 3
     local MusicMix = 0
     local WaveToAquireHalfPotions = 12
 
@@ -30,11 +32,11 @@ do
 
     function EndWave()
 
-        if Current_Wave >= 51 then
+        if Current_Wave >= WIN_WAVE then
             VictoryScreen()
         else
             Current_Wave = Current_Wave + 1 + GLOBAL_WAVE_SKIP_BONUS
-            AddWaveTimer(390.)
+            AddWaveTimer(415.)
             --print("reset shops")
             ResetShops()
             --print("toggle citizens")
@@ -48,6 +50,7 @@ do
             PlayMusic(GetRandomMusicMix())
             ResumeMusic()
             OngoingWave = false
+            UpdateGamblerStock()
         end
 
         for i = 1, 6 do
@@ -206,7 +209,7 @@ do
         ClearShop(gg_unit_n01W_0111)
         --print("clear ok")
 
-        if WavesUntilShopsUpdate == 3 then
+        if WavesUntilShopsUpdate >= RESET_SHOP_INDEX then
             WavesUntilShopsUpdate = 0
             DelayAction(0.1, function() ResetPeonShop() end)
             DelayAction(0.15, function() ResetBlackShop() end)
@@ -244,17 +247,21 @@ do
                 AddItemToShopWithSlot(gg_unit_n001_0055, scrolls, 28, false)
 
                 if GetRandomInt(1, 4) == 1 then
-                    local item = CreateCustomItem(ITEM_ELIXIR_INNOCENCE, 0, 0, false)
+                    item = CreateCustomItem(ITEM_ELIXIR_INNOCENCE, 0, 0, false)
+                    SetItemCharges(item, GetRandomInt(1, 2) * ActivePlayers)
+                    AddItemToShop(gg_unit_n001_0055, item, false)
+                end
 
-                        SetItemCharges(item, GetRandomInt(1, 2) * ActivePlayers)
-                        AddItemToShop(gg_unit_n001_0055, item, false)
+                if GetRandomInt(1, 4) == 1 then
+                    item = CreateCustomItem(ITEM_ASHEN_TONIC, 0, 0, false)
+                    SetItemCharges(item, GetRandomInt(1, 2) * ActivePlayers)
+                    AddItemToShop(gg_unit_n001_0055, item, false)
                 end
 
                 if GetRandomInt(1, 5) == 1 then
-                    local item = CreateCustomItem(ITEM_NECRONOMICON, 0, 0, false)
-
-                        SetItemCharges(item, GetRandomInt(1, 4))
-                        AddItemToShop(gg_unit_n001_0055, item, false)
+                    item = CreateCustomItem(ITEM_NECRONOMICON, 0, 0, false)
+                    SetItemCharges(item, GetRandomInt(1, 4))
+                    AddItemToShop(gg_unit_n001_0055, item, false)
                 end
         end)
         --print("shops resetted")

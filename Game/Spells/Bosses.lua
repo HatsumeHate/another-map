@@ -130,7 +130,7 @@ do
     end
 
 
-    function SpiderQueen_WebTrap(boss)
+    function SpawnWebTrap(boss)
         local rect = Rect(-16., -16., 16., 16)
         local angle = GetRandomReal(0., 359.)
         local max_range = GetMaxAvailableDistance(GetUnitX(boss), GetUnitY(boss), angle, GetRandomInt(200, 400))
@@ -169,6 +169,13 @@ do
             end
         end)
 
+    end
+
+
+    function SpiderQueen_WebTrap(boss)
+        for i = 1, GetRandomInt(3, 4) do
+            SpawnWebTrap(boss)
+        end
     end
 
 
@@ -334,6 +341,74 @@ do
 
     end
 
+    function LightningBreathCast(source, missile)
+        local timer = CreateTimer()
+        local max = 400.
+        local delta_radius = (max - 100.) / (missile.time / 0.025)
+
+                TimerStart(timer, 0.025, true, function()
+                    if missile and missile.time > 0. then
+                        if missile.radius < max then missile.radius = missile.radius + delta_radius end
+                    else
+                        DestroyTimer(timer)
+                    end
+                end)
+
+    end
+
+
+    local function SpawnPortalUnits(amount, x, y, angle, portal)
+        local timer = CreateTimer()
+        local pool = { "n002", "n00B" }
+
+            TimerStart(timer, 0.65, true, function()
+                if amount <= 0 then
+                    DestroyTimer(timer)
+                    DestroyEffect(portal)
+                else
+                    local range = GetRandomReal(0., 100.)
+                    local spawn_angle = angle
+
+                        if GetRandomInt(1, 2) then spawn_angle = spawn_angle + 90.
+                        else spawn_angle = spawn_angle - 90. end
+
+                    local spawn_x, spawn_y = x + Rx(range, spawn_angle), y + Ry(range, spawn_angle)
+                    local summoned = CreateUnit(SECOND_MONSTER_PLAYER, FourCC(pool[GetRandomInt(1, 2)]), x, y, angle)
+
+                    ShowUnit(summoned, false)
+                    UnitAddAbility(summoned, FourCC("Avul"))
+                    IssuePointOrderById(summoned, order_move, spawn_x + Rx(150., angle), spawn_y + Ry(150., angle))
+
+                        DelayAction(0., function()
+                            local unit_data = GetUnitData(summoned)
+                            unit_data.classification = 0
+                            ShowUnit(summoned, true)
+                            FadeInUnit(summoned, 0.6, unit_data.colours, function() UnitRemoveAbility(summoned, FourCC("Avul")) end)
+                        end)
+                    amount = amount - 1
+
+                end
+            end)
+
+    end
+
+    function QueenPortalCast(unit)
+        local angle = GetRandomReal(0., 360.)
+        local x, y = GetUnitX(unit), GetUnitY(unit)
+        local range = GetMaxAvailableDistance(x, y, angle, 300.)
+        x, y = x + Rx(range, angle), y + Ry(range, angle)
+        local portal = AddSpecialEffect("Effect\\RedShimmeringPortal.mdx", x, y)
+
+            AddSoundVolume("Abilities\\Spells\\Demon\\SoulPreservation\\SoulPreservation.wav", x, y, 128, 1600.)
+            angle = AngleBetweenUnitXY(unit, x, y) + 180.
+            BlzSetSpecialEffectYaw(portal, angle * bj_DEGTORAD)
+            BlzSetSpecialEffectTimeScale(portal, 3.)
+            DelayAction(3.1, function()
+                SpawnPortalUnits(GetRandomInt(3, 5), x, y, angle, portal)
+            end)
+
+    end
+
 
     function BloodRavenReviveCast(unit)
 
@@ -379,6 +454,62 @@ do
                     end)
             end)
         end
+
+    end
+
+    function ReanimatedPrisonCast(unit, x, y)
+        local amount = 12
+        local shift_angle = 30.
+        local starting_angle = 0.
+
+            for i = 1, amount do
+                local target_x, target_y = x + Rx(200., starting_angle), y + Ry(200., starting_angle)
+
+                    if IsPathable_Ground(target_x, target_y) then
+                        local angle = starting_angle
+                        DelayAction(GetRandomReal(0., 0.22), function()
+                            local bone = CreateUnit(SECOND_MONSTER_PLAYER, FourCC("o006"), target_x, target_y, angle + 180.)
+                            UnitApplyTimedLife(bone, 0, 10.)
+                            AddSoundVolume("Sounds\\Spells\\bone_light_hit_"..GetRandomInt(1, 5)..".wav", GetUnitX(bone), GetUnitY(bone), 120, 1500.)
+                            SetUnitX(bone, target_x)
+                            SetUnitY(bone, target_y)
+                        end)
+                    end
+
+                starting_angle = starting_angle + 30.
+            end
+
+    end
+
+
+    function ReanimatedWardCast(unit)
+        local angle = GetRandomReal(0.,360.)
+        local unit_x, unit_y = GetUnitX(unit), GetUnitY(unit)
+        local range = GetMaxAvailableDistance(unit_x, unit_y, angle, 600.)
+        local timer = CreateTimer()
+        local ward = CreateUnit(SECOND_MONSTER_PLAYER, FourCC("o007"), unit_x + Rx(range, angle), unit_y + Ry(range, angle), GetRandomReal(0., 360.))
+        local unit_data = GetUnitData(unit)
+
+            DestroyEffect(AddSpecialEffect("Effect\\Soul Beam.mdx", GetUnitX(ward), GetUnitY(ward)))
+            UnitApplyTimedLife(ward, 0, 25.)
+            AddSpecialEffectTargetEx("Effect\\LifeAura.mdx", ward, "origin", 0.)
+            AddSoundVolume("Abilities\\Spells\\Undead\\DarkSummoning\\DarkSummoningTarget1.wav", GetUnitX(ward), GetUnitY(ward), 128, 1600.)
+            SetUnitAnimation(ward, "birth")
+
+            TimerStart(timer, 1., true, function()
+                if GetUnitState(unit, UNIT_STATE_LIFE) <= 0.045 then
+                    KillUnit(ward)
+                    DestroyTimer(timer)
+                elseif GetUnitState(ward, UNIT_STATE_LIFE) > 0.045 then
+                    if not unit_data.ward_cd and Chance(25.) then
+                        ThrowMissile(ward, unit, "reanimated_spirit_missile", nil, GetUnitX(ward), GetUnitY(ward), 0., 0., 0., true)
+                        unit_data.ward_cd = true
+                        DelayAction(6., function() unit_data.ward_cd = false end)
+                    end
+                elseif GetUnitState(ward, UNIT_STATE_LIFE) <= 0.045 then
+                    DestroyTimer(timer)
+                end
+            end)
 
     end
 
@@ -504,7 +635,8 @@ do
 
                     AddSoundVolume("Sounds\\Spells\\Diablo_Apocalypse_Start0"..GetRandomInt(1,4)..".wav", x, y, 120, 1600)
                     BlzSetSpecialEffectScale(sfx, 0.6)
-                    DelayAction(3., function()
+                    BlzSetSpecialEffectZ(sfx, GetTerrainZ(x, y) + 10.)
+                    DelayAction(2.5, function()
                         ApplyEffect(unit, nil, x, y, "diablo_apoc_effect", 1, nil)
                         DestroyEffect(sfx)
                     end)
@@ -575,6 +707,24 @@ do
 
         --CreateSpellCircle("Effect\\Spell Marker Red.mdx", x, y, 1.4, 1.2, 0.8, function()  end)
     end
+
+    function SeductionCast(caster)
+        local group = CreateGroup()
+
+            GroupEnumUnitsInRange(group, GetUnitX(caster), GetUnitY(caster), 800., nil)
+
+                for index = BlzGroupGetSize(group) - 1, 0, -1 do
+                    local picked = BlzGroupUnitAt(group, index)
+                    if IsUnitEnemy(picked, MONSTER_PLAYER) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 and IsUnitInRange(caster, picked, 800.) and IsAngleInFace(caster, 35., GetUnitX(picked), GetUnitY(picked), false) then
+                        ApplyBuff(caster, picked, "A056", 1)
+                    end
+                end
+
+            DestroyGroup(group)
+
+
+    end
+
 
 
     function BelialFelRain(caster, x, y)
@@ -681,6 +831,41 @@ do
                     duration = duration - 0.5
                     ApplyEffect(caster, nil, x, y, "andariel_poison_pool_effect", 1)
                 end
+            end)
+
+
+    end
+
+
+    function DurielHolyFreeze(caster)
+        local unit_data = GetUnitData(caster)
+        local timer = CreateTimer()
+        local ease_time = 0.
+
+            TimerStart(timer, 1, true, function()
+                if ease_time <= 0. and Chance(12.) then
+                    local group = CreateGroup()
+
+                        GroupEnumUnitsInRange(group, GetUnitX(caster), GetUnitY(caster), 600., nil)
+
+                            for index = BlzGroupGetSize(group) - 1, 0, -1 do
+                                local picked = BlzGroupUnitAt(group, index)
+
+                                    if IsUnitEnemy(picked, MONSTER_PLAYER) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
+                                        ApplyEffect(caster, nil, GetUnitX(picked), GetUnitY(picked), "duruel_holy_freeze_effect", 1, nil)
+                                        ease_time = 4.
+                                        break
+                                    end
+
+                            end
+
+                        DestroyGroup(group)
+                else
+                    ease_time = ease_time - 1.
+                end
+
+                if GetUnitState(caster, UNIT_STATE_LIFE) <= 0.045 then DestroyTimer(timer) end
+
             end)
 
 

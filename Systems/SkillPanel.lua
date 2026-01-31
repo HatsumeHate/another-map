@@ -123,8 +123,12 @@ do
                         FrameChangeTexture(button_data.button, button_data.skill.icon)
                         if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(SkillPanelFrame[player].displayed_skill_button[i], true) end
                         BlzFrameSetText(button_data.name_text, button_data.skill.name)
+
                         if button_data.skill.short_name then BlzFrameSetScale(button_data.name_text, 0.7)
+                        elseif button_data.skill.short_name_ru and my_locale == "ruRU" then BlzFrameSetScale(button_data.name_text, button_data.skill.short_name_ru)
+                        elseif button_data.skill.short_name_en and my_locale ~= "ruRU" then BlzFrameSetScale(button_data.name_text, button_data.skill.short_name_en)
                         else BlzFrameSetScale(button_data.name_text, 0.86) end
+
                         BlzFrameSetText(button_data.level_text, LOCALE_LIST[my_locale].SKILL_PANEL_LVL_TEXT .. UnitGetAbilityLevel(PlayerHero[player], button_data.skill.Id))
 
                     else
@@ -385,9 +389,9 @@ do
                                 end
                             else
                                 SkillPanelFrame[player].slider_value = BlzGetTriggerFrameValue()
+                                UpdateSkillWindow(player)
                             end
 
-                            UpdateSkillWindow(player)
                         end)
 
                     BlzTriggerRegisterFrameEvent(SkillPanelFrame[player].slider_trigger, SkillPanelFrame[player].slider, FRAMEEVENT_MOUSE_WHEEL)
@@ -524,9 +528,9 @@ do
                         end
                     else
                         SkillPanelFrame[player].slider_value = BlzGetTriggerFrameValue()
+                        UpdateSkillWindow(player)
                     end
 
-                    UpdateSkillWindow(player)
                     --EnableTrigger(GetTriggeringTrigger())
                 end)
 

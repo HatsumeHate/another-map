@@ -8,6 +8,9 @@ do
     MAIN_MULTIBOARD = 0
     local PlayerColors = 0
     local PlayerNames = 0
+    local PlayerPool
+    local golditemrows
+    local levelitemrows
 
 
 
@@ -27,7 +30,15 @@ do
         local gold = GetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD)
         local per_player = math.ceil(gold / ActivePlayers)
 
-            MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + player, 0), "|c006F6F6F" .. PlayerNames[player] .. "|r")
+            for i = 1, 6 do
+                if PlayerPool[i].player_id == player then
+                    MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), "|c006F6F6F" .. PlayerNames[player] .. "|r")
+                    break
+                end
+            end
+
+            RemovePlayerModificator()
+            --MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + player, 0), "|c006F6F6F" .. PlayerNames[player] .. "|r")
             SetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD, 0)
             --MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + player, 1), "|c00FFFF00".."0".."|r")
             IssueImmediateOrderById(PlayerHero[player], order_stop)
@@ -38,8 +49,8 @@ do
 
                 if per_player > 0 then
                     for i = 1, 6 do
-                        if PlayerHero[player] and not IsUnitHidden(PlayerHero[player]) then
-                            SetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD) + per_player)
+                        if PlayerHero[i] and not IsUnitHidden(PlayerHero[i]) then
+                            SetPlayerState(Player(i-1), PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(Player(player-1), PLAYER_STATE_RESOURCE_GOLD) + per_player)
                         end
                     end
                 end
@@ -63,33 +74,41 @@ do
             BlzFrameSetPoint(multiboard, FRAMEPOINT_TOPLEFT, PlayerUI.minimap_border, FRAMEPOINT_TOPRIGHT, 0.014, 0.)
             MultiboardSetTitleText(MAIN_MULTIBOARD, LOCALE_LIST[my_locale].WAVE_INCOMING_TEXT)
             MultiboardSetItemsStyle(MAIN_MULTIBOARD, true, false)
-            MultiboardSetItemsWidth(MAIN_MULTIBOARD, 0.048)
+            MultiboardSetItemsWidth(MAIN_MULTIBOARD, 0.0015)
             MultiboardSetColumnCount(MAIN_MULTIBOARD, 3)
             MultiboardSetRowCount(MAIN_MULTIBOARD, 8)
             MultiboardDisplay(MAIN_MULTIBOARD, true)
             MultiboardMinimize(MAIN_MULTIBOARD, true)
             MultiboardMinimize(MAIN_MULTIBOARD, false)
-            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 0), 0.07)
-            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 1), 0.1)
+            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 0), 0.05)
+            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 1), 0.07)
 
-            for i = 0, 2 do
+            for i = 0, 3 do
                 MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1, i), "=========================")
-                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1, i), 0.07)
+                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1, i), 0.06)
             end
 
             MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 2), 0.)
             MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1, 2), 0.)
 
-            for i = 1, 6 do
-                if GetPlayerSlotState(Player(i-1)) == PLAYER_SLOT_STATE_PLAYING then
-                    MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), PlayerColors[i] .. PlayerNames[i] .. "|r")
-                end
+            --for i = 1, 6 do
+                --if GetPlayerSlotState(Player(i-1)) == PLAYER_SLOT_STATE_PLAYING then
+                  --  MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), PlayerColors[i] .. PlayerNames[i] .. "|r")
+                --end
+            --end
+
+            for i = 1, #PlayerPool do
+                MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), PlayerColors[PlayerPool[i].player_id] .. PlayerNames[PlayerPool[i].player_id] .. "|r")
             end
 
-            for i = 1, 6 do
-                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), 0.07)
-                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 1), 0.014)
-                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 2), 0.03)
+            MultiboardSetRowCount(MAIN_MULTIBOARD, 2 + #PlayerPool)
+
+            for i = 1, #PlayerPool do
+                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), 0.075)
+                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 1), 0.012)
+                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 2), 0.04)
+                golditemrows[i] = MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 2)
+                levelitemrows[i] = MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 1)
             end
     end
 
@@ -113,10 +132,12 @@ do
             [6] = "|c00FF8B00",
         }
 
+        PlayerPool = {}
+
             MAIN_MULTIBOARD = CreateMultiboard()
             MultiboardSetTitleText(MAIN_MULTIBOARD, LOCALE_LIST[my_locale].WAVE_INCOMING_TEXT)
             MultiboardSetItemsStyle(MAIN_MULTIBOARD, true, false)
-            MultiboardSetItemsWidth(MAIN_MULTIBOARD, 0.048)
+            MultiboardSetItemsWidth(MAIN_MULTIBOARD, 0.0015)
             MultiboardSetColumnCount(MAIN_MULTIBOARD, 3)
             MultiboardSetRowCount(MAIN_MULTIBOARD, 8)
             MultiboardDisplay(MAIN_MULTIBOARD, true)
@@ -129,12 +150,12 @@ do
             BlzFrameSetPoint(multiboard, FRAMEPOINT_TOPLEFT, PlayerUI.minimap_border, FRAMEPOINT_TOPRIGHT, 0.014, 0.)
 
 
-            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 0), 0.07)
-            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 1), 0.1)
+            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 0), 0.05)
+            MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 1), 0.07)
 
-            for i = 0, 2 do
+            for i = 0, 3 do
                 MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1, i), "=========================")
-                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1, i), 0.07)
+                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1, i), 0.06)
             end
 
             MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 0, 2), 0.)
@@ -143,22 +164,34 @@ do
             for i = 1, 6 do
                 if GetPlayerSlotState(Player(i-1)) == PLAYER_SLOT_STATE_PLAYING then
                     PlayerNames[i] = ParsePlayerName(GetPlayerName(Player(i-1)))
-                    MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), PlayerColors[i] .. PlayerNames[i] .. "|r")
+                    PlayerPool[#PlayerPool+1] = { player_id = i }
                 end
             end
 
-            for i = 1, 6 do
-                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), 0.07)
-                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 1), 0.014)
-                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 2), 0.03)
+            for i = 1, #PlayerPool do
+                MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), PlayerColors[PlayerPool[i].player_id] .. PlayerNames[PlayerPool[i].player_id] .. "|r")
+            end
+
+            MultiboardSetRowCount(MAIN_MULTIBOARD, 2 + #PlayerPool)
+
+            golditemrows = {}
+            levelitemrows = {}
+
+
+            for i = 1, #PlayerPool do
+                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 0), 0.075)
+                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 1), 0.012)
+                MultiboardSetItemWidth(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 2), 0.04)
+                golditemrows[i] = MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 2)
+                levelitemrows[i] = MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 1)
             end
 
 
             local timer = CreateTimer()
             TimerStart(timer, 2.25, true, function()
-                for i = 1, 6 do
-                    MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 2), "|c00FFFF00"..GetPlayerState(Player(i-1), PLAYER_STATE_RESOURCE_GOLD).."|r")
-                    if PlayerHero[i] then MultiboardSetItemValue(MultiboardGetItem(MAIN_MULTIBOARD, 1 + i, 1), GetHeroLevel(PlayerHero[i])) end
+                for i = 1, #PlayerPool do
+                    MultiboardSetItemValue(golditemrows[i], "|c00FFFF00"..GetPlayerState(Player(PlayerPool[i].player_id-1), PLAYER_STATE_RESOURCE_GOLD).."|r")
+                    if PlayerHero[PlayerPool[i].player_id] then MultiboardSetItemValue(levelitemrows[i], GetHeroLevel(PlayerHero[PlayerPool[i].player_id])) end
                 end
             end)
 

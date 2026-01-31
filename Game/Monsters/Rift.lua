@@ -55,7 +55,7 @@ do
 
                     if BlzGroupGetSize(pack.group) < pack.pack_count then
                         ForGroup(pack.group, function() KillUnit(GetEnumUnit()); ShowUnit(GetEnumUnit(), false) end)
-                        pack.group = SpawnMonsterPack(rift.spawner, pack_tag, pack.min, pack.max, pack.elite or 0, 0.)
+                        pack.group = SpawnMonsterPack(rift.spawner, pack_tag, pack.min, pack.max, pack.elite or 0, 0., MONSTER_PLAYER)
                         ForGroup(pack.group, function() TriggerRegisterUnitEvent(pack.death_trigger, GetEnumUnit(), EVENT_UNIT_DEATH) end)
                         pack.pack_count = BlzGroupGetSize(pack.group)
                     end

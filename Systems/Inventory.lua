@@ -16,6 +16,7 @@ do
     ControlState = 0
     QualityHighlightTexture = nil
     local ClassFrameTexture
+    local ClassFrameTextureScaling
     local ClickTrigger = 0
     local BackupButtonData
     local last_EnteredFrame
@@ -782,7 +783,7 @@ do
                 return
             end
 
-            if GetItemType(item) == ITEM_TYPE_CHARGED then
+            if GetItemType(item) == ITEM_TYPE_CHARGED and not item_data.permanent then
 
                 if IsItemInvulnerable(item) then
                     UnitUseItem(PlayerHero[player], item)
@@ -1581,8 +1582,8 @@ do
                 BlzFrameSetTexture(slots_Frame, "UI\\big_bar.blp", 0, true)
 
                 local silhouette = BlzCreateFrameByType("BACKDROP", "silhouette", slots_Frame, "", 0)
-                BlzFrameSetPoint(silhouette, FRAMEPOINT_TOP, slots_Frame, FRAMEPOINT_TOP, 0.,0.)
-                BlzFrameSetPoint(silhouette, FRAMEPOINT_BOTTOM, slots_Frame, FRAMEPOINT_BOTTOM, 0.,0.)
+                BlzFrameSetPoint(silhouette, FRAMEPOINT_TOP, slots_Frame, FRAMEPOINT_TOP, 0., 0. - ClassFrameTextureScaling[GetUnitClass(PlayerHero[player])])
+                BlzFrameSetPoint(silhouette, FRAMEPOINT_BOTTOM, slots_Frame, FRAMEPOINT_BOTTOM, 0., 0. + ClassFrameTextureScaling[GetUnitClass(PlayerHero[player])])
                 BlzFrameSetSize(silhouette, 0.1, 0.1)
                 BlzFrameSetTexture(silhouette, ClassFrameTexture[GetUnitClass(PlayerHero[player])], 0, true)
 
@@ -1726,8 +1727,10 @@ do
         BlzFrameSetTexture(slots_Frame, "UI\\big_bar.blp", 0, true)
 
         local silhouette = BlzCreateFrameByType("BACKDROP", "silhouette", slots_Frame, "", 0)
-        BlzFrameSetPoint(silhouette, FRAMEPOINT_TOP, slots_Frame, FRAMEPOINT_TOP, 0.,0.)
-        BlzFrameSetPoint(silhouette, FRAMEPOINT_BOTTOM, slots_Frame, FRAMEPOINT_BOTTOM, 0.,0.)
+        --BlzFrameSetPoint(silhouette, FRAMEPOINT_TOP, slots_Frame, FRAMEPOINT_TOP, 0., 0.)
+        --BlzFrameSetPoint(silhouette, FRAMEPOINT_BOTTOM, slots_Frame, FRAMEPOINT_BOTTOM, 0., 0.)
+        BlzFrameSetPoint(silhouette, FRAMEPOINT_TOP, slots_Frame, FRAMEPOINT_TOP, 0., 0. - ClassFrameTextureScaling[GetUnitClass(PlayerHero[player])])
+        BlzFrameSetPoint(silhouette, FRAMEPOINT_BOTTOM, slots_Frame, FRAMEPOINT_BOTTOM, 0., 0. + ClassFrameTextureScaling[GetUnitClass(PlayerHero[player])])
         BlzFrameSetSize(silhouette, 0.1, 0.1)
         BlzFrameSetTexture(silhouette, ClassFrameTexture[GetUnitClass(unit)], 0, true)
 
@@ -2042,6 +2045,14 @@ do
             [NECROMANCER_CLASS] = "UI\\shadowmage_silhouette_man.blp",
             [ASSASSIN_CLASS] = "UI\\assassin_silhouette_woman.blp",
             [PALADIN_CLASS] = "UI\\warrior_silhouette_man.blp"
+        }
+
+        ClassFrameTextureScaling = {
+            [BARBARIAN_CLASS] = 0.,
+            [SORCERESS_CLASS] = 0.,
+            [NECROMANCER_CLASS] = 0.,
+            [ASSASSIN_CLASS] = 0.005,
+            [PALADIN_CLASS] = 0.006
         }
 
         UNIT_POINT_LIST = {

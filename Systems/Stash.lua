@@ -523,6 +523,7 @@ do
             [5] = "item_conduction",
             [6] = "item_fortify",
             [7] = "weap_poison_phys",
+            [8] = "weap_decay",
         }
 
         --ShowUnit(gg_unit_n01Z_0030, false)

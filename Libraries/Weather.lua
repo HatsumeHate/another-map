@@ -98,17 +98,19 @@ do
         end
     end
 
+    local function ResetWeather()
+        for i = 1, #RectList do RemoveWeatherEffect(RectList[i].weather) end
+        Weather_Current = 0
+    end
 
     local function DestroyWeatherOnRects()
         EnableWeatherEffect(RectList[CurrentWeatherRectIndex].weather, false)
-        RemoveWeatherEffect(RectList[CurrentWeatherRectIndex].weather)
+
         RectList[CurrentWeatherRectIndex].weather = nil
         CurrentWeatherRectIndex = CurrentWeatherRectIndex - 1
 
         if CurrentWeatherRectIndex == 0 then
-            TimerStart(CreationTimer, 0., false, nil)
-            --PauseTimer(CreationTimer)
-            Weather_Current = 0
+            TimerStart(CreationTimer, 10., false, ResetWeather)
         end
 
     end

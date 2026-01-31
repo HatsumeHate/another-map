@@ -55,7 +55,7 @@ do
             id = "hydra_aura",
             name = "hydra fire aura",
             max_level = 75,
-            sfx_path = "",
+            sfx_path = "Buffs\\EarthDefAura.mdx",
             sfx_point = "origin",
             tickrate = 0.5,
             level = {
@@ -88,13 +88,13 @@ do
             id = "caltrops_aura",
             name = "caltrops aura",
             max_level = 1,
-            sfx_path = "",
+            sfx_path = ".mdl",
             tickrate = 0.5,
             level = {
                 [1] = {
                     sfx_scale = 1.5,
                     radius = 300.,
-                    duration = 5.,
+                    duration = 8.,
                     [ON_ENEMY] = { applied_effect = "caltrops_effect" }
                 }
             }
@@ -107,6 +107,9 @@ do
             sfx_path = "Effect\\Blind Aura.mdx",
             sfx_point = "origin",
             tickrate = 0.5,
+            sound = {
+                loop_pack = { "Sounds\\Spells\\Mark_Loop_PLR_01.wav", "Sounds\\Spells\\Mark_Loop_PLR_02.wav" },
+                      volume = 125, cutoff = 1400., fadein = 0, fadeout = 100, delay = -0.14 },
             level = {
                 [1] = {
                     sfx_scale = 1.3,
@@ -283,7 +286,7 @@ do
         NewAuraTemplate({
             id = "sanctify_aura",
             name = "sanctify_aura",
-            sfx_path = "",
+            sfx_path = ".mdl",
             max_level = 75,
             tickrate = 0.2,
 
@@ -325,6 +328,23 @@ do
                     radius = 300.,
                     duration = 15.,
                     [ON_ENEMY] = { applied_effect = "effect_duriel_poison_aura" }
+                }
+            }
+        })
+        --=================================================================--
+        NewAuraTemplate({
+            id = "monster_sirenward_aura",
+            name = "monster_sirenward_aura",
+            max_level = 1,
+            sfx_path = "Effect\\AbyssAura.mdx",
+            sfx_point = "origin",
+            sfx_scale = 1.5,
+            tickrate = 0.5,
+            level = {
+                [1] = {
+                    sfx_scale = 1.,
+                    radius = 700.,
+                    [ON_ALLY] = { applied_buff = "A059" }
                 }
             }
         })

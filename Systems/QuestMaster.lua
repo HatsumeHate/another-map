@@ -50,6 +50,12 @@ do
         end
     end
 
+    ---@param message string
+    ---@param time real
+    function SendQuestMessageForPlayer(message, time, player)
+        DisplayTimedTextToPlayer(Player(player-1), 0, 0, time, " ")
+        DisplayTimedTextToPlayer(Player(player-1), 0, 0, time, message)
+    end
 
 
     ---@param message string
@@ -72,6 +78,30 @@ do
     function ShowQuestAlert(message)
         SendQuestMessage(QUEST_ALERT_STRING .. message, bj_TEXT_DELAY_WARNING)
         StartSound(QUEST_ALERT_SOUND or bj_questWarningSound)
+    end
+
+    function PlayQuestHintSound(player)
+        if GetLocalPlayer() == Player(player) then StartSound(QUEST_HINT_SOUND or bj_questHintSound) end
+    end
+
+    function PlayQuestAlertSound(player)
+        if GetLocalPlayer() == Player(player) then StartSound(QUEST_ALERT_SOUND or bj_questWarningSound) end
+    end
+
+    function PlayQuestUpdatedSound(player)
+        if GetLocalPlayer() == Player(player) then StartSound(QUEST_UPDATED_SOUND or bj_questUpdatedSound) end
+    end
+
+    function PlayQuestFailedSound(player)
+        if GetLocalPlayer() == Player(player) then StartSound(QUEST_FAILED_SOUND or bj_questFailedSound) end
+    end
+
+    function PlayQuestCompletedSound(player)
+        if GetLocalPlayer() == Player(player) then StartSound(QUEST_DONE_SOUND or bj_questCompletedSound) end
+    end
+
+    function PlayQuestRevealedSound(player)
+        if GetLocalPlayer() == Player(player) then StartSound(QUEST_REVEALED_SOUND or bj_questDiscoveredSound) end
     end
 
 

@@ -11,7 +11,7 @@ do
         --CircleFigure = {}
 
         local function normalize (angle)
-            return (angle %% (2 * math.pi) + 2 * math.pi) %% (2 * math.pi);
+            return (angle % (2 * math.pi) + 2 * math.pi) % (2 * math.pi);
         end
 
         CircleFigureEdge = { }

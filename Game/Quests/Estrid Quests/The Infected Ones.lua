@@ -56,8 +56,8 @@ do
         AddJournalEntry(player, "infected_quest_journal", "ReplaceableTextures\\CommandButtons\\BTNShimmerWeed.blp", GetLocalString("Инфекция", "The Infection"), 5, false)
         AddJournalEntryText(player, "infected_quest_journal", GetConversationText("estrid_infected_start_conv", Estrid, player), false)
         AddJournalEntryObjective(player, "infected_quest_journal", "infected_quest_journal_gloomreed_count", GetLocalString("Мрачный тростник собран: ", "Gloomreed gathered: ") .. "0/10")
-        SendQuestMessage(QUEST_REVEALED_STRING .. GetLocalString("Инфекция", "The Infection"), bj_TEXT_DELAY_QUEST)
-        StartSound(QUEST_REVEALED_SOUND or bj_questDiscoveredSound)
+        SendQuestMessageForPlayer(QUEST_REVEALED_STRING .. GetLocalString("Инфекция", "The Infection"), bj_TEXT_DELAY_QUEST, player)
+        if GetLocalPlayer() == Player(player - 1) then StartSound(QUEST_REVEALED_SOUND or bj_questDiscoveredSound) end
         EnableGloomreedSpawn()
         GloomreedStage[player] = 1
     end
@@ -67,6 +67,8 @@ do
         GiveExpForPlayer(200, player)
         GiveGoldForPlayer(250, player)
         RemoveJournalEntry(player, "infected_quest_journal")
+        SendQuestMessageForPlayer(QUEST_DONE_STRING .. GetLocalString("Инфекция", "The Infection"), bj_TEXT_DELAY_QUESTDONE, player)
+        PlayQuestCompletedSound(player-1)
     end
 
     function InitInfectedOnes()

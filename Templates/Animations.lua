@@ -97,7 +97,7 @@ do
         NewAnimationSequence("barb_spell_howl", {
             animation           = 43,
             animation_point     = 0.792,
-            animation_backswing = 0.5,
+            animation_backswing = 0.37,
         })
 
         NewAnimationSequence("barb_spell_punch", {
@@ -776,6 +776,12 @@ do
             animation_backswing = 0.1,
         })
 
+        NewAnimationSequence("siren_spell", {
+            animation           = 6,
+            animation_point     = 0.567,
+            animation_backswing = 0.5,
+        })
+
         NewAnimationSequence("skele_boss_spell", {
             animation           = 4,
             animation_point     = 0.5,
@@ -917,9 +923,9 @@ do
         })
 
         NewAnimationSequence("skeleton_mage_spell", {
-            animation           = 2,
-            animation_point     = 0.533,
-            animation_backswing = 0.42,
+            animation           = 11,
+            animation_point     = 0.52,
+            animation_backswing = 0.48,
         })
 
         NewAnimationSequence("sorceress_spell", {
@@ -953,6 +959,23 @@ do
             animation_backswing = 0.47,
         })
 
+        NewAnimationSequence("bandit_spell", {
+            animation           = 2,
+            animation_point     = 1.167,
+            animation_backswing = 1.,
+        })
+
+        NewAnimationSequence("bandit_mage_spell", {
+            animation           = 5,
+            animation_point     = 0.467,
+            animation_backswing = 0.6,
+        })
+
+        NewAnimationSequence("succubus_spell_slam", {
+            animation           = 9,
+            animation_point     = 0.467,
+            animation_backswing = 0.6,
+        })
 
         NewAnimationSequence("succubus_spell", {
             animation           = 10,
@@ -976,6 +999,18 @@ do
             animation           = 7,
             animation_point     = 1.2,
             animation_backswing = 0.2,
+        })
+
+        NewAnimationSequence("reanimated_spell", {
+            animation           = 8,
+            animation_point     = 0.9,
+            animation_backswing = 0.5,
+        })
+
+        NewAnimationSequence("reanimated_spell_throw", {
+            animation           = 9,
+            animation_point     = 0.7,
+            animation_backswing = 0.3,
         })
 
         NewAnimationSequence("faceless_spell_attack", {

@@ -444,7 +444,7 @@ do
         --============================================--
         NewSkillData('AMLT', {
             name            = LOCALE_LIST[my_locale].SKILL_MELTDOWN,
-            icon            = "Spell\\BTNFireBreaker.blp",
+            icon            = "Spell\\BTNjntb_301.blp",
             activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_FIRE,
@@ -455,7 +455,7 @@ do
                 { "Sound\\Sorceress\\Wizard_Gasp_Medium_1.wav", "Sound\\Sorceress\\Wizard_Gasp_Medium_2.wav", "Sound\\Sorceress\\Wizard_Gasp_Medium_3.wav", "Sound\\Sorceress\\Wizard_Gasp_Medium_4.wav", volume = 150, cutoff = 1500., delay = 1. },
             },
             animation = {
-                sequence  = GetAnimationSequence("sorc_spell_throw_big"), timescale = 0.8,
+                sequence  = GetAnimationSequence("sorc_spell_throw_big"), timescale = 0.65,
             },
             sfx_pack = {
                 on_caster = {
@@ -523,7 +523,7 @@ do
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_ICE,
             sound = {
-                { "Sounds\\Spells\\cast_large_1.wav", "Sounds\\Spells\\cast_large_2.wav", "Sounds\\Spells\\cast_large_3.wav", volume = 110, cutoff = 1500. },
+                { "Sounds\\Spells\\cast_large_1.wav", "Sounds\\Spells\\cast_large_2.wav", "Sounds\\Spells\\cast_large_3.wav", volume = 117, cutoff = 1500. },
                 { "Sound\\Sorceress\\Wizard_Gasp_Medium_1.wav", "Sound\\Sorceress\\Wizard_Gasp_Medium_2.wav", "Sound\\Sorceress\\Wizard_Gasp_Medium_3.wav", "Sound\\Sorceress\\Wizard_Gasp_Medium_4.wav", volume = 150, cutoff = 1500., delay = 1.3 },
             },
             animation = {
@@ -756,10 +756,43 @@ do
                 [1] = {
                     range               = 800.,
                     resource_cost       = 25.,
-                    cooldown            = 7.,
+                    cooldown            = 10.,
                     proc_rate           = 0.7,
                 }
             }
+        })
+        --============================================--
+        NewSkillData('ASRF', {
+            name            = LOCALE_LIST[my_locale].SKILL_RINGOFFIRE,
+            icon            = "Spell\\BTNjntb_4.blp",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            category = SKILL_CATEGORY_FIRE,
+            sound = {
+                { "Sounds\\Spells\\fire_launch_1.wav", "Sounds\\Spells\\fire_launch_2.wav", "Sounds\\Spells\\fire_launch_3.wav", volume = 117, cutoff = 1600. },
+                { "Sound\\Sorceress\\Wizard_Gasp_Medium_1.wav", "Sound\\Sorceress\\Wizard_Gasp_Medium_2.wav", "Sound\\Sorceress\\Wizard_Gasp_Medium_3.wav", "Sound\\Sorceress\\Wizard_Gasp_Medium_4.wav", volume = 150, cutoff = 1500., delay = 0.3 },
+                on_cast_end = { "Sounds\\Spells\\magic_spell_fire_1_deploy.wav", volume = 128, cutoff = 1600. },
+            },
+            animation = { sequence  = GetAnimationSequence("sorc_spell_empower"), timescale = 0.88, },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Effect\\FireHands.mdx", point = 'hand right' },
+                    { effect = "Effect\\FireHands.mdx", point = 'hand left' }
+                }
+            },
+            projection = { type = PROJECTION_TYPE_AREA },
+            resource_cost_delta = 1,
+            resource_cost_delta_level = 4,
+
+            level = {
+                [1] = {
+                    effect              = 'effect_ring_of_fire_initial',
+                    resource_cost       = 14.,
+                    cooldown            = 10.,
+                    proc_rate           = 0.5
+                }
+            }
+
         })
         --============================================--
         NewSkillData('A00J', {
@@ -777,7 +810,8 @@ do
             },
             sfx_pack = {
                 on_caster = {
-                    { effect = "Spell\\Sweep_Lightning_Small.mdx", point = "weapon" }, { effect = "Spell\\Storm Cast.mdx", point = 'hand right' }
+                    { effect = "Spell\\Sweep_Lightning_Small.mdx", point = "weapon" },
+                    { effect = "Spell\\Storm Cast.mdx", point = 'hand right' }
                 }
             },
             projection = {
@@ -802,7 +836,7 @@ do
         --============================================--
         NewSkillData('A019', {
             name            = LOCALE_LIST[my_locale].SKILL_CHAIN_LIGHTNING,
-            icon            = "Spell\\BTNChainLightning2.blp",
+            icon            = "Spell\\BTNjntb_176.blp",
             activation_type = TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_LIGHTNING,
@@ -879,6 +913,7 @@ do
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_LIGHTNING,
             classification = SKILL_CLASS_ATTACK,
+            short_name_ru = 0.8,
             sound = {
                 { "Sounds\\Spells\\cast_lightning_1_diff.wav", "Sounds\\Spells\\cast_lightning_2_diff.wav", volume = 120, cutoff = 1500. },
                 { "Sound\\Sorceress\\Wizard_Gasp_Light_1.wav", "Sound\\Sorceress\\Wizard_Gasp_Light_2.wav", "Sound\\Sorceress\\Wizard_Gasp_Light_3.wav", "Sound\\Sorceress\\Wizard_Gasp_Light_4.wav", volume = 150, cutoff = 1500., delay = 0.4 },
@@ -1159,7 +1194,7 @@ do
 
             level = {
                 [1] = {
-                    resource_cost       = 20,
+                    resource_cost       = 26,
                     cooldown            = 12.,
                     proc_rate           = 0.33,
                 }
@@ -1230,7 +1265,7 @@ do
             classification = SKILL_CLASS_UTILITY,
             animation = { sequence = GetAnimationSequence("sorc_spell_empower"), timescale = 0.65 },
             sound = {
-                { "Sounds\\Spells\\cast_large_1.wav", "Sounds\\Spells\\cast_large_2.wav", "Sounds\\Spells\\cast_large_3.wav", volume = 110, cutoff = 1500. },
+                { "Sounds\\Spells\\cast_large_1.wav", "Sounds\\Spells\\cast_large_2.wav", "Sounds\\Spells\\cast_large_3.wav", volume = 117, cutoff = 1500. },
                 { "Sound\\Sorceress\\Wizard_Gasp_Medium_1.wav", "Sound\\Sorceress\\Wizard_Gasp_Medium_2.wav", "Sound\\Sorceress\\Wizard_Gasp_Medium_3.wav", "Sound\\Sorceress\\Wizard_Gasp_Medium_4.wav", volume = 150, cutoff = 1500., delay = 0.5 },
             },
             resource_cost_delta = 1,
@@ -1264,7 +1299,9 @@ do
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_ARCANE,
             classification = SKILL_CLASS_ATTACK,
+            short_name_ru = 0.7,
             sound = {
+                { "Sounds\\Spells\\cast_large_1.wav", "Sounds\\Spells\\cast_large_2.wav", "Sounds\\Spells\\cast_large_3.wav", volume = 124, cutoff = 1500. },
                 { "Sound\\Sorceress\\Wizard_Gasp_Light_1.wav", "Sound\\Sorceress\\Wizard_Gasp_Light_2.wav", "Sound\\Sorceress\\Wizard_Gasp_Light_3.wav", "Sound\\Sorceress\\Wizard_Gasp_Light_4.wav", volume = 150, cutoff = 1500., delay = 0.4 },
             },
             animation = { sequence  = GetAnimationSequence("sorc_spell_throw_twohanded"), timescale = 1.2, },
@@ -1299,7 +1336,7 @@ do
             category = SKILL_CATEGORY_ICE,
             classification = SKILL_CLASS_ATTACK,
             sound = {
-                { "Sounds\\Spells\\frosbolt_launch_1.wav", "Sounds\\Spells\\frosbolt_launch_2.wav", volume = 128, cutoff = 1500., delay = 0.25 },
+                { "Sounds\\Spells\\frosbolt_launch_1.wav", "Sounds\\Spells\\frosbolt_launch_2.wav", volume = 128, cutoff = 1500. },
                 on_cast_end = { "Sound\\Sorceress\\Wizard_Gasp_Medium_1.wav", "Sound\\Sorceress\\Wizard_Gasp_Medium_2.wav", "Sound\\Sorceress\\Wizard_Gasp_Medium_3.wav", "Sound\\Sorceress\\Wizard_Gasp_Medium_4.wav", volume = 150, cutoff = 1500. },
             },
             animation = { sequence  = GetAnimationSequence("sorc_spell_throw_air"), timescale = 1.15, },
@@ -1531,13 +1568,13 @@ do
                     { effect = "Spell\\Sweep_Chaos_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
                 },
                 on_terrain = {
-                    { effect = "Spell\\BasicStrike_Red.mdx", plane_offset = 70., height = 80., roll = 225., appear_delay = 0.61, animation_time_influence = true, scale = 1.4,
+                    { effect = "Spell\\TrueStrikeRed.mdx", plane_offset = 70., height = 80., roll = 45., appear_delay = 0.61, animation_time_influence = true, scale = 2.2,
                     conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }
                     },
-                    { effect = "Spell\\BasicStrike_Red.mdx", plane_offset = 60., height = 75., roll = -45., appear_delay = 0.57, animation_time_influence = true, scale = 1.2,
+                    { effect = "Spell\\TrueStrikeRed.mdx", plane_offset = 60., height = 75., roll = -225., appear_delay = 0.57, animation_time_influence = true, scale = 2.,
                       conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }
                     },
-                    { effect = "Spell\\BasicStrike_Red.mdx", plane_offset = 60., height = 75., appear_delay = 0.56, animation_time_influence = true, scale = 1.,
+                    { effect = "Spell\\TrueStrikeRed.mdx", plane_offset = 60., height = 75., appear_delay = 0.56, animation_time_influence = true, scale = 1.8,
                     conditional_weapon = { FIST_WEAPON }
                     }
                 }
@@ -1556,7 +1593,7 @@ do
                 [1] = {
                     range               = 135.,
                     effect              = 'EEXC',
-                    cooldown            = 2.,
+                    cooldown            = 2.75,
                     resource_cost       = 8.,
                     proc_rate           = 1.
                 }
@@ -1781,6 +1818,10 @@ do
             name            = LOCALE_LIST[my_locale].SKILL_FIRSTAID,
             icon            = "Spell\\BTNBlood (6).blp",
             activation_type = SELF_CAST,
+            sound = {
+                { "Sounds\\Spells\\bloodrush.wav", volume = 128, cutoff = 1500. },
+                on_cast_end = { "Sounds\\Spells\\player_heartbeat01.wav", volume = 128, cutoff = 1500. },
+            },
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_INNER_STRENGTH,
             classification = SKILL_CLASS_SUPPORT,
@@ -1789,6 +1830,7 @@ do
             },
             resource_cost_delta = 1,
             resource_cost_delta_level = 4,
+            sfx_pack = { on_terrain = { { effect = "Effect\\Blood Explosion.mdx", animation_time_influence = true, random_orientation_angle = true, permanent = true }, } },
 
             level = {
                 [1] = {
@@ -1910,7 +1952,7 @@ do
                 [1] = {
                     effect = "effect_tremble",
                     range               = 200.,
-                    cooldown            = 4.,
+                    cooldown            = 5.,
                     resource_cost       = 12.,
                     proc_rate           = 0.7
                 }
@@ -1924,6 +1966,7 @@ do
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_INNER_STRENGTH,
             classification = SKILL_CLASS_SUPPORT,
+            short_name_en = 0.78,
             sound = {  { "Sounds\\Spells\\CallOfTheAncients_Cast_1.wav", "Sounds\\Spells\\CallOfTheAncients_Cast_2.wav", "Sounds\\Spells\\CallOfTheAncients_Cast_3.wav", volume = 158, cutoff = 1500. },  },
             animation = { sequence = GetAnimationSequence("barb_spell_howl"), timescale = 0.75 },
             resource_cost_delta = 1,
@@ -2144,7 +2187,7 @@ do
         --============================================--
         NewSkillData('ANBS', {
             name            = LOCALE_LIST[my_locale].SKILL_BONE_SPEAR,
-            icon            = "Spell\\BTN_Bonespear.blp",
+            icon            = "Spell\\BTNBoneSpear.blp",
             activation_type = POINT_AND_TARGET_CAST,
             type            = SKILL_MAGICAL,
             category = SKILL_CATEGORY_DARK_ART,
@@ -2980,6 +3023,7 @@ do
             classification = SKILL_CLASS_ATTACK,
             always_max_range_cast = true,
             sound = {
+                { "Sounds\\Spells\\Shield_Strike01.wav", "Sounds\\Spells\\Shield_Strike02.wav", "Sounds\\Spells\\Shield_Strike03.wav", volume = 125, cutoff = 1500. },
                 { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav", volume = 128, cutoff = 1500., delay = 0.4 },
                 { "Sound\\Paladin\\Paladin_Gasp_Light_1.wav", "Sound\\Paladin\\Paladin_Gasp_Light_2.wav", "Sound\\Paladin\\Paladin_Gasp_Light_3.wav", volume = 126, cutoff = 1500., delay = 0.4 },
             },
@@ -2993,7 +3037,7 @@ do
                     { effect = "Spell\\Sweep_Chaos_Medium.mdx", point = "hand left", permanent = true },
                 },
                 on_terrain = {
-                    { effect = "Spell\\Ephemeral Slash Red.mdx", plane_offset = 60., height = 70., roll = 0., appear_delay = 0.48, animation_time_influence = true, scale = 1., }
+                    { effect = "Spell\\Ephemeral Slash Red.mdx", plane_offset = 60., height = 70., roll = 0., appear_delay = 0.48, animation_time_influence = true, scale = 1., animation_time_influence = true }
                 }
             },
 
@@ -3099,7 +3143,7 @@ do
                 { "Sounds\\Spells\\shield_throw_cast_1.wav", "Sounds\\Spells\\shield_throw_cast_2.wav", "Sounds\\Spells\\shield_throw_cast_3.wav", volume = 128, cutoff = 1500. },
                 { "Sounds\\Spells\\shield_throw_woosh.wav", volume = 128, cutoff = 1500., delay = 0.4 },
                 { "Sound\\Paladin\\Paladin_Gasp_Medium_1.wav", "Sound\\Paladin\\Paladin_Gasp_Medium_2.wav", "Sound\\Paladin\\Paladin_Gasp_Medium_3.wav", "Sound\\Paladin\\Paladin_Gasp_Medium_4.wav", volume = 126, cutoff = 1500. },
-                on_cast_end = { "Sounds\\Spells\\shield_throw_1.wav", "Sounds\\Spells\\shield_throw_2.wav", "Sounds\\Spells\\shield_throw_3.wav", volume = 128, cutoff = 1500. },
+                on_cast_end = { "Sounds\\Spells\\BlessedShield_Launch01.wav", "Sounds\\Spells\\BlessedShield_Launch02.wav", "Sounds\\Spells\\BlessedShield_Launch03.wav", "Sounds\\Spells\\BlessedShield_Launch04.wav", volume = 125, cutoff = 1500. },
             },
             animation = { sequence = GetAnimationSequence("paladin_spell_throw_left"), timescale = 0.75 },
             resource_cost_delta = 1,
@@ -3370,6 +3414,7 @@ do
             category = SKILL_CATEGORY_HOLY_DOCTRINE,
             classification = SKILL_CLASS_UTILITY,
             projection = { type = PROJECTION_TYPE_AREA, radius = 700. },
+            short_name_ru = 0.7,
             sound = {
                 { "Sounds\\Spells\\stamina.wav" , volume = 120, cutoff = 1600. }
             },
@@ -3394,6 +3439,7 @@ do
             category = SKILL_CATEGORY_HOLY_DOCTRINE,
             classification = SKILL_CLASS_UTILITY,
             projection = { type = PROJECTION_TYPE_AREA, radius = 700. },
+            short_name_ru = 0.49,
             sound = {
                 { "Sounds\\Spells\\sanctuary.wav" , volume = 120, cutoff = 1600. }
             },
@@ -3483,8 +3529,6 @@ do
             resource_cost_delta = 1,
             resource_cost_delta_level = 4,
 
-            --
-
             level = {
                 [1] = {
                     resource_cost       = 15,
@@ -3538,7 +3582,7 @@ do
                 { "Sound\\Assassin\\Assassin_Gasp_Light_1.wav", "Sound\\Assassin\\Assassin_Gasp_Light_2.wav", "Sound\\Assassin\\Assassin_Gasp_Light_3.wav", volume = 150, cutoff = 1500., delay = 1.27 },
                 { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav", volume = 128, cutoff = 1500., delay = 1.45 },
             },
-            animation = { sequence = GetAnimationSequence("assassin_swing_long_upwing"), timescale = 0.4 },
+            animation = { sequence = GetAnimationSequence("assassin_swing_long_upwing"), timescale = 0.37 },
             sfx_pack = {
                 on_caster = {
                     { effect = "Spell\\Sweep_Chaos_Medium.mdx", point = "weapon", conditional_weapon = { SWORD_WEAPON, AXE_WEAPON, BLUNT_WEAPON, DAGGER_WEAPON }, permanent = true },
@@ -3582,8 +3626,9 @@ do
             category = SKILL_CATEGORY_LETHALITY,
             classification = SKILL_CLASS_ATTACK,
             sound = {
-                { "Sound\\Assassin\\Assassin_Gasp_Light_1.wav", "Sound\\Assassin\\Assassin_Gasp_Light_2.wav", "Sound\\Assassin\\Assassin_Gasp_Light_3.wav", volume = 150, cutoff = 1500., delay = 0.9 },
-                { "Sounds\\Spells\\DashAttack_Lunge_1.wav", "Sounds\\Spells\\DashAttack_Lunge_2.wav" , volume = 150, cutoff = 1600. }
+                { "Sound\\Assassin\\Assassin_Gasp_Light_1.wav", "Sound\\Assassin\\Assassin_Gasp_Light_2.wav", "Sound\\Assassin\\Assassin_Gasp_Light_3.wav", volume = 150, cutoff = 1500. },
+                { "Sounds\\Spells\\SinisterStrike_Launch01.wav", "Sounds\\Spells\\SinisterStrike_Launch02.wav", "Sounds\\Spells\\SinisterStrike_Launch03.wav" , volume = 125, cutoff = 1600., delay = 0.9 },
+                on_cast_end = { "Sound\\Assassin\\Assassin_Gasp_Heavy_1.wav", "Sound\\Assassin\\Assassin_Gasp_Heavy_2.wav", "Sound\\Assassin\\Assassin_Gasp_Heavy_3.wav", volume = 150, cutoff = 1500. },
             },
             animation = { sequence = GetAnimationSequence("assassin_stab"), timescale = 0.35 },
             sfx_pack = {
@@ -3593,6 +3638,13 @@ do
                     { effect = "Spell\\Sweep_Chaos_Small.mdx", point = "hand right", conditional_weapon = { FIST_WEAPON }, permanent = true }
                 },
             },
+            custom_condition = function(caster)
+                if not IsUnitRooted(caster) then return true
+                else
+                    SimError(GetLocalString("Вы обездвижены", "You are rooted"), GetPlayerId(GetOwningPlayer(caster)))
+                    return false
+                end
+            end,
             projection = { type = PROJECTION_TYPE_ARROW, max_distance = 500., radius = 75. },
             resource_cost_delta = 1,
             resource_cost_delta_level = 4,
@@ -3692,7 +3744,8 @@ do
             always_max_range_cast = true,
             sound = {
                 { "Sound\\Assassin\\Assassin_Gasp_Light_1.wav", "Sound\\Assassin\\Assassin_Gasp_Light_2.wav", "Sound\\Assassin\\Assassin_Gasp_Light_3.wav", volume = 150, cutoff = 1500., delay = 0.17 },
-                { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav", volume = 128, cutoff = 1500., delay = 0.2},
+                { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav", volume = 128, cutoff = 1500., delay = 0.2 },
+                { "Sounds\\Spells\\Garrote_Launch01.wav", "Sounds\\Spells\\Garrote_Launch02.wav", volume = 115, cutoff = 1500., delay = 0.1 },
             },
             animation = { sequence = GetAnimationSequence("assassin_swing_combo_1"), timescale = 0.8 },
             sfx_pack = {
@@ -3723,8 +3776,8 @@ do
                 [1] = {
                     range               = 150.,
                     effect              = 'effect_eviscerate',
-                    cooldown            = 3.,
-                    resource_cost       = 7.,
+                    cooldown            = 4.,
+                    resource_cost       = 13.,
                     proc_rate           = 0.65
                 }
             }
@@ -3739,10 +3792,11 @@ do
             classification = SKILL_CLASS_ATTACK,
             always_max_range_cast = true,
             sound = {
+                { "Sounds\\Spells\\CripplingPoison_Launch01.wav", volume = 110, cutoff = 1500. },
                 { "Sound\\Assassin\\Assassin_Gasp_Light_1.wav", "Sound\\Assassin\\Assassin_Gasp_Light_2.wav", "Sound\\Assassin\\Assassin_Gasp_Light_3.wav", volume = 150, cutoff = 1500., delay = 0.27 },
                 { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav", volume = 128, cutoff = 1500., delay = 0.33 },
             },
-            animation = { sequence = GetAnimationSequence("assassin_swing_right_to_left"), timescale = 1.1 },
+            animation = { sequence = GetAnimationSequence("assassin_swing_right_to_left"), timescale = 1.14 },
             sfx_pack = {
                 on_caster = {
                     { effect = "Spell\\Sweep_Acid_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
@@ -3804,7 +3858,7 @@ do
             level = {
                 [1] = {
                     effect              = 'effect_blade_flurry',
-                    cooldown            = 5.,
+                    cooldown            = 8.,
                     resource_cost       = 15.,
                     proc_rate           = 0.66
                 }
@@ -3818,7 +3872,7 @@ do
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_LETHALITY,
             classification = SKILL_CLASS_UTILITY,
-            --sound = {  { "Sounds\\Spells\\skill_heavy_swing_1.wav", "Sounds\\Spells\\skill_heavy_swing_2.wav", "Sounds\\Spells\\skill_heavy_swing_3.wav" }, volume = 128, cutoff = 1500., delay = 0.45 },
+            sound = { on_cast_end = { "Sounds\\Spells\\Focus_Launch01.wav", "Sounds\\Spells\\Focus_Launch02.wav", volume = 120, cutoff = 1500. }, },
             animation = { sequence = GetAnimationSequence("assassin_empower"), timescale = 0.3 },
             projection = { type = PROJECTION_TYPE_AREA },
             resource_cost_delta = 1,
@@ -3849,6 +3903,7 @@ do
             classification = SKILL_CLASS_UTILITY,
             sound = {
                 { "Sound\\Assassin\\Assassin_Gasp_hmph_1.wav", "Sound\\Assassin\\Assassin_Gasp_hmph_2.wav", volume = 150, cutoff = 1500., delay = 0.25 },
+                on_cast_end = { "Sounds\\Spells\\ColdBlood_Launch01.wav", volume = 118, cutoff = 1500. },
             },
             animation = { sequence = GetAnimationSequence("assassin_empower"), timescale = 0.2 },
             sfx_pack = {
@@ -3876,7 +3931,7 @@ do
             type            = SKILL_PHYSICAL,
             category = SKILL_CATEGORY_SHADOWS,
             classification = SKILL_CLASS_SUPPORT,
-            sound = {  { "Sounds\\Spells\\shadows_buff_1.wav", "Sounds\\Spells\\shadows_buff_2.wav", "Sounds\\Spells\\shadows_buff_3.wav", "Sounds\\Spells\\shadows_buff_4.wav", volume = 115, cutoff = 1500., delay = 0.45 },  },
+            sound = {  { "Sounds\\Spells\\EnvelopingShadows_Launch01.wav", volume = 115, cutoff = 1500. },  },
             animation = { sequence = GetAnimationSequence("assassin_empower"), timescale = 0.27 },
             sfx_pack = {
                 on_caster = {
@@ -3936,10 +3991,11 @@ do
             classification = SKILL_CLASS_ATTACK,
             always_max_range_cast = true,
             sound = {
+                { "Sounds\\Spells\\ShadowDagger_Launch01.wav", "Sounds\\Spells\\ShadowDagger_Launch02.wav", "Sounds\\Spells\\ShadowDagger_Launch03.wav", volume = 115, cutoff = 1500. },
                 { "Sound\\Assassin\\Assassin_Gasp_Medium_1.wav", "Sound\\Assassin\\Assassin_Gasp_Medium_2.wav", "Sound\\Assassin\\Assassin_Gasp_Medium_3.wav", volume = 150, cutoff = 1500., delay = 0.1 },
                 { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav", volume = 128, cutoff = 1500., delay = 0.13 },
             },
-            animation = { sequence = GetAnimationSequence("assassin_swing_combo_2"), timescale = 2.5 },
+            animation = { sequence = GetAnimationSequence("assassin_swing_combo_2"), timescale = 2.6 },
             sfx_pack = {
                 on_caster = {
                     { effect = "Spell\\Sweep_Astral_Large.mdx", point = "weapon", conditional_weapon = { GREATAXE_WEAPON, GREATSWORD_WEAPON, GREATBLUNT_WEAPON, STAFF_WEAPON }, permanent = true },
@@ -3981,7 +4037,7 @@ do
         -- teleport behind, gain critical strike chance
         NewSkillData('AAST', {
             name            = LOCALE_LIST[my_locale].SKILL_SHADOWSTEP,
-            icon            = "Spell\\BTNshadowstep.blp",
+            icon            = "Spell\\BTNFile00001254.blp",
             activation_type = TARGET_CAST,
             type            = SKILL_UNIQUE,
             category = SKILL_CATEGORY_SHADOWS,
@@ -3993,9 +4049,6 @@ do
                     { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand left", permanent = true },
                     { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand right", permanent = true }
                 },
-                --on_terrain = {
-                    --{ effect = "Effect\\ChaosBlinkCaster.mdx", random_orientation_angle = true, duration = 0.667, permanent = true },
-                --}
             },
             projection = { type = PROJECTION_TYPE_AREA },
             resource_cost_delta = 1,
@@ -4019,6 +4072,7 @@ do
             classification = SKILL_CLASS_ATTACK,
             always_max_range_cast = true,
             sound = {
+                { "Sounds\\Spells\\ShadowStrike_Launch_01.wav", volume = 128, cutoff = 1500. },
                 { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav", volume = 128, cutoff = 1500., delay = 0.2 },
                 { "Sound\\Assassin\\Assassin_Gasp_Light_1.wav", "Sound\\Assassin\\Assassin_Gasp_Light_2.wav", "Sound\\Assassin\\Assassin_Gasp_Light_3.wav", volume = 150, cutoff = 1500., delay = 0.25 },
             },
@@ -5054,6 +5108,72 @@ do
             }
         })
         --============================================--
+        NewSkillData('ADKS', {
+            name            = "demoness kiss",
+            activation_type = POINT_CAST,
+            type            = SKILL_MAGICAL,
+            sound = {
+                { "Units\\Demon\\Demoness\\SuccubusYes3.wav", "Units\\Demon\\Demoness\\SuccubusYes4.wav", volume = 128, cutoff = 1600. },
+                { "Abilities\\Spells\\Undead\\Sleep\\SleepBirth1.wav", volume = 128, cutoff = 1600. },
+            },
+            animation = { sequence  = GetAnimationSequence("demoness_spell_kiss"), timescale = 1.75, },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand right", scale = 1.25, permanent = true },
+                }
+            },
+
+            level = {
+                [1] = {
+                    range               = 800.,
+                    cooldown            = 14.,
+                    resource_cost       = 0.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A057', {
+            name            = "siren fire attack",
+            activation_type = POINT_CAST,
+            type            = SKILL_PHYSICAL,
+            --sound = { { "Sounds\\Monsters\\Spells\\demon_assassin_attack1.wav", "Sounds\\Monsters\\Spells\\demon_assassin_attack3.wav", "Sounds\\Monsters\\Spells\\demon_assassin_attack5.wav", volume = 128, cutoff = 1600. }, },
+            animation = { sequence  = GetAnimationSequence("siren_spell"), timescale = 1., },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Fire_Small.mdx", point = "hand left", permanent = true },
+                },
+            },
+
+            level = {
+                [1] = {
+                    range               = 500.,
+                    resource_cost       = 0.,
+                    cooldown            = 7.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('A058', {
+            name            = "siren ward skill",
+            activation_type = SELF_CAST,
+            type            = SKILL_PHYSICAL,
+            --sound = { { "Sounds\\Monsters\\Spells\\demon_assassin_attack1.wav", "Sounds\\Monsters\\Spells\\demon_assassin_attack3.wav", "Sounds\\Monsters\\Spells\\demon_assassin_attack5.wav", volume = 128, cutoff = 1600. }, },
+            animation = { sequence  = GetAnimationSequence("siren_spell"), timescale = 1.25, },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand left", permanent = true },
+                },
+            },
+
+            level = {
+                [1] = {
+                    range               = 500.,
+                    resource_cost       = 0.,
+                    cooldown            = 15.,
+                }
+            }
+        })
+        --============================================--
         NewSkillData('ABCC', {
             name            = "butcher cut",
             activation_type = POINT_CAST,
@@ -5084,7 +5204,7 @@ do
             type            = SKILL_MAGICAL,
             sound = {
                 { "Sounds\\Monsters\\butcher_Fresh_Meat_1.wav", "Sounds\\Monsters\\butcher_Fresh_Meat_2.wav", "Sounds\\Monsters\\butcher_Fresh_Meat_3.wav", "Sounds\\Monsters\\butcher_Fresh_Meat_4.wav", volume = 128, cutoff = 1500. },
-                on_cast_end = { "Sounds\\Monsters\\Spells\\butcher_Charge_1.wav", "Sounds\\Monsters\\Spells\\butcher_Charge_2.wav", "Sounds\\Monsters\\Spells\\butcher_Charge_3.wav", "Sounds\\Monsters\\Spells\\butcher_Charge_4.wav", volume = 128, cutoff = 1500.},
+                on_cast_end = { "Sounds\\Monsters\\Spells\\butcher_Charge_1.wav", "Sounds\\Monsters\\Spells\\butcher_Charge_2.wav", "Sounds\\Monsters\\Spells\\butcher_Charge_3.wav", "Sounds\\Monsters\\Spells\\butcher_Charge_4.wav", volume = 128, cutoff = 1500. },
             },
             animation = { sequence  = GetAnimationSequence("butcher_spell_throw"), timescale = 1.85, },
             sfx_pack = {
@@ -5657,7 +5777,7 @@ do
             name            = "satyr rally",
             activation_type = SELF_CAST,
             type            = SKILL_PHYSICAL,
-            sound = {  { "Units\\Creeps\\Satyr\\SatyreYesAttack1.wav", "Units\\Creeps\\Satyr\\SatyreYesAttack2.wav", "Units\\Creeps\\Satyr\\SatyreYesAttack3.wav", volume = 125, cutoff = 1500. }, },
+            sound = {  { "Units\\Creeps\\Satyr\\SatyreYesAttack1.wav", "Units\\Creeps\\Satyr\\SatyreYesAttack2.wav", "Units\\Creeps\\Satyr\\SatyreYesAttack3.wav", volume = 128, cutoff = 1500. }, },
             animation = { sequence  = GetAnimationSequence("satyr_spell"), timescale = 1.15, },
             sfx_pack = {
                 on_caster = {
@@ -5670,6 +5790,52 @@ do
                     cooldown            = 10.,
                     effect              = "satyr_rally_effect",
                     resource_cost       = 0.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ABRL', {
+            name            = "bandit rally",
+            activation_type = SELF_CAST,
+            type            = SKILL_PHYSICAL,
+            sound = {  { "Units\\Creeps\\Bandit\\BanditYesAttack1.wav", "Units\\Creeps\\Bandit\\BanditYesAttack2.wav", "Units\\Creeps\\Bandit\\BanditYesAttack3.wav", volume = 128, cutoff = 1500. }, },
+            animation = { sequence  = GetAnimationSequence("bandit_spell"), timescale = 0.5, },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Chaos_Medium.mdx", point = "hand left", scale = 1., permanent = true },
+                }
+            },
+
+            level = {
+                [1] = {
+                    cooldown            = 13.,
+                    effect              = "bandit_rally_effect",
+                    resource_cost       = 0.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ABAB', {
+            name            = "bandit arcane ball",
+            activation_type = POINT_CAST,
+            type            = SKILL_MAGICAL,
+            sound = {
+                { "Units\\Human\\Priest\\PriestYesAttack2.wav",  volume = 128, cutoff = 1500. },
+                on_cast_end = { "Abilities\\Spells\\Orc\\Purge\\PurgeTarget1.wav", volume = 128, cutoff = 1500. }
+            },
+            animation = { sequence  = GetAnimationSequence("bandit_mage_spell"), timescale = 1.1, },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Astral_Large.mdx", point = "hand left", scale = 1., permanent = true },
+                }
+            },
+
+            level = {
+                [1] = {
+                    cooldown            = 12.,
+                    missile             = "bandit_ball_missile",
+                    resource_cost       = 0.,
+                    range               = 800.
                 }
             }
         })
@@ -5737,17 +5903,67 @@ do
             name            = "succubus astral barrage",
             activation_type = SELF_CAST,
             type            = SKILL_MAGICAL,
-            animation = { sequence  = GetAnimationSequence("succubus_spell"), timescale = 1.45, },
+            sound = {
+                { "Sounds\\Monsters\\Spells\\monster_succubus_cast.wav", volume = 128, cutoff = 1600. },
+                on_cast_end = { "Abilities\\Spells\\Human\\SpellSteal\\SpellStealTarget.wav", volume = 128, cutoff = 1600. }
+            },
+            animation = { sequence  = GetAnimationSequence("succubus_spell_slam"), timescale = 1.5, },
             sfx_pack = {
                 on_caster = {
-                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand left", permanent = true },
-                    { effect = "Spell\\Sweep_Astral_Small.mdx", point = "hand right", permanent = true },
+                    { effect = "Spell\\Sweep_Astral_Medium.mdx", point = "hand left", permanent = true },
+                    { effect = "Spell\\Sweep_Astral_Medium.mdx", point = "hand right", permanent = true },
                 }
             },
 
             level = {
                 [1] = {
                     cooldown            = 12.,
+                    resource_cost       = 0.,
+                }
+            }
+        })
+         --============================================--
+        NewSkillData('A055', {
+            name            = "succubus portal",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            sound = {
+                { "Sounds\\Monsters\\Spells\\monster_succubus_cast.wav", volume = 128, cutoff = 1600. },
+                --on_cast_end = { "Abilities\\Spells\\Human\\SpellSteal\\SpellStealTarget.wav", volume = 128, cutoff = 1600. }
+            },
+            animation = { sequence  = GetAnimationSequence("succubus_spell_slam"), timescale = 2.15, },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Astral_Medium.mdx", point = "hand left", permanent = true },
+                    { effect = "Spell\\Sweep_Astral_Medium.mdx", point = "hand right", permanent = true },
+                }
+            },
+
+            level = {
+                [1] = {
+                    cooldown            = 16.,
+                    resource_cost       = 0.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ASLB', {
+            name            = "succubus lightning breath",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            sound = { { "Sounds\\Monsters\\Spells\\monster_succubus_cast.wav", volume = 128, cutoff = 1600. }, },
+            animation = { sequence  = GetAnimationSequence("succubus_spell"), timescale = 1.45, },
+            sfx_pack = {
+                on_caster = {
+                    { effect = "Spell\\Sweep_Lightning_Medium.mdx", point = "hand left", permanent = true },
+                    { effect = "Spell\\Sweep_Lightning_Medium.mdx", point = "hand right", permanent = true },
+                }
+            },
+
+            level = {
+                [1] = {
+                    missile             = "lightning_breath_queen_missile",
+                    cooldown            = 9.,
                     resource_cost       = 0.,
                 }
             }
@@ -5794,7 +6010,7 @@ do
 
             level = {
                 [1] = {
-                    cooldown            = 12.,
+                    cooldown            = 8.,
                     resource_cost       = 0.,
                     range               = 800.
                 }
@@ -5831,7 +6047,59 @@ do
 
             level = {
                 [1] = {
+                    cooldown            = 10.,
+                    resource_cost       = 0.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ARPR', {
+            name            = "reanimated prison",
+            activation_type = POINT_CAST,
+            type            = SKILL_MAGICAL,
+            sound = { { "Abilities\\Spells\\Undead\\DeathPact\\DeathPactTargetBirth1.wav", volume = 128, cutoff = 1600. } },
+            animation = { sequence  = GetAnimationSequence("reanimated_spell"), timescale = 1.1, },
+
+            level = {
+                [1] = {
                     cooldown            = 12.,
+                    resource_cost       = 0.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ARBS', {
+            name            = "reanimated bow",
+            activation_type = TARGET_CAST,
+            type            = SKILL_PHYSICAL,
+            sound = {
+                { "Abilities\\Spells\\Undead\\DeathCoil\\DeathCoilSpecialArt1.wav", volume = 128, cutoff = 1600. },
+                on_cast_end = { "Abilities\\Spells\\Undead\\DeathCoil\\DeathCoilMissileLaunch1.wav", volume = 128, cutoff = 1600. }
+            },
+            animation = { sequence  = GetAnimationSequence("reanimated_spell_throw"), timescale = 4., },
+            target_tracking_anglesec = 70.,
+            forcepointcast = true,
+
+            level = {
+                [1] = {
+                    missile             = "reanimated_bowskill_missile",
+                    range               = 1000.,
+                    cooldown            = 8.,
+                    resource_cost       = 0.,
+                }
+            }
+        })
+        --============================================--
+        NewSkillData('ARWD', {
+            name            = "reanimated wards",
+            activation_type = SELF_CAST,
+            type            = SKILL_MAGICAL,
+            sound = { { "Abilities\\Spells\\Undead\\DarkSummoning\\DarkSummoningLaunch1.wav", volume = 128, cutoff = 1600. }, },
+            animation = { sequence  = GetAnimationSequence("reanimated_spell"), timescale = 1.5, },
+
+            level = {
+                [1] = {
+                    cooldown            = 15.,
                     resource_cost       = 0.,
                 }
             }

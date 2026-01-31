@@ -26,7 +26,7 @@ do
             MonsterPack[i].respawn_executed = nil
             GroupClear(MonsterPack[i].group)
             DestroyGroup(MonsterPack[i].group)
-            MonsterPack[i].group = SpawnMonsterPack(MonsterPack[i].spawner, MonsterPack[i].tags[GetRandomInt(1, #MonsterPack[i].tags)], MonsterPack[i].min, MonsterPack[i].max, MonsterPack[i].elite or 0, 0.)
+            MonsterPack[i].group = SpawnMonsterPack(MonsterPack[i].spawner, MonsterPack[i].tags[GetRandomInt(1, #MonsterPack[i].tags)], MonsterPack[i].min, MonsterPack[i].max, MonsterPack[i].elite or 0, 0., SECOND_MONSTER_PLAYER)
 
             ForGroup(MonsterPack[i].group, function()
                 TriggerRegisterUnitEvent(MonsterPack[i].death_trigger, GetEnumUnit(), EVENT_UNIT_DEATH)
@@ -304,7 +304,7 @@ do
             spawner = gg_rct_monster_pack_16_spawner,
             wander_region = { gg_rct_monster_pack_16_1, gg_rct_monster_pack_16_2 },
             tags = { MONSTERPACK_SPIDERS },
-            respawn = 440., min = 1, max = 3, elite = 1, initial_spawn_time = 24.
+            respawn = 440., min = 5, max = 10, elite = 2, initial_spawn_time = 24.
         }
         --#######################SPAWNER_DATA#######################
         MonsterPack[17] = {
@@ -358,7 +358,7 @@ do
         DelayAction(BASE_SPAWN_TIME, function()
             for i = 1, #MonsterPack do
                 DelayAction(MonsterPack[i].initial_spawn_time, function()
-                    MonsterPack[i].group = SpawnMonsterPack(MonsterPack[i].spawner, MonsterPack[i].tags[GetRandomInt(1, #MonsterPack[i].tags)], MonsterPack[i].min, MonsterPack[i].max, MonsterPack[i].elite or 0, 0.)
+                    MonsterPack[i].group = SpawnMonsterPack(MonsterPack[i].spawner, MonsterPack[i].tags[GetRandomInt(1, #MonsterPack[i].tags)], MonsterPack[i].min, MonsterPack[i].max, MonsterPack[i].elite or 0, 0., SECOND_MONSTER_PLAYER)
                     MonsterPack[i].pack_count = BlzGroupGetSize(MonsterPack[i].group)
 
                         if MonsterPack[i].respawn then
@@ -436,6 +436,14 @@ do
                     print(GetParameterName(i) .. " value " .. unit_data.stats[i].value .. " bonus " .. unit_data.stats[i].bonus .. " mult " .. unit_data.stats[i].multiplier)
                 end
             end)
+        end)
+
+        RegisterTestCommand("clear", function()
+            for i = 1, #MonsterPack do
+                ForGroup(MonsterPack[i].group, function()
+                    KillUnit(GetEnumUnit())
+                end)
+            end
         end)
 
 --print("aaaaaaa2")

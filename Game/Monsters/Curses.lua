@@ -67,7 +67,9 @@ do
     function ApplyCurse(curse_id)
         for i = 1, 6 do
             if PlayerHero[i] then
-                ApplyBuff(PlayerHero[i], PlayerHero[i], curse_id, 1)
+                if GetUnitAbilityLevel(PlayerHero[i], FourCC(curse_id)) == 0 then
+                    ApplyBuff(PlayerHero[i], PlayerHero[i], curse_id, 1)
+                end
             end
         end
     end

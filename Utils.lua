@@ -205,6 +205,24 @@
 	end
 
 
+		function SetDestructibleOcclude(dest, rect)
+			local trg_enter = CreateTrigger()
+			local trg_leave = CreateTrigger()
+			local group = CreateGroup()
+
+				TriggerRegisterEnterRectSimple(trg_enter, rect)
+				TriggerAddAction(trg_enter, function()
+					ShowDestructable(dest, false)
+				end)
+
+				TriggerRegisterLeaveRectSimple(trg_leave, rect)
+				TriggerAddAction(trg_enter, function()
+					GroupEnumUnitsInRect(group, rect, nil)
+					if BlzGroupGetSize(group) <= 0 then ShowDestructable(dest, true) end
+				end)
+
+		end
+
 		---@param x real
 		---@param y real
 		---@param angle real
@@ -538,12 +556,12 @@
 		local TAU = math.pi * 2.
 
 		function IsPointInsideCone(coneX, coneY, coneDirection, coneWidth, targetX, targetY)
-        local a = (coneDirection - math.atan(targetY - coneY, targetX - coneX) + math.pi) %% TAU - math.pi
+        local a = (coneDirection - math.atan(targetY - coneY, targetX - coneX) + math.pi) % TAU - math.pi
         return a * a <= coneWidth * coneWidth * 0.25
     end
 
 		function IsPointInsideCone(coneX, coneY, coneDirection, coneWidth, targetX, targetY)
-        return math.abs((coneDirection - math.atan(targetY - coneY, targetX - coneX) + math.pi) %% (math.pi * 2.) - math.pi) <= coneWidth * 0.5
+        return math.abs((coneDirection - math.atan(targetY - coneY, targetX - coneX) + math.pi) % (math.pi * 2.) - math.pi) <= coneWidth * 0.5
     end
 
 	---@param ataker unit
@@ -598,6 +616,20 @@
 		return true
 	end
 
+		---@param b unit
+	---@param a unit
+	function IsRightEx(facing, bx, by, ax, ay)
+		local ang = AngleBetweenXY_DEG(ax, ay, bx, by)
+
+			if not (by > ay) then facing = facing - 360. end
+
+			if ((ang <= (facing + 135.00) and ang >= (facing + 45.00)) or (by > ay and bx > ax and ang <= (facing - 225.00) and ang >= (facing - 315.00))) then
+				return false
+			end
+
+		return true
+	end
+
 	---@param a unit
 	---@param x real
 	---@param y real
@@ -618,6 +650,7 @@
 
 		return float_angle < 180
 	end
+
 		---@param facing angle
 	---@param x real
 	---@param y real
@@ -858,7 +891,7 @@
     	RealGetUnitY = GetUnitY
 
 		function RealToString(s)
-			return string.format('%%.3f', s)
+			return string.format('%.3f', s)
 		end
 
     function GetUnitRealX(unit)

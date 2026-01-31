@@ -9,6 +9,36 @@ do
     MONSTER_STATS_RATES = 0
     BONUS_MONSTER_STAT_RATES = 0
 
+    function ApplyPlayerModificator(target)
+        local mod = ActivePlayers - 1
+
+            if mod > 0 then
+                for i = 1, #PER_PLAYER_MONSTER_BONUS do
+                    ModifyStat(target, PER_PLAYER_MONSTER_BONUS[i].param, 1. + (PER_PLAYER_MONSTER_BONUS[i].value * mod), MULTIPLY_BONUS, true)
+                end
+            end
+
+    end
+
+    function RemovePlayerModificator()
+        local mod = ActivePlayers - 1
+
+        ForGroup(ScaleMonstersGroup, function()
+
+            for i = 1, #PER_PLAYER_MONSTER_BONUS do
+                ModifyStat(GetEnumUnit(), PER_PLAYER_MONSTER_BONUS[i].param, 1. + (PER_PLAYER_MONSTER_BONUS[i].value * (mod + 1)), MULTIPLY_BONUS, false)
+            end
+
+            if mod > 0 then
+                for i = 1, #PER_PLAYER_MONSTER_BONUS do
+                    ModifyStat(GetEnumUnit(), PER_PLAYER_MONSTER_BONUS[i].param, 1. + (PER_PLAYER_MONSTER_BONUS[i].value * mod), MULTIPLY_BONUS, true)
+                end
+            end
+
+        end)
+
+    end
+
 
     ---@param target unit
     function ScaleMonsterUnit(target, to_level)
@@ -25,66 +55,54 @@ do
         --print("scale - start " .. GetUnitName(target))
 
             for i = 1, #MONSTER_STATS_RATES do
-                local level_modulo = math.floor(to_level / MONSTER_STATS_RATES[i].delta_level)
-                local power_modulo = math.floor(unit_data.unit_level / MONSTER_STATS_RATES[i].delta_level)
+                local rates_table = MONSTER_STATS_RATES[i]
+                local level_modulo = math.floor(to_level / rates_table.delta_level)
+                local power_modulo = math.floor(unit_data.unit_level / rates_table.delta_level)
                 local difference = level_modulo - power_modulo
                 local bonus_delta = 0
+
                 --print("=========")
-                --print(GetParameterName(MONSTER_STATS_RATES[i].stat))
+                --print(GetParameterName(rates_table.stat))
                 --print("level scaling " .. level_modulo)
                 --print("power scaling " .. power_modulo)
 
-                if BONUS_MONSTER_STAT_RATES[monster_id] and BONUS_MONSTER_STAT_RATES[monster_id][MONSTER_STATS_RATES[i].stat] then
-                    bonus_delta = BONUS_MONSTER_STAT_RATES[monster_id][MONSTER_STATS_RATES[i].stat]
+                if BONUS_MONSTER_STAT_RATES[monster_id] and BONUS_MONSTER_STAT_RATES[monster_id][rates_table.stat] then
+                    bonus_delta = BONUS_MONSTER_STAT_RATES[monster_id][rates_table.stat]
                 end
 
                 if difference > 0 then
-                    local stat = MONSTER_STATS_RATES[i].stat
+                    local stat = rates_table.stat
                     local last_multiplicator = 0.
-                    --print("must scale")
-                    --print("difference " .. difference)
-                    --print( "active " .. ActivePlayers)
-                    bonus_delta = MONSTER_STATS_RATES[i].delta + bonus_delta + ((MONSTER_STATS_RATES[i].per_player or 0.) * (ActivePlayers - 1))
-                    local delta = bonus_delta
-                    --print(R2S(MONSTER_STATS_RATES[i].initial) .. "/" .. R2S(MONSTER_STATS_RATES[i].delta))
-                    --print("=====")
-                    --print(GetParameterName(stat))
-                    if unit_data.scaling_values[stat] and MONSTER_STATS_RATES[i].method == MULTIPLY_BONUS then
-                        --[[
-                        local scaling_value = unit_data.scaling_values[stat]
-                        print("scaling values total " .. #scaling_value)
-                        for i = 1, #scaling_value do
-                            print("current stored modifier " .. scaling_value[i])
+                    local difficulty_bonus = 0
 
-                            mult_summ = mult_summ + (scaling_value[i] - 1.)
-                        end]]
-                        ModifyStat(target, stat, MONSTER_STATS_RATES[i].initial + unit_data.scaling_values[stat], MULTIPLY_BONUS, false)
-                        last_multiplicator = unit_data.scaling_values[stat] -- 0.04
-                        --print("last value is ".. unit_data.scaling_values[stat])
+                    if MONSTER_DIFFICULTY_STAT_RATES[CurrentDifficulty] and
+                            MONSTER_DIFFICULTY_STAT_RATES[CurrentDifficulty][rates_table.method] and
+                            MONSTER_DIFFICULTY_STAT_RATES[CurrentDifficulty][rates_table.method][rates_table.stat] then
+
+                        difficulty_bonus = MONSTER_DIFFICULTY_STAT_RATES[CurrentDifficulty][rates_table.method][rates_table.stat]
                     end
 
-                    bonus_delta = MONSTER_STATS_RATES[i].initial + last_multiplicator + (difference * bonus_delta)
-                    if MONSTER_STATS_RATES[i].method ~= MULTIPLY_BONUS then
+                    bonus_delta = rates_table.delta + bonus_delta + difficulty_bonus + ((rates_table.per_player or 0.) * (ActivePlayers - 1))
+                    local delta = bonus_delta
+
+                    if unit_data.scaling_values[stat] and rates_table.method == MULTIPLY_BONUS then
+                        ModifyStat(target, stat, rates_table.initial + unit_data.scaling_values[stat], MULTIPLY_BONUS, false)
+                        last_multiplicator = unit_data.scaling_values[stat]
+                    end
+
+                    bonus_delta = rates_table.initial + last_multiplicator + (difference * bonus_delta)
+                    if rates_table.method ~= MULTIPLY_BONUS then
                         bonus_delta = R2I(bonus_delta)
                     end
                     
-                    ModifyStat(target, stat, bonus_delta, MONSTER_STATS_RATES[i].method, true)
+                    ModifyStat(target, stat, bonus_delta, rates_table.method, true)
                     --print("result modificator is ".. bonus_delta)
 
 
-                    if MONSTER_STATS_RATES[i].method == MULTIPLY_BONUS then
-                        unit_data.scaling_values[stat] = last_multiplicator + delta -- 0 + 0.04
-                        --print("new scaling value is " .. unit_data.scaling_values[stat])
-                        --[[
-                        if unit_data.scaling_values[stat] then
-                            unit_data.scaling_values[stat][#unit_data.scaling_values[stat] + 1] = bonus_delta - mult_summ
-                            print("insert in ".. (#unit_data.scaling_values[stat]) .. " value " .. (bonus_delta - mult_summ))
-                        else
-
-
-                        end]]
+                    if rates_table.method == MULTIPLY_BONUS then
+                        unit_data.scaling_values[stat] = last_multiplicator + delta
                     end
-                    --BONUS_MONSTER_STAT_RATES[monster_id][MONSTER_STATS_RATES[i].stat] or
+
                 end
 
             end

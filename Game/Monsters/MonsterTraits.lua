@@ -19,12 +19,15 @@ do
     MONSTER_TRAIT_STURDY = 10
     MONSTER_TRAIT_AGILE = 11
     MONSTER_TRAIT_OVERPOWERING = 12
-    ---@integer this is index 13
-    MONSTER_TRAIT_ARCANE = 13
-    MONSTER_TRAIT_ELITE_RED = 14
-    MONSTER_TRAIT_ELITE_BLUE = 15
-    MONSTER_TRAIT_ELITE_YELLOW = 16
-    MONSTER_TRAIT_ELITE_GREEN = 17
+    MONSTER_TRAIT_RESISTANT = 13
+    MONSTER_TRAIT_POSSESSED = 14
+    MONSTER_TRAIT_ETHEREAL = 15
+    ---@integer this is index 50
+    MONSTER_TRAIT_ARCANE = 50
+    MONSTER_TRAIT_ELITE_RED = 51
+    MONSTER_TRAIT_ELITE_BLUE = 52
+    MONSTER_TRAIT_ELITE_YELLOW = 53
+    MONSTER_TRAIT_ELITE_GREEN = 54
     local MonsterAurasData
     MONSTER_TRAIR_AURA_PHYSICAL = 1 --physical+holy
     MONSTER_TRAIR_AURA_PRIMAL_ELEMENTS = 2 --fire+lightning+cold
@@ -38,7 +41,7 @@ do
     end
 
     function GetRandomMonsterTrait()
-        return GetRandomInt(MONSTER_TRAIT_ELECTRIFIED, MONSTER_TRAIT_ARCANE)
+        return GetRandomInt(MONSTER_TRAIT_ELECTRIFIED, MONSTER_TRAIT_ETHEREAL)
     end
 
     ---@param unit unit
@@ -160,6 +163,7 @@ do
             end
 
             if trait.color then
+                if not unit_data.colours then unit_data.colours = {} end
                 unit_data.colours.r = trait.color.r or 255; unit_data.colours.g = trait.color.g or 255; unit_data.colours.b = trait.color.b or 255; unit_data.colours.a = trait.color.a or 255;
                 SetUnitVertexColor(unit, trait.color.r or 255, trait.color.g or 255, trait.color.b or 255, trait.color.a or 255)
             end
@@ -190,7 +194,7 @@ do
         MonsterTraitsData = {
             [MONSTER_TRAIT_ELECTRIFIED] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_ELECTRIFIED],
-                excludes = { MONSTER_TRAIT_CHILLING, MONSTER_TRAIT_BURNING, MONSTER_TRAIT_TOXIC },
+                excludes = { MONSTER_TRAIT_CHILLING, MONSTER_TRAIT_BURNING, MONSTER_TRAIT_TOXIC, MONSTER_TRAIT_POSSESSED, MONSTER_TRAIT_ARCANE },
                 modified_parameters = {
                     { param = LIGHTNING_RESIST, value = 25, method = STRAIGHT_BONUS, min = 0, max = 20 },
                     { param = LIGHTNING_BONUS, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
@@ -207,7 +211,7 @@ do
             },
             [MONSTER_TRAIT_TOXIC] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_TOXIC],
-                excludes = { MONSTER_TRAIT_CHILLING, MONSTER_TRAIT_BURNING, MONSTER_TRAIT_ELECTRIFIED, MONSTER_TRAIT_ARCANE },
+                excludes = { MONSTER_TRAIT_CHILLING, MONSTER_TRAIT_BURNING, MONSTER_TRAIT_ELECTRIFIED, MONSTER_TRAIT_ARCANE, MONSTER_TRAIT_POSSESSED },
                 modified_parameters = {
                     { param = POISON_RESIST, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
                     { param = POISON_BONUS, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
@@ -224,7 +228,7 @@ do
             },
             [MONSTER_TRAIT_ARCANE] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_ARCANE],
-                excludes = { MONSTER_TRAIT_CHILLING, MONSTER_TRAIT_BURNING, MONSTER_TRAIT_ELECTRIFIED, MONSTER_TRAIT_TOXIC },
+                excludes = { MONSTER_TRAIT_CHILLING, MONSTER_TRAIT_BURNING, MONSTER_TRAIT_ELECTRIFIED, MONSTER_TRAIT_TOXIC, MONSTER_TRAIT_POSSESSED },
                 modified_parameters = {
                     { param = ARCANE_RESIST, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
                     { param = ARCANE_BONUS, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
@@ -269,7 +273,7 @@ do
             [MONSTER_TRAIT_SPIKY] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_SPIKY],
                 modified_parameters = {
-                    { param = REFLECT_DAMAGE, value = 200, method = STRAIGHT_BONUS, min = -25, max = 200 },
+                    { param = REFLECT_DAMAGE, value = 100, method = STRAIGHT_BONUS, min = -25, max = 75 },
                     { param = HP_VALUE, value = 1.25, method = MULTIPLY_BONUS }
                 },
                 apply_func = function(unit)
@@ -279,7 +283,7 @@ do
             },
             [MONSTER_TRAIT_BURNING] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_BURNING],
-                excludes = { MONSTER_TRAIT_CHILLING, MONSTER_TRAIT_ELECTRIFIED, MONSTER_TRAIT_TOXIC, MONSTER_TRAIT_ARCANE },
+                excludes = { MONSTER_TRAIT_CHILLING, MONSTER_TRAIT_ELECTRIFIED, MONSTER_TRAIT_TOXIC, MONSTER_TRAIT_ARCANE, MONSTER_TRAIT_POSSESSED },
                 modified_parameters = {
                     { param = FIRE_RESIST, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
                     { param = FIRE_BONUS, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
@@ -297,7 +301,7 @@ do
             },
             [MONSTER_TRAIT_CHILLING] = {
                 affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_CHILLING],
-                excludes = { MONSTER_TRAIT_BURNING, MONSTER_TRAIT_ELECTRIFIED, MONSTER_TRAIT_TOXIC, MONSTER_TRAIT_ARCANE, MONSTER_TRAIT_OVERPOWERING },
+                excludes = { MONSTER_TRAIT_BURNING, MONSTER_TRAIT_ELECTRIFIED, MONSTER_TRAIT_TOXIC, MONSTER_TRAIT_ARCANE, MONSTER_TRAIT_OVERPOWERING, MONSTER_TRAIT_POSSESSED },
                 modified_parameters = {
                     { param = ICE_RESIST, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
                     { param = ICE_BONUS, value = 20, method = STRAIGHT_BONUS, min = 0, max = 20 },
@@ -366,7 +370,48 @@ do
                 end,
                 bonus_exp = 1.14
             },
+            [MONSTER_TRAIT_RESISTANT] = {
+                affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_RESISTANT],
+                modified_parameters = {
+                    { param = FIRE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = ICE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = LIGHTNING_RESIST, value = 40, method = STRAIGHT_BONUS },
+                },
+                apply_func = function(unit)
+                    AddSpecialEffectTargetEx("Buffs\\WindBuff_Origin.mdx", unit, "origin")
+                end,
+                bonus_exp = 1.1
+            },
+            [MONSTER_TRAIT_POSSESSED] = {
+                affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_POSSESSED],
+                excludes = { MONSTER_TRAIT_CHILLING, MONSTER_TRAIT_ELECTRIFIED, MONSTER_TRAIT_TOXIC, MONSTER_TRAIT_ARCANE, MONSTER_TRAIT_BURNING },
+                modified_parameters = {
+                    { param = HP_VALUE, value = 3., method = MULTIPLY_BONUS },
+                    { param = CONTROL_REDUCTION, value = 50, method = STRAIGHT_BONUS },
+                },
+                applied_effects = {  "trait_possessed" },
+                apply_func = function(unit)
+                    local unit_data = GetUnitData(unit)
+                    unit_data.equip_point[WEAPON_POINT].ATTRIBUTE = DARKNESS_ATTRIBUTE
+                    AddSpecialEffectTargetEx("Buffs\\DespairAuraPurple.mdx", unit, "origin")
+                end,
+                bonus_exp = 1.25
+            },
+            [MONSTER_TRAIT_ETHEREAL] = {
+                affix = LOCALE_LIST[my_locale].MONSTER_TRAITS[MONSTER_TRAIT_ETHEREAL],
+                modified_parameters = {
+                    { param = PHYSICAL_RESIST, value = 65, method = STRAIGHT_BONUS },
+                    { param = MOVING_SPEED, value = 0.65, method = MULTIPLY_BONUS },
+                },
+                apply_func = function(unit)
+                    local unit_data = GetUnitData(unit)
+                    unit_data.colours.a = 100
+                    SetUnitVertexColor(unit, unit_data.colours.r, unit_data.colours.g, unit_data.colours.b, unit_data.colours.a)
+                end,
+                bonus_exp = 1.15
+            },
             [MONSTER_TRAIT_ELITE_RED] = {
+                excludes = { MONSTER_TRAIT_ELITE_BLUE, MONSTER_TRAIT_ELITE_YELLOW, MONSTER_TRAIT_ELITE_GREEN },
                 modified_parameters = {
                     { param = PHYSICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
                     { param = MAGICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
@@ -378,6 +423,7 @@ do
                 bonus_exp = 1.75
             },
             [MONSTER_TRAIT_ELITE_BLUE] = {
+                excludes = { MONSTER_TRAIT_ELITE_RED, MONSTER_TRAIT_ELITE_YELLOW, MONSTER_TRAIT_ELITE_GREEN },
                 modified_parameters = {
                     { param = PHYSICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
                     { param = MAGICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
@@ -389,6 +435,7 @@ do
                 bonus_exp = 1.75
             },
             [MONSTER_TRAIT_ELITE_YELLOW] = {
+                excludes = { MONSTER_TRAIT_ELITE_BLUE, MONSTER_TRAIT_ELITE_RED, MONSTER_TRAIT_ELITE_GREEN },
                 modified_parameters = {
                     { param = PHYSICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
                     { param = MAGICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
@@ -400,6 +447,7 @@ do
                 bonus_exp = 1.75
             },
             [MONSTER_TRAIT_ELITE_GREEN] = {
+                excludes = { MONSTER_TRAIT_ELITE_BLUE, MONSTER_TRAIT_ELITE_YELLOW, MONSTER_TRAIT_ELITE_RED },
                 modified_parameters = {
                     { param = PHYSICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },
                     { param = MAGICAL_ATTACK, value = 1.35, method = MULTIPLY_BONUS },

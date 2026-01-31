@@ -613,7 +613,8 @@ do
             [64]	 = gg_rct_chest_64,
             [65]	 = gg_rct_chest_65,
             [66]	 = gg_rct_chest_66,
-            [67]	 = gg_rct_chest_67
+            [67]	 = gg_rct_chest_67,
+            [68]	 = gg_rct_chest_68
         }
 
         AltarRects = {

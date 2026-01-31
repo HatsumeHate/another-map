@@ -13,6 +13,7 @@ do
 	ITEM_TYPE_OTHER      = 7
 	ITEM_TYPE_SKILLBOOK  = 8
 	ITEM_TYPE_GIFT  	 = 9
+	ITEM_TYPE_KEY  	     = 10
 
 	ITEM_PASSIVE_EFFECT = 1
 	ITEM_ACTIVE_EFFECT 	= 2
@@ -66,7 +67,7 @@ do
 
     SOUNDPACK_AMULET = 26; SOUNDPACK_RING = 27
 
-    SOUNDPACK_POTION = 28; SOUNDPACK_SCROLL = 29; SOUNDPACK_GEM = 30; SOUNDPACK_BOOK = 31; SOUNDPACK_RUNE = 32; SOUNDPACK_CHARM = 33
+    SOUNDPACK_POTION = 28; SOUNDPACK_SCROLL = 29; SOUNDPACK_GEM = 30; SOUNDPACK_BOOK = 31; SOUNDPACK_RUNE = 32; SOUNDPACK_CHARM = 33; SOUNDPACK_KEY = 34
 
 
     ITEM_SOUNDPACK = 0
@@ -113,6 +114,8 @@ do
 
 	ITEM_NECRONOMICON = "I03P"
 	ITEM_ELIXIR_INNOCENCE = "I03Q"
+	ITEM_ASHEN_TONIC = "I055"
+
 
 	ITEM_FOOD = "I03B"
 	ITEM_DRINKS = "I03C"
@@ -405,7 +408,7 @@ do
 			[SORCERESS_CLASS] = {
 				[SKILL_CATEGORY_LIGHTNING] 			= { 'A00M', "A00J", "A00K", "A019", "ASSU", "ASSF", "ALSP", "ASLF" },
 				[SKILL_CATEGORY_ICE] 				= { "A003", "A001", "A005", "A00E", "ABLZ", "ASIR", "APRF" },
-				[SKILL_CATEGORY_FIRE] 				= { "A00D", "A00F", "A00I", "AMLT", "AFRW", "ASFS", "AFWL", "ASEF", "AFCR" },
+				[SKILL_CATEGORY_FIRE] 				= { "A00D", "A00F", "A00I", "AMLT", "AFRW", "ASFS", "AFWL", "ASEF", "AFCR", "ASRF" },
 				[SKILL_CATEGORY_ARCANE] 			= { "A00L", "A00N", "A00H", "AARF", "AARC" }
 			},
 			[NECROMANCER_CLASS] = {
@@ -470,6 +473,7 @@ do
             [SOUNDPACK_BOOK]                 = { drop = "Sound\\book.wav" },
 			[SOUNDPACK_RUNE] 				 = { drop = "Sound\\rune.flac" },
 			[SOUNDPACK_CHARM] 				 = { drop = "Sound\\charm.wav" },
+			[SOUNDPACK_KEY] 				 = { drop = "Sound\\key.wav" },
 
         }
 
@@ -583,6 +587,7 @@ do
 			BONUS   = {
 				{ PARAM = HP_VALUE, VALUE = 15, METHOD = STRAIGHT_BONUS },
 			},
+			--armor_type = ARMOR_TYPE_WOOD,
 			MAX_SLOTS = 0,
 			sell_value = 70,
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR]
@@ -1482,6 +1487,18 @@ do
 			usable = true
 		})
 
+		ItemAddData('I055', {
+			NAME    		   = LOCALE_LIST[my_locale].ASHEN_TONIC,
+			TYPE    		   = ITEM_TYPE_CONSUMABLE,
+			QUALITY 		   = RARE_ITEM,
+			frame_texture      = "ReplaceableTextures\\CommandButtons\\BTNLesserInvisibility.blp",
+			item_description   = LOCALE_LIST[my_locale].ASHEN_TONIC_DESC_TEXT,
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_POTION],
+			cost = 100,
+			cooldown_type = 7,
+			usable = true
+		})
+
 
 		ItemAddData('I00U', {
 			NAME    		   = LOCALE_LIST[my_locale].SKILLBOOK_FIRE,
@@ -1900,7 +1917,7 @@ do
 		ItemAddData('I03E', {
 			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_LETHALITY,
 			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
-			frame_texture      	= "Items\\Book\\BTNBK_Black_Book.BLP",
+			frame_texture      	= "Items\\Book\\BTNLockedTome.BLP",
 			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
 			restricted_to 		= ASSASSIN_CLASS,
 			skill_category 		= CLASS_SKILL_LIST[ASSASSIN_CLASS][SKILL_CATEGORY_LETHALITY],
@@ -1926,7 +1943,7 @@ do
 		ItemAddData('I044', {
 			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_BOW,
 			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
-			frame_texture      	= "Items\\Book\\BTNBK_Black_Book.blp",
+			frame_texture      	= "Items\\Book\\BTNbookAzyr.blp",
 			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
 			restricted_to 		= ASSASSIN_CLASS,
 			skill_category 		= CLASS_SKILL_LIST[ASSASSIN_CLASS][SKILL_CATEGORY_BOW],
@@ -1939,7 +1956,7 @@ do
 		ItemAddData('I03G', {
 			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_GEAR,
 			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
-			frame_texture      	= "Items\\Book\\BTNBK_Black_Book.blp",
+			frame_texture      	= "Items\\Book\\BTN_cr_RunicTOME.blp",
 			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
 			restricted_to 		= ASSASSIN_CLASS,
 			skill_category 		= CLASS_SKILL_LIST[ASSASSIN_CLASS][SKILL_CATEGORY_GEAR],
@@ -1954,7 +1971,7 @@ do
 			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_LETHALITY,
 			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
 			QUALITY 		   	= RARE_ITEM,
-			frame_texture      	= "Items\\Book\\BTNBK_Black_Book.BLP",
+			frame_texture      	= "Items\\Book\\BTNLockedTome.BLP",
 			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
 			restricted_to 		= ASSASSIN_CLASS,
 			skill_category 		= CLASS_SKILL_LIST[ASSASSIN_CLASS][SKILL_CATEGORY_LETHALITY],
@@ -1982,7 +1999,7 @@ do
 			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_GEAR,
 			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
 			QUALITY 		   	= RARE_ITEM,
-			frame_texture      	= "Items\\Book\\BTNBK_Black_Book.blp",
+			frame_texture      	= "Items\\Book\\BTN_cr_RunicTOME.blp",
 			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
 			restricted_to 		= ASSASSIN_CLASS,
 			skill_category 		= CLASS_SKILL_LIST[ASSASSIN_CLASS][SKILL_CATEGORY_GEAR],
@@ -1996,7 +2013,7 @@ do
 			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_BOW,
 			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
 			QUALITY 		   	= RARE_ITEM,
-			frame_texture      	= "Items\\Book\\BTNBK_Black_Book.blp",
+			frame_texture      	= "Items\\Book\\BTNbookAzyr.blp",
 			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
 			restricted_to 		= ASSASSIN_CLASS,
 			skill_category 		= CLASS_SKILL_LIST[ASSASSIN_CLASS][SKILL_CATEGORY_BOW],
@@ -2010,7 +2027,7 @@ do
 			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_LETHALITY,
 			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
 			QUALITY 		   	= MAGIC_ITEM,
-			frame_texture      	= "Items\\Book\\BTNBK_Black_Book.BLP",
+			frame_texture      	= "Items\\Book\\BTNLockedTome.BLP",
 			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
 			restricted_to 		= ASSASSIN_CLASS,
 			skill_category 		= CLASS_SKILL_LIST[ASSASSIN_CLASS][SKILL_CATEGORY_LETHALITY],
@@ -2038,7 +2055,7 @@ do
 			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_GEAR,
 			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
 			QUALITY 		   	= MAGIC_ITEM,
-			frame_texture      	= "Items\\Book\\BTNBK_Black_Book.blp",
+			frame_texture      	= "Items\\Book\\BTN_cr_RunicTOME.blp",
 			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
 			restricted_to 		= ASSASSIN_CLASS,
 			skill_category 		= CLASS_SKILL_LIST[ASSASSIN_CLASS][SKILL_CATEGORY_GEAR],
@@ -2052,7 +2069,7 @@ do
 			NAME    		   	= LOCALE_LIST[my_locale].SKILLBOOK_BOW,
 			TYPE    		   	= ITEM_TYPE_SKILLBOOK,
 			QUALITY 		   	= MAGIC_ITEM,
-			frame_texture      	= "Items\\Book\\BTNBK_Black_Book.blp",
+			frame_texture      	= "Items\\Book\\BTNbookAzyr.blp",
 			item_description 	= LOCALE_LIST[my_locale].SKILLBOOK_TEXT,
 			restricted_to 		= ASSASSIN_CLASS,
 			skill_category 		= CLASS_SKILL_LIST[ASSASSIN_CLASS][SKILL_CATEGORY_BOW],
@@ -2332,6 +2349,310 @@ do
 			usable = true
 		})
 
+		ItemAddData('rd01', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_AMULET,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= NECKLACE_JEWELRY,
+			frame_texture      	= "UI\\BTNunknown_amulet.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_AMULET],
+			level 				= 1
+		})
+
+		ItemAddData('rd02', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_RING,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= RING_JEWELRY,
+			frame_texture      	= "UI\\BTNunknown_ring.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_RING],
+			level 				= 1
+		})
+
+		ItemAddData('rd03', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_SWORD,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= SWORD_WEAPON,
+			frame_texture      	= "UI\\BTNunknown_sword.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
+			level 				= 1
+		})
+
+		ItemAddData('rd04', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_SWORD2H,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= GREATSWORD_WEAPON,
+			frame_texture      	= "UI\\BTNunknown_greatsword.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+			level 				= 1
+		})
+
+		ItemAddData('rd05', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_AXE,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= AXE_WEAPON,
+			frame_texture      	= "UI\\BTNunknown_axe.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+			level 				= 1
+		})
+
+		ItemAddData('rd06', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_AXE2H,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= GREATAXE_WEAPON,
+			frame_texture      	= "UI\\BTNunknown_greataxe.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+			level 				= 1
+		})
+
+		ItemAddData('rd07', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_BLUNT,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= BLUNT_WEAPON,
+			frame_texture      	= "UI\\BTNunknown_hammer.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_BLUNT],
+			level 				= 1
+		})
+
+		ItemAddData('rd08', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_BLUNT2H,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= GREATBLUNT_WEAPON,
+			frame_texture      	= "UI\\BTNunknown_greathammer.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+			level 				= 1
+		})
+
+		ItemAddData('rd09', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_DAGGER,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= DAGGER_WEAPON,
+			frame_texture      	= "UI\\BTNunknown_dagger.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+			level 				= 1
+		})
+
+		ItemAddData('rd10', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_STAFF,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= STAFF_WEAPON,
+			frame_texture      	= "UI\\BTNunknown_staff.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+			level 				= 1
+		})
+
+		ItemAddData('rd11', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_BOW,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= BOW_WEAPON,
+			frame_texture      	= "UI\\BTNunknown_bow.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+			level 				= 1
+		})
+
+		ItemAddData('rd12', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_BELT,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= BELT_ARMOR,
+			frame_texture      	= "UI\\BTNunknown_belt.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+			level 				= 1
+		})
+
+
+		ItemAddData('rd14', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_BOOTS,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= LEGS_ARMOR,
+			frame_texture      	= "UI\\BTNunknown_boots.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+			level 				= 1
+		})
+
+		ItemAddData('rd15', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_CHEST,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= CHEST_ARMOR,
+			frame_texture      	= "UI\\BTNunknown_chest.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+			level 				= 1
+		})
+
+		ItemAddData('rd16', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_GLOVES,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= HANDS_ARMOR,
+			frame_texture      	= "UI\\BTNunknown_gloves.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+			level 				= 1
+		})
+
+		ItemAddData('rd17', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_HELMET,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= HEAD_ARMOR,
+			frame_texture      	= "UI\\BTNunknown_helmet.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+			level 				= 1
+		})
+
+		ItemAddData('rd18', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_ORB,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= ORB_OFFHAND,
+			frame_texture      	= "UI\\BTNunknown_orb.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+			level 				= 1
+		})
+
+		ItemAddData('rd19', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_QUIVER,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= QUIVER_OFFHAND,
+			frame_texture      	= "UI\\BTNunknown_quiver.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+			level 				= 1
+		})
+		ItemAddData('rd13', {
+			NAME    		   	= LOCALE_LIST[my_locale].RANDOM_SHIELD,
+			TYPE    		   	= ITEM_TYPE_OTHER,
+			QUALITY 		   	= COMMON_ITEM,
+			SUBTYPE 			= SHIELD_OFFHAND,
+			frame_texture      	= "UI\\BTNunknown_shield.blp",
+			item_description 	= LOCALE_LIST[my_locale].RANDOM_STATS_DESC,
+			cost 				= 1000,
+			sell_penalty 		= 0.5,
+			sellable 			= false,
+			droppable 			= false,
+			usable 				= false,
+			soundpack 			= ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+			level 				= 1
+		})
+
 
 		ItemAddData('I00N', {
 			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_RAT_HUNTER,
@@ -2421,7 +2742,7 @@ do
 		})
 
 		ItemAddData('I01L', {
-			NAME    = "Обруч Напряжения", --LOCALE_LIST[my_locale].ITEM_NAME_DARK_CROWN,
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_NIGHTWATCH,
 			TYPE    = ITEM_TYPE_ARMOR,
 			SUBTYPE = HEAD_ARMOR,
 			QUALITY = UNIQUE_ITEM,
@@ -2430,13 +2751,13 @@ do
 			flippy = true,
 			level = 10,
 			BONUS   = {
-				{ PARAM = MAGICAL_ATTACK, VALUE = 1.3, METHOD = MULTIPLY_BONUS },
-				{ PARAM = CRIT_CHANCE, VALUE = 10, METHOD = STRAIGHT_BONUS },
-				{ PARAM = DARKNESS_BONUS, VALUE = 10, METHOD = STRAIGHT_BONUS },
+				{ PARAM = DODGE_CHANCE, VALUE = 12, METHOD = STRAIGHT_BONUS },
+				{ PARAM = MOVING_SPEED, VALUE = 75, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CONTROL_REDUCTION, VALUE = 33, METHOD = STRAIGHT_BONUS },
 			},
-			MAX_SLOTS = 2,
+			MAX_SLOTS = 3,
 			frame_texture = "Armor\\BTNdiadem1.blp",
-			special_description = "\"".. "Приносит одну головную боль. Но не только его владельцу." .."\"",
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_NIGHTWATCH .."\"",
 			soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR],
 		})
 
@@ -2543,6 +2864,7 @@ do
 				{ PARAM = ALL_RESIST, VALUE = 10, METHOD = STRAIGHT_BONUS, base = 10, delta = 1, delta_level = 10, delta_level_max = 5 },
 			},
 			MAX_SLOTS = 3,
+			--armor_type = ARMOR_TYPE_FLESH,
 			frame_texture = "Armor\\BTNCloak of shadows.blp",
 			texture = TEXTURE_ID_ARMOR_03,
 			assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_11,
@@ -2733,6 +3055,7 @@ do
 				{ PARAM = CAST_SPEED, VALUE = 7, METHOD = STRAIGHT_BONUS },
 			},
 			MAX_SLOTS = 2,
+			--armor_type = ARMOR_TYPE_METAL,
 			frame_texture = "Armor\\BTNSpikedArmor.blp",
 			set_bonus = GetItemSet("FRDL"),
 			model = "Items\\Armor_06.mdx",
@@ -2889,6 +3212,7 @@ do
 				{ PARAM = HP_VALUE, VALUE = 30, METHOD = STRAIGHT_BONUS, base = 30, delta = 10, delta_level = 3, delta_level_max = 25 },
 			},
 			MAX_SLOTS = 2,
+			--armor_type = ARMOR_TYPE_METAL,
 			frame_texture = "Armor\\BTNFire Plate Armor.blp",
 			set_bonus = GetItemSet("crimson_legion_set"),
 			texture = TEXTURE_ID_ARMOR_02,
@@ -3123,6 +3447,7 @@ do
 				{ PARAM = INT_STAT, VALUE = 10, METHOD = STRAIGHT_BONUS, base = 10, delta = 1, delta_level = 10, delta_level_max = 5 },
 			},
 			MAX_SLOTS = 3,
+			--armor_type = ARMOR_TYPE_METAL,
 			frame_texture = "Armor\\BTNTenebriousArmor.blp",
 			texture = TEXTURE_ID_ARMOR_02,
 			assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_17,
@@ -3351,6 +3676,73 @@ do
 			soundpack = { equip = "Sound\\ring_mana_equip.wav", uneqip = "Sound\\ring_mana_unequip.wav", drop = "Sound\\ring.wav" }
 		})
 
+		ItemAddData('I04Z', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_THE_SERPENTFANG,
+			TYPE    = ITEM_TYPE_WEAPON,
+			SUBTYPE = DAGGER_WEAPON,
+			QUALITY = UNIQUE_ITEM,
+			ATTRIBUTE = POISON_ATTRIBUTE,
+			ATTRIBUTE_BONUS = 5,
+			stat_modificator = 0.82,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = ATTACK_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS },
+				{ PARAM = POISONING_DAMAGE_BOOST, VALUE = 25, METHOD = STRAIGHT_BONUS },
+				{ PARAM = MOVING_SPEED, VALUE = 38, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 3,
+			frame_texture = "Weapons\\BTNNature Short Blade.blp",
+			model = "Items\\Almalexia_Scimitar.mdx",
+			legendary_effect = GetLegendaryEffect("serpentfang_effect"),
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_SERPENTFANG .."\"",
+			soundpack = { equip = "Sound\\daggers_poisoned_equip.wav", uneqip = "Sound\\dagger_unequip.wav", drop = "Sound\\smallmetalweapon.wav" }
+		})
+
+		ItemAddData('I050', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_CROWN_OF_HOLLOW_KING,
+			TYPE    = ITEM_TYPE_ARMOR,
+			SUBTYPE = HEAD_ARMOR,
+			QUALITY = UNIQUE_ITEM,
+			DEFENCE = 20,
+			stat_modificator = 0.85,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = MINION_POWER, VALUE = 30, METHOD = STRAIGHT_BONUS },
+				{ PARAM = INT_STAT, VALUE = 5, METHOD = STRAIGHT_BONUS, base = 5, delta = 1, delta_level = 5, delta_level_max = 10 },
+				{ PARAM = ALL_RESIST, VALUE = 10, METHOD = STRAIGHT_BONUS },
+			},
+			MAX_SLOTS = 3,
+			legendary_effect = GetLegendaryEffect("cohk_legendary"),
+			frame_texture = "Armor\\BTNCrown of Dead Lord.blp",
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_CROWN_OF_HOLLOW_KING .."\"",
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_HEAD_LIGHT_ARMOR],
+		})
+
+		ItemAddData('I051', {
+			NAME    = LOCALE_LIST[my_locale].ITEM_NAME_DAWNWEAVER,
+			TYPE    = ITEM_TYPE_WEAPON,
+			SUBTYPE = BLUNT_WEAPON,
+			ATTRIBUTE = HOLY_ATTRIBUTE,
+			QUALITY = UNIQUE_ITEM,
+			DAMAGE  = 50,
+			stat_modificator = 1.12,
+			flippy = true,
+			level = 10,
+			BONUS   = {
+				{ PARAM = DAMAGE_TO_CLOSE_ENEMIES, VALUE = 25, METHOD = STRAIGHT_BONUS },
+				{ PARAM = CRIT_CHANCE, VALUE = 12, METHOD = STRAIGHT_BONUS },
+				{ PARAM = HEALING_BONUS, VALUE = 15, METHOD = STRAIGHT_BONUS },
+			},
+			legendary_effect = GetLegendaryEffect("dawnweaver_effect_Legendary"),
+			MAX_SLOTS = 3,
+			frame_texture = "Weapons\\BTNMorningStarDivine64x64.blp",
+			model = "Items\\Lion_Mace.mdx",
+			special_description = "\"".. LOCALE_LIST[my_locale].ITEM_SPEC_DESCRIPTION_DAWNWEAVER .."\"",
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_BLUNT]
+		})
+
 
 		ItemAddData('I02H', {
 			NAME    		   = LOCALE_LIST[my_locale].LOOTBOX_NAME,
@@ -3404,6 +3796,50 @@ do
 			sellable = false,
 			permanent = true
 		})
+
+		ItemAddData('I052', {
+			NAME    		   = GetLocalString("Бронзовый Ключ", "Bronze Key"),
+			TYPE    		   = ITEM_TYPE_KEY,
+			QUALITY 		   = COMMON_ITEM,
+			frame_texture      = "BTNBronzeKey.blp",
+			item_description   = GetLocalString("Открывает сундук с сокровищами в подземельях", "Opens a treasure chest in dungeons"),
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_KEY],
+			cost = 250,
+			usable = true,
+			droppable = true,
+			sellable = true,
+			permanent = true
+		})
+
+		ItemAddData('I053', {
+			NAME    		   = GetLocalString("Серебрянный Ключ", "Silver Key"),
+			TYPE    		   = ITEM_TYPE_KEY,
+			QUALITY 		   = RARE_ITEM,
+			frame_texture      = "MoonKey_TEX.blp",
+			item_description   = GetLocalString("Открывает сундук с сокровищами в подземельях", "Opens a treasure chest in dungeons"),
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_KEY],
+			cost = 500,
+			usable = true,
+			droppable = true,
+			sellable = true,
+			permanent = true
+		})
+
+		ItemAddData('I054', {
+			NAME    		   = GetLocalString("Золотой Ключ", "Golden Key"),
+			TYPE    		   = ITEM_TYPE_KEY,
+			QUALITY 		   = MAGIC_ITEM,
+			frame_texture      = "SunKey_TEX.blp",
+			item_description   = GetLocalString("Открывает сундук с сокровищами в подземельях", "Opens a treasure chest in dungeons"),
+			soundpack = ITEM_SOUNDPACK[SOUNDPACK_KEY],
+			cost = 750,
+			usable = true,
+			droppable = true,
+			sellable = true,
+			permanent = true
+		})
+
+
 
 		InitRunewords()
 		InitGifts()

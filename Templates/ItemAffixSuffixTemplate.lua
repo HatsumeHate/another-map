@@ -32,6 +32,7 @@ do
     ITEM_SUFFIX_ADVENTURER          = 19
     ITEM_SUFFIX_DECAY               = 20
     ITEM_SUFFIX_EFFICIENCY          = 21
+    ITEM_SUFFIX_DOOM                = 22
     -- rare boosted suffix
     ITEM_SUFFIX_SLAYER_GENIUS       = 13
     ITEM_SUFFIX_HIGH_KNIGHT         = 14
@@ -596,7 +597,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_06.mdx",
                         texture = TEXTURE_ID_ARMOR_04,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_16
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_16,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
@@ -606,7 +608,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_08.mdx",
                         texture = TEXTURE_ID_ARMOR_12,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_22
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_22,
+                        --armor_type = --armor_type_WOOD
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
@@ -616,7 +619,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
                         texture = TEXTURE_ID_ARMOR_02,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_15
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_15,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
@@ -626,7 +630,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_10.mdx",
                         texture = TEXTURE_ID_ARMOR_10,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_28
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_28,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
@@ -636,7 +641,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
                         texture = TEXTURE_ID_ARMOR_05,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_19
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_19,
+                        --armor_type = --armor_type_WOOD
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
@@ -646,7 +652,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
                         texture = TEXTURE_ID_ARMOR_06,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_20
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_20,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
@@ -656,7 +663,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
                         texture = TEXTURE_ID_ARMOR_01,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_06
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_06,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
@@ -666,7 +674,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
                         texture = TEXTURE_ID_ARMOR_09,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_04
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_04,
+                        --armor_type = --armor_type_FLESH
                     },
                     {
                         icon = "Armor\\BTNBattle Mage Armor.blp",
@@ -676,7 +685,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
                         texture = TEXTURE_ID_ARMOR_08,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_21
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_21,
+                        --armor_type = --armor_type_FLESH
                     },
                     {
                         icon = "Armor\\BTNRed Priest Cloth Robe.blp",
@@ -686,7 +696,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
                         texture = TEXTURE_ID_ARMOR_03,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_11
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_11,
+                        --armor_type = --armor_type_FLESH
                     },
                     {
                         icon = "Armor\\BTNDark Lord Armor.blp",
@@ -696,7 +707,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
                         texture = TEXTURE_ID_ARMOR_11,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_30
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_30,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNClassicArmor.blp",
@@ -706,7 +718,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
                         texture = TEXTURE_ID_ARMOR_02,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_01
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_01,
+                        --armor_type = --armor_type_METAL
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -974,6 +987,14 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
                         model = "Items\\Metalblade.mdx", --Items\\Metalblade.mdx Items\\Sword_1.mdx
                     },
+                    {
+                        icon = "Weapons\\BTNtier 7 sword.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_7,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
+                        model = "Items\\SpiritS.mdx",
+                    },
                 },
                 [GREATSWORD_WEAPON] = {
                     {
@@ -1034,6 +1055,14 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
                         model = "Items\\Weapon_Axe_1.mdx",
                     },
+                    {
+                        icon = "Weapons\\BTNUndeadAxe.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_6,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "Items\\ExecutorsAxe.mdx",
+                    },
                 },
                 [GREATAXE_WEAPON] = {
                     {
@@ -1067,6 +1096,14 @@ do
                         modificator = 1.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
                         model = "Items\\Double Axe.mdx",
+                    },
+                    {
+                        icon = "Weapons\\BTNHalberd.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_6,
+                        decl = DECL_SHE,
+                        modificator = 1.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "Items\\Halberd.mdx",
                     },
                 },
                 [BLUNT_WEAPON] = {
@@ -1128,6 +1165,14 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
                         model = "Items\\HammerTime.mdx",
                     },
+                    {
+                        icon = "Weapons\\BTNAdamantMace.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_6,
+                        decl = DECL_SHE,
+                        modificator = 1.8,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "Items\\Adamantium_Mace.mdx",
+                    },
                 },
                 [DAGGER_WEAPON] = {
                     {
@@ -1169,6 +1214,14 @@ do
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
                         model = "Items\\Weapon_Dagger_1.mdx",
+                    },
+                    {
+                        icon = "Weapons\\BTNOrcishDagger.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_8,
+                        decl = DECL_HE,
+                        modificator = 0.85,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "Items\\MonsterHunter Knife's.mdx",
                     },
                 },
                 [STAFF_WEAPON] = {
@@ -1348,6 +1401,14 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
                         model = "Abilities\\Spells\\Items\\AIob\\AIobTarget.mdx",
                     },
+                    {
+                        icon = "Offhand\\BTNOrb of Storm.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_6,
+                        decl = DECL_SHE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_ORB],
+                        model = "Abilities\\Spells\\Items\\AIlb\\AIlbTarget.mdx",
+                    },
                 },
                 [SHIELD_OFFHAND] = {
                     {
@@ -1512,7 +1573,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_06.mdx",
                         texture = TEXTURE_ID_ARMOR_04,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_16
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_16,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
@@ -1522,7 +1584,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_08.mdx",
                         texture = TEXTURE_ID_ARMOR_12,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_22
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_22,
+                        --armor_type = --armor_type_WOOD
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
@@ -1532,7 +1595,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
                         texture = TEXTURE_ID_ARMOR_02,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_15
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_15,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
@@ -1542,7 +1606,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
                         texture = TEXTURE_ID_ARMOR_10,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_28
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_28,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
@@ -1552,7 +1617,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
                         texture = TEXTURE_ID_ARMOR_05,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_19
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_19,
+                        --armor_type = --armor_type_WOOD
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
@@ -1562,7 +1628,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
                         texture = TEXTURE_ID_ARMOR_06,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_20
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_20,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
@@ -1572,7 +1639,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
                         texture = TEXTURE_ID_ARMOR_01,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_06
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_06,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
@@ -1582,7 +1650,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
                         texture = TEXTURE_ID_ARMOR_09,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_04
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_04,
+                        --armor_type = --armor_type_FLESH
                     },
                     {
                         icon = "Armor\\BTNBattle Mage Armor.blp",
@@ -1592,7 +1661,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
                         texture = TEXTURE_ID_ARMOR_08,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_21
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_21,
+                        --armor_type = --armor_type_FLESH
                     },
                     {
                         icon = "Armor\\BTNRed Priest Cloth Robe.blp",
@@ -1602,7 +1672,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
                         texture = TEXTURE_ID_ARMOR_03,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_11
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_11,
+                        --armor_type = --armor_type_FLESH
                     },
                     {
                         icon = "Armor\\BTNDark Lord Armor.blp",
@@ -1612,7 +1683,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
                         texture = TEXTURE_ID_ARMOR_11,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_30
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_30,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNClassicArmor.blp",
@@ -1622,7 +1694,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
                         texture = TEXTURE_ID_ARMOR_02,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_01
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_01,
+                        --armor_type = --armor_type_METAL
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -1866,7 +1939,7 @@ do
                 },
                 [SWORD_WEAPON] = {
                     {
-                        icon = "Weapons\\BTNTier1 Sword.blp",
+                        icon = "Weapons\\BTNTier2 Sword.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_1,
                         decl = DECL_HE,
                         modificator = 1.,
@@ -1904,6 +1977,14 @@ do
                         modificator = 1.,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
                         model = "Items\\Lambent Light.mdx",
+                    },
+                    {
+                        icon = "Weapons\\BTNtier 7 sword.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_7,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
+                        model = "Items\\SpiritS.mdx",
                     },
                 },
                 [GREATSWORD_WEAPON] = {
@@ -1981,6 +2062,14 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
                         model = "Items\\RunestoneBattleaxe.mdx",
                     },
+                    {
+                        icon = "Weapons\\BTNUndeadAxe.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_6,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "Items\\ExecutorsAxe.mdx",
+                    },
                 },
                 [GREATAXE_WEAPON] = {
                     {
@@ -2014,6 +2103,14 @@ do
                         modificator = 1.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
                         model = "Items\\Double Axe.mdx",
+                    },
+                    {
+                        icon = "Weapons\\BTNHalberd.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_6,
+                        decl = DECL_SHE,
+                        modificator = 1.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "Items\\Halberd.mdx",
                     },
                 },
                 [BLUNT_WEAPON] = {
@@ -2083,6 +2180,14 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
                         model = "Items\\HammerTime.mdx",
                     },
+                    {
+                        icon = "Weapons\\BTNAdamantMace.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_6,
+                        decl = DECL_SHE,
+                        modificator = 1.8,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "Items\\Adamantium_Mace.mdx",
+                    },
                 },
                 [DAGGER_WEAPON] = {
                     {
@@ -2124,6 +2229,14 @@ do
                         modificator = 0.85,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
                         model = "Items\\Weapon_Dagger_1.mdx",
+                    },
+                    {
+                        icon = "Weapons\\BTNOrcishDagger.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_8,
+                        decl = DECL_HE,
+                        modificator = 0.85,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "Items\\MonsterHunter Knife's.mdx",
                     },
                 },
                 [STAFF_WEAPON] = {
@@ -2312,7 +2425,7 @@ do
                         model = "Abilities\\Spells\\Items\\OrbVenom\\OrbVenom.mdx",
                     },
                     {
-                        icon = "Offhand\\BTNOrbOfLightningNew.blp",
+                        icon = "Offhand\\BTNOrb of Storm.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_6,
                         decl = DECL_SHE,
                         modificator = 1.,
@@ -2547,7 +2660,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_06.mdx",
                         texture = TEXTURE_ID_ARMOR_04,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_16
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_16,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNCrowLightArmor.blp",
@@ -2557,7 +2671,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_8.mdx",
                         texture = TEXTURE_ID_ARMOR_12,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_22
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_22,
+                        --armor_type = --armor_type_WOOD
                     },
                     {
                         icon = "Armor\\BTNDarkArmor.blp",
@@ -2567,7 +2682,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
                         texture = TEXTURE_ID_ARMOR_02,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_15
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_15,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNGreenMetalCarapace.blp",
@@ -2577,7 +2693,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
                         texture = TEXTURE_ID_ARMOR_10,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_28
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_28,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNLightArmor.blp",
@@ -2587,7 +2704,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
                         texture = TEXTURE_ID_ARMOR_05,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_19
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_19,
+                        --armor_type = --armor_type_WOOD
                     },
                     {
                         icon = "Armor\\BTNSea Heavy Armor.blp",
@@ -2597,7 +2715,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
                         texture = TEXTURE_ID_ARMOR_06,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_20
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_20,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNSteelArmorR.blp",
@@ -2607,7 +2726,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
                         texture = TEXTURE_ID_ARMOR_01,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_06
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_06,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNSuperiorMageRobe.blp",
@@ -2617,7 +2737,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
                         texture = TEXTURE_ID_ARMOR_09,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_04
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_04,
+                        --armor_type = --armor_type_FLESH
                     },
                     {
                         icon = "Armor\\BTNArbalestersArmor.blp",
@@ -2627,7 +2748,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_09.mdx",
                         texture = TEXTURE_ID_ARMOR_04,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_23
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_23,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNDivineArmor.blp",
@@ -2637,7 +2759,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_07.mdx",
                         texture = TEXTURE_ID_ARMOR_01,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_31
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_31,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNHalfArmor.blp",
@@ -2647,7 +2770,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
                         texture = TEXTURE_ID_ARMOR_07,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_14
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_14,
+                        --armor_type = --armor_type_WOOD
                     },
                     {
                         icon = "Armor\\BTNHalfArmor.blp",
@@ -2657,7 +2781,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_10.mdx",
                         texture = TEXTURE_ID_ARMOR_07,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_26
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_26,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNMoongladeArmor.blp",
@@ -2667,7 +2792,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
                         texture = TEXTURE_ID_ARMOR_06,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_21
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_21,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNBattle Mage Armor.blp",
@@ -2677,7 +2803,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
                         texture = TEXTURE_ID_ARMOR_08,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_21
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_21,
+                        --armor_type = --armor_type_FLESH
                     },
                     {
                         icon = "Armor\\BTNRed Priest Cloth Robe.blp",
@@ -2687,7 +2814,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_LIGHT_ARMOR],
                         model = "Items\\Armor_04.mdx",
                         texture = TEXTURE_ID_ARMOR_03,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_11
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_11,
+                        --armor_type = --armor_type_FLESH
                     },
                     {
                         icon = "Armor\\BTNDark Lord Armor.blp",
@@ -2697,7 +2825,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_HEAVY_ARMOR],
                         model = "Items\\Armor_06.mdx",
                         texture = TEXTURE_ID_ARMOR_11,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_30
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_30,
+                        --armor_type = --armor_type_METAL
                     },
                     {
                         icon = "Armor\\BTNClassicArmor.blp",
@@ -2707,7 +2836,8 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_CHEST_MID_ARMOR],
                         model = "Items\\Armor_10.mdx",
                         texture = TEXTURE_ID_ARMOR_02,
-                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_01
+                        assassin_texture = TEXTURE_ID_ASSASSIN_ARMOR_01,
+                        --armor_type = --armor_type_METAL
                     },
                 },
                 [HANDS_ARMOR] = {
@@ -3060,6 +3190,14 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
                         model = "Items\\Lambent Light.mdx",
                     },
+                    {
+                        icon = "Weapons\\BTNtier 7 sword.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_SWORD_NAME_7,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_1],
+                        model = "Items\\SpiritS.mdx",
+                    },
                 },
                 [GREATSWORD_WEAPON] = {
                     {
@@ -3140,7 +3278,7 @@ do
                         icon = "Weapons\\BTNMysticHatchet.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_4,
                         decl = DECL_HE,
-                        modificator = 1.,
+                        modificator = 0.95,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
                         model = "Items\\Weapon_Axe_1.mdx",
                     },
@@ -3151,6 +3289,14 @@ do
                         modificator = 0.95,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
                         model = "Items\\RunestoneBattleaxe.mdx",
+                    },
+                    {
+                        icon = "Weapons\\BTNUndeadAxe.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_AXE_NAME_6,
+                        decl = DECL_HE,
+                        modificator = 1.,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_SWORD_2],
+                        model = "Items\\ExecutorsAxe.mdx",
                     },
                 },
                 [GREATAXE_WEAPON] = {
@@ -3193,6 +3339,14 @@ do
                         modificator = 1.75,
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
                         model = "Items\\Double Axe.mdx",
+                    },
+                    {
+                        icon = "Weapons\\BTNHalberd.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATAXE_NAME_6,
+                        decl = DECL_SHE,
+                        modificator = 1.75,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "Items\\Halberd.mdx",
                     },
                 },
                 [BLUNT_WEAPON] = {
@@ -3286,6 +3440,14 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
                         model = "Items\\HammerTime.mdx",
                     },
+                    {
+                        icon = "Weapons\\BTNAdamantMace.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_GREATBLUNT_NAME_6,
+                        decl = DECL_SHE,
+                        modificator = 1.8,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_2HSWORD],
+                        model = "Items\\Adamantium_Mace.mdx",
+                    },
                 },
                 [DAGGER_WEAPON] = {
                     {
@@ -3344,7 +3506,14 @@ do
                         soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
                         model = "Items\\Weapon_Dagger_1.mdx",
                     },
-
+                    {
+                        icon = "Weapons\\BTNOrcishDagger.blp",
+                        name = LOCALE_LIST[my_locale].GENERIC_DAGGER_NAME_8,
+                        decl = DECL_HE,
+                        modificator = 0.85,
+                        soundpack = ITEM_SOUNDPACK[SOUNDPACK_DAGGER],
+                        model = "Items\\MonsterHunter Knife's.mdx",
+                    },
                 },
                 [STAFF_WEAPON] = {
                     {
@@ -3584,7 +3753,7 @@ do
                         model = "Abilities\\Spells\\Items\\OrbVenom\\OrbVenom.mdx",
                     },
                     {
-                        icon = "Offhand\\BTNOrbOfLightningNew.blp",
+                        icon = "Offhand\\BTNOrb of Storm.blp",
                         name = LOCALE_LIST[my_locale].GENERIC_ORB_NAME_6,
                         decl = DECL_SHE,
                         modificator = 1.,
@@ -3681,6 +3850,7 @@ do
                     ITEM_SUFFIX_ADVENTURER,
                     ITEM_SUFFIX_TRICKSTER,
                     ITEM_SUFFIX_EFFICIENCY,
+                    ITEM_SUFFIX_DOOM
                 },
                 [NECKLACE_JEWELRY] = {
                     ITEM_SUFFIX_FURY,
@@ -3690,7 +3860,8 @@ do
                     ITEM_SUFFIX_KNOWLEDGE,
                     ITEM_SUFFIX_ADVENTURER,
                     ITEM_SUFFIX_TRICKSTER,
-                    ITEM_SUFFIX_EFFICIENCY
+                    ITEM_SUFFIX_EFFICIENCY,
+                    ITEM_SUFFIX_DOOM
                 },
                 [HEAD_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3700,7 +3871,8 @@ do
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [HANDS_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3710,7 +3882,8 @@ do
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [CHEST_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3720,7 +3893,8 @@ do
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [LEGS_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3730,7 +3904,8 @@ do
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [BELT_ARMOR] = {
                     ITEM_SUFFIX_ROCK,
@@ -3738,56 +3913,64 @@ do
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_KNOWLEDGE,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [SWORD_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_CONCENTRATION,
                     ITEM_SUFFIX_PRECISION,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [GREATSWORD_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_CONCENTRATION,
                     ITEM_SUFFIX_PRECISION,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [BLUNT_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_CONCENTRATION,
                     ITEM_SUFFIX_PRECISION,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [GREATBLUNT_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_CONCENTRATION,
                     ITEM_SUFFIX_PRECISION,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [AXE_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_CONCENTRATION,
                     ITEM_SUFFIX_PRECISION,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [GREATAXE_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_CONCENTRATION,
                     ITEM_SUFFIX_PRECISION,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [DAGGER_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_CONCENTRATION,
                     ITEM_SUFFIX_PRECISION,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [STAFF_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
@@ -3798,14 +3981,16 @@ do
                     ITEM_SUFFIX_LIGHTNING_WIZARD,
                     ITEM_SUFFIX_FIRE_WIZARD,
                     ITEM_SUFFIX_SLAYER,
-                    ITEM_SUFFIX_DECAY
+                    ITEM_SUFFIX_DECAY,
+                    ITEM_SUFFIX_DOOM
                 },
                 [BOW_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_CONCENTRATION,
                     ITEM_SUFFIX_PRECISION,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [ORB_OFFHAND] = {
                     ITEM_SUFFIX_FURY,
@@ -3820,7 +4005,8 @@ do
                     ITEM_SUFFIX_DECAY,
                     ITEM_SUFFIX_FIRE_WIZARD,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [SHIELD_OFFHAND] = {
                     ITEM_SUFFIX_KNOWLEDGE,
@@ -3830,7 +4016,8 @@ do
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [QUIVER_OFFHAND] = {
                     ITEM_SUFFIX_FURY,
@@ -3838,7 +4025,8 @@ do
                     ITEM_SUFFIX_PRECISION,
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 }
             },
             [RARE_ITEM] = {
@@ -3854,7 +4042,8 @@ do
                     ITEM_SUFFIX_ADVENTURER,
                     ITEM_SUFFIX_TRICKSTER,
                     ITEM_SUFFIX_EFFICIENCY,
-                    ITEM_SUFFIX_PEAK_EFFICIENCY
+                    ITEM_SUFFIX_PEAK_EFFICIENCY,
+                    ITEM_SUFFIX_DOOM
                 },
                 [NECKLACE_JEWELRY] = {
                     ITEM_SUFFIX_FURY,
@@ -3868,7 +4057,8 @@ do
                     ITEM_SUFFIX_ADVENTURER,
                     ITEM_SUFFIX_TRICKSTER,
                     ITEM_SUFFIX_EFFICIENCY,
-                    ITEM_SUFFIX_PEAK_EFFICIENCY
+                    ITEM_SUFFIX_PEAK_EFFICIENCY,
+                    ITEM_SUFFIX_DOOM
                 },
                 [HEAD_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3882,7 +4072,8 @@ do
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [HANDS_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3896,7 +4087,8 @@ do
                     ITEM_SUFFIX_DEADLY_PRECISION,
                     ITEM_SUFFIX_HIGH_KNIGHT,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [CHEST_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3910,7 +4102,8 @@ do
                     ITEM_SUFFIX_DEADLY_PRECISION,
                     ITEM_SUFFIX_HIGH_KNIGHT,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [LEGS_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -3924,7 +4117,8 @@ do
                     ITEM_SUFFIX_DEADLY_PRECISION,
                     ITEM_SUFFIX_HIGH_KNIGHT,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [BELT_ARMOR] = {
                     ITEM_SUFFIX_ROCK,
@@ -3934,6 +4128,7 @@ do
                     ITEM_SUFFIX_HIGH_KNIGHT,
                     ITEM_SUFFIX_ADVENTURER,
                     ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [SWORD_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
@@ -3944,7 +4139,8 @@ do
                     ITEM_SUFFIX_ENDLESS_FURY,
                     ITEM_SUFFIX_PURE_CONCENTRATION,
                     ITEM_SUFFIX_DEADLY_PRECISION,
-                    ITEM_SUFFIX_SLAYER_GENIUS
+                    ITEM_SUFFIX_SLAYER_GENIUS,
+                    ITEM_SUFFIX_DOOM
                 },
                 [GREATSWORD_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
@@ -3955,7 +4151,8 @@ do
                     ITEM_SUFFIX_ENDLESS_FURY,
                     ITEM_SUFFIX_PURE_CONCENTRATION,
                     ITEM_SUFFIX_DEADLY_PRECISION,
-                    ITEM_SUFFIX_SLAYER_GENIUS
+                    ITEM_SUFFIX_SLAYER_GENIUS,
+                    ITEM_SUFFIX_DOOM
                 },
                 [BLUNT_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
@@ -3966,7 +4163,8 @@ do
                     ITEM_SUFFIX_ENDLESS_FURY,
                     ITEM_SUFFIX_PURE_CONCENTRATION,
                     ITEM_SUFFIX_DEADLY_PRECISION,
-                    ITEM_SUFFIX_SLAYER_GENIUS
+                    ITEM_SUFFIX_SLAYER_GENIUS,
+                    ITEM_SUFFIX_DOOM
                 },
                 [GREATBLUNT_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
@@ -3977,7 +4175,8 @@ do
                     ITEM_SUFFIX_ENDLESS_FURY,
                     ITEM_SUFFIX_PURE_CONCENTRATION,
                     ITEM_SUFFIX_DEADLY_PRECISION,
-                    ITEM_SUFFIX_SLAYER_GENIUS
+                    ITEM_SUFFIX_SLAYER_GENIUS,
+                    ITEM_SUFFIX_DOOM
                 },
                 [AXE_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
@@ -3988,7 +4187,8 @@ do
                     ITEM_SUFFIX_ENDLESS_FURY,
                     ITEM_SUFFIX_PURE_CONCENTRATION,
                     ITEM_SUFFIX_DEADLY_PRECISION,
-                    ITEM_SUFFIX_SLAYER_GENIUS
+                    ITEM_SUFFIX_SLAYER_GENIUS,
+                    ITEM_SUFFIX_DOOM
                 },
                 [GREATAXE_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
@@ -3999,7 +4199,8 @@ do
                     ITEM_SUFFIX_ENDLESS_FURY,
                     ITEM_SUFFIX_PURE_CONCENTRATION,
                     ITEM_SUFFIX_DEADLY_PRECISION,
-                    ITEM_SUFFIX_SLAYER_GENIUS
+                    ITEM_SUFFIX_SLAYER_GENIUS,
+                    ITEM_SUFFIX_DOOM
                 },
                 [DAGGER_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
@@ -4010,7 +4211,8 @@ do
                     ITEM_SUFFIX_ENDLESS_FURY,
                     ITEM_SUFFIX_PURE_CONCENTRATION,
                     ITEM_SUFFIX_DEADLY_PRECISION,
-                    ITEM_SUFFIX_SLAYER_GENIUS
+                    ITEM_SUFFIX_SLAYER_GENIUS,
+                    ITEM_SUFFIX_DOOM
                 },
                 [STAFF_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
@@ -4025,7 +4227,8 @@ do
                     ITEM_SUFFIX_ENDLESS_FURY,
                     ITEM_SUFFIX_PURE_CONCENTRATION,
                     ITEM_SUFFIX_DEADLY_PRECISION,
-                    ITEM_SUFFIX_SLAYER_GENIUS
+                    ITEM_SUFFIX_SLAYER_GENIUS,
+                    ITEM_SUFFIX_DOOM
                 },
                 [BOW_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
@@ -4036,7 +4239,8 @@ do
                     ITEM_SUFFIX_ENDLESS_FURY,
                     ITEM_SUFFIX_PURE_CONCENTRATION,
                     ITEM_SUFFIX_DEADLY_PRECISION,
-                    ITEM_SUFFIX_SLAYER_GENIUS
+                    ITEM_SUFFIX_SLAYER_GENIUS,
+                    ITEM_SUFFIX_DOOM
                 },
                 [ORB_OFFHAND] = {
                     ITEM_SUFFIX_FURY,
@@ -4054,7 +4258,8 @@ do
                     ITEM_SUFFIX_PURE_CONCENTRATION,
                     ITEM_SUFFIX_DEADLY_PRECISION,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [SHIELD_OFFHAND] = {
                     ITEM_SUFFIX_KNOWLEDGE,
@@ -4066,7 +4271,8 @@ do
                     ITEM_SUFFIX_HIGH_KNIGHT,
                     ITEM_SUFFIX_ENDLESS_FURY,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [QUIVER_OFFHAND] = {
                     ITEM_SUFFIX_FURY,
@@ -4074,7 +4280,8 @@ do
                     ITEM_SUFFIX_PRECISION,
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 }
             },
             [MAGIC_ITEM] = {
@@ -4086,7 +4293,8 @@ do
                     ITEM_SUFFIX_KNOWLEDGE,
                     ITEM_SUFFIX_ADVENTURER,
                     ITEM_SUFFIX_TRICKSTER,
-                    ITEM_SUFFIX_EFFICIENCY
+                    ITEM_SUFFIX_EFFICIENCY,
+                    ITEM_SUFFIX_DOOM
                 },
                 [NECKLACE_JEWELRY] = {
                     ITEM_SUFFIX_FURY,
@@ -4096,7 +4304,8 @@ do
                     ITEM_SUFFIX_KNOWLEDGE,
                     ITEM_SUFFIX_ADVENTURER,
                     ITEM_SUFFIX_TRICKSTER,
-                    ITEM_SUFFIX_EFFICIENCY
+                    ITEM_SUFFIX_EFFICIENCY,
+                    ITEM_SUFFIX_DOOM
                 },
                 [HEAD_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -4106,7 +4315,8 @@ do
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [HANDS_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -4116,7 +4326,8 @@ do
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [CHEST_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -4126,7 +4337,8 @@ do
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [LEGS_ARMOR] = {
                     ITEM_SUFFIX_FURY,
@@ -4136,7 +4348,8 @@ do
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [BELT_ARMOR] = {
                     ITEM_SUFFIX_ROCK,
@@ -4144,56 +4357,64 @@ do
                     ITEM_SUFFIX_MYSTERY,
                     ITEM_SUFFIX_KNOWLEDGE,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [SWORD_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_CONCENTRATION,
                     ITEM_SUFFIX_PRECISION,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [GREATSWORD_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_CONCENTRATION,
                     ITEM_SUFFIX_PRECISION,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [BLUNT_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_CONCENTRATION,
                     ITEM_SUFFIX_PRECISION,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [GREATBLUNT_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_CONCENTRATION,
                     ITEM_SUFFIX_PRECISION,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [AXE_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_CONCENTRATION,
                     ITEM_SUFFIX_PRECISION,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [GREATAXE_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_CONCENTRATION,
                     ITEM_SUFFIX_PRECISION,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [DAGGER_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_CONCENTRATION,
                     ITEM_SUFFIX_PRECISION,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [STAFF_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
@@ -4204,14 +4425,16 @@ do
                     ITEM_SUFFIX_LIGHTNING_WIZARD,
                     ITEM_SUFFIX_DECAY,
                     ITEM_SUFFIX_FIRE_WIZARD,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [BOW_WEAPON] = {
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_CONCENTRATION,
                     ITEM_SUFFIX_PRECISION,
-                    ITEM_SUFFIX_SLAYER
+                    ITEM_SUFFIX_SLAYER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [ORB_OFFHAND] = {
                     ITEM_SUFFIX_FURY,
@@ -4226,7 +4449,8 @@ do
                     ITEM_SUFFIX_DECAY,
                     ITEM_SUFFIX_FIRE_WIZARD,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [SHIELD_OFFHAND] = {
                     ITEM_SUFFIX_KNOWLEDGE,
@@ -4236,7 +4460,8 @@ do
                     ITEM_SUFFIX_KNIGHT,
                     ITEM_SUFFIX_FURY,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 },
                 [QUIVER_OFFHAND] = {
                     ITEM_SUFFIX_FURY,
@@ -4244,7 +4469,8 @@ do
                     ITEM_SUFFIX_PRECISION,
                     ITEM_SUFFIX_ANGER,
                     ITEM_SUFFIX_ADVENTURER,
-                    ITEM_SUFFIX_TRICKSTER
+                    ITEM_SUFFIX_TRICKSTER,
+                    ITEM_SUFFIX_DOOM
                 }
             },
         }
@@ -4312,6 +4538,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                         },
@@ -4448,6 +4675,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                         },
@@ -4507,6 +4735,7 @@ do
                                 { id = "weap_poison_mag", chance = 15. },
                                 { id = "weap_fire_mag", chance = 15. },
                                 { id = "weap_bleed", chance = 15. },
+                                { id = "weap_decay", chance = 15. },
                                 { id = "item_enrage", chance = 15. },
                                 { id = "item_conduction", chance = 15. },
                             },
@@ -4584,6 +4813,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                         },
@@ -4642,6 +4872,7 @@ do
                                 { id = "weap_poison_phys", chance = 15. },
                                 { id = "weap_poison_mag", chance = 15. },
                                 { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_decay", chance = 15. },
                                 { id = "weap_bleed", chance = 15. },
                                 { id = "item_enrage", chance = 15. },
                                 { id = "item_conduction", chance = 15. },
@@ -4720,6 +4951,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                         },
@@ -4778,6 +5010,7 @@ do
                                 { id = "weap_poison_phys", chance = 20. },
                                 { id = "weap_poison_mag", chance = 20. },
                                 { id = "weap_fire_mag", chance = 20 },
+                                { id = "weap_decay", chance = 20. },
                                 { id = "weap_bleed", chance = 20. },
                                 { id = "item_enrage", chance = 20. },
                                 { id = "item_conduction", chance = 20. },
@@ -4889,6 +5122,7 @@ do
                                 { id = "weap_poison_phys", chance = 10. },
                                 { id = "weap_poison_mag", chance = 10. },
                                 { id = "weap_fire_mag", chance = 10 },
+                                { id = "weap_decay", chance = 15. },
                                 { id = "weap_bleed", chance = 10. },
                                 { id = "item_enrage", chance = 10. },
                                 { id = "item_conduction", chance = 10. },
@@ -4995,6 +5229,7 @@ do
                                 { id = "weap_poison_phys", chance = 15. },
                                 { id = "weap_poison_mag", chance = 15. },
                                 { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_decay", chance = 15. },
                                 { id = "weap_bleed", chance = 15. },
                                 { id = "item_enrage", chance = 15. },
                                 { id = "item_conduction", chance = 15. },
@@ -5101,6 +5336,7 @@ do
                                 { id = "weap_poison_phys", chance = 15. },
                                 { id = "weap_poison_mag", chance = 15. },
                                 { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_decay", chance = 15. },
                                 { id = "weap_bleed", chance = 15. },
                                 { id = "item_enrage", chance = 15. },
                                 { id = "item_conduction", chance = 15. },
@@ -5208,6 +5444,7 @@ do
                                 { id = "weap_poison_mag", chance = 20. },
                                 { id = "weap_bleed", chance = 20. },
                                 { id = "weap_fire_mag", chance = 20. },
+                                { id = "weap_decay", chance = 20. },
                                 { id = "item_enrage", chance = 20. },
                                 { id = "item_conduction", chance = 20. },
                             },
@@ -5319,6 +5556,7 @@ do
                                 { id = "weap_poison_mag", chance = 10. },
                                 { id = "weap_bleed", chance = 10. },
                                 { id = "weap_fire_mag", chance = 10. },
+                                { id = "weap_decay", chance = 10. },
                                 { id = "item_enrage", chance = 10. },
                                 { id = "item_conduction", chance = 10. },
                             },
@@ -5424,6 +5662,7 @@ do
                                 { id = "weap_poison_phys", chance = 15. },
                                 { id = "weap_poison_mag", chance = 15. },
                                 { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_decay", chance = 15. },
                                 { id = "weap_bleed", chance = 15. },
                                 { id = "item_enrage", chance = 15. },
                                 { id = "item_conduction", chance = 15. },
@@ -5530,6 +5769,7 @@ do
                                 { id = "weap_poison_phys", chance = 15. },
                                 { id = "weap_poison_mag", chance = 15. },
                                 { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_decay", chance = 15. },
                                 { id = "weap_bleed", chance = 15. },
                                 { id = "item_enrage", chance = 15. },
                                 { id = "item_conduction", chance = 15. },
@@ -5636,6 +5876,7 @@ do
                                 { id = "weap_poison_phys", chance = 20. },
                                 { id = "weap_poison_mag", chance = 20. },
                                 { id = "weap_fire_mag", chance = 20 },
+                                { id = "weap_decay", chance = 20. },
                                 { id = "weap_bleed", chance = 20. },
                                 { id = "item_enrage", chance = 20. },
                                 { id = "item_conduction", chance = 20. },
@@ -6141,6 +6382,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                         },
@@ -6237,6 +6479,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                         },
@@ -6333,6 +6576,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                         },
@@ -6429,6 +6673,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                         },
@@ -6532,6 +6777,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 7, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                         },
@@ -6628,6 +6874,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                         },
@@ -6724,6 +6971,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 14, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 14, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 14, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 14, value_max = 17, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                         },
@@ -6820,6 +7068,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 17, value_max = 20, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                         },
@@ -7664,6 +7913,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -7746,6 +7996,7 @@ do
                                 { id = "weap_poison_phys", chance = 10. },
                                 { id = "weap_poison_mag", chance = 10. },
                                 { id = "weap_fire_mag", chance = 10. },
+                                { id = "weap_decay", chance = 10. },
                                 { id = "weap_bleed", chance = 10. },
                                 { id = "item_enrage", chance = 10. },
                                 { id = "item_conduction", chance = 10. },
@@ -7775,6 +8026,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -7857,6 +8109,7 @@ do
                                 { id = "weap_poison_phys", chance = 15. },
                                 { id = "weap_poison_mag", chance = 15. },
                                 { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_decay", chance = 15. },
                                 { id = "weap_bleed", chance = 15. },
                                 { id = "item_enrage", chance = 15. },
                                 { id = "item_conduction", chance = 15. },
@@ -7886,6 +8139,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 5, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -7968,6 +8222,7 @@ do
                                 { id = "weap_poison_phys", chance = 15. },
                                 { id = "weap_poison_mag", chance = 15. },
                                 { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_decay", chance = 15. },
                                 { id = "weap_bleed", chance = 15. },
                                 { id = "item_enrage", chance = 15. },
                                 { id = "item_conduction", chance = 15. },
@@ -7997,6 +8252,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -8079,6 +8335,7 @@ do
                                 { id = "weap_poison_phys", chance = 20. },
                                 { id = "weap_poison_mag", chance = 20. },
                                 { id = "weap_fire_mag", chance = 20. },
+                                { id = "weap_decay", chance = 20. },
                                 { id = "weap_bleed", chance = 20. },
                                 { id = "item_enrage", chance = 20. },
                                 { id = "item_conduction", chance = 20. },
@@ -8115,6 +8372,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -8197,6 +8455,7 @@ do
                                 { id = "weap_poison_phys", chance = 10. },
                                 { id = "weap_poison_mag", chance = 10. },
                                 { id = "weap_fire_mag", chance = 10. },
+                                { id = "weap_decay", chance = 10. },
                                 { id = "weap_bleed", chance = 10. },
                                 { id = "item_enrage", chance = 10. },
                                 { id = "item_conduction", chance = 10. },
@@ -8226,6 +8485,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -8308,6 +8568,7 @@ do
                                 { id = "weap_poison_phys", chance = 15. },
                                 { id = "weap_poison_mag", chance = 15. },
                                 { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_decay", chance = 15. },
                                 { id = "weap_bleed", chance = 15. },
                                 { id = "item_enrage", chance = 15. },
                                 { id = "item_conduction", chance = 15. },
@@ -8337,6 +8598,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -8419,6 +8681,7 @@ do
                                 { id = "weap_poison_phys", chance = 15. },
                                 { id = "weap_poison_mag", chance = 15. },
                                 { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_decay", chance = 15. },
                                 { id = "weap_bleed", chance = 15. },
                                 { id = "item_enrage", chance = 15. },
                                 { id = "item_conduction", chance = 15. },
@@ -8448,6 +8711,7 @@ do
                                     { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
                                     { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 10, value_max = 14, METHOD = STRAIGHT_BONUS, probability = 25. },
                                 }
                             },
                             {
@@ -8530,6 +8794,7 @@ do
                                 { id = "weap_poison_phys", chance = 20. },
                                 { id = "weap_poison_mag", chance = 20. },
                                 { id = "weap_fire_mag", chance = 20. },
+                                { id = "weap_decay", chance = 20. },
                                 { id = "weap_bleed", chance = 20. },
                                 { id = "item_enrage", chance = 20. },
                                 { id = "item_conduction", chance = 20. },
@@ -11507,6 +11772,7 @@ do
                             [ITEM_TYPE_WEAPON] = {
                                 { id = "weap_poison_mag", chance = 10 },
                                 { id = "item_conduction", chance = 10. },
+                                { id = "weap_decay", chance = 10. },
                             },
                             [ITEM_TYPE_ARMOR] = {
                                 { id = "item_fortify", chance = 10. },
@@ -11574,6 +11840,7 @@ do
                             [ITEM_TYPE_WEAPON] = {
                                 { id = "weap_poison_mag", chance = 15 },
                                 { id = "item_conduction", chance = 15. },
+                                { id = "weap_decay", chance = 15. },
                             },
                             [ITEM_TYPE_ARMOR] = {
                                 { id = "item_fortify", chance = 15. },
@@ -11641,6 +11908,7 @@ do
                             [ITEM_TYPE_WEAPON] = {
                                 { id = "weap_poison_mag", chance = 15 },
                                 { id = "item_conduction", chance = 15. },
+                                { id = "weap_decay", chance = 15. },
                             },
                             [ITEM_TYPE_ARMOR] = {
                                 { id = "item_fortify", chance = 15. },
@@ -11708,6 +11976,7 @@ do
                             [ITEM_TYPE_WEAPON] = {
                                 { id = "weap_poison_mag", chance = 20 },
                                 { id = "item_conduction", chance = 20. },
+                                { id = "weap_decay", chance = 20. },
                             },
                             [ITEM_TYPE_ARMOR] = {
                                 { id = "item_fortify", chance = 20. },
@@ -12738,7 +13007,562 @@ do
                         }
                     },
                 }
-            }
+            },
+            [ITEM_SUFFIX_DOOM] = {
+                name = LOCALE_LIST[my_locale].ITEM_SUFFIX_DOOM,
+                min_affix = ITEM_AFFIX_WORN,
+                max_affix = ITEM_AFFIX_IDEAL,
+                affix_bonus = {
+                    [ITEM_AFFIX_WORN] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 2, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 1, value_max = 1, METHOD = STRAIGHT_BONUS, probability = 30. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = BLEEDING_DAMAGE_BOOST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = BURNING_DAMAGE_BOOST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISONING_DAMAGE_BOOST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = DECAYING_DAMAGE_BOOST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_MULTIPLIER, value_min = 0.1, value_max = 0.1, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 4, value_max = 8, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.03, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 11, value_max = 15, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.03, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_RESIST, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = LIGHTNING_RESIST, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = DARKNESS_RESIST, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = POISON_RESIST, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = ARCANE_RESIST, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 25. },
+                        },
+                        skill_bonus = {
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
+                            },
+                            [NECROMANCER_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
+                            },
+                            min_level = 1,
+                            max_level = 1,
+                        },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 15. },
+                                { id = "weap_poison_mag", chance = 15. },
+                                { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_bleed", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                        }
+                    },
+                    [ITEM_AFFIX_FINE] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 2, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 3, value_max = 4, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                            { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 30. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = BLEEDING_DAMAGE_BOOST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = BURNING_DAMAGE_BOOST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISONING_DAMAGE_BOOST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = DECAYING_DAMAGE_BOOST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_MULTIPLIER, value_min = 0.1, value_max = 0.2, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 8, value_max = 14, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 15, value_max = 18, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.03, value_max = 1.04, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = LIGHTNING_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = DARKNESS_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = POISON_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = ARCANE_RESIST, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 25. },
+                        },
+                        skill_bonus = {
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
+                            },
+                            [NECROMANCER_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
+                            },
+                            min_level = 1,
+                            max_level = 1,
+                        },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 15. },
+                                { id = "weap_poison_mag", chance = 15. },
+                                { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_bleed", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                        }
+                    },
+                    [ITEM_AFFIX_EXCELLENT] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 4, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 1, value_max = 2, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = BLEEDING_DAMAGE_BOOST, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = BURNING_DAMAGE_BOOST, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISONING_DAMAGE_BOOST, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = DECAYING_DAMAGE_BOOST, value_min = 8, value_max = 10, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_MULTIPLIER, value_min = 0.2, value_max = 0.3, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 14, value_max = 19, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.035, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 18, value_max = 22, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.035, value_max = 1.045, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_RESIST, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = LIGHTNING_RESIST, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = DARKNESS_RESIST, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = POISON_RESIST, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = ARCANE_RESIST, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 25. },
+                        },
+                        skill_bonus = {
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
+                            },
+                            [NECROMANCER_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
+                            },
+                            min_level = 1,
+                            max_level = 2,
+                        },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 15. },
+                                { id = "weap_poison_mag", chance = 15. },
+                                { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_bleed", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                        }
+                    },
+                    [ITEM_AFFIX_IDEAL] = {
+                        additional_parameter = 0,
+                        parameter_bonus = {
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = ATTACK_SPEED, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                    { type = SINGLE_PARAMETER, PARAM = CAST_SPEED, value_min = 4, value_max = 6, METHOD = STRAIGHT_BONUS, probability = 10. },
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = ALL_RESIST, value_min = 5, value_max = 7, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = INT_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = AGI_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = STR_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            { type = SINGLE_PARAMETER, PARAM = VIT_STAT, value_min = 1, value_max = 3, METHOD = STRAIGHT_BONUS, probability = 40. },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = BLEEDING_DAMAGE_BOOST, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = BURNING_DAMAGE_BOOST, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISONING_DAMAGE_BOOST, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = DECAYING_DAMAGE_BOOST, value_min = 10, value_max = 12, METHOD = STRAIGHT_BONUS, probability = 50. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_MULTIPLIER, value_min = 0.3, value_max = 0.45, METHOD = STRAIGHT_BONUS, probability = 70. },
+                                    { type = SINGLE_PARAMETER, PARAM = CRIT_CHANCE, value_min = 3, value_max = 5, METHOD = STRAIGHT_BONUS, probability = 30. },
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 19, value_max = 24, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 2, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_ATTACK, value_min = 1.045, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min = 22, value_max = 28, METHOD = STRAIGHT_BONUS, delta = 1, delta_level = 1, delta_level_max = 50, probability = 50. },
+                                    { type = SINGLE_PARAMETER, PARAM = MAGICAL_ATTACK, value_min= 1.045, value_max = 1.06, METHOD = MULTIPLY_BONUS, probability = 50. }
+                                }
+                            },
+                            {
+                                type = MULTIPLE_PARAMETER,
+                                parameters = {
+                                    { type = SINGLE_PARAMETER, PARAM = PHYSICAL_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = LIGHTNING_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = FIRE_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ICE_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = DARKNESS_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = POISON_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = ARCANE_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                    { type = SINGLE_PARAMETER, PARAM = HOLY_BONUS, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                                }
+                            },
+                            { type = SINGLE_PARAMETER, PARAM = PHYSICAL_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = LIGHTNING_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = FIRE_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = ICE_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = DARKNESS_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = POISON_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                            { type = SINGLE_PARAMETER, PARAM = ARCANE_RESIST, value_min = 6, value_max = 8, METHOD = STRAIGHT_BONUS, probability = 25. },
+                        },
+                        skill_bonus = {
+                            can_generate_for = { BARBARIAN_CLASS, SORCERESS_CLASS, NECROMANCER_CLASS, ASSASSIN_CLASS, PALADIN_CLASS },
+                            [BARBARIAN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_INNER_STRENGTH, SKILL_CATEGORY_BATTLE_ADVANTAGE, SKILL_CATEGORY_FIGHTING_MASTERY },
+                            },
+                            [SORCERESS_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LIGHTNING, SKILL_CATEGORY_FIRE, SKILL_CATEGORY_ICE, SKILL_CATEGORY_ARCANE },
+                            },
+                            [NECROMANCER_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_DARK_ART, SKILL_CATEGORY_CURSES, SKILL_CATEGORY_SUMMONING },
+                            },
+                            [ASSASSIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_LETHALITY, SKILL_CATEGORY_SHADOWS, SKILL_CATEGORY_BOW, SKILL_CATEGORY_GEAR },
+                            },
+                            [PALADIN_CLASS] = {
+                                category_bonus_probability = 20.,
+                                skill_bonus_probability = 20.,
+                                min_level_skill = 1,
+                                max_level_skill = 2,
+                                min_level_category = 1,
+                                max_level_category = 1,
+                                available_category = { SKILL_CATEGORY_COMBAT_SKILLS, SKILL_CATEGORY_HOLY_DOCTRINE, SKILL_CATEGORY_FAITH },
+                            },
+                            min_level = 1,
+                            max_level = 2,
+                        },
+                        effect_bonus = {
+                            [ITEM_TYPE_WEAPON] = {
+                                { id = "weap_poison_phys", chance = 15. },
+                                { id = "weap_poison_mag", chance = 15. },
+                                { id = "weap_fire_mag", chance = 15. },
+                                { id = "weap_bleed", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_ARMOR] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_JEWELRY] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                            [ITEM_TYPE_OFFHAND] = {
+                                { id = "item_fortify", chance = 15. },
+                                { id = "item_enrage", chance = 15. },
+                                { id = "item_conduction", chance = 15. },
+                            },
+                        }
+                    }
+                }
+            },
         }
 
 

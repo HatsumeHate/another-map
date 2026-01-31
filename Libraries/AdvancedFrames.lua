@@ -14,7 +14,7 @@ do
 
 
     function GetMasterParentFrame(player)
-        local frame
+        local frame = nil
         local btn
 
             if ShopFrame[player].state then
@@ -22,6 +22,8 @@ do
                 frame = (StringLength(BlzFrameGetText(btn.charges_text_frame or nil)) > 0) and btn.charges_text_frame or btn.image
             elseif SkillPanelFrame[player].state then
                 frame = SkillPanelFrame[player].slider
+            elseif GamblerFrame[player].state then
+                frame = GamblerFrame[player].masterframe
             elseif PlayerInventoryFrameState[player] then
                 --btn = GetButtonData(InventorySlots[player][32])
                 frame = InventoryFallbackFrame[player]--StringLength(BlzFrameGetText(btn.charges_text_frame or nil)) > 0 and btn.charges_text_frame or btn.image
@@ -408,6 +410,7 @@ do
 
             BlzFrameClearAllPoints(ContextFrame[player].backdrop)
             BlzFrameSetParent(ContextFrame[player].backdrop, parent)
+
                 if direction == FRAMEPOINT_RIGHT then
                     from = FRAMEPOINT_LEFT
                     ContextFrame[player].inverted_side = nil
@@ -805,6 +808,100 @@ do
     end
 
 
+
+    function ShowSpecialTooltip(item_rawcode, tooltip, button, player, fallback_tooltip)
+        local item_data = ITEM_TEMPLATE_DATA[FourCC(item_rawcode)]
+        local point_from = FRAMEPOINT_TOPLEFT
+        local point_to = FRAMEPOINT_RIGHT
+        local offset_x = 0.002
+        local offset_y = -0.002
+        local width = 0.
+        local height = 0.
+        local property_text = ""
+        local bonus_text
+
+
+
+            if ContextFrame[player].state or SliderFrame[player].state then return end
+            tooltip = TooltipList[tooltip]
+            RemoveTooltip(player)
+            PlayerTooltip[player] = tooltip.backdrop
+            if GetLocalPlayer() == Player(player-1) then BlzFrameSetVisible(tooltip.backdrop, true) end
+
+            BlzFrameSetAlpha(tooltip.backdrop, 255)
+            BlzFrameClearAllPoints(tooltip.backdrop)
+            BlzFrameSetPoint(tooltip.backdrop, point_from, button.image, point_to, offset_x, offset_y)
+            BlzFrameSetSize(tooltip.backdrop, 0.01, 0.01)
+            property_text = GetItemSubTypeName(item_data.SUBTYPE) .. "|n" .. "|n"
+
+            if item_data.item_description then
+                if bonus_text == nil then bonus_text = "|n" .. item_data.item_description
+                else bonus_text = bonus_text .. "|n" .. item_data.item_description end
+            end
+
+            local myframe = SetTooltipText(1, tooltip, item_data.NAME, TEXT_JUSTIFY_MIDDLE, tooltip.backdrop, FRAMEPOINT_TOP, FRAMEPOINT_TOP, 0., -0.01, player)
+            LockWidth(myframe, BlzFrameGetWidth(myframe), 0.1, 0.16)
+            BlzFrameSetScale(myframe, 1.2)
+            height = height + BlzFrameGetHeight(myframe)
+
+            myframe = SetTooltipText(2, tooltip, property_text, TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., -0.008, player)
+            BlzFrameSetScale(myframe, 0.95)
+            height = height + BlzFrameGetHeight(myframe)
+
+            local master_index = 3
+
+            if bonus_text then
+                myframe = SetTooltipText(master_index, tooltip, bonus_text, TEXT_JUSTIFY_MIDDLE, myframe, FRAMEPOINT_TOP, FRAMEPOINT_BOTTOM, 0., 0, player)
+                BlzFrameSetScale(myframe, 0.95)
+                LockWidth(myframe, BlzFrameGetWidth(myframe), 0.16, 0.21)
+                master_index = master_index + 1
+                height = height + BlzFrameGetHeight(myframe)
+            end
+
+            if item_data.sell_value or item_data.cost then
+                local total_cost = 0
+                local single_item_cost = ""
+
+                if item_data.sell_value then total_cost = total_cost + item_data.sell_value end
+                if item_data.cost then total_cost = total_cost + item_data.cost end
+
+                if total_cost > 0 then
+                    if ((fallback_tooltip and fallback_tooltip.is_sell_penalty) or tooltip.is_sell_penalty) and item_data.sell_penalty then
+                        total_cost = total_cost * item_data.sell_penalty
+                    end
+                    myframe = SetTooltipIcon(6, tooltip, "UI\\Widgets\\ToolTips\\Human\\ToolTipGoldIcon.blp", 0.0085, 0.0085, 1.05, tooltip.backdrop, FRAMEPOINT_BOTTOMLEFT, FRAMEPOINT_BOTTOMLEFT, 0.0055, 0.0055, player)
+                    height = height + BlzFrameGetHeight(myframe) * 2.55
+                    SetTooltipText(master_index, tooltip, R2I(total_cost) .. single_item_cost, TEXT_JUSTIFY_LEFT, myframe, FRAMEPOINT_LEFT, FRAMEPOINT_RIGHT, 0.002, 0., player)
+                    master_index = master_index + 1
+                end
+
+            end
+
+
+            if item_data.level then
+                local text = SetTooltipText(master_index, tooltip, LOCALE_LIST[my_locale].ITEM_LEVEL_UI .. " " .. item_data.level, TEXT_JUSTIFY_RIGHT, tooltip.backdrop, FRAMEPOINT_BOTTOMRIGHT, FRAMEPOINT_BOTTOMRIGHT, -0.01, 0.01, player)
+                BlzFrameSetScale(text, 0.7)
+            end
+
+            local test_width
+            for i = 1, master_index do
+                test_width = BlzFrameGetWidth(tooltip.textframe[i]) * 1.07
+                if test_width > width then
+                    width = test_width
+                end
+            end
+
+            BlzFrameSetSize(tooltip.backdrop, width, height * 1.2)
+            BlzFrameSetPoint(tooltip.header, FRAMEPOINT_TOPRIGHT, tooltip.backdrop, FRAMEPOINT_TOPRIGHT, -0.004, -0.004)
+            BlzFrameSetPoint(tooltip.header, FRAMEPOINT_TOPLEFT, tooltip.backdrop, FRAMEPOINT_TOPLEFT, 0.004, -0.004)
+            BlzFrameSetPoint(tooltip.header, FRAMEPOINT_BOTTOM, tooltip.textframe[1], FRAMEPOINT_BOTTOM, 0., -0.007)
+            for i = 1, 5 do BlzFrameSetVisible(tooltip.header_glow[i], false) end
+            BlzFrameSetVisible(tooltip.header_glow[item_data.QUALITY or COMMON_ITEM], true)
+
+    end
+
+
+
     ---@param item item
     ---@param tooltip framehandle
     ---@param button table
@@ -882,8 +979,8 @@ do
             elseif item_data.TYPE == ITEM_TYPE_OFFHAND then
                 --property_text = property_text .. LOCALE_LIST[my_locale].DEFENCE_UI .. R2I(item_data.DEFENCE)
                 if item_data.SUBTYPE == SHIELD_OFFHAND then
-                    property_text = property_text .. LOCALE_LIST[my_locale].DEFENCE_UI .. R2I(item_data.DEFENCE) .. "|n" .. LOCALE_LIST[my_locale].BLOCK_UI .. R2I(item_data.BLOCK) .. "%%"
-                else
+                    property_text = property_text .. LOCALE_LIST[my_locale].DEFENCE_UI .. R2I(item_data.DEFENCE) .. "|n" .. LOCALE_LIST[my_locale].BLOCK_UI .. R2I(item_data.BLOCK) .. "%"
+                elseif item_data.SUBTYPE == ORB_OFFHAND then
                     property_text = property_text .. LOCALE_LIST[my_locale].ALLRESIST_UI .. R2I(item_data.ALLRESIST)
                 end
             end

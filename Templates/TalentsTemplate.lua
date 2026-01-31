@@ -184,8 +184,25 @@ do
                     if not flag then
                         local unit_data = GetUnitData(unit)
                         unit_data.heating_up_boost = nil
+                        unit_data.heating_up_stacks = nil
                         DestroyEffect(unit_data.heating_up_effect)
                         RemoveStatusBarState("talent_heating_up", GetPlayerId(GetOwningPlayer(unit))+1)
+                    end
+                end,
+                [2] = function(unit, flag)
+                    if flag then
+                        local unit_data = GetUnitData(unit)
+                        if unit_data.heating_up_stacks and unit_data.heating_up_stacks >= 3 then
+                            unit_data.heating_up_stacks = 3
+                            SetStatusBarValue("talent_heating_up", unit_data.heating_up_stacks, GetPlayerId(GetOwningPlayer(unit))+1)
+
+                                if not unit_data.heating_up_boost then
+                                    unit_data.heating_up_boost = true
+                                    unit_data.heating_up_effect = AddSpecialEffectTarget("Effect\\heating_up.mdx", unit, "origin")
+                                    EnableAbilitySpriteOverlay("fire", GetPlayerId(GetOwningPlayer(unit))+1)
+                                end
+
+                        end
                     end
                 end
             },

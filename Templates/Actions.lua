@@ -98,7 +98,8 @@ do
             action_type = SKILL_PHYSICAL,
             sound = {
                 { "Sound\\Assassin\\Assassin_Gasp_Medium_1.wav", "Sound\\Assassin\\Assassin_Gasp_Medium_2.wav", "Sound\\Assassin\\Assassin_Gasp_Medium_3.wav", volume = 150, cutoff = 1500., delay = 0.25 },
-                { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" , volume = 128, cutoff = 1500., delay = 0.3 }
+                { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" , volume = 128, cutoff = 1500., delay = 0.3 },
+                { "Sounds\\Spells\\Garrote_Launch01.wav", "Sounds\\Spells\\Garrote_Launch02.wav", volume = 115, cutoff = 1500., delay = 0.15 },
             },
             animation = {
                 sequence = GetAnimationSequence("assassin_swing_combo_2"), timescale = 1.2
@@ -130,7 +131,8 @@ do
             action_type = SKILL_PHYSICAL,
             sound = {
                 { "Sound\\Assassin\\Assassin_Gasp_Heavy_1.wav", "Sound\\Assassin\\Assassin_Gasp_Heavy_2.wav", "Sound\\Assassin\\Assassin_Gasp_Heavy_3.wav", volume = 150, cutoff = 1500., delay = 0.25 },
-                { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" , volume = 128, cutoff = 1500., delay = 0.3 }
+                { "Sounds\\Spells\\skill_swing_1.wav", "Sounds\\Spells\\skill_swing_2.wav", "Sounds\\Spells\\skill_swing_3.wav", "Sounds\\Spells\\skill_swing_4.wav" , volume = 128, cutoff = 1500., delay = 0.3 },
+                { "Sounds\\Spells\\Garrote_Launch01.wav", "Sounds\\Spells\\Garrote_Launch02.wav", volume = 115, cutoff = 1500., delay = 0.15 },
             },
             animation = {
                 sequence = GetAnimationSequence("assassin_swing_combo_3"), timescale = 0.75

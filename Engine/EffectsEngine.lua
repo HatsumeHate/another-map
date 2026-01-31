@@ -119,6 +119,8 @@ do
     function ApplyRestoreEffect(source, target, data, lvl)
         local myeffect = data.level[lvl]
 
+        if GetUnitState(target, UNIT_STATE_LIFE) <= 0.045 then return end
+
             if myeffect.life_restored and myeffect.life_restored > 0 then
                 local healing = myeffect.life_restored * (1. + GetUnitParameterValue(target, HEALING_BONUS) * 0.01)
 
@@ -196,6 +198,8 @@ do
         if myeffect.hit_once_in and EffectHitOnceTrigger(myeffect, data, lvl, target, source) then
             return
         end
+
+        if GetUnitState(target, UNIT_STATE_LIFE) <= 0.045 then return end
 
         PlaySpecialEffect(data.SFX_on_unit, target, data.SFX_on_unit_point, data.SFX_on_unit_scale, data.SFX_on_unit_duration)
         if data.sfx_pack then PlaySpecialEffectPack(data.sfx_pack.on_unit, target) end
@@ -312,6 +316,15 @@ do
     end
 
 
+    ABILITY_INSTANCE_FIELD_POWER_MULT = "power_multiplier"
+    ABILITY_INSTANCE_FIELD_ATTACK_MULT = "attack_multiplier"
+    ABILITY_INSTANCE_FIELD_WEAPON_MULT = "weapon_multiplier"
+    ABILITY_INSTANCE_FIELD_CRIT_CHANCE_BONUS = "bonus_crit_chance"
+    ABILITY_INSTANCE_FIELD_CRIT_MULT_BONUS = "bonus_crit_multiplier"
+    ABILITY_INSTANCE_FIELD_ATTRIBUTE_BONUS = "attribute_bonus"
+    ABILITY_INSTANCE_FIELD_RADIUS_BONUS = "bonus_radius"
+
+
     ---@param source unit
     ---@param target unit
     ---@param x real
@@ -326,7 +339,6 @@ do
 
             if data then data = MergeTables({}, data)
             else return end
-
 
         data.current_level = lvl
 
@@ -346,7 +358,7 @@ do
         local myeffect = data.level[data.current_level]
 
         if ability_instance then
-            if ability_instance.tags then data.tags = ability_instance.tags end
+            if ability_instance.tags then data.tags = MergeTables(data.tags or {}, ability_instance.tags) end
 
             if ability_instance.power_multiplier and myeffect.power then
                 myeffect.power = myeffect.power * (1. + ability_instance.power_multiplier)
@@ -377,7 +389,7 @@ do
             end
         end
 
-        data.ability_instance = ability_instance or nil
+        data.ability_instance = ability_instance or { }
         data.enemies_hit = {}
 
         OnEffectPrecast(source, target, x, y, data)
@@ -411,6 +423,7 @@ do
 
         data.effect_x = x
         data.effect_y = y
+        local on_hit_triggered = false
 
             local timer = CreateTimer()
             TimerStart(timer, data.SFX_delay or 0., false, function()
@@ -537,15 +550,18 @@ do
                                                     if IsAngleInFace(source, myeffect.angle_window, GetUnitX(picked), GetUnitY(picked), false) then
                                                         ApplyEffectDamage(source, picked, data, lvl)
                                                         GroupAddUnit(damaged_group, picked)
+                                                        on_hit_triggered = true
                                                     elseif IsUnitInRange(source, picked, limit_range) then
                                                         if IsAngleInFace(source, myeffect.angle_window * 1.35, GetUnitX(picked), GetUnitY(picked), false) then
                                                             ApplyEffectDamage(source, picked, data, lvl)
                                                             GroupAddUnit(damaged_group, picked)
+                                                            on_hit_triggered = true
                                                         end
                                                     end
                                                 else
                                                     ApplyEffectDamage(source, picked, data, lvl)
                                                     GroupAddUnit(damaged_group, picked)
+                                                    on_hit_triggered = true
                                                 end
 
                                                 targets = targets - 1
@@ -576,13 +592,16 @@ do
                                         if myeffect.angle_window and myeffect.angle_window > 0. then
                                             if IsAngleInFace(source, myeffect.angle_window, GetUnitX(picked), GetUnitY(picked), false) then
                                                 ApplyEffectDamage(source, picked, data, lvl)
+                                                on_hit_triggered = true
                                             elseif IsUnitInRange(source, picked, limit_range) then
                                                 if IsAngleInFace(source, myeffect.angle_window * 1.35, GetUnitX(picked), GetUnitY(picked), false) then
                                                     ApplyEffectDamage(source, picked, data, lvl)
+                                                    on_hit_triggered = true
                                                 end
                                             end
                                         else
                                             ApplyEffectDamage(source, picked, data, lvl)
+                                            on_hit_triggered = true
                                         end
 
                                         targets = targets - 1
@@ -604,10 +623,12 @@ do
                             if myeffect.angle_window and myeffect.angle_window > 0. then
                                 if IsAngleInFace(source, myeffect.angle_window, GetUnitX(target), GetUnitY(target), false) then
                                     ApplyEffectDamage(source, target, data, lvl)
+                                    on_hit_triggered = true
                                 end
                             else
                                 --print("apply damage effect - " .. GetUnitName(source) .. " to " .. GetUnitName(target) .. " with effect " .. data.name .. " with level " .. I2S(lvl))
                                 ApplyEffectDamage(source, target, data, lvl)
+                                on_hit_triggered = true
                             end
 
                             data.enemies_hit[target] = true
@@ -811,6 +832,11 @@ do
                     end
                 end
 
+                if on_hit_triggered then
+                    if data.sound_on_hit_trigger then
+                        AddSoundVolumeZ(data.sound_on_hit_trigger.pack[GetRandomInt(1, #data.sound_on_hit_trigger.pack)], GetUnitX(source), GetUnitY(source), 35., data.sound_on_hit_trigger.volume, data.sound_on_hit_trigger.cutoff)
+                    end
+                end
 
                 ModifyBuffsEffect(source, source, data, lvl, ON_SELF)
                 OnEffectTrigger(source, target, x, y, data, lvl)

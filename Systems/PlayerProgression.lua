@@ -10,10 +10,14 @@ do
     local PlayerColors
 
 
-
     function DisplayPlayerProgression(player)
         if PlayerSyncData[player]["current_wave"] then
-            local msg = PlayerColors[player] .. ParsePlayerName(GetPlayerName(Player(player-1))) .. "|r" .. LOCALE_LIST[my_locale].PLAYER_PROGRESSION_MSG_1 .. PlayerSyncData[player]["current_wave"] .. LOCALE_LIST[my_locale].PLAYER_PROGRESSION_MSG_2
+            local difficulty_name = PlayerSyncData[player]["diff"]
+
+            if difficulty_name then difficulty_name = DifficultyName[tonumber(difficulty_name)]
+            else difficulty_name = DifficultyName[DIFFICULTY_NORMAL] end
+
+            local msg = PlayerColors[player] .. ParsePlayerName(GetPlayerName(Player(player-1))) .. "|r" .. LOCALE_LIST[my_locale].PLAYER_PROGRESSION_MSG_1 .. PlayerSyncData[player]["current_wave"] .. LOCALE_LIST[my_locale].PLAYER_PROGRESSION_MSG_2 .. "|c00FF0000" .. difficulty_name .. "|r."
 
             DisplayTimedTextToPlayer(Player(player-1), 0, 0, 10., msg)
 
@@ -31,10 +35,10 @@ do
     function SavePlayerProgression(player)
         local max = PlayerSyncData[player]["current_wave"] or 0
 
-        max = math.floor(max)
+            max = math.floor(max)
 
             if PlayerHero[player] and max < Current_Wave then
-                AddToBuffer("@currentwave" .. Current_Wave)
+                AddToBuffer("@currentwave" .. Current_Wave .. "@diff" .. CurrentDifficulty)
                 FileWrite(player-1, SaveDataPath .. "player_progression.txt", "")
             end
 

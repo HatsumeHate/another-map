@@ -46,18 +46,15 @@ do
                 local hydra = GetUnitData(unit_data.spawned_hydra)
 
                     hydra.powerlevel = level
-                    hydra.stats[PHYSICAL_ATTACK].value = unit_data.stats[PHYSICAL_ATTACK].value * percent
-                    hydra.stats[MAGICAL_ATTACK].value = unit_data.stats[MAGICAL_ATTACK].value * percent
-                    hydra.stats[CRIT_CHANCE].value = unit_data.stats[CRIT_CHANCE].value * percent
                     hydra.equip_point[WEAPON_POINT].DAMAGE = unit_data.equip_point[WEAPON_POINT].DAMAGE * percent
-                    hydra.equip_point[WEAPON_POINT].ATTACK_SPEED = unit_data.stats[ATTACK_SPEED].value * percent
+                    hydra.equip_point[WEAPON_POINT].ATTACK_SPEED = unit_data.equip_point[WEAPON_POINT].ATTACK_SPEED * ((100 - (unit_data.stats[CAST_SPEED].value * percent)) / 100)
                     hydra.equip_point[WEAPON_POINT].DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL
                     hydra.equip_point[WEAPON_POINT].ATTRIBUTE = FIRE_ATTRIBUTE
+                    hydra.equip_point[WEAPON_POINT].CRIT_CHANCE = math.floor(unit_data.equip_point[WEAPON_POINT].CRIT_CHANCE * percent)
                     hydra.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS = R2I((hydra.equip_point[WEAPON_POINT].ATTRIBUTE_BONUS or 0) * percent)
-                    hydra.stats[INT_STAT].value = R2I(unit_data.stats[INT_STAT].value * percent)
-                    hydra.stats[FIRE_BONUS].value = R2I(unit_data.stats[FIRE_BONUS].value * percent)
-                    UpdateParameters(hydra)
+                    ScaleHeroMinionStats(unit_data.spawned_hydra, hero, percent)
                     ToggleAuraOnUnit(unit_data.spawned_hydra, "hydra_aura", ability_level, true)
+
             end)
     end
 
@@ -698,6 +695,8 @@ do
             StartSound(flame_sound)
             SetSoundPlayPosition(flame_sound, GetRandomInt(0, GetSoundDuration(flame_sound)))
 
+            if GetUnitTalentLevel(caster, "talent_napalm") > 0 and Chance(GetUnitParameterValue(caster, CRIT_CHANCE)) then NapalmTalentEffectSpecial(caster, x, y, missiles) end
+
             local timer = CreateTimer()
             TimerStart(timer, 0.025, true, function()
                 if missiles[1] and missiles[1].time <= 0. then
@@ -824,7 +823,7 @@ do
                 local step = offset / ((offset / 700.) / 0.025)
 
                     for i = 1, 2 do
-                        effect_data[i] = { sfx = AddSpecialEffect("Abilities\\Spells\\Orc\\Shockwave\\ShockwaveMissile.mdx", x, y), x = x, y = y  }
+                        effect_data[i] = { sfx = AddSpecialEffect("Effect\\FireWave.mdx", x, y), x = x, y = y  }
                         BlzSetSpecialEffectScale(effect_data[i].sfx, 0.7)
                     end
 
@@ -1053,6 +1052,103 @@ do
                 SetBuffExpirationTime(caster, "A04X", -1)
             end
         
+    end
+
+
+    function WaveVisual(sfx_path, x, y, angle, speed, range, scale)
+        local sfx = AddSpecialEffect(sfx_path, x, y)
+        local timer = CreateTimer()
+        local time = range / speed
+        local step = speed / 40
+
+            BlzSetSpecialEffectYaw(sfx, angle * bj_DEGTORAD)
+            BlzSetSpecialEffectScale(sfx, scale)
+            TimerStart(timer, 0.025, true, function()
+
+                if time > 0. then
+                    time = time - 0.025
+                    x = x + Rx(step, angle)
+                    y = y + Ry(step, angle)
+                    BlzSetSpecialEffectX(sfx, x)
+                    BlzSetSpecialEffectY(sfx, y)
+                    BlzSetSpecialEffectZ(sfx, GetZ(x, y))
+                else
+                    DestroyTimer(timer)
+                    DestroyEffect(sfx)
+                end
+
+            end)
+
+    end
+
+
+    function RingOfFireCast(hero, ability_instance)
+        local amount = 34
+        local anglestep = 360/amount
+        local starting_angle = GetRandomReal(0., 360)
+        local x, y = GetUnitX(hero), GetUnitY(hero)
+        local level = UnitGetAbilityLevel(hero, "ASRF")
+        local speed = 900
+        local range = 450
+        local duration = range / speed
+
+            for i = 1, amount do
+                WaveVisual("Effect\\AZ_Fire021.mdx", x, y, starting_angle, speed, range, 1.)
+                starting_angle = starting_angle + anglestep
+            end
+
+            local flame_sound = CreateNew3DSound("Sounds\\Spells\\flame_wave_loop.wav", x, y, 10., 100, 1700., 4000., true)
+            StartSound(flame_sound)
+            SetSoundPlayPosition(flame_sound, GetRandomInt(0, GetSoundDuration(flame_sound)))
+
+            DelayAction(duration, function()
+                local fire_amount = 28
+                local timer = CreateTimer()
+                local time = 5.
+                local fires = {}
+                local sounds = {}
+
+                    StopSound(flame_sound, true, true)
+
+                    anglestep = 360./fire_amount
+                    starting_angle = GetRandomReal(0., 360)
+
+                    local sound_anglestep = 360./6
+                    local sound_starting_angle = GetRandomReal(0., 360)
+
+                    for i = 1, 6 do
+                        local snd = CreateNew3DSound("Sounds\\Spells\\magic_spell_fire_3_loop.wav", x + Rx(450., sound_starting_angle), y + Ry(450., sound_starting_angle), 10., 80, 1700., 4000., true)
+                        sounds[#sounds+1] = snd
+                        StartSound(snd)
+                        SetSoundPlayPosition(snd, GetRandomInt(0, GetSoundDuration(snd)))
+                        sound_starting_angle = sound_starting_angle + sound_anglestep
+                    end
+
+
+                    for i = 1, fire_amount do
+                        fires[#fires+1] = { x = x + Rx(range, starting_angle), y = y + Ry(range, starting_angle) }
+                        fires[i].sfx = AddSpecialEffect("Effect\\fire2.mdx", fires[i].x, fires[i].y)
+                        BlzSetSpecialEffectScale(fires[i].sfx, 1.75)
+                        BlzSetSpecialEffectYaw(fires[i].sfx, GetRandomReal(0., 360) * bj_DEGTORAD)
+                        starting_angle = starting_angle + anglestep
+                    end
+
+                    TimerStart(timer, 0.1, true, function()
+
+                        if time > 0. then
+                            time = time - 0.1
+                            for i = 1, #fires do ApplyEffect(hero, nil, fires[i].x, fires[i].y, "ring_of_fire_apply_effect", level, ability_instance) end
+                        else
+                            --StopSound(snd, true, true)
+                            DestroyTimer(timer)
+                            for i = 1, #fires do DestroyEffect(fires[i].sfx) end
+                            for i = 1, #sounds do StopSound(sounds[i], true, true) end
+                        end
+
+                    end)
+
+            end)
+
     end
 
 end

@@ -305,6 +305,53 @@ do
     end
 
 
+
+    local function Reaction(unit, attacked, onhit)
+
+        if GetUnitAbilityLevel(unit, FourCC("AAIM")) > 0 or GetUnitState(unit, UNIT_STATE_LIFE) <= 0.045 then return end
+
+        local ai = AITable[GetUnitTypeId(unit)]
+        local chance
+
+            for i = 1, #ai.ability_list do
+                local ability = ai.ability_list[i]
+
+                if onhit then chance = ability.on_hit_chance
+                else chance = ability.on_attack_chance end
+
+                if Chance(chance) then
+
+                    UnitAddAbility(unit, FourCC("AAIM"))
+
+                    DelayAction(0., function()
+                        if GetUnitState(unit, UNIT_STATE_LIFE) > 0.045 then
+                            if ability.activation == SELF_CAST then IssueImmediateOrderById(unit, ability.order)
+                            elseif ability.activation == TARGET_CAST then IssueTargetOrderById(unit, ability.order, attacked)
+                            elseif ability.activation == POINT_CAST then
+                                local x, y = GetUnitX(attacked), GetUnitY(attacked)
+
+                                if ability.point_min_offset or ability.point_max_offset then
+                                    local offset_range = GetRandomReal(ability.point_min_offset or 0., ability.point_max_offset or 50.)
+                                    local angle = GetRandomReal(0., 359.)
+                                    x = x + Rx(offset_range, angle)
+                                    y = y + Ry(offset_range, angle)
+                                end
+
+                                IssuePointOrderById(unit, ability.order, x, y)
+                            end
+                        end
+                    end)
+
+                    DelayAction(2., function() UnitRemoveAbility(unit, FourCC("AAIM")) end)
+
+                    break
+                end
+
+            end
+
+    end
+
+
     function AI_AttackReaction(attacker, attacked)
         local unit
 
@@ -323,69 +370,11 @@ do
 
 
             if attacked and AITable[GetUnitTypeId(attacked)] then
-                unit = attacked
-                if GetUnitAbilityLevel(unit, FourCC("AAIM")) > 0 then return end
-                local ai = AITable[GetUnitTypeId(unit)]
-
-
-                    for i = 1, #ai.ability_list do
-                        if Chance(ai.ability_list[i].on_hit_chance) then
-                            UnitAddAbility(unit, FourCC("AAIM"))
-
-                            if ai.ability_list[i].activation == SELF_CAST then IssueImmediateOrderById(unit, ai.ability_list[i].order)
-                            elseif ai.ability_list[i].activation == TARGET_CAST then IssueTargetOrderById(unit, ai.ability_list[i].order, attacker)
-                            elseif ai.ability_list[i].activation == POINT_CAST then
-                                local x, y = GetUnitX(attacker), GetUnitY(attacker)
-
-                                if ai.ability_list[i].point_min_offset or ai.ability_list[i].point_max_offset then
-                                    local offset_range = GetRandomReal(ai.ability_list[i].point_min_offset or 0., ai.ability_list[i].point_max_offset or 50.)
-                                    local angle = GetRandomReal(0., 359.)
-                                    x = x + Rx(offset_range, angle)
-                                    y = y + Ry(offset_range, angle)
-                                end
-
-                                IssuePointOrderById(unit, ai.ability_list[i].order, x, y)
-                            end
-
-                            DelayAction(2., function() UnitRemoveAbility(unit, FourCC("AAIM")) end)
-
-                            break
-                        end
-                    end
-
+                Reaction(attacked, attacker, true)
             elseif attacker and AITable[GetUnitTypeId(attacker)] then
-                unit = attacker
-                if GetUnitAbilityLevel(unit, FourCC("AAIM")) > 0 then return end
-                local ai = AITable[GetUnitTypeId(unit)]
-
-                for i = 1, #ai.ability_list do
-
-                    if Chance(ai.ability_list[i].on_attack_chance) then
-
-                        UnitAddAbility(unit, FourCC("AAIM"))
-
-                        if ai.ability_list[i].activation == SELF_CAST then IssueImmediateOrderById(unit, ai.ability_list[i].order)
-                        elseif ai.ability_list[i].activation == TARGET_CAST then IssueTargetOrderById(unit, ai.ability_list[i].order, attacked)
-                        elseif ai.ability_list[i].activation == POINT_CAST then
-                            local x, y = GetUnitX(attacked), GetUnitY(attacked)
-
-                                if ai.ability_list[i].point_min_offset or ai.ability_list[i].point_max_offset then
-                                    local offset_range = GetRandomReal(ai.ability_list[i].point_min_offset or 0., ai.ability_list[i].point_max_offset or 50.)
-                                    local angle = GetRandomReal(0., 359.)
-                                    x = x + Rx(offset_range, angle)
-                                    y = y + Ry(offset_range, angle)
-                                end
-
-                           IssuePointOrderById(unit, ai.ability_list[i].order, x, y)
-                        end
-
-                        DelayAction(2., function() UnitRemoveAbility(unit, FourCC("AAIM")) end)
-
-                        break
-                    end
-                end
-
+                Reaction(attacker, attacked, false)
             end
+
     end
 
 
@@ -422,6 +411,9 @@ do
             [FourCC(MONSTER_ID_REANIMATED)] = {
                 ability_list = {
                     { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 14., on_hit_chance = 14., point_max_offset = 75. },
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 14., on_hit_chance = 14., point_max_offset = 50. },
+                    { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 14., on_hit_chance = 14. },
+                    { order = order_forceofnature, activation = TARGET_CAST, on_attack_chance = 14., on_hit_chance = 14. },
                 }
             },
             [FourCC(MONSTER_ID_SPIDER_QUEEN)] = {
@@ -501,6 +493,17 @@ do
                 ability_list = {
                     { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 14., on_hit_chance = 10., point_max_offset = 50. },
                     { order = order_frenzy, activation = POINT_CAST, on_attack_chance = 12., on_hit_chance = 17., point_max_offset = 10. },
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 12., on_hit_chance = 17., point_max_offset = 10., on_hit_range = 750. },
+                }
+            },
+            [FourCC(MONSTER_ID_IRON_MAIDEN)] = {
+                ability_list = {
+                    { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 16., on_hit_chance = 10., point_max_offset = 50., on_hit_range = 450. },
+                }
+            },
+            [FourCC(MONSTER_ID_SIREN)] = {
+                ability_list = {
+                    { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 12., on_hit_chance = 15. },
                 }
             },
             [FourCC(MONSTER_ID_PHANTOM)] = {
@@ -516,9 +519,9 @@ do
             },
             [FourCC(MONSTER_ID_BAAL)] = {
                 ability_list = {
-                    { order = order_frenzy, activation = POINT_CAST, on_attack_chance = 13., on_hit_chance = 12. },
-                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 13., on_hit_chance = 12. },
-                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 5., on_hit_chance = 12. },
+                    { order = order_frenzy, activation = POINT_CAST, on_attack_chance = 16., on_hit_chance = 14. },
+                    { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 17., on_hit_chance = 15. },
+                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 7., on_hit_chance = 15. },
                 }
             },
             [FourCC(MONSTER_ID_SKELETON_MAGE)] = {
@@ -567,6 +570,16 @@ do
                     { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 24., on_hit_chance = 3. },
                 }
             },
+            [FourCC(MONSTER_ID_BANDIT_ROGUE)] = {
+                ability_list = {
+                    { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 18., on_hit_chance = 18. },
+                }
+            },
+            [FourCC(MONSTER_ID_BANDIT_ROGUE_MAGE)] = {
+                ability_list = {
+                    { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 14., on_hit_chance = 10., point_max_offset = 50. },
+                }
+            },
             [FourCC(MONSTER_ID_REVENANT_FROST)] = {
                 ability_list = {
                     { order = order_flamestrike, activation = POINT_CAST, on_attack_chance = 17., on_hit_chance = 3. },
@@ -580,6 +593,8 @@ do
             [FourCC(MONSTER_ID_UNDERWORLD_QUEEN)] = {
                 ability_list = {
                     { order = order_acidbomb, activation = SELF_CAST, on_attack_chance = 15., on_hit_chance = 20. },
+                    { order = order_frostnova, activation = POINT_CAST, on_attack_chance = 15., on_hit_chance = 20. },
+                    { order = order_freezingbreath, activation = SELF_CAST, on_attack_chance = 15., on_hit_chance = 15. },
                 }
             },
             [FourCC(MONSTER_ID_BLOOD_RAVEN)] = {
@@ -742,6 +757,15 @@ do
         PingGroup = CreateGroup()
         AttackGroup = CreateGroup()
 
+
+        local atk_trg = CreateTrigger()
+        for i = 1, 10 do TriggerRegisterPlayerUnitEvent(atk_trg, Player(i-1), EVENT_PLAYER_UNIT_ATTACKED, nil) end
+
+        TriggerAddAction(atk_trg, function()
+            if AITable[GetUnitTypeId(GetAttacker())] then
+                Reaction(GetAttacker(), GetTriggerUnit(), false)
+            end
+        end)
 
     end
 

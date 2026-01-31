@@ -11,7 +11,7 @@ do
     local RAVEN_STATE_SITTING = 2
     local RAVEN_STATE_LANDING = 3
     local RavenState
-
+    local Area
 
 
     function RavenEnumerate()
@@ -52,7 +52,7 @@ do
                         end)
 
                 elseif GetRandomInt(1, 19) == 1 then
-                    IssuePointOrderById(raven, order_move, GetRandomReal(GetRectMinX(bj_mapInitialPlayableArea), GetRectMaxX(bj_mapInitialPlayableArea)), GetRandomReal(GetRectMinY(bj_mapInitialPlayableArea), GetRectMaxY(bj_mapInitialPlayableArea)))
+                    IssuePointOrderById(raven, order_move, GetRandomReal(GetRectMinX(Area), GetRectMaxX(Area)), GetRandomReal(GetRectMinY(Area), GetRectMaxY(Area)))
                 end
 
             elseif RavenState[raven] == RAVEN_STATE_SITTING then
@@ -65,7 +65,7 @@ do
                         SetUnitFlyHeight(raven, 330., 0.)
                         AddUnitAnimationProperties(raven, "alternate", false)
                         AddUnitAnimationProperties(raven, "gold", true)
-                        IssuePointOrderById(raven, order_move, GetRandomReal(GetRectMinX(bj_mapInitialPlayableArea), GetRectMaxX(bj_mapInitialPlayableArea)), GetRandomReal(GetRectMinY(bj_mapInitialPlayableArea), GetRectMaxY(bj_mapInitialPlayableArea)))
+                        IssuePointOrderById(raven, order_move, GetRandomReal(GetRectMinX(Area), GetRectMaxX(Area)), GetRandomReal(GetRectMinY(Area), GetRectMaxY(Area)))
                         --print("take off done")
                     end)
                 end
@@ -86,13 +86,15 @@ do
             SetUnitFlyHeight(raven, 330., 0.)
             RemoveGuardPosition(raven)
             RavenState[raven] = RAVEN_STATE_FLYING
-            IssuePointOrderById(raven, order_move, GetRandomReal(GetRectMinX(bj_mapInitialPlayableArea), GetRectMaxX(bj_mapInitialPlayableArea)), GetRandomReal(GetRectMinY(bj_mapInitialPlayableArea), GetRectMaxY(bj_mapInitialPlayableArea)))
+            IssuePointOrderById(raven, order_move, GetRandomReal(GetRectMinX(Area), GetRectMaxX(Area)), GetRandomReal(GetRectMinY(Area), GetRectMaxY(Area)))
 
     end
 
 
 
     function InitRavens()
+
+        Area = gg_rct_outer_map
 
         RavenRects = {
             gg_rct_raven_rest_1,

@@ -44,7 +44,7 @@ do
             charges = { border = border, text = text }
             BlzFrameSetPoint(border, FRAMEPOINT_BOTTOMLEFT, parent, FRAMEPOINT_BOTTOMLEFT, 0.002, 0.002)
             BlzFrameSetSize(border, 0.012, 0.012)
-            BlzFrameSetTexture(border, "GUI\\ChargesTexture.blp", 0, true)
+            BlzFrameSetTexture(border, "UI\\little_round_frame2.blp", 0, true)
             BlzFrameSetPoint(text, FRAMEPOINT_CENTER, border, FRAMEPOINT_CENTER, 0.,0.)
             BlzFrameSetVisible(border, false)
             BlzFrameSetText(text, "")
@@ -82,92 +82,69 @@ do
         end
     end
 
-    function EnableAbilitySpriteOverlay(id, player)
+
+
+    function UpdateAbilitySpriteOverlay(player)
+
+        for key = KEY_Q, KEY_F do
+            if KEYBIND_LIST[key].player_skill_bind[player] == 0 then
+                BlzFrameSetVisible(PlayerUI.skill_button_sprite_overlay[player][key], false)
+                SpriteOverlayData[player].key[key].current_id = nil
+            end
+        end
+
+    end
+
+    function EnableAbilitySpriteOverlayKey(id, key, player)
         local overlay = GetSkillOverlayData(id)
 
-            for key = KEY_Q, KEY_F do
-                if KEYBIND_LIST[key].ability > 0 then
-                    local keybind = SpriteOverlayData[player].key[key]
-                    local index = #keybind.overlay+1
-                    local skill = GetUnitSkillData(PlayerHero[player], KEYBIND_LIST[key].player_skill_bind_string_id[player])
+            if KEYBIND_LIST[key].player_skill_bind[player] > 0 then
+                local keybind_overlay = SpriteOverlayData[player].key[key]
+                local skill = GetUnitSkillData(PlayerHero[player], KEYBIND_LIST[key].player_skill_bind_string_id[player])
+
+                if not keybind_overlay.current_id then keybind_overlay.current_id = 0 end
+                if not keybind_overlay.current_priority then keybind_overlay.current_priority = 0 end
 
 
-                        for i = 1, #keybind.overlay do
-                            if keybind.overlay[i].id == id then
-                                break
-                            end
-                        end
+                    if skill and keybind_overlay.current_id ~= id and OverlayHasSkillClassification(overlay, skill.classification) and OverlayHasSkillCategory(overlay, skill.category) and overlay.priority >= keybind_overlay.current_priority then
+                        local sprite = PlayerUI.skill_button_sprite_overlay[player][key]
+                            BlzFrameSetModel(sprite, overlay.sprite_model_path, 0)
+                            BlzFrameSetScale(sprite, overlay.scale)
+                            BlzFrameSetVisible(sprite, true)
+                            BlzFrameClearAllPoints(sprite)
+                            BlzFrameSetPoint(sprite, FRAMEPOINT_BOTTOMLEFT, button_list[key], FRAMEPOINT_BOTTOMLEFT, overlay.offsetx, overlay.offsety)
+                            keybind_overlay.current_id = id
+                            keybind_overlay.current_priority = overlay.priority
 
-                        if skill and OverlayHasSkillClassification(overlay, skill.classification) and OverlayHasSkillCategory(overlay, skill.category)  then
-                            keybind.overlay[index] = { id = id, model_path = overlay.sprite_model_path, scale = overlay.scale, offsetx = overlay.offsetx, offsety = overlay.offsety, priority = overlay.priority }
+                    end
 
-                            if overlay.priority >= keybind.last_priority then
-                                local sprite = PlayerUI.skill_button_sprite_overlay[player][key]
-
-                                    keybind.last_priority = overlay.priority
-                                    keybind.current_id = id
-                                    BlzFrameSetModel(sprite, overlay.sprite_model_path, 0)
-                                    BlzFrameSetScale(sprite, overlay.scale)
-                                    BlzFrameSetVisible(sprite, true)
-                                    BlzFrameClearAllPoints(sprite)
-                                    BlzFrameSetPoint(sprite, FRAMEPOINT_BOTTOMLEFT, button_list[key], FRAMEPOINT_BOTTOMLEFT, overlay.offsetx, overlay.offsety)
-
-                            end
-
-                        end
-
-                end
             end
 
 
     end
 
+
+    function EnableAbilitySpriteOverlay(id, player)
+        for key = KEY_Q, KEY_F do
+            EnableAbilitySpriteOverlayKey(id, key, player)
+        end
+    end
+
+
     function DisableAbilitySpriteOverlay(id, player)
 
-
         for key = KEY_Q, KEY_F do
-            if KEYBIND_LIST[key].ability > 0 then
-                local keybind = SpriteOverlayData[player].key[key]
-                --local skill = GetUnitSkillData(PlayerHero[player], KEYBIND_LIST[key].player_skill_bind_string_id[player])
+            if KEYBIND_LIST[key].player_skill_bind[player] > 0 then
+                local keybind_overlay = SpriteOverlayData[player].key[key]
 
-                    if id == keybind.current_id then
+                    if id == keybind_overlay.current_id then
                         local sprite = PlayerUI.skill_button_sprite_overlay[player][key]
 
-                        BlzFrameSetModel(sprite, ".mdx", 0)
-                        BlzFrameSetScale(sprite, 1.)
-                        BlzFrameSetVisible(sprite, false)
+                            BlzFrameSetModel(sprite, ".mdx", 0)
+                            BlzFrameSetScale(sprite, 1.)
+                            BlzFrameSetVisible(sprite, false)
+                            keybind_overlay.current_id = nil
 
-                        if #keybind.overlay > 1 then
-                            local highest_id
-                            local last_priority = 0
-                            local index = 0
-
-                            for i = 1, #keybind.overlay do
-                                if keybind.overlay[i].priority >= last_priority then
-                                    last_priority = keybind.overlay[i].priority
-                                    highest_id = keybind.overlay[i].id
-                                    index = i
-                                end
-                            end
-
-                            if highest_id then
-                                keybind.last_priority = last_priority
-                                keybind.current_id = highest_id
-                                keybind.overlay[index] = nil
-                                EnableAbilitySpriteOverlay(highest_id, player)
-                            end
-
-                        else
-                            keybind.current_id = 0
-                            keybind.last_priority = 0
-
-                            for i = 1, #keybind.overlay do
-                                if keybind.overlay[i].id == id then
-                                    keybind.overlay[i] = nil
-                                end
-                            end
-
-                        end
                     end
 
             end
@@ -176,7 +153,7 @@ do
     end
 
     function IsSpriteOverlayEnabled(player, keybind)
-        return #SpriteOverlayData[player].key[keybind].overlay > 0
+        return (SpriteOverlayData[player].key[keybind].current_id and SpriteOverlayData[player].key[keybind].current_id > 0)
     end
 
 
@@ -308,7 +285,7 @@ do
                 local button = BlzGetFrameByName("CommandButton_10", 0)
                 BlzFrameClearAllPoints(button)
                 BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, PlayerUI.action_bar, FRAMEPOINT_BOTTOM, -0.003, 0.0339)
-                PlayerUI.skill_button_hotkey[1] = CreateSimpleChargesText(button, "E", 0.9, 0.9, 0., 0., GAME_UI)
+                PlayerUI.skill_button_hotkey[1] = CreateSimpleChargesText(button, "E", 0.85, 0.85, 0., 0., GAME_UI)
                 PlayerUI.skill_button_borders[1] = CreateUIBorder(button, 0.0035)
                 button_list[KEY_E] = button
                 CreateSpriteOverlayFrame(KEY_E, button)
@@ -316,7 +293,7 @@ do
                 button = BlzGetFrameByName("CommandButton_9", 0)
                 BlzFrameClearAllPoints(button)
                 BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, BlzGetFrameByName("CommandButton_10", 0), FRAMEPOINT_LEFT, -0.006, 0.)
-                PlayerUI.skill_button_hotkey[2] = CreateSimpleChargesText(button, "W", 0.9, 0.9, 0., 0., GAME_UI)
+                PlayerUI.skill_button_hotkey[2] = CreateSimpleChargesText(button, "W", 0.85, 0.85, 0., 0., GAME_UI)
                 PlayerUI.skill_button_borders[2] = CreateUIBorder(button, 0.0035)
                 button_list[KEY_W] = button
                 CreateSpriteOverlayFrame(KEY_W, button)
@@ -324,7 +301,7 @@ do
                 button = BlzGetFrameByName("CommandButton_8", 0)
                 BlzFrameClearAllPoints(button)
                 BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, BlzGetFrameByName("CommandButton_9", 0), FRAMEPOINT_LEFT, -0.006, 0.)
-                PlayerUI.skill_button_hotkey[3] = CreateSimpleChargesText(button, "Q", 0.9, 0.9, 0., 0., GAME_UI)
+                PlayerUI.skill_button_hotkey[3] = CreateSimpleChargesText(button, "Q", 0.85, 0.85, 0., 0., GAME_UI)
                 PlayerUI.skill_button_borders[3] = CreateUIBorder(button, 0.0035)
                 button_list[KEY_Q] = button
                 CreateSpriteOverlayFrame(KEY_Q, button)
@@ -332,7 +309,7 @@ do
                 button = BlzGetFrameByName("CommandButton_11", 0)
                 BlzFrameClearAllPoints(button)
                 BlzFrameSetPoint(button, FRAMEPOINT_LEFT, PlayerUI.action_bar, FRAMEPOINT_BOTTOM, 0.003, 0.0339)
-                PlayerUI.skill_button_hotkey[4] = CreateSimpleChargesText(button, "R", 0.9, 0.9, 0., 0., GAME_UI)
+                PlayerUI.skill_button_hotkey[4] = CreateSimpleChargesText(button, "R", 0.85, 0.85, 0., 0., GAME_UI)
                 PlayerUI.skill_button_borders[4] = CreateUIBorder(button, 0.0035)
                 button_list[KEY_R] = button
                 CreateSpriteOverlayFrame(KEY_R, button)
@@ -340,7 +317,7 @@ do
                 button = BlzGetFrameByName("CommandButton_6", 0)
                 BlzFrameClearAllPoints(button)
                 BlzFrameSetPoint(button, FRAMEPOINT_LEFT, BlzGetFrameByName("CommandButton_11", 0), FRAMEPOINT_RIGHT, 0.006, 0.)
-                PlayerUI.skill_button_hotkey[5] = CreateSimpleChargesText(button, "D", 0.9, 0.9, 0., 0., GAME_UI)
+                PlayerUI.skill_button_hotkey[5] = CreateSimpleChargesText(button, "D", 0.85, 0.85, 0., 0., GAME_UI)
                 PlayerUI.skill_button_borders[5] = CreateUIBorder(button, 0.0035)
                 button_list[KEY_D] = button
                 CreateSpriteOverlayFrame(KEY_D, button)
@@ -348,7 +325,7 @@ do
                 button = BlzGetFrameByName("CommandButton_7", 0)
                 BlzFrameClearAllPoints(button)
                 BlzFrameSetPoint(button, FRAMEPOINT_LEFT, BlzGetFrameByName("CommandButton_6", 0), FRAMEPOINT_RIGHT, 0.006, 0.)
-                PlayerUI.skill_button_hotkey[6] = CreateSimpleChargesText(button, "F", 0.9, 0.9, 0., 0., GAME_UI)
+                PlayerUI.skill_button_hotkey[6] = CreateSimpleChargesText(button, "F", 0.85, 0.85, 0., 0., GAME_UI)
                 PlayerUI.skill_button_borders[6] = CreateUIBorder(button, 0.0035)
                 button_list[KEY_F] = button
                 CreateSpriteOverlayFrame(KEY_F, button)
@@ -577,34 +554,6 @@ do
                     ShowPlayerUI(current_player)
                     UpdateBindedSkillsData(current_player)
 
-                    for k = 1, 6 do
-                        if IsSpriteOverlayEnabled(player, k) then
-                            local keybind = SpriteOverlayData[player].key[k]
-                            local last_priority
-                            local highest_id
-                            local index
-
-                                for i = 1, #keybind.overlay do
-                                    if keybind.overlay[i].priority >= last_priority then
-                                        last_priority = keybind.overlay[i].priority
-                                        highest_id = keybind.overlay[i].id
-                                        index = i
-                                    end
-                                end
-
-                                if highest_id then
-                                    keybind.last_priority = last_priority
-                                    keybind.current_id = highest_id
-                                    keybind.overlay[index] = nil
-                                    EnableAbilitySpriteOverlay(highest_id, player)
-                                end
-
-                        end
-                    end
-
-
-
-
                     local unit_data = GetUnitData(PlayerHero[current_player])
 
                         if unit_data.equip_point[CHEST_POINT] then
@@ -788,7 +737,7 @@ do
             local button = BlzGetFrameByName("CommandButton_10", 0)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, PlayerUI.action_bar, FRAMEPOINT_BOTTOM, -0.003, 0.0339)
-            PlayerUI.skill_button_hotkey[1] = CreateSimpleChargesText(button, "E", 0.9, 0.9, 0., 0., GAME_UI)
+            PlayerUI.skill_button_hotkey[1] = CreateSimpleChargesText(button, "E", 0.85, 0.85, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[1] = CreateUIBorder(button, 0.0035)
             button_list[KEY_E] = button
             CreateSpriteOverlayFrame(KEY_E, button)
@@ -797,7 +746,7 @@ do
             button = BlzGetFrameByName("CommandButton_9", 0)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, BlzGetFrameByName("CommandButton_10", 0), FRAMEPOINT_LEFT, -0.006, 0.)
-            PlayerUI.skill_button_hotkey[2] = CreateSimpleChargesText(button, "W", 0.9, 0.9, 0., 0., GAME_UI)
+            PlayerUI.skill_button_hotkey[2] = CreateSimpleChargesText(button, "W", 0.85, 0.85, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[2] = CreateUIBorder(button, 0.0035)
             button_list[KEY_W] = button
             CreateSpriteOverlayFrame(KEY_W, button)
@@ -806,7 +755,7 @@ do
             button = BlzGetFrameByName("CommandButton_8", 0)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_RIGHT, BlzGetFrameByName("CommandButton_9", 0), FRAMEPOINT_LEFT, -0.006, 0.)
-            PlayerUI.skill_button_hotkey[3] = CreateSimpleChargesText(button, "Q", 0.9, 0.9, 0., 0., GAME_UI)
+            PlayerUI.skill_button_hotkey[3] = CreateSimpleChargesText(button, "Q", 0.85, 0.85, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[3] = CreateUIBorder(button, 0.0035)
             button_list[KEY_Q] = button
             CreateSpriteOverlayFrame(KEY_Q, button)
@@ -815,7 +764,7 @@ do
             button = BlzGetFrameByName("CommandButton_11", 0)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_LEFT, PlayerUI.action_bar, FRAMEPOINT_BOTTOM, 0.003, 0.0339)
-            PlayerUI.skill_button_hotkey[4] = CreateSimpleChargesText(button, "R", 0.9, 0.9, 0., 0., GAME_UI)
+            PlayerUI.skill_button_hotkey[4] = CreateSimpleChargesText(button, "R", 0.85, 0.85, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[4] = CreateUIBorder(button, 0.0035)
             button_list[KEY_R] = button
             CreateSpriteOverlayFrame(KEY_R, button)
@@ -823,7 +772,7 @@ do
             button = BlzGetFrameByName("CommandButton_6", 0)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_LEFT, BlzGetFrameByName("CommandButton_11", 0), FRAMEPOINT_RIGHT, 0.006, 0.)
-            PlayerUI.skill_button_hotkey[5] = CreateSimpleChargesText(button, "D", 0.9, 0.9, 0., 0., GAME_UI)
+            PlayerUI.skill_button_hotkey[5] = CreateSimpleChargesText(button, "D", 0.85, 0.85, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[5] = CreateUIBorder(button, 0.0035)
             button_list[KEY_D] = button
             CreateSpriteOverlayFrame(KEY_D, button)
@@ -832,7 +781,7 @@ do
             button = BlzGetFrameByName("CommandButton_7", 0)
             BlzFrameClearAllPoints(button)
             BlzFrameSetPoint(button, FRAMEPOINT_LEFT, BlzGetFrameByName("CommandButton_6", 0), FRAMEPOINT_RIGHT, 0.006, 0.)
-            PlayerUI.skill_button_hotkey[6] = CreateSimpleChargesText(button, "F", 0.9, 0.9, 0., 0., GAME_UI)
+            PlayerUI.skill_button_hotkey[6] = CreateSimpleChargesText(button, "F", 0.85, 0.85, 0., 0., GAME_UI)
             PlayerUI.skill_button_borders[6] = CreateUIBorder(button, 0.0035)
             button_list[KEY_F] = button
             CreateSpriteOverlayFrame(KEY_F, button)

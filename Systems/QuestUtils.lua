@@ -59,6 +59,29 @@ do
         return ClickTrig
     end
 
+    ---@param unit unit
+    ---@param duration real
+    ---@param feedback function
+    ---@param rgb table
+    function FadeInUnit(unit, duration, rgb, feedback)
+        local timer = CreateTimer()
+        local alpha = 0
+        local step = 255 / duration / 40
+
+            SetUnitVertexColor(unit, rgb.r, rgb.g, rgb.b, 0)
+
+            TimerStart(timer, 0.025, true, function()
+                if alpha >= 255 then
+                    SetUnitVertexColor(unit, rgb.r, rgb.g, rgb.b, 255)
+                    DestroyTimer(timer)
+                    feedback()
+                else
+                    alpha = alpha + step
+                    SetUnitVertexColor(unit, rgb.r, rgb.g, rgb.b, alpha)
+                end
+            end)
+
+    end
 
     ---@param unit unit
     ---@param duration real

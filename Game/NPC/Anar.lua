@@ -700,7 +700,20 @@ do
             end }, 3)
         LockInteractiveOptionId(gg_unit_n029_0022, "anar_task_soldiersrescue_done")
 
+
+        AddInteractiveOption(gg_unit_n029_0022, {
+            name = GetLocalString("Мертвый разведчик", "Dead scout"),
+            id = "anar_dead_scout_done",
+            feedback = function(clicked, clicking, player)
+                PlayConversation("quartermaster_dead_scout_done", gg_unit_n029_0022, player)
+                LockInteractiveOptionIdPlayer(gg_unit_n029_0022, "anar_dead_scout_done", player)
+                CompleteDeadScout(player)
+            end }, 4)
+        LockInteractiveOptionId(gg_unit_n029_0022, "anar_dead_scout_done")
+
         InitTasksData()
+        InitDeadScoutQuest()
+        InitCallQuest()
 
     end
 

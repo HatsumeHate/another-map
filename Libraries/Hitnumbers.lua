@@ -231,7 +231,7 @@ do
 
 
                     if #text > #pool.pack then
-                        local model = ""
+                        local model = ".mdl"
                         local local_source = GetLocalPlayer() == GetOwningPlayer(source)
                         local local_victim = GetLocalPlayer() == GetOwningPlayer(victim)
 
@@ -264,7 +264,7 @@ do
                     end
 
                     if not pool.special and (status == ATTACK_STATUS_CRITICAL or status == ATTACK_STATUS_CRITICAL_BLOCKED) then
-                        local model = ""
+                        local model = ".mdl"
                         local local_source = GetLocalPlayer() == GetOwningPlayer(source)
                         local local_victim = GetLocalPlayer() == GetOwningPlayer(victim)
                         if local_source or local_victim then model = "Other\\NumberTexttag4.mdx" end
@@ -324,7 +324,7 @@ do
                 local y = GetUnitY(victim) + GetRandomReal(STATUS_OFFSET[status].y.min, STATUS_OFFSET[status].y.max)
                 local z = GetUnitZ(victim) + 90.
                 local pack = {}
-                local model = ""
+                local model = ".mdl"
                 local attribute_sfx
                 local local_source = GetLocalPlayer() == GetOwningPlayer(source)
                 local local_victim = GetLocalPlayer() == GetOwningPlayer(victim)
@@ -420,7 +420,7 @@ do
     ---@param victim unit
     ---@param attribute integer
     ---@param status integer
-    function CreateHitnumberSpecial(text, source, victim, attribute, status)
+    function CreateHitnumberSpecial(text, source, victim, attribute, status, direct)
 
         if status == ATTACK_STATUS_MISS then
             CreateHitnumber(text, source, victim, status)
@@ -428,17 +428,29 @@ do
             text = I2S(text)
             local initial_offset = 7.
             local megascale = 1.45
+            local bonus_x = 0.
+            local y_offset = 0.
             local offset = HitnumberModelOffset
+
             if status == ATTACK_STATUS_CRITICAL or status == ATTACK_STATUS_CRITICAL_BLOCKED then
                 megascale = 1.85
                 offset = 21.
                 initial_offset = 11.
             end
-            local x = GetUnitX(victim) + GetRandomReal(STATUS_OFFSET[status].x.min, STATUS_OFFSET[status].x.max) - ((#text * offset) * 0.5)
-            local y = GetUnitY(victim) + GetRandomReal(STATUS_OFFSET[status].y.min, STATUS_OFFSET[status].y.max)
+
+            if not direct then
+                megascale = 1.32
+                offset = HitnumberModelOffset
+                initial_offset = 7.
+                y_offset = -35.
+                bonus_x = 30.
+            end
+
+            local x = GetUnitX(victim) + GetRandomReal(STATUS_OFFSET[status].x.min, STATUS_OFFSET[status].x.max) - ((#text * offset) * 0.5) + bonus_x
+            local y = GetUnitY(victim) + GetRandomReal(STATUS_OFFSET[status].y.min, STATUS_OFFSET[status].y.max) + y_offset
             local z = GetUnitZ(victim) + 90. + GetRandomReal(-STATUS_OFFSET[status].z_deviation, STATUS_OFFSET[status].z_deviation)
             local pack = {}
-            local model = ""
+            local model = ".mdl"
             local attribute_sfx
             local local_source = GetLocalPlayer() == GetOwningPlayer(source)
             local local_victim = GetLocalPlayer() == GetOwningPlayer(victim)

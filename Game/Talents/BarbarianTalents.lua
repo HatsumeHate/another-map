@@ -97,8 +97,9 @@ do
 
                     if unit_data.sharpened_blade_charge_time <= 0. then
                         unit_data.sharpened_blade_counter = 3 + (GetUnitTalentLevel(source, "talent_sharpened_blade")-1) * 2
-                        ApplyBuff(source, source, "ATSB", 1)
-                        SetStatusBarValue("ATSB", unit_data.sharpened_blade_counter, GetPlayerId(GetOwningPlayer(source))+1)
+                        AddStatusBarState("sharpened_blade", "Talents\\BTNDER_Weapon_Forge.blp", true, GetPlayerId(GetOwningPlayer(source))+1)
+                        SetStatusBarHeaderName("sharpened_blade", LOCALE_LIST[my_locale].BUFF_SHARPENED_BLADE, GetPlayerId(GetOwningPlayer(source))+1)
+                        SetStatusBarValue("sharpened_blade", unit_data.sharpened_blade_counter, GetPlayerId(GetOwningPlayer(source))+1)
                         unit_data.sharpened_blade_time = 15.
                         DelayAction(0., function() PauseTimer(unit_data.sharpened_blade_charge_timer); unit_data.sharpened_blade_charge_time = 15. end)
                     else
@@ -106,11 +107,11 @@ do
                     end
 
                 else
-                    RemoveBuff(source, "ATSB")
+                    RemoveStatusBarState("sharpened_blade", GetPlayerId(GetOwningPlayer(source))+1)
                     unit_data.sharpened_blade_counter = 0
                 end
 
-                ResumeTimer(GetExpiredTimer())
+                ResumeTimer(unit_data.sharpened_blade_charge_timer)
             end
 
 
@@ -186,6 +187,25 @@ do
 
     end
 
+
+    function IntimidationAoeEffect(caster)
+        local group = CreateGroup()
+        local avul = FourCC("Avul")
+        local level = GetUnitTalentLevel(caster, "talent_intimidation")
+
+            GroupEnumUnitsInRange(group, GetUnitX(caster), GetUnitY(caster), 800., nil)
+
+            for index = BlzGroupGetSize(group) - 1, 0, -1 do
+                local picked = BlzGroupUnitAt(group, index)
+
+                    if GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and IsUnitEnemy(picked, Player(0)) and IsUnitVisible(picked, Player(0)) and GetUnitAbilityLevel(picked, avul) == 0 then
+                        if Chance(35.) then ApplyBuff(caster, picked, "ATIT", level) end
+                    end
+
+            end
+
+        DestroyGroup(group)
+    end
 
 
 end

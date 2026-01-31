@@ -60,15 +60,15 @@ do
     end
 
     function lsh(value,shift)
-        return (value*(2^shift)) %% 256
+        return (value*(2^shift)) % 256
     end
 
     function rsh(value,shift)
-        return math.floor(value/2^shift) %% 256
+        return math.floor(value/2^shift) % 256
     end
 
     function bit(x,b)
-        return (x %% 2^b - x %% 2^(b-1) > 0)
+        return (x % 2^b - x % 2^(b-1) > 0)
     end
 
     function lor(x,y)
@@ -86,7 +86,7 @@ do
         local result = ""
         for spos=0,string.len(data)-1,3 do
             for byte=1,3 do bytes[byte] = string.byte(string.sub(data,(spos+byte))) or 0 end
-            result = string.format('%%s%%s%%s%%s%%s',result,base64chars[rsh(bytes[1],2)],base64chars[lor(lsh((bytes[1] %% 4),4), rsh(bytes[2],4))] or "=",((#data-spos) > 1) and base64chars[lor(lsh(bytes[2] %% 16,2), rsh(bytes[3],6))] or "=",((#data-spos) > 2) and base64chars[(bytes[3] %% 64)] or "=")
+            result = string.format('%s%s%s%s%s',result,base64chars[rsh(bytes[1],2)],base64chars[lor(lsh((bytes[1] % 4),4), rsh(bytes[2],4))] or "=",((#data-spos) > 1) and base64chars[lor(lsh(bytes[2] % 16,2), rsh(bytes[3],6))] or "=",((#data-spos) > 2) and base64chars[(bytes[3] % 64)] or "=")
         end
         return result
     end
@@ -99,7 +99,7 @@ do
         local result=""
         for dpos=0,string.len(data)-1,4 do
             for char=1,4 do chars[char] = base64bytes[(string.sub(data,(dpos+char),(dpos+char)) or "=")] end
-            result = string.format('%%s%%s%%s%%s',result,string.char(lor(lsh(chars[1],2), rsh(chars[2],4))),(chars[3] ~= nil) and string.char(lor(lsh(chars[2],4), rsh(chars[3],2))) or "",(chars[4] ~= nil) and string.char(lor(lsh(chars[3],6) %% 192, (chars[4]))) or "")
+            result = string.format('%s%s%s%s',result,string.char(lor(lsh(chars[1],2), rsh(chars[2],4))),(chars[3] ~= nil) and string.char(lor(lsh(chars[2],4), rsh(chars[3],2))) or "",(chars[4] ~= nil) and string.char(lor(lsh(chars[3],6) % 192, (chars[4]))) or "")
         end
         return result
     end
@@ -234,33 +234,7 @@ do
        --print("encoded string: " .. result)
 
         PreloadGenClear()
-        --[[
-        if additional_data == "" then
-            local half = math.floor(#result / 2)
-            local part_1 = string.sub(result, 1, half)
-            local part_2 = string.sub(result, half+1, #result)
 
-            if GetLocalPlayer() == Player(player) then
-                Preload("\")\ncall BlzSetAbilityTooltip ('Agyv',\"".. part_1 .. "\",0)" .. "\n//")
-                Preload("\")\ncall BlzSetAbilityTooltip ('Aroc',\"".. part_2 .. "\",0)" .. "\n//")
-                PreloadGenEnd(path)
-                --print("saved!")
-            end
-        else
-            local thirth = math.floor(#result / 3)
-            local part_1 = string.sub(result, 1, thirth)
-            local part_2 = string.sub(result, thirth+1, #result - thirth)
-            local part_3 = string.sub(result, #result - thirth+1, #result)
-
-                if GetLocalPlayer() == Player(player) then
-                    Preload("\")\ncall BlzSetAbilityTooltip ('Agyv',\"".. part_1 .. "\",0)" .. "\n//")
-                    Preload("\")\ncall BlzSetAbilityTooltip ('Aroc',\"".. part_2 .. "\",0)" .. "\n//")
-                    Preload("\")\ncall BlzSetAbilityTooltip ('Ahsb',\"".. part_3 .. "\",0)" .. "\n//")
-                    PreloadGenEnd(path)
-                    --print("saved!")
-                end
-
-        end]]
         local half = math.floor(#result / 2)
         local part_1 = string.sub(result, 1, half)
         local part_2 = string.sub(result, half+1, #result)
@@ -383,7 +357,8 @@ do
                                         if IsCyrillic(name) then name = ConvertFromCyrillic(name) end
 
                                         if name == player and not PlayerSyncData[i+1]["current_wave"] and #sync_string > 1 then
-                                            PlayerSyncData[i+1]["current_wave"] = string.sub(sync_string, string.find(sync_string, "@currentwave", 1, true)+12, #sync_string)
+                                            PlayerSyncData[i+1]["current_wave"] = string.sub(sync_string, string.find(sync_string, "@currentwave", 1, true)+12, string.find(sync_string, "@diff", 12, true)-1)
+                                            PlayerSyncData[i+1]["diff"] = string.sub(sync_string, string.find(sync_string, "@diff", 1, true)+5, #sync_string)
                                             break
                                         end
                                     end
@@ -393,68 +368,6 @@ do
 
                 end
             end
-
-
-
-
-
-                --[[
-                if slot > 0 then
-                    --print("its a slot with data " .. sync_string)
-                    local begin = string.find(sync_string, "slot", 1, true)+5
-                    local delc = string.find(sync_string, "_-a", begin, true)
-                    local player = ParsePlayerNameOut(string.sub(sync_string, begin, delc-1))--SubString(sync_string, 5, delc-3))
-
-                    --print("got data to sync from player " .. player .. " in slot ".. slot)
-                    --print("slot is " .. (slot or "NOT SUPPOSED TO HAPPEN"))
-
-                        if StringLength(sync_string) > 1 then
-                            sync_string = string.sub(sync_string, delc, #sync_string)
-                        else
-                            sync_string = ""
-                        end
-
-                       -- print("data is " .. (sync_string or "NOT SUPPOSED TO HAPPEN"))
-
-                        for i = 0, 5 do
-                            local name = GetPlayerName(Player(i))
-                            if #name > 0 then
-
-                                if IsCyrillic(name) then name = ConvertFromCyrillic(name) end
-
-                                if name == player and not PlayerSyncData[i+1][slot] and #sync_string > 1 then
-                                    print("its a slot with data " .. sync_string)
-                                    LoadItem(sync_string, i+1, slot)
-                                    PlayerSyncData[i+1][slot] = true
-                                    break
-                                end
-                            end
-                            --print("name")
-
-                        end
-
-                elseif BlzGetTriggerSyncPrefix() == "dataload_progression" then
-                    local player = ParsePlayerNameOut(string.sub(sync_string, 2, string.find(sync_string, "@", 1, true)-2))
-
-                    --print("player name to load " .. player)
-
-                        for i = 0, 5 do
-                            local name = GetPlayerName(Player(i))
-                            if #name > 0 then
-
-                                if IsCyrillic(name) then name = ConvertFromCyrillic(name) end
-
-                                if name == player and not PlayerSyncData[i+1]["current_wave"] and #sync_string > 1 then
-                                    --LoadItem(sync_string, i+1, slot)
-
-                                    PlayerSyncData[i+1]["current_wave"] = string.sub(sync_string, string.find(sync_string, "@currentwave", 1, true)+12, #sync_string)
-                                    break
-                                end
-                            end
-                            --print("name")
-
-                        end
-                end]]
 
         end)
 

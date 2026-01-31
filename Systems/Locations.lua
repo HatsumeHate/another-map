@@ -70,7 +70,7 @@ do
             name = LOCALE_LIST[my_locale].WILDFOREST_LOCATION_TEXTURE
         }
         Locations[4] = {
-            rects = { gg_rct_loc_narrowpass_1, gg_rct_loc_narrowpass_2, gg_rct_loc_narrowpass_3, gg_rct_loc_narrowpass_4 },
+            rects = { gg_rct_loc_narrowpass_1, gg_rct_loc_narrowpass_2, gg_rct_loc_narrowpass_3, gg_rct_loc_narrowpass_4, gg_rct_loc_narrowpass_5 },
             name = LOCALE_LIST[my_locale].NARROWPASS_LOCATION_TEXTURE
         }
         Locations[5] = {

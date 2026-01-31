@@ -24,7 +24,7 @@ do
     function GetClosestUnitToCursor(player)
         local group = CreateGroup()
         local distance = 64.
-        local cx, cy = PlayerMousePosition[player].x, PlayerMousePosition[player].y-32
+        local cx, cy = PlayerMousePosition[player].x, PlayerMousePosition[player].y-24.
         local target = nil
 
             GroupEnumUnitsInRange(group, cx, cy, 64., nil)
@@ -35,10 +35,10 @@ do
                 if GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
                     local d = DistanceBetweenUnitXY(picked, cx, cy)
 
-                        if d < distance then
-                            target = picked
-                            distance = d
-                        end
+                    if d < distance then
+                        target = picked
+                        distance = d
+                    end
 
                 end
 
@@ -46,7 +46,7 @@ do
 
             end
 
-        DestroyGroup(group)
+            DestroyGroup(group)
 
         return target
     end
@@ -144,22 +144,22 @@ do
                 GenerateEffectLevelData(effect, lvl)
 
                     if value_str == "pwr" then return "|c00FF7600" .. (effect.level[lvl].power or 0) .. "|r"
-                    elseif value_str == "dmg" then return "|c00FF7600" .. (effect.level[lvl].power or 0) .. " + " .. S2I(R2S((effect.level[lvl].attack_percent_bonus or 1.) * 100.)) .. "%%|r " .. LOCALE_LIST[my_locale].GENERATED_TOOLTIP
+                    elseif value_str == "dmg" then return "|c00FF7600" .. (effect.level[lvl].power or 0) .. " + " .. S2I(R2SW((effect.level[lvl].attack_percent_bonus or 1.) * 100., 0, 0)) .. "%|r " .. LOCALE_LIST[my_locale].GENERATED_TOOLTIP
                     elseif value_str == "atr" then return GetAttributeColor(effect.attribute) .. GetAttributeName(effect.attribute) .. "|r"
                     elseif value_str == "ap" then return math.floor((effect.level[lvl].attack_percent_bonus or 1.) * 100.)
                     elseif value_str == "ab" then return "|c007AB3FF" ..  (effect.level[lvl].attribute_bonus or 0) .. "|r"
                     elseif value_str == "wdpb" then return math.floor((effect.level[lvl].weapon_damage_percent_bonus or 1.) * 100.)
                     elseif value_str == "aoe" then return R2I(effect.level[lvl].area_of_effect or 0.)
-                    elseif value_str == "bcc" then return "|c00FFD900" .. R2I(effect.level[lvl].bonus_crit_chance or 0.) .. "%%|r"
+                    elseif value_str == "bcc" then return "|c00FFD900" .. R2I(effect.level[lvl].bonus_crit_chance or 0.) .. "%|r"
                     elseif value_str == "bcm" then return "|c00FFD900" .. (effect.level[lvl].bonus_crit_multiplier or 0.) .. "|r"
-                    elseif value_str == "hp_perc" then return "|c0000FF00" .. string.format('%%.1f', (effect.level[lvl].life_percent_restored or 0.) * 100.) .. "%%|r"
-                    elseif value_str == "mp_perc" then return "|c000066FF" .. string.format('%%.1f', (effect.level[lvl].resource_percent_restored or 0.) * 100.) .. "%%|r"
+                    elseif value_str == "hp_perc" then return "|c0000FF00" .. string.format('%.1f', (effect.level[lvl].life_percent_restored or 0.) * 100.) .. "%|r"
+                    elseif value_str == "mp_perc" then return "|c000066FF" .. string.format('%.1f', (effect.level[lvl].resource_percent_restored or 0.) * 100.) .. "%|r"
                     elseif value_str == "hp" then return "|c0000FF00" .. (effect.level[lvl].life_restored or 0.) .. "|r"
                     elseif value_str == "mp" then return "|c000066FF" .. (effect.level[lvl].resource_restored or 0.) .. "|r"
                     elseif value_str == "hphitmax" then return "|c0000FF00" .. (effect.level[lvl].life_restored_from_hit_max or 0.) .. "|r"
                     elseif value_str == "mphitmax" then return "|c000066FF" .. (effect.level[lvl].resource_restored_from_hit_max or 0.) .. "|r"
                     elseif value_str == "heal_hp" then return "|c0000FF00" .. (effect.level[lvl].heal_amount or 0.) .. "|r"
-                    elseif value_str == "heal_max_hp" then return "|c0000FF00" .. string.format('%%.1f', (effect.level[lvl].heal_amount_max_hp or 0.) * 100.) .. "%%|r"
+                    elseif value_str == "heal_max_hp" then return "|c0000FF00" .. string.format('%.1f', (effect.level[lvl].heal_amount_max_hp or 0.) * 100.) .. "%|r"
                     end
 
 
@@ -180,6 +180,11 @@ do
                     return "invalid buff"
                 end
 
+                if buff.level_penalty then
+                    lvl = lvl - buff.level_penalty
+                    if lvl < 1 then lvl = 1 end
+                end
+
                     GenerateBuffLevelData(buff, lvl)
 
                     if value_str == "time" then return buff.level[lvl].time or 0.1
@@ -192,7 +197,7 @@ do
                     elseif sub == "en" then
                         return "|c00FF862F" .. (buff.level[lvl].endurance or 0) .. "|r"
                     elseif sub == "eh" then
-                        return "|c00FF862F" .. math.floor((buff.level[lvl].endurance_hp or 0) * 100) .. "%%|r"
+                        return "|c00FF862F" .. math.floor((buff.level[lvl].endurance_hp or 0) * 100) .. "%|r"
                     end
 
             elseif tag == "m" then
@@ -569,7 +574,7 @@ do
                 end
             end
 
-           GenerateSkillLevelData(skill, ability_level)
+            GenerateSkillLevelData(skill, ability_level)
 
         return ability_level
     end
@@ -638,7 +643,7 @@ do
         return false
     end
 
-    local function PlayCastSfx(unit_data, pack, animation_timescale, target, x, y)
+    local function PlayCastSfx(unit_data, pack, animation_timescale, timemult, target, x, y)
 
         if pack then
 
@@ -667,7 +672,7 @@ do
                             BlzSetSpecialEffectScale(casteffect, effect.scale or 1.)
 
                             if effect.animation_time_influence then
-                                BlzSetSpecialEffectTimeScale(casteffect, (effect.timescale or 1.) * animation_timescale)
+                                BlzSetSpecialEffectTimeScale(casteffect, (effect.timescale or 1.) * timemult)
                             else
                                 BlzSetSpecialEffectTimeScale(casteffect, effect.timescale or 1.)
                             end
@@ -698,7 +703,7 @@ do
                             BlzSetSpecialEffectScale(casteffect, effect.scale or 1.)
 
                             if effect.animation_time_influence then
-                                BlzSetSpecialEffectTimeScale(casteffect, (effect.timescale or 1.) * animation_timescale)
+                                BlzSetSpecialEffectTimeScale(casteffect, (effect.timescale or 1.) * timemult)
                             else
                                 BlzSetSpecialEffectTimeScale(casteffect, effect.timescale or 1.)
                             end
@@ -747,7 +752,7 @@ do
                                 BlzSetSpecialEffectOrientation(casteffect, (effect.yaw or orientation * bj_DEGTORAD), 0., (effect.roll or 0.) * bj_DEGTORAD)
 
                                     if effect.animation_time_influence then
-                                        BlzSetSpecialEffectTimeScale(casteffect, (effect.timescale or 1.) * animation_timescale)
+                                        BlzSetSpecialEffectTimeScale(casteffect, (effect.timescale or 1.) * timemult)
                                     else
                                         BlzSetSpecialEffectTimeScale(casteffect, effect.timescale or 1.)
                                     end
@@ -853,6 +858,11 @@ do
                     SetUnitState(unit, UNIT_STATE_MANA, GetUnitState(unit, UNIT_STATE_MANA) + unit_data.cast_skill_mana)
                     unit_data.cast_skill_mana = 0
                 end
+
+            if unit_data.skill_tracking_timer then
+                DestroyTimer(unit_data.skill_tracking_timer)
+                unit_data.skill_tracking_timer = nil
+            end
 
             unit_data.skip_sfx_effects = true
             unit_data.cast_skill = 0
@@ -963,10 +973,13 @@ do
 
             --print(animation.timescale or 1.)
             local time_reduction = (animation.timescale or 1.) + (sequence.bonus_timescale or 0.)
+            local time_mult_mod = 1.
 
             if action.action_type == SKILL_PHYSICAL then
+                time_mult_mod = (1. + unit_data.stats[ATTACK_SPEED].actual_bonus * 0.01)
                 time_reduction = time_reduction * (1. - unit_data.stats[ATTACK_SPEED].actual_bonus * 0.01)
             elseif action.action_type == SKILL_MAGICAL then
+                time_mult_mod = (1. + unit_data.stats[CAST_SPEED].value * 0.01)
                 time_reduction = time_reduction * (1. - unit_data.stats[CAST_SPEED].value * 0.01)
             end
 
@@ -997,7 +1010,7 @@ do
             SetUnitAnimationByIndex(source, sequence.animation or 0)
             if IsAHero(source) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(source))+1] = false end
 
-            PlayCastSfx(unit_data, action.sfx_pack or nil, time_reduction, target or nil, point_x, point_y)
+            PlayCastSfx(unit_data, action.sfx_pack or nil, time_reduction, time_mult_mod, target or nil, point_x, point_y)
 
                 if action.sound then
                     local unit_x, unit_y = GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner)
@@ -1218,11 +1231,9 @@ do
                                         local angle = AngleBetweenUnitXY(PlayerHero[player], PlayerMousePosition[player].x, PlayerMousePosition[player].y)
                                         local unit_data = GetUnitData(PlayerHero[player])
 
-
                                             range = (range + unit_data.stats[RANGE_BONUS].bonus) * unit_data.stats[RANGE_BONUS].multiplier
 
                                             if not skill.always_max_range_cast then range = math.min(DistanceBetweenUnitXY(PlayerHero[player], PlayerMousePosition[player].x, PlayerMousePosition[player].y), (range or 99999.)) end
-
                                             if PlayerSkillQueue[player].is_casting_skill then
                                                 PlayerSkillQueue[player].queue_skill = KEYBIND_LIST[key].order
                                                 PlayerSkillQueue[player].queue_skill_activation_type = skill.activation_type
@@ -1329,6 +1340,7 @@ do
                     local spell_x = GetSpellTargetX()
                     local spell_y = GetSpellTargetY()
 
+                    --print("skill name " .. skill.name)
 
                     if skill.required_weapon then
                         local player_id = GetPlayerId(GetOwningPlayer(unit_data.Owner))+1
@@ -1424,10 +1436,13 @@ do
                     end
 
                     local time_reduction = (animation.timescale or 1.) + (sequence.bonus_timescale or 0.)
+                    local time_mult_mod = 1.
 
                         if skill.type == SKILL_PHYSICAL then
+                            time_mult_mod = (1. + unit_data.stats[ATTACK_SPEED].actual_bonus * 0.01)
                             time_reduction = time_reduction * (1. - unit_data.stats[ATTACK_SPEED].actual_bonus * 0.01)
                         elseif skill.type == SKILL_MAGICAL then
+                            time_mult_mod = (1. + unit_data.stats[CAST_SPEED].value * 0.01)
                             time_reduction = time_reduction * (1. - unit_data.stats[CAST_SPEED].value * 0.01)
                         end
 
@@ -1586,7 +1601,7 @@ do
                         end)
                     end
 
-                    PlayCastSfx(unit_data, skill.sfx_pack, time_reduction, target, spell_x, spell_y)
+                    PlayCastSfx(unit_data, skill.sfx_pack, time_reduction, time_mult_mod, target, spell_x, spell_y)
 
                         if skill.level[ability_level].effect_on_caster then
                             unit_data.cast_effect = AddSpecialEffectTarget(skill.level[ability_level].effect_on_caster, unit_data.Owner, skill.level[ability_level].effect_on_caster_point)
@@ -1627,6 +1642,36 @@ do
 
                     if GetUnitState(unit_data.Owner, UNIT_STATE_LIFE) < 0.045 or HasAnyDisableState(unit_data.Owner) then return end
 
+                    if skill.target_tracking_anglesec then
+                        --print("skill tracking")
+                        local angle_per_tick = skill.target_tracking_anglesec / FPS
+                        unit_data.skill_tracking_timer = CreateTimer()
+                        local facing = GetUnitFacing(unit_data.Owner)
+
+                            TimerStart(unit_data.skill_tracking_timer, 0.025, true, function()
+                                local angle_diff = AngleBetweenUnits(unit_data.Owner, target) + 360.
+                                local heading = facing + 360.
+                                local difference_angle
+
+                                    if angle_diff > heading then difference_angle = angle_diff - heading
+                                    else difference_angle = heading - angle_diff end
+
+                                        if difference_angle > 1. and IsUnitInRange(unit_data.Owner, target, skill.level[ability_level].range or 100.) then
+
+                                            if difference_angle > angle_per_tick then difference_angle = angle_per_tick end
+
+                                            if WhichSideEx(facing, GetUnitX(target), GetUnitY(target), GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner)) then facing = facing + difference_angle
+                                            else facing = facing - difference_angle end
+
+                                            BlzSetUnitFacingEx(unit_data.Owner, facing)
+                                        end
+
+                            end)
+
+
+                    end
+
+
                     OnSkillCast(unit_data.Owner, target, spell_x, spell_y, skill, ability_level, skill_additional_data)
 
 
@@ -1646,6 +1691,22 @@ do
                                 DestroyEffect(bj_lastCreatedEffect)
                             end
 
+                            if skill.forcepointcast and target then
+                                local range = DistanceBetweenUnits(unit_data.Owner, target)
+                                    spell_x = GetUnitX(unit_data.Owner) + Rx(range, GetUnitFacing(unit_data.Owner))
+                                    spell_y = GetUnitY(unit_data.Owner) + Ry(range, GetUnitFacing(unit_data.Owner))
+                                target = nil
+                            end
+
+                            if target then
+                                local target_data = GetUnitData(target)
+                                if target_data.exploded then
+                                    spell_x = target_data.death_x
+                                    spell_y = target_data.death_y
+                                    target = nil
+                                end
+                            end
+
                                 if skill.autotrigger then
                                     if skill.level[ability_level].missile then
                                         if target then
@@ -1655,11 +1716,26 @@ do
                                                     GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), 0., 0., GetUnitFacing(unit_data.Owner), skill.level[ability_level].from_unit)
                                                 --print("throw missile end")
                                             else
-                                                --print("throw missile")
+                                                local target_data = GetUnitData(target)
+                                                local end_x, end_y = GetUnitX(target), GetUnitY(target)
                                                 local angle = AngleBetweenUnits(unit_data.Owner, target)
+
+                                                if target_data.exploded then
+                                                    end_x = target_data.death_x
+                                                    end_y = target_data.death_y
+                                                    angle = AngleBetweenUnitXY(unit_data.Owner, end_x, end_y)
+                                                end
+
+                                                if math.floor(end_x) == 0 and math.floor(end_y) == 0 then
+                                                    end_x = GetUnitX(unit_data.Owner) + Rx(25., GetUnitFacing(unit_data.Owner))
+                                                    end_y = GetUnitY(unit_data.Owner) + Ry(25., GetUnitFacing(unit_data.Owner))
+                                                    angle = AngleBetweenUnitXY(unit_data.Owner, end_x, end_y)
+                                                end
+                                                --print("throw missile")
+
                                                 SetUnitFacing(unit_data.Owner, angle)
                                                 ThrowMissile(unit_data.Owner, target, skill.level[ability_level].missile, { effect = skill.level[ability_level].effect, level = ability_level, ability_instance = skill_additional_data },
-                                                    GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), GetUnitX(target), GetUnitY(target), angle, skill.level[ability_level].from_unit)
+                                                    GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), end_x, end_y, angle, skill.level[ability_level].from_unit)
                                                 --print("throw missile end")
                                             end
                                         else
@@ -1684,6 +1760,7 @@ do
                                     end
                                 end
 
+                            --print("backswing prestart")
                             TimerStart(unit_data.action_timer, (sequence.animation_backswing or 0.) * time_reduction, false, function ()
                                 --print("backswing start")
                                 local casting_queue_skill
@@ -1697,28 +1774,45 @@ do
                                          if GetUnitState(PlayerHero[player_id], UNIT_STATE_LIFE) > 0.045 and not IsUnitDisabled(PlayerHero[player_id]) then
 
                                             if (PlayerSkillQueue[player_id].queue_skill_activation_type == TARGET_CAST or PlayerSkillQueue[player_id].queue_skill_activation_type == POINT_AND_TARGET_CAST) and PlayerSkillQueue[player_id].queue_skill_target and IsUnitInRange(PlayerHero[player_id], PlayerSkillQueue[player_id].queue_skill_target, PlayerSkillQueue[player_id].queue_skill_range) then
+                                                local target_data = GetUnitData(PlayerSkillQueue[player_id].queue_skill_target)
 
-                                                if GetUnitState(PlayerSkillQueue[player_id].queue_skill_target, UNIT_STATE_LIFE) > 0.045 then
+                                                if GetUnitState(PlayerSkillQueue[player_id].queue_skill_target, UNIT_STATE_LIFE) > 0.045 and not target_data.exploded then
                                                     IssueTargetOrderById(PlayerHero[player_id], casting_queue_skill, PlayerSkillQueue[player_id].queue_skill_target)
+                                                elseif target_data.exploded and PlayerSkillQueue[player_id].queue_skill_activation_type == POINT_AND_TARGET_CAST then
+                                                    local end_x, end_y = target_data.death_x, target_data.death_y
+
+                                                        if math.floor(end_x) == 0 and math.floor(end_y) == 0 then
+                                                            end_x = GetUnitX(unit_data.Owner) + Rx(25., GetUnitFacing(unit_data.Owner))
+                                                            end_y = GetUnitY(unit_data.Owner) + Ry(25., GetUnitFacing(unit_data.Owner))
+                                                        end
+
+                                                    IssuePointOrderById(PlayerHero[player_id], casting_queue_skill, target_data.death_x, target_data.death_y)
                                                 end
 
                                             elseif PlayerSkillQueue[player_id].queue_skill_activation_type == POINT_CAST or PlayerSkillQueue[player_id].queue_skill_activation_type == POINT_AND_TARGET_CAST then
+                                                local end_x, end_y = PlayerSkillQueue[player_id].queue_skill_x, PlayerSkillQueue[player_id].queue_skill_y
+
+                                                    if math.floor(end_x) == 0 and math.floor(end_y) == 0 then
+                                                        end_x = GetUnitX(unit_data.Owner) + Rx(25., GetUnitFacing(unit_data.Owner))
+                                                        end_y = GetUnitY(unit_data.Owner) + Ry(25., GetUnitFacing(unit_data.Owner))
+                                                    end
+
                                                 IssuePointOrderById(PlayerHero[player_id], casting_queue_skill, PlayerSkillQueue[player_id].queue_skill_x, PlayerSkillQueue[player_id].queue_skill_y)
                                             else
-                                               IssueImmediateOrderById(PlayerHero[player_id], casting_queue_skill)
+                                                IssueImmediateOrderById(PlayerHero[player_id], casting_queue_skill)
                                             end
                                         end
                                     else
+                                        local player = GetOwningPlayer(unit_data.Owner)
 
-                                        if skill.activation_type ~= SELF_CAST then
+                                        if skill.activation_type ~= SELF_CAST and GetUnitState(unit_data.Owner, UNIT_STATE_LIFE) > 0.045 and not IsUnitDisabled(unit_data.Owner) then
 
-                                            if target and GetUnitState(target, UNIT_STATE_LIFE) > 0.045 and DistanceBetweenUnits(unit_data.Owner, target) <= unit_data.equip_point[WEAPON_POINT].RANGE then
+                                            if target and IsUnitEnemy(target, player) and GetUnitState(target, UNIT_STATE_LIFE) > 0.045 and DistanceBetweenUnits(unit_data.Owner, target) <= unit_data.equip_point[WEAPON_POINT].RANGE then
                                                 IssueTargetOrderById(unit_data.Owner, order_attack,  target)
                                             else
                                                 local group = CreateGroup()
                                                 local closest_range = unit_data.equip_point[WEAPON_POINT].RANGE
                                                 local closest_unit
-                                                local player = GetPlayerId(GetOwningPlayer(unit_data.Owner))
 
                                                     GroupEnumUnitsInRange(group, GetUnitX(unit_data.Owner), GetUnitY(unit_data.Owner), unit_data.equip_point[WEAPON_POINT].RANGE or 125., nil)
 
@@ -1750,6 +1844,11 @@ do
                             end
 
                             if IsAHero(unit_data.Owner) then PlayerCanChangeEquipment[GetPlayerId(GetOwningPlayer(unit_data.Owner))+1] = true end
+
+                            if unit_data.skill_tracking_timer then
+                                DestroyTimer(unit_data.skill_tracking_timer)
+                                unit_data.skill_tracking_timer = nil
+                            end
 
                         end)
 

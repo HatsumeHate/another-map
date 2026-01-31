@@ -106,6 +106,7 @@ do
 		SetGameSpeed(MAP_SPEED_FASTEST)
 		SetMapFlag(MAP_LOCK_SPEED, true)
 		EnableOcclusion(true)
+		BlzChangeMinimapTerrainTex("war3mapMap123.blp")
 
 		MONSTER_PLAYER = Player(10)
         SECOND_MONSTER_PLAYER = Player(11)
@@ -126,15 +127,15 @@ do
 					InitAltars, InitQuestMaster, InitQuestUtils, InitNPCs, InitFileData
 				}
 
-				TimerStart(GetExpiredTimer(), 0.05, true, function()
+				TimerStart(timer, 0.05, true, function()
 					func_id = func_id + 1
 
 					if init_que[func_id] then
 						init_que[func_id]()
 						print("Loading data " .. func_id.." / " .. #init_que)
 					else
-						DestroyTimer(GetExpiredTimer())
-						InitWeather(bj_mapInitialPlayableArea)
+						DestroyTimer(timer)
+						InitWeather(gg_rct_outer_map)
 						InitUnitsDataOnMap()
 						print("Done")
 
@@ -158,6 +159,7 @@ do
 						CreateHeroSelections()
 						CreatePlayerUI()
 						LoadPlayerProgression()
+						DrawDiffPanel()
 
 						PickUpItemReaction("I02U", function()
 							local picker = GetTriggerUnit()
@@ -181,7 +183,6 @@ do
 
 						end)
 
-
 						local timer = CreateTimer()
 						TimerStart(timer, 5., false, function()
 							WavesInit()
@@ -195,6 +196,7 @@ do
 							AddQuestItem("cred",  "cred6",  "XGM:|nBergiBear, NazarPunk, MF, Empyreal, Beyhut, Prometheus, PrincePhoenix, RoyMustang, NightSiren",  false)
 							DelayAction(145., function() EnableQuest1NPC() end)
 							DelayAction(225., function() EnableMainQuest1() end )
+							StartDifficultyPick()
 						end)
 					end
 
@@ -252,6 +254,7 @@ do
 
 				DoNotSaveReplay()
 				AirPathingUnit = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE), FourCC("hgry"), 0.,0., 0.)
+				UnitAddAbility(AirPathingUnit, FourCC("Avul"))
 				ShowUnit(AirPathingUnit, false)
 				GroundPathingItem = CreateItem(FourCC("rde2"), 0.,0.)
 				SetItemVisible(GroundPathingItem, false)

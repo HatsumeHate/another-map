@@ -693,7 +693,7 @@ do
                                     if GetLocalPlayer() == Player(id) then BlzFrameSetVisible(ShopFrame[player].main_frame, false) end
                                     DestroyTimer(GetExpiredTimer())
                                     if soundpack then
-                                        PlayLocalSound(soundpack.close[GetRandomInt(1, #soundpack.open)], id, 125)
+                                        PlayLocalSound(soundpack.close[GetRandomInt(1, #soundpack.close)], id, 125)
                                     end
                                 end
                             end)

@@ -89,6 +89,21 @@ do
     end
 
 
+    function CheckRaiseSkeletonSkillSummonCap(caster)
+        local max = 2 + math.floor(UnitGetAbilityLevel(caster, "ANRD") / 6)
+        local skill = GetUnitSkillData(caster, "ANRD")
+
+            if skill.summoned_group and BlzGroupGetSize(skill.summoned_group) > 0 then
+                if BlzGroupGetSize(skill.summoned_group) > max then
+                    local difference = BlzGroupGetSize(skill.summoned_group) - max
+
+                        for i = 1, difference do KillUnit(BlzGroupUnitAt(skill.summoned_group, i-1)) end
+
+                end
+            end
+
+    end
+
     function RaiseSkeletonSkill(caster)
         local group = CreateGroup()
         local raw = FourCC("h003")
@@ -97,6 +112,7 @@ do
         local level = UnitGetAbilityLevel(caster, "ANRD")
         local max = 2 + math.floor(level / 6)
 
+        if UnitHasEffect(caster, "cohk_legendary") then max = max + 5 end
 
             GroupEnumUnitsInRange(group, GetUnitX(caster), GetUnitY(caster), 600., nil)
 
@@ -202,9 +218,10 @@ do
                                         DestroyEffect(sfx)
                                         SetUnitAnimation(summoned, "Stand")
                                         SafePauseUnit(summoned, false)
-                                        CreateLeashForSummonedUnit(summoned, caster, 700.)
+                                        CreateLeashForSummonedUnit(summoned, caster, 950.)
                                         ModifyStat(summoned, HP_VALUE, math.floor((50 * level) * power), STRAIGHT_BONUS, true)
                                         ModifyStat(summoned, HP_REGEN, (1. + (0.01 * level)) * power, MULTIPLY_BONUS, true)
+                                        ModifyStat(summoned, CRIT_CHANCE, math.floor(((0.35 * level)) * power), STRAIGHT_BONUS, true)
                                         ModifyStat(summoned, PHYSICAL_ATTACK, math.floor((3 * level) * power), STRAIGHT_BONUS, true)
                                         ModifyStat(summoned, MAGICAL_ATTACK, math.floor((4 * level) * power), STRAIGHT_BONUS, true)
                                         ModifyStat(summoned, DARKNESS_BONUS, math.floor((1 * level) * power), STRAIGHT_BONUS, true)
@@ -267,7 +284,7 @@ do
                 local corpses = {}
                 local power = GetUnitParameterValue(caster, MINION_POWER)
 
-                GroupEnumUnitsInRange(group, GetUnitX(caster), GetUnitY(caster), 700., nil)
+                GroupEnumUnitsInRange(group, GetUnitX(caster), GetUnitY(caster), 825., nil)
 
                     for index = BlzGroupGetSize(group) - 1, 0, -1 do
                         local picked = BlzGroupUnitAt(group, index)
@@ -335,9 +352,10 @@ do
                             DelayAction(0., function()
                                 local unit_data = GetUnitData(summoned)
                                 unit_data.minion_owner = caster
-                                CreateLeashForSummonedUnit(summoned, caster, 600.)
+                                CreateLeashForSummonedUnit(summoned, caster, 850.)
                                 ModifyStat(summoned, HP_VALUE, math.floor((50 * level) * power), STRAIGHT_BONUS, true)
                                 ModifyStat(summoned, HP_REGEN, (1. + (0.01 * level)) * power, MULTIPLY_BONUS, true)
+                                ModifyStat(summoned, CRIT_CHANCE, math.floor(((0.35 * level)) * power), STRAIGHT_BONUS, true)
                                 ModifyStat(summoned, PHYSICAL_ATTACK, math.floor((3 * level) * power), STRAIGHT_BONUS, true)
                                 ModifyStat(summoned, MAGICAL_ATTACK, math.floor((4 * level) * power), STRAIGHT_BONUS, true)
                                 ModifyStat(summoned, DARKNESS_BONUS, math.floor((1 * level) * power), STRAIGHT_BONUS, true)

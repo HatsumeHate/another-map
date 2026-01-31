@@ -359,37 +359,35 @@ do
                  local item_data = GetItemData(exchange_button.item)
                  local gold = GetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD)
 
-                 if item_data.restricted_to then
-                     if item_data.restricted_to == unit_data.unit_class then
-                         Feedback_CantUse(player)
-                     else
-                         if gold >= LibrarianFrame[player].exchange_cost then
-                             SetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD, gold - LibrarianFrame[player].exchange_cost)
-                             PlayLocalSound("Sound\\altarshop_buymagicspell.wav", player-1, 115)
-                             BlzFrameSetText(LibrarianFrame[player].exchange_frame, "")
-                             LibrarianFrame[player].exchange_cost = 0
-                             local quality = item_data.QUALITY
-                             DropItemFromInventory(player, exchange_button.item, true)
-                             RemoveCustomItem(exchange_button.item)
-                             exchange_button.item = nil
-                             UpdateLibrarianWindow(player)
+                     if item_data.restricted_to then
 
-                             local category_button = GetButtonData(LibrarianFrame[player].categories[LibrarianFrame[player].last_category])
-                             local new_book
+                             if gold >= LibrarianFrame[player].exchange_cost then
+                                 SetPlayerState(Player(player - 1), PLAYER_STATE_RESOURCE_GOLD, gold - LibrarianFrame[player].exchange_cost)
+                                 PlayLocalSound("Sound\\altarshop_buymagicspell.wav", player-1, 115)
+                                 BlzFrameSetText(LibrarianFrame[player].exchange_frame, "")
+                                 LibrarianFrame[player].exchange_cost = 0
+                                 local quality = item_data.QUALITY
+                                 DropItemFromInventory(player, exchange_button.item, true)
+                                 RemoveCustomItem(exchange_button.item)
+                                 exchange_button.item = nil
+                                 UpdateLibrarianWindow(player)
 
-                             if category_button.category then
-                                 new_book = CreateCustomItem(GetBookClassCategory(unit_data.unit_class, quality, category_button.category), 0.,0., false)
+                                 local category_button = GetButtonData(LibrarianFrame[player].categories[LibrarianFrame[player].last_category])
+                                 local new_book
+
+                                 if category_button.category then
+                                     new_book = CreateCustomItem(GetBookClassCategory(unit_data.unit_class, quality, category_button.category), 0.,0., false)
+                                 else
+                                     new_book = CreateCustomItem(GetRandomBookClass(unit_data.unit_class, quality), 0.,0., false)
+                                 end
+
+
+                                 AddToInventory(player, new_book)
                              else
-                                 new_book = CreateCustomItem(GetRandomBookClass(unit_data.unit_class, quality), 0.,0., false)
+                                 Feedback_NoGold(player)
                              end
-
-
-                             AddToInventory(player, new_book)
-                         else
-                             Feedback_NoGold(player)
-                         end
                      end
-                 end
+
              elseif button.button_type == 2 then
                  for i = 1, 5 do
                      local cat_data = GetButtonData(LibrarianFrame[player].categories[i])

@@ -95,11 +95,11 @@ do
                         DelayAction(0., function()
                             local summon_data = GetUnitData(summoned)
                                 summon_data.minion_owner = caster
-                                CreateLeashForSummonedUnit(summoned, caster, 700.)
+                                CreateLeashForSummonedUnit(summoned, caster, 850.)
                                 ModifyStat(summoned, HP_VALUE, math.floor((50 * Current_Wave) * power), STRAIGHT_BONUS, true)
                                 ModifyStat(summoned, HP_REGEN, (1. + (0.01 * Current_Wave)) * power, MULTIPLY_BONUS, true)
                                 ModifyStat(summoned, PHYSICAL_ATTACK, math.floor((3 * Current_Wave) * power), STRAIGHT_BONUS, true)
-                                ModifyStat(summoned, MAGICAL_ATTACK, math.floor((4 * Current_Wave) * power), STRAIGHT_BONUS, true)
+                                ModifyStat(summoned, MAGICAL_ATTACK, math.floor((6 * Current_Wave) * power), STRAIGHT_BONUS, true)
 
                                     if GetUnitTalentLevel(caster, "talent_experienced_summoner") > 0 then
                                         if GetUnitTalentLevel(caster, "talent_experienced_summoner") == 1 then ModifyStat(summoned, HP_VALUE, 1.1, MULTIPLY_BONUS, true)

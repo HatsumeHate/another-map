@@ -7,9 +7,7 @@ do
 
     local Droplists
     local GOLD_CONST_PER_LEVEL = 1
-    local GOLD_MOD_PER_LEVEL = 0.012
-
-
+    local GOLD_MOD_PER_LEVEL = 0.011
 
     ---@param id string
     function GetDropList(id)
@@ -102,29 +100,36 @@ do
     ---@param bundle table
     ---@param min integer
     ---@param max integer
-    local function AddItemsToDropBundle(droplist, bundle, bonus_drop_chance)
+    local function AddItemsToDropBundle(droplist, bundle, bonus_drop_chance, global_min)
         local list = droplist.list
-        local min = droplist.min or 1
+        local min = droplist.min or 0
         local max = droplist.max or 1
         local rolls = droplist.rolls or 1
-        local random = GetRandomIntTable(1, #list, #list)
+        local random
         local current_item_count = 0
 
-            for i = 1, #list do
-                local chance = current_item_count < min and 126. or (list[random[i]].chance or 100.)
+            for roll = 1, rolls do
+                random = GetRandomIntTable(1, #list, #list)
+                for i = 1, #list do
+                    local chance = current_item_count < min and 126. or (list[random[i]].chance or 100.)
 
-                if Chance(chance * bonus_drop_chance) then
-
-                    if list[random[i]].generate then
-                        list[random[i]].quality_list = droplist.quality
+                    if global_min > 0 and chance < 100. then
+                        chance = 100.
+                        global_min = global_min - 1
                     end
 
-                    bundle[#bundle + 1] = list[random[i]]
-                    if current_item_count >= min then rolls = rolls - 1 end
-                end
+                    if Chance(chance * bonus_drop_chance) then
 
-                current_item_count = current_item_count + 1
-                if current_item_count >= max or rolls <= 0 then break end
+                        if list[random[i]].generate then
+                            list[random[i]].quality_list = droplist.quality
+                        end
+
+                        bundle[#bundle + 1] = list[random[i]]
+                    end
+
+                    current_item_count = current_item_count + 1
+                    if current_item_count >= max then break end
+                end
             end
 
     end
@@ -138,7 +143,7 @@ do
     ---@param droplist table
     function DropDroplistForPlayer(player, x, y, min_offset, max_offset, droplist)
         local item_drop = {}
-        local min = droplist.min or 1
+        local min = droplist.min or 0
         local max = droplist.max or 1
         local current = 0
         local initial_time_offset = 0.45
@@ -151,7 +156,7 @@ do
                     local inner_droplist = GetProperDropList(droplist.list[i].id)
 
                         if inner_droplist then
-                            AddItemsToDropBundle(inner_droplist, item_drop, bonus_drop_chance * GLOBAL_DROP_RATE)
+                            AddItemsToDropBundle(inner_droplist, item_drop, bonus_drop_chance * GLOBAL_DROP_RATE, min)
                         end
 
                 end
@@ -172,7 +177,26 @@ do
                                 if item_drop[i].id == "gold" then
                                     CreateGoldStack(math.floor((GetRandomInt(item_drop[i].min, item_drop[i].max) + (GOLD_CONST_PER_LEVEL * Current_Wave)) * (1. + GOLD_MOD_PER_LEVEL * Current_Wave) * (1. + GetUnitParameterValue(PlayerHero[player], GOLD_BONUS) * 0.01) * GLOBAL_GOLD_RATE), new_x, new_y, player-1)
                                 else
-                                    local item = CreateCustomItem(item_drop[i].id, new_x, new_y, true, player-1)
+                                    local id = item_drop[i].id
+
+                                        if id == "common_books_restricted" or id == "rare_books_restricted" or id == "magic_books_restricted" then
+
+                                            if Chance(65.) then
+                                                local class = GetUnitClass(PlayerHero[player])
+
+                                                    if id == "common_books_restricted" then id = GetRandomBookClass(class, COMMON_ITEM)
+                                                    elseif id == "rare_books_restricted" then id = GetRandomBookClass(class, RARE_ITEM)
+                                                    else id = GetRandomBookClass(class, MAGIC_ITEM) end
+
+                                            else
+                                                if id == "common_books_restricted" then id = GetRandomBookItemId(COMMON_ITEM)
+                                                elseif id == "rare_books_restricted" then id = GetRandomBookItemId(RARE_ITEM)
+                                                else id = GetRandomBookItemId(MAGIC_ITEM) end
+                                            end
+
+                                        end
+                                    
+                                    local item = CreateCustomItem(id, new_x, new_y, true, player-1)
 
                                         if item_drop[i].generate then
                                             local item_data = GetItemData(item)
@@ -231,10 +255,8 @@ do
 
     end
 
-
     function InitDroplist()
         Droplists = {}
-
 
         NewDropList("common_item", {
             quality = {
@@ -327,6 +349,10 @@ do
                 { id = "I04M", generate = true }, --nightwalkers
                 { id = "I04N", generate = true }, --trick
                 { id = "I04X", generate = true }, --icebound
+                { id = "I04Z", generate = true }, --serpentfang
+                { id = "I050", generate = true }, --crownhollow
+                { id = "I051", generate = true }, --dawnweaver
+                { id = "I01L", generate = true }, --nightwatch
             }
         })
 
@@ -356,15 +382,15 @@ do
             max = 2,
             rolls = 3,
             list = {
-                { id = ITEM_RUNE_FEH, chance = 11. },
-                { id = ITEM_RUNE_GEBO, chance = 11. },
-                { id = ITEM_RUNE_RAIDO, chance = 11. },
-                { id = ITEM_RUNE_DAG, chance = 11. },
-                { id = ITEM_RUNE_SOL, chance = 11. },
-                { id = ITEM_RUNE_ISA, chance = 11. },
-                { id = ITEM_RUNE_EHW, chance = 11. },
-                { id = ITEM_RUNE_BER, chance = 11. },
-                { id = ITEM_RUNE_KANO, chance = 11. },
+                { id = ITEM_RUNE_FEH, chance = 15. },
+                { id = ITEM_RUNE_GEBO, chance = 15. },
+                { id = ITEM_RUNE_RAIDO, chance = 15. },
+                { id = ITEM_RUNE_DAG, chance = 15. },
+                { id = ITEM_RUNE_SOL, chance = 15. },
+                { id = ITEM_RUNE_ISA, chance = 15. },
+                { id = ITEM_RUNE_EHW, chance = 15. },
+                { id = ITEM_RUNE_BER, chance = 15. },
+                { id = ITEM_RUNE_KANO, chance = 15. },
             }
         })
 
@@ -386,18 +412,18 @@ do
             max = 4,
             rolls = 5,
             list = {
-                { id = ITEM_STONE_DIAMOND, chance = 30., max = 5 },
-                { id = ITEM_STONE_AMETHYST, chance = 30., max = 5 },
-                { id = ITEM_STONE_TURQUOISE, chance = 30., max = 5 },
-                { id = ITEM_STONE_EMERALD, chance = 30., max = 5 },
-                { id = ITEM_STONE_MALACHITE, chance = 30., max = 5 },
-                { id = ITEM_STONE_JADE, chance = 30., max = 5 },
-                { id = ITEM_STONE_OPAL, chance = 30., max = 5 },
-                { id = ITEM_STONE_RUBY, chance = 30., max = 5 },
-                { id = ITEM_STONE_SAPPHIRE, chance = 30., max = 5 },
-                { id = ITEM_STONE_TOPAZ, chance = 30., max = 5 },
-                { id = ITEM_STONE_AMBER, chance = 30., max = 5 },
-                { id = ITEM_STONE_AQUAMARINE, chance = 30., max = 5 },
+                { id = ITEM_STONE_DIAMOND, chance = 30., min = 3, max = 5 },
+                { id = ITEM_STONE_AMETHYST, chance = 30.,  min = 3, max = 5 },
+                { id = ITEM_STONE_TURQUOISE, chance = 30.,  min = 3, max = 5 },
+                { id = ITEM_STONE_EMERALD, chance = 30.,  min = 3, max = 5 },
+                { id = ITEM_STONE_MALACHITE, chance = 30.,  min = 3, max = 5 },
+                { id = ITEM_STONE_JADE, chance = 30.,  min = 3, max = 5 },
+                { id = ITEM_STONE_OPAL, chance = 30.,  min = 3, max = 5 },
+                { id = ITEM_STONE_RUBY, chance = 30.,  min = 3, max = 5 },
+                { id = ITEM_STONE_SAPPHIRE, chance = 30.,  min = 3, max = 5 },
+                { id = ITEM_STONE_TOPAZ, chance = 30.,  min = 3, max = 5 },
+                { id = ITEM_STONE_AMBER, chance = 30.,  min = 3, max = 5 },
+                { id = ITEM_STONE_AQUAMARINE, chance = 30.,  min = 3, max = 5 },
             }
         })
 
@@ -405,15 +431,15 @@ do
             max = 2,
             rolls = 4,
             list = {
-                { id = ITEM_RUNE_FEH, chance = 30., max = 2 },
-                { id = ITEM_RUNE_GEBO, chance = 30., max = 2 },
-                { id = ITEM_RUNE_RAIDO, chance = 30., max = 2 },
-                { id = ITEM_RUNE_DAG, chance = 30., max = 2 },
-                { id = ITEM_RUNE_SOL, chance = 30., max = 2 },
-                { id = ITEM_RUNE_ISA, chance = 30., max = 2 },
-                { id = ITEM_RUNE_EHW, chance = 30., max = 2 },
-                { id = ITEM_RUNE_BER, chance = 30., max = 2 },
-                { id = ITEM_RUNE_KANO, chance = 30., max = 2 },
+                { id = ITEM_RUNE_FEH, chance = 30., min = 2, max = 2 },
+                { id = ITEM_RUNE_GEBO, chance = 30., min = 2, max = 2 },
+                { id = ITEM_RUNE_RAIDO, chance = 30., min = 2, max = 2 },
+                { id = ITEM_RUNE_DAG, chance = 30., min = 2, max = 2 },
+                { id = ITEM_RUNE_SOL, chance = 30., min = 2, max = 2 },
+                { id = ITEM_RUNE_ISA, chance = 30., min = 2, max = 2 },
+                { id = ITEM_RUNE_EHW, chance = 30., min = 2, max = 2 },
+                { id = ITEM_RUNE_BER, chance = 30., min = 2, max = 2 },
+                { id = ITEM_RUNE_KANO, chance = 30., min = 2, max = 2 },
             }
         })
 
@@ -430,8 +456,9 @@ do
                 { id = ITEM_SCROLL_OF_TOWN_PORTAL, chance = 8.3 },
                 { id = ITEM_SCROLL_OF_PROTECTION, chance = 7.4 },
                 { id = ITEM_SCROLL_OF_PETRI, chance = 7.4 },
-                { id = ITEM_NECRONOMICON, chance = 3.5, max = 2 },
+                { id = ITEM_NECRONOMICON, chance = 9., max = 2 },
                 { id = ITEM_ELIXIR_INNOCENCE, chance = 4.7, max = 3 },
+                { id = ITEM_ASHEN_TONIC, chance = 4.7, max = 3 },
             }
         })
 
@@ -456,8 +483,9 @@ do
                 { id = ITEM_POTION_ADRENALINE, chance = 15., max = 5 },
                 { id = ITEM_SCROLL_OF_PROTECTION, chance = 10., max = 5 },
                 { id = ITEM_SCROLL_OF_PETRI, chance = 10., max = 5 },
-                { id = ITEM_NECRONOMICON, chance = 15.5, max = 5 },
+                { id = ITEM_NECRONOMICON, chance = 25., max = 5 },
                 { id = ITEM_ELIXIR_INNOCENCE, chance = 15., max = 5 },
+                { id = ITEM_ASHEN_TONIC, chance = 15., max = 5 },
             }
         })
 
@@ -576,13 +604,239 @@ do
             }
         })
 
+        NewDropList("library_common_books_low", {
+            rolls = 5,
+            list = {
+                { id = "I017" },
+                { id = "I016" },
+                { id = "I015" },
+                { id = "I014" },
+                { id = "I013" },
+                { id = "I00V" },
+                { id = "I00U" },
+                { id = "I028" },
+                { id = "I029" },
+                { id = "I02A" },
+                { id = "I03E" },
+                { id = "I03F" },
+                { id = "I03G" },
+                { id = "I044" },
+                { id = "I04O" },
+                { id = "I04R" },
+                { id = "I04U" }
+            }
+        })
+
+        NewDropList("library_rare_books_low", {
+            rolls = 4,
+            list = {
+                { id = "I023" },
+                { id = "I024" },
+                { id = "I025" },
+                { id = "I021" },
+                { id = "I020" },
+                { id = "I01Z" },
+                { id = "I022" },
+                { id = "I02B" },
+                { id = "I02C" },
+                { id = "I02D" },
+                { id = "I03H" },
+                { id = "I03I" },
+                { id = "I03J" },
+                { id = "I045" },
+                { id = "I04P" },
+                { id = "I04S" },
+                { id = "I04V" }
+            }
+        })
+
+        NewDropList("library_magic_books_low", {
+            rolls = 3,
+            list = {
+                { id = "I04C" },
+                { id = "I04D" },
+                { id = "I04E" },
+                { id = "I048" },
+                { id = "I049" },
+                { id = "I04A" },
+                { id = "I04B" },
+                { id = "I04F" },
+                { id = "I04G" },
+                { id = "I04H" },
+                { id = "I04I" },
+                { id = "I04J" },
+                { id = "I04K" },
+                { id = "I04L" },
+                { id = "I04Q" },
+                { id = "I04T" },
+                { id = "I04W" }
+            }
+        })
+
+        NewDropList("library_common_books_mid", {
+            rolls = 6,
+            list = {
+                { id = "I017" },
+                { id = "I016" },
+                { id = "I015" },
+                { id = "I014" },
+                { id = "I013" },
+                { id = "I00V" },
+                { id = "I00U" },
+                { id = "I028" },
+                { id = "I029" },
+                { id = "I02A" },
+                { id = "I03E" },
+                { id = "I03F" },
+                { id = "I03G" },
+                { id = "I044" },
+                { id = "I04O" },
+                { id = "I04R" },
+                { id = "I04U" }
+            }
+        })
+
+        NewDropList("library_rare_books_mid", {
+            rolls = 5,
+            list = {
+                { id = "I023" },
+                { id = "I024" },
+                { id = "I025" },
+                { id = "I021" },
+                { id = "I020" },
+                { id = "I01Z" },
+                { id = "I022" },
+                { id = "I02B" },
+                { id = "I02C" },
+                { id = "I02D" },
+                { id = "I03H" },
+                { id = "I03I" },
+                { id = "I03J" },
+                { id = "I045" },
+                { id = "I04P" },
+                { id = "I04S" },
+                { id = "I04V" }
+            }
+        })
+
+        NewDropList("library_magic_books_mid", {
+            rolls = 4,
+            list = {
+                { id = "I04C" },
+                { id = "I04D" },
+                { id = "I04E" },
+                { id = "I048" },
+                { id = "I049" },
+                { id = "I04A" },
+                { id = "I04B" },
+                { id = "I04F" },
+                { id = "I04G" },
+                { id = "I04H" },
+                { id = "I04I" },
+                { id = "I04J" },
+                { id = "I04K" },
+                { id = "I04L" },
+                { id = "I04Q" },
+                { id = "I04T" },
+                { id = "I04W" }
+            }
+        })
+
+        NewDropList("library_common_books_high", {
+            rolls = 7,
+            list = {
+                { id = "I017" },
+                { id = "I016" },
+                { id = "I015" },
+                { id = "I014" },
+                { id = "I013" },
+                { id = "I00V" },
+                { id = "I00U" },
+                { id = "I028" },
+                { id = "I029" },
+                { id = "I02A" },
+                { id = "I03E" },
+                { id = "I03F" },
+                { id = "I03G" },
+                { id = "I044" },
+                { id = "I04O" },
+                { id = "I04R" },
+                { id = "I04U" }
+            }
+        })
+
+        NewDropList("library_rare_books_high", {
+            rolls = 6,
+            list = {
+                { id = "I023" },
+                { id = "I024" },
+                { id = "I025" },
+                { id = "I021" },
+                { id = "I020" },
+                { id = "I01Z" },
+                { id = "I022" },
+                { id = "I02B" },
+                { id = "I02C" },
+                { id = "I02D" },
+                { id = "I03H" },
+                { id = "I03I" },
+                { id = "I03J" },
+                { id = "I045" },
+                { id = "I04P" },
+                { id = "I04S" },
+                { id = "I04V" }
+            }
+        })
+
+        NewDropList("library_magic_books_high", {
+            rolls = 5,
+            list = {
+                { id = "I04C" },
+                { id = "I04D" },
+                { id = "I04E" },
+                { id = "I048" },
+                { id = "I049" },
+                { id = "I04A" },
+                { id = "I04B" },
+                { id = "I04F" },
+                { id = "I04G" },
+                { id = "I04H" },
+                { id = "I04I" },
+                { id = "I04J" },
+                { id = "I04K" },
+                { id = "I04L" },
+                { id = "I04Q" },
+                { id = "I04T" },
+                { id = "I04W" }
+            }
+        })
+
+
+        NewDropList("books_restricted", {
+            list = {
+                { id = "magic_books_restricted", chance = 5. },
+                { id = "rare_books_restricted", chance = 20. },
+                { id = "common_books_restricted", chance = 45. },
+            }
+        })
+
 
         NewDropList("books", {
             template = true,
             list = {
-                { id = "magic_books", chance = 7. },
-                { id = "rare_books", chance = 23. },
+                { id = "magic_books", chance = 5. },
+                { id = "rare_books", chance = 20. },
                 { id = "common_books", chance = 45. },
+            }
+        })
+
+        NewDropList("keys", {
+            max = 2,
+            rolls = 2,
+            list = {
+                { id = "I054", chance = 7. },
+                { id = "I053", chance = 20. },
+                { id = "I052", chance = 45. },
             }
         })
 
@@ -590,12 +844,13 @@ do
             template = true,
             max = 2,
             list = {
-                { id = "common_item", chance = 7.5 },
+                { id = "common_item", chance = 4. },
                 { id = "consumables", chance = 4. },
-                { id = "gems", chance = 2. },
-                { id = "books", chance = 16.5 },
+                { id = "gems", chance = 1.25 },
+                { id = "books_restricted", chance = 8.5 },
+                { id = "keys", chance = 1. },
                 { id = "unique_items", chance = 0.03 },
-                { id = "gold_common", chance = 70. }
+                { id = "gold_common", chance = 40. }
             }
         })
 
@@ -608,16 +863,17 @@ do
             template = true,
             max = 4,
             list = {
-                { id = "adv_item", chance = 13.8 },
-                { id = "gems", chance = 17. },
-                { id = "runes", chance = 9. },
-                { id = "consumables", chance = 9. },
+                { id = "adv_item", chance = 8.3 },
+                { id = "gems", chance = 12. },
+                { id = "runes", chance = 7. },
+                { id = "consumables", chance = 10. },
                 { id = "consumables_potions_strong", chance = 4. },
-                { id = "books", chance = 31. },
+                { id = "books_restricted", chance = 15. },
+                { id = "keys", chance = 3.5 },
                 { id = "special_items", chance = 5. },
-                { id = "gold_adv", chance = 70. },
                 { id = "unique_items", chance = 0.05 },
-                { id = "gifts", chance = 3. },
+                { id = "gifts", chance = 5.75 },
+                { id = "gold_adv", chance = 50. },
             }
         })
 
@@ -687,19 +943,21 @@ do
 
         NewDropList("boss_enemy", {
             template = true,
+            rolls = 2,
             max = 6,
             list = {
                 { id = "boss_item", chance = 38.5 },
                 { id = "unique_items", chance = 7. },
-                { id = "gems", chance = 25. },
-                { id = "runes", chance = 33. },
+                { id = "gems", chance = 33. },
+                { id = "runes", chance = 50. },
                 { id = "consumables", chance = 11. },
                 { id = "consumables_potions_strong", chance = 11. },
                 { id = "books", chance = 37. },
+                { id = "keys", chance = 50. },
                 { id = "shard", chance = 10. },
                 { id = "special_items", chance = 10. },
+                { id = "gifts", chance = 65. },
                 { id = "gold_boss", chance = 70.},
-                { id = "gifts", chance = 40. },
             }
         })
 
@@ -735,32 +993,201 @@ do
             }
         })
 
+        NewDropList("crypt_chest_item_low", {
+            max = 6,
+            rolls = 6,
+            quality = {
+                { quality = MAGIC_ITEM, chance = 15. },
+                { quality = RARE_ITEM, chance = 40. },
+                { quality = COMMON_ITEM, chance = 100. },
+            },
+            list = {
+                { id = GetGeneratedItemId(SWORD_WEAPON), chance = 30., generate = true  },
+                { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(AXE_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(STAFF_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(BOW_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(CHEST_ARMOR), chance = 30., generate = true },
+                { id = GetGeneratedItemId(HEAD_ARMOR), chance = 30., generate = true },
+                { id = GetGeneratedItemId(HANDS_ARMOR), chance = 30., generate = true },
+                { id = GetGeneratedItemId(LEGS_ARMOR), chance = 30., generate = true },
+                { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 30., generate = true },
+                { id = GetGeneratedItemId(RING_JEWELRY), chance = 30., generate = true },
+                { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 30., generate = true },
+                { id = GetGeneratedItemId(ORB_OFFHAND), chance = 30., generate = true },
+                { id = GetGeneratedItemId(BELT_ARMOR), chance = 30., generate = true },
+                { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 30., generate = true },
+            }
+        })
+
+        NewDropList("crypt_chest_item_mid", {
+            max = 7,
+            rolls = 7,
+            quality = {
+                { quality = MAGIC_ITEM, chance = 20. },
+                { quality = RARE_ITEM, chance = 50. },
+                { quality = COMMON_ITEM, chance = 100. },
+            },
+            list = {
+                { id = GetGeneratedItemId(SWORD_WEAPON), chance = 30., generate = true  },
+                { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(AXE_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(STAFF_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(BOW_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(CHEST_ARMOR), chance = 30., generate = true },
+                { id = GetGeneratedItemId(HEAD_ARMOR), chance = 30., generate = true },
+                { id = GetGeneratedItemId(HANDS_ARMOR), chance = 30., generate = true },
+                { id = GetGeneratedItemId(LEGS_ARMOR), chance = 30., generate = true },
+                { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 30., generate = true },
+                { id = GetGeneratedItemId(RING_JEWELRY), chance = 30., generate = true },
+                { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 30., generate = true },
+                { id = GetGeneratedItemId(ORB_OFFHAND), chance = 30., generate = true },
+                { id = GetGeneratedItemId(BELT_ARMOR), chance = 30., generate = true },
+                { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 30., generate = true },
+            }
+        })
+
+        NewDropList("crypt_chest_item_high", {
+            max = 8,
+            rolls = 8,
+            quality = {
+                { quality = MAGIC_ITEM, chance = 35. },
+                { quality = RARE_ITEM, chance = 65. },
+                { quality = COMMON_ITEM, chance = 100. },
+            },
+            list = {
+                { id = GetGeneratedItemId(SWORD_WEAPON), chance = 30., generate = true  },
+                { id = GetGeneratedItemId(GREATSWORD_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(AXE_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(GREATAXE_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(BLUNT_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(GREATBLUNT_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(STAFF_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(DAGGER_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(BOW_WEAPON), chance = 30., generate = true },
+                { id = GetGeneratedItemId(CHEST_ARMOR), chance = 30., generate = true },
+                { id = GetGeneratedItemId(HEAD_ARMOR), chance = 30., generate = true },
+                { id = GetGeneratedItemId(HANDS_ARMOR), chance = 30., generate = true },
+                { id = GetGeneratedItemId(LEGS_ARMOR), chance = 30., generate = true },
+                { id = GetGeneratedItemId(NECKLACE_JEWELRY), chance = 30., generate = true },
+                { id = GetGeneratedItemId(RING_JEWELRY), chance = 30., generate = true },
+                { id = GetGeneratedItemId(SHIELD_OFFHAND), chance = 30., generate = true },
+                { id = GetGeneratedItemId(ORB_OFFHAND), chance = 30., generate = true },
+                { id = GetGeneratedItemId(BELT_ARMOR), chance = 30., generate = true },
+                { id = GetGeneratedItemId(QUIVER_OFFHAND), chance = 30., generate = true },
+            }
+        })
+
         NewDropList("chest", {
             template = true,
             max = 4,
             list = {
                 { id = "chest_item", chance = 47.5 },
                 { id = "unique_items", chance = 4. },
-                { id = "gems", chance = 25. },
-                { id = "runes", chance = 17. },
+                { id = "gems", chance = 50. },
+                { id = "runes", chance = 30. },
                 { id = "consumables", chance = 11. },
                 { id = "special_items", chance = 7. },
-                { id = "gold_chest", chance = 90.},
-                { id = "gifts", chance = 7. },
+                { id = "keys", chance = 25. },
+                { id = "gifts", chance = 20. },
                 { id = "books", chance = 50. },
+                { id = "gold_chest", chance = 90.},
             }
         })
 
         NewDropList("supply_crate", {
             template = true,
+            min = 1,
             max = 5,
             list = {
                 { id = "chest_item", chance = 65.5 },
                 { id = "unique_items", chance = 1. },
-                { id = "gems_supply", chance = 50. },
-                { id = "runes_supply", chance = 50. },
+                { id = "gems_supply", chance = 75. },
+                { id = "runes_supply", chance = 65. },
                 { id = "consumables_supply", chance = 20. },
+                { id = "books", chance = 50. },
+                { id = "keys", chance = 75. },
                 { id = "gold_supply", chance = 100.}
+            }
+        })
+
+        NewDropList("library_books_low", {
+            template = true,
+            min = 1,
+            max = 6,
+            list = {
+                { id = "library_magic_books_low", chance = 20. },
+                { id = "library_rare_books_low", chance = 50. },
+                { id = "library_common_books_low", chance = 100. },
+            }
+        })
+
+        NewDropList("library_books_mid", {
+            template = true,
+            min = 3,
+            max = 10,
+            list = {
+                { id = "library_magic_books_mid", chance = 30. },
+                { id = "library_rare_books_mid", chance = 50. },
+                { id = "library_common_books_mid", chance = 100. },
+            }
+        })
+
+        NewDropList("library_books_high", {
+            template = true,
+            min = 5,
+            max = 14,
+            list = {
+                { id = "library_magic_books_high", chance = 40. },
+                { id = "library_rare_books_high", chance = 65. },
+                { id = "library_common_books_high", chance = 100. },
+            }
+        })
+
+        NewDropList("crypt_chest_low", {
+            template = true,
+            min = 2,
+            max = 5,
+            list = {
+                { id = "unique_items", chance = 1. },
+                { id = "crypt_chest_item_low", chance = 100. },
+                { id = "gifts", chance = 15. },
+                { id = "runes", chance = 15. },
+                { id = "gold_chest", chance = 100. },
+            }
+        })
+
+        NewDropList("crypt_chest_mid", {
+            template = true,
+            min = 3,
+            max = 7,
+            list = {
+                { id = "unique_items", chance = 2. },
+                { id = "crypt_chest_item_mid", chance = 100. },
+                { id = "gifts", chance = 20. },
+                { id = "runes", chance = 20. },
+                { id = "gold_chest", chance = 100. },
+            }
+        })
+
+        NewDropList("crypt_chest_high", {
+            template = true,
+            min = 4,
+            max = 9,
+            list = {
+                { id = "unique_items", chance = 4. },
+                { id = "crypt_chest_item_high", chance = 100. },
+                { id = "gifts", chance = 25. },
+                { id = "runes", chance = 30. },
+                { id = "gold_chest", chance = 100. },
             }
         })
 

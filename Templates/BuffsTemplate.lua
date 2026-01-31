@@ -471,7 +471,7 @@ do
             level = {
                 [1] = {
                     rank = 10,
-                    time = 5.,
+                    time = 6.,
 
                     bonus = {
                         { PARAM = CAST_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 3, value_delta_level_max = 15 },
@@ -614,7 +614,7 @@ do
             level = {
                 [1] = {
                     rank = 10,
-                    time = 6.,
+                    time = 10.,
                     bonus = {
                         { PARAM = FIRE_RESIST, VALUE = -1, METHOD = STRAIGHT_BONUS, value_delta = -1 },
                     }
@@ -658,6 +658,28 @@ do
                     time = 2.,
 
                     effect = 'fire_wall_damage_effect',
+                    effect_delay = 0.33,
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "ring of fire debuff",
+            id = 'A05J',
+            buff_id = 'B07A',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = true,
+            max_level = 75,
+            attribute = FIRE_ATTRIBUTE,
+            tags = { TAG_SKILL, TAG_BURNING },
+
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 2.,
+
+                    effect = 'ring_of_fire_damage_effect',
                     effect_delay = 0.33,
                 }
             }
@@ -997,12 +1019,9 @@ do
                     rank = 7,
                     time = 7.,
 
-                    current_level = 1,
-                    max_level = 1,
-
                     bonus = {
-                        { PARAM = PHYSICAL_ATTACK, VALUE = 1.3, METHOD = MULTIPLY_BONUS, value_delta = 0.03, value_delta_level = 3, value_delta_level_max = 15 },
-                        { PARAM = CONTROL_REDUCTION, VALUE = 30, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 1.25, METHOD = MULTIPLY_BONUS, value_delta = 0.01, value_delta_level = 1, value_delta_level_max = 75 },
+                        { PARAM = CONTROL_REDUCTION, VALUE = 30, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 2, value_delta_level_max = 25 },
                         { PARAM = MOVING_SPEED, VALUE = 40, METHOD = STRAIGHT_BONUS, value_delta = 4, value_delta_level = 5, value_delta_level_max = 15 },
                     }
                 }
@@ -1025,8 +1044,8 @@ do
                     rank = 10,
                     time = 7.,
                     bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = 15, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 25 },
-                        { PARAM = HP_PER_HIT, VALUE = 3, METHOD = STRAIGHT_BONUS, value_delta = 2, value_delta_level = 5, value_delta_level_max = 10 },
+                        { PARAM = ATTACK_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 2, value_delta_level_max = 25 },
+                        { PARAM = HP_PER_HIT, VALUE = 3, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 3, value_delta_level_max = 20 },
                     }
                 }
             }
@@ -1041,17 +1060,14 @@ do
             max_level = 75,
             breakpoints = { 10 },
             tags = { "skill" },
-            endurance_hp_delta = 0.01,
-            endurance_hp_delta_level = 3,
             icon = "Spell\\BTNBlood (6).blp",
+            permanent_sfx = { path = "Buffs\\BloodAura.mdx", point = "origin", scale = 0.7 },
 
 
             level = {
                 [1] = {
                     rank = 7,
                     time = 10.,
-
-                    endurance_hp = 0.1,
 
                     effect = 'EFAA',
                     effect_delay = 1.,
@@ -1062,8 +1078,6 @@ do
                 [10] = {
                     rank = 7,
                     time = 10.,
-
-                    endurance_hp = 0.1,
 
                     effect = 'EFAA',
                     effect_delay = 1.,
@@ -1115,7 +1129,7 @@ do
                     time = 5.,
                     bonus = {
                         { PARAM = PHYSICAL_RESIST, VALUE = -10, METHOD = STRAIGHT_BONUS, value_delta = -1, value_delta_level = 1, value_delta_level_max = 75 },
-                        { PARAM = ATTACK_SPEED, VALUE = -10, METHOD = STRAIGHT_BONUS, value_delta = -1, value_delta_level = 1, value_delta_level_max = 35 },
+                        { PARAM = ATTACK_SPEED, VALUE = -5, METHOD = STRAIGHT_BONUS, value_delta = -1, value_delta_level = 1, value_delta_level_max = 35 },
                     }
                 }
             }
@@ -1140,11 +1154,12 @@ do
         })
         --================================================--
         NewBuffTemplate({
-            name = "charge stun debuff",
+            name = LOCALE_LIST[my_locale].BUFF_STUN,
             id = 'ABCB',
             buff_id = 'B00S',
             buff_type = NEGATIVE_BUFF,
             max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNStun.blp",
 
             level = {
                 [1] = {
@@ -1263,7 +1278,7 @@ do
             level = {
                 [1] = {
                     rank = 5,
-                    time = 5.,
+                    time = 6.,
                     bonus = {
                         { PARAM = MOVING_SPEED, VALUE = 1.05, METHOD = MULTIPLY_BONUS, value_delta = 0.01, value_delta_level = 1, value_delta_level_max = 50 },
                         { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 10, METHOD = STRAIGHT_BONUS, value_delta = 1, value_delta_level = 1, value_delta_level_max = 50 },
@@ -1289,7 +1304,7 @@ do
             level = {
                 [1] = {
                     rank = 15,
-                    time = 1.75,
+                    time = 0.75,
                     negative_state = STATE_STUN
                 }
             }
@@ -2344,6 +2359,7 @@ do
                     time = 5.,
                     negative_state = STATE_BLIND,
                     bonus = {
+                        { PARAM = MAGICAL_ATTACK, VALUE = -25, METHOD = STRAIGHT_BONUS, value_delta = -1, value_delta_level = 1, value_delta_level_max = 75 },
                         { PARAM = CAST_SPEED, VALUE = -7, METHOD = STRAIGHT_BONUS, value_delta = -1, value_delta_level = 1, value_delta_level_max = 65 },
                     },
                 }
@@ -3772,21 +3788,21 @@ do
             level = {
                 [1] = {
                     rank = 15,
-                    time = 10.,
+                    time = 5.,
                     bonus = {
                         { PARAM = PHYSICAL_ATTACK, VALUE = 1.23, METHOD = MULTIPLY_BONUS }
                     }
                 },
                 [2] = {
                     rank = 15,
-                    time = 10.,
+                    time = 5.,
                     bonus = {
                         { PARAM = PHYSICAL_ATTACK, VALUE = 1.34, METHOD = MULTIPLY_BONUS }
                     }
                 },
                 [3] = {
                     rank = 15,
-                    time = 10.,
+                    time = 5.,
                     bonus = {
                         { PARAM = PHYSICAL_ATTACK, VALUE = 1.45, METHOD = MULTIPLY_BONUS }
                     }
@@ -4269,7 +4285,7 @@ do
             level = {
                 [1] = {
                     rank = 5,
-                    time = 4.,
+                    time = 5.,
                     buff_sfx = "Abilities\\Spells\\Undead\\FrostArmor\\FrostArmorDamage.mdx",
                     buff_sfx_point = "chest",
                     bonus = {
@@ -4279,7 +4295,7 @@ do
                 },
                 [2] = {
                     rank = 5,
-                    time = 4.,
+                    time = 5.,
                     buff_sfx = "Abilities\\Spells\\Undead\\FrostArmor\\FrostArmorDamage.mdx",
                     buff_sfx_point = "chest",
                     bonus = {
@@ -4289,7 +4305,7 @@ do
                 },
                 [3] = {
                     rank = 5,
-                    time = 4.,
+                    time = 5.,
                     buff_sfx = "Abilities\\Spells\\Undead\\FrostArmor\\FrostArmorDamage.mdx",
                     buff_sfx_point = "chest",
                     bonus = {
@@ -4299,7 +4315,7 @@ do
                 },
                 [4] = {
                     rank = 5,
-                    time = 4.,
+                    time = 5.,
                     buff_sfx = "Abilities\\Spells\\Undead\\FrostArmor\\FrostArmorDamage.mdx",
                     buff_sfx_point = "chest",
                     bonus = {
@@ -4834,9 +4850,10 @@ do
             level = {
                 [1] = {
                     rank = 15,
-                    time = 15.,
+                    time = 60.,
                     bonus = {
                         { PARAM = POISON_RESIST, VALUE = 50, METHOD = STRAIGHT_BONUS },
+                        { PARAM = POISONING_DAMAGE_REDUCTION, VALUE = 50, METHOD = STRAIGHT_BONUS },
                     }
                 }
             }
@@ -4858,6 +4875,29 @@ do
                     time = 11.,
                     bonus = {
                         { PARAM = MOVING_SPEED, VALUE = 1.35, METHOD = MULTIPLY_BONUS },
+                        { PARAM = DODGE_CHANCE, VALUE = 15, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = LOCALE_LIST[my_locale].ASHEN_TONIC,
+            id = 'A05H',
+            buff_id = 'B078',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNLesserInvisibility.blp",
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 60.,
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS },
+                        { PARAM = CAST_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS },
                     }
                 }
             }
@@ -4876,7 +4916,7 @@ do
             level = {
                 [1] = {
                     rank = 15,
-                    time = 25.,
+                    time = 30.,
                     bonus = {
                         { PARAM = ALL_RESIST, VALUE = 25, METHOD = STRAIGHT_BONUS },
                     }
@@ -4897,7 +4937,7 @@ do
             level = {
                 [1] = {
                     rank = 15,
-                    time = 25.,
+                    time = 30.,
                     bonus = {
                         { PARAM = PHYSICAL_DEFENCE, VALUE = 1.75, METHOD = MULTIPLY_BONUS },
                         { PARAM = MAGICAL_SUPPRESSION, VALUE = 1.75, METHOD = MULTIPLY_BONUS },
@@ -5167,6 +5207,28 @@ do
         })
         --================================================--
         NewBuffTemplate({
+            name = "siren ward buff",
+            id = 'A059',
+            buff_id = 'B076',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 1.,
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 25, METHOD = STRAIGHT_BONUS },
+                        { PARAM = CAST_SPEED, VALUE = 25, METHOD = STRAIGHT_BONUS },
+                        { PARAM = MOVING_SPEED, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
+                    },
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
             name = LOCALE_LIST[my_locale].BUFF_PRISON,
             id = 'A02C',
             buff_id = 'B04P',
@@ -5182,6 +5244,25 @@ do
                     effect = "demoness_prison_damage_effect",
                     effect_delay = 1.,
                     effect_initial_delay = 0.
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = GetLocalString("Соблазнен", "Seduced"),
+            id = 'A056',
+            buff_id = 'B075',
+            buff_type = NEGATIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+            icon = "Buffs\\BTNSeduction.blp",
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 4.,
+                    negative_state = STATE_STUN,
                 }
             }
 
@@ -5222,6 +5303,29 @@ do
                     bonus = {
                         { PARAM = PHYSICAL_ATTACK, VALUE = 0.7, METHOD = MULTIPLY_BONUS },
                         { PARAM = MAGICAL_ATTACK, VALUE = 0.7, METHOD = MULTIPLY_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "reanimated spirit buff",
+            id = 'A05A',
+            buff_id = 'B077',
+            buff_type = POSITIVE_BUFF,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 15,
+                    time = 8.,
+                    bonus = {
+                        { PARAM = ATTACK_SPEED, VALUE = 20, METHOD = STRAIGHT_BONUS },
+                        { PARAM = CAST_SPEED, VALUE = 20, METHOD = STRAIGHT_BONUS },
+                        { PARAM = PHYSICAL_ATTACK, VALUE = 1.25, METHOD = MULTIPLY_BONUS },
+                        { PARAM = ALL_RESIST, VALUE = 25, METHOD = STRAIGHT_BONUS },
                     }
                 }
             }
@@ -5804,63 +5908,63 @@ do
                     rank = 15,
                     time = 5.,
                     bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = 5, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = 3, METHOD = STRAIGHT_BONUS },
                     }
                 },
                 [2] = {
                     rank = 15,
                     time = 5.,
                     bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = 6, METHOD = STRAIGHT_BONUS },
                     }
                 },
                 [3] = {
                     rank = 15,
                     time = 5.,
                     bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = 15, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = 9, METHOD = STRAIGHT_BONUS },
                     }
                 },
                 [4] = {
                     rank = 15,
                     time = 5.,
                     bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = 7, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = 4, METHOD = STRAIGHT_BONUS },
                     }
                 },
                 [5] = {
                     rank = 15,
                     time = 5.,
                     bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = 14, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = 8, METHOD = STRAIGHT_BONUS },
                     }
                 },
                 [6] = {
                     rank = 15,
                     time = 5.,
                     bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = 21, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = 12, METHOD = STRAIGHT_BONUS },
                     }
                 },
                 [7] = {
                     rank = 15,
                     time = 5.,
                     bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = 9, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = 5, METHOD = STRAIGHT_BONUS },
                     }
                 },
                 [8] = {
                     rank = 15,
                     time = 5.,
                     bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = 18, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = 10, METHOD = STRAIGHT_BONUS },
                     }
                 },
                 [9] = {
                     rank = 15,
                     time = 5.,
                     bonus = {
-                        { PARAM = ATTACK_SPEED, VALUE = 27, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = 15, METHOD = STRAIGHT_BONUS },
                     }
                 },
             }
@@ -6389,6 +6493,27 @@ do
         })
         --================================================--
         NewBuffTemplate({
+            name = "weapon decay magical debuff",
+            id = 'A05I',
+            buff_id = 'B079',
+            buff_type = NEGATIVE_BUFF,
+            attribute = DARKNESS_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
+            tags = { TAG_DAMAGE_OVER_TIME, TAG_DECAYING },
+
+            level = {
+                [1] = {
+                    rank = 5,
+                    time = 6.,
+
+                    effect = 'decay_magical_weapon_effect',
+                    effect_delay = 2.,
+                }
+            }
+        })
+        --================================================--
+        NewBuffTemplate({
             name = LOCALE_LIST[my_locale].BUFF_ITEM_FORTIFY,
             id = 'AIFT',
             buff_id = 'B030',
@@ -6659,6 +6784,55 @@ do
         })
         --================================================--
         NewBuffTemplate({
+            name = "bandit rally buff",
+            id = 'A04Y',
+            buff_id = 'B070',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 6.,
+
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = 75, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = 25, METHOD = STRAIGHT_BONUS },
+                    }
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = GetLocalString("Диссонанс", "Dissonance"),
+            id = 'A04Z',
+            buff_id = 'B071',
+            buff_type = NEGATIVE_BUFF,
+            attribute = ARCANE_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNDevourMagic.blp",
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 5.,
+
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = -25, METHOD = STRAIGHT_BONUS },
+                        { PARAM = PHYSICAL_DEFENCE, VALUE = -100, METHOD = STRAIGHT_BONUS },
+                        { PARAM = MAGICAL_SUPPRESSION, VALUE = -50, METHOD = STRAIGHT_BONUS },
+                    },
+                    negative_state = STATE_SLOW
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
             name = LOCALE_LIST[my_locale].BUFF_CRIPPLE,
             id = 'ABCR',
             buff_id = 'B036',
@@ -6678,6 +6852,32 @@ do
                         { PARAM = PHYSICAL_DEFENCE, VALUE = 0.75, METHOD = MULTIPLY_BONUS },
                     },
                     negative_state = STATE_SLOW
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
+            name = "butcher buff",
+            id = 'A053',
+            buff_id = 'B074',
+            buff_type = POSITIVE_BUFF,
+            attribute = PHYSICAL_ATTRIBUTE,
+            inherit_level = false,
+            max_level = 1,
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 5.,
+
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = 50, METHOD = STRAIGHT_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = 25, METHOD = STRAIGHT_BONUS },
+                        { PARAM = MELEE_DAMAGE_REDUCTION, VALUE = 35, METHOD = STRAIGHT_BONUS },
+                        { PARAM = RANGE_DAMAGE_REDUCTION, VALUE = 25, METHOD = STRAIGHT_BONUS },
+                    },
+
                 }
             }
 
@@ -6788,7 +6988,7 @@ do
                     time = 5.,
 
                     bonus = {
-                        { PARAM = POISON_RESIST, VALUE = 5, METHOD = STRAIGHT_BONUS, delta = 5, value_delta = 5, value_delta_level = 1, value_delta_level_max = 10 },
+                        { PARAM = POISON_RESIST, VALUE = -5, METHOD = STRAIGHT_BONUS, delta = -5, value_delta = -5, value_delta_level = 1, value_delta_level_max = 10 },
                     }
 
                 }
@@ -7112,14 +7312,16 @@ do
         })
         --================================================--
         NewBuffTemplate({
-            name = "duriel_dot",
+            name = GetLocalString("Разложение", "Rot"),
             id = 'A04U',
             buff_id = 'B06X',
             buff_type = NEGATIVE_BUFF,
             attribute = POISON_ATTRIBUTE,
             inherit_level = false,
             max_level = 10,
+            icon = "ReplaceableTextures\\PassiveButtons\\PASBTNPlagueCloud.blp",
             tags = { "dot", "poisoning" },
+            statusbar_show_level = true,
 
             level = {
                 [1] = {
@@ -7227,6 +7429,33 @@ do
         })
         --================================================--
         NewBuffTemplate({
+            name = GetLocalString("Обморожение", "Frostbite"),
+            id = 'A051',
+            buff_id = 'B072',
+            buff_type = NEGATIVE_BUFF,
+            attribute = ICE_ATTRIBUTE,
+            inherit_level = true,
+            max_level = 1,
+            icon = "ReplaceableTextures\\CommandButtons\\BTNDarkRitual.blp",
+
+            level = {
+                [1] = {
+                    rank = 10,
+                    time = 4.,
+
+                    bonus = {
+                        { PARAM = MOVING_SPEED, VALUE = 0.25, METHOD = MULTIPLY_BONUS },
+                        { PARAM = ATTACK_SPEED, VALUE = -50, METHOD = STRAIGHT_BONUS },
+                        { PARAM = CAST_SPEED, VALUE = -50, METHOD = STRAIGHT_BONUS },
+                    },
+
+                    negative_state = STATE_SLOW
+                }
+            }
+
+        })
+        --================================================--
+        NewBuffTemplate({
             name = LOCALE_LIST[my_locale].BUFF_STUN,
             id = 'A04W',
             buff_id = 'B06Y',
@@ -7267,6 +7496,10 @@ do
         })
 
         DefineSkillOverlaysData()
+
+        RegisterTestCommand("fury", function()
+            ApplyBuff(PlayerHero[1], PlayerHero[1], "A01G", 1)
+        end)
 
     end
 

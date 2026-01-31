@@ -7,7 +7,7 @@ do
 
     local StatusBarData
     local StatusBarButtons
-    local MAX_STATUSES = 25
+    local MAX_STATUSES = 27
 
 
     ---@param button_type number
@@ -116,10 +116,10 @@ do
                     if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(StatusBarButtons[player][index], true) end
 
                     if data.time then
-                        if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.bar, data.time > 0) end
+                        BlzFrameSetVisible(button.bar, data.time > 0)
                         BlzFrameSetMinMaxValue(button.bar, 0, data.time)
                     else
-                        if GetLocalPlayer() == Player(player - 1) then BlzFrameSetVisible(button.bar, false) end
+                       BlzFrameSetVisible(button.bar, false)
                     end
 
                     if data.value and data.value > 0 then
@@ -288,7 +288,7 @@ do
 
         if player > 6 then return end
 
-        for i = 1, MAX_STATUSES do
+        for i = MAX_STATUSES, 1, -1 do
             if StatusBarData[player][i] and StatusBarData[player][i].id == id then
                 StatusBarData[player][i] = nil
                 UpdateStatusBarState(i, player)

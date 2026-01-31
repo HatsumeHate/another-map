@@ -142,6 +142,7 @@ do
             ReloadStashFrames()
             ReloadInventoryFrames()
             ReloadShopFrames()
+            ReloadGamblerFrames()
             ReloadBarFrames()
             ReloadLibrarianFrames()
             ReloadBlacksmithFrames()
@@ -154,6 +155,8 @@ do
             ReloadSacrificeAltarFrame()
             DrawHeroBars()
             ReloadStatusBar()
+            DrawDiffPanel()
+            SetDifficultyBannerIcon()
         end)
 
 
@@ -201,6 +204,7 @@ do
         local fifth_timer = CreateTimer()
         TimerStart(fifth_timer, 1.5, false, function()
             DrawShopFrames(player_id)
+            DrawGamblerUI(player_id)
         end)
 
         BlzTriggerRegisterPlayerKeyEvent(GUIManagerHotkeyTrigger, Player(player_id-1), OSKEY_TAB, 0, true)
@@ -400,6 +404,7 @@ do
         InitTalentsWindow()
         InitJournal()
         InitSacrificeAltar()
+        InitGambler()
 
         last_OpenedWindow = {}
 
@@ -587,6 +592,7 @@ do
 
         TeleporterInit()
         InitStatusBar()
+        InitDifficultyPick()
 
         local LoadTrigger = CreateTrigger()
         TriggerRegisterGameEvent(LoadTrigger, EVENT_GAME_LOADED)

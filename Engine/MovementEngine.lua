@@ -2,7 +2,7 @@ do
 
     local PERIOD = 0.025
     local MapArea = 0
-    local FPS = 1. / PERIOD
+    FPS = 1. / PERIOD
 
 
     local PullList
@@ -167,13 +167,14 @@ do
         local pull_data = {}
         local h = source
 
-        if PullList[h] ~= nil then
-            if PullList[h].power < power then
-                pull_data.target = target
-                pull_data.speed = speed
-                pull_data.power = power
-                pull_data.release_range = release_range
+        if PullList[h] then
+
+            if PullList[h].power <= power then
+                DestroyTimer(PullList[h].timer)
+            else
+                return
             end
+
         end
 
             ResetUnitSpellCast(target)
@@ -182,17 +183,20 @@ do
             pull_data.power = power
             pull_data.speed = speed
             pull_data.release_range = release_range
+            pull_data.break_range = DistanceBetweenUnits(source, target) * 1.5
             local velocity = (speed * PERIOD) / DistanceBetweenUnits(source, target)
             pull_data.vx = (RealGetUnitX(target) - RealGetUnitX(source)) * velocity
             pull_data.vy = (RealGetUnitY(target) - RealGetUnitY(source)) * velocity
 
-            local timer = CreateTimer()
-            TimerStart(timer, PERIOD, true, function()
+            pull_data.timer = CreateTimer()
+            TimerStart(pull_data.timer, PERIOD, true, function()
                 if IsUnitInRange(source, pull_data.target, pull_data.release_range) or GetUnitState(source, UNIT_STATE_LIFE) < 0.045 or GetUnitState(pull_data.target, UNIT_STATE_LIFE) < 0.045 then
+                    DestroyTimer(pull_data.timer)
                     OnPullRelease(source, pull_data.target, sign)
-                    pull_data = nil
                     PullList[h] = nil
-                    DestroyTimer(GetExpiredTimer())
+                elseif DistanceBetweenUnits(source, target) > pull_data.break_range then
+                    DestroyTimer(pull_data.timer)
+                    PullList[h] = nil
                 else
                     SetUnitX(source, RealGetUnitX(source) + pull_data.vx)
                     SetUnitY(source, RealGetUnitY(source) + pull_data.vy)
@@ -1046,23 +1050,29 @@ do
 
                                         if m.tracking_angle_clamp then
                                             --print("clamp")
-                                            local angle_diff = AngleBetweenXY(m.current_x, m.current_y, tx, ty)
+                                            local angle_diff = AngleBetweenXY(m.current_x, m.current_y, tx, ty) + 360.
+                                            local heading = m.heading_angle + 360.
+                                            local difference_angle
 
-                                                if angle_diff - m.heading_angle > m.tracking_angle_clamp then
-                                                    --print("clamp exceeds")
-                                                    angle_diff = m.tracking_angle_clamp
+                                                if angle_diff > heading then difference_angle = angle_diff - heading
+                                                else difference_angle = heading - angle_diff end
 
-                                                    if WhichSideEx(m.heading_angle, m.current_x, m.current_y, tx, ty) then m.heading_angle = m.heading_angle + m.tracking_angle_clamp
-                                                    else m.heading_angle = m.heading_angle - m.tracking_angle_clamp end
+                                                if difference_angle > m.tracking_minimum_difference_angle then
 
-                                                    tx, ty = m.current_x + Rx(distance, m.heading_angle), m.current_y + Ry(distance, m.heading_angle)
-                                                    velocity = (m.speed * PERIOD) / distance
-                                                    m.vx = (tx - m.current_x) * velocity
-                                                    m.vy = (ty - m.current_y) * velocity
-                                                    m.vz = (m.end_z + GetUnitZ(m.target) - m.current_z) * velocity
-                                                    BlzSetSpecialEffectOrientation(missile_effect, m.heading_angle * bj_DEGTORAD, 0., 0.)
-                                                   -- print("clamped tracking")
+                                                    if difference_angle > m.tracking_angle_clamp then difference_angle = m.tracking_angle_clamp end
+
+                                                        if WhichSideEx(m.heading_angle, tx, ty, m.current_x, m.current_y) then m.heading_angle = m.heading_angle + difference_angle
+                                                        else m.heading_angle = m.heading_angle - difference_angle end
+
                                                 end
+
+                                                tx, ty = m.current_x + Rx(distance, m.heading_angle), m.current_y + Ry(distance, m.heading_angle)
+                                                velocity = (m.speed * PERIOD) / distance
+                                                m.vx = (tx - m.current_x) * velocity
+                                                m.vy = (ty - m.current_y) * velocity
+                                                m.vz = (m.end_z + GetUnitZ(m.target) - m.current_z) * velocity
+                                                BlzSetSpecialEffectOrientation(missile_effect, m.heading_angle * bj_DEGTORAD, 0., 0.)
+
 
                                         else
                                             velocity = (m.speed * PERIOD) / distance

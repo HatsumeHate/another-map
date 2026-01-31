@@ -50,6 +50,11 @@ do
     MONSTER_ID_ZOMBIE_MUTANT = "n00E"
     MONSTER_ID_FIEND = "u007"
     MONSTER_ID_SCAVENGER = "u00P"
+    MONSTER_ID_SCAVENGER_SHADOWBEAST = "u01G"
+    MONSTER_ID_SCAVENGER_BONEGASHER = "u01H"
+    MONSTER_ID_IRON_MAIDEN = "n03C"
+    MONSTER_ID_SIREN = "n03D"
+    MONSTER_ID_SALAMANDER = "n03E"
     MONSTER_ID_GHOUL = "u00J"
     MONSTER_ID_MEAT_GOLEM = "e000"
     MONSTER_ID_ABOMINATION = "u00M"
@@ -69,8 +74,16 @@ do
     MONSTER_ID_BANSHEE_N = "u00K"
     MONSTER_ID_GHOST = "n006"
     MONSTER_ID_PHANTOM = "n02R"
+    MONSTER_ID_SHADOWLING = "n03Q"
+    MONSTER_ID_LESSER_VOIDWALKER = "n00A"
     MONSTER_ID_VOIDWALKER = "n008"
     MONSTER_ID_ANCIENT_VOIDWALKER = "n009"
+    MONSTER_ID_LESSER_FIREWALKER = "n03G"
+    MONSTER_ID_FIREWALKER = "n03H"
+    MONSTER_ID_ANCIENT_FIREWALKER = "n03I"
+    MONSTER_ID_LESSER_FROSTWALKER = "n03J"
+    MONSTER_ID_FROSTWALKER = "n03K"
+    MONSTER_ID_ANCIENT_FROSTWALKER = "n03L"
     MONSTER_ID_SKELETON = "u00D"
     MONSTER_ID_SKELETON_IMPROVED = "n00D"
     MONSTER_ID_SKELETON_ARMORED = "u00B"
@@ -87,6 +100,7 @@ do
     MONSTER_ID_NECROMANCER = "u00F"
     MONSTER_ID_NECROMANCER_N = "u00L"
     MONSTER_ID_SORCERESS = "h002"
+    MONSTER_ID_BAT = "n03F"
     MONSTER_ID_BLOODSUCKER = "n01O"
     MONSTER_ID_VAMPIRE = "u00N"
     MONSTER_ID_SPIDER = "n00Y"
@@ -354,6 +368,55 @@ do
 
     end
 
+    function ApplyMonsterTraitsToGroup(group)
+
+        if GetRandomInt(1, MONSTER_AURA_SPAWN_KEY) == 1 then
+            ApplyMonsterAuaraTrait(BlzGroupUnitAt(group, GetRandomInt(0, BlzGroupGetSize(group)-1)))
+        end
+
+                if GetRandomInt(1, MONSTER_TRAIT_SPAWN_KEY) == 1 then
+                    local monster_pack_table = SortGroup(group)
+                    local random_values = GetRandomIntTable(1, #monster_pack_table, #monster_pack_table)
+                    local monsters_with_trait_amount = GetRandomInt(1, 4)
+                    local spawn_elite = false
+
+                    if GetRandomInt(1, MONSTER_ELITE_SPAWN_KEY) == 1 then spawn_elite = true end
+
+                        for i = 1, #random_values do
+                            local current_group = monster_pack_table[random_values[i]]
+
+                            if current_group.count >= monsters_with_trait_amount then
+                                local random_values_index = GetRandomIntTable(0, BlzGroupGetSize(current_group.group)-1, BlzGroupGetSize(current_group.group)-1)
+                                local trait_amount = GetRandomInt(1, 2)
+
+                                    for k = 1, monsters_with_trait_amount do
+                                        local monster = BlzGroupUnitAt(current_group.group, random_values_index[k])
+                                        local applied = false
+
+                                            for j = 1, trait_amount do
+                                                local trait = GetRandomMonsterTrait()
+                                                local trait_applied = ApplyMonsterTrait(monster, trait)
+                                                if trait_applied then applied = true end
+                                            end
+
+                                        if applied and spawn_elite then
+                                            spawn_elite = false
+                                            ApplyMonsterTrait(monster, GetRandomMonsterEliteTrait())
+                                        end
+
+                                    end
+
+                                    break
+                            end
+
+                        end
+
+                    for i = 1, #monster_pack_table do DestroyGroup(monster_pack_table[i].group) end
+                    monster_pack_table = nil
+
+                end
+    end
+
 
     ---@param point rect
     ---@param monster_pack number
@@ -475,7 +538,7 @@ do
     function SpawnMonstersWave(point)
         local monster_pack = GetRandomMonsterPack(MONSTER_RANK_COMMON)
         --local point = SPAWN_POINTS[1]
-        local total_monster_count = math.floor((GetRandomInt(WAVE_MINIMUM_COUNT, WAVE_MAXIMUM_COUNT) + Current_Wave + (ActivePlayers-1 * WAVE_PLAYER_BONUS)) * WaveDifficultyModificator)
+        local total_monster_count = math.floor((GetRandomInt(WAVE_MINIMUM_COUNT, WAVE_MAXIMUM_COUNT) + Current_Wave + math.floor(Current_Wave * 0.25) + (ActivePlayers-1 * WAVE_PLAYER_BONUS)) * WaveDifficultyModificator)
         --print("total is "..total_monster_count)
         local first_pack_count = math.floor(total_monster_count * COMMON_MONSTER_RATE)
         --print("first pack counter is "..first_pack_count)
@@ -552,7 +615,7 @@ do
             DestroyGroup(wave_group)
         end)
 
-        if Current_Wave >= 50 then
+        if Current_Wave >= WIN_WAVE then
             GroupAddUnit(WaveGroup, CreateUnit(MONSTER_PLAYER, FourCC("uDBL"), GetRectCenterX(point), GetRectCenterY(point), 270.))
         elseif BossCounter == 5 then
             local boss
@@ -685,8 +748,11 @@ do
             [MONSTERPACK_BEASTS] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
-                        { id = MONSTER_ID_WOLF, chance = 35. },
-                        { id = MONSTER_ID_INSECT, chance = 35. },
+                        { id = MONSTER_ID_WOLF, chance = 35., max = 5 },
+                        { id = MONSTER_ID_INSECT, chance = 35., max = 5 },
+                        { id = MONSTER_ID_SIREN, chance = 35., max = 2 },
+                        { id = MONSTER_ID_SALAMANDER, chance = 35., max = 2 },
+                        { id = MONSTER_ID_IRON_MAIDEN, chance = 35., max = 3 },
                         { id = MONSTER_ID_QUILLBEAST, chance = 100., max = 3 },
                     },
                     [MONSTER_TAG_RANGE] = {
@@ -696,7 +762,7 @@ do
                 },
                 [MONSTER_RANK_ADVANCED] = {
                     [MONSTER_TAG_MELEE] = {
-                        { id = MONSTER_ID_WEREWOLF, chance = 50., max = 4},
+                        { id = MONSTER_ID_WEREWOLF, chance = 50., max = 4 },
                         { id = MONSTER_ID_BEAR, chance = 100., max = 2}
                     }
                 }
@@ -704,7 +770,11 @@ do
             [MONSTERPACK_SWARM] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
-                        { id = MONSTER_ID_BLOODSUCKER, chance = 100., max = 4 },
+                        { id = MONSTER_ID_SIREN, chance = 35., max = 2 },
+                        { id = MONSTER_ID_SALAMANDER, chance = 35., max = 2 },
+                        { id = MONSTER_ID_IRON_MAIDEN, chance = 40., max = 3 },
+                        { id = MONSTER_ID_BLOODSUCKER, chance = 60., max = 4 },
+                        { id = MONSTER_ID_BAT, chance = 100., max = 7 },
                     }
                 },
                 [MONSTER_RANK_ADVANCED] = {
@@ -800,11 +870,14 @@ do
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
                         { id = MONSTER_ID_FACELESS, chance = 15., max = 1 },
+                        { id = MONSTER_ID_LESSER_VOIDWALKER, chance = 10., max = 2 },
+                        { id = MONSTER_ID_LESSER_FIREWALKER, chance = 10., max = 2 },
+                        { id = MONSTER_ID_LESSER_FROSTWALKER, chance = 10., max = 2 },
                         { id = MONSTER_ID_PHANTOM, chance = 10., max = 2 },
+                        { id = MONSTER_ID_SHADOWLING, chance = 10., max = 2 },
                         { id = MONSTER_ID_ZOMBIE, chance = 10., max = 2 },
                         { id = MONSTER_ID_ZOMBIE_BLACK_DEATH, chance = 7., max = 1 },
                         { id = MONSTER_ID_SKELETON_N, chance = 20., max = 4 },
-                        { id = MONSTER_ID_SKELETON_IMPROVED, chance = 32.5, max = 2 },
                         { id = MONSTER_ID_SKELETON, chance = 100., max = 5 },
                     },
                     [MONSTER_TAG_RANGE] = {
@@ -821,6 +894,7 @@ do
                 },
                 [MONSTER_RANK_ADVANCED] = {
                     [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_SKELETON_IMPROVED, chance = 32.5, max = 3 },
                         { id = MONSTER_ID_ZOMBIE_MUTANT, chance = 10., max = 1 },
                         { id = MONSTER_ID_SKELETON_ARMORED, chance = 100., max = 2 },
                     },
@@ -839,20 +913,26 @@ do
             [MONSTERPACK_ZOMBIES] = {
                 [MONSTER_RANK_COMMON] = {
                     [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_LESSER_VOIDWALKER, chance = 7.5, max = 2 },
+                        { id = MONSTER_ID_LESSER_FIREWALKER, chance = 7.5, max = 2 },
+                        { id = MONSTER_ID_LESSER_FROSTWALKER, chance = 7.5, max = 2 },
                         { id = MONSTER_ID_PHANTOM, chance = 7.5, max = 2 },
+                        { id = MONSTER_ID_SHADOWLING, chance = 7.5, max = 2 },
                         { id = MONSTER_ID_SKELETON_N, chance = 10., max = 2 },
                         { id = MONSTER_ID_SKELETON, chance = 20., max = 3 },
                         { id = MONSTER_ID_FACELESS, chance = 15., max = 2 },
+                        { id = MONSTER_ID_SCAVENGER_BONEGASHER, chance = 15., max = 6 },
+                        { id = MONSTER_ID_SCAVENGER_SHADOWBEAST, chance = 17., max = 6 },
                         { id = MONSTER_ID_SCAVENGER, chance = 20., max = 6 },
-                        { id = MONSTER_ID_ZOMBIE_BLACK_DEATH, chance = 20., max = 3 },
-                        { id = MONSTER_ID_ZOMBIE_N, chance = 35., max = 2 },
+                        { id = MONSTER_ID_ZOMBIE_BLACK_DEATH, chance = 20., max = 2 },
+                        { id = MONSTER_ID_ZOMBIE_N, chance = 35., max = 3 },
                         { id = MONSTER_ID_ZOMBIE, chance = 100., max = 3 },
                     },
                     [MONSTER_TAG_RANGE] = {
-                        { id = MONSTER_ID_SKELETON_MAGE, chance = 15., max = 2 },
-                        { id = MONSTER_ID_SKELETON_MAGE_COLD, chance = 15., max = 2 },
-                        { id = MONSTER_ID_SKELETON_MAGE_LIGHTNING, chance = 15., max = 2 },
-                        { id = MONSTER_ID_SKELETON_MAGE_FIRE, chance = 15., max = 2 },
+                        { id = MONSTER_ID_SKELETON_MAGE, chance = 17., max = 2 },
+                        { id = MONSTER_ID_SKELETON_MAGE_COLD, chance = 17., max = 2 },
+                        { id = MONSTER_ID_SKELETON_MAGE_LIGHTNING, chance = 17., max = 2 },
+                        { id = MONSTER_ID_SKELETON_MAGE_FIRE, chance = 17., max = 2 },
                         { id = MONSTER_ID_SKELETON_MAGE_N, chance = 15., max = 2 },
                         { id = MONSTER_ID_NECROMANCER_N, chance = 20., max = 2 },
                         { id = MONSTER_ID_NECROMANCER, chance = 100., max = 3 },
@@ -860,6 +940,7 @@ do
                 },
                 [MONSTER_RANK_ADVANCED] = {
                     [MONSTER_TAG_MELEE] = {
+                        { id = MONSTER_ID_SKELETON_IMPROVED, chance = 32.5, max = 3 },
                         { id = MONSTER_ID_ZOMBIE_MUTANT, chance = 100., max = 2 },
                     }
                 },
@@ -877,13 +958,20 @@ do
                         { id = MONSTER_ID_SUCCUBUS, chance = 33.5, max = 3 },
                         { id = MONSTER_ID_GHOUL, chance = 33.5, max = 3 },
                         { id = MONSTER_ID_HELL_BEAST, chance = 33.5, max = 3 },
+                        { id = MONSTER_ID_SCAVENGER_BONEGASHER, chance = 37., max = 6 },
+                        { id = MONSTER_ID_SCAVENGER_SHADOWBEAST, chance = 42., max = 6 },
                         { id = MONSTER_ID_SCAVENGER, chance = 50., max = 6 },
-                        { id = MONSTER_ID_FIEND, chance = 100. },
+                        { id = MONSTER_ID_FIEND, chance = 100., max = 5 },
                     },
                     [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_LESSER_FIREWALKER, chance = 17., max = 3 },
+                        { id = MONSTER_ID_LESSER_VOIDWALKER, chance = 17., max = 3 },
+                        { id = MONSTER_ID_LESSER_FROSTWALKER, chance = 17., max = 3 },
                         { id = MONSTER_ID_NECROMANCER_N, chance = 23., max = 3 },
                         { id = MONSTER_ID_NECROMANCER, chance = 23. },
-                        { id = MONSTER_ID_SUCCUBUS_ADVANCED, chance = 40. },
+                        { id = MONSTER_ID_SUCCUBUS_ADVANCED, chance = 45. },
+                        { id = MONSTER_ID_FIREWALKER, chance = 50. },
+                        { id = MONSTER_ID_FROSTWALKER, chance = 50. },
                         { id = MONSTER_ID_VOIDWALKER, chance = 100. },
                     }
                 },
@@ -898,9 +986,11 @@ do
                     },
                     [MONSTER_TAG_RANGE] = {
                         { id = MONSTER_ID_REVENANT, chance = 20., max = 3 },
-                        { id = MONSTER_ID_HELL_SUCCUBUS, chance = 27., max = 2 },
+                        { id = MONSTER_ID_HELL_SUCCUBUS, chance = 40., max = 2 },
                         { id = MONSTER_ID_DEMON_WIZARD, chance = 33.5, max = 2 },
-                        { id = MONSTER_ID_ANCIENT_VOIDWALKER, chance = 100. },
+                        { id = MONSTER_ID_ANCIENT_FIREWALKER, chance = 45., max = 4 },
+                        { id = MONSTER_ID_ANCIENT_FROSTWALKER, chance = 45., max = 4 },
+                        { id = MONSTER_ID_ANCIENT_VOIDWALKER, chance = 100., max = 3 },
                     }
                 },
                 [MONSTERPACK_BOSS] = {
@@ -919,9 +1009,16 @@ do
                     [MONSTER_TAG_MELEE] = {
                         { id = MONSTER_ID_REVENANT_FROST, chance = 30.5, max = 2 },
                         { id = MONSTER_ID_PHANTOM, chance = 36.5, max = 2 },
-                        { id = MONSTER_ID_REVENANT_MELEE, chance = 100., max = 3 },
+                        { id = MONSTER_ID_REVENANT_MELEE, chance = 44., max = 3 },
+                        { id = MONSTER_ID_SHADOWLING, chance = 100., max = 3 },
                     },
                     [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_LESSER_FIREWALKER, chance = 20.5, max = 3 },
+                        { id = MONSTER_ID_LESSER_VOIDWALKER, chance = 20.5, max = 3 },
+                        { id = MONSTER_ID_LESSER_FROSTWALKER, chance = 20.5, max = 3 },
+                        { id = MONSTER_ID_FIREWALKER, chance = 25., max = 3 },
+                        { id = MONSTER_ID_FROSTWALKER, chance = 25., max = 3 },
+                        { id = MONSTER_ID_VOIDWALKER, chance = 25., max = 3 },
                         { id = MONSTER_ID_SORCERESS, chance = 25., max = 2 },
                         { id = MONSTER_ID_BANSHEE_N, chance = 35., max = 2 },
                         { id = MONSTER_ID_BANSHEE, chance = 100. },
@@ -932,6 +1029,9 @@ do
                         { id = MONSTER_ID_REVENANT, chance = 100., max = 3 },
                     },
                     [MONSTER_TAG_RANGE] = {
+                        { id = MONSTER_ID_ANCIENT_FROSTWALKER, chance = 27., max = 3 },
+                        { id = MONSTER_ID_ANCIENT_FIREWALKER, chance = 27., max = 3 },
+                        { id = MONSTER_ID_ANCIENT_VOIDWALKER, chance = 27., max = 3 },
                         { id = MONSTER_ID_GHOST, chance = 100. },
                     }
                 },
@@ -1009,14 +1109,14 @@ do
         MONSTER_STATS_RATES = {
             { stat = PHYSICAL_ATTACK,       initial = 0,      delta = 1,     delta_level = 1, method = STRAIGHT_BONUS },
             { stat = MAGICAL_ATTACK,        initial = 0,      delta = 2,     delta_level = 1, method = STRAIGHT_BONUS },
-            { stat = PHYSICAL_DEFENCE,      initial = 0,      delta = 6,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 5 },
-            { stat = MAGICAL_SUPPRESSION,   initial = 0,      delta = 3,     delta_level = 1, method = STRAIGHT_BONUS, per_player = 1 },
+            { stat = PHYSICAL_DEFENCE,      initial = 0,      delta = 7,     delta_level = 1, method = STRAIGHT_BONUS },
+            { stat = MAGICAL_SUPPRESSION,   initial = 0,      delta = 3,     delta_level = 1, method = STRAIGHT_BONUS },
             { stat = PHYSICAL_ATTACK,       initial = 1.,     delta = 0.003,  delta_level = 1, method = MULTIPLY_BONUS },
             { stat = PHYSICAL_DEFENCE,      initial = 1.,     delta = 0.01,  delta_level = 1, method = MULTIPLY_BONUS },
             { stat = MAGICAL_ATTACK,        initial = 1.,     delta = 0.005,  delta_level = 1, method = MULTIPLY_BONUS },
             { stat = MAGICAL_SUPPRESSION,   initial = 1.,     delta = 0.007,  delta_level = 1, method = MULTIPLY_BONUS },
             { stat = CRIT_CHANCE,           initial = 0,      delta = 1.,    delta_level = 5, method = STRAIGHT_BONUS },
-            { stat = ALL_RESIST,            initial = 0,      delta = 3,     delta_level = 5, method = STRAIGHT_BONUS },
+            { stat = ALL_RESIST,            initial = 0,      delta = 3,     delta_level = 4, method = STRAIGHT_BONUS },
             { stat = PHYSICAL_BONUS,        initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
             { stat = ICE_BONUS,             initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
             { stat = LIGHTNING_BONUS,       initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
@@ -1025,9 +1125,38 @@ do
             { stat = HOLY_BONUS,            initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
             { stat = POISON_BONUS,          initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
             { stat = ARCANE_BONUS,          initial = 0,      delta = 1,     delta_level = 3, method = STRAIGHT_BONUS },
-            { stat = HP_VALUE,              initial = 0,      delta = 12,    delta_level = 1, method = STRAIGHT_BONUS, per_player = 45 },
-            { stat = HP_VALUE,              initial = 1.,     delta = 0.02,  delta_level = 1, method = MULTIPLY_BONUS },
+            { stat = HP_VALUE,              initial = 0,      delta = 20,    delta_level = 1, method = STRAIGHT_BONUS},
+            { stat = HP_VALUE,              initial = 1.,     delta = 0.03,  delta_level = 1, method = MULTIPLY_BONUS },
             { stat = MOVING_SPEED,          initial = 0,      delta = 3,     delta_level = 5, method = STRAIGHT_BONUS },
+        }
+
+        MONSTER_DIFFICULTY_STAT_RATES = {
+            [DIFFICULTY_NIGHTMARE] = {
+                [STRAIGHT_BONUS] = {
+                    [PHYSICAL_ATTACK] = 1,
+                    [MAGICAL_ATTACK] = 1,
+                    [PHYSICAL_DEFENCE] = 2,
+                    [MAGICAL_SUPPRESSION] = 2,
+                    [HP_VALUE] = 33,
+                }
+            },
+            [DIFFICULTY_HELL] = {
+                [STRAIGHT_BONUS] = {
+                    [PHYSICAL_ATTACK] = 2,
+                    [MAGICAL_ATTACK] = 2,
+                    [PHYSICAL_DEFENCE] = 3,
+                    [MAGICAL_SUPPRESSION] = 3,
+                    [HP_VALUE] = 50,
+                }
+            }
+        }
+
+        PER_PLAYER_MONSTER_BONUS = {
+            { param = PHYSICAL_ATTACK, value = 0.03 },
+            { param = PHYSICAL_DEFENCE, value = 0.06 },
+            { param = MAGICAL_ATTACK, value = 0.03 },
+            { param = MAGICAL_SUPPRESSION, value = 0.06 },
+            { param = HP_VALUE, value = 0.33 },
         }
 
         BONUS_MONSTER_STAT_RATES = {
@@ -1105,6 +1234,7 @@ do
                 --print("a2")
                 TriggerRegisterPlayerUnitEvent(trg, MONSTER_PLAYER, EVENT_PLAYER_UNIT_DEATH, nil)
                 TriggerRegisterPlayerUnitEvent(trg, SECOND_MONSTER_PLAYER, EVENT_PLAYER_UNIT_DEATH, nil)
+                TriggerRegisterPlayerUnitEvent(trg, Player(12), EVENT_PLAYER_UNIT_DEATH, nil)
                 --print("a3")
                 TriggerAddAction(trg, function()
                     local unit = GetTriggerUnit()
@@ -1119,18 +1249,33 @@ do
                     if GetKillingUnit() then
                         local unit_Data = GetUnitData(unit)
 
-                        --print("pre drop")
-                        for i = 1, 6 do
-                            if PlayerHero[i] and IsUnitInRangeXY(PlayerHero[i], GetUnitX(unit), GetUnitY(unit), 2700.) then
-                                DropForPlayer(unit, i-1)
-                            end
-                        end
+                            if unit_Data.xp and unit_Data.xp > 0 then
+                                local xp = unit_Data.xp
 
-                        if unit_Data.xp and unit_Data.xp > 0 then
-                            local bonus = MONSTER_EXP_RATES.const_per_level * Current_Wave
-                            local mult = 1. + (MONSTER_EXP_RATES.modf_per_level * Current_Wave)
-                            GiveExpForKill(((unit_Data.xp * (1. + GetUnitParameterValue(GetKillingUnit(), EXP_BONUS) * 0.01)) + bonus) * MONSTER_EXP_RATES[unit_Data.classification or MONSTER_RANK_COMMON] * mult * GLOBAL_EXP_RATE, GetUnitX(unit), GetUnitY(unit))
-                        end
+                                if unit_Data.classification == 0 then xp = math.floor(xp * 0.5) end
+
+                                if xp > 0 then
+                                    local bonus = MONSTER_EXP_RATES.const_per_level * Current_Wave
+                                    local mult = 1. + (MONSTER_EXP_RATES.modf_per_level * Current_Wave)
+                                    local rate = 1.
+
+                                        if unit_Data.classification and unit_Data.classification > 0 then
+                                            rate = MONSTER_EXP_RATES[unit_Data.classification or MONSTER_RANK_COMMON]
+                                        end
+
+                                    GiveExpForKill((xp + bonus) * rate * mult * GLOBAL_EXP_RATE, GetUnitX(unit), GetUnitY(unit))
+                                end
+
+                            end
+
+                            if unit_Data.classification == 0 then return end
+
+                            --print("pre drop")
+                            for i = 1, 6 do
+                                if PlayerHero[i] and IsUnitInRangeXY(PlayerHero[i], GetUnitX(unit), GetUnitY(unit), 2700.) then
+                                    DropForPlayer(unit, i-1)
+                                end
+                            end
 
                         unit = nil
                         unit_Data = nil

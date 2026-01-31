@@ -152,6 +152,7 @@ do
             time_before_remove = reference_data.time_before_remove or 25.,
             proper_declension = reference_data.proper_declension or DECL_HE,
             hide_body = reference_data.hide_body or false,
+            trigger_death = true,
 
             cast_skill = 0,
             cast_skill_level = 0,
@@ -196,6 +197,7 @@ do
         if reference_data.missile_eject_angle then data.missile_eject_angle = reference_data.missile_eject_angle end
         if reference_data.height then data.height = reference_data.height or 120. end
         if reference_data.classic_model then data.classic_model = true end
+        if not reference_data.trigger_death then data.trigger_death = false end
 
         if reference_data.death_sound then
             data.death_sound = MergeTables({}, reference_data.death_sound)
@@ -222,9 +224,17 @@ do
 
         UpdateParameters(data)
 
-        if reference_data.bonus_parameters ~= nil then
+        if reference_data.bonus_parameters then
+            local params = reference_data.bonus_parameters
             for i = 1, #reference_data.bonus_parameters do
-                ModifyStat(source, reference_data.bonus_parameters[i].param, reference_data.bonus_parameters[i].value, reference_data.bonus_parameters[i].method, true)
+                ModifyStat(source, params[i].param, params[i].value, params[i].method, true)
+            end
+        end
+
+        if reference_data.difficulty_parameters and reference_data.difficulty_parameters[CurrentDifficulty] then
+            local params = reference_data.difficulty_parameters[CurrentDifficulty]
+            for i = 1, #params do
+                ModifyStat(source, params[i].param, params[i].value, params[i].method, true)
             end
         end
 
@@ -239,7 +249,7 @@ do
 
 
     function NewUnitTemplate(id, reference)
-        local new_data = { }
+        local new_data = { trigger_death = true }
 
         MergeTables(new_data, reference)
 
@@ -666,6 +676,11 @@ do
             time_before_remove = 25.,
             base_stats = { health = 125., hp_regen = 0.4, moving_speed = 275. },
             weapon = { ATTACK_SPEED = 1.4, DAMAGE = 5, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = MOVING_SPEED, value = 50, method = STRAIGHT_BONUS },
+                }
+            },
             has_mp = false,
             height = 120.,
             drop_offset_min = 15., drop_offset_max = 45.,
@@ -685,6 +700,61 @@ do
             weapon = { ATTACK_SPEED = 1.27, DAMAGE = 3, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             has_mp = false,
             height = 115.,
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = MOVING_SPEED, value = 50, method = STRAIGHT_BONUS },
+                }
+            },
+            death_sound = { pack = { "Sounds\\Monsters\\fiend_death1.wav", "Sounds\\Monsters\\fiend_death2.wav", "Sounds\\Monsters\\fiend_death3.wav", "Sounds\\Monsters\\fiend_death4.wav", "Sounds\\Monsters\\fiend_death5.wav" }, volume = 127, cutoff = 1500. },
+            on_attack_sound = { pack = { "Sounds\\Monsters\\fiend_attack1.wav", "Sounds\\Monsters\\fiend_attack2.wav", "Sounds\\Monsters\\fiend_attack3.wav", "Sounds\\Monsters\\fiend_attack4.wav" }, volume = 127, cutoff = 1700., chance = 26. },
+            drop_offset_min = 14., drop_offset_max = 42.,
+            xp = 27,
+        })
+
+        -- scavenger shadow beast
+        NewUnitTemplate('u01G', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SCAVENGER_SHADOWBEAST,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            --trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
+            time_before_remove = 25.,
+            base_stats = { health = 103., hp_regen = 0.36, moving_speed = 295. },
+            weapon = { ATTACK_SPEED = 1.15, DAMAGE = 4, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH, ATTRIBUTE = DARKNESS_ATTRIBUTE },
+            has_mp = false,
+            height = 115.,
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = MOVING_SPEED, value = 50, method = STRAIGHT_BONUS },
+                }
+            },
+            death_sound = { pack = { "Sounds\\Monsters\\fiend_death1.wav", "Sounds\\Monsters\\fiend_death2.wav", "Sounds\\Monsters\\fiend_death3.wav", "Sounds\\Monsters\\fiend_death4.wav", "Sounds\\Monsters\\fiend_death5.wav" }, volume = 127, cutoff = 1500. },
+            on_attack_sound = { pack = { "Sounds\\Monsters\\fiend_attack1.wav", "Sounds\\Monsters\\fiend_attack2.wav", "Sounds\\Monsters\\fiend_attack3.wav", "Sounds\\Monsters\\fiend_attack4.wav" }, volume = 127, cutoff = 1700., chance = 26. },
+            drop_offset_min = 14., drop_offset_max = 42.,
+            xp = 27,
+        })
+
+        -- scavenger bone gasher
+        NewUnitTemplate('u01H', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SCAVENGER_BONEGASHER,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            --trait = TRAIT_DEMON,
+            unit_trait = { TRAIT_DEMON },
+            time_before_remove = 25.,
+            base_stats = { health = 126., hp_regen = 0.36, moving_speed = 295. },
+            weapon = { ATTACK_SPEED = 1.25, DAMAGE = 4, CRIT_CHANCE = 10., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH,  ATTRIBUTE = ICE_ATTRIBUTE },
+            has_mp = false,
+            height = 115.,
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = MOVING_SPEED, value = 50, method = STRAIGHT_BONUS },
+                }
+            },
+            death_sound = { pack = { "Sounds\\Monsters\\fiend_death1.wav", "Sounds\\Monsters\\fiend_death2.wav", "Sounds\\Monsters\\fiend_death3.wav", "Sounds\\Monsters\\fiend_death4.wav", "Sounds\\Monsters\\fiend_death5.wav" }, volume = 127, cutoff = 1500. },
+            on_attack_sound = { pack = { "Sounds\\Monsters\\fiend_attack1.wav", "Sounds\\Monsters\\fiend_attack2.wav", "Sounds\\Monsters\\fiend_attack3.wav", "Sounds\\Monsters\\fiend_attack4.wav" }, volume = 127, cutoff = 1700., chance = 26. },
             drop_offset_min = 14., drop_offset_max = 42.,
             xp = 27,
         })
@@ -702,6 +772,11 @@ do
             weapon = { ATTACK_SPEED = 1.33, DAMAGE = 5, CRIT_CHANCE = 14., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 6, method = STRAIGHT_BONUS }
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = MOVING_SPEED, value = 33, method = STRAIGHT_BONUS },
+                }
             },
             skill_list = { "AGHS" },
             has_mp = false,
@@ -727,11 +802,20 @@ do
                 { param = PHYSICAL_DEFENCE, value = 70, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 33, method = STRAIGHT_BONUS },
+                }
+            },
             scale = 1.2,
             has_mp = false,
             height = 140.,
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 45,
+            death_sound = { pack = { "Sounds\\Monsters\\skele_death1.wav", "Sounds\\Monsters\\skele_death2.wav", "Sounds\\Monsters\\skele_death3.wav", "Sounds\\Monsters\\skele_death4.wav", "Sounds\\Monsters\\skele_death5.wav" }, volume = 127, cutoff = 1700. },
             teamcolour = 10,
             hide_body = true
         })
@@ -749,6 +833,13 @@ do
             weapon = { ATTACK_SPEED = 2.25, DAMAGE = 3, CRIT_CHANCE = 5., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             bonus_parameters = {
                 { param = MELEE_DAMAGE_REDUCTION, value = 11, method = STRAIGHT_BONUS }
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 33, method = STRAIGHT_BONUS },
+                }
             },
             skill_list = {"AZVO"},
             colours = { r = 255, g = 150, b = 150 },
@@ -771,6 +862,13 @@ do
             weapon = { ATTACK_SPEED = 2.35, DAMAGE = 6, CRIT_CHANCE = 5., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             bonus_parameters = {
                 { param = MAGICAL_SUPPRESSION, value = 75, method = STRAIGHT_BONUS }
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 33, method = STRAIGHT_BONUS },
+                }
             },
             effect_list = { "black_death_effect" },
             colours = { r = 255, g = 255, b = 0 },
@@ -795,6 +893,13 @@ do
             bonus_parameters = {
                 { param = MELEE_DAMAGE_REDUCTION, value = 11, method = STRAIGHT_BONUS },
                 { param = ALL_RESIST, value = 6, method = STRAIGHT_BONUS }
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 33, method = STRAIGHT_BONUS },
+                }
             },
             skill_list = {"AZVO"},
             colours = { r = 255, g = 150, b = 150 },
@@ -824,6 +929,16 @@ do
             bonus_parameters = {
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 33, method = STRAIGHT_BONUS },
+                    { param = POISON_RESIST, value = 75, method = STRAIGHT_BONUS },
+                }
+            },
+            death_sound = { pack = { "Sounds\\Monsters\\skele_death1.wav", "Sounds\\Monsters\\skele_death2.wav", "Sounds\\Monsters\\skele_death3.wav", "Sounds\\Monsters\\skele_death4.wav", "Sounds\\Monsters\\skele_death5.wav" }, volume = 127, cutoff = 1700. },
             xp = 25,
             teamcolour = 24,
             hide_body = true
@@ -847,6 +962,16 @@ do
             bonus_parameters = {
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 33, method = STRAIGHT_BONUS },
+                    { param = POISON_RESIST, value = 75, method = STRAIGHT_BONUS },
+                }
+            },
+            death_sound = { pack = { "Sounds\\Monsters\\skele_death1.wav", "Sounds\\Monsters\\skele_death2.wav", "Sounds\\Monsters\\skele_death3.wav", "Sounds\\Monsters\\skele_death4.wav", "Sounds\\Monsters\\skele_death5.wav" }, volume = 127, cutoff = 1700. },
             height = 120.,
             xp = 27,
             hide_body = true
@@ -869,6 +994,17 @@ do
             bonus_parameters = {
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = ICE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = POISON_RESIST, value = 75, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 25, method = STRAIGHT_BONUS },
+                }
+            },
+            death_sound = { pack = { "Sounds\\Monsters\\skele_death1.wav", "Sounds\\Monsters\\skele_death2.wav", "Sounds\\Monsters\\skele_death3.wav", "Sounds\\Monsters\\skele_death4.wav", "Sounds\\Monsters\\skele_death5.wav" }, volume = 127, cutoff = 1700. },
             xp = 30,
             teamcolour = 8,
             hide_body = true
@@ -889,6 +1025,17 @@ do
             bonus_parameters = {
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = ICE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = POISON_RESIST, value = 75, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 25, method = STRAIGHT_BONUS },
+                }
+            },
+            death_sound = { pack = { "Sounds\\Monsters\\skele_death1.wav", "Sounds\\Monsters\\skele_death2.wav", "Sounds\\Monsters\\skele_death3.wav", "Sounds\\Monsters\\skele_death4.wav", "Sounds\\Monsters\\skele_death5.wav" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 35,
             hide_body = true
@@ -908,9 +1055,15 @@ do
                 { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 75, method = STRAIGHT_BONUS },
+                }
+            },
             skill_list = { "ASKC" },
             has_mp = false,
             height = 145.,
+            death_sound = { pack = { "Sounds\\Monsters\\skele_death1.wav", "Sounds\\Monsters\\skele_death2.wav", "Sounds\\Monsters\\skele_death3.wav", "Sounds\\Monsters\\skele_death4.wav", "Sounds\\Monsters\\skele_death5.wav" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 35,
             teamcolour = 24,
@@ -935,7 +1088,14 @@ do
                 { param = LIGHTNING_RESIST, value = 25, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 75, method = STRAIGHT_BONUS },
+                    { param = LIGHTNING_RESIST, value = 35, method = STRAIGHT_BONUS },
+                }
+            },
             has_mp = false,
+            death_sound = { pack = { "Sounds\\Monsters\\skele_death1.wav", "Sounds\\Monsters\\skele_death2.wav", "Sounds\\Monsters\\skele_death3.wav", "Sounds\\Monsters\\skele_death4.wav", "Sounds\\Monsters\\skele_death5.wav" }, volume = 127, cutoff = 1700. },
             height = 145.,
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 35,
@@ -959,9 +1119,16 @@ do
                 { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 75, method = STRAIGHT_BONUS },
+                    { param = ICE_RESIST, value = 35, method = STRAIGHT_BONUS },
+                }
+            },
             effect_list = { "skele_mage_cold" },
             has_mp = false,
             height = 145.,
+            death_sound = { pack = { "Sounds\\Monsters\\skele_death1.wav", "Sounds\\Monsters\\skele_death2.wav", "Sounds\\Monsters\\skele_death3.wav", "Sounds\\Monsters\\skele_death4.wav", "Sounds\\Monsters\\skele_death5.wav" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 35,
             teamcolour = 24,
@@ -984,8 +1151,15 @@ do
                 { param = FIRE_RESIST, value = 25, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 75, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 35, method = STRAIGHT_BONUS },
+                }
+            },
             has_mp = false,
             height = 145.,
+            death_sound = { pack = { "Sounds\\Monsters\\skele_death1.wav", "Sounds\\Monsters\\skele_death2.wav", "Sounds\\Monsters\\skele_death3.wav", "Sounds\\Monsters\\skele_death4.wav", "Sounds\\Monsters\\skele_death5.wav" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 35,
             teamcolour = 24,
@@ -1007,8 +1181,19 @@ do
                 { param = ALL_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 75, method = STRAIGHT_BONUS },
+                    { param = ARCANE_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = ICE_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = LIGHTNING_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 50, method = STRAIGHT_BONUS },
+                }
+            },
             has_mp = false,
             height = 145.,
+            death_sound = { pack = { "Sounds\\Monsters\\skele_death1.wav", "Sounds\\Monsters\\skele_death2.wav", "Sounds\\Monsters\\skele_death3.wav", "Sounds\\Monsters\\skele_death4.wav", "Sounds\\Monsters\\skele_death5.wav" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 45,
             hide_body = true
@@ -1019,21 +1204,31 @@ do
             name = LOCALE_LIST[my_locale].MONSTER_NAME_SKELETON_IMPROVED,
             proper_declension = DECL_HE,
             unit_class = NO_CLASS,
-            classification = MONSTER_RANK_COMMON,
+            classification = MONSTER_RANK_ADVANCED ,
             unit_trait = { TRAIT_UNDEAD },
             time_before_remove = 25.,
-            base_stats = { health = 200., hp_regen = 0.4, moving_speed = 250. },
-            weapon = { ATTACK_SPEED = 1.65, DAMAGE = 6, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
+            base_stats = { health = 220., hp_regen = 0.4, moving_speed = 265. },
+            weapon = { ATTACK_SPEED = 1.68, DAMAGE = 8, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
             bonus_parameters = {
-                { param = PHYSICAL_DEFENCE, value = 50, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_DEFENCE, value = 150, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 33, method = STRAIGHT_BONUS },
+                    { param = POISON_RESIST, value = 75, method = STRAIGHT_BONUS },
+                }
+            },
+            offhand = { BLOCK = 22., BLOCK_RATE = 30. },
             scale = 1.1,
             height = 135.,
+            death_sound = { pack = { "Sounds\\Monsters\\skele_death1.wav", "Sounds\\Monsters\\skele_death2.wav", "Sounds\\Monsters\\skele_death3.wav", "Sounds\\Monsters\\skele_death4.wav", "Sounds\\Monsters\\skele_death5.wav" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             has_mp = false,
-            xp = 35,
-            teamcolour = 24,
+            xp = 40,
             hide_body = true
         })
         --==========================================================--
@@ -1094,6 +1289,28 @@ do
             xp = 48,
         })
         --==========================================================--
+        -- bat
+        NewUnitTemplate('n03F', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_BAT,
+            proper_declension = DECL_SHE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_BEASTS },
+            time_before_remove = 25.,
+            base_stats = { health = 162., hp_regen = 0.25, moving_speed = 277. },
+            weapon = { ATTACK_SPEED = 1.27, DAMAGE = 4, CRIT_CHANCE = 12., DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL, ATTRIBUTE = PHYSICAL_ATTRIBUTE },
+            bonus_parameters = {
+                { param = MAGICAL_SUPPRESSION, value = 10, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 33, method = STRAIGHT_BONUS },
+            },
+            height = 100.,
+            has_mp = false,
+            teamcolour = 9,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 22,
+            hide_body = true,
+        })
+        --==========================================================--
         -- bloodsucker
         NewUnitTemplate('n01O', {
             name = LOCALE_LIST[my_locale].MONSTER_NAME_BLOODSUCKER,
@@ -1106,7 +1323,8 @@ do
             weapon = { ATTACK_SPEED = 1.53, DAMAGE = 6, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 5 },
             bonus_parameters = {
                 { param = MAGICAL_SUPPRESSION, value = 16, method = STRAIGHT_BONUS },
-                { param = HP_PER_HIT, value = 5, method = STRAIGHT_BONUS }
+                { param = HP_PER_HIT, value = 5, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 33, method = STRAIGHT_BONUS },
             },
             scale = 1.2,
             height = 130.,
@@ -1128,7 +1346,8 @@ do
             weapon = { ATTACK_SPEED = 1.37, DAMAGE = 8, CRIT_CHANCE = 17., DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 5 },
             bonus_parameters = {
                 { param = MAGICAL_SUPPRESSION, value = 32, method = STRAIGHT_BONUS },
-                { param = HP_PER_HIT, value = 7, method = STRAIGHT_BONUS }
+                { param = HP_PER_HIT, value = 7, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 33, method = STRAIGHT_BONUS },
             },
             has_mp = false,
             height = 150.,
@@ -1153,6 +1372,7 @@ do
                 { param = PHYSICAL_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
+                { param = POISONING_DAMAGE_REDUCTION, value = 33, method = STRAIGHT_BONUS },
             },
             effect_list = { "EHOR" },
             height = 140.,
@@ -1179,6 +1399,7 @@ do
                 { param = PHYSICAL_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
+                { param = POISONING_DAMAGE_REDUCTION, value = 33, method = STRAIGHT_BONUS },
             },
             height = 140.,
             has_mp = false,
@@ -1196,7 +1417,7 @@ do
             unit_trait = { TRAIT_DEMON },
             time_before_remove = 25.,
             base_stats = { health = 227., hp_regen = 0.55, moving_speed = 265. },
-            weapon = { ATTACK_SPEED = 2.33, DAMAGE = 6, CRIT_CHANCE = 10., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSCB", angle_deviation = 5. },
+            weapon = { ATTACK_SPEED = 2.33, DAMAGE = 6, CRIT_CHANCE = 10., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 7, missile = "MSCB" },
             has_mp = false,
             scale = 1.2,
             height = 140.,
@@ -1214,7 +1435,7 @@ do
             unit_trait = { TRAIT_DEMON },
             time_before_remove = 25.,
             base_stats = { health = 205., hp_regen = 0.52, moving_speed = 285. },
-            weapon = { ATTACK_SPEED = 2.44, DAMAGE = 9, CRIT_CHANCE = 12., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 12, missile = "MSCB", angle_deviation = 4. },
+            weapon = { ATTACK_SPEED = 2.44, DAMAGE = 9, CRIT_CHANCE = 12., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = DARKNESS_ATTRIBUTE, ATTRIBUTE_BONUS = 12, missile = "MSCB" },
             has_mp = false,
             scale = 1.18,
             height = 130.,
@@ -1272,6 +1493,107 @@ do
             xp = 39,
         })
         --==========================================================--
+        -- iron maiden
+        NewUnitTemplate('n03C', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_IRON_MAIDEN,
+            proper_declension = DECL_SHE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 25.,
+            base_stats = { health = 200., hp_regen = 0.7, moving_speed = 285. },
+            weapon = { ATTACK_SPEED = 1.65, DAMAGE = 6, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE, ATTRIBUTE = POISON_ATTRIBUTE },
+            bonus_parameters = {
+                { param = FIRE_RESIST, value = 33, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 50, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_RESIST, value = 44, method = STRAIGHT_BONUS },
+                { param = RANGE_DAMAGE_REDUCTION, value = 17, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = 50, method = STRAIGHT_BONUS },
+            },
+            scale = 1.1,
+            height = 145.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            has_mp = false,
+            skill_list = { "A057" },
+            xp = 35,
+            teamcolour = 9,
+            hide_body = false
+        })
+        --==========================================================--
+        -- salamander
+        NewUnitTemplate('n03E', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SALAMANDER,
+            proper_declension = DECL_SHE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_BEAST },
+            time_before_remove = 25.,
+            base_stats = { health = 180., hp_regen = 0.7, moving_speed = 285. },
+            weapon = { ATTACK_SPEED = 1.65, DAMAGE = 7, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE, ATTRIBUTE = FIRE_ATTRIBUTE },
+            bonus_parameters = {
+                { param = FIRE_RESIST, value = 50, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 33, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_RESIST, value = 44, method = STRAIGHT_BONUS },
+                { param = RANGE_DAMAGE_REDUCTION, value = 17, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = 33, method = STRAIGHT_BONUS },
+            },
+            scale = 1.1,
+            height = 145.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            has_mp = false,
+            xp = 35,
+            skill_list = { "A057" },
+            teamcolour = 9,
+            hide_body = false
+        })
+        --==========================================================--
+        -- Siren
+        NewUnitTemplate('n03D', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SIREN,
+            proper_declension = DECL_SHE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_DEMON, TRAIT_BEAST },
+            time_before_remove = 25.,
+            base_stats = { health = 245., hp_regen = 0.83, moving_speed = 285. },
+            weapon = { ATTACK_SPEED = 1.72, DAMAGE = 12, CRIT_CHANCE = 12., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE, ATTRIBUTE = POISON_ATTRIBUTE },
+            bonus_parameters = {
+                { param = FIRE_RESIST, value = 44, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 50, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_RESIST, value = 33, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = 50, method = STRAIGHT_BONUS },
+                { param = RANGE_DAMAGE_REDUCTION, value = 17, method = STRAIGHT_BONUS },
+            },
+            scale = 1.1,
+            height = 145.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            has_mp = false,
+            xp = 45,
+            teamcolour = 9,
+            skill_list = { "A058" },
+            hide_body = false
+        })
+        --==========================================================--
+        -- Siren ward
+        NewUnitTemplate('o005', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SIREN_WARD,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = 0,
+            unit_trait = { },
+            time_before_remove = 15.,
+            base_stats = { health = 350., hp_regen = 0, moving_speed = 0. },
+            bonus_parameters = {
+                { param = CONTROL_REDUCTION, value = 1000, method = STRAIGHT_BONUS },
+            },
+            height = 100.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            has_mp = false,
+            xp = 0,
+            hide_body = true,
+            trigger_death = false
+        })
+        --==========================================================--
         -- void walker small
         NewUnitTemplate('n00A', {
             name = LOCALE_LIST[my_locale].MONSTER_NAME_VOID_WALKER_SMALL,
@@ -1306,6 +1628,11 @@ do
                 { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 5, method = STRAIGHT_BONUS }
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = DARKNESS_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
+            },
             scale = 1.15,
             has_mp = false,
             height = 190.,
@@ -1330,11 +1657,201 @@ do
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 15, method = STRAIGHT_BONUS }
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = DARKNESS_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
+            },
             scale = 1.3,
             has_mp = false,
             height = 270.,
             drop_offset_min = 15., drop_offset_max = 55.,
             xp = 45,
+            hide_body = true,
+        })
+        --==========================================================--
+        -- fire walker small
+        NewUnitTemplate('n03G', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_FIRE_WALKER_SMALL,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_DEMON },
+            time_before_remove = 25.,
+            base_stats = { health = 200., hp_regen = 0.4, moving_speed = 240. },
+            weapon = { ATTACK_SPEED = 2.25, DAMAGE = 4, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 5, missile = "MFWS", angle_deviation = 5. },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = FIRE_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
+            },
+            has_mp = false,
+            scale = 0.75,
+            height = 180.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 25,
+            hide_body = true,
+        })
+        --==========================================================--
+        -- fire walker normal
+        NewUnitTemplate('n03H', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_FIRE_WALKER_NORMAL,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_DEMON },
+            time_before_remove = 25.,
+            base_stats = { health = 225., hp_regen = 0.4, moving_speed = 240. },
+            weapon = { ATTACK_SPEED = 2.3, DAMAGE = 6, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MFWM", angle_deviation = 4. },
+            bonus_parameters = {
+                { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 5, method = STRAIGHT_BONUS }
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = FIRE_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
+            },
+            scale = 1.15,
+            has_mp = false,
+            height = 190.,
+            drop_offset_min = 15., drop_offset_max = 50.,
+            xp = 35,
+            hide_body = true,
+        })
+        --==========================================================--
+        -- fire walker big
+        NewUnitTemplate('n03I', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_FIRE_WALKER_BIG,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            unit_trait = { TRAIT_DEMON },
+            --trait = TRAIT_DEMON,
+            time_before_remove = 25.,
+            base_stats = { health = 270., hp_regen = 0.4, moving_speed = 225. },
+            weapon = { ATTACK_SPEED = 2.4, DAMAGE = 11, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = FIRE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MFWB", angle_deviation = 4. },
+            bonus_parameters = {
+                { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 15, method = STRAIGHT_BONUS }
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = FIRE_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
+            },
+            scale = 1.3,
+            has_mp = false,
+            height = 270.,
+            drop_offset_min = 15., drop_offset_max = 55.,
+            xp = 45,
+            hide_body = true,
+        })
+        --==========================================================--
+        -- cold walker small
+        NewUnitTemplate('n03J', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_COLD_WALKER_SMALL,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_DEMON },
+            time_before_remove = 25.,
+            base_stats = { health = 200., hp_regen = 0.4, moving_speed = 240. },
+            weapon = { ATTACK_SPEED = 2.25, DAMAGE = 4, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 5, missile = "MCWS", angle_deviation = 5. },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
+            },
+            has_mp = false,
+            scale = 0.75,
+            height = 180.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            xp = 25,
+            hide_body = true,
+        })
+        --==========================================================--
+        -- cold walker normal
+        NewUnitTemplate('n03K', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_COLD_WALKER_NORMAL,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_DEMON },
+            time_before_remove = 25.,
+            base_stats = { health = 225., hp_regen = 0.4, moving_speed = 240. },
+            weapon = { ATTACK_SPEED = 2.3, DAMAGE = 6, CRIT_CHANCE = 11., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 10, missile = "MCWM", angle_deviation = 4. },
+            bonus_parameters = {
+                { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 5, method = STRAIGHT_BONUS }
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
+            },
+            scale = 1.15,
+            has_mp = false,
+            height = 190.,
+            drop_offset_min = 15., drop_offset_max = 50.,
+            xp = 35,
+            hide_body = true,
+        })
+        --==========================================================--
+        -- cold walker big
+        NewUnitTemplate('n03L', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_COLD_WALKER_BIG,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_ADVANCED,
+            unit_trait = { TRAIT_DEMON },
+            --trait = TRAIT_DEMON,
+            time_before_remove = 25.,
+            base_stats = { health = 270., hp_regen = 0.4, moving_speed = 225. },
+            weapon = { ATTACK_SPEED = 2.4, DAMAGE = 11, CRIT_CHANCE = 14., DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = ICE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MCWB", angle_deviation = 4. },
+            bonus_parameters = {
+                { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 15, method = STRAIGHT_BONUS }
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
+            },
+            scale = 1.3,
+            has_mp = false,
+            height = 270.,
+            drop_offset_min = 15., drop_offset_max = 55.,
+            xp = 45,
+            hide_body = true,
+        })
+        --==========================================================--
+        -- shadowling
+        NewUnitTemplate('n03Q', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_SHADOWLING,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = MONSTER_RANK_COMMON,
+            unit_trait = { TRAIT_UNDEAD },
+            time_before_remove = 25.,
+            base_stats = { health = 182., hp_regen = 0.4, moving_speed = 275. },
+            weapon = { ATTACK_SPEED = 1.9, DAMAGE = 7, CRIT_CHANCE = 12., DAMAGE_TYPE = DAMAGE_TYPE_PHYSICAL, ATTRIBUTE = PHYSICAL_ATTRIBUTE, WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH  },
+            bonus_parameters = {
+                { param = MELEE_DAMAGE_REDUCTION, value = 15, method = STRAIGHT_BONUS },
+                { param = RANGE_DAMAGE_REDUCTION, value = 15, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = PHYSICAL_RESIST, value = 20, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = POISON_RESIST, value = 15, method = STRAIGHT_BONUS },
+                { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
+                { param = POISONING_DAMAGE_REDUCTION, value = 33, method = STRAIGHT_BONUS },
+                { param = DODGE_CHANCE, value = 7, method = STRAIGHT_BONUS },
+            },
+            scale = 0.9,
+            has_mp = false,
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 35.,
+            xp = 25,
             hide_body = true,
         })
         --==========================================================--
@@ -1355,7 +1872,13 @@ do
                 { param = PHYSICAL_RESIST, value = 20, method = STRAIGHT_BONUS },
                 { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
+                { param = POISONING_DAMAGE_REDUCTION, value = 33, method = STRAIGHT_BONUS },
                 { param = DODGE_CHANCE, value = 7, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
             },
             skill_list = { "AFRD" },
             scale = 1.4,
@@ -1415,6 +1938,13 @@ do
                 { param = MELEE_DAMAGE_REDUCTION, value = 11, method = STRAIGHT_BONUS },
                 { param = ALL_RESIST, value = 4, method = STRAIGHT_BONUS }
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
+            },
             scale = 1.75,
             has_mp = false,
             drop_offset_min = 15., drop_offset_max = 55.,
@@ -1438,6 +1968,11 @@ do
                 { param = PHYSICAL_DEFENCE, value = 167, method = STRAIGHT_BONUS },
                 { param = CONTROL_REDUCTION, value = 33, method = STRAIGHT_BONUS },
                 { param = ALL_RESIST, value = 6, method = STRAIGHT_BONUS }
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = PHYSICAL_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
             },
             skill_list = {"AMGT", "AMGR"},
             has_mp = false,
@@ -1484,6 +2019,11 @@ do
                 { param = MAGICAL_SUPPRESSION, value = 189, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 44, method = STRAIGHT_BONUS }
+                }
+            },
             scale = 0.9,
             skill_list = { "AHBA" },
             has_mp = false,
@@ -1528,6 +2068,12 @@ do
             bonus_parameters = {
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = CRIT_CHANCE, value = 20, method = STRAIGHT_BONUS },
+                    { param = MOVING_SPEED, value = 33, method = STRAIGHT_BONUS }
+                }
+            },
             scale = 0.75,
             skill_list = { "AWRG" },
             has_mp = false,
@@ -1552,6 +2098,11 @@ do
                 { param = CONTROL_REDUCTION, value = 24, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = CRIT_CHANCE, value = 20, method = STRAIGHT_BONUS }
+                }
+            },
             has_mp = false,
             height = 180.,
             teamcolour = 24,
@@ -1573,6 +2124,12 @@ do
                 { param = MAGICAL_SUPPRESSION, value = 167, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 15, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = CRIT_CHANCE, value = 27, method = STRAIGHT_BONUS },
+                    { param = MOVING_SPEED, value = 33, method = STRAIGHT_BONUS }
+                }
             },
             skill_list = { "AWWO" },
             has_mp = false,
@@ -1597,6 +2154,11 @@ do
                 { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = POISON_RESIST, value = 25, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 40, method = STRAIGHT_BONUS }
+                }
+            },
             scale = 0.6,
             has_mp = false,
             height = 160.,
@@ -1620,6 +2182,12 @@ do
                 { param = LIGHTNING_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 7, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ARCANE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 30, method = STRAIGHT_BONUS }
+                }
+            },
             scale = 1.15,
             has_mp = false,
             height = 130.,
@@ -1641,6 +2209,12 @@ do
                 { param = LIGHTNING_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 14, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ARCANE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 30, method = STRAIGHT_BONUS }
+                }
+            },
             skill_list = { "ASBL" },
             has_mp = false,
             height = 130.,
@@ -1661,6 +2235,12 @@ do
             bonus_parameters = {
                 { param = LIGHTNING_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 18, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ARCANE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 30, method = STRAIGHT_BONUS }
+                }
             },
             skill_list = { "ASRL" },
             scale = 1.05,
@@ -1755,8 +2335,17 @@ do
                 { param = FIRE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = FIRE_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 33, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 33, method = STRAIGHT_BONUS },
+                    { param = POISON_RESIST, value = 75, method = STRAIGHT_BONUS },
+                }
+            },
             has_mp = false,
             height = 155.,
+            death_sound = { pack = { "Sounds\\Monsters\\skele_death1.wav", "Sounds\\Monsters\\skele_death2.wav", "Sounds\\Monsters\\skele_death3.wav", "Sounds\\Monsters\\skele_death4.wav", "Sounds\\Monsters\\skele_death5.wav" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 20., drop_offset_max = 55.,
             xp = 35,
             hide_body = true,
@@ -1776,9 +2365,18 @@ do
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ICE_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 33, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 33, method = STRAIGHT_BONUS },
+                    { param = POISON_RESIST, value = 75, method = STRAIGHT_BONUS },
+                }
+            },
             effect_list = { "skele_mage_cold" },
             has_mp = false,
             height = 155.,
+            death_sound = { pack = { "Sounds\\Monsters\\skele_death1.wav", "Sounds\\Monsters\\skele_death2.wav", "Sounds\\Monsters\\skele_death3.wav", "Sounds\\Monsters\\skele_death4.wav", "Sounds\\Monsters\\skele_death5.wav" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 20., drop_offset_max = 55.,
             xp = 35,
             hide_body = true,
@@ -1796,6 +2394,13 @@ do
             weapon = { ATTACK_SPEED = 1.95, DAMAGE = 7, CRIT_CHANCE = 11., ATTRIBUTE = ARCANE_ATTRIBUTE, ATTRIBUTE_BONUS = 15, missile = "MDWZ", angle_deviation = 4. },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 8, method = STRAIGHT_BONUS }
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = DARKNESS_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 33, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 75, method = STRAIGHT_BONUS },
+                }
             },
             scale = 1.55,
             has_mp = false,
@@ -1821,6 +2426,14 @@ do
                 { param = DARKNESS_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = 5, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 25, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 33, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 33, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 45, method = STRAIGHT_BONUS },
+                }
+            },
             has_mp = false,
             scale = 0.9,
             height = 135.,
@@ -1844,6 +2457,12 @@ do
             bonus_parameters = {
                 { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = 15, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = HOLY_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 30, method = STRAIGHT_BONUS }
+                }
             },
             scale = 0.9,
             has_mp = false,
@@ -1869,6 +2488,11 @@ do
                 { param = ALL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = PHYSICAL_DEFENCE, value = 70, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 50, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ALL_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
             },
             skill_list = { "AHGF" },
             scale = 1.3,
@@ -1918,6 +2542,11 @@ do
             weapon = { ATTACK_SPEED = 1.35, DAMAGE = 6, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_BASH },
             has_mp = false,
             height = 120.,
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
+            },
             drop_offset_min = 15., drop_offset_max = 45.,
             teamcolour = 12,
             xp = 35,
@@ -1935,6 +2564,11 @@ do
             base_stats = { health = 146., hp_regen = 0.47, moving_speed = 270. },
             colours = { r = 255, g = 140, b = 140 },
             weapon = { ATTACK_SPEED = 1.55, DAMAGE = 14, CRIT_CHANCE = 7., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_BASH },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
+            },
             has_mp = false,
             height = 135.,
             drop_offset_min = 20., drop_offset_max = 45.,
@@ -1953,6 +2587,11 @@ do
             time_before_remove = 25.,
             base_stats = { health = 256., hp_regen = 0.54, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 1.75, DAMAGE = 20, CRIT_CHANCE = 12., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_BASH },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
+            },
             has_mp = false,
             height = 155.,
             drop_offset_min = 35., drop_offset_max = 65.,
@@ -1971,6 +2610,11 @@ do
             time_before_remove = 25.,
             base_stats = { health = 100., hp_regen = 0.37, moving_speed = 275. },
             weapon = { ATTACK_SPEED = 1.75, DAMAGE = 4, CRIT_CHANCE = 7., missile = "MSKA", angle_deviation = 5. },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
+            },
             skill_list = { "AGEN" },
             has_mp = false,
             height = 120.,
@@ -1991,6 +2635,11 @@ do
             base_stats = { health = 120., hp_regen = 0.39, moving_speed = 275. },
             colours = { r = 100, g = 100, b = 255 },
             weapon = { ATTACK_SPEED = 1.87, DAMAGE = 6, CRIT_CHANCE = 7., missile = "MSKA", angle_deviation = 4. },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
+            },
             skill_list = { "AGEN" },
             has_mp = false,
             height = 135.,
@@ -2010,6 +2659,11 @@ do
             time_before_remove = 25.,
             base_stats = { health = 120., hp_regen = 0.39, moving_speed = 275. },
             weapon = { ATTACK_SPEED = 1.8, DAMAGE = 9, CRIT_CHANCE = 7., missile = "MGNL", DAMAGE_TYPE = DAMAGE_TYPE_MAGICAL, ATTRIBUTE = LIGHTNING_ATTRIBUTE, ATTRIBUTE_BONUS = 15, angle_deviation = 4. },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS }
+                }
+            },
             has_mp = false,
             height = 145.,
             drop_offset_min = 25., drop_offset_max = 55.,
@@ -2031,6 +2685,11 @@ do
             bonus_parameters = {
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
+            },
             scale = 0.65,
             has_mp = false,
             height = 120.,
@@ -2051,6 +2710,11 @@ do
             weapon = { ATTACK_SPEED = 1.35, DAMAGE = 7, CRIT_CHANCE = 12., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_CHOP },
             bonus_parameters = {
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS }
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             scale = 0.8,
             has_mp = false,
@@ -2074,6 +2738,11 @@ do
             bonus_parameters = {
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
+            },
             scale = 0.65,
             has_mp = false,
             height = 120.,
@@ -2095,6 +2764,11 @@ do
                 { param = POISON_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS }
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             scale = 0.9,
             has_mp = false,
@@ -2118,6 +2792,11 @@ do
                 { param = POISON_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS }
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             has_mp = false,
             height = 130.,
@@ -2147,6 +2826,11 @@ do
                 { param = CONTROL_REDUCTION, value = 55, method = STRAIGHT_BONUS },
                 { param = MAGICAL_ATTACK, value = 100, method = STRAIGHT_BONUS }
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
+            },
             scale = 1.2,
             skill_list = { "AACL", "AAPN", "AACH" },
             respawn_rect = gg_rct_arachnid_boss,
@@ -2170,7 +2854,13 @@ do
             bonus_parameters = {
                 { param = POISON_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
-                { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS }
+                { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS },
+                { param = POISONING_DAMAGE_REDUCTION, value = 33, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             scale = 0.6,
             has_mp = false,
@@ -2193,7 +2883,13 @@ do
             bonus_parameters = {
                 { param = POISON_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
-                { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS }
+                { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS },
+                { param = POISONING_DAMAGE_REDUCTION, value = 33, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             has_mp = false,
             height = 125.,
@@ -2215,7 +2911,13 @@ do
             bonus_parameters = {
                 { param = POISON_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
-                { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS }
+                { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS },
+                { param = POISONING_DAMAGE_REDUCTION, value = 33, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             has_mp = false,
             height = 125.,
@@ -2236,7 +2938,13 @@ do
             bonus_parameters = {
                 { param = POISON_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
-                { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS }
+                { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS },
+                { param = POISONING_DAMAGE_REDUCTION, value = 33, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             has_mp = false,
             height = 130.,
@@ -2258,7 +2966,13 @@ do
             bonus_parameters = {
                 { param = POISON_RESIST, value = 25, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -15, method = STRAIGHT_BONUS },
-                { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS }
+                { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS },
+                { param = POISONING_DAMAGE_REDUCTION, value = 33, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             scale = 1.25,
             has_mp = false,
@@ -2287,6 +3001,12 @@ do
                 { param = POISON_BONUS, value = 15, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -25, method = STRAIGHT_BONUS },
                 { param = CONTROL_REDUCTION, value = 55, method = STRAIGHT_BONUS },
+                { param = POISONING_DAMAGE_REDUCTION, value = 33, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             scale = 1.5,
             skill_list = { "ASQB", "ASQT", "ASQS", "ASQC" },
@@ -2311,9 +3031,17 @@ do
                 { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -5, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 20, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ICE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             has_mp = false,
             height = 125.,
+            on_attack_sound = { pack = { "Sounds\\Monsters\\goat_attack1.wav", "Sounds\\Monsters\\goat_attack2.wav", "Sounds\\Monsters\\goat_attack3.wav", "Sounds\\Monsters\\goat_attack4.wav" }, volume = 127, cutoff = 1700., chance = 28. },
+            death_sound = { pack = { "Sounds\\Monsters\\goat_death1", "Sounds\\Monsters\\goat_death2", "Sounds\\Monsters\\goat_death3", "Sounds\\Monsters\\goat_death4" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 25,
         })
@@ -2332,9 +3060,17 @@ do
                 { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -5, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 20, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ICE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             has_mp = false,
             height = 125.,
+            on_attack_sound = { pack = { "Sounds\\Monsters\\goat_attack1.wav", "Sounds\\Monsters\\goat_attack2.wav", "Sounds\\Monsters\\goat_attack3.wav", "Sounds\\Monsters\\goat_attack4.wav" }, volume = 127, cutoff = 1700., chance = 28. },
+            death_sound = { pack = { "Sounds\\Monsters\\goat_death1", "Sounds\\Monsters\\goat_death2", "Sounds\\Monsters\\goat_death3", "Sounds\\Monsters\\goat_death4" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 25,
         })
@@ -2353,9 +3089,17 @@ do
                 { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -5, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 20, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ICE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             has_mp = false,
             height = 125.,
+            on_attack_sound = { pack = { "Sounds\\Monsters\\goat_attack1.wav", "Sounds\\Monsters\\goat_attack2.wav", "Sounds\\Monsters\\goat_attack3.wav", "Sounds\\Monsters\\goat_attack4.wav" }, volume = 127, cutoff = 1700., chance = 28. },
+            death_sound = { pack = { "Sounds\\Monsters\\goat_death1", "Sounds\\Monsters\\goat_death2", "Sounds\\Monsters\\goat_death3", "Sounds\\Monsters\\goat_death4" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 30,
         })
@@ -2374,9 +3118,17 @@ do
                 { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
                 { param = FIRE_RESIST, value = -5, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 20, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = ICE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             has_mp = false,
             height = 125.,
+            on_attack_sound = { pack = { "Sounds\\Monsters\\goat_attack1.wav", "Sounds\\Monsters\\goat_attack2.wav", "Sounds\\Monsters\\goat_attack3.wav", "Sounds\\Monsters\\goat_attack4.wav" }, volume = 127, cutoff = 1700., chance = 28. },
+            death_sound = { pack = { "Sounds\\Monsters\\goat_death1", "Sounds\\Monsters\\goat_death2", "Sounds\\Monsters\\goat_death3", "Sounds\\Monsters\\goat_death4" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 30,
         })
@@ -2394,13 +3146,20 @@ do
             bonus_parameters = {
                 { param = PHYSICAL_RESIST, value = 7, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 7, method = STRAIGHT_BONUS },
-                { param = ICE_RESIST, value = 7, method = STRAIGHT_BONUS },
-                { param = LIGHTNING_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 27, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = 7, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 1.15, method = MULTIPLY_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
+            },
             has_mp = false,
             height = 125.,
+            on_attack_sound = { pack = { "Sounds\\Monsters\\goat_attack1.wav", "Sounds\\Monsters\\goat_attack2.wav", "Sounds\\Monsters\\goat_attack3.wav", "Sounds\\Monsters\\goat_attack4.wav" }, volume = 127, cutoff = 1700., chance = 28. },
+            death_sound = { pack = { "Sounds\\Monsters\\goat_death1", "Sounds\\Monsters\\goat_death2", "Sounds\\Monsters\\goat_death3", "Sounds\\Monsters\\goat_death4" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 25,
         })
@@ -2418,13 +3177,20 @@ do
             bonus_parameters = {
                 { param = PHYSICAL_RESIST, value = 7, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 7, method = STRAIGHT_BONUS },
-                { param = ICE_RESIST, value = 7, method = STRAIGHT_BONUS },
-                { param = LIGHTNING_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 27, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = 7, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 1.15, method = MULTIPLY_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
+            },
             has_mp = false,
             height = 125.,
+            on_attack_sound = { pack = { "Sounds\\Monsters\\goat_attack1.wav", "Sounds\\Monsters\\goat_attack2.wav", "Sounds\\Monsters\\goat_attack3.wav", "Sounds\\Monsters\\goat_attack4.wav" }, volume = 127, cutoff = 1700., chance = 28. },
+            death_sound = { pack = { "Sounds\\Monsters\\goat_death1", "Sounds\\Monsters\\goat_death2", "Sounds\\Monsters\\goat_death3", "Sounds\\Monsters\\goat_death4" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 25,
         })
@@ -2442,13 +3208,20 @@ do
             bonus_parameters = {
                 { param = PHYSICAL_RESIST, value = 7, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 7, method = STRAIGHT_BONUS },
-                { param = ICE_RESIST, value = 7, method = STRAIGHT_BONUS },
-                { param = LIGHTNING_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 27, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = 7, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 1.15, method = MULTIPLY_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
+            },
             has_mp = false,
             height = 125.,
+            on_attack_sound = { pack = { "Sounds\\Monsters\\goat_attack1.wav", "Sounds\\Monsters\\goat_attack2.wav", "Sounds\\Monsters\\goat_attack3.wav", "Sounds\\Monsters\\goat_attack4.wav" }, volume = 127, cutoff = 1700., chance = 28. },
+            death_sound = { pack = { "Sounds\\Monsters\\goat_death1", "Sounds\\Monsters\\goat_death2", "Sounds\\Monsters\\goat_death3", "Sounds\\Monsters\\goat_death4" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 30,
         })
@@ -2466,13 +3239,20 @@ do
             bonus_parameters = {
                 { param = PHYSICAL_RESIST, value = 7, method = STRAIGHT_BONUS },
                 { param = DARKNESS_RESIST, value = 7, method = STRAIGHT_BONUS },
-                { param = ICE_RESIST, value = 7, method = STRAIGHT_BONUS },
-                { param = LIGHTNING_RESIST, value = 7, method = STRAIGHT_BONUS },
+                { param = ICE_RESIST, value = 27, method = STRAIGHT_BONUS },
+                { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = 7, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 1.15, method = MULTIPLY_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
+            },
             has_mp = false,
             height = 125.,
+            on_attack_sound = { pack = { "Sounds\\Monsters\\goat_attack1.wav", "Sounds\\Monsters\\goat_attack2.wav", "Sounds\\Monsters\\goat_attack3.wav", "Sounds\\Monsters\\goat_attack4.wav" }, volume = 127, cutoff = 1700., chance = 28. },
+            death_sound = { pack = { "Sounds\\Monsters\\goat_death1", "Sounds\\Monsters\\goat_death2", "Sounds\\Monsters\\goat_death3", "Sounds\\Monsters\\goat_death4" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 30,
         })
@@ -2490,10 +3270,17 @@ do
             bonus_parameters = {
                 { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
-                { param = FIRE_RESIST, value = -5, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 20, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = FIRE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             has_mp = false,
             height = 130.,
+            on_attack_sound = { pack = { "Sounds\\Monsters\\goat_attack1.wav", "Sounds\\Monsters\\goat_attack2.wav", "Sounds\\Monsters\\goat_attack3.wav", "Sounds\\Monsters\\goat_attack4.wav" }, volume = 127, cutoff = 1700., chance = 28. },
+            death_sound = { pack = { "Sounds\\Monsters\\goat_death1", "Sounds\\Monsters\\goat_death2", "Sounds\\Monsters\\goat_death3", "Sounds\\Monsters\\goat_death4" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 45,
         })
@@ -2511,10 +3298,17 @@ do
             bonus_parameters = {
                 { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
-                { param = FIRE_RESIST, value = -5, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 20, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = FIRE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             has_mp = false,
             height = 130.,
+            on_attack_sound = { pack = { "Sounds\\Monsters\\goat_attack1.wav", "Sounds\\Monsters\\goat_attack2.wav", "Sounds\\Monsters\\goat_attack3.wav", "Sounds\\Monsters\\goat_attack4.wav" }, volume = 127, cutoff = 1700., chance = 28. },
+            death_sound = { pack = { "Sounds\\Monsters\\goat_death1", "Sounds\\Monsters\\goat_death2", "Sounds\\Monsters\\goat_death3", "Sounds\\Monsters\\goat_death4" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 45,
         })
@@ -2532,10 +3326,17 @@ do
             bonus_parameters = {
                 { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
-                { param = FIRE_RESIST, value = -5, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 20, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = FIRE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             has_mp = false,
             height = 130.,
+            on_attack_sound = { pack = { "Sounds\\Monsters\\goat_attack1.wav", "Sounds\\Monsters\\goat_attack2.wav", "Sounds\\Monsters\\goat_attack3.wav", "Sounds\\Monsters\\goat_attack4.wav" }, volume = 127, cutoff = 1700., chance = 28. },
+            death_sound = { pack = { "Sounds\\Monsters\\goat_death1", "Sounds\\Monsters\\goat_death2", "Sounds\\Monsters\\goat_death3", "Sounds\\Monsters\\goat_death4" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 37,
         })
@@ -2553,10 +3354,17 @@ do
             bonus_parameters = {
                 { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
-                { param = FIRE_RESIST, value = -5, method = STRAIGHT_BONUS },
+                { param = FIRE_RESIST, value = 20, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = FIRE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             has_mp = false,
             height = 130.,
+            on_attack_sound = { pack = { "Sounds\\Monsters\\goat_attack1.wav", "Sounds\\Monsters\\goat_attack2.wav", "Sounds\\Monsters\\goat_attack3.wav", "Sounds\\Monsters\\goat_attack4.wav" }, volume = 127, cutoff = 1700., chance = 28. },
+            death_sound = { pack = { "Sounds\\Monsters\\goat_death1", "Sounds\\Monsters\\goat_death2", "Sounds\\Monsters\\goat_death3", "Sounds\\Monsters\\goat_death4" }, volume = 127, cutoff = 1700. },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 37,
         })
@@ -2576,6 +3384,11 @@ do
                 { param = RANGE_DAMAGE_REDUCTION, value = 7, method = STRAIGHT_BONUS },
                 { param = PHYSICAL_RESIST, value = 5, method = STRAIGHT_BONUS },
                 { param = POISON_RESIST, value = -5, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = PHYSICAL_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             has_mp = false,
             height = 120.,
@@ -2646,6 +3459,7 @@ do
             },
             has_mp = false,
             height = 120.,
+            skill_list = { "ABAB" },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 30,
         })
@@ -2669,6 +3483,7 @@ do
             scale = 1.3,
             has_mp = false,
             height = 130.,
+            skill_list = { "ABRL" },
             drop_offset_min = 15., drop_offset_max = 45.,
             xp = 45,
         })
@@ -2768,7 +3583,13 @@ do
                 { param = DARKNESS_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
+                { param = POISONING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = FIRE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                }
             },
             skill_list = { "ASSM", "ASBN", "A049" },
             has_mp = false,
@@ -2814,6 +3635,7 @@ do
             base_stats = { health = 66., hp_regen = 0.4, moving_speed = 255. },
             weapon = { ATTACK_SPEED = 1.66, DAMAGE = 5, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_METAL_MEDIUM_SLICE },
             has_mp = false,
+            death_sound = { pack = { "Sounds\\Monsters\\skele_death1.wav", "Sounds\\Monsters\\skele_death2.wav", "Sounds\\Monsters\\skele_death3.wav", "Sounds\\Monsters\\skele_death4.wav", "Sounds\\Monsters\\skele_death5.wav" }, volume = 127, cutoff = 1700. },
             height = 120.,
             xp = 0,
         })
@@ -2863,6 +3685,13 @@ do
                 { param = MAGICAL_ATTACK, value = 125, method = STRAIGHT_BONUS },
                 { param = BLEEDING_DAMAGE_REDUCTION, value = 50, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = ICE_RESIST, value = 40, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 25, method = STRAIGHT_BONUS },
+                }
+            },
             on_attack_sound = { pack = { "Sounds\\Monsters\\mephisto_attack1.wav", "Sounds\\Monsters\\mephisto_attack2.wav", "Sounds\\Monsters\\mephisto_attack3.wav", "Sounds\\Monsters\\mephisto_attack4.wav" }, volume = 128, cutoff = 1700., chance = 28. },
             death_sound = { pack = { "Sounds\\Monsters\\mephisto_death.wav" }, volume = 128, cutoff = 1700. },
             skill_list = { "AMLN", "AMFB" },
@@ -2895,6 +3724,14 @@ do
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 35, method = STRAIGHT_BONUS },
+                    { param = ICE_RESIST, value = 35, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 35, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 50, method = STRAIGHT_BONUS },
+                }
+            },
             skill_list = { "ABSS", "ABHF", "ABFN" },
             death_sound = { pack = { "Sounds\\Monsters\\BaalDeath.wav" }, volume = 128, cutoff = 1700. },
             has_mp = false,
@@ -2925,7 +3762,15 @@ do
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
-            skill_list = { "AARB" },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 45, method = STRAIGHT_BONUS },
+                    { param = ICE_RESIST, value = 35, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 35, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 25, method = STRAIGHT_BONUS },
+                }
+            },
+            skill_list = { "AARB", "ASLB", "A055" },
             has_mp = false,
             drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
@@ -2955,6 +3800,14 @@ do
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = HP_PER_HIT, value = 5, method = STRAIGHT_BONUS },
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = DARKNESS_RESIST, value = 45, method = STRAIGHT_BONUS },
+                    { param = ICE_RESIST, value = 20, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 35, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 25, method = STRAIGHT_BONUS },
+                }
+            },
             on_attack_sound = { pack = { "Sounds\\Monsters\\butcher_attack_1.wav", "Sounds\\Monsters\\butcher_attack_2.wav", "Sounds\\Monsters\\butcher_attack_3.wav", "Sounds\\Monsters\\butcher_attack_4.wav", "Sounds\\Monsters\\butcher_attack_5.wav" }, volume = 128, cutoff = 1700., chance = 28. },
             skill_list = { "ABCC", "ABBC" },
             has_mp = false,
@@ -2970,7 +3823,7 @@ do
             classification = MONSTER_RANK_BOSS,
             unit_trait = { TRAIT_DEMON },
             time_before_remove = 25.,
-            base_stats = { health = 2305., hp_regen = 0.49, moving_speed = 275. },
+            base_stats = { health = 2305., hp_regen = 0.49, moving_speed = 265. },
             weapon = { ATTACK_SPEED = 1.66, DAMAGE = 44, CRIT_CHANCE = 15., WEAPON_SOUND = WEAPON_TYPE_METAL_HEAVY_BASH },
             bonus_parameters = {
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
@@ -2982,6 +3835,15 @@ do
                 { param = LIGHTNING_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 45, method = STRAIGHT_BONUS },
+                    { param = ICE_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = POISON_RESIST, value = 35, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 35, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 25, method = STRAIGHT_BONUS },
+                }
             },
             on_attack_sound = { pack = { "Sounds\\Monsters\\duriel_attack1.wav", "Sounds\\Monsters\\duriel_attack2.wav", "Sounds\\Monsters\\duriel_attack3.wav", "Sounds\\Monsters\\duriel_attack4.wav", "Sounds\\Monsters\\duriel_attack5.wav" }, volume = 128, cutoff = 1700., chance = 28. },
             skill_list = { "ADSM" },
@@ -3011,6 +3873,15 @@ do
                 { param = POISON_RESIST, value = 35, method = STRAIGHT_BONUS },
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 45, method = STRAIGHT_BONUS },
+                    { param = ICE_RESIST, value = 45, method = STRAIGHT_BONUS },
+                    { param = POISON_RESIST, value = 55, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 35, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 55, method = STRAIGHT_BONUS },
+                }
             },
             on_attack_sound = { pack = { "Sounds\\Monsters\\andariel_attack1.wav", "Sounds\\Monsters\\andariel_attack2.wav", "Sounds\\Monsters\\andariel_attack3.wav", "Sounds\\Monsters\\andariel_attack3.wav" }, volume = 128, cutoff = 1700., chance = 28. },
             death_sound = { pack = { "Sounds\\Monsters\\andariel_death.wav" }, volume = 128, cutoff = 1700. },
@@ -3042,10 +3913,59 @@ do
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
-            skill_list = { "ARNA" },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 45, method = STRAIGHT_BONUS },
+                    { param = ICE_RESIST, value = 20, method = STRAIGHT_BONUS },
+                    { param = POISON_RESIST, value = 55, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 15, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 50, method = STRAIGHT_BONUS },
+                }
+            },
+            skill_list = { "ARNA", "ARPR", "ARWD", "ARBS" },
             has_mp = false,
             drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
+        })
+        --==========================================================--
+        -- bone prison
+        NewUnitTemplate('o006', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_REANIMATED_BONE_PRISON,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = 0,
+            unit_trait = { },
+            time_before_remove = 15.,
+            base_stats = { health = 325., hp_regen = 0, moving_speed = 0. },
+            bonus_parameters = {
+                { param = CONTROL_REDUCTION, value = 1000, method = STRAIGHT_BONUS },
+            },
+            height = 100.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            has_mp = false,
+            xp = 0,
+            hide_body = true,
+            trigger_death = false
+        })
+        --==========================================================--
+        -- bone ward
+        NewUnitTemplate('o007', {
+            name = LOCALE_LIST[my_locale].MONSTER_NAME_REANIMATED_BONE_WARD,
+            proper_declension = DECL_HE,
+            unit_class = NO_CLASS,
+            classification = 0,
+            unit_trait = { },
+            time_before_remove = 15.,
+            base_stats = { health = 420., hp_regen = 0, moving_speed = 0. },
+            bonus_parameters = {
+                { param = CONTROL_REDUCTION, value = 1000, method = STRAIGHT_BONUS },
+            },
+            height = 120.,
+            drop_offset_min = 15., drop_offset_max = 45.,
+            has_mp = false,
+            xp = 0,
+            hide_body = true,
+            trigger_death = false
         })
         --==========================================================--
         -- BLOOD RAVEN
@@ -3072,6 +3992,13 @@ do
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = LIGHTNING_RESIST, value = 35, method = STRAIGHT_BONUS },
+                    { param = ICE_RESIST, value = 35, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 20, method = STRAIGHT_BONUS },
+                }
+            },
             skill_list = { "ABRR", "ABRA", "A03Y" },
             death_sound = { pack = { "Sounds\\Monsters\\blood_raven_death.wav" }, volume = 128, cutoff = 1700. },
             has_mp = false,
@@ -3093,6 +4020,13 @@ do
             bonus_parameters = {
                 { param = MELEE_DAMAGE_REDUCTION, value = 7, method = STRAIGHT_BONUS },
                 { param = ALL_RESIST, value = 4, method = STRAIGHT_BONUS }
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = POISON_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = FIRE_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 33, method = STRAIGHT_BONUS },
+                }
             },
             colours = { r = 150, g = 150, b = 150 },
             scale = 1.15,
@@ -3135,6 +4069,13 @@ do
                 { param = ICE_RESIST, value = 25, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS },
                 { param = MAGICAL_ATTACK, value = 125, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = FIRE_RESIST, value = 35, method = STRAIGHT_BONUS },
+                    { param = ICE_RESIST, value = 20, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 20, method = STRAIGHT_BONUS },
+                }
             },
             on_attack_sound = { pack = { "Units\\Creeps\\SeaGiant\\SeaGiantWhat1.wav", "Units\\Creeps\\SeaGiant\\SeaGiantWhat2.wav", "Units\\Creeps\\SeaGiant\\SeaGiantYes3.wav" }, volume = 128, cutoff = 1700., chance = 28. },
             skill_list = { "A03X", "A042", "A044", "A045", "A047" },
@@ -3236,7 +4177,7 @@ do
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = -15, method = STRAIGHT_BONUS }
             },
-            skill_list = { "ADME", "ADMP" },
+            skill_list = { "ADME", "ADMP", "ADKS" },
             has_mp = false,
             drop_offset_min = 20., drop_offset_max = 65.,
             xp = 700,
@@ -3250,9 +4191,10 @@ do
             classification = MONSTER_RANK_BOSS,
             unit_trait = { TRAIT_DEMON },
             time_before_remove = 25.,
-            base_stats = { health = 3570., hp_regen = 0.44, moving_speed = 270. },
+            base_stats = { health = 3570., hp_regen = 0.44, moving_speed = 335. },
             weapon = { ATTACK_SPEED = 2.3, DAMAGE = 48, CRIT_CHANCE = 17., WEAPON_SOUND = WEAPON_TYPE_WOOD_HEAVY_BASH, ATTRIBUTE = PHYSICAL_ATTRIBUTE, ATTRIBUTE_BONUS = 10 },
             bonus_parameters = {
+                { param = ATTACK_SPEED, value = 25, method = STRAIGHT_BONUS },
                 { param = ALL_RESIST, value = 10, method = STRAIGHT_BONUS },
                 { param = PHYSICAL_DEFENCE, value = 750, method = STRAIGHT_BONUS },
                 { param = MAGICAL_SUPPRESSION, value = 450, method = STRAIGHT_BONUS },
@@ -3262,6 +4204,15 @@ do
                 { param = POISON_RESIST, value = 25, method = STRAIGHT_BONUS },
                 { param = ICE_RESIST, value = 15, method = STRAIGHT_BONUS },
                 { param = HOLY_RESIST, value = 5, method = STRAIGHT_BONUS },
+            },
+            difficulty_parameters = {
+                [DIFFICULTY_HELL] = {
+                    { param = FIRE_RESIST, value = 35, method = STRAIGHT_BONUS },
+                    { param = LIGHTNING_RESIST, value = 35, method = STRAIGHT_BONUS },
+                    { param = DARKNESS_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = PHYSICAL_RESIST, value = 50, method = STRAIGHT_BONUS },
+                    { param = CRIT_CHANCE, value = 15, method = STRAIGHT_BONUS },
+                }
             },
             on_attack_sound = { pack = { "Sounds\\Monsters\\diablo_attack1.wav", "Sounds\\Monsters\\diablo_attack2.wav", "Sounds\\Monsters\\diablo_attack3.wav", "Sounds\\Monsters\\diablo_attack4.wav", "Sounds\\Monsters\\diablo_attack5.wav" }, volume = 128, cutoff = 1700., chance = 28. },
             death_sound = { pack = { "Sounds\\Monsters\\Diablo_Death.wav" }, volume = 115, cutoff = 1700. },
@@ -3289,6 +4240,7 @@ do
             height = 120.,
             has_mp = false,
             xp = 0,
+            trigger_death = false
         })
         --==========================================================--
         -- spider egg 2
@@ -3309,6 +4261,7 @@ do
             height = 120.,
             has_mp = false,
             xp = 0,
+            trigger_death = false
         })
         --==========================================================--
         -- tentacle summoned
@@ -3321,11 +4274,12 @@ do
             base_stats = { health = 92., hp_regen = 0.2, moving_speed = 0. },
             weapon = { ATTACK_SPEED = 1.44, DAMAGE = 7, CRIT_CHANCE = 9., WEAPON_SOUND = WEAPON_TYPE_WOOD_MEDIUM_BASH },
             bonus_parameters = {
-                { param = CONTROL_REDUCTION, value = 100, method = STRAIGHT_BONUS },
+                { param = CONTROL_REDUCTION, value = 1000, method = STRAIGHT_BONUS },
             },
             height = 170.,
             has_mp = false,
             xp = 0,
+            trigger_death = false
         })
         --==========================================================--
         -- curse totem
@@ -3334,14 +4288,15 @@ do
             unit_class = NO_CLASS,
             classification = MONSTER_RANK_ADVANCED,
             time_before_remove = 25.,
-            base_stats = { health = 1100., hp_regen = 0.21, moving_speed = 0. },
+            base_stats = { health = 2400., hp_regen = 0.21, moving_speed = 0. },
             bonus_parameters = {
-                { param = CONTROL_REDUCTION, value = 100, method = STRAIGHT_BONUS },
+                { param = CONTROL_REDUCTION, value = 1000, method = STRAIGHT_BONUS },
             },
             height = 180.,
             has_mp = false,
             drop_offset_min = 15., drop_offset_max = 55.,
             xp = 5,
+            trigger_death = false
         })
         --==========================================================--
         -- Lilith
@@ -3451,6 +4406,16 @@ do
             end)
 
 
+        end)
+
+        RegisterTestCommand("rf", function()
+            for i = 1, 5 do
+                CreateUnit(MONSTER_PLAYER, FourCC(MONSTER_ID_ANCIENT_VOIDWALKER), GetRandomReal(GetRectMinX(gg_rct_testrect1), GetRectMaxX(gg_rct_testrect1)), GetRandomReal(GetRectMinY(gg_rct_testrect1), GetRectMaxY(gg_rct_testrect1)), RndAng())
+            end
+        end)
+
+        RegisterTestCommand("test1", function()
+            ModifyStat(PlayerHero[1], MAGICAL_ATTACK, 350, STRAIGHT_BONUS, true)
         end)
 
 

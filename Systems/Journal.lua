@@ -96,6 +96,11 @@ do
                 end
             end
 
+            local pages = #entry_list
+
+            if pages <= 6 then pages = 1 end
+            BlzFrameSetMinMaxValue(JournalFrame[player].entries_slider, 1., pages)
+
                 for i = 1, 6 do
                     local button_data = GetButtonData(JournalFrame[player].entries_buttons[i])
 
@@ -360,7 +365,7 @@ do
                         entry.objectives[i].text = text
 
                             if hint_update then
-                                SendQuestMessage(QUEST_UPDATED_STRING .. entry.header, bj_TEXT_DELAY_QUESTUPDATE)
+                                SendQuestMessageForPlayer(QUEST_UPDATED_STRING .. entry.header, bj_TEXT_DELAY_QUESTUPDATE, player)
                                 if GetLocalPlayer() == Player(player - 1) then StartSound(QUEST_UPDATED_SOUND or bj_questUpdatedSound) end
                             end
 
@@ -513,7 +518,6 @@ do
         end
         
         JournalFrame[player].entries_list[#JournalFrame[player].entries_list+1] = { id = id, icon = icon, priority = priority, header = header, text = {} }
-        BlzFrameSetMinMaxValue(JournalFrame[player].entries_slider, 1, #JournalFrame[player].entries_list)
         SortEntries(player)
         UpdateJournalWindow(player)
         if sound then PlayLocalSound("Sound\\NewLogEntry.wav", player-1, 120) end
@@ -588,6 +592,7 @@ do
                 BlzFrameSetStepSize(new_frame, 1)
                 BlzFrameSetPoint(new_frame, FRAMEPOINT_TOPRIGHT, border, FRAMEPOINT_TOPLEFT, 0.017, -0.018)
                 BlzFrameSetPoint(new_frame, FRAMEPOINT_BOTTOMRIGHT, border, FRAMEPOINT_BOTTOMLEFT, 0.017, 0.018)
+                BlzFrameSetSize(new_frame, 0.015, 0.27)
 
 
                 JournalFrame[player].entries_slider = new_frame
@@ -598,9 +603,19 @@ do
                     TriggerAddAction(JournalFrame[player].slider_trigger, function ()
 
                             if BlzGetTriggerFrameEvent() == FRAMEEVENT_MOUSE_WHEEL then
-                                if BlzGetTriggerFrameValue() > 0 then
+                                if BlzGetTriggerFrameValue() < 0 then
+                                    local entries = 0
+
+                                        for i = 1, #JournalFrame[player].entries_list do
+                                            if JournalFrame[player].entries_list[i] and not JournalFrame[player].entries_list[i].hidden then
+                                                entries = entries + 1
+                                            end
+                                        end
+
+                                    if entries <= 6 then entries = 1 end
+
                                     JournalFrame[player].slider_value = JournalFrame[player].slider_value + 1
-                                    if JournalFrame[player].slider_value > #JournalFrame[player].entries_list then JournalFrame[player].slider_value = #JournalFrame[player].entries_list end
+                                    if JournalFrame[player].slider_value > entries then JournalFrame[player].slider_value = entries end
                                     BlzFrameSetValue(JournalFrame[player].entries_slider, JournalFrame[player].slider_value)
                                 else
                                     JournalFrame[player].slider_value = JournalFrame[player].slider_value - 1
@@ -609,9 +624,9 @@ do
                                 end
                             else
                                 JournalFrame[player].slider_value = BlzGetTriggerFrameValue()
+                                UpdateJournalWindow(player)
                             end
 
-                            UpdateJournalWindow(player)
                         end)
 
                     BlzTriggerRegisterFrameEvent(JournalFrame[player].slider_trigger, JournalFrame[player].entries_slider, FRAMEEVENT_MOUSE_WHEEL)
@@ -712,6 +727,7 @@ do
         BlzFrameSetStepSize(new_frame, 1)
         BlzFrameSetPoint(new_frame, FRAMEPOINT_TOPRIGHT, border, FRAMEPOINT_TOPLEFT, 0.017, -0.018)
         BlzFrameSetPoint(new_frame, FRAMEPOINT_BOTTOMRIGHT, border, FRAMEPOINT_BOTTOMLEFT, 0.017, 0.018)
+        BlzFrameSetSize(new_frame, 0.015, 0.27)
 
 
         JournalFrame[player].entries_slider = new_frame
@@ -722,9 +738,19 @@ do
             TriggerAddAction(JournalFrame[player].slider_trigger, function ()
 
                     if BlzGetTriggerFrameEvent() == FRAMEEVENT_MOUSE_WHEEL then
-                        if BlzGetTriggerFrameValue() > 0 then
+                        if BlzGetTriggerFrameValue() < 0 then
+                            local entries = 0
+
+                                for i = 1, #JournalFrame[player].entries_list do
+                                    if JournalFrame[player].entries_list[i] and not JournalFrame[player].entries_list[i].hidden then
+                                        entries = entries + 1
+                                    end
+                                end
+
+                            if entries <= 6 then entries = 1 end
+
                             JournalFrame[player].slider_value = JournalFrame[player].slider_value + 1
-                            if JournalFrame[player].slider_value > #JournalFrame[player].entries_list then JournalFrame[player].slider_value = #JournalFrame[player].entries_list end
+                            if JournalFrame[player].slider_value > entries then JournalFrame[player].slider_value = entries end
                             BlzFrameSetValue(JournalFrame[player].entries_slider, JournalFrame[player].slider_value)
                         else
                             JournalFrame[player].slider_value = JournalFrame[player].slider_value - 1
@@ -733,9 +759,10 @@ do
                         end
                     else
                         JournalFrame[player].slider_value = BlzGetTriggerFrameValue()
+                        UpdateJournalWindow(player)
                     end
 
-                    UpdateJournalWindow(player)
+
                 end)
 
             BlzTriggerRegisterFrameEvent(JournalFrame[player].slider_trigger, JournalFrame[player].entries_slider, FRAMEEVENT_MOUSE_WHEEL)

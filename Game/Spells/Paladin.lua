@@ -201,7 +201,7 @@ do
                     for index = BlzGroupGetSize(group) - 1, 0, -1 do
                         local picked = BlzGroupUnitAt(group, index)
 
-                        if IsUnitEnemy(picked, player) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 then
+                        if IsUnitEnemy(picked, player) and GetUnitState(picked, UNIT_STATE_LIFE) > 0.045 and GetUnitAbilityLevel(picked, FourCC("Avul")) == 0 and GetUnitParameterValue(picked, CONTROL_REDUCTION) < 100 then
                             CollectivePunishmentPull(picked, target, caster)
                         end
                     end

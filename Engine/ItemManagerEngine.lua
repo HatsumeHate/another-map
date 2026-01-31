@@ -80,8 +80,14 @@ do
     end
 
 
-
-
+    function ConvertArmorTypeInteger(armor_type)
+            if ARMOR_TYPE_FLESH then return 1
+            elseif ARMOR_TYPE_METAL then return 2
+            elseif ARMOR_TYPE_WOOD then return 3
+            elseif ARMOR_TYPE_ETHREAL then return 4
+            elseif ARMOR_TYPE_STONE then return 5 end
+        return 0
+    end
 
 
     function CreateQualityEffect(item)
@@ -132,11 +138,11 @@ do
         local str = ""
 
         if GetLocalPlayer() == Player(player) then
-            str = "Items\\Money.mdl"
+            str = "Items\\Money.mdx"
         end
 
         local effect = AddSpecialEffect(str, x, y)
-        local rect = Rect(x - 45., y - 45., x + 45., y + 45.)
+        local rect = Rect(x - 55., y - 55., x + 55., y + 55.)
         local region = CreateRegion()
         local timer = CreateTimer()
 
@@ -169,7 +175,7 @@ do
 
             end)
 
-            TimerStart(timer, 70., false, function()
+            TimerStart(timer, 90., false, function()
                 DestroyEffect(effect)
                 RemoveRegion(region)
                 DestroyTrigger(trg)
@@ -325,6 +331,9 @@ do
             if data.TYPE == ITEM_TYPE_SKILLBOOK then GenerateItemBookSkill(item)
             elseif data.TYPE == ITEM_TYPE_CONSUMABLE and data.cooldown_type then BlzSetItemIntegerField(item, ITEM_IF_COOLDOWN_GROUP, data.cooldown_type) end
 
+            if not data.flippy then
+                BlzSetItemName(item, GetQualityColor(data.QUALITY) .. data.NAME .. "|r")
+            end
 
 		return item
 	end
@@ -332,17 +341,19 @@ do
     ---@param id integer
     ---@param x real
     ---@param y real
-    function CreateCustomItem_Id(id, x, y)
+    function CreateCustomItem_Id(id, x, y, quality)
         local item   = CreateItem(id, x, y)
         local data   = MergeTables({}, ITEM_TEMPLATE_DATA[id])
 
             ITEM_DATA[item] = data
             data.item = item
 
+            if quality then data.QUALITY = quality end
+
             x = GetItemX(item)
             y = GetItemY(item)
 
-            if IsRandomGeneratedId(id) then GenerateItemStats(item, 1, COMMON_ITEM)
+            if IsRandomGeneratedId(id) then GenerateItemStats(item, 1, data.QUALITY)
             else GenerateItemLevel(item, 1) end
 
             if data.flippy then
@@ -510,11 +521,21 @@ do
                 local gen = preset.skill_bonus.can_generate_for[GetRandomInt(1, #preset.skill_bonus.can_generate_for)]
                 local class = preset.skill_bonus[gen]
                 local category = class.available_category[GetRandomInt(1, #class.available_category)]
+                local generate_skill = false
 
-                if gen ~= ASSASSIN_CLASS and (item_data.SUBTYPE == BOW_WEAPON or item_data.SUBTYPE == QUIVER_OFFHAND) then
-                elseif (gen ~= SORCERESS_CLASS and gen ~= NECROMANCER_CLASS) and (item_data.SUBTYPE == ORB_OFFHAND or item_data.SUBTYPE == STAFF_WEAPON) then
-                elseif gen == ASSASSIN_CLASS and (item_data.SUBTYPE == SHIELD_OFFHAND or item_data.SUBTYPE == BLUNT_WEAPON or item_data.SUBTYPE == GREATBLUNT_WEAPON or item_data.SUBTYPE == AXE_WEAPON or item_data.SUBTYPE == GREATAXE_WEAPON or item_data.SUBTYPE == GREATSWORD_WEAPON) then
-                else
+                if gen == BARBARIAN_CLASS and (item_data.SUBTYPE == SWORD_WEAPON or item_data.SUBTYPE == GREATSWORD_WEAPON or item_data.SUBTYPE == AXE_WEAPON or item_data.SUBTYPE == GREATAXE_WEAPON or item_data.SUBTYPE == BLUNT_WEAPON or item_data.SUBTYPE == GREATBLUNT_WEAPON or item_data.SUBTYPE == DAGGER_WEAPON) then
+                    generate_skill = true
+                elseif (gen == SORCERESS_CLASS or gen == NECROMANCER_CLASS) and (item_data.SUBTYPE ~= BOW_WEAPON and item_data.SUBTYPE ~= QUIVER_OFFHAND) then
+                    generate_skill = true
+                elseif gen == ASSASSIN_CLASS and (item_data.SUBTYPE == SWORD_WEAPON or item_data.SUBTYPE == AXE_WEAPON or item_data.SUBTYPE == DAGGER_WEAPON or item_data.SUBTYPE == BOW_WEAPON or item_data.SUBTYPE == QUIVER_OFFHAND) then
+                    generate_skill = true
+                elseif gen == PALADIN_CLASS and (item_data.SUBTYPE == SWORD_WEAPON or item_data.SUBTYPE == GREATSWORD_WEAPON or item_data.SUBTYPE == AXE_WEAPON or item_data.SUBTYPE == GREATAXE_WEAPON or item_data.SUBTYPE == BLUNT_WEAPON or item_data.SUBTYPE == GREATBLUNT_WEAPON or item_data.SUBTYPE == SHIELD_OFFHAND) then
+                    generate_skill = true
+                elseif (item_data.SUBTYPE == NECKLACE_JEWELRY or item_data.SUBTYPE == RING_JEWELRY or item_data.SUBTYPE == BELT_ARMOR or item_data.SUBTYPE == CHEST_ARMOR or item_data.SUBTYPE == HEAD_ARMOR or item_data.SUBTYPE == HANDS_ARMOR or item_data.SUBTYPE == LEGS_ARMOR) then
+                    generate_skill = true
+                end
+
+                if generate_skill then
                     if GetRandomInt(0, 100) <= class.skill_bonus_probability then
 
                             item_data.SKILL_BONUS[#item_data.SKILL_BONUS + 1] = {
@@ -557,15 +578,23 @@ do
             if bonus_parameters_count > 0 and preset.effect_bonus and preset.effect_bonus[item_data.TYPE] then
                 local effect_list = preset.effect_bonus[item_data.TYPE]
                 local list_vars = #effect_list
-                local random_list = GetRandomIntTable(1, list_vars, list_vars)
 
-                    for i = 1, list_vars do
-                        if Chance(effect_list[random_list[i]].chance) then
-                            if not item_data.effect_bonus then item_data.effect_bonus = {} end
-                            item_data.effect_bonus[#item_data.effect_bonus+1] = effect_list[random_list[i]].id
-                            break
+                    if not item_data.effect_bonus then item_data.effect_bonus = {} end
+
+                    if list_vars > 1 then
+                        local random_list = GetRandomIntTable(1, list_vars, list_vars)
+
+                        for i = 1, list_vars do
+                            if Chance(effect_list[random_list[i]].chance) then
+                                item_data.effect_bonus[#item_data.effect_bonus+1] = effect_list[random_list[i]].id
+                                break
+                            end
                         end
+                    else
+                        item_data.effect_bonus[#item_data.effect_bonus+1] = effect_list[1].id
                     end
+
+
             end
             --print("generator skills done")
 
@@ -650,8 +679,11 @@ do
                 if item_data.SUBTYPE == SHIELD_OFFHAND then
                     item_data.DEFENCE = math.ceil(item_data.DEFENCE * value)
                     item_data.BLOCK = math.ceil(item_data.BLOCK * value)
+                elseif item_data.SUBTYPE == ORB_OFFHAND then
+                    item_data.ALLRESIST = math.ceil(item_data.ALLRESIST * value)
                 end
             end
+
     end
 
 
@@ -676,7 +708,7 @@ do
                     if item_data.SUBTYPE == SHIELD_OFFHAND then
                         item_data.BLOCK = GetRandomInt(20, 35)
                         item_data.DEFENCE = R2I(15 * GetRandomReal(0.75, 1.25)) + 1 * level
-                    else
+                    elseif item_data.SUBTYPE == ORB_OFFHAND then
                         item_data.ALLRESIST = GetRandomInt(3, 7) + math.floor((level * 0.5) + 0.5)
                     end
                 end
@@ -715,6 +747,8 @@ do
             item_data.texture = item_preset.texture or nil
             item_data.assassin_texture = item_preset.assassin_texture or nil
             item_data.item_variation = item_variation
+            if item_preset.armor_type then item_data.armor_type = item_preset.armor_type end
+
             --print("1")
             ApplyQualityGlowColour(item)
 
@@ -871,11 +905,16 @@ do
                 if flag then
 
                     if point == CHEST_POINT then
-                        if GetUnitClass(unit) == ASSASSIN_CLASS then
-                            SetTexture(unit, item_data.assassin_texture or TEXTURE_ID_ASSASSIN_BASE)
-                        else
-                            SetTexture(unit, item_data.texture or TEXTURE_ID_EMPTY)
+
+                        if GetUnitClass(unit) == ASSASSIN_CLASS then SetTexture(unit, item_data.assassin_texture or TEXTURE_ID_ASSASSIN_BASE)
+                        else SetTexture(unit, item_data.texture or TEXTURE_ID_EMPTY) end
+
+                        if item_data.armor_type and flag then
+                            --BlzSetUnitIntegerField(unit, UNIT_IF_ARMOR_TYPE, ConvertArmorTypeInteger(item_data.armor_type))
+                        elseif not flag then
+                            --BlzSetUnitIntegerField(unit, UNIT_IF_ARMOR_TYPE, ConvertArmorTypeInteger(ARMOR_TYPE_FLESH))
                         end
+
                     else
                         local ref_point = "chest"
 
@@ -1230,6 +1269,7 @@ do
             [ITEM_TYPE_SKILLBOOK]  = LOCALE_LIST[my_locale].ITEM_TYPE_SKILLBOOK,
             [ITEM_TYPE_OTHER]      = LOCALE_LIST[my_locale].ITEM_TYPE_OTHER,
             [ITEM_TYPE_GIFT]       = LOCALE_LIST[my_locale].ITEM_TYPE_GIFT,
+            [ITEM_TYPE_KEY]        = LOCALE_LIST[my_locale].ITEM_TYPE_KEY,
         }
 
         ITEMSUBTYPES_NAMES = {

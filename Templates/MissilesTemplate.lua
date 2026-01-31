@@ -191,9 +191,9 @@ do
             max_distance = 900.,
             radius = 50.,
             speed = 1200.,
-            start_z = 65.,
-            end_z = 65.,
-            arc = 0.12,
+            start_z = 75.,
+            end_z = 75.,
+            arc = 0.08,
             ignore_terrain = false,
             penetrate = false,
             full_distance = true
@@ -234,9 +234,9 @@ do
             max_distance = 900.,
             radius = 50.,
             speed = 1200.,
-            start_z = 65.,
-            end_z = 65.,
-            arc = 0.15,
+            start_z = 75.,
+            end_z = 75.,
+            arc = 0.08,
             ignore_terrain = false,
             penetrate = false,
             full_distance = true
@@ -248,9 +248,9 @@ do
             max_distance = 900.,
             radius = 50.,
             speed = 800.,
-            start_z = 65.,
-            end_z = 65.,
-            arc = 0.15,
+            start_z = 75.,
+            end_z = 75.,
+            arc = 0.08,
             ignore_terrain = false,
             penetrate = false,
             full_distance = true
@@ -366,6 +366,96 @@ do
             start_z = 95.,
             end_z = 95.,
             arc = 0.,
+            scale = 0.9,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MFWS', {
+            name = "fire walker small",
+            model = "Missile\\Fireball Minor.mdx",
+            max_distance = 1000.,
+            radius = 55.,
+            speed = 650.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.,
+            scale = 0.85,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MFWM', {
+            name = "fire walker normal",
+            model = "Missile\\Fireball Minor.mdx",
+            max_distance = 1000.,
+            radius = 55.,
+            speed = 650.,
+            start_z = 85.,
+            end_z = 85.,
+            arc = 0.,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MFWB', {
+            name = "fire walker big",
+            model = "Missile\\Fireball Medium.mdx",
+            max_distance = 1000.,
+            radius = 57.,
+            speed = 650.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.,
+            scale = 0.9,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MCWS', {
+            name = "cold walker small",
+            model = "Missile\\BlizMissile.mdx",
+            max_distance = 1000.,
+            radius = 55.,
+            speed = 725.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.,
+            scale = 0.4,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MCWM', {
+            name = "cold walker normal",
+            model = "Missile\\BlizMissile.mdx",
+            max_distance = 1000.,
+            radius = 55.,
+            speed = 725.,
+            start_z = 85.,
+            end_z = 85.,
+            arc = 0.,
+            scale = 0.5,
+            ignore_terrain = true,
+            penetrate = false,
+            full_distance = true
+        })
+        --==============================================--
+        NewMissileTemplate('MCWB', {
+            name = "cold walker big",
+            model = "Missile\\BlizMissile.mdx",
+            max_distance = 1000.,
+            radius = 57.,
+            speed = 725.,
+            start_z = 95.,
+            end_z = 95.,
+            arc = 0.,
+            scale = 0.6,
             ignore_terrain = true,
             penetrate = false,
             full_distance = true
@@ -466,9 +556,14 @@ do
             end_z = 65.,
             arc = 0.,
             scale = 1.1,
+            tracking_angle_window = 60.,
+            tracking_max_distance = 1000.,
+            tracking_max_angle_per_second = 60.,
+            tracking_minimum_difference_angle = 0.75,
             ignore_terrain = true,
             penetrate = false,
-            full_distance = true
+            full_distance = true,
+            trackable = true
         })
         --==============================================--
         NewMissileTemplate('MBAL', {
@@ -541,7 +636,7 @@ do
             name = "evolt missile",
             model = "Effect\\Evolt-8.mdx",
             max_distance = 1000.,
-            radius = 120.,
+            radius = 135.,
             speed = 305.,
             start_z = 100.,
             end_z = 100.,
@@ -943,8 +1038,11 @@ do
             arc = 0.07,
             scale = 1.,
             sound_on_launch = {
-                pack = { "Sounds\\Spells\\cast_large_1.wav", "Sounds\\Spells\\cast_large_2.wav", "Sounds\\Spells\\cast_large_3.wav" },
-                volume = 110,
+                pack = {
+                    "Sounds\\Spells\\Wizard_MagicMissile_Launch_01.wav", "Sounds\\Spells\\Wizard_MagicMissile_Launch_02.wav", "Sounds\\Spells\\Wizard_MagicMissile_Launch_03.wav",
+                    "Sounds\\Spells\\Wizard_MagicMissile_Launch_04.wav", "Sounds\\Spells\\Wizard_MagicMissile_Launch_05.wav", "Sounds\\Spells\\Wizard_MagicMissile_Launch_06.wav", "Sounds\\Spells\\Wizard_MagicMissile_Launch_07.wav"
+                },
+                volume = 120,
                 cutoff = 1500.
             },
             effect_on_hit = 'effect_arcane_missile',
@@ -968,8 +1066,11 @@ do
             geo_arc = 45.,
             geo_arc_randomize_angle = false,
             sound_on_launch = {
-                pack = { "Sounds\\Spells\\cast_large_1.wav", "Sounds\\Spells\\cast_large_2.wav", "Sounds\\Spells\\cast_large_3.wav" },
-                volume = 110,
+                pack = {
+                    "Sounds\\Spells\\Wizard_MagicMissile_Launch_01.wav", "Sounds\\Spells\\Wizard_MagicMissile_Launch_02.wav", "Sounds\\Spells\\Wizard_MagicMissile_Launch_03.wav",
+                    "Sounds\\Spells\\Wizard_MagicMissile_Launch_04.wav", "Sounds\\Spells\\Wizard_MagicMissile_Launch_05.wav", "Sounds\\Spells\\Wizard_MagicMissile_Launch_06.wav", "Sounds\\Spells\\Wizard_MagicMissile_Launch_07.wav"
+                },
+                volume = 120,
                 cutoff = 1500.
             },
             effect_on_hit = 'effect_arcane_missile',
@@ -1292,7 +1393,7 @@ do
             speed = 900.,
             start_z = 60.,
             end_z = 0.,
-            arc = 0.5,
+            arc = 0.3,
             scale = 1.,
             effect_on_expire = 'incendiary_grenade_effect',
             max_targets = 1,
@@ -1310,7 +1411,7 @@ do
             speed = 900.,
             start_z = 60.,
             end_z = 0.,
-            arc = 0.5,
+            arc = 0.3,
             scale = 1.,
             --effect_on_target = 'incendiary_grenade_effect',
             effect_on_expire = 'smoke_bomb_effect',
@@ -1349,7 +1450,7 @@ do
             speed = 1500.,
             start_z = 95.,
             end_z = 95.,
-            arc = 0.07,
+            arc = 0.05,
             scale = 1.,
             effect_on_hit = 'precision_arrow_effect',
             ignore_terrain = true,
@@ -1366,7 +1467,7 @@ do
             speed = 1500.,
             start_z = 95.,
             end_z = 95.,
-            arc = 0.07,
+            arc = 0.05,
             scale = 1.,
             effect_on_hit = 'precision_arrow_effect',
             ignore_terrain = true,
@@ -1383,7 +1484,7 @@ do
             speed = 1500.,
             start_z = 95.,
             end_z = 95.,
-            arc = 0.07,
+            arc = 0.05,
             scale = 1.,
             effect_on_hit = 'precision_arrow_effect',
             ignore_terrain = true,
@@ -1400,7 +1501,7 @@ do
             speed = 1500.,
             start_z = 95.,
             end_z = 95.,
-            arc = 0.07,
+            arc = 0.05,
             scale = 0.75,
             effect_on_hit = 'main_cluster_arrow_effect',
             ignore_terrain = true,
@@ -1417,7 +1518,7 @@ do
             speed = 1500.,
             start_z = 95.,
             end_z = 95.,
-            arc = 0.07,
+            arc = 0.05,
             scale = 0.75,
             effect_on_hit = 'main_cluster_arrow_effect',
             effect_on_expire = 'sub_cluster_arrow_effect',
@@ -1435,7 +1536,7 @@ do
             speed = 1500.,
             start_z = 95.,
             end_z = 95.,
-            arc = 0.07,
+            arc = 0.05,
             scale = 0.75,
             effect_on_hit = 'main_cluster_arrow_effect',
             effect_on_expire = 'sub_cluster_arrow_effect',
@@ -1453,7 +1554,7 @@ do
             speed = 1500.,
             start_z = 95.,
             end_z = 95.,
-            arc = 0.07,
+            arc = 0.05,
             scale = 0.75,
             --effect_on_hit = 'EGFB',
             ignore_terrain = true,
@@ -1470,7 +1571,7 @@ do
             speed = 1500.,
             start_z = 95.,
             end_z = 95.,
-            arc = 0.07,
+            arc = 0.05,
             scale = 1.,
             effect_on_hit = 'charged_shot_effect',
             ignore_terrain = true,
@@ -1487,7 +1588,7 @@ do
             speed = 1500.,
             start_z = 95.,
             end_z = 95.,
-            arc = 0.07,
+            arc = 0.05,
             scale = 1.,
             effect_on_hit = 'frost_arrow_effect',
             ignore_terrain = true,
@@ -1504,7 +1605,7 @@ do
             speed = 1500.,
             start_z = 95.,
             end_z = 95.,
-            arc = 0.07,
+            arc = 0.05,
             scale = 1.,
             effect_on_hit = 'poison_arrow_effect',
             ignore_terrain = true,
@@ -1521,7 +1622,7 @@ do
             speed = 1500.,
             start_z = 95.,
             end_z = 95.,
-            arc = 0.07,
+            arc = 0.05,
             scale = 0.7,
             effect_on_hit = 'expose_arrow_effect',
             ignore_terrain = true,
@@ -1538,7 +1639,7 @@ do
             speed = 1500.,
             start_z = 95.,
             end_z = 95.,
-            arc = 0.07,
+            arc = 0.05,
             scale = 0.7,
             effect_on_hit = 'expose_arrow_effect',
             ignore_terrain = true,
@@ -1555,7 +1656,7 @@ do
             speed = 1500.,
             start_z = 95.,
             end_z = 95.,
-            arc = 0.07,
+            arc = 0.05,
             scale = 0.7,
             effect_on_hit = 'expose_arrow_effect',
             ignore_terrain = true,
@@ -1700,7 +1801,7 @@ do
             speed = 1500.,
             start_z = 95.,
             end_z = 95.,
-            arc = 0.07,
+            arc = 0.05,
             scale = 0.9,
             effect_on_hit = 'supp_fire_effect',
             ignore_terrain = true,
@@ -1717,7 +1818,7 @@ do
             speed = 1500.,
             start_z = 95.,
             end_z = 95.,
-            arc = 0.07,
+            arc = 0.05,
             scale = 0.9,
             effect_on_hit = 'supp_fire_effect',
             ignore_terrain = true,
@@ -1734,7 +1835,7 @@ do
             speed = 1500.,
             start_z = 95.,
             end_z = 95.,
-            arc = 0.07,
+            arc = 0.05,
             scale = 0.9,
             effect_on_hit = 'supp_fire_effect',
             ignore_terrain = true,
@@ -1813,6 +1914,24 @@ do
             penetrate = true,
             trackable = false,
         })
+        NewMissileTemplate('dawnweaver_missile', {
+            name = "dawnweaver missile",
+            model = "Abilities\\Spells\\Orc\\Shockwave\\ShockwaveMissile.mdx",
+            max_distance = 500.,
+            radius = 100.,
+            speed = 1000.,
+            start_z = 0.,
+            end_z = 0.,
+            arc = 0.,
+            scale = 1.,
+            max_targets = 300,
+            hit_once_in = 0.25,
+            effect_on_hit = 'dawnweaver_effect',
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            trackable = false
+        })
         --==============================================--
         NewMissileTemplate('void_rain_missile', {
             name = "void rain",
@@ -1860,6 +1979,7 @@ do
             penetrate = false,
             full_distance = true
         })
+        --===============================================--
         NewMissileTemplate('baal_hoarfrost_missile', {
             name = "baal hoarfrost missile",
             model = "Missile\\WindMissle.mdx",
@@ -1883,6 +2003,7 @@ do
             penetrate = true,
             trackable = false
         })
+        --===============================================--
         NewMissileTemplate('andariel_fire_missile', {
             name = "andariel hellfire missile",
             model = "Effect\\Flame of Darkness.mdx",
@@ -1899,6 +2020,7 @@ do
             penetrate = true,
             trackable = false
         })
+        --===============================================--
         NewMissileTemplate('baal_nova_missile', {
             name = "baal nova missile",
             model = "Missile\\Firebolt Medium.mdx",
@@ -1910,6 +2032,60 @@ do
             arc = 0.,
             scale = 1.,
             effect_on_hit = 'baal_nova',
+            max_targets = 300,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            trackable = false
+        })
+        --===============================================--
+        NewMissileTemplate('siren_fire_missile', {
+            name = "siren_fire_missile",
+            model = "Missile\\Fire Claw.mdx",
+            max_distance = 500.,
+            radius = 85.,
+            speed = 900.,
+            start_z = 0.,
+            end_z = 0.,
+            arc = 0.,
+            scale = 1.,
+            effect_on_hit = 'siren_fire_effect',
+            max_targets = 300,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            trackable = false
+        })
+        --===============================================--
+        NewMissileTemplate('siren_poison_missile', {
+            name = "siren_poison_missile",
+            model = "Missile\\Fire Claw.mdx",
+            max_distance = 500.,
+            radius = 85.,
+            speed = 900.,
+            start_z = 0.,
+            end_z = 0.,
+            arc = 0.,
+            scale = 1.,
+            effect_on_hit = 'siren_fire_effect',
+            max_targets = 300,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            trackable = false
+        })
+        --===============================================--
+        NewMissileTemplate('lightning_breath_queen_missile', {
+            name = "lightning_breath_queen_missile",
+            model = "Missile\\LightningBreath.mdx",
+            max_distance = 1000.,
+            radius = 100.,
+            speed = 2000.,
+            start_z = 65.,
+            end_z = 65.,
+            arc = 0.,
+            scale = 1.,
+            effect_on_hit = 'lightning_breath_queen_effect',
             max_targets = 300,
             ignore_terrain = true,
             full_distance = true,
@@ -1939,6 +2115,23 @@ do
             full_distance = true,
             penetrate = true,
             only_on_impact = false
+        })
+        NewMissileTemplate('bandit_ball_missile', {
+            name = "bandit_ball missile",
+            model = "Missile\\Purple Ball.mdx",
+            max_distance = 1000.,
+            radius = 85.,
+            speed = 650.,
+            start_z = 60.,
+            end_z = 60.,
+            arc = 0.,
+            scale = 1.,
+            effect_on_hit = 'arcane_ball_effect',
+            max_targets = 300,
+            ignore_terrain = true,
+            full_distance = true,
+            penetrate = true,
+            trackable = false
         })
         --===============================================--
         NewMissileTemplate('ensnare_missile', {
@@ -2040,11 +2233,12 @@ do
             start_z = 95.,
             end_z = 95.,
             arc = 0.,
-            scale = 0.6,
+            scale = 0.65,
             effect_on_hit = "belial_fel_effect",
-            tracking_angle_window = 15.,
+            tracking_angle_window = 70.,
             tracking_max_distance = 1000.,
-            --tracking_max_angle_per_second = 5.,
+            tracking_max_angle_per_second = 55.,
+            tracking_minimum_difference_angle = 0.75,
             hit_once_in = 0.33,
             max_targets = 300,
             ignore_terrain = true,
@@ -2052,6 +2246,43 @@ do
             penetrate = true,
             trackable = true,
             can_enum = false
+        })
+        --===============================================--
+        NewMissileTemplate('reanimated_spirit_missile', {
+            name = "reanimated_spirit missile",
+            model = "Missile\\SpiritBolt.mdx",
+            max_distance = 2000.,
+            radius = 50.,
+            speed = 700.,
+            start_z = 70.,
+            end_z = 70.,
+            arc = 0.,
+            scale = 0.75,
+            effect_on_hit = 'reanimated_spirit_effect',
+            max_targets = 1,
+            only_on_target = true,
+            ignore_terrain = true,
+            full_distance = false,
+            penetrate = true,
+            trackable = true,
+            can_enum = false
+        })
+        --==============================================--
+        NewMissileTemplate('reanimated_bowskill_missile', {
+            name = "reanimated_bowskill_missile",
+            model = "Missile\\Big Blue.mdx",
+            max_distance = 1500.,
+            radius = 75.,
+            speed = 1550.,
+            start_z = 65.,
+            end_z = 65.,
+            effect_on_hit = "reanimated_bowskill_effect",
+            arc = 0.,
+            scale = 1.,
+            max_targets = 300,
+            ignore_terrain = true,
+            penetrate = true,
+            full_distance = true
         })
     end
 

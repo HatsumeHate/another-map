@@ -170,16 +170,14 @@ do
     function GetCorrectParamText(parameter, value, method)
         if method == MULTIPLY_BONUS then
             local v = value
-			value = S2I(R2S((value - 1.) * 100.)) --math.floor((value - 1.) * 100.) --string.format('%%.0f', (value - 1.) * 100.) --
-
-				if v >= 1. then value = "+" .. value .. "%%"
-				else value = math.abs(value) .. "%%" end
-
+			value = S2I(R2SW((value - 1.) * 100., 0, 0))
+				if v >= 1. then value = "+" .. value .. "%"
+				else value = math.abs(value) .. "%" end
         else
 			local special = ""
             local vector = "+"
 
-			if SpecialSymbolParam[parameter] then special = "%%" end
+			if SpecialSymbolParam[parameter] then special = "%" end
 			if parameter == MELEE_DAMAGE_REDUCTION or parameter == RANGE_DAMAGE_REDUCTION then vector = "-" end
 			if parameter ~= CRIT_MULTIPLIER and parameter ~= HP_REGEN and parameter ~= MP_REGEN then value = R2I(value) end --math.floor(value) end --
 
@@ -383,7 +381,7 @@ do
 					end
 				end
 
-				data.stats[PHYSICAL_ATTACK].value = (total_damage * GetBonus_STR(data.stats[STR_STAT].value) + data.stats[PHYSICAL_ATTACK].bonus) * data.stats[PHYSICAL_ATTACK].multiplier
+				data.stats[PHYSICAL_ATTACK].value = ((total_damage + data.stats[PHYSICAL_ATTACK].bonus) * GetBonus_STR(data.stats[STR_STAT].value)) * data.stats[PHYSICAL_ATTACK].multiplier
 			end,
 
 			---@param data table
@@ -410,7 +408,7 @@ do
 					end
 				end
 
-				data.stats[MAGICAL_ATTACK].value = (total_damage * GetBonus_INT(data.stats[INT_STAT].value) + data.stats[MAGICAL_ATTACK].bonus) * data.stats[MAGICAL_ATTACK].multiplier
+				data.stats[MAGICAL_ATTACK].value = ((total_damage + data.stats[MAGICAL_ATTACK].bonus) * GetBonus_INT(data.stats[INT_STAT].value)) * data.stats[MAGICAL_ATTACK].multiplier
 			end,
 
 			---@param data table
@@ -576,7 +574,6 @@ do
 
 			---@param data table
 			[MELEE_DAMAGE_REDUCTION] = function(data)
-				if TraceBug then print("update melee damage reduction A") end
 				data.stats[MELEE_DAMAGE_REDUCTION].value = data.stats[MELEE_DAMAGE_REDUCTION].bonus
 			end,
 
